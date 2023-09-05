@@ -15,11 +15,16 @@ module Glean.Database.Write.Batch
 import Control.Exception
 import Control.Monad.Extra
 import qualified Data.ByteString as BS
+import Data.Map.Strict (Map)
+import qualified Data.Map.Strict as Map
 import Data.Coerce
 import Data.Default
+import Data.Int (Int64)
 import Data.IORef
 import Data.Maybe
 import qualified Data.Text as Text
+import qualified Data.Vector.Storable as Vector
+import Data.Vector.Storable (Vector)
 
 import Util.Control.Exception
 import Util.STM
@@ -40,6 +45,7 @@ import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import Glean.RTS.Foreign.Ownership as Ownership
 import Glean.RTS.Foreign.Subst (Subst)
 import qualified Glean.RTS.Foreign.Subst as Subst
+import Glean.RTS.Types (Pid(..), Fid(..))
 import Glean.Types (Repo)
 import qualified Glean.Types as Thrift
 import Glean.Util.Metric
@@ -60,6 +66,23 @@ syncWriteDatabase
 syncWriteDatabase env repo batch = do
   point <- beginTick 1
   writeDatabase env repo (WriteContent batch Nothing) point
+
+makeDefineOwnership
+  :: Env
+  -> Repo
+  -> Map Int64 (Map Int64 (Vector Int64))
+  -> IO (Maybe DefineOwnership)
+makeDefineOwnership env repo deps
+  | Map.null deps = return Nothing
+  | otherwise = do
+  readDatabase env repo $ \odb lookup -> do
+  maybeOwnership <- readTVarIO (odbOwnership odb)
+  forM maybeOwnership $ \ownership -> do
+    nextId <- Lookup.firstFreeId lookup
+    define <- Ownership.newDefineOwnership ownership nextId
+    forM_ (Map.toList deps) $ \(pid, ownerMap) ->
+      Ownership.addDerivedOwners lookup define (Pid pid) ownerMap
+    return define
 
 writeDatabase
   :: Env
@@ -102,8 +125,17 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
                   updateLookupCacheStats env
                   let !is = Subst.substIntervals subst . coerce <$>
                         Thrift.batch_owned batch
-                  forM_ maybeOwn $ \ownBatch ->
-                    Ownership.substDefineOwnership ownBatch subst
+                      !deps = substDependencies subst
+                        <$> Thrift.batch_dependencies factBatch
+
+                  derivedOwners <-
+                    if | Just owners <- maybeOwn -> do
+                          Ownership.substDefineOwnership owners subst
+                          return $ Just owners
+                       | not $ Map.null deps ->
+                          makeDefineOwnership env repo deps
+                       | otherwise -> return Nothing
+
                   -- before commit, because it may modify facts
                   new_next_id <- Lookup.firstFreeId facts
                   logExceptions (\s -> inRepo repo $ "commit error: " ++ s)
@@ -113,7 +145,7 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
                         Stats.tick (envStats env)
                           Stats.commitThroughput mem $ do
                             Storage.commit odbHandle facts is
-                            forM_ maybeOwn $ \ownBatch ->
+                            forM_ derivedOwners $ \ownBatch ->
                               Storage.addDefineOwnership odbHandle ownBatch
                   -- update wrNextId only *after* commit, otherwise we
                   -- will use an incomplete snapshot of the DB in
@@ -159,16 +191,30 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
                 deduped_batch <- FactSet.serialize deduped_facts
                 let !is = coerce . Subst.substIntervals dsubst . coerce
                       <$> Thrift.batch_owned factBatch
+                    !deps = substDependencies dsubst
+                      <$> Thrift.batch_dependencies factBatch
                 forM_ maybeOwn $ \ownBatch ->
                   Ownership.substDefineOwnership ownBatch dsubst
                 -- And now write it do the DB, deduplicating again
                 wsubst <- withMutex (wrLock writing) $ const $
-                  do_write True deduped_batch { Thrift.batch_owned = is }
+                  do_write True deduped_batch
+                    { Thrift.batch_owned = is
+                    , Thrift.batch_dependencies = deps
+                    }
                 return $ dsubst <> wsubst
             )
     Nothing -> dbError repo "can't write to a read only database (1)"
   where
     batch_size = fromIntegral . BS.length . Thrift.batch_facts
+    substDependencies
+      :: Subst
+      -> Map.Map Int64 (Vector.Vector Int64)
+      -> Map.Map Int64 (Vector.Vector Int64)
+    substDependencies subst dmap = Map.fromListWith (<>) $ zip keys vals
+      where
+      !keys = substFid <$> Map.keys dmap
+      !vals = Vector.map substFid <$> Map.elems dmap
+      substFid = fromFid . Subst.subst subst . Fid
 
 withLookupCache
   :: Repo

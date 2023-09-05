@@ -300,6 +300,12 @@ const char *glean_subst_intervals(
   size_t *outs_size
 );
 
+const char *glean_subst_subst(
+  const Substitution *subst,
+  const glean_fact_id_t id,
+  glean_fact_id_t *res
+);
+
 uint64_t glean_subst_offset(
   const Substitution *subst
 );

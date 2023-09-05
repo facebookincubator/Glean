@@ -6,10 +6,16 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.RTS.Foreign.Subst (
-  Subst, empty, serialize, substIntervals, rebaseIntervals, deserialize,
-  substOffset,
-) where
+module Glean.RTS.Foreign.Subst
+  ( Subst
+  , empty
+  , serialize
+  , substIntervals
+  , subst
+  , rebaseIntervals
+  , deserialize
+  , substOffset
+  ) where
 
 import Control.Exception
 import Data.Int
@@ -59,6 +65,12 @@ substOffset subst = fromIntegral $ unsafeDupablePerformIO $
 -- | Apply the given substitution to the intervals
 substIntervals :: Subst -> VS.Vector Fid -> VS.Vector Fid
 substIntervals subst ins = substIntervals_ subst False ins
+
+-- | Apply the given substitution to one Fid
+subst :: Subst -> Fid -> Fid
+subst subst old = unsafePerformIO $
+  with subst $ \subst_ptr ->
+  mask_ $ invoke $ glean_subst_subst subst_ptr old
 
 {-
   How rebasing works:
@@ -138,6 +150,12 @@ foreign import ccall safe glean_subst_intervals
   -> CSize
   -> Ptr (Ptr Fid)
   -> Ptr CSize
+  -> IO CString
+
+foreign import ccall safe glean_subst_subst
+  :: Ptr Subst
+  -> Fid
+  -> Ptr Fid
   -> IO CString
 
 foreign import ccall unsafe glean_subst_offset

@@ -22,6 +22,7 @@ module Glean.RTS.Foreign.Ownership
   , DefineOwnership
   , substDefineOwnership
   , defineOwnershipSortByOwner
+  , addDerivedOwners
   , DerivedFactOwnershipIterator
   , computeDerivedOwnership
   , getFactOwner
@@ -36,6 +37,8 @@ module Glean.RTS.Foreign.Ownership
 import Control.Exception
 import Control.Monad
 import Data.Coerce
+import qualified Data.Map.Strict as Map
+import Data.Map.Strict (Map)
 import qualified Data.Vector.Storable as VS
 import Data.Text (Text)
 import Foreign hiding (with)
@@ -52,6 +55,7 @@ import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Lookup
 import Glean.RTS.Foreign.Subst
 import Glean.RTS.Types
+import qualified Glean.Types as Thrift
 
 newtype UnitIterator = UnitIterator (Ptr UnitIterator)
   deriving(Storable)
@@ -160,6 +164,36 @@ substDefineOwnership define subst =
   with define $ \define_ptr ->
   with subst $ \subst_ptr ->
     invoke $ glean_define_ownership_subst define_ptr subst_ptr
+
+addDerivedOwners
+  :: CanLookup base
+  => base
+  -> DefineOwnership
+  -> Pid
+  -> Map Thrift.Id (VS.Vector Thrift.Id)
+  -> IO ()
+addDerivedOwners base define (Pid pid) deps =
+  when (not $ Map.null deps) $
+  with define $ \define_ptr ->
+  withLookup base $ \base_lookup_ptr ->
+  withMany entry (Map.toList deps) $ \xs ->
+  let (fids, fids_ptrs, fids_sizes) = unzip3 xs in
+  withArray fids $ \p_fids ->
+  withArray fids_ptrs $ \p_fids_ptrs ->
+  withArray fids_sizes $ \p_fids_sizes ->
+    invoke $ glean_define_ownership_add_derived
+      base_lookup_ptr
+      define_ptr
+      (fromIntegral pid)
+      (fromIntegral $ Map.size deps)
+      p_fids
+      p_fids_ptrs
+      p_fids_sizes
+  where
+    entry (fid, fids) f =
+      VS.unsafeWith (VS.map fromIntegral fids) $ \fids_ptr ->
+      f (fromIntegral fid, fids_ptr, fromIntegral $ VS.length fids)
+
 
 newtype DerivedFactOwnershipIterator =
   DerivedFactOwnershipIterator (Ptr DerivedFactOwnershipIterator)
@@ -286,6 +320,16 @@ foreign import ccall unsafe glean_define_ownership_sort_by_owner
   :: Ptr DefineOwnership
   -> Word64
   -> Ptr (HsArray Int64)
+  -> IO CString
+
+foreign import ccall unsafe glean_define_ownership_add_derived
+  :: Ptr Lookup
+  -> Ptr DefineOwnership
+  -> Word64
+  -> CSize
+  -> Ptr Word64
+  -> Ptr (Ptr Word64)
+  -> Ptr CSize
   -> IO CString
 
 foreign import ccall unsafe glean_ownership_unit_iterator_free

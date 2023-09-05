@@ -246,6 +246,28 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
       std::move(intervals));
 }
 
+void addDerived(
+    Lookup *lookup,
+    DefineOwnership *define,
+    Pid pid,
+    DerivedDependencyIterator* it) {
+  while (auto v = it->get()) {
+    Id id = v->first;
+    auto& deps = v->second;
+    std::set<UsetId> owners;
+    for (auto dep : deps) {
+      auto owner = lookup->getOwner(dep);
+      if (owner == INVALID_USET) {
+        VLOG(1) << "fact " << dep.toWord() << " has no owner";
+      } else {
+        owners.insert(owner);
+      }
+    }
+
+    define->derivedFrom(pid, id, owners);
+  }
+}
+
 }
 }
 }

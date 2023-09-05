@@ -79,6 +79,22 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
   Lookup* base,
   DerivedFactOwnershipIterator *iter);
 
+struct DerivedDependencyIterator {
+  virtual ~DerivedDependencyIterator () {}
+  virtual folly::Optional<std::pair<Id,std::vector<Id>>> get() = 0;
+};
+
+///
+// Add ownership data for externally derived facts
+//
+void addDerived(
+  Lookup *lookup,
+  DefineOwnership *define,
+  Pid pid,
+  DerivedDependencyIterator* it
+);
+
+
 }
 }
 }

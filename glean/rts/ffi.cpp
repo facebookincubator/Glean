@@ -458,6 +458,15 @@ const char *glean_subst_intervals(
   });
 }
 
+const char *glean_subst_subst(
+    const Substitution *subst,
+    const glean_fact_id_t id,
+    glean_fact_id_t *res) {
+  return ffi::wrap([=] {
+    *res = subst->subst(Id::fromThrift(id)).toThrift();
+  });
+}
+
 uint64_t glean_subst_offset(const Substitution* subst) {
   return distance(subst->finish(), subst->firstFreeId());
 }
@@ -1032,6 +1041,64 @@ const char *glean_define_ownership_sort_by_owner(
   HsArray<int64_t> *result) {
   return ffi::wrap([=] {
     *result = define->sortByOwner(facts);
+  });
+}
+
+namespace {
+struct DependencyIterator : DerivedDependencyIterator {
+  DependencyIterator(
+    size_t size_,
+    uint64_t* fids,
+    uint64_t** fids_lists,
+    size_t* fids_lists_sizes)
+  : size_(size_), fids(fids), fids_lists(fids_lists),
+  fids_lists_sizes(fids_lists_sizes), ix(0) {}
+
+  folly::Optional<std::pair<Id, std::vector<Id>>> get() override {
+    if (ix < size_) {
+      const auto id = Id::fromThrift(fids[ix]);
+      std::vector<Id> deps;
+      const auto dep_size = fids_lists_sizes[ix];
+      deps.reserve(dep_size);
+      std::transform(
+        fids_lists[ix],
+        fids_lists[ix] + dep_size,
+        std::back_inserter(deps),
+        Id::fromThrift
+      );
+
+      ix++;
+      return std::pair(id, std::move(deps));
+    }
+    return folly::none;
+  }
+
+private:
+  size_t size_;
+  uint64_t* fids;
+  uint64_t** fids_lists;
+  size_t* fids_lists_sizes;
+  size_t ix;
+};
+
+}
+
+const char *glean_define_ownership_add_derived(
+  Lookup *lookup,
+  DefineOwnership *define,
+  uint64_t pid_raw,
+  size_t fids_size,
+  uint64_t* fids,
+  uint64_t** fids_lists,
+  size_t* fids_lists_sizes) {
+  return ffi::wrap([=] {
+    auto it = DependencyIterator(
+      fids_size,
+      fids,
+      fids_lists,
+      fids_lists_sizes
+    );
+    addDerived(lookup, define, Pid::fromThrift(pid_raw), &it);
   });
 }
 
