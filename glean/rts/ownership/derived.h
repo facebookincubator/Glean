@@ -15,37 +15,41 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
-///
-// Container for holding ownership data for facts as they are derived
-//
+// Ownership data for all derived predicates in a batch.
 struct DefineOwnership {
-  DefineOwnership(Ownership *ownership, Pid pid, Id first_id) :
-      pid_(pid),
-      ownership_(ownership),
-      first_id_(first_id),
-      usets_(ownership->nextSetId()) {}
+  DefineOwnership(Ownership *ownership, Id first_id) :
+    first_id_(first_id),
+    ownership_(ownership),
+    defines_(),
+    usets_(ownership->nextSetId()),
+    newSets_() {}
 
   // record that a fact was derived from some other facts
-  void derivedFrom(Id id, const std::set<UsetId>& deps);
+  void derivedFrom(Pid pid, Id id, const std::set<UsetId>& deps);
 
   // Apply a substitution to the Ids
   void subst(const Substitution& subst);
 
   std::vector<int64_t> sortByOwner(uint64_t facts);
 
-  const Pid pid_;
-  Ownership *ownership_;
+  struct PerPredicate {
+    // new owners for exsiting facts (< first_id)
+    std::vector<Id> ids_;
+    std::vector<UsetId> owners_;
+
+    // owners for new facts in this batch
+    std::vector<Id> new_ids_;
+    std::vector<UsetId> new_owners_;
+  };
+
+  using const_iterator = std::map<Pid, PerPredicate>::const_iterator;
+  const_iterator begin() { return defines_.begin(); }
+  const_iterator end() { return defines_.end(); }
 
   // first fact Id in the current batch
   Id first_id_;
-
-  // new owners for exsiting facts (< first_id)
-  std::vector<Id> ids_;
-  std::vector<UsetId> owners_;
-
-  // owners for new facts in this batch
-  std::vector<Id> new_ids_;
-  std::vector<UsetId> new_owners_;
+  Ownership *ownership_;
+  std::map<Pid, PerPredicate> defines_;
 
   Usets usets_;
 
@@ -53,6 +57,7 @@ struct DefineOwnership {
   // the DB later.
   std::vector<Uset*> newSets_;
 };
+
 
 struct DerivedFactOwnership {
   folly::Range<const Id*> ids;

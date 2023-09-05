@@ -605,7 +605,6 @@ void glean_sliced_stack_free(SlicedStack *sliced);
 
 const char *glean_new_define_ownership(
   Ownership *own,
-  int64_t pid,
   int64_t first_id,
   DefineOwnership **result
 );

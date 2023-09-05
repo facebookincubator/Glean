@@ -896,10 +896,9 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
   auto t = makeAutoTimer("addDefineOwnership");
   container_.requireOpen();
 
-  VLOG(1) << "addDefineOwnership: "
-          << def.owners_.size() + def.new_owners_.size() << " owners, "
-          << def.usets_.size() << " sets";
+  VLOG(1) << "addDefineOwnership: " << def.usets_.size() << " sets";
 
+  // add new owner sets
   if (def.newSets_.size() > 0) {
     folly::F14FastMap<UsetId, UsetId> substitution;
     auto subst = [&](uint32_t old) -> uint32_t {
@@ -953,59 +952,68 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
     VLOG(1) << "addDefineOwnership: writing sets (" << numNewSets << ")";
     check(container_.db->Write(container_.writeOptions, &batch));
 
-    for (auto& owner : def.owners_) {
-      owner = subst(owner);
-    }
-    for (auto& owner : def.new_owners_) {
-      owner = subst(owner);
+    for (auto& [_, pred] : def.defines_) {
+      for (auto& owner : pred.owners_) {
+        owner = subst(owner);
+      }
+
+      for (auto& owner : pred.new_owners_) {
+        owner = subst(owner);
+      }
     }
   }
 
-  // ownershipDerivedRaw :: (Pid,nat) -> vector<int64_t>
-  //
-  // Similarly to ownershipRaw, this is basically just an
-  // append-only log. The nat in the key is a per-Pid counter that
-  // we bump by one each time we add another batch of data for a
-  // Pid.
+  for (const auto& [pid, pred] : def) {
+    VLOG(1) << "addDefineOwnership: "
+            << pred.owners_.size() + pred.new_owners_.size() << " owners, for pid "
+            << pid.toWord();
 
-  binary::Output key;
-  key.nat(def.pid_.toWord());
-  const auto [it, _] =
-      ownership_derived_counters.insert({def.pid_.toWord(), 0});
-  key.nat(it->second++);
+    // ownershipDerivedRaw :: (Pid,nat) -> vector<int64_t>
+    //
+    // Similarly to ownershipRaw, this is basically just an
+    // append-only log. The nat in the key is a per-Pid counter that
+    // we bump by one each time we add another batch of data for a
+    // Pid.
 
-  rocksdb::WriteBatch batch;
+    binary::Output key;
+    key.nat(pid.toWord());
+    const auto [it, _] =
+        ownership_derived_counters.insert({pid.toWord(), 0});
+    key.nat(it->second++);
 
-  binary::Output val;
+    rocksdb::WriteBatch batch;
 
-  val.bytes(
-      def.ids_.data(),
-      def.ids_.size() *
-          sizeof(std::remove_reference<decltype(def.ids_)>::type::value_type));
-  val.bytes(
-      def.new_ids_.data(),
-      def.new_ids_.size() *
-          sizeof(
-              std::remove_reference<decltype(def.new_ids_)>::type::value_type));
-  val.bytes(
-      def.owners_.data(),
-      def.owners_.size() *
-          sizeof(
-              std::remove_reference<decltype(def.owners_)>::type::value_type));
-  val.bytes(
-      def.new_owners_.data(),
-      def.new_owners_.size() *
-          sizeof(std::remove_reference<
-                 decltype(def.new_owners_)>::type::value_type));
+    binary::Output val;
 
-  check(batch.Put(
-      container_.family(Family::ownershipDerivedRaw), slice(key), slice(val)));
+    val.bytes(
+        pred.ids_.data(),
+        pred.ids_.size() *
+            sizeof(std::remove_reference<decltype(pred.ids_)>::type::value_type));
+    val.bytes(
+        pred.new_ids_.data(),
+        pred.new_ids_.size() *
+            sizeof(
+                std::remove_reference<decltype(pred.new_ids_)>::type::value_type));
+    val.bytes(
+        pred.owners_.data(),
+        pred.owners_.size() *
+            sizeof(
+                std::remove_reference<decltype(pred.owners_)>::type::value_type));
+    val.bytes(
+        pred.new_owners_.data(),
+        pred.new_owners_.size() *
+            sizeof(std::remove_reference<
+                   decltype(pred.new_owners_)>::type::value_type));
 
-  check(container_.db->Write(container_.writeOptions, &batch));
+    check(batch.Put(
+        container_.family(Family::ownershipDerivedRaw), slice(key), slice(val)));
 
-  VLOG(1) << "addDefineOwnership wrote "
-          << def.ids_.size() + def.new_ids_.size() << " entries for pid "
-          << def.pid_.toWord();
+    check(container_.db->Write(container_.writeOptions, &batch));
+
+    VLOG(1) << "addDefineOwnership wrote "
+            << pred.ids_.size() + pred.new_ids_.size() << " entries for pid "
+            << pid.toWord();
+  }
 }
 
 }

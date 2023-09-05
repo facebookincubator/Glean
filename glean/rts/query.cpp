@@ -385,7 +385,7 @@ Id QueryExecutor::newDerivedFact(
       }
     }
     if (owners.size() > 0) {
-      ownership->derivedFrom(id, owners);
+      ownership->derivedFrom(type, id, owners);
     }
   }
 

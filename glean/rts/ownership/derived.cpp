@@ -17,11 +17,14 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
-void DefineOwnership::derivedFrom(Id id, const std::set<UsetId>& deps) {
+void DefineOwnership::derivedFrom(Pid pid, Id id, const std::set<UsetId>& deps) {
   if (deps.size() == 0) {
     LOG(ERROR) << "DefineOwnership::derivedFrom: empty deps";
     return;
   }
+
+  const auto [it, _ ] = defines_.insert({ pid, PerPredicate() });
+  PerPredicate& pred = it->second;
 
   SetU32 set = SetU32::from(deps);
   size_t size = set.size();
@@ -47,11 +50,11 @@ void DefineOwnership::derivedFrom(Id id, const std::set<UsetId>& deps) {
   }
 
   if (id >= first_id_) {
-    new_ids_.push_back(id);
-    new_owners_.push_back(usetid);
+    pred.new_ids_.push_back(id);
+    pred.new_owners_.push_back(usetid);
   } else {
-    ids_.push_back(id);
-    owners_.push_back(usetid);
+    pred.ids_.push_back(id);
+    pred.owners_.push_back(usetid);
   }
 }
 
@@ -80,13 +83,15 @@ std::vector<int64_t> DefineOwnership::sortByOwner(uint64_t facts) {
   std::vector<UsetId> owners(facts, INVALID_USET);
 
   auto tmpset = usets_.getNextId();
-  for (size_t i = 0; i < new_ids_.size(); i++) {
-    auto ix = new_ids_[i] - first_id_;
-    if (owners[ix] == INVALID_USET) {
-      owners[ix] = new_owners_[i];
-    } else {
-      // this fact has multiple owners, use a new temporary UsetId.
-      owners[ix] = tmpset++;
+  for (auto& [_, pred] : defines_) {
+    for (size_t i = 0; i < pred.new_ids_.size(); i++) {
+      auto ix = pred.new_ids_[i] - first_id_;
+      if (owners[ix] == INVALID_USET) {
+        owners[ix] = pred.new_owners_[i];
+      } else {
+        // this fact has multiple owners, use a new temporary UsetId.
+        owners[ix] = tmpset++;
+      }
     }
   }
 
@@ -118,8 +123,10 @@ std::vector<int64_t> DefineOwnership::sortByOwner(uint64_t facts) {
 
   // 4. substitute fact IDs in new_ids
 
-  for (size_t i = 0; i < new_ids_.size(); i++) {
-    new_ids_[i] = idmap[new_ids_[i] - first_id_];
+  for (auto& [_, pred] : defines_) {
+    for (size_t i = 0; i < pred.new_ids_.size(); i++) {
+      pred.new_ids_[i] = idmap[pred.new_ids_[i] - first_id_];
+    }
   }
 
   return order;
@@ -130,11 +137,13 @@ std::vector<int64_t> DefineOwnership::sortByOwner(uint64_t facts) {
 }
 
 void DefineOwnership::subst(const Substitution& subst) {
-  for (auto& id : ids_) {
-    id = subst.subst(id);
-  }
-  for (auto& id : new_ids_) {
-    id = subst.subst(id);
+  for (auto& [_, pred] : defines_) {
+    for (auto& id : pred.ids_) {
+      id = subst.subst(id);
+    }
+    for (auto& id : pred.new_ids_) {
+      id = subst.subst(id);
+    }
   }
 }
 

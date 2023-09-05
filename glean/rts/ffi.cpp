@@ -1010,13 +1010,11 @@ void glean_sliced_stack_free(SlicedStack* sliced) {
 
 const char *glean_new_define_ownership(
   Ownership *own,
-  int64_t pid,
   int64_t first_id,
   DefineOwnership **result
 ) {
   return ffi::wrap([=] {
-    *result = new DefineOwnership(own,Pid::fromWord(pid),
-                                  Id::fromWord(first_id));
+    *result = new DefineOwnership(own, Id::fromWord(first_id));
   });
 }
 

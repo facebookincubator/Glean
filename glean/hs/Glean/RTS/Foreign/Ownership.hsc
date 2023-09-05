@@ -149,13 +149,11 @@ instance Object DefineOwnership where
   unwrap (DefineOwnership p) = p
   destroy = glean_define_ownership_free
 
-newDefineOwnership :: Ownership -> Pid -> Fid -> IO DefineOwnership
-newDefineOwnership ownership (Pid pid) (Fid first_id) =
+newDefineOwnership :: Ownership -> Fid -> IO DefineOwnership
+newDefineOwnership ownership (Fid first_id) =
   with ownership $ \ownership_ptr ->
     construct $ invoke $
-      glean_new_define_ownership ownership_ptr
-        (fromIntegral pid)
-        (fromIntegral first_id)
+      glean_new_define_ownership ownership_ptr (fromIntegral first_id)
 
 substDefineOwnership :: DefineOwnership -> Subst -> IO ()
 substDefineOwnership define subst =
@@ -272,7 +270,6 @@ foreign import ccall unsafe glean_get_ownership_stats
 
 foreign import ccall unsafe glean_new_define_ownership
   :: Ptr Ownership
-  -> Word64
   -> Word64
   -> Ptr (Ptr DefineOwnership)
   -> IO CString

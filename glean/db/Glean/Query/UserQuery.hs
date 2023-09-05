@@ -728,7 +728,7 @@ userQueryImpl
       then do
         maybeOwnership <- readTVarIO (odbOwnership odb)
         forM maybeOwnership $ \ownership ->
-          newDefineOwnership ownership predicatePid nextId
+          newDefineOwnership ownership nextId
       else return Nothing
 
     appliedTrans <- either (throwIO . Thrift.BadQuery) return $
@@ -884,7 +884,7 @@ userQueryImpl
         then do
           maybeOwnership <- readTVarIO (odbOwnership odb)
           forM maybeOwnership $ \ownership ->
-            newDefineOwnership ownership predicatePid nextId
+            newDefineOwnership ownership nextId
         else return Nothing
 
     results <- case Thrift.userQueryOptions_continuation opts of
