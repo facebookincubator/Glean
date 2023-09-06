@@ -112,6 +112,49 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
+        "name": "Foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 21,
+            "columnBegin": 3,
+            "lineEnd": 21,
+            "columnEnd": 15
+          }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "usingDeclaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "Foo" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 3,
+                  "lineEnd": 21,
+                  "columnEnd": 15
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
         "name": "N1",
         "file": { "key": "test.cpp" },
         "location": {
@@ -225,6 +268,47 @@
                       }
                     }
                   ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "N1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 26,
+            "columnBegin": 3,
+            "lineEnd": 26,
+            "columnEnd": 20
+          }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "N1" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 26,
+                  "columnBegin": 3,
+                  "lineEnd": 26,
+                  "columnEnd": 20
                 }
               }
             }

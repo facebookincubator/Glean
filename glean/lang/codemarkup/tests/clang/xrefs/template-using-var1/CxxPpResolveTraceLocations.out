@@ -143,6 +143,46 @@
   {
     "key": {
       "tuplefield0": {
+        "name": "N1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 19,
+            "columnBegin": 1,
+            "lineEnd": 19,
+            "columnEnd": 18
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "N1" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 19,
+                  "columnBegin": 1,
+                  "lineEnd": 19,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
         "name": "N2",
         "file": { "key": "test.cpp" },
         "location": {
@@ -434,6 +474,48 @@
                   "columnBegin": 1,
                   "lineEnd": 13,
                   "columnEnd": 38
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 31,
+            "columnBegin": 1,
+            "lineEnd": 31,
+            "columnEnd": 13
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDeclaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 31,
+                  "columnBegin": 1,
+                  "lineEnd": 31,
+                  "columnEnd": 13
                 }
               }
             }

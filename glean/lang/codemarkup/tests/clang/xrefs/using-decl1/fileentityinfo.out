@@ -233,6 +233,130 @@
       "entity": {
         "cxx": {
           "decl": {
+            "usingDeclaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "f1" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 30,
+                  "columnBegin": 1,
+                  "lineEnd": 30,
+                  "columnEnd": 12
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 5, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "usingDeclaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "f1" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 63,
+                  "columnBegin": 1,
+                  "lineEnd": 63,
+                  "columnEnd": 12
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 5, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "usingDeclaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "f3" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 31,
+                  "columnBegin": 1,
+                  "lineEnd": 31,
+                  "columnEnd": 12
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 5, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "usingDeclaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "f5" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 32,
+                  "columnBegin": 1,
+                  "lineEnd": 32,
+                  "columnEnd": 12
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 5, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "entity": {
+        "cxx": {
+          "decl": {
             "variable": {
               "key": {
                 "name": {

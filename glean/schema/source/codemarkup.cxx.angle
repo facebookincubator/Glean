@@ -31,12 +31,19 @@ predicate CxxResolveTraceLocation:
     Decl = Decls[..];
     # most declarations (their definition if present)
     (
-      cxx1.DeclarationLocationNameSpan { Decl, Range, Str, NameFile, NameSpan };
-      Destination = { just = { NameFile, NameSpan } };
-      Location = codemarkup.types.Location { Str, File, { range = Range }, Destination };
+      if ( cxx1.DeclarationLocationNameSpan { Decl, Range, Str, NameFile, NameSpan } )
+        then ( # if we have a 'destination' name span
+          Destination = { just = { NameFile, NameSpan } };
+          Location = codemarkup.types.Location { Str, File, { range = Range }, Destination }
+        ) else (
+          # use the entity span only (usingDirectives, usingDeclarations)
+          cxx1.DeclarationLocationName { Decl, Range, Str };
+          Location = codemarkup.types.Location { Str, File, { range = Range }, nothing }
+        );
       CxxResolveDeclarationToEntity { Decl, Entity };
+
+    # and find some extra enumerators: extracted from the enum decl
     ) | (
-      # if decl is an enum defn its enumerator (fields) should also be present
       { enum_ = EnumDecl } = Decl;
       cxx1.EnumDefinition { declaration = EnumDecl, enumerators = Es };
       Enumerator = Es[..];

@@ -467,6 +467,43 @@
   {
     "key": {
       "tuplefield0": {
+        "name": "N",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 32,
+            "columnBegin": 3,
+            "lineEnd": 32,
+            "columnEnd": 19
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": { "name": { "key": "N" }, "scope": { "global_": { } } }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 32,
+                  "columnBegin": 3,
+                  "lineEnd": 32,
+                  "columnEnd": 19
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
         "name": "NEST_FOO",
         "file": { "key": "test.cpp" },
         "location": {

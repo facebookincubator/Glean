@@ -577,6 +577,54 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
+        "name": "N3",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 27,
+            "columnBegin": 1,
+            "lineEnd": 27,
+            "columnEnd": 22
+          }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "N3" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "N2" },
+                          "parent": { "key": { "name": { "key": "N1" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 27,
+                  "columnBegin": 1,
+                  "lineEnd": 27,
+                  "columnEnd": 22
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
         "name": "O1",
         "file": { "key": "test.cpp" },
         "location": {

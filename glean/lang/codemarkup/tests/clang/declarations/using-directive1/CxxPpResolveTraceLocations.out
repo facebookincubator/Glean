@@ -57,6 +57,194 @@
   {
     "key": {
       "tuplefield0": {
+        "name": "IIN1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 21,
+            "columnBegin": 1,
+            "lineEnd": 21,
+            "columnEnd": 29
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IIN1" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "IN1" },
+                          "parent": { "key": { "name": { "key": "N1" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 1,
+                  "lineEnd": 21,
+                  "columnEnd": 29
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "IIN1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 22,
+            "columnBegin": 1,
+            "lineEnd": 22,
+            "columnEnd": 20
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IIN1" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "IN1" },
+                          "parent": { "key": { "name": { "key": "N1" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 22,
+                  "columnBegin": 1,
+                  "lineEnd": 22,
+                  "columnEnd": 20
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "IIN1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 33,
+            "columnBegin": 1,
+            "lineEnd": 33,
+            "columnEnd": 29
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IIN1" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "IN1" },
+                          "parent": { "key": { "name": { "key": "N1" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 33,
+                  "columnBegin": 1,
+                  "lineEnd": 33,
+                  "columnEnd": 29
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "IIN1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 34,
+            "columnBegin": 1,
+            "lineEnd": 34,
+            "columnEnd": 20
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IIN1" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "IN1" },
+                          "parent": { "key": { "name": { "key": "N1" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 34,
+                  "columnBegin": 1,
+                  "lineEnd": 34,
+                  "columnEnd": 20
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
         "name": "IN1",
         "file": { "key": "test.cpp" },
         "location": {
@@ -135,6 +323,90 @@
   {
     "key": {
       "tuplefield0": {
+        "name": "IN1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 20,
+            "columnBegin": 1,
+            "lineEnd": 20,
+            "columnEnd": 23
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IN1" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 20,
+                  "columnBegin": 1,
+                  "lineEnd": 20,
+                  "columnEnd": 23
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "IN1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 32,
+            "columnBegin": 1,
+            "lineEnd": 32,
+            "columnEnd": 23
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IN1" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 32,
+                  "columnBegin": 1,
+                  "lineEnd": 32,
+                  "columnEnd": 23
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
         "name": "IN2",
         "file": { "key": "test.cpp" },
         "location": {
@@ -174,6 +446,90 @@
                   }
                 },
                 "members": { "key": [ ] }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "IN2",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 23,
+            "columnBegin": 1,
+            "lineEnd": 23,
+            "columnEnd": 19
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IN2" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 23,
+                  "columnBegin": 1,
+                  "lineEnd": 23,
+                  "columnEnd": 19
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "IN2",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 35,
+            "columnBegin": 1,
+            "lineEnd": 35,
+            "columnEnd": 19
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "IN2" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 35,
+                  "columnBegin": 1,
+                  "lineEnd": 35,
+                  "columnEnd": 19
+                }
               }
             }
           }
@@ -258,6 +614,86 @@
                       }
                     }
                   ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "N1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 19,
+            "columnBegin": 1,
+            "lineEnd": 19,
+            "columnEnd": 18
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "N1" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 19,
+                  "columnBegin": 1,
+                  "lineEnd": 19,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "N1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 31,
+            "columnBegin": 1,
+            "lineEnd": 31,
+            "columnEnd": 18
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "N1" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 31,
+                  "columnBegin": 1,
+                  "lineEnd": 31,
+                  "columnEnd": 18
                 }
               }
             }

@@ -977,6 +977,46 @@
   {
     "key": {
       "tuplefield0": {
+        "name": "N0",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 32,
+            "columnBegin": 1,
+            "lineEnd": 32,
+            "columnEnd": 18
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "N0" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 32,
+                  "columnBegin": 1,
+                  "lineEnd": 32,
+                  "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
         "name": "N1",
         "file": { "key": "test.cpp" },
         "location": {
@@ -1011,6 +1051,46 @@
                   }
                 },
                 "members": { "key": [ ] }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "N1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 38,
+            "columnBegin": 1,
+            "lineEnd": 38,
+            "columnEnd": 18
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "N1" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 38,
+                  "columnBegin": 1,
+                  "lineEnd": 38,
+                  "columnEnd": 18
+                }
               }
             }
           }

@@ -98,6 +98,46 @@
   {
     "key": {
       "tuplefield0": {
+        "name": "N1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 17,
+            "columnBegin": 3,
+            "lineEnd": 17,
+            "columnEnd": 20
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDirective": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "N1" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 17,
+                  "columnBegin": 3,
+                  "lineEnd": 17,
+                  "columnEnd": 20
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
         "name": "X",
         "file": { "key": "test.cpp" },
         "location": {
@@ -296,6 +336,48 @@
                 "columnBegin": 10,
                 "lineEnd": 11,
                 "columnEnd": 11
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "X1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 24,
+            "columnBegin": 3,
+            "lineEnd": 24,
+            "columnEnd": 14
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDeclaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "X1" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 24,
+                  "columnBegin": 3,
+                  "lineEnd": 24,
+                  "columnEnd": 14
+                }
               }
             }
           }
@@ -557,6 +639,48 @@
                     }
                   }
                 ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "Y",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 25,
+            "columnBegin": 3,
+            "lineEnd": 25,
+            "columnEnd": 13
+          }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "usingDeclaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "Y" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 25,
+                  "columnBegin": 3,
+                  "lineEnd": 25,
+                  "columnEnd": 13
+                }
               }
             }
           }

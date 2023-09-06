@@ -236,6 +236,83 @@
       "entity": {
         "cxx": {
           "decl": {
+            "usingDeclaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "Foo" } } },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "N2" },
+                          "parent": { "key": { "name": { "key": "N1" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 31,
+                  "columnBegin": 1,
+                  "lineEnd": 31,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 5, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "usingDeclaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "YYY" } } },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "N3" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 18,
+                  "columnBegin": 1,
+                  "lineEnd": 18,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 5, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "entity": {
+        "cxx": {
+          "decl": {
             "variable": {
               "key": {
                 "name": {
