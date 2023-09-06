@@ -382,6 +382,711 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "N1"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "namespace N1"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 13,
+                    "lineBegin": 173,
+                    "lineEnd": 173
+                },
+                "sym": "test/cpp//N1"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "N2"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "namespace N2"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 13,
+                    "lineBegin": 175,
+                    "lineEnd": 175
+                },
+                "sym": "test/cpp//N1/N2"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Bar"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Bar"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 8,
+                    "columnEnd": 11,
+                    "lineBegin": 186,
+                    "lineEnd": 186
+                },
+                "sym": "test/cpp//N1/N2/Bar"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "bar(N1::N2::N3::Foo)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::Bar"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo (*)(N1::N2::N3::Foo) bar(N1::N2::N3::Foo x)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 23,
+                    "lineBegin": 205,
+                    "lineEnd": 205
+                },
+                "sym": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "bar(N1::N2::N3::Foo)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::Bar"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo (*)(N1::N2::N3::Foo) bar(N1::N2::N3::Foo x)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 12,
+                    "lineBegin": 188,
+                    "lineEnd": 188
+                },
+                "sym": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "x"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::Bar::bar"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo x"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 17,
+                    "columnEnd": 18,
+                    "lineBegin": 188,
+                    "lineEnd": 188
+                },
+                "sym": "test/cpp//N1/N2/Bar/bar/x/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "x"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::Bar::bar"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo x"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 28,
+                    "columnEnd": 29,
+                    "lineBegin": 205,
+                    "lineEnd": 205
+                },
+                "sym": "test/cpp//N1/N2/Bar/bar/x/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "N3"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "namespace N3"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 13,
+                    "lineBegin": 177,
+                    "lineEnd": 177
+                },
+                "sym": "test/cpp//N1/N2/N3"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 26,
+                    "lineBegin": 177,
+                    "lineEnd": 177
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "using N1::N2::N3::Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 14,
+                    "lineBegin": 179,
+                    "lineEnd": 179
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "using N1::N2::N3::Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 22,
+                    "lineBegin": 195,
+                    "lineEnd": 195
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "foo(N1::N2::N3::Foo)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo (*)(N1::N2::N3::Foo) foo(N1::N2::N3::Foo x)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 18,
+                    "lineBegin": 201,
+                    "lineEnd": 201
+                },
+                "sym": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "foo(N1::N2::N3::Foo)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo (*)(N1::N2::N3::Foo) foo(N1::N2::N3::Foo x)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 10,
+                    "lineBegin": 184,
+                    "lineEnd": 184
+                },
+                "sym": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "x"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::foo"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo x"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 16,
+                    "lineBegin": 184,
+                    "lineEnd": 184
+                },
+                "sym": "test/cpp//N1/N2/foo/x/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "x"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::foo"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo x"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 24,
+                    "lineBegin": 201,
+                    "lineEnd": 201
+                },
+                "sym": "test/cpp//N1/N2/foo/x/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "Q"
                         },
                         "key": "symbolName"
@@ -4283,6 +4988,100 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "id(N1::N2::N3::Foo)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo id(N1::N2::N3::Foo x)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 7,
+                    "lineBegin": 197,
+                    "lineEnd": 197
+                },
+                "sym": "test/cpp//id/.f/N1::N2::N3::Foo/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "x"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "id"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo x"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 12,
+                    "columnEnd": 13,
+                    "lineBegin": 197,
+                    "lineEnd": 197
+                },
+                "sym": "test/cpp//id/x/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "maybe"
                         },
                         "key": "symbolName"
@@ -4894,6 +5693,194 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "y"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo y"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 24,
+                    "lineBegin": 184,
+                    "lineEnd": 184
+                },
+                "sym": "test/cpp//y/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "y"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo y"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 25,
+                    "columnEnd": 26,
+                    "lineBegin": 188,
+                    "lineEnd": 188
+                },
+                "sym": "test/cpp//y/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "y"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo y"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 31,
+                    "columnEnd": 32,
+                    "lineBegin": 201,
+                    "lineEnd": 201
+                },
+                "sym": "test/cpp//y/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "y"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo y"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 36,
+                    "columnEnd": 37,
+                    "lineBegin": 205,
+                    "lineEnd": 205
+                },
+                "sym": "test/cpp//y/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "A"
                         },
                         "key": "symbolName"
@@ -4974,14 +5961,14 @@
             }
         ],
         "digest": {
-            "hash": "99a993b583112b6187a1b069eb21780ceb79589c",
-            "size": 2436
+            "hash": "d572817cc1cddfd1be0b72fb785f2421ce28e009",
+            "size": 2992
         },
         "referenced_file_digests": {
             "test": {
                 "test.cpp": {
-                    "hash": "99a993b583112b6187a1b069eb21780ceb79589c",
-                    "size": 2436
+                    "hash": "d572817cc1cddfd1be0b72fb785f2421ce28e009",
+                    "size": 2992
                 },
                 "test.h": {
                     "hash": "ce71a4bc848a767198c61bd5c21d1ead3be6a19b",
@@ -4994,6 +5981,1659 @@
             }
         },
         "references": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "N1"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "namespace N1"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 9,
+                    "lineBegin": 195,
+                    "lineEnd": 195
+                },
+                "sym": "test/cpp//N1",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 173,
+                        "lineEnd": 173
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "N1"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "namespace N1"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 9,
+                    "lineBegin": 201,
+                    "lineEnd": 201
+                },
+                "sym": "test/cpp//N1",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 173,
+                        "lineEnd": 173
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "N1"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "namespace N1"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 9,
+                    "lineBegin": 205,
+                    "lineEnd": 205
+                },
+                "sym": "test/cpp//N1",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 173,
+                        "lineEnd": 173
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "N2"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "namespace N2"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 13,
+                    "lineBegin": 195,
+                    "lineEnd": 195
+                },
+                "sym": "test/cpp//N1/N2",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 175,
+                        "lineEnd": 175
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "N2"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "namespace N2"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 13,
+                    "lineBegin": 201,
+                    "lineEnd": 201
+                },
+                "sym": "test/cpp//N1/N2",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 175,
+                        "lineEnd": 175
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "N2"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "namespace N2"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 13,
+                    "lineBegin": 205,
+                    "lineEnd": 205
+                },
+                "sym": "test/cpp//N1/N2",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 175,
+                        "lineEnd": 175
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Bar"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Bar"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 18,
+                    "lineBegin": 205,
+                    "lineEnd": 205
+                },
+                "sym": "test/cpp//N1/N2/Bar",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 11,
+                        "lineBegin": 186,
+                        "lineEnd": 186
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "bar(N1::N2::N3::Foo)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::Bar"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo (*)(N1::N2::N3::Foo) bar(N1::N2::N3::Foo x)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 12,
+                    "lineBegin": 188,
+                    "lineEnd": 188
+                },
+                "sym": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 23,
+                        "lineBegin": 205,
+                        "lineEnd": 205
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "bar(N1::N2::N3::Foo)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::Bar"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo (*)(N1::N2::N3::Foo) bar(N1::N2::N3::Foo x)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 23,
+                    "lineBegin": 205,
+                    "lineEnd": 205
+                },
+                "sym": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 12,
+                        "lineBegin": 188,
+                        "lineEnd": 188
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "N3"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "namespace N3"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 9,
+                    "lineBegin": 179,
+                    "lineEnd": 179
+                },
+                "sym": "test/cpp//N1/N2/N3",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "N3"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "namespace N3"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 6
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 17,
+                    "lineBegin": 195,
+                    "lineEnd": 195
+                },
+                "sym": "test/cpp//N1/N2/N3",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 13,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 14,
+                    "lineBegin": 179,
+                    "lineEnd": 179
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 4,
+                    "lineBegin": 184,
+                    "lineEnd": 184
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 14,
+                    "lineBegin": 184,
+                    "lineEnd": 184
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 22,
+                    "lineBegin": 184,
+                    "lineEnd": 184
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 6,
+                    "lineBegin": 188,
+                    "lineEnd": 188
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 13,
+                    "columnEnd": 16,
+                    "lineBegin": 188,
+                    "lineEnd": 188
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 21,
+                    "columnEnd": 24,
+                    "lineBegin": 188,
+                    "lineEnd": 188
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 22,
+                    "lineBegin": 195,
+                    "lineEnd": 195
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 4,
+                    "lineBegin": 197,
+                    "lineEnd": 197
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 8,
+                    "columnEnd": 11,
+                    "lineBegin": 197,
+                    "lineEnd": 197
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 4,
+                    "lineBegin": 201,
+                    "lineEnd": 201
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 22,
+                    "lineBegin": 201,
+                    "lineEnd": 201
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 27,
+                    "columnEnd": 30,
+                    "lineBegin": 201,
+                    "lineEnd": 201
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 4,
+                    "lineBegin": 205,
+                    "lineEnd": 205
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 24,
+                    "columnEnd": 27,
+                    "lineBegin": 205,
+                    "lineEnd": 205
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 32,
+                    "columnEnd": 35,
+                    "lineBegin": 205,
+                    "lineEnd": 205
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "foo(N1::N2::N3::Foo)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo (*)(N1::N2::N3::Foo) foo(N1::N2::N3::Foo x)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 10,
+                    "lineBegin": 184,
+                    "lineEnd": 184
+                },
+                "sym": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 18,
+                        "lineBegin": 201,
+                        "lineEnd": 201
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "foo(N1::N2::N3::Foo)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo (*)(N1::N2::N3::Foo) foo(N1::N2::N3::Foo x)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 18,
+                    "lineBegin": 201,
+                    "lineEnd": 201
+                },
+                "sym": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 10,
+                        "lineBegin": 184,
+                        "lineEnd": 184
+                    },
+                    "repository": "test"
+                }
+            },
             {
                 "attributes": [
                     {
@@ -6928,6 +9568,120 @@
                         "columnEnd": 13,
                         "lineBegin": 54,
                         "lineEnd": 54
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "id(N1::N2::N3::Foo)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo id(N1::N2::N3::Foo x)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 13,
+                    "lineBegin": 202,
+                    "lineEnd": 202
+                },
+                "sym": "test/cpp//id/.f/N1::N2::N3::Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 7,
+                        "lineBegin": 197,
+                        "lineEnd": 197
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "id(N1::N2::N3::Foo)"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3::Foo id(N1::N2::N3::Foo x)"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 13,
+                    "lineBegin": 206,
+                    "lineEnd": 206
+                },
+                "sym": "test/cpp//id/.f/N1::N2::N3::Foo/.decl",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 7,
+                        "lineBegin": 197,
+                        "lineEnd": 197
                     },
                     "repository": "test"
                 }

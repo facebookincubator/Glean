@@ -2,6 +2,85 @@
   "@generated",
   {
     "key": {
+      "name": { "key": "N1" },
+      "decl": {
+        "namespace_": {
+          "key": {
+            "name": { "key": { "name": { "key": "N1" } } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 173,
+              "columnBegin": 1,
+              "lineEnd": 193,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "N2" },
+      "parent": { "key": { "name": { "key": "N1" } } },
+      "decl": {
+        "namespace_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "N2" },
+                "parent": { "key": { "name": { "key": "N1" } } }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 175,
+              "columnBegin": 1,
+              "lineEnd": 191,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "N3" },
+      "parent": {
+        "key": {
+          "name": { "key": "N2" },
+          "parent": { "key": { "name": { "key": "N1" } } }
+        }
+      },
+      "decl": {
+        "namespace_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "N3" },
+                "parent": {
+                  "key": {
+                    "name": { "key": "N2" },
+                    "parent": { "key": { "name": { "key": "N1" } } }
+                  }
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 177,
+              "columnBegin": 1,
+              "lineEnd": 177,
+              "columnEnd": 31
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": "Q" },
       "decl": {
         "namespace_": {

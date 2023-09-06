@@ -4,6 +4,52 @@
         "symbolDetails": [],
         "symbols": [
             {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 201,
+                        "lineEnd": 203
+                    },
+                    "repository": "test"
+                },
+                "name": "foo",
+                "qname": {
+                    "container": "N1::N2",
+                    "localName": "foo(N1::N2::N3::Foo)"
+                },
+                "score": {
+                    "exactness": 0
+                },
+                "symbol": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 184,
+                        "lineEnd": 184
+                    },
+                    "repository": "test"
+                },
+                "name": "foo",
+                "qname": {
+                    "container": "N1::N2",
+                    "localName": "foo(N1::N2::N3::Foo)"
+                },
+                "score": {
+                    "exactness": 0
+                },
+                "symbol": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo/.decl"
+            },
+            {
                 "kind": 6,
                 "language": 1,
                 "location": {

@@ -31,6 +31,19 @@
             "Right": {
                 "declaration": false,
                 "errors": [],
+                "localname": "N1",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
                 "localname": "Q",
                 "params": [],
                 "path": "",
@@ -111,6 +124,21 @@
         },
         {
             "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "id",
+                "params": [
+                    "N1::N2::N3::Foo"
+                ],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [],
+                "tag": "Function"
+            }
+        },
+        {
+            "Right": {
                 "declaration": false,
                 "errors": [],
                 "localname": "maybe",
@@ -127,6 +155,19 @@
                 "declaration": true,
                 "errors": [],
                 "localname": "pear",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "y",
                 "params": [],
                 "path": "",
                 "qualifiers": [],
@@ -221,6 +262,196 @@
                 "returns": null,
                 "scopes": [
                     "GlobalClass"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "N2",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "N1"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "Bar",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "N1",
+                    "N2"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "N3",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "N1",
+                    "N2"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "foo",
+                "params": [
+                    "N1::N2::N3::Foo"
+                ],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "N1",
+                    "N2"
+                ],
+                "tag": "Function"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "foo",
+                "params": [
+                    "N1::N2::N3::Foo"
+                ],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "N1",
+                    "N2"
+                ],
+                "tag": "Function"
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "bar",
+                "params": [
+                    "N1::N2::N3::Foo"
+                ],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "N1",
+                    "N2",
+                    "Bar"
+                ],
+                "tag": "Function"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "bar",
+                "params": [
+                    "N1::N2::N3::Foo"
+                ],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "N1",
+                    "N2",
+                    "Bar"
+                ],
+                "tag": "Function"
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "x",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "N1",
+                    "N2",
+                    "Bar",
+                    "bar"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": false,
+                "errors": [],
+                "localname": "Foo",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "N1",
+                    "N2",
+                    "N3"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "Foo",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "N1",
+                    "N2",
+                    "N3"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "x",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "N1",
+                    "N2",
+                    "foo"
                 ],
                 "tag": null
             }
@@ -1368,6 +1599,21 @@
                 "returns": null,
                 "scopes": [
                     "h"
+                ],
+                "tag": null
+            }
+        },
+        {
+            "Right": {
+                "declaration": true,
+                "errors": [],
+                "localname": "x",
+                "params": [],
+                "path": "",
+                "qualifiers": [],
+                "returns": null,
+                "scopes": [
+                    "id"
                 ],
                 "tag": null
             }

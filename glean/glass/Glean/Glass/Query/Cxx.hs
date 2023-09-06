@@ -142,7 +142,7 @@ fileEntityXRefLocations mlimit fileId traceId = do
     Nothing -> return []
     Just xrefId -> do
       fixedXRefs <- fixedXRefs mlimit xrefId
-      variableXRefs <- externalXRefs mlimit xrefId
+      variableXRefs <- externalXRefs mlimit xrefId fileId
       ppxrefs <- ppXRefs mlimit traceId
       defXRefs <- declToDefXRefs mlimit traceId
       return [fixedXRefs, variableXRefs, ppxrefs, defXRefs]
@@ -170,8 +170,9 @@ fixedXRefs mlimit xmapId = searchRecursiveWithLimit mlimit $
 externalXRefs
   :: Maybe Int
   -> Glean.IdOf Cxx.FileXRefs
+  -> Glean.IdOf Src.File
   -> Glean.RepoHaxl u w ([(Code.XRefLocation, Code.Entity)], Bool)
-externalXRefs mlimit xrefId = do
+externalXRefs mlimit xrefId fileId = do
   -- process concurrently
   maybeRawXRefs <- variableXRefs xrefId
   declToDefMap  <- externalDeclToDefXRefs mlimit xrefId
@@ -185,11 +186,60 @@ externalXRefs mlimit xrefId = do
           declXRefs = zipXRefSourceAndTargets ranges locations
           defnXRefs = zipXRefSourcesAndDefinitions (fst declToDefMap)
                         ranges locations
-      return (defnXRefs ++ declXRefs, snd declLocMap || snd declToDefMap)
+      indirectXRefs <- catMaybes <$> mapM (mkIndirectXRef fileId)
+        [ indirect
+        | Cxx.XRefTargets { xRefTargets_key = Just xrefs} <- targets
+        , Cxx.XRefTarget_indirect indirect <- xrefs -- initial indirect xrefs
+        ]
+      return (defnXRefs ++ declXRefs ++ indirectXRefs,
+        snd declLocMap || snd declToDefMap)
   where
     fromToRanges :: [Cxx.From] -> [[Src.ByteSpan]]
     fromToRanges =
       map (map Range.rangeToByteSpan . Range.fromToSpansAndSpellings)
+
+-- | Extract depth=1 "indirect" xref "via" targets, and make them into
+-- first-class xrefs results. Build xref source span from `via` emit target
+-- entity/location from target of "via"
+mkIndirectXRef
+  :: Glean.IdOf Src.File -- ^ we only want indirect xrefs whose use is here
+  -> Cxx.XRefIndirectTarget
+  -> Glean.RepoHaxl u w (Maybe (Code.XRefLocation, Code.Entity))
+mkIndirectXRef fileId viaFact = do
+  (Cxx.XRefIndirectTarget_key via target) <- Glean.keyOf viaFact
+  mXRefTarget <- cxxXRefTargetToLocation mempty target
+  case mXRefTarget of
+    Nothing -> return Nothing -- filter unknowns
+    Just (targetEntity, targetLocation) -> do -- now get the source from XRefVia
+      mSourceRange <- getXRefViaRange via
+      case mSourceRange of
+        Just sourceRange -- validate the via use is in this file only
+          | Glean.getId (Src.range_file sourceRange) == fileId -> do
+            let xrefLocation = Code.XRefLocation {
+                  Code.xRefLocation_target = targetLocation,
+                  Code.xRefLocation_source = Code.RangeSpan_range sourceRange
+                }
+            return $ Just (xrefLocation, targetEntity)
+        _ -> return Nothing
+
+-- Find the use span of an indirect xref: the `via` xref source range
+getXRefViaRange :: Cxx.XRefVia -> Glean.RepoHaxl u w (Maybe Src.Range)
+getXRefViaRange via = case via of
+  Cxx.XRefVia_usingDeclaration decl -> do
+    Cxx.UsingDeclaration_key _name range <- Glean.keyOf decl
+    return (Just range)
+{-
+-- TODO: until we verify how these behave, disable them:
+-- e.g "using namespace" is potentially a UPND source due to the import of
+-- many unrelated xrefs
+  Cxx.XRefVia_usingDirective decl -> do
+    Cxx.UsingDirective_key _name range <- Glean.keyOf decl
+    return (Just range)
+  Cxx.XRefVia_macro use -> do
+    Pp.Use_key _m _d _e source _name <- Glean.keyOf use
+    return (Just source) -- entire term including args is xref use site?
+-}
+  _ -> pure Nothing
 
 -- Laboriously stitch the unzipped xref source and target into
 -- XRefLocation and Entities again.
@@ -201,7 +251,7 @@ zipXRefSourceAndTargets sources targets =
   [ (xrefFromLocationAndSpan targetLocation span, entity)
   | (spans, xrefs) <- zip sources targets
   , span <- spans
-  , Just (entity, targetLocation) <- xrefs
+  , Just (entity, targetLocation) <- xrefs -- filter unknown xref targets
   ]
 
 -- Laboriously stitch the unzipped xref source to target _definition_
@@ -317,9 +367,10 @@ cxxXRefTargetToLocation declLocMap (Cxx.XRefTarget_declaration decl) = do
       let entity = Code.Entity_cxx (Cxx.Entity_decl decl)
       return $ Just (entity, location)
 
+-- Indirect xrefs: we resolve it fully to its target
 cxxXRefTargetToLocation declLocMap (Cxx.XRefTarget_indirect indirect) = do
   Cxx.XRefIndirectTarget_key _via target <- Glean.keyOf indirect
-  cxxXRefTargetToLocation declLocMap target  -- n.b recurse
+  cxxXRefTargetToLocation declLocMap target  -- n.b recurse to find target
 
 cxxXRefTargetToLocation _ (Cxx.XRefTarget_enumerator enumerator) = do
   Cxx.Enumerator_key name _decl range <- Glean.keyOf enumerator

@@ -489,6 +489,72 @@
               "key": {
                 "name": {
                   "key": {
+                    "name": { "key": { "name": { "key": "bar" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "Bar" },
+                            "scope": {
+                              "namespace_": {
+                                "key": {
+                                  "name": { "key": "N2" },
+                                  "parent": {
+                                    "key": { "name": { "key": "N1" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": {
+                      "key": "N1::N2::N3::Foo (*)(N1::N2::N3::Foo)"
+                    },
+                    "parameters": [
+                      {
+                        "name": { "key": "x" },
+                        "type": { "key": "N1::N2::N3::Foo" }
+                      }
+                    ]
+                  }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 188,
+                  "columnBegin": 3,
+                  "lineEnd": 188,
+                  "columnEnd": 26
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "cxx": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
                     "name": { "key": { "name": { "key": "bozzo" } } },
                     "scope": {
                       "recordWithAccess": {
@@ -555,6 +621,54 @@
                   "columnBegin": 1,
                   "lineEnd": 21,
                   "columnEnd": 8
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "cxx": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "N2" },
+                          "parent": { "key": { "name": { "key": "N1" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": {
+                      "key": "N1::N2::N3::Foo (*)(N1::N2::N3::Foo)"
+                    },
+                    "parameters": [
+                      {
+                        "name": { "key": "x" },
+                        "type": { "key": "N1::N2::N3::Foo" }
+                      }
+                    ]
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 184,
+                  "columnBegin": 1,
+                  "lineEnd": 184,
+                  "columnEnd": 24
                 }
               }
             }
@@ -815,6 +929,45 @@
                   "columnBegin": 1,
                   "lineEnd": 52,
                   "columnEnd": 14
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "cxx": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "id" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "N1::N2::N3::Foo" },
+                    "parameters": [
+                      {
+                        "name": { "key": "x" },
+                        "type": { "key": "N1::N2::N3::Foo" }
+                      }
+                    ]
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 197,
+                  "columnBegin": 1,
+                  "lineEnd": 197,
+                  "columnEnd": 13
                 }
               }
             }

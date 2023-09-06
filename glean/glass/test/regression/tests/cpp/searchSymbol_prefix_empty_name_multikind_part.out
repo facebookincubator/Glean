@@ -50,6 +50,105 @@
                 "symbol": "test/cpp//GlobalClass"
             },
             {
+                "kind": 8,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 205,
+                        "lineEnd": 207
+                    },
+                    "repository": "test"
+                },
+                "name": "bar",
+                "qname": {
+                    "container": "N1::N2::Bar",
+                    "localName": "bar(N1::N2::N3::Foo)"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "N1::N2",
+                        "localName": "Bar"
+                    },
+                    "symbol": "test/cpp//N1/N2/Bar"
+                },
+                "kind": 8,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 188,
+                        "lineEnd": 188
+                    },
+                    "repository": "test"
+                },
+                "name": "bar",
+                "qname": {
+                    "container": "N1::N2::Bar",
+                    "localName": "bar(N1::N2::N3::Foo)"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo/.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 201,
+                        "lineEnd": 203
+                    },
+                    "repository": "test"
+                },
+                "name": "foo",
+                "qname": {
+                    "container": "N1::N2",
+                    "localName": "foo(N1::N2::N3::Foo)"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 184,
+                        "lineEnd": 184
+                    },
+                    "repository": "test"
+                },
+                "name": "foo",
+                "qname": {
+                    "container": "N1::N2",
+                    "localName": "foo(N1::N2::N3::Foo)"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo/.decl"
+            },
+            {
                 "context": {
                     "qname": {
                         "container": "Q",
@@ -518,6 +617,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//h/.f/int/.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 14,
+                        "lineBegin": 197,
+                        "lineEnd": 197
+                    },
+                    "repository": "test"
+                },
+                "name": "id",
+                "qname": {
+                    "container": "",
+                    "localName": "id(N1::N2::N3::Foo)"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//id/.f/N1::N2::N3::Foo/.decl"
             },
             {
                 "kind": 12,
