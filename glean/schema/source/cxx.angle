@@ -1351,20 +1351,4 @@ predicate FilePPTraceXRefs:
       { TargetFile, SrcRange, SrcSpan } = Include;
       { include_ = TargetFile } = Entity; )
 
-# Definition location for a pp1.Define
-# (deprecated)
-predicate PPEntityLocation :
-  {
-    entity : PpEntity,
-    name : string,
-    file : src.File,
-    range : src.Range,
-  }
-  ({ { define = Define }, Name, File, Range } where
-    { pp1.Macro Name, Range } = Define;
-    { file = File } = Range ) |
-  ({ { include_ = File }, Name, File, Range } where
-    src.File Name = File;
-    Range = { File, 1, 1, 1, 1 } )
-
 }
