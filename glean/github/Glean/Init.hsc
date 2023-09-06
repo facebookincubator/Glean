@@ -16,6 +16,7 @@ module Glean.Init (
     parserInfo,
     setArgs,
     setPrefs,
+    setTransformGflags,
   ) where
 
 import Control.Exception
@@ -70,11 +71,17 @@ data InitOptions a = InitOptions
   { initArgs :: Maybe [String] -- otherwise use getArgs
   , initPrefs :: PrefsMod
   , initParser :: ParserInfo a
+  , initTransformGflags :: a -> [String] -> [String]
   }
 
 parserInfo :: ParserInfo a -> InitOptions a
 parserInfo p =
-  InitOptions { initArgs = Nothing, initPrefs = idm, initParser = p }
+  InitOptions
+    { initArgs = Nothing
+    , initPrefs = idm
+    , initParser = p
+    , initTransformGflags = \_ x -> x
+    }
 
 type InitSpec a = InitOptions a -> InitOptions a
 
@@ -83,6 +90,9 @@ setPrefs m opts = opts { initPrefs = m }
 
 setArgs :: [String] -> InitSpec a
 setArgs a opts = opts { initArgs = Just a }
+
+setTransformGflags :: (a -> [String] -> [String]) -> InitSpec a
+setTransformGflags tr opts = opts { initTransformGflags = tr }
 
 withUnitTestOptions :: ParserInfo a -> (TestAction -> a -> IO b) -> IO b
 withUnitTestOptions opts f = withOptions opts $ f TestAction
@@ -93,7 +103,9 @@ withOptionsGen InitOptions{..} act = do
   r <- tryAll $ partialParse (prefs initPrefs) p' args
   case r of
     Left e -> run (fixHelp args) $ throwIO e
-    Right (opts, fbArgs) -> run (fixHelp fbArgs) $ act opts
+    Right (opts, fbArgs) ->
+      run (initTransformGflags opts (fixHelp fbArgs)) $
+        act opts
   where
     p' = initParser { infoParser = fbhelper <*> infoParser initParser }
     run args act = bracket_ (follyInit args) follyUninit act

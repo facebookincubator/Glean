@@ -142,7 +142,13 @@ options = info (((,) <$> parser <*> configOptions) <**> helper <**> helpAll)
 main :: IO ()
 main =
   let
-    spec = setPrefs subparserInline $ parserInfo options
+    spec =
+      setTransformGflags tr $
+      setPrefs subparserInline $
+      parserInfo options
+
+    tr (opts, _) = case cfgCommand opts of
+      PluginCommand c -> argTransform c
   in
   withOptionsGen spec $ \(Config{..}, cfgOpts) ->
   withEventBaseDataplane $ \evb ->
