@@ -26,6 +26,7 @@ import Data.Int (Int64)
 import Data.Maybe (fromMaybe)
 import Data.Proxy (Proxy (..))
 import Data.Text (Text, pack, unpack)
+import Data.ByteString.Lazy (fromStrict, toStrict)
 import qualified Data.Text.Encoding as TE
 import qualified Database.MySQL.Simple as DB
 import Options.Applicative (
@@ -48,6 +49,7 @@ import Options.Applicative (
   strArgument,
   strOption,
   value,
+  switch,
  )
 import System.FilePath.Posix (joinPath, splitDirectories)
 import Thrift.Protocol (serializeGen)
@@ -56,6 +58,7 @@ import Text.Printf
 
 import Facebook.Db (InstanceRequirement (Master), withConnection)
 import Util.Log.String (logError, logInfo, logWarning)
+import Codec.Compression.GZip (compress)
 
 import qualified Glean
 import qualified Glean.Glass.Env as Glass
@@ -104,6 +107,13 @@ outputString = optional $ strOption
   <> help "Don't upload snapshot, save to file instead"
   )
 
+compressParser :: Parser Bool
+compressParser = switch
+  (  long "no-compression"
+  <> help "Don't compress snapshots"
+  )
+
+
 newtype SnapshotTier = SnapshotTier Text
 
 snapshotTierParser :: Parser SnapshotTier
@@ -130,12 +140,14 @@ data Config = Config
   , tier :: SnapshotTier
   , threshold :: Maybe Int
   , gleanDBName :: Maybe Glean.Repo
+  , doCompress :: Bool
   }
 
 configParser :: Parser Config
 configParser =
   Config <$> Glass.configParser <*> filesToSnapshot <*> outputString <*>
-  optRev <*> snapshotTierParser <*> thresholdParser <*> gleanDBNameParser
+  optRev <*> snapshotTierParser <*> thresholdParser <*> gleanDBNameParser <*>
+  (not <$> compressParser)
 
 options :: ParserInfo Config
 options = info (helper <*> configParser) (fullDesc <>
@@ -159,8 +171,9 @@ buildSnapshot
   :: Glass.Env
   -> Maybe Types.Revision
   -> FileToSnapshot
+  -> Bool
   -> IO BuildSnapshot
-buildSnapshot env rev (repo, path) = do
+buildSnapshot env rev (repo, path) doCompress = do
     let opts = def
     let req = Types.DocumentSymbolsRequest repo path Nothing True
     symList <- Handler.documentSymbolListX env req opts
@@ -172,11 +185,13 @@ buildSnapshot env rev (repo, path) = do
     let revision = Types.documentSymbolListXResult_revision symbolList
     let snapshots = Types.Snapshot
           [Types.DocumentSymbolListXQuery req opts symbolList]
-    let ser = serializeGen (Proxy :: Proxy Compact) snapshots
+    let transform = if doCompress then toStrict . compress . fromStrict else id
+    let ser = transform $ serializeGen (Proxy :: Proxy Compact) snapshots
     let snapshotSizeKB = BS.length ser `div` 1000
-    logInfo $ printf "Building snapshot %s %s: %d defs %d refs %dKB"
+    let logCompress :: String = if doCompress then "(compressed)" else ""
+    logInfo $ printf "Building snapshot %s %s: %d defs %d refs %dKB %s"
       (Types.unPath path) (Types.unRevision revision) defs refs
-      snapshotSizeKB
+      snapshotSizeKB logCompress
     return $! BuildSnapshot ser revision snapshotSizeKB symbolList
 
 uploadToXdb
@@ -225,14 +240,15 @@ main =
      $ \env@Glass.Env{..} ->
       case (output, files) of
         (Nothing, _) -> forM_ files $ \file@(repo, path) -> do
-            snap@BuildSnapshot{revision, sizeKB} <- buildSnapshot env rev file
+            snap@BuildSnapshot{revision, sizeKB} <-
+              buildSnapshot env rev file doCompress
             if sizeKB < fromMaybe maxBound threshold then
               uploadToXdb tier repo revision path snap
             else
               logInfo $
                 printf "Snapshot too big (%d kB), don't upload" sizeKB
         (Just output_, [file]) -> do
-          BuildSnapshot{bytes} <- buildSnapshot env rev file
+          BuildSnapshot{bytes} <- buildSnapshot env rev file doCompress
           BS.writeFile output_ bytes
         _ -> fail "Exactly one file must be provided when generating an output\
                   \ file"
