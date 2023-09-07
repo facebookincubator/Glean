@@ -17,12 +17,12 @@
 module Glean.Glass.Snapshot
   ( main ) where
 
-import Control.Exception (SomeException)
-import Control.Monad (forM_)
-import Control.Monad.Catch (try)
+import Control.Exception (SomeException, try)
+import Control.Monad (forM_, when)
 import qualified Data.ByteString as BS
 import Data.Default (def)
 import Data.Int (Int64)
+import Data.IORef.Extra
 import Data.Maybe (fromMaybe)
 import Data.Proxy (Proxy (..))
 import Data.Text (Text, pack, unpack)
@@ -52,6 +52,7 @@ import Options.Applicative (
   switch,
  )
 import System.Directory (createDirectoryIfMissing)
+import System.Exit (exitWith, ExitCode (ExitFailure))
 import System.FilePath ((</>), joinPath, splitDirectories, takeDirectory)
 import Thrift.Protocol (serializeGen)
 import Thrift.Protocol.Compact (Compact)
@@ -168,6 +169,7 @@ isEmptySymbols Types.DocumentSymbolListXResult{..} =
     null documentSymbolListXResult_definitions &&
     null documentSymbolListXResult_definitions
 
+-- | Throws GlassException
 buildSnapshot
   :: Glass.Env
   -> Maybe Types.Revision
@@ -175,7 +177,7 @@ buildSnapshot
   -> Bool
   -> IO BuildSnapshot
 buildSnapshot env rev (repo, path) doCompress = do
-    let opts = def
+    let opts = def{Types.requestOptions_strict = True}
     let req = Types.DocumentSymbolsRequest repo path Nothing True
     symList <- Handler.documentSymbolListX env req opts
     let symbolList = case rev of
@@ -237,18 +239,31 @@ main =
     (Glass.snapshotTier glassConfig)
     (Glass.configKey glassConfig)
     (Glass.refreshFreq glassConfig)
-    gleanDBName $ \env@Glass.Env{..} ->
-      forM_ files $ \file@(repo, path) -> do
-        snap@BuildSnapshot{bytes, revision, sizeKB} <-
-          buildSnapshot env rev file doCompress
-        case output of
-          Nothing ->
-            if sizeKB < fromMaybe maxBound threshold then
-              uploadToXdb tier repo revision path snap
-            else
-              logInfo $
-                printf "Snapshot too big (%d kB), don't upload" sizeKB
-          Just output_ -> do
-            let out = output_ </> unpack (Types.unPath path)
-            createDirectoryIfMissing True (takeDirectory out)
-            BS.writeFile out bytes
+    gleanDBName $ \env@Glass.Env{..} -> do
+      errorsCounterRef <- newIORef 0
+      forM_ files $ \file@(repo, path@(Types.Path p)) -> do
+        snapOrError <- try $ buildSnapshot env rev file doCompress
+        case snapOrError of
+          Left Types.GlassException{..} -> do
+            atomicModifyIORef'_ errorsCounterRef succ
+            logError $ printf "%s: %s" p (show $ head glassException_reasons)
+          Right snap@BuildSnapshot{bytes, revision, sizeKB}
+            | Nothing <- output
+            , sizeKB < fromMaybe maxBound threshold
+            -> uploadToXdb tier repo revision path snap
+            | Nothing <- output
+            -> logError $
+                printf
+                  "%s: Snapshot size above threshold (%d kB), not uploading"
+                  p
+                  sizeKB
+            | Just output_ <- output
+            -> do
+              let out = output_ </> unpack p
+              createDirectoryIfMissing True (takeDirectory out)
+              BS.writeFile out bytes
+
+      -- Exit with error code = number of failed snapshots
+      errorsCount <- readIORef errorsCounterRef
+      when (errorsCount > 0) $
+        exitWith (ExitFailure errorsCount)
