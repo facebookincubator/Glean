@@ -51,7 +51,8 @@ import Options.Applicative (
   value,
   switch,
  )
-import System.FilePath.Posix (joinPath, splitDirectories)
+import System.Directory (createDirectoryIfMissing)
+import System.FilePath ((</>), joinPath, splitDirectories, takeDirectory)
 import Thrift.Protocol (serializeGen)
 import Thrift.Protocol.Compact (Compact)
 import Text.Printf
@@ -103,7 +104,7 @@ outputString :: Parser (Maybe FilePath)
 outputString = optional $ strOption
   (  long "output"
   <> short 'o'
-  <> metavar "FILE"
+  <> metavar "FOLDER"
   <> help "Don't upload snapshot, save to file instead"
   )
 
@@ -236,19 +237,18 @@ main =
     (Glass.snapshotTier glassConfig)
     (Glass.configKey glassConfig)
     (Glass.refreshFreq glassConfig)
-    gleanDBName
-     $ \env@Glass.Env{..} ->
-      case (output, files) of
-        (Nothing, _) -> forM_ files $ \file@(repo, path) -> do
-            snap@BuildSnapshot{revision, sizeKB} <-
-              buildSnapshot env rev file doCompress
+    gleanDBName $ \env@Glass.Env{..} ->
+      forM_ files $ \file@(repo, path) -> do
+        snap@BuildSnapshot{bytes, revision, sizeKB} <-
+          buildSnapshot env rev file doCompress
+        case output of
+          Nothing ->
             if sizeKB < fromMaybe maxBound threshold then
               uploadToXdb tier repo revision path snap
             else
               logInfo $
                 printf "Snapshot too big (%d kB), don't upload" sizeKB
-        (Just output_, [file]) -> do
-          BuildSnapshot{bytes} <- buildSnapshot env rev file doCompress
-          BS.writeFile output_ bytes
-        _ -> fail "Exactly one file must be provided when generating an output\
-                  \ file"
+          Just output_ -> do
+            let out = output_ </> unpack (Types.unPath path)
+            createDirectoryIfMissing True (takeDirectory out)
+            BS.writeFile out bytes
