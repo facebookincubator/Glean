@@ -17,6 +17,8 @@
 module Glean.Glass.Snapshot
   ( main ) where
 
+import Control.Concurrent.Stream (stream)
+import Control.Concurrent (getNumCapabilities)
 import Control.Exception (SomeException, try)
 import Control.Monad (forM_, when)
 import qualified Data.ByteString as BS
@@ -240,8 +242,9 @@ main =
     (Glass.configKey glassConfig)
     (Glass.refreshFreq glassConfig)
     gleanDBName $ \env@Glass.Env{..} -> do
+      numCores <- getNumCapabilities
       errorsCounterRef <- newIORef 0
-      forM_ files $ \file@(repo, path@(Types.Path p)) -> do
+      stream numCores (forM_ files) $ \file@(repo, path@(Types.Path p)) -> do
         snapOrError <- try $ buildSnapshot env rev file doCompress
         case snapOrError of
           Left Types.GlassException{..} -> do
