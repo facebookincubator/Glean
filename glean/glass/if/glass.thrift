@@ -328,7 +328,7 @@ enum Modifier {
   ASYNC = 3,
   STATIC = 4,
   READONLY = 5,
-  CONST = 6,
+  CONST = 6 (cpp.name = "Modifier_CONST"),
   MUTABLE = 7,
   VOLATILE = 8,
   VIRTUAL = 9,
