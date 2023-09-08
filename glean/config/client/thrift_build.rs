@@ -46,7 +46,7 @@ service glean_service",
 
         conf.types_crate("glean_client_config__types");
 
-        let options = "serde";
+        let options = "deprecated_default_enum_min_i32,serde";
         if !options.is_empty() {
             conf.options(options);
         }
