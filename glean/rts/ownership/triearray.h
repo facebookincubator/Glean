@@ -43,6 +43,15 @@ public:
    * This tries to split the tree as little as possible. We also guarantee to
    * call `get` exactly once for each previous value (including `nullptr` for
    * "no previous value").
+   *
+   * The trie maintains reference counts for each value, by calling
+   *    value->use(uint_t)
+   *
+   * get(T* old_value, uint_t ref) -> T*
+   *   `ref` references to `old_value` are being updated.
+   *   get() is responsible for updating the refcount of the old value,
+   *   and for releasing (or reusing) it to avoid leaking memory if
+   *   its refcount would fall to zero.
    */
   template<typename Get>
   void insert(const OwnershipUnit::Ids *start, const OwnershipUnit::Ids *finish, Get&& get) {
@@ -56,6 +65,10 @@ public:
     // only 32-bit keys are supported; this property is assumed later
     CHECK(maxkey_ <= std::numeric_limits<uint32_t>::max());
 
+    // During insertion if we are replacing all references of an existing value,
+    // we want to do that in a single operation so that get() can reuse
+    // the memory for the old value.
+    //
     // Algorithm:
     //
     // - Collect previously existing values in `values`.
@@ -90,7 +103,7 @@ public:
                 if (prev == nullptr) {
                   values.push_back(value);
                 } else {
-                  value->use(-1);
+                  value->use(-1); // we dropped the ref from the trie
                 }
               } else {
                 tree = Tree::link(null_link);
@@ -107,6 +120,9 @@ public:
     }
 
     const auto unlink = [&](Tree *tree, T * FOLLY_NULLABLE value) {
+      // If we are updating *all* references to this value, then the
+      // refcount for the old value will be 1 here, and get() can do
+      // an in-place update.
       auto upd = get(value, 1);
       uint32_t refs = 0;
       while (tree != nullptr) {
