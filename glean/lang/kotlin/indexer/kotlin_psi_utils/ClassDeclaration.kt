@@ -25,6 +25,7 @@ fun buildClassDeclaration(decl: KtClass, context: BindingContext): ClassDeclarat
       decl.qualifiedName() ?: throw MissingRequiredGleanFieldException("ClassDeclaration.name"),
       implements =
           getSuperTypesFromClass(decl, context).map { kotlinType -> kotlinType.path().toQName() },
-      location = buildFileLocation(decl.psiOrParent)
+      location =
+          buildFileLocation(decl.psiOrParent)
               ?: throw EmptyDeclarationLocation(decl.name ?: "", "class"))
 }
