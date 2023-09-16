@@ -2669,7 +2669,8 @@ struct ASTConsumer : public clang::ASTConsumer {
     // Clang is sometimes generating a bogus AST when there are
     // compilation errors (even for parts of the AST that should be
     // unrelated to the error) so this is a workaround.
-    if (ctx.getDiagnostics().hasErrorOccurred() && !FLAGS_index_on_error) {
+    if (ctx.getDiagnostics().hasUncompilableErrorOccurred() &&
+        !FLAGS_index_on_error) {
       db->IndexFailure(ctx);
       return;
     }
