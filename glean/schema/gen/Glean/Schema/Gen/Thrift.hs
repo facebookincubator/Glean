@@ -160,6 +160,10 @@ thriftDir :: Mode -> Text -> Text
 thriftDir Query slashVn = "glean/schema" <> slashVn <> "/thrift/query"
 thriftDir _ slashVn = "glean/schema" <> slashVn <> "/thrift"
 
+package :: Mode -> Text
+package Query = "facebook.com/glean/schema/query"
+package _ = "facebook.com/glean/schema"
+
 hsNamespace :: Mode -> Text
 hsNamespace Query = "Glean.Schema.Query"
 hsNamespace _ = "Glean.Schema"
@@ -268,6 +272,9 @@ genNamespace mode slashVn namespaces version
     [ "include \"" <> thriftDir mode slashVn <> "/" <> underscored dep
         <> ".thrift\""
     | dep <- deps ] ++
+    [ ""
+    , "package \"" <> package mode <> "/" <> underscored namespaces <> "\""
+    ] ++
     [ ""
     , "namespace cpp2 " <> cpp2Namespace mode <> "." <> dotted namespaces
     , "namespace hs " <> hsNamespace mode
