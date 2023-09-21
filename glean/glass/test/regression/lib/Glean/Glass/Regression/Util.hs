@@ -28,11 +28,12 @@ withTestEnv backend f =
   withConfigProvider defaultConfigOptions $ \cfgapi ->
   withLogger cfgapi $ \logger ->
   withFb303 "glass-test" $ \fb303 ->
-  withLatestRepos backend (hours 1) $ \latestGleanRepos  repoScmRevisions ->
-    f Glass.Env
-      { gleanBackend = Some backend
-      , gleanIndexBackend = IndexBackend Nothing
-      , snapshotBackend = SB.snapshotBackend SB.snapshotDefaultTier
-      , gleanDB = Nothing
-      , ..
-      }
+  withLatestRepos backend Nothing Nothing (hours 1) $
+    \latestGleanRepos repoScmRevisions ->
+      f Glass.Env
+        { gleanBackend = Some backend
+        , gleanIndexBackend = IndexBackend Nothing
+        , snapshotBackend = SB.snapshotBackend SB.snapshotDefaultTier
+        , gleanDB = Nothing
+        , ..
+        }

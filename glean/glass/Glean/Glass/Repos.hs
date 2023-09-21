@@ -47,9 +47,13 @@ import qualified Data.Map.Strict as Map
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Text ( Text, intercalate )
+import qualified Logger.GleanGlassErrors as Errors
 
+import Logger.IO (Logger)
+import qualified Util.Log as LocalLog
 import Glean.Util.Periodic ( doPeriodicallySynchronised )
-import Glean.Util.Time ( DiffTimePoints )
+import Util.Text ( textShow )
+import Glean.Util.Time
 import qualified Glean
 import Util.STM ( readTVar, writeTVar, atomically, newTVarIO, TVar, STM )
 import qualified Glean.Repo as Glean
@@ -65,7 +69,7 @@ import Glean.Glass.Types
       Revision(..),
       LocationRange(..)
     )
-import Glean.Glass.RepoMapping  -- site-specific
+import qualified Glean.Glass.RepoMapping as Mapping -- site-specific
 
 -- mapping from scm repo to hash for each db
 newtype ScmRevisions = ScmRevisions
@@ -74,7 +78,7 @@ newtype ScmRevisions = ScmRevisions
 
 -- return a RepoName if indexed by glean
 toRepoName :: Text -> Maybe RepoName
-toRepoName repo = case Map.lookup repoName gleanIndices of
+toRepoName repo = case Map.lookup repoName Mapping.gleanIndices of
     Just _ -> Just repoName
     Nothing -> Nothing
   where
@@ -83,15 +87,15 @@ toRepoName repo = case Map.lookup repoName gleanIndices of
 -- | Additional metadata about files and methods in attribute dbs
 firstAttrDB :: GleanDBName -> Maybe GleanDBAttrName
 firstAttrDB dbName
-  | Just (db:_) <- Map.lookup dbName gleanAttrIndices = Just db
+  | Just (db:_) <- Map.lookup dbName Mapping.gleanAttrIndices = Just db
   | otherwise = Nothing
 
 -- | All the Glean db repo names we're aware of
--- We will only be able to queries members of this set.
+-- We will only be able to query members of this set
 allGleanRepos :: Set GleanDBName
 allGleanRepos = Set.fromList $
-  map fst (concat (Map.elems gleanIndices)) ++
-  concatMap (map gleanAttrDBName) (Map.elems gleanAttrIndices)
+  map fst (concat (Map.elems Mapping.gleanIndices)) ++
+  concatMap (map gleanAttrDBName) (Map.elems Mapping.gleanAttrIndices)
 
 -- | Expand generic string search request parameters into a set of candidate
 -- GleanDBs, grouped by logical SCM repo or corpus.
@@ -160,9 +164,9 @@ normalizeLanguages l = l
 listGleanIndices :: Bool -> [(RepoName, (GleanDBName, Language))]
 listGleanIndices testsOnly
   | not testsOnly = concatMap flatten $ -- only non-test repos
-      Map.toList (Map.delete testRepo gleanIndices)
+      Map.toList (Map.delete testRepo Mapping.gleanIndices)
   | otherwise = map (testRepo,) $ -- just the test repos
-      Map.findWithDefault [] testRepo gleanIndices
+      Map.findWithDefault [] testRepo Mapping.gleanIndices
   where
     testRepo = RepoName "test"
 
@@ -174,7 +178,7 @@ listGleanIndices testsOnly
 -- properties?
 fromSCSRepo :: RepoName -> Maybe Language -> [GleanDBName]
 fromSCSRepo r hint
-  | Just rs <- Map.lookup r gleanIndices
+  | Just rs <- Map.lookup r Mapping.gleanIndices
   = nub $ map fst $ case hint of
       Nothing -> rs
       Just h -> filter ((== h) . snd) rs
@@ -234,16 +238,68 @@ filetype (Path file)
   | otherwise = Nothing
 
 --
--- Operating on the latest repo state
---
--- TODO: exception handling behavior
+-- Operating on the latest repo statea
 --
 
 -- | Fetch all latest dbs we care for
 getLatestRepos
-  :: Glean.Backend b => b -> Set GleanDBName -> IO Glean.LatestRepos
-getLatestRepos backend repoNames = Glean.getLatestRepos backend $ \name ->
-  GleanDBName name `Set.member` repoNames
+  :: Glean.Backend b
+  => b -> Maybe Logger -> Maybe Int -> Set GleanDBName -> IO Glean.LatestRepos
+getLatestRepos backend mlogger mretry repoNames = go mretry
+  where
+    go :: Maybe Int -> IO Glean.LatestRepos
+    go n = do
+      latest <- Glean.getLatestRepos backend $ \name ->
+        GleanDBName name `Set.member` repoNames
+      let advertised = Map.keysSet (Glean.latestRepos latest)
+      if required `Set.isSubsetOf` advertised
+        then return latest
+        else do
+          -- some required dbs are missing! this is transient? and bad
+          -- in prod/full service mode this would be bad
+          let missing = required `Set.difference` advertised
+          logIt mlogger missing n backend
+          case n of
+            Just n | n > 1 {- i.e. try more than 1 time -}
+              -> delay (seconds 1) >> go (Just (n-1))
+
+            _ -> return latest -- give up in all other scenarios
+
+    required = Set.map unGleanDBName Mapping.gleanRequiredIndices
+
+-- | Log an entry in glean_glass_server_error_events if a logger is available,
+-- and locally (e.g. to stderr). Do not log otherwise (e.g. in test mode).
+logIt
+  :: Glean.Backend b
+  => Maybe Logger -> Set Text -> Maybe Int -> b -> IO ()
+logIt mlogger missing attempt backend = do
+  case mlogger of
+    Just logger -> do
+      LocalLog.logError $ mconcat [
+        "Error listing databases: ",
+        Text.unpack missingDBNames,
+        " not found. ",
+        Text.unpack errorMsg
+       ]
+      Errors.runLog logger $ mconcat [
+        Errors.setErrorType errorTy,
+        Errors.setError errorMsg,
+        Errors.setRepoName missingDBNames, -- these are the ones not found
+        Errors.setMethod "getLatestRepos" -- fake thrift method is required
+       ]
+    Nothing -> return () -- don't log unless Just attempt
+  where
+    errorTy = "ListDatabases"
+    errorMsg = Text.concat [
+        "Missing some required databases in listDatabases (attempt ",
+        maybe "unknown" textShow attempt,
+        "). Using " <> formatBackend backend
+        ]
+    missingDBNames = Text.intercalate "," (Set.toList missing)
+
+-- This is the full glean backend details so should have some useful stuff
+formatBackend :: Glean.Backend b => b -> Text
+formatBackend = Text.pack . Glean.displayBackend
 
 getScmRevisions :: Glean.Backend b => b -> Glean.LatestRepos -> IO ScmRevisions
 getScmRevisions backend repos = ScmRevisions . HashMap.fromList <$>
@@ -257,11 +313,13 @@ getScmRevisions backend repos = ScmRevisions . HashMap.fromList <$>
 withLatestRepos
   :: Glean.Backend b
    => b
+   -> Maybe Logger
+   -> Maybe Int
    -> DiffTimePoints
    -> (TVar Glean.LatestRepos -> TVar ScmRevisions -> IO a)
    -> IO a
-withLatestRepos backend freq f = do
-  repos <- getLatestRepos backend allGleanRepos
+withLatestRepos backend mlogger mretry freq f = do
+  repos <- getLatestRepos backend mlogger mretry allGleanRepos
   scmRevisions <- getScmRevisions backend repos
   tvRepos <- newTVarIO repos
   tvRevs <- newTVarIO scmRevisions
@@ -274,15 +332,16 @@ withLatestRepos backend freq f = do
         -- which can cause memory leaks if the process exits
         -- immediately. This is benign, but can lead to ASAN test
         -- failures.
-      updateLatestRepos backend tvRepos tvRevs
+      updateLatestRepos backend mlogger mretry tvRepos tvRevs
 
 -- | Update a TVar with the latest repos
 -- TODO: should take latest configuration repo list
 updateLatestRepos
   :: Glean.Backend b
-  => b -> TVar Glean.LatestRepos -> TVar ScmRevisions -> IO ()
-updateLatestRepos backend tvRepos tvRevs = do
-  repos <- getLatestRepos backend allGleanRepos
+  => b -> Maybe Logger -> Maybe Int
+  -> TVar Glean.LatestRepos -> TVar ScmRevisions -> IO ()
+updateLatestRepos backend mlogger mretry tvRepos tvRevs = do
+  repos <- getLatestRepos backend mlogger mretry allGleanRepos
   revs <- getScmRevisions backend repos
   atomically $ do
     writeTVar tvRepos repos
@@ -303,7 +362,7 @@ lookupLatestRepos tv repoNames = do
 findRepos :: Text -> [SymbolId]
 findRepos pRepo =
   let repos = Map.toList $ Map.filterWithKey
-        (const . Text.isPrefixOf pRepo . unRepoName) gleanIndices
+        (const . Text.isPrefixOf pRepo . unRepoName) Mapping.gleanIndices
   in concatMap (\(RepoName repo, repolangs) ->
       map (\(_, lang) -> SymbolId $ repo <> "/" <> toShortCode lang <> "/")
       repolangs) repos
@@ -312,7 +371,7 @@ findRepos pRepo =
 findLanguages :: RepoName -> Text -> [SymbolId]
 findLanguages repoName@(RepoName repo) pLang =
   let allLangs = maybe [] (map (toShortCode . snd)) $
-        Map.lookup repoName gleanIndices
+        Map.lookup repoName Mapping.gleanIndices
       langs = filter (Text.isPrefixOf pLang) allLangs
   in map (\lang -> SymbolId $ repo <> "/" <> lang <> "/") langs
 

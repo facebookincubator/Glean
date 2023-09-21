@@ -40,7 +40,10 @@ data Config = Config
   , configKey :: Text
   , gleanService :: Glean.Service
   , serviceName :: Text
-  , refreshFreq :: DiffTimePoints -- ^ refresh glean repos on this frequency
+  , refreshFreq :: DiffTimePoints
+      -- ^ refresh glean repos on this frequency
+  , listDatabasesRetry :: Maybe Int
+      -- ^ whether to trust listDatabases and how often to wait to retry N times
   , numWorkerThreads :: Maybe Int
   , snapshotTier :: SnapshotTier
   }

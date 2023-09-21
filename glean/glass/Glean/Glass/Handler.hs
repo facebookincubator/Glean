@@ -143,7 +143,6 @@ import Glean.Glass.SnapshotBackend
 import Glean.Glass.SymbolKind (findSymbolKind)
 
 -- | Runner for methods that are keyed by a file path
--- TODO : do the plumbing via a class rather than function composition
 runRepoFile
   :: (LogResult t)
   => Text

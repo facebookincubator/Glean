@@ -240,7 +240,7 @@ main =
     (Glass.gleanService glassConfig)
     (Glass.snapshotTier glassConfig)
     (Glass.configKey glassConfig)
-    (Glass.refreshFreq glassConfig)
+    (Glass.refreshFreq glassConfig) Nothing
     gleanDBName $ \env@Glass.Env{..} -> do
       numCores <- getNumCapabilities
       errorsCounterRef <- newIORef 0

@@ -6,8 +6,13 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.Glass.RepoMapping where
+module Glean.Glass.RepoMapping
+  ( gleanIndices
+  , gleanAttrIndices
+  , gleanRequiredIndices
+  ) where
 
+import qualified Data.Set as Set
 import qualified Data.Map.Strict as Map
 
 import Glean.Glass.Base ( GleanDBAttrName, GleanDBName(..) )
@@ -37,3 +42,7 @@ gleanIndices = Map.fromList
 -- repos that contain symbol attributes
 gleanAttrIndices :: Map.Map GleanDBName [GleanDBAttrName]
 gleanAttrIndices = Map.empty
+
+-- repos that are required
+gleanRequiredIndices :: Set.Set GleanDBName
+gleanRequiredIndices = Set.empty

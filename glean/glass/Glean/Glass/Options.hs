@@ -32,6 +32,7 @@ configParser = do
   listenPort <- portParser
   serviceName <- serviceNameParser
   refreshFreq <- refreshFreqParser
+  listDatabasesRetry <- listDatabasesRetryParser
   numWorkerThreads <- workerThreadsParser
   snapshotTier <- snapshotTierParser
   return Glass.Config{configKey = Glass.defaultConfigKey, ..}
@@ -49,6 +50,13 @@ refreshFreqParser = option (minutes <$> auto) $ mconcat
   [ long "refresh"
   , help "Default update frequency for latest repos (minutes)"
   , value Glass.defaultRefreshFreq
+  ]
+
+listDatabasesRetryParser :: Parser (Maybe Int)
+listDatabasesRetryParser = optional $ option auto $ mconcat
+  [ long "list-databases-retry"
+  , help "Default retry attempts for listing databases"
+  , value Glass.defaultListDatabasesRetry
   ]
 
 serviceNameParser :: Parser Text

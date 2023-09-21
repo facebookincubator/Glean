@@ -61,8 +61,8 @@ type Server = Glass.Env -> Glass.Config -> IO ()
 withGlass :: Server -> IO ()
 withGlass f =
   withOptions Glass.options $ \config@Glass.Config{..} ->
-  withEnv serviceName gleanService snapshotTier configKey refreshFreq Nothing $
-    \env -> f env config
+  withEnv serviceName gleanService snapshotTier
+      configKey refreshFreq listDatabasesRetry Nothing $ \env -> f env config
 
 -- | Construct a server environment
 withEnv
@@ -71,24 +71,26 @@ withEnv
   -> SnapshotTier
   -> Text
   -> DiffTimePoints
+  -> Maybe Int
   -> Maybe Glean.Repo
   -> (Glass.Env -> IO a)
   -> IO a
-withEnv name service snapshotTier _ refreshFreq gleanDB f =
+withEnv name service snapshotTier _ refreshFreq listDatabasesRetry gleanDB f =
   withEventBaseDataplane $ \evp ->
   withConfigProvider defaultConfigOptions $ \cfgapi ->
   withLogger cfgapi $ \logger ->
   withFb303 name $ \fb303 ->
   withBackendWithDefaultOptions evp cfgapi service (Just schema_id)
     $ \backend ->
-  withLatestRepos backend refreshFreq $ \latestGleanRepos repoScmRevisions ->
-    f Glass.Env
-      { gleanBackend = Some backend
-      , gleanIndexBackend = indexBackend backend
-      , snapshotBackend = snapshotBackend snapshotTier
-      , gleanDB = gleanDB
-      , ..
-      }
+  withLatestRepos backend (Just logger) listDatabasesRetry refreshFreq
+    $ \latestGleanRepos repoScmRevisions ->
+      f Glass.Env
+        { gleanBackend = Some backend
+        , gleanIndexBackend = indexBackend backend
+        , snapshotBackend = snapshotBackend snapshotTier
+        , gleanDB = gleanDB
+        , ..
+        }
 
 -- | Construct a backend to call the indexing endpoint
 indexBackend :: LocalOrRemote b => b -> Glass.IndexBackend

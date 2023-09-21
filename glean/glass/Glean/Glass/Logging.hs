@@ -270,7 +270,6 @@ errorsText errs =
     (("  " <>) . errorText)
     (nubOrd $ NE.toList errs)
 
-
 data ErrorLogger = ErrorLogger
   { errorTy :: ![GlassExceptionReason]
   , errorGleanRepo :: ![Glean.Repo]

@@ -12,10 +12,11 @@ module Glean.Glass.Config
     defaultPort,
     defaultServiceName,
     defaultRefreshFreq,
+    defaultListDatabasesRetry
   ) where
 
 import Data.Text (Text)
-import Glean.Util.Time ( DiffTimePoints, minutes )
+import Glean.Util.Time
 
 defaultPort :: Int
 defaultPort = 26073
@@ -28,3 +29,6 @@ defaultServiceName = "glean_glass"
 
 defaultRefreshFreq :: DiffTimePoints
 defaultRefreshFreq = minutes 5
+
+defaultListDatabasesRetry :: Int
+defaultListDatabasesRetry = 3
