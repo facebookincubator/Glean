@@ -12,7 +12,8 @@ module Glean.Database.Types (
   Tailer(..), TailerKey, DB(..),
   Env(..), WriteQueues(..), WriteQueue(..), WriteJob(..),
   Derivation(..),
-  EnableRecursion(..)
+  EnableRecursion(..),
+  JanitorRunResult(..), JanitorException(..)
 ) where
 
 import Control.DeepSeq
@@ -24,6 +25,7 @@ import Data.HashMap.Strict (HashMap)
 import Data.HashSet (HashSet)
 import Data.IORef (IORef)
 import Data.Text (Text)
+import Data.Typeable (Typeable)
 import Data.Time
 import System.Clock
 
@@ -203,6 +205,20 @@ data EnableRecursion
   = EnableRecursion
   | DisableRecursion
 
+data JanitorRunResult
+  = JanitorRunSuccess UTCTime
+  | JanitorRunFailure JanitorException
+  | JanitorTimeout
+  | JanitorDisabled
+  deriving Show
+
+data JanitorException
+  = OtherJanitorException SomeException
+  | JanitorFetchBackupsFailure -- ^ Raised only when no catalog available
+  deriving (Typeable, Show)
+
+instance Exception JanitorException
+
 data Env = forall storage. Storage storage => Env
   { envEventBase :: EventBaseDataplane
   , envServerLogger :: Some GleanServerLogger
@@ -227,7 +243,7 @@ data Env = forall storage. Storage storage => Env
   , envStats :: Stats
   , envLookupCacheStats :: LookupCache.Stats
   , envWarden :: Warden
-  , envDatabaseJanitor :: TVar (Maybe UTCTime)
+  , envDatabaseJanitor :: TVar (Maybe JanitorRunResult)
   , envDatabaseJanitorPublishedCounters :: TVar (HashSet ByteString)
   , envCachedRestorableDBs :: TVar (Maybe (UTCTime, [(Thrift.Repo, Meta)]))
   , envWorkQueue :: WorkQueue

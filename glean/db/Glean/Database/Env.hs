@@ -10,11 +10,10 @@
 module Glean.Database.Env ( withDatabases ) where
 
 import Control.Concurrent
-import Control.Exception
+import Control.Exception.Safe
 import Control.Monad.Extra
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
-import Data.Maybe
 import Data.Time
 import System.Clock (TimeSpec(..))
 import System.Timeout
@@ -151,20 +150,33 @@ spawnThreads :: Env -> IO ()
 spawnThreads env@Env{..} = do
   ServerConfig.Config{..} <- Observed.get envServerConfig
 
+  -- on completion, record the time we last ran the janitor. This is
+  -- used by the server to know when to advertise the server as alive.
+  let recordJanitorResult = atomically . writeTVar envDatabaseJanitor . Just
+
   case config_janitor_period of
     Just secs -> Warden.spawn_ envWarden
       $ doPeriodically (seconds (fromIntegral secs))
         -- a conservative timeout in case the janitor deadlocks for
         -- some reason.
-      $ withTimeout (fromIntegral secs * 20)
-      $ runDatabaseJanitor env
-      where
-        withTimeout t act = do
-          r <- timeout (t * 1000*1000) act
-          when (isNothing r) $ logError "janitor timeout"
-    Nothing -> do
-      t <- getCurrentTime
-      atomically $ writeTVar envDatabaseJanitor $ Just t
+      $ do
+          result <- try $ timeout (fromIntegral secs * 20 * 1000 * 1000)
+                      $ runDatabaseJanitor env
+          case result of
+            Right (Just ()) -> do
+              t <- envGetCurrentTime
+              recordJanitorResult $ JanitorRunSuccess t
+            Right Nothing -> do
+              logError "janitor timeout"
+              recordJanitorResult JanitorTimeout
+            Left someException
+              | Just e <- fromException someException
+              -> recordJanitorResult (JanitorRunFailure e)
+              | otherwise
+              -> recordJanitorResult
+                  (JanitorRunFailure $ OtherJanitorException someException)
+    Nothing ->
+      recordJanitorResult JanitorDisabled
 
   Warden.spawn_ envWarden $ backuper env
 

@@ -21,7 +21,7 @@ module Glean.Database.Janitor
 
 import Control.Concurrent.Stream (stream)
 import Control.Concurrent (getNumCapabilities)
-import Control.Exception
+import Control.Exception.Safe
 import Control.Monad.Extra
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Trans.Writer.CPS
@@ -146,10 +146,20 @@ runWithShards env myShards sm = do
 
   let
     !ServerConfig.DatabaseRetentionPolicy{} = config_retention
-    !ServerConfig.DatabaseRestorePolicy{} = config_restore
+    !ServerConfig.DatabaseRestorePolicy{..} = config_restore
     !ServerConfig.DatabaseClosePolicy{..} = config_close
 
-  backups <- fetchBackups env
+  fetchBackupsResult <- fetchBackups env
+
+  backups <- case fetchBackupsResult of
+    ReusedPreviousBackups{fetchedBackups} -> return fetchedBackups
+    FetchedNewBackups{fetchedBackups} -> return fetchedBackups
+    FetchFailure{..} -> do
+      logError $ "couldn't list restorable databases: " <> show fetchError
+
+      case previousGoodBackups of
+        Nothing -> throwIO JanitorFetchBackupsFailure
+        Just _ -> return []
 
   localAndRestoring <- atomically $
     Catalog.list (envCatalog env) [Local,Restoring] everythingF
@@ -157,11 +167,6 @@ runWithShards env myShards sm = do
   t <- envGetCurrentTime env
 
   dbToShard <- computeShardMapping sm
-
-  -- on completion, record the time we last ran the janitor. This is
-  -- used by the server to know when to advertise the server as alive.
-  let done = atomically $ writeTVar (envDatabaseJanitor env) (Just t)
-  flip finally done $ do
 
   let
     allDBsByAge :: [Item]
@@ -555,30 +560,48 @@ dbRetentionForRepo ServerConfig.Retention{..} t dbs = keep
       -- one has downloaded.
       filter isLocal (take retainAtLeast (filter shouldHold sorted))
 
+data FetchBackups
+  = ReusedPreviousBackups {
+    fetchedBackups :: [(Repo, Meta)]
+    }
+  | FetchedNewBackups {
+    fetchedBackups :: [(Repo, Meta)]
+    }
+  | FetchFailure {
+    previousGoodBackups :: Maybe [(Repo, Meta)],
+    fetchError :: SomeException
+  }
 
 -- Fetches backups only if they haven't been fetched recently
-fetchBackups :: Env -> IO [(Repo, Meta)]
+fetchBackups :: Env -> IO FetchBackups
 fetchBackups env = do
   ServerConfig.Config{..} <- Observed.get (envServerConfig env)
   let syncPeriodSeconds = fromIntegral config_backup_list_sync_period
   maybeLastFetch <- readTVarIO (envCachedRestorableDBs env)
   now <- envGetCurrentTime env
   case maybeLastFetch of
-    Nothing -> fetch now
+    Nothing -> fetch now Nothing
     Just (lastFetch, dbs)
       | now `timeDiffInSeconds` lastFetch > syncPeriodSeconds ->
-        fetch now
-      | otherwise -> return dbs
+        fetch now (Just dbs)
+      | otherwise ->
+        return $ ReusedPreviousBackups dbs
   where
     timeDiffInSeconds t1 t2 =
       timeSpanInSeconds $ fromUTCTime t1 `timeDiff` fromUTCTime t2
-    fetch now = do
+    fetch now previousGood = do
       logInfo "fetching restorable databases list"
-      dbs <- loggingAction (runLogCmd "listRestorable" env) (const mempty) $
-        concatMap HashMap.toList <$>
-          forRestoreSitesM env mempty listRestorable
-      atomically $ writeTVar (envCachedRestorableDBs env) (Just (now,dbs))
-      return dbs
+      dbs <- tryAll $
+        loggingAction (runLogCmd "listRestorable" env) (const mempty) $
+          concatMap HashMap.toList <$>
+            forRestoreSitesM env mempty listRestorable
+
+      for_ dbs $ \dbs ->
+        atomically $ writeTVar (envCachedRestorableDBs env) (Just (now,dbs))
+
+      return $ case dbs of
+        Right dbs -> FetchedNewBackups dbs
+        Left error -> FetchFailure previousGood error
 
 repoRetention
   :: ServerConfig.DatabaseRetentionPolicy -> Text -> ServerConfig.Retention

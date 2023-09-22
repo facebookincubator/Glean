@@ -16,8 +16,6 @@ import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
 import Data.Text (Text)
 
-import Util.Control.Exception
-import Util.Log
 import Util.STM
 
 import qualified Glean.Database.Backup.Backend as Backup
@@ -75,11 +73,8 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
         currentAgeInSeconds = unPosixEpochTime now - unPosixEpochTime dbTime
 
 listRestorable :: Backup.Site site => Text -> site -> IO (HashMap Repo Meta)
-listRestorable prefix site = do
-  (HashMap.fromList . mapMaybe restorable <$> Backup.enumerate site)
-  `catchAll` \exc -> do
-    logError $ "couldn't list restorable databases: " ++ show exc
-    return mempty
+listRestorable prefix site =
+  HashMap.fromList . mapMaybe restorable <$> Backup.enumerate site
   where
     restorable (repo, props)
       | Right meta <-

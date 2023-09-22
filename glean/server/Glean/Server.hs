@@ -94,17 +94,32 @@ main =
     -- completion before we advertise the server as alive.  Otherwise
     -- clients may contact this server and see no available DBs.
     waitForAlive server = do
-      atomically $ do
+      l <- atomically $ do
         l <- readTVar $ envDatabaseJanitor databases
-        when (isNothing l) retry
-      setAlive server
+        maybe retry return l
+
+      case l of
+        JanitorRunFailure JanitorFetchBackupsFailure -> do
+          logError "Aborting: failed to list remote DBs at startup"
+          return False
+        JanitorTimeout -> do
+          logError "Aborting: Janitor timeout at startup"
+          return False
+        JanitorRunSuccess{} ->
+          setAlive server >> return True
+        JanitorRunFailure OtherJanitorException{} ->
+          setAlive server >> return True
+        JanitorDisabled ->
+          setAlive server >> return True
 
     waitForTerminate = waitForTerminateSignalsAndGracefulShutdown
                         databases
                         terminating
                         (cfgGracefulShutdownTimeout cfg)
 
-    waitToStart server = waitForAlive server >> waitForTerminate
+    waitToStart server = do
+      success <- waitForAlive server
+      when success waitForTerminate
     opts = ThriftServer.defaultOptions {
       ThriftServer.desiredPort = cfgPort cfg }
 
