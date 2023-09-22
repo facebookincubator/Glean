@@ -10,7 +10,7 @@ module InventoryTest
   ( main
   ) where
 
-import Control.Concurrent.Async ( forConcurrently )
+import Control.Monad (forM)
 import qualified Data.HashMap.Strict as HM
 import Data.HashMap.Strict (HashMap)
 import qualified Data.Map as Map
@@ -91,7 +91,7 @@ deterministicOnHashMaps schemaSourceDir = TestCase $ do
 testDeterminism :: [DbSchema] -> IO ()
 testDeterminism permutations = do
   assertBool "Test input is empty or a singleton" (length permutations > 1)
-  inventories <- forConcurrently permutations $ \s -> do
+  inventories <- forM permutations $ \s -> do
     let i = schemaInventory s
     let !serial = Inventory.serialize i
     return (serial, s)
