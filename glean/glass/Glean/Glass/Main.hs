@@ -33,7 +33,7 @@ import qualified Data.Text as Text
 import qualified Glean
 import Glean.Init ( withOptions )
 import Glean.LocalOrRemote as Glean
-  ( Service,
+  ( Service(..),
     LocalOrRemote(..),
     BackendKind(..),
     withBackendWithDefaultOptions )
@@ -82,7 +82,8 @@ withEnv name service snapshotTier _ refreshFreq listDatabasesRetry gleanDB f =
   withFb303 name $ \fb303 ->
   withBackendWithDefaultOptions evp cfgapi service (Just schema_id)
     $ \backend ->
-  withLatestRepos backend (Just logger) listDatabasesRetry refreshFreq
+  withLatestRepos backend (Just logger)
+    (if isRemote service then listDatabasesRetry else Nothing) refreshFreq
     $ \latestGleanRepos repoScmRevisions ->
       f Glass.Env
         { gleanBackend = Some backend
@@ -91,6 +92,12 @@ withEnv name service snapshotTier _ refreshFreq listDatabasesRetry gleanDB f =
         , gleanDB = gleanDB
         , ..
         }
+
+-- | Some of the retry/logging logic only applies to remote services
+isRemote :: Service -> Bool
+isRemote service = case service of
+  Remote{} -> True
+  _ -> False
 
 -- | Construct a backend to call the indexing endpoint
 indexBackend :: LocalOrRemote b => b -> Glass.IndexBackend

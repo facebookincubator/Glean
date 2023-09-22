@@ -291,8 +291,8 @@ logIt mlogger missing attempt backend = do
   where
     errorTy = "ListDatabases"
     errorMsg = Text.concat [
-        "Missing some required databases in listDatabases (attempt ",
-        maybe "unknown" textShow attempt,
+        "Missing some required databases in listDatabases (attempts remaining ",
+        maybe "unknown" textShow (subtract 1 <$> attempt),
         "). Using " <> formatBackend backend
         ]
     missingDBNames = Text.intercalate "," (Set.toList missing)
