@@ -159,7 +159,7 @@ runWithShards env myShards sm = do
 
       case previousGoodBackups of
         Nothing -> throwIO JanitorFetchBackupsFailure
-        Just _ -> return []
+        Just dbs -> return dbs
 
   localAndRestoring <- atomically $
     Catalog.list (envCatalog env) [Local,Restoring] everythingF
