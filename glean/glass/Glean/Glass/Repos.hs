@@ -260,10 +260,11 @@ getLatestRepos backend mlogger mretry repoNames = go mretry
           let missing = required `Set.difference` advertised
           logIt mlogger missing n backend
           case n of
-            Just n | n > 1 {- i.e. try more than 1 time -}
-              -> delay (seconds 1) >> go (Just (n-1))
+            Just n
+              | n > 1 -> do {- i.e. try more than 1 time -}
+                delay (seconds 1) >> go (Just (n-1))
 
-            _ -> return latest -- give up in all other scenarios
+            _ -> return latest -- if no retries allowed, give up
 
     required = Set.map unGleanDBName Mapping.gleanRequiredIndices
 
@@ -289,13 +290,21 @@ logIt mlogger missing attempt backend = do
        ]
     Nothing -> return () -- don't log unless Just attempt
   where
-    errorTy = "ListDatabases"
-    errorMsg = Text.concat [
-        "Missing some required databases in listDatabases (attempts remaining ",
-        maybe "unknown" textShow (subtract 1 <$> attempt),
-        "). Using " <> formatBackend backend
-        ]
     missingDBNames = Text.intercalate "," (Set.toList missing)
+    errorTy = "ListDatabases"
+    errorMsg =
+      let remaining = subtract 1 <$> attempt
+      in case remaining of
+        Just 0 -> Text.concat [ -- final attempt failed
+                "Failed finding required databases in listDatabases",
+                " (no more attempts possible!)",
+                ". Using " <> formatBackend backend ]
+        _ -> Text.concat [
+                "Missing some required databases in listDatabases",
+                " (attempts remaining " <> maybe "unknown" textShow remaining,
+                "). Using " <> formatBackend backend
+            ]
+
 
 -- This is the full glean backend details so should have some useful stuff
 formatBackend :: Glean.Backend b => b -> Text
