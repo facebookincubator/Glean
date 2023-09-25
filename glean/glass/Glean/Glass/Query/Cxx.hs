@@ -89,9 +89,7 @@ documentSymbolsForCxx mlimit includeRefs fileId = do
       (xrefs, trunc2{- one of the sub queries truncated-}) <- if includeRefs
         then fileEntityXRefLocations mlimit fileId traceId
         else return ([], False)
-
       let (xrefs', trunc3) = maybeTake mlimit xrefs
-
       return (xrefs', defns, trunc1 || trunc2 || trunc3)
 
 maybeTake :: Maybe Int -> [a] -> ([a], Bool)
@@ -138,16 +136,17 @@ fileEntityXRefLocations
   -> Glean.RepoHaxl u w ([(Code.XRefLocation,Code.Entity)], Bool)
 fileEntityXRefLocations mlimit fileId traceId = do
   mresult <- getFirstFileXRefs fileId
-  fileXRefs <- case mresult of
+  fixedAndVariable <- case mresult of -- C++ xrefs rely on a cxxFileXRefs fact
     Nothing -> return []
     Just xrefId -> do
       fixedXRefs <- fixedXRefs mlimit xrefId
       variableXRefs <- externalXRefs mlimit xrefId fileId
-      ppxrefs <- ppXRefs mlimit traceId
-      defXRefs <- declToDefXRefs mlimit traceId
-      return [fixedXRefs, variableXRefs, ppxrefs, defXRefs]
+      return [fixedXRefs, variableXRefs]
+  -- these do not depend on a cxx1.FileXRefs fact, run independently
+  ppxrefs <- ppXRefs mlimit traceId
+  defXRefs <- declToDefXRefs mlimit traceId
   spellingXRefs <- spellingXRefs mlimit fileId
-  let result = fileXRefs ++ [spellingXRefs]
+  let result = fixedAndVariable ++ [ppxrefs, defXRefs, spellingXRefs]
   return (concatMap fst result, any snd result)
 
 -- spelling (easily discoverable) xrefs

@@ -48,8 +48,122 @@
             "hash": "ce71a4bc848a767198c61bd5c21d1ead3be6a19b",
             "size": 273
         },
-        "referenced_file_digests": {},
-        "references": [],
+        "referenced_file_digests": {
+            "test": {
+                "test2.h": {
+                    "hash": "c522430338f3620e08fe42afbcff1f66599c0efe",
+                    "size": 267
+                },
+                "test3.h": {
+                    "hash": "679207c91be9b8c0fe715c6506fa400584f3eaa1",
+                    "size": 235
+                }
+            }
+        },
+        "references": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "test2.h"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 4
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 19,
+                    "lineBegin": 10,
+                    "lineEnd": 10
+                },
+                "sym": "test/pp/test2.h",
+                "target": {
+                    "filepath": "test2.h",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "test3.h"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 4
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 19,
+                    "lineBegin": 11,
+                    "lineEnd": 11
+                },
+                "sym": "test/pp/test3.h",
+                "target": {
+                    "filepath": "test3.h",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
         "revision": "testhash",
         "truncated": false
     }
