@@ -17,7 +17,7 @@
 module Glean.Glass.Snapshot
   ( main ) where
 
-import Control.Concurrent.Stream (stream)
+import Control.Concurrent.Stream (forConcurrently_unordered)
 import Control.Concurrent (getNumCapabilities)
 import Control.Exception (SomeException, try)
 import Control.Monad (forM_, when)
@@ -25,7 +25,7 @@ import qualified Data.ByteString as BS
 import Data.Default (def)
 import Data.Int (Int64)
 import Data.IORef.Extra
-import Data.Maybe (fromMaybe)
+import Data.Maybe (fromMaybe, catMaybes)
 import Data.Proxy (Proxy (..))
 import Data.Text (Text, pack, unpack)
 import Data.ByteString.Lazy (fromStrict, toStrict)
@@ -244,13 +244,20 @@ main =
     gleanDBName $ \env@Glass.Env{..} -> do
       numCores <- getNumCapabilities
       errorsCounterRef <- newIORef 0
-      stream numCores (forM_ files) $ \file@(repo, path@(Types.Path p)) -> do
+      snaps <- forConcurrently_unordered numCores files $ \file -> do
+        let (_, Types.Path p) = file
         snapOrError <- try $ buildSnapshot env rev file doCompress
         case snapOrError of
           Left Types.GlassException{..} -> do
             atomicModifyIORef'_ errorsCounterRef succ
             logError $ printf "%s: %s" p (show $ head glassException_reasons)
-          Right snap@BuildSnapshot{bytes, revision, sizeKB}
+            return Nothing
+          Right snap ->
+            return $ Just (file, snap)
+      forM_ (catMaybes snaps) $ \(file, snap) -> do
+        let (repo, path@(Types.Path p)) = file
+        let BuildSnapshot{bytes, revision, sizeKB} = snap
+        if
             | Nothing <- output
             , sizeKB < fromMaybe maxBound threshold
             -> uploadToXdb tier repo revision path snap
