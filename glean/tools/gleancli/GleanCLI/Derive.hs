@@ -13,8 +13,8 @@ module GleanCLI.Derive (DeriveCommand) where
 
 import Control.Concurrent
 import Control.Concurrent.Async (async, wait)
-import Control.Exception (bracket_)
-import Control.Monad (forM)
+import Control.Exception (bracket_, throwIO)
+import Control.Monad (forM, unless)
 import Data.Foldable (for_)
 import Data.Graph (graphFromEdges, vertices)
 import qualified Data.Map as Map
@@ -34,6 +34,7 @@ import Glean.Types
 
 import GleanCLI.Types
 import GleanCLI.Common
+import Text.Printf
 
 data DeriveCommand
   = Derive
@@ -105,6 +106,14 @@ instance Plugin DeriveCommand where
         waitFor predicate = mapM_ wait (ivars Map.!? predicate)
         -- mapping predicates to evaluation asyncs
         ivars = Map.fromList $ zip (fst <$> derivations) asyncs
+
+      -- sanity check: all the requested derivations must be in the graph
+      for_ predicates $ \(pred,_) ->
+        unless (pred `elem` map fst derivations) $ do
+          throwIO $ userError $ printf
+            ("abort: %s is not in the schema or is not derived. This is not" ++
+              " supported, try deriving one predicate at a time instead.\n")
+            pred
 
       asyncs <- forM derivations $ \(pred, deps) -> async $ do
         -- wait for my dependencies
