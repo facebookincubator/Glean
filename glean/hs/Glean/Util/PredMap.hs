@@ -12,6 +12,7 @@
 module Glean.Util.PredMap
   ( PredMap(..), makePredMap, fromList, fromDistinctAscList, fromListWith
   , lookup, findWithDefault, mapMaybe, alter, empty, insert, insertWith, elems
+  , union
   , unionsWith
   , keys
   , toList, toAscList
@@ -79,6 +80,9 @@ insert p v = PredMap . IntMap.insert (one p) v . predMap
 
 insertWith :: (v -> v -> v) -> IdOf p -> v -> PredMap p v -> PredMap p v
 insertWith f p v = PredMap . IntMap.insertWith f (one p) v . predMap
+
+union :: PredMap p v -> PredMap p v -> PredMap p v
+union a b = PredMap $ IntMap.union (predMap a) (predMap b)
 
 unionsWith :: (v -> v -> v) -> [PredMap p v] -> PredMap p v
 unionsWith f = PredMap . IntMap.unionsWith f . map predMap
