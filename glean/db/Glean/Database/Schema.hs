@@ -483,6 +483,10 @@ mkDbSchema toList cacheVar knownPids dbContent
             Nothing -> error "no \"all\" schema in DB"
             Just (_, id) -> id
 
+        predicatesById = tcEnvPredicates tcEnv
+        derivationDepends = HashMap.fromListWith (++)
+          [ (p, pp) | (_, p, pp) <- derivationEdges predicatesById]
+
     vlog 2 $ "DB schema " <> unSchemaId dbSchemaId <> " has " <>
       showt (HashMap.size (hashedTypes stored)) <> " types/" <>
       showt (HashMap.size (hashedPreds stored)) <>
@@ -499,7 +503,7 @@ mkDbSchema toList cacheVar knownPids dbContent
       vlog 2 $ "all." <> showt n <> " = " <> unSchemaId id
 
     return $ DbSchema
-      { predicatesById = tcEnvPredicates tcEnv
+      { predicatesById = predicatesById
       , typesById = tcEnvTypes tcEnv
       , schemaEnvs = schemaEnvMap
       , legacyAllVersions = legacyAllVersions
@@ -509,6 +513,7 @@ mkDbSchema toList cacheVar knownPids dbContent
       , schemaSource = (source, hashedSchemaAllVersions stored)
       , schemaMaxPid = maxPid
       , schemaLatestVersion = latestSchemaId
+      , derivationDepends = derivationDepends
       }
 
 mkTransformations
@@ -949,20 +954,16 @@ usesOfNegation preds =
     derivations :: [(Maybe UseOfNegation, PredicateId, [PredicateId])]
     derivations = toPred . getNode <$> reverse (topSort graph)
     (graph, getNode, _) = graphFromEdges $ derivationEdges preds
-    toPred (b, k, ks)   = (tcQueryUsesNegation b, fromKey k, map fromKey ks)
-    fromKey (n, v) = PredicateId n v
+    toPred (b, k, ks) = (tcQueryUsesNegation b, k, ks)
 
 derivationEdges
   :: HashMap PredicateId PredicateDetails
-  -> [(TcQuery, (PredicateRef, Hash), [(PredicateRef, Hash)])]
+  -> [(TcQuery, PredicateId, [PredicateId])]
 derivationEdges preds =
-  [ fromPred (query, ref, Set.toList (tcQueryDeps query))
+  [ (query, ref, Set.toList (tcQueryDeps query))
   | (ref, details) <- HashMap.toList preds
   , Derive _ (QueryWithInfo query _ _)  <- [predicateDeriving details]
   ]
-  where
-    fromPred (b, p, ps) = (b, toKey p, map toKey ps)
-    toKey (PredicateId n v) = (n, v)
 
 -- | Check that the type of a stored predicate doesn't refer to any
 -- derived predicates.
@@ -1166,6 +1167,14 @@ getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
           (IntMap.elems (hashedSchemaAllVersions procSchemaHashed))
       ]
 
+    fromPredicateId predId =
+      fromPid $ predicatePid(predicatesById dbSchema HashMap.! predId)
+
+    derivationDependencies = Map.fromList
+      [ (fromPredicateId p, fromPredicateId <$> pp)
+      | (p, pp) <- HashMap.toList (derivationDepends dbSchema)
+      ]
+
   source <- if getSchemaInfo_omit_source
     then return ""
     else case getSchemaInfo_select of
@@ -1180,6 +1189,7 @@ getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
     , schemaInfo_schemaIds = schemaIds
     , schemaInfo_dbSchemaIds = dbSchemaIds
     , schemaInfo_otherSchemaIds = otherSchemaIds
+    , schemaInfo_derivationDependencies = derivationDependencies
     }
 
 

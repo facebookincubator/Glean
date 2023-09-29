@@ -27,7 +27,6 @@ import Util.OptParse
 import Util.Text
 
 import Glean
-import Glean.Database.Schema
 import Glean.Derive (derivePredicate)
 import Glean.Schema.Util (parseRef)
 import Glean.Types
@@ -90,13 +89,15 @@ instance Plugin DeriveCommand where
       SchemaInfo{..} <- Glean.getSchemaInfo backend deriveRepo $
         GetSchemaInfo (SelectSchema_stored Empty) False
       -- get the typechecked predicates from the schema
-      DbSchema{predicatesById} <-
-        mkDbSchemaFromSource Nothing Nothing readWriteContent schemaInfo_schema
-      -- create the derivations dependency graph
-      let (graph, getNode, _) = graphFromEdges (derivationEdges predicatesById)
+      let (graph, getNode, _) = graphFromEdges edges
+          edges = [ (p, p, pp)
+                  | (p, pp) <- Map.toList schemaInfo_derivationDependencies
+                  ]
+          predicateName pid =
+            predicateRef_name (schemaInfo_predicateIds Map.! pid)
           derivations =
-            [ (predicateRef_name pred, predicateRef_name . fst <$> deps)
-            | (_, (pred, _), deps) <- getNode <$> vertices graph
+            [ (predicateName pred, predicateName <$> deps)
+            | (_, pred, deps) <- getNode <$> vertices graph
             ]
 
       concurrencyAvailable <- newQSem deriveMaxConcurrency

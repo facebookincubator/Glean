@@ -1094,6 +1094,9 @@ struct SchemaInfo {
   // Other known schemas, each maps schema IDs -> all.version
   // Like SchemaIndex, but without files.
   5: list<map<string, Version>> otherSchemaIds;
+
+  // The dependency relation for derived predicates
+  6: map<Id, list<Id>> derivationDependencies;
 }
 
 union SelectSchema {

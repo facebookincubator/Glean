@@ -74,6 +74,7 @@ import Glean.Schema.Util
 -- | The Schema used by a DB
 data DbSchema = DbSchema
   { predicatesById :: HashMap PredicateId PredicateDetails
+  , derivationDepends :: HashMap PredicateId [PredicateId]
   , typesById :: HashMap TypeId TypeDetails
 
   , schemaEnvs :: Map SchemaId (NameEnv RefTargetId)
