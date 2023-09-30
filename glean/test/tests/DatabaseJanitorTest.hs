@@ -618,6 +618,31 @@ elsewhereTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
       [ "0001", "0002", "0003", "0004", "0005", "0006"]
       (sort $ map (repo_hash . database_repo) dbs)
 
+elsewhereNotYetAvailableTest :: Test
+elsewhereNotYetAvailableTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
+  let myShards = pure $ Just ["0001"]
+  let cfg = (dbConfig dbdir (serverConfig backupdir)
+        { config_retention = def
+          { databaseRetentionPolicy_default_retention = def
+            { retention_delete_if_older =
+                Just $ fromIntegral $ timeSpanInSeconds $ days 10
+            , retention_retain_at_least = Just 10 }
+          }
+        })
+        {cfgShardManager = \_ _ k ->
+            k $ SomeShardManager $ shardByRepoHash myShards
+        ,cfgFilterAvailableDBs = return . filter (\db -> repo_hash db == "0003")
+        }
+  withDatabases evb cfg cfgAPI $ \env -> do
+    runDatabaseJanitor env
+    waitDel env
+    dbs <- listAllDBs env
+
+    assertEqual "after: dbs actually available"
+      ["0001", "0003"]
+      (sort $ map (repo_hash . database_repo) dbs)
+
+
 
 shardUnexpireTest :: Test
 shardUnexpireTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
@@ -847,6 +872,7 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "shardingByRepoName" shardingByRepoNameTest
   , TestLabel "shardingExpiring" shardUnexpireTest
   , TestLabel "availableElsewhere" elsewhereTest
+  , TestLabel "notAvailableElsewhere" elsewhereNotYetAvailableTest
   , TestLabel "ageCountersForAllNewestDBs" ageCountersCompleteTest
   , TestLabel "ageCountersForOnlyNewestDBs" ageCountersOnlyNewestTest
   , TestLabel "ageCountersClear" ageCountersClearTest
