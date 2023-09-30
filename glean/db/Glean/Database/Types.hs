@@ -264,6 +264,8 @@ data Env = forall storage. Storage storage => Env
   , envShardManager :: SomeShardManager
   , envEnableRecursion :: EnableRecursion
       -- ^ Experimental support for recursive queries. For testing only.
+  , envFilterAvailableDBs :: [Thrift.Repo] -> IO [Thrift.Repo]
+    -- ^ Filter out DBs not currently available in the server tier
   }
 
 instance Show Env where

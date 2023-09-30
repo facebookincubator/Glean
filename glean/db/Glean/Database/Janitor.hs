@@ -258,10 +258,16 @@ runWithShards env myShards sm = do
   -- so that the backup thread can't jump in early and pick one
   atomically $ sequence_ restores
 
-  atomically $ Catalog.resetElsewhere (envCatalog env) $
-    [ item
-      -- Nothing means the db is not in any of the shards assigned to this node
-    | (item, Nothing) <- keepAnnotatedWithShard]
+  let elsewhereDBs =
+        [ item
+          -- Nothing means it is not in any of the shards assigned to this node
+        | (item, Nothing) <- keepAnnotatedWithShard]
+  available <- HashSet.fromList <$>
+    envFilterAvailableDBs env (map itemRepo elsewhereDBs)
+  let availableElsewhereDBs =
+        filter (\Item{..} -> itemRepo `HashSet.member` available) elsewhereDBs
+
+  atomically $ Catalog.resetElsewhere (envCatalog env) availableElsewhereDBs
 
   deleting <- readTVarIO (envDeleting env)
 
