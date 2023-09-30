@@ -25,26 +25,26 @@ module Glean.Glass.Logging
 
   ) where
 
-import Logger.GleanGlass ( GleanGlassLogger )
-import Logger.GleanGlassErrors ( GleanGlassErrorsLogger )
-import Util.Logger ( ActionLog(..) )
-import qualified Logger.GleanGlass as Logger
-import qualified Logger.GleanGlassErrors as Errors
-
 import Control.Applicative ((<|>))
 import Data.List.Extra (nubOrd)
-import Data.Text ( Text )
-import Util.Text ( textShow )
+import Data.List.NonEmpty(NonEmpty(..))
+import qualified Data.List.NonEmpty as NE
+import Data.Text (Text)
+import qualified Data.Text as Text
+import Data.Function (on)
+import Util.Text (textShow)
+
+import Util.Logger (ActionLog(..))
+
+import Logger.GleanGlass (GleanGlassLogger)
+import qualified Logger.GleanGlass as Logger
+import Logger.GleanGlassErrors (GleanGlassErrorsLogger)
+import qualified Logger.GleanGlassErrors as Errors
 
 import Glean ( Repo(..) )
-
 import Glean.Glass.Types
 import Glean.Glass.Query (FeelingLuckyResult(..), RepoSearchResult)
-import qualified Data.Text as Text
-import Data.List.NonEmpty ( NonEmpty(..), toList )
-import qualified Data.List.NonEmpty as NE
 import Glean.Glass.SnapshotBackend ( SnapshotStatus(..) )
-import Data.Function (on)
 
 instance ActionLog GleanGlassLogger where
   successLog = Logger.setSuccess True
@@ -248,7 +248,7 @@ instance LogRepo (NonEmpty Glean.Repo) where
       rs = NE.sortBy (compare `on` Glean.repo_name) rs0
 
 commas :: (Glean.Repo -> Text) -> NonEmpty Glean.Repo -> Text
-commas f = Text.intercalate "," . map f . toList
+commas f = Text.intercalate "," . map f . NE.toList
 
 --
 -- | Intern error logging
