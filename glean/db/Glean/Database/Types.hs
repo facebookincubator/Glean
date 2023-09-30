@@ -246,6 +246,7 @@ data Env = forall storage. Storage storage => Env
   , envDatabaseJanitor :: TVar (Maybe JanitorRunResult)
   , envDatabaseJanitorPublishedCounters :: TVar (HashSet ByteString)
   , envCachedRestorableDBs :: TVar (Maybe (UTCTime, [(Thrift.Repo, Meta)]))
+  , envCachedAvailableDBs :: TVar (HashSet Thrift.Repo)
   , envWorkQueue :: WorkQueue
   , envHeartbeats :: Heartbeats
   , envWrites :: TVar (HashMap Text Write)

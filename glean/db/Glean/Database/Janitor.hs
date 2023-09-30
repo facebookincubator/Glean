@@ -14,7 +14,6 @@ module Glean.Database.Janitor
   -- for testing
   , mergeLocalAndRemote
   , computeRetentionSet
-  , RetentionSet(..)
   , dbIndex
   , DbIndex(..)
   ) where
@@ -24,6 +23,9 @@ import Control.Concurrent (getNumCapabilities)
 import Control.Exception.Safe
 import Control.Monad.Extra
 import Control.Monad.IO.Class (liftIO)
+import Control.Monad.Trans (lift)
+import Control.Monad.Trans.State.Strict (StateT, runStateT)
+import qualified Control.Monad.Trans.State.Strict as State
 import Control.Monad.Trans.Writer.CPS
 import Data.ByteString (ByteString)
 import Data.Foldable as Foldable
@@ -168,14 +170,25 @@ runWithShards env myShards sm = do
 
   dbToShard <- computeShardMapping sm
 
+  cachedAvailableDBs <- readTVarIO (envCachedAvailableDBs env)
   let
+    isAvailable db = not . null <$> envFilterAvailableDBs env [db]
+
     allDBsByAge :: [Item]
     allDBsByAge = mergeLocalAndRemote backups localAndRestoring
 
     index@DbIndex{byRepo, byRepoName, dependencies} = dbIndex allDBsByAge
-    RetentionSet{retentionSetRemote, retentionSetLocalAndRemote = keep} =
-      computeRetentionSet config_retention t backups index
 
+  (keep, cachedAvailable) <-
+    computeRetentionSet config_retention t isAvailable index
+      `runStateT`
+      HashMap.fromList [(k, True) | k <- HashSet.toList cachedAvailableDBs]
+
+  atomically $ writeTVar
+    (envCachedAvailableDBs env)
+    (HashMap.keysSet $ HashMap.filter id cachedAvailable)
+
+  let
     keepAnnotatedWithShard =
       [ (item, guard (shard `Set.member` myShards) >> pure shard)
       | item <- keep
@@ -186,11 +199,6 @@ runWithShards env myShards sm = do
 
     keepInThisNode =
       mapMaybe (\(item, shard) -> (item,) <$> shard) keepAnnotatedWithShard
-
-    retentionSlackInThisNode =
-      [ item
-      | (item@Item{itemRepo}, _) <- keepInThisNode
-      , not $ HashSet.member itemRepo retentionSetRemote ]
 
     delete =
       [ repo | Item repo Local _ _ <- allDBsByAge
@@ -261,13 +269,10 @@ runWithShards env myShards sm = do
   let elsewhereDBs =
         [ item
           -- Nothing means it is not in any of the shards assigned to this node
-        | (item, Nothing) <- keepAnnotatedWithShard]
-  available <- HashSet.fromList <$>
-    envFilterAvailableDBs env (map itemRepo elsewhereDBs)
-  let availableElsewhereDBs =
-        filter (\Item{..} -> itemRepo `HashSet.member` available) elsewhereDBs
+        | (item, Nothing) <- keepAnnotatedWithShard
+        ]
 
-  atomically $ Catalog.resetElsewhere (envCatalog env) availableElsewhereDBs
+  atomically $ Catalog.resetElsewhere (envCatalog env) elsewhereDBs
 
   deleting <- readTVarIO (envDeleting env)
 
@@ -302,16 +307,6 @@ runWithShards env myShards sm = do
       whenM (liftIO $ atomically $ isDatabaseClosed env $ itemRepo item) $
         preOpenDB (itemRepo item)
 
-    -- see "Retention set slack" note
-    let totalSlack = sum
-            [ fromIntegral b
-            | Item{ itemMeta = Meta {
-                  metaCompleteness =
-                    Complete DatabaseComplete{databaseComplete_bytes = Just b}
-                  }
-                } <- retentionSlackInThisNode
-            ]
-    publishCounter "glean.db.slack.bytes" totalSlack
     forM_ byRepoName $ \(repoNm, dbsByAge) -> do
       let prefix = "glean.db." <> Text.encodeUtf8 repoNm
       let repoKeep =
@@ -356,20 +351,6 @@ runWithShards env myShards sm = do
           publishCounter (prefix <> ".age") (ageFrom dbStart)
           publishCounter (prefix <> ".span") (ageFrom dbCreated)
 
-      -- see "Retention set slack" note
-      let leaked = sum
-            [ fromIntegral b
-            | Item{
-                itemRepo,
-                itemMeta = Meta {
-                  metaCompleteness =
-                    Complete DatabaseComplete{databaseComplete_bytes = Just b}
-                  }
-                } <- retentionSlackInThisNode
-            , repo_name itemRepo == repoNm
-            ]
-      unless (leaked == 0) $ publishCounter (prefix <> ".slack.bytes") leaked
-
     -- Report shard stats for dynamic sharding assignment
     mapM_ (\(n,v) -> publishCounter (Text.encodeUtf8 n) v) $
       countersForShardSizes sm $
@@ -388,7 +369,8 @@ mergeLocalAndRemote :: [(Repo, Meta)] -> [Item] -> [Item]
 mergeLocalAndRemote backups localAndRestoring =
   sortOn (metaCreated . itemMeta) $
       localAndRestoring ++
-        [ Item repo Cloud meta ItemMissing -- DBs we could restore
+        [ Item repo Cloud meta ItemMissing
+          -- DBs we could restore
         | (repo, meta) <- backups
         , repo `notElem` map itemRepo localAndRestoring  ]
 
@@ -424,110 +406,58 @@ dbIndex items = DbIndex{..}
       [ pruned_base update `Map.lookup` byRepo ]
     stacked Nothing = []
 
-{- NOTE Retention set slack
-
-  The slack is the difference between the remote and local+remote
-  retention sets. It is only justified  when no other shard is
-  serving DB instances for a given DB name. This happens very rarely
-  with hash-based sharding, and constitutes a resource leak that we track.
-
-  Example using sharding per DB name:
-
-  Remote Retention Set: [DB1(I1, I2), DB2(I1,I2), DB3(I1)]
-  Shard 1: DB1(I1,I2)
-  Shard 2: DB2(I1,I2)
-  Shard 3: DB3(I1)
-
-  --> Event: DB1(I3) gets published
-
-  Retention Set: [DB1(I2, I3), DB2(I1,I2), DB3(I1)]
-  Shard 1: DB1(I2, *I3*) --I3 is getting restored
-  Shard 2: DB2(I1,I2)
-  Shard 3: DB3(I1)
-
-  --> Event: DB1(I4) gets published
-  Retention Set: [DB1(I3, I4), DB2(I1,I2), DB3(I1)]
-  Shard 1: DB1(*I3*, *I4*) --I3 and I4 are getting restored
-           -- in this case the local retention set will include DB1(I2)
-           -- to continue serving DB1 until I3 and I4 are restored
-  Shard 2: DB2(I1,I2)
-  Shard 3: DB3(I1)
-
-  A different sharding policy for the same event sequence could render:
-
-  Remote Retention Set: [DB1(I1, I2), DB2(I1,I2), DB3(I1)]
-  Shard 1: DB1(I1,I2)
-  Shard 2: DB2(I1,I2)
-  Shard 3: DB3(I1)
-
-  --> Event: DB1(I3) gets published
-  --> Event: DB1(I4) gets published
-  --> Event: DB1(I3) gets restored
-  --> Event: DB1(I4) gets restored
-
-  Retention Set: [DB1(I2, I3), DB2(I1,I2), DB3(I1)]
-  Shard 1: DB1(I2)
-           -- DB1(I2) is still in the local retention set after DB1(I3)
-           -- has been restored, which constitutes a leak.
-  Shard 2: DB1(I4), DB2(I1,I2)
-  Shard 3: DB1(I3), DB3(I1)
-  --
- -}
-
-data RetentionSet = RetentionSet
-  { retentionSetRemote :: HashSet.HashSet Repo
-  -- ^ The retention set ignoring local DBs
-  , retentionSetLocalAndRemote :: [Item]
-  -- ^ The retention set that applies to this server
-  }
 -- | The final set of DBs we want usable on disk.
 --  This is the set of 'keepRoots' DB extended with all the stacked dependencies
 computeRetentionSet
-  :: ServerConfig.DatabaseRetentionPolicy
+  :: Monad m
+  => ServerConfig.DatabaseRetentionPolicy
   -> UTCTime
-  -> [(Repo, Meta)] -- ^ Remote backups
+  -> (Repo -> m Bool)
   -> DbIndex
-  -> RetentionSet
-computeRetentionSet config_retention time backups DbIndex{..} = RetentionSet{..}
-  where
-    retentionSetRemote =
-      HashSet.fromList $ map itemRepo $ retentionSet backupItemsByRepoName
-    retentionSetLocalAndRemote = retentionSet byRepoName
-    retentionSet dbsByRepoName =
-      transitiveClosureBy itemRepo (catMaybes . dependencies) $
-        concatMap
-          (\(repoNm, dbs) ->
-            dbRetentionForRepo (repoRetention config_retention repoNm) time
-              dbs
-          )
-          dbsByRepoName
-    backupItemsByRepoName = Map.toList $ Map.fromListWith (<>)
-      [ (repo_name itemRepo, pure Item{..})
-      | let itemLocality = Cloud
-      , let itemStatus = ItemComplete
-      , (itemRepo, itemMeta) <- backups
-      ]
+  -> StateT (HashMap.HashMap Repo Bool) m [Item]
+computeRetentionSet config_retention time isAvailableM DbIndex{..} =
+  transitiveClosureBy itemRepo (catMaybes . dependencies) <$>
+    concatMapM
+      (\(repoNm, dbs) ->
+        dbRetentionForRepo
+          (repoRetention config_retention repoNm)
+          time
+          isAvailableM
+          dbs
+      )
+      byRepoName
 
 -- | The target set of DBs we want usable on the disk. This is a set of
 -- DBs that satisfies the policy.
 dbRetentionForRepo
-  :: ServerConfig.Retention
+  :: Monad m
+  => ServerConfig.Retention
   -> UTCTime
+  -> (Repo -> m Bool)
   -> NonEmpty Item
-  -> [Item]
-dbRetentionForRepo ServerConfig.Retention{..} t dbs = keep
-  where
+  -> StateT (HashMap.HashMap Repo Bool) m [Item]
+dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs = do
+  let
+    itemAvailable Item{itemRepo} = do
+      st <- State.get
+      case HashMap.lookup itemRepo st of
+        Just isAvailable -> return isAvailable
+        Nothing -> do
+          isAvailable <- lift $ isAvailableM itemRepo
+          State.put $! HashMap.insert itemRepo isAvailable st
+          return isAvailable
+
     -- retention policy parameters
     retainAtLeast = fromIntegral $ fromMaybe 0 retention_retain_at_least
     retainAtMost = fmap fromIntegral retention_retain_at_most
     deleteIfOlder = fmap fromIntegral retention_delete_if_older
     deleteIncompleteIfOlder =
       fmap fromIntegral retention_delete_incomplete_if_older
-    remoteBumpsLocalAfter =
-      fmap fromIntegral retention_remote_db_bumps_local_db_after
 
     f &&& g = \x -> f x && g x
     f ||| g = \x -> f x || g x
+    f &&&> g = \x -> if not(f x) then return False else g x
+    f |||> g = \x -> if f x then return True else g x
 
     ifSet (Just a) f = f a
     ifSet Nothing _ = const False
@@ -537,9 +467,11 @@ dbRetentionForRepo ServerConfig.Retention{..} t dbs = keep
     isComplete Item{..} =
       completenessStatus itemMeta == Thrift.DatabaseStatus_Complete
     isOlderThan secs Item{..} = dbAge t itemMeta >= secs
+    isAvailable = isLocal |||> itemAvailable
 
     -- all DBs sorted by most recent first
-    sorted = sortOn (Down . metaCreated . itemMeta) (NonEmpty.toList dbs)
+    sorted =
+      sortOn (Down . metaCreated . itemMeta) (NonEmpty.toList dbs)
 
     -- whether to delete a DB according to the deletion policy
     delete =
@@ -547,24 +479,19 @@ dbRetentionForRepo ServerConfig.Retention{..} t dbs = keep
       (ifSet deleteIncompleteIfOlder $ \secs ->
         (not . isComplete) &&& isOlderThan secs)
 
-    -- selects DBs to satisfy retain_at_least
-    shouldHold =
-      isComplete &&&
-      (isLocal ||| ifSet remoteBumpsLocalAfter isOlderThan)
+    -- ensure we have retain_at_least DBs from the available set
+  atLeast <- takeFilterM
+    retainAtLeast
+    (isComplete &&&> isAvailable)
+    -- bound the search since isAvailable is expensive
+    -- this matters only for tier bootstraps where all DBs are unavailable
+    (take (retainAtLeast*10) sorted)
 
-    keep =
-      uniqBy (comparing itemRepo) $
+    -- delete DBs according to the deletion policy, and keep retain_at_most
+  let atMost = maybe id take retainAtMost (filter (not . delete) sorted)
 
-      -- delete DBs according to the deletion policy, and keep retain_at_most
-      maybe id take retainAtMost (filter (not . delete) sorted) ++
+  return $ uniqBy (comparing itemRepo) (atLeast ++ atMost)
 
-      -- ensure we have retain_at_least DBs from the global + local set
-      take retainAtLeast (filter isComplete sorted) ++
-
-      -- Finally, ensure we have retain_at_least DBs from the local set
-      -- to avoid premuaturely deleting local DBs before the remote
-      -- one has downloaded.
-      filter isLocal (take retainAtLeast (filter shouldHold sorted))
 
 data FetchBackups
   = ReusedPreviousBackups {
@@ -629,3 +556,14 @@ transitiveClosureBy k fn xs = HashMap.elems $ go xs HashMap.empty
         go
           (Foldable.toList (fn n) ++ ns)
           (HashMap.insert (k n) n r)
+
+-- | Take the first n items that satisfy the predicate
+takeFilterM :: (Monad m) => Int -> (a -> m Bool) -> [a] -> m [a]
+takeFilterM n pred = loop [] n where
+  loop acc _ [] = return (reverse acc)
+  loop acc 0 _ = return (reverse acc)
+  loop acc n (x:xx) = do
+    accept <- pred x
+    if accept
+      then loop (x:acc) (n-1) xx
+      else loop acc n xx
