@@ -41,7 +41,10 @@ newtype NoDatabase = NoDatabase Text
 instance Control.Exception.Exception NoDatabase
 
 -- | Collecting 'getLatestRepo' for every available repo in the backend
-newtype LatestRepos = LatestRepos{ latestRepos :: Map Text Repo }
+data LatestRepos = LatestRepos{
+  latestRepos :: !(Map Text Repo),  -- ^ Guaranteed available
+  allLatestRepos :: Map Text [Repo] -- ^ Possibly unavailable
+  }
 
 -- | Ask the server which databases are available, and return
 -- list of repo.
@@ -49,7 +52,7 @@ getRepos
   :: Backend be
   => be
   -> (Repo -> Bool)  -- ^ Predicate to choose repo
-  -> IO [Repo]
+  -> IO ([Repo], [Repo])
 getRepos backend pred = do
   let
     -- If we're connecting to a tier and using shards, then we can
@@ -68,11 +71,12 @@ getRepos backend pred = do
       isNothing database_expire_time
   xss <- groupSortOn (repo_name . database_repo) . filter ok <$>
     localDatabases backend
-  let pickRepo xs =
+  let pickRepo xs = do
         let
           sorted = sortBy (flip compare `on` database_created_since_epoch) xs
-        in checkRestorableAvailable backend sorted
-  catMaybes <$> mapM pickRepo xss
+        available <- maybeToList <$> checkRestorableAvailable backend sorted
+        return (available, map database_repo sorted)
+  mconcat <$> mapM pickRepo xss
 
 
 -- | Ask the server which databases are available, and return the first one that
@@ -82,7 +86,7 @@ getRepo
   => be
   -> (Repo -> Bool)  -- ^ Predicate to choose repo
   -> IO (Maybe Repo)
-getRepo backend pred = listToMaybe <$> getRepos backend pred
+getRepo backend pred = listToMaybe . fst <$> getRepos backend pred
 
 -- | Ask the server which databases are available, and select the
 -- latest complete database for all repo names selected by the predicate.
@@ -92,7 +96,9 @@ getLatestRepos
   -> (Text -> Bool)  -- ^ Predicate to choose repo names to include
   -> IO LatestRepos
 getLatestRepos backend keepName = do
-  let assemble rs = LatestRepos $ Map.fromList [ (repo_name r, r) | r <- rs ]
+  let assemble (rs, all) = LatestRepos
+        (Map.fromList [ (repo_name r, r) | r <- rs ])
+        (Map.fromListWith (++) [ (repo_name r, [r]) | r <- all])
   assemble <$> getRepos backend (keepName . repo_name)
 
 -- | Ask the server which databases are available, and select the
