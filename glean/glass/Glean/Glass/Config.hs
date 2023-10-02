@@ -31,4 +31,4 @@ defaultRefreshFreq :: DiffTimePoints
 defaultRefreshFreq = minutes 5
 
 defaultListDatabasesRetry :: Int
-defaultListDatabasesRetry = 3
+defaultListDatabasesRetry = 5
