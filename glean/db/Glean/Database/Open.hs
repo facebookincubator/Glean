@@ -383,7 +383,7 @@ schemaUpdated env@Env{..} mbRepo = do
                   setupSchema env dbRepo odbHandle ReadOnly
             case r of
               Left err -> logError $ "schema update for " <> showRepo dbRepo <>
-                "failed: " <> show err
+                " failed: " <> show err
               Right schema -> atomically $ do
                 state <- readTVar dbState
                 case state of
