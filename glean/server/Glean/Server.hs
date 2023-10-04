@@ -8,9 +8,12 @@
 
 module Glean.Server (main) where
 
+import Control.Concurrent.Async (race)
 import Control.Monad
 import Data.IORef
 import Data.Maybe
+import Data.Typeable (cast)
+import Network.HTTP.Client
 import qualified Options.Applicative as O
 import System.Time.Extra (Seconds)
 
@@ -27,11 +30,13 @@ import Util.Log
 import Util.STM
 
 #if GLEAN_FACEBOOK
+import JustKnobs (evalKnob)
 import Logger.IO
 import Glean.Facebook.Logger.Server
 import Glean.Facebook.Logger.Database
 import qualified Glean.Database.Backup.Manifold as Manifold
 import Glean.Server.Available ( withAvailableDBFilterViaSR )
+import Manifold.Client
 #endif
 
 import Glean.Database.Config (Config(..))
@@ -99,7 +104,7 @@ main =
         maybe retry return l
 
       case l of
-        JanitorRunFailure JanitorFetchBackupsFailure -> do
+        JanitorRunFailure JanitorFetchBackupsFailure{} -> do
           logError "Aborting: failed to list remote DBs at startup"
           return False
         JanitorTimeout -> do
@@ -112,7 +117,35 @@ main =
         JanitorDisabled ->
           setAlive server >> return True
 
-    waitForTerminate = waitForTerminateSignalsAndGracefulShutdown
+    monitorJanitor = do
+      result <- atomically $ do
+        l <- readTVar (envDatabaseJanitor databases)
+        maybe retry return l
+#ifdef GLEAN_FACEBOOK
+      case result of
+        JanitorRunFailure (JanitorFetchBackupsFailure fetchError) -> do
+          let dbServerBelievedDead = if
+                | Just NoHostsError
+                  <- cast fetchError -> True
+                | Just (HttpExceptionRequest _req ConnectionFailure{})
+                  <- cast fetchError -> True
+                | Just (HttpExceptionRequest _req ConnectionTimeout{})
+                  <- cast fetchError -> True
+                | otherwise -> False
+          knob <-
+            evalKnob "code_indexing/glean:server_automated_restarts"
+          if knob == Right True && not dbServerBelievedDead
+              then logError "Aborting: failed to list remote DBs too many times"
+              else monitorJanitor
+        _ -> monitorJanitor
+#else
+          result `seq` monitorJanitor
+#endif
+
+    waitForTerminate = void $
+      monitorJanitor
+      `race`
+      waitForTerminateSignalsAndGracefulShutdown
                         databases
                         terminating
                         (cfgGracefulShutdownTimeout cfg)
