@@ -23,17 +23,12 @@ import qualified Glean.Database.Backup.Locator as Backup
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Meta
 import Glean.Database.Types
-import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types hiding (Database)
 import qualified Glean.Types as Thrift
-import qualified Glean.Util.Observed as Observed
 
 
 listDatabases :: Env -> Thrift.ListDatabases -> IO Thrift.ListDatabasesResult
 listDatabases env@Env{..} Thrift.ListDatabases{..} = do
-  now <- utcTimeToPosixEpochTime <$> envGetCurrentTime
-  minDBAge <- ServerConfig.config_min_db_age <$> Observed.get envServerConfig
-  let filterWithMinDBAge = filterDatabasePred now minDBAge
   backups <-
     if listDatabases_includeBackups
       then do
@@ -54,7 +49,7 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
         fmap Thrift.getDatabaseResult_database $
         HashMap.union local backups
   return Thrift.ListDatabasesResult
-    { listDatabasesResult_databases = filter filterWithMinDBAge databases }
+    { listDatabasesResult_databases = databases }
   where
     reposToResults = HashMap.mapWithKey
       (\repo meta -> Thrift.GetDatabaseResult
@@ -65,12 +60,6 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
             meta
         , getDatabaseResult_tasks = Nothing
         })
-    filterDatabasePred now minDBAge db = currentAgeInSeconds >= minDBAge
-      where
-        dbTime = case Thrift.database_completed db of
-          Just completedAt -> completedAt
-          Nothing -> Thrift.database_created_since_epoch db
-        currentAgeInSeconds = unPosixEpochTime now - unPosixEpochTime dbTime
 
 listRestorable :: Backup.Site site => Text -> site -> IO (HashMap Repo Meta)
 listRestorable prefix site =
