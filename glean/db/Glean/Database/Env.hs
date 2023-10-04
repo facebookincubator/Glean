@@ -106,6 +106,7 @@ initEnv evb envStorage envCatalog shardManager cfg
     envDatabaseJanitor <- newTVarIO Nothing
     envDatabaseJanitorPublishedCounters <- newTVarIO mempty
     envCachedRestorableDBs <- newTVarIO Nothing
+    envCachedAvailableDBs <- newTVarIO mempty
 
     envLoggerRateLimit <-
       newRateLimiterMap (fromIntegral config_logging_rate_limit) 600
@@ -144,6 +145,7 @@ initEnv evb envStorage envCatalog shardManager cfg
           if cfgEnableRecursion cfg
           then EnableRecursion
           else DisableRecursion
+      , envFilterAvailableDBs = cfgFilterAvailableDBs cfg
       , .. }
 
 spawnThreads :: Env -> IO ()
