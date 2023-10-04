@@ -85,6 +85,7 @@
             "isAccessor": false,
             "isInstance": true,
             "isOptional": false,
+            "name": "foo",
             "selector": { "key": [ "foo" ] },
             "signature": {
               "key": { "parameters": [ ], "returns": { "key": "int" } }
@@ -139,6 +140,7 @@
             "isAccessor": false,
             "isInstance": true,
             "isOptional": false,
+            "name": "setFoo:",
             "selector": { "key": [ "setFoo" ] },
             "signature": {
               "key": {

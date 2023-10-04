@@ -27,6 +27,7 @@
                     {
                       "objcMethod": {
                         "key": {
+                          "name": "testMethod",
                           "selector": { "key": [ "testMethod" ] },
                           "container": { "implementation": { "key": "J" } },
                           "signature": {

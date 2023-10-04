@@ -86,6 +86,7 @@
                 {
                   "objcMethod": {
                     "key": {
+                      "name": "checkProtocol:",
                       "selector": { "key": [ "checkProtocol" ] },
                       "container": { "interface_": { "key": "J" } },
                       "signature": {

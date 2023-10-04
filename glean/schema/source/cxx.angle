@@ -177,6 +177,15 @@ predicate ObjcSelector : [string]
 # Objective C method declaration
 predicate ObjcMethodDeclaration :
   {
+    # The full name of an ObjC method declaration.
+    #
+    # If the method has no parameters, the name is the method name. e.g., `foo`
+    # If the method has 1 parameter, the name ends with a colon. e.g., `foo:`
+    # If the method has multiple parameters, the parameter names are
+    # concatenated with a colon. e.g., `foo:bar:`
+    #
+    # Parameters may have no name, in which case they are omitted. e.g., `foo::`
+    name : string,
     selector : ObjcSelector,
     container : ObjcContainerId,
     signature : Signature,
@@ -1151,8 +1160,7 @@ predicate DeclarationLocationName :
         FunctionDeclaration { source = Range, name = { FName, _ } } = X;
         FunctionDeclarationNameString { FName, NameStr }) |
       ( { objcMethod = X } = Decl;
-        X = ObjcMethodDeclaration { source = Range, selector = S };
-        S = ObjcSelector [NameStr]; )
+        X = ObjcMethodDeclaration { source = Range, name = NameStr })
     )
 
 # short name for function declarations
@@ -1235,8 +1243,7 @@ predicate DeclarationLocationNameSpan :
         FunctionDeclaration { name = { FName, _ }, source = Range } = X;
         FunctionDeclarationNameString { FName, NameStr }) |
       ( { objcMethod = X } = Decl;
-        X = ObjcMethodDeclaration { selector = S, source = Range };
-        S = ObjcSelector [NameStr]; )
+        X = ObjcMethodDeclaration { name = NameStr, source = Range })
     );
     DeclarationNameSpan { Decl, File, Span }
 

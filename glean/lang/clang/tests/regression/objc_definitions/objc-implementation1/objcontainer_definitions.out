@@ -20,6 +20,7 @@
           {
             "objcMethod": {
               "key": {
+                "name": "f1",
                 "selector": { "key": [ "f1" ] },
                 "container": { "implementation": { "key": "I" } },
                 "signature": {
@@ -83,6 +84,7 @@
           {
             "objcMethod": {
               "key": {
+                "name": "f1",
                 "selector": { "key": [ "f1" ] },
                 "container": { "interface_": { "key": "I" } },
                 "signature": {

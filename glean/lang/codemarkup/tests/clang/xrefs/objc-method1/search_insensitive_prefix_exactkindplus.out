@@ -9,6 +9,7 @@
           "decl": {
             "objcMethod": {
               "key": {
+                "name": "fooBar",
                 "selector": { "key": [ "fooBar" ] },
                 "container": { "implementation": { "key": "Bar" } },
                 "signature": {

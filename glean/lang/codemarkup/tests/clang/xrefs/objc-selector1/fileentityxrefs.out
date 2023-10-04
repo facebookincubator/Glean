@@ -46,6 +46,7 @@
                     {
                       "objcMethod": {
                         "key": {
+                          "name": "checkSelector:",
                           "selector": { "key": [ "checkSelector" ] },
                           "container": { "interface_": { "key": "J" } },
                           "signature": {
@@ -86,7 +87,7 @@
       "file": { "key": "test.m" },
       "xref": {
         "target": {
-          "name": "checkSelector",
+          "name": "checkSelector:",
           "file": { "key": "test.m" },
           "location": {
             "range": {
@@ -109,6 +110,7 @@
           "decl": {
             "objcMethod": {
               "key": {
+                "name": "checkSelector:",
                 "selector": { "key": [ "checkSelector" ] },
                 "container": { "interface_": { "key": "J" } },
                 "signature": {

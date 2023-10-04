@@ -6,6 +6,44 @@
       "entity": {
         "cxx": {
           "decl": {
+            "objcMethod": {
+              "key": {
+                "name": "setInt:setDouble:",
+                "selector": { "key": [ "setInt", "setDouble" ] },
+                "container": { "protocol": { "key": "Foo" } },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "void" },
+                    "parameters": [
+                      { "name": { "key": "x" }, "type": { "key": "int" } },
+                      { "name": { "key": "y" }, "type": { "key": "double" } }
+                    ]
+                  }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": false,
+                "source": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 42
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "entity": {
+        "cxx": {
+          "decl": {
             "variable": {
               "key": {
                 "name": {

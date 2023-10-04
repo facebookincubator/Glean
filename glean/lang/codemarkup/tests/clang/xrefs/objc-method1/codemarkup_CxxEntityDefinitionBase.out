@@ -86,6 +86,7 @@
                 {
                   "objcMethod": {
                     "key": {
+                      "name": "fooBar",
                       "selector": { "key": [ "fooBar" ] },
                       "container": { "implementation": { "key": "Bar" } },
                       "signature": {
@@ -213,6 +214,7 @@
                 {
                   "objcMethod": {
                     "key": {
+                      "name": "setInt:setDouble:",
                       "selector": { "key": [ "setInt", "setDouble" ] },
                       "container": { "protocol": { "key": "Foo" } },
                       "signature": {
@@ -270,6 +272,7 @@
         "objcMethod": {
           "key": {
             "key": {
+              "name": "fooBar",
               "selector": { "key": [ "fooBar" ] },
               "container": { "implementation": { "key": "Bar" } },
               "signature": {
@@ -292,6 +295,7 @@
       "base": {
         "objcMethod": {
           "key": {
+            "name": "fooBar",
             "selector": { "key": [ "fooBar" ] },
             "container": { "implementation": { "key": "Bar" } },
             "signature": {

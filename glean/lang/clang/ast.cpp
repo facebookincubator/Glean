@@ -2007,6 +2007,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         return ObjcMethodDecl
           { {}
           , visitor.db.fact<Cxx::ObjcMethodDeclaration>(
+              d->getNameAsString(),
               visitor.objcSelector(d->getSelector()).first,
               container->id,
               visitor.signature(d->getReturnType(), d->parameters()),

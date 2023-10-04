@@ -75,6 +75,7 @@
                     "declaration": {
                       "objcMethod": {
                         "key": {
+                          "name": "checkProtocol:",
                           "selector": { "key": [ "checkProtocol" ] },
                           "container": { "interface_": { "key": "J" } },
                           "signature": {
@@ -257,6 +258,7 @@
                     "declaration": {
                       "objcMethod": {
                         "key": {
+                          "name": "checkProtocol:",
                           "selector": { "key": [ "checkProtocol" ] },
                           "container": { "interface_": { "key": "J" } },
                           "signature": {
@@ -362,6 +364,7 @@
                   {
                     "objcMethod": {
                       "key": {
+                        "name": "checkProtocol:",
                         "selector": { "key": [ "checkProtocol" ] },
                         "container": { "interface_": { "key": "J" } },
                         "signature": {
@@ -471,6 +474,7 @@
                     "declaration": {
                       "objcMethod": {
                         "key": {
+                          "name": "checkProtocol:",
                           "selector": { "key": [ "checkProtocol" ] },
                           "container": { "interface_": { "key": "J" } },
                           "signature": {
@@ -536,7 +540,7 @@
       },
       "xref": {
         "target": {
-          "name": "checkProtocol",
+          "name": "checkProtocol:",
           "file": { "key": "test.m" },
           "location": {
             "range": {
@@ -558,6 +562,7 @@
         "decl": {
           "objcMethod": {
             "key": {
+              "name": "checkProtocol:",
               "selector": { "key": [ "checkProtocol" ] },
               "container": { "interface_": { "key": "J" } },
               "signature": {
@@ -659,6 +664,7 @@
                     "declaration": {
                       "objcMethod": {
                         "key": {
+                          "name": "checkProtocol:",
                           "selector": { "key": [ "checkProtocol" ] },
                           "container": { "interface_": { "key": "J" } },
                           "signature": {

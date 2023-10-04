@@ -75,6 +75,7 @@
                     "declaration": {
                       "objcMethod": {
                         "key": {
+                          "name": "setInt:setDouble:",
                           "selector": { "key": [ "setInt", "setDouble" ] },
                           "container": { "protocol": { "key": "Foo" } },
                           "signature": {
@@ -196,6 +197,7 @@
                   {
                     "objcMethod": {
                       "key": {
+                        "name": "setInt:setDouble:",
                         "selector": { "key": [ "setInt", "setDouble" ] },
                         "container": { "protocol": { "key": "Foo" } },
                         "signature": {
@@ -309,6 +311,7 @@
                     "declaration": {
                       "objcMethod": {
                         "key": {
+                          "name": "setInt:setDouble:",
                           "selector": { "key": [ "setInt", "setDouble" ] },
                           "container": { "protocol": { "key": "Foo" } },
                           "signature": {
@@ -430,6 +433,7 @@
                   {
                     "objcMethod": {
                       "key": {
+                        "name": "setInt:setDouble:",
                         "selector": { "key": [ "setInt", "setDouble" ] },
                         "container": { "protocol": { "key": "Foo" } },
                         "signature": {
@@ -543,6 +547,7 @@
                     "declaration": {
                       "objcMethod": {
                         "key": {
+                          "name": "setInt:setDouble:",
                           "selector": { "key": [ "setInt", "setDouble" ] },
                           "container": { "protocol": { "key": "Foo" } },
                           "signature": {
@@ -749,6 +754,7 @@
                     "declaration": {
                       "objcMethod": {
                         "key": {
+                          "name": "setInt:setDouble:",
                           "selector": { "key": [ "setInt", "setDouble" ] },
                           "container": { "protocol": { "key": "Foo" } },
                           "signature": {
@@ -863,6 +869,834 @@
                 "columnBegin": 3,
                 "lineEnd": 20,
                 "columnEnd": 13
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.mm" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "objcContainer": {
+                        "key": {
+                          "id": { "protocol": { "key": "Foo" } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 4
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": { "name": { "key": "setFoo" } }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 15,
+                            "columnBegin": 13,
+                            "lineEnd": 15,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 316 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "objcMethod": {
+                        "key": {
+                          "name": "setInt:setDouble:",
+                          "selector": { "key": [ "setInt", "setDouble" ] },
+                          "container": { "protocol": { "key": "Foo" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "x" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "y" },
+                                  "type": { "key": "double" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [
+                      { "length": 6, "offsets": [ 320 ] },
+                      { "length": 9, "offsets": [ 10 ] },
+                      { "length": 6, "offsets": [ 126 ] },
+                      { "length": 9, "offsets": [ 10 ] }
+                    ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "ivar": { "synthesize": false } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 20,
+                            "columnBegin": 3,
+                            "lineEnd": 20,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 452 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
+              ],
+              "froms": [ ]
+            }
+          },
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "setInt:setDouble:",
+          "file": { "key": "test.mm" },
+          "location": {
+            "range": {
+              "file": { "key": "test.mm" },
+              "lineBegin": 11,
+              "columnBegin": 1,
+              "lineEnd": 11,
+              "columnEnd": 42
+            }
+          },
+          "destination": {
+            "file": { "key": "test.mm" },
+            "span": { "start": 236, "length": 1 }
+          }
+        },
+        "source": { "span": { "start": 320, "length": 6 } }
+      },
+      "entity": {
+        "decl": {
+          "objcMethod": {
+            "key": {
+              "name": "setInt:setDouble:",
+              "selector": { "key": [ "setInt", "setDouble" ] },
+              "container": { "protocol": { "key": "Foo" } },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "x" }, "type": { "key": "int" } },
+                    { "name": { "key": "y" }, "type": { "key": "double" } }
+                  ]
+                }
+              },
+              "isInstance": true,
+              "isOptional": false,
+              "isAccessor": false,
+              "source": {
+                "file": { "key": "test.mm" },
+                "lineBegin": 11,
+                "columnBegin": 1,
+                "lineEnd": 11,
+                "columnEnd": 42
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.mm" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "objcContainer": {
+                        "key": {
+                          "id": { "protocol": { "key": "Foo" } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 4
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": { "name": { "key": "setFoo" } }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 15,
+                            "columnBegin": 13,
+                            "lineEnd": 15,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 316 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "objcMethod": {
+                        "key": {
+                          "name": "setInt:setDouble:",
+                          "selector": { "key": [ "setInt", "setDouble" ] },
+                          "container": { "protocol": { "key": "Foo" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "x" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "y" },
+                                  "type": { "key": "double" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [
+                      { "length": 6, "offsets": [ 320 ] },
+                      { "length": 9, "offsets": [ 10 ] },
+                      { "length": 6, "offsets": [ 126 ] },
+                      { "length": 9, "offsets": [ 10 ] }
+                    ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "ivar": { "synthesize": false } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 20,
+                            "columnBegin": 3,
+                            "lineEnd": 20,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 452 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
+              ],
+              "froms": [ ]
+            }
+          },
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "setInt:setDouble:",
+          "file": { "key": "test.mm" },
+          "location": {
+            "range": {
+              "file": { "key": "test.mm" },
+              "lineBegin": 11,
+              "columnBegin": 1,
+              "lineEnd": 11,
+              "columnEnd": 42
+            }
+          },
+          "destination": {
+            "file": { "key": "test.mm" },
+            "span": { "start": 236, "length": 1 }
+          }
+        },
+        "source": { "span": { "start": 330, "length": 9 } }
+      },
+      "entity": {
+        "decl": {
+          "objcMethod": {
+            "key": {
+              "name": "setInt:setDouble:",
+              "selector": { "key": [ "setInt", "setDouble" ] },
+              "container": { "protocol": { "key": "Foo" } },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "x" }, "type": { "key": "int" } },
+                    { "name": { "key": "y" }, "type": { "key": "double" } }
+                  ]
+                }
+              },
+              "isInstance": true,
+              "isOptional": false,
+              "isAccessor": false,
+              "source": {
+                "file": { "key": "test.mm" },
+                "lineBegin": 11,
+                "columnBegin": 1,
+                "lineEnd": 11,
+                "columnEnd": 42
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.mm" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "objcContainer": {
+                        "key": {
+                          "id": { "protocol": { "key": "Foo" } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 4
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": { "name": { "key": "setFoo" } }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 15,
+                            "columnBegin": 13,
+                            "lineEnd": 15,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 316 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "objcMethod": {
+                        "key": {
+                          "name": "setInt:setDouble:",
+                          "selector": { "key": [ "setInt", "setDouble" ] },
+                          "container": { "protocol": { "key": "Foo" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "x" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "y" },
+                                  "type": { "key": "double" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [
+                      { "length": 6, "offsets": [ 320 ] },
+                      { "length": 9, "offsets": [ 10 ] },
+                      { "length": 6, "offsets": [ 126 ] },
+                      { "length": 9, "offsets": [ 10 ] }
+                    ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "ivar": { "synthesize": false } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 20,
+                            "columnBegin": 3,
+                            "lineEnd": 20,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 452 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
+              ],
+              "froms": [ ]
+            }
+          },
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "setInt:setDouble:",
+          "file": { "key": "test.mm" },
+          "location": {
+            "range": {
+              "file": { "key": "test.mm" },
+              "lineBegin": 11,
+              "columnBegin": 1,
+              "lineEnd": 11,
+              "columnEnd": 42
+            }
+          },
+          "destination": {
+            "file": { "key": "test.mm" },
+            "span": { "start": 236, "length": 1 }
+          }
+        },
+        "source": { "span": { "start": 456, "length": 6 } }
+      },
+      "entity": {
+        "decl": {
+          "objcMethod": {
+            "key": {
+              "name": "setInt:setDouble:",
+              "selector": { "key": [ "setInt", "setDouble" ] },
+              "container": { "protocol": { "key": "Foo" } },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "x" }, "type": { "key": "int" } },
+                    { "name": { "key": "y" }, "type": { "key": "double" } }
+                  ]
+                }
+              },
+              "isInstance": true,
+              "isOptional": false,
+              "isAccessor": false,
+              "source": {
+                "file": { "key": "test.mm" },
+                "lineBegin": 11,
+                "columnBegin": 1,
+                "lineEnd": 11,
+                "columnEnd": 42
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.mm" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "objcContainer": {
+                        "key": {
+                          "id": { "protocol": { "key": "Foo" } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 9,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 4
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 301, 71 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": { "name": { "key": "setFoo" } }
+                                    },
+                                    "scope": { "global_": { } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 15,
+                            "columnBegin": 13,
+                            "lineEnd": 15,
+                            "columnEnd": 23
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 316 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "objcMethod": {
+                        "key": {
+                          "name": "setInt:setDouble:",
+                          "selector": { "key": [ "setInt", "setDouble" ] },
+                          "container": { "protocol": { "key": "Foo" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "x" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "y" },
+                                  "type": { "key": "double" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 42
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [
+                      { "length": 6, "offsets": [ 320 ] },
+                      { "length": 9, "offsets": [ 10 ] },
+                      { "length": 6, "offsets": [ 126 ] },
+                      { "length": 9, "offsets": [ 10 ] }
+                    ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "ivar": { "synthesize": false } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 20,
+                            "columnBegin": 3,
+                            "lineEnd": 20,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 3, "offsets": [ 452 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
+              ],
+              "froms": [ ]
+            }
+          },
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "setInt:setDouble:",
+          "file": { "key": "test.mm" },
+          "location": {
+            "range": {
+              "file": { "key": "test.mm" },
+              "lineBegin": 11,
+              "columnBegin": 1,
+              "lineEnd": 11,
+              "columnEnd": 42
+            }
+          },
+          "destination": {
+            "file": { "key": "test.mm" },
+            "span": { "start": 236, "length": 1 }
+          }
+        },
+        "source": { "span": { "start": 466, "length": 9 } }
+      },
+      "entity": {
+        "decl": {
+          "objcMethod": {
+            "key": {
+              "name": "setInt:setDouble:",
+              "selector": { "key": [ "setInt", "setDouble" ] },
+              "container": { "protocol": { "key": "Foo" } },
+              "signature": {
+                "key": {
+                  "returns": { "key": "void" },
+                  "parameters": [
+                    { "name": { "key": "x" }, "type": { "key": "int" } },
+                    { "name": { "key": "y" }, "type": { "key": "double" } }
+                  ]
+                }
+              },
+              "isInstance": true,
+              "isOptional": false,
+              "isAccessor": false,
+              "source": {
+                "file": { "key": "test.mm" },
+                "lineBegin": 11,
+                "columnBegin": 1,
+                "lineEnd": 11,
+                "columnEnd": 42
               }
             }
           }

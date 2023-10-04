@@ -43,6 +43,7 @@
                     {
                       "objcMethod": {
                         "key": {
+                          "name": "foo",
                           "selector": { "key": [ "foo" ] },
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
@@ -67,6 +68,7 @@
                     {
                       "objcMethod": {
                         "key": {
+                          "name": "setFoo:",
                           "selector": { "key": [ "setFoo" ] },
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
@@ -185,6 +187,7 @@
           "decl": {
             "objcMethod": {
               "key": {
+                "name": "foo",
                 "selector": { "key": [ "foo" ] },
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
@@ -211,7 +214,7 @@
     "key": {
       "file": { "key": "test.m" },
       "location": {
-        "name": "setFoo",
+        "name": "setFoo:",
         "file": { "key": "test.m" },
         "location": {
           "range": {
@@ -232,6 +235,7 @@
           "decl": {
             "objcMethod": {
               "key": {
+                "name": "setFoo:",
                 "selector": { "key": [ "setFoo" ] },
                 "container": { "interface_": { "key": "I" } },
                 "signature": {

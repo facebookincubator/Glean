@@ -111,6 +111,7 @@
                     {
                       "objcMethod": {
                         "key": {
+                          "name": "fooBar",
                           "selector": { "key": [ "fooBar" ] },
                           "container": { "implementation": { "key": "Bar" } },
                           "signature": {
@@ -183,6 +184,7 @@
                     {
                       "objcMethod": {
                         "key": {
+                          "name": "setInt:setDouble:",
                           "selector": { "key": [ "setInt", "setDouble" ] },
                           "container": { "protocol": { "key": "Foo" } },
                           "signature": {
@@ -346,6 +348,7 @@
             "objcMethod": {
               "key": {
                 "key": {
+                  "name": "fooBar",
                   "selector": { "key": [ "fooBar" ] },
                   "container": { "implementation": { "key": "Bar" } },
                   "signature": {
@@ -422,6 +425,59 @@
                   }
                 },
                 "isInline": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "setInt:setDouble:",
+        "file": { "key": "test.mm" },
+        "location": {
+          "range": {
+            "file": { "key": "test.mm" },
+            "lineBegin": 11,
+            "columnBegin": 1,
+            "lineEnd": 11,
+            "columnEnd": 42
+          }
+        },
+        "destination": {
+          "file": { "key": "test.mm" },
+          "span": { "start": 236, "length": 1 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "name": "setInt:setDouble:",
+                "selector": { "key": [ "setInt", "setDouble" ] },
+                "container": { "protocol": { "key": "Foo" } },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "void" },
+                    "parameters": [
+                      { "name": { "key": "x" }, "type": { "key": "int" } },
+                      { "name": { "key": "y" }, "type": { "key": "double" } }
+                    ]
+                  }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": false,
+                "source": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 42
+                }
               }
             }
           }

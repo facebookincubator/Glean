@@ -8,6 +8,7 @@
           "decl": {
             "objcMethod": {
               "key": {
+                "name": "checkSelector:",
                 "selector": { "key": [ "checkSelector" ] },
                 "container": { "interface_": { "key": "J" } },
                 "signature": {

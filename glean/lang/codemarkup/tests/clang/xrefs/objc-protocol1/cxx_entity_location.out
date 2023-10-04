@@ -6,6 +6,7 @@
         "decl": {
           "objcMethod": {
             "key": {
+              "name": "checkProtocol:",
               "selector": { "key": [ "checkProtocol" ] },
               "container": { "interface_": { "key": "J" } },
               "signature": {
@@ -31,7 +32,7 @@
         }
       },
       "location": {
-        "name": "checkProtocol",
+        "name": "checkProtocol:",
         "file": { "key": "test.m" },
         "location": {
           "range": {
@@ -220,6 +221,7 @@
                   {
                     "objcMethod": {
                       "key": {
+                        "name": "checkProtocol:",
                         "selector": { "key": [ "checkProtocol" ] },
                         "container": { "interface_": { "key": "J" } },
                         "signature": {

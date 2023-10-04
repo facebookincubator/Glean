@@ -69,6 +69,7 @@
             "declaration": {
               "objcMethod": {
                 "key": {
+                  "name": "setFoo:",
                   "selector": { "key": [ "setFoo" ] },
                   "container": { "interface_": { "key": "I" } },
                   "signature": {
@@ -104,6 +105,7 @@
             "declaration": {
               "objcMethod": {
                 "key": {
+                  "name": "foo",
                   "selector": { "key": [ "foo" ] },
                   "container": { "interface_": { "key": "I" } },
                   "signature": {

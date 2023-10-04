@@ -220,8 +220,8 @@ instance Symbol Cxx.ObjcContainerDeclaration_key where
   toSymbol (Cxx.ObjcContainerDeclaration_key cid _) = toSymbol cid
 
 instance Symbol Cxx.ObjcMethodDeclaration_key where
-  toSymbol (Cxx.ObjcMethodDeclaration_key name cid _ _ _ _ _) =
-    cid <:> name
+  toSymbol (Cxx.ObjcMethodDeclaration_key _ selector cid _ _ _ _ _) =
+    cid <:> selector
 
 instance Symbol Cxx.ObjcPropertyDeclaration_key where
   toSymbol (Cxx.ObjcPropertyDeclaration_key name cid _ty _ _ _ _ _) =

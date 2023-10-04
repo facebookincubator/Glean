@@ -27,6 +27,7 @@
                     {
                       "objcMethod": {
                         "key": {
+                          "name": "fooBar",
                           "selector": { "key": [ "fooBar" ] },
                           "container": { "implementation": { "key": "Bar" } },
                           "signature": {
@@ -138,6 +139,7 @@
                     {
                       "objcMethod": {
                         "key": {
+                          "name": "setInt:setDouble:",
                           "selector": { "key": [ "setInt", "setDouble" ] },
                           "container": { "protocol": { "key": "Foo" } },
                           "signature": {

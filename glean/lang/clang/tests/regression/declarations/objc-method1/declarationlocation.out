@@ -33,7 +33,7 @@
         "lineEnd": 12,
         "columnEnd": 18
       },
-      "tuplefield1": "f2"
+      "tuplefield1": "f2:"
     }
   },
   {
@@ -46,6 +46,18 @@
         "columnEnd": 17
       },
       "tuplefield1": "x"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "file": { "key": "test.m" },
+        "lineBegin": 13,
+        "columnBegin": 1,
+        "lineEnd": 13,
+        "columnEnd": 32
+      },
+      "tuplefield1": "f3a:f3b:"
     }
   },
   {
@@ -70,6 +82,18 @@
         "columnEnd": 31
       },
       "tuplefield1": "y"
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "file": { "key": "test.m" },
+        "lineBegin": 14,
+        "columnBegin": 1,
+        "lineEnd": 14,
+        "columnEnd": 29
+      },
+      "tuplefield1": "f4a::"
     }
   },
   {

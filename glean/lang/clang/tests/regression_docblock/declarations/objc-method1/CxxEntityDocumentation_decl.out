@@ -28,6 +28,7 @@
         "decl": {
           "objcMethod": {
             "key": {
+              "name": "f1",
               "selector": { "key": [ "f1" ] },
               "container": { "interface_": { "key": "I" } },
               "signature": {
@@ -57,6 +58,7 @@
         "decl": {
           "objcMethod": {
             "key": {
+              "name": "f2:",
               "selector": { "key": [ "f2" ] },
               "container": { "interface_": { "key": "I" } },
               "signature": {
@@ -91,6 +93,7 @@
         "decl": {
           "objcMethod": {
             "key": {
+              "name": "f3a:f3b:",
               "selector": { "key": [ "f3a", "f3b" ] },
               "container": { "interface_": { "key": "I" } },
               "signature": {
@@ -126,6 +129,7 @@
         "decl": {
           "objcMethod": {
             "key": {
+              "name": "f4a::",
               "selector": { "key": [ "f4a", "" ] },
               "container": { "interface_": { "key": "I" } },
               "signature": {

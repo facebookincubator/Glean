@@ -89,6 +89,7 @@
                     {
                       "objcMethod": {
                         "key": {
+                          "name": "checkProtocol:",
                           "selector": { "key": [ "checkProtocol" ] },
                           "container": { "interface_": { "key": "J" } },
                           "signature": {
@@ -186,7 +187,7 @@
     "key": {
       "file": { "key": "test.m" },
       "location": {
-        "name": "checkProtocol",
+        "name": "checkProtocol:",
         "file": { "key": "test.m" },
         "location": {
           "range": {
@@ -207,6 +208,7 @@
           "decl": {
             "objcMethod": {
               "key": {
+                "name": "checkProtocol:",
                 "selector": { "key": [ "checkProtocol" ] },
                 "container": { "interface_": { "key": "J" } },
                 "signature": {

@@ -134,6 +134,7 @@
                     {
                       "objcMethod": {
                         "key": {
+                          "name": "setInt:setDouble:",
                           "selector": { "key": [ "setInt", "setDouble" ] },
                           "container": { "protocol": { "key": "Foo" } },
                           "signature": {
