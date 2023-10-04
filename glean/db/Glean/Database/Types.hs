@@ -214,7 +214,8 @@ data JanitorRunResult
 
 data JanitorException
   = OtherJanitorException SomeException
-  | JanitorFetchBackupsFailure -- ^ Raised only when no remote db list available
+  | JanitorFetchBackupsFailure SomeException
+    -- ^ Raised only when no remote db list available
   deriving (Typeable, Show)
 
 instance Exception JanitorException

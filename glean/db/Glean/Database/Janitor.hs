@@ -74,7 +74,6 @@ import Glean.Util.ShardManager
       SomeShardManager(SomeShardManager), BaseOfStack (BaseOfStack),
       countersForShardSizes, noSharding )
 import Glean.Util.Time
-
 {- |
 The database janitor has the following functions:
   - ensure the newest db for each repo is open to speed-up queries to it.
@@ -153,6 +152,8 @@ runWithShards env myShards sm = do
 
   fetchBackupsResult <- fetchBackups env
 
+  now <- envGetCurrentTime env
+
   backups <- case fetchBackupsResult of
     ReusedPreviousBackups{reusedBackups = (dbs,_utc)} -> return dbs
     FetchedNewBackups{newBackups} -> return newBackups
@@ -160,13 +161,16 @@ runWithShards env myShards sm = do
       logError $ "couldn't list restorable databases: " <> show fetchError
 
       case previousGoodBackups of
-        Nothing -> throwIO JanitorFetchBackupsFailure
-        Just (dbs, _utc) -> return dbs
+        Nothing -> throwIO $ JanitorFetchBackupsFailure fetchError
+        Just (dbs, utc) -> do
+          let previousAgeInSeconds = fromIntegral (timeDiffInSeconds now utc)
+              tooOld = previousAgeInSeconds > config_max_remote_db_list_age
+          when tooOld $ throwIO $ JanitorFetchBackupsFailure fetchError
+
+          return dbs
 
   localAndRestoring <- atomically $
     Catalog.list (envCatalog env) [Local,Restoring] everythingF
-
-  now <- envGetCurrentTime env
 
   dbToShard <- computeShardMapping sm
 
