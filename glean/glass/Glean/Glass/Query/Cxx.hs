@@ -385,6 +385,7 @@ cxxXRefTargetToLocation _ (Cxx.XRefTarget_enumerator enumerator) = do
 
 {-
 XRefTarget_objcSelector ObjcSelector
+XRefTarget_objcSelectorSlot ObjcSelectorSlot
 XRefTarget_unknown Loc
 -}
 cxxXRefTargetToLocation _ _ = return Nothing

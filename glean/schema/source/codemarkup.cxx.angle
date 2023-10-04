@@ -195,7 +195,8 @@ predicate CxxXRefTargetLocation:
       { Name, TargetFile, { range = Range }, nothing } = Location;
       { enumerator = Enum } = Entity;
     )
-    # objSelector -- not an entity type
+    # objcSelector -- not an entity type
+    # objcSelectorSlot -- can't implement due to array indexing
     # unknown -- just a file and a point in the file tbd
     # indirect -- can't implement due to recursion
 

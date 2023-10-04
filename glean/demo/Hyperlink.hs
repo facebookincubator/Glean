@@ -384,6 +384,8 @@ cxxGetHyperlinks path = do  -- ApplicativeDo makes these parallel:
 
       Cxx.XRefTarget_objcSelector{} -> return Nothing
 
+      Cxx.XRefTarget_objcSelectorSlot{} -> return Nothing
+
       Cxx.XRefTarget_unknown (Src.Loc file line _) ->
         target_locH "unknown" file line
 

@@ -48,6 +48,12 @@
                         "key": {
                           "name": "checkSelector:",
                           "selector": { "key": [ "checkSelector" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 13 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "J" } },
                           "signature": {
                             "key": {
@@ -103,7 +109,7 @@
             "span": { "start": 234, "length": 1 }
           }
         },
-        "source": { "span": { "start": 397, "length": 13 } }
+        "source": { "span": { "start": 394, "length": 32 } }
       },
       "entity": {
         "cxx": {
@@ -112,6 +118,12 @@
               "key": {
                 "name": "checkSelector:",
                 "selector": { "key": [ "checkSelector" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 242, "length": 13 }
+                  }
+                ],
                 "container": { "interface_": { "key": "J" } },
                 "signature": {
                   "key": {

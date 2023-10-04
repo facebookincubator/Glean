@@ -85,6 +85,12 @@
             "isAccessor": false,
             "isInstance": true,
             "isOptional": false,
+            "locations": [
+              {
+                "file": { "key": "test.m" },
+                "span": { "length": 3, "start": 242 }
+              }
+            ],
             "name": "foo",
             "selector": { "key": [ "foo" ] },
             "signature": {
@@ -140,6 +146,12 @@
             "isAccessor": false,
             "isInstance": true,
             "isOptional": false,
+            "locations": [
+              {
+                "file": { "key": "test.m" },
+                "span": { "length": 6, "start": 255 }
+              }
+            ],
             "name": "setFoo:",
             "selector": { "key": [ "setFoo" ] },
             "signature": {

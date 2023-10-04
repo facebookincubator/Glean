@@ -48,6 +48,16 @@
                         "key": {
                           "name": "setInt:setDouble:",
                           "selector": { "key": [ "setInt", "setDouble" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.mm" },
+                              "span": { "start": 244, "length": 6 }
+                            },
+                            {
+                              "file": { "key": "test.mm" },
+                              "span": { "start": 258, "length": 9 }
+                            }
+                          ],
                           "container": { "protocol": { "key": "Foo" } },
                           "signature": {
                             "key": {
@@ -134,6 +144,16 @@
                         "key": {
                           "name": "setInt:setDouble:",
                           "selector": { "key": [ "setInt", "setDouble" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.mm" },
+                              "span": { "start": 244, "length": 6 }
+                            },
+                            {
+                              "file": { "key": "test.mm" },
+                              "span": { "start": 258, "length": 9 }
+                            }
+                          ],
                           "container": { "protocol": { "key": "Foo" } },
                           "signature": {
                             "key": {
@@ -300,7 +320,7 @@
             "span": { "start": 236, "length": 1 }
           }
         },
-        "source": { "span": { "start": 320, "length": 6 } }
+        "source": { "span": { "start": 315, "length": 30 } }
       },
       "entity": {
         "cxx": {
@@ -309,6 +329,16 @@
               "key": {
                 "name": "setInt:setDouble:",
                 "selector": { "key": [ "setInt", "setDouble" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.mm" },
+                    "span": { "start": 244, "length": 6 }
+                  },
+                  {
+                    "file": { "key": "test.mm" },
+                    "span": { "start": 258, "length": 9 }
+                  }
+                ],
                 "container": { "protocol": { "key": "Foo" } },
                 "signature": {
                   "key": {
@@ -357,7 +387,7 @@
             "span": { "start": 236, "length": 1 }
           }
         },
-        "source": { "span": { "start": 330, "length": 9 } }
+        "source": { "span": { "start": 451, "length": 30 } }
       },
       "entity": {
         "cxx": {
@@ -366,120 +396,16 @@
               "key": {
                 "name": "setInt:setDouble:",
                 "selector": { "key": [ "setInt", "setDouble" ] },
-                "container": { "protocol": { "key": "Foo" } },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "x" }, "type": { "key": "int" } },
-                      { "name": { "key": "y" }, "type": { "key": "double" } }
-                    ]
+                "locations": [
+                  {
+                    "file": { "key": "test.mm" },
+                    "span": { "start": 244, "length": 6 }
+                  },
+                  {
+                    "file": { "key": "test.mm" },
+                    "span": { "start": 258, "length": 9 }
                   }
-                },
-                "isInstance": true,
-                "isOptional": false,
-                "isAccessor": false,
-                "source": {
-                  "file": { "key": "test.mm" },
-                  "lineBegin": 11,
-                  "columnBegin": 1,
-                  "lineEnd": 11,
-                  "columnEnd": 42
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.mm" },
-      "xref": {
-        "target": {
-          "name": "setInt:setDouble:",
-          "file": { "key": "test.mm" },
-          "location": {
-            "range": {
-              "file": { "key": "test.mm" },
-              "lineBegin": 11,
-              "columnBegin": 1,
-              "lineEnd": 11,
-              "columnEnd": 42
-            }
-          },
-          "destination": {
-            "file": { "key": "test.mm" },
-            "span": { "start": 236, "length": 1 }
-          }
-        },
-        "source": { "span": { "start": 456, "length": 6 } }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "objcMethod": {
-              "key": {
-                "name": "setInt:setDouble:",
-                "selector": { "key": [ "setInt", "setDouble" ] },
-                "container": { "protocol": { "key": "Foo" } },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "void" },
-                    "parameters": [
-                      { "name": { "key": "x" }, "type": { "key": "int" } },
-                      { "name": { "key": "y" }, "type": { "key": "double" } }
-                    ]
-                  }
-                },
-                "isInstance": true,
-                "isOptional": false,
-                "isAccessor": false,
-                "source": {
-                  "file": { "key": "test.mm" },
-                  "lineBegin": 11,
-                  "columnBegin": 1,
-                  "lineEnd": 11,
-                  "columnEnd": 42
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "test.mm" },
-      "xref": {
-        "target": {
-          "name": "setInt:setDouble:",
-          "file": { "key": "test.mm" },
-          "location": {
-            "range": {
-              "file": { "key": "test.mm" },
-              "lineBegin": 11,
-              "columnBegin": 1,
-              "lineEnd": 11,
-              "columnEnd": 42
-            }
-          },
-          "destination": {
-            "file": { "key": "test.mm" },
-            "span": { "start": 236, "length": 1 }
-          }
-        },
-        "source": { "span": { "start": 466, "length": 9 } }
-      },
-      "entity": {
-        "cxx": {
-          "decl": {
-            "objcMethod": {
-              "key": {
-                "name": "setInt:setDouble:",
-                "selector": { "key": [ "setInt", "setDouble" ] },
+                ],
                 "container": { "protocol": { "key": "Foo" } },
                 "signature": {
                   "key": {

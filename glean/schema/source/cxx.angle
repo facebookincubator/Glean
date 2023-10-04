@@ -187,6 +187,9 @@ predicate ObjcMethodDeclaration :
     # Parameters may have no name, in which case they are omitted. e.g., `foo::`
     name : string,
     selector : ObjcSelector,
+    # Locations of the slots of the selector.
+    # These correspond to the `selector` entries.
+    locations : [src.FileLocation],
     container : ObjcContainerId,
     signature : Signature,
     isInstance : bool,
@@ -500,6 +503,17 @@ type Declaration =
     typeAlias : TypeAliasDeclaration |
   }
 
+# A specific slot of an ObjC selector. The `index` field is the position
+# within the `selector` and `locations` field of `ObjCMethodDeclaration`.
+#
+# This construction of declaration accompanied by an index enables
+# representing the relationship of (decl <-> defn) + index.
+type ObjcSelectorSlot =
+  {
+    objcMethod : ObjcMethodDeclaration,
+    index : nat,
+  }
+
 # What indirect xrefs can go through
 type XRefVia =
   {
@@ -514,6 +528,7 @@ type XRefTarget =
     declaration : Declaration |
     enumerator : Enumerator |
     objcSelector : ObjcSelector |
+    objcSelectorSlot : ObjcSelectorSlot |
     unknown : src.Loc |
     indirect : XRefIndirectTarget |
   }

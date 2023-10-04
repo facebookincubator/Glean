@@ -33,6 +33,12 @@
               "key": {
                 "name": "checkSelector:",
                 "selector": { "key": [ "checkSelector" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 242, "length": 13 }
+                  }
+                ],
                 "container": { "interface_": { "key": "J" } },
                 "signature": {
                   "key": {
@@ -61,7 +67,7 @@
         }
       },
       "file": { "key": "test.m" },
-      "range": { "span": { "start": 397, "length": 13 } }
+      "range": { "span": { "start": 394, "length": 32 } }
     }
   },
   {

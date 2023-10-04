@@ -10,6 +10,16 @@
               "key": {
                 "name": "setInt:setDouble:",
                 "selector": { "key": [ "setInt", "setDouble" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.mm" },
+                    "span": { "start": 244, "length": 6 }
+                  },
+                  {
+                    "file": { "key": "test.mm" },
+                    "span": { "start": 258, "length": 9 }
+                  }
+                ],
                 "container": { "protocol": { "key": "Foo" } },
                 "signature": {
                   "key": {
@@ -219,6 +229,12 @@
                 "key": {
                   "name": "fooBar",
                   "selector": { "key": [ "fooBar" ] },
+                  "locations": [
+                    {
+                      "file": { "key": "test.mm" },
+                      "span": { "start": 440, "length": 6 }
+                    }
+                  ],
                   "container": { "implementation": { "key": "Bar" } },
                   "signature": {
                     "key": { "returns": { "key": "void" }, "parameters": [ ] }

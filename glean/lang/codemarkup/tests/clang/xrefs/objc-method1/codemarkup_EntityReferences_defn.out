@@ -27,6 +27,16 @@
                         "key": {
                           "name": "setInt:setDouble:",
                           "selector": { "key": [ "setInt", "setDouble" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.mm" },
+                              "span": { "start": 244, "length": 6 }
+                            },
+                            {
+                              "file": { "key": "test.mm" },
+                              "span": { "start": 258, "length": 9 }
+                            }
+                          ],
                           "container": { "protocol": { "key": "Foo" } },
                           "signature": {
                             "key": {
@@ -94,6 +104,16 @@
                         "key": {
                           "name": "setInt:setDouble:",
                           "selector": { "key": [ "setInt", "setDouble" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.mm" },
+                              "span": { "start": 244, "length": 6 }
+                            },
+                            {
+                              "file": { "key": "test.mm" },
+                              "span": { "start": 258, "length": 9 }
+                            }
+                          ],
                           "container": { "protocol": { "key": "Foo" } },
                           "signature": {
                             "key": {

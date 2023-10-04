@@ -48,6 +48,12 @@
                         "key": {
                           "name": "foo",
                           "selector": { "key": [ "foo" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 3 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
                             "key": {
@@ -125,6 +131,12 @@
                         "key": {
                           "name": "foo",
                           "selector": { "key": [ "foo" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 3 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
                             "key": {
@@ -184,6 +196,12 @@
               "key": {
                 "name": "foo",
                 "selector": { "key": [ "foo" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 242, "length": 3 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": { "returns": { "key": "int" }, "parameters": [ ] }

@@ -1990,6 +1990,24 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return {db.fact<Cxx::ObjcSelector>(sels), std::move(sels)};
   }
 
+  std::vector<Src::FileLocation> objcSelectorLocations(
+      const clang::ObjCMethodDecl* d) {
+    const auto n = d->getNumSelectorLocs();
+    std::vector<Src::FileLocation> spans;
+    spans.reserve(n);
+    for (unsigned int i = 0; i < n; ++i) {
+      auto range = folly::variant_match(
+          db.fullSrcRange(d->getSelectorLoc(i)),
+          [](const ClangDB::SourceRange& range) { return range; },
+          [](const auto& range) {
+            const auto& [expansion, spelling] = range;
+            return spelling && spelling->file ? *spelling : expansion;
+          });
+      spans.push_back({range.file->fact, range.span});
+    }
+    return spans;
+  }
+
   struct ObjcMethodDecl : Declare<ObjcMethodDecl> {
     Fact<Cxx::ObjcMethodDeclaration> decl;
 
@@ -2009,6 +2027,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           , visitor.db.fact<Cxx::ObjcMethodDeclaration>(
               d->getNameAsString(),
               visitor.objcSelector(d->getSelector()).first,
+              visitor.objcSelectorLocations(d),
               container->id,
               visitor.signature(d->getReturnType(), d->parameters()),
               d->isInstanceMethod(),
@@ -2482,33 +2501,16 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   bool VisitObjCMessageExpr(const clang::ObjCMessageExpr *expr) {
-    if (!expr->isImplicit()) {
-      if (const auto *decl = expr->getMethodDecl()) {
-        folly::Optional<Cxx::XRefTarget> target;
-        if (auto r = objcMethodDecls(decl)) {
-          target = Cxx::XRefTarget::declaration(
-            Cxx::Declaration::objcMethod(r->decl));
-        }
-        const auto sel = expr->getSelector();
-        const auto nsels = expr->getNumSelectorLocs();
-        for (unsigned int i = 0; i < nsels; ++i) {
-          const auto start = expr->getSelectorLoc(i);
-          if (start.isValid()) {
-            // NOTE: Arguments don't necessarily have names, e.g.
-            // foo:(float)x :(float)y :(float)z
-            // which would then be called as
-            // [o foo:1 :2 :3]
-            //
-            // There will be at least one word (the method name) so we'll
-            // definitely get at least one xref.
-            if (auto ident = sel.getIdentifierInfoForSlot(i)) {
-              const auto end = start.getLocWithOffset(
-                ident->getLength()-1);
-              xrefTarget(
-                clang::SourceRange(start,end),
-                XRef::to(decl, target));
-            }
-          }
+    if (expr->isImplicit()) {
+      return true;
+    }
+    if (const auto *decl = expr->getMethodDecl()) {
+      xrefTarget(expr->getSourceRange(), XRef::toDecl(objcMethodDecls, decl));
+      if (auto d = objcMethodDecls(decl)) {
+        for (unsigned int i = 0, n = expr->getNumSelectorLocs(); i < n; ++i) {
+          auto target = Cxx::XRefTarget::objcSelectorSlot(
+              Cxx::ObjcSelectorSlot{d->decl, i});
+          xrefTarget(expr->getSelectorLoc(i), XRef::to(decl, target));
         }
       }
     }

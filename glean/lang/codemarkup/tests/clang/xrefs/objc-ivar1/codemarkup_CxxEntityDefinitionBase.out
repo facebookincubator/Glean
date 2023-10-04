@@ -25,6 +25,12 @@
                     "key": {
                       "name": "testMethod",
                       "selector": { "key": [ "testMethod" ] },
+                      "locations": [
+                        {
+                          "file": { "key": "test.m" },
+                          "span": { "start": 341, "length": 10 }
+                        }
+                      ],
                       "container": { "implementation": { "key": "J" } },
                       "signature": {
                         "key": {
@@ -156,6 +162,12 @@
             "key": {
               "name": "testMethod",
               "selector": { "key": [ "testMethod" ] },
+              "locations": [
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "start": 341, "length": 10 }
+                }
+              ],
               "container": { "implementation": { "key": "J" } },
               "signature": {
                 "key": { "returns": { "key": "void" }, "parameters": [ ] }
@@ -179,6 +191,12 @@
           "key": {
             "name": "testMethod",
             "selector": { "key": [ "testMethod" ] },
+            "locations": [
+              {
+                "file": { "key": "test.m" },
+                "span": { "start": 341, "length": 10 }
+              }
+            ],
             "container": { "implementation": { "key": "J" } },
             "signature": {
               "key": { "returns": { "key": "void" }, "parameters": [ ] }

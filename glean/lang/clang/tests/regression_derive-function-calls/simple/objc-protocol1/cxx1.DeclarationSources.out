@@ -132,6 +132,12 @@
             "isAccessor": false,
             "isInstance": true,
             "isOptional": false,
+            "locations": [
+              {
+                "file": { "key": "test.m" },
+                "span": { "length": 13, "start": 242 }
+              }
+            ],
             "name": "checkProtocol:",
             "selector": { "key": [ "checkProtocol" ] },
             "signature": {

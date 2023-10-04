@@ -22,6 +22,12 @@
               "key": {
                 "name": "f1",
                 "selector": { "key": [ "f1" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 305, "length": 2 }
+                  }
+                ],
                 "container": { "implementation": { "key": "I" } },
                 "signature": {
                   "key": { "returns": { "key": "int" }, "parameters": [ ] }
@@ -86,6 +92,12 @@
               "key": {
                 "name": "f1",
                 "selector": { "key": [ "f1" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 255, "length": 2 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": { "returns": { "key": "int" }, "parameters": [ ] }

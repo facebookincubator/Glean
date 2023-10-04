@@ -11,6 +11,12 @@
               "key": {
                 "name": "fooBar",
                 "selector": { "key": [ "fooBar" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.mm" },
+                    "span": { "start": 440, "length": 6 }
+                  }
+                ],
                 "container": { "implementation": { "key": "Bar" } },
                 "signature": {
                   "key": { "returns": { "key": "void" }, "parameters": [ ] }

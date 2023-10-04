@@ -44,6 +44,12 @@
                         "key": {
                           "name": "f1",
                           "selector": { "key": [ "f1" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 2 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
                             "key": {
@@ -69,6 +75,12 @@
                         "key": {
                           "name": "f2:",
                           "selector": { "key": [ "f2" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 252, "length": 2 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
                             "key": {
@@ -99,6 +111,16 @@
                         "key": {
                           "name": "f3a:f3b:",
                           "selector": { "key": [ "f3a", "f3b" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 271, "length": 3 }
+                            },
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 284, "length": 3 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
                             "key": {
@@ -133,6 +155,16 @@
                         "key": {
                           "name": "f4a::",
                           "selector": { "key": [ "f4a", "" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 304, "length": 3 }
+                            },
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 317, "length": 1 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
                             "key": {
@@ -197,6 +229,12 @@
               "key": {
                 "name": "f1",
                 "selector": { "key": [ "f1" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 242, "length": 2 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": { "returns": { "key": "int" }, "parameters": [ ] }
@@ -244,6 +282,12 @@
               "key": {
                 "name": "f2:",
                 "selector": { "key": [ "f2" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 252, "length": 2 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": {
@@ -296,6 +340,16 @@
               "key": {
                 "name": "f3a:f3b:",
                 "selector": { "key": [ "f3a", "f3b" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 271, "length": 3 }
+                  },
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 284, "length": 3 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": {
@@ -349,6 +403,16 @@
               "key": {
                 "name": "f4a::",
                 "selector": { "key": [ "f4a", "" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 304, "length": 3 }
+                  },
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 317, "length": 1 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": {
