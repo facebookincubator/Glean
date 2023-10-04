@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE CPP #-}
 module Glean.Database.Env ( withDatabases ) where
 
 import Control.Concurrent

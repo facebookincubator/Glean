@@ -30,10 +30,8 @@ import Util.STM
 import Logger.IO
 import Glean.Facebook.Logger.Server
 import Glean.Facebook.Logger.Database
-#endif
-
-#ifdef GLEAN_FACEBOOK
 import qualified Glean.Database.Backup.Manifold as Manifold
+import Glean.Server.Available ( withAvailableDBFilterViaSR )
 #endif
 
 import Glean.Database.Config (Config(..))
@@ -58,12 +56,14 @@ main =
   withConfigProvider cfgOpts $ \(configAPI :: ConfigAPI) ->
 #if GLEAN_FACEBOOK
   withLogger configAPI $ \logger ->
+  withAvailableDBFilterViaSR evb $ \filterAvailableDBs ->
 #endif
   let dbCfg = (cfgDBConfig cfg0){
         cfgShardManager = shardManagerConfig (cfgPort cfg)
 #if GLEAN_FACEBOOK
         , cfgServerLogger = Some (GleanServerFacebookLogger logger)
         , cfgDatabaseLogger = Some (GleanDatabaseFacebookLogger logger)
+        , cfgFilterAvailableDBs = filterAvailableDBs
 #endif
       }
 
