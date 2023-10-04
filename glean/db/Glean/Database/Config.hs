@@ -156,6 +156,8 @@ data Config = Config
     -- ^ Backup backends
   , cfgEnableRecursion :: Bool
     -- ^ Enable experimental support for recursion
+  , cfgFilterAvailableDBs :: [Repo] -> IO [Repo]
+    -- ^ Filter out DBs not currently available in the server tier
   }
 
 instance Show Config where
@@ -182,6 +184,7 @@ instance Default Config where
     , cfgDatabaseLogger = Some NullGleanDatabaseLogger
     , cfgBackupBackends = HashMap.fromList [("mock", Backup.Mock.mock)]
     , cfgEnableRecursion = False
+    , cfgFilterAvailableDBs = return
     }
 
 data SchemaIndex = SchemaIndex
@@ -430,6 +433,7 @@ options = do
     , cfgServerLogger = cfgServerLogger def
     , cfgDatabaseLogger = cfgDatabaseLogger def
     , cfgBackupBackends = cfgBackupBackends def
+    , cfgFilterAvailableDBs = return
     , .. }
   where
     recipesConfigThriftSource = option (eitherReader ThriftSource.parse)

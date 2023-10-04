@@ -12,6 +12,7 @@ module Model.Update (
 ) where
 
 import Control.Applicative ((<|>))
+import Control.Monad.State.Strict (evalState)
 import Data.Functor.Identity (Identity (..))
 import qualified Data.HashMap.Strict as HM
 import qualified Data.HashSet as Set
@@ -145,12 +146,13 @@ recomputeEntries model@Model {..} =
     time = posixEpochTimeToUTCTime modelTime
     Identity localAndRestoring =
       Catalog.list' id [Local, Restoring] everythingF modelEntries
-    allDBs =
-      mergeLocalAndRemote (HM.toList modelRestorableDBs) localAndRestoring
+    allDBs = mergeLocalAndRemote
+      (HM.toList modelRestorableDBs)
+      localAndRestoring
     index = dbIndex allDBs
-    backups = [(itemRepo,itemMeta) | Item{..} <- allDBs]
-    RetentionSet{retentionSetLocalAndRemote = retentionSet} =
-      computeRetentionSet modelRetentionPolicy time backups index
+    retentionSet =
+      computeRetentionSet modelRetentionPolicy time (const $ pure True) index
+        `evalState` mempty
     keepHereSet = [(itemRepo, itemMeta) | Item {..} <- retentionSet]
     entriesLiveHere' =
       foldl'
