@@ -154,19 +154,19 @@ runWithShards env myShards sm = do
   fetchBackupsResult <- fetchBackups env
 
   backups <- case fetchBackupsResult of
-    ReusedPreviousBackups{fetchedBackups} -> return fetchedBackups
-    FetchedNewBackups{fetchedBackups} -> return fetchedBackups
+    ReusedPreviousBackups{reusedBackups = (dbs,_utc)} -> return dbs
+    FetchedNewBackups{newBackups} -> return newBackups
     FetchFailure{..} -> do
       logError $ "couldn't list restorable databases: " <> show fetchError
 
       case previousGoodBackups of
         Nothing -> throwIO JanitorFetchBackupsFailure
-        Just dbs -> return dbs
+        Just (dbs, _utc) -> return dbs
 
   localAndRestoring <- atomically $
     Catalog.list (envCatalog env) [Local,Restoring] everythingF
 
-  t <- envGetCurrentTime env
+  now <- envGetCurrentTime env
 
   dbToShard <- computeShardMapping sm
 
@@ -181,8 +181,8 @@ runWithShards env myShards sm = do
 
     index@DbIndex{byRepo, byRepoName, dependencies} = dbIndex allDBsByAge
 
-  (keep, cachedAvailable) <-
-    computeRetentionSet config_retention t isAvailable index `runStateT` mempty
+  (keep, cachedAvailable) <- computeRetentionSet
+    config_retention now isAvailable index `runStateT` mempty
 
   atomically $ writeTVar
     (envCachedAvailableDBs env)
@@ -260,7 +260,7 @@ runWithShards env myShards sm = do
   restores <- fmap catMaybes $ forM fetch $ \(Item{..}, _) ->
     ifRestoreRepo env Nothing itemRepo $ do
       logInfo $ "Restoring: " ++ showRepo itemRepo ++
-        " ("  ++ showNominalDiffTime (dbAge t itemMeta) ++ " old)"
+        " ("  ++ showNominalDiffTime (dbAge now itemMeta) ++ " old)"
       return $ Just $ Catalog.startRestoring (envCatalog env) itemRepo itemMeta
   -- register all the restoring DBs together in a single transaction,
   -- so that the backup thread can't jump in early and pick one
@@ -307,6 +307,14 @@ runWithShards env myShards sm = do
       whenM (liftIO $ atomically $ isDatabaseClosed env $ itemRepo item) $
         preOpenDB (itemRepo item)
 
+    publishCounter "glean.db.remote.oldness" $ case fetchBackupsResult of
+      ReusedPreviousBackups{reusedBackups = (_,utc)} ->
+        timeDiffInSeconds now utc
+      FetchFailure{previousGoodBackups = Just (_, utc)} ->
+        timeDiffInSeconds now utc
+      FetchFailure{previousGoodBackups = Nothing} -> 0
+      FetchedNewBackups{} -> 0
+
     forM_ byRepoName $ \(repoNm, dbsByAge) -> do
       let prefix = "glean.db." <> Text.encodeUtf8 repoNm
       let repoKeep =
@@ -346,7 +354,7 @@ runWithShards env myShards sm = do
               dbCreated = metaCreated meta
               dbStart = fromMaybe dbCreated dbConceived
               ageFrom t0 = timeSpanInSeconds $
-                fromUTCTime t `timeDiff` posixEpochTimeToTime t0
+                fromUTCTime now `timeDiff` posixEpochTimeToTime t0
           -- .age is the age of the data, .span is the age of the DB
           publishCounter (prefix <> ".age") (ageFrom dbStart)
           publishCounter (prefix <> ".span") (ageFrom dbCreated)
@@ -495,13 +503,13 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs = do
 
 data FetchBackups
   = ReusedPreviousBackups {
-    fetchedBackups :: [(Repo, Meta)]
+    reusedBackups :: ([(Repo, Meta)], UTCTime)
     }
   | FetchedNewBackups {
-    fetchedBackups :: [(Repo, Meta)]
+    newBackups :: [(Repo, Meta)]
     }
   | FetchFailure {
-    previousGoodBackups :: Maybe [(Repo, Meta)],
+    previousGoodBackups :: Maybe ([(Repo, Meta)], UTCTime),
     fetchError :: SomeException
   }
 
@@ -516,12 +524,10 @@ fetchBackups env = do
     Nothing -> fetch now Nothing
     Just (lastFetch, dbs)
       | now `timeDiffInSeconds` lastFetch > syncPeriodSeconds ->
-        fetch now (Just dbs)
+        fetch now (Just (dbs, lastFetch))
       | otherwise ->
-        return $ ReusedPreviousBackups dbs
+        return $ ReusedPreviousBackups (dbs, lastFetch)
   where
-    timeDiffInSeconds t1 t2 =
-      timeSpanInSeconds $ fromUTCTime t1 `timeDiff` fromUTCTime t2
     fetch now previousGood = do
       logInfo "fetching restorable databases list"
       dbs <- tryAll $
@@ -535,6 +541,10 @@ fetchBackups env = do
       return $ case dbs of
         Right dbs -> FetchedNewBackups dbs
         Left error -> FetchFailure previousGood error
+
+timeDiffInSeconds :: UTCTime -> UTCTime -> Int
+timeDiffInSeconds t1 t2 =
+  timeSpanInSeconds $ fromUTCTime t1 `timeDiff` fromUTCTime t2
 
 repoRetention
   :: ServerConfig.DatabaseRetentionPolicy -> Text -> ServerConfig.Retention
