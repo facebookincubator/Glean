@@ -50,9 +50,12 @@ instance Backend LoggingBackend where
   factIdRange (LoggingBackend env) repo =
     loggingAction (runLogRepo "factIdRange" env repo) (const mempty) $
       factIdRange env repo
-  getSchemaInfo (LoggingBackend env) repo req =
+  getSchemaInfo (LoggingBackend env) (Just repo) req =
     loggingAction (runLogRepo "getSchemaInfo" env repo) (const mempty) $
-      getSchemaInfo env repo req
+      getSchemaInfo env (Just repo) req
+  getSchemaInfo (LoggingBackend env) Nothing req =
+    loggingAction (runLogCmd "getSchemaInfo" env) (const mempty) $
+      getSchemaInfo env Nothing req
   validateSchema (LoggingBackend env) req =
     loggingAction (runLogCmd "validateSchema" env) (const mempty) $
       validateSchema env req

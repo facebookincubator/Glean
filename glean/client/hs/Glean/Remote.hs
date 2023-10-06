@@ -177,7 +177,9 @@ instance Backend ThriftBackend where
       Thrift.Fact 0 _ _ -> return Nothing
       _ -> return (Just fact)
   factIdRange t repo = withShard t repo $ GleanService.factIdRange repo
-  getSchemaInfo t repo req = withShard t repo $
+  getSchemaInfo t Nothing req = withoutShard t $
+    GleanService.getSchemaInfoForSchema req
+  getSchemaInfo t (Just repo) req = withShard t repo $
     GleanService.getSchemaInfo repo req
   validateSchema t req = withoutShard t $ GleanService.validateSchema req
   predicateStats t repo opts = withShard t repo $

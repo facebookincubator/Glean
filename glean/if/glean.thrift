@@ -1140,6 +1140,8 @@ service GleanService extends fb303.FacebookService {
     1: UnknownDatabase u,
   );
 
+  SchemaInfo getSchemaInfoForSchema(1: GetSchemaInfo get);
+
   // Check that a schema is valid, throws an exception if not.  Used
   // to verify a schema against the server before making it the
   // default.

@@ -103,7 +103,7 @@ createGleanDB backend dontCreateDb newRepo fileLinesMap batchOutputs = do
 
   predicates <-
     Thrift.schemaInfo_predicateIds
-      <$> Glean.getSchemaInfo backend newRepo
+      <$> Glean.getSchemaInfo backend (Just newRepo)
             def { Glean.getSchemaInfo_omit_source = True }
   repoStats <- Glean.predicateStats backend newRepo Glean.ExcludeBase
   let readableStats =

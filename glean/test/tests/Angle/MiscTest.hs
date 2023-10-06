@@ -278,7 +278,7 @@ factsSearched ref lookupPid maybeStats = do
 -}
 reorderTest :: Test
 reorderTest = dbTestCase $ \env repo -> do
-  si <- getSchemaInfo env repo def { getSchemaInfo_omit_source = True }
+  si <- getSchemaInfo env (Just repo) def { getSchemaInfo_omit_source = True }
   let lookupPid = Map.fromList
         [ (ref,pid) | (pid,ref) <- Map.toList (schemaInfo_predicateIds si) ]
 

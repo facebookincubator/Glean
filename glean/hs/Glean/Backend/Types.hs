@@ -79,7 +79,7 @@ data StackedDbOpts
 class Backend a where
   queryFact :: a -> Thrift.Repo -> Thrift.Id -> IO (Maybe Thrift.Fact)
   factIdRange :: a -> Thrift.Repo -> IO Thrift.FactIdRange
-  getSchemaInfo :: a -> Thrift.Repo -> Thrift.GetSchemaInfo
+  getSchemaInfo :: a -> Maybe Thrift.Repo -> Thrift.GetSchemaInfo
     -> IO Thrift.SchemaInfo
   validateSchema :: a -> Thrift.ValidateSchema -> IO ()
   predicateStats :: a -> Thrift.Repo -> StackedDbOpts
@@ -210,8 +210,8 @@ loadPredicates
   -> [SchemaPredicates]
   -> IO Predicates
 loadPredicates backend repo refs =
-  makePredicates refs <$>
-    getSchemaInfo backend repo def { Thrift.getSchemaInfo_omit_source = True }
+  makePredicates refs <$> getSchemaInfo backend (Just repo)
+    def { Thrift.getSchemaInfo_omit_source = True }
 
 databases :: Backend a => a -> IO [Thrift.Database]
 databases be =

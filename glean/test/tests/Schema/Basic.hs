@@ -361,7 +361,7 @@ changeSchemaTest = TestCase $ do
           kickOffTestDB env repo id
           completeTestDB env repo
 
-          info <- getSchemaInfo env repo
+          info <- getSchemaInfo env (Just repo)
             def { getSchemaInfo_omit_source = True }
           assertBool "changeSchemaTest 1" $
             PredicateRef "test.P" 1 `elem`
@@ -375,7 +375,7 @@ changeSchemaTest = TestCase $ do
           -- wait for the schema to be updated for our repo
           let
             loop = do
-              info <- getSchemaInfo env repo
+              info <- getSchemaInfo env (Just repo)
                 def { getSchemaInfo_omit_source = True }
               when (PredicateRef "test.P" 2 `notElem`
                   Map.elems (schemaInfo_predicateIds info)) $

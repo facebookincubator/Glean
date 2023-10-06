@@ -107,7 +107,7 @@ runQuery backend repo xforms qfile = do
 
       perfString <- if queryPerf
         then do
-          Thrift.SchemaInfo{..} <- Glean.getSchemaInfo backend repo
+          Thrift.SchemaInfo{..} <- Glean.getSchemaInfo backend (Just repo)
             def { Thrift.getSchemaInfo_omit_source = True }
           return $ Just $ show $ pretty $ JSON.JSObject $ JSON.toJSObject $
             (generatedTag, JSON.JSNull) :

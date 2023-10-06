@@ -176,7 +176,7 @@ setRepo r = do
   sel <- useSchemaId <$> getState
   withBackend $ \backend -> do
     info@SchemaInfo{..} <- liftIO $
-      getSchemaInfo backend r def { getSchemaInfo_select = sel }
+      getSchemaInfo backend (Just r) def { getSchemaInfo_select = sel }
     let sids = map (first Thrift.SchemaId) $ Map.toList $ case sel of
           Thrift.SelectSchema_current{} -> schemaInfo_schemaIds
           Thrift.SelectSchema_stored{} -> schemaInfo_dbSchemaIds
