@@ -30,7 +30,6 @@ import qualified Glean.Schema.Hs.Types as Hs
 import qualified Glean.Schema.Src as Src
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Types as Thrift
-import HieDBIndexer.Options (HieDBIndexerEnv (..), HieDBIndexerOptions (..))
 import HieDBIndexer.Types (
   Definition (..),
   FileLineMap,
@@ -49,34 +48,24 @@ data IndexerException = DatabaseAlreadyExistsException
 
 instance Exception IndexerException
 
--- | Throws a 'DatabaseAlreadyExistsException'
+-- |  Throws a 'DatabaseAlreadyExistsException'
 createGleanDB ::
   (Glean.Backend b) =>
-  HieDBIndexerEnv b ->
+  b ->
+  Bool ->
+  Thrift.Repo ->
   FileLineMap ->
   [IndexerBatchOutput] ->
   IO ()
-createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
-  let hash = repoHash cfg
+createGleanDB backend dontCreateDb newRepo fileLinesMap batchOutputs = do
+  let buildHandle = buildRule <> "@" <> buildRevision
+      Thrift.Repo{..} = newRepo
 
-  let newRepo = Glean.Repo (Text.pack $ repoName cfg) hash
-      buildHandle = buildRule <> "@" <> buildRevision
+  printf "Creating Glean DB %s/%s\n" repo_name repo_hash
 
-      fileLinesList = Map.toList fileLinesMap
-
-  printf "Creating Glean DB %s/%s\n" (repoName cfg) hash
-
-  let batchWriter IndexerBatchOutput {..} = do
+  let finalWriter = do
         Glean.basicWriter backend newRepo allPredicates $
-          gleanWriter nodeDefs xrefList
-
-      finalWriter = do
-        -- Write FileLines facts first.
-        Glean.basicWriter backend newRepo allPredicates $
-          gleanFileLinesWriter fileLinesList
-
-        -- Open each output file and write the definitions and xrefs
-        mapM_ batchWriter batchOutputs
+          hieFactsBuilder fileLinesMap batchOutputs
 
         let mkPredRef predName =
               SourceRef {sourceRefName = predName, sourceRefVersion = Nothing}
@@ -102,7 +91,7 @@ createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
           )
           predsToDerive
 
-  if dontCreateDb cfg
+  if dontCreateDb
     then finalWriter
     else
       Glean.fillDatabase
@@ -128,6 +117,23 @@ createGleanDB _env@HieDBIndexerEnv {..} fileLinesMap batchOutputs = do
 
   putStrLn "Repo stats: "
   mapM_ putStrLn readableStats
+
+hieFactsBuilder ::
+  FileLineMap ->
+  [IndexerBatchOutput] ->
+  Glean.FactBuilder
+hieFactsBuilder fileLinesMap batchOutputs = do
+  let
+      fileLinesList = Map.toList fileLinesMap
+
+      batchWriter IndexerBatchOutput {..} =
+        gleanWriter nodeDefs xrefList
+
+  -- Write FileLines facts first.
+  writeFileLines fileLinesList
+
+  -- Open each output file and write the definitions and xrefs
+  mapM_ batchWriter batchOutputs
 
 -- | Given a FileXRefMap, create and write Glean facts to a database.
 gleanWriter ::
@@ -166,10 +172,10 @@ gleanWriter nodeDefs xrefList = do
       Glean.makeFact_ @Hs.Definition $ Hs.Definition_key defName fileLocFact
 
 -- | Given a FileXRefMap, create and write Glean facts to a database.
-gleanFileLinesWriter ::
+writeFileLines ::
   [(FilePath, LineLengthArray)] ->
   Glean.FactBuilder
-gleanFileLinesWriter fileLinesList = do
+writeFileLines fileLinesList = do
   forM_ fileLinesList $ \(srcFp, lineLens) -> do
     let fp = Text.pack srcFp
     fileFact <- Glean.makeFact @Src.File fp
