@@ -17,6 +17,7 @@ import Data.Maybe (mapMaybe, catMaybes)
 
 import Glean.Query.Codegen.Types
 import Glean.RTS.Types (Pid, PidRef(..))
+import Glean.RTS.Term hiding (Match)
 
 -- | Make a predicate derivation query efficiently derive new facts on an
 -- incremental database.
@@ -72,7 +73,10 @@ expandGenerators hasFacts stmts =
 
   expandStatement :: CgStatement -> Incremental CgStatement
   expandStatement stmt = case stmt of
-    CgStatement pat (FactGenerator pref key val SeekOnAllFacts) ->
+    CgStatement pat (FactGenerator pref key val SeekOnAllFacts)
+      -- when pat is known, this is a lookup not a seek so we
+      -- don't need to expand it.
+      | not (known pat) ->
       let PidRef pid _ = pref
           generator where_ =
             if hasFacts where_ pid
@@ -88,6 +92,12 @@ expandGenerators hasFacts stmts =
       error "unexpected negation in stored derived predicate"
     CgConditional{} ->
       error "unexpected if statement in stored derived predicate"
+
+  known (Ref MatchFid{}) = True
+  known (Ref MatchVar{}) = True
+  known Nat{} = True
+  known (Ref (MatchAnd p q)) = known p || known q
+  known _ = False
 
   expandDisjunction :: [[CgStatement]] -> Incremental [[CgStatement]]
   expandDisjunction branches = Incremental (nonnull news) (nonnull olds)
