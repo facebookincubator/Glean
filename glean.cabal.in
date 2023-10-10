@@ -940,6 +940,7 @@ executable glean-server
         glean:db,
         glean:util,
         haskeline >=0.7.3 && <0.8,
+        http-client,
         json
 
 library shell-lib
