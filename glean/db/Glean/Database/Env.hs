@@ -170,12 +170,14 @@ spawnThreads env@Env{..} = do
             Right Nothing -> do
               logError "janitor timeout"
               recordJanitorResult JanitorTimeout
-            Left someException
-              | Just e <- fromException someException
-              -> recordJanitorResult (JanitorRunFailure e)
-              | otherwise
-              -> recordJanitorResult
-                  (JanitorRunFailure $ OtherJanitorException someException)
+            Left someException -> do
+              logError $ "janitor failed: " <> show someException
+              if
+                | Just e <- fromException someException
+                -> recordJanitorResult (JanitorRunFailure e)
+                | otherwise
+                -> recordJanitorResult
+                    (JanitorRunFailure $ OtherJanitorException someException)
     Nothing ->
       recordJanitorResult JanitorDisabled
 
