@@ -110,7 +110,9 @@ jobs:
         # External hh_server hasn't caught up with the internal
         # version yet so the test output differs. Disable the Hack
         # tests temporarily.
-        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests
+        #
+        # Need a new image with modern llvm/clang to get glean-clang-codemarkup to work
+        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests -f-clang-tests
 
   # check the vscode extension builds
   vscode:
