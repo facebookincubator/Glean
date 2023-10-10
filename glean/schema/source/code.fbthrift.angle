@@ -1,0 +1,15 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema code.fbthrift.1 {
+import fbthrift.1
+
+type Entity =
+  {
+    decl : fbthrift.Declaration |
+  }
+
+type Annotations =
+  {
+    annotations : [fbthrift.StructuredAnnotation] |
+  }
+}

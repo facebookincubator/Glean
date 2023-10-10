@@ -5,6 +5,7 @@ import src.1
 import code.buck.1
 import code.cxx.4
 import code.erlang.1
+import code.fbthrift.1
 import code.flow.2
 import code.hack.4
 import code.hs.2
@@ -28,6 +29,7 @@ type Entity =
     hack : code.hack.Entity |
     flow : code.flow.Entity |
     thrift : code.thrift.Entity |
+    fbthrift : code.fbthrift.Entity |
     buck : code.buck.Entity |
     erlang : code.erlang.Entity |
     lsif : code.lsif.Entity |
@@ -61,6 +63,7 @@ predicate EntityLanguage:
     ( { hack = _ } = Entity; Hack = Language ) |
     ( { flow = _ } = Entity; JavaScript = Language ) |
     ( { thrift = _ } = Entity; Thrift = Language ) |
+    ( { fbthrift = _ } = Entity; Thrift = Language ) |
     ( { buck = _ } = Entity; Buck = Language ) |
     ( { erlang = _ } = Entity; Erlang = Language ) |
     ( { lsif = LSIF }  = Entity; EntityLanguageLSIF { LSIF, Language } ) |
@@ -100,7 +103,8 @@ type Annotations =
     java : code.java.Annotations |
     python : code.python.Annotations |
     hack : code.hack.Annotations |
-    thrift : code.thrift.Annotations |
+    thrift : code.fbthrift.Annotations |
+    fbthrift : code.fbthrift.Annotations |
   }
 
 type Argument =

@@ -1,0 +1,153 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema codemarkup.fbthrift.1 {
+
+import code.fbthrift.1
+import codemarkup.types.1
+import src.1
+import fbthrift.1
+
+#
+# Resolving locations to entities
+#
+
+predicate ThriftResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.fbthrift.Entity,
+  }
+  { { Name, FileS, { range = Range }, nothing }, { decl = Decl } } where
+    FileT = fbthrift.File FileS;
+    fbthrift.FileDeclaration { FileT, Decl };
+    fbthrift.DeclarationNameSpan { Decl, Identifier, FileT, {LB, CB, LE, CE} };
+    Identifier = fbthrift.Identifier Name;
+    { file = FileS, lineBegin = LB, columnBegin = CB, lineEnd = LE, columnEnd = CE } = Range;
+
+#
+# Finding entities' locations
+#
+
+predicate ThriftEntityLocation:
+  {
+    entity: code.fbthrift.Entity,
+    location: codemarkup.types.Location,
+  }
+  { { decl = Decl }, { Name, File, RangeSpan, nothing } } where
+    ( fbthrift.DeclarationNameSpan { Decl, Ident, fbthrift.File File, Loc };
+      fbthrift.Identifier Name = Ident;
+      { LB, CB, LE, CE } = Loc;
+      { range = { File, LB, CB, LE, CE } } = RangeSpan;
+    ) | (
+      { include_ = fbthrift.File File } = Decl;
+      src.File Name = File;
+      { span = {0,0} } = RangeSpan;
+    )
+
+#
+# Finding references in a file
+#
+
+predicate ThriftFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.fbthrift.Entity,
+  }
+ {
+   File,
+   { target = TargetLocation, source = { range = SourceRange } },
+   { decl = XRefTarget }
+  }
+  where
+  FileT = fbthrift.File File;
+  fbthrift.FileXRefs { file = FileT, xrefs = XRefs };
+  { { startLine = LB, startCol = CB, endLine = LE, endCol = CE }  , XRefTarget } = XRefs[..];
+  { file = File, lineBegin = LB, columnBegin = CB, lineEnd = LE, columnEnd = CE } = SourceRange;
+  fbthrift.DeclarationNameSpan { decl = XRefTarget,
+                               name = fbthrift.Identifier Name,
+                               file = TargetFileT,
+                               span = { TLB, TCB, TLE, TCE } };
+  TargetFileT = fbthrift.File TargetFile;
+  TargetRange = {TargetFile, TLB, TCB, TLE, TCE };
+  { Name, TargetFile, { range = TargetRange }, nothing } = TargetLocation;
+
+#
+# Kinds and annotations
+#
+
+predicate ThriftEntityKind:
+  {
+    entity: code.fbthrift.Entity,
+    kind: codemarkup.types.SymbolKind
+  }
+  { { decl = Decl }, Kind } where
+    ({ include_ = _ } = Decl; File = Kind) |
+    ({ function_ = _ } = Decl; Function = Kind) |
+    ({ enumValue = _ } = Decl; Enumerator = Kind) |
+    ({ constant = _ } = Decl; Constant = Kind) |
+    ({ named = { name = { kind = typedef_ } } } = Decl; Type = Kind) |
+    ({ named = { name = { kind = enum_ } } } = Decl; Enum_ = Kind) |
+    ({ named = { name = { kind = struct_ } } } = Decl; Struct = Kind) |
+    ({ named = { name = { kind = union_ } } } = Decl; Union = Kind) |
+    # we don't have a great symbol kinds for thesse
+    ({ exception_ = _ } = Decl; Value = Kind) |
+    ({ service_ = _ } = Decl ; Class_ = Kind);
+
+#
+# Extends relationships
+#
+
+predicate ThriftContainsChildEntity :
+  {
+    parent: code.fbthrift.Entity,
+    child: code.fbthrift.Entity
+  }
+  { { decl = Parent }, { decl = Child } } where
+    ( { service_ = P } = Parent;
+      F = fbthrift.FunctionName { service_ = P };
+      { function_ = F } = Child
+    ) | (
+      { include_ = F } = Parent;
+      QN = fbthrift.QualName { file = F };
+      fbthrift.DeclarationName { qname = QN, decl = Child }
+    )
+
+predicate ThriftContainsParentEntity :
+  {
+    child: code.fbthrift.Entity,
+    parent: code.fbthrift.Entity
+  }
+  { { decl = Child }, { decl = Parent } } where
+    ( { function_ = F } = Child;
+      fbthrift.FunctionName { service_ = P } = F;
+      { service_ = P } = Parent
+    ) | (
+      ( { exception_ = { name = QName } } ) |
+      ( { service_ = { name = QName } } ) |
+      ( { constant = { name = QName } } ) |
+      ( { named = { name = { name = QName } } } ) = Child;
+      { file = File } = QName;
+      { include_ = File } = Parent
+    )
+
+predicate ThriftExtendsChildEntity :
+  {
+    parent: code.fbthrift.Entity,
+    child: code.fbthrift.Entity
+  }
+  { { decl = Parent }, { decl = Child } } where
+    { service_ = P } = Parent;
+    fbthrift.ServiceChild { parent = P, child = C };
+    { service_ = C } = Child
+
+predicate ThriftExtendsParentEntity :
+  {
+    child: code.fbthrift.Entity,
+    parent: code.fbthrift.Entity
+  }
+  { { decl = Child }, { decl = Parent } } where
+    { service_ = C } = Child ;
+    fbthrift.ServiceParent { child = C, parent = P };
+    { service_ = P } = Parent
+
+}

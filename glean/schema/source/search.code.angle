@@ -24,6 +24,7 @@ import search.java.1
 import search.kotlin.1
 import search.python.1
 import thrift.7
+import fbthrift.1
 
 #
 # public API
@@ -556,8 +557,10 @@ predicate ThriftSearchByName:
     entity: code.Entity
   }
   { Name, Entity } where
-    Ident = thrift.Identifier Name;
-    ThriftSearchByNameFact { Ident, Entity }
+    ( Ident = thrift.Identifier Name;
+      ThriftSearchByNameFact { Ident, Entity } ) |
+    ( Ident = fbthrift.Identifier Name;
+      FbthriftSearchByNameFact { Ident, Entity } )
 
 predicate ThriftSearchByLowerCaseName:
   {
@@ -565,8 +568,10 @@ predicate ThriftSearchByLowerCaseName:
     entity: code.Entity
   }
   { NameStr, Entity } where
-    thrift.NameLowerCase { NameStr, Ident };
-    ThriftSearchByNameFact { Ident, Entity }
+    ( thrift.NameLowerCase { NameStr, Ident };
+      ThriftSearchByNameFact { Ident, Entity } ) |
+    ( fbthrift.NameLowerCase { NameStr, Ident };
+      FbthriftSearchByNameFact { Ident, Entity } )
 
 predicate ThriftSearchByNameFact:
   {
@@ -576,6 +581,15 @@ predicate ThriftSearchByNameFact:
   { Ident, { thrift = { decl = Decl } }} where
     thrift.SearchByName { Ident, QName };
     thrift.DeclarationName { QName, Decl }
+
+predicate FbthriftSearchByNameFact:
+  {
+    name: fbthrift.Identifier,
+    entity: code.Entity
+  }
+  { Ident, { fbthrift = { decl = Decl } }} where
+    fbthrift.SearchByName { Ident, QName };
+    fbthrift.DeclarationName { QName, Decl }
 
 predicate HsSearchByName:
   {
