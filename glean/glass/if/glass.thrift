@@ -783,14 +783,4 @@ service GlassService extends fb303.FacebookService {
     2: GlassException g,
     3: RevisionNotAvailableException revisionNotAvailable,
   );
-
-  // Resolve declaration USR from ClangD to xref sites
-  list<USRSymbolReference> clangUSRToReferenceRanges(
-    1: USR hash,
-    2: RequestOptions options,
-  ) throws (
-    1: ServerException e,
-    2: GlassException g,
-    3: RevisionNotAvailableException revisionNotAvailable,
-  );
 } (sr.service_name = 'glean.glass')
