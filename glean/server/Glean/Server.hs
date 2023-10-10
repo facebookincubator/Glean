@@ -139,7 +139,7 @@ main =
               else monitorJanitor
         _ -> monitorJanitor
 #else
-          result `seq` monitorJanitor
+      result `seq` monitorJanitor
 #endif
 
     waitForTerminate = void $
