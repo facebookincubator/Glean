@@ -61,6 +61,7 @@ instance ToAngle Cxx.Entity where
     Cxx.Entity_decl x -> alt @"decl" (toAngle x)
     Cxx.Entity_defn x -> alt @"defn" (toAngle x)
     Cxx.Entity_enumerator x -> alt @"enumerator" (mkKey x)
+    Cxx.Entity_objcSelectorSlot x -> alt @"objcSelectorSlot" (toAngle x)
     Cxx.Entity_EMPTY -> error "unknown Entity"
 
 instance ToAngle Cxx.Declaration where
@@ -88,6 +89,19 @@ instance ToAngle Cxx.Definition where
     Cxx.Definition_variable x -> alt @"variable" (mkKey x)
     Cxx.Definition_namespace_ x -> alt @"namespace_" (mkKey x)
     Cxx.Definition_EMPTY -> error "unknown Definition"
+
+instance ToAngle Cxx.ObjcMethodEntity where
+  toAngle e = case e of
+    Cxx.ObjcMethodEntity_decl x -> alt @"decl" (mkKey x)
+    Cxx.ObjcMethodEntity_defn x -> alt @"defn" (mkKey x)
+    Cxx.ObjcMethodEntity_EMPTY -> error "unknown ObjcMethodEntity"
+
+instance ToAngle Cxx.ObjcSelectorSlotEntity where
+  toAngle (Cxx.ObjcSelectorSlotEntity method idx) =
+    rec $
+      field @"objcMethod" (toAngle method) $
+      field @"index" (nat $ fromNat idx)
+    end
 
 -- Erlang
 

@@ -16,7 +16,7 @@ module Glean.Glass.SymbolId.Cxx (
 
   ) where
 
-import Data.Text as Text ( Text, intercalate, break, replace, splitOn )
+import Data.Text as Text ( Text, intercalate, break, replace, splitOn, pack)
 import Data.Maybe
 import Control.Monad.Catch ( throwM )
 
@@ -27,10 +27,8 @@ import qualified Glean.Haxl.Repos as Glean
 
 import Glean.Glass.Types
 import qualified Glean.Glass.Types as Glass
+import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.Cxx1.Types as Cxx
-
-import Glean.Schema.CodeCxx.Types as Cxx
-    ( Entity(..), Definition(..) )
 
 import Glean.Angle
 import qualified Glean.Schema.CodemarkupCxx.Types as Code
@@ -50,6 +48,14 @@ instance Symbol Cxx.Entity where
         sym <- toSymbol decl
         pure (sym ++ [".decl"])
       Cxx.Entity_enumerator enum -> toSymbolPredicate enum
+      Cxx.Entity_objcSelectorSlot (Cxx.ObjcSelectorSlotEntity method idx) -> do
+        sym <- case method of
+          Cxx.ObjcMethodEntity_decl decl -> do
+            sym <- toSymbolPredicate decl
+            pure (sym ++ [".decl"])
+          Cxx.ObjcMethodEntity_defn defn -> toSymbolPredicate defn
+          Cxx.ObjcMethodEntity_EMPTY -> return []
+        pure (sym ++ [Text.pack $ show $ Glean.fromNat idx])
       Cxx.Entity_EMPTY -> return []
     where
       -- find common repo anchor (e.g. "fbcode" or "xplat")
@@ -220,8 +226,9 @@ instance Symbol Cxx.ObjcContainerDeclaration_key where
   toSymbol (Cxx.ObjcContainerDeclaration_key cid _) = toSymbol cid
 
 instance Symbol Cxx.ObjcMethodDeclaration_key where
-  toSymbol (Cxx.ObjcMethodDeclaration_key _ selector _ cid _ _ _ _ _) =
-    cid <:> selector
+  toSymbol (Cxx.ObjcMethodDeclaration_key name _ _ cid _ _ _ _ _) = do
+    xs <- toSymbol cid
+    return $ xs ++ [name]
 
 instance Symbol Cxx.ObjcPropertyDeclaration_key where
   toSymbol (Cxx.ObjcPropertyDeclaration_key name cid _ty _ _ _ _ _) =
@@ -313,9 +320,6 @@ instance Symbol Cxx.ObjcCategoryId where
     k2 <- Glean.keyOf n2
     return [k1,k2] -- which order?
 
-instance Symbol Cxx.ObjcSelector where
-  toSymbol k = reverse <$> Glean.keyOf k -- :: [Text] ? order?
-
 -- Currently we don't encode the parameter name, just its type.
 -- > "folly::dynamic::Array &&"
 toTypeSymbol :: Cxx.Type -> Glean.RepoHaxl u w Text
@@ -356,6 +360,7 @@ instance ToSymbolParent Cxx.Entity where
     Cxx.Entity_decl x -> toSymbolParent x
     Cxx.Entity_defn{} -> return Nothing
     Cxx.Entity_enumerator x -> Glean.keyOf x >>= toSymbolParent
+    Cxx.Entity_objcSelectorSlot{} -> return Nothing
     Cxx.Entity_EMPTY -> return Nothing
 
 instance ToSymbolParent Cxx.Declaration where
@@ -475,6 +480,11 @@ cxxEntityDefinitionType e = case e of
   Cxx.Entity_decl{} -> Glass.DefinitionKind_Declaration
   Cxx.Entity_defn{} -> Glass.DefinitionKind_Definition
   Cxx.Entity_enumerator{} -> Glass.DefinitionKind_Definition -- is this ok?
+  Cxx.Entity_objcSelectorSlot (Cxx.ObjcSelectorSlotEntity method _) -> do
+    case method of
+      Cxx.ObjcMethodEntity_decl{} -> Glass.DefinitionKind_Declaration
+      Cxx.ObjcMethodEntity_defn{} -> Glass.DefinitionKind_Definition
+      Cxx.ObjcMethodEntity_EMPTY -> Glass.DefinitionKind_Definition -- fallback
   Cxx.Entity_EMPTY -> Glass.DefinitionKind_Definition -- fallback to definition
 
 --
@@ -484,7 +494,8 @@ cxxEntityKind :: Cxx.Entity -> Glean.RepoHaxl u w (Maybe Glass.SymbolKind)
 cxxEntityKind e = case e of
   Cxx.Entity_decl x -> toSymbolDeclKind x
   Cxx.Entity_defn x -> toSymbolDefnKind x
-  Cxx.Entity_enumerator{} -> return (Just SymbolKind_Enumerator)
+  Cxx.Entity_enumerator{} -> return $ Just SymbolKind_Enumerator
+  Cxx.Entity_objcSelectorSlot{} -> return $ Just SymbolKind_Method
   Cxx.Entity_EMPTY -> return Nothing
 
 -- to match idelsp/GleanLSPConverter.php

@@ -8,6 +8,7 @@ type Entity =
     decl : cxx1.Declaration |
     defn : Definition |
     enumerator : cxx1.Enumerator |
+    objcSelectorSlot : ObjcSelectorSlotEntity |
   }
 
 type Definition =
@@ -21,6 +22,17 @@ type Definition =
     namespace_ : cxx1.NamespaceDefinition |
   }
 
+type ObjcMethodEntity =
+  {
+    decl : cxx1.ObjcMethodDeclaration |
+    defn : cxx1.ObjcMethodDefinition |
+  }
+
+type ObjcSelectorSlotEntity =
+  {
+    objcMethod : ObjcMethodEntity,
+    index : nat,
+  }
 
 # Map from any declaration to its definition(s), either through its
 # DeclFamily or directly from itself.

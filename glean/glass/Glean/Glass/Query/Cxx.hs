@@ -21,6 +21,7 @@ import Data.Maybe ( catMaybes )
 import Data.Map.Strict ( Map )
 import qualified Data.Map as Map
 import Data.Text (Text)
+import Safe (atMay)
 import Util.List ( uniq )
 
 import qualified Glean
@@ -261,13 +262,21 @@ zipXRefSourcesAndDefinitions
   -> [[Maybe (Code.Entity, Code.Location)]]
   -> [(Code.XRefLocation, Code.Entity)]
 zipXRefSourcesAndDefinitions declToDefMap sources targets = catMaybes
-  [ case Map.lookup decl declToDefMap of
-      Nothing -> Nothing
-      Just (entity, targetLocation) -> Just
-        (xrefFromLocationAndSpan targetLocation span, entity)
+  [ case entity of
+      Cxx.Entity_decl decl -> do
+        (entity, targetLocation) <- Map.lookup decl declToDefMap
+        return (xrefFromLocationAndSpan targetLocation span, entity)
+      Cxx.Entity_objcSelectorSlot (Cxx.ObjcSelectorSlotEntity
+          (Cxx.ObjcMethodEntity_decl decl) idx) -> do
+        (Code.Entity_cxx (Cxx.Entity_defn (Cxx.Definition_objcMethod defn)), _)
+          <- Map.lookup (Cxx.Declaration_objcMethod decl) declToDefMap
+        (entity, location) <- objcSelectorSlotLocation $
+          Cxx.ObjcSelectorSlotEntity (Cxx.ObjcMethodEntity_defn defn) idx
+        return (xrefFromLocationAndSpan location span, entity)
+      _ -> Nothing
   | (spans, xrefs) <- zip sources targets -- find just the decls
   , span <- spans
-  , Just (Code.Entity_cxx (Cxx.Entity_decl decl), _) <- xrefs
+  , Just (Code.Entity_cxx entity, _) <- xrefs
   ]
 
 xrefFromLocationAndSpan :: Code.Location -> Src.ByteSpan -> Code.XRefLocation
@@ -330,6 +339,32 @@ declToDefXRefs
 declToDefXRefs mlimit traceId = searchRecursiveWithLimit mlimit $
   cxxFileEntityTraceDeclToDefXRefLocations traceId
 
+objcSelectorSlotLocation
+  :: Cxx.ObjcSelectorSlotEntity -> Maybe (Code.Entity, Code.Location)
+objcSelectorSlotLocation slot@(Cxx.ObjcSelectorSlotEntity method idx) = do
+  decl <- case method of
+    Cxx.ObjcMethodEntity_decl decl -> Just decl
+    Cxx.ObjcMethodEntity_defn Cxx.ObjcMethodDefinition{
+      objcMethodDefinition_key = Just decl} -> Just decl
+    _ -> Nothing
+  Cxx.ObjcMethodDeclaration_key{
+    objcMethodDeclaration_key_selector = Cxx.ObjcSelector{
+      objcSelector_key = Just selector
+    },
+    objcMethodDeclaration_key_locations = locations
+  } <- Glean.getFactKey decl
+  let index = fromIntegral $ Glean.fromNat idx
+  name <- atMay selector index
+  Src.FileLocation{..} <- atMay locations index
+  return (
+    Code.Entity_cxx (Cxx.Entity_objcSelectorSlot slot),
+    Code.Location {
+      Code.location_name = name,
+      Code.location_file = fileLocation_file,
+      Code.location_location = Code.RangeSpan_span fileLocation_span,
+      Code.location_destination = Nothing
+    })
+
 -- Basically the body of CxxFileEntityTraceFixedXRefLocations
 -- But split between client and server calls.
 --
@@ -383,9 +418,14 @@ cxxXRefTargetToLocation _ (Cxx.XRefTarget_enumerator enumerator) = do
     }
   return $ Just (entity, location)
 
+cxxXRefTargetToLocation _ (Cxx.XRefTarget_objcSelectorSlot slot) =
+  return $ objcSelectorSlotLocation $
+    Cxx.ObjcSelectorSlotEntity (Cxx.ObjcMethodEntity_decl method) idx
+  where
+    (Cxx.ObjcSelectorSlot method idx) = slot
+
 {-
 XRefTarget_objcSelector ObjcSelector
-XRefTarget_objcSelectorSlot ObjcSelectorSlot
 XRefTarget_unknown Loc
 -}
 cxxXRefTargetToLocation _ _ = return Nothing
