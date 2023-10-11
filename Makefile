@@ -174,6 +174,7 @@ SCHEMAS= \
 	codemarkup_search \
 	codemarkup_thrift \
 	codemarkup_types \
+	code_fbthrift \
 	code_pp \
 	code_python \
 	code_scip \
@@ -211,6 +212,7 @@ SCHEMAS= \
 	symbolid_java \
 	symbolid_kotlin \
 	sys \
+	fbthrift \
 	thrift \
 
 .PHONY: thrift
