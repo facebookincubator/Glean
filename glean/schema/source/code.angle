@@ -103,7 +103,7 @@ type Annotations =
     java : code.java.Annotations |
     python : code.python.Annotations |
     hack : code.hack.Annotations |
-    thrift : code.fbthrift.Annotations |
+    thrift : code.thrift.Annotations |
     fbthrift : code.fbthrift.Annotations |
   }
 
