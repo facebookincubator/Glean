@@ -134,7 +134,7 @@ struct TaskWaiting {}
 
 struct TaskRunning {
   // ParcelState for parcels [0,1..n-1] where n is Recipe.parcels.
-  1: list<ParcelState> (hs.type = "Vector") parcels;
+  1: list_ParcelState_7430 parcels;
 }
 
 struct TaskFinished {
@@ -254,7 +254,7 @@ struct Batch {
   //   - all elements are unique
   //   - ids are reasonably dense (writing the batch to the db will use a
   //     data structure of size O(max id - firstId))
-  4: optional list<i64> (hs.type = "VectorStorable") ids;
+  4: optional list_i64_7948 ids;
 
   // (optional for now)
   //
@@ -268,7 +268,7 @@ struct Batch {
   //
   // Units do not need to be declared beforehand; a Unit exists if
   // it is the owner of at least one fact.
-  5: map<UnitName, listOfIds> (hs.type = "HashMap") owned;
+  5: map_UnitName_listOfIds_7119 owned;
 
   // Specifies explicit dependencies of derived facts per predicate.
   //
@@ -283,7 +283,7 @@ struct Batch {
 
 struct Subst {
   1: Id firstId;
-  2: list<i64> (hs.type = "VectorStorable") ids;
+  2: list_i64_7948 ids;
 }
 
 struct Error {
@@ -803,8 +803,8 @@ struct UserQueryResultsBin {
 
 struct UserQueryResultsListBin {
   1: UserQueryEncodingListBin encoding;
-  2: list<Id> (hs.type = "Vector") ids;
-  3: list<Fact> (hs.type = "Vector") facts;
+  2: list_Id_2029 ids;
+  3: list_Fact_2137 facts;
   4: map<Id, Fact> nestedFacts;
 }
 
@@ -1302,3 +1302,12 @@ struct PredicateAnnotation {
   1: PredicateName name;
   2: i32 version;
 }
+
+// The following were automatically generated and may benefit from renaming.
+typedef list<Fact> (hs.type = "Vector") list_Fact_2137
+typedef list<Id> (hs.type = "Vector") list_Id_2029
+typedef list<ParcelState> (hs.type = "Vector") list_ParcelState_7430
+typedef list<i64> (hs.type = "VectorStorable") list_i64_7948
+typedef map<UnitName, listOfIds> (
+  hs.type = "HashMap",
+) map_UnitName_listOfIds_7119
