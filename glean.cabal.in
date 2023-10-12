@@ -652,10 +652,12 @@ library schema
         Glean.Schema.CodemarkupScip
         Glean.Schema.CodemarkupSearch
         Glean.Schema.CodemarkupThrift
+        Glean.Schema.CodemarkupFbthrift
         Glean.Schema.CodemarkupTypes
         Glean.Schema.CodePp
         Glean.Schema.CodePython
         Glean.Schema.CodeThrift
+        Glean.Schema.CodeFbthrift
         Glean.Schema.CodeBuck
         Glean.Schema.Cxx1
         Glean.Schema.Digest
@@ -705,6 +707,7 @@ library schema
         Glean.Schema.CodemarkupScip.Types
         Glean.Schema.CodemarkupSearch.Types
         Glean.Schema.CodemarkupThrift.Types
+        Glean.Schema.CodemarkupFbthrift.Types
         Glean.Schema.Codemarkup.Types
         Glean.Schema.CodemarkupTypes.Types
         Glean.Schema.CodePp.Types

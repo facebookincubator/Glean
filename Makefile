@@ -173,12 +173,14 @@ SCHEMAS= \
 	codemarkup_scip \
 	codemarkup_search \
 	codemarkup_thrift \
+	codemarkup_fbthrift \
 	codemarkup_types \
 	code_fbthrift \
 	code_pp \
 	code_python \
 	code_scip \
 	code_thrift \
+	code_fbthrift \
 	cxx1 \
 	digest \
 	docmarkup \
