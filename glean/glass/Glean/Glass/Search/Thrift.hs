@@ -23,8 +23,8 @@ import Glean.Glass.Query ( entityLocation )
 import Glean.Glass.Utils ( joinFragments )
 
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
-import qualified Glean.Schema.Thrift.Types as Thrift
-import qualified Glean.Schema.CodeThrift.Types as Thrift
+import qualified Glean.Schema.Fbthrift.Types as Thrift
+import qualified Glean.Schema.CodeFbthrift.Types as Thrift
 import qualified Glean.Schema.Src.Types as Src
 
 instance Search Thrift.Entity where
@@ -73,7 +73,7 @@ searchQName path name =
         field @"qname" (asPredicate qname) $
         field @"decl" decl
       end),
-    entityLocation (alt @"thrift" (alt @"decl" decl)) file rangespan lname
+    entityLocation (alt @"fbthrift" (alt @"decl" decl)) file rangespan lname
   ]
 
 searchFunctionName
@@ -99,7 +99,7 @@ searchFunctionName path servicename name =
         field @"name" (string name) $
         field @"decl" decl
       end),
-    entityLocation (alt @"thrift" (alt @"decl" decl)) file rangespan lname
+    entityLocation (alt @"fbthrift" (alt @"decl" decl)) file rangespan lname
   ]
 
 searchThriftFile :: Text -> Angle (ResultLocation Thrift.Declaration)
@@ -111,5 +111,5 @@ searchThriftFile path = vars $ \(file :: Angle Src.File)
       thriftFile .= predicate @Thrift.File file,
       decl .= sig (alt @"include_"
               (asPredicate thriftFile) :: Angle Thrift.Declaration),
-      entityLocation (alt @"thrift" (alt @"decl" decl)) file rangespan lname
+      entityLocation (alt @"fbthrift" (alt @"decl" decl)) file rangespan lname
     ]
