@@ -14,7 +14,7 @@ namespace hs Glean
 
 // The Schema stored in a DB
 struct StoredSchema {
-  1: string_321 schema;
+  1: string (hs.type = "ByteString") schema;
   2: map<glean.Id, glean.PredicateRef> predicateIds;
 
   // We store the SchemaId corresponding to each all.version in the
@@ -105,6 +105,3 @@ struct SchemaIndex {
   // Older versions of the schema we also know about
   2: list<SchemaInstance> older;
 }
-
-// The following were automatically generated and may benefit from renaming.
-typedef string (hs.type = "ByteString") string_321
