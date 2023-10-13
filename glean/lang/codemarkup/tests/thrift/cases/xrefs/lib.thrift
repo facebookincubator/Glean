@@ -11,8 +11,6 @@ namespace hack GleanGlass
 namespace py3 glean
 namespace cpp2 glean
 
-include "thrift/annotation/hack.thrift"
-
 typedef string RepoName (hs.newtype)
 
 typedef string Path (hs.newtype)
@@ -162,14 +160,6 @@ struct SearchContext {
   4: set<SymbolKind> kinds;
 }
 
-@hack.Attributes{
-  attributes = [
-    "\GraphQLEnum('GlassSymbolKind')",
-    "\RelayFlowEnum",
-    "\SelfDescriptive",
-    "\Oncalls('code_indexing')",
-  ],
-}
 enum SymbolKind {
   Package = 1,
   Type = 2,
@@ -201,16 +191,10 @@ enum SymbolKind {
   TypeParameter = 28,
   Union = 29,
   Macro = 30,
-}
+} (
+  hack.attributes = "\GraphQLEnum('GlassSymbolKind'), \RelayFlowEnum, \SelfDescriptive, \Oncalls('code_indexing')",
+)
 
-@hack.Attributes{
-  attributes = [
-    "\GraphQLEnum('GlassLanguage')",
-    "\RelayFlowEnum",
-    "\SelfDescriptive",
-    "\Oncalls('code_indexing')",
-  ],
-}
 enum Language {
   Cpp = 1,
   JavaScript = 2,
@@ -223,19 +207,16 @@ enum Language {
   Thrift = 9,
   Rust = 10,
   Buck = 11,
-}
+} (
+  hack.attributes = "\GraphQLEnum('GlassLanguage'), \RelayFlowEnum, \SelfDescriptive, \Oncalls('code_indexing')",
+)
 
-@hack.Attributes{
-  attributes = [
-    "\GraphQLEnum('GlassDefinitionKind')",
-    "\SelfDescriptive",
-    "\Oncalls('code_indexing')",
-  ],
-}
 enum DefinitionKind {
   Definition = 1,
   Declaration = 2,
-}
+} (
+  hack.attributes = "\GraphQLEnum('GlassDefinitionKind'), \SelfDescriptive, \Oncalls('code_indexing')",
+)
 
 struct SearchByNameRequest {
   1: SearchContext context;
