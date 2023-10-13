@@ -355,7 +355,7 @@
         },
         "destination": {
           "file": { "key": "test.mm" },
-          "span": { "start": 431, "length": 1 }
+          "span": { "start": 440, "length": 6 }
         }
       },
       "tuplefield1": {
@@ -470,7 +470,7 @@
         },
         "destination": {
           "file": { "key": "test.mm" },
-          "span": { "start": 236, "length": 1 }
+          "span": { "start": 244, "length": 6 }
         }
       },
       "tuplefield1": {

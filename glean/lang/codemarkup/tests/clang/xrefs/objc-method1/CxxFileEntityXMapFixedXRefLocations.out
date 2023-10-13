@@ -1631,7 +1631,7 @@
           },
           "destination": {
             "file": { "key": "test.mm" },
-            "span": { "start": 236, "length": 1 }
+            "span": { "start": 244, "length": 6 }
           }
         },
         "source": { "span": { "start": 315, "length": 30 } }
@@ -1961,7 +1961,7 @@
           },
           "destination": {
             "file": { "key": "test.mm" },
-            "span": { "start": 236, "length": 1 }
+            "span": { "start": 244, "length": 6 }
           }
         },
         "source": { "span": { "start": 451, "length": 30 } }

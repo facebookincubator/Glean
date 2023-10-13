@@ -221,7 +221,7 @@
         },
         "destination": {
           "file": { "key": "test.m" },
-          "span": { "start": 235, "length": 1 }
+          "span": { "start": 242, "length": 2 }
         }
       },
       "entity": {
@@ -275,7 +275,7 @@
         },
         "destination": {
           "file": { "key": "test.m" },
-          "span": { "start": 246, "length": 1 }
+          "span": { "start": 252, "length": 2 }
         }
       },
       "entity": {
@@ -334,7 +334,7 @@
         },
         "destination": {
           "file": { "key": "test.m" },
-          "span": { "start": 265, "length": 1 }
+          "span": { "start": 271, "length": 3 }
         }
       },
       "entity": {
@@ -398,7 +398,7 @@
         },
         "destination": {
           "file": { "key": "test.m" },
-          "span": { "start": 298, "length": 1 }
+          "span": { "start": 304, "length": 3 }
         }
       },
       "entity": {

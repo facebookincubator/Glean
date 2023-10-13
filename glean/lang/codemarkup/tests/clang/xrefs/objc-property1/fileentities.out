@@ -191,7 +191,7 @@
         },
         "destination": {
           "file": { "key": "test.m" },
-          "span": { "start": 235, "length": 1 }
+          "span": { "start": 242, "length": 3 }
         }
       },
       "entity": {
@@ -245,7 +245,7 @@
         },
         "destination": {
           "file": { "key": "test.m" },
-          "span": { "start": 247, "length": 1 }
+          "span": { "start": 255, "length": 6 }
         }
       },
       "entity": {

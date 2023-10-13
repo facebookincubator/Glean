@@ -137,7 +137,7 @@
           },
           "destination": {
             "file": { "key": "test.m" },
-            "span": { "start": 235, "length": 1 }
+            "span": { "start": 242, "length": 3 }
           }
         },
         "source": { "span": { "start": 314, "length": 3 } }
@@ -194,7 +194,7 @@
           },
           "destination": {
             "file": { "key": "test.m" },
-            "span": { "start": 235, "length": 1 }
+            "span": { "start": 242, "length": 3 }
           }
         },
         "source": { "span": { "start": 335, "length": 3 } }
@@ -251,7 +251,7 @@
           },
           "destination": {
             "file": { "key": "test.m" },
-            "span": { "start": 247, "length": 1 }
+            "span": { "start": 255, "length": 6 }
           }
         },
         "source": { "span": { "start": 301, "length": 3 } }
@@ -313,7 +313,7 @@
           },
           "destination": {
             "file": { "key": "test.m" },
-            "span": { "start": 247, "length": 1 }
+            "span": { "start": 255, "length": 6 }
           }
         },
         "source": { "span": { "start": 314, "length": 3 } }
