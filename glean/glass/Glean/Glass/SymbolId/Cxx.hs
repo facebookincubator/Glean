@@ -226,9 +226,11 @@ instance Symbol Cxx.ObjcContainerDeclaration_key where
   toSymbol (Cxx.ObjcContainerDeclaration_key cid _) = toSymbol cid
 
 instance Symbol Cxx.ObjcMethodDeclaration_key where
-  toSymbol (Cxx.ObjcMethodDeclaration_key name _ _ cid _ _ _ _ _) = do
-    xs <- toSymbol cid
-    return $ xs ++ [name]
+  toSymbol Cxx.ObjcMethodDeclaration_key {
+    objcMethodDeclaration_key_selector = selector,
+    objcMethodDeclaration_key_container = cid
+  } =
+    cid <:> selector
 
 instance Symbol Cxx.ObjcPropertyDeclaration_key where
   toSymbol (Cxx.ObjcPropertyDeclaration_key name cid _ty _ _ _ _ _) =
@@ -319,6 +321,9 @@ instance Symbol Cxx.ObjcCategoryId where
     k1 <- Glean.keyOf n1
     k2 <- Glean.keyOf n2
     return [k1,k2] -- which order?
+
+instance Symbol Cxx.ObjcSelector where
+  toSymbol k = Glean.keyOf k
 
 -- Currently we don't encode the parameter name, just its type.
 -- > "folly::dynamic::Array &&"

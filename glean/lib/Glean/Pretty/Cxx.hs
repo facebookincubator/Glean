@@ -118,6 +118,9 @@ instance Pretty ObjcContainerDeclaration where
 instance Pretty Cxx.Enumerator where
   pretty = prettyEnumerator
 
+instance Pretty Cxx.ObjcSelector where
+  pretty = prettyObjcSelector
+
 instance Pretty Cxx.ObjcContainerId where
   pretty = prettyObjcContId
 
@@ -166,12 +169,15 @@ prettyDecls decls = vsep $ map (\decl -> pretty decl <> line) decls
 prettyObjcMethodDecl :: Cxx.ObjcMethodDeclaration -> Doc ann
 prettyObjcMethodDecl Cxx.ObjcMethodDeclaration {
   objcMethodDeclaration_key = Just Cxx.ObjcMethodDeclaration_key {
-    objcMethodDeclaration_key_name = name,
+    objcMethodDeclaration_key_selector = selector,
     objcMethodDeclaration_key_container = contId,
     objcMethodDeclaration_key_signature = signature_,
     objcMethodDeclaration_key_source = range
   }} = vsep [
-    sep [ prettyRetType signature_, pretty name, prettyObjcContId contId ],
+    sep [
+      prettyRetType signature_,
+      prettyObjcSelector selector,
+      prettyObjcContId contId],
     "at" <+> pretty range
   ]
 prettyObjcMethodDecl _ = ""
@@ -202,6 +208,14 @@ prettyObjcMethodDeclSignature Cxx.ObjcMethodDeclaration_key {
     mergeSig s p = pretty s <> colon
       <> lparen <> prettyType (parameter_type p) <> rparen
       <> prettyName (parameter_name p)
+
+prettyObjcSelector :: Cxx.ObjcSelector -> Doc ann
+prettyObjcSelector Cxx.ObjcSelector { objcSelector_key = mSelector }
+  | Nothing <- mSelector = mempty
+  | Just selectors <- mSelector =
+      case selectors of
+        [] -> mempty
+        nonEmpty -> fillSep $ map (\ h -> pretty h <> colon) nonEmpty
 
 prettyObjcSelectorSlot :: Cxx.ObjcSelectorSlotEntity -> Doc ann
 prettyObjcSelectorSlot (Cxx.ObjcSelectorSlotEntity method idx) =
