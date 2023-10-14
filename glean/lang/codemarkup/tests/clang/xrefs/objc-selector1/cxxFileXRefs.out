@@ -42,7 +42,6 @@
                 "declaration": {
                   "objcMethod": {
                     "key": {
-                      "name": "checkSelector:",
                       "selector": { "key": [ "checkSelector" ] },
                       "locations": [
                         {
@@ -126,7 +125,6 @@
                 "objcSelectorSlot": {
                   "objcMethod": {
                     "key": {
-                      "name": "checkSelector:",
                       "selector": { "key": [ "checkSelector" ] },
                       "locations": [
                         {

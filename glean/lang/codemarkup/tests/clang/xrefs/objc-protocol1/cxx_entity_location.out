@@ -6,7 +6,6 @@
         "decl": {
           "objcMethod": {
             "key": {
-              "name": "checkProtocol:",
               "selector": { "key": [ "checkProtocol" ] },
               "locations": [
                 {
@@ -227,7 +226,6 @@
                   {
                     "objcMethod": {
                       "key": {
-                        "name": "checkProtocol:",
                         "selector": { "key": [ "checkProtocol" ] },
                         "locations": [
                           {

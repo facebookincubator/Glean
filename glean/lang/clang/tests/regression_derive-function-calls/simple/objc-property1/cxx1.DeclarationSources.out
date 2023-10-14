@@ -91,7 +91,6 @@
                 "span": { "length": 3, "start": 242 }
               }
             ],
-            "name": "foo",
             "selector": { "key": [ "foo" ] },
             "signature": {
               "key": { "parameters": [ ], "returns": { "key": "int" } }
@@ -152,7 +151,6 @@
                 "span": { "length": 6, "start": 255 }
               }
             ],
-            "name": "setFoo:",
             "selector": { "key": [ "setFoo" ] },
             "signature": {
               "key": {

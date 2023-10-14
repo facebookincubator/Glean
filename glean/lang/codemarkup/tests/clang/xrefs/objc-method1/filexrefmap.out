@@ -32,7 +32,6 @@
             "declaration": {
               "objcMethod": {
                 "key": {
-                  "name": "setInt:setDouble:",
                   "selector": { "key": [ "setInt", "setDouble" ] },
                   "locations": [
                     {
@@ -116,7 +115,6 @@
             "objcSelectorSlot": {
               "objcMethod": {
                 "key": {
-                  "name": "setInt:setDouble:",
                   "selector": { "key": [ "setInt", "setDouble" ] },
                   "locations": [
                     {
@@ -164,7 +162,6 @@
             "objcSelectorSlot": {
               "objcMethod": {
                 "key": {
-                  "name": "setInt:setDouble:",
                   "selector": { "key": [ "setInt", "setDouble" ] },
                   "locations": [
                     {

@@ -28,7 +28,6 @@
         "decl": {
           "objcMethod": {
             "key": {
-              "name": "f1",
               "selector": { "key": [ "f1" ] },
               "locations": [
                 {
@@ -64,7 +63,6 @@
         "decl": {
           "objcMethod": {
             "key": {
-              "name": "f2:",
               "selector": { "key": [ "f2" ] },
               "locations": [
                 {
@@ -105,7 +103,6 @@
         "decl": {
           "objcMethod": {
             "key": {
-              "name": "f3a:f3b:",
               "selector": { "key": [ "f3a", "f3b" ] },
               "locations": [
                 {
@@ -151,7 +148,6 @@
         "decl": {
           "objcMethod": {
             "key": {
-              "name": "f4a::",
               "selector": { "key": [ "f4a", "" ] },
               "locations": [
                 {

@@ -62,7 +62,6 @@
             "declaration": {
               "objcMethod": {
                 "key": {
-                  "name": "setFoo:",
                   "selector": { "key": [ "setFoo" ] },
                   "locations": [
                     {
@@ -133,7 +132,6 @@
             "declaration": {
               "objcMethod": {
                 "key": {
-                  "name": "foo",
                   "selector": { "key": [ "foo" ] },
                   "locations": [
                     {
@@ -166,7 +164,6 @@
             "declaration": {
               "objcMethod": {
                 "key": {
-                  "name": "setFoo:",
                   "selector": { "key": [ "setFoo" ] },
                   "locations": [
                     {
@@ -237,7 +234,6 @@
             "declaration": {
               "objcMethod": {
                 "key": {
-                  "name": "foo",
                   "selector": { "key": [ "foo" ] },
                   "locations": [
                     {

@@ -25,7 +25,6 @@
                     {
                       "objcMethod": {
                         "key": {
-                          "name": "setInt:setDouble:",
                           "selector": { "key": [ "setInt", "setDouble" ] },
                           "locations": [
                             {
@@ -102,7 +101,6 @@
                     {
                       "objcMethod": {
                         "key": {
-                          "name": "setInt:setDouble:",
                           "selector": { "key": [ "setInt", "setDouble" ] },
                           "locations": [
                             {

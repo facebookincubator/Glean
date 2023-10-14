@@ -30,7 +30,6 @@
                   "span": { "length": 2, "start": 242 }
                 }
               ],
-              "name": "f1",
               "selector": { "key": [ "f1" ] },
               "signature": {
                 "key": { "parameters": [ ], "returns": { "key": "int" } }
@@ -58,7 +57,6 @@
                   "span": { "length": 2, "start": 253 }
                 }
               ],
-              "name": "f2:",
               "selector": { "key": [ "f2" ] },
               "signature": {
                 "key": {
@@ -95,7 +93,6 @@
                   "span": { "length": 3, "start": 286 }
                 }
               ],
-              "name": "f3a:f3b:",
               "selector": { "key": [ "f3a", "f3b" ] },
               "signature": {
                 "key": {
@@ -192,7 +189,6 @@
                 "span": { "length": 3, "start": 497 }
               }
             ],
-            "name": "f4a::",
             "selector": { "key": [ "", "f4a" ] },
             "signature": {
               "key": {
@@ -231,7 +227,6 @@
                   "span": { "length": 3, "start": 286 }
                 }
               ],
-              "name": "f3a:f3b:",
               "selector": { "key": [ "f3a", "f3b" ] },
               "signature": {
                 "key": {
@@ -306,7 +301,6 @@
                 "span": { "length": 2, "start": 392 }
               }
             ],
-            "name": "f2:",
             "selector": { "key": [ "f2" ] },
             "signature": {
               "key": {
@@ -340,7 +334,6 @@
                   "span": { "length": 2, "start": 242 }
                 }
               ],
-              "name": "f1",
               "selector": { "key": [ "f1" ] },
               "signature": {
                 "key": { "parameters": [ ], "returns": { "key": "int" } }
@@ -377,7 +370,6 @@
                 "span": { "length": 3, "start": 449 }
               }
             ],
-            "name": "f3a:f3b:",
             "selector": { "key": [ "f3a", "f3b" ] },
             "signature": {
               "key": {
@@ -412,7 +404,6 @@
                   "span": { "length": 2, "start": 253 }
                 }
               ],
-              "name": "f2:",
               "selector": { "key": [ "f2" ] },
               "signature": {
                 "key": {

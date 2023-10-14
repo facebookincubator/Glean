@@ -55,7 +55,6 @@
           "decl": {
             "objcMethod": {
               "key": {
-                "name": "setInt:setDouble:",
                 "selector": { "key": [ "setInt", "setDouble" ] },
                 "locations": [
                   {
@@ -103,7 +102,6 @@
           "decl": {
             "objcMethod": {
               "key": {
-                "name": "setInt:setDouble:",
                 "selector": { "key": [ "setInt", "setDouble" ] },
                 "locations": [
                   {

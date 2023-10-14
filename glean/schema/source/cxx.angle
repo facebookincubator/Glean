@@ -172,20 +172,14 @@ predicate ObjcContainerDeclaration :
   }
 
 # Objective C selector
+#
+# T166420010: This is not fully correct. Specifically, ObjC selectors
+# `method` and `method:` are different, but isn't distinguished here.
 predicate ObjcSelector : [string]
 
 # Objective C method declaration
 predicate ObjcMethodDeclaration :
   {
-    # The full name of an ObjC method declaration.
-    #
-    # If the method has no parameters, the name is the method name. e.g., `foo`
-    # If the method has 1 parameter, the name ends with a colon. e.g., `foo:`
-    # If the method has multiple parameters, the parameter names are
-    # concatenated with a colon. e.g., `foo:bar:`
-    #
-    # Parameters may have no name, in which case they are omitted. e.g., `foo::`
-    name : string,
     selector : ObjcSelector,
     # Locations of the slots of the selector.
     # These correspond to the `selector` entries.
@@ -196,6 +190,26 @@ predicate ObjcMethodDeclaration :
     isOptional : bool,
     isAccessor : bool,
     source : src.Range,
+  }
+
+# The full name of an ObjC method declaration.
+#
+# If the method has no parameters, the name is the method name. e.g., `foo`
+# If the method has 1 parameter, the name ends with a colon. e.g., `foo:`
+# If the method has multiple parameters, the parameter names are
+# concatenated with a colon. e.g., `foo:bar:`
+#
+# Parameters may have no name, in which case they are omitted. e.g., `foo::`
+#
+# NOTE: Even with `ObjcSelector` not being sufficient in fully capturing
+# the name, we can deduce this name for a method since we have the `signature`.
+# That is, `parameters = []` is `method`, and `parameters = [_]` is `method:`.
+# However, Angle currently isn't powerful enough for us to perform string join
+# operations. As such, we produce these in the indexer and store them for now.
+predicate ObjcMethodDeclarationName :
+  {
+    decl : ObjcMethodDeclaration,
+    name : Name,
   }
 
 # Objective C property declaration
@@ -1165,17 +1179,18 @@ predicate DeclarationLocationName :
       ( { objcContainer = X } = Decl;
         X = ObjcContainerDeclaration { source = Range, id = Id };
         ObjContainerIdName { Id, Name }) |
+      ( { objcMethod = X } = Decl;
+        X = ObjcMethodDeclaration { source = Range };
+        ObjcMethodDeclarationName { X, Name }) |
       ( { objcProperty = X } = Decl;
         X = ObjcPropertyDeclaration { source = Range, name = Name }) |
       ( { typeAlias = X } = Decl;
         X = TypeAliasDeclaration { source = Range, name = { name = Name }});
       Name = Name NameStr
     ) | (
-      ( { function_ = X } = Decl;
-        FunctionDeclaration { source = Range, name = { FName, _ } } = X;
-        FunctionDeclarationNameString { FName, NameStr }) |
-      ( { objcMethod = X } = Decl;
-        X = ObjcMethodDeclaration { source = Range, name = NameStr })
+      { function_ = X } = Decl;
+      FunctionDeclaration { source = Range, name = { FName, _ } } = X;
+      FunctionDeclarationNameString { FName, NameStr }
     )
 
 # short name for function declarations
@@ -1248,17 +1263,18 @@ predicate DeclarationLocationNameSpan :
       ( { objcContainer = X } = Decl;
         X = ObjcContainerDeclaration { id = Id, source = Range };
         ObjContainerIdName { Id, Name }) |
+      ( { objcMethod = X } = Decl;
+        X = ObjcMethodDeclaration { source = Range };
+        ObjcMethodDeclarationName { X, Name }) |
       ( { objcProperty = X } = Decl;
         X = ObjcPropertyDeclaration { name = Name, source = Range }) |
       ( { typeAlias = X } = Decl;
         X = TypeAliasDeclaration { name = { name = Name }, source = Range });
       Name = Name NameStr
     ) | (
-      ( { function_ = X } = Decl;
-        FunctionDeclaration { name = { FName, _ }, source = Range } = X;
-        FunctionDeclarationNameString { FName, NameStr }) |
-      ( { objcMethod = X } = Decl;
-        X = ObjcMethodDeclaration { name = NameStr, source = Range })
+      { function_ = X } = Decl;
+      FunctionDeclaration { name = { FName, _ }, source = Range } = X;
+      FunctionDeclarationNameString { FName, NameStr }
     );
     DeclarationNameSpan { Decl, File, Span }
 

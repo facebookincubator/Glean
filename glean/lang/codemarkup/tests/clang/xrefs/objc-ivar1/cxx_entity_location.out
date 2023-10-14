@@ -108,7 +108,6 @@
                   {
                     "objcMethod": {
                       "key": {
-                        "name": "testMethod",
                         "selector": { "key": [ "testMethod" ] },
                         "locations": [
                           {
@@ -255,7 +254,6 @@
           "objcMethod": {
             "key": {
               "key": {
-                "name": "testMethod",
                 "selector": { "key": [ "testMethod" ] },
                 "locations": [
                   {

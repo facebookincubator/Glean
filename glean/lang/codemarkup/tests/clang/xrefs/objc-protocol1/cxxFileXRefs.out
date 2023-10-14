@@ -34,7 +34,6 @@
                 "declaration": {
                   "objcMethod": {
                     "key": {
-                      "name": "checkProtocol:",
                       "selector": { "key": [ "checkProtocol" ] },
                       "locations": [
                         {
@@ -118,7 +117,6 @@
                 "objcSelectorSlot": {
                   "objcMethod": {
                     "key": {
-                      "name": "checkProtocol:",
                       "selector": { "key": [ "checkProtocol" ] },
                       "locations": [
                         {

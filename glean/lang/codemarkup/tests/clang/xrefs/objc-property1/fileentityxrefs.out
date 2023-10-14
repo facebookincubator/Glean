@@ -46,7 +46,6 @@
                     {
                       "objcMethod": {
                         "key": {
-                          "name": "foo",
                           "selector": { "key": [ "foo" ] },
                           "locations": [
                             {
@@ -77,7 +76,6 @@
                     {
                       "objcMethod": {
                         "key": {
-                          "name": "setFoo:",
                           "selector": { "key": [ "setFoo" ] },
                           "locations": [
                             {
@@ -147,7 +145,6 @@
           "decl": {
             "objcMethod": {
               "key": {
-                "name": "foo",
                 "selector": { "key": [ "foo" ] },
                 "locations": [
                   {
@@ -204,7 +201,6 @@
           "decl": {
             "objcMethod": {
               "key": {
-                "name": "foo",
                 "selector": { "key": [ "foo" ] },
                 "locations": [
                   {
@@ -261,7 +257,6 @@
           "decl": {
             "objcMethod": {
               "key": {
-                "name": "setFoo:",
                 "selector": { "key": [ "setFoo" ] },
                 "locations": [
                   {
@@ -323,7 +318,6 @@
           "decl": {
             "objcMethod": {
               "key": {
-                "name": "setFoo:",
                 "selector": { "key": [ "setFoo" ] },
                 "locations": [
                   {

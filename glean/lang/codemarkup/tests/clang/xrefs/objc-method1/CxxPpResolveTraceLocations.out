@@ -111,7 +111,6 @@
                     {
                       "objcMethod": {
                         "key": {
-                          "name": "fooBar",
                           "selector": { "key": [ "fooBar" ] },
                           "locations": [
                             {
@@ -190,7 +189,6 @@
                     {
                       "objcMethod": {
                         "key": {
-                          "name": "setInt:setDouble:",
                           "selector": { "key": [ "setInt", "setDouble" ] },
                           "locations": [
                             {
@@ -364,7 +362,6 @@
             "objcMethod": {
               "key": {
                 "key": {
-                  "name": "fooBar",
                   "selector": { "key": [ "fooBar" ] },
                   "locations": [
                     {
@@ -478,7 +475,6 @@
           "decl": {
             "objcMethod": {
               "key": {
-                "name": "setInt:setDouble:",
                 "selector": { "key": [ "setInt", "setDouble" ] },
                 "locations": [
                   {

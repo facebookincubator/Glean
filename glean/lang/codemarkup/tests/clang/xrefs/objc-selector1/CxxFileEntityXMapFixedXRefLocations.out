@@ -44,7 +44,6 @@
                     "declaration": {
                       "objcMethod": {
                         "key": {
-                          "name": "checkSelector:",
                           "selector": { "key": [ "checkSelector" ] },
                           "locations": [
                             {
@@ -128,7 +127,6 @@
                     "objcSelectorSlot": {
                       "objcMethod": {
                         "key": {
-                          "name": "checkSelector:",
                           "selector": { "key": [ "checkSelector" ] },
                           "locations": [
                             {
@@ -218,7 +216,6 @@
                   {
                     "objcMethod": {
                       "key": {
-                        "name": "checkSelector:",
                         "selector": { "key": [ "checkSelector" ] },
                         "locations": [
                           {
@@ -303,7 +300,6 @@
                     "declaration": {
                       "objcMethod": {
                         "key": {
-                          "name": "checkSelector:",
                           "selector": { "key": [ "checkSelector" ] },
                           "locations": [
                             {
@@ -387,7 +383,6 @@
                     "objcSelectorSlot": {
                       "objcMethod": {
                         "key": {
-                          "name": "checkSelector:",
                           "selector": { "key": [ "checkSelector" ] },
                           "locations": [
                             {
@@ -459,7 +454,6 @@
         "decl": {
           "objcMethod": {
             "key": {
-              "name": "checkSelector:",
               "selector": { "key": [ "checkSelector" ] },
               "locations": [
                 {
@@ -536,7 +530,6 @@
                     "declaration": {
                       "objcMethod": {
                         "key": {
-                          "name": "checkSelector:",
                           "selector": { "key": [ "checkSelector" ] },
                           "locations": [
                             {
@@ -620,7 +613,6 @@
                     "objcSelectorSlot": {
                       "objcMethod": {
                         "key": {
-                          "name": "checkSelector:",
                           "selector": { "key": [ "checkSelector" ] },
                           "locations": [
                             {

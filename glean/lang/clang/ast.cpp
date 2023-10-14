@@ -2029,19 +2029,20 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         Src::Range range) {
       if (auto container =
             ObjcContainerDecl::find(visitor, d->getDeclContext())) {
-        return ObjcMethodDecl
-          { {}
-          , visitor.db.fact<Cxx::ObjcMethodDeclaration>(
-              d->getNameAsString(),
-              visitor.objcSelector(d->getSelector()).first,
-              visitor.objcSelectorLocations(d),
-              container->id,
-              visitor.signature(d->getReturnType(), d->parameters()),
-              d->isInstanceMethod(),
-              d->isOptional(),
-              d->isPropertyAccessor(),
-              range)
-          };
+        auto fact = visitor.db.fact<Cxx::ObjcMethodDeclaration>(
+            visitor.objcSelector(d->getSelector()).first,
+            visitor.objcSelectorLocations(d),
+            container->id,
+            visitor.signature(d->getReturnType(), d->parameters()),
+            d->isInstanceMethod(),
+            d->isOptional(),
+            d->isPropertyAccessor(),
+            range);
+        visitor.db.fact<Cxx::ObjcMethodDeclarationName>(
+            fact,
+            // NOTE: This use of `getNameAsString` is intentional.
+            visitor.db.name(d->getNameAsString()));
+        return ObjcMethodDecl{{}, fact};
       } else {
         return folly::none;
       }
