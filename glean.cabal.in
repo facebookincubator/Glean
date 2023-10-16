@@ -1280,6 +1280,7 @@ library glass-lib
         Glean.Glass.SymbolId.Pp
         Glean.Glass.SymbolId.Python
         Glean.Glass.SymbolId.Thrift
+        Glean.Glass.SymbolId.Fbthrift
         Glean.Glass.SymbolKind
         Glean.Glass.SymbolMap
         Glean.Glass.SymbolSig
