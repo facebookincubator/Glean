@@ -67,7 +67,6 @@ import Glean.Util.ConfigProvider
 import Glean.Util.ShardManager
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.Time (seconds)
-import Glean.Database.Catalog (entriesRestoring)
 import qualified Data.ByteString.Char8 as BS
 import qualified Data.Map as Map
 import Glean.Database.Backup.Backend
@@ -258,13 +257,8 @@ listDBs env = filter hereDBs <$> listAllDBs env
   where
     hereDBs Database{..} = database_status /= DatabaseStatus_Available
 
--- T124581378 replace with listDBs once DatabaseStatus_Available is used properly
 listHereDBs :: Env -> IO [Database]
-listHereDBs env = do
-  waitRestoring env
-  filter hereDBs <$> listAllDBs env
-  where
-    hereDBs Database{..} = database_status /= DatabaseStatus_Restoring
+listHereDBs = listDBs
 
 listAllDBs :: Env -> IO [Database]
 listAllDBs env = listDatabasesResult_databases <$> listDatabases env def
@@ -272,11 +266,6 @@ listAllDBs env = listDatabasesResult_databases <$> listDatabases env def
 waitDel :: Env -> IO ()
 waitDel env = atomically $ do
   done <- HashMap.null <$> readTVar (envDeleting env)
-  when (not done) retry
-
-waitRestoring :: Env -> IO ()
-waitRestoring env = atomically $ do
-  done <- HashMap.null . entriesRestoring <$> Catalog.getEntries (envCatalog env)
   when (not done) retry
 
 deleteOldDBsTest :: Test
