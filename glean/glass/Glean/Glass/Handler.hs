@@ -1260,13 +1260,19 @@ toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
   destination <- forM location_destination $ \Src.FileLocation{..} ->
     let rangeSpan = Code.RangeSpan_span fileLocation_span in
     rangeSpanToLocationRange repoName fileLocation_file rangeSpan
-  let range = case destination of
+
+  let nameRange = case destination of
         Just LocationRange{..} | symbolRepo == locationRange_repository &&
                                  symbolPath == locationRange_filepath
-          -> locationRange_range
-        _ -> rangeSpanToRange offsets location_location
+          -> Just locationRange_range
+        _ -> Nothing
 
-  return $ (entity,) $ DefinitionSymbolX sym range attributes
+  -- backwards compat to T166461963, range == nameRange until VS Code migrated
+  let range = case nameRange of
+        Nothing -> rangeSpanToRange offsets location_location
+        Just nr -> nr -- TODO _always_ location_location after T166461963
+
+  return $ (entity,) $ DefinitionSymbolX sym range nameRange attributes
 
 -- | Decorate an entity with 'static' attributes.
 -- These are static in that they are derivable from the entity and

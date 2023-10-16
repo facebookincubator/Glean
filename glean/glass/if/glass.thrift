@@ -176,8 +176,11 @@ struct DefinitionSymbolX {
   // a stable name for the definition
   1: SymbolId sym;
 
-  // the resolved local line:col spans in this file
+  // the line and column range of the full entity
   2: Range range (hs.strict);
+
+  // the line and column range of the entity name only
+  4: optional Range nameRange (hs.strict);
 
   // attributes of this definition
   3: AttributeList attributes;

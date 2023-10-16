@@ -19,6 +19,7 @@ module Glean.Glass.SymbolMap
 
 import qualified Data.Map.Strict as Map
 
+import Data.Maybe ( fromMaybe )
 import Data.Int ( Int64 )
 import Data.List as List ( sortBy, groupBy )
 import Data.Ord ( comparing )
@@ -76,7 +77,8 @@ definitionToSymbolX :: DefinitionSymbolX -> SymbolX
 definitionToSymbolX DefinitionSymbolX{..} =
   SymbolX {
     symbolX_sym = definitionSymbolX_sym,
-    symbolX_range = definitionSymbolX_range,
+    symbolX_range = fromMaybe definitionSymbolX_range
+      definitionSymbolX_nameRange,
     symbolX_target = Nothing,
     symbolX_attributes = Attributes.attrListToMap definitionSymbolX_attributes
   }
@@ -121,6 +123,7 @@ toDefinitions m =
   [ DefinitionSymbolX {
       definitionSymbolX_sym = symbolX_sym,
       definitionSymbolX_range = symbolX_range,
+      definitionSymbolX_nameRange = Just symbolX_range,
       definitionSymbolX_attributes =
         Attributes.attrMapToList symbolX_attributes
     }
