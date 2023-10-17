@@ -67,7 +67,7 @@ bisect !bis xs = BisectM $ attempt 0 (length xs) xs
           case xs of
             [x] -> do
               liftIO $ bisectFailed bis err x
-              e <- liftIO $ atomicModifyIORef' r (\x -> (x, max 0 (x-1)))
+              e <- liftIO $ atomicModifyIORef' r (\x -> (max 0 (x-1), x))
               when (e == 0) $ throwE (err,xs)
               return []
             _otherwise -> do
