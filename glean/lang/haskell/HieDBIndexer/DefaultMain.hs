@@ -30,7 +30,6 @@ import HieDb.Run (optParser)
 import Options.Applicative.Common (evalParser)
 import System.Directory (copyFile, doesFileExist)
 import System.IO.Extra (withTempFile)
-import Text.Printf (printf)
 import qualified Thrift.Protocol.Compact
 
 {- | Tests run concurrently, and they become flaky because the
@@ -91,7 +90,6 @@ outputMain tracer cfg out backend = withHieDB cfg $ \hiedb -> do
     withBatchWriter predicates Nothing def $ \writer ->
       writeFacts writer $
         hieFactsBuilder fileLinesMap xrefMapData
-  printf "count = %d\n" (Thrift.batch_count batch)
   BS.writeFile out (Thrift.Protocol.Compact.serializeCompact batch)
 
 

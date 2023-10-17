@@ -42,6 +42,7 @@ import HieDBIndexer.Types (
   mkGleanXReference,
  )
 import Text.Printf
+import Util.Log
 
 data IndexerException = DatabaseAlreadyExistsException
   deriving (Show, Typeable)
@@ -61,7 +62,7 @@ createGleanDB backend dontCreateDb newRepo fileLinesMap batchOutputs = do
   let buildHandle = buildRule <> "@" <> buildRevision
       Thrift.Repo{..} = newRepo
 
-  printf "Creating Glean DB %s/%s\n" repo_name repo_hash
+  logInfo $ printf "Creating Glean DB %s/%s" repo_name repo_hash
 
   let finalWriter = do
         Glean.basicWriter backend newRepo allPredicates $
@@ -115,8 +116,7 @@ createGleanDB backend dontCreateDb newRepo fileLinesMap batchOutputs = do
         , Just Thrift.PredicateRef {..} <- [AMap.lookup p predicates]
         ]
 
-  putStrLn "Repo stats: "
-  mapM_ putStrLn readableStats
+  logInfo $ unlines $ "Repo stats: " : readableStats
 
 hieFactsBuilder ::
   FileLineMap ->
