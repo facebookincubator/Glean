@@ -1261,16 +1261,14 @@ toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
     let rangeSpan = Code.RangeSpan_span fileLocation_span in
     rangeSpanToLocationRange repoName fileLocation_file rangeSpan
 
+  -- full entity range (i.e. body of the method + signature)
+  let range = rangeSpanToRange offsets location_location
+  -- entity name/identifying location range (the name token for go-to-def)
   let nameRange = case destination of
         Just LocationRange{..} | symbolRepo == locationRange_repository &&
                                  symbolPath == locationRange_filepath
           -> Just locationRange_range
         _ -> Nothing
-
-  -- backwards compat to T166461963, range == nameRange until VS Code migrated
-  let range = case nameRange of
-        Nothing -> rangeSpanToRange offsets location_location
-        Just nr -> nr -- TODO _always_ location_location after T166461963
 
   return $ (entity,) $ DefinitionSymbolX sym range nameRange attributes
 

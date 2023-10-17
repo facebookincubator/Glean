@@ -48,8 +48,8 @@
                     "lineEnd": 99
                 },
                 "range": {
-                    "columnBegin": 6,
-                    "columnEnd": 12,
+                    "columnBegin": 1,
+                    "columnEnd": 27,
                     "lineBegin": 99,
                     "lineEnd": 99
                 },
@@ -242,8 +242,8 @@
                     "lineEnd": 100
                 },
                 "range": {
-                    "columnBegin": 12,
-                    "columnEnd": 23,
+                    "columnBegin": 1,
+                    "columnEnd": 41,
                     "lineBegin": 100,
                     "lineEnd": 100
                 },
@@ -436,10 +436,10 @@
                     "lineEnd": 173
                 },
                 "range": {
-                    "columnBegin": 11,
-                    "columnEnd": 13,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 173,
-                    "lineEnd": 173
+                    "lineEnd": 193
                 },
                 "sym": "test/cpp//N1"
             },
@@ -489,10 +489,10 @@
                     "lineEnd": 175
                 },
                 "range": {
-                    "columnBegin": 11,
-                    "columnEnd": 13,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 175,
-                    "lineEnd": 175
+                    "lineEnd": 191
                 },
                 "sym": "test/cpp//N1/N2"
             },
@@ -542,10 +542,10 @@
                     "lineEnd": 186
                 },
                 "range": {
-                    "columnBegin": 8,
-                    "columnEnd": 11,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 186,
-                    "lineEnd": 186
+                    "lineEnd": 189
                 },
                 "sym": "test/cpp//N1/N2/Bar"
             },
@@ -595,10 +595,10 @@
                     "lineEnd": 205
                 },
                 "range": {
-                    "columnBegin": 20,
-                    "columnEnd": 23,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 205,
-                    "lineEnd": 205
+                    "lineEnd": 207
                 },
                 "sym": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo"
             },
@@ -648,8 +648,8 @@
                     "lineEnd": 188
                 },
                 "range": {
-                    "columnBegin": 9,
-                    "columnEnd": 12,
+                    "columnBegin": 3,
+                    "columnEnd": 27,
                     "lineBegin": 188,
                     "lineEnd": 188
                 },
@@ -701,7 +701,7 @@
                     "lineEnd": 188
                 },
                 "range": {
-                    "columnBegin": 17,
+                    "columnBegin": 13,
                     "columnEnd": 18,
                     "lineBegin": 188,
                     "lineEnd": 188
@@ -754,7 +754,7 @@
                     "lineEnd": 205
                 },
                 "range": {
-                    "columnBegin": 28,
+                    "columnBegin": 24,
                     "columnEnd": 29,
                     "lineBegin": 205,
                     "lineEnd": 205
@@ -807,8 +807,8 @@
                     "lineEnd": 177
                 },
                 "range": {
-                    "columnBegin": 11,
-                    "columnEnd": 13,
+                    "columnBegin": 1,
+                    "columnEnd": 32,
                     "lineBegin": 177,
                     "lineEnd": 177
                 },
@@ -860,8 +860,8 @@
                     "lineEnd": 177
                 },
                 "range": {
-                    "columnBegin": 23,
-                    "columnEnd": 26,
+                    "columnBegin": 16,
+                    "columnEnd": 29,
                     "lineBegin": 177,
                     "lineEnd": 177
                 },
@@ -1007,10 +1007,10 @@
                     "lineEnd": 201
                 },
                 "range": {
-                    "columnBegin": 15,
-                    "columnEnd": 18,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 201,
-                    "lineEnd": 201
+                    "lineEnd": 203
                 },
                 "sym": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo"
             },
@@ -1060,8 +1060,8 @@
                     "lineEnd": 184
                 },
                 "range": {
-                    "columnBegin": 7,
-                    "columnEnd": 10,
+                    "columnBegin": 1,
+                    "columnEnd": 25,
                     "lineBegin": 184,
                     "lineEnd": 184
                 },
@@ -1113,7 +1113,7 @@
                     "lineEnd": 184
                 },
                 "range": {
-                    "columnBegin": 15,
+                    "columnBegin": 11,
                     "columnEnd": 16,
                     "lineBegin": 184,
                     "lineEnd": 184
@@ -1166,7 +1166,7 @@
                     "lineEnd": 201
                 },
                 "range": {
-                    "columnBegin": 23,
+                    "columnBegin": 19,
                     "columnEnd": 24,
                     "lineBegin": 201,
                     "lineEnd": 201
@@ -1219,10 +1219,10 @@
                     "lineEnd": 129
                 },
                 "range": {
-                    "columnBegin": 11,
-                    "columnEnd": 12,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 129,
-                    "lineEnd": 129
+                    "lineEnd": 171
                 },
                 "sym": "test/cpp//Q"
             },
@@ -1272,10 +1272,10 @@
                     "lineEnd": 150
                 },
                 "range": {
-                    "columnBegin": 10,
-                    "columnEnd": 12,
+                    "columnBegin": 3,
+                    "columnEnd": 4,
                     "lineBegin": 150,
-                    "lineEnd": 150
+                    "lineEnd": 164
                 },
                 "sym": "test/cpp//Q/OO"
             },
@@ -1325,8 +1325,8 @@
                     "lineEnd": 162
                 },
                 "range": {
-                    "columnBegin": 15,
-                    "columnEnd": 23,
+                    "columnBegin": 5,
+                    "columnEnd": 35,
                     "lineBegin": 162,
                     "lineEnd": 162
                 },
@@ -1378,8 +1378,8 @@
                     "lineEnd": 160
                 },
                 "range": {
-                    "columnBegin": 15,
-                    "columnEnd": 23,
+                    "columnBegin": 5,
+                    "columnEnd": 36,
                     "lineBegin": 160,
                     "lineEnd": 160
                 },
@@ -1431,8 +1431,8 @@
                     "lineEnd": 157
                 },
                 "range": {
-                    "columnBegin": 9,
-                    "columnEnd": 17,
+                    "columnBegin": 5,
+                    "columnEnd": 33,
                     "lineBegin": 157,
                     "lineEnd": 157
                 },
@@ -1484,8 +1484,8 @@
                     "lineEnd": 156
                 },
                 "range": {
-                    "columnBegin": 9,
-                    "columnEnd": 17,
+                    "columnBegin": 5,
+                    "columnEnd": 29,
                     "lineBegin": 156,
                     "lineEnd": 156
                 },
@@ -1537,8 +1537,8 @@
                     "lineEnd": 156
                 },
                 "range": {
-                    "columnBegin": 28,
-                    "columnEnd": 29,
+                    "columnBegin": 19,
+                    "columnEnd": 28,
                     "lineBegin": 156,
                     "lineEnd": 156
                 },
@@ -1590,8 +1590,8 @@
                     "lineEnd": 157
                 },
                 "range": {
-                    "columnBegin": 23,
-                    "columnEnd": 24,
+                    "columnBegin": 19,
+                    "columnEnd": 23,
                     "lineBegin": 157,
                     "lineEnd": 157
                 },
@@ -1643,8 +1643,8 @@
                     "lineEnd": 154
                 },
                 "range": {
-                    "columnBegin": 9,
-                    "columnEnd": 17,
+                    "columnBegin": 5,
+                    "columnEnd": 21,
                     "lineBegin": 154,
                     "lineEnd": 154
                 },
@@ -1696,10 +1696,10 @@
                     "lineEnd": 133
                 },
                 "range": {
-                    "columnBegin": 10,
-                    "columnEnd": 12,
+                    "columnBegin": 3,
+                    "columnEnd": 4,
                     "lineBegin": 133,
-                    "lineEnd": 133
+                    "lineEnd": 148
                 },
                 "sym": "test/cpp//Q/QQ"
             },
@@ -1750,7 +1750,7 @@
                 },
                 "range": {
                     "columnBegin": 5,
-                    "columnEnd": 6,
+                    "columnEnd": 19,
                     "lineBegin": 147,
                     "lineEnd": 147
                 },
@@ -1802,8 +1802,8 @@
                     "lineEnd": 135
                 },
                 "range": {
-                    "columnBegin": 10,
-                    "columnEnd": 15,
+                    "columnBegin": 5,
+                    "columnEnd": 17,
                     "lineBegin": 135,
                     "lineEnd": 135
                 },
@@ -1855,8 +1855,8 @@
                     "lineEnd": 137
                 },
                 "range": {
-                    "columnBegin": 12,
-                    "columnEnd": 21,
+                    "columnBegin": 5,
+                    "columnEnd": 30,
                     "lineBegin": 137,
                     "lineEnd": 137
                 },
@@ -1908,8 +1908,8 @@
                     "lineEnd": 138
                 },
                 "range": {
-                    "columnBegin": 13,
-                    "columnEnd": 22,
+                    "columnBegin": 5,
+                    "columnEnd": 26,
                     "lineBegin": 138,
                     "lineEnd": 138
                 },
@@ -1961,8 +1961,8 @@
                     "lineEnd": 139
                 },
                 "range": {
-                    "columnBegin": 12,
-                    "columnEnd": 21,
+                    "columnBegin": 5,
+                    "columnEnd": 26,
                     "lineBegin": 139,
                     "lineEnd": 139
                 },
@@ -2014,8 +2014,8 @@
                     "lineEnd": 143
                 },
                 "range": {
-                    "columnBegin": 9,
-                    "columnEnd": 15,
+                    "columnBegin": 5,
+                    "columnEnd": 29,
                     "lineBegin": 143,
                     "lineEnd": 143
                 },
@@ -2067,8 +2067,8 @@
                     "lineEnd": 142
                 },
                 "range": {
-                    "columnBegin": 10,
-                    "columnEnd": 16,
+                    "columnBegin": 5,
+                    "columnEnd": 28,
                     "lineBegin": 142,
                     "lineEnd": 142
                 },
@@ -2120,8 +2120,8 @@
                     "lineEnd": 141
                 },
                 "range": {
-                    "columnBegin": 9,
-                    "columnEnd": 15,
+                    "columnBegin": 5,
+                    "columnEnd": 38,
                     "lineBegin": 141,
                     "lineEnd": 141
                 },
@@ -2173,8 +2173,8 @@
                     "lineEnd": 141
                 },
                 "range": {
-                    "columnBegin": 19,
-                    "columnEnd": 20,
+                    "columnBegin": 16,
+                    "columnEnd": 19,
                     "lineBegin": 141,
                     "lineEnd": 141
                 },
@@ -2226,8 +2226,8 @@
                     "lineEnd": 141
                 },
                 "range": {
-                    "columnBegin": 30,
-                    "columnEnd": 31,
+                    "columnBegin": 21,
+                    "columnEnd": 30,
                     "lineBegin": 141,
                     "lineEnd": 141
                 },
@@ -2279,8 +2279,8 @@
                     "lineEnd": 142
                 },
                 "range": {
-                    "columnBegin": 20,
-                    "columnEnd": 21,
+                    "columnBegin": 17,
+                    "columnEnd": 20,
                     "lineBegin": 142,
                     "lineEnd": 142
                 },
@@ -2332,8 +2332,8 @@
                     "lineEnd": 142
                 },
                 "range": {
-                    "columnBegin": 25,
-                    "columnEnd": 26,
+                    "columnBegin": 22,
+                    "columnEnd": 25,
                     "lineBegin": 142,
                     "lineEnd": 142
                 },
@@ -2385,8 +2385,8 @@
                     "lineEnd": 143
                 },
                 "range": {
-                    "columnBegin": 19,
-                    "columnEnd": 20,
+                    "columnBegin": 16,
+                    "columnEnd": 19,
                     "lineBegin": 143,
                     "lineEnd": 143
                 },
@@ -2438,8 +2438,8 @@
                     "lineEnd": 143
                 },
                 "range": {
-                    "columnBegin": 25,
-                    "columnEnd": 26,
+                    "columnBegin": 21,
+                    "columnEnd": 25,
                     "lineBegin": 143,
                     "lineEnd": 143
                 },
@@ -2491,8 +2491,8 @@
                     "lineEnd": 145
                 },
                 "range": {
-                    "columnBegin": 9,
-                    "columnEnd": 15,
+                    "columnBegin": 5,
+                    "columnEnd": 43,
                     "lineBegin": 145,
                     "lineEnd": 145
                 },
@@ -2544,8 +2544,8 @@
                     "lineEnd": 145
                 },
                 "range": {
-                    "columnBegin": 30,
-                    "columnEnd": 31,
+                    "columnBegin": 16,
+                    "columnEnd": 30,
                     "lineBegin": 145,
                     "lineEnd": 145
                 },
@@ -2597,8 +2597,8 @@
                     "lineEnd": 145
                 },
                 "range": {
-                    "columnBegin": 36,
-                    "columnEnd": 37,
+                    "columnBegin": 32,
+                    "columnEnd": 36,
                     "lineBegin": 145,
                     "lineEnd": 145
                 },
@@ -2650,8 +2650,8 @@
                     "lineEnd": 131
                 },
                 "range": {
-                    "columnBegin": 8,
-                    "columnEnd": 13,
+                    "columnBegin": 3,
+                    "columnEnd": 27,
                     "lineBegin": 131,
                     "lineEnd": 131
                 },
@@ -2703,10 +2703,10 @@
                     "lineEnd": 166
                 },
                 "range": {
-                    "columnBegin": 18,
-                    "columnEnd": 26,
+                    "columnBegin": 3,
+                    "columnEnd": 4,
                     "lineBegin": 166,
-                    "lineEnd": 166
+                    "lineEnd": 169
                 },
                 "sym": "test/cpp//Q/operator%22%22_glean/.o/const+char32_t+*,unsigned+long"
             },
@@ -2756,7 +2756,7 @@
                     "lineEnd": 167
                 },
                 "range": {
-                    "columnBegin": 42,
+                    "columnBegin": 28,
                     "columnEnd": 45,
                     "lineBegin": 167,
                     "lineEnd": 167
@@ -2809,7 +2809,7 @@
                     "lineEnd": 167
                 },
                 "range": {
-                    "columnBegin": 23,
+                    "columnBegin": 7,
                     "columnEnd": 26,
                     "lineBegin": 167,
                     "lineEnd": 167
@@ -2862,8 +2862,8 @@
                     "lineEnd": 152
                 },
                 "range": {
-                    "columnBegin": 17,
-                    "columnEnd": 25,
+                    "columnBegin": 5,
+                    "columnEnd": 53,
                     "lineBegin": 152,
                     "lineEnd": 152
                 },
@@ -2915,7 +2915,7 @@
                     "lineEnd": 152
                 },
                 "range": {
-                    "columnBegin": 38,
+                    "columnBegin": 28,
                     "columnEnd": 39,
                     "lineBegin": 152,
                     "lineEnd": 152
@@ -2968,7 +2968,7 @@
                     "lineEnd": 152
                 },
                 "range": {
-                    "columnBegin": 51,
+                    "columnBegin": 41,
                     "columnEnd": 52,
                     "lineBegin": 152,
                     "lineEnd": 152
@@ -3021,10 +3021,10 @@
                     "lineEnd": 90
                 },
                 "range": {
-                    "columnBegin": 11,
-                    "columnEnd": 14,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 90,
-                    "lineEnd": 90
+                    "lineEnd": 97
                 },
                 "sym": "test/cpp//baz"
             },
@@ -3074,10 +3074,10 @@
                     "lineEnd": 92
                 },
                 "range": {
-                    "columnBegin": 8,
-                    "columnEnd": 9,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 92,
-                    "lineEnd": 92
+                    "lineEnd": 95
                 },
                 "sym": "test/cpp//baz/U"
             },
@@ -3127,8 +3127,8 @@
                     "lineEnd": 93
                 },
                 "range": {
-                    "columnBegin": 8,
-                    "columnEnd": 11,
+                    "columnBegin": 3,
+                    "columnEnd": 26,
                     "lineBegin": 93,
                     "lineEnd": 93
                 },
@@ -3321,8 +3321,8 @@
                     "lineEnd": 94
                 },
                 "range": {
-                    "columnBegin": 14,
-                    "columnEnd": 22,
+                    "columnBegin": 3,
+                    "columnEnd": 40,
                     "lineBegin": 94,
                     "lineEnd": 94
                 },
@@ -3515,10 +3515,10 @@
                     "lineEnd": 107
                 },
                 "range": {
-                    "columnBegin": 8,
-                    "columnEnd": 9,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 107,
-                    "lineEnd": 107
+                    "lineEnd": 127
                 },
                 "sym": "test/cpp//d"
             },
@@ -3569,7 +3569,7 @@
                 },
                 "range": {
                     "columnBegin": 5,
-                    "columnEnd": 6,
+                    "columnEnd": 8,
                     "lineBegin": 115,
                     "lineEnd": 115
                 },
@@ -3622,7 +3622,7 @@
                 },
                 "range": {
                     "columnBegin": 5,
-                    "columnEnd": 6,
+                    "columnEnd": 36,
                     "lineBegin": 121,
                     "lineEnd": 121
                 },
@@ -3675,7 +3675,7 @@
                 },
                 "range": {
                     "columnBegin": 5,
-                    "columnEnd": 6,
+                    "columnEnd": 35,
                     "lineBegin": 119,
                     "lineEnd": 119
                 },
@@ -3728,7 +3728,7 @@
                 },
                 "range": {
                     "columnBegin": 5,
-                    "columnEnd": 6,
+                    "columnEnd": 23,
                     "lineBegin": 117,
                     "lineEnd": 117
                 },
@@ -3781,7 +3781,7 @@
                 },
                 "range": {
                     "columnBegin": 5,
-                    "columnEnd": 6,
+                    "columnEnd": 16,
                     "lineBegin": 123,
                     "lineEnd": 123
                 },
@@ -3834,7 +3834,7 @@
                 },
                 "range": {
                     "columnBegin": 5,
-                    "columnEnd": 6,
+                    "columnEnd": 35,
                     "lineBegin": 125,
                     "lineEnd": 125
                 },
@@ -3886,8 +3886,8 @@
                     "lineEnd": 119
                 },
                 "range": {
-                    "columnBegin": 31,
-                    "columnEnd": 32,
+                    "columnBegin": 24,
+                    "columnEnd": 34,
                     "lineBegin": 119,
                     "lineEnd": 119
                 },
@@ -3939,8 +3939,8 @@
                     "lineEnd": 123
                 },
                 "range": {
-                    "columnBegin": 15,
-                    "columnEnd": 16,
+                    "columnBegin": 7,
+                    "columnEnd": 15,
                     "lineBegin": 123,
                     "lineEnd": 123
                 },
@@ -3992,7 +3992,7 @@
                     "lineEnd": 121
                 },
                 "range": {
-                    "columnBegin": 12,
+                    "columnBegin": 7,
                     "columnEnd": 13,
                     "lineBegin": 121,
                     "lineEnd": 121
@@ -4045,7 +4045,7 @@
                     "lineEnd": 125
                 },
                 "range": {
-                    "columnBegin": 32,
+                    "columnBegin": 27,
                     "columnEnd": 34,
                     "lineBegin": 125,
                     "lineEnd": 125
@@ -4098,7 +4098,7 @@
                     "lineEnd": 121
                 },
                 "range": {
-                    "columnBegin": 19,
+                    "columnBegin": 15,
                     "columnEnd": 20,
                     "lineBegin": 121,
                     "lineEnd": 121
@@ -4151,7 +4151,7 @@
                     "lineEnd": 121
                 },
                 "range": {
-                    "columnBegin": 34,
+                    "columnBegin": 22,
                     "columnEnd": 35,
                     "lineBegin": 121,
                     "lineEnd": 121
@@ -4204,7 +4204,7 @@
                     "lineEnd": 125
                 },
                 "range": {
-                    "columnBegin": 24,
+                    "columnBegin": 7,
                     "columnEnd": 25,
                     "lineBegin": 125,
                     "lineEnd": 125
@@ -4257,7 +4257,7 @@
                     "lineEnd": 117
                 },
                 "range": {
-                    "columnBegin": 19,
+                    "columnBegin": 7,
                     "columnEnd": 22,
                     "lineBegin": 117,
                     "lineEnd": 117
@@ -4310,7 +4310,7 @@
                     "lineEnd": 119
                 },
                 "range": {
-                    "columnBegin": 19,
+                    "columnBegin": 7,
                     "columnEnd": 22,
                     "lineBegin": 119,
                     "lineEnd": 119
@@ -4363,7 +4363,7 @@
                     "lineEnd": 109
                 },
                 "range": {
-                    "columnBegin": 6,
+                    "columnBegin": 2,
                     "columnEnd": 7,
                     "lineBegin": 109,
                     "lineEnd": 109
@@ -4416,10 +4416,10 @@
                     "lineEnd": 11
                 },
                 "range": {
-                    "columnBegin": 11,
-                    "columnEnd": 14,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 11,
-                    "lineEnd": 11
+                    "lineEnd": 49
                 },
                 "sym": "test/cpp//foo"
             },
@@ -4469,10 +4469,10 @@
                     "lineEnd": 13
                 },
                 "range": {
-                    "columnBegin": 8,
-                    "columnEnd": 9,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 13,
-                    "lineEnd": 13
+                    "lineEnd": 16
                 },
                 "sym": "test/cpp//foo/S"
             },
@@ -4522,7 +4522,7 @@
                     "lineEnd": 14
                 },
                 "range": {
-                    "columnBegin": 16,
+                    "columnBegin": 3,
                     "columnEnd": 34,
                     "lineBegin": 14,
                     "lineEnd": 14
@@ -4575,8 +4575,8 @@
                     "lineEnd": 15
                 },
                 "range": {
-                    "columnBegin": 9,
-                    "columnEnd": 25,
+                    "columnBegin": 3,
+                    "columnEnd": 32,
                     "lineBegin": 15,
                     "lineEnd": 15
                 },
@@ -4628,10 +4628,10 @@
                     "lineEnd": 33
                 },
                 "range": {
-                    "columnBegin": 11,
-                    "columnEnd": 14,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 33,
-                    "lineEnd": 33
+                    "lineEnd": 43
                 },
                 "sym": "test/cpp//foo/bar"
             },
@@ -4681,10 +4681,10 @@
                     "lineEnd": 38
                 },
                 "range": {
-                    "columnBegin": 8,
-                    "columnEnd": 9,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 38,
-                    "lineEnd": 38
+                    "lineEnd": 40
                 },
                 "sym": "test/cpp//foo/bar/T"
             },
@@ -4734,7 +4734,7 @@
                     "lineEnd": 39
                 },
                 "range": {
-                    "columnBegin": 7,
+                    "columnBegin": 3,
                     "columnEnd": 25,
                     "lineBegin": 39,
                     "lineEnd": 39
@@ -4787,7 +4787,7 @@
                     "lineEnd": 35
                 },
                 "range": {
-                    "columnBegin": 15,
+                    "columnBegin": 1,
                     "columnEnd": 31,
                     "lineBegin": 35,
                     "lineEnd": 35
@@ -4840,8 +4840,8 @@
                     "lineEnd": 36
                 },
                 "range": {
-                    "columnBegin": 7,
-                    "columnEnd": 21,
+                    "columnBegin": 1,
+                    "columnEnd": 29,
                     "lineBegin": 36,
                     "lineEnd": 36
                 },
@@ -4893,8 +4893,8 @@
                     "lineEnd": 41
                 },
                 "range": {
-                    "columnBegin": 6,
-                    "columnEnd": 7,
+                    "columnBegin": 1,
+                    "columnEnd": 9,
                     "lineBegin": 41,
                     "lineEnd": 41
                 },
@@ -4946,8 +4946,8 @@
                     "lineEnd": 21
                 },
                 "range": {
-                    "columnBegin": 6,
-                    "columnEnd": 7,
+                    "columnBegin": 1,
+                    "columnEnd": 9,
                     "lineBegin": 21,
                     "lineEnd": 21
                 },
@@ -4999,10 +4999,10 @@
                     "lineEnd": 24
                 },
                 "range": {
-                    "columnBegin": 6,
-                    "columnEnd": 9,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 24,
-                    "lineEnd": 24
+                    "lineEnd": 27
                 },
                 "sym": "test/cpp//foo/foo/.f/"
             },
@@ -5052,8 +5052,8 @@
                     "lineEnd": 31
                 },
                 "range": {
-                    "columnBegin": 6,
-                    "columnEnd": 9,
+                    "columnBegin": 1,
+                    "columnEnd": 11,
                     "lineBegin": 31,
                     "lineEnd": 31
                 },
@@ -5105,8 +5105,8 @@
                     "lineEnd": 25
                 },
                 "range": {
-                    "columnBegin": 7,
-                    "columnEnd": 11,
+                    "columnBegin": 3,
+                    "columnEnd": 23,
                     "lineBegin": 25,
                     "lineEnd": 25
                 },
@@ -5158,10 +5158,10 @@
                     "lineEnd": 45
                 },
                 "range": {
-                    "columnBegin": 5,
-                    "columnEnd": 10,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 45,
-                    "lineEnd": 45
+                    "lineEnd": 47
                 },
                 "sym": "test/cpp//foo/fooFn/.f/int"
             },
@@ -5211,7 +5211,7 @@
                     "lineEnd": 45
                 },
                 "range": {
-                    "columnBegin": 15,
+                    "columnBegin": 11,
                     "columnEnd": 19,
                     "lineBegin": 45,
                     "lineEnd": 45
@@ -5264,10 +5264,10 @@
                     "lineEnd": 54
                 },
                 "range": {
-                    "columnBegin": 6,
-                    "columnEnd": 7,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 54,
-                    "lineEnd": 54
+                    "lineEnd": 62
                 },
                 "sym": "test/cpp//h/.f/int"
             },
@@ -5317,8 +5317,8 @@
                     "lineEnd": 52
                 },
                 "range": {
-                    "columnBegin": 6,
-                    "columnEnd": 7,
+                    "columnBegin": 1,
+                    "columnEnd": 15,
                     "lineBegin": 52,
                     "lineEnd": 52
                 },
@@ -5370,7 +5370,7 @@
                     "lineEnd": 52
                 },
                 "range": {
-                    "columnBegin": 12,
+                    "columnBegin": 8,
                     "columnEnd": 14,
                     "lineBegin": 52,
                     "lineEnd": 52
@@ -5423,7 +5423,7 @@
                     "lineEnd": 54
                 },
                 "range": {
-                    "columnBegin": 12,
+                    "columnBegin": 8,
                     "columnEnd": 13,
                     "lineBegin": 54,
                     "lineEnd": 54
@@ -5476,7 +5476,7 @@
                     "lineEnd": 56
                 },
                 "range": {
-                    "columnBegin": 10,
+                    "columnBegin": 3,
                     "columnEnd": 11,
                     "lineBegin": 56,
                     "lineEnd": 56
@@ -5529,7 +5529,7 @@
                     "lineEnd": 57
                 },
                 "range": {
-                    "columnBegin": 15,
+                    "columnBegin": 3,
                     "columnEnd": 16,
                     "lineBegin": 57,
                     "lineEnd": 57
@@ -5582,8 +5582,8 @@
                     "lineEnd": 197
                 },
                 "range": {
-                    "columnBegin": 5,
-                    "columnEnd": 7,
+                    "columnBegin": 1,
+                    "columnEnd": 14,
                     "lineBegin": 197,
                     "lineEnd": 197
                 },
@@ -5635,7 +5635,7 @@
                     "lineEnd": 197
                 },
                 "range": {
-                    "columnBegin": 12,
+                    "columnBegin": 8,
                     "columnEnd": 13,
                     "lineBegin": 197,
                     "lineEnd": 197
@@ -5688,10 +5688,10 @@
                     "lineEnd": 64
                 },
                 "range": {
-                    "columnBegin": 11,
-                    "columnEnd": 16,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 64,
-                    "lineEnd": 64
+                    "lineEnd": 83
                 },
                 "sym": "test/cpp//maybe"
             },
@@ -5741,10 +5741,10 @@
                     "lineEnd": 69
                 },
                 "range": {
-                    "columnBegin": 8,
-                    "columnEnd": 15,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 69,
-                    "lineEnd": 69
+                    "lineEnd": 73
                 },
                 "sym": "test/cpp//maybe/Nothing"
             },
@@ -5794,8 +5794,8 @@
                     "lineEnd": 72
                 },
                 "range": {
-                    "columnBegin": 22,
-                    "columnEnd": 29,
+                    "columnBegin": 3,
+                    "columnEnd": 41,
                     "lineBegin": 72,
                     "lineEnd": 72
                 },
@@ -5847,8 +5847,8 @@
                     "lineEnd": 72
                 },
                 "range": {
-                    "columnBegin": 37,
-                    "columnEnd": 38,
+                    "columnBegin": 30,
+                    "columnEnd": 37,
                     "lineBegin": 72,
                     "lineEnd": 72
                 },
@@ -5900,8 +5900,8 @@
                     "lineEnd": 70
                 },
                 "range": {
-                    "columnBegin": 14,
-                    "columnEnd": 21,
+                    "columnBegin": 3,
+                    "columnEnd": 32,
                     "lineBegin": 70,
                     "lineEnd": 70
                 },
@@ -6000,10 +6000,10 @@
                     "lineEnd": 76
                 },
                 "range": {
-                    "columnBegin": 8,
-                    "columnEnd": 17,
+                    "columnBegin": 1,
+                    "columnEnd": 2,
                     "lineBegin": 76,
-                    "lineEnd": 76
+                    "lineEnd": 80
                 },
                 "sym": "test/cpp//maybe/Something"
             },
@@ -6054,7 +6054,7 @@
                 },
                 "range": {
                     "columnBegin": 3,
-                    "columnEnd": 12,
+                    "columnEnd": 28,
                     "lineBegin": 78,
                     "lineEnd": 78
                 },
@@ -6106,7 +6106,7 @@
                     "lineEnd": 78
                 },
                 "range": {
-                    "columnBegin": 17,
+                    "columnBegin": 13,
                     "columnEnd": 18,
                     "lineBegin": 78,
                     "lineEnd": 78
@@ -6160,7 +6160,7 @@
                 },
                 "range": {
                     "columnBegin": 3,
-                    "columnEnd": 4,
+                    "columnEnd": 18,
                     "lineBegin": 79,
                     "lineEnd": 79
                 },
@@ -6212,7 +6212,7 @@
                     "lineEnd": 77
                 },
                 "range": {
-                    "columnBegin": 7,
+                    "columnBegin": 3,
                     "columnEnd": 9,
                     "lineBegin": 77,
                     "lineEnd": 77
@@ -6265,8 +6265,8 @@
                     "lineEnd": 74
                 },
                 "range": {
-                    "columnBegin": 19,
-                    "columnEnd": 26,
+                    "columnBegin": 1,
+                    "columnEnd": 52,
                     "lineBegin": 74,
                     "lineEnd": 74
                 },
@@ -6318,7 +6318,7 @@
                     "lineEnd": 105
                 },
                 "range": {
-                    "columnBegin": 10,
+                    "columnBegin": 3,
                     "columnEnd": 14,
                     "lineBegin": 105,
                     "lineEnd": 105
@@ -6371,7 +6371,7 @@
                     "lineEnd": 184
                 },
                 "range": {
-                    "columnBegin": 23,
+                    "columnBegin": 19,
                     "columnEnd": 24,
                     "lineBegin": 184,
                     "lineEnd": 184
@@ -6424,7 +6424,7 @@
                     "lineEnd": 188
                 },
                 "range": {
-                    "columnBegin": 25,
+                    "columnBegin": 21,
                     "columnEnd": 26,
                     "lineBegin": 188,
                     "lineEnd": 188
@@ -6477,7 +6477,7 @@
                     "lineEnd": 201
                 },
                 "range": {
-                    "columnBegin": 31,
+                    "columnBegin": 27,
                     "columnEnd": 32,
                     "lineBegin": 201,
                     "lineEnd": 201
@@ -6530,7 +6530,7 @@
                     "lineEnd": 205
                 },
                 "range": {
-                    "columnBegin": 36,
+                    "columnBegin": 32,
                     "columnEnd": 37,
                     "lineBegin": 205,
                     "lineEnd": 205
