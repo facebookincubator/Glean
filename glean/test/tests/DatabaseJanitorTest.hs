@@ -291,6 +291,10 @@ deleteOldDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
     [ "0001" ]
     (sort (map (repo_hash . database_repo) dbs))
 
+  dbdirs1 <- listDirectory (dbdir </> "test")
+  dbdirs2 <- listDirectory (dbdir </> "test2")
+  assertEqual "directories deleted" (dbdirs1 ++ dbdirs2) [ "0001" ]
+
   runDatabaseJanitor env
   waitDel env
   dbs <- listDBs env
