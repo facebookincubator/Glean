@@ -9,6 +9,7 @@ import code.python.1
 import cxx1.5
 import flow.3
 import hack.6
+import buck.4
 import javakotlin.alpha.1
 import erlang.1
 import hs.2
@@ -47,7 +48,8 @@ predicate SearchByNameAndLanguage:
     ( PreProcessor = Language; PpSearchByName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByName { Name, Entity } ) |
-    ( Thrift = Language; ThriftSearchByName { Name, Entity } );
+    ( Thrift = Language; ThriftSearchByName { Name, Entity } ) |
+    ( Buck = Language; BuckSearchByName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
 # global symbol search normalized to lower case
@@ -67,7 +69,8 @@ predicate SearchByLowerCaseNameAndLanguage:
     ( PreProcessor = Language; PpSearchByLowerCaseName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByLowerCaseName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByLowerCaseName { Name, Entity } ) |
-    ( Thrift = Language; ThriftSearchByLowerCaseName { Name, Entity } );
+    ( Thrift = Language; ThriftSearchByLowerCaseName { Name, Entity } ) |
+    ( Buck = Language; BuckSearchByLowerCaseName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
 # scoped search (experimental!)
@@ -590,6 +593,33 @@ predicate FbthriftSearchByNameFact:
   { Ident, { fbthrift = { decl = Decl } }} where
     fbthrift.SearchByName { Ident, QName };
     fbthrift.DeclarationName { QName, Decl }
+
+predicate BuckSearchByName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { NameStr, Entity } where
+    LocalName = buck.LocalName NameStr;
+    BuckSearchByLocalNameFact { LocalName, Entity }
+
+predicate BuckSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { NameStr, Entity } where
+    buck.LocalNameLowerCase { NameStr, LocalName };
+    BuckSearchByLocalNameFact { LocalName, Entity }
+
+# helper to avoid repeatedly doing string search
+predicate BuckSearchByLocalNameFact:
+  {
+    name: buck.LocalName,
+    entity: code.Entity,
+  }
+  { LocalName, { buck = Decl }} where
+    buck.SearchByLocalName { LocalName, Decl }
 
 predicate HsSearchByName:
   {

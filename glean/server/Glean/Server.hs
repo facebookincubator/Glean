@@ -12,6 +12,7 @@ import Control.Concurrent.Async (race)
 import Control.Monad
 import Data.IORef
 import Data.Maybe
+import Data.Time
 import Data.Typeable (cast)
 import Network.HTTP.Client
 import qualified Options.Applicative as O
@@ -99,7 +100,7 @@ main =
     -- completion before we advertise the server as alive.  Otherwise
     -- clients may contact this server and see no available DBs.
     waitForAlive server = do
-      l <- atomically $ do
+      (_, l) <- atomically $ do
         l <- readTVar $ envDatabaseJanitor databases
         maybe retry return l
 
@@ -110,17 +111,21 @@ main =
         JanitorTimeout -> do
           logError "Aborting: Janitor timeout at startup"
           return False
-        JanitorRunSuccess{} ->
+        JanitorRunSuccess ->
           setAlive server >> return True
         JanitorRunFailure OtherJanitorException{} ->
           setAlive server >> return True
         JanitorDisabled ->
           setAlive server >> return True
 
-    monitorJanitor = do
-      result <- atomically $ do
+    monitorJanitor t0 = do
+      (t1, result) <- atomically $ do
         l <- readTVar (envDatabaseJanitor databases)
-        maybe retry return l
+        case l of
+          Nothing -> retry
+          Just (t1, r)
+            | t1 == t0 -> retry  -- block until the next janitor run
+            | otherwise -> return (t1, r)
 #ifdef GLEAN_FACEBOOK
       case result of
         JanitorRunFailure (JanitorFetchBackupsFailure fetchError) -> do
@@ -136,15 +141,15 @@ main =
             evalKnob "code_indexing/glean:server_automated_restarts"
           if knob == Right True && not dbServerBelievedDead
               then logError "Aborting: failed to list remote DBs too many times"
-              else monitorJanitor
-        _ -> monitorJanitor
+              else monitorJanitor t1
+        _ -> monitorJanitor t1
 #else
-      result `seq` monitorJanitor
+      result `seq` monitorJanitor t1
 #endif
 
     waitForTerminate = void $
-      monitorJanitor
-      `race`
+      (getCurrentTime >>= monitorJanitor)
+       `race`
       waitForTerminateSignalsAndGracefulShutdown
                         databases
                         terminating

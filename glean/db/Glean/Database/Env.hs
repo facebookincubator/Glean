@@ -153,7 +153,9 @@ spawnThreads env@Env{..} = do
 
   -- on completion, record the time we last ran the janitor. This is
   -- used by the server to know when to advertise the server as alive.
-  let recordJanitorResult = atomically . writeTVar envDatabaseJanitor . Just
+  let recordJanitorResult result = do
+        t <- envGetCurrentTime
+        atomically $ writeTVar envDatabaseJanitor $ Just (t, result)
 
   case config_janitor_period of
     Just secs -> Warden.spawn_ envWarden
@@ -164,9 +166,8 @@ spawnThreads env@Env{..} = do
           result <- try $ timeout (fromIntegral secs * 20 * 1000 * 1000)
                       $ runDatabaseJanitor env
           case result of
-            Right (Just ()) -> do
-              t <- envGetCurrentTime
-              recordJanitorResult $ JanitorRunSuccess t
+            Right (Just ()) ->
+              recordJanitorResult JanitorRunSuccess
             Right Nothing -> do
               logError "janitor timeout"
               recordJanitorResult JanitorTimeout
