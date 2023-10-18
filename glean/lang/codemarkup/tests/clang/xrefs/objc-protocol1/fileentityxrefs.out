@@ -96,6 +96,12 @@
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "checkProtocol" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 13 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "J" } },
                           "signature": {
                             "key": {
@@ -135,7 +141,7 @@
       "file": { "key": "test.m" },
       "xref": {
         "target": {
-          "name": "checkProtocol",
+          "name": "checkProtocol:",
           "file": { "key": "test.m" },
           "location": {
             "range": {
@@ -148,10 +154,10 @@
           },
           "destination": {
             "file": { "key": "test.m" },
-            "span": { "start": 234, "length": 1 }
+            "span": { "start": 242, "length": 13 }
           }
         },
-        "source": { "span": { "start": 320, "length": 13 } }
+        "source": { "span": { "start": 317, "length": 32 } }
       },
       "entity": {
         "cxx": {
@@ -159,6 +165,12 @@
             "objcMethod": {
               "key": {
                 "selector": { "key": [ "checkProtocol" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 242, "length": 13 }
+                  }
+                ],
                 "container": { "interface_": { "key": "J" } },
                 "signature": {
                   "key": {

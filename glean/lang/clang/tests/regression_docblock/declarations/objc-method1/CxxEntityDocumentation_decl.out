@@ -29,6 +29,12 @@
           "objcMethod": {
             "key": {
               "selector": { "key": [ "f1" ] },
+              "locations": [
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "start": 369, "length": 2 }
+                }
+              ],
               "container": { "interface_": { "key": "I" } },
               "signature": {
                 "key": { "returns": { "key": "int" }, "parameters": [ ] }
@@ -58,6 +64,12 @@
           "objcMethod": {
             "key": {
               "selector": { "key": [ "f2" ] },
+              "locations": [
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "start": 439, "length": 2 }
+                }
+              ],
               "container": { "interface_": { "key": "I" } },
               "signature": {
                 "key": {
@@ -92,6 +104,16 @@
           "objcMethod": {
             "key": {
               "selector": { "key": [ "f3a", "f3b" ] },
+              "locations": [
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "start": 524, "length": 3 }
+                },
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "start": 537, "length": 3 }
+                }
+              ],
               "container": { "interface_": { "key": "I" } },
               "signature": {
                 "key": {
@@ -127,6 +149,16 @@
           "objcMethod": {
             "key": {
               "selector": { "key": [ "f4a", "" ] },
+              "locations": [
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "start": 618, "length": 3 }
+                },
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "start": 631, "length": 1 }
+                }
+              ],
               "container": { "interface_": { "key": "I" } },
               "signature": {
                 "key": {

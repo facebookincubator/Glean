@@ -34,6 +34,50 @@
                 {
                   "target": {
                     "declaration": {
+                      "objcMethod": {
+                        "key": {
+                          "selector": { "key": [ "checkProtocol" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 13 }
+                            }
+                          ],
+                          "container": { "interface_": { "key": "J" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "f" },
+                                  "type": { "key": "Protocol *" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.m" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 10,
+                            "columnEnd": 36
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 32, "offsets": [ 317 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
                       "variable": {
                         "key": {
                           "name": {
@@ -72,10 +116,16 @@
                 },
                 {
                   "target": {
-                    "declaration": {
+                    "objcSelectorSlot": {
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "checkProtocol" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 13 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "J" } },
                           "signature": {
                             "key": {
@@ -99,7 +149,8 @@
                             "columnEnd": 36
                           }
                         }
-                      }
+                      },
+                      "index": 0
                     }
                   },
                   "from": {
@@ -216,6 +267,50 @@
                 {
                   "target": {
                     "declaration": {
+                      "objcMethod": {
+                        "key": {
+                          "selector": { "key": [ "checkProtocol" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 13 }
+                            }
+                          ],
+                          "container": { "interface_": { "key": "J" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "f" },
+                                  "type": { "key": "Protocol *" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.m" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 10,
+                            "columnEnd": 36
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 32, "offsets": [ 317 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
                       "variable": {
                         "key": {
                           "name": {
@@ -254,10 +349,16 @@
                 },
                 {
                   "target": {
-                    "declaration": {
+                    "objcSelectorSlot": {
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "checkProtocol" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 13 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "J" } },
                           "signature": {
                             "key": {
@@ -281,7 +382,8 @@
                             "columnEnd": 36
                           }
                         }
-                      }
+                      },
+                      "index": 0
                     }
                   },
                   "from": {
@@ -363,6 +465,12 @@
                     "objcMethod": {
                       "key": {
                         "selector": { "key": [ "checkProtocol" ] },
+                        "locations": [
+                          {
+                            "file": { "key": "test.m" },
+                            "span": { "start": 242, "length": 13 }
+                          }
+                        ],
                         "container": { "interface_": { "key": "J" } },
                         "signature": {
                           "key": {
@@ -430,6 +538,50 @@
                 {
                   "target": {
                     "declaration": {
+                      "objcMethod": {
+                        "key": {
+                          "selector": { "key": [ "checkProtocol" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 13 }
+                            }
+                          ],
+                          "container": { "interface_": { "key": "J" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "f" },
+                                  "type": { "key": "Protocol *" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.m" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 10,
+                            "columnEnd": 36
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 32, "offsets": [ 317 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
                       "variable": {
                         "key": {
                           "name": {
@@ -468,10 +620,16 @@
                 },
                 {
                   "target": {
-                    "declaration": {
+                    "objcSelectorSlot": {
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "checkProtocol" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 13 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "J" } },
                           "signature": {
                             "key": {
@@ -495,7 +653,8 @@
                             "columnEnd": 36
                           }
                         }
-                      }
+                      },
+                      "index": 0
                     }
                   },
                   "from": {
@@ -536,7 +695,7 @@
       },
       "xref": {
         "target": {
-          "name": "checkProtocol",
+          "name": "checkProtocol:",
           "file": { "key": "test.m" },
           "location": {
             "range": {
@@ -549,16 +708,22 @@
           },
           "destination": {
             "file": { "key": "test.m" },
-            "span": { "start": 234, "length": 1 }
+            "span": { "start": 242, "length": 13 }
           }
         },
-        "source": { "span": { "start": 320, "length": 13 } }
+        "source": { "span": { "start": 317, "length": 32 } }
       },
       "entity": {
         "decl": {
           "objcMethod": {
             "key": {
               "selector": { "key": [ "checkProtocol" ] },
+              "locations": [
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "start": 242, "length": 13 }
+                }
+              ],
               "container": { "interface_": { "key": "J" } },
               "signature": {
                 "key": {
@@ -618,6 +783,50 @@
                 {
                   "target": {
                     "declaration": {
+                      "objcMethod": {
+                        "key": {
+                          "selector": { "key": [ "checkProtocol" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 13 }
+                            }
+                          ],
+                          "container": { "interface_": { "key": "J" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "f" },
+                                  "type": { "key": "Protocol *" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.m" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 10,
+                            "columnEnd": 36
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 32, "offsets": [ 317 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
                       "variable": {
                         "key": {
                           "name": {
@@ -656,10 +865,16 @@
                 },
                 {
                   "target": {
-                    "declaration": {
+                    "objcSelectorSlot": {
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "checkProtocol" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 13 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "J" } },
                           "signature": {
                             "key": {
@@ -683,7 +898,8 @@
                             "columnEnd": 36
                           }
                         }
-                      }
+                      },
+                      "index": 0
                     }
                   },
                   "from": {

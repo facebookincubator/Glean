@@ -119,13 +119,16 @@ public:
 
   // Names
 
-  Fact<Cxx::Name> name(const clang::Token& name) {
-    return batch.fact<Cxx::Name>(
-      static_cast<std::string>(name.getIdentifierInfo()->getName()));
+  Fact<Cxx::Name> name(std::string s) {
+    return batch.fact<Cxx::Name>(std::move(s));
   }
 
   Fact<Cxx::Name> name(clang::StringRef ref) {
-    return batch.fact<Cxx::Name>(static_cast<std::string>(ref));
+    return name(ref.str());
+  }
+
+  Fact<Cxx::Name> name(const clang::Token& token) {
+    return name(token.getIdentifierInfo()->getName());
   }
 
   struct Include {

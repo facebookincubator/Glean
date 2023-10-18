@@ -47,7 +47,7 @@ std::filesystem::path subpath(
 //    goodPath(), giving us "folly/File.h".
 //
 // 3. Name is a symlink (absolute or relative) to a file inside
-//    root. Use canonical() to get the symlink target, and goodPath()
+//    root. Use read_symlink() to get the symlink target, and goodPath()
 //    to strip root.
 //
 // 4. Name is relative, but is a symlink to a file *outside* root. In
@@ -57,12 +57,13 @@ std::filesystem::path subpath(
 //      e.g. "buck-out/v2/gen/fbcode/<hash>/...".
 //    Replace the buck-out hash with the file contents hash to eliminate dupes
 //
+
 std::optional<std::pair<Fact<Src::File>, std::filesystem::path>>
-ClangDB::fileFromEntry(const clang::FileEntry& entry) {
-  auto path = goodPath(root,
-                        std::filesystem::canonical(entry.getName().str()));
-  if (path.is_absolute()) {
-    path = goodPath(root, subpath(subdir, entry.getName().str()));
+ClangDB::fileFromEntry(
+    const clang::FileEntry& entry) {
+  auto path = goodPath(root, subpath(subdir, entry.getName().str()));
+  if (path.is_relative()) {
+    path = followSymlinksInsideRoot(root, path);
   }
   if (path_prefix.has_value()) {
     path = std::filesystem::path(path_prefix.value()) / path;

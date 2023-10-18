@@ -8,8 +8,17 @@
             "1": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 4
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "my_defs.bzl"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project"
                         }
                     },
                     "range": {
@@ -24,8 +33,17 @@
             "14": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "h"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
                         }
                     },
                     "range": {
@@ -40,8 +58,17 @@
             "3": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "f"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
                         }
                     },
                     "range": {
@@ -56,8 +83,17 @@
             "6": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "g"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
                         }
                     },
                     "range": {
@@ -72,8 +108,17 @@
             "9": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "some_library"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
                         }
                     },
                     "range": {

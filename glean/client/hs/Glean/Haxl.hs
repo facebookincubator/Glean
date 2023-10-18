@@ -10,6 +10,7 @@
 module Glean.Haxl
   ( runHaxl
   , runHaxlWithWrites
+  , initHaxlEnv
   , Haxl
   , haxlRepo
   , get

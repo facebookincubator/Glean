@@ -12,11 +12,12 @@ module Glean.Glass.SymbolId.Buck
   ({- instances -})
   where
 
-import Glean.Glass.SymbolId.Class ( Symbol(..), toSymbolPredicate )
-import Glean ( keyOf )
+import Glean.Glass.SymbolId.Class
+import qualified Glean
 
 import qualified Glean.Schema.Buck.Types as Buck
 import Glean.Glass.Utils as Utils
+import Glean.Glass.Types
 
 import Glean.Schema.CodeBuck.Types as CodeBuck
     ( Entity(..) )
@@ -41,3 +42,22 @@ instance Symbol Buck.Definition_key where
   toSymbol (Buck.Definition_key module_ name) = do
     path <- Utils.pathFragments <$> Glean.keyOf module_
     return $ "d" : path ++ [ name ]
+
+instance ToQName CodeBuck.Entity where
+  toQName e = case e of
+    CodeBuck.Entity_locator locator -> do
+      Buck.Locator_key _subdir path name <- Glean.keyOf locator
+      return $ Right (Name name, Name path)
+
+    CodeBuck.Entity_file file -> do
+      path <- Glean.keyOf file
+      return $ case reverse (pathFragments path) of
+        [] -> Left "QName not supported for empty Buck file path"
+        (h:t) -> Right (Name h, Name (joinFragments (reverse t)))
+
+    CodeBuck.Entity_definition definition -> do
+      Buck.Definition_key module_ name <- Glean.keyOf definition
+      path <- Glean.keyOf module_
+      return (Right (Name name, Name path))
+
+    CodeBuck.Entity_EMPTY -> pure $ Left "ToQName: Unknown Buck entity"

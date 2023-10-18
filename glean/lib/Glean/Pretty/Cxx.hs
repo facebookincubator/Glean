@@ -23,6 +23,7 @@ module Glean.Pretty.Cxx
 import Data.Maybe (fromMaybe)
 import Data.Text.Prettyprint.Doc
 import Data.Text (Text)
+import Safe (atMay)
 
 import Glean
 import Glean.Pretty.CxxAnn (clangRecordKind, getMaybeContainerName, breakType)
@@ -40,6 +41,7 @@ instance Pretty Cxx.Entity where
   pretty (Cxx.Entity_decl decl) = pretty decl
   pretty (Cxx.Entity_defn defn) = pretty defn
   pretty (Cxx.Entity_enumerator en) = pretty en
+  pretty (Cxx.Entity_objcSelectorSlot slot) = pretty slot
   pretty Cxx.Entity_EMPTY = intentionallyEmpty
 
 instance Pretty Cxx.Definition where
@@ -103,6 +105,9 @@ instance Pretty ObjcContainerDefinition where
 
 instance Pretty ObjcMethodDeclaration where
   pretty = prettyObjcMethodDecl
+
+instance Pretty ObjcSelectorSlotEntity where
+  pretty = prettyObjcSelectorSlot
 
 instance Pretty ObjcPropertyDeclaration where
   pretty = prettyObjcPropertyDecl
@@ -173,7 +178,8 @@ prettyObjcMethodDecl Cxx.ObjcMethodDeclaration {
       prettyRetType signature_,
       prettyObjcSelector selector,
       prettyObjcContId contId],
-    "at" <+> pretty range]
+    "at" <+> pretty range
+  ]
 prettyObjcMethodDecl _ = ""
 
 -- | Display well-formed objc method signature over a few lines, in ObjC style
@@ -210,6 +216,25 @@ prettyObjcSelector Cxx.ObjcSelector { objcSelector_key = mSelector }
       case selectors of
         [] -> mempty
         nonEmpty -> fillSep $ map (\ h -> pretty h <> colon) nonEmpty
+
+prettyObjcSelectorSlot :: Cxx.ObjcSelectorSlotEntity -> Doc ann
+prettyObjcSelectorSlot (Cxx.ObjcSelectorSlotEntity method idx) =
+  fromMaybe "" $ do
+    decl <- case method of
+      Cxx.ObjcMethodEntity_decl decl -> Just decl
+      Cxx.ObjcMethodEntity_defn Cxx.ObjcMethodDefinition{
+        objcMethodDefinition_key = Just decl} -> Just decl
+      _ -> Nothing
+    Cxx.ObjcMethodDeclaration_key{
+      objcMethodDeclaration_key_selector = Cxx.ObjcSelector{
+        objcSelector_key = Just selector
+      },
+      objcMethodDeclaration_key_locations = locations
+    } <- Glean.getFactKey decl
+    let index = fromIntegral $ Glean.fromNat idx
+    name <- atMay selector index
+    location <- atMay locations index
+    return $ vsep [pretty name, "at" <+> pretty location]
 
 prettyObjcPropertyDeclExplain :: Cxx.ObjcPropertyDeclaration_key -> Doc ann
 prettyObjcPropertyDeclExplain Cxx.ObjcPropertyDeclaration_key {

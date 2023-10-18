@@ -88,6 +88,12 @@
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "checkProtocol" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 13 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "J" } },
                           "signature": {
                             "key": {
@@ -182,7 +188,7 @@
   {
     "key": {
       "tuplefield0": {
-        "name": "checkProtocol",
+        "name": "checkProtocol:",
         "file": { "key": "test.m" },
         "location": {
           "range": {
@@ -195,7 +201,7 @@
         },
         "destination": {
           "file": { "key": "test.m" },
-          "span": { "start": 234, "length": 1 }
+          "span": { "start": 242, "length": 13 }
         }
       },
       "tuplefield1": {
@@ -204,6 +210,12 @@
             "objcMethod": {
               "key": {
                 "selector": { "key": [ "checkProtocol" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 242, "length": 13 }
+                  }
+                ],
                 "container": { "interface_": { "key": "J" } },
                 "signature": {
                   "key": {

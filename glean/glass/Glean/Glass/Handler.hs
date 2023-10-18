@@ -41,7 +41,6 @@ module Glean.Glass.Handler
   -- * C++ specific methods
   , fileIncludeLocations
   , clangUSRToDefinition
-  , clangUSRToReferenceRanges
 
   ) where
 
@@ -208,18 +207,6 @@ firstOrErrors act = do
           Nothing -> FoundOne
           Just otherSuccesses ->  FoundMultiple (fmap fst otherSuccesses)
       )
-    [] -> Left $ fromMaybe (error "unreachable") $ nonEmpty fail
-
--- | Return all successes, after de-duplication
-anyOrErrors
-  :: Ord a
-  => ReposHaxl u w [Either GlassExceptionReason [a]]
-  -> ReposHaxl u w (Either (NonEmpty GlassExceptionReason) [a])
-anyOrErrors act = do
-  result <- act
-  let (fail, success) = partitionEithers result
-  return $ case success of
-    xs@(_:_) -> Right (nubOrd (concat xs))
     [] -> Left $ fromMaybe (error "unreachable") $ nonEmpty fail
 
 allOrError :: NonEmpty (Either a1 a2) -> Either a1 (NonEmpty a2)
@@ -394,31 +381,6 @@ clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) opts = withRepoLanguage
     repo = RepoName "fbsource"
     mlang = Just Language_Cpp
 
--- | Lookup the USR in Glean to get an entity and return the range spans of
--- its usages.
-clangUSRToReferenceRanges
-  :: Glass.Env
-  -> USR
-  -> RequestOptions
-  -> IO [USRSymbolReference]
-clangUSRToReferenceRanges env@Glass.Env{..} usr@(USR hash) opts =
-  withRepoLanguage "clangUSRToReferenceRanges" env usr scmRepo mlang $
-   \(gleanDBs,_) _ ->
-    withStrictErrorHandling opts $
-      backendRunHaxl GleanBackend{..} $ do
-        result <- anyOrErrors $ queryEachRepo $ do
-          repo <- RepoName . Glean.repo_name <$> Glean.haxlRepo
-          refs <- Cxx.usrHashToXRefs mlimit hash
-          res <- forM refs $ \(targetFile, rspan) -> USRSymbolReference <$>
-            rangeSpanToLocationRange repo targetFile rspan
-          pure (Right res)
-        case result of
-          Left err -> throwM $ ServerException $ errorsText err
-          Right refs -> return (refs, Nothing)
-  where
-    scmRepo = RepoName "fbsource" -- a "corpus" corresponds to >1 glean index
-    mlang = Just Language_Cpp
-    mlimit = fromIntegral <$> requestOptions_limit opts
 
 -- | Scrub all glean types for export to the client
 -- And flatten to lists for GraphQL.
@@ -1298,13 +1260,17 @@ toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
   destination <- forM location_destination $ \Src.FileLocation{..} ->
     let rangeSpan = Code.RangeSpan_span fileLocation_span in
     rangeSpanToLocationRange repoName fileLocation_file rangeSpan
-  let range = case destination of
+
+  -- full entity range (i.e. body of the method + signature)
+  let range = rangeSpanToRange offsets location_location
+  -- entity name/identifying location range (the name token for go-to-def)
+  let nameRange = case destination of
         Just LocationRange{..} | symbolRepo == locationRange_repository &&
                                  symbolPath == locationRange_filepath
-          -> locationRange_range
-        _ -> rangeSpanToRange offsets location_location
+          -> Just locationRange_range
+        _ -> Nothing
 
-  return $ (entity,) $ DefinitionSymbolX sym range attributes
+  return $ (entity,) $ DefinitionSymbolX sym range nameRange attributes
 
 -- | Decorate an entity with 'static' attributes.
 -- These are static in that they are derivable from the entity and

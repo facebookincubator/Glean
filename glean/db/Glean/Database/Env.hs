@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE CPP #-}
 module Glean.Database.Env ( withDatabases ) where
 
 import Control.Concurrent
@@ -106,6 +105,7 @@ initEnv evb envStorage envCatalog shardManager cfg
     envDatabaseJanitor <- newTVarIO Nothing
     envDatabaseJanitorPublishedCounters <- newTVarIO mempty
     envCachedRestorableDBs <- newTVarIO Nothing
+    envCachedAvailableDBs <- newTVarIO mempty
 
     envLoggerRateLimit <-
       newRateLimiterMap (fromIntegral config_logging_rate_limit) 600
@@ -144,6 +144,7 @@ initEnv evb envStorage envCatalog shardManager cfg
           if cfgEnableRecursion cfg
           then EnableRecursion
           else DisableRecursion
+      , envFilterAvailableDBs = cfgFilterAvailableDBs cfg
       , .. }
 
 spawnThreads :: Env -> IO ()
@@ -152,7 +153,9 @@ spawnThreads env@Env{..} = do
 
   -- on completion, record the time we last ran the janitor. This is
   -- used by the server to know when to advertise the server as alive.
-  let recordJanitorResult = atomically . writeTVar envDatabaseJanitor . Just
+  let recordJanitorResult result = do
+        t <- envGetCurrentTime
+        atomically $ writeTVar envDatabaseJanitor $ Just (t, result)
 
   case config_janitor_period of
     Just secs -> Warden.spawn_ envWarden
@@ -163,18 +166,19 @@ spawnThreads env@Env{..} = do
           result <- try $ timeout (fromIntegral secs * 20 * 1000 * 1000)
                       $ runDatabaseJanitor env
           case result of
-            Right (Just ()) -> do
-              t <- envGetCurrentTime
-              recordJanitorResult $ JanitorRunSuccess t
+            Right (Just ()) ->
+              recordJanitorResult JanitorRunSuccess
             Right Nothing -> do
               logError "janitor timeout"
               recordJanitorResult JanitorTimeout
-            Left someException
-              | Just e <- fromException someException
-              -> recordJanitorResult (JanitorRunFailure e)
-              | otherwise
-              -> recordJanitorResult
-                  (JanitorRunFailure $ OtherJanitorException someException)
+            Left someException -> do
+              logError $ "janitor failed: " <> show someException
+              if
+                | Just e <- fromException someException
+                -> recordJanitorResult (JanitorRunFailure e)
+                | otherwise
+                -> recordJanitorResult
+                    (JanitorRunFailure $ OtherJanitorException someException)
     Nothing ->
       recordJanitorResult JanitorDisabled
 

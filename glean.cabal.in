@@ -711,6 +711,7 @@ library schema
         Glean.Schema.CodePython.Types
         Glean.Schema.CodeScip.Types
         Glean.Schema.CodeThrift.Types
+        Glean.Schema.CodeFbthrift.Types
         Glean.Schema.Code.Types
         Glean.Schema.Cxx1.Types
         Glean.Schema.Digest.Types
@@ -743,6 +744,7 @@ library schema
         Glean.Schema.SymbolidKotlin.Types
         Glean.Schema.Sys.Types
         Glean.Schema.Thrift.Types
+        Glean.Schema.Fbthrift.Types
     build-depends:
         glean:if-glean-hs,
         glean:config,
@@ -940,6 +942,7 @@ executable glean-server
         glean:db,
         glean:util,
         haskeline >=0.7.3 && <0.8,
+        http-client,
         json
 
 library shell-lib
@@ -1277,6 +1280,7 @@ library glass-lib
         Glean.Glass.SymbolId.Pp
         Glean.Glass.SymbolId.Python
         Glean.Glass.SymbolId.Thrift
+        Glean.Glass.SymbolId.Fbthrift
         Glean.Glass.SymbolKind
         Glean.Glass.SymbolMap
         Glean.Glass.SymbolSig

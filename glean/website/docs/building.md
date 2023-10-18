@@ -120,10 +120,10 @@ export PKG_CONFIG_PATH=$HOME/.hsthrift/lib/pkgconfig:$HOME/.hsthrift/lib64/pkgco
 export PATH=$PATH:$HOME/.hsthrift/bin
 ```
 
-These will build with either gcc or clang as the base C and C++ compilers. We
-test with gcc-{9,10} and clang-{10,11,12}.
+These will build with either gcc or clang as the base C and C++ compilers. Clang is 
+the best supported C++ compiler for this project.
 
-Now clone [hsthrift](https://github.com/facebookincubator/hsthrift) and
+Now we will clone [hsthrift](https://github.com/facebookincubator/hsthrift) and
 build and install its dependencies:
 ```
 ./install_deps.sh
@@ -156,4 +156,4 @@ On an 6 core machine with 16G of ram you might use, to save 50% or more of the b
 make EXTRA_GHC_OPTS='-j4 +RTS -A128m -n2m -RTS'
 ```
 
-Using clang++-12 and clang-12 as the C and C++ compilers can shave another 25% off the build time, though is less well tested.
+Using clang++-12 and clang-12 as the C and C++ compilers can shave another 25% off the build time.

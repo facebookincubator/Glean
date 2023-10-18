@@ -24,6 +24,7 @@ module Glean.Database.Schema
   , readOnlyContent
   , readWriteContent
   , getSchemaInfo
+  , getSchemaInfoForSchema
   , renderSchemaSource
   , toStoredVersions
   , derivationEdges
@@ -1130,7 +1131,7 @@ definitions schemas = (types, preds)
 
 -- | Interrogate the schema associated with a DB
 getSchemaInfo :: DbSchema -> SchemaIndex -> GetSchemaInfo -> IO SchemaInfo
-getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
+getSchemaInfo dbSchema index@SchemaIndex{..} GetSchemaInfo{..} = do
   let
     pids = Map.fromList $
       [ (fromPid $ predicatePid p, predicateRef p)
@@ -1138,25 +1139,6 @@ getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
       ]
 
     storedSchema = renderSchemaSource (fst (schemaSource dbSchema))
-
-    -- Try to find the source for the desired schema. It could be in
-    -- our SchemaIndex, or it could be the schema stored in the DB if
-    -- we're looking at an old DB.
-    findSchemaSource sid =
-      case matches of
-        (one:_) -> return $ renderSchemaSource one
-        [] -> throwIO $ Exception $
-          "SchemaId not found: " <> unSchemaId sid
-      where
-      matches =
-        [ procSchemaSource proc
-        | proc <- schemaIndexCurrent : schemaIndexOlder
-        , sid `Map.member` hashedSchemaEnvs (procSchemaHashed proc)
-        ] ++
-        [ source
-        | (source, versions) <- [ schemaSource dbSchema ]
-        , sid `elem` IntMap.elems versions
-        ]
 
     schemaIds = toStoredVersions (legacyAllVersions dbSchema)
     dbSchemaIds = toStoredVersions (snd (schemaSource dbSchema))
@@ -1179,8 +1161,9 @@ getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
     then return ""
     else case getSchemaInfo_select of
       SelectSchema_stored{} -> return storedSchema
-      SelectSchema_current{} -> findSchemaSource (schemaLatestVersion dbSchema)
-      SelectSchema_schema_id sid -> findSchemaSource sid
+      SelectSchema_current{} ->
+        findSchemaSource index dbSchema (schemaLatestVersion dbSchema)
+      SelectSchema_schema_id sid -> findSchemaSource index dbSchema sid
       _ -> return storedSchema
 
   return SchemaInfo
@@ -1191,6 +1174,18 @@ getSchemaInfo dbSchema SchemaIndex{..} GetSchemaInfo{..} = do
     , schemaInfo_otherSchemaIds = otherSchemaIds
     , schemaInfo_derivationDependencies = derivationDependencies
     }
+
+getSchemaInfoForSchema :: SchemaIndex -> SchemaId -> IO SchemaInfo
+getSchemaInfoForSchema index sid = do
+  processed <- maybe (throwIO $ userError "schema id not found") return $
+    findSchemaInIndex index sid
+  dbSchema <-
+    mkDbSchema HashMap.toList Nothing Nothing readWriteContent processed Nothing
+  let schemaSource = renderSchemaSource (procSchemaSource processed)
+
+  res <- getSchemaInfo
+    dbSchema index (GetSchemaInfo (SelectSchema_schema_id sid) True)
+  return res{schemaInfo_schema = schemaSource}
 
 
 -- The version map in the 'StoredSchema', the 'SchemaIndex' and the
@@ -1211,3 +1206,41 @@ fromStoredVersions versions = IntMap.fromList
 renderSchemaSource :: SourceSchemas -> ByteString
 renderSchemaSource parsed =
   Text.encodeUtf8 $ renderStrict $ layoutCompact $ displayDefault parsed
+
+-- Try to find the source for the desired schema. It could be in
+-- our SchemaIndex, or it could be the schema stored in the DB if
+-- we're looking at an old DB.
+findSchemaSource
+  :: Glean.Database.Config.SchemaIndex
+  -> DbSchema
+  -> Thrift.SchemaId
+  -> IO ByteString
+findSchemaSource index dbSchema sid = do
+  let inDB = findSchemaInDB dbSchema sid
+      inIndex = findSchemaInIndex index sid
+  case inDB <|> fmap procSchemaSource inIndex of
+    Just schema -> return $ renderSchemaSource schema
+    Nothing -> throwIO $ Thrift.Exception $
+      "SchemaId not found: " <> Thrift.unSchemaId sid
+
+findSchemaInDB :: DbSchema -> Thrift.SchemaId -> Maybe SourceSchemas
+findSchemaInDB dbSchema sid = listToMaybe matches
+  where
+  matches =
+    [ source
+    | (source, versions) <- [ schemaSource dbSchema ]
+    , sid `elem` IntMap.elems versions
+    ]
+
+findSchemaInIndex
+  :: Glean.Database.Config.SchemaIndex
+  -> Thrift.SchemaId
+  -> Maybe ProcessedSchema
+findSchemaInIndex Glean.Database.Config.SchemaIndex{..} sid =
+  listToMaybe matches
+  where
+  matches =
+    [ proc
+    | proc <- schemaIndexCurrent : schemaIndexOlder
+    , sid `Map.member` hashedSchemaEnvs (procSchemaHashed proc)
+    ]

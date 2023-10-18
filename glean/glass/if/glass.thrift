@@ -176,8 +176,11 @@ struct DefinitionSymbolX {
   // a stable name for the definition
   1: SymbolId sym;
 
-  // the resolved local line:col spans in this file
+  // the line and column range of the full entity
   2: Range range (hs.strict);
+
+  // the line and column range of the entity name only
+  4: optional Range nameRange (hs.strict);
 
   // attributes of this definition
   3: AttributeList attributes;
@@ -776,16 +779,6 @@ service GlassService extends fb303.FacebookService {
 
   // Resolve declaration USR from ClangD to definition sites
   USRSymbolDefinition clangUSRToDefinition(
-    1: USR hash,
-    2: RequestOptions options,
-  ) throws (
-    1: ServerException e,
-    2: GlassException g,
-    3: RevisionNotAvailableException revisionNotAvailable,
-  );
-
-  // Resolve declaration USR from ClangD to xref sites
-  list<USRSymbolReference> clangUSRToReferenceRanges(
     1: USR hash,
     2: RequestOptions options,
   ) throws (

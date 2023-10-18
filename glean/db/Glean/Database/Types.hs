@@ -206,7 +206,7 @@ data EnableRecursion
   | DisableRecursion
 
 data JanitorRunResult
-  = JanitorRunSuccess UTCTime
+  = JanitorRunSuccess
   | JanitorRunFailure JanitorException
   | JanitorTimeout
   | JanitorDisabled
@@ -214,7 +214,8 @@ data JanitorRunResult
 
 data JanitorException
   = OtherJanitorException SomeException
-  | JanitorFetchBackupsFailure -- ^ Raised only when no catalog available
+  | JanitorFetchBackupsFailure SomeException
+    -- ^ Raised only when no remote db list available
   deriving (Typeable, Show)
 
 instance Exception JanitorException
@@ -243,9 +244,10 @@ data Env = forall storage. Storage storage => Env
   , envStats :: Stats
   , envLookupCacheStats :: LookupCache.Stats
   , envWarden :: Warden
-  , envDatabaseJanitor :: TVar (Maybe JanitorRunResult)
+  , envDatabaseJanitor :: TVar (Maybe (UTCTime, JanitorRunResult))
   , envDatabaseJanitorPublishedCounters :: TVar (HashSet ByteString)
   , envCachedRestorableDBs :: TVar (Maybe (UTCTime, [(Thrift.Repo, Meta)]))
+  , envCachedAvailableDBs :: TVar (HashSet Thrift.Repo)
   , envWorkQueue :: WorkQueue
   , envHeartbeats :: Heartbeats
   , envWrites :: TVar (HashMap Text Write)
@@ -264,6 +266,8 @@ data Env = forall storage. Storage storage => Env
   , envShardManager :: SomeShardManager
   , envEnableRecursion :: EnableRecursion
       -- ^ Experimental support for recursive queries. For testing only.
+  , envFilterAvailableDBs :: [Thrift.Repo] -> IO [Thrift.Repo]
+    -- ^ Filter out DBs not currently available in the server tier
   }
 
 instance Show Env where

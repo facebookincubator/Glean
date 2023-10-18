@@ -15,8 +15,9 @@ module Glean.Glass.Pretty.Cxx (
   Qualified(..)
 ) where
 
-import Glean.Schema.CodeCxx.Types as Cxx (Definition (..), Entity (..))
+import qualified Glean
 
+import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.Cxx1.Types as Cxx
 
 import Data.Text ( Text, intercalate )
@@ -24,6 +25,7 @@ import Data.Text.Prettyprint.Doc
   (pretty, layoutSmart, LayoutOptions, SimpleDocStream, reAnnotateS)
 import Data.Maybe ( fromMaybe )
 import qualified Data.Text as Text
+import Safe (atMay)
 import Util.Text (textShow)
 import Glean.Glass.Types ( SymbolId(..) )
 
@@ -68,6 +70,7 @@ prettyCxxSignature opts e qualified = case text of
       Cxx.Entity_defn def -> prettyDefinition def qualified
       Cxx.Entity_enumerator x ->
         prettyEnumerator x -- clangd doesn't qualify enumerators
+      Cxx.Entity_objcSelectorSlot slot -> prettyObjcSelectorSlot slot
       Cxx.Entity_EMPTY -> intentionallyEmpty
 
 intentionallyEmpty :: Text
@@ -137,6 +140,21 @@ prettyEnumType maybeType = ":" <+> fillImplicitUnderlyingType maybeType
     fillImplicitUnderlyingType Nothing = implicitUnderlyingEnumType
     fillImplicitUnderlyingType (Just ttype) = prettyType ttype
 
+prettyObjcSelectorSlot :: Cxx.ObjcSelectorSlotEntity -> Text
+prettyObjcSelectorSlot (Cxx.ObjcSelectorSlotEntity method idx) =
+  fromMaybe missingKey $ do
+    decl <- case method of
+      Cxx.ObjcMethodEntity_decl decl -> Just decl
+      Cxx.ObjcMethodEntity_defn Cxx.ObjcMethodDefinition{
+        objcMethodDefinition_key = Just decl} -> Just decl
+      _ -> Nothing
+    Cxx.ObjcMethodDeclaration_key{
+      objcMethodDeclaration_key_selector = Cxx.ObjcSelector{
+        objcSelector_key = Just selector
+      }
+    } <- Glean.getFactKey decl
+    let index = fromIntegral $ Glean.fromNat idx
+    atMay selector index
 -- Notes:
 -- * "kind = { global_ = {definition = true}" doesn't guarantee that this
 --   variable has an 'extern' key

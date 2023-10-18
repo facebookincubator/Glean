@@ -63,7 +63,6 @@ jobs:
           cp -r "${NODEARCH}"/* "$HOME"/.hsthrift/
           npm install -g @sourcegraph/scip-python
 
-
       - name: Install indexer (rust)
         run: |
           export RUST_ANALYZER=2023-06-19

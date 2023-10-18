@@ -24,6 +24,12 @@
               "isAccessor": false,
               "isInstance": true,
               "isOptional": false,
+              "locations": [
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "length": 2, "start": 242 }
+                }
+              ],
               "selector": { "key": [ "f1" ] },
               "signature": {
                 "key": { "parameters": [ ], "returns": { "key": "int" } }
@@ -45,6 +51,12 @@
               "isAccessor": false,
               "isInstance": true,
               "isOptional": false,
+              "locations": [
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "length": 2, "start": 253 }
+                }
+              ],
               "selector": { "key": [ "f2" ] },
               "signature": {
                 "key": {
@@ -71,6 +83,16 @@
               "isAccessor": false,
               "isInstance": true,
               "isOptional": false,
+              "locations": [
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "length": 3, "start": 273 }
+                },
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "length": 3, "start": 286 }
+                }
+              ],
               "selector": { "key": [ "f3a", "f3b" ] },
               "signature": {
                 "key": {
@@ -157,6 +179,16 @@
             "isAccessor": false,
             "isInstance": true,
             "isOptional": false,
+            "locations": [
+              {
+                "file": { "key": "test.m" },
+                "span": { "length": 1, "start": 510 }
+              },
+              {
+                "file": { "key": "test.m" },
+                "span": { "length": 3, "start": 497 }
+              }
+            ],
             "selector": { "key": [ "", "f4a" ] },
             "signature": {
               "key": {
@@ -185,6 +217,16 @@
               "isAccessor": false,
               "isInstance": true,
               "isOptional": false,
+              "locations": [
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "length": 3, "start": 273 }
+                },
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "length": 3, "start": 286 }
+                }
+              ],
               "selector": { "key": [ "f3a", "f3b" ] },
               "signature": {
                 "key": {
@@ -253,6 +295,12 @@
             "isAccessor": false,
             "isInstance": true,
             "isOptional": false,
+            "locations": [
+              {
+                "file": { "key": "test.m" },
+                "span": { "length": 2, "start": 392 }
+              }
+            ],
             "selector": { "key": [ "f2" ] },
             "signature": {
               "key": {
@@ -280,6 +328,12 @@
               "isAccessor": false,
               "isInstance": true,
               "isOptional": false,
+              "locations": [
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "length": 2, "start": 242 }
+                }
+              ],
               "selector": { "key": [ "f1" ] },
               "signature": {
                 "key": { "parameters": [ ], "returns": { "key": "int" } }
@@ -306,6 +360,16 @@
             "isAccessor": false,
             "isInstance": true,
             "isOptional": false,
+            "locations": [
+              {
+                "file": { "key": "test.m" },
+                "span": { "length": 3, "start": 436 }
+              },
+              {
+                "file": { "key": "test.m" },
+                "span": { "length": 3, "start": 449 }
+              }
+            ],
             "selector": { "key": [ "f3a", "f3b" ] },
             "signature": {
               "key": {
@@ -334,6 +398,12 @@
               "isAccessor": false,
               "isInstance": true,
               "isOptional": false,
+              "locations": [
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "length": 2, "start": 253 }
+                }
+              ],
               "selector": { "key": [ "f2" ] },
               "signature": {
                 "key": {

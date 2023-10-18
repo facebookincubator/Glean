@@ -8,8 +8,17 @@
             "12": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "."
                         }
                     },
                     "range": {
@@ -24,8 +33,17 @@
             "15": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "a"
                         }
                     },
                     "range": {
@@ -50,8 +68,17 @@
             "16": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "."
                         }
                     },
                     "range": {
@@ -76,8 +103,17 @@
             "2": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "f"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
                         }
                     },
                     "range": {
@@ -100,8 +136,17 @@
                 },
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "g"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
                         }
                     },
                     "range": {
@@ -124,8 +169,17 @@
                 },
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 3
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "h"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project/my_defs.bzl"
                         }
                     },
                     "range": {
@@ -148,8 +202,17 @@
                 },
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 4
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "my_defs.bzl"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project"
                         }
                     },
                     "range": {
@@ -174,8 +237,17 @@
             "20": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "."
                         }
                     },
                     "range": {
@@ -190,8 +262,17 @@
             "22": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 4
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "toto.c"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project"
                         }
                     },
                     "range": {
@@ -214,8 +295,17 @@
                 },
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 4
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "tutu.c"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project"
                         }
                     },
                     "range": {
@@ -240,8 +330,17 @@
             "24": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "b"
                         }
                     },
                     "range": {
@@ -266,8 +365,17 @@
             "4": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "foobar"
+                        },
+                        "symbolParent": {
+                            "aString": "."
                         }
                     },
                     "range": {
@@ -282,8 +390,17 @@
             "7": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "bar"
+                        },
+                        "symbolParent": {
+                            "aString": "."
                         }
                     },
                     "range": {
@@ -308,8 +425,17 @@
             "8": [
                 {
                     "attributes": {
+                        "symbolKind": {
+                            "aInteger": 30
+                        },
                         "symbolLanguage": {
                             "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "foo"
+                        },
+                        "symbolParent": {
+                            "aString": "."
                         }
                     },
                     "range": {

@@ -26,7 +26,7 @@ module Glean.Backend.Local
 
 import Control.Concurrent (getNumCapabilities)
 import Control.Concurrent.Stream (stream)
-import Control.Exception (catches, Handler (Handler))
+import Control.Exception (catches, Handler (Handler), throwIO)
 import Control.Monad (forM_)
 import Data.ByteString (ByteString)
 import Data.Default
@@ -79,10 +79,17 @@ instance Backend Database.Env where
       (,) <$> Lookup.startingId db <*> Lookup.firstFreeId db
     return $ Thrift.FactIdRange (fromFid starting) (fromFid next)
 
-  getSchemaInfo env repo req =
+  getSchemaInfo env (Just repo) req =
     withOpenDatabase env repo $ \odb -> do
       index <- Observed.get (Database.envSchemaSource env)
       Database.getSchemaInfo (Database.odbSchema odb) index req
+
+  getSchemaInfo env Nothing Thrift.GetSchemaInfo{..} = do
+      index <- Observed.get (Database.envSchemaSource env)
+      sid <- case getSchemaInfo_select of
+          Thrift.SelectSchema_schema_id sid -> return sid
+          other -> throwIO $ userError $ "unsupported: " <> show other
+      Database.getSchemaInfoForSchema index sid
 
   validateSchema env (Thrift.ValidateSchema str) = do
     schema <- Observed.get (Database.envSchemaSource env)
@@ -223,7 +230,7 @@ runSyncQuery repo env q@(Query req) acc rvar = do
 loadDbSchema :: Backend a => a -> Thrift.Repo -> IO DbSchema
 loadDbSchema backend repo = do
   Thrift.SchemaInfo schema pids _ dbSchemaIds _ _ <-
-    getSchemaInfo backend repo def
+    getSchemaInfo backend (Just repo) def
       { Thrift.getSchemaInfo_select = Thrift.SelectSchema_stored def }
   fromStoredSchema Nothing (StoredSchema schema pids dbSchemaIds)
     readWriteContent

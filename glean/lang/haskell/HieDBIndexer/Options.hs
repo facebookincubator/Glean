@@ -10,15 +10,8 @@
 
 module HieDBIndexer.Options where
 
--- @lint-ignore-every TODOHACK
--- @lint-ignore-every LINEWRAP
-
--- @lint-ignore-every TODOHACK
--- @lint-ignore-every LINEWRAP
 import Data.List.NonEmpty (NonEmpty, nonEmpty)
 import Data.Maybe (fromJust)
-import Data.Text (Text)
-import qualified Glean (Backend)
 import Options.Applicative (
   Parser,
   ParserInfo,
@@ -36,6 +29,7 @@ import Options.Applicative (
   switch,
   value, (<|>), some, strArgument
  )
+import Glean (Repo (Repo))
 
 -- | Either a HieDB or a set of folders to recursively search for .hie files
 data Sources
@@ -46,17 +40,19 @@ data HieDBIndexerOptions sources = HieDBIndexerOptions
   { sources :: sources
   , verbosity :: Int
   , hiedbTrace :: Bool
-  , repoName :: String
-  , repoHash :: Text
   , repoPath :: FilePath
   , chunkSize :: Int
-  , dontCreateDb :: Bool
   }
 
-data HieDBIndexerEnv b = HieDBIndexerEnv
-  { backend :: Glean.Backend b => b
-  , cfg :: HieDBIndexerOptions FilePath
-  }
+data Mode
+  = WriteMode {
+      repo :: Repo,
+      dontCreateDb :: Bool
+    }
+  | BinaryMode {
+      outputPath :: FilePath
+    }
+
 
 sourcesP :: Parser Sources
 sourcesP = HieDB <$> hiedbP <|> (HieFiles <$> hieFilesP)
@@ -69,10 +65,10 @@ sourcesP = HieDB <$> hiedbP <|> (HieFiles <$> hieFilesP)
     hieFilesP = fromJust . nonEmpty <$> some
       (strArgument (metavar "PATH" <> help "Tree containing .hie files"))
 
-options :: ParserInfo (HieDBIndexerOptions Sources)
+options :: ParserInfo (HieDBIndexerOptions Sources, Mode)
 options = info (helper <*> parser) fullDesc
   where
-    parser :: Parser (HieDBIndexerOptions Sources)
+    parser :: Parser (HieDBIndexerOptions Sources, Mode)
     parser = do
 
       sources <- sourcesP
@@ -110,6 +106,23 @@ options = info (helper <*> parser) fullDesc
               <> help "Enable trace in hiedb connection."
           )
 
+      chunkSize <-
+        option
+          auto
+          ( long "chunk-size"
+              <> short 'c'
+              <> help "Number of vertices in each file batch."
+              <> showDefault
+              <> value 15000
+              <> metavar "INT"
+          )
+      mode <- modeParser
+      return (HieDBIndexerOptions {..}, mode)
+
+modeParser :: Parser Mode
+modeParser = serviceModeParser <|> binaryModeParser
+  where
+    serviceModeParser = do
       repoName <-
         strOption
           ( long "repo-name"
@@ -123,16 +136,6 @@ options = info (helper <*> parser) fullDesc
               <> metavar "REPO_HASH"
               <> help "Hash of the DB to be created."
           )
-      chunkSize <-
-        option
-          auto
-          ( long "chunk-size"
-              <> short 'c'
-              <> help "Number of vertices in each file batch."
-              <> showDefault
-              <> value 15000
-              <> metavar "INT"
-          )
       dontCreateDb <-
         switch
           ( long "dont-create-db"
@@ -144,4 +147,11 @@ options = info (helper <*> parser) fullDesc
                     ]
                 )
           )
-      return HieDBIndexerOptions {..}
+      return $ WriteMode (Repo repoName repoHash) dontCreateDb
+
+    binaryModeParser = do
+        outputPath <- strOption
+          ( long "output"
+            <> metavar "FILE"
+            <> help "Output binary serialized facts instead of writing to DB")
+        return $ BinaryMode{..}

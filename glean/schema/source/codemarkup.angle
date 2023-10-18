@@ -6,6 +6,7 @@ import code.24
 import codemarkup.buck.2
 import codemarkup.cxx.4
 import codemarkup.erlang.2
+import codemarkup.fbthrift.1
 import codemarkup.flow.2
 import codemarkup.hack.2
 import codemarkup.haskell.2
@@ -46,7 +47,9 @@ predicate EntityKind:
     (codemarkup.flow.FlowEntityKind { E, Kind }; { flow = E } = Entity) |
     (codemarkup.java.JavaEntityKind { E, Kind }; { java = E } = Entity) |
     (codemarkup.kotlin.KotlinEntityKind { E, Kind }; { kotlin = E } = Entity) |
-    (codemarkup.thrift.ThriftEntityKind { E, Kind }; { thrift = E } = Entity);
+    (codemarkup.thrift.ThriftEntityKind { E, Kind }; { thrift = E } = Entity) |
+    (codemarkup.fbthrift.ThriftEntityKind { E, Kind }; { fbthrift = E } = Entity) |
+    (codemarkup.buck.BuckEntityKind { E, Kind }; { buck = E } = Entity);
 
 # Retrieve information about an entity
 predicate EntityInfo:
@@ -67,7 +70,9 @@ predicate EntityInfo:
        (codemarkup.java.JavaEntityKind { E, Kind };
         { java = E } = Entity) |
        (codemarkup.kotlin.KotlinEntityKind { E, Kind };
-        { kotlin = E } = Entity)
+        { kotlin = E } = Entity) |
+       (codemarkup.buck.BuckEntityKind { E, Kind };
+        { buck = E } = Entity);
       )
     ) |
     (codemarkup.cxx.CxxEntityInfo { E, Info }; { cxx = E } = Entity) |
@@ -136,6 +141,8 @@ predicate ResolveLocation:
      { buck = E } = Entity) |
     (codemarkup.thrift.ThriftResolveLocation { Location, E };
      { thrift = E } = Entity) |
+    (codemarkup.fbthrift.ThriftResolveLocation { Location, E };
+     { fbthrift = E } = Entity) |
     (codemarkup.erlang.ErlangResolveLocation { Location, E };
      { erlang = E } = Entity) |
     (codemarkup.lsif.LsifResolveLocation { Location, E };
@@ -169,6 +176,8 @@ predicate EntityLocation:
      { buck = E } = Entity) |
     (codemarkup.thrift.ThriftEntityLocation { E, Location };
      { thrift = E } = Entity) |
+    (codemarkup.fbthrift.ThriftEntityLocation { E, Location };
+     { fbthrift = E } = Entity) |
     (codemarkup.erlang.ErlangEntityLocation { E, Location };
      { erlang = E } = Entity) |
     (codemarkup.lsif.LsifEntityLocation { E, Location };
@@ -204,6 +213,8 @@ predicate FileEntityXRefLocations:
      { buck = E } = Entity) |
     (codemarkup.thrift.ThriftFileEntityXRefLocations { File, XRef, E };
      { thrift = E } = Entity) |
+    (codemarkup.fbthrift.ThriftFileEntityXRefLocations { File, XRef, E };
+     { fbthrift = E } = Entity) |
     (codemarkup.erlang.ErlangFileEntityXRefLocations { File, XRef, E };
      { erlang = E } = Entity) |
     (codemarkup.lsif.LsifFileEntityXRefLocations { File, XRef, E };
@@ -240,6 +251,8 @@ predicate FileEntityXRefSpans:
        { buck = E } = Entity) |
       (codemarkup.thrift.ThriftFileEntityXRefLocations { File, XRef, E };
        { thrift = E } = Entity) |
+      (codemarkup.fbthrift.ThriftFileEntityXRefLocations { File, XRef, E };
+       { fbthrift = E } = Entity) |
       (codemarkup.erlang.ErlangFileEntityXRefLocations { File, XRef, E };
        { erlang = E } = Entity) |
       (codemarkup.lsif.LsifFileEntityXRefLocations { File, XRef, E };
@@ -471,6 +484,10 @@ predicate ExtendsParentEntity :
       codemarkup.thrift.ThriftExtendsParentEntity { C, P };
       { thrift = P } = Parent
     ) | (
+      { fbthrift = C } = Child;
+      codemarkup.fbthrift.ThriftExtendsParentEntity { C, P };
+      { fbthrift = P } = Parent
+    ) | (
       { java = C } = Child;
       codemarkup.java.JavaExtendsParentEntity { C, P };
       { java = P } = Parent
@@ -521,6 +538,10 @@ predicate ExtendsChildEntity :
       codemarkup.thrift.ThriftExtendsChildEntity { P, C };
       { thrift = C } = Child
     ) | (
+      { fbthrift = P } = Parent;
+      codemarkup.fbthrift.ThriftExtendsChildEntity { P, C };
+      { fbthrift = C } = Child
+    ) | (
       { java = P } = Parent;
       codemarkup.java.JavaExtendsChildEntity { P, C };
       { java = C } = Child
@@ -552,6 +573,10 @@ predicate ContainsParentEntity :
       { thrift = C } = Child;
       codemarkup.thrift.ThriftContainsParentEntity { C, P };
       { thrift = P } = Parent
+    ) | (
+      { fbthrift = C } = Child;
+      codemarkup.fbthrift.ThriftContainsParentEntity { C, P };
+      { fbthrift = P } = Parent
     ) | (
       { java = C } = Child;
       codemarkup.java.JavaContainsParentEntity { C, P };
@@ -588,6 +613,10 @@ predicate ContainsChildEntity :
       { thrift = P } = Parent;
       codemarkup.thrift.ThriftContainsChildEntity { P, C };
       { thrift = C } = Child
+    ) | (
+      { fbthrift = P } = Parent;
+      codemarkup.fbthrift.ThriftContainsChildEntity { P, C };
+      { fbthrift = C } = Child
     ) | (
       { java = P } = Parent;
       codemarkup.java.JavaContainsChildEntity { P, C };

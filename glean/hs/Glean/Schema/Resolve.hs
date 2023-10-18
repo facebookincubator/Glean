@@ -13,6 +13,7 @@ module Glean.Schema.Resolve
   , parseAndResolveSchemaCached
   , SchemaParserCache
   , resolveType
+  , resolveSchema
   , runResolve
   , resolveQuery
   ) where

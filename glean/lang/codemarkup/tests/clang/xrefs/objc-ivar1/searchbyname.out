@@ -28,6 +28,12 @@
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "testMethod" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 341, "length": 10 }
+                            }
+                          ],
                           "container": { "implementation": { "key": "J" } },
                           "signature": {
                             "key": {

@@ -8,9 +8,13 @@
 
 module Glean.Server (main) where
 
+import Control.Concurrent.Async (race)
 import Control.Monad
 import Data.IORef
 import Data.Maybe
+import Data.Time
+import Data.Typeable (cast)
+import Network.HTTP.Client
 import qualified Options.Applicative as O
 import System.Time.Extra (Seconds)
 
@@ -27,13 +31,13 @@ import Util.Log
 import Util.STM
 
 #if GLEAN_FACEBOOK
+import JustKnobs (evalKnob)
 import Logger.IO
 import Glean.Facebook.Logger.Server
 import Glean.Facebook.Logger.Database
-#endif
-
-#ifdef GLEAN_FACEBOOK
 import qualified Glean.Database.Backup.Manifold as Manifold
+import Glean.Server.Available ( withAvailableDBFilterViaSR )
+import Manifold.Client
 #endif
 
 import Glean.Database.Config (Config(..))
@@ -58,12 +62,14 @@ main =
   withConfigProvider cfgOpts $ \(configAPI :: ConfigAPI) ->
 #if GLEAN_FACEBOOK
   withLogger configAPI $ \logger ->
+  withAvailableDBFilterViaSR evb $ \filterAvailableDBs ->
 #endif
   let dbCfg = (cfgDBConfig cfg0){
         cfgShardManager = shardManagerConfig (cfgPort cfg)
 #if GLEAN_FACEBOOK
         , cfgServerLogger = Some (GleanServerFacebookLogger logger)
         , cfgDatabaseLogger = Some (GleanDatabaseFacebookLogger logger)
+        , cfgFilterAvailableDBs = filterAvailableDBs
 #endif
       }
 
@@ -94,25 +100,57 @@ main =
     -- completion before we advertise the server as alive.  Otherwise
     -- clients may contact this server and see no available DBs.
     waitForAlive server = do
-      l <- atomically $ do
+      (_, l) <- atomically $ do
         l <- readTVar $ envDatabaseJanitor databases
         maybe retry return l
 
       case l of
-        JanitorRunFailure JanitorFetchBackupsFailure -> do
+        JanitorRunFailure JanitorFetchBackupsFailure{} -> do
           logError "Aborting: failed to list remote DBs at startup"
           return False
         JanitorTimeout -> do
           logError "Aborting: Janitor timeout at startup"
           return False
-        JanitorRunSuccess{} ->
+        JanitorRunSuccess ->
           setAlive server >> return True
         JanitorRunFailure OtherJanitorException{} ->
           setAlive server >> return True
         JanitorDisabled ->
           setAlive server >> return True
 
-    waitForTerminate = waitForTerminateSignalsAndGracefulShutdown
+    monitorJanitor t0 = do
+      (t1, result) <- atomically $ do
+        l <- readTVar (envDatabaseJanitor databases)
+        case l of
+          Nothing -> retry
+          Just (t1, r)
+            | t1 == t0 -> retry  -- block until the next janitor run
+            | otherwise -> return (t1, r)
+#ifdef GLEAN_FACEBOOK
+      case result of
+        JanitorRunFailure (JanitorFetchBackupsFailure fetchError) -> do
+          let dbServerBelievedDead = if
+                | Just NoHostsError
+                  <- cast fetchError -> True
+                | Just (HttpExceptionRequest _req ConnectionFailure{})
+                  <- cast fetchError -> True
+                | Just (HttpExceptionRequest _req ConnectionTimeout{})
+                  <- cast fetchError -> True
+                | otherwise -> False
+          knob <-
+            evalKnob "code_indexing/glean:server_automated_restarts"
+          if knob == Right True && not dbServerBelievedDead
+              then logError "Aborting: failed to list remote DBs too many times"
+              else monitorJanitor t1
+        _ -> monitorJanitor t1
+#else
+      result `seq` monitorJanitor t1
+#endif
+
+    waitForTerminate = void $
+      (getCurrentTime >>= monitorJanitor)
+       `race`
+      waitForTerminateSignalsAndGracefulShutdown
                         databases
                         terminating
                         (cfgGracefulShutdownTimeout cfg)

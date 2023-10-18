@@ -1,0 +1,50 @@
+[
+    "@generated",
+    {
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 30,
+        "language": 11,
+        "location": {
+            "filepath": "buck_project/TEST_TARGETS",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 2,
+                "lineBegin": 12,
+                "lineEnd": 18
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": ".",
+            "localName": "foo"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "sym": "test/buck/t/buck_project/PATH/./foo",
+        "sym_location": {
+            "filepath": "buck_project/TEST_TARGETS",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 2,
+                "lineBegin": 12,
+                "lineEnd": 18
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]

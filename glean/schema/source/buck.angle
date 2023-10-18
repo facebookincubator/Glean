@@ -501,6 +501,32 @@ predicate TargetMode :
     mode : string,
   }
 
+#
+# Efficient searching
+#
+
+predicate LocalName: string
+  stored NameStr where
+    buck.Locator { name = NameStr } | buck.Definition { name = NameStr }
+
+# Pair the lower case normalized form with the case sensitive form
+predicate LocalNameLowerCase:
+  {
+    lowercase : string,
+    name : LocalName,
+  }
+  stored { prim.toLower NameStr, Name } where Name = buck.LocalName NameStr
+
+# And just the declarations we need
+predicate SearchByLocalName:
+  {
+    name : LocalName,
+    decl : XRefDestination
+  }
+  stored { buck.LocalName NameStr, Decl } where
+    ( LDecl = buck.Locator { name = NameStr }; { locator = LDecl } = Decl) |
+    ( DDecl = buck.Definition { name = NameStr }; { definition = DDecl } = Decl)
+
 } # end schema buck.4
 
 schema buck.4 evolves buck.3

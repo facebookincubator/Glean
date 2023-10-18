@@ -41,9 +41,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 12,
+                    "lineBegin": 99,
+                    "lineEnd": 99
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 27,
                     "lineBegin": 99,
                     "lineEnd": 99
                 },
@@ -229,9 +235,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 12,
                     "columnEnd": 23,
+                    "lineBegin": 100,
+                    "lineEnd": 100
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 41,
                     "lineBegin": 100,
                     "lineEnd": 100
                 },
@@ -417,11 +429,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 13,
                     "lineBegin": 173,
                     "lineEnd": 173
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 173,
+                    "lineEnd": 193
                 },
                 "sym": "test/cpp//N1"
             },
@@ -464,11 +482,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 13,
                     "lineBegin": 175,
                     "lineEnd": 175
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 175,
+                    "lineEnd": 191
                 },
                 "sym": "test/cpp//N1/N2"
             },
@@ -511,11 +535,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 11,
                     "lineBegin": 186,
                     "lineEnd": 186
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 186,
+                    "lineEnd": 189
                 },
                 "sym": "test/cpp//N1/N2/Bar"
             },
@@ -558,11 +588,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 20,
                     "columnEnd": 23,
                     "lineBegin": 205,
                     "lineEnd": 205
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 205,
+                    "lineEnd": 207
                 },
                 "sym": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo"
             },
@@ -605,9 +641,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 12,
+                    "lineBegin": 188,
+                    "lineEnd": 188
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 27,
                     "lineBegin": 188,
                     "lineEnd": 188
                 },
@@ -652,8 +694,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 17,
+                    "columnEnd": 18,
+                    "lineBegin": 188,
+                    "lineEnd": 188
+                },
+                "range": {
+                    "columnBegin": 13,
                     "columnEnd": 18,
                     "lineBegin": 188,
                     "lineEnd": 188
@@ -699,8 +747,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 28,
+                    "columnEnd": 29,
+                    "lineBegin": 205,
+                    "lineEnd": 205
+                },
+                "range": {
+                    "columnBegin": 24,
                     "columnEnd": 29,
                     "lineBegin": 205,
                     "lineEnd": 205
@@ -746,9 +800,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 13,
+                    "lineBegin": 177,
+                    "lineEnd": 177
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 32,
                     "lineBegin": 177,
                     "lineEnd": 177
                 },
@@ -793,9 +853,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 23,
                     "columnEnd": 26,
+                    "lineBegin": 177,
+                    "lineEnd": 177
+                },
+                "range": {
+                    "columnBegin": 16,
+                    "columnEnd": 29,
                     "lineBegin": 177,
                     "lineEnd": 177
                 },
@@ -934,11 +1000,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 15,
                     "columnEnd": 18,
                     "lineBegin": 201,
                     "lineEnd": 201
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 201,
+                    "lineEnd": 203
                 },
                 "sym": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo"
             },
@@ -981,9 +1053,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 7,
                     "columnEnd": 10,
+                    "lineBegin": 184,
+                    "lineEnd": 184
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 25,
                     "lineBegin": 184,
                     "lineEnd": 184
                 },
@@ -1028,8 +1106,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 15,
+                    "columnEnd": 16,
+                    "lineBegin": 184,
+                    "lineEnd": 184
+                },
+                "range": {
+                    "columnBegin": 11,
                     "columnEnd": 16,
                     "lineBegin": 184,
                     "lineEnd": 184
@@ -1075,8 +1159,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 23,
+                    "columnEnd": 24,
+                    "lineBegin": 201,
+                    "lineEnd": 201
+                },
+                "range": {
+                    "columnBegin": 19,
                     "columnEnd": 24,
                     "lineBegin": 201,
                     "lineEnd": 201
@@ -1122,11 +1212,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 12,
                     "lineBegin": 129,
                     "lineEnd": 129
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 129,
+                    "lineEnd": 171
                 },
                 "sym": "test/cpp//Q"
             },
@@ -1169,11 +1265,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 10,
                     "columnEnd": 12,
                     "lineBegin": 150,
                     "lineEnd": 150
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 4,
+                    "lineBegin": 150,
+                    "lineEnd": 164
                 },
                 "sym": "test/cpp//Q/OO"
             },
@@ -1216,9 +1318,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 15,
                     "columnEnd": 23,
+                    "lineBegin": 162,
+                    "lineEnd": 162
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 35,
                     "lineBegin": 162,
                     "lineEnd": 162
                 },
@@ -1263,9 +1371,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 15,
                     "columnEnd": 23,
+                    "lineBegin": 160,
+                    "lineEnd": 160
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 36,
                     "lineBegin": 160,
                     "lineEnd": 160
                 },
@@ -1310,9 +1424,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 17,
+                    "lineBegin": 157,
+                    "lineEnd": 157
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 33,
                     "lineBegin": 157,
                     "lineEnd": 157
                 },
@@ -1357,9 +1477,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 17,
+                    "lineBegin": 156,
+                    "lineEnd": 156
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 29,
                     "lineBegin": 156,
                     "lineEnd": 156
                 },
@@ -1404,9 +1530,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 28,
                     "columnEnd": 29,
+                    "lineBegin": 156,
+                    "lineEnd": 156
+                },
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 28,
                     "lineBegin": 156,
                     "lineEnd": 156
                 },
@@ -1451,9 +1583,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 23,
                     "columnEnd": 24,
+                    "lineBegin": 157,
+                    "lineEnd": 157
+                },
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 23,
                     "lineBegin": 157,
                     "lineEnd": 157
                 },
@@ -1498,9 +1636,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 17,
+                    "lineBegin": 154,
+                    "lineEnd": 154
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 21,
                     "lineBegin": 154,
                     "lineEnd": 154
                 },
@@ -1545,11 +1689,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 10,
                     "columnEnd": 12,
                     "lineBegin": 133,
                     "lineEnd": 133
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 4,
+                    "lineBegin": 133,
+                    "lineEnd": 148
                 },
                 "sym": "test/cpp//Q/QQ"
             },
@@ -1592,9 +1742,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
+                    "lineBegin": 147,
+                    "lineEnd": 147
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 19,
                     "lineBegin": 147,
                     "lineEnd": 147
                 },
@@ -1639,9 +1795,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 10,
                     "columnEnd": 15,
+                    "lineBegin": 135,
+                    "lineEnd": 135
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 17,
                     "lineBegin": 135,
                     "lineEnd": 135
                 },
@@ -1686,9 +1848,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 12,
                     "columnEnd": 21,
+                    "lineBegin": 137,
+                    "lineEnd": 137
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 30,
                     "lineBegin": 137,
                     "lineEnd": 137
                 },
@@ -1733,9 +1901,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 13,
                     "columnEnd": 22,
+                    "lineBegin": 138,
+                    "lineEnd": 138
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 26,
                     "lineBegin": 138,
                     "lineEnd": 138
                 },
@@ -1780,9 +1954,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 12,
                     "columnEnd": 21,
+                    "lineBegin": 139,
+                    "lineEnd": 139
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 26,
                     "lineBegin": 139,
                     "lineEnd": 139
                 },
@@ -1827,9 +2007,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 15,
+                    "lineBegin": 143,
+                    "lineEnd": 143
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 29,
                     "lineBegin": 143,
                     "lineEnd": 143
                 },
@@ -1874,9 +2060,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 10,
                     "columnEnd": 16,
+                    "lineBegin": 142,
+                    "lineEnd": 142
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 28,
                     "lineBegin": 142,
                     "lineEnd": 142
                 },
@@ -1921,9 +2113,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 15,
+                    "lineBegin": 141,
+                    "lineEnd": 141
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 38,
                     "lineBegin": 141,
                     "lineEnd": 141
                 },
@@ -1968,9 +2166,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 19,
                     "columnEnd": 20,
+                    "lineBegin": 141,
+                    "lineEnd": 141
+                },
+                "range": {
+                    "columnBegin": 16,
+                    "columnEnd": 19,
                     "lineBegin": 141,
                     "lineEnd": 141
                 },
@@ -2015,9 +2219,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 30,
                     "columnEnd": 31,
+                    "lineBegin": 141,
+                    "lineEnd": 141
+                },
+                "range": {
+                    "columnBegin": 21,
+                    "columnEnd": 30,
                     "lineBegin": 141,
                     "lineEnd": 141
                 },
@@ -2062,9 +2272,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 20,
                     "columnEnd": 21,
+                    "lineBegin": 142,
+                    "lineEnd": 142
+                },
+                "range": {
+                    "columnBegin": 17,
+                    "columnEnd": 20,
                     "lineBegin": 142,
                     "lineEnd": 142
                 },
@@ -2109,9 +2325,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 25,
                     "columnEnd": 26,
+                    "lineBegin": 142,
+                    "lineEnd": 142
+                },
+                "range": {
+                    "columnBegin": 22,
+                    "columnEnd": 25,
                     "lineBegin": 142,
                     "lineEnd": 142
                 },
@@ -2156,9 +2378,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 19,
                     "columnEnd": 20,
+                    "lineBegin": 143,
+                    "lineEnd": 143
+                },
+                "range": {
+                    "columnBegin": 16,
+                    "columnEnd": 19,
                     "lineBegin": 143,
                     "lineEnd": 143
                 },
@@ -2203,9 +2431,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 25,
                     "columnEnd": 26,
+                    "lineBegin": 143,
+                    "lineEnd": 143
+                },
+                "range": {
+                    "columnBegin": 21,
+                    "columnEnd": 25,
                     "lineBegin": 143,
                     "lineEnd": 143
                 },
@@ -2250,9 +2484,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 15,
+                    "lineBegin": 145,
+                    "lineEnd": 145
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 43,
                     "lineBegin": 145,
                     "lineEnd": 145
                 },
@@ -2297,9 +2537,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 30,
                     "columnEnd": 31,
+                    "lineBegin": 145,
+                    "lineEnd": 145
+                },
+                "range": {
+                    "columnBegin": 16,
+                    "columnEnd": 30,
                     "lineBegin": 145,
                     "lineEnd": 145
                 },
@@ -2344,9 +2590,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 36,
                     "columnEnd": 37,
+                    "lineBegin": 145,
+                    "lineEnd": 145
+                },
+                "range": {
+                    "columnBegin": 32,
+                    "columnEnd": 36,
                     "lineBegin": 145,
                     "lineEnd": 145
                 },
@@ -2391,9 +2643,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 13,
+                    "lineBegin": 131,
+                    "lineEnd": 131
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 27,
                     "lineBegin": 131,
                     "lineEnd": 131
                 },
@@ -2438,11 +2696,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 18,
                     "columnEnd": 26,
                     "lineBegin": 166,
                     "lineEnd": 166
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 4,
+                    "lineBegin": 166,
+                    "lineEnd": 169
                 },
                 "sym": "test/cpp//Q/operator%22%22_glean/.o/const+char32_t+*,unsigned+long"
             },
@@ -2485,8 +2749,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 42,
+                    "columnEnd": 45,
+                    "lineBegin": 167,
+                    "lineEnd": 167
+                },
+                "range": {
+                    "columnBegin": 28,
                     "columnEnd": 45,
                     "lineBegin": 167,
                     "lineEnd": 167
@@ -2532,8 +2802,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 23,
+                    "columnEnd": 26,
+                    "lineBegin": 167,
+                    "lineEnd": 167
+                },
+                "range": {
+                    "columnBegin": 7,
                     "columnEnd": 26,
                     "lineBegin": 167,
                     "lineEnd": 167
@@ -2579,9 +2855,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 17,
                     "columnEnd": 25,
+                    "lineBegin": 152,
+                    "lineEnd": 152
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 53,
                     "lineBegin": 152,
                     "lineEnd": 152
                 },
@@ -2626,8 +2908,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 38,
+                    "columnEnd": 39,
+                    "lineBegin": 152,
+                    "lineEnd": 152
+                },
+                "range": {
+                    "columnBegin": 28,
                     "columnEnd": 39,
                     "lineBegin": 152,
                     "lineEnd": 152
@@ -2673,8 +2961,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 51,
+                    "columnEnd": 52,
+                    "lineBegin": 152,
+                    "lineEnd": 152
+                },
+                "range": {
+                    "columnBegin": 41,
                     "columnEnd": 52,
                     "lineBegin": 152,
                     "lineEnd": 152
@@ -2720,11 +3014,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 14,
                     "lineBegin": 90,
                     "lineEnd": 90
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 90,
+                    "lineEnd": 97
                 },
                 "sym": "test/cpp//baz"
             },
@@ -2767,11 +3067,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 9,
                     "lineBegin": 92,
                     "lineEnd": 92
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 92,
+                    "lineEnd": 95
                 },
                 "sym": "test/cpp//baz/U"
             },
@@ -2814,9 +3120,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 11,
+                    "lineBegin": 93,
+                    "lineEnd": 93
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 26,
                     "lineBegin": 93,
                     "lineEnd": 93
                 },
@@ -3002,9 +3314,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 14,
                     "columnEnd": 22,
+                    "lineBegin": 94,
+                    "lineEnd": 94
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 40,
                     "lineBegin": 94,
                     "lineEnd": 94
                 },
@@ -3190,11 +3508,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 9,
                     "lineBegin": 107,
                     "lineEnd": 107
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 107,
+                    "lineEnd": 127
                 },
                 "sym": "test/cpp//d"
             },
@@ -3237,9 +3561,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
+                    "lineBegin": 115,
+                    "lineEnd": 115
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 8,
                     "lineBegin": 115,
                     "lineEnd": 115
                 },
@@ -3284,9 +3614,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
+                    "lineBegin": 121,
+                    "lineEnd": 121
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 36,
                     "lineBegin": 121,
                     "lineEnd": 121
                 },
@@ -3331,9 +3667,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
+                    "lineBegin": 119,
+                    "lineEnd": 119
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 35,
                     "lineBegin": 119,
                     "lineEnd": 119
                 },
@@ -3378,9 +3720,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
+                    "lineBegin": 117,
+                    "lineEnd": 117
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 23,
                     "lineBegin": 117,
                     "lineEnd": 117
                 },
@@ -3425,9 +3773,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
+                    "lineBegin": 123,
+                    "lineEnd": 123
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 16,
                     "lineBegin": 123,
                     "lineEnd": 123
                 },
@@ -3472,9 +3826,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
+                    "lineBegin": 125,
+                    "lineEnd": 125
+                },
+                "range": {
+                    "columnBegin": 5,
+                    "columnEnd": 35,
                     "lineBegin": 125,
                     "lineEnd": 125
                 },
@@ -3519,9 +3879,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 31,
                     "columnEnd": 32,
+                    "lineBegin": 119,
+                    "lineEnd": 119
+                },
+                "range": {
+                    "columnBegin": 24,
+                    "columnEnd": 34,
                     "lineBegin": 119,
                     "lineEnd": 119
                 },
@@ -3566,9 +3932,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 15,
                     "columnEnd": 16,
+                    "lineBegin": 123,
+                    "lineEnd": 123
+                },
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 15,
                     "lineBegin": 123,
                     "lineEnd": 123
                 },
@@ -3613,8 +3985,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 12,
+                    "columnEnd": 13,
+                    "lineBegin": 121,
+                    "lineEnd": 121
+                },
+                "range": {
+                    "columnBegin": 7,
                     "columnEnd": 13,
                     "lineBegin": 121,
                     "lineEnd": 121
@@ -3660,8 +4038,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 32,
+                    "columnEnd": 34,
+                    "lineBegin": 125,
+                    "lineEnd": 125
+                },
+                "range": {
+                    "columnBegin": 27,
                     "columnEnd": 34,
                     "lineBegin": 125,
                     "lineEnd": 125
@@ -3707,8 +4091,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 19,
+                    "columnEnd": 20,
+                    "lineBegin": 121,
+                    "lineEnd": 121
+                },
+                "range": {
+                    "columnBegin": 15,
                     "columnEnd": 20,
                     "lineBegin": 121,
                     "lineEnd": 121
@@ -3754,8 +4144,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 34,
+                    "columnEnd": 35,
+                    "lineBegin": 121,
+                    "lineEnd": 121
+                },
+                "range": {
+                    "columnBegin": 22,
                     "columnEnd": 35,
                     "lineBegin": 121,
                     "lineEnd": 121
@@ -3801,8 +4197,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 24,
+                    "columnEnd": 25,
+                    "lineBegin": 125,
+                    "lineEnd": 125
+                },
+                "range": {
+                    "columnBegin": 7,
                     "columnEnd": 25,
                     "lineBegin": 125,
                     "lineEnd": 125
@@ -3848,8 +4250,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 19,
+                    "columnEnd": 22,
+                    "lineBegin": 117,
+                    "lineEnd": 117
+                },
+                "range": {
+                    "columnBegin": 7,
                     "columnEnd": 22,
                     "lineBegin": 117,
                     "lineEnd": 117
@@ -3895,8 +4303,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 19,
+                    "columnEnd": 22,
+                    "lineBegin": 119,
+                    "lineEnd": 119
+                },
+                "range": {
+                    "columnBegin": 7,
                     "columnEnd": 22,
                     "lineBegin": 119,
                     "lineEnd": 119
@@ -3942,8 +4356,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 6,
+                    "columnEnd": 7,
+                    "lineBegin": 109,
+                    "lineEnd": 109
+                },
+                "range": {
+                    "columnBegin": 2,
                     "columnEnd": 7,
                     "lineBegin": 109,
                     "lineEnd": 109
@@ -3989,11 +4409,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 14,
                     "lineBegin": 11,
                     "lineEnd": 11
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 11,
+                    "lineEnd": 49
                 },
                 "sym": "test/cpp//foo"
             },
@@ -4036,11 +4462,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 9,
                     "lineBegin": 13,
                     "lineEnd": 13
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 13,
+                    "lineEnd": 16
                 },
                 "sym": "test/cpp//foo/S"
             },
@@ -4083,8 +4515,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 16,
+                    "columnEnd": 34,
+                    "lineBegin": 14,
+                    "lineEnd": 14
+                },
+                "range": {
+                    "columnBegin": 3,
                     "columnEnd": 34,
                     "lineBegin": 14,
                     "lineEnd": 14
@@ -4130,9 +4568,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 25,
+                    "lineBegin": 15,
+                    "lineEnd": 15
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 32,
                     "lineBegin": 15,
                     "lineEnd": 15
                 },
@@ -4177,11 +4621,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 14,
                     "lineBegin": 33,
                     "lineEnd": 33
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 33,
+                    "lineEnd": 43
                 },
                 "sym": "test/cpp//foo/bar"
             },
@@ -4224,11 +4674,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 9,
                     "lineBegin": 38,
                     "lineEnd": 38
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 38,
+                    "lineEnd": 40
                 },
                 "sym": "test/cpp//foo/bar/T"
             },
@@ -4271,8 +4727,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 7,
+                    "columnEnd": 25,
+                    "lineBegin": 39,
+                    "lineEnd": 39
+                },
+                "range": {
+                    "columnBegin": 3,
                     "columnEnd": 25,
                     "lineBegin": 39,
                     "lineEnd": 39
@@ -4318,8 +4780,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 15,
+                    "columnEnd": 31,
+                    "lineBegin": 35,
+                    "lineEnd": 35
+                },
+                "range": {
+                    "columnBegin": 1,
                     "columnEnd": 31,
                     "lineBegin": 35,
                     "lineEnd": 35
@@ -4365,9 +4833,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 7,
                     "columnEnd": 21,
+                    "lineBegin": 36,
+                    "lineEnd": 36
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 29,
                     "lineBegin": 36,
                     "lineEnd": 36
                 },
@@ -4412,9 +4886,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 7,
+                    "lineBegin": 41,
+                    "lineEnd": 41
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 9,
                     "lineBegin": 41,
                     "lineEnd": 41
                 },
@@ -4459,9 +4939,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 7,
+                    "lineBegin": 21,
+                    "lineEnd": 21
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 9,
                     "lineBegin": 21,
                     "lineEnd": 21
                 },
@@ -4506,11 +4992,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 9,
                     "lineBegin": 24,
                     "lineEnd": 24
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 24,
+                    "lineEnd": 27
                 },
                 "sym": "test/cpp//foo/foo/.f/"
             },
@@ -4553,9 +5045,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 9,
+                    "lineBegin": 31,
+                    "lineEnd": 31
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 11,
                     "lineBegin": 31,
                     "lineEnd": 31
                 },
@@ -4600,9 +5098,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 7,
                     "columnEnd": 11,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 23,
                     "lineBegin": 25,
                     "lineEnd": 25
                 },
@@ -4647,11 +5151,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 10,
                     "lineBegin": 45,
                     "lineEnd": 45
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 45,
+                    "lineEnd": 47
                 },
                 "sym": "test/cpp//foo/fooFn/.f/int"
             },
@@ -4694,8 +5204,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 15,
+                    "columnEnd": 19,
+                    "lineBegin": 45,
+                    "lineEnd": 45
+                },
+                "range": {
+                    "columnBegin": 11,
                     "columnEnd": 19,
                     "lineBegin": 45,
                     "lineEnd": 45
@@ -4741,11 +5257,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 7,
                     "lineBegin": 54,
                     "lineEnd": 54
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 54,
+                    "lineEnd": 62
                 },
                 "sym": "test/cpp//h/.f/int"
             },
@@ -4788,9 +5310,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 7,
+                    "lineBegin": 52,
+                    "lineEnd": 52
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 15,
                     "lineBegin": 52,
                     "lineEnd": 52
                 },
@@ -4835,8 +5363,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 12,
+                    "columnEnd": 14,
+                    "lineBegin": 52,
+                    "lineEnd": 52
+                },
+                "range": {
+                    "columnBegin": 8,
                     "columnEnd": 14,
                     "lineBegin": 52,
                     "lineEnd": 52
@@ -4882,8 +5416,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 12,
+                    "columnEnd": 13,
+                    "lineBegin": 54,
+                    "lineEnd": 54
+                },
+                "range": {
+                    "columnBegin": 8,
                     "columnEnd": 13,
                     "lineBegin": 54,
                     "lineEnd": 54
@@ -4929,8 +5469,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 10,
+                    "columnEnd": 11,
+                    "lineBegin": 56,
+                    "lineEnd": 56
+                },
+                "range": {
+                    "columnBegin": 3,
                     "columnEnd": 11,
                     "lineBegin": 56,
                     "lineEnd": 56
@@ -4976,8 +5522,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 15,
+                    "columnEnd": 16,
+                    "lineBegin": 57,
+                    "lineEnd": 57
+                },
+                "range": {
+                    "columnBegin": 3,
                     "columnEnd": 16,
                     "lineBegin": 57,
                     "lineEnd": 57
@@ -5023,9 +5575,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 7,
+                    "lineBegin": 197,
+                    "lineEnd": 197
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 14,
                     "lineBegin": 197,
                     "lineEnd": 197
                 },
@@ -5070,8 +5628,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 12,
+                    "columnEnd": 13,
+                    "lineBegin": 197,
+                    "lineEnd": 197
+                },
+                "range": {
+                    "columnBegin": 8,
                     "columnEnd": 13,
                     "lineBegin": 197,
                     "lineEnd": 197
@@ -5117,11 +5681,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 16,
                     "lineBegin": 64,
                     "lineEnd": 64
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 64,
+                    "lineEnd": 83
                 },
                 "sym": "test/cpp//maybe"
             },
@@ -5164,11 +5734,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 15,
                     "lineBegin": 69,
                     "lineEnd": 69
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 69,
+                    "lineEnd": 73
                 },
                 "sym": "test/cpp//maybe/Nothing"
             },
@@ -5211,9 +5787,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 22,
                     "columnEnd": 29,
+                    "lineBegin": 72,
+                    "lineEnd": 72
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 41,
                     "lineBegin": 72,
                     "lineEnd": 72
                 },
@@ -5258,9 +5840,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 37,
                     "columnEnd": 38,
+                    "lineBegin": 72,
+                    "lineEnd": 72
+                },
+                "range": {
+                    "columnBegin": 30,
+                    "columnEnd": 37,
                     "lineBegin": 72,
                     "lineEnd": 72
                 },
@@ -5305,9 +5893,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 14,
                     "columnEnd": 21,
+                    "lineBegin": 70,
+                    "lineEnd": 70
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 32,
                     "lineBegin": 70,
                     "lineEnd": 70
                 },
@@ -5399,11 +5993,17 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 17,
                     "lineBegin": 76,
                     "lineEnd": 76
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 76,
+                    "lineEnd": 80
                 },
                 "sym": "test/cpp//maybe/Something"
             },
@@ -5446,9 +6046,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 3,
                     "columnEnd": 12,
+                    "lineBegin": 78,
+                    "lineEnd": 78
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 28,
                     "lineBegin": 78,
                     "lineEnd": 78
                 },
@@ -5493,8 +6099,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 17,
+                    "columnEnd": 18,
+                    "lineBegin": 78,
+                    "lineEnd": 78
+                },
+                "range": {
+                    "columnBegin": 13,
                     "columnEnd": 18,
                     "lineBegin": 78,
                     "lineEnd": 78
@@ -5540,9 +6152,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 3,
                     "columnEnd": 4,
+                    "lineBegin": 79,
+                    "lineEnd": 79
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 18,
                     "lineBegin": 79,
                     "lineEnd": 79
                 },
@@ -5587,8 +6205,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 7,
+                    "columnEnd": 9,
+                    "lineBegin": 77,
+                    "lineEnd": 77
+                },
+                "range": {
+                    "columnBegin": 3,
                     "columnEnd": 9,
                     "lineBegin": 77,
                     "lineEnd": 77
@@ -5634,9 +6258,15 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 19,
                     "columnEnd": 26,
+                    "lineBegin": 74,
+                    "lineEnd": 74
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 52,
                     "lineBegin": 74,
                     "lineEnd": 74
                 },
@@ -5681,8 +6311,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 10,
+                    "columnEnd": 14,
+                    "lineBegin": 105,
+                    "lineEnd": 105
+                },
+                "range": {
+                    "columnBegin": 3,
                     "columnEnd": 14,
                     "lineBegin": 105,
                     "lineEnd": 105
@@ -5728,8 +6364,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 23,
+                    "columnEnd": 24,
+                    "lineBegin": 184,
+                    "lineEnd": 184
+                },
+                "range": {
+                    "columnBegin": 19,
                     "columnEnd": 24,
                     "lineBegin": 184,
                     "lineEnd": 184
@@ -5775,8 +6417,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 25,
+                    "columnEnd": 26,
+                    "lineBegin": 188,
+                    "lineEnd": 188
+                },
+                "range": {
+                    "columnBegin": 21,
                     "columnEnd": 26,
                     "lineBegin": 188,
                     "lineEnd": 188
@@ -5822,8 +6470,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 31,
+                    "columnEnd": 32,
+                    "lineBegin": 201,
+                    "lineEnd": 201
+                },
+                "range": {
+                    "columnBegin": 27,
                     "columnEnd": 32,
                     "lineBegin": 201,
                     "lineEnd": 201
@@ -5869,8 +6523,14 @@
                         "key": "symbolDefinitionType"
                     }
                 ],
-                "range": {
+                "nameRange": {
                     "columnBegin": 36,
+                    "columnEnd": 37,
+                    "lineBegin": 205,
+                    "lineEnd": 205
+                },
+                "range": {
+                    "columnBegin": 32,
                     "columnEnd": 37,
                     "lineBegin": 205,
                     "lineEnd": 205

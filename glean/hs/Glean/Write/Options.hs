@@ -37,7 +37,7 @@ sendQueueOptions = do
     <> O.metavar "N"
     <> O.value 1
     <> O.showDefault
-    <> O.help "number of concurrent sender threads, default 1"
+    <> O.help "number of concurrent sender threads"
   sendQueueMaxMemory <- O.option O.auto $
     O.long "max-send-queue-size"
     <> O.metavar "N"
@@ -55,7 +55,7 @@ sendQueueOptions = do
     <> O.metavar "N"
     <> O.value 20
     <> O.showDefault
-    <> O.help "number of retries, default 20"
+    <> O.help "number of retries"
   return def
     { sendQueueThreads
     , sendQueueMaxMemory

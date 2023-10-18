@@ -47,6 +47,12 @@
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "foo" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 3 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
                             "key": {
@@ -71,6 +77,12 @@
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "setFoo" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 255, "length": 6 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
                             "key": {
@@ -123,7 +135,7 @@
           },
           "destination": {
             "file": { "key": "test.m" },
-            "span": { "start": 235, "length": 1 }
+            "span": { "start": 242, "length": 3 }
           }
         },
         "source": { "span": { "start": 314, "length": 3 } }
@@ -134,6 +146,12 @@
             "objcMethod": {
               "key": {
                 "selector": { "key": [ "foo" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 242, "length": 3 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": { "returns": { "key": "int" }, "parameters": [ ] }
@@ -173,7 +191,7 @@
           },
           "destination": {
             "file": { "key": "test.m" },
-            "span": { "start": 235, "length": 1 }
+            "span": { "start": 242, "length": 3 }
           }
         },
         "source": { "span": { "start": 335, "length": 3 } }
@@ -184,6 +202,12 @@
             "objcMethod": {
               "key": {
                 "selector": { "key": [ "foo" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 242, "length": 3 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": { "returns": { "key": "int" }, "parameters": [ ] }
@@ -210,7 +234,7 @@
       "file": { "key": "test.m" },
       "xref": {
         "target": {
-          "name": "setFoo",
+          "name": "setFoo:",
           "file": { "key": "test.m" },
           "location": {
             "range": {
@@ -223,7 +247,7 @@
           },
           "destination": {
             "file": { "key": "test.m" },
-            "span": { "start": 247, "length": 1 }
+            "span": { "start": 255, "length": 6 }
           }
         },
         "source": { "span": { "start": 301, "length": 3 } }
@@ -234,6 +258,12 @@
             "objcMethod": {
               "key": {
                 "selector": { "key": [ "setFoo" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 255, "length": 6 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": {
@@ -265,7 +295,7 @@
       "file": { "key": "test.m" },
       "xref": {
         "target": {
-          "name": "setFoo",
+          "name": "setFoo:",
           "file": { "key": "test.m" },
           "location": {
             "range": {
@@ -278,7 +308,7 @@
           },
           "destination": {
             "file": { "key": "test.m" },
-            "span": { "start": 247, "length": 1 }
+            "span": { "start": 255, "length": 6 }
           }
         },
         "source": { "span": { "start": 314, "length": 3 } }
@@ -289,6 +319,12 @@
             "objcMethod": {
               "key": {
                 "selector": { "key": [ "setFoo" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 255, "length": 6 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": {

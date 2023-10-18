@@ -24,6 +24,48 @@
           }
         },
         {
+          "range": { "begin": 315, "end": 345 },
+          "target": {
+            "declaration": {
+              "objcMethod": {
+                "key": {
+                  "selector": { "key": [ "setInt", "setDouble" ] },
+                  "locations": [
+                    {
+                      "file": { "key": "test.mm" },
+                      "span": { "start": 244, "length": 6 }
+                    },
+                    {
+                      "file": { "key": "test.mm" },
+                      "span": { "start": 258, "length": 9 }
+                    }
+                  ],
+                  "container": { "protocol": { "key": "Foo" } },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        { "name": { "key": "x" }, "type": { "key": "int" } },
+                        { "name": { "key": "y" }, "type": { "key": "double" } }
+                      ]
+                    }
+                  },
+                  "isInstance": true,
+                  "isOptional": false,
+                  "isAccessor": false,
+                  "source": {
+                    "file": { "key": "test.mm" },
+                    "lineBegin": 11,
+                    "columnBegin": 1,
+                    "lineEnd": 11,
+                    "columnEnd": 42
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 316, "end": 319 },
           "target": {
             "declaration": {
@@ -59,10 +101,20 @@
         {
           "range": { "begin": 320, "end": 326 },
           "target": {
-            "declaration": {
+            "objcSelectorSlot": {
               "objcMethod": {
                 "key": {
                   "selector": { "key": [ "setInt", "setDouble" ] },
+                  "locations": [
+                    {
+                      "file": { "key": "test.mm" },
+                      "span": { "start": 244, "length": 6 }
+                    },
+                    {
+                      "file": { "key": "test.mm" },
+                      "span": { "start": 258, "length": 9 }
+                    }
+                  ],
                   "container": { "protocol": { "key": "Foo" } },
                   "signature": {
                     "key": {
@@ -84,17 +136,28 @@
                     "columnEnd": 42
                   }
                 }
-              }
+              },
+              "index": 0
             }
           }
         },
         {
           "range": { "begin": 330, "end": 339 },
           "target": {
-            "declaration": {
+            "objcSelectorSlot": {
               "objcMethod": {
                 "key": {
                   "selector": { "key": [ "setInt", "setDouble" ] },
+                  "locations": [
+                    {
+                      "file": { "key": "test.mm" },
+                      "span": { "start": 244, "length": 6 }
+                    },
+                    {
+                      "file": { "key": "test.mm" },
+                      "span": { "start": 258, "length": 9 }
+                    }
+                  ],
                   "container": { "protocol": { "key": "Foo" } },
                   "signature": {
                     "key": {
@@ -116,7 +179,8 @@
                     "columnEnd": 42
                   }
                 }
-              }
+              },
+              "index": 1
             }
           }
         },
@@ -133,6 +197,48 @@
                     "columnBegin": 1,
                     "lineEnd": 13,
                     "columnEnd": 4
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 451, "end": 481 },
+          "target": {
+            "declaration": {
+              "objcMethod": {
+                "key": {
+                  "selector": { "key": [ "setInt", "setDouble" ] },
+                  "locations": [
+                    {
+                      "file": { "key": "test.mm" },
+                      "span": { "start": 244, "length": 6 }
+                    },
+                    {
+                      "file": { "key": "test.mm" },
+                      "span": { "start": 258, "length": 9 }
+                    }
+                  ],
+                  "container": { "protocol": { "key": "Foo" } },
+                  "signature": {
+                    "key": {
+                      "returns": { "key": "void" },
+                      "parameters": [
+                        { "name": { "key": "x" }, "type": { "key": "int" } },
+                        { "name": { "key": "y" }, "type": { "key": "double" } }
+                      ]
+                    }
+                  },
+                  "isInstance": true,
+                  "isOptional": false,
+                  "isAccessor": false,
+                  "source": {
+                    "file": { "key": "test.mm" },
+                    "lineBegin": 11,
+                    "columnBegin": 1,
+                    "lineEnd": 11,
+                    "columnEnd": 42
                   }
                 }
               }
@@ -168,10 +274,20 @@
         {
           "range": { "begin": 456, "end": 462 },
           "target": {
-            "declaration": {
+            "objcSelectorSlot": {
               "objcMethod": {
                 "key": {
                   "selector": { "key": [ "setInt", "setDouble" ] },
+                  "locations": [
+                    {
+                      "file": { "key": "test.mm" },
+                      "span": { "start": 244, "length": 6 }
+                    },
+                    {
+                      "file": { "key": "test.mm" },
+                      "span": { "start": 258, "length": 9 }
+                    }
+                  ],
                   "container": { "protocol": { "key": "Foo" } },
                   "signature": {
                     "key": {
@@ -193,17 +309,28 @@
                     "columnEnd": 42
                   }
                 }
-              }
+              },
+              "index": 0
             }
           }
         },
         {
           "range": { "begin": 466, "end": 475 },
           "target": {
-            "declaration": {
+            "objcSelectorSlot": {
               "objcMethod": {
                 "key": {
                   "selector": { "key": [ "setInt", "setDouble" ] },
+                  "locations": [
+                    {
+                      "file": { "key": "test.mm" },
+                      "span": { "start": 244, "length": 6 }
+                    },
+                    {
+                      "file": { "key": "test.mm" },
+                      "span": { "start": 258, "length": 9 }
+                    }
+                  ],
                   "container": { "protocol": { "key": "Foo" } },
                   "signature": {
                     "key": {
@@ -225,7 +352,8 @@
                     "columnEnd": 42
                   }
                 }
-              }
+              },
+              "index": 1
             }
           }
         }

@@ -33,6 +33,13 @@ std::filesystem::path goodPath(
   std::filesystem::path root,
   std::filesystem::path path);
 
+// Resolve symlinks in source, but only those that keep the path inside root.
+// Where the path traverses symlinks, those are resolved too.
+//
+// root must be absolute, source must be relative.
+//
+std::filesystem::path followSymlinksInsideRoot(
+    std::filesystem::path root, std::filesystem::path source);
 }
 }
 }

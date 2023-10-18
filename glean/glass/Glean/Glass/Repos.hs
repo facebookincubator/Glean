@@ -70,6 +70,7 @@ import Glean.Glass.Types
       LocationRange(..)
     )
 import qualified Glean.Glass.RepoMapping as Mapping -- site-specific
+import Glean.Repo (LatestRepos)
 
 -- mapping from scm repo to hash for each db
 newtype ScmRevisions = ScmRevisions
@@ -258,7 +259,7 @@ getLatestRepos backend mlogger mretry repoNames = go mretry
           -- some required dbs are missing! this is transient? and bad
           -- in prod/full service mode this would be bad
           let missing = required `Set.difference` advertised
-          logIt mlogger missing n backend
+          logIt mlogger latest missing n backend
           case n of
             Just n
               | n > 1 -> do {- i.e. try more than 1 time -}
@@ -272,8 +273,8 @@ getLatestRepos backend mlogger mretry repoNames = go mretry
 -- and locally (e.g. to stderr). Do not log otherwise (e.g. in test mode).
 logIt
   :: Glean.Backend b
-  => Maybe Logger -> Set Text -> Maybe Int -> b -> IO ()
-logIt mlogger missing attempt backend = do
+  => Maybe Logger -> LatestRepos -> Set Text -> Maybe Int -> b -> IO ()
+logIt mlogger latest missing attempt backend = do
   case mlogger of
     Just logger -> do
       LocalLog.logError $ mconcat [
@@ -294,11 +295,23 @@ logIt mlogger missing attempt backend = do
     errorTy = "ListDatabases"
     errorMsg =
       let remaining = subtract 1 <$> attempt
+          reposListed = Text.unlines
+            [ "Instances listed for " <> db <> " : " <> intercalate ","
+              [ Glean.repo_hash repo
+              | Just repos <- [Map.lookup db (Glean.allLatestRepos latest)]
+              , repo <- repos
+              ]
+              | db <- Set.toList missing
+            ]
+
       in case remaining of
         Just 0 -> Text.concat [ -- final attempt failed
                 "Failed finding required databases in listDatabases",
                 " (no more attempts possible!)",
-                ". Using " <> formatBackend backend ]
+                ". Using " <> formatBackend backend,
+                ". \n",
+                reposListed
+                ]
         _ -> Text.concat [
                 "Missing some required databases in listDatabases",
                 " (attempts remaining " <> maybe "unknown" textShow remaining,

@@ -75,14 +75,15 @@ import Glean.Glass.SymbolId.Class
 import Glean.Glass.SymbolId.Buck ({- instances -})
 import Glean.Glass.SymbolId.Cxx ({- instances -})
 import Glean.Glass.SymbolId.Erlang ({- instances -})
+import Glean.Glass.SymbolId.Fbthrift ({- instances -})
 import Glean.Glass.SymbolId.Flow ({- instances -})
 import Glean.Glass.SymbolId.Hack ({- instances -})
 import Glean.Glass.SymbolId.Hs ({- instances -})
 import Glean.Glass.SymbolId.Java ({- instances -})
 import Glean.Glass.SymbolId.LSIF ({- instances -})
-import Glean.Glass.SymbolId.SCIP ({- instances -})
 import Glean.Glass.SymbolId.Pp ({- instances -})
 import Glean.Glass.SymbolId.Python ({- instances -})
+import Glean.Glass.SymbolId.SCIP ({- instances -})
 import Glean.Glass.SymbolId.Thrift ({- instances -})
 
 import qualified Glean.Glass.SymbolId.Cxx as Cxx
@@ -98,6 +99,7 @@ import Glean.Schema.CodeJava.Types as Java ( Entity(Entity_decl) )
 import Glean.Schema.CodeKotlin.Types as Kotlin ( Entity(Entity_decl) )
 import Glean.Schema.CodePython.Types as Python ( Entity(Entity_decl) )
 import Glean.Schema.CodeThrift.Types as Thrift ( Entity(Entity_decl) )
+import Glean.Schema.CodeFbthrift.Types as Fbthrift ( Entity(Entity_decl) )
 
 -- Introduce a SymbolId. This is essentially the semantic "path to this symbol
 -- in the Codex style. www/php/Glean/getLatestRepo
@@ -220,6 +222,7 @@ entityLanguage e = case e of
   Code.Entity_pp{} -> Language_PreProcessor
   Code.Entity_python{} -> Language_Python
   Code.Entity_thrift{} -> Language_Thrift
+  Code.Entity_fbthrift{} -> Language_Thrift
   Code.Entity_buck{} -> Language_Buck
   Code.Entity_erlang{} -> Language_Erlang
   -- lsif languages
@@ -282,6 +285,7 @@ instance Symbol Code.Entity where
     Code.Entity_kotlin x -> toSymbolWithPath x p
     Code.Entity_pp x -> toSymbolWithPath x p
     Code.Entity_thrift (Thrift.Entity_decl x) -> toSymbolWithPath x p
+    Code.Entity_fbthrift (Fbthrift.Entity_decl x) -> toSymbolWithPath x p
     Code.Entity_lsif ent -> case ent of -- enumerate all variants for lsif
       Lsif.Entity_erlang se -> toSymbolWithPath se p
       Lsif.Entity_fsharp se -> toSymbolWithPath se p
@@ -331,6 +335,8 @@ entityToAngle e = case e of
     alt @"kotlin" (alt @"decl" (toAngle x))
   Code.Entity_thrift (Thrift.Entity_decl x) -> Right $
     alt @"thrift" (alt @"decl" (toAngle x))
+  Code.Entity_fbthrift (Fbthrift.Entity_decl x) -> Right $
+    alt @"fbthrift" (alt @"decl" (toAngle x))
   -- lsif languages, enumerate all lang constructors
   Code.Entity_lsif se -> alt @"lsif" <$> case se of
       Lsif.Entity_erlang x -> Right $ alt @"erlang" (toAngle x)
@@ -363,10 +369,12 @@ instance ToQName Code.Entity where
     Code.Entity_flow x -> toQName x
     Code.Entity_cxx x -> toQName x
     Code.Entity_pp x -> toQName x
+    Code.Entity_buck x -> toQName x
     Code.Entity_erlang x -> toQName x
     Code.Entity_java x -> toQName x
     Code.Entity_kotlin x -> toQName x
     Code.Entity_thrift (Thrift.Entity_decl x) -> toQName x
+    Code.Entity_fbthrift (Fbthrift.Entity_decl x) -> toQName x
     Code.Entity_lsif se -> case se of -- enumerate all cases for lsif
       Lsif.Entity_erlang x -> toQName x
       Lsif.Entity_fsharp x -> toQName x

@@ -73,7 +73,7 @@ searchEntity lang toks = case lang of
   Language_Haskell -> fmap Code.Entity_hs <$> Search.symbolSearch toks
   Language_Erlang -> fmap Code.Entity_erlang <$> Search.symbolSearch toks
   Language_Buck -> fmap Code.Entity_buck <$> Search.symbolSearch toks
-  Language_Thrift -> fmap Code.Entity_thrift <$> Search.symbolSearch toks
+  Language_Thrift -> fmap Code.Entity_fbthrift <$> Search.symbolSearch toks
   Language_Java -> fmap Code.Entity_java <$> Search.symbolSearch toks
   Language_Kotlin -> fmap Code.Entity_kotlin <$> Search.symbolSearch toks
   -- limited set via lsif

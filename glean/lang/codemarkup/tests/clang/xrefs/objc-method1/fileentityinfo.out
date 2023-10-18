@@ -6,6 +6,53 @@
       "entity": {
         "cxx": {
           "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "setInt", "setDouble" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.mm" },
+                    "span": { "start": 244, "length": 6 }
+                  },
+                  {
+                    "file": { "key": "test.mm" },
+                    "span": { "start": 258, "length": 9 }
+                  }
+                ],
+                "container": { "protocol": { "key": "Foo" } },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "void" },
+                    "parameters": [
+                      { "name": { "key": "x" }, "type": { "key": "int" } },
+                      { "name": { "key": "y" }, "type": { "key": "double" } }
+                    ]
+                  }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": false,
+                "source": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 42
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "entity": {
+        "cxx": {
+          "decl": {
             "variable": {
               "key": {
                 "name": {
@@ -180,6 +227,12 @@
               "key": {
                 "key": {
                   "selector": { "key": [ "fooBar" ] },
+                  "locations": [
+                    {
+                      "file": { "key": "test.mm" },
+                      "span": { "start": 440, "length": 6 }
+                    }
+                  ],
                   "container": { "implementation": { "key": "Bar" } },
                   "signature": {
                     "key": { "returns": { "key": "void" }, "parameters": [ ] }

@@ -22,6 +22,7 @@ import qualified Glean.Schema.Lsif.Types as Lsif
 import qualified Glean.Schema.Scip.Types as Scip
 import qualified Glean.Schema.Python.Types as Py
 import qualified Glean.Schema.Thrift.Types as Thrift
+import qualified Glean.Schema.Fbthrift.Types as Fbthrift
 import qualified Glean.Schema.JavaAlpha.Types as Java
 import qualified Glean.Schema.KotlinAlpha.Types as Kotlin
 
@@ -61,6 +62,7 @@ instance ToAngle Cxx.Entity where
     Cxx.Entity_decl x -> alt @"decl" (toAngle x)
     Cxx.Entity_defn x -> alt @"defn" (toAngle x)
     Cxx.Entity_enumerator x -> alt @"enumerator" (mkKey x)
+    Cxx.Entity_objcSelectorSlot x -> alt @"objcSelectorSlot" (toAngle x)
     Cxx.Entity_EMPTY -> error "unknown Entity"
 
 instance ToAngle Cxx.Declaration where
@@ -88,6 +90,19 @@ instance ToAngle Cxx.Definition where
     Cxx.Definition_variable x -> alt @"variable" (mkKey x)
     Cxx.Definition_namespace_ x -> alt @"namespace_" (mkKey x)
     Cxx.Definition_EMPTY -> error "unknown Definition"
+
+instance ToAngle Cxx.ObjcMethodEntity where
+  toAngle e = case e of
+    Cxx.ObjcMethodEntity_decl x -> alt @"decl" (mkKey x)
+    Cxx.ObjcMethodEntity_defn x -> alt @"defn" (mkKey x)
+    Cxx.ObjcMethodEntity_EMPTY -> error "unknown ObjcMethodEntity"
+
+instance ToAngle Cxx.ObjcSelectorSlotEntity where
+  toAngle (Cxx.ObjcSelectorSlotEntity method idx) =
+    rec $
+      field @"objcMethod" (toAngle method) $
+      field @"index" (nat $ fromNat idx)
+    end
 
 -- Erlang
 
@@ -175,6 +190,18 @@ instance ToAngle Thrift.XRefTarget where
   toAngle (Thrift.XRefTarget_enumValue x) = alt @"enumValue" (mkKey x)
   toAngle (Thrift.XRefTarget_function_ x) = alt @"function_" (mkKey x)
   toAngle Thrift.XRefTarget_EMPTY = error "unknown Entity"
+
+-- Fbthrift
+
+instance ToAngle Fbthrift.XRefTarget where
+  toAngle (Fbthrift.XRefTarget_include_ x) = alt @"include_" (mkKey x)
+  toAngle (Fbthrift.XRefTarget_named x) = alt @"named" (mkKey x)
+  toAngle (Fbthrift.XRefTarget_exception_ x) = alt @"exception_" (mkKey x)
+  toAngle (Fbthrift.XRefTarget_service_ x) = alt @"service_" (mkKey x)
+  toAngle (Fbthrift.XRefTarget_constant x) = alt @"constant" (mkKey x)
+  toAngle (Fbthrift.XRefTarget_enumValue x) = alt @"enumValue" (mkKey x)
+  toAngle (Fbthrift.XRefTarget_function_ x) = alt @"function_" (mkKey x)
+  toAngle Fbthrift.XRefTarget_EMPTY = error "unknown Entity"
 
 -- Java
 

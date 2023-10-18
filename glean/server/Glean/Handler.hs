@@ -32,7 +32,10 @@ handler State{..} req =
   let backend = LoggingBackend stEnv in -- log (most) requests
   case req of
     Service.GetSchemaInfo repo req ->
-      Backend.getSchemaInfo backend repo req
+      Backend.getSchemaInfo backend (Just repo) req
+
+    Service.GetSchemaInfoForSchema req ->
+      Backend.getSchemaInfo backend Nothing req
 
     Service.ValidateSchema req -> Backend.validateSchema backend req
 

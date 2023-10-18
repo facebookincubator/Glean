@@ -43,6 +43,12 @@
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "foo" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 3 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
                             "key": {
@@ -67,6 +73,12 @@
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "setFoo" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 255, "length": 6 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
                             "key": {
@@ -174,7 +186,7 @@
         },
         "destination": {
           "file": { "key": "test.m" },
-          "span": { "start": 235, "length": 1 }
+          "span": { "start": 242, "length": 3 }
         }
       },
       "tuplefield1": {
@@ -183,6 +195,12 @@
             "objcMethod": {
               "key": {
                 "selector": { "key": [ "foo" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 242, "length": 3 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": { "returns": { "key": "int" }, "parameters": [ ] }
@@ -207,7 +225,7 @@
   {
     "key": {
       "tuplefield0": {
-        "name": "setFoo",
+        "name": "setFoo:",
         "file": { "key": "test.m" },
         "location": {
           "range": {
@@ -220,7 +238,7 @@
         },
         "destination": {
           "file": { "key": "test.m" },
-          "span": { "start": 247, "length": 1 }
+          "span": { "start": 255, "length": 6 }
         }
       },
       "tuplefield1": {
@@ -229,6 +247,12 @@
             "objcMethod": {
               "key": {
                 "selector": { "key": [ "setFoo" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 255, "length": 6 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": {

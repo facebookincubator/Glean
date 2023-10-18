@@ -51,6 +51,12 @@
               "isAccessor": false,
               "isInstance": true,
               "isOptional": false,
+              "locations": [
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "length": 3, "start": 242 }
+                }
+              ],
               "selector": { "key": [ "foo" ] },
               "signature": {
                 "key": { "parameters": [ ], "returns": { "key": "int" } }
@@ -72,6 +78,12 @@
               "isAccessor": false,
               "isInstance": true,
               "isOptional": false,
+              "locations": [
+                {
+                  "file": { "key": "test.m" },
+                  "span": { "length": 6, "start": 255 }
+                }
+              ],
               "selector": { "key": [ "setFoo" ] },
               "signature": {
                 "key": {

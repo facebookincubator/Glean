@@ -6,6 +6,24 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "bar"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "."
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 11
                         },
                         "key": "symbolLanguage"
@@ -23,6 +41,24 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "."
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 11
                         },
                         "key": "symbolLanguage"
@@ -38,6 +74,24 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foobar"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "."
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aInteger": 11
@@ -58,6 +112,24 @@
         "references": [
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "f"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "buck_project/my_defs.bzl"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aInteger": 11
@@ -87,6 +159,24 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "g"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "buck_project/my_defs.bzl"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 11
                         },
                         "key": "symbolLanguage"
@@ -112,6 +202,24 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "h"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "buck_project/my_defs.bzl"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aInteger": 11
@@ -141,6 +249,24 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 4
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "my_defs.bzl"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "buck_project"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 11
                         },
                         "key": "symbolLanguage"
@@ -166,6 +292,24 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 4
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "toto.c"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "buck_project"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aInteger": 11
@@ -195,6 +339,24 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 4
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "tutu.c"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "buck_project"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 11
                         },
                         "key": "symbolLanguage"
@@ -220,6 +382,24 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "bar"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "."
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aInteger": 11
@@ -249,6 +429,24 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "bar"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "."
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 11
                         },
                         "key": "symbolLanguage"
@@ -274,6 +472,24 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "."
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aInteger": 11
@@ -303,6 +519,24 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "a"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 11
                         },
                         "key": "symbolLanguage"
@@ -328,6 +562,24 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "bar"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "b"
+                        },
+                        "key": "symbolParent"
+                    },
                     {
                         "attribute": {
                             "aInteger": 11

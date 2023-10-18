@@ -101,4 +101,17 @@ predicate BuckEntityUses:
     buck.DestinationUses { Destination, File, Spans };
     Span = Spans[..];
 
+#
+# Kinds.
+#
+predicate BuckEntityKind:
+  {
+    entity: code.buck.Entity,
+    kind: codemarkup.types.SymbolKind
+  }
+  { Entity, Kind } where
+    ( { locator = _ } = Entity; Macro = Kind) |
+    ( { file = _ } = Entity; File = Kind) |
+    ( { definition = _ } = Entity; Value = Kind);
+
 }

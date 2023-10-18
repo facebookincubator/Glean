@@ -2,6 +2,18 @@
   "@generated",
   {
     "key": {
+      "entity": { "buck": { "file": { "key": "all.thrift" } } },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "entity": { "buck": { "file": { "key": "lib.thrift" } } },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
       "entity": { "pp": { "include_": { "key": "all.thrift" } } },
       "kind": 3
     }

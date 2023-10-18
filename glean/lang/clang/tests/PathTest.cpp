@@ -9,6 +9,8 @@
 #include "glean/lang/clang/path.h"
 
 #include <gtest/gtest.h>
+#include <folly/experimental/TestUtil.h>
+#include <filesystem>
 
 namespace facebook {
 namespace glean {
@@ -39,6 +41,50 @@ TEST(PathTest, goodPath) {
 
 }
 
+TEST(PathTest, followSymlinksInsideRoot) {
+  using namespace std::filesystem;
+
+  folly::test::TemporaryDirectory tmpdir;
+  auto dir = path(tmpdir.path().native());
+
+  auto root = dir/"root";
+  create_directory(root);
+
+  auto out = dir/"out";
+  create_directory(out);
+
+  create_directory(root/"a");
+  create_directory(root/"a/c");
+  create_symlink("a", root/"b");
+  create_symlink(out, root/"escape");
+
+  // symlink that traverses another symlink
+  create_symlink("../b/c", root/"a/d");
+
+  // symlink going back into root
+  create_symlink("../root/a/c", out/"back");
+
+  // no symlinks
+  EXPECT_EQ(followSymlinksInsideRoot(root, path("a/c")), path("a/c"));
+
+  // follow internal symlink
+  EXPECT_EQ(followSymlinksInsideRoot(root, path("b")), path("a"));
+
+  // follow dir symlink, relative and absolute
+  EXPECT_EQ(followSymlinksInsideRoot(root, path("b/c")), path("a/c"));
+
+  // don't follow external symlink
+  EXPECT_EQ(followSymlinksInsideRoot(root, path("escape")), path("escape"));
+
+  // don't follow external dir symlink
+  EXPECT_EQ(followSymlinksInsideRoot(root, path("escape/c")), path("escape/c"));
+
+  // complicated case
+  EXPECT_EQ(followSymlinksInsideRoot(root, path("a/d")), path("a/c"));
+
+  // escape from root and then go back via a relative symlink
+  EXPECT_EQ(followSymlinksInsideRoot(root, path("escape/back")), path("a/c"));
+}
 }
 }
 }

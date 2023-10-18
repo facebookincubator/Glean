@@ -7,6 +7,7 @@
 -}
 
 {-# LANGUAGE CPP #-}
+{-# LANGUAGE ViewPatterns #-}
 module Glean.Glass.Main
   ( main
 
@@ -15,8 +16,9 @@ module Glean.Glass.Main
   ) where
 
 
-import Facebook.Service ( runFacebookService )
+import Facebook.Service ( runFacebookService' )
 import Facebook.Fb303 ( fb303Handler, withFb303 )
+import Thrift.Channel (Header)
 #ifdef FBTHRIFT
 import qualified Thrift.Server.CppServer as Thrift
 #else
@@ -27,8 +29,10 @@ import Util.Log.Text ( logInfo )
 import Util.Text ( textShow )
 import Logger.IO (withLogger)
 
+import Control.Exception (SomeException, fromException)
 import Data.Text (Text)
 import qualified Data.Text as Text
+import Data.Text.Encoding (encodeUtf8)
 
 import qualified Glean
 import Glean.Init ( withOptions )
@@ -50,6 +54,10 @@ import qualified Glean.Glass.Handler as Handler
 import Glean.Glass.GlassService.Service ( GlassServiceCommand(..) )
 
 import Glean.Glass.SnapshotBackend ( snapshotBackend, SnapshotTier )
+import Glean.Glass.Types (RevisionNotAvailableException(..))
+
+kThriftCacheNoCache :: Text
+kThriftCacheNoCache = "nocache"
 
 -- | Ok, go.
 main :: IO ()
@@ -115,7 +123,12 @@ runGlass res@Glass.Env{..} conf@Glass.Config{..} = do
         { Thrift.desiredPort = Just listenPort
         , Thrift.numWorkerThreads = numWorkerThreads
         }
-  runFacebookService fb303 (glassHandler res) options
+  runFacebookService' fb303 (glassHandler res) assignHeaders options
+
+assignHeaders :: GlassServiceCommand r -> Either SomeException r -> Header
+assignHeaders _ (Left (fromException -> Just RevisionNotAvailableException{})) =
+  [ (encodeUtf8 kThriftCacheNoCache, "1")]
+assignHeaders _ _ = []
 
 welcomeMessage :: Glass.Config -> IO Text
 welcomeMessage Glass.Config{..} = do
@@ -165,5 +178,3 @@ glassHandler env cmd = case cmd of
   -- C++/LSP specific
   FileIncludeLocations r opts -> Handler.fileIncludeLocations env r opts
   ClangUSRToDefinition r opts -> fst <$> Handler.clangUSRToDefinition env r opts
-  ClangUSRToReferenceRanges r opts ->
-    Handler.clangUSRToReferenceRanges env r opts

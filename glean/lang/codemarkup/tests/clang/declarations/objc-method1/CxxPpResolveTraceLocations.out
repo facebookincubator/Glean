@@ -43,6 +43,12 @@
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "f1" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 2 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
                             "key": {
@@ -67,6 +73,12 @@
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "f2" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 252, "length": 2 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
                             "key": {
@@ -96,6 +108,16 @@
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "f3a", "f3b" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 271, "length": 3 }
+                            },
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 284, "length": 3 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
                             "key": {
@@ -129,6 +151,16 @@
                       "objcMethod": {
                         "key": {
                           "selector": { "key": [ "f4a", "" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 304, "length": 3 }
+                            },
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 317, "length": 1 }
+                            }
+                          ],
                           "container": { "interface_": { "key": "I" } },
                           "signature": {
                             "key": {
@@ -183,7 +215,7 @@
         },
         "destination": {
           "file": { "key": "test.m" },
-          "span": { "start": 235, "length": 1 }
+          "span": { "start": 242, "length": 2 }
         }
       },
       "tuplefield1": {
@@ -192,6 +224,12 @@
             "objcMethod": {
               "key": {
                 "selector": { "key": [ "f1" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 242, "length": 2 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": { "returns": { "key": "int" }, "parameters": [ ] }
@@ -216,7 +254,7 @@
   {
     "key": {
       "tuplefield0": {
-        "name": "f2",
+        "name": "f2:",
         "file": { "key": "test.m" },
         "location": {
           "range": {
@@ -229,7 +267,7 @@
         },
         "destination": {
           "file": { "key": "test.m" },
-          "span": { "start": 246, "length": 1 }
+          "span": { "start": 252, "length": 2 }
         }
       },
       "tuplefield1": {
@@ -238,6 +276,12 @@
             "objcMethod": {
               "key": {
                 "selector": { "key": [ "f2" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 252, "length": 2 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": {
@@ -256,6 +300,130 @@
                   "columnBegin": 1,
                   "lineEnd": 12,
                   "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "f3a:f3b:",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 13,
+            "columnBegin": 1,
+            "lineEnd": 13,
+            "columnEnd": 32
+          }
+        },
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 271, "length": 3 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "f3a", "f3b" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 271, "length": 3 }
+                  },
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 284, "length": 3 }
+                  }
+                ],
+                "container": { "interface_": { "key": "I" } },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "id" },
+                    "parameters": [
+                      { "name": { "key": "x" }, "type": { "key": "int" } },
+                      { "name": { "key": "y" }, "type": { "key": "int" } }
+                    ]
+                  }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": false,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 13,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 32
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "f4a::",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 14,
+            "columnBegin": 1,
+            "lineEnd": 14,
+            "columnEnd": 29
+          }
+        },
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 304, "length": 3 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "f4a", "" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 304, "length": 3 }
+                  },
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 317, "length": 1 }
+                  }
+                ],
+                "container": { "interface_": { "key": "I" } },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "id" },
+                    "parameters": [
+                      { "name": { "key": "x" }, "type": { "key": "int" } },
+                      { "name": { "key": "y" }, "type": { "key": "int" } }
+                    ]
+                  }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": false,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 14,
+                  "columnBegin": 1,
+                  "lineEnd": 14,
+                  "columnEnd": 29
                 }
               }
             }

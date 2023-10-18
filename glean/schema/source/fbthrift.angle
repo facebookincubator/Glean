@@ -1,0 +1,450 @@
+schema fbthrift.1 {
+import builtin.1
+import src.1
+
+# Primitives
+
+# First parameter of namespace directive:
+# cpp2, d, erl, go, hack, php, php_path, java, java.swift, hs,
+# py, py.asyncio, py.twisted, py3, rust, cocoa, csharp, c_glib
+predicate NamespaceName : string
+
+# Actual namespace from thrift file (optional quotes removed)
+predicate NamespaceValue : string
+
+# User defined Identifiers in Thrift
+predicate Identifier : string
+
+# Location where row and column are 1-based, or all zero for missing info
+type Loc =
+  {
+    startLine : nat,
+    startCol : nat,
+    endLine : nat,
+    endCol : nat,
+  }
+
+predicate PackageName : string
+
+# Example path: "fbcode/glean/shiny/if/shiny.thrift"
+# Pathname to a file, also used to qualify thrift identifiers
+predicate File : src.File
+
+# ##############################################################################
+# Thrift File Indexing pieces
+
+# Fully qualified thrift name resolved to thrift file scope
+predicate QualName : { file : File, name : Identifier }
+
+# Namespace header, quoted namespaces are indicated by bool value of true:
+# namespace "hs" My.Module  # name:"hs", namespace_:"My.Module", quoted:false
+# namespace "py" "Blue"     # name:"py", namepsace_:"Blue", quoted:true
+# namespace "java.swift" 'com.service'  # quoted:true, could be single quotes
+# Thrift namespace header, as hint to code generation
+predicate Namespace :
+  {
+    target : File,
+    name : NamespaceName,
+    namespace_ : NamespaceValue,
+    quoted : bool,
+  }
+
+# The different kinds of named type declarations in type specifications
+type NamedKind = enum { typedef_ | enum_ | struct_ | union_ }
+
+# Thrift Named type, part of a type specification
+#
+# User declared type identifier, along with resolved kind
+# Note: This cannot refer to an Exception (not part of NamedKind)
+type NamedType = { name : QualName, kind : NamedKind }
+
+predicate Package :
+  {
+    target : File,
+    name : PackageName,
+  }
+
+################################################################################
+# Thrift declarations as Glean predicates
+#
+# Note for queries: If we recusively expand the first parameter's
+# definition they all actually start with the *.thrift filepath.
+
+# Named type declaration, always at a particular location
+# could become (union of) separate full definitions
+predicate NamedDecl : { name : NamedType, locName : Loc }
+
+# Declared exception, always at a particular location
+# could become a full definition or reference to struct definition
+predicate ExceptionName : { name : QualName, locName : Loc }
+
+# Declared service name, always at a particular location
+# could become a full definition
+predicate ServiceName : { name : QualName, locName : Loc }
+
+# Find the parent of a given service
+predicate ServiceParent : { child : ServiceName, parent : ServiceName }
+
+predicate ServiceChild :
+  {
+    parent : ServiceName,
+    child : ServiceName
+  }
+  stored
+  { Parent, Child } where
+  ServiceParent { child = Child, parent = Parent }
+
+# no internal thrift references to this
+# Declared function name, scoped to a service name
+predicate FunctionName :
+  {
+    service_ : ServiceName,
+    name : Identifier,
+    locName : Loc,
+  }
+
+# Declared constant name, always at a particular location
+# could become a full definition
+predicate Constant : { name : QualName, locName : Loc }
+
+# Declared enum value name, scoped to an enum name
+# could become a full definition
+predicate EnumValue : { enum_ : NamedType, name : Identifier, locName : Loc }
+
+################################################################################
+# Cross-references
+
+# Thrift internal cross-reference target predicates, organized by kind
+# This is the type of thrift "Declarations"
+type XRefTarget =
+  {
+    include_ : File |
+    named : NamedDecl |
+    exception_ : ExceptionName |
+    service_ : ServiceName |
+    constant : Constant |
+    enumValue : EnumValue |
+    function_ : FunctionName |
+  }
+
+# Thrift internal cross-reference target at locTarget in a file
+# see FileXRefs for file context
+type Target = { locTarget : Loc, target : XRefTarget }
+
+# Thrift internal cross-reference from locRef in a file to target
+# see FileXRefs for file context
+type XRef = { locRef : Loc, target : XRefTarget }
+
+# Collection of internal thrift cross-reference information for a file
+predicate FileXRefs :
+  {
+    file : File,
+    targets : [Target], # always empty??
+    xrefs : [XRef],
+  }
+
+# ##############################################################################
+# Thrift types, recusive definition through predicate TypeSpecification
+# https://www.internalfb.com/intern/wiki/Thrift/IDL-Reference/
+
+type PrimitiveType = enum {
+  bool_ | byte_ | i16_ | i32_ | i64_ | float_ | double_ | binary_ | string_
+}
+
+type MapType = {
+  key_ : TypeSpecification,
+  value : TypeSpecification
+}
+
+type ContainerType = {
+  list_ : TypeSpecification |
+  set_ : TypeSpecification |
+  map_ : MapType
+}
+
+predicate TypeSpecification : {
+  primitive : PrimitiveType |
+  container : ContainerType |
+  named : NamedType
+}
+
+# ##############################################################################
+# Thrift fields
+
+# (true, 7) is +7, (false, 7) is -7.  Zero will be (true, 0)
+type IntegerLiteral = {
+  isNonNegative : bool,
+  absValue : nat
+}
+
+# Usually in the range of 1 through 65535. But sometimes 0 or negative.
+type FieldId = IntegerLiteral
+
+type Qualifier = enum { default_ | optional_ | required_ }
+
+# Use more precise UnqualField type that the canonical IDL,
+# where this is folded into FieldSpecification. Function arguments
+# and Union alternatives do not have a Qualifier.
+type UnqualField = {
+  id : FieldId,
+  type_ : TypeSpecification,
+  name : Identifier,
+  structuredAnnotations : [StructuredAnnotation]
+}
+
+# ##############################################################################
+# Function and Service definitions
+
+type ExceptionSpecName = {
+  simple : ExceptionName |  # key for ExceptionType
+  typedef_ : TypeDefException
+}
+
+# Make typedefs of exceptions separate from the normal TypeDefType
+predicate TypeDefException : {
+  alias : NamedDecl,
+  type_ : ExceptionSpecName
+}
+
+# Use more precise ExceptionSpecification type that the canonical IDL,
+# where this is folded into FieldSpecification
+type ExceptionSpecification = {
+  id : FieldId,
+  type_ : ExceptionSpecName,
+  name : Identifier,
+  structuredAnnotations : [StructuredAnnotation]
+}
+
+##############################################################################
+# Function and Service definitions
+
+# Some fancy streams are in use, making a complicated result type.
+# codeseach bunnylol: cs stream< repo:fbcode file:thrift$
+type ResultStream = {
+  response : maybe TypeSpecification,
+  stream_ : TypeSpecification,
+  throws_ : [ExceptionSpecification]
+}
+
+type ResultSink = {
+  type_ : TypeSpecification,
+  firstResponse : maybe TypeSpecification,
+  finalResponse : maybe TypeSpecification
+}
+
+# Thrift RPC calls can have several kinds of results:
+#
+# * oneway_ : function call does not wait for return, just sends message
+# * void_ : function call waits for return (or exception), no result value
+# * result : function waits for return value (or exception)
+# * stream_ : function call starts stream of results from server
+# * service_ : function call returns a service
+# * sink : function call starts sink of results from client
+type ResultType = {
+  oneway_ : builtin.Unit |
+  void_ : builtin.Unit |
+  result : TypeSpecification |
+  stream_ : ResultStream |
+  service_ : ServiceName |
+  sink_ :  ResultSink
+}
+
+predicate FunctionSpecification : {
+  name : FunctionName,
+  result : ResultType,
+  arguments : [UnqualField],
+  throws_ : [ExceptionSpecification],
+  structuredAnnotations : [StructuredAnnotation]
+}
+
+predicate ServiceDefinition : {
+  name : ServiceName,
+  functions : [FunctionSpecification],
+  structuredAnnotations : [StructuredAnnotation]
+}
+
+#
+# Support for file-indexed navigation in codemarkup
+#
+type Declaration = XRefTarget
+
+# All declarations in a thrift file
+predicate FileDeclaration :
+  {
+    file: File,
+    decl: Declaration,
+  }
+  stored
+  { File, Decl } where
+  DeclarationNameSpan { decl = Decl, file = File }
+
+# Identifying name of a declaration
+predicate DeclarationNameSpan :
+  {
+    decl: Declaration,
+    name: Identifier,
+    file: File,
+    span: Loc,
+  }
+
+predicate DeclarationName:
+  {
+    qname: QualName,
+    decl: Declaration
+  }
+  stored
+  { { File, Name }, Decl } where
+  DeclarationNameSpan { decl = Decl, name = Name, file = File }
+
+predicate StructType : {
+  name : QualName,
+  fields : [FieldSpecification],
+  structuredAnnotations : [StructuredAnnotation],
+}
+
+predicate ExceptionType : {
+  name : QualName,  # key for ExceptionName
+  fields : [FieldSpecification],
+  structuredAnnotations : [StructuredAnnotation],
+}
+
+predicate UnionType : {
+  name : QualName,
+  alts : [UnqualField],
+  structuredAnnotations : [StructuredAnnotation],
+}
+
+predicate EnumerationType : {
+  name : QualName,
+  value : [EnumValueDef],
+  structuredAnnotations : [StructuredAnnotation],
+}
+
+predicate EnumValueDef : {
+  name : EnumValue,
+  value : IntegerLiteral,
+  structuredAnnotations : [StructuredAnnotation],
+}
+
+type FieldSpecification = {
+  id : FieldId,
+  qualifier : Qualifier,
+  type_ : TypeSpecification,
+  name : Identifier,
+  value : maybe TypedConst,
+  structuredAnnotations : [StructuredAnnotation],
+}
+
+predicate StructuredAnnotation : {
+  type_ : TypeSpecification,
+  value : StructVal,
+}
+
+predicate StructVal : {
+  fields : [StructFieldVal]
+}
+
+predicate ExceptionVal : StructVal
+
+predicate UnionVal : {
+  field : UnionFieldVal,
+}
+
+predicate EnumVal : {
+  name : QualName,
+  loc : Loc,
+}
+
+type StructFieldValValue = {
+  val : TypedConstT |
+  default_ : TypeSpecification  |
+  just : TypedConstT |
+  nothing : {} |
+}
+
+type StructFieldVal = {
+  name : Identifier,
+  value : StructFieldValValue,
+}
+
+type UnionFieldVal = {
+  name : Identifier,
+  value : TypedConstT,
+}
+
+type TypedConstT = {
+  const_ : TypedConst,
+  type_ : TypeSpecification
+}
+
+type TypedConst = {
+  literal : Literal |
+  identifier : Constant
+}
+
+type FloatLiteral = {
+  isNaN : bool,
+  isPositive : bool,
+  exponent : nat,
+  significand : nat,
+}
+
+type KeyValue = {
+  key: TypedConst,
+  value: TypedConst,
+}
+
+predicate Literal : {
+  byte_ : IntegerLiteral |
+  i16_ : IntegerLiteral |
+  i32_ : IntegerLiteral |
+  i64_ : IntegerLiteral |
+
+  float_ : FloatLiteral |
+  double_ : FloatLiteral |
+
+  bool_ : bool |
+  string_ : string |
+  binary_ : [byte] |
+
+  set_ : [TypedConst] |
+  # hashSet_ : [TypedConst] | Deprecated - not exported by fbthrift
+  list_ : [TypedConst] |
+  map_ : [KeyValue] |
+  # hashMap_ : [KeyValue] | Deprecated - not exported by fbthrift
+
+  newtype_ : Literal |
+
+  struct_ : StructVal |
+  exception_ : ExceptionVal |
+  union_ : UnionVal |
+
+  enum_ : EnumVal |
+}
+
+# lookup qualnames by identifier
+predicate SearchByName:
+  {
+    name: Identifier,
+    qname: QualName,
+  } stored { Name, QName } where QName = fbthrift.QualName { name = Name }
+
+# lower case name map
+predicate NameLowerCase:
+  {
+    nameStr: string,
+    name: Identifier
+  } stored { prim.toLower NameStr, Name } where Name = fbthrift.Identifier NameStr
+
+# Lookup function declaration by full qname of service + identifier
+predicate FunctionDeclarationName:
+  {
+    qname: QualName,
+    name: Identifier,
+    decl: Declaration
+  }
+  { QName, Ident, { function_ = FN }} where
+    SN = ServiceName { name = QName };
+    FN = FunctionName { service_ = SN, name = Ident }
+
+}

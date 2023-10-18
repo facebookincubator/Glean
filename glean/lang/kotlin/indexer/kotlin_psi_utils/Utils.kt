@@ -12,8 +12,11 @@ private val FBSOURCE = "^/.*[/-]fbsource/".toRegex()
 
 private val NOISE = "^[0-9]+-[0-9]+/".toRegex()
 
+private val RE_NOISE = "^/re_cwd/".toRegex()
+
 // Reimplementation of java-alpha indexer Utils.java path normalizer
 fun normalizePath(path: String): String {
-  val cleanPath = FBSOURCE.replaceFirst(path, "")
-  return NOISE.replaceFirst(cleanPath, "")
+  val m1 = FBSOURCE.replaceFirst(path, "")
+  val m2 = NOISE.replaceFirst(m1, "")
+  return RE_NOISE.replaceFirst(m2, "")
 }

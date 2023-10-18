@@ -9,9 +9,13 @@
 {-# LANGUAGE CPP #-}
 module Facebook.Service
   ( runFacebookService
+  , runFacebookService'
   , withBackgroundFacebookService
+  , withBackgroundFacebookService'
   , runFacebookServiceDeferredAlive
+  , runFacebookServiceDeferredAlive'
   , withBackgroundFacebookServiceDeferredAlive
+  , withBackgroundFacebookServiceDeferredAlive'
   , waitForTerminateSignals
   ) where
 
@@ -38,8 +42,18 @@ runFacebookService
   -> (forall r. s r -> IO r) -- ^ your handler
   -> ServerOptions -- ^ server options
   -> IO ()
-runFacebookService fb303State handler opts = do
-  withBackgroundFacebookService fb303State handler opts $
+runFacebookService fb303 handler = do
+  runFacebookService' fb303 handler nilPostProcess
+
+runFacebookService'
+  :: Processor s
+  => Fb303State -- ^ Mandatory fb303 state
+  -> (forall r. s r -> IO r) -- ^ your handler
+  -> (forall r. s r -> Either SomeException r -> Header)
+  -> ServerOptions -- ^ server options
+  -> IO ()
+runFacebookService' fb303State handler postProcess opts = do
+  withBackgroundFacebookService' fb303State handler postProcess opts $
     const waitForTerminateSignals
 
 -- | Like 'runFacebookService' but does not set the fb303 status to
@@ -52,9 +66,20 @@ runFacebookServiceDeferredAlive
   -> (forall r. s r -> IO r) -- ^ your handler
   -> ServerOptions -- ^ server options
   -> IO ()
-runFacebookServiceDeferredAlive fb303State handler opts = do
-  withBackgroundFacebookServiceDeferredAlive fb303State handler opts $
-    const waitForTerminateSignals
+runFacebookServiceDeferredAlive fb303 handler = do
+  runFacebookServiceDeferredAlive' fb303 handler nilPostProcess
+
+runFacebookServiceDeferredAlive'
+  :: Processor s
+  => Fb303State -- ^ Mandatory fb303 state
+  -> (forall r. s r -> IO r) -- ^ your handler
+  -> (forall r. s r -> Either SomeException r -> Header)
+  -> ServerOptions -- ^ server options
+  -> IO ()
+runFacebookServiceDeferredAlive' fb303State handler postProcess opts = do
+  withBackgroundFacebookServiceDeferredAlive'
+    fb303State handler postProcess opts
+    $ const waitForTerminateSignals
 
 -- | Block indefinitely until the process receives SIGTERM or SIGINT,
 -- and then return.
@@ -83,8 +108,19 @@ withBackgroundFacebookService
   -> ServerOptions -- ^ server options
   -> (Server -> IO a) -- ^ wait action
   -> IO a
-withBackgroundFacebookService fb303 handler opts waitAction =
-  withBackgroundFacebookService_ fb303 handler opts $ \server ->
+withBackgroundFacebookService fb303 handler =
+  withBackgroundFacebookService' fb303 handler nilPostProcess
+
+withBackgroundFacebookService'
+  :: Processor s
+  => Fb303State -- ^ Mandatory fb303 state
+  -> (forall r. s r -> IO r) -- ^ your handler
+  -> (forall r. s r -> Either SomeException r -> Header)
+  -> ServerOptions -- ^ server options
+  -> (Server -> IO a) -- ^ wait action
+  -> IO a
+withBackgroundFacebookService' fb303 handler postProcess opts waitAction =
+  withBackgroundFacebookService_ fb303 handler postProcess opts $ \server ->
     bracketFb303 fb303 Fb303_status_ALIVE Fb303_status_STOPPING $
       waitAction server
 
@@ -99,8 +135,20 @@ withBackgroundFacebookServiceDeferredAlive
   -> ServerOptions -- ^ server options
   -> (Server -> IO a) -- ^ wait action
   -> IO a
-withBackgroundFacebookServiceDeferredAlive fb303 handler opts waitAction =
-  withBackgroundFacebookService_ fb303 handler opts $ \server ->
+withBackgroundFacebookServiceDeferredAlive fb303 handler =
+  withBackgroundFacebookServiceDeferredAlive' fb303 handler nilPostProcess
+
+withBackgroundFacebookServiceDeferredAlive'
+  :: Processor s
+  => Fb303State -- ^ Mandatory fb303 state
+  -> (forall r. s r -> IO r) -- ^ your handler
+  -> (forall r. s r -> Either SomeException r -> Header)
+  -> ServerOptions -- ^ server options
+  -> (Server -> IO a) -- ^ wait action
+  -> IO a
+withBackgroundFacebookServiceDeferredAlive' fb303 handler postP opts waitAction
+  =
+  withBackgroundFacebookService_ fb303 handler postP opts $ \server ->
     waitAction server
       `finally` writeIORef (fb303_status fb303) Fb303_status_STOPPING
 
@@ -112,9 +160,13 @@ withBackgroundFacebookService_
   :: Processor s
   => Fb303State
   -> (forall r. s r -> IO r)
+  -> (forall r. s r -> Either SomeException r -> Header)
   -> ServerOptions
   -> (Server -> IO a)
   -> IO a
-withBackgroundFacebookService_ fb303 handler opts waitAction = do
+withBackgroundFacebookService_ fb303 handler postProcess opts waitAction = do
   bracketFb303 fb303 Fb303_status_STARTING Fb303_status_STOPPED $ do
-    withBackgroundServer handler opts waitAction
+    withBackgroundServer' handler postProcess opts waitAction
+
+nilPostProcess :: a -> b -> [c]
+nilPostProcess _ _ = []

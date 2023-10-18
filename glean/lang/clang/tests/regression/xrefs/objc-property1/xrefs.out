@@ -63,6 +63,12 @@
               "objcMethod": {
                 "key": {
                   "selector": { "key": [ "setFoo" ] },
+                  "locations": [
+                    {
+                      "file": { "key": "test.m" },
+                      "span": { "start": 255, "length": 6 }
+                    }
+                  ],
                   "container": { "interface_": { "key": "I" } },
                   "signature": {
                     "key": {
@@ -127,6 +133,12 @@
               "objcMethod": {
                 "key": {
                   "selector": { "key": [ "foo" ] },
+                  "locations": [
+                    {
+                      "file": { "key": "test.m" },
+                      "span": { "start": 242, "length": 3 }
+                    }
+                  ],
                   "container": { "interface_": { "key": "I" } },
                   "signature": {
                     "key": { "returns": { "key": "int" }, "parameters": [ ] }
@@ -153,6 +165,12 @@
               "objcMethod": {
                 "key": {
                   "selector": { "key": [ "setFoo" ] },
+                  "locations": [
+                    {
+                      "file": { "key": "test.m" },
+                      "span": { "start": 255, "length": 6 }
+                    }
+                  ],
                   "container": { "interface_": { "key": "I" } },
                   "signature": {
                     "key": {
@@ -217,6 +235,12 @@
               "objcMethod": {
                 "key": {
                   "selector": { "key": [ "foo" ] },
+                  "locations": [
+                    {
+                      "file": { "key": "test.m" },
+                      "span": { "start": 242, "length": 3 }
+                    }
+                  ],
                   "container": { "interface_": { "key": "I" } },
                   "signature": {
                     "key": { "returns": { "key": "int" }, "parameters": [ ] }

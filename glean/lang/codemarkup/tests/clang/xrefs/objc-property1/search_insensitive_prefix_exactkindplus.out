@@ -10,6 +10,12 @@
             "objcMethod": {
               "key": {
                 "selector": { "key": [ "foo" ] },
+                "locations": [
+                  {
+                    "file": { "key": "test.m" },
+                    "span": { "start": 242, "length": 3 }
+                  }
+                ],
                 "container": { "interface_": { "key": "I" } },
                 "signature": {
                   "key": { "returns": { "key": "int" }, "parameters": [ ] }
@@ -43,7 +49,7 @@
         },
         "destination": {
           "file": { "key": "test.m" },
-          "span": { "start": 235, "length": 1 }
+          "span": { "start": 242, "length": 3 }
         }
       },
       "kind": 7,
