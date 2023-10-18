@@ -6,6 +6,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "bar"
                         },
                         "key": "symbolName"
@@ -35,6 +41,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "foo"
                         },
                         "key": "symbolName"
@@ -62,6 +74,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "foobar"
@@ -94,6 +112,12 @@
         "references": [
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "f"
@@ -135,6 +159,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "g"
                         },
                         "key": "symbolName"
@@ -172,6 +202,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "h"
@@ -213,6 +249,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 4
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "my_defs.bzl"
                         },
                         "key": "symbolName"
@@ -250,6 +292,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 4
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "toto.c"
@@ -291,6 +339,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 4
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "tutu.c"
                         },
                         "key": "symbolName"
@@ -328,6 +382,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "bar"
@@ -369,6 +429,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "bar"
                         },
                         "key": "symbolName"
@@ -406,6 +472,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "foo"
@@ -447,6 +519,12 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "foo"
                         },
                         "key": "symbolName"
@@ -484,6 +562,12 @@
             },
             {
                 "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
                     {
                         "attribute": {
                             "aString": "bar"

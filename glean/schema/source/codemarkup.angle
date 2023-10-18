@@ -48,7 +48,8 @@ predicate EntityKind:
     (codemarkup.java.JavaEntityKind { E, Kind }; { java = E } = Entity) |
     (codemarkup.kotlin.KotlinEntityKind { E, Kind }; { kotlin = E } = Entity) |
     (codemarkup.thrift.ThriftEntityKind { E, Kind }; { thrift = E } = Entity) |
-    (codemarkup.fbthrift.ThriftEntityKind { E, Kind }; { fbthrift = E } = Entity);
+    (codemarkup.fbthrift.ThriftEntityKind { E, Kind }; { fbthrift = E } = Entity) |
+    (codemarkup.buck.BuckEntityKind { E, Kind }; { buck = E } = Entity);
 
 # Retrieve information about an entity
 predicate EntityInfo:
@@ -69,7 +70,9 @@ predicate EntityInfo:
        (codemarkup.java.JavaEntityKind { E, Kind };
         { java = E } = Entity) |
        (codemarkup.kotlin.KotlinEntityKind { E, Kind };
-        { kotlin = E } = Entity)
+        { kotlin = E } = Entity) |
+       (codemarkup.buck.BuckEntityKind { E, Kind };
+        { buck = E } = Entity);
       )
     ) |
     (codemarkup.cxx.CxxEntityInfo { E, Info }; { cxx = E } = Entity) |
