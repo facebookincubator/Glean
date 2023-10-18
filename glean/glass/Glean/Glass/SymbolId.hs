@@ -369,6 +369,7 @@ instance ToQName Code.Entity where
     Code.Entity_flow x -> toQName x
     Code.Entity_cxx x -> toQName x
     Code.Entity_pp x -> toQName x
+    Code.Entity_buck x -> toQName x
     Code.Entity_erlang x -> toQName x
     Code.Entity_java x -> toQName x
     Code.Entity_kotlin x -> toQName x

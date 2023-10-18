@@ -1,0 +1,49 @@
+[
+    "@generated",
+    {
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "language": 11,
+        "location": {
+            "filepath": "buck_project/my_defs.bzl",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 17,
+                "lineBegin": 3,
+                "lineEnd": 4
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "buck_project/my_defs.bzl",
+            "localName": "f"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "sym": "test/buck/d/buck_project/my_defs.bzl/f",
+        "sym_location": {
+            "filepath": "buck_project/my_defs.bzl",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 17,
+                "lineBegin": 3,
+                "lineEnd": 4
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]
