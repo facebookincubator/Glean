@@ -60,6 +60,12 @@ jobs:
           apt-get install -y nodejs
           npm install -g @sourcegraph/scip-typescript
 
+      - name: Install indexer (typescript)
+        run: |
+            curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+            apt-get install -y nodejs
+            npm i @sourcegraph/scip-python
+
       - name: Install indexer (go)
         run: |
           export GOLANG=1.17.8
