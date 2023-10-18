@@ -53,10 +53,8 @@ jobs:
 
       - name: Install indexer (python)
         run: |
-          export NODEARCH=node-v18.0.0-linux-x64
-          curl -LO "https://nodejs.org/dist/v18.0.0/${NODEARCH}.tar.xz"
-          tar -xvf "${NODEARCH}.tar.xz"
-          cp -r "${NODEARCH}"/* "$HOME"/.hsthrift/
+          curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+          apt-get install -y nodejs
           npm install -g @sourcegraph/scip-python
 
       - name: Install indexer (go)
