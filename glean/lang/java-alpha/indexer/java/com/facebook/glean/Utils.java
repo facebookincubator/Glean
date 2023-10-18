@@ -33,14 +33,17 @@ public class Utils {
   //
   private static final Pattern FBSOURCE = Pattern.compile("^/.*[/-]fbsource/");
 
+  // after cleaning things up we may have buck2 + RE path noise to remove
+  private static final Pattern RE_NOISE = Pattern.compile("^/re_cwd/");
+
   // what we need is to pass an indexerRoot through...
 
   /** Input paths are absolute, and need to be made relative and de-noised */
   public static String normalizePath(String path) {
-    Matcher n = FBSOURCE.matcher(path);
-    String cleanPath = n.replaceFirst("");
-    Matcher m = NOISE.matcher(cleanPath);
-    return m.replaceFirst("");
+    Matcher m1 = FBSOURCE.matcher(path);
+    Matcher m2 = NOISE.matcher(m1.replaceFirst(""));
+    Matcher m3 = RE_NOISE.matcher(m2.replaceFirst(""));
+    return m3.replaceFirst("");
   }
 
   public static class Lexer {
