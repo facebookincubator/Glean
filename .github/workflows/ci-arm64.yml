@@ -55,6 +55,15 @@ jobs:
           cp -r "${NODEARCH}"/* "$HOME"/.hsthrift/
           npm install -g @sourcegraph/scip-typescript
 
+      - name: Install indexer (python)
+        run: |
+          export NODEARCH=node-v18.0.0-linux-arm64
+          curl -LO "https://nodejs.org/dist/v18.0.0/${NODEARCH}.tar.xz"
+          tar -xvf "${NODEARCH}.tar.xz"
+          cp -r "${NODEARCH}"/* "$HOME"/.hsthrift/
+          npm install -g @sourcegraph/scip-python
+
+
       - name: Install indexer (rust)
         run: |
           export RUST_ANALYZER=2023-06-19
@@ -84,13 +93,6 @@ jobs:
           mkdir -p "$HOME"/.hsthrift/bin && mv scip-go "$HOME"/.hsthrift/bin
           echo "$HOME/.hsthrift/go/bin" >> "$GITHUB_PATH"
 
-      - name: Install indexer (python)
-        run: |
-          export NODEARCH=node-v18.0.0-linux-arm64
-          curl -LO "https://nodejs.org/dist/v18.0.0/${NODEARCH}.tar.xz"
-          tar -xvf "${NODEARCH}.tar.xz"
-          cp -r "${NODEARCH}"/* "$HOME"/.hsthrift/
-          npm install -g @sourcegraph/scip-python
 
     # no hhvm builds yet for arm/linux, so we skip the hack indexer
 
