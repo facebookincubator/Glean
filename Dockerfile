@@ -2,12 +2,13 @@ FROM ghcr.io/facebookincubator/hsthrift/ci-base:latest as tools
 # remove any old stuff
 RUN rm -rf /usr/local/lib
 RUN rm -rf /usr/local/include
-RUN apt-get install -y ghc-8.10.2 cmake ninja-build libxxhash-dev wget unzip rsync
+RUN apt-get install -y ghc-8.10.2 cmake ninja-build libxxhash-dev wget unzip rsync libgmock-dev
 RUN cabal update
 RUN mkdir /glean-code
 WORKDIR /glean-code
 ADD https://api.github.com/repos/facebookincubator/hsthrift/compare/main...HEAD /dev/null
 ADD ./glean /glean-code/glean
+ADD ./thrift /glean-code/thrift
 ADD ./cabal.project /glean-code/
 ADD ./Makefile  /glean-code/
 ADD ./mk /glean-code/mk
@@ -28,9 +29,9 @@ RUN cp $(cabal exec --project-file=cabal.project -- which glean) ~/.cabal/bin/
 RUN cp $(cabal exec --project-file=cabal.project -- which glean-server) ~/.cabal/bin/
 RUN cp $(cabal exec --project-file=cabal.project -- which glean-hyperlink) ~/.cabal/bin/
 RUN glean --help
-RUN wget https://github.com/facebook/flow/releases/download/v0.148.0/flow-linux64-v0.148.0.zip
-RUN unzip flow-linux64-v0.148.0.zip
-RUN mv flow/flow /root/.hsthrift/bin/ && rm -rf flow-linux64-v0.148.0.zip flow/
+RUN wget https://github.com/facebook/flow/releases/download/v0.209.1/flow-linux64-v0.209.1.zip
+RUN unzip flow-linux64-v0.209.1.zip
+RUN mkdir -p /root/.hsthrift/bin && mv flow/flow /root/.hsthrift/bin/ && rm -rf flow-linux64-v0.209.1.zip flow/
 WORKDIR /
 RUN git clone https://github.com/facebook/react.git --depth 1 react-code
 RUN cat /react-code/scripts/flow/config/flowconfig \
