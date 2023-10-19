@@ -994,6 +994,7 @@ library indexers
         Glean.Indexer
         Glean.Indexer.Cpp
         Glean.Indexer.External
+        Glean.Indexer.Fbthrift
         Glean.Indexer.Flow
         Glean.Indexer.Go
         Glean.Indexer.Hack
