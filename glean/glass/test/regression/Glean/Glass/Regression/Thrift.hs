@@ -10,12 +10,18 @@ module Glean.Glass.Regression.Thrift (main) where
 
 import Test.HUnit
 
-import Glean.Regression.Test
+import Glean.Indexer.Fbthrift as Fbthrift
 
 import Glean.Glass.Types
+import Glean.Glass.Regression.Snapshot
 import Glean.Glass.Regression.Tests
 
 main :: IO ()
-main = mainTestIndexExternal "glass-regression-thrift" $ \get -> TestList
-  [ testDocumentSymbolListX (Path "lib.thrift") get
-  ]
+main = mainGlassSnapshot testName testPath testIndexer unitTests
+  where
+    testName = "glass-regression-thrift"
+    testPath = "glean/glass/test/regression/tests/thrift"
+    testIndexer = Fbthrift.indexer
+
+unitTests :: Getter -> [Test]
+unitTests get = [testDocumentSymbolListX (Path "lib.thrift") get]

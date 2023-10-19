@@ -1,0 +1,56 @@
+[
+  "@generated",
+  {
+    "key": [
+      {
+        "objcMethod": {
+          "key": {
+            "container": { "implementation": { "key": "I" } },
+            "isAccessor": false,
+            "isInstance": true,
+            "isOptional": false,
+            "locations": [
+              {
+                "file": { "key": "test.m" },
+                "span": { "length": 1, "start": 296 }
+              }
+            ],
+            "selector": { "key": [ "i" ] },
+            "signature": {
+              "key": { "parameters": [ ], "returns": { "key": "int" } }
+            },
+            "source": {
+              "columnBegin": 1,
+              "columnEnd": 1,
+              "file": { "key": "test.m" },
+              "lineBegin": 17,
+              "lineEnd": 19
+            }
+          }
+        }
+      },
+      {
+        "objcMethod": {
+          "key": {
+            "container": { "interface_": { "key": "I" } },
+            "isAccessor": true,
+            "isInstance": true,
+            "isOptional": false,
+            "locations": [ ],
+            "selector": { "key": [ "i" ] },
+            "signature": {
+              "key": { "parameters": [ ], "returns": { "key": "int" } }
+            },
+            "source": {
+              "columnBegin": 26,
+              "columnEnd": 26,
+              "file": { "key": "test.m" },
+              "lineBegin": 11,
+              "lineEnd": 11
+            }
+          }
+        }
+      }
+    ]
+  }
+]

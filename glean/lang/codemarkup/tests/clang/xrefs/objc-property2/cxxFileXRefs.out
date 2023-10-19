@@ -1,0 +1,85 @@
+[
+  "@generated",
+  {
+    "key": {
+      "xmap": {
+        "key": {
+          "file": { "key": "test.m" },
+          "fixed": [
+            {
+              "target": {
+                "declaration": {
+                  "objcMethod": {
+                    "key": {
+                      "selector": { "key": [ "i" ] },
+                      "locations": [ ],
+                      "container": { "interface_": { "key": "I" } },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [ ]
+                        }
+                      },
+                      "isInstance": true,
+                      "isOptional": false,
+                      "isAccessor": true,
+                      "source": {
+                        "file": { "key": "test.m" },
+                        "lineBegin": 11,
+                        "columnBegin": 26,
+                        "lineEnd": 11,
+                        "columnEnd": 26
+                      }
+                    }
+                  }
+                }
+              },
+              "from": {
+                "spans": [ { "length": 8, "offsets": [ 335 ] } ],
+                "expansions": [ ],
+                "spellings": [ ]
+              }
+            },
+            {
+              "target": {
+                "objcSelectorSlot": {
+                  "objcMethod": {
+                    "key": {
+                      "selector": { "key": [ "i" ] },
+                      "locations": [ ],
+                      "container": { "interface_": { "key": "I" } },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [ ]
+                        }
+                      },
+                      "isInstance": true,
+                      "isOptional": false,
+                      "isAccessor": true,
+                      "source": {
+                        "file": { "key": "test.m" },
+                        "lineBegin": 11,
+                        "columnBegin": 26,
+                        "lineEnd": 11,
+                        "columnEnd": 26
+                      }
+                    }
+                  },
+                  "index": 0
+                }
+              },
+              "from": {
+                "spans": [ { "length": 1, "offsets": [ 341 ] } ],
+                "expansions": [ ],
+                "spellings": [ ]
+              }
+            }
+          ],
+          "froms": [ ]
+        }
+      },
+      "targets": [ ]
+    }
+  }
+]
