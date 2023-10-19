@@ -111,6 +111,9 @@ main =
         JanitorTimeout -> do
           logError "Aborting: Janitor timeout at startup"
           return False
+        JanitorStuck -> do
+          logError "Aborting: Janitor stuck at startup"
+          return False
         JanitorRunSuccess ->
           setAlive server >> return True
         JanitorRunFailure OtherJanitorException{} ->
@@ -126,8 +129,10 @@ main =
           Just (t1, r)
             | t1 == t0 -> retry  -- block until the next janitor run
             | otherwise -> return (t1, r)
-#ifdef GLEAN_FACEBOOK
       case result of
+        JanitorStuck -> do
+          logError "Aborting: Janitor stuck"
+#ifdef GLEAN_FACEBOOK
         JanitorRunFailure (JanitorFetchBackupsFailure fetchError) -> do
           let dbServerBelievedDead = if
                 | Just NoHostsError
@@ -142,10 +147,8 @@ main =
           if knob == Right True && not dbServerBelievedDead
               then logError "Aborting: failed to list remote DBs too many times"
               else monitorJanitor t1
-        _ -> monitorJanitor t1
-#else
-      result `seq` monitorJanitor t1
 #endif
+        _ -> monitorJanitor t1
 
     waitForTerminate = void $
       (getCurrentTime >>= monitorJanitor)

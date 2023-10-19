@@ -147,7 +147,6 @@ runWithShards env myShards sm = do
 
   let
     !ServerConfig.DatabaseRetentionPolicy{} = config_retention
-    !ServerConfig.DatabaseRestorePolicy{..} = config_restore
     !ServerConfig.DatabaseClosePolicy{..} = config_close
 
   fetchBackupsResult <- fetchBackups env
