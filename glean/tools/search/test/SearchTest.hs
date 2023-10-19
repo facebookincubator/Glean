@@ -288,7 +288,9 @@ main = do
 
       search "prop1" "objc property" $ \r ->
         case sort r of
-          [ Entity_cxx (Entity_decl Declaration_objcProperty{}) ] -> True
+          [ Entity_cxx (Entity_decl Declaration_objcMethod{}),
+            Entity_cxx (Entity_decl Declaration_objcMethod{}),
+            Entity_cxx (Entity_decl Declaration_objcProperty{}) ] -> True
           _ -> False
 
       -- TODO: protocol
