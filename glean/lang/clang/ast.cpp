@@ -593,8 +593,12 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       if (!decl->isImplicit()) {
         return false;
       }
+      // ObjC getters/setters are produced by corresponding ObjC property decls.
+      if (clang::dyn_cast<clang::ObjCMethodDecl>(decl)) {
+        return false;
+      }
       auto rd = clang::dyn_cast<clang::CXXRecordDecl>(decl);
-      return !rd || !rd->isLambda();
+      return !(rd && rd->isLambda());
     }
 
     template<typename T>
