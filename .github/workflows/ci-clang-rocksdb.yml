@@ -53,7 +53,7 @@ jobs:
 
       - name: Install indexer (python)
         run: |
-          export NODEARCH=node-v18.0.0-linux-arm64
+          export NODEARCH=node-v18.0.0-linux-x86_64
           curl -LO "https://nodejs.org/dist/v18.0.0/${NODEARCH}.tar.xz"
           tar -xvf "${NODEARCH}.tar.xz"
           cp -r "${NODEARCH}"/* "$HOME"/.hsthrift/
