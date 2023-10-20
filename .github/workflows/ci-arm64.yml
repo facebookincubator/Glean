@@ -92,7 +92,6 @@ jobs:
           mkdir -p "$HOME"/.hsthrift/bin && mv scip-go "$HOME"/.hsthrift/bin
           echo "$HOME/.hsthrift/go/bin" >> "$GITHUB_PATH"
 
-
     # no hhvm builds yet for arm/linux, so we skip the hack indexer
 
       - name: Fetch hsthrift and build folly, fizz, wangle, fbthrift
