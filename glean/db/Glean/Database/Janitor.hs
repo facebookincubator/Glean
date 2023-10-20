@@ -147,7 +147,6 @@ runWithShards env myShards sm = do
 
   let
     !ServerConfig.DatabaseRetentionPolicy{} = config_retention
-    !ServerConfig.DatabaseRestorePolicy{..} = config_restore
     !ServerConfig.DatabaseClosePolicy{..} = config_close
 
   fetchBackupsResult <- fetchBackups env
@@ -362,6 +361,8 @@ runWithShards env myShards sm = do
           -- .age is the age of the data, .span is the age of the DB
           publishCounter (prefix <> ".age") (ageFrom dbStart)
           publishCounter (prefix <> ".span") (ageFrom dbCreated)
+          publishCounter (prefix <> ".newest")
+            (fromIntegral (unPosixEpochTime dbStart))
 
     -- Report shard stats for dynamic sharding assignment
     mapM_ (\(n,v) -> publishCounter (Text.encodeUtf8 n) v) $

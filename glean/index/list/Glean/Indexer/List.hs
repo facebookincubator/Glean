@@ -25,8 +25,9 @@ import qualified Glean.Indexer.External as External
 import qualified Glean.Indexer.Flow as Flow
 import qualified Glean.Indexer.Hack as Hack
 #ifdef GLEAN_FACEBOOK
-import qualified Glean.Indexer.Python as Python
 import qualified Glean.Indexer.Buck as Buck
+import qualified Glean.Indexer.Fbthrift as Fbthrift
+import qualified Glean.Indexer.Python as Python
 #endif
 import qualified Glean.Indexer.Go as Go
 import qualified Glean.Indexer.JavaLsif as JavaLsif
@@ -46,8 +47,9 @@ indexers =
   , SomeIndexer Flow.indexer
   , SomeIndexer Hack.indexer
 #ifdef GLEAN_FACEBOOK
-  , SomeIndexer Python.indexer
   , SomeIndexer Buck.indexer
+  , SomeIndexer Fbthrift.indexer
+  , SomeIndexer Python.indexer
 #endif
   , SomeIndexer Hs.indexer
   , SomeIndexer Go.indexer

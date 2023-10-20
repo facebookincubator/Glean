@@ -30,10 +30,28 @@
   {
     "key": {
       "file": { "key": "test.m" },
+      "lineBegin": 13,
+      "columnBegin": 35,
+      "lineEnd": 13,
+      "columnEnd": 35
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
       "lineBegin": 17,
       "columnBegin": 1,
       "lineEnd": 21,
       "columnEnd": 1
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "lineBegin": 19,
+      "columnBegin": 1,
+      "lineEnd": 19,
+      "columnEnd": 13
     }
   }
 ]

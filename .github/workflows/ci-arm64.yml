@@ -22,7 +22,7 @@ jobs:
           rm -rf "$HOME"/.cabal
           rm -rf "$HOME"/.ghcup/bin
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install additional tools
         run: |

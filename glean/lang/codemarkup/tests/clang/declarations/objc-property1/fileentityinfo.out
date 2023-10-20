@@ -6,6 +6,144 @@
       "entity": {
         "cxx": {
           "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "i" ] },
+                "locations": [ ],
+                "container": { "implementation": { "key": "A" } },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": true,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 19,
+                  "columnBegin": 1,
+                  "lineEnd": 19,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "i" ] },
+                "locations": [ ],
+                "container": { "interface_": { "key": "A" } },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": true,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 13,
+                  "columnBegin": 35,
+                  "lineEnd": 13,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "setI" ] },
+                "locations": [ ],
+                "container": { "implementation": { "key": "A" } },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "void" },
+                    "parameters": [
+                      { "name": { "key": "i" }, "type": { "key": "int" } }
+                    ]
+                  }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": true,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 19,
+                  "columnBegin": 1,
+                  "lineEnd": 19,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "objcMethod": {
+              "key": {
+                "selector": { "key": [ "setI" ] },
+                "locations": [ ],
+                "container": { "interface_": { "key": "A" } },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "void" },
+                    "parameters": [
+                      { "name": { "key": "i" }, "type": { "key": "int" } }
+                    ]
+                  }
+                },
+                "isInstance": true,
+                "isOptional": false,
+                "isAccessor": true,
+                "source": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 13,
+                  "columnBegin": 35,
+                  "lineEnd": 13,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 7, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "decl": {
             "objcProperty": {
               "key": {
                 "name": { "key": "i" },
