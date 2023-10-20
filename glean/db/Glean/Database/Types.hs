@@ -209,6 +209,7 @@ data JanitorRunResult
   = JanitorRunSuccess
   | JanitorRunFailure JanitorException
   | JanitorTimeout
+  | JanitorStuck
   | JanitorDisabled
   deriving Show
 
