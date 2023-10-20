@@ -213,8 +213,9 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
     substDependencies subst dmap = Map.fromListWith (<>) $ zip keys vals
       where
       !keys = substFid <$> Map.keys dmap
-      !vals = Vector.map substFid <$> Map.elems dmap
       substFid = fromFid . Subst.subst subst . Fid
+      !vals = under (Subst.substVector subst) <$> Map.elems dmap
+      under f = Vector.unsafeCast . f . Vector.unsafeCast
 
 withLookupCache
   :: Repo

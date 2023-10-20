@@ -12,6 +12,7 @@ module Glean.RTS.Foreign.Subst
   , serialize
   , substIntervals
   , subst
+  , substVector
   , rebaseIntervals
   , deserialize
   , substOffset
@@ -71,6 +72,17 @@ subst :: Subst -> Fid -> Fid
 subst subst old = unsafePerformIO $
   with subst $ \subst_ptr ->
   mask_ $ invoke $ glean_subst_subst subst_ptr old
+
+-- | Apply the given subsitution to all the Fids in the vector
+substVector :: Subst -> VS.Vector Fid -> VS.Vector Fid
+substVector subst vec = unsafePerformIO $
+  with subst $ \subst_ptr ->
+  VS.unsafeWith vec $ \vec_ptr -> mask_ $ do
+    (outs_ptr, outs_size) <- invoke $ glean_subst_vector
+      subst_ptr
+      vec_ptr
+      (fromIntegral $ VS.length vec)
+    unsafeMallocedVector outs_ptr outs_size
 
 {-
   How rebasing works:
@@ -143,7 +155,7 @@ foreign import ccall unsafe glean_subst_deserialize
   -> Ptr (Ptr Subst)
   -> IO CString
 
-foreign import ccall safe glean_subst_intervals
+foreign import ccall unsafe glean_subst_intervals
   :: Ptr Subst
   -> CBool
   -> Ptr Fid
@@ -152,10 +164,18 @@ foreign import ccall safe glean_subst_intervals
   -> Ptr CSize
   -> IO CString
 
-foreign import ccall safe glean_subst_subst
+foreign import ccall unsafe glean_subst_subst
   :: Ptr Subst
   -> Fid
   -> Ptr Fid
+  -> IO CString
+
+foreign import ccall unsafe glean_subst_vector
+  :: Ptr Subst
+  -> Ptr Fid
+  -> CSize
+  -> Ptr (Ptr Fid)
+  -> Ptr CSize
   -> IO CString
 
 foreign import ccall unsafe glean_subst_offset

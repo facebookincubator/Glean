@@ -16,7 +16,7 @@ jobs:
       options: --cpus 2 --security-opt=seccomp=unconfined
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install additional tools
         run: |

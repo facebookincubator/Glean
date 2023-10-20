@@ -14,6 +14,7 @@ module DatabaseJanitorTest
   , withTest
   ) where
 
+import Control.Concurrent (threadDelay)
 import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
@@ -780,6 +781,32 @@ ageCountersClearTest = TestCase $ do
     assertBool "glean.db.test.age cleared"
       $ not (HashMap.member "glean.db.test.age" counters)
 
+stuckTest :: Test
+stuckTest = TestCase $ withFakeCloudDBs $ \evb cfgAPI dbdir backupdir -> do
+  let cfg = dbConfig dbdir $ (serverConfig backupdir)
+        { config_janitor_period = Just 0
+        , config_restore = def {
+              databaseRestorePolicy_enabled = True
+            }
+        , config_retention = def {
+            databaseRetentionPolicy_default_retention = def {
+            retention_retain_at_least = Just 2
+          }
+         }
+        }
+      cfg' = cfg {
+         cfgFilterAvailableDBs  = \_ -> do
+           uninterruptibleMask_ $ threadDelay maxBound
+           return []
+      }
+  withDatabases evb cfg' cfgAPI $ \env -> do
+    (_, janitorResult) <- atomically $ do
+      res <- readTVar $ envDatabaseJanitor env
+      maybe retry return res
+    assertBool (show janitorResult) $ case janitorResult of
+      JanitorStuck -> True
+      _ -> False
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "deleteOldDBs" deleteOldDBsTest
@@ -800,4 +827,5 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "ageCountersForAllNewestDBs" ageCountersCompleteTest
   , TestLabel "ageCountersForOnlyNewestDBs" ageCountersOnlyNewestTest
   , TestLabel "ageCountersClear" ageCountersClearTest
+  , TestLabel "stuck" stuckTest
   ]

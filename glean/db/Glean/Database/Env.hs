@@ -9,13 +9,14 @@
 module Glean.Database.Env ( withDatabases ) where
 
 import Control.Concurrent
+import Control.Concurrent.Async (async, waitEither, withAsync)
 import Control.Exception.Safe
 import Control.Monad.Extra
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
 import Data.Time
 import System.Clock (TimeSpec(..))
-import System.Timeout
+import System.Time.Extra (sleep, Seconds, timeout)
 
 import Data.RateLimiterMap
 import ServiceData.GlobalStats
@@ -163,14 +164,21 @@ spawnThreads env@Env{..} = do
         -- a conservative timeout in case the janitor deadlocks for
         -- some reason.
       $ do
-          result <- try $ timeout (fromIntegral secs * 20 * 1000 * 1000)
-                      $ runDatabaseJanitor env
+          let softTimeout = 1 + fromIntegral secs * 20 * 1000 * 1000
+                                     -- 20 * config_janitor_period
+              hardTimeout = 1 + fromIntegral (secs * 120) -- 6 * soft timeout
+          result <- try $ asyncTimeout hardTimeout
+                        $ timeout softTimeout
+                        $ runDatabaseJanitor env
           case result of
-            Right (Just ()) ->
+            Right (Just (Just ())) ->
               recordJanitorResult JanitorRunSuccess
-            Right Nothing -> do
+            Right (Just Nothing) -> do
               logError "janitor timeout"
               recordJanitorResult JanitorTimeout
+            Right Nothing -> do
+              logError "janitor stuck"
+              recordJanitorResult JanitorStuck
             Left someException -> do
               logError $ "janitor failed: " <> show someException
               if
@@ -216,3 +224,11 @@ closeEnv env@Env{..} = do
   closeDatabases env
   Warden.shutdown envWarden
   Catalog.close envCatalog
+
+-- | Like 'System.Timeout.timeout' but more resilient against FFI calls.
+--   The IO computation is run in a separate thread, and if it doesn't finish
+--   before the timeout a 'Nothing' is returned. Cancellation is not attempted
+asyncTimeout :: Seconds -> IO a -> IO (Maybe a)
+asyncTimeout seconds action = withAsync (sleep seconds) $ \sleepA -> do
+  actionA <- async action
+  either Just (const Nothing) <$> waitEither actionA sleepA

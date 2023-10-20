@@ -467,6 +467,26 @@ const char *glean_subst_subst(
   });
 }
 
+const char *glean_subst_vector(
+    const Substitution *subst,
+    const glean_fact_id_t *ins,
+    size_t ins_size,
+    glean_fact_id_t **outs,
+    size_t *outs_size) {
+  return ffi::wrap([=] {
+    auto res = ffi::malloc_array<glean_fact_id_t>(ins_size);
+    std::transform(
+        ins,
+        ins+ins_size,
+        res.get(),
+        [subst](auto id) {
+          return subst->subst(Id::fromThrift(id)).toThrift();
+            }
+    );
+    res.release_to(outs,outs_size);
+  });
+}
+
 uint64_t glean_subst_offset(const Substitution* subst) {
   return distance(subst->finish(), subst->firstFreeId());
 }
