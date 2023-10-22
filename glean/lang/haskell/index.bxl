@@ -1,0 +1,49 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+# All rights reserved.
+#
+# This source code is licensed under the BSD-style license found in the
+# LICENSE file in the root directory of this source tree.
+
+# load("@fbcode_macros//build_defs/lib:link_styles.bzl", "link_styles")
+load("//common/hs/index:rules.bzl", "haskell_index_rule")
+
+def _impl(ctx):
+    hie_indexer = ctx.unconfigured_sub_targets("fbcode//glean/lang/haskell:indexer")
+    bxl_actions = ctx.bxl_actions(exec_deps = [hie_indexer])
+    action_factory = bxl_actions.actions
+
+    deps = [ctx.analysis(label).as_dependency() for label in ctx.cli_args.targets]
+
+    hie = action_factory.anon_target(
+        haskell_index_rule,
+        attrs = {
+            "deps": deps,
+            # "link_style": link_styles.default(),
+            "link_style": "shared",
+        },
+    )
+    hie_result = ctx.resolve(action_factory, hie.promise)
+    hie_files = (hie_result[DefaultInfo].default_outputs[0])
+
+    facts = action_factory.declare_output("facts")
+    args = cmd_args(bxl_actions.exec_deps[hie_indexer][RunInfo])
+    args.add(ctx.cli_args.backend)
+    args.add("--repo-path", ctx.root())
+    args.add("--output", facts.as_output())
+    args.add(hie_files)
+
+    action_factory.run(
+        args,
+        category = "glean_haskell_indexer",
+        local_only = True,  # needs access to the repo
+    )
+    ensured = ctx.output.ensure(facts)
+    ctx.output.print(ensured.abs_path())
+
+index = bxl_main(
+    impl = _impl,
+    cli_args = {
+        "backend": cli_args.string(""),
+        "targets": cli_args.list(cli_args.target_label()),
+    },
+)

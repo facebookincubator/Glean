@@ -57,6 +57,7 @@ import Control.Exception
       mask_,
       uninterruptibleMask_ )
 import Control.Monad
+import Control.Monad.Catch (throwM)
 import Data.Functor.Identity
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
@@ -504,7 +505,7 @@ startRestoring cat repo meta = do
     (repo `HashMap.member` entriesLiveHere
       || repo `HashMap.member` entriesRestoring
       || repo `HashSet.member` entriesEphemeral)
-    $ dbError repo "can't restore: database already exists"
+    $ throwM DBAlreadyExists
   writeTVar (catEntries cat) $ Just Entries
     { entriesRestoring = HashMap.insert repo meta entriesRestoring
     , ..

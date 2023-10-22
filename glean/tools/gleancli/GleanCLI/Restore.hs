@@ -9,6 +9,7 @@
 {-# LANGUAGE ApplicativeDo #-}
 module GleanCLI.Restore (RestoreCommand) where
 
+import Control.Exception.Safe (catch)
 import Control.Monad (forM_, forM)
 import Control.Monad.Extra (firstJustM)
 import Control.Concurrent
@@ -37,6 +38,7 @@ import Glean.Database.Meta (metaFromProps, metaToThriftDatabase)
 
 import GleanCLI.Common
 import GleanCLI.Types
+import Glean.Database.Exception
 import Glean.Database.Repo (inRepo)
 import Glean.Database.Open (depParent)
 
@@ -162,6 +164,7 @@ instance Plugin RestoreCommand where
             [ Glean.showRepo repo | Just repo <- [mrepo]] ++
             [ "from", Text.unpack locator]
           Glean.restoreDatabase backend locator
+              `catch` \DBAlreadyExists -> return ()
 
       wait locators = do
         localDatabases <- Glean.listDatabasesResult_databases <$>
