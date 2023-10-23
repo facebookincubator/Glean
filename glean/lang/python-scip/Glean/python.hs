@@ -30,9 +30,9 @@ options = do
 
 indexer :: Indexer PythonScip
 indexer = Indexer {
-    indexerShortName = "python-scip"
-    indexerDescription = "Index Python code with `python-analyzer scip`"
-    indexerOptParser = options
+    indexerShortName = "python-scip",
+    indexerDescription = "Index Python code with `python-analyzer scip`",
+    indexerOptParser = options,
     indexerRun = \PythonScip{..} backend repo IndexerParams{..} -> do
         val <- SCIP.runIndexer ScipIndexerParams {
             scipBinary = pythonAnalyzerBinary,

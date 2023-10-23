@@ -985,6 +985,7 @@ library indexers
         glean/lang/java-lsif
         glean/lang/lsif/indexer
         glean/lang/scip/indexer
+        glean/lang/python-scip
         glean/lang/rust-lsif
         glean/lang/rust-scip
         glean/lang/typescript
@@ -2221,6 +2222,19 @@ test-suite glean-snapshot-hack
     -- no regular hhvm builds for arm64
     if !flag(hack-tests)
         buildable: False
+
+test-suite glean-snapshot-python-scip
+    import: fb-haskell, deps
+    hs-source-dirs: glean/lang/python-scip/tests
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/PythonScip/Main.hs
+    ghc-options: -main-is Glean.Regression.PythonScip.Main
+    build-depends:
+        glean:regression-test-lib,
+        glean:indexers
+    if !flag(python-tests)
+        buildable: False
+        
 
 test-suite glean-snapshot-rust-lsif
     import: fb-haskell, deps
