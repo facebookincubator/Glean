@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{ -# LANGUAGE ApplicaPtiveDo #-}
+{ -# LANGUAGE ApplicativeDo #- }
 module Glean.Indexer.PythonScip ( indexer ) where
 
 import Options.Applicative
