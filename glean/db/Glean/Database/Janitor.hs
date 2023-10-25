@@ -461,8 +461,11 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs = do
           return isAvailable
 
     -- retention policy parameters
-    retainAtLeast = fromIntegral $ fromMaybe 0 retention_retain_at_least
-    retainAtMost = fmap fromIntegral retention_retain_at_most
+    retainAtLeast' = fromIntegral $ fromMaybe 0 retention_retain_at_least
+    retainAtMost' = fmap fromIntegral retention_retain_at_most
+    -- enforce invariant: atLeast <= atMost
+    retainAtLeast = min retainAtLeast' (fromMaybe maxBound retainAtMost')
+    retainAtMost  = max retainAtLeast' <$> retainAtMost'
     deleteIfOlder = fmap fromIntegral retention_delete_if_older
     deleteIncompleteIfOlder =
       fmap fromIntegral retention_delete_incomplete_if_older
