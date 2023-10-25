@@ -179,7 +179,10 @@ buildSnapshot
   -> Bool
   -> IO BuildSnapshot
 buildSnapshot env rev (repo, path) doCompress = do
-    let opts = def{Types.requestOptions_strict = True}
+    let opts = def
+          { Types.requestOptions_strict = True
+          , Types.requestOptions_limit = Just maxBound
+          }
     let req = Types.DocumentSymbolsRequest repo path Nothing True
     symList <- Handler.documentSymbolListX env req opts
     let symbolList = case rev of
