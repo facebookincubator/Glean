@@ -447,4 +447,11 @@ predicate FunctionDeclarationName:
     SN = ServiceName { name = QName };
     FN = FunctionName { service_ = SN, name = Ident }
 
+predicate DeclarationComment:
+  {
+    declaration : Declaration,
+    file : src.File,
+    span : src.ByteSpan,
+  }
+
 }
