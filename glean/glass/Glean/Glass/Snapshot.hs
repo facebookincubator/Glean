@@ -69,6 +69,7 @@ import qualified Glean.Glass.Env as Glass
 import qualified Glean.Glass.Handler as Handler
 import Glean.Glass.Main (withEnv)
 import qualified Glean.Glass.Options as Glass
+import Glean.Glass.SnapshotBackend (SnapshotBackend(NoSnapshotBackend))
 import qualified Glean.Glass.Types as Types
 import Glean.Init (withOptions)
 
@@ -244,7 +245,8 @@ main =
     (Glass.snapshotTier glassConfig)
     (Glass.configKey glassConfig)
     (Glass.refreshFreq glassConfig) Nothing
-    gleanDBName $ \env@Glass.Env{..} -> do
+    gleanDBName $ \env0@Glass.Env{..} -> do
+      let env = env0 { Glass.snapshotBackend = NoSnapshotBackend}
       numCores <- getNumCapabilities
       errorsCounterRef <- newIORef 0
       snaps <- forConcurrently_unordered numCores files $ \file -> do
