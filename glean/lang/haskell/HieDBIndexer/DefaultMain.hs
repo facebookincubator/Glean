@@ -16,9 +16,8 @@ import qualified Data.Map as AMap
 import Data.Text (Text)
 import qualified Glean
 import Glean.Impl.ConfigProvider ()
-import Glean.Schema.Builtin.Types (schema_id)
 import Glean.Typed.Predicate (makePredicates)
-import Glean.Types (SelectSchema(SelectSchema_schema_id))
+import Glean.Types (SelectSchema(SelectSchema_schema_id), SchemaId)
 import Glean.Write.Async as Glean
 import qualified Glean.Types as Thrift
 import HieDBIndexer.Builder (buildXrefMapFiles)
@@ -74,9 +73,10 @@ outputMain
   => Tracer Text
   -> HieDBIndexerOptions Sources
   -> FilePath
+  -> SchemaId
   -> b
   -> IO ()
-outputMain tracer cfg out backend = withHieDB cfg $ \hiedb -> do
+outputMain tracer cfg out schema_id backend = withHieDB cfg $ \hiedb -> do
   schemaInfo <- Glean.getSchemaInfo backend Nothing $
     Thrift.GetSchemaInfo (SelectSchema_schema_id schema_id) True
   let finalCfg = cfg {sources = hiedb}
