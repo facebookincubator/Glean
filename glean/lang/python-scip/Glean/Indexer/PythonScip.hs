@@ -12,7 +12,7 @@ module Glean.Indexer.PythonScip ( indexer ) where
 import Options.Applicative
 
 import Glean.Indexer
-import Glean.Indexer.SCIP
+import Glean.Indexer.External (sendJsonBatches)
 import Glean.Indexer.SCIP (derive)
 import Glean.SCIP.Driver as SCIP
 
@@ -37,7 +37,7 @@ indexer = Indexer {
         val <- SCIP.runIndexer ScipIndexerParams {
             scipBinary = pythonScipBinary,
             scipArgs = const [ "index","--cwd", indexerRoot,
-             "--target-only", "--output", "--show-progress-rate-limit", outFile ],
+             "--target-only", "--output", "--show-progress-rate-limit" ],
             scipRoot = indexerRoot,
             scipWritesLocal = True,
             scipLanguage = Just SCIP.Python
