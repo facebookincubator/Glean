@@ -80,6 +80,10 @@ flag hack-tests
 flag typescript-tests
      default: True
 
+-- run tests that require pytest-scip
+flag python-tests
+     default: False
+
 -- run tests that require lsif-go
 flag go-tests
      default: True
@@ -1005,6 +1009,7 @@ library indexers
         Glean.Indexer.RustLsif
         Glean.Indexer.RustScip
         Glean.Indexer.Typescript
+        Glean.Indexer.PythonScip
         Glean.Indexer.List
     build-depends:
         glean:client-hs,
@@ -2222,18 +2227,6 @@ test-suite glean-snapshot-hack
     -- no regular hhvm builds for arm64
     if !flag(hack-tests)
         buildable: False
-
-test-suite glean-snapshot-python-scip
-    import: fb-haskell, deps
-    hs-source-dirs: glean/lang/python-scip/tests
-    type: exitcode-stdio-1.0
-    main-is: Glean/Regression/PythonScip/Main.hs
-    ghc-options: -main-is Glean.Regression.PythonScip.Main
-    build-depends:
-        glean:regression-test-lib,
-        glean:indexers
-    if !flag(python-tests)
-        buildable: False
         
 
 test-suite glean-snapshot-rust-lsif
@@ -2258,6 +2251,18 @@ test-suite glean-snapshot-rust-scip
         glean:regression-test-lib,
         glean:indexers
     if !flag(rust-tests)
+        buildable: False
+
+test-suite glean-snapshot-Python-scip
+    import: fb-haskell, deps
+    hs-source-dirs: glean/lang/python-scip/tests
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/PythonScip/Main.hs
+    ghc-options: -main-is Glean.Regression.PythonScip.Main
+    build-depends:
+        glean:regression-test-lib,
+        glean:indexers
+    if !flag(python-tests)
         buildable: False
 
 test-suite glean-snapshot-typescript
@@ -2394,6 +2399,20 @@ test-suite glass-regression-hack
         glean:util,
     if !flag(hack-tests)
         buildable: False
+
+test-suite glass-regression-python-scip
+    import: glass-regression-deps, fb-haskell, deps
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Regression/PythonScip/Main.hs
+    ghc-options: -main-is Glean.Glass.Regression.PythonScip.Main
+    other-modules: Glean.Glass.Regression.PythonScip
+    build-depends:
+        glean:client-hs,
+        glean:indexers,
+        glean:util,
+    if !flag(python-tests)
+        buildable: False
+
 
 test-suite glass-regression-typescript
     import: glass-regression-deps, fb-haskell, deps

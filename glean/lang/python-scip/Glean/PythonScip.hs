@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{ -# LANGUAGE ApplicativeDo #- }
+{-# LANGUAGE ApplicativeDo #-}
 module Glean.Indexer.PythonScip ( indexer ) where
 
 import Options.Applicative
@@ -17,30 +17,31 @@ import Glean.Indexer.SCIP (derive)
 import Glean.SCIP.Driver as SCIP
 
 newtype PythonScip = PythonScip
-    { pythonAnalyzerBinary :: FilePath       
+    { pythonScipBinary :: FilePath       
     }
 
 options :: Parser PythonScip
 options = do
-    pythonAnalyzerBinary <- strOption $
-        long "python-analyzer" <>
-        value "python-analyzer" <>
-        help "path to python-analyzer binary"
+    pythonScipBinary <- strOption $
+        long "scip-python" <>
+        value "scip-python" <>
+        help "path to scip-python binary"
     return PythonScip{..}
 
 indexer :: Indexer PythonScip
 indexer = Indexer {
     indexerShortName = "python-scip",
-    indexerDescription = "Index Python code with `python-analyzer scip`",
+    indexerDescription = "Index Python code with `scip-python`",
     indexerOptParser = options,
     indexerRun = \PythonScip{..} backend repo IndexerParams{..} -> do
         val <- SCIP.runIndexer ScipIndexerParams {
-            scipBinary = pythonAnalyzerBinary,
-            scipArgs = const [ "scip", "." ],
+            scipBinary = pythonScipBinary,
+            scipArgs = const [ "index","--cwd", indexerRoot,
+             "--target-only", "--output", "--show-progress-rate-limit", outFile ],
             scipRoot = indexerRoot,
             scipWritesLocal = True,
             scipLanguage = Just SCIP.Python
         }
-        sendJsonBatches backend repo (pythonAnalyzerBinary <> "/scip") val
+        sendJsonBatches backend repo (pythonScipBinary <> "/scip") val
         derive backend repo
 }
