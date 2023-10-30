@@ -37,7 +37,7 @@ indexer = Indexer {
         val <- SCIP.runIndexer ScipIndexerParams {
             scipBinary = pythonScipBinary,
             scipArgs = const [ "index","--cwd", indexerRoot,
-             "--target-only", "--output", "--show-progress-rate-limit" ],
+             "--target-only", "--output"],
             scipRoot = indexerRoot,
             scipWritesLocal = True,
             scipLanguage = Just SCIP.Python
