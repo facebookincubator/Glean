@@ -38,6 +38,6 @@ main = do
           (Just schema_id)
           $ case mode of
               HieDB.BinaryMode{..} ->
-                outputMain tracer cfg outputPath
+                outputMain tracer cfg outputPath schemaId
               HieDB.WriteMode{..} ->
                 defaultMain tracer cfg repo dontCreateDb

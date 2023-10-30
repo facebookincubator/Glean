@@ -11,6 +11,7 @@
 module HieDBIndexer.Options where
 
 import Data.List.NonEmpty (NonEmpty, nonEmpty)
+
 import Data.Maybe (fromJust)
 import Options.Applicative (
   Parser,
@@ -29,7 +30,8 @@ import Options.Applicative (
   switch,
   value, (<|>), some, strArgument
  )
-import Glean (Repo (Repo))
+import Glean (Repo (Repo), SchemaId (SchemaId, unSchemaId))
+import Glean.Schema.Builtin.Types (schema_id)
 
 -- | Either a HieDB or a set of folders to recursively search for .hie files
 data Sources
@@ -50,7 +52,8 @@ data Mode
       dontCreateDb :: Bool
     }
   | BinaryMode {
-      outputPath :: FilePath
+      outputPath :: FilePath,
+      schemaId :: SchemaId
     }
 
 
@@ -154,4 +157,8 @@ modeParser = serviceModeParser <|> binaryModeParser
           ( long "output"
             <> metavar "FILE"
             <> help "Output binary serialized facts instead of writing to DB")
+        schemaId <- SchemaId <$> strOption
+          ( long "schema-id"
+            <> help "Glean schema id to use for encoding the facts (defaults to latest one)"
+            <> value (unSchemaId schema_id))
         return $ BinaryMode{..}
