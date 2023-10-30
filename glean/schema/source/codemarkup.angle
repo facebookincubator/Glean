@@ -713,6 +713,10 @@ predicate EntityComments:
       { java = Decl } = Entity;
       codemarkup.java.JavaEntityDocumentation { Decl, File, Span };
       nothing = Text
+    ) | (
+      { fbthrift = Decl } = Entity;
+      codemarkup.fbthrift.FbthriftEntityDocumentation { Decl, File, Span };
+      nothing = Text
     )
 
 # Identifies indexed files

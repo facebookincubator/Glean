@@ -67,7 +67,7 @@ struct DocumentSymbolsRequest {
 
 typedef string SymbolId (hs.newtype)
 
-union Attribute {
+/** Doc! */ union Attribute {
   1: bool aBool;
   2: i64 aInteger;
   3: double aDouble;

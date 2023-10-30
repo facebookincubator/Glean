@@ -2666,49 +2666,6 @@
               "key": {
                 "locName": {
                   "endCol": 15,
-                  "endLine": 70,
-                  "startCol": 7,
-                  "startLine": 70
-                },
-                "name": {
-                  "kind": 3,
-                  "name": {
-                    "key": {
-                      "file": { "key": { "key": "lib.thrift" } },
-                      "name": { "key": "Attribute" }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "lib.thrift" },
-      "location": {
-        "file": { "key": "lib.thrift" },
-        "location": {
-          "range": {
-            "columnBegin": 7,
-            "columnEnd": 15,
-            "file": { "key": "lib.thrift" },
-            "lineBegin": 70,
-            "lineEnd": 70
-          }
-        },
-        "name": "Attribute"
-      }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "thrift": {
-          "decl": {
-            "named": {
-              "key": {
-                "locName": {
-                  "endCol": 15,
                   "endLine": 163,
                   "startCol": 6,
                   "startLine": 163
@@ -3557,6 +3514,49 @@
           }
         },
         "name": "SearchByNameRequest"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "thrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": 27,
+                  "endLine": 70,
+                  "startCol": 19,
+                  "startLine": 70
+                },
+                "name": {
+                  "kind": 3,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Attribute" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "location": {
+        "file": { "key": "lib.thrift" },
+        "location": {
+          "range": {
+            "columnBegin": 19,
+            "columnEnd": 27,
+            "file": { "key": "lib.thrift" },
+            "lineBegin": 70,
+            "lineEnd": 70
+          }
+        },
+        "name": "Attribute"
       }
     }
   },

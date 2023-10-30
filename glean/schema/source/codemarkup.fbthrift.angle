@@ -150,4 +150,14 @@ predicate ThriftExtendsParentEntity :
     fbthrift.ServiceParent { child = C, parent = P };
     { service_ = P } = Parent
 
+predicate FbthriftEntityDocumentation :
+  {
+    entity : code.fbthrift.Entity,
+    file : src.File,
+    span : src.ByteSpan
+  }
+  { Entity, File, Span } where
+    { decl = Decl } = Entity;
+    fbthrift.DeclarationComment { Decl, File, Span }
+
 }

@@ -1,7 +1,18 @@
 [
     "@generated",
     {
-        "comments": [],
+        "comments": [
+            {
+                "filepath": "lib.thrift",
+                "range": {
+                    "columnBegin": 2,
+                    "columnEnd": 14,
+                    "lineBegin": 70,
+                    "lineEnd": 70
+                },
+                "repository": "test"
+            }
+        ],
         "contains_relation": {
             "firstChild": "nondeterministic",
             "firstParent": "nondeterministic",
@@ -19,7 +30,7 @@
         "location": {
             "filepath": "lib.thrift",
             "range": {
-                "columnBegin": 1,
+                "columnBegin": 13,
                 "columnEnd": 2,
                 "lineBegin": 70,
                 "lineEnd": 76
@@ -31,13 +42,26 @@
             "container": "lib",
             "localName": "Attribute"
         },
-        "pretty_comments": [],
+        "pretty_comments": [
+            {
+                "location": {
+                    "filepath": "lib.thrift",
+                    "range": {
+                        "columnBegin": 2,
+                        "columnEnd": 14,
+                        "lineBegin": 70,
+                        "lineEnd": 70
+                    },
+                    "repository": "test"
+                }
+            }
+        ],
         "repo_hash": "testhash",
         "sym": "test/thrift/lib.thrift/Attribute",
         "sym_location": {
             "filepath": "lib.thrift",
             "range": {
-                "columnBegin": 1,
+                "columnBegin": 13,
                 "columnEnd": 2,
                 "lineBegin": 70,
                 "lineEnd": 76
