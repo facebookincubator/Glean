@@ -37,6 +37,7 @@ import qualified Glean.Indexer.Typescript as Typescript
 import qualified Glean.Indexer.LSIF as LSIF
 import qualified Glean.Indexer.SCIP as SCIP
 import qualified Glean.Indexer.Haskell as Hs
+import qualified Glean.Indexer.PythonScip as PythonScip
 
 data SomeIndexer = forall opts . SomeIndexer (Indexer opts)
 
@@ -59,6 +60,7 @@ indexers =
   , SomeIndexer RustLsif.indexer
   , SomeIndexer RustScip.indexer
   , SomeIndexer Typescript.indexer
+  , SomeIndexer PythonScip.indexer
   ]
 
 cmdLineParser :: Parser RunIndexer
