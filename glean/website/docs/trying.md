@@ -37,7 +37,7 @@ What's in the image?
 Start the Glean [shell](shell.md):
 
 ```
-glean shell --db-root /gleandb --schema /glean-code/glean/schema/source
+glean shell --db-root /glean-demo/db --schema /glean-demo/schema/source
 ```
 
 You should see:
@@ -77,7 +77,7 @@ directly. Instead we can run a server that the clients will interact
 with to make queries:
 
 ```
-glean-server --db-root /gleandb --schema /glean-code/glean/schema/source --port 12345
+glean-server --db-root /glean-demo/db --schema /glean-demo/schema/source --port 12345
 ```
 
 And now the shell can connect to the server:
@@ -99,7 +99,7 @@ We can navigate the React source code as follows. First start the
 Glean server:
 
 ```
-glean-server --db-root /gleandb --schema /glean-code/glean/schema/source --port 12345
+glean-server --db-root /glean-demo/db --schema /glean-demo/schema/source --port 12345
 ```
 
 Next start the Hyperlink server:
