@@ -67,6 +67,7 @@ jobs:
           tar -xvf "${NODEARCH}.tar.xz"
           cp -r "${NODEARCH}"/* "$HOME"/.hsthrift/
           npm install -g @sourcegraph/scip-python
+          apt install -y python3-pip
 
       - name: Install indexer (go)
         run: |
