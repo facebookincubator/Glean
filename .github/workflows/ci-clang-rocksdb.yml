@@ -59,6 +59,13 @@ jobs:
           cp -r "${NODEARCH}"/* "$HOME"/.hsthrift/
           npm install -g @sourcegraph/scip-python
           apt install -y python3-pip
+      
+      - name: Install indexer (protobuf)
+        run: |
+          export PROTOBUF={24.4}
+          wget "https://github.com/protocolbuffers/protobuf/releases/download/v{PROTOBUF}/protoc-{PROTOBUF}-linux-aarch_64.zip"
+          unzip "protoc-{PROTOBUF}-linux-aarch_64.zip"
+          mkdir -p "$HOME"/.hsthrift/bin && mv bin/protoc "$HOME"/.hsthrift/bin
 
       - name: Install indexer (go)
         run: |
