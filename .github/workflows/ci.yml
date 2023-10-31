@@ -71,8 +71,8 @@ jobs:
       - name: Install indexer (protobuf)
         run: |
           export PROTOBUF={24.4}
-          wget "https://github.com/protocolbuffers/protobuf/releases/download/v{PROTOBUF}/protoc-{PROTOBUF}-linux-aarch_64.zip"
-          unzip "protoc-{PROTOBUF}-linux-aarch_64.zip"
+          wget "https://github.com/protocolbuffers/protobuf/releases/download/v24.4/protoc-24.4-linux-aarch_64.zip"
+          unzip "protoc-24.4-linux-aarch_64.zip"
           mkdir -p "$HOME"/.hsthrift/bin && mv bin/protoc "$HOME"/.hsthrift/bin
 
       - name: Install indexer (go)
