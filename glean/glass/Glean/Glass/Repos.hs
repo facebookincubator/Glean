@@ -196,10 +196,12 @@ filetype (Path file)
   | ".c" `Text.isSuffixOf` file = Just Language_Cpp
   | ".cc" `Text.isSuffixOf` file = Just Language_Cpp
   | ".cpp" `Text.isSuffixOf` file = Just Language_Cpp
+  | ".cu" `Text.isSuffixOf` file = Just Language_Cpp -- CUDA
   | ".cxx" `Text.isSuffixOf` file = Just Language_Cpp
   | ".c++" `Text.isSuffixOf` file = Just Language_Cpp
   | ".h" `Text.isSuffixOf` file = Just Language_Cpp
   | ".hh" `Text.isSuffixOf` file = Just Language_Cpp
+  | ".hip" `Text.isSuffixOf` file = Just Language_Cpp
   | ".hpp" `Text.isSuffixOf` file = Just Language_Cpp
   | ".hxx" `Text.isSuffixOf` file = Just Language_Cpp
   | ".h++" `Text.isSuffixOf` file = Just Language_Cpp

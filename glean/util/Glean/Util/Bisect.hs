@@ -54,14 +54,14 @@ execBisectRefM ref (BisectM action) = runReaderT (runExceptT action) ref
 bisect
   :: Bisect a b err
   -> [a]
-  -> BisectM (err,[a]) [b]
+  -> BisectM (err,[a]) [(b, [a])]
      -- ^ On abort, returns the last error and the list of items
 bisect !bis xs = BisectM $ attempt 0 (length xs) xs
   where
     attempt k n xs = do
       r <- liftIO $ bisectProcess bis xs
       case r of
-        Right x -> return [x]
+        Right x -> return [(x, xs)]
         Left err -> do
           r <- lift ask
           case xs of
