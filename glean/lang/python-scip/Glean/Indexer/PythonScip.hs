@@ -34,8 +34,7 @@ indexer = Indexer {
     indexerRun = \PythonScip{..} backend repo IndexerParams{..} -> do
         val <- SCIP.runIndexer ScipIndexerParams {
             scipBinary = pythonScipBinary,
-            scipArgs = const [ "index","--cwd", indexerRoot,
-             "--target-only", "--output"],
+            scipArgs = const [ "index", "."],
             scipRoot = indexerRoot,
             scipWritesLocal = True,
             scipLanguage = Just SCIP.Python
