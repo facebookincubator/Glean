@@ -1,0 +1,41 @@
+schema csharp.1 {
+  import src.1
+
+# AlphaNamespace and type names (§7.8)
+# https://fburl.com/d94ubqay
+predicate AlphaName : string
+
+# AlphaNamespace declarations (§13.3)
+# https://fburl.com/gv0o62tb
+predicate AlphaNamespace :
+  {
+    name : maybe AlphaName,
+    containing_namespace : maybe AlphaNamespace,
+    is_global : bool,
+    locations : [src.FileLocation],
+  }
+
+# Classes (§14)
+# https://fburl.com/mb38zzjh
+predicate AlphaClassDefinition :
+  {
+    name : AlphaName,
+    containing_namespace : maybe AlphaNamespace,
+    locations : [src.FileLocation],
+  }
+
+# Projects (.csproj)
+# https://fburl.com/0axo3xpz
+predicate AlphaProject :
+  {
+    solution : maybe AlphaSolution,
+    file : src.File,
+  }
+
+# Solutions (.sln)
+# https://fburl.com/var17xpf
+predicate AlphaSolution :
+  {
+    file : src.File,
+  }
+}
