@@ -29,6 +29,7 @@ import Data.Vector.Storable (Vector)
 import Util.Control.Exception
 import Util.STM
 
+import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Open
 import Glean.Database.Exception
 import Glean.Database.Repo
@@ -36,6 +37,7 @@ import qualified Glean.Database.Storage as Storage
 import Glean.Database.Schema
 import Glean.Database.Types
 import Glean.FFI
+import Glean.Internal.Types as Thrift
 import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.Define (trustRefs)
 import qualified Glean.RTS.Foreign.FactSet as FactSet
@@ -75,6 +77,7 @@ makeDefineOwnership
 makeDefineOwnership env repo deps
   | HashMap.null deps = return Nothing
   | otherwise = do
+  ensureComplete
   readDatabase env repo $ \odb lookup -> do
   maybeOwnership <- readTVarIO (odbOwnership odb)
   forM maybeOwnership $ \ownership -> do
@@ -83,6 +86,13 @@ makeDefineOwnership env repo deps
     forM_ (HashMap.toList deps) $ \(pid, ownerMap) ->
       Ownership.addDerivedOwners lookup define (Pid pid) ownerMap
     return define
+  where
+  -- TODO: enforce that not only the axiom predicates be complete
+  -- but that every predicate depended upon be complete.
+  ensureComplete = atomically $ do
+    meta <- Catalog.readMeta (envCatalog env) repo
+    unless (metaAxiomComplete meta) $
+      throwSTM $ Thrift.Exception "DB is not complete"
 
 writeDatabase
   :: Env
