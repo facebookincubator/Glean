@@ -607,6 +607,79 @@ orphanTest = TestCase $
         (rec $ field @"child" (rec $ field @"label" (string "d") end) end)
     assertEqual "orphan 3" 1 (length results)
 
+externalDerivationTest :: Test
+externalDerivationTest = TestList
+  [ TestLabel "add fact with dependencies" $ TestCase $
+    withDB $ \env repo -> do
+      writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
+        a <- makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
+        b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
+        void $ derivedFrom [idOf (getId a), idOf (getId b)] =<<
+          makeFact @Glean.Test.StringPair (Glean.Test.StringPair_key "a" "b")
+
+      void $ completePredicates env repo $ CompletePredicates_derived $
+        CompleteDerivedPredicate $
+        PredicateRef "glean.test.StringPair" 1
+
+      owners <- ownersOf env repo $ query $
+        predicate @Glean.Test.StringPair wild
+
+      assertEqual "owners"
+        (show [Just $ AndOwners
+          [ OrOwners [Unit "B"]
+          , OrOwners [Unit "A"]
+          ] ])
+        (show owners)
+
+  , TestLabel "multiple predicates in the same batch" $ TestCase $
+    withDB $ \env repo -> do
+      writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
+        a <- makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
+        void $ derivedFrom [idOf (getId a)] =<<
+          makeFact @Glean.Test.StringPair (Glean.Test.StringPair_key "a" "a")
+
+        b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
+        void $ derivedFrom [idOf (getId b)] =<<
+          makeFact @Glean.Test.Name "b"
+
+      void $ completePredicates env repo $ CompletePredicates_derived $
+        CompleteDerivedPredicate $
+        PredicateRef "glean.test.StringPair" 1
+
+      void $ completePredicates env repo $ CompletePredicates_derived $
+        CompleteDerivedPredicate $
+        PredicateRef "glean.test.Name" 1
+
+      owners <- ownersOf env repo $ query $
+        predicate @Glean.Test.StringPair wild
+      assertEqual "StringPair owners"
+        (show [Just $ OrOwners [Unit "A"]])
+        (show owners)
+
+      owners <- ownersOf env repo $ query $
+        predicate @Glean.Test.Name wild
+      assertEqual "Name owners"
+        (show [Just $ OrOwners [Unit "B"]])
+        (show owners)
+  ]
+  where
+  ownersOf env repo q = do
+    results <- runQuery_ env repo q
+    let fids = map (idOf . getId) results
+    traverse (factOwnership env repo) fids
+
+  withDB act =
+    withTestEnv [setCompactOnCompletion] $ \env -> do
+      let repo = Repo "base" "0"
+      kickOffTestDB env repo id
+      writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
+        void $ withUnit "A" $
+          makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
+        void $ withUnit "B" $
+          makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
+      void $ completePredicates env repo $ CompletePredicates_axiom def
+      act env repo
+
 deriveTest :: Test
 deriveTest = TestCase $
   withTestEnv [setCompactOnCompletion] $ \env -> do
@@ -723,6 +796,7 @@ main_ = withUnitTest $ testRunner $ TestList
   , TestLabel "dupSetTest" dupSetTest
   , TestLabel "orphanTest" orphanTest
   , TestLabel "deriveTest" deriveTest
+  , TestLabel "externalDerivationTest" externalDerivationTest
   , TestLabel "stackedIncrementalTest" stackedIncrementalTest
   , TestLabel "stackedIncrementalTest2" stackedIncrementalTest2
   , TestLabel "restartIndexing" restartIndexing
