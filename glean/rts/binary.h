@@ -264,7 +264,7 @@ struct Input {
       return false;
     }
   }
-}; // namespace binary
+} // namespace binary
 
 /**
  *
