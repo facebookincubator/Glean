@@ -304,6 +304,8 @@ combineDescriptions y x =
         symbolDescription_annotations y -- <> Maybe [a]
     , symbolDescription_comments = symbolDescription_comments x <>
         symbolDescription_comments y
+    , symbolDescription_pretty_comments = symbolDescription_pretty_comments x <>
+        symbolDescription_pretty_comments y
     , symbolDescription_sym_other_locations =
         filter (/= symbolDescription_sym_location x) $
           uniq ( -- collapse duplicate syms
