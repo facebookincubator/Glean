@@ -229,6 +229,11 @@ struct Fact {
   3: Value value; // value decodes to a term that matches valueType
 }
 
+struct FactDependencies {
+  1: list<Id> (hs.type = "VectorStorable") facts;
+  2: list<Id> (hs.type = "VectorStorable") dependencies;
+}
+
 // A collection of facts which can be written to a database.
 struct Batch {
   // Id of the first fact in the batch if ids isn't supplied and the boundary
@@ -279,7 +284,7 @@ struct Batch {
   // derive that fact.
   //
   // The dependency relation is used to determine ownership.
-  6: map<Id, multimapOfIds> (hs.type = "HashMap") dependencies;
+  6: map<Id, list<FactDependencies>> (hs.type = "HashMap") dependencies;
 }
 
 struct Subst {

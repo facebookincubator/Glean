@@ -1068,36 +1068,46 @@ namespace {
 struct DependencyIterator : DerivedDependencyIterator {
   DependencyIterator(
     size_t size_,
-    uint64_t* fids,
-    uint64_t** fids_lists,
-    size_t* fids_lists_sizes)
-  : size_(size_), fids(fids), fids_lists(fids_lists),
-  fids_lists_sizes(fids_lists_sizes), ix(0) {}
+    uint64_t** facts_lists,
+    size_t* facts_lists_sizes,
+    uint64_t** deps_lists,
+    size_t* deps_lists_sizes)
+  : size_(size_), facts_lists(facts_lists), facts_lists_sizes(facts_lists_sizes),
+    deps_lists(deps_lists), deps_lists_sizes(deps_lists_sizes), ix(0) {}
 
-  folly::Optional<std::pair<Id, std::vector<Id>>> get() override {
+  folly::Optional<std::pair<std::vector<Id>, std::vector<Id>>> get() override {
     if (ix < size_) {
-      const auto id = Id::fromThrift(fids[ix]);
+      std::vector<Id> facts;
+      const auto facts_size = facts_lists_sizes[ix];
+      facts.reserve(facts_size);
+      std::transform(
+        facts_lists[ix],
+        facts_lists[ix] + facts_size,
+        std::back_inserter(facts),
+        Id::fromThrift
+      );
       std::vector<Id> deps;
-      const auto dep_size = fids_lists_sizes[ix];
+      const auto dep_size = deps_lists_sizes[ix];
       deps.reserve(dep_size);
       std::transform(
-        fids_lists[ix],
-        fids_lists[ix] + dep_size,
+        deps_lists[ix],
+        deps_lists[ix] + dep_size,
         std::back_inserter(deps),
         Id::fromThrift
       );
 
       ix++;
-      return std::pair(id, std::move(deps));
+      return std::pair(std::move(facts), std::move(deps));
     }
     return folly::none;
   }
 
 private:
   size_t size_;
-  uint64_t* fids;
-  uint64_t** fids_lists;
-  size_t* fids_lists_sizes;
+  uint64_t** facts_lists;
+  size_t* facts_lists_sizes;
+  uint64_t** deps_lists;
+  size_t* deps_lists_sizes;
   size_t ix;
 };
 
@@ -1108,15 +1118,17 @@ const char *glean_define_ownership_add_derived(
   DefineOwnership *define,
   uint64_t pid_raw,
   size_t fids_size,
-  uint64_t* fids,
-  uint64_t** fids_lists,
-  size_t* fids_lists_sizes) {
+  uint64_t** facts_lists,
+  size_t* facts_lists_sizes,
+  uint64_t** deps_lists,
+  size_t* deps_lists_sizes) {
   return ffi::wrap([=] {
     auto it = DependencyIterator(
       fids_size,
-      fids,
-      fids_lists,
-      fids_lists_sizes
+      facts_lists,
+      facts_lists_sizes,
+      deps_lists,
+      deps_lists_sizes
     );
     addDerived(lookup, define, Pid::fromThrift(pid_raw), &it);
   });

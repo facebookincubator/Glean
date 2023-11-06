@@ -23,15 +23,12 @@ module Glean.Typed.BuildFact
   , buildBatch
   ) where
 
-import Data.Bifunctor (first)
+import Data.Coerce
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
-import Data.Set (Set)
-import qualified Data.Set as Set
 import Data.Int
 import Data.IORef
 import Data.Maybe
-import Data.Vector.Storable (Vector)
 import qualified Data.Vector.Storable as Vector
 import Control.Monad
 import Control.Monad.IO.Class
@@ -65,7 +62,7 @@ class (MonadFail m, Monad m) => NewFact m where
   withUnit ::Thrift.UnitName -> m a -> m a
 
   -- | Set dependencies of an externally derived fact
-  derivedFrom :: Predicate p => [Fid] -> p -> m p
+  derivedFrom :: Predicate p => [Fid] -> [p] -> m ()
 
 -- | Create a new fact in a 'NewFact' monad and return the corresponding Thrift
 -- structure which will have 'Just' the passed key and value.
@@ -99,7 +96,7 @@ data Facts = Facts
   { factsPredicates :: Predicates
   , factsData :: FactSet
   , factsOwnership :: IORef (HashMap Thrift.UnitName [Int64])
-  , factsDerivations :: IORef (HashMap Pid (HashMap Fid (Set Fid)))
+  , factsDerivations :: IORef (HashMap Pid [([Fid],[Fid])])
   }
 
 -- | Create a new empty collection of facts. New facts will be assigned
@@ -125,15 +122,15 @@ serializeFacts Facts{..} = do
   return batch
     { Thrift.batch_owned = fmap Vector.fromList ownership
     , Thrift.batch_dependencies = HashMap.fromList
-        $ fmap (first fromPid)
-        $ HashMap.toList
-        $ fmap mkMap derivations
+        [ (fromPid pid, map toFactDependencies deps)
+        | (pid, deps) <- HashMap.toList derivations ]
     }
   where
-    mkMap :: HashMap Fid (Set Fid) -> HashMap Int64 (Vector Int64)
-    mkMap m = HashMap.fromList
-      [ (fromFid fid, Vector.fromList $ fromFid <$> Set.toList fids)
-      | (fid, fids) <- HashMap.toList m ]
+    toFactDependencies :: ([Fid],[Fid]) -> Thrift.FactDependencies
+    toFactDependencies (deps, facts) =
+      Thrift.FactDependencies
+        (Vector.fromList (coerce facts))
+        (Vector.fromList (coerce deps))
 
 -- | Return a rough estimate of how much memory is used by the facts.
 factsMemory :: Facts -> IO Int
@@ -175,14 +172,12 @@ instance NewFact FactsM where
           [fromFid firstId, fromFid lastId - 1]
     return a
 
-  derivedFrom :: forall p. Predicate p => [Fid] -> p -> FactsM p
-  derivedFrom deps fact = FactsM $ do
+  derivedFrom :: forall p. Predicate p => [Fid] -> [p] -> FactsM ()
+  derivedFrom deps facts = FactsM $ do
     Facts{..} <- ask
-    let pid = getPid factsPredicates :: PidOf p
+    let pid = pidOf (getPid factsPredicates :: PidOf p)
     liftIO $ modifyIORef' factsDerivations $
-        HashMap.insertWith (HashMap.unionWith (<>)) (pidOf pid) $
-        HashMap.singleton (idOf $ getId fact) (Set.fromList deps)
-    return fact
+        HashMap.insertWith (<>) pid [(deps, map (idOf . getId) facts)]
 
 -- | A fact builder
 type FactBuilder = forall m. NewFact m => m ()

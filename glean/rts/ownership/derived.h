@@ -81,7 +81,7 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
 
 struct DerivedDependencyIterator {
   virtual ~DerivedDependencyIterator () {}
-  virtual folly::Optional<std::pair<Id,std::vector<Id>>> get() = 0;
+  virtual folly::Optional<std::pair<std::vector<Id>,std::vector<Id>>> get() = 0;
 };
 
 ///

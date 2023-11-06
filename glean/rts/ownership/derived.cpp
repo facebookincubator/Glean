@@ -252,7 +252,7 @@ void addDerived(
     Pid pid,
     DerivedDependencyIterator* it) {
   while (auto v = it->get()) {
-    Id id = v->first;
+    auto& facts = v->first;
     auto& deps = v->second;
     std::set<UsetId> owners;
     for (auto dep : deps) {
@@ -264,7 +264,9 @@ void addDerived(
       }
     }
 
-    define->derivedFrom(pid, id, owners);
+    for (auto id : facts) {
+      define->derivedFrom(pid, id, owners);
+    }
   }
 }
 

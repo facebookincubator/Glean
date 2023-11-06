@@ -24,7 +24,6 @@ import Data.IORef
 import Data.Maybe
 import qualified Data.Text as Text
 import qualified Data.Vector.Storable as Vector
-import Data.Vector.Storable (Vector)
 
 import Util.Control.Exception
 import Util.STM
@@ -47,7 +46,7 @@ import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import Glean.RTS.Foreign.Ownership as Ownership
 import Glean.RTS.Foreign.Subst (Subst)
 import qualified Glean.RTS.Foreign.Subst as Subst
-import Glean.RTS.Types (Pid(..), Fid(..))
+import Glean.RTS.Types (Pid(..))
 import Glean.Types (Repo)
 import qualified Glean.Types as Thrift
 import Glean.Util.Metric
@@ -72,7 +71,7 @@ syncWriteDatabase env repo batch = do
 makeDefineOwnership
   :: Env
   -> Repo
-  -> HashMap Int64 (HashMap Int64 (Vector Int64))
+  -> HashMap Int64 [Thrift.FactDependencies]
   -> IO (Maybe DefineOwnership)
 makeDefineOwnership env repo deps
   | HashMap.null deps = return Nothing
@@ -217,14 +216,17 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
   where
     batch_size = fromIntegral . BS.length . Thrift.batch_facts
     substDependencies
-      :: Subst
-      -> HashMap Int64 (Vector.Vector Int64)
-      -> HashMap Int64 (Vector.Vector Int64)
-    substDependencies subst dmap = HashMap.fromListWith (<>) $ zip keys vals
+     :: Subst
+     -> [Thrift.FactDependencies]
+     -> [Thrift.FactDependencies]
+    substDependencies subst dmap = map substFD dmap
       where
-      !keys = substFid <$> HashMap.keys dmap
-      !vals = Vector.map substFid <$> HashMap.elems dmap
-      substFid = fromFid . Subst.subst subst . Fid
+      substFD (Thrift.FactDependencies facts deps) =
+        Thrift.FactDependencies facts' deps'
+        where
+        !facts' = under (Subst.substVector subst) facts
+        !deps' = under (Subst.substVector subst) deps
+        under f = Vector.unsafeCast . f . Vector.unsafeCast
 
 withLookupCache
   :: Repo

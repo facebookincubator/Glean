@@ -614,8 +614,8 @@ externalDerivationTest = TestList
       writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
         a <- makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
         b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
-        void $ derivedFrom [idOf (getId a), idOf (getId b)] =<<
-          makeFact @Glean.Test.StringPair (Glean.Test.StringPair_key "a" "b")
+        p <- makeFact @Glean.Test.StringPair (Glean.Test.StringPair_key "a" "b")
+        derivedFrom [idOf (getId a), idOf (getId b)] [p]
 
       void $ completePredicates env repo $ CompletePredicates_derived $
         CompleteDerivedPredicate $
@@ -635,12 +635,12 @@ externalDerivationTest = TestList
     withDB $ \env repo -> do
       writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
         a <- makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
-        void $ derivedFrom [idOf (getId a)] =<<
-          makeFact @Glean.Test.StringPair (Glean.Test.StringPair_key "a" "a")
+        p <- makeFact @Glean.Test.StringPair (Glean.Test.StringPair_key "a" "a")
+        derivedFrom [idOf (getId a)] [p]
 
         b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
-        void $ derivedFrom [idOf (getId b)] =<<
-          makeFact @Glean.Test.Name "b"
+        n <- makeFact @Glean.Test.Name "b"
+        derivedFrom [idOf (getId b)] [n]
 
       void $ completePredicates env repo $ CompletePredicates_derived $
         CompleteDerivedPredicate $
