@@ -49,8 +49,8 @@ instance Backend RetryBackend where
     retryChannelExceptions policy $ workHeartbeat backend work
   workFinished (RetryBackend policy backend) work =
     retryChannelExceptions policy $ workFinished backend work
-  completePredicates_ (RetryBackend policy backend) repo =
-    retryChannelExceptions policy $ completePredicates_ backend repo
+  completePredicates_ (RetryBackend policy backend) repo preds =
+    retryChannelExceptions policy $ completePredicates_ backend repo preds
 
   restoreDatabase (RetryBackend _ backend) = restoreDatabase backend
   deleteDatabase (RetryBackend _ backend) = deleteDatabase backend

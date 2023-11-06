@@ -198,7 +198,7 @@ stackedIncrementalTest = TestCase $
     let
       deriveAndFinish :: Env -> Repo -> IO ()
       deriveAndFinish env repo = do
-        void $ completePredicates env repo
+        void $ completePredicates env repo (CompletePredicates_axiom def)
         derivePredicate env repo Nothing Nothing
           (parseRef "glean.test.RevEdge") Nothing
         derivePredicate env repo Nothing Nothing
@@ -431,7 +431,7 @@ stackedIncrementalTest2 = TestCase $
     let
       deriveAndFinish :: Env -> Repo -> IO ()
       deriveAndFinish env repo = do
-        void $ completePredicates env repo
+        void $ completePredicates env repo (CompletePredicates_axiom def)
         derivePredicate env repo Nothing Nothing
           (parseRef "glean.test.NodePair") Nothing
         completeTestDB env repo
@@ -613,7 +613,7 @@ deriveTest = TestCase $
     let base = Repo "base" "0"
     kickOffTestDB env base id
     mkGraph env base
-    void $ completePredicates env base
+    void $ completePredicates env base (CompletePredicates_axiom def)
 
     derivePredicate env base Nothing Nothing
       (parseRef "glean.test.RevEdge") Nothing

@@ -1132,6 +1132,19 @@ struct PredicateStatsOpts {
   1: bool excludeBase = true;
 }
 
+// Complete all base predicates (i.e. non-derived).
+struct CompleteAxiomPredicates {}
+
+// Complete externally derived predicates.
+struct CompleteDerivedPredicate {
+  1: PredicateRef predicate;
+}
+
+union CompletePredicates {
+  1: CompleteAxiomPredicates axiom;
+  2: CompleteDerivedPredicate derived;
+} (hs.nonempty)
+
 struct CompletePredicatesResponse {}
 
 service GleanService extends fb303.FacebookService {
@@ -1215,9 +1228,10 @@ service GleanService extends fb303.FacebookService {
     6: WrongHandle h,
   );
 
-  // Tell the server when non-derived predicates are complete.  This
-  // call must be completed successfully before deriveStored() is
-  // called.
+  // Tell the server when predicates are complete.
+  // Axiom predicates must be completed first. Then externally
+  // derived predicates can be completed and the derivation of
+  // stored predicates can start.
   //
   // Note that the process of completing predicates may take some
   // time, and the call may return Retry multiple times. You can't
@@ -1225,7 +1239,7 @@ service GleanService extends fb303.FacebookService {
   // successfully.
   CompletePredicatesResponse completePredicates(
     1: Repo repo,
-  // later: 2: optional list<PredicateRef> predicates
+    2: CompletePredicates predicates,
   ) throws (1: Exception e, 3: Retry r, 4: UnknownDatabase u);
 
   // Wait for a DB to be complete, after the last workFinished

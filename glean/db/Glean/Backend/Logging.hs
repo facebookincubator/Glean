@@ -128,11 +128,11 @@ instance Backend LoggingBackend where
       (const mempty) $
       workFinished env rq
 
-  completePredicates_ (LoggingBackend env) repo =
+  completePredicates_ (LoggingBackend env) repo preds =
     loggingAction
        (runLogRepo "completePredicates" env repo)
        (const mempty) $
-       completePredicates_ env repo
+       completePredicates_ env repo preds
 
   restoreDatabase (LoggingBackend env) loc =
     loggingAction (runLogCmd "restoreDatabase" env) (const mempty) $

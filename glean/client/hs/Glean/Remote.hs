@@ -244,8 +244,8 @@ instance Backend ThriftBackend where
     withShard t (Thrift.work_repo $ Thrift.workFinished_work rq)
       $ GleanService.workFinished rq
 
-  completePredicates_ t repo = withShard t repo $
-    GleanService.completePredicates repo
+  completePredicates_ t repo preds = withShard t repo $
+    GleanService.completePredicates repo preds
 
   restoreDatabase t loc =
     withoutShard t $ GleanService.restore loc

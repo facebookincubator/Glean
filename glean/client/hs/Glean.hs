@@ -149,6 +149,7 @@ module Glean
   , fillDatabase
   , finalize
   , completePredicates
+  , CompletePredicates(..)
   , basicWriter
   , FactBuilder
   , makeFact
