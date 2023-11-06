@@ -15,8 +15,8 @@ module Glean.Database.Write.Batch
 import Control.Exception
 import Control.Monad.Extra
 import qualified Data.ByteString as BS
-import Data.Map.Strict (Map)
-import qualified Data.Map.Strict as Map
+import qualified Data.HashMap.Strict as HashMap
+import Data.HashMap.Strict (HashMap)
 import Data.Coerce
 import Data.Default
 import Data.Int (Int64)
@@ -70,17 +70,17 @@ syncWriteDatabase env repo batch = do
 makeDefineOwnership
   :: Env
   -> Repo
-  -> Map Int64 (Map Int64 (Vector Int64))
+  -> HashMap Int64 (HashMap Int64 (Vector Int64))
   -> IO (Maybe DefineOwnership)
 makeDefineOwnership env repo deps
-  | Map.null deps = return Nothing
+  | HashMap.null deps = return Nothing
   | otherwise = do
   readDatabase env repo $ \odb lookup -> do
   maybeOwnership <- readTVarIO (odbOwnership odb)
   forM maybeOwnership $ \ownership -> do
     nextId <- Lookup.firstFreeId lookup
     define <- Ownership.newDefineOwnership ownership nextId
-    forM_ (Map.toList deps) $ \(pid, ownerMap) ->
+    forM_ (HashMap.toList deps) $ \(pid, ownerMap) ->
       Ownership.addDerivedOwners lookup define (Pid pid) ownerMap
     return define
 
@@ -132,7 +132,7 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
                     if | Just owners <- maybeOwn -> do
                           Ownership.substDefineOwnership owners subst
                           return $ Just owners
-                       | not $ Map.null deps ->
+                       | not $ HashMap.null deps ->
                           makeDefineOwnership env repo deps
                        | otherwise -> return Nothing
 
@@ -208,14 +208,13 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
     batch_size = fromIntegral . BS.length . Thrift.batch_facts
     substDependencies
       :: Subst
-      -> Map.Map Int64 (Vector.Vector Int64)
-      -> Map.Map Int64 (Vector.Vector Int64)
-    substDependencies subst dmap = Map.fromListWith (<>) $ zip keys vals
+      -> HashMap Int64 (Vector.Vector Int64)
+      -> HashMap Int64 (Vector.Vector Int64)
+    substDependencies subst dmap = HashMap.fromListWith (<>) $ zip keys vals
       where
-      !keys = substFid <$> Map.keys dmap
+      !keys = substFid <$> HashMap.keys dmap
+      !vals = Vector.map substFid <$> HashMap.elems dmap
       substFid = fromFid . Subst.subst subst . Fid
-      !vals = under (Subst.substVector subst) <$> Map.elems dmap
-      under f = Vector.unsafeCast . f . Vector.unsafeCast
 
 withLookupCache
   :: Repo

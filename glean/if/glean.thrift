@@ -27,6 +27,7 @@ namespace py3 glean
 // Uniquely identifies a fact in a database
 typedef i64 Id
 typedef list<Id> (hs.type = "VectorStorable") listOfIds
+typedef map<Id, listOfIds> (hs.type = "HashMap") multimapOfIds
 
 const Id INVALID_ID = 0;
 const Id FIRST_FREE_ID = 1024;
@@ -278,7 +279,7 @@ struct Batch {
   // derive that fact.
   //
   // The dependency relation is used to determine ownership.
-  6: map<Id, map<Id, listOfIds>> dependencies;
+  6: map<Id, multimapOfIds> (hs.type = "HashMap") dependencies;
 }
 
 struct Subst {

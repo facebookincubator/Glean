@@ -6,18 +6,32 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE AllowAmbiguousTypes, TypeApplications, CPP #-}
+{-# LANGUAGE AllowAmbiguousTypes, TypeApplications, CPP, InstanceSigs #-}
 module Glean.Typed.BuildFact
-  ( NewFact(newFact,withUnit), makeFact, makeFact_, makeFactV, makeFactV_
-  , Facts, newFacts, serializeFacts, factsMemory
-  , FactBuilder, buildFacts, extendFacts, buildBatch
+  ( NewFact(newFact,withUnit, derivedFrom)
+  , makeFact
+  , makeFact_
+  , makeFactV
+  , makeFactV_
+  , Facts
+  , newFacts
+  , serializeFacts
+  , factsMemory
+  , FactBuilder
+  , buildFacts
+  , extendFacts
+  , buildBatch
   ) where
 
+import Data.Bifunctor (first)
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
+import Data.Set (Set)
+import qualified Data.Set as Set
 import Data.Int
 import Data.IORef
 import Data.Maybe
+import Data.Vector.Storable (Vector)
 import qualified Data.Vector.Storable as Vector
 import Control.Monad
 import Control.Monad.IO.Class
@@ -49,6 +63,9 @@ class (MonadFail m, Monad m) => NewFact m where
 
   -- | Create some facts owned by the given UnitName
   withUnit ::Thrift.UnitName -> m a -> m a
+
+  -- | Set dependencies of an externally derived fact
+  derivedFrom :: Predicate p => [Fid] -> p -> m p
 
 -- | Create a new fact in a 'NewFact' monad and return the corresponding Thrift
 -- structure which will have 'Just' the passed key and value.
@@ -82,6 +99,7 @@ data Facts = Facts
   { factsPredicates :: Predicates
   , factsData :: FactSet
   , factsOwnership :: IORef (HashMap Thrift.UnitName [Int64])
+  , factsDerivations :: IORef (HashMap Pid (HashMap Fid (Set Fid)))
   }
 
 -- | Create a new empty collection of facts. New facts will be assigned
@@ -96,13 +114,26 @@ newFacts ps start =
   Facts ps
     <$> FactSet.new (fromMaybe lowestFid start)
     <*> newIORef HashMap.empty
+    <*> newIORef HashMap.empty
 
 -- | Serialize the facts into a batch which can be sent via Thrift.
 serializeFacts :: Facts -> IO Thrift.Batch
 serializeFacts Facts{..} = do
   batch <- FactSet.serialize factsData
   ownership <- readIORef factsOwnership
-  return batch { Thrift.batch_owned = fmap Vector.fromList ownership }
+  derivations <- readIORef factsDerivations
+  return batch
+    { Thrift.batch_owned = fmap Vector.fromList ownership
+    , Thrift.batch_dependencies = HashMap.fromList
+        $ fmap (first fromPid)
+        $ HashMap.toList
+        $ fmap mkMap derivations
+    }
+  where
+    mkMap :: HashMap Fid (Set Fid) -> HashMap Int64 (Vector Int64)
+    mkMap m = HashMap.fromList
+      [ (fromFid fid, Vector.fromList $ fromFid <$> Set.toList fids)
+      | (fid, fids) <- HashMap.toList m ]
 
 -- | Return a rough estimate of how much memory is used by the facts.
 factsMemory :: Facts -> IO Int
@@ -144,6 +175,14 @@ instance NewFact FactsM where
           [fromFid firstId, fromFid lastId - 1]
     return a
 
+  derivedFrom :: forall p. Predicate p => [Fid] -> p -> FactsM p
+  derivedFrom deps fact = FactsM $ do
+    Facts{..} <- ask
+    let pid = getPid factsPredicates :: PidOf p
+    liftIO $ modifyIORef' factsDerivations $
+        HashMap.insertWith (HashMap.unionWith (<>)) (pidOf pid) $
+        HashMap.singleton (idOf $ getId fact) (Set.fromList deps)
+    return fact
 
 -- | A fact builder
 type FactBuilder = forall m. NewFact m => m ()

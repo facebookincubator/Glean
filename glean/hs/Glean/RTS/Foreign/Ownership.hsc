@@ -37,8 +37,8 @@ module Glean.RTS.Foreign.Ownership
 import Control.Exception
 import Control.Monad
 import Data.Coerce
-import qualified Data.Map.Strict as Map
-import Data.Map.Strict (Map)
+import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Vector.Storable as VS
 import Data.Text (Text)
 import Foreign hiding (with)
@@ -170,13 +170,13 @@ addDerivedOwners
   => base
   -> DefineOwnership
   -> Pid
-  -> Map Thrift.Id (VS.Vector Thrift.Id)
+  -> HashMap Thrift.Id (VS.Vector Thrift.Id)
   -> IO ()
 addDerivedOwners base define (Pid pid) deps =
-  when (not $ Map.null deps) $
+  when (not $ HashMap.null deps) $
   with define $ \define_ptr ->
   withLookup base $ \base_lookup_ptr ->
-  withMany entry (Map.toList deps) $ \xs ->
+  withMany entry (HashMap.toList deps) $ \xs ->
   let (fids, fids_ptrs, fids_sizes) = unzip3 xs in
   withArray fids $ \p_fids ->
   withArray fids_ptrs $ \p_fids_ptrs ->
@@ -185,7 +185,7 @@ addDerivedOwners base define (Pid pid) deps =
       base_lookup_ptr
       define_ptr
       (fromIntegral pid)
-      (fromIntegral $ Map.size deps)
+      (fromIntegral $ HashMap.size deps)
       p_fids
       p_fids_ptrs
       p_fids_sizes
