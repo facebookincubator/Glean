@@ -1,0 +1,419 @@
+[
+  "@generated",
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/colors."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/delay."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/food."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/godown()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/goleft()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/goright()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/group()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/head."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/high_score."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/index."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/move()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/new_segment."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/pen."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/score."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/segment."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/segments."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/shapes."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/wn."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/x."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/y."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 builtins/list#append()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 builtins/range#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 random/choice."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 random/randint."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 time/sleep()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/RawTurtle#clear()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/RawTurtle#shape()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/RawTurtle#write()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/RawTurtle#write().(align)"
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/RawTurtle#write().(font)"
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/Screen()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TNavigator#distance()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TNavigator#goto()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TNavigator#setx()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TNavigator#sety()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TNavigator#xcor()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TNavigator#ycor()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TPen#color()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TPen#hideturtle()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TPen#penup()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TPen#speed()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/Turtle#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TurtleScreen#bgcolor()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TurtleScreen#listen()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TurtleScreen#onkeypress()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TurtleScreen#tracer()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/TurtleScreen#update()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/_Screen#setup()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/_Screen#setup().(height)"
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/_Screen#setup().(width)"
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 turtle/_Screen#title()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python python-stdlib 3.11 typing/MutableSequence#clear()."
+      },
+      "kind": 5
+    }
+  }
+]

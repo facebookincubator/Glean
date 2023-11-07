@@ -1,0 +1,155 @@
+[
+  "@generated",
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/__init__:"
+      },
+      "docs": { "key": "(module) example" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/colors."
+      },
+      "docs": { "key": "```python\u000abuiltins.str\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/delay."
+      },
+      "docs": { "key": "```python\u000abuiltins.float\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/food."
+      },
+      "docs": { "key": "```python\u000aturtle.Turtle\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/godown()."
+      },
+      "docs": { "key": "```python\u000adef godown(): # -> None:\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/goleft()."
+      },
+      "docs": { "key": "```python\u000adef goleft(): # -> None:\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/goright()."
+      },
+      "docs": { "key": "```python\u000adef goright(): # -> None:\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/group()."
+      },
+      "docs": { "key": "```python\u000adef group(): # -> None:\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/head."
+      },
+      "docs": { "key": "```python\u000aturtle.Turtle\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/high_score."
+      },
+      "docs": { "key": "```python\u000abuiltins.int\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/move()."
+      },
+      "docs": { "key": "```python\u000adef move(): # -> None:\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/new_segment."
+      },
+      "docs": { "key": "```python\u000aturtle.Turtle\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/pen."
+      },
+      "docs": { "key": "```python\u000aturtle.Turtle\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/score."
+      },
+      "docs": { "key": "```python\u000abuiltins.int\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/segments."
+      },
+      "docs": { "key": "```python\u000abuiltins.list\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/shapes."
+      },
+      "docs": { "key": "```python\u000abuiltins.str\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/wn."
+      },
+      "docs": { "key": "```python\u000aturtle._Screen\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/x."
+      },
+      "docs": { "key": "```python\u000abuiltins.int\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/y."
+      },
+      "docs": { "key": "```python\u000abuiltins.int\u000a```" }
+    }
+  }
+]
