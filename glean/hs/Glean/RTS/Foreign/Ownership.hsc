@@ -316,18 +316,18 @@ foreign import ccall unsafe glean_new_define_ownership
 foreign import ccall unsafe "&glean_define_ownership_free"
   glean_define_ownership_free :: FunPtr (Ptr DefineOwnership -> IO ())
 
-foreign import ccall unsafe glean_define_ownership_subst
+foreign import ccall safe glean_define_ownership_subst
   :: Ptr DefineOwnership
   -> Ptr Subst
   -> IO CString
 
-foreign import ccall unsafe glean_define_ownership_sort_by_owner
+foreign import ccall safe glean_define_ownership_sort_by_owner
   :: Ptr DefineOwnership
   -> Word64
   -> Ptr (HsArray Int64)
   -> IO CString
 
-foreign import ccall unsafe glean_define_ownership_add_derived
+foreign import ccall safe glean_define_ownership_add_derived
   :: Ptr Lookup
   -> Ptr DefineOwnership
   -> Word64

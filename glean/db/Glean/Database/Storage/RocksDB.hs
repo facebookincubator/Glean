@@ -403,7 +403,7 @@ foreign import ccall unsafe glean_rocksdb_get_ownership
   -> Ptr (Ptr Ownership)
   -> IO CString
 
-foreign import ccall unsafe glean_rocksdb_add_define_ownership
+foreign import ccall safe glean_rocksdb_add_define_ownership
   :: Ptr (Database RocksDB)
   -> Ptr DefineOwnership
   -> IO CString
