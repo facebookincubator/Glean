@@ -488,7 +488,7 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
         let base = Repo "base" "0"
         kickOffTestDB env base id
         void $ syncWriteJsonBatch env base baseFacts Nothing
-        void $ completePredicates env base
+        void $ completePredicates env base (CompletePredicates_axiom def)
         _ <- deriveStored' env base opts' pref
         completeTestDB env base
 

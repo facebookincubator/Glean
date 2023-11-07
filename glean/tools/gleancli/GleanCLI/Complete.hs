@@ -10,6 +10,7 @@
 module GleanCLI.Complete (CompleteCommand) where
 
 import Control.Monad
+import Data.Default (def)
 import Options.Applicative
 
 import Util.IO
@@ -20,6 +21,7 @@ import GleanCLI.Types
 
 import Glean
 import Glean.Schema.Util
+import qualified Glean.Types as Thrift
 
 data CompleteCommand
   = Complete
@@ -44,4 +46,5 @@ instance Plugin CompleteCommand where
     when (not (null completePredicates)) $
       die 1 "completing individual predicates is not supported yet"
 
-    void $ Glean.completePredicates backend completeRepo
+    void $ Glean.completePredicates backend completeRepo $
+      Thrift.CompletePredicates_axiom def

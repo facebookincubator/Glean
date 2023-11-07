@@ -37,10 +37,9 @@ module Glean.RTS.Foreign.Ownership
 import Control.Exception
 import Control.Monad
 import Data.Coerce
-import qualified Data.Map.Strict as Map
-import Data.Map.Strict (Map)
-import qualified Data.Vector.Storable as VS
+import Data.List (unzip4)
 import Data.Text (Text)
+import qualified Data.Vector.Storable as VS
 import Foreign hiding (with)
 import Foreign.C
 import TextShow
@@ -170,29 +169,35 @@ addDerivedOwners
   => base
   -> DefineOwnership
   -> Pid
-  -> Map Thrift.Id (VS.Vector Thrift.Id)
+  -> [Thrift.FactDependencies]
   -> IO ()
 addDerivedOwners base define (Pid pid) deps =
-  when (not $ Map.null deps) $
+  when (not $ null deps) $
   with define $ \define_ptr ->
   withLookup base $ \base_lookup_ptr ->
-  withMany entry (Map.toList deps) $ \xs ->
-  let (fids, fids_ptrs, fids_sizes) = unzip3 xs in
-  withArray fids $ \p_fids ->
-  withArray fids_ptrs $ \p_fids_ptrs ->
-  withArray fids_sizes $ \p_fids_sizes ->
+  withMany entry deps $ \xs ->
+  let !(facts_ptrs, facts_sizes, deps_ptrs, deps_sizes) = unzip4 xs in
+  withArray facts_ptrs $ \p_facts_ptrs ->
+  withArray facts_sizes $ \p_facts_sizes ->
+  withArray deps_ptrs $ \p_deps_ptrs ->
+  withArray deps_sizes $ \p_deps_sizes ->
     invoke $ glean_define_ownership_add_derived
       base_lookup_ptr
       define_ptr
       (fromIntegral pid)
-      (fromIntegral $ Map.size deps)
-      p_fids
-      p_fids_ptrs
-      p_fids_sizes
+      (fromIntegral $ length deps)
+      p_facts_ptrs
+      p_facts_sizes
+      p_deps_ptrs
+      p_deps_sizes
   where
-    entry (fid, fids) f =
-      VS.unsafeWith (VS.map fromIntegral fids) $ \fids_ptr ->
-      f (fromIntegral fid, fids_ptr, fromIntegral $ VS.length fids)
+    entry (Thrift.FactDependencies facts deps) f =
+      VS.unsafeWith (coerce facts) $ \facts_ptr ->
+      VS.unsafeWith (coerce deps) $ \deps_ptr -> do
+      let
+        !num_facts = fromIntegral $ VS.length facts
+        !num_deps = fromIntegral $ VS.length deps
+      f (facts_ptr, num_facts, deps_ptr, num_deps)
 
 
 newtype DerivedFactOwnershipIterator =
@@ -327,7 +332,8 @@ foreign import ccall unsafe glean_define_ownership_add_derived
   -> Ptr DefineOwnership
   -> Word64
   -> CSize
-  -> Ptr Word64
+  -> Ptr (Ptr Word64)
+  -> Ptr CSize
   -> Ptr (Ptr Word64)
   -> Ptr CSize
   -> IO CString

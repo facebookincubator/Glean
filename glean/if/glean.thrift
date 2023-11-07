@@ -27,6 +27,7 @@ namespace py3 glean
 // Uniquely identifies a fact in a database
 typedef i64 Id
 typedef list<Id> (hs.type = "VectorStorable") listOfIds
+typedef map<Id, listOfIds> (hs.type = "HashMap") multimapOfIds
 
 const Id INVALID_ID = 0;
 const Id FIRST_FREE_ID = 1024;
@@ -228,6 +229,11 @@ struct Fact {
   3: Value value; // value decodes to a term that matches valueType
 }
 
+struct FactDependencies {
+  1: list<Id> (hs.type = "VectorStorable") facts;
+  2: list<Id> (hs.type = "VectorStorable") dependencies;
+}
+
 // A collection of facts which can be written to a database.
 struct Batch {
   // Id of the first fact in the batch if ids isn't supplied and the boundary
@@ -278,7 +284,7 @@ struct Batch {
   // derive that fact.
   //
   // The dependency relation is used to determine ownership.
-  6: map<Id, map<Id, listOfIds>> dependencies;
+  6: map<Id, list<FactDependencies>> (hs.type = "HashMap") dependencies;
 }
 
 struct Subst {
@@ -1132,6 +1138,19 @@ struct PredicateStatsOpts {
   1: bool excludeBase = true;
 }
 
+// Complete all base predicates (i.e. non-derived).
+struct CompleteAxiomPredicates {}
+
+// Complete externally derived predicates.
+struct CompleteDerivedPredicate {
+  1: PredicateRef predicate;
+}
+
+union CompletePredicates {
+  1: CompleteAxiomPredicates axiom;
+  2: CompleteDerivedPredicate derived;
+} (hs.nonempty)
+
 struct CompletePredicatesResponse {}
 
 service GleanService extends fb303.FacebookService {
@@ -1215,9 +1234,10 @@ service GleanService extends fb303.FacebookService {
     6: WrongHandle h,
   );
 
-  // Tell the server when non-derived predicates are complete.  This
-  // call must be completed successfully before deriveStored() is
-  // called.
+  // Tell the server when predicates are complete.
+  // Axiom predicates must be completed first. Then externally
+  // derived predicates can be completed and the derivation of
+  // stored predicates can start.
   //
   // Note that the process of completing predicates may take some
   // time, and the call may return Retry multiple times. You can't
@@ -1225,7 +1245,7 @@ service GleanService extends fb303.FacebookService {
   // successfully.
   CompletePredicatesResponse completePredicates(
     1: Repo repo,
-  // later: 2: optional list<PredicateRef> predicates
+    2: CompletePredicates predicates,
   ) throws (1: Exception e, 3: Retry r, 4: UnknownDatabase u);
 
   // Wait for a DB to be complete, after the last workFinished

@@ -115,6 +115,7 @@ class Backend a where
   completePredicates_
     :: a
     -> Thrift.Repo
+    -> Thrift.CompletePredicates
     -> IO Thrift.CompletePredicatesResponse
 
   -- | Request a backed up database (specified via its backup locator) to be
@@ -277,9 +278,9 @@ finalize env repo =
 
 -- | Notify the server when non-derived predicates are complete. This
 -- must be called before derivedStored.
-completePredicates :: Backend a => a -> Repo -> IO ()
-completePredicates env repo =
-  void $ untilDone $ completePredicates_ env repo
+completePredicates :: Backend a => a -> Repo -> CompletePredicates -> IO ()
+completePredicates env repo preds =
+  void $ untilDone $ completePredicates_ env repo preds
 
 untilDone :: IO a -> IO a
 untilDone io = loop

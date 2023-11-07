@@ -198,7 +198,7 @@ stackedIncrementalTest = TestCase $
     let
       deriveAndFinish :: Env -> Repo -> IO ()
       deriveAndFinish env repo = do
-        void $ completePredicates env repo
+        void $ completePredicates env repo (CompletePredicates_axiom def)
         derivePredicate env repo Nothing Nothing
           (parseRef "glean.test.RevEdge") Nothing
         derivePredicate env repo Nothing Nothing
@@ -431,7 +431,7 @@ stackedIncrementalTest2 = TestCase $
     let
       deriveAndFinish :: Env -> Repo -> IO ()
       deriveAndFinish env repo = do
-        void $ completePredicates env repo
+        void $ completePredicates env repo (CompletePredicates_axiom def)
         derivePredicate env repo Nothing Nothing
           (parseRef "glean.test.NodePair") Nothing
         completeTestDB env repo
@@ -607,13 +607,86 @@ orphanTest = TestCase $
         (rec $ field @"child" (rec $ field @"label" (string "d") end) end)
     assertEqual "orphan 3" 1 (length results)
 
+externalDerivationTest :: Test
+externalDerivationTest = TestList
+  [ TestLabel "add fact with dependencies" $ TestCase $
+    withDB $ \env repo -> do
+      writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
+        a <- makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
+        b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
+        p <- makeFact @Glean.Test.StringPair (Glean.Test.StringPair_key "a" "b")
+        derivedFrom [idOf (getId a), idOf (getId b)] [p]
+
+      void $ completePredicates env repo $ CompletePredicates_derived $
+        CompleteDerivedPredicate $
+        PredicateRef "glean.test.StringPair" 1
+
+      owners <- ownersOf env repo $ query $
+        predicate @Glean.Test.StringPair wild
+
+      assertEqual "owners"
+        (show [Just $ AndOwners
+          [ OrOwners [Unit "B"]
+          , OrOwners [Unit "A"]
+          ] ])
+        (show owners)
+
+  , TestLabel "multiple predicates in the same batch" $ TestCase $
+    withDB $ \env repo -> do
+      writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
+        a <- makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
+        p <- makeFact @Glean.Test.StringPair (Glean.Test.StringPair_key "a" "a")
+        derivedFrom [idOf (getId a)] [p]
+
+        b <- makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
+        n <- makeFact @Glean.Test.Name "b"
+        derivedFrom [idOf (getId b)] [n]
+
+      void $ completePredicates env repo $ CompletePredicates_derived $
+        CompleteDerivedPredicate $
+        PredicateRef "glean.test.StringPair" 1
+
+      void $ completePredicates env repo $ CompletePredicates_derived $
+        CompleteDerivedPredicate $
+        PredicateRef "glean.test.Name" 1
+
+      owners <- ownersOf env repo $ query $
+        predicate @Glean.Test.StringPair wild
+      assertEqual "StringPair owners"
+        (show [Just $ OrOwners [Unit "A"]])
+        (show owners)
+
+      owners <- ownersOf env repo $ query $
+        predicate @Glean.Test.Name wild
+      assertEqual "Name owners"
+        (show [Just $ OrOwners [Unit "B"]])
+        (show owners)
+  ]
+  where
+  ownersOf env repo q = do
+    results <- runQuery_ env repo q
+    let fids = map (idOf . getId) results
+    traverse (factOwnership env repo) fids
+
+  withDB act =
+    withTestEnv [setCompactOnCompletion] $ \env -> do
+      let repo = Repo "base" "0"
+      kickOffTestDB env repo id
+      writeFactsIntoDB env repo [ Glean.Test.allPredicates ] $ do
+        void $ withUnit "A" $
+          makeFact @Glean.Test.Node (Glean.Test.Node_key "a")
+        void $ withUnit "B" $
+          makeFact @Glean.Test.Node (Glean.Test.Node_key "b")
+      void $ completePredicates env repo $ CompletePredicates_axiom def
+      act env repo
+
 deriveTest :: Test
 deriveTest = TestCase $
   withTestEnv [setCompactOnCompletion] $ \env -> do
     let base = Repo "base" "0"
     kickOffTestDB env base id
     mkGraph env base
-    void $ completePredicates env base
+    void $ completePredicates env base (CompletePredicates_axiom def)
 
     derivePredicate env base Nothing Nothing
       (parseRef "glean.test.RevEdge") Nothing
@@ -723,6 +796,7 @@ main_ = withUnitTest $ testRunner $ TestList
   , TestLabel "dupSetTest" dupSetTest
   , TestLabel "orphanTest" orphanTest
   , TestLabel "deriveTest" deriveTest
+  , TestLabel "externalDerivationTest" externalDerivationTest
   , TestLabel "stackedIncrementalTest" stackedIncrementalTest
   , TestLabel "stackedIncrementalTest2" stackedIncrementalTest2
   , TestLabel "restartIndexing" restartIndexing

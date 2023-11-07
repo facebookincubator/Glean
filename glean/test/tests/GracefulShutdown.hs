@@ -64,6 +64,7 @@ import Glean.Remote (
   withRemoteBackend,
  )
 import Glean.Server.Spawn (withServer)
+import qualified Glean.Types as Glean
 import Glean.Util.ConfigProvider (
   ConfigProvider (defaultConfigOptions, withConfigProvider),
  )
@@ -128,7 +129,7 @@ waitForIncompleteDBs = setupOutOfProcessServer 10000 $ \ph err backend -> do
   _ <- async $ evaluate (rnf $ length err)
 
   -- finish the DB and check the server exits
-  Glean.completePredicates backend repo
+  Glean.completePredicates backend repo (Glean.CompletePredicates_axiom def)
   workFinished
     backend
     WorkFinished

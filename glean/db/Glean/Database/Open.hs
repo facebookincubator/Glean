@@ -553,17 +553,21 @@ baseSlices env deps stored_units = case deps of
       slice <- if exclude && Set.null units
         then return Nothing
         else do
+          let !n = Set.size units
           vlog 1 $ "computing slice for " <> showRepo repo <> " with " <>
-            show (Set.toList units) <>
-            if exclude then " excluded" else " included"
+            show n <>
+            (if exclude then " excluded: " else " included: ") <>
+            show (Set.toList units)
           unitIds <- fmap catMaybes $
             forM (Set.toList units) $ \name -> do
               id <- Storage.getUnitId odbHandle name
               vlog 2 $ "unit: " <> show name <> " = " <> show id
               return id
           maybeOwnership <- readTVarIO odbOwnership
-          forM maybeOwnership $ \ownership ->
+          r <- forM maybeOwnership $ \ownership ->
             Ownership.slice ownership (catMaybes rest) unitIds exclude
+          logInfo $ "completed " <> show n <> " slices for " <> showRepo repo
+          return r
       return (slice : rest)
 
   -- | Create the slices for a stack of dependencies

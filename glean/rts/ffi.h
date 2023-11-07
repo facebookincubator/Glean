@@ -626,6 +626,17 @@ const char *glean_define_ownership_sort_by_owner(
   FactOrder *result
 );
 
+const char *glean_define_ownership_add_derived(
+  Lookup *lookup,
+  DefineOwnership *define,
+  uint64_t pid_,
+  size_t fids_size,
+  uint64_t** facts_lists,
+  size_t* facts_lists_sizes,
+  uint64_t** deps_lists,
+  size_t* deps_lists_sizes
+);
+
 void glean_define_ownership_free(DefineOwnership *def);
 
 const char *glean_derived_ownership_compute(

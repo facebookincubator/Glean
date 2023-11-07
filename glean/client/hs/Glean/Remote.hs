@@ -30,6 +30,12 @@ module Glean.Remote
   , dbShard
   , dbShardWord
 
+    -- * Retries
+  , RetryBackend(..)
+  , backendRetryWrites
+  , RetryPolicy(..)
+  , defaultRetryPolicy
+
     -- * More operations
   , SchemaPredicates
   , loadPredicates
@@ -60,6 +66,7 @@ import Util.Log
 import Util.STM
 
 import Glean.Backend.Types
+import Glean.Backend.Retry
 import Glean.BuildInfo (buildRule)
 import Glean.ClientConfig.Types (UseShards(..), ClientConfig(..))
 import Glean.DefaultConfigs
@@ -69,6 +76,7 @@ import qualified Glean.Types as Thrift
 import Glean.Query.Thrift
 import Glean.Query.Thrift.Internal
 import Glean.Util.ConfigProvider
+import Glean.Util.RetryChannelException
 import Glean.Util.Service
 import Glean.Username (getUsername)
 import Glean.Util.ThriftSource as ThriftSource
@@ -236,8 +244,8 @@ instance Backend ThriftBackend where
     withShard t (Thrift.work_repo $ Thrift.workFinished_work rq)
       $ GleanService.workFinished rq
 
-  completePredicates_ t repo = withShard t repo $
-    GleanService.completePredicates repo
+  completePredicates_ t repo preds = withShard t repo $
+    GleanService.completePredicates repo preds
 
   restoreDatabase t loc =
     withoutShard t $ GleanService.restore loc

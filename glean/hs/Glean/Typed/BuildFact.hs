@@ -6,13 +6,24 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE AllowAmbiguousTypes, TypeApplications, CPP #-}
+{-# LANGUAGE AllowAmbiguousTypes, TypeApplications, CPP, InstanceSigs #-}
 module Glean.Typed.BuildFact
-  ( NewFact(newFact,withUnit), makeFact, makeFact_, makeFactV, makeFactV_
-  , Facts, newFacts, serializeFacts, factsMemory
-  , FactBuilder, buildFacts, extendFacts, buildBatch
+  ( NewFact(newFact,withUnit, derivedFrom)
+  , makeFact
+  , makeFact_
+  , makeFactV
+  , makeFactV_
+  , Facts
+  , newFacts
+  , serializeFacts
+  , factsMemory
+  , FactBuilder
+  , buildFacts
+  , extendFacts
+  , buildBatch
   ) where
 
+import Data.Coerce
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Int
@@ -50,6 +61,9 @@ class (MonadFail m, Monad m) => NewFact m where
   -- | Create some facts owned by the given UnitName
   withUnit ::Thrift.UnitName -> m a -> m a
 
+  -- | Set dependencies of an externally derived fact
+  derivedFrom :: Predicate p => [Fid] -> [p] -> m ()
+
 -- | Create a new fact in a 'NewFact' monad and return the corresponding Thrift
 -- structure which will have 'Just' the passed key and value.
 makeFactV
@@ -82,6 +96,7 @@ data Facts = Facts
   { factsPredicates :: Predicates
   , factsData :: FactSet
   , factsOwnership :: IORef (HashMap Thrift.UnitName [Int64])
+  , factsDerivations :: IORef (HashMap Pid [([Fid],[Fid])])
   }
 
 -- | Create a new empty collection of facts. New facts will be assigned
@@ -96,13 +111,26 @@ newFacts ps start =
   Facts ps
     <$> FactSet.new (fromMaybe lowestFid start)
     <*> newIORef HashMap.empty
+    <*> newIORef HashMap.empty
 
 -- | Serialize the facts into a batch which can be sent via Thrift.
 serializeFacts :: Facts -> IO Thrift.Batch
 serializeFacts Facts{..} = do
   batch <- FactSet.serialize factsData
   ownership <- readIORef factsOwnership
-  return batch { Thrift.batch_owned = fmap Vector.fromList ownership }
+  derivations <- readIORef factsDerivations
+  return batch
+    { Thrift.batch_owned = fmap Vector.fromList ownership
+    , Thrift.batch_dependencies = HashMap.fromList
+        [ (fromPid pid, map toFactDependencies deps)
+        | (pid, deps) <- HashMap.toList derivations ]
+    }
+  where
+    toFactDependencies :: ([Fid],[Fid]) -> Thrift.FactDependencies
+    toFactDependencies (deps, facts) =
+      Thrift.FactDependencies
+        (Vector.fromList (coerce facts))
+        (Vector.fromList (coerce deps))
 
 -- | Return a rough estimate of how much memory is used by the facts.
 factsMemory :: Facts -> IO Int
@@ -144,6 +172,12 @@ instance NewFact FactsM where
           [fromFid firstId, fromFid lastId - 1]
     return a
 
+  derivedFrom :: forall p. Predicate p => [Fid] -> [p] -> FactsM ()
+  derivedFrom deps facts = FactsM $ do
+    Facts{..} <- ask
+    let pid = pidOf (getPid factsPredicates :: PidOf p)
+    liftIO $ modifyIORef' factsDerivations $
+        HashMap.insertWith (<>) pid [(deps, map (idOf . getId) facts)]
 
 -- | A fact builder
 type FactBuilder = forall m. NewFact m => m ()

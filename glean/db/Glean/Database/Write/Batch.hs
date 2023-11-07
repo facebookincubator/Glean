@@ -15,8 +15,8 @@ module Glean.Database.Write.Batch
 import Control.Exception
 import Control.Monad.Extra
 import qualified Data.ByteString as BS
-import Data.Map.Strict (Map)
-import qualified Data.Map.Strict as Map
+import qualified Data.HashMap.Strict as HashMap
+import Data.HashMap.Strict (HashMap)
 import Data.Coerce
 import Data.Default
 import Data.Int (Int64)
@@ -24,11 +24,11 @@ import Data.IORef
 import Data.Maybe
 import qualified Data.Text as Text
 import qualified Data.Vector.Storable as Vector
-import Data.Vector.Storable (Vector)
 
 import Util.Control.Exception
 import Util.STM
 
+import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Open
 import Glean.Database.Exception
 import Glean.Database.Repo
@@ -36,6 +36,7 @@ import qualified Glean.Database.Storage as Storage
 import Glean.Database.Schema
 import Glean.Database.Types
 import Glean.FFI
+import Glean.Internal.Types as Thrift
 import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.Define (trustRefs)
 import qualified Glean.RTS.Foreign.FactSet as FactSet
@@ -45,7 +46,7 @@ import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import Glean.RTS.Foreign.Ownership as Ownership
 import Glean.RTS.Foreign.Subst (Subst)
 import qualified Glean.RTS.Foreign.Subst as Subst
-import Glean.RTS.Types (Pid(..), Fid(..))
+import Glean.RTS.Types (Pid(..))
 import Glean.Types (Repo)
 import qualified Glean.Types as Thrift
 import Glean.Util.Metric
@@ -70,19 +71,27 @@ syncWriteDatabase env repo batch = do
 makeDefineOwnership
   :: Env
   -> Repo
-  -> Map Int64 (Map Int64 (Vector Int64))
+  -> HashMap Int64 [Thrift.FactDependencies]
   -> IO (Maybe DefineOwnership)
 makeDefineOwnership env repo deps
-  | Map.null deps = return Nothing
+  | HashMap.null deps = return Nothing
   | otherwise = do
+  ensureComplete
   readDatabase env repo $ \odb lookup -> do
   maybeOwnership <- readTVarIO (odbOwnership odb)
   forM maybeOwnership $ \ownership -> do
     nextId <- Lookup.firstFreeId lookup
     define <- Ownership.newDefineOwnership ownership nextId
-    forM_ (Map.toList deps) $ \(pid, ownerMap) ->
+    forM_ (HashMap.toList deps) $ \(pid, ownerMap) ->
       Ownership.addDerivedOwners lookup define (Pid pid) ownerMap
     return define
+  where
+  -- TODO: enforce that not only the axiom predicates be complete
+  -- but that every predicate depended upon be complete.
+  ensureComplete = atomically $ do
+    meta <- Catalog.readMeta (envCatalog env) repo
+    unless (metaAxiomComplete meta) $
+      throwSTM $ Thrift.Exception "DB is not complete"
 
 writeDatabase
   :: Env
@@ -132,7 +141,7 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
                     if | Just owners <- maybeOwn -> do
                           Ownership.substDefineOwnership owners subst
                           return $ Just owners
-                       | not $ Map.null deps ->
+                       | not $ HashMap.null deps ->
                           makeDefineOwnership env repo deps
                        | otherwise -> return Nothing
 
@@ -207,15 +216,17 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
   where
     batch_size = fromIntegral . BS.length . Thrift.batch_facts
     substDependencies
-      :: Subst
-      -> Map.Map Int64 (Vector.Vector Int64)
-      -> Map.Map Int64 (Vector.Vector Int64)
-    substDependencies subst dmap = Map.fromListWith (<>) $ zip keys vals
+     :: Subst
+     -> [Thrift.FactDependencies]
+     -> [Thrift.FactDependencies]
+    substDependencies subst dmap = map substFD dmap
       where
-      !keys = substFid <$> Map.keys dmap
-      substFid = fromFid . Subst.subst subst . Fid
-      !vals = under (Subst.substVector subst) <$> Map.elems dmap
-      under f = Vector.unsafeCast . f . Vector.unsafeCast
+      substFD (Thrift.FactDependencies facts deps) =
+        Thrift.FactDependencies facts' deps'
+        where
+        !facts' = under (Subst.substVector subst) facts
+        !deps' = under (Subst.substVector subst) deps
+        under f = Vector.unsafeCast . f . Vector.unsafeCast
 
 withLookupCache
   :: Repo
