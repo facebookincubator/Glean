@@ -50,7 +50,7 @@ namespace {
  * OwnershipUnitIterator and populates the TrieArray with it, making
  * a FactId -> Set(Unit) mapping.
  */
-FOLLY_NOINLINE TrieArray<Uset> fillOwnership(
+FOLLY_NOINLINE std::unique_ptr<TrieArray<Uset>> fillOwnership(
     OwnershipUnitIterator* iter,
     uint32_t& firstSetId) {
   struct Stats {
@@ -91,7 +91,7 @@ FOLLY_NOINLINE TrieArray<Uset> fillOwnership(
     queue.blockingWrite(folly::none);
   });
 
-  TrieArray<Uset> utrie;
+  auto utrie = std::make_unique<TrieArray<Uset>>();
   uint32_t last_unit = 0;
   uint32_t max_unit = 0;
   Stats stats;
@@ -100,7 +100,7 @@ FOLLY_NOINLINE TrieArray<Uset> fillOwnership(
     const auto& data = d.value();
     CHECK_GE(data.unit,last_unit);
 
-    utrie.insert(
+    utrie->insert(
       data.ids.data(),
       data.ids.data() + data.ids.size(),
       [&](Uset * FOLLY_NULLABLE prev, uint32_t refs) {
@@ -429,16 +429,22 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
   uint32_t firstUsetId;
   auto t = makeAutoTimer("computeOwnership");
   VLOG(1) << "computing ownership";
-  auto utrie = fillOwnership(iter,firstUsetId);
-  t.log("fillOwnership");
-  auto usets = collectUsets(firstUsetId,utrie);
-  t.log("collectUsets");
-  // TODO: Should `completeOwnership` work with the trie rather than a
-  // flat vector?
 
   const auto min_id = lookup.startingId();
   const auto max_id = lookup.firstFreeId();
-  auto flattened = utrie.flatten(min_id.toWord(), max_id.toWord());
+
+  auto utrie = fillOwnership(iter,firstUsetId);
+  t.log("fillOwnership");
+  auto usets = collectUsets(firstUsetId,*utrie);
+  t.log("collectUsets");
+    // TODO: Should `completeOwnership` work with the trie rather than a
+    // flat vector?
+
+  auto flattened = utrie->flatten(min_id.toWord(), max_id.toWord());
+
+  // The trie is no longer required, so free it
+  utrie.reset();
+
   const auto owner = [&](Id id) -> Uset*& {
     return flattened.dense[id.toWord() - min_id.toWord()];
   };
