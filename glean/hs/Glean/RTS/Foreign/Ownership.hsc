@@ -302,7 +302,7 @@ nextUsetId ownership =
   with ownership $ \ownership_ptr -> do
     invoke $ glean_ownership_next_set_id ownership_ptr
 
-foreign import ccall unsafe glean_get_ownership_stats
+foreign import ccall safe glean_get_ownership_stats
   :: Ptr Ownership
   -> Ptr OwnershipStats
   -> IO CString
