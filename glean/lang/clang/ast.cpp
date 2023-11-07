@@ -9,6 +9,7 @@
 #include <variant>
 
 #include <clang/AST/DeclBase.h>
+#include <clang/AST/DeclVisitor.h>
 #include <clang/AST/RecursiveASTVisitor.h>
 #include <clang/Sema/SemaConsumer.h>
 #include <llvm/Config/llvm-config.h>
@@ -976,12 +977,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   bool VisitUsingDirectiveDecl(const clang::UsingDirectiveDecl *decl) {
     if (auto nominated = decl->getNominatedNamespace()) {
-      usingTracker.inNameContext(decl->getQualifier(), [&] {
-        xrefTarget(
-            decl->getIdentLocation(), XRef::toDecl(namespaces, nominated));
-      });
+      xrefExpr(decl->getIdentLocation(), decl->getQualifier(), nominated);
     }
-
     if (auto ns = decl->getNominatedNamespaceAsWritten()) {
       auto range = db.srcRange(decl->getSourceRange());
       auto fact = db.fact<Cxx::UsingDirective>(
@@ -1058,12 +1055,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         return decl->getTemplateInstantiationPattern();
       }
     };
-
-    static const clang::EnumDecl* FOLLY_NULLABLE
-    getSpecializedDecl(const clang::EnumDecl*) {
-      // There isn't a specialized decl since enumerations can't be templates.
-      return nullptr;
-    }
   };
 
   struct EnumeratorDecl {
@@ -1151,12 +1142,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         return nullptr;
       }
     };
-
-    static const clang::TypedefNameDecl* FOLLY_NULLABLE
-    getSpecializedDecl(const clang::TypedefNameDecl*) {
-      // There isn't a specialized decl since type aliases can't be specialized.
-      return nullptr;
-    }
   };
 
   bool VisitTypedefNameDecl(const clang::TypedefNameDecl *decl) {
@@ -1270,15 +1255,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
     };
 
-    static const clang::CXXRecordDecl * FOLLY_NULLABLE getSpecializedDecl(
-        const clang::CXXRecordDecl *decl) {
-      if (auto spec =
-              clang::dyn_cast<clang::ClassTemplateSpecializationDecl>(decl)) {
-        auto tpl = spec->getSpecializedTemplate();
-        return tpl ? tpl->getTemplatedDecl() : nullptr;
-      }
-      return nullptr;
-    }
   };
 
   // Clang record visitor
@@ -1405,9 +1381,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
               ctor && !ctor->isDefaulted()) {
             for (const auto* init : ctor->inits()) {
               if (init->isMemberInitializer()) {
-                visitor.xrefTarget(
-                    init->getMemberLocation(),
-                    XRef::toDecl(visitor.varDecls, init->getMember()));
+                visitor.xrefDecl(init->getMemberLocation(), init->getMember());
               }
             }
           }
@@ -1677,15 +1651,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   std::vector<Fact<Cxx::ObjcContainerDeclaration>> objcContainerProtocols(
       const clang::ObjCContainerDecl *decl) {
-    const clang::ObjCProtocolList *list;
+    const clang::ObjCProtocolList *list = nullptr;
     if (auto prot = clang::dyn_cast<clang::ObjCProtocolDecl>(decl)) {
       list = &prot->getReferencedProtocols();
     } else if (auto iface = clang::dyn_cast<clang::ObjCInterfaceDecl>(decl)) {
       list = &iface->getReferencedProtocols();
     } else if (auto cat = clang::dyn_cast<clang::ObjCCategoryDecl>(decl)) {
       list = &cat->getReferencedProtocols();
-    } else {
-      list = nullptr;
     }
 
     std::vector<Fact<Cxx::ObjcContainerDeclaration>> protocols;
@@ -2140,50 +2112,21 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     const clang::Decl *decl;
     folly::Optional<Cxx::XRefTarget> target;
 
-    static XRef unknown(const clang::Decl *d) {
-      return XRef{d,d,folly::none};
+    static XRef unknown(const clang::Decl* d) {
+      return {d, d, folly::none};
     }
 
-    static XRef to(const clang::Decl *d, folly::Optional<Cxx::XRefTarget> t) {
-      return XRef{d,d,t};
+    static XRef to(const clang::Decl* d, Cxx::XRefTarget t) {
+      return {d, d, std::move(t)};
     }
 
-    template<typename Memo, typename Decl>
-    static XRef toDecl(Memo& memo, const Decl *decl) {
+    template <typename Memo, typename Decl>
+    static XRef toDecl(Memo& memo, const Decl* decl) {
       auto b = memo(decl);
       auto d = b ? b->key : decl;
-      XRef xref{d, d, folly::none};
-      if (b) {
-        xref.target = Cxx::XRefTarget::declaration(b->declaration());
-      }
-      return xref;
+      return b ? to(d, Cxx::XRefTarget::declaration(b->declaration()))
+               : unknown(d);
     }
-
-    template<typename Memo, typename Decl>
-    void suggest(Memo& memo, const Decl *d) {
-      if (!target) {
-        if (auto b = memo(d)) {
-          target = Cxx::XRefTarget::declaration(b->declaration());
-          decl = b->key;
-        }
-      }
-    }
-
-    template<typename Memo, typename Decl>
-    static XRef toTemplatableDecl(Memo& memo, const Decl *decl) {
-      auto b = memo(decl);
-      auto d = b ? b->key : decl;
-      XRef xref{d, d, folly::none};
-      if (b) {
-        xref.target = Cxx::XRefTarget::declaration(b->declaration());
-      }
-      if (auto tpl = Memo::value_type::getSpecializedDecl(d)) {
-        xref.primary = tpl;
-        xref.suggest(memo, tpl);
-      }
-      return xref;
-    }
-
   };
 
   void xrefTarget(clang::SourceRange range, XRef xref) {
@@ -2202,13 +2145,108 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return Cxx::XRefTarget::unknown(db.srcLoc(decl->getBeginLoc()));
   }
 
+  void xrefDecl(
+      clang::SourceRange range,
+      const clang::Decl* FOLLY_NULLABLE decl) {
+    struct XRefVisitor : clang::ConstDeclVisitor<XRefVisitor, XRef> {
+      explicit XRefVisitor(ASTVisitor& v) : visitor_(v) {}
+      XRef VisitDecl(const clang::Decl* d) {
+        return XRef::unknown(d);
+      }
+      XRef VisitCXXRecordDecl(const clang::CXXRecordDecl* d) {
+        return XRef::toDecl(visitor_.classDecls, d);
+      }
+      XRef VisitClassTemplateSpecializationDecl(
+          const clang::ClassTemplateSpecializationDecl* d) {
+        auto xref = XRef::toDecl(visitor_.classDecls, d);
+        if (const auto* tpl = d->getSpecializedTemplate()) {
+          if (const auto* primary = tpl->getTemplatedDecl()) {
+            xref.primary = primary;
+          }
+        }
+        return xref;
+      }
+      XRef VisitEnumDecl(const clang::EnumDecl* d) {
+        return XRef::toDecl(visitor_.enumDecls, d);
+      }
+      XRef VisitEnumConstantDecl(const clang::EnumConstantDecl* d) {
+        auto e = visitor_.enumeratorDecls(d);
+        CHECK(e);
+        return XRef::to(d, Cxx::XRefTarget::enumerator(e->fact));
+      }
+      XRef VisitFieldDecl(const clang::FieldDecl* d) {
+        return XRef::toDecl(visitor_.varDecls, d);
+      }
+      XRef VisitFunctionDecl(const clang::FunctionDecl* d) {
+        auto xref = XRef::toDecl(visitor_.funDecls, d);
+        if (const auto* tpl = d->getPrimaryTemplate()) {
+          if (const auto* primary = tpl->getTemplatedDecl()) {
+            xref.primary = primary;
+          }
+        }
+        return xref;
+      }
+      XRef VisitNamespaceDecl(const clang::NamespaceDecl* d) {
+        return XRef::toDecl(visitor_.namespaces, d);
+      }
+      XRef VisitObjCCategoryDecl(const clang::ObjCCategoryDecl* d) {
+        return XRef::toDecl(visitor_.objcContainerDecls, d);
+      }
+      XRef VisitObjCCategoryImplDecl(const clang::ObjCCategoryImplDecl* d) {
+        return XRef::toDecl(visitor_.objcContainerDecls, d);
+      }
+      XRef VisitObjCImplementationDecl(const clang::ObjCImplementationDecl* d) {
+        return XRef::toDecl(visitor_.objcContainerDecls, d);
+      }
+      XRef VisitObjCInterfaceDecl(const clang::ObjCInterfaceDecl* d) {
+        return XRef::toDecl(visitor_.objcContainerDecls, d);
+      }
+      XRef VisitObjCProtocolDecl(const clang::ObjCProtocolDecl* d) {
+        return XRef::toDecl(visitor_.objcContainerDecls, d);
+      }
+      XRef VisitObjCMethodDecl(const clang::ObjCMethodDecl* d) {
+        return XRef::toDecl(visitor_.objcMethodDecls, d);
+      }
+      XRef VisitObjCPropertyDecl(const clang::ObjCPropertyDecl* d) {
+        return XRef::toDecl(visitor_.objcPropertyDecls, d);
+      }
+      XRef VisitRedeclarableTemplateDecl(
+          const clang::RedeclarableTemplateDecl* d) {
+        return Visit(d->getTemplatedDecl());
+      }
+      XRef VisitTypedefNameDecl(const clang::TypedefNameDecl* d) {
+        return XRef::toDecl(visitor_.typeAliasDecls, d);
+      }
+      XRef VisitUsingShadowDecl(const clang::UsingShadowDecl* d) {
+        return Visit(d->getTargetDecl());
+      }
+      XRef VisitVarDecl(const clang::VarDecl* d) {
+        return XRef::toDecl(visitor_.varDecls, d);
+      }
+      XRef VisitVarTemplateSpecializationDecl(
+          const clang::VarTemplateSpecializationDecl* d) {
+        auto xref = XRef::toDecl(visitor_.varDecls, d);
+        if (const auto* tpl = d->getSpecializedTemplate()) {
+          if (const auto* primary = tpl->getTemplatedDecl()) {
+            xref.primary = primary;
+          }
+        }
+        return xref;
+      }
+      ASTVisitor& visitor_;
+    };
+    if (decl) {
+      xrefTarget(range, XRefVisitor(*this).Visit(decl));
+    }
+  }
+
   void xrefObjCProtocolDecl(
       clang::SourceLocation loc,
       const clang::ObjCProtocolDecl *decl) {
     if (loc.isValid()) {
-      xrefTarget(
-        {loc, loc.getLocWithOffset(decl->getIdentifier()->getLength()-1)},
-        XRef::toDecl(objcContainerDecls, decl));
+      xrefDecl(
+          {loc, loc.getLocWithOffset(decl->getIdentifier()->getLength() - 1)},
+          decl);
     }
   }
 
@@ -2217,46 +2255,17 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
    *****************/
 
   bool VisitTagTypeLoc(clang::TagTypeLoc tloc) {
-    if (auto decl = tloc.getDecl()) {
-      const auto range = tloc.getSourceRange();
-      XRef xref;
-      if (auto record = clang::dyn_cast<clang::CXXRecordDecl>(decl)) {
-        xref = XRef::toTemplatableDecl(classDecls, record);
-      } else if (auto enm = clang::dyn_cast<clang::EnumDecl>(decl)) {
-        xref = XRef::toTemplatableDecl(enumDecls, enm);
-      } else {
-        xref = XRef::unknown(decl);
-      }
-      xrefTarget(range, xref);
-    }
+    xrefDecl(tloc.getSourceRange(), tloc.getDecl());
     return true;
   }
 
   bool VisitTypedefTypeLoc(clang::TypedefTypeLoc tloc) {
-    if (auto decl = tloc.getTypedefNameDecl()) {
-      xrefTarget(
-        tloc.getSourceRange(),
-        XRef::toTemplatableDecl(typeAliasDecls, decl));
-    }
+    xrefDecl(tloc.getSourceRange(), tloc.getTypedefNameDecl());
     return true;
   }
 
   void xrefTemplateName(clang::SourceLocation loc, clang::TemplateName name) {
-    if (auto decl = name.getAsTemplateDecl()) {
-      XRef xref;
-      if (auto cls = clang::dyn_cast<clang::ClassTemplateDecl>(decl)) {
-        xref = XRef::toTemplatableDecl(classDecls, cls->getTemplatedDecl());
-      } else if (
-          auto alias = clang::dyn_cast<clang::TypeAliasTemplateDecl>(decl)) {
-        xref =
-            XRef::toTemplatableDecl(typeAliasDecls, alias->getTemplatedDecl());
-      } else {
-        // We don't want to xref template template parameters and I assume we
-        // can't get functions or variables here.
-        return;
-      }
-      xrefTarget(loc, xref);
-    }
+      xrefDecl(loc, name.getAsTemplateDecl());
   }
 
   bool VisitTemplateSpecializationTypeLoc(
@@ -2277,9 +2286,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   bool VisitObjCInterfaceTypeLoc(clang::ObjCInterfaceTypeLoc tloc) {
-    xrefTarget(
-      tloc.getLocalSourceRange(),
-      XRef::toDecl(objcContainerDecls, tloc.getIFaceDecl()));
+    xrefDecl(tloc.getLocalSourceRange(), tloc.getIFaceDecl());
     return true;
   }
 
@@ -2408,9 +2415,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       [&] {
         if (spec) {
           if (auto ns = spec->getAsNamespace()) {
-            xrefTarget(
-                loc.getLocalSourceRange().getBegin(),
-                XRef::toDecl(namespaces, ns->getCanonicalDecl()));
+            xrefDecl(loc.getLocalBeginLoc(), ns->getCanonicalDecl());
           }
         }
         return Base::TraverseNestedNameSpecifierLoc(loc);
@@ -2418,39 +2423,24 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   void xrefExpr(
-      const clang::Decl * FOLLY_NULLABLE decl,
-      const clang::NestedNameSpecifier * FOLLY_NULLABLE qualifier,
-      clang::SourceRange range) {
+      clang::SourceRange range,
+      const clang::NestedNameSpecifier* FOLLY_NULLABLE qualifier,
+      const clang::Decl* FOLLY_NULLABLE decl) {
     if (decl) {
-      auto xref = XRef::unknown(decl);
-      if (auto fun = clang::dyn_cast<clang::FunctionDecl>(decl)) {
-        xref = XRef::toTemplatableDecl(funDecls, fun);
-      } else if (auto var = clang::dyn_cast<clang::VarDecl>(decl)) {
-        xref = XRef::toTemplatableDecl(varDecls, var);
-      } else if (auto field = clang::dyn_cast<clang::FieldDecl>(decl)) {
-        // TODO: can this ever happen? or will it always be a MemberExpr?
-        xref = XRef::toDecl(varDecls, field);
-      } else if (auto e = clang::dyn_cast<clang::EnumConstantDecl>(decl)) {
-        if (auto r = enumeratorDecls(e)) {
-          xref = XRef::to(e, Cxx::XRefTarget::enumerator(r->fact));
-        }
-      }
-      usingTracker.inNameContext(qualifier, [&]{ xrefTarget(range, xref); });
+      usingTracker.inNameContext(qualifier, [&] { xrefDecl(range, decl); });
     }
   }
 
   bool VisitCXXConstructExpr(const clang::CXXConstructExpr* expr) {
-    xrefTarget(
-        expr->getSourceRange(),
-        XRef::toTemplatableDecl(funDecls, expr->getConstructor()));
+    xrefDecl(expr->getSourceRange(), expr->getConstructor());
     return true;
   }
 
   bool VisitDeclRefExpr(const clang::DeclRefExpr* expr) {
     xrefExpr(
-        expr->getDecl(),
+        expr->getNameInfo().getSourceRange(),
         expr->getQualifier(),
-        expr->getNameInfo().getSourceRange());
+        expr->getDecl());
     return true;
   }
 
@@ -2466,39 +2456,20 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     //
     // This is especially important for using decls.
     for (const auto *decl : expr->decls()) {
-      if (auto shadow = clang::dyn_cast_or_null<clang::UsingShadowDecl>(decl)) {
-        decl = shadow->getTargetDecl();
-      }
-      if (auto tpl = clang::dyn_cast_or_null<clang::TemplateDecl>(decl)) {
-        decl = tpl->getTemplatedDecl();
-      }
-      xrefExpr(decl, qualifier, range);
+      xrefExpr(range, qualifier, decl);
     }
     return true;
   }
 
   bool VisitMemberExpr(const clang::MemberExpr *expr) {
-    if (const auto *decl = expr->getMemberDecl()) {
-      XRef xref;
-      folly::Optional<Cxx::XRefTarget> target;
-      if (auto fun = clang::dyn_cast<clang::FunctionDecl>(decl)) {
-        xref = XRef::toTemplatableDecl(funDecls, fun);
-      } else if (auto field = clang::dyn_cast<clang::FieldDecl>(decl)) {
-        xref = XRef::toDecl(varDecls, field);
-      } else {
-        xref = XRef::unknown(decl);
-      }
-
-      // getMemberNameInfo().getSourceRange() can return an invalid range if,
-      // say, an implicit conversion operator is applied to the member.
-      // If so, we use the full range of the expr as our range.
-      auto range = expr->getMemberNameInfo().getSourceRange();
-      if (range.isInvalid()) {
-        range = expr->getSourceRange();
-      }
-
-      xrefTarget(range, xref);
+    // getMemberNameInfo().getSourceRange() can return an invalid range if,
+    // say, an implicit conversion operator is applied to the member.
+    // If so, we use the full range of the expr as our range.
+    auto range = expr->getMemberNameInfo().getSourceRange();
+    if (range.isInvalid()) {
+      range = expr->getSourceRange();
     }
+    xrefDecl(range, expr->getMemberDecl());
     return true;
   }
 
@@ -2517,55 +2488,43 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       return true;
     }
     if (const auto *decl = expr->getMethodDecl()) {
-      xrefTarget(expr->getSourceRange(), XRef::toDecl(objcMethodDecls, decl));
-      if (auto d = objcMethodDecls(decl)) {
-        for (unsigned int i = 0, n = expr->getNumSelectorLocs(); i < n; ++i) {
-          auto target = Cxx::XRefTarget::objcSelectorSlot(
-              Cxx::ObjcSelectorSlot{d->decl, i});
-          xrefTarget(expr->getSelectorLoc(i), XRef::to(decl, target));
-        }
+      xrefDecl(expr->getSourceRange(), decl);
+      auto d = objcMethodDecls(decl);
+      for (unsigned int i = 0, n = expr->getNumSelectorLocs(); i < n; ++i) {
+        auto target = Cxx::XRefTarget::objcSelectorSlot(
+            Cxx::ObjcSelectorSlot{d->decl, i});
+        xrefTarget(expr->getSelectorLoc(i), XRef::to(decl, target));
       }
     }
     return true;
   }
 
   bool VisitObjCPropertyRefExpr(const clang::ObjCPropertyRefExpr *expr) {
-    std::vector<XRef> xrefs;
+    std::vector<const clang::NamedDecl*> decls;
     if (expr->isImplicitProperty()) {
       // Note things like x.foo += 5 generate xrefs to both getter and setter.
       if (expr->isMessagingGetter()) {
-        if (auto getter = expr->getImplicitPropertyGetter()) {
-          xrefs.push_back(XRef::toDecl(objcMethodDecls, getter));
-        }
+        decls.push_back(expr->getImplicitPropertyGetter());
         if (expr->isClassReceiver()) {
-          xrefTarget(
-            expr->getReceiverLocation(),
-            XRef::toDecl(objcContainerDecls, expr->getClassReceiver())
-          );
+          xrefDecl(expr->getReceiverLocation(), expr->getClassReceiver());
         }
       }
       if (expr->isMessagingSetter()) {
-        if (auto setter = expr->getImplicitPropertySetter()) {
-          xrefs.push_back(XRef::toDecl(objcMethodDecls, setter));
-        }
+        decls.push_back(expr->getImplicitPropertySetter());
       }
-    } else if (auto prop = expr->getExplicitProperty()) {
-      xrefs.push_back(XRef::toDecl(objcPropertyDecls, prop));
+    } else {
+      decls.push_back(expr->getExplicitProperty());
     }
 
-    if (!xrefs.empty()) {
-      const auto loc = expr->getLocation();
-      for (const auto &xref : xrefs) {
-        xrefTarget(loc, xref);
-      }
+    const auto loc = expr->getLocation();
+    for (const auto* decl : decls) {
+      xrefDecl(loc, decl);
     }
     return true;
   }
 
   bool VisitObjCIvarRefExpr(const clang::ObjCIvarRefExpr *expr) {
-    const clang::ObjCIvarDecl *decl = expr->getDecl();
-    xrefTarget(
-        expr->getLocation(), XRef::toDecl(varDecls, CHECK_NOTNULL(decl)));
+    xrefDecl(expr->getLocation(), expr->getDecl());
     return true;
   }
 
