@@ -403,8 +403,9 @@ struct SourceIndexer {
     if (FLAGS_ownership) {
       // source file paths will be absolute (see loadCompilationDatabase()) but
       // we need the unit path to be relative.
-      batch.beginUnit(
-          std::filesystem::relative(source.file).string());
+      batch.beginUnit(std::filesystem::path(source.file)
+                          .lexically_relative(config.root)
+                          .string());
     }
     auto pcdb = cdb.load(source);
     ClangCfg cfg{
