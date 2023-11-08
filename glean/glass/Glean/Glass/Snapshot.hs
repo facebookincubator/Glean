@@ -20,11 +20,10 @@ module Glean.Glass.Snapshot
 import Control.Concurrent.Stream (forConcurrently_unordered)
 import Control.Concurrent (getNumCapabilities)
 import Control.Exception (SomeException, try)
-import Control.Monad (forM_, when)
+import Control.Monad (forM, when)
 import qualified Data.ByteString as BS
 import Data.Default (def)
 import Data.Int (Int64)
-import Data.IORef.Extra
 import Data.Maybe (fromMaybe, catMaybes)
 import Data.Proxy (Proxy (..))
 import Data.Text (Text, pack, unpack)
@@ -74,6 +73,7 @@ import qualified Glean.Glass.Types as Types
 import Glean.Init (withOptions)
 
 import qualified Glean.Snapshot.Types as Types
+import Glean.Glass.Types (GlassException(glassException_reasons))
 
 type FileToSnapshot = (Types.RepoName, Types.Path)
 
@@ -172,6 +172,14 @@ isEmptySymbols Types.DocumentSymbolListXResult{..} =
     null documentSymbolListXResult_definitions &&
     null documentSymbolListXResult_definitions
 
+data SnapshotError
+ = SizeAboveThreshold { _kb :: Int }
+ | GlassException Types.GlassException
+ | EmptySymbolList
+ | InsertError
+ | UploadError SomeException
+ | AlreadyPresent
+
 -- | Throws GlassException
 buildSnapshot
   :: Glass.Env
@@ -209,15 +217,16 @@ uploadToXdb
   -> Types.Revision
   -> Types.Path
   -> BuildSnapshot
-  -> IO ()
+  -> IO (Maybe SnapshotError)
 uploadToXdb
   (SnapshotTier xdbTier)
   (Types.RepoName repo)
   (Types.Revision rev)
   (Types.Path path)
   BuildSnapshot{bytes, sizeKB, symbolList}
-    | isEmptySymbols symbolList =
+    | isEmptySymbols symbolList = do
       logWarning $ printf "%s: Refusing to upload empty snapshot" path
+      return $ Just EmptySymbolList
     | otherwise = do
     let num_rows :: IO Int64 = withConnection (TE.encodeUtf8 xdbTier) Master $
           \conn -> do
@@ -229,12 +238,16 @@ uploadToXdb
     case res of
       Right 1 -> do
         logInfo $ printf "%s: successfully uploaded %d KB\n" path sizeKB
-      Right 0 ->
+        return Nothing
+      Right 0 -> do
         logError $ printf "%s: already present - skipping" path
-      Right _ ->
+        return $ Just  AlreadyPresent
+      Right _ -> do
         logError $ printf "%s: Couldn't upload" path
+        return $ Just InsertError
       Left (exc::SomeException) -> do
-         logError $ printf "%s: %s" path (show exc)
+        logError $ printf "%s: %s" path (show exc)
+        return $ Just $ UploadError exc
 
 main :: IO ()
 main =
@@ -248,37 +261,54 @@ main =
     gleanDBName $ \env0@Glass.Env{..} -> do
       let env = env0 { Glass.snapshotBackend = NoSnapshotBackend}
       numCores <- getNumCapabilities
-      errorsCounterRef <- newIORef 0
+
       snaps <- forConcurrently_unordered numCores files $ \file -> do
         let (_, Types.Path p) = file
         snapOrError <- try $ buildSnapshot env rev file doCompress
         case snapOrError of
-          Left Types.GlassException{..} -> do
-            atomicModifyIORef'_ errorsCounterRef succ
-            logError $ printf "%s: %s" p (show $ head glassException_reasons)
-            return Nothing
+          Left e@Types.GlassException{..} -> do
+            let reason = printf "%s: %s" p (show $ head glassException_reasons)
+            logError reason
+            return (file, Left $ GlassException e)
           Right snap ->
-            return $ Just (file, snap)
-      forM_ (catMaybes snaps) $ \(file, snap) -> do
-        let (repo, path@(Types.Path p)) = file
-        let BuildSnapshot{bytes, revision, sizeKB} = snap
-        if
-            | Nothing <- output
-            , sizeKB < fromMaybe maxBound threshold
-            -> uploadToXdb tier repo revision path snap
-            | Nothing <- output
-            -> logError $
-                printf
-                  "%s: Snapshot size above threshold (%d kB), not uploading"
-                  p
-                  sizeKB
-            | Just output_ <- output
-            -> do
-              let out = output_ </> unpack p
-              createDirectoryIfMissing True (takeDirectory out)
-              BS.writeFile out bytes
+            return (file, Right snap)
+
+      mbErrors <- forM snaps $ \((repo, path), snapOrError) -> do
+        case snapOrError of
+          Left e -> return (Just e)
+          Right snap -> do
+            let BuildSnapshot{bytes, revision, sizeKB} = snap
+            if
+                | Nothing <- output
+                , sizeKB < fromMaybe maxBound threshold
+                -> do
+                  uploadToXdb tier repo revision path snap
+                | Nothing <- output
+                -> do
+                  logError $
+                    printf
+                      "%s: Snapshot size above threshold (%d kB), not uploading"
+                      (Types.unPath path)
+                      sizeKB
+                  return (Just $ SizeAboveThreshold sizeKB)
+                | Just output_ <- output
+                -> do
+                  let out = output_ </> unpack (Types.unPath path)
+                  createDirectoryIfMissing True (takeDirectory out)
+                  BS.writeFile out bytes
+                  return Nothing
 
       -- Exit with error code = number of failed snapshots
-      errorsCount <- readIORef errorsCounterRef
+      let errors = catMaybes mbErrors
+      let errorsCount = length $ filter isFatalError errors
       when (errorsCount > 0) $
         exitWith (ExitFailure errorsCount)
+
+isFatalError :: SnapshotError -> Bool
+isFatalError = \case
+  SizeAboveThreshold{} -> True
+  GlassException{} -> True
+  EmptySymbolList{} -> True
+  InsertError{} -> True
+  UploadError{} -> True
+  AlreadyPresent -> False
