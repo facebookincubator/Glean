@@ -53,13 +53,16 @@ import Options.Applicative (
   switch,
  )
 import System.Directory (createDirectoryIfMissing)
+import System.Environment (lookupEnv)
 import System.Exit (exitWith, ExitCode (ExitFailure))
 import System.FilePath ((</>), joinPath, splitDirectories, takeDirectory)
 import Thrift.Protocol (serializeGen)
 import Thrift.Protocol.Compact (Compact)
 import Text.Printf
+import TextShow
 
 import Facebook.Db (InstanceRequirement (Master), withConnection)
+import qualified Logger.GleanDiffTimeCoverage as Logger
 import Util.Log.String (logError, logInfo, logWarning)
 import Codec.Compression.GZip (compress)
 
@@ -137,6 +140,10 @@ gleanDBNameParser =
     <> help "identifies the database"
     )
 
+phabricatorVersionParser :: Parser (Maybe Text)
+phabricatorVersionParser =
+  optional $ strOption (long "phabricator-version-number")
+
 data Config = Config
   { glassConfig :: Glass.Config -- TODO we don't need all these options
   , files :: [FileToSnapshot]
@@ -146,13 +153,14 @@ data Config = Config
   , threshold :: Maybe Int
   , gleanDBName :: Maybe Glean.Repo
   , doCompress :: Bool
+  , phabricatorVersionNumber :: Maybe Text
   }
 
 configParser :: Parser Config
 configParser =
   Config <$> Glass.configParser <*> filesToSnapshot <*> outputString <*>
   optRev <*> snapshotTierParser <*> thresholdParser <*> gleanDBNameParser <*>
-  (not <$> compressParser)
+  (not <$> compressParser) <*> phabricatorVersionParser
 
 options :: ParserInfo Config
 options = info (helper <*> configParser) (fullDesc <>
@@ -164,7 +172,9 @@ data BuildSnapshot = BuildSnapshot
     bytes :: !BS.ByteString,
     revision :: Types.Revision,
     sizeKB :: !Int,
-    symbolList :: Types.DocumentSymbolListXResult
+    symbolList :: Types.DocumentSymbolListXResult,
+    defs :: !Int,
+    refs :: !Int
   }
 
 isEmptySymbols :: Types.DocumentSymbolListXResult -> Bool
@@ -173,12 +183,30 @@ isEmptySymbols Types.DocumentSymbolListXResult{..} =
     null documentSymbolListXResult_definitions
 
 data SnapshotError
- = SizeAboveThreshold { _kb :: Int }
+ = SizeAboveThreshold { kb :: Int }
  | GlassException Types.GlassException
  | EmptySymbolList
  | InsertError
  | UploadError SomeException
  | AlreadyPresent
+
+showError :: SnapshotError -> Text
+showError EmptySymbolList = "empty symbol list"
+showError SizeAboveThreshold{..} = "size above threshold (" <> showt kb <> "kB)"
+showError InsertError = "insertion error (XDB)"
+showError (UploadError e) = "upload error (" <> showt e <> ")"
+showError (GlassException g) = case glassException_reasons g of
+  [] -> "glass: unknown"
+  Types.GlassExceptionReason_noSrcFileFact{} : _ -> "no src.File fact"
+  Types.GlassExceptionReason_noSrcFileLinesFact{} : _ -> "no src.FileLines fact"
+  Types.GlassExceptionReason_notIndexedFile{} : _ -> "not indexed"
+  Types.GlassExceptionReason_entitySearchFail{} : _ -> "entity search failed"
+  Types.GlassExceptionReason_entityNotSupported{} : _ -> "entity not supported"
+  Types.GlassExceptionReason_attributesError{} : _ -> "attributes error"
+  Types.GlassExceptionReason_exactRevisionNotAvailable{} : _ ->
+    "exact revision not available"
+  Types.GlassExceptionReason_EMPTY : _ -> "glass: unknown"
+showError AlreadyPresent = "already present"
 
 -- | Throws GlassException
 buildSnapshot
@@ -209,7 +237,7 @@ buildSnapshot env rev (repo, path) doCompress = do
     logInfo $ printf "Building snapshot %s %s: %d defs %d refs %dKB %s"
       (Types.unPath path) (Types.unRevision revision) defs refs
       snapshotSizeKB logCompress
-    return $! BuildSnapshot ser revision snapshotSizeKB symbolList
+    return $! BuildSnapshot ser revision snapshotSizeKB symbolList defs refs
 
 uploadToXdb
   :: SnapshotTier
@@ -261,6 +289,10 @@ main =
     gleanDBName $ \env0@Glass.Env{..} -> do
       let env = env0 { Glass.snapshotBackend = NoSnapshotBackend}
       numCores <- getNumCapabilities
+      skycastleJobId <- lookupEnv "SKYCASTLE_WORKFLOW_RUN_ID"
+      let logJobProperties =
+            foldMap (Logger.setWorkflowId . pack) skycastleJobId <>
+            foldMap Logger.setDiffVersion phabricatorVersionNumber
 
       snaps <- forConcurrently_unordered numCores files $ \file -> do
         let (_, Types.Path p) = file
@@ -274,15 +306,16 @@ main =
             return (file, Right snap)
 
       mbErrors <- forM snaps $ \((repo, path), snapOrError) -> do
-        case snapOrError of
-          Left e -> return (Just e)
+        result <- case snapOrError of
+          Left e -> return (Left e)
           Right snap -> do
             let BuildSnapshot{bytes, revision, sizeKB} = snap
             if
                 | Nothing <- output
                 , sizeKB < fromMaybe maxBound threshold
                 -> do
-                  uploadToXdb tier repo revision path snap
+                  mbError <- uploadToXdb tier repo revision path snap
+                  return (maybe (Right snap) Left mbError)
                 | Nothing <- output
                 -> do
                   logError $
@@ -290,13 +323,26 @@ main =
                       "%s: Snapshot size above threshold (%d kB), not uploading"
                       (Types.unPath path)
                       sizeKB
-                  return (Just $ SizeAboveThreshold sizeKB)
+                  return (Left $ SizeAboveThreshold sizeKB)
                 | Just output_ <- output
                 -> do
                   let out = output_ </> unpack (Types.unPath path)
                   createDirectoryIfMissing True (takeDirectory out)
                   BS.writeFile out bytes
-                  return Nothing
+                  return (Right snap)
+
+        Logger.runLog logger $
+          logJobProperties <>
+          Logger.setPath (Types.unPath path) <>
+          Logger.setRepo (Types.unRepoName repo) <>
+          case result of
+            Left e ->
+              Logger.setError (showError e)
+            Right BuildSnapshot{..} ->
+              Logger.setDefinitions defs <>
+              Logger.setReferences refs
+
+        return (either Just (const Nothing) result)
 
       -- Exit with error code = number of failed snapshots
       let errors = catMaybes mbErrors
