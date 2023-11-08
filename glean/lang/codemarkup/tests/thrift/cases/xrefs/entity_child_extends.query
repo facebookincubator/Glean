@@ -1,2 +1,2 @@
-query: codemarkup.ExtendsChildEntity { parent = { thrift = _ }, child = { thrift = _ } }
+query: codemarkup.ExtendsChildEntity { parent = { fbthrift = _ }, child = { fbthrift = _ } }
 transform: [normord, []]

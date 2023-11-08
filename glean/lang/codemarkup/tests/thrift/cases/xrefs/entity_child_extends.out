@@ -3,15 +3,15 @@
   {
     "key": {
       "child": {
-        "thrift": {
+        "fbthrift": {
           "decl": {
             "service_": {
               "key": {
                 "locName": {
-                  "endCol": 19,
-                  "endLine": 238,
-                  "startCol": 9,
-                  "startLine": 238
+                  "endCol": -1,
+                  "endLine": -1,
+                  "startCol": -1,
+                  "startLine": -1
                 },
                 "name": {
                   "key": {
@@ -25,15 +25,15 @@
         }
       },
       "parent": {
-        "thrift": {
+        "fbthrift": {
           "decl": {
             "service_": {
               "key": {
                 "locName": {
-                  "endCol": 19,
-                  "endLine": 235,
-                  "startCol": 9,
-                  "startLine": 235
+                  "endCol": -1,
+                  "endLine": -1,
+                  "startCol": -1,
+                  "startLine": -1
                 },
                 "name": {
                   "key": {
@@ -51,15 +51,15 @@
   {
     "key": {
       "child": {
-        "thrift": {
+        "fbthrift": {
           "decl": {
             "service_": {
               "key": {
                 "locName": {
-                  "endCol": 20,
-                  "endLine": 241,
-                  "startCol": 9,
-                  "startLine": 241
+                  "endCol": -1,
+                  "endLine": -1,
+                  "startCol": -1,
+                  "startLine": -1
                 },
                 "name": {
                   "key": {
@@ -73,15 +73,15 @@
         }
       },
       "parent": {
-        "thrift": {
+        "fbthrift": {
           "decl": {
             "service_": {
               "key": {
                 "locName": {
-                  "endCol": 19,
-                  "endLine": 238,
-                  "startCol": 9,
-                  "startLine": 238
+                  "endCol": -1,
+                  "endLine": -1,
+                  "startCol": -1,
+                  "startLine": -1
                 },
                 "name": {
                   "key": {

@@ -1,1 +1,34 @@
-[ "@generated" ]
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "locName": {
+                  "endCol": -1,
+                  "endLine": -1,
+                  "startCol": -1,
+                  "startLine": -1
+                },
+                "name": {
+                  "kind": 3,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Attribute" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.thrift" },
+      "span": { "length": 11, "start": 1176 }
+    }
+  }
+]
