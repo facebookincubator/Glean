@@ -14,9 +14,11 @@ module Derive.CxxSame
 
 import Control.Exception
 import Control.Monad
+import Data.Coerce
 import Data.Int
 import qualified Data.IntMap.Strict as IntMap
 import Data.Graph as Graph
+import Data.Proxy
 import Data.Tree as Tree
 
 import Util.Log (logInfo)
@@ -24,6 +26,8 @@ import Util.Log (logInfo)
 import Glean
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import Glean.Util.Declarations (getDeclId)
+import Glean.Util.PredSet (PredSet)
+import qualified Glean.Util.PredSet as PredSet
 
 import Derive.Types
 
@@ -39,12 +43,16 @@ but there may in general be many declarations for the same
 definition, and even multiple definitions.
 
 The Cxx.Same edges produced by the indexer are not transitively
-closed.
+closed. We want to find the components of the graph represented by the
+cxx.Same edges, and produce:
 
-In Diffusion and the dead-code analyses we want a global view of
-the complete set of declarations for a given entity. This
-derivation pass establishes that, by extracting the components of
-the graph formed by the Cxx.Same edges.
+  predicate DeclFamily : [Declaration]
+
+  predicate DeclToFamily :
+    {
+      decl : Declaration,
+      family : DeclFamily,
+    }
 
 The basic algorithm is:
 * For each @Cxx.Same d1 d2@,
@@ -69,13 +77,16 @@ deriveSame e cfg writer = do
     $ \(nodes,edges) bs -> do
     let
       procSame (nodes, edges)
-        (Cxx.Same _ (Just (Cxx.Same_key decl1 decl2))) = do
+        (Cxx.Same fid (Just (Cxx.Same_key decl1 decl2))) = do
         let
           d1 = getDeclId decl1
           d2 = getDeclId decl2
+          id = coerce fid :: IdOf Cxx.Same
+          one_id = PredSet.singleton id
+          ins (decl, set) _ = (decl, PredSet.insert id set)
           !nodes' =
-            IntMap.insert (fromIntegral d1) decl1 $
-            IntMap.insert (fromIntegral d2) decl2 nodes
+            IntMap.insertWith ins (fromIntegral d1) (decl1, one_id) $
+            IntMap.insertWith ins (fromIntegral d2) (decl2, one_id) nodes
           !edges' = IntMap.insertWith (const (d2:)) (fromIntegral d1) [d2] edges
         return (nodes',edges')
       procSame _ _ = throwIO $ ErrorCall "internal error: procSame"
@@ -83,20 +94,34 @@ deriveSame e cfg writer = do
     foldM procSame (nodes,edges) bs
 
   let
-    adjacencyList :: [(Cxx.Declaration, Int64, [Int64])]
+    adjacencyList :: [((Cxx.Declaration, PredSet Cxx.Same), Int64, [Int64])]
     adjacencyList =
       [ (decl, fromIntegral n, IntMap.findWithDefault [] n edges)
       | (n,decl) <- IntMap.toList nodes ]
 
     (theGraph, fromVertex, _) = Graph.graphFromEdges adjacencyList
 
-    fromV :: Graph.Vertex -> Cxx.Declaration
-    fromV v = case fromVertex v of (decl, _, _) -> decl
+    fromVs :: [Graph.Vertex] -> ([Cxx.Declaration], PredSet Cxx.Same)
+    fromVs vs = (ds, foldr PredSet.union mempty sets)
+      where
+      (ds, sets) = unzip [ d | v <- vs, let (d, _, _) = fromVertex v ]
 
-    generateFamilies :: [[Cxx.Declaration]] -> IO ()
-    generateFamilies groups = writeFacts writer $ forM_ groups $ \group -> do
-      fam <- makeFact @Cxx.DeclFamily group
-      forM_ group $ \decl -> makeFact_ @Cxx.DeclToFamily $
-        Cxx.DeclToFamily_key decl fam
+    generateFamilies :: [([Cxx.Declaration], PredSet Cxx.Same)] -> IO ()
+    generateFamilies groups =
+      writeFacts writer $
+        forM_ groups $ \(group, sames) -> do
+          let sources = coerce $ PredSet.toList sames
+          fam <- makeFact @Cxx.DeclFamily group
+          tos <- forM group $ \decl ->
+            makeFact @Cxx.DeclToFamily $ Cxx.DeclToFamily_key decl fam
+          derivedFrom sources [fam]
+          derivedFrom sources tos
 
-  generateFamilies $ map (map fromV . Tree.flatten) $ Graph.components theGraph
+  generateFamilies $ map (fromVs . Tree.flatten) $ Graph.components theGraph
+
+  completePredicates e (cfgRepo cfg) $
+    CompletePredicates_derived $ CompleteDerivedPredicate $
+      getName (Proxy @Cxx.DeclFamily)
+  completePredicates e (cfgRepo cfg) $
+    CompletePredicates_derived $ CompleteDerivedPredicate $
+      getName (Proxy @Cxx.DeclToFamily)
