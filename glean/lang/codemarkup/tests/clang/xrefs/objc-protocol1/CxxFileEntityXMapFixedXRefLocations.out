@@ -177,7 +177,7 @@
                     }
                   },
                   "from": {
-                    "spans": [ { "length": 9, "offsets": [ 334 ] } ],
+                    "spans": [ { "length": 3, "offsets": [ 344 ] } ],
                     "expansions": [ ],
                     "spellings": [ ]
                   }
@@ -207,7 +207,7 @@
             "span": { "start": 287, "length": 3 }
           }
         },
-        "source": { "span": { "start": 334, "length": 9 } }
+        "source": { "span": { "start": 344, "length": 3 } }
       },
       "entity": {
         "defn": {
@@ -410,7 +410,7 @@
                     }
                   },
                   "from": {
-                    "spans": [ { "length": 9, "offsets": [ 334 ] } ],
+                    "spans": [ { "length": 3, "offsets": [ 344 ] } ],
                     "expansions": [ ],
                     "spellings": [ ]
                   }
@@ -681,7 +681,7 @@
                     }
                   },
                   "from": {
-                    "spans": [ { "length": 9, "offsets": [ 334 ] } ],
+                    "spans": [ { "length": 3, "offsets": [ 344 ] } ],
                     "expansions": [ ],
                     "spellings": [ ]
                   }
@@ -926,7 +926,7 @@
                     }
                   },
                   "from": {
-                    "spans": [ { "length": 9, "offsets": [ 334 ] } ],
+                    "spans": [ { "length": 3, "offsets": [ 344 ] } ],
                     "expansions": [ ],
                     "spellings": [ ]
                   }

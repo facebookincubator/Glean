@@ -2244,9 +2244,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       clang::SourceLocation loc,
       const clang::ObjCProtocolDecl *decl) {
     if (loc.isValid()) {
-      xrefDecl(
-          {loc, loc.getLocWithOffset(decl->getIdentifier()->getLength() - 1)},
-          decl);
+      xrefDecl(loc, decl);
     }
   }
 
@@ -2539,7 +2537,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   bool VisitObjCProtocolExpr(const clang::ObjCProtocolExpr *expr) {
-    xrefObjCProtocolDecl(expr->getBeginLoc(), expr->getProtocol());
+    xrefObjCProtocolDecl(expr->getProtocolIdLoc(), expr->getProtocol());
     return true;
   }
 
