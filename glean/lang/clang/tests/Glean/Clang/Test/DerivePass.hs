@@ -10,13 +10,14 @@
 module Glean.Clang.Test.DerivePass (testDeriver, driver, derivePasses) where
 
 import Control.Monad
+import Data.Default
 
-import Glean.Backend.Types (Backend)
+import Glean.Backend.Types
 import qualified Glean.Clang.Test as Clang
 import Glean.Indexer
 import Glean.Regression.Snapshot.Driver
 import Glean.Regression.Snapshot
-import Glean.Types (Repo)
+import Glean.Types
 
 import Derive.Env (withEnv)
 import Derive.Lib (dispatchDerive, DerivePass, allPredicates)
@@ -30,7 +31,8 @@ driver passes = Clang.driver { driverIndexer = indexer }
 
 derivePasses
   :: Backend backend => [DerivePass] -> backend -> Repo -> p -> IO ()
-derivePasses passes backend repo _params =
+derivePasses passes backend repo _params = do
+    completePredicates backend repo (CompletePredicates_axiom def)
     forM_ passes $ \thisPass ->
       -- withTestWriter completes before next pass
       withEnv (testConfig repo) allPredicates backend $ \env ->

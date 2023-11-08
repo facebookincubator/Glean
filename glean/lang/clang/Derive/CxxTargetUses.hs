@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE ApplicativeDo, PartialTypeSignatures, TypeApplications #-}
+{-# LANGUAGE PartialTypeSignatures, TypeApplications #-}
 {-# OPTIONS_GHC -Wno-partial-type-signatures #-}
 module Derive.CxxTargetUses
   ( deriveUses
@@ -14,8 +14,10 @@ module Derive.CxxTargetUses
 
 import Control.Exception
 import Control.Monad
+import Data.Coerce
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
+import Data.Proxy
 import qualified Data.Set as Set
 import qualified Data.Vector as V
 
@@ -26,6 +28,7 @@ import Glean.Typed (getPid)
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Util.PredMap as PredMap
+import qualified Glean.Util.PredSet as PredSet
 import Glean.Util.Range
 
 import Derive.Common
@@ -67,20 +70,21 @@ deriveUses e cfg writer = do
   xrefs <- getFileXRefs e cfg
   logInfo $ "loaded " ++ show (PredMap.size xrefs) ++ " file xrefs"
 
-  let generateUses :: Maybe Src.File -> Uses -> IO ()
-      generateUses (Just file) uses =
-        when (not $ cfgDryRun cfg)
-        $ writeFacts writer
-        $ forM_ (HashMap.toList uses) $ \(target, Ranges{..}) -> do
+  let generateUses :: Maybe Src.File -> [IdOf Cxx.FileXRefs] -> Uses -> IO ()
+      generateUses (Just file) deps uses = do
+        when (not $ cfgDryRun cfg) $ writeFacts writer $ do
+          facts <- forM (HashMap.toList uses) $ \(target, Ranges{..}) -> do
             let rangesToSpans = rangesToPackedByteSpans . Set.toList
-            makeFact_ @Cxx.TargetUses Cxx.TargetUses_key
+            makeFact @Cxx.TargetUses Cxx.TargetUses_key
               { targetUses_key_target = target
               , targetUses_key_file = file
               , targetUses_key_from = Cxx.From (rangesToSpans ranges)
                                                (rangesToSpans expansions)
                                                (rangesToSpans spellings)
               }
-      generateUses _ _ = return ()
+          when (not (null deps)) $ derivedFrom (coerce deps) facts
+
+      generateUses _ _ _ = return ()
 
       -- NOTE: We rely on the ordering property of the `allFacts` query.
       --       Specifically, we expect to encounter `FileXRefMap`s for
@@ -89,26 +93,49 @@ deriveUses e cfg writer = do
       q = maybe id limit (cfgMaxQueryFacts cfg) $
           limitBytes (cfgMaxQuerySize cfg) allFacts
 
-  (uses, last_file) <- runQueryEach e (cfgRepo cfg) q (mempty, Nothing)
-    $ \(uses, last_file) (Cxx.FileXRefMap i k) -> do
-      key <- case k of
-        Just k -> return k
-        Nothing -> throwIO $ ErrorCall "internal error: deriveUses"
-      let file = Just $ Cxx.fileXRefMap_key_file key
-      uses <- if last_file == file
-        then return uses
-        else do
-          generateUses last_file uses
-          return HashMap.empty
-      let new_uses = foldr (addUses indirects) uses $
-            [ (target, from)
-            | Cxx.FixedXRef target from <- Cxx.fileXRefMap_key_fixed key ]
-            ++
-            [ (target, from)
-            | (targets, from) <- zip
-                (V.toList $ PredMap.findWithDefault mempty (IdOf $ Fid i) xrefs)
-                (Cxx.fileXRefMap_key_froms key)
-            , target <- HashSet.toList targets ]
-      return (new_uses, file)
+      -- The dependencies we record for each cxx.TargetUses fact are
+      -- the set of cxx.FileXRefs used to generate it. The other
+      -- facts that we touch are reachable from the FileXRefs:
+      --   - cxx.FileXRefMap is pointed to by FileXRefs
+      --   - cxx.XRefIndirectTarget is pointed to by FileXRefMap
+      --
+      -- Note that this is not strictly accurate. Each TargetUses fact
+      -- is actually derived from some subset of the FileXRefs facts
+      -- that we saw, since not all FileXRefs have the same
+      -- targets. But since we will never hide just a subset of the
+      -- FileXRef facts (if we fully index the fanout) widening the
+      -- ownership like this is safe and more efficient because we
+      -- generate fewer ownership sets.
 
-  generateUses last_file uses
+  (uses, deps, last_file) <-
+    runQueryEach e (cfgRepo cfg) q (mempty, [], Nothing)
+      $ \(uses, deps, last_file) (Cxx.FileXRefMap i k) -> do
+        key <- case k of
+          Just k -> return k
+          Nothing -> throwIO $ ErrorCall "internal error: deriveUses"
+        let file = Just $ Cxx.fileXRefMap_key_file key
+        (deps, uses) <- if last_file == file
+          then return (deps, uses)
+          else do
+            generateUses last_file deps uses
+            return ([], HashMap.empty)
+
+        let
+            (new_deps, map_targets) = case PredMap.lookup (IdOf $ Fid i) xrefs of
+              Nothing -> (PredSet.empty, mempty)
+              Just x -> x
+            new_uses = foldr (addUses indirects) uses $
+              [ (target, from)
+              | Cxx.FixedXRef target from <- Cxx.fileXRefMap_key_fixed key ]
+              ++
+              [ (target, from)
+              | (targets, from) <-
+                  zip (V.toList map_targets) (Cxx.fileXRefMap_key_froms key)
+              , target <- HashSet.toList targets ]
+        return (new_uses, PredSet.toList new_deps <> deps, file)
+
+  generateUses last_file deps uses
+
+  completePredicates e (cfgRepo cfg) $
+    CompletePredicates_derived $ CompleteDerivedPredicate $
+      getName (Proxy @Cxx.TargetUses)

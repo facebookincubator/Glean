@@ -150,6 +150,7 @@ module Glean
   , finalize
   , completePredicates
   , CompletePredicates(..)
+  , CompleteDerivedPredicate(..)
   , basicWriter
   , FactBuilder
   , makeFact

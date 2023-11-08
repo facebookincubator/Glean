@@ -23,11 +23,15 @@ import Data.Maybe
 import qualified Data.Vector as V
 import qualified Data.Vector.Mutable as VM
 
+import Util.Log
+
 import Glean
 import Glean.Typed (PidOf)
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import Glean.Util.PredMap (PredMap)
 import qualified Glean.Util.PredMap as PredMap
+import Glean.Util.PredSet (PredSet)
+import qualified Glean.Util.PredSet as PredSet
 
 import Derive.Types
 
@@ -37,7 +41,10 @@ type Indirects = PredMap Cxx.XRefIndirectTarget Cxx.XRefTarget
 
 -- Keys are fileXRefMap_id, values are sets of targets for each external target
 -- in the map.
-type XRefs = PredMap Cxx.FileXRefMap (V.Vector (HashSet Cxx.XRefTarget))
+type XRefs =
+  PredMap
+    Cxx.FileXRefMap
+    (PredSet Cxx.FileXRefs, V.Vector (HashSet Cxx.XRefTarget))
 
 getIndirectTargets
   :: Backend e => e -> Config -> PidOf Cxx.XRefIndirectTarget -> IO Indirects
@@ -83,6 +90,7 @@ getFileXRefs e cfg = do
         Just k -> return k
         Nothing -> throwIO $ ErrorCall "internal error: getFileXRefs"
       return $ PredMap.insert (IdOf $ Fid i) key targetsMap
+  logInfo $ "loaded " ++ show (PredMap.size targetsMap) ++ " XRefTargets"
 
   let
     q :: Query Cxx.FileXRefs
@@ -90,7 +98,7 @@ getFileXRefs e cfg = do
         limitBytes (cfgMaxQuerySize cfg) allFacts
 
   xrefs <- runQueryEach e (cfgRepo cfg) q mempty
-      $ \xrefs (Cxx.FileXRefs _ k) -> do
+      $ \xrefs (Cxx.FileXRefs i k) -> do
     key <- case k of
       Just k -> return k
       Nothing -> throwIO $ ErrorCall "internal error: getFileXRefs"
@@ -100,14 +108,15 @@ getFileXRefs e cfg = do
           | targets <- Cxx.fileXRefs_key_targets key ]
         id = getId (Cxx.fileXRefs_key_xmap key)
     case PredMap.lookup id xrefs of
-      Just xs -> do
+      Just (deps, xs) -> do
         forM_ (zip [0 .. VM.length xs - 1] targets) $ \(i, ts) -> do
           x <- VM.unsafeRead xs i
           VM.unsafeWrite xs i $! HashSet.union ts x
-        return xrefs
+        let !newDeps = PredSet.insert (IdOf $ Fid i) deps
+        return $ PredMap.insert id (newDeps, xs) xrefs
       Nothing -> do
         xs <- VM.new (length targets)
         forM_ (zip [0..] targets) $ \(i, ts) ->
           VM.unsafeWrite xs i $! ts
-        return $ PredMap.insert id xs xrefs
-  traverse V.unsafeFreeze xrefs
+        return $ PredMap.insert id (PredSet.singleton (IdOf $ Fid i), xs) xrefs
+  traverse (\(deps, xs) -> (deps,) <$> V.unsafeFreeze xs) xrefs

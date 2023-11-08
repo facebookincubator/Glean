@@ -444,7 +444,9 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
             matched = zip froms $ V.toList targets
               where
                 froms = Cxx.fileXRefMap_key_froms key
-                targets = PredMap.findWithDefault mempty i xrefs
+                targets = case PredMap.lookup i xrefs of
+                  Nothing -> mempty
+                  Just (_, xs) -> xs
 
             variableTargets =
               [ (range, targetDecls)
