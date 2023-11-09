@@ -1,0 +1,6 @@
+query: cxx1.DeclByName _
+transform:
+  - sort
+  - - [key,name_lowercase]
+    - [key,kind]
+    - [key,ident,macro,key]
