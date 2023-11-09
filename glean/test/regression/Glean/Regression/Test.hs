@@ -70,7 +70,7 @@ mainTestIndexGeneric
   :: Driver driverOpts
   -> Parser extraOpts -- ^ parser for extra options to recognise
   -> String -- ^ just a string to identify this test
-  -> (extraOpts -> Config -> String -> TestConfig -> TestIndex)
+  -> (extraOpts -> driverOpts -> Config -> TestConfig -> TestIndex)
   -> IO ()
 mainTestIndexGeneric driver extraOptParser dir testIndex = do
   let
@@ -111,7 +111,7 @@ mainTestIndexGeneric driver extraOptParser dir testIndex = do
 
           withLazy withSetup $ \get ->
             fn $ TestLabel (mkLabel platform) $
-              testIndex extraOpts cfg platform testConfig get
+              testIndex extraOpts driverOpts cfg testConfig get
 
       withMany withPlatformTest platforms $ \tests ->
         testRunnerAction action (TestList tests)
