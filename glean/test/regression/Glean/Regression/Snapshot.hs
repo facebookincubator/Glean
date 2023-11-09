@@ -34,6 +34,7 @@ import qualified Test.HUnit as HUnit
 import TestRunner
 import Util.JSON.Pretty ()
 
+import Glean (Backend)
 import Glean.Indexer
 import Glean.Init (withUnitTestOptions)
 import Glean.Regression.Config
@@ -66,35 +67,43 @@ runTest
   -> FilePath    -- ^ test root, canonicalized
   -> TestConfig
   -> IO [FilePath]
-runTest Driver{..} driverOpts root testIn =
+runTest driver@Driver{..} driverOpts root testIn =
   withTestBackend testIn $ \backend -> do
     let index = indexerRun driverIndexer driverOpts
-    withTestDatabase backend index Nothing testIn $
-      queryMakeOuts testIn backend
-  where
-    queryMakeOuts test backend repo = do
-      queries <- get_queries root mempty (testRoot test)
-      fmap concat $ forM (Map.elems queries) $ \query -> do
-        (result, perf) <- runQuery
-          backend
-          repo
-          (defaultTransforms <> driverTransforms)
-          query
-        let base = testOutput test </> dropExtension (takeFileName query)
-            out = base <.> "out"
-            perfOut = base <.> "perf"
-        writeFile out result
-        mapM_ (writeFile perfOut) perf
-        return $ if isJust perf then [out,perfOut] else [out]
+    withTestDatabase backend index Nothing testIn $ \_ ->
+      runQueries backend driver root testIn
 
-    get_queries root qs path = do
-      files <- listDirectory path
-      let qs' = Map.union qs $ Map.fromList
-            [ (file, path </> file)
-            | file <- files, ".query" `isExtensionOf` file ]
-      if equalFilePath path root
-        then return qs'
-        else get_queries root qs' $ takeDirectory path
+-- | Run the queries
+runQueries
+  :: Backend b
+  => b
+  -> Driver opts
+  -> FilePath  -- ^ test root, canonicalized
+  -> TestConfig
+  -> IO [FilePath]
+runQueries backend Driver{..} root test  = do
+  queries <- get_queries root mempty (testRoot test)
+  fmap concat $ forM (Map.elems queries) $ \query -> do
+    (result, perf) <- runQuery
+      backend
+      (testRepo test)
+      (defaultTransforms <> driverTransforms)
+      query
+    let base = testOutput test </> dropExtension (takeFileName query)
+        out = base <.> "out"
+        perfOut = base <.> "perf"
+    writeFile out result
+    mapM_ (writeFile perfOut) perf
+    return $ if isJust perf then [out,perfOut] else [out]
+  where
+  get_queries root qs path = do
+    files <- listDirectory path
+    let qs' = Map.union qs $ Map.fromList
+          [ (file, path </> file)
+          | file <- files, ".query" `isExtensionOf` file ]
+    if equalFilePath path root
+      then return qs'
+      else get_queries root qs' $ takeDirectory path
 
 -- | Outputs to compare/regenerate.
 --
@@ -137,6 +146,20 @@ executeTest cfg driver driverOpts base_group group diff subdir =
         }
   createDirectoryIfMissing True $ testOutput test
   outputs <- runTest driver driverOpts (cfgRoot cfg) test
+  compareOutputs test diff base_group group outputs
+  where
+    with_outdir f = case cfgOutput cfg of
+      Just dir -> f dir
+      Nothing -> withSystemTempDirectory "glean-regression" f
+
+compareOutputs
+  :: TestConfig
+  -> (Outputs -> IO Result)  -- ^ compare or overwrite golden outputs
+  -> String
+  -> String
+  -> [FilePath]
+  -> IO Result
+compareOutputs test diff base_group group outputs = do
   fmap mconcat $ forM outputs $ \output -> do
     let base = testRoot test </> takeFileName output
         specific
@@ -150,10 +173,6 @@ executeTest cfg driver driverOpts base_group group diff subdir =
       , outGoldenBase = base
       , outGoldenGroup = specific
       }
-  where
-    with_outdir f = case cfgOutput cfg of
-      Just dir -> f dir
-      Nothing -> withSystemTempDirectory "glean-regression" f
 
 -- | Regenerate golden outputs. Do nothing if 'outGoldenBase' exists and is the
 -- same as 'outGenerated'. Otherwise, copy 'outGenerated' to 'outGoldenGroup'
@@ -186,22 +205,6 @@ diff Outputs{..} = do
         if n == 1
           then ": unexpected result\n" ++ sout
           else ": fatal error\n" ++ serr
-
--- | Wrap 'executeTest' into an 'HUnit.Test'
-toHUnit
-  :: Config
-  -> Driver opts
-  -> opts
-  -> String
-  -> String
-  -> FilePath
-  -> HUnit.Test
-toHUnit cfg driver driverOpts base_group group subdir =
-  HUnit.TestLabel subdir $ HUnit.TestCase $ do
-    r <- executeTest cfg driver driverOpts base_group group diff subdir
-    case r of
-      Success _ -> return ()
-      Failure msg -> HUnit.assertFailure $ unlines $ msg []
 
 -- | Convert a 'Driver' into a regression test over --root parameter.
 --
@@ -240,11 +243,13 @@ testAll act cfg driver opts = do
             Success regenerated -> do
               removeNonRegenerated root test regenerated
     Nothing -> do
-      testRunnerAction act $ HUnit.TestList
-        [ (if null g then id else HUnit.TestLabel g)
-            $ HUnit.TestList
-            $ map (toHUnit cfg driver opts (head groups) g) tests
-          | g <- groups ]
+      testRunnerAction act $
+        HUnit.TestList $ flip map groups $ \g ->
+          (if null g then id else HUnit.TestLabel g) $
+            HUnit.TestList $ flip map tests $ \subdir ->
+              HUnit.TestLabel subdir $ HUnit.TestCase $
+                executeTest cfg driver opts (head groups) g diff subdir
+                  >>= toHUnit
 
     where
       -- clean-up .out or .perf files which weren't regenerated

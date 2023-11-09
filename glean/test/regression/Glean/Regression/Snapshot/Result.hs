@@ -6,8 +6,11 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.Regression.Snapshot.Result (Result(..), failure)
-where
+module Glean.Regression.Snapshot.Result
+  ( Result(..), failure, toHUnit
+  ) where
+
+import qualified Test.HUnit as HUnit
 
 data Result
   = Success [FilePath]
@@ -24,3 +27,8 @@ failure s = Failure (s:)
 
 instance Monoid Result where
   mempty = Success []
+
+-- | Use a 'Result' in a 'Test'
+toHUnit :: Result -> HUnit.Assertion
+toHUnit Success{} = return ()
+toHUnit (Failure msg) = HUnit.assertFailure $ unlines $ msg []
