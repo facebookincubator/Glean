@@ -67,8 +67,9 @@ runTest
   -> TestConfig
   -> IO [FilePath]
 runTest Driver{..} driverOpts root testIn =
-  withTestBackend testIn $ \backend ->
-    withTestDatabase backend (indexerRun driverIndexer driverOpts) testIn $
+  withTestBackend testIn $ \backend -> do
+    let index = indexerRun driverIndexer driverOpts
+    withTestDatabase backend index Nothing testIn $
       queryMakeOuts testIn backend
   where
     queryMakeOuts test backend repo = do

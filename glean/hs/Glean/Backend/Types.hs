@@ -236,13 +236,15 @@ fillDatabase
     -- ^ The repo to create
   -> Text
     -- ^ Handle for writing. Can be anything you like.
+  -> Maybe Dependencies
+    -- ^ Optionally stack the new DB on another DB
   -> IO ()
     -- ^ What to do if the DB already exists. @return ()@ to continue,
     -- or @throwIO@ to forbid.
   -> IO b
     -- ^ Caller-supplied action to write data into the DB.
   -> IO b
-fillDatabase env repo handle ifexists action =
+fillDatabase env repo handle maybeDeps ifexists action =
   tryBracket create finish (const action)
   where
   create = do
@@ -253,6 +255,7 @@ fillDatabase env repo handle ifexists action =
           [ ("glean.schema_id", id)
           | Just (SchemaId id) <- [schemaId env]
           ]
+      , kickOff_dependencies = maybeDeps
       }
     when (kickOffResponse_alreadyExists r) ifexists
 

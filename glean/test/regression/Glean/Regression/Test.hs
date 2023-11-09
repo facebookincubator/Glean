@@ -29,6 +29,7 @@ import TestRunner
 import Util.IO
 
 import Glean
+import Glean.LocalOrRemote
 import Glean.Indexer
 import Glean.Init (withUnitTestOptions)
 import Glean.Regression.Config
@@ -37,7 +38,7 @@ import Glean.Regression.Snapshot.Driver
 import Glean.Regression.Snapshot.Options
 import Glean.Util.Some (Some(..))
 
-type TestIndex = IO (Some Backend, Repo) -> Test
+type TestIndex = IO (Some LocalOrRemote, Repo) -> Test
 
 withOutputDir :: String -> Maybe FilePath -> (FilePath -> IO a) -> IO a
 withOutputDir _dir (Just output) act = act output
@@ -102,11 +103,11 @@ mainTestIndexGeneric driver extraOptParser dir testIndex = do
                 , testSchemaVersion = cfgSchemaVersion cfg
                 }
 
-              withSetup :: ((Some Backend, Repo) -> IO a) -> IO a
+              withSetup :: ((Some LocalOrRemote, Repo) -> IO a) -> IO a
               withSetup f =
-                withTestBackend testConfig $ \(Some backend) ->
-                withTestDatabase (Some backend) index testConfig $ \repo ->
-                  f (Some backend, repo)
+                withTestBackend testConfig $ \backend ->
+                withTestDatabase backend index Nothing testConfig
+                  $ \repo -> f (backend, repo)
 
           withLazy withSetup $ \get ->
             fn $ TestLabel (mkLabel platform) $

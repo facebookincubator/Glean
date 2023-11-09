@@ -59,7 +59,7 @@ indexCmd str = do
     let repo = Glean.Repo name hash
     withBackend $ \backend -> do
       let exists = throwIO (ErrorCall (show repo <> ": already exists"))
-      liftIO $ fillDatabase backend repo "" exists $
+      liftIO $ fillDatabase backend repo "" Nothing exists $
         runIndexer (Some backend) repo
           IndexerParams {
             indexerRoot = root,
@@ -90,7 +90,7 @@ pickHash name = withBackend $ \be -> do
 load :: Glean.Repo -> [FilePath] -> Eval ()
 load repo files = withBackend $ \be ->  liftIO $ do
   let onExisting  = throwIO $ ErrorCall "database already exists"
-  void $ fillDatabase be repo "" onExisting $ forM_ files $ \file -> do
+  void $ fillDatabase be repo "" Nothing onExisting $ forM_ files $ \file -> do
     r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
     val <- either (throwIO  . ErrorCall . Text.unpack) return r
     batches <- case Aeson.parse parseJsonFactBatches val of

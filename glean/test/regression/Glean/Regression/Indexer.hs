@@ -49,10 +49,11 @@ withTestBackend test action =
 withTestDatabase
   :: Some LocalOrRemote
   -> RunIndexer
+  -> Maybe Dependencies
   -> TestConfig
   -> (Repo -> IO a)
   -> IO a
-withTestDatabase backend indexer test action = do
+withTestDatabase backend indexer maybeDeps test action = do
   let
     repo = testRepo test
     params = IndexerParams {
@@ -61,6 +62,6 @@ withTestDatabase backend indexer test action = do
       indexerOutput = testOutput test,
       indexerGroup = testGroup test
     }
-  fillDatabase backend repo "" (die "repo already exists") $
+  fillDatabase backend repo "" maybeDeps (die "repo already exists") $
     indexer backend repo params
   action repo

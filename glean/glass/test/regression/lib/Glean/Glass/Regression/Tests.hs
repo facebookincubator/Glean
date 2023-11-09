@@ -25,6 +25,7 @@ import qualified Data.Text as Text
 import Test.HUnit hiding (Path)
 
 import Glean
+import Glean.LocalOrRemote
 import Glean.Util.Some
 
 import Glean.Glass.Handler
@@ -32,7 +33,8 @@ import Glean.Glass.Types as Glass
 
 import Glean.Glass.Regression.Util
 
-type Getter = IO (Some Backend, Repo)
+type Getter = IO (Some LocalOrRemote, Repo)
+
 
 -- | Test that documentSymbolListX returns non-empty definitions and
 -- references for the given Path.

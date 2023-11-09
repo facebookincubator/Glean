@@ -13,6 +13,7 @@ import Data.Text (Text)
 import Test.HUnit
 
 import Glean
+import Glean.LocalOrRemote
 import Glean.Indexer.Python as Python
 import Glean.Util.Some
 
@@ -35,7 +36,7 @@ unitTests get =
   -- Python doesn't support comments yet, so no testDescribeSymbolComments
   ]
 
-testSymbolIdLookup :: IO (Some Backend, Repo) -> Test
+testSymbolIdLookup :: IO (Some LocalOrRemote, Repo) -> Test
 testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
   -- class
   "test/py/big_lib.big_func" --> "big_lib/__init__.py",
@@ -63,7 +64,7 @@ testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
         (Path expected)
         get
 
-testPythonFindReferences :: IO (Some Backend, Repo) -> Test
+testPythonFindReferences :: IO (Some LocalOrRemote, Repo) -> Test
 testPythonFindReferences get = TestLabel "findReferences" $ TestList [
   "test/py/big_lib.big_func" --> [
     ("all.py",2),

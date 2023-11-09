@@ -99,6 +99,7 @@ createGleanDB backend dontCreateDb newRepo fileLinesMap batchOutputs = do
         backend
         newRepo
         buildHandle
+        Nothing
         (throwIO DatabaseAlreadyExistsException)
         finalWriter
 

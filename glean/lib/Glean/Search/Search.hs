@@ -55,7 +55,6 @@ import Glean.Schema.Src.Types as Src
 import Glean.Search.Types as Search
 import Glean.Util.Range as Range
 import Glean.Util.SchemaRepos
-import Glean.Util.Some (Some)
 import Glean.Util.ToAngle
 
 -- -----------------------------------------------------------------------------
@@ -95,8 +94,9 @@ instance ToJSON EntityRefs
 
 
 findEntities
-  :: Maybe Int
-  -> Some Glean.Backend
+  :: Glean.Backend b
+  => Maybe Int
+  -> b
   -> Repos
   -> SearchQuery
   -> Bool -- ^ Also find references?
@@ -120,8 +120,9 @@ findEntities lim backend SchemaRepos{..} q@SearchQuery{..} refs = do
 
 -- | Search for Haskell declarations
 findHsDecls
-  :: Maybe Int
-  -> Some Glean.Backend
+  :: Glean.Backend b
+  => Maybe Int
+  -> b
   -> Glean.Repo
   -> SearchQuery
   -> IO [EntityRefs]
@@ -136,8 +137,9 @@ findHsDecls lim backend repo SearchQuery{..} = do
 
 -- | Search for C/C++/ObjectiveC entities
 findCxxDecls
-  :: Maybe Int
-  -> Some Glean.Backend
+  :: Glean.Backend b
+  => Maybe Int
+  -> b
   -> Glean.Repo
   -> SearchQuery
   -> Bool
@@ -361,8 +363,9 @@ data ParsedHackQuery
 -- If the input is ill-formed (e.g. more than one @::@ separator) then this
 -- will return no results.
 findHackDecls
-  :: Maybe Int
-  -> Some Glean.Backend
+  :: Glean.Backend b
+  => Maybe Int
+  -> b
   -> Glean.Repo
   -> SearchQuery
   -> IO [EntityRefs]
