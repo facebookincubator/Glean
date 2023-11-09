@@ -2262,6 +2262,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return true;
   }
 
+#if LLVM_VERSION_MAJOR >= 14
+  bool VisitUsingTypeLoc(clang::UsingTypeLoc tloc) {
+    xrefDecl(tloc.getSourceRange(), tloc.getFoundDecl());
+    return true;
+  }
+#endif
+
   void xrefTemplateName(clang::SourceLocation loc, clang::TemplateName name) {
       xrefDecl(loc, name.getAsTemplateDecl());
   }
