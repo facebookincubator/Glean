@@ -70,8 +70,8 @@ runTest
 runTest driver@Driver{..} driverOpts root testIn =
   withTestBackend testIn $ \backend -> do
     let index = indexerRun driverIndexer driverOpts
-    withTestDatabase backend index Nothing testIn $ \_ ->
-      runQueries backend driver root testIn
+    driverCreateDatabase driverOpts backend index testIn
+    runQueries backend driver root testIn
 
 -- | Run the queries
 runQueries

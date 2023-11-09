@@ -12,9 +12,16 @@ module Glean.Regression.Snapshot.Driver
   , externalDriver
   ) where
 
+import System.Exit
+
+import Glean
+import Glean.LocalOrRemote
 import Glean.Indexer
 import Glean.Indexer.External
+import Glean.Regression.Config
+import Glean.Regression.Indexer
 import Glean.Regression.Snapshot.Transform
+import Glean.Util.Some
 
 -- | A test driver describes how to run a set of tests. It is passed to
 -- 'Glean.Regression.Snapshot.testMain' to make a complete test executable.
@@ -27,7 +34,16 @@ data Driver opts = Driver
       -- executed once with 'testGroup' set to "".
   , driverTransforms :: Transforms
       -- ^ Additional query result transformers.
+  , driverCreateDatabase :: CreateDatabase opts
+      -- ^ How to create a DB for this driver
   }
+
+type CreateDatabase opts
+  = opts
+  -> Some LocalOrRemote
+  -> RunIndexer
+  -> TestConfig
+  -> IO ()
 
 type Group = String
 
@@ -36,7 +52,14 @@ driverFromIndexer indexer = Driver
   { driverIndexer = indexer
   , driverGroups = const []
   , driverTransforms = mempty
+  , driverCreateDatabase = defaultCreateDatabase
   }
+  where
+  defaultCreateDatabase :: CreateDatabase opts
+  defaultCreateDatabase _opts backend indexer test = do
+    let repo = testRepo test
+    fillDatabase backend repo "" Nothing (die "repo already exists") $
+      runIndexerForTest backend indexer test
 
 -- | A 'Driver' using an external 'Indexer'. See
 -- "Glean.Indexer.External".

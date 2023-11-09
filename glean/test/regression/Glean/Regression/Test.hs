@@ -105,9 +105,10 @@ mainTestIndexGeneric driver extraOptParser dir testIndex = do
 
               withSetup :: ((Some LocalOrRemote, Repo) -> IO a) -> IO a
               withSetup f =
-                withTestBackend testConfig $ \backend ->
-                withTestDatabase backend index Nothing testConfig
-                  $ \repo -> f (backend, repo)
+                withTestBackend testConfig $ \backend -> do
+                  driverCreateDatabase driver driverOpts backend
+                    index testConfig
+                  f (backend, testRepo testConfig)
 
           withLazy withSetup $ \get ->
             fn $ TestLabel (mkLabel platform) $

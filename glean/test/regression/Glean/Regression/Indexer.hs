@@ -8,15 +8,13 @@
 
 module Glean.Regression.Indexer
   ( withTestBackend
-  , withTestDatabase
+  , runIndexerForTest
   ) where
 
 import Control.Exception
 import qualified Data.IntMap as IntMap
-import System.Exit
 import System.FilePath
 
-import Glean
 import Glean.Database.Config
 import Glean.Database.Schema.ComputeIds
 import Glean.Database.Types
@@ -45,23 +43,13 @@ withTestBackend test action =
         Nothing -> throwIO $ ErrorCall $ "unknown schema version: " <> show ver
         Just id -> return env { envSchemaId = Just id }
 
--- | Run the supplied Indexer to populate a temporary DB
-withTestDatabase
-  :: Some LocalOrRemote
-  -> RunIndexer
-  -> Maybe Dependencies
-  -> TestConfig
-  -> (Repo -> IO a)
-  -> IO a
-withTestDatabase backend indexer maybeDeps test action = do
-  let
-    repo = testRepo test
-    params = IndexerParams {
-      indexerRoot = testRoot test,
-      indexerProjectRoot = testProjectRoot test,
-      indexerOutput = testOutput test,
-      indexerGroup = testGroup test
+runIndexerForTest :: Some LocalOrRemote -> RunIndexer -> TestConfig -> IO ()
+runIndexerForTest backend indexer test =
+  indexer backend (testRepo test) params
+  where
+  params = IndexerParams {
+    indexerRoot = testRoot test,
+    indexerProjectRoot = testProjectRoot test,
+    indexerOutput = testOutput test,
+    indexerGroup = testGroup test
     }
-  fillDatabase backend repo "" maybeDeps (die "repo already exists") $
-    indexer backend repo params
-  action repo
