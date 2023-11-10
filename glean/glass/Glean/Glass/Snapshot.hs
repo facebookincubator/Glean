@@ -24,6 +24,7 @@ import Control.Monad (forM, when)
 import qualified Data.ByteString as BS
 import Data.Default (def)
 import Data.Int (Int64)
+import Data.Foldable (asum)
 import Data.Maybe (fromMaybe, catMaybes)
 import Data.Proxy (Proxy (..))
 import Data.Text (Text, pack, unpack)
@@ -56,7 +57,7 @@ import System.Directory (createDirectoryIfMissing)
 import System.Environment (lookupEnv)
 import System.Exit (exitWith, ExitCode (ExitFailure))
 import System.FilePath ((</>), joinPath, splitDirectories, takeDirectory)
-import Thrift.Protocol (serializeGen)
+import Thrift.Protocol (serializeGen, deserializeGen)
 import Thrift.Protocol.Compact (Compact)
 import Text.Printf
 import TextShow
@@ -64,7 +65,7 @@ import TextShow
 import Facebook.Db (InstanceRequirement (Master), withConnection)
 import qualified Logger.GleanDiffTimeCoverage as Logger
 import Util.Log.String (logError, logInfo, logWarning)
-import Codec.Compression.GZip (compress)
+import Codec.Compression.GZip (compress, decompress)
 
 import qualified Glean
 import qualified Glean.Glass.Env as Glass
@@ -162,10 +163,19 @@ configParser =
   optRev <*> snapshotTierParser <*> thresholdParser <*> gleanDBNameParser <*>
   (not <$> compressParser) <*> phabricatorVersionParser
 
-options :: ParserInfo Config
-options = info (helper <*> configParser) (fullDesc <>
-    progDesc ("pre-computes the DocumentSymbolListX results for input files, "
-    <> "and upload to XDB tier"))
+options :: ParserInfo (Either Config FilePath)
+options = info (helper <*> parser) desc
+  where
+    parser = asum
+      [
+        Left <$> configParser,
+        Right <$> printSnapshotParser
+      ]
+    printSnapshotParser = strOption (long "print-snapshot")
+    desc =
+      fullDesc <>
+      progDesc ("pre-computes the DocumentSymbolListX results for input files, "
+      <> "and upload to XDB tier")
 
 data BuildSnapshot = BuildSnapshot
   {
@@ -279,7 +289,12 @@ uploadToXdb
 
 main :: IO ()
 main =
-  withOptions options $ \_config@Config{..} ->
+  withOptions options $ \case
+    Left config -> realMain config
+    Right snapshotPath -> printSnapshot snapshotPath
+
+realMain :: Config -> IO ()
+realMain _config@Config{..} =
   withEnv
     (Glass.serviceName glassConfig)
     (Glass.gleanService glassConfig)
@@ -358,3 +373,11 @@ isFatalError = \case
   InsertError{} -> True
   UploadError{} -> True
   AlreadyPresent -> False
+
+printSnapshot :: FilePath -> IO ()
+printSnapshot path = do
+  bytes <- BS.readFile path
+  let decomp = toStrict $ decompress $ fromStrict bytes
+      deser :: Either String Types.Snapshot
+      deser = deserializeGen (Proxy :: Proxy Compact) decomp
+  either error print deser
