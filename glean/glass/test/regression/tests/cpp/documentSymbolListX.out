@@ -7302,6 +7302,120 @@
                     },
                     {
                         "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 14,
+                    "lineBegin": 179,
+                    "lineEnd": 179
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 22,
+                    "lineBegin": 195,
+                    "lineEnd": 195
+                },
+                "sym": "test/cpp//N1/N2/N3/Foo",
+                "target": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 26,
+                        "lineBegin": 177,
+                        "lineEnd": 177
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "Foo"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct Foo"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 2
                         },
                         "key": "symbolDefinitionType"

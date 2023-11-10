@@ -81,83 +81,9 @@
                 }
               },
               "from": {
-                "spans": [ { "length": 2, "offsets": [ 517, 185, 224 ] } ],
-                "expansions": [ ],
-                "spellings": [ ]
-              }
-            },
-            {
-              "target": {
-                "declaration": {
-                  "function_": {
-                    "key": {
-                      "name": {
-                        "key": {
-                          "name": { "key": { "name": { "key": "f3" } } },
-                          "scope": {
-                            "namespace_": {
-                              "key": {
-                                "parent": { "key": { "name": { "key": "N1" } } }
-                              }
-                            }
-                          }
-                        }
-                      },
-                      "signature": {
-                        "key": {
-                          "returns": { "key": "int" },
-                          "parameters": [ ]
-                        }
-                      },
-                      "source": {
-                        "file": { "key": "test.cpp" },
-                        "lineBegin": 17,
-                        "columnBegin": 13,
-                        "lineEnd": 17,
-                        "columnEnd": 32
-                      }
-                    }
-                  }
-                }
-              },
-              "from": {
-                "spans": [ { "length": 2, "offsets": [ 555, 204, 45 ] } ],
-                "expansions": [ ],
-                "spellings": [ ]
-              }
-            },
-            {
-              "target": {
-                "declaration": {
-                  "function_": {
-                    "key": {
-                      "name": {
-                        "key": {
-                          "name": { "key": { "name": { "key": "f5" } } },
-                          "scope": {
-                            "namespace_": { "key": { "name": { "key": "N1" } } }
-                          }
-                        }
-                      },
-                      "signature": {
-                        "key": {
-                          "returns": { "key": "int" },
-                          "parameters": [ ]
-                        }
-                      },
-                      "source": {
-                        "file": { "key": "test.cpp" },
-                        "lineBegin": 24,
-                        "columnBegin": 1,
-                        "lineEnd": 24,
-                        "columnEnd": 8
-                      }
-                    }
-                  }
-                }
-              },
-              "from": {
-                "spans": [ { "length": 2, "offsets": [ 592, 257 ] } ],
+                "spans": [
+                  { "length": 2, "offsets": [ 452, 65, 185, 184, 40 ] }
+                ],
                 "expansions": [ ],
                 "spellings": [ ]
               }
@@ -198,7 +124,163 @@
                 }
               },
               "from": {
-                "spans": [ { "length": 2, "offsets": [ 636 ] } ],
+                "spans": [ { "length": 2, "offsets": [ 452, 184, 250 ] } ],
+                "expansions": [ ],
+                "spellings": [ ]
+              }
+            },
+            {
+              "target": {
+                "declaration": {
+                  "function_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "f1" } } },
+                          "scope": {
+                            "namespace_": { "key": { "name": { "key": "N1" } } }
+                          }
+                        }
+                      },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [
+                            { "name": { "key": "" }, "type": { "key": "bool" } }
+                          ]
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 13,
+                        "columnBegin": 1,
+                        "lineEnd": 13,
+                        "columnEnd": 12
+                      }
+                    }
+                  }
+                }
+              },
+              "from": {
+                "spans": [ { "length": 2, "offsets": [ 452, 434 ] } ],
+                "expansions": [ ],
+                "spellings": [ ]
+              }
+            },
+            {
+              "target": {
+                "declaration": {
+                  "function_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "f3" } } },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "parent": { "key": { "name": { "key": "N1" } } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [
+                            { "name": { "key": "" }, "type": { "key": "int" } }
+                          ]
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 17,
+                        "columnBegin": 34,
+                        "lineEnd": 17,
+                        "columnEnd": 56
+                      }
+                    }
+                  }
+                }
+              },
+              "from": {
+                "spans": [ { "length": 2, "offsets": [ 466 ] } ],
+                "expansions": [ ],
+                "spellings": [ ]
+              }
+            },
+            {
+              "target": {
+                "declaration": {
+                  "function_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "f3" } } },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "parent": { "key": { "name": { "key": "N1" } } }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [ ]
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 17,
+                        "columnBegin": 13,
+                        "lineEnd": 17,
+                        "columnEnd": 32
+                      }
+                    }
+                  }
+                }
+              },
+              "from": {
+                "spans": [ { "length": 2, "offsets": [ 466, 89, 204, 45 ] } ],
+                "expansions": [ ],
+                "spellings": [ ]
+              }
+            },
+            {
+              "target": {
+                "declaration": {
+                  "function_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "f5" } } },
+                          "scope": {
+                            "namespace_": { "key": { "name": { "key": "N1" } } }
+                          }
+                        }
+                      },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [ ]
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 24,
+                        "columnBegin": 1,
+                        "lineEnd": 24,
+                        "columnEnd": 8
+                      }
+                    }
+                  }
+                }
+              },
+              "from": {
+                "spans": [ { "length": 2, "offsets": [ 480, 112, 257 ] } ],
                 "expansions": [ ],
                 "spellings": [ ]
               }

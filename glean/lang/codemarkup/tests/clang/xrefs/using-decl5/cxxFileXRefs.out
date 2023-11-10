@@ -42,6 +42,49 @@
             {
               "target": {
                 "declaration": {
+                  "record_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "name": { "key": "N3" },
+                                "parent": {
+                                  "key": {
+                                    "name": { "key": "N2" },
+                                    "parent": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "kind": { "struct_": { } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 13,
+                        "columnBegin": 16,
+                        "lineEnd": 13,
+                        "columnEnd": 28
+                      }
+                    }
+                  }
+                }
+              },
+              "from": {
+                "spans": [ { "length": 3, "offsets": [ 296, 241 ] } ],
+                "expansions": [ ],
+                "spellings": [ ]
+              }
+            },
+            {
+              "target": {
+                "declaration": {
                   "namespace_": {
                     "key": {
                       "name": { "key": { "name": { "key": "N1" } } },

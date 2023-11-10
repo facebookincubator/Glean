@@ -967,6 +967,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         db.declaration(range, Cxx::Declaration::usingDeclaration(fact));
         usingTracker.addUsingDecl(decl, fact);
       }
+      for (const auto* shadow : decl->shadows()) {
+        xrefExpr(
+            decl->getNameInfo().getSourceRange(), decl->getQualifier(), shadow);
+      }
     }
     return true;
   }

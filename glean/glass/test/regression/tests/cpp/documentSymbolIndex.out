@@ -22,7 +22,7 @@
             }
         },
         "revision": "testhash",
-        "size": 206,
+        "size": 208,
         "symbols": {
             "100": [
                 {
@@ -2584,6 +2584,45 @@
                 {
                     "attributes": {
                         "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "Foo"
+                        },
+                        "symbolParent": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct Foo"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 179,
+                        "lineEnd": 179
+                    },
+                    "sym": "test/cpp//N1/N2/N3/Foo",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 23,
+                            "columnEnd": 26,
+                            "lineBegin": 177,
+                            "lineEnd": 177
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
                             "aInteger": 2
                         },
                         "symbolKind": {
@@ -3283,6 +3322,45 @@
                         "range": {
                             "columnBegin": 11,
                             "columnEnd": 13,
+                            "lineBegin": 177,
+                            "lineEnd": 177
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 1
+                        },
+                        "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "Foo"
+                        },
+                        "symbolParent": {
+                            "aString": "N1::N2::N3"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct Foo"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 22,
+                        "lineBegin": 195,
+                        "lineEnd": 195
+                    },
+                    "sym": "test/cpp//N1/N2/N3/Foo",
+                    "target": {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 23,
+                            "columnEnd": 26,
                             "lineBegin": 177,
                             "lineEnd": 177
                         },

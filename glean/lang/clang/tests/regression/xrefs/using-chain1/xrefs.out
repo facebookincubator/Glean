@@ -43,6 +43,65 @@
           }
         },
         {
+          "range": { "begin": 332, "end": 334 },
+          "target": {
+            "indirect": {
+              "key": {
+                "via": {
+                  "usingDirective": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "N1" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 1,
+                        "lineEnd": 19,
+                        "columnEnd": 18
+                      }
+                    }
+                  }
+                },
+                "target": {
+                  "declaration": {
+                    "function_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "f1" } } },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N1" } }
+                              }
+                            }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "int" },
+                            "parameters": [ ]
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 11,
+                          "columnBegin": 1,
+                          "lineEnd": 11,
+                          "columnEnd": 8
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 342, "end": 344 },
           "target": {
             "declaration": {
@@ -55,6 +114,60 @@
                     "columnBegin": 1,
                     "lineEnd": 21,
                     "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 346, "end": 348 },
+          "target": {
+            "indirect": {
+              "key": {
+                "via": {
+                  "usingDirective": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "N1" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 1,
+                        "lineEnd": 19,
+                        "columnEnd": 18
+                      }
+                    }
+                  }
+                },
+                "target": {
+                  "declaration": {
+                    "record_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "T1" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N1" } }
+                              }
+                            }
+                          }
+                        },
+                        "kind": { "struct_": { } },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 13,
+                          "columnBegin": 1,
+                          "lineEnd": 13,
+                          "columnEnd": 12
+                        }
+                      }
+                    }
                   }
                 }
               }

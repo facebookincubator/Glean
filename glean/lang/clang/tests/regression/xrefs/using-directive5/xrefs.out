@@ -24,6 +24,33 @@
           }
         },
         {
+          "range": { "begin": 264, "end": 265 },
+          "target": {
+            "declaration": {
+              "record_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "T" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N1" } } }
+                      }
+                    }
+                  },
+                  "kind": { "struct_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 11,
+                    "columnBegin": 1,
+                    "lineEnd": 11,
+                    "columnEnd": 11
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
           "range": { "begin": 316, "end": 318 },
           "target": {
             "declaration": {
