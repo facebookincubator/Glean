@@ -1,41 +1,112 @@
 schema csharp.1 {
   import src.1
 
-# AlphaNamespace and type names (§7.8)
-# https://fburl.com/d94ubqay
-predicate AlphaName : string
+  # Namespace and type names (§7.8)
+  # https://fburl.com/d94ubqay
+  type AlphaV2Name = string
 
-# AlphaNamespace declarations (§13.3)
-# https://fburl.com/gv0o62tb
-predicate AlphaNamespace :
-  {
-    name : maybe AlphaName,
-    containing_namespace : maybe AlphaNamespace,
-    is_global : bool,
-    locations : [src.FileLocation],
-  }
+  # Namespaces (§13.3)
+  # https://fburl.com/gv0o62tb
+  predicate AlphaV2NamespaceSymbol:
+    { name : AlphaV2Name
+    , containing_namespace : maybe AlphaV2NamespaceSymbol
+    }
 
-# Classes (§14)
-# https://fburl.com/mb38zzjh
-predicate AlphaClassDefinition :
-  {
-    name : AlphaName,
-    containing_namespace : maybe AlphaNamespace,
-    locations : [src.FileLocation],
-  }
+  # Classes (§14)
+  # https://fburl.com/mb38zzjh
+  predicate AlphaV2ClassSymbol:
+    { name : AlphaV2Name
+    , containing_namespace : AlphaV2NamespaceSymbol
+    }
 
-# Projects (.csproj)
-# https://fburl.com/0axo3xpz
-predicate AlphaProject :
-  {
-    solution : maybe AlphaSolution,
-    file : src.File,
-  }
+  # Interfaces (§18)
+  # https://fburl.com/9awakpxi
+  predicate AlphaV2InterfaceSymbol:
+    { name : AlphaV2Name
+    , containing_namespace : AlphaV2NamespaceSymbol
+    }
 
-# Solutions (.sln)
-# https://fburl.com/var17xpf
-predicate AlphaSolution :
-  {
-    file : src.File,
-  }
+  # MethodKind Enum
+  # https://fburl.com/f4f1gtl1
+  type AlphaV2MethodKind = enum
+    { anonymous_function
+    | builtin_operator
+    | constructor
+    | conversion
+    | declare_method
+    | delegate_invoke
+    | destructor
+    | event_add
+    | event_raise
+    | event_remove
+    | explicit_interface_implementation
+    | function_pointer_signature
+    | lambda_method
+    | local_function
+    | ordinary
+    | property_get
+    | property_set
+    | reduced_extension
+    | shared_constructor
+    | static_constructor
+    | user_defined_operator
+    }
+
+  # INamedTypeSymbol Interface
+  # https://fburl.com/9pg1rmon
+  type AlphaV2NamedTypeSymbol =
+    { class_ : AlphaV2ClassSymbol
+    | interface_ : AlphaV2InterfaceSymbol
+    }
+
+  # IMethodSymbol Interface
+  # https://fburl.com/qh1vhxzs
+  predicate AlphaV2MethodSymbol:
+    { name : AlphaV2Name
+    , kind : AlphaV2MethodKind
+    , containing_type : AlphaV2NamedTypeSymbol
+    }
+
+  # NamespaceDeclarationSyntax Class
+  # https://fburl.com/rx4jbunu
+  predicate AlphaV2NamespaceDeclarationSyntax:
+    { symbol : AlphaV2NamespaceSymbol
+    , location : src.FileLocation
+    }
+
+  # ClassDeclarationSyntax Class
+  # https://fburl.com/oyak5vc7
+  predicate AlphaV2ClassDeclarationSyntax:
+    { symbol : AlphaV2ClassSymbol
+    , location : src.FileLocation
+    }
+
+  # ObjectCreationExpressionSyntax Class
+  # https://fburl.com/7r9cp3dp
+  predicate AlphaV2ObjectCreationExpressionSyntax:
+    { constructed_from : AlphaV2NamedTypeSymbol
+    , symbol : AlphaV2MethodSymbol
+    , location : src.FileLocation
+    }
+
+  # InterfaceDeclarationSyntax Class
+  # https://fburl.com/6iyi7sc5
+  predicate AlphaV2InterfaceDeclarationSyntax:
+    { symbol : AlphaV2InterfaceSymbol
+    , location : src.FileLocation
+    }
+
+  # InvocationExpressionSyntax Class
+  # https://fburl.com/4yp4myhd
+  predicate AlphaV2InvocationExpressionSyntax:
+    { symbol : AlphaV2MethodSymbol
+    , location : src.FileLocation
+    }
+
+  # MethodDeclarationSyntax Class
+  # https://fburl.com/h368lhr1
+  predicate AlphaV2MethodDeclarationSyntax:
+    { symbol : AlphaV2MethodSymbol
+    , location : src.FileLocation
+    }
 }
