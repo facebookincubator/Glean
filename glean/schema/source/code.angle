@@ -15,7 +15,6 @@ import code.lsif.2
 import code.pp.1
 import code.python.1
 import code.scip.1
-import code.thrift.5
 import codemarkup.types.1
 
 type Entity =
@@ -28,7 +27,6 @@ type Entity =
     python : code.python.Entity |
     hack : code.hack.Entity |
     flow : code.flow.Entity |
-    thrift : code.thrift.Entity |
     fbthrift : code.fbthrift.Entity |
     buck : code.buck.Entity |
     erlang : code.erlang.Entity |
@@ -62,7 +60,6 @@ predicate EntityLanguage:
     ( { python = _ } = Entity; Python = Language ) |
     ( { hack = _ } = Entity; Hack = Language ) |
     ( { flow = _ } = Entity; JavaScript = Language ) |
-    ( { thrift = _ } = Entity; Thrift = Language ) |
     ( { fbthrift = _ } = Entity; Thrift = Language ) |
     ( { buck = _ } = Entity; Buck = Language ) |
     ( { erlang = _ } = Entity; Erlang = Language ) |
@@ -103,7 +100,6 @@ type Annotations =
     java : code.java.Annotations |
     python : code.python.Annotations |
     hack : code.hack.Annotations |
-    thrift : code.thrift.Annotations |
     fbthrift : code.fbthrift.Annotations |
   }
 

@@ -16,7 +16,6 @@ import codemarkup.lsif.3
 import codemarkup.pp.3
 import codemarkup.python.2
 import codemarkup.scip.1
-import codemarkup.thrift.4
 import codemarkup.types.1
 import cxx1.5
 import hack.6
@@ -47,7 +46,6 @@ predicate EntityKind:
     (codemarkup.flow.FlowEntityKind { E, Kind }; { flow = E } = Entity) |
     (codemarkup.java.JavaEntityKind { E, Kind }; { java = E } = Entity) |
     (codemarkup.kotlin.KotlinEntityKind { E, Kind }; { kotlin = E } = Entity) |
-    (codemarkup.thrift.ThriftEntityKind { E, Kind }; { thrift = E } = Entity) |
     (codemarkup.fbthrift.ThriftEntityKind { E, Kind }; { fbthrift = E } = Entity) |
     (codemarkup.buck.BuckEntityKind { E, Kind }; { buck = E } = Entity);
 
@@ -139,8 +137,6 @@ predicate ResolveLocation:
      { hs = E } = Entity) |
     (codemarkup.buck.BuckResolveLocation { Location, E };
      { buck = E } = Entity) |
-    (codemarkup.thrift.ThriftResolveLocation { Location, E };
-     { thrift = E } = Entity) |
     (codemarkup.fbthrift.ThriftResolveLocation { Location, E };
      { fbthrift = E } = Entity) |
     (codemarkup.erlang.ErlangResolveLocation { Location, E };
@@ -174,8 +170,6 @@ predicate EntityLocation:
      { hs = E } = Entity) |
     (codemarkup.buck.BuckEntityLocation { E, Location };
      { buck = E } = Entity) |
-    (codemarkup.thrift.ThriftEntityLocation { E, Location };
-     { thrift = E } = Entity) |
     (codemarkup.fbthrift.ThriftEntityLocation { E, Location };
      { fbthrift = E } = Entity) |
     (codemarkup.erlang.ErlangEntityLocation { E, Location };
@@ -211,8 +205,6 @@ predicate FileEntityXRefLocations:
      { hs = E } = Entity) |
     (codemarkup.buck.BuckFileEntityXRefLocations { File, XRef, E };
      { buck = E } = Entity) |
-    (codemarkup.thrift.ThriftFileEntityXRefLocations { File, XRef, E };
-     { thrift = E } = Entity) |
     (codemarkup.fbthrift.ThriftFileEntityXRefLocations { File, XRef, E };
      { fbthrift = E } = Entity) |
     (codemarkup.erlang.ErlangFileEntityXRefLocations { File, XRef, E };
@@ -249,8 +241,6 @@ predicate FileEntityXRefSpans:
        { hs = E } = Entity) |
       (codemarkup.buck.BuckFileEntityXRefLocations { File, XRef, E };
        { buck = E } = Entity) |
-      (codemarkup.thrift.ThriftFileEntityXRefLocations { File, XRef, E };
-       { thrift = E } = Entity) |
       (codemarkup.fbthrift.ThriftFileEntityXRefLocations { File, XRef, E };
        { fbthrift = E } = Entity) |
       (codemarkup.erlang.ErlangFileEntityXRefLocations { File, XRef, E };
@@ -480,10 +470,6 @@ predicate ExtendsParentEntity :
       codemarkup.python.PythonExtendsParentEntity { C, P };
       { python = P } = Parent
     ) | (
-      { thrift = C } = Child;
-      codemarkup.thrift.ThriftExtendsParentEntity { C, P };
-      { thrift = P } = Parent
-    ) | (
       { fbthrift = C } = Child;
       codemarkup.fbthrift.ThriftExtendsParentEntity { C, P };
       { fbthrift = P } = Parent
@@ -534,10 +520,6 @@ predicate ExtendsChildEntity :
       codemarkup.python.PythonExtendsChildEntity { P, C };
       { python = C } = Child
     ) | (
-      { thrift = P } = Parent;
-      codemarkup.thrift.ThriftExtendsChildEntity { P, C };
-      { thrift = C } = Child
-    ) | (
       { fbthrift = P } = Parent;
       codemarkup.fbthrift.ThriftExtendsChildEntity { P, C };
       { fbthrift = C } = Child
@@ -569,10 +551,6 @@ predicate ContainsParentEntity :
       { flow = C } = Child;
       codemarkup.flow.FlowContainsParentEntity { C, P };
       { flow = P } = Parent
-    ) | (
-      { thrift = C } = Child;
-      codemarkup.thrift.ThriftContainsParentEntity { C, P };
-      { thrift = P } = Parent
     ) | (
       { fbthrift = C } = Child;
       codemarkup.fbthrift.ThriftContainsParentEntity { C, P };
@@ -609,10 +587,6 @@ predicate ContainsChildEntity :
       { flow = P } = Parent;
       codemarkup.flow.FlowContainsChildEntity { P, C };
       { flow = C } = Child
-    ) | (
-      { thrift = P } = Parent;
-      codemarkup.thrift.ThriftContainsChildEntity { P, C };
-      { thrift = C } = Child
     ) | (
       { fbthrift = P } = Parent;
       codemarkup.fbthrift.ThriftContainsChildEntity { P, C };

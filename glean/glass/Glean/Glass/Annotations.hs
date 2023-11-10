@@ -163,7 +163,6 @@ instance HasAnnotations AnnotationsSymbolId where
     (Code.Annotations_hack ann, syms) -> getAnnotations (ann, syms)
     (Code.Annotations_python anns, _) -> getAnnotations anns
     (Code.Annotations_java anns, _) -> getAnnotations anns
-    (Code.Annotations_thrift{}, _) -> pure Nothing -- Not yet supported
     (Code.Annotations_fbthrift{}, _) -> pure Nothing -- Not yet supported
     (Code.Annotations_EMPTY, _) -> pure Nothing
 
