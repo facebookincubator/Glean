@@ -28,7 +28,6 @@ import Data.List.NonEmpty (NonEmpty((:|)))
 import qualified Data.List.NonEmpty as NE
 import Data.Text (Text)
 import qualified Data.Text as T
-import Data.Text.Encoding (encodeUtf8)
 import qualified Data.Text.IO as T
 import Data.Traversable (for)
 import System.Directory (getCurrentDirectory)
@@ -40,7 +39,7 @@ import Util.Regex (RegexError, substituteNoLimit_safe)
 import Glean (
   Backend,
   Nat (unNat),
-  NewFact (withUnit, newFact),
+  NewFact (newFact),
   Repo,
   makeFact,
   basicWriter,
@@ -164,12 +163,11 @@ derive backend repo Config{..} = {-# SCC "derive-digests" #-} do
 
   {-# SCC "write" #-} liftIO $
     basicWriter backend repo [Src.allPredicates, Code.allPredicates] $ do
-      for_ factsByFile $ \(f, facts) ->
-        withUnit (encodeUtf8 f) $ do
-          srcFile <- makeFact @Src.File f
-          for_ facts $ \(entity, digest) -> do
-            let key = Code.FileEntityDigest_key srcFile entity
-            void $ newFact @_ @Code.FileEntityDigest key digest
+      for_ factsByFile $ \(f, facts) -> do
+        srcFile <- makeFact @Src.File f
+        for_ facts $ \(entity, digest) -> do
+          let key = Code.FileEntityDigest_key srcFile entity
+          void $ newFact @_ @Code.FileEntityDigest key digest
 
 rangeSpanToFileLocation
   :: Src.File
