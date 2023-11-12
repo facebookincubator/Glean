@@ -66,6 +66,7 @@ jobs:
           wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
           chmod +x dotnet-install.sh
           ./dotnet-install.sh --channel ${DOTNET} --install-dir "$HOME"/.hsthrift/dotnet
+          dotnet tool install --global scip-dotnet 
 
       - name: Install indexer (go)
         run: |
