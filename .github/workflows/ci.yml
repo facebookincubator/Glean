@@ -77,7 +77,6 @@ jobs:
             ./dotnet-install.sh --channel ${DOTNET} --install-dir "$HOME"/.hsthrift/dotnet
             echo "$HOME/.hsthrift/dotnet" >> "$GITHUB_PATH"
             echo 'export PATH="$HOME/.hsthrift/dotnet:$PATH"' >> $HOME/.bashrc
-            source $HOME/.bashrc
             dotnet tool install --global scip-dotnet
   
       - name: Install indexer (go)
