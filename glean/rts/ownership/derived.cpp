@@ -19,7 +19,6 @@ namespace rts {
 
 void DefineOwnership::derivedFrom(Pid pid, Id id, const std::set<UsetId>& deps) {
   if (deps.size() == 0) {
-    LOG(ERROR) << "DefineOwnership::derivedFrom: empty deps";
     return;
   }
 
@@ -264,8 +263,10 @@ void addDerived(
       }
     }
 
-    for (auto id : facts) {
-      define->derivedFrom(pid, id, owners);
+    if (owners.size() > 0) {
+      for (auto id : facts) {
+        define->derivedFrom(pid, id, owners);
+      }
     }
   }
 }
