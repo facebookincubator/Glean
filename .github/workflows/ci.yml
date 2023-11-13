@@ -38,6 +38,15 @@ jobs:
       - name: Add GHC and cabal to PATH
         run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
 
+      - name: Install indexer (dotnet)
+        run: |
+          export DOTNET=7.0
+          wget https://dot.net/v1/dotnet-install.sh
+          chmod +x dotnet-install.sh
+          ./dotnet-install.sh --channel ${DOTNET} 
+          mkdir -p "$HOME"/.hsthrift/bin && mv "$HOME"/.dotnet/dotnet "$HOME"/.hsthrift/bin
+          dotnet tool install --global scip-dotnet
+        
       - name: Install indexer (flow)
         run: |
           export FLOW=0.209.1
