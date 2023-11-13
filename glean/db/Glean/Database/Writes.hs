@@ -55,6 +55,7 @@ import qualified Data.Text.Encoding as Text
 import qualified Data.UUID as UUID
 import qualified Data.UUID.V4 as UUID
 import System.Clock
+import System.Timeout
 
 import ServiceData.GlobalStats
 import ServiceData.Types
@@ -319,7 +320,11 @@ pollBatch env@Env{..} handle = do
   r <- HashMap.lookup handle <$> readTVarIO envWrites
   case r of
     Just write -> do
-      s <- tryReadMVar (writeWait write)
+      -- for tiny writes that will complete in a few ms, we would like
+      -- to wait synchronously. Otherwise we'll return a Retry to the
+      -- caller which will wait 1s before polling again. In particular
+      -- all those one-second delays make tests run slowly.
+      s <- timeout 100000 $ readMVar (writeWait write)
       case s of
         Just x -> do
           atomically $ void $ updateTVar envWrites $ HashMap.delete handle
