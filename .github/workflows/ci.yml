@@ -45,6 +45,7 @@ jobs:
           chmod +x dotnet-install.sh
           ./dotnet-install.sh --channel ${DOTNET} 
           mkdir -p "$HOME"/.hsthrift/bin && mv "$HOME"/.dotnet/dotnet "$HOME"/.hsthrift/bin
+          echo "$HOME/.hsthrift/bin" >> "$GITHUB_PATH"
           dotnet tool install --global scip-dotnet
         
       - name: Install indexer (flow)
