@@ -6,9 +6,10 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-
+{-# LANGUAGE TypeApplications #-}
 module Derive.Common
   ( getFileXRefs
+  , getFileXRefsIncremental
   , getIndirectTargets
   , resolve
   , Indirects
@@ -26,6 +27,7 @@ import qualified Data.Vector.Mutable as VM
 import Util.Log
 
 import Glean
+import Glean.Angle
 import Glean.Typed (PidOf)
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import Glean.Util.PredMap (PredMap)
@@ -89,7 +91,7 @@ getFileXRefs e cfg = do
       key <- case k of
         Just k -> return k
         Nothing -> throwIO $ ErrorCall "internal error: getFileXRefs"
-      return $ PredMap.insert (IdOf $ Fid i) key targetsMap
+      return $ PredMap.insert (IdOf $ Fid i) (HashSet.fromList key) targetsMap
   logInfo $ "loaded " ++ show (PredMap.size targetsMap) ++ " XRefTargets"
 
   let
@@ -103,7 +105,7 @@ getFileXRefs e cfg = do
       Just k -> return k
       Nothing -> throwIO $ ErrorCall "internal error: getFileXRefs"
     let targets =
-          [ HashSet.fromList $ PredMap.findWithDefault
+          [ PredMap.findWithDefault
               (error "missing XRefTargets") (getId targets) targetsMap
           | targets <- Cxx.fileXRefs_key_targets key ]
         id = getId (Cxx.fileXRefs_key_xmap key)
@@ -119,4 +121,41 @@ getFileXRefs e cfg = do
         forM_ (zip [0..] targets) $ \(i, ts) ->
           VM.unsafeWrite xs i $! ts
         return $ PredMap.insert id (PredSet.singleton (IdOf $ Fid i), xs) xrefs
+  traverse (\(deps, xs) -> (deps,) <$> V.unsafeFreeze xs) xrefs
+
+getFileXRefsIncremental :: Backend e => e -> Config -> IO XRefs
+getFileXRefsIncremental e cfg = do
+  let
+    q :: Query Cxx.FileXRefs
+    q = maybe id limit (cfgMaxQueryFacts cfg) $
+        limitBytes (cfgMaxQuerySize cfg) $ query $
+          new $ predicate @Cxx.FileXRefs wild
+
+  trips <- runHaxl e (cfgRepo cfg) $ do
+    fileXRefs <- search_ q
+    forM fileXRefs $ \(Cxx.FileXRefs i k) -> do
+      key <- case k of
+        Just k -> return k
+        Nothing -> throw $ ErrorCall "internal error: getFileXRefs"
+      let id = getId (Cxx.fileXRefs_key_xmap key)
+      targets <- mapM keyOf (Cxx.fileXRefs_key_targets key)
+      return (i, id, map HashSet.fromList targets)
+
+  let
+    add xrefs (i, id, targets) =
+      case PredMap.lookup id xrefs of
+        Just (deps, xs) -> do
+          forM_ (zip [0 .. VM.length xs - 1] targets) $ \(i, ts) -> do
+            x <- VM.unsafeRead xs i
+            VM.unsafeWrite xs i $! HashSet.union ts x
+          let !newDeps = PredSet.insert (IdOf $ Fid i) deps
+          return $ PredMap.insert id (newDeps, xs) xrefs
+        Nothing -> do
+          xs <- VM.new (length targets)
+          forM_ (zip [0..] targets) $ \(i, ts) ->
+            VM.unsafeWrite xs i $! ts
+          return $
+            PredMap.insert id (PredSet.singleton (IdOf $ Fid i), xs) xrefs
+
+  xrefs <- foldM add mempty trips
   traverse (\(deps, xs) -> (deps,) <$> V.unsafeFreeze xs) xrefs
