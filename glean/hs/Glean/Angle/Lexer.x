@@ -39,13 +39,19 @@ import Glean.Angle.Types (SrcSpan(..), SrcLoc(..), AngleVersion(..), latestAngle
 
 $all = [.\n]
 $digit = [0-9]
+
+-- The # in identifiers is reserved for "special" uses. Currently
+-- there are two: <predicate>#new and <predicate>#old for
+-- restricting queries to the stacked and base DB respectively, when
+-- writing incremental derivers.
 @ident = [a-zA-Z_] [a-zA-Z0-9_]*
+
 @string = \" (\\ $all | $all # [\"\\] )* \"
 
 -- A qualified name with an optional version:
---    VALID: "a" "a.b" "a.b.3"
+--    VALID: "a" "a.b" "a.b.3" "a.b#new" "a.b.3#old"
 --    INVALID: "a." "a..b" "a.3.b" "a.3b"
-@qident = @ident (\. @ident)* (\. $digit+)?
+@qident = @ident (\. @ident)* (\. $digit+)? (\# @ident)?
 
 tokens :-
   $white+       ;

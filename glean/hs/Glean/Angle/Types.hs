@@ -45,6 +45,7 @@ module Glean.Angle.Types
   , SourceStatement_(..)
   , SourcePat_(..)
   , PrimOp(..)
+  , SeekSection(..)
 
   -- * Schemas and definitions
   , TypeDef_(..)
@@ -212,9 +213,28 @@ data SourcePat_ s p t
 
   -- The following forms are introduced by the resolver, and replace
   -- the Variable and App forms produced by the parser.
-  | Clause s p (SourcePat_ s p t)
+  | Clause s p (SourcePat_ s p t) SeekSection
   | Prim s PrimOp [SourcePat_ s p t]
  deriving (Eq, Show, Generic)
+
+-- | Should a `seek` call be restricted to a section of the database?
+--
+-- When performing a query over a stacked database we have three levels
+--  * base db
+--  * stacked db
+--  * writable FactSet
+--
+-- The writable FactSet is there to store facts from derived predicates
+-- generated during the querying.
+--
+-- This type specifies which of these sections should be be covered in a seek.
+data SeekSection
+  = SeekOnAllFacts -- ^ base + stacked + writable
+  | SeekOnBase -- ^ base only
+  | SeekOnStacked -- ^ stacked only
+  deriving (Eq, Show, Generic)
+
+instance Binary SeekSection
 
 instance (Binary p, Binary t) => Binary (SourcePat_ () p t)
 
@@ -242,7 +262,7 @@ instance Bifunctor (SourcePat_ s) where
     TypeSignature s pat ty -> TypeSignature s (bimap f g pat) (bimap f g ty)
     Never s -> Never s
     IfPattern s a b c -> IfPattern s (bimap f g a) (bimap f g b) (bimap f g c)
-    Clause s p pat -> Clause s (f p) (bimap f g pat)
+    Clause s p pat rng -> Clause s (f p) (bimap f g pat) rng
     Prim s p pats -> Prim s p (fmap (bimap f g) pats)
 
 instance Bifoldable (SourcePat_ s) where
@@ -268,7 +288,7 @@ instance Bifoldable (SourcePat_ s) where
     TypeSignature _ pat ty -> bifoldMap f g pat <> bifoldMap f g ty
     Never{} -> mempty
     IfPattern _ a b c -> bifoldMap f g a <> bifoldMap f g b <> bifoldMap f g c
-    Clause _ p pat -> f p <> bifoldMap f g pat
+    Clause _ p pat _ -> f p <> bifoldMap f g pat
     Prim _ _ pats -> foldMap (bifoldMap f g) pats
 
 data Field s p t = Field FieldName (SourcePat_ s p t)
@@ -321,7 +341,7 @@ sourcePatSpan = \case
   FactId s _ _ -> s
   TypeSignature s _ _ -> s
   Never s -> s
-  Clause s _ _ -> s
+  Clause s _ _ _ -> s
   Prim s _ _ -> s
 
 -- -----------------------------------------------------------------------------
@@ -778,7 +798,12 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
   display opts (TypeSignature _ p t) =
     displayAtom opts p <+> ":" <+> display opts t
   display _ (Never _) = "never"
-  display opts (Clause _ p pat) = display opts p <+> displayAtom opts pat
+  display opts (Clause _ p pat rng) =
+    display opts p <> prng <+> displayAtom opts pat
+    where prng = case rng of
+            SeekOnBase -> "#old"
+            SeekOnStacked -> "#new"
+            _ -> mempty
   display opts (Prim _ p pats) =
     display opts p <+> hsep (punctuate " " (map (displayAtom opts) pats))
 
@@ -893,7 +918,7 @@ rmLocPat = \case
   NestedQuery _ query -> NestedQuery () $ rmLocQuery query
   FactId _ x y -> FactId () x y
   TypeSignature _ x t -> TypeSignature () (rmLocPat x) t
-  Clause _ x y -> Clause () x (rmLocPat y)
+  Clause _ x y rng -> Clause () x (rmLocPat y) rng
   Prim _ p ps -> Prim () p (rmLocPat <$> ps)
 
 rmLocField :: Field s p t -> Field () p t

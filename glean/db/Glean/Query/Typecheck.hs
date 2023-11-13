@@ -281,7 +281,7 @@ inferExpr ctx pat = case pat of
     return
       ( RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args')))
       , retTy )
-  Clause _ pred pat -> tcFactGenerator pred pat
+  Clause _ pred pat range -> tcFactGenerator pred pat range
   OrPattern _ a b -> do
     ((a', ty), b') <-
       disjunction
@@ -404,9 +404,9 @@ typecheckPattern ctx typ pat = case (typ, pat) of
       patTypeError pat ty
     args' <- primInferAndCheck span args primOp primArgTys
     return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))))
-  (PredicateTy (PidRef _ ref), Clause _ ref' arg) ->
+  (PredicateTy (PidRef _ ref), Clause _ ref' arg range) ->
     if ref == ref'
-      then fst <$> tcFactGenerator ref arg
+      then fst <$> tcFactGenerator ref arg range
       else patTypeError pat typ
       -- Note: we don't automatically fall back to matching against
       -- the key type here, unlike in other cases where the expected
@@ -492,13 +492,13 @@ typecheckPattern ctx typ pat = case (typ, pat) of
         -- match the key type instead of the fact ID.
         case ty of
           PredicateTy (PidRef _ ref) -> do
-            fst <$> tcFactGenerator ref pat
+            fst <$> tcFactGenerator ref pat SeekOnAllFacts
           _ -> patTypeError pat ty
 
   -- A match on a predicate type with a pattern that is not a wildcard
   -- or a variable does a nested match on the key of the predicate:
   (PredicateTy (PidRef _ ref), pat) | not (isVar pat) ->
-    fst <$> tcFactGenerator ref pat
+    fst <$> tcFactGenerator ref pat SeekOnAllFacts
 
   (ty, Wildcard{}) -> return (mkWild ty)
   (ty, Never{}) -> return $ Ref (MatchNever ty)
@@ -518,8 +518,9 @@ tcFactGenerator
   :: IsSrcSpan s
   => PredicateId
   -> Pat' s
+  -> SeekSection
   -> T (TcPat, Type)
-tcFactGenerator ref pat = do
+tcFactGenerator ref pat range = do
   TcEnv{..} <- gets tcEnv
   PredicateDetails{..} <- case HashMap.lookup ref tcEnvPredicates of
     Nothing -> prettyErrorIn pat $ "tcFactGenerator: " <> displayDefault ref
@@ -536,7 +537,7 @@ tcFactGenerator ref pat = do
     pidRef = (PidRef predicatePid ref)
     ty = PredicateTy pidRef
   return
-    ( Ref (MatchExt (Typed ty (TcFactGen pidRef kpat' vpat')))
+    ( Ref (MatchExt (Typed ty (TcFactGen pidRef kpat' vpat' range)))
     , ty)
 
 isVar :: IsSrcSpan s => Pat' s -> Bool
@@ -899,7 +900,7 @@ varsPat pat r = case pat of
   Wildcard{} -> r
   FactId{} -> r
   Never{} -> r
-  Clause _ _ p -> varsPat p r
+  Clause _ _ p _ -> varsPat p r
   Prim _ _ ps -> foldr varsPat r ps
 
 varsQuery :: IsSrcSpan s => Query' s -> VarSet -> VarSet
@@ -937,7 +938,7 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
     overTerm :: TcTerm -> [PidRef]
     overTerm = \case
       TcOr x y -> overPat x <> overPat y
-      TcFactGen pref x y -> pref : overPat x <> overPat y
+      TcFactGen pref x y _ -> pref : overPat x <> overPat y
       TcElementsOfArray x -> overPat x
       TcQueryGen q -> overQuery q
       TcNegation stmts -> foldMap overStatement stmts
@@ -984,7 +985,7 @@ matchUsesNegation = \case
 tcTermUsesNegation  :: TcTerm -> Maybe UseOfNegation
 tcTermUsesNegation = \case
   TcOr x y -> tcPatUsesNegation x <|> tcPatUsesNegation y
-  TcFactGen _ x y -> tcPatUsesNegation x <|> tcPatUsesNegation y
+  TcFactGen _ x y _ -> tcPatUsesNegation x <|> tcPatUsesNegation y
   TcElementsOfArray x -> tcPatUsesNegation x
   TcQueryGen q -> tcQueryUsesNegation q
   TcNegation _ -> Just PatternNegation

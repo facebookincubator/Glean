@@ -61,6 +61,8 @@ module Glean.Query.Angle
   , HasField
   , AngleEnum(..)
   , AngleVars
+  , new
+  , old
   ) where
 
 import Control.Monad.State.Strict
@@ -445,6 +447,33 @@ nothing = Angle $ pure (Variable DSL "nothing")
   | KeyValue (SourcePat_ v t) (SourcePat_ v t)
 -}
 
+
+-- -----------------------------------------------------------------------------
+-- Special queries
+
+-- | Query only new facts of the given predicate, i.e. facts in the
+-- topmost DB in the stack.
+--
+-- (This is a special-purpose query tool for building incremental fact
+-- derivers)
+new :: Predicate p => Angle p -> Angle p
+new = specialPredicateQuery "new"
+
+-- | Query only old facts of the given predicate, i.e. facts from all
+-- but the topmost DB in the stack.
+--
+-- (This is a special-purpose query tool for building incremental fact
+-- derivers)
+old :: Predicate p => Angle p -> Angle p
+old = specialPredicateQuery "old"
+
+specialPredicateQuery :: Predicate p => Text -> Angle p -> Angle p
+specialPredicateQuery suffix (Angle pat) = Angle $ do
+  p <- pat
+  case p of
+    App DSL (Variable DSL p) args ->
+      return $ App DSL (Variable DSL (p <> "#" <> suffix)) args
+    _ -> error $ ": not a predicate"
 
 -- -----------------------------------------------------------------------------
 -- Type checking for records and sum types

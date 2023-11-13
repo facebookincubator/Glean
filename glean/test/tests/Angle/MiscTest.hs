@@ -47,7 +47,22 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "queryOptions" angleQueryOptions
   , TestLabel "limitBytes" limitTest
   , TestLabel "fullScans" fullScansTest
+  , TestLabel "newold" $ newOldTest id
   ]
+
+newOldTest :: (forall a . Query a -> Query a) -> Test
+newOldTest modify = TestCase $ withStackedTestDB [] $ \env repo -> do
+  results <- runQuery_ env repo $ modify $ keys $ Angle.query $
+    new $ predicate @Cxx.Name wild
+  assertEqual "angle - new facts"
+    [ "abcd", "allin", "anywhere", "barbie", "blob" ]
+    results
+
+  results <- runQuery_ env repo $ modify $ keys $ Angle.query $
+    old $ predicate @Cxx.Name wild
+  assertEqual "angle - old facts"
+    [ "abba", "anonymous", "azimuth", "blubber", "book", "foo" ]
+    results
 
 angleDSL :: (forall a . Query a -> Query a) -> Test
 angleDSL modify = dbTestCase $ \env repo -> do

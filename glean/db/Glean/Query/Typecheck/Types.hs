@@ -50,7 +50,7 @@ type TcPat = Term (Match (Typed TcTerm) Var)
 
 data TcTerm
   = TcOr TcPat TcPat
-  | TcFactGen PidRef TcPat TcPat
+  | TcFactGen PidRef TcPat TcPat SeekSection
   | TcElementsOfArray TcPat
   | TcQueryGen TcQuery
   | TcNegation [TcStatement]
@@ -65,7 +65,7 @@ instance Display TcTerm where
     , nest 2 $ sep ["then", displayAtom opts then_]
     , nest 2 $ sep ["else", displayAtom opts else_]
     ]
-  display opts (TcFactGen pid kpat vpat)
+  display opts (TcFactGen pid kpat vpat _range)
     | isWild vpat || isUnit vpat =
       nest 2 $ sep [display opts pid, displayAtom opts kpat]
     | otherwise =

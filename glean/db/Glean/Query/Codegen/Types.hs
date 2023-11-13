@@ -35,7 +35,7 @@ import Data.Maybe (fromMaybe)
 import Data.Text (Text)
 import Data.Text.Prettyprint.Doc
 
-import Glean.Angle.Types (IsWild(..), PrimOp(..))
+import Glean.Angle.Types (IsWild(..), PrimOp(..), SeekSection(..))
 import Glean.Bytecode.Types (Register, Ty(..))
 import Glean.Display
 import Glean.RTS.Term hiding (Match)
@@ -117,22 +117,6 @@ With sequential composition of queries we can do it like this:
 typecheck the sub-query "name x where ...", but we can generate the
 AST for it in the JSON query compiler.)
 -}
--- | Should a `seek` call be restricted to a section of the database?
---
--- When performing a query over a stacked database we have three levels
---  * base db
---  * stacked db
---  * writable FactSet
---
--- The writable FactSet is there to store facts from derived predicates
--- generated during the querying.
---
--- This type specifies which of these sections should be be covered in a seek.
-data SeekSection
-  = SeekOnAllFacts -- ^ base + stacked + writable
-  | SeekOnBase -- ^ base only
-  | SeekOnStacked -- ^ stacked only
-  deriving (Eq, Show)
 
 type Generator = Generator_ Var
 
