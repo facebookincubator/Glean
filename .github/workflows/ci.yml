@@ -83,7 +83,7 @@ jobs:
 
       - name: Install indexer (rust)
         run: |
-          export RUST_ANALYZER=2023-06-19
+          export RUST_ANALYZER=2023-11-06
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
           mkdir -p "$HOME"/.hsthrift/bin

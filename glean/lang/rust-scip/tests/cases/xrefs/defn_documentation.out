@@ -4,7 +4,30 @@
     "key": {
       "defn": {
         "key": {
-          "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (acc)" },
+          "symbol": { "key": "rust-analyzer cargo basics 0.1.0 f1_go()." },
+          "location": {
+            "key": {
+              "file": { "key": "src/lib.rs" },
+              "range": {
+                "lineBegin": 16,
+                "columnBegin": 4,
+                "lineEnd": 16,
+                "columnEnd": 8
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "```rust\u000abasics\u000a```\u000a\u000a```rust\u000afn f1_go(n: u64, acc: u64) -> u64\u000a```"
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": { "key": "rust-analyzer cargo basics 0.1.0 f1_go().(acc)" },
           "location": {
             "key": {
               "file": { "key": "src/lib.rs" },
@@ -25,28 +48,7 @@
     "key": {
       "defn": {
         "key": {
-          "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
-          "location": {
-            "key": {
-              "file": { "key": "src/lib.rs" },
-              "range": {
-                "lineBegin": 12,
-                "columnBegin": 15,
-                "lineEnd": 12,
-                "columnEnd": 15
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000an: u64\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
+          "symbol": { "key": "rust-analyzer cargo basics 0.1.0 f1_go().(n)" },
           "location": {
             "key": {
               "file": { "key": "src/lib.rs" },
@@ -61,71 +63,6 @@
         }
       },
       "docs": { "key": "```rust\u000an: u64\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
-          "location": {
-            "key": {
-              "file": { "key": "src/lib.rs" },
-              "range": {
-                "lineBegin": 22,
-                "columnBegin": 15,
-                "lineEnd": 22,
-                "columnEnd": 15
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000an: u64\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo basics 0.1.0 (n)" },
-          "location": {
-            "key": {
-              "file": { "key": "src/lib.rs" },
-              "range": {
-                "lineBegin": 37,
-                "columnBegin": 15,
-                "lineEnd": 37,
-                "columnEnd": 15
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000an: u64\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo basics 0.1.0 f1_go()." },
-          "location": {
-            "key": {
-              "file": { "key": "src/lib.rs" },
-              "range": {
-                "lineBegin": 16,
-                "columnBegin": 4,
-                "lineEnd": 16,
-                "columnEnd": 8
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000abasics\u000a```\u000a\u000a```rust\u000afn f1_go(n: u64, acc: u64) -> u64\u000a```"
-      }
     }
   },
   {
@@ -155,6 +92,27 @@
     "key": {
       "defn": {
         "key": {
+          "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f1().(n)" },
+          "location": {
+            "key": {
+              "file": { "key": "src/lib.rs" },
+              "range": {
+                "lineBegin": 12,
+                "columnBegin": 15,
+                "lineEnd": 12,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```rust\u000an: u64\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
           "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f2()." },
           "location": {
             "key": {
@@ -178,6 +136,27 @@
     "key": {
       "defn": {
         "key": {
+          "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f2().(n)" },
+          "location": {
+            "key": {
+              "file": { "key": "src/lib.rs" },
+              "range": {
+                "lineBegin": 22,
+                "columnBegin": 15,
+                "lineEnd": 22,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```rust\u000an: u64\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
           "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f3()." },
           "location": {
             "key": {
@@ -195,6 +174,27 @@
       "docs": {
         "key": "```rust\u000abasics\u000a```\u000a\u000a```rust\u000apub fn sum_f3(n: u64) -> u64\u000a```"
       }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f3().(n)" },
+          "location": {
+            "key": {
+              "file": { "key": "src/lib.rs" },
+              "range": {
+                "lineBegin": 37,
+                "columnBegin": 15,
+                "lineEnd": 37,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```rust\u000an: u64\u000a```" }
     }
   }
 ]
