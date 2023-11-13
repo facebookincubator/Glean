@@ -51,6 +51,7 @@ data Config = Config
   , cfgMatchAlgorithm :: MatchAlgorithm  -- ^ function-calls pass
   , cfgDebugPrintReferences :: Bool  -- ^ function-calls pass
   , cfgMaxQueueSize :: Int  -- ^ function-calls pass
+  , cfgIncremental :: Bool  -- ^ derive incrementally
   }
 
 -- | Only used for regression testing derived passes
@@ -74,6 +75,7 @@ testConfig repo = Config
   , cfgMatchAlgorithm = def
   , cfgDebugPrintReferences = False
   , cfgMaxQueueSize = 100000
+  , cfgIncremental = False
   }
 
 -- | Command-line argument parser for "Derive" to get 'Config'
@@ -128,4 +130,6 @@ options = do
     <> O.metavar "N"
     <> O.value 10000
     <> O.help "function-calls: maximum queue size for cxx.FileXRefMap"
+  cfgIncremental <- O.switch $
+    O.long "incremental"
   return Config{..}

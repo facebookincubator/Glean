@@ -41,7 +41,7 @@ data Driver opts = Driver
 type CreateDatabase opts
   = opts
   -> Some LocalOrRemote
-  -> RunIndexer
+  -> (opts -> RunIndexer)
   -> TestConfig
   -> IO ()
 
@@ -56,10 +56,10 @@ driverFromIndexer indexer = Driver
   }
   where
   defaultCreateDatabase :: CreateDatabase opts
-  defaultCreateDatabase _opts backend indexer test = do
+  defaultCreateDatabase opts backend indexer test = do
     let repo = testRepo test
     fillDatabase backend repo "" Nothing (die "repo already exists") $
-      runIndexerForTest backend indexer test
+      runIndexerForTest backend (indexer opts) test
 
 -- | A 'Driver' using an external 'Indexer'. See
 -- "Glean.Indexer.External".
