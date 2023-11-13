@@ -40,6 +40,15 @@ jobs:
       - name: Install cabal-install 3.8
         run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.8.1.0/cabal-install-3.8.1.0-aarch64-linux-deb10.tar.xz 3.8.1.0 --set
 
+      - name: Install indexer (dotnet)
+        run: |
+          export DOTNET=7.0
+          wget https://dot.net/v1/dotnet-install.sh
+          chmod +x dotnet-install.sh
+          ./dotnet-install.sh --channel ${DOTNET} 
+          mkdir -p "$HOME"/.hsthrift/bin && mv "$HOME"/.dotnet/dotnet "$HOME"/.hsthrift/bin
+          dotnet tool install --global scip-dotnet
+
       - name: Install indexers (flow)
         run: |
           export FLOW=0.209.1
@@ -64,14 +73,7 @@ jobs:
           npm install -g @sourcegraph/scip-python
           apt install -y python3-pip
 
-      - name: Install indexer (dotnet)
-        run: |
-          export DOTNET=7.0
-          wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
-          chmod +x dotnet-install.sh
-          ./dotnet-install.sh --channel ${DOTNET} --install-dir "$HOME"/.hsthrift/dotnet
-          dotnet tool install --global scip-dotnet
-
+      
       - name: Install indexer (rust)
         run: |
           export RUST_ANALYZER=2023-11-06
