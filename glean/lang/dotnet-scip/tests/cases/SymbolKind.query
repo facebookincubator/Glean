@@ -1,0 +1,3 @@
+query: scip.SymbolKind _
+perf: True
+transform: [gensort,[]]
