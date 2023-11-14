@@ -61,9 +61,9 @@ data IndexerParams = IndexerParams
 -- The right indexer doesn't have any options. It's possible to
 -- generalise this, but this more restricted form was found to be more
 -- convenient when used with 'Driver'.
-indexerThen :: Indexer a -> RunIndexer -> Indexer a
+indexerThen :: Indexer opts -> (opts -> RunIndexer) -> Indexer opts
 indexerThen indexer run2 = indexer
-  { indexerRun = \opts -> indexerRun indexer opts <> run2
+  { indexerRun = \opts -> indexerRun indexer opts <> run2 opts
   }
 
 indexerWithNoOptions :: String -> RunIndexer -> Indexer ()

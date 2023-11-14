@@ -663,10 +663,18 @@ resolvePat pat = case pat of
     case args of
       [arg] -> do
         arg' <- resolvePat arg
-        res <- resolveTypeOrPred svar txt
+        let (range, txt') = if
+              | Just rem <- Text.stripSuffix "#new" txt -> (SeekOnStacked, rem)
+              | Just rem <- Text.stripSuffix "#old" txt -> (SeekOnBase, rem)
+              | otherwise -> (SeekOnAllFacts, txt)
+        res <- resolveTypeOrPred svar txt'
         case res of
-          RefPred ref -> return (Clause s ref arg')
-          RefType ref -> return (TypeSignature s arg' (NamedTy ref))
+          RefPred ref -> return (Clause s ref arg' range)
+          RefType ref
+            | SeekOnAllFacts <- range ->
+              return (TypeSignature s arg' (NamedTy ref))
+            | otherwise ->
+              prettyErrorIn pat "cannot use #new or #old with types"
             -- The syntax "T pat" for "pat : T" is something we might
             -- consider deprecating later. For now it's just desugared
             -- here.

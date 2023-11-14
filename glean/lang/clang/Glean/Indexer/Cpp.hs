@@ -56,6 +56,7 @@ data Clang = Clang
   , clangJobs         :: Int -- ^ number of indexers to run concurrently
   , clangVerbose      :: Bool -- ^ display debugging information
   , clangProgress     :: Bool -- ^ display indexing progress
+  , clangIncremental  :: Bool -- ^ use incremental derivation
   } deriving Show
 
 options :: Parser Clang
@@ -81,6 +82,7 @@ options = do
   clangProgress <- switch $
     long "progress" <>
     help "Display indexing progress even in verbose mode"
+  clangIncremental <- pure False -- internal, not a CLI flag
   return Clang{..}
 
 -- | Standard indexer, that also runs the deriver

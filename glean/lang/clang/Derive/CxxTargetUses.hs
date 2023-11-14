@@ -24,6 +24,7 @@ import qualified Data.Vector as V
 import Util.Log (logInfo)
 
 import Glean
+import Glean.Angle
 import Glean.Typed (getPid)
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Src.Types as Src
@@ -64,10 +65,16 @@ addUses indirects (target, Cxx.From{..})
 
 deriveUses :: Backend e => e -> Config -> Writer -> IO ()
 deriveUses e cfg writer = do
-  logInfo "deriveUses"
+  logInfo $ "deriveUses" <> if cfgIncremental cfg then " (incremental)" else ""
   indirects <- getIndirectTargets e cfg (getPid writer)
+    -- There are usually not many indirect targets, so we can get away
+    -- without doing anything special in incremental mode for
+    -- getIndirectTargets.
   logInfo $ "loaded " ++ show (PredMap.size indirects) ++ " indirect targets"
-  xrefs <- getFileXRefs e cfg
+  xrefs <-
+    if cfgIncremental cfg
+      then getFileXRefsIncremental e cfg
+      else getFileXRefs e cfg
   logInfo $ "loaded " ++ show (PredMap.size xrefs) ++ " file xrefs"
 
   let generateUses :: Maybe Src.File -> [IdOf Cxx.FileXRefs] -> Uses -> IO ()
@@ -86,12 +93,19 @@ deriveUses e cfg writer = do
 
       generateUses _ _ _ = return ()
 
+      ifIncremental f = if cfgIncremental cfg then f else id
+
       -- NOTE: We rely on the ordering property of the `allFacts` query.
       --       Specifically, we expect to encounter `FileXRefMap`s for
       --       a single file in a single sequence.
+      -- NOTE (incremental):
+      --   what's the rationale for only processing the new FileXRefMaps?
+      --   Provided we did the fanout correctly, this will include all
+      --   FileXRefMaps corresponding to files that have changed.
       q :: Query Cxx.FileXRefMap
       q = maybe id limit (cfgMaxQueryFacts cfg) $
-          limitBytes (cfgMaxQuerySize cfg) allFacts
+          limitBytes (cfgMaxQuerySize cfg) $ query $ ifIncremental new $
+            predicate @Cxx.FileXRefMap wild
 
       -- The dependencies we record for each cxx.TargetUses fact are
       -- the set of cxx.FileXRefs used to generate it. The other

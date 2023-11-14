@@ -8,7 +8,8 @@
 
 {-# LANGUAGE TypeApplications #-}
 module TestDB (
-  withTestDB, withWritableTestDB, dbTestCase, dbTestCaseWritable, createTestDB
+  withTestDB, withWritableTestDB, withStackedTestDB,
+  dbTestCase, dbTestCaseWritable, createTestDB
 ) where
 
 import Data.Default

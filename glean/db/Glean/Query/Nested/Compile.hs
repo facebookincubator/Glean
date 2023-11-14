@@ -72,7 +72,7 @@ toGenerators rec dbSchema deriveStored details term =
     idv <- Var predTy <$> fresh <*> return Nothing
     let
       valpat = RTS.Ref (MatchWild (predicateValueType details))
-      gen = TcFactGen pidRef pat valpat
+      gen = TcFactGen pidRef pat valpat SeekOnAllFacts
     return $ TcQuery predTy
       (RTS.Ref (MatchVar idv))
       Nothing
@@ -130,7 +130,7 @@ toGenerators rec dbSchema deriveStored details term =
     pat <- nestedTerm predicateKeyType term
     return (RTS.Ref (MatchExt
       (Typed ty (TcFactGen (PidRef predicatePid predicateId) pat
-        (RTS.Ref (MatchWild predicateValueType))))))
+        (RTS.Ref (MatchWild predicateValueType)) SeekOnAllFacts))))
   nestedMatch ty (RTS.MatchTerm NestedPred{}) =
     return (RTS.Ref (MatchWild ty))
   nestedMatch ty@(Angle.SumTy fields)

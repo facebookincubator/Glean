@@ -69,7 +69,7 @@ runTest
   -> IO [FilePath]
 runTest driver@Driver{..} driverOpts root testIn =
   withTestBackend testIn $ \backend -> do
-    let index = indexerRun driverIndexer driverOpts
+    let index = indexerRun driverIndexer
     driverCreateDatabase driverOpts backend index testIn
     runQueries backend driver root testIn
 

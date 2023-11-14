@@ -32,7 +32,7 @@ incrementalClangDriver = clangDriver { driverCreateDatabase = createDB }
   where
   clangDriver = DerivePass.driver Code.codemarkupDerivePasses
 
-  createDB _ backend indexer test = do
+  createDB opts backend indexer test = do
     let
       repo = testRepo test
       base = repo { repo_name = (repo_name repo) <> "_base" }
@@ -42,7 +42,7 @@ incrementalClangDriver = clangDriver { driverCreateDatabase = createDB }
         }
 
     fillDatabase backend base "" Nothing (die "repo already exists") $
-      runIndexerForTest backend indexer baseTestConfig
+      runIndexerForTest backend (indexer opts) baseTestConfig
 
     -- discover which files are in the new version
     let isCppFile = (`elem` [".h", ".cpp"]) . takeExtension
@@ -55,4 +55,4 @@ incrementalClangDriver = clangDriver { driverCreateDatabase = createDB }
             pruned_exclude = True
           }
     fillDatabase backend repo "" (Just deps) (die "repo already exists") $
-      runIndexerForTest backend indexer test
+      runIndexerForTest backend (indexer opts { Clang.clangIncremental = True }) test

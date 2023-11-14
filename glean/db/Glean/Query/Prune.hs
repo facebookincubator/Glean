@@ -141,11 +141,11 @@ prune hasFacts (QueryWithInfo q _ t) = do
       MatchPrefix s x -> Ref . MatchPrefix s <$> prunePat x
       MatchArrayPrefix t xs -> Ref . MatchArrayPrefix t <$> traverse prunePat xs
       MatchExt (Typed ty tcterm) -> case tcterm of
-        TcFactGen (PidRef _ predId) _ _
+        TcFactGen (PidRef _ predId) _ _ _
           | not $ hasFacts predId
           -> Nothing
-        TcFactGen pidref k v -> Ref . MatchExt . Typed ty
-          <$> (TcFactGen pidref <$> prunePat k <*> prunePat v)
+        TcFactGen pidref k v range -> Ref . MatchExt . Typed ty
+          <$> (TcFactGen pidref <$> prunePat k <*> prunePat v <*> pure range)
         TcElementsOfArray x -> Ref . MatchExt . Typed ty . TcElementsOfArray
           <$> prunePat x
         TcQueryGen q ->
@@ -211,7 +211,8 @@ renumberVars ty q =
   renameTcTerm :: TcTerm -> R TcTerm
   renameTcTerm = \case
     TcOr a b -> TcOr <$> renamePat a <*> renamePat b
-    TcFactGen ref k v -> TcFactGen ref <$> renamePat k <*> renamePat v
+    TcFactGen ref k v range ->
+      TcFactGen ref <$> renamePat k <*> renamePat v <*> pure range
     TcElementsOfArray x -> TcElementsOfArray <$> renamePat x
     TcQueryGen q -> TcQueryGen <$> renameQuery q
     TcNegation xs -> TcNegation <$> traverse renameStmt xs

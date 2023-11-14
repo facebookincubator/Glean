@@ -87,7 +87,6 @@ mainTestIndexGeneric driver extraOptParser dir testIndex = do
       (platforms, mkLabel) = if null theGroups
           then (["testhash"], const dir)
           else (theGroups, \group -> dir <> " : " <> group)
-      index = indexerRun indexer driverOpts
     withOutputDir dir (cfgOutput cfg) $ \ outDir -> do
       let
         withPlatformTest :: String -> (Test -> IO a) -> IO a
@@ -107,7 +106,7 @@ mainTestIndexGeneric driver extraOptParser dir testIndex = do
               withSetup f =
                 withTestBackend testConfig $ \backend -> do
                   driverCreateDatabase driver driverOpts backend
-                    index testConfig
+                    (indexerRun indexer) testConfig
                   f (backend, testRepo testConfig)
 
           withLazy withSetup $ \get ->

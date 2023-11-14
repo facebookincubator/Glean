@@ -20,7 +20,7 @@ import Glean.Regression.Snapshot.Driver
 
 indexer :: Indexer Hack.Hack
 indexer =
-  Hack.indexer `indexerThen` \env repo _params ->
+  Hack.indexer `indexerThen` \_opts env repo _params ->
     withEnv (DT.defaultConfig repo) env
       deriveHackDeclarationTarget
 
