@@ -655,11 +655,9 @@ library schema
         Glean.Schema.CodemarkupPython
         Glean.Schema.CodemarkupScip
         Glean.Schema.CodemarkupSearch
-        Glean.Schema.CodemarkupThrift
         Glean.Schema.CodemarkupTypes
         Glean.Schema.CodePp
         Glean.Schema.CodePython
-        Glean.Schema.CodeThrift
         Glean.Schema.CodeBuck
         Glean.Schema.Cxx1
         Glean.Schema.Digest
@@ -708,13 +706,11 @@ library schema
         Glean.Schema.CodemarkupPython.Types
         Glean.Schema.CodemarkupScip.Types
         Glean.Schema.CodemarkupSearch.Types
-        Glean.Schema.CodemarkupThrift.Types
         Glean.Schema.Codemarkup.Types
         Glean.Schema.CodemarkupTypes.Types
         Glean.Schema.CodePp.Types
         Glean.Schema.CodePython.Types
         Glean.Schema.CodeScip.Types
-        Glean.Schema.CodeThrift.Types
         Glean.Schema.CodeFbthrift.Types
         Glean.Schema.Code.Types
         Glean.Schema.Cxx1.Types
