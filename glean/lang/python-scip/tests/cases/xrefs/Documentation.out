@@ -1,0 +1,15 @@
+[
+  "@generated",
+  { "key": "(module) example" },
+  { "key": "```python\u000abuiltins.float\u000a```" },
+  { "key": "```python\u000abuiltins.int\u000a```" },
+  { "key": "```python\u000abuiltins.list\u000a```" },
+  { "key": "```python\u000abuiltins.str\u000a```" },
+  { "key": "```python\u000adef godown(): # -> None:\u000a```" },
+  { "key": "```python\u000adef goleft(): # -> None:\u000a```" },
+  { "key": "```python\u000adef goright(): # -> None:\u000a```" },
+  { "key": "```python\u000adef group(): # -> None:\u000a```" },
+  { "key": "```python\u000adef move(): # -> None:\u000a```" },
+  { "key": "```python\u000aturtle.Turtle\u000a```" },
+  { "key": "```python\u000aturtle._Screen\u000a```" }
+]

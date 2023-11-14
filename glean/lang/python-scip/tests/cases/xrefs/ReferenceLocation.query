@@ -1,0 +1,3 @@
+query: scip.ReferenceLocation _
+perf: True
+transform: [gensort,[]]
