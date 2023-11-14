@@ -51,7 +51,7 @@ import Data.Bifunctor (second)
 import Data.Either.Extra (eitherToMaybe, partitionEithers)
 import Data.Default (def)
 import Data.List as List ( sortOn )
-import Data.List.Extra ( nubOrd, nubOrdOn, groupOn )
+import Data.List.Extra ( nubOrd, nubOrdOn, groupOn, groupSortOn )
 import Data.List.NonEmpty (NonEmpty(..), toList, nonEmpty)
 import qualified Data.List.NonEmpty as NonEmpty
 import Data.Maybe ( mapMaybe, catMaybes, fromMaybe, listToMaybe )
@@ -432,8 +432,8 @@ searchSymbol env@Glass.Env{..} req@SymbolSearchRequest{..} RequestOptions{..} =
     terse = not symbolSearchOptions_detailedResults
     sorted = symbolSearchOptions_sortResults
     mlimit = fromIntegral <$> requestOptions_limit
-    -- inner limit can be higher if we are sampling/sorting
-    mlimitInner = if sorted then fmap (*10) mlimit else mlimit
+    -- inner limit can be higher if we are sampling/sorting into kind/lang sets
+    mlimitInner = if sorted then fmap (*5) mlimit else mlimit
 
     sCase = if symbolSearchOptions_ignoreCase then Insensitive else Sensitive
     sType = if symbolSearchOptions_exactMatch then Exact else Prefix
@@ -683,18 +683,44 @@ data MaybeResult a
 sortResults
   :: Query.RepoSearchResult
   -> [[(SymbolResult, Maybe SymbolDescription)]]
-sortResults xs = map (List.sortOn relevance) (groupOn features xs)
+sortResults xs = map (List.sortOn relevance) (groupSortOn features xs)
   where
-    -- we group on the language/kind to produce result sets
-    -- then sort those results by score and alpha (note: not groupSortOn which
-    -- would create too many classes to select from)
+    -- we group on the language/kind sets to produce result sets
+    -- then sort those results by score and alpha (note: not groupSortOn with
+    -- relevance as that would create too many classes to select from)
     features (SymbolResult{..},_desc) = Feature
-      symbolResult_language
-      symbolResult_kind
+      symbolResult_language (scoreKind symbolResult_kind)
 
+  -- we could improve this slightly with a qualified vs global qname check
     relevance (SymbolResult{..},_desc) =
-      (symbolResult_score, symbolResult_name,
-        qualifiedName_container symbolResult_qname)
+      ( symbolResult_score
+      , scoreKind symbolResult_kind
+      , scoreScope symbolResult_qname
+      , symbolResult_name
+      , qualifiedName_container symbolResult_qname)
+
+-- Match feelingLuck() server-side classes
+containerishKinds :: Set SymbolKind
+containerishKinds = Set.fromList
+  [ SymbolKind_Namespace
+  , SymbolKind_Class_
+  , SymbolKind_Trait
+  , SymbolKind_Interface
+  , SymbolKind_Module
+  ]
+
+scoreScope :: QualifiedName -> Int
+scoreScope qname = case qualifiedName_container qname of
+  Name "" -> 0 -- free or global things have empty container names
+  _ -> 1
+
+scoreKind :: Maybe SymbolKind -> Int
+scoreKind kind = case kind of
+  Just k
+    | k `Set.member` containerishKinds -> 1
+    | k == SymbolKind_Function || k == SymbolKind_Method -> 2
+    | otherwise -> 3
+  _unknown -> 4
 
 -- | We do some light ranking of the results
 scoreResult :: Text -> Text -> MatchType
@@ -710,8 +736,11 @@ scoreResult query result
 -- todo: we might want to have fewer symbolkind groups (e.g. combine class-like
 -- things)
 --
-data Feature = Feature !Language !(Maybe SymbolKind)
-  deriving Eq
+data Feature = Feature !Language {-# UNPACK #-}!KindSort
+  deriving (Eq, Ord)
+
+-- Containerish, function/method, other
+type KindSort = Int
 
 -- | Glass needs to mark results by how good they are
 -- For scope searches we don't care so much as the scope will filter
