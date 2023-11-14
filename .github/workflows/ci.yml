@@ -37,16 +37,6 @@ jobs:
         run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.8.1.0/cabal-install-3.8.1.0-x86_64-linux-deb10.tar.xz 3.8.1.0 --set
       - name: Add GHC and cabal to PATH
         run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
-
-      - name: Install indexer (dotnet)
-        run: |
-          export DOTNET=7.0
-          wget https://dot.net/v1/dotnet-install.sh
-          chmod +x dotnet-install.sh
-          ./dotnet-install.sh --channel ${DOTNET} 
-          export DOTNET_ROOT=$HOME/.dotnet
-          export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
-          dotnet tool install --global scip-dotnet
         
       - name: Install indexer (flow)
         run: |
@@ -82,11 +72,11 @@ jobs:
       - name: Install indexer (dotnet)
         run: |
             export DOTNET=7.0
-            wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+            wget https://dot.net/v1/dotnet-install.sh
             chmod +x dotnet-install.sh
-            ./dotnet-install.sh --channel ${DOTNET} --install-dir "$HOME"/.hsthrift/dotnet
-            echo "$HOME/.hsthrift/dotnet" >> "$GITHUB_PATH"
-            echo 'export PATH="$HOME/.hsthrift/dotnet:$PATH"' >> $HOME/.bashrc
+            ./dotnet-install.sh --channel ${DOTNET} 
+            export DOTNET_ROOT=$HOME/.dotnet
+            export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
             dotnet tool install --global scip-dotnet
   
       - name: Install indexer (go)
