@@ -44,8 +44,8 @@ jobs:
           wget https://dot.net/v1/dotnet-install.sh
           chmod +x dotnet-install.sh
           ./dotnet-install.sh --channel ${DOTNET} 
-          mkdir -p "$HOME"/.hsthrift/bin && mv "$HOME"/.dotnet "$HOME"/.hsthrift/bin
-          echo "$HOME/.hsthrift/bin" >> "$GITHUB_PATH"
+          export DOTNET_ROOT=$HOME/.dotnet
+          export PATH=$PATH:$DOTNET_ROOT:$DOTNET_ROOT/tools
           dotnet tool install --global scip-dotnet
         
       - name: Install indexer (flow)
