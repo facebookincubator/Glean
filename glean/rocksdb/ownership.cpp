@@ -319,11 +319,11 @@ void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
   check(container_.db->Write(container_.writeOptions, &batch));
 
   for (auto i : touched) {
-    assert(i < first_unit_id + ownership_unit_counters.size());
+    CHECK_LT(i, first_unit_id + ownership_unit_counters.size());
     ++ownership_unit_counters[i - first_unit_id];
   }
   ownership_unit_counters.insert(ownership_unit_counters.end(), new_count, 1);
-  assert(next_uset_id == ownership_unit_counters.size() + first_unit_id);
+  CHECK_EQ(next_uset_id, ownership_unit_counters.size() + first_unit_id);
 }
 
 std::unique_ptr<rts::DerivedFactOwnershipIterator>
@@ -409,7 +409,7 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
     rocksdb::WriteBatch batch;
 
     uint32_t id = ownership.firstId_;
-    assert(id >= next_uset_id);
+    CHECK_GE(id, next_uset_id);
 
     for (auto& exp : ownership.sets_) {
       if ((id % 1000000) == 0) {
@@ -432,7 +432,7 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
 
   // ToDo: just update usets_, don't load the whole thing
   usets_ = loadOwnershipSets();
-  assert(usets_->size() == 0 || usets_->getNextId() == next_uset_id);
+  CHECK(usets_->size() == 0 || usets_->getNextId() == next_uset_id);
   // TODO: better not add new units after storing sets, we should fail if that happens
 
   if (ownership.facts_.size() > 0) {
@@ -667,7 +667,7 @@ void DatabaseImpl::FactOwnerCache::enable(ContainerImpl& container) {
   }
 
   check(s);
-  assert(val.size() % sizeof(UsetId) == 0);
+  CHECK_EQ(val.size() % sizeof(UsetId), 0);
   size_t num = val.size() / sizeof(UsetId);
   std::vector<UsetId> index(num);
   const UsetId* start = reinterpret_cast<const UsetId*>(val.data());
