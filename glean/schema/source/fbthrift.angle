@@ -72,15 +72,15 @@ predicate Package :
 
 # Named type declaration, always at a particular location
 # could become (union of) separate full definitions
-predicate NamedDecl : { name : NamedType, locName : Loc }
+predicate NamedDecl : { name : NamedType }
 
 # Declared exception, always at a particular location
 # could become a full definition or reference to struct definition
-predicate ExceptionName : { name : QualName, locName : Loc }
+predicate ExceptionName : { name : QualName }
 
 # Declared service name, always at a particular location
 # could become a full definition
-predicate ServiceName : { name : QualName, locName : Loc }
+predicate ServiceName : { name : QualName }
 
 # Find the parent of a given service
 predicate ServiceParent : { child : ServiceName, parent : ServiceName }
@@ -100,16 +100,15 @@ predicate FunctionName :
   {
     service_ : ServiceName,
     name : Identifier,
-    locName : Loc,
   }
 
 # Declared constant name, always at a particular location
 # could become a full definition
-predicate Constant : { name : QualName, locName : Loc }
+predicate Constant : { name : QualName }
 
 # Declared enum value name, scoped to an enum name
 # could become a full definition
-predicate EnumValue : { enum_ : NamedType, name : Identifier, locName : Loc }
+predicate EnumValue : { enum_ : NamedType, name : Identifier }
 
 ################################################################################
 # Cross-references
@@ -127,9 +126,9 @@ type XRefTarget =
     function_ : FunctionName |
   }
 
-# Thrift internal cross-reference target at locTarget in a file
+# Thrift internal cross-reference target in a file
 # see FileXRefs for file context
-type Target = { locTarget : Loc, target : XRefTarget }
+type Target = { target : XRefTarget }
 
 # Thrift internal cross-reference from locRef in a file to target
 # see FileXRefs for file context
@@ -139,7 +138,6 @@ type XRef = { locRef : Loc, target : XRefTarget }
 predicate FileXRefs :
   {
     file : File,
-    targets : [Target], # always empty??
     xrefs : [XRef],
   }
 
@@ -352,7 +350,6 @@ predicate UnionVal : {
 
 predicate EnumVal : {
   name : QualName,
-  loc : Loc,
 }
 
 type StructFieldValValue = {

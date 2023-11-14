@@ -16,12 +16,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Declaration" }
               }
             }
@@ -58,12 +52,6 @@
                       "name": { "key": "DefinitionKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Definition" }
               }
@@ -102,12 +90,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Buck" }
               }
             }
@@ -144,12 +126,6 @@
                       "name": { "key": "Language" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Cpp" }
               }
@@ -188,12 +164,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Hack" }
               }
             }
@@ -230,12 +200,6 @@
                       "name": { "key": "Language" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Haskell" }
               }
@@ -274,12 +238,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Java" }
               }
             }
@@ -316,12 +274,6 @@
                       "name": { "key": "Language" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "JavaScript" }
               }
@@ -360,12 +312,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "ObjectiveC" }
               }
             }
@@ -402,12 +348,6 @@
                       "name": { "key": "Language" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "PreProcessor" }
               }
@@ -446,12 +386,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Python" }
               }
             }
@@ -488,12 +422,6 @@
                       "name": { "key": "Language" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Rust" }
               }
@@ -532,12 +460,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Thrift" }
               }
             }
@@ -574,12 +496,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Array" }
               }
@@ -618,12 +534,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Boolean" }
               }
             }
@@ -660,12 +570,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Class_" }
               }
@@ -704,12 +608,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Constant" }
               }
             }
@@ -746,12 +644,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Constructor" }
               }
@@ -790,12 +682,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Enum" }
               }
             }
@@ -832,12 +718,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Enumerator" }
               }
@@ -876,12 +756,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Event" }
               }
             }
@@ -918,12 +792,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Field" }
               }
@@ -962,12 +830,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "File" }
               }
             }
@@ -1004,12 +866,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Function" }
               }
@@ -1048,12 +904,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Interface" }
               }
             }
@@ -1090,12 +940,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Key" }
               }
@@ -1134,12 +978,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Macro" }
               }
             }
@@ -1176,12 +1014,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Method" }
               }
@@ -1220,12 +1052,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Module" }
               }
             }
@@ -1262,12 +1088,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Namespace" }
               }
@@ -1306,12 +1126,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Null" }
               }
             }
@@ -1348,12 +1162,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Number" }
               }
@@ -1392,12 +1200,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Object" }
               }
             }
@@ -1434,12 +1236,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Operator" }
               }
@@ -1478,12 +1274,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Package" }
               }
             }
@@ -1520,12 +1310,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Property" }
               }
@@ -1564,12 +1348,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "String" }
               }
             }
@@ -1606,12 +1384,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Struct" }
               }
@@ -1650,12 +1422,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Type" }
               }
             }
@@ -1692,12 +1458,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "TypeParameter" }
               }
@@ -1736,12 +1496,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Union" }
               }
             }
@@ -1778,12 +1532,6 @@
                       "name": { "key": "SymbolKind" }
                     }
                   }
-                },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
                 },
                 "name": { "key": "Value" }
               }
@@ -1822,12 +1570,6 @@
                     }
                   }
                 },
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "Variable" }
               }
             }
@@ -1856,12 +1598,6 @@
           "decl": {
             "exception_": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "key": {
                     "file": { "key": { "key": "lib.thrift" } },
@@ -1895,21 +1631,9 @@
           "decl": {
             "function_": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "describeSymbol" },
                 "service_": {
                   "key": {
-                    "locName": {
-                      "endCol": -1,
-                      "endLine": -1,
-                      "startCol": -1,
-                      "startLine": -1
-                    },
                     "name": {
                       "key": {
                         "file": { "key": { "key": "lib.thrift" } },
@@ -1945,21 +1669,9 @@
           "decl": {
             "function_": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "documentSymbolIndex" },
                 "service_": {
                   "key": {
-                    "locName": {
-                      "endCol": -1,
-                      "endLine": -1,
-                      "startCol": -1,
-                      "startLine": -1
-                    },
                     "name": {
                       "key": {
                         "file": { "key": { "key": "lib.thrift" } },
@@ -1995,21 +1707,9 @@
           "decl": {
             "function_": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "documentSymbolListX" },
                 "service_": {
                   "key": {
-                    "locName": {
-                      "endCol": -1,
-                      "endLine": -1,
-                      "startCol": -1,
-                      "startLine": -1
-                    },
                     "name": {
                       "key": {
                         "file": { "key": { "key": "lib.thrift" } },
@@ -2045,21 +1745,9 @@
           "decl": {
             "function_": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "findReferenceRanges" },
                 "service_": {
                   "key": {
-                    "locName": {
-                      "endCol": -1,
-                      "endLine": -1,
-                      "startCol": -1,
-                      "startLine": -1
-                    },
                     "name": {
                       "key": {
                         "file": { "key": { "key": "lib.thrift" } },
@@ -2095,21 +1783,9 @@
           "decl": {
             "function_": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "findReferences" },
                 "service_": {
                   "key": {
-                    "locName": {
-                      "endCol": -1,
-                      "endLine": -1,
-                      "startCol": -1,
-                      "startLine": -1
-                    },
                     "name": {
                       "key": {
                         "file": { "key": { "key": "lib.thrift" } },
@@ -2145,21 +1821,9 @@
           "decl": {
             "function_": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "jumpTo" },
                 "service_": {
                   "key": {
-                    "locName": {
-                      "endCol": -1,
-                      "endLine": -1,
-                      "startCol": -1,
-                      "startLine": -1
-                    },
                     "name": {
                       "key": {
                         "file": { "key": { "key": "lib.thrift" } },
@@ -2195,21 +1859,9 @@
           "decl": {
             "function_": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "resolveSymbol" },
                 "service_": {
                   "key": {
-                    "locName": {
-                      "endCol": -1,
-                      "endLine": -1,
-                      "startCol": -1,
-                      "startLine": -1
-                    },
                     "name": {
                       "key": {
                         "file": { "key": { "key": "lib.thrift" } },
@@ -2245,21 +1897,9 @@
           "decl": {
             "function_": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "searchByName" },
                 "service_": {
                   "key": {
-                    "locName": {
-                      "endCol": -1,
-                      "endLine": -1,
-                      "startCol": -1,
-                      "startLine": -1
-                    },
                     "name": {
                       "key": {
                         "file": { "key": { "key": "lib.thrift" } },
@@ -2295,21 +1935,9 @@
           "decl": {
             "function_": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "searchByNamePrefix" },
                 "service_": {
                   "key": {
-                    "locName": {
-                      "endCol": -1,
-                      "endLine": -1,
-                      "startCol": -1,
-                      "startLine": -1
-                    },
                     "name": {
                       "key": {
                         "file": { "key": { "key": "lib.thrift" } },
@@ -2345,21 +1973,9 @@
           "decl": {
             "function_": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": { "key": "searchBySymbolId" },
                 "service_": {
                   "key": {
-                    "locName": {
-                      "endCol": -1,
-                      "endLine": -1,
-                      "startCol": -1,
-                      "startLine": -1
-                    },
                     "name": {
                       "key": {
                         "file": { "key": { "key": "lib.thrift" } },
@@ -2423,12 +2039,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 0,
                   "name": {
@@ -2465,12 +2075,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 0,
                   "name": {
@@ -2507,12 +2111,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 0,
                   "name": {
@@ -2549,12 +2147,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 0,
                   "name": {
@@ -2591,12 +2183,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 0,
                   "name": {
@@ -2633,12 +2219,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 0,
                   "name": {
@@ -2675,12 +2255,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 0,
                   "name": {
@@ -2717,12 +2291,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 1,
                   "name": {
@@ -2759,12 +2327,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 1,
                   "name": {
@@ -2801,12 +2363,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 1,
                   "name": {
@@ -2843,12 +2399,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -2885,12 +2435,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -2927,12 +2471,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -2969,12 +2507,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3011,12 +2543,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3053,12 +2579,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3095,12 +2615,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3137,12 +2651,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3179,12 +2687,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3221,12 +2723,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3263,12 +2759,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3305,12 +2795,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3347,12 +2831,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3389,12 +2867,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3431,12 +2903,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3473,12 +2939,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3515,12 +2975,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3557,12 +3011,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3599,12 +3047,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3641,12 +3083,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3683,12 +3119,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 2,
                   "name": {
@@ -3725,12 +3155,6 @@
           "decl": {
             "named": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "kind": 3,
                   "name": {
@@ -3767,12 +3191,6 @@
           "decl": {
             "service_": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "key": {
                     "file": { "key": { "key": "lib.thrift" } },
@@ -3806,12 +3224,6 @@
           "decl": {
             "service_": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "key": {
                     "file": { "key": { "key": "lib.thrift" } },
@@ -3845,12 +3257,6 @@
           "decl": {
             "service_": {
               "key": {
-                "locName": {
-                  "endCol": -1,
-                  "endLine": -1,
-                  "startCol": -1,
-                  "startLine": -1
-                },
                 "name": {
                   "key": {
                     "file": { "key": { "key": "lib.thrift" } },
