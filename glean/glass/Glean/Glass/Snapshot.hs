@@ -361,9 +361,10 @@ realMain _config@Config{..} =
                 case result of
                   Left e ->
                     Logger.setError (showError e)
-                  Right BuildSnapshot{defs, refs} ->
+                  Right BuildSnapshot{defs, refs, revision} ->
                     Logger.setDefinitions defs <>
-                    Logger.setReferences refs
+                    Logger.setReferences refs <>
+                    Logger.setRevision (Types.unRevision revision)
               let accErrors' = either pure (const []) result <> accErrors
               uploadLoop accErrors'
 
