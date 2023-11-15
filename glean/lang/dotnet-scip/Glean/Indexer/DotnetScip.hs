@@ -28,17 +28,17 @@ options = do
 
 indexer :: Indexer DotnetScip
 indexer = Indexer {
-    indexerShortName = "dotnet-scip",
-    indexerDescription = "Index C# code with `scip-dotnet`",
-    indexerOptParser = options,
-    indexerRun = \DotnetScip{..} backend repo IndexerParams{..} -> do
-        val <- SCIP.runIndexer ScipIndexerParams {
-            scipBinary = dotnetScipBinary,
-            scipArgs = const [ "index"],
-            scipRoot = indexerRoot,
-            scipWritesLocal = True,
-            scipLanguage = Just SCIP.CSharp
-        }
-        sendJsonBatches backend repo (dotnetScipBinary <> "/scip") val
-        derive backend repo
-}
+        indexerShortName = "dotnet-scip",
+        indexerDescription = "Index C# code with `scip-dotnet`",
+        indexerOptParser = options,
+        indexerRun = \DotnetScip{..} backend repo IndexerParams{..} -> do
+            val <- SCIP.runIndexer ScipIndexerParams {
+                scipBinary = dotnetScipBinary,
+                scipArgs = const [ "index"],
+                scipRoot = indexerRoot,
+                scipWritesLocal = True,
+                scipLanguage = Just SCIP.CSharp
+            }
+            sendJsonBatches backend repo (dotnetScipBinary <> "/scip") val
+            derive backend repo
+    }
