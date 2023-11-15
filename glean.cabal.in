@@ -986,6 +986,7 @@ library indexers
         glean/lang/lsif/indexer
         glean/lang/scip/indexer
         glean/lang/python-scip
+        glean/lang/dotnet-scip
         glean/lang/rust-lsif
         glean/lang/rust-scip
         glean/lang/typescript
@@ -1006,6 +1007,7 @@ library indexers
         Glean.Indexer.RustScip
         Glean.Indexer.Typescript
         Glean.Indexer.PythonScip
+        Glean.Indexer.DotnetScip
         Glean.Indexer.List
     build-depends:
         glean:client-hs,
