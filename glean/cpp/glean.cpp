@@ -46,21 +46,9 @@ std::map<std::string, std::vector<int64_t>> BatchBase::serializeOwnership() cons
     }
     ow.insert({p.unit, std::move(ids)});
   }
-  if(ow.size() != owned.size()) {
-    LOG(ERROR) << "unexpected number of serialized units "
-      << ow.size() << " vs. " << owned.size();
-    std::vector<std::string> us;
-    for (const auto& p : owned) {
-      us.push_back(p.unit);
-    }
-    std::sort(us.begin(), us.end());
-    std::string buf;
-    for (const auto& s : us) {
-      buf += s;
-      buf += ' ';
-    }
-    LOG(FATAL) << buf;
-  }
+  // it's possible that ow.size() != owned.size() here. If we indexed
+  // the same file multiple times, then we would have ownership data
+  // for the same unit occurring multiple times in the owned deque.
   last_serialized_units = owned.size();
   total_serialized_units += owned.size();
   return ow;
