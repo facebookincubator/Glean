@@ -13,8 +13,6 @@ import Control.Monad
 import Data.IORef
 import Data.Maybe
 import Data.Time
-import Data.Typeable (cast)
-import Network.HTTP.Client
 import qualified Options.Applicative as O
 import System.Time.Extra (Seconds)
 
@@ -31,6 +29,9 @@ import Util.Log
 import Util.STM
 
 #if GLEAN_FACEBOOK
+import Data.Typeable (cast)
+import Network.HTTP.Client
+
 import JustKnobs (evalKnob)
 import Logger.IO
 import Glean.Facebook.Logger.Server
@@ -38,6 +39,7 @@ import Glean.Facebook.Logger.Database
 import qualified Glean.Database.Backup.Manifold as Manifold
 import Glean.Server.Available ( withAvailableDBFilterViaSR )
 import Manifold.Client
+import Glean.Util.Some
 #endif
 
 import Glean.Database.Config (Config(..))
@@ -53,7 +55,6 @@ import Glean.Server.Sharding (
   withShardsUpdater,
   waitForTerminateSignalsAndGracefulShutdown)
 import Glean.Util.ConfigProvider
-import Glean.Util.Some
 
 main :: IO ()
 main =
