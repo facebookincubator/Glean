@@ -6,7 +6,9 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.Clang.Test (driver, driverWith, Options) where
+module Glean.Clang.Test (
+    driver, driverWith, Options, Cpp.clangIncremental
+  ) where
 
 import qualified Data.Aeson as Aeson
 import Data.List
@@ -16,6 +18,7 @@ import Text.JSON
 
 import Glean.Indexer
 import Glean.Indexer.Cpp
+import qualified Glean.Indexer.Cpp as Cpp ( clangIncremental )
 import Glean.Regression.Snapshot.Driver
 import Glean.Regression.Snapshot.Transform
 import Glean.Util.CxxXRef
