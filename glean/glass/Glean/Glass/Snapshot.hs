@@ -24,6 +24,7 @@ import Control.Concurrent.STM
 import Control.Concurrent.Stream (stream)
 import Control.Exception (SomeException, try)
 import Control.Monad (forM_, when)
+import Data.Aeson.Encode.Pretty (encodePretty)
 import qualified Data.ByteString as BS
 import Data.Default (def)
 import Data.Int (Int64)
@@ -32,6 +33,7 @@ import Data.Maybe (fromMaybe)
 import Data.Proxy (Proxy (..))
 import Data.Text (Text, pack, unpack)
 import Data.ByteString.Lazy (fromStrict, toStrict)
+import qualified Data.ByteString.Lazy as LBS
 import qualified Data.Text.Encoding as TE
 import qualified Database.MySQL.Simple as DB
 import Numeric.Natural
@@ -406,4 +408,4 @@ printSnapshot path = do
   let decomp = toStrict $ decompress $ fromStrict bytes
       deser :: Either String Types.Snapshot
       deser = deserializeGen (Proxy :: Proxy Compact) decomp
-  either error print deser
+  either error (LBS.putStr . encodePretty) deser
