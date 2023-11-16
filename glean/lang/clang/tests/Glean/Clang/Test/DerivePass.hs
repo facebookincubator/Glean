@@ -13,8 +13,9 @@ import Control.Monad
 import Data.Default
 
 import Glean.Backend.Types
-import qualified Glean.Clang.Test as Clang
 import Glean.Indexer
+import qualified Glean.Clang.Test as Clang
+import qualified Glean.Indexer.Cpp as Clang ( clangIncremental )
 import Glean.Regression.Snapshot.Driver
 import Glean.Regression.Snapshot
 import Glean.Types
