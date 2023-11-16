@@ -1,0 +1,236 @@
+[
+  "@generated",
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . Collections/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": { "symbol": { "key": "scip-dotnet nuget . . Generic/" }, "kind": 3 }
+  },
+  { "key": { "symbol": { "key": "scip-dotnet nuget . . Http/" }, "kind": 3 } },
+  { "key": { "symbol": { "key": "scip-dotnet nuget . . IO/" }, "kind": 3 } },
+  { "key": { "symbol": { "key": "scip-dotnet nuget . . Linq/" }, "kind": 3 } },
+  { "key": { "symbol": { "key": "scip-dotnet nuget . . Net/" }, "kind": 3 } },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . Reflection/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": { "symbol": { "key": "scip-dotnet nuget . . Runtime/" }, "kind": 3 }
+  },
+  {
+    "key": { "symbol": { "key": "scip-dotnet nuget . . System/" }, "kind": 3 }
+  },
+  { "key": { "symbol": { "key": "scip-dotnet nuget . . Tasks/" }, "kind": 3 } },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . Threading/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . Versioning/" },
+      "kind": 3
+    }
+  },
+  { "key": { "symbol": { "key": "scip-dotnet nuget . . ``/" }, "kind": 3 } },
+  {
+    "key": { "symbol": { "key": "scip-dotnet nuget . . ``/Dog#" }, "kind": 4 }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Dog#`.ctor`()." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/ExecuteInheritance#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget . . ``/ExecuteInheritance#Main()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget . . ``/ExecuteInheritance#Main().(args)"
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": { "symbol": { "key": "scip-dotnet nuget . . ``/Human#" }, "kind": 4 }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Human#`.ctor`()." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#NumberOfLegs." },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#Specie." },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`()." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`(+1)." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`(+1).(numberOfLegs)"
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`(+1).(specie)"
+      },
+      "kind": 7
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#numberOfLegs." },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#specie." },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget System.Console 7.0.0.0 System/Console#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget System.Console 7.0.0.0 System/Console#WriteLine(+11)."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Reflection/AssemblyCompanyAttribute#`.ctor`()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Reflection/AssemblyConfigurationAttribute#`.ctor`()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Reflection/AssemblyFileVersionAttribute#`.ctor`()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Reflection/AssemblyInformationalVersionAttribute#`.ctor`()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Reflection/AssemblyProductAttribute#`.ctor`()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Reflection/AssemblyTitleAttribute#`.ctor`()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Reflection/AssemblyVersionAttribute#`.ctor`()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget System.Runtime 7.0.0.0 System/String#Empty."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Versioning/TargetFrameworkAttribute#FrameworkDisplayName."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget System.Runtime 7.0.0.0 Versioning/TargetFrameworkAttribute#`.ctor`()."
+      },
+      "kind": 5
+    }
+  }
+]
