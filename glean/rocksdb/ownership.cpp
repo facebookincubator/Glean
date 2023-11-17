@@ -408,18 +408,20 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
     auto t = makeAutoTimer("storeOwnership(sets)");
     rocksdb::WriteBatch batch;
 
-    uint32_t id = ownership.firstId_;
+    auto serialized = ownership.sets_.toEliasFano();
+    uint32_t id = ownership.sets_.getFirstId();
     CHECK_GE(id, next_uset_id);
 
-    for (auto& exp : ownership.sets_) {
+    for (auto& exp : serialized) {
       if ((id % 1000000) == 0) {
         VLOG(1) << "storeOwnership: " << id;
       }
       putOwnerSet(container_, batch, id, exp.op, exp.set);
+      exp.set.free();
       id++;
     }
 
-    next_uset_id = ownership.firstId_ + ownership.sets_.size();
+    next_uset_id = ownership.sets_.getFirstId() + ownership.sets_.size();
     check(batch.Put(
       container_.family(Family::admin),
       toSlice(AdminId::NEXT_UNIT_ID),
@@ -428,10 +430,14 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
     VLOG(1) << "storeOwnership: writing sets (" << ownership.sets_.size()
             << ")";
     check(container_.db->Write(container_.writeOptions, &batch));
+
+    if (usets_->size() == 0) {
+      // If usets_ is empty, then it will not have the correct firstId yet
+      usets_ = std::make_unique<Usets>(ownership.sets_.getFirstId());
+    }
+    usets_->append(std::move(ownership.sets_));
   }
 
-  // ToDo: just update usets_, don't load the whole thing
-  usets_ = loadOwnershipSets();
   CHECK(usets_->size() == 0 || usets_->getNextId() == next_uset_id);
   // TODO: better not add new units after storing sets, we should fail if that happens
 
