@@ -67,7 +67,7 @@ jobs:
             chmod +x dotnet-install.sh
             ./dotnet-install.sh --channel ${DOTNET} 
             export DOTNET_ROOT=$HOME/.dotnet
-            DOTNET_ROOT/dotnet tool install --global scip-dotnet
+            $DOTNET_ROOT/dotnet tool install --global scip-dotnet
 
       - name: Install indexer (go)
         run: |
