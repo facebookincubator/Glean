@@ -598,6 +598,18 @@ const char* glean_slice_compute(
     size_t num_bases,
     Slice** result);
 
+const char* glean_slice_serialize(
+  Slice* slice,
+  const void **data,
+  size_t *size
+);
+
+const char* glean_slice_deserialize(
+  const void *data,
+  size_t size,
+  Slice **slice
+);
+
 void glean_slice_free(Slice *slice);
 
 const char *glean_make_sliced_stack(

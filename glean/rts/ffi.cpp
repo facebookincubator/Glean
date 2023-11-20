@@ -1018,6 +1018,27 @@ const char *glean_slice_compute(
   });
 }
 
+const char* glean_slice_serialize(
+  Slice* slice,
+  const void **data,
+  size_t *size) {
+  return ffi::wrap([=] {
+    binary::Output bytes;
+    slice->serialize(bytes);
+    ffi::clone_bytes(bytes.bytes()).release_to(data, size);
+  });
+}
+
+const char* glean_slice_deserialize(
+  const void *data,
+  size_t size,
+  Slice **slice) {
+  return ffi::wrap([=] {
+    binary::Input bytes(data, size);
+    *slice = Slice::deserialize(bytes).release();
+  });
+}
+
 void glean_slice_free(Slice *slice) {
   ffi::free_(slice);
 }

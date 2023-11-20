@@ -218,6 +218,24 @@ std::unique_ptr<Slice> slice(
   return std::make_unique<Slice>(first, std::move(members));
 }
 
+void Slice::serialize(binary::Output& o) const {
+    serialize::put(o, first_);
+    std::vector<uint64_t> words(set_.num_blocks());
+    to_block_range(set_, words.begin());
+    serialize::put(o, words, serialize::AsBytes());
+  }
+
+
+std::unique_ptr<Slice> Slice::deserialize(binary::Input& i) {
+  UsetId first;
+  serialize::get(i, first);
+  std::vector<uint64_t> words;
+  serialize::get(i, words, serialize::AsBytes());
+  boost::dynamic_bitset<uint64_t> set(words.size()*64);
+  from_block_range(words.begin(), words.end(), set);
+  return std::make_unique<Slice>(first, std::move(set));
+}
+
 }
 }
 }
