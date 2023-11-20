@@ -74,24 +74,24 @@ resumeWork env =  do
       statusV .==. DatabaseStatus_Incomplete
     forM_ metas $ \Item{..} ->
       case metaCompleteness itemMeta of
-        Incomplete (DatabaseIncomplete_tasks tasks) ->
-          forM_ (HashMap.toList tasks) (\(name, task@Task{..}) -> do
-              case task_state of
-                TaskState_running (TaskRunning parcels) -> do
-                  controller resumeTask Context
-                    { ctxEnv = env
-                    , ctxRepo = itemRepo
-                    , ctxTask = name
-                    , ctxRecipe = task_recipe
-                    , ctxWorkFinished = workFinished
-                    }
-                    parcels
-                  lift $ resumeHeartbeats
-                    timepoint env itemRepo name task parcels
-                _ -> return ())
-          `catch` \err -> do
-            new_meta <- failTask itemMeta err
-            lift $ Catalog.writeMeta (envCatalog env) itemRepo new_meta
+        Incomplete (DatabaseIncomplete_tasks tasks) -> do
+          new_meta <- handle (failTask itemMeta) $ do
+            forM_ (HashMap.toList tasks) (\(name, task@Task{..}) -> do
+                case task_state of
+                  TaskState_running (TaskRunning parcels) -> do
+                    controller resumeTask Context
+                      { ctxEnv = env
+                      , ctxRepo = itemRepo
+                      , ctxTask = name
+                      , ctxRecipe = task_recipe
+                      , ctxWorkFinished = workFinished
+                      }
+                      parcels
+                    lift $ resumeHeartbeats
+                      timepoint env itemRepo name task parcels
+                  _ -> return ())
+            scheduleTasks env itemRepo itemMeta
+          lift $ Catalog.writeMeta (envCatalog env) itemRepo new_meta
         _ -> return ()
 
 -- | Resume listening for heartbeats from running workers when the
