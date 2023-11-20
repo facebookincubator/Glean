@@ -7,6 +7,7 @@
  */
 
 #include <algorithm>
+#include <boost/dynamic_bitset.hpp>
 
 #include "glean/rts/ownership/slice.h"
 #include "glean/rts/timer.h"
@@ -44,12 +45,12 @@ std::unique_ptr<Slice> slice(
       units.size());
 
   if (size == 0) {
-    return std::make_unique<Slice>(base.end(), std::vector<bool>());
+    return std::make_unique<Slice>(base.end(), boost::dynamic_bitset<uint64_t>());
   }
 
   assert(base.empty() || first >= base.end());
 
-  std::vector<bool> members(size, false);
+  boost::dynamic_bitset<uint64_t> members(size, false);
 
   // true if reader is a subset of units
   auto isSubset = [&, first](Reader& reader) {
@@ -132,7 +133,7 @@ std::unique_ptr<Slice> slice(
       }
     }
     do {
-      if (members.at(reader.value() - first)) {
+      if (members[reader.value() - first]) {
         VLOG(5) << folly::sformat("orVisible: visible({})", reader.value());
         return true;
       }
@@ -173,7 +174,7 @@ std::unique_ptr<Slice> slice(
       }
     }
     do {
-      if (!members.at(reader.value() - first)) {
+      if (!members[reader.value() - first]) {
         VLOG(5) << folly::sformat("andVisible: invisible({})", reader.value());
         return false;
       }

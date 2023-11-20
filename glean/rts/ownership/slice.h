@@ -12,6 +12,8 @@
 #include "glean/rts/lookup.h"
 #include "glean/rts/ownership.h"
 
+#include <boost/dynamic_bitset.hpp>
+
 namespace facebook {
 namespace glean {
 namespace rts {
@@ -23,7 +25,7 @@ namespace rts {
 // A Slice only makes sense in the context of a particular DB.
 //
 struct Slice {
-  explicit Slice(UsetId first, std::vector<bool> set) :
+  explicit Slice(UsetId first, boost::dynamic_bitset<uint64_t> set) :
       first_(first), set_(std::move(set)) {}
 
   bool visible(UsetId uset) const {
@@ -42,7 +44,7 @@ struct Slice {
 
  private:
   const UsetId first_;
-  const std::vector<bool> set_;
+  const boost::dynamic_bitset<uint64_t> set_;
 };
 
 ///
