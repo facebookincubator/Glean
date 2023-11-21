@@ -184,7 +184,7 @@ allStats =
       stat <- readIORef (get stats)
       return $ concat [shw $ statNew stat, " [", shw $ statAll stat, "]"]
 
-    showMissRate h m stats = case hits+misses of
+    showMissRate h m stats = pad 5 $ case hits+misses of
       0 -> "-"
       n ->
         let !rate = (misses * 1000) `div` n

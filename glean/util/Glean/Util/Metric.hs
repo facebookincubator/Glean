@@ -10,7 +10,7 @@ module Glean.Util.Metric (
   Tick(..), Point(..), beginTick, endTick, endTicks,
   showLatency, showThroughput,
   tickLatencyNanoSecs, tickMillis,
-  showMemory, showCount
+  showMemory, showCount, pad
 ) where
 
 import Data.List (find)
@@ -30,14 +30,14 @@ instance Monoid Tick where
   mappend (Tick v1 d1) (Tick v2 d2) = Tick (v1+v2) (d1+d2)
 
 showLatency :: Tick -> String
-showLatency (Tick 0 _) = "-"
-showLatency tick = display $ tickLatencyNanoSecs tick
-  where
-    display n
-      | n <= 2000 = show n ++ "ns"
-      | n <= 2000000 = show (n `div` 1000) ++ "us"
-      | n <= 2000000000 = show (n `div` 1000000) ++ "ms"
-      | otherwise = show (n `div` 1000000000) ++ "s"
+showLatency = pad 5 . f where
+  f (Tick 0 _) = "-"
+  f tick = display $ tickLatencyNanoSecs tick
+  display n
+    | n <= 2000 = show n ++ "ns"
+    | n <= 2000000 = show (n `div` 1000) ++ "us"
+    | n <= 2000000000 = show (n `div` 1000000) ++ "ms"
+    | otherwise = show (n `div` 1000000000) ++ "s"
 
 tickLatencyNanoSecs :: Tick -> Integer
 tickLatencyNanoSecs (Tick value time) =
@@ -52,12 +52,13 @@ showScaled scale value
   | otherwise = show value
 
 showThroughput :: Tick -> String
-showThroughput tick
-  | ms == 0 = "-"
-  | otherwise = showScaled deciscale rate ++ "B/s"
-  where
-    ms = tickMillis tick
-    rate = (tickValue tick * 1000) `div` ms
+showThroughput = pad 9 . f where
+  f tick
+    | ms == 0 = "-"
+    | otherwise = showScaled deciscale rate ++ "B/s"
+   where
+      ms = tickMillis tick
+      rate = (tickValue tick * 1000) `div` ms
 
 deciscale :: [(Word64, String)]
 deciscale = [(1000*1000*1000, "G"), (1000*1000, "M"), (1000, "K")]
@@ -89,3 +90,6 @@ showMemory n = showScaled deciscale n ++ "B"
 
 showCount :: Word64 -> String
 showCount n = showScaled deciscale n
+
+pad :: Int -> String -> String
+pad n s = replicate (n - length s) ' ' <> s
