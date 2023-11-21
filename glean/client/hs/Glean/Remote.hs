@@ -172,9 +172,10 @@ thriftServiceWithTimeout ClientConfig{..} opts =
     opts' = case clientConfig_serv of
       HostPort{} ->
         opts {
-          processingTimeout = processingTimeout opts <|>
-            Just (fromIntegral clientConfig_host_timeout_ms / 1000)
+          processingTimeout = processingTimeout opts <|> Just t,
+          queueTimeout = queueTimeout opts <|> Just t
           }
+        where t = fromIntegral clientConfig_host_timeout_ms / 1000
       _otherwise -> opts
 
 

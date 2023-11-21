@@ -47,7 +47,7 @@ optionsWith other = O.info (O.helper <*> ((,) <$> parser <*> other)) O.fullDesc
     parser = do
       cfgProjectRoot <- O.strOption
         $ O.long "project-root" <> O.metavar "PATH" <> O.value ""
-      cfgRoot <- O.strOption $ O.long "root" <> O.metavar "PATH" <> O.value ""
+      cfgRoot <- O.strOption $ O.long "root" <> O.metavar "PATH"
       cfgOutput <- O.optional $ O.strOption $
         O.short 'o' <> O.long "output" <> O.metavar "PATH"
       cfgReplace <- O.optional $ O.strOption $

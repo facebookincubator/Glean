@@ -112,7 +112,6 @@ writerThread WriteQueues{..} = mask $ \restore ->
     latency <- do
       writeEnd <- getTime Monotonic
       return (writeEnd - pointStart writeStart)
-    void $ tryPutMVar writeDone result
     if isLeft result then
       addStatValueType "glean.db.write.failed" (writeSize `div` k) Sum
     else
@@ -124,6 +123,10 @@ writerThread WriteQueues{..} = mask $ \restore ->
       qSize <- now $ updateTVar writeQueueSize (subtract writeSize)
       size <- now $ updateTVar writeQueuesSize (subtract writeSize)
       later $ reportQueueSizes repo queueCount qSize size (Just latency)
+    -- don't put the MVar until we have updated writeQueueActive, otherwise
+    -- there is a race condition with workFinished which will fail because
+    -- active /= 0.
+    void $ tryPutMVar writeDone result
   done _ _ = return ()
 
   handler restore action = do

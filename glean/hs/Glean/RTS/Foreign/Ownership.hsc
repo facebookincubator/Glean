@@ -18,6 +18,8 @@ module Glean.RTS.Foreign.Ownership
   , slice
   , slicedStack
   , SlicedStack
+  , serializeSlice
+  , deserializeSlice
   , newDefineOwnership
   , DefineOwnership
   , substDefineOwnership
@@ -36,6 +38,8 @@ module Glean.RTS.Foreign.Ownership
 
 import Control.Exception
 import Control.Monad
+import Data.ByteString (ByteString)
+import Data.ByteString.Unsafe (unsafeUseAsCStringLen)
 import Data.Coerce
 import Data.List (unzip4)
 import Data.Text (Text)
@@ -123,6 +127,18 @@ slice ownership bases units exclude =
     (fromIntegral (fromEnum exclude))
     bases_arr
     (fromIntegral bases_arr_size)
+
+serializeSlice :: Slice -> IO ByteString
+serializeSlice slice =
+  with slice $ \p_slice -> do
+    (bytes, size) <- invoke $ glean_slice_serialize p_slice
+    unsafeMallocedByteString bytes size
+
+deserializeSlice :: ByteString -> IO Slice
+deserializeSlice bs =
+  unsafeUseAsCStringLen bs $ \(ptr, len) ->
+    construct $ invoke $
+      glean_slice_deserialize (castPtr ptr) (fromIntegral len)
 
 data SlicedStack base = SlicedStack [Slice] base
 
@@ -384,6 +400,18 @@ foreign import ccall safe glean_slice_compute
   -> CSize
   -> CInt
   -> Ptr (Ptr Slice)
+  -> CSize
+  -> Ptr (Ptr Slice)
+  -> IO CString
+
+foreign import ccall unsafe glean_slice_serialize
+  :: Ptr Slice
+  -> Ptr (Ptr ())
+  -> Ptr CSize
+  -> IO CString
+
+foreign import ccall unsafe glean_slice_deserialize
+  :: Ptr ()
   -> CSize
   -> Ptr (Ptr Slice)
   -> IO CString

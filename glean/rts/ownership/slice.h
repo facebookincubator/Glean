@@ -8,9 +8,12 @@
 
 #pragma once
 
+#include <boost/dynamic_bitset.hpp>
+
 #include "glean/rts/fact.h"
 #include "glean/rts/lookup.h"
 #include "glean/rts/ownership.h"
+#include "glean/rts/serialize.h"
 
 namespace facebook {
 namespace glean {
@@ -23,7 +26,7 @@ namespace rts {
 // A Slice only makes sense in the context of a particular DB.
 //
 struct Slice {
-  explicit Slice(UsetId first, std::vector<bool> set) :
+  explicit Slice(UsetId first, boost::dynamic_bitset<uint64_t> set) :
       first_(first), set_(std::move(set)) {}
 
   bool visible(UsetId uset) const {
@@ -40,10 +43,14 @@ struct Slice {
   UsetId end() const { return first_ + set_.size(); }
   bool empty() const { return set_.empty(); }
 
+  void serialize(binary::Output& o) const;
+  static std::unique_ptr<Slice> deserialize(binary::Input& i);
+
  private:
   const UsetId first_;
-  const std::vector<bool> set_;
+  const boost::dynamic_bitset<uint64_t> set_;
 };
+
 
 ///
 // A set of slices that can be treated as a single Slice

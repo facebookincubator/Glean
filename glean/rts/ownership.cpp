@@ -502,11 +502,8 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
     factOwners.emplace_back(id, INVALID_USET);
   }
 
-  auto sets = usets.toEliasFano();
-
   return std::make_unique<ComputedOwnership>(
-      usets.getFirstId(),
-      std::move(sets),
+      std::move(usets),
       std::move(factOwners));
 }
 
