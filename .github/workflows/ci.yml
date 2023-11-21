@@ -37,7 +37,7 @@ jobs:
         run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.8.1.0/cabal-install-3.8.1.0-x86_64-linux-deb10.tar.xz 3.8.1.0 --set
       - name: Add GHC and cabal to PATH
         run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
-  
+
       - name: Install indexer (flow)
         run: |
           export FLOW=0.209.1
