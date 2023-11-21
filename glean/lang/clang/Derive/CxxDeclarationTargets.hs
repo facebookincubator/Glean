@@ -339,7 +339,7 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
       <$> Concurrently (getFileXRefs e cfg >>= done "fileXRefs")
       <*> Concurrently (getDeclarations e cfg somePid >>= done "declarations")
       <*> Concurrently (getFileLines e cfg >>= done "fileLines")
-      <*> Concurrently (getIndirectTargets e cfg somePid >>= done "indirect")
+      <*> Concurrently (getIndirectTargets e cfg >>= done "indirect")
     logInfo "loaded predmaps, compacting"
     compactMaps <- Compact.compact maps
     size <- Compact.compactSize compactMaps
