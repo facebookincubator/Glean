@@ -458,16 +458,23 @@ asyncOpenDB env@Env{..} db@DB{..} version mode deps on_success on_failure =
             writing <- case mode of
               ReadOnly -> return Nothing
               _ -> Just <$> setupWriting env handle
-            stored_units <- case mode of
+            maybeSlices <- case mode of
               Create{} -> do
                 let units = case deps of
                       Just (Thrift.Dependencies_pruned Thrift.Pruned{..}) ->
                         pruned_units
                       _ -> []
                 storeUnits handle units
-                return (Just units)
-              _ -> retrieveUnits dbRepo handle
-            maybeSlices <- baseSlices env deps stored_units
+                slices <- baseSlices env deps (Just units)
+                storeSlices handle (catMaybes slices)
+                return slices
+              _ -> do
+                m <- retrieveSlices dbRepo handle
+                case m of
+                  Nothing -> do
+                    stored_units <- retrieveUnits dbRepo handle
+                    baseSlices env deps stored_units
+                  Just slices -> return $ map Just slices
             idle <- newTVarIO =<< getTimePoint
             ownership <- newTVarIO =<< Storage.getOwnership handle
             on_success
@@ -566,7 +573,7 @@ baseSlices env deps stored_units = case deps of
           maybeOwnership <- readTVarIO odbOwnership
           r <- forM maybeOwnership $ \ownership ->
             Ownership.slice ownership (catMaybes rest) unitIds exclude
-          logInfo $ "completed " <> show n <> " slices for " <> showRepo repo
+          logInfo $ "completed " <> show n <> " slice for " <> showRepo repo
           return r
       return (slice : rest)
 
