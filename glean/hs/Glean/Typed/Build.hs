@@ -57,10 +57,12 @@ instance Functor Decoder where
 
 instance Applicative Decoder where
   pure x = Decoder $ \_ -> pure x
+  {-# INLINE (<*>) #-}
   (<*>) = ap
 
 instance Monad Decoder where
   return = pure
+  {-# INLINE (>>=) #-}
   Decoder m >>= k = Decoder $ \env -> do
     a <- m env
     runDecoder (k a) env

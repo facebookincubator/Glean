@@ -36,9 +36,9 @@ import Derive.Common
 import Derive.Types
 
 data Ranges = Ranges
-  { ranges     :: Set.Set ByteRange
-  , expansions :: Set.Set ByteRange
-  , spellings  :: Set.Set ByteRange
+  { ranges     :: !(Set.Set ByteRange)
+  , expansions :: !(Set.Set ByteRange)
+  , spellings  :: !(Set.Set ByteRange)
   }
 
 instance Semigroup Ranges where
