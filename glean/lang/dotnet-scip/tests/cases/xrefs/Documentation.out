@@ -1,0 +1,26 @@
+[
+  "@generated",
+  { "key": "```cs\u000aDog? d\u000a```" },
+  { "key": "```cs\u000aHuman? h\u000a```" },
+  { "key": "```cs\u000aMammal? m\u000a```" },
+  { "key": "```cs\u000aclass Dog\u000a```" },
+  { "key": "```cs\u000aclass ExecuteInheritance\u000a```" },
+  { "key": "```cs\u000aclass Human\u000a```" },
+  { "key": "```cs\u000aclass Mammal\u000a```" },
+  { "key": "```cs\u000aint numberOfLegs\u000a```" },
+  { "key": "```cs\u000aprivate int Mammal.numberOfLegs\u000a```" },
+  {
+    "key": "```cs\u000aprivate static void ExecuteInheritance.Main(string[] args)\u000a```"
+  },
+  { "key": "```cs\u000aprivate string Mammal.specie\u000a```" },
+  { "key": "```cs\u000apublic Dog.Dog()\u000a```" },
+  { "key": "```cs\u000apublic Human.Human()\u000a```" },
+  { "key": "```cs\u000apublic Mammal.Mammal()\u000a```" },
+  {
+    "key": "```cs\u000apublic Mammal.Mammal(string specie, int numberOfLegs)\u000a```"
+  },
+  { "key": "```cs\u000apublic int Mammal.NumberOfLegs { get; }\u000a```" },
+  { "key": "```cs\u000apublic string Mammal.Specie { get; }\u000a```" },
+  { "key": "```cs\u000astring specie\u000a```" },
+  { "key": "```cs\u000astring[] args\u000a```" }
+]

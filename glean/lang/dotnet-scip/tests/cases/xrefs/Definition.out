@@ -1,0 +1,267 @@
+[
+  "@generated",
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Dog#" },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 35,
+            "columnBegin": 14,
+            "lineEnd": 35,
+            "columnEnd": 16
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Dog#`.ctor`()." },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 37,
+            "columnBegin": 9,
+            "lineEnd": 37,
+            "columnEnd": 11
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/ExecuteInheritance#" },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 49,
+            "columnBegin": 7,
+            "lineEnd": 49,
+            "columnEnd": 24
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget . . ``/ExecuteInheritance#Main()."
+      },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 50,
+            "columnBegin": 14,
+            "lineEnd": 50,
+            "columnEnd": 17
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget . . ``/ExecuteInheritance#Main().(args)"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 50,
+            "columnBegin": 28,
+            "lineEnd": 50,
+            "columnEnd": 31
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Human#" },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 42,
+            "columnBegin": 14,
+            "lineEnd": 42,
+            "columnEnd": 18
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Human#`.ctor`()." },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 44,
+            "columnBegin": 9,
+            "lineEnd": 44,
+            "columnEnd": 13
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#" },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 3,
+            "columnBegin": 14,
+            "lineEnd": 3,
+            "columnEnd": 19
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#NumberOfLegs." },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 18,
+            "columnBegin": 13,
+            "lineEnd": 18,
+            "columnEnd": 24
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#Specie." },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 26,
+            "columnBegin": 16,
+            "lineEnd": 26,
+            "columnEnd": 21
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`()." },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 8,
+            "columnBegin": 12,
+            "lineEnd": 8,
+            "columnEnd": 17
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`(+1)." },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 12,
+            "columnBegin": 9,
+            "lineEnd": 12,
+            "columnEnd": 14
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`(+1).(numberOfLegs)"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 12,
+            "columnBegin": 35,
+            "lineEnd": 12,
+            "columnEnd": 46
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`(+1).(specie)"
+      },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 12,
+            "columnBegin": 23,
+            "lineEnd": 12,
+            "columnEnd": 28
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#numberOfLegs." },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 5,
+            "columnBegin": 14,
+            "lineEnd": 5,
+            "columnEnd": 25
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#specie." },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 6,
+            "columnBegin": 17,
+            "lineEnd": 6,
+            "columnEnd": 22
+          }
+        }
+      }
+    }
+  }
+]

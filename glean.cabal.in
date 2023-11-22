@@ -84,6 +84,10 @@ flag typescript-tests
 flag python-tests
      default: False
 
+-- run tests that require dotnet-scip
+flag dotnet-tests
+     default: False
+
 -- run tests that require lsif-go
 flag go-tests
      default: True
@@ -2261,6 +2265,18 @@ test-suite glean-snapshot-python-scip
     if !flag(python-tests)
         buildable: False
 
+test-suite glean-snapshot-dotnet-scip
+    import: fb-haskell, deps
+    hs-source-dirs: glean/lang/dotnet-scip/tests
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/DotnetScip/Main.hs
+    ghc-options: -main-is Glean.Regression.DotnetScip.Main
+    build-depends:
+        glean:regression-test-lib,
+        glean:indexers
+    if !flag(dotnet-tests)
+        buildable: False
+
 test-suite glean-snapshot-typescript
     import: fb-haskell, deps
     hs-source-dirs: glean/lang/codemarkup/tests/typescript
@@ -2407,6 +2423,19 @@ test-suite glass-regression-python-scip
         glean:indexers,
         glean:util,
     if !flag(python-tests)
+        buildable: False
+
+test-suite glass-regression-dotnet-scip
+    import: glass-regression-deps, fb-haskell, deps
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Regression/DotnetScip/Main.hs
+    ghc-options: -main-is Glean.Glass.Regression.DotnetScip.Main
+    other-modules: Glean.Glass.Regression.DotnetScip
+    build-depends:
+        glean:client-hs,
+        glean:indexers,
+        glean:util,
+    if !flag(dotnet-tests)
         buildable: False
 
 test-suite glass-regression-typescript
