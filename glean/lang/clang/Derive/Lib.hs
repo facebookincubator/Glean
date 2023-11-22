@@ -38,7 +38,7 @@ import Derive.Generic (derivePredicate)
 -- what was just written.
 dispatchDerive :: Env -> DerivePass -> IO ()
 dispatchDerive env = \case
-  DeriveTargetUses -> exec deriveUses
+  DeriveTargetUses -> execN deriveUses
   DeriveDeclFamilies -> exec deriveSame
   DeriveFunctionCalls -> execN deriveCxxDeclarationTargets
   DeriveFunctionCalls_Pass_2 -> exec deriveCxxDeclarationSources

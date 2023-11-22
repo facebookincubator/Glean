@@ -69,6 +69,15 @@ jobs:
           npm install -g @sourcegraph/scip-python
           apt install -y python3-pip
 
+      - name: Install indexer (dotnet)
+        run: |
+            export DOTNET=7.0
+            wget https://dot.net/v1/dotnet-install.sh
+            chmod +x dotnet-install.sh
+            ./dotnet-install.sh --channel ${DOTNET}
+            export DOTNET_ROOT=$HOME/.dotnet
+            $DOTNET_ROOT/dotnet tool install --global scip-dotnet
+
       - name: Install indexer (go)
         run: |
           export GOLANG=1.17.8

@@ -16,8 +16,6 @@ module Glean.Util.Range
   , byteRangeExclusiveEnd
   , byteRangeContains
   , srcRangeToByteRange
-  , relByteSpansToRanges
-  , rangesToRelSpans
   , packedByteSpansToRanges
   , fromToSpansAndExpansions
   , fromToSpansAndSpellings
@@ -419,29 +417,17 @@ srcRangeToFileLocation lengths =
             }
           }
 
-relByteSpansToRanges :: [Src.RelByteSpan] -> [ByteRange]
-relByteSpansToRanges spans = go 0 spans
-  where
-  go _ [] = []
-  go !prev (Src.RelByteSpan{..} : rest) = br : go (byteRange_begin br) rest
-    where
-      br = ByteRange
-        { byteRange_begin = fromNat relByteSpan_offset + prev
-        , byteRange_length = fromNat relByteSpan_length }
-
-rangesToRelSpans :: [ByteRange] -> [Src.RelByteSpan]
-rangesToRelSpans = go 0
-  where
-  go !m (ByteRange{byteRange_begin = begin, byteRange_length = len}: spans) =
-    Src.RelByteSpan (toNat (begin-m)) (toNat len) : go begin spans
-  go _ [] = []
-
 packedByteSpansToRanges :: Src.PackedByteSpans -> [ByteRange]
-packedByteSpansToRanges = relByteSpansToRanges . packedToRelByteSpans
+packedByteSpansToRanges = go 0
   where
-  packedToRelByteSpans = concatMap $ \Src.PackedByteSpansGroup{..} ->
-    map (`Src.RelByteSpan` packedByteSpansGroup_length)
-        packedByteSpansGroup_offsets
+  go !_ [] = []
+  go !off (Src.PackedByteSpansGroup{..} : rest) =
+    go2 off (fromNat packedByteSpansGroup_length) packedByteSpansGroup_offsets rest
+    where
+    go2 !off !_ [] rest = go off rest
+    go2 !prev !len (off : offs) rest =
+      ByteRange (fromNat off + prev) len :
+        go2 (fromNat off + prev) len offs rest
 
 fromToSpansAndExpansions :: Cxx.From -> [ByteRange]
 fromToSpansAndExpansions Cxx.From{..} =
@@ -454,12 +440,19 @@ fromToSpansAndSpellings Cxx.From{..} =
         (packedByteSpansToRanges from_spellings)
 
 rangesToPackedByteSpans :: [ByteRange] -> Src.PackedByteSpans
-rangesToPackedByteSpans = relToPackedByteSpans . rangesToRelSpans
+rangesToPackedByteSpans [] = []
+rangesToPackedByteSpans (ByteRange begin len : rest) =
+  go begin len [toNat begin] rest
   where
-  relToPackedByteSpans spans =
-    map (\group -> Src.PackedByteSpansGroup (relByteSpan_length $ head group)
-                                            (map relByteSpan_offset group))
-        (groupBy (\x y -> relByteSpan_length x == relByteSpan_length y) spans)
+  go !off !len acc (ByteRange begin len' : rest)
+    | len == len' = go begin len (tok : acc) rest
+    | otherwise =
+        Src.PackedByteSpansGroup (toNat len) (reverse acc) :
+          go begin len' [tok] rest
+    where
+    !tok = toNat (begin-off)
+  go !_ !_ [] [] = []
+  go !_ !len acc [] = [Src.PackedByteSpansGroup (toNat len) (reverse acc)]
 
 -- | Convert Src schema bytespans to ranges
 byteSpanToRange :: Src.ByteSpan -> ByteRange

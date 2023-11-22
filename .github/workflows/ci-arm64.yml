@@ -40,6 +40,15 @@ jobs:
       - name: Install cabal-install 3.8
         run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.8.1.0/cabal-install-3.8.1.0-aarch64-linux-deb10.tar.xz 3.8.1.0 --set
 
+      - name: Install indexer (dotnet)
+        run: |
+          export DOTNET=7.0
+          wget https://dot.net/v1/dotnet-install.sh
+          chmod +x dotnet-install.sh
+          ./dotnet-install.sh --channel ${DOTNET}
+          export DOTNET_ROOT=$HOME/.dotnet
+          $DOTNET_ROOT/dotnet tool install --global scip-dotnet
+
       - name: Install indexers (flow)
         run: |
           export FLOW=0.209.1

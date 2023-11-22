@@ -9,7 +9,7 @@
 {-# LANGUAGE TypeApplications #-}
 module Derive.Common
   ( getFileXRefs
-  , getFileXRefsIncremental
+  , getFileXRefsFor
   , getIndirectTargets
   , resolve
   , Indirects
@@ -28,7 +28,6 @@ import Util.Log
 
 import Glean
 import Glean.Angle
-import Glean.Typed (PidOf)
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import Glean.Util.PredMap (PredMap)
 import qualified Glean.Util.PredMap as PredMap
@@ -49,8 +48,8 @@ type XRefs =
     (PredSet Cxx.FileXRefs, V.Vector (HashSet Cxx.XRefTarget))
 
 getIndirectTargets
-  :: Backend e => e -> Config -> PidOf Cxx.XRefIndirectTarget -> IO Indirects
-getIndirectTargets e cfg _pid = do
+  :: Backend e => e -> Config -> IO Indirects
+getIndirectTargets e cfg = do
 
   let q = maybe id limit (cfgMaxQueryFacts cfg) $
         limitBytes (cfgMaxQuerySize cfg) allFacts
@@ -123,13 +122,24 @@ getFileXRefs e cfg = do
         return $ PredMap.insert id (PredSet.singleton (IdOf $ Fid i), xs) xrefs
   traverse (\(deps, xs) -> (deps,) <$> V.unsafeFreeze xs) xrefs
 
-getFileXRefsIncremental :: Backend e => e -> Config -> IO XRefs
-getFileXRefsIncremental e cfg = do
+getFileXRefsFor
+  :: Backend e
+  => e
+  -> [IdOf Cxx.FileXRefMap]
+  -> Config
+  -> IO XRefs
+getFileXRefsFor _ [] _ = return PredMap.empty
+getFileXRefsFor e xmapIds cfg = do
   let
     q :: Query Cxx.FileXRefs
     q = maybe id limit (cfgMaxQueryFacts cfg) $
         limitBytes (cfgMaxQuerySize cfg) $ query $
-          new $ predicate @Cxx.FileXRefs wild
+          vars $ \(xmap :: Angle Cxx.FileXRefMap) xrefs ->
+            xrefs `where_` [
+              xmap .= elementsOf (factIdsArray xmapIds),
+              xrefs .= (predicate @Cxx.FileXRefs $ rec $
+                field @"xmap" (asPredicate xmap) end)
+            ]
 
   trips <- runHaxl e (cfgRepo cfg) $ do
     fileXRefs <- search_ q
