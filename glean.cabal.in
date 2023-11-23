@@ -2338,6 +2338,7 @@ library glass-regression
         glean:client-hs,
         glean:glass-lib,
         glean:if-glass-hs,
+        glean:client-hs-local,
         glean:indexers,
         glean:logger,
         glean:regression-test-lib,
@@ -2351,6 +2352,7 @@ common glass-regression-deps
     hs-source-dirs: glean/glass/test/regression
     build-depends:
         HUnit,
+        glean:client-hs-local
         glean:glass-lib,
         glean:glass-regression,
         glean:if-glass-hs,
