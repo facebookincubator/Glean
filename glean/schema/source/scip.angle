@@ -147,6 +147,8 @@ type Entity =
     rust: SomeEntity |
     go: SomeEntity |
     typescript: SomeEntity |
+    python: SomeEntity |
+    dotnet: SomeEntity |
   }
 
 # entities are scip.Definitions
@@ -166,7 +168,9 @@ predicate TagDefinition:
     SomeEntity = scip.SomeEntity { defn = Defn };
     ( Rust = Language; { rust = SomeEntity }) |
     ( Go = Language; { go = SomeEntity }) |
-    ( TypeScript = Language; { typescript = SomeEntity }) = Entity;
+    ( TypeScript = Language; { typescript = SomeEntity }) |
+    ( Python = Language; { python = SomeEntity}) |
+    ( Dotnet = Language; {dotnet = SomeEntity}) = Entity;
 
 # eliminate entity language tags. inverse of TagDefinition
 predicate EntityDefinition:
