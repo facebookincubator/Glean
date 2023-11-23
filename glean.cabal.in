@@ -82,11 +82,11 @@ flag typescript-tests
 
 -- run tests that require python-scip
 flag python-tests
-     default: False
+     default: True
 
 -- run tests that require dotnet-scip
 flag dotnet-tests
-     default: False
+     default: True
 
 -- run tests that require lsif-go
 flag go-tests
