@@ -2352,7 +2352,7 @@ common glass-regression-deps
     hs-source-dirs: glean/glass/test/regression
     build-depends:
         HUnit,
-        glean:client-hs-local
+        glean:client-hs-local,
         glean:glass-lib,
         glean:glass-regression,
         glean:if-glass-hs,
