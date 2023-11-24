@@ -11,9 +11,7 @@
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/__init__:"
-          },
+          "symbol": { "key": "scip-python python . test example/__init__:" },
           "location": {
             "key": {
               "file": { "key": "example.py" },
@@ -33,23 +31,21 @@
     "key": {
       "file": { "key": "example.py" },
       "range": {
-        "lineBegin": 6,
+        "lineBegin": 12,
         "columnBegin": 1,
-        "lineEnd": 6,
+        "lineEnd": 12,
         "columnEnd": 5
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/delay."
-          },
+          "symbol": { "key": "scip-python python . test example/delay." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
               "range": {
-                "lineBegin": 6,
+                "lineBegin": 12,
                 "columnBegin": 1,
-                "lineEnd": 6,
+                "lineEnd": 12,
                 "columnEnd": 5
               }
             }
@@ -62,23 +58,21 @@
     "key": {
       "file": { "key": "example.py" },
       "range": {
-        "lineBegin": 7,
+        "lineBegin": 13,
         "columnBegin": 1,
-        "lineEnd": 7,
+        "lineEnd": 13,
         "columnEnd": 5
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/score."
-          },
+          "symbol": { "key": "scip-python python . test example/score." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
               "range": {
-                "lineBegin": 7,
+                "lineBegin": 13,
                 "columnBegin": 1,
-                "lineEnd": 7,
+                "lineEnd": 13,
                 "columnEnd": 5
               }
             }
@@ -91,23 +85,21 @@
     "key": {
       "file": { "key": "example.py" },
       "range": {
-        "lineBegin": 8,
+        "lineBegin": 14,
         "columnBegin": 1,
-        "lineEnd": 8,
+        "lineEnd": 14,
         "columnEnd": 10
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/high_score."
-          },
+          "symbol": { "key": "scip-python python . test example/high_score." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
               "range": {
-                "lineBegin": 8,
+                "lineBegin": 14,
                 "columnBegin": 1,
-                "lineEnd": 8,
+                "lineEnd": 14,
                 "columnEnd": 10
               }
             }
@@ -120,23 +112,21 @@
     "key": {
       "file": { "key": "example.py" },
       "range": {
-        "lineBegin": 12,
+        "lineBegin": 18,
         "columnBegin": 1,
-        "lineEnd": 12,
+        "lineEnd": 18,
         "columnEnd": 2
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/wn."
-          },
+          "symbol": { "key": "scip-python python . test example/wn." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
               "range": {
-                "lineBegin": 12,
+                "lineBegin": 18,
                 "columnBegin": 1,
-                "lineEnd": 12,
+                "lineEnd": 18,
                 "columnEnd": 2
               }
             }
@@ -149,23 +139,21 @@
     "key": {
       "file": { "key": "example.py" },
       "range": {
-        "lineBegin": 20,
+        "lineBegin": 26,
         "columnBegin": 1,
-        "lineEnd": 20,
+        "lineEnd": 26,
         "columnEnd": 4
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/head."
-          },
+          "symbol": { "key": "scip-python python . test example/head." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
               "range": {
-                "lineBegin": 20,
+                "lineBegin": 26,
                 "columnBegin": 1,
-                "lineEnd": 20,
+                "lineEnd": 26,
                 "columnEnd": 4
               }
             }
@@ -178,23 +166,21 @@
     "key": {
       "file": { "key": "example.py" },
       "range": {
-        "lineBegin": 28,
+        "lineBegin": 34,
         "columnBegin": 1,
-        "lineEnd": 28,
+        "lineEnd": 34,
         "columnEnd": 4
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/food."
-          },
+          "symbol": { "key": "scip-python python . test example/food." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
               "range": {
-                "lineBegin": 28,
+                "lineBegin": 34,
                 "columnBegin": 1,
-                "lineEnd": 28,
+                "lineEnd": 34,
                 "columnEnd": 4
               }
             }
@@ -207,23 +193,21 @@
     "key": {
       "file": { "key": "example.py" },
       "range": {
-        "lineBegin": 29,
+        "lineBegin": 35,
         "columnBegin": 1,
-        "lineEnd": 29,
+        "lineEnd": 35,
         "columnEnd": 6
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/colors."
-          },
+          "symbol": { "key": "scip-python python . test example/colors." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
               "range": {
-                "lineBegin": 29,
+                "lineBegin": 35,
                 "columnBegin": 1,
-                "lineEnd": 29,
+                "lineEnd": 35,
                 "columnEnd": 6
               }
             }
@@ -236,23 +220,21 @@
     "key": {
       "file": { "key": "example.py" },
       "range": {
-        "lineBegin": 30,
+        "lineBegin": 36,
         "columnBegin": 1,
-        "lineEnd": 30,
+        "lineEnd": 36,
         "columnEnd": 6
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/shapes."
-          },
+          "symbol": { "key": "scip-python python . test example/shapes." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
               "range": {
-                "lineBegin": 30,
+                "lineBegin": 36,
                 "columnBegin": 1,
-                "lineEnd": 30,
+                "lineEnd": 36,
                 "columnEnd": 6
               }
             }
@@ -265,53 +247,22 @@
     "key": {
       "file": { "key": "example.py" },
       "range": {
-        "lineBegin": 37,
+        "lineBegin": 43,
         "columnBegin": 1,
-        "lineEnd": 37,
+        "lineEnd": 43,
         "columnEnd": 3
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/pen."
-          },
+          "symbol": { "key": "scip-python python . test example/pen." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
               "range": {
-                "lineBegin": 37,
+                "lineBegin": 43,
                 "columnBegin": 1,
-                "lineEnd": 37,
+                "lineEnd": 43,
                 "columnEnd": 3
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "example.py" },
-      "range": {
-        "lineBegin": 49,
-        "columnBegin": 5,
-        "lineEnd": 49,
-        "columnEnd": 9
-      },
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/group()."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "example.py" },
-              "range": {
-                "lineBegin": 49,
-                "columnBegin": 5,
-                "lineEnd": 49,
-                "columnEnd": 9
               }
             }
           }
@@ -326,13 +277,11 @@
         "lineBegin": 54,
         "columnBegin": 5,
         "lineEnd": 54,
-        "columnEnd": 10
+        "columnEnd": 9
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/godown()."
-          },
+          "symbol": { "key": "scip-python python . test example/group()." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
@@ -340,7 +289,7 @@
                 "lineBegin": 54,
                 "columnBegin": 5,
                 "lineEnd": 54,
-                "columnEnd": 10
+                "columnEnd": 9
               }
             }
           }
@@ -359,9 +308,7 @@
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/goleft()."
-          },
+          "symbol": { "key": "scip-python python . test example/godown()." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
@@ -384,13 +331,11 @@
         "lineBegin": 64,
         "columnBegin": 5,
         "lineEnd": 64,
-        "columnEnd": 11
+        "columnEnd": 10
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/goright()."
-          },
+          "symbol": { "key": "scip-python python . test example/goleft()." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
@@ -398,7 +343,7 @@
                 "lineBegin": 64,
                 "columnBegin": 5,
                 "lineEnd": 64,
-                "columnEnd": 11
+                "columnEnd": 10
               }
             }
           }
@@ -413,13 +358,11 @@
         "lineBegin": 69,
         "columnBegin": 5,
         "lineEnd": 69,
-        "columnEnd": 8
+        "columnEnd": 11
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/move()."
-          },
+          "symbol": { "key": "scip-python python . test example/goright()." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
@@ -427,7 +370,7 @@
                 "lineBegin": 69,
                 "columnBegin": 5,
                 "lineEnd": 69,
-                "columnEnd": 8
+                "columnEnd": 11
               }
             }
           }
@@ -439,23 +382,21 @@
     "key": {
       "file": { "key": "example.py" },
       "range": {
-        "lineBegin": 90,
-        "columnBegin": 1,
-        "lineEnd": 90,
+        "lineBegin": 74,
+        "columnBegin": 5,
+        "lineEnd": 74,
         "columnEnd": 8
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/segments."
-          },
+          "symbol": { "key": "scip-python python . test example/move()." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
               "range": {
-                "lineBegin": 90,
-                "columnBegin": 1,
-                "lineEnd": 90,
+                "lineBegin": 74,
+                "columnBegin": 5,
+                "lineEnd": 74,
                 "columnEnd": 8
               }
             }
@@ -468,53 +409,22 @@
     "key": {
       "file": { "key": "example.py" },
       "range": {
-        "lineBegin": 102,
-        "columnBegin": 13,
-        "lineEnd": 102,
-        "columnEnd": 19
+        "lineBegin": 95,
+        "columnBegin": 1,
+        "lineEnd": 95,
+        "columnEnd": 8
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/segment."
-          },
+          "symbol": { "key": "scip-python python . test example/segments." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
               "range": {
-                "lineBegin": 102,
-                "columnBegin": 13,
-                "lineEnd": 102,
-                "columnEnd": 19
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "example.py" },
-      "range": {
-        "lineBegin": 111,
-        "columnBegin": 9,
-        "lineEnd": 111,
-        "columnEnd": 9
-      },
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/x."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "example.py" },
-              "range": {
-                "lineBegin": 111,
-                "columnBegin": 9,
-                "lineEnd": 111,
-                "columnEnd": 9
+                "lineBegin": 95,
+                "columnBegin": 1,
+                "lineEnd": 95,
+                "columnEnd": 8
               }
             }
           }
@@ -527,51 +437,20 @@
       "file": { "key": "example.py" },
       "range": {
         "lineBegin": 112,
-        "columnBegin": 9,
+        "columnBegin": 13,
         "lineEnd": 112,
-        "columnEnd": 9
+        "columnEnd": 19
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/y."
-          },
+          "symbol": { "key": "scip-python python . test example/segment." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
               "range": {
                 "lineBegin": 112,
-                "columnBegin": 9,
+                "columnBegin": 13,
                 "lineEnd": 112,
-                "columnEnd": 9
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "example.py" },
-      "range": {
-        "lineBegin": 116,
-        "columnBegin": 9,
-        "lineEnd": 116,
-        "columnEnd": 19
-      },
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/new_segment."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "example.py" },
-              "range": {
-                "lineBegin": 116,
-                "columnBegin": 9,
-                "lineEnd": 116,
                 "columnEnd": 19
               }
             }
@@ -584,23 +463,102 @@
     "key": {
       "file": { "key": "example.py" },
       "range": {
-        "lineBegin": 130,
+        "lineBegin": 124,
         "columnBegin": 9,
-        "lineEnd": 130,
-        "columnEnd": 13
+        "lineEnd": 124,
+        "columnEnd": 9
       },
       "defn": {
         "key": {
-          "symbol": {
-            "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/index."
-          },
+          "symbol": { "key": "scip-python python . test example/x." },
           "location": {
             "key": {
               "file": { "key": "example.py" },
               "range": {
-                "lineBegin": 130,
+                "lineBegin": 124,
                 "columnBegin": 9,
-                "lineEnd": 130,
+                "lineEnd": 124,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.py" },
+      "range": {
+        "lineBegin": 125,
+        "columnBegin": 9,
+        "lineEnd": 125,
+        "columnEnd": 9
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "scip-python python . test example/y." },
+          "location": {
+            "key": {
+              "file": { "key": "example.py" },
+              "range": {
+                "lineBegin": 125,
+                "columnBegin": 9,
+                "lineEnd": 125,
+                "columnEnd": 9
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.py" },
+      "range": {
+        "lineBegin": 129,
+        "columnBegin": 9,
+        "lineEnd": 129,
+        "columnEnd": 19
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "scip-python python . test example/new_segment." },
+          "location": {
+            "key": {
+              "file": { "key": "example.py" },
+              "range": {
+                "lineBegin": 129,
+                "columnBegin": 9,
+                "lineEnd": 129,
+                "columnEnd": 19
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.py" },
+      "range": {
+        "lineBegin": 146,
+        "columnBegin": 9,
+        "lineEnd": 146,
+        "columnEnd": 13
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "scip-python python . test example/index." },
+          "location": {
+            "key": {
+              "file": { "key": "example.py" },
+              "range": {
+                "lineBegin": 146,
+                "columnBegin": 9,
+                "lineEnd": 146,
                 "columnEnd": 13
               }
             }

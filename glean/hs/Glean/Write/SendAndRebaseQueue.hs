@@ -133,7 +133,7 @@ rebase
   -> FactSet.FactSet
   -> IO (FactSet.FactSet, Ownership)
 rebase inventory batch cache base = do
-  LookupCache.withCache Lookup.EmptyLookup cache LookupCache.LRU $ \cache -> do
+  LookupCache.withCache Lookup.EmptyLookup cache LookupCache.FIFO $ \cache -> do
     -- when there are multiple senders, the cache may have new facts since
     -- we previously rebased, and it may contain fact IDs that overlap with
     -- the current base. So we have to use a snapshot of the cache, restricted

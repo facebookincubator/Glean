@@ -19,7 +19,7 @@ The indexer is run via the main `glean` CLI tool.
 
 And index your Python repository with:
 ```
-glean index scip-python DIR --db NAME/INSTANCE
+glean index python-scip DIR --db NAME/INSTANCE
 ```
 
 where
@@ -35,7 +35,7 @@ to `glean`
 Python source can also be indexed directly from the Glean shell:
 
 ```
-:index scip-python DIR
+:index python-scip DIR
 ```
 
 The shell will pick a DB name and hash for you based on `DIR`.
