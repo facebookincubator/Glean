@@ -40,7 +40,7 @@ type LanguageId =
     ObjectiveC | ObjectiveCpp | Perl | Perl6 | PHP | Powershell | Pug | Python |
     R | Razor | Ruby | Rust | SCSS | Scala | ShaderLab | Shell | SQL | Swift |
     TypeScript | TypeScriptReact | TeX | VisualBasic | XML | XSL | YAML |
-    UnknownLanguage | Dotnet |
+    UnknownLanguage | CSharp |
 # extend the specification with things
     Kotlin | OCaml
   }
