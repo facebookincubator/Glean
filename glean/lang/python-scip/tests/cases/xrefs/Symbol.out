@@ -1,68 +1,26 @@
 [
   "@generated",
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/__init__:"
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/colors."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/delay."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/food."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/godown()."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/goleft()."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/goright()."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/group()."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/head."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/high_score."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/index."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/move()."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/new_segment."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/pen."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/score."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/segment."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/segments."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/shapes."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/wn."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/x."
-  },
-  {
-    "key": "scip-python python . 6335acee62d20004204dfbeb99f4bc2066268b3c example/y."
-  },
+  { "key": "scip-python python . test example/__init__:" },
+  { "key": "scip-python python . test example/colors." },
+  { "key": "scip-python python . test example/delay." },
+  { "key": "scip-python python . test example/food." },
+  { "key": "scip-python python . test example/godown()." },
+  { "key": "scip-python python . test example/goleft()." },
+  { "key": "scip-python python . test example/goright()." },
+  { "key": "scip-python python . test example/group()." },
+  { "key": "scip-python python . test example/head." },
+  { "key": "scip-python python . test example/high_score." },
+  { "key": "scip-python python . test example/index." },
+  { "key": "scip-python python . test example/move()." },
+  { "key": "scip-python python . test example/new_segment." },
+  { "key": "scip-python python . test example/pen." },
+  { "key": "scip-python python . test example/score." },
+  { "key": "scip-python python . test example/segment." },
+  { "key": "scip-python python . test example/segments." },
+  { "key": "scip-python python . test example/shapes." },
+  { "key": "scip-python python . test example/wn." },
+  { "key": "scip-python python . test example/x." },
+  { "key": "scip-python python . test example/y." },
   { "key": "scip-python python python-stdlib 3.11 builtins/list#append()." },
   { "key": "scip-python python python-stdlib 3.11 builtins/range#" },
   { "key": "scip-python python python-stdlib 3.11 random/__init__:" },
