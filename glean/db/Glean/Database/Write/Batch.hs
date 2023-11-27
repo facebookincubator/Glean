@@ -151,7 +151,7 @@ writeDatabase env repo (WriteContent factBatch maybeOwn) latency =
               let !is = Subst.substIntervals subst . coerce <$>
                     Thrift.batch_owned batch
                   !deps = substDependencies subst
-                    <$> Thrift.batch_dependencies factBatch
+                    <$> Thrift.batch_dependencies batch
 
               derivedOwners <-
                 if | Just owners <- maybeOwn -> do
