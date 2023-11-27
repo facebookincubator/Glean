@@ -220,7 +220,7 @@ deDupBatch
   -> IO Subst
 deDupBatch env repo odb lookup writing original_size batch maybeOwn = do
   next_id <- readIORef $ wrNextId writing
-  bracket
+  (maybe_deduped_batch, dsubst) <- bracket
     (
       withLookupCache repo writing lookup $ \cache ->
       -- We need a snapshot here because we don't want lookups to
@@ -240,25 +240,30 @@ deDupBatch env repo odb lookup writing original_size batch maybeOwn = do
     (\(deduped_facts, dsubst) -> do
       factCount <- FactSet.factCount deduped_facts
       if factCount == 0 && isNothing maybeOwn then
-        return dsubst
+        return (Nothing, dsubst)
       else do
         deduped_batch <- FactSet.serialize deduped_facts
-        let !is = coerce Subst.substIntervals dsubst
-              <$> Thrift.batch_owned batch
-            !deps = substDependencies dsubst
-              <$> Thrift.batch_dependencies batch
-        forM_ maybeOwn $ \ownBatch ->
-          Ownership.substDefineOwnership ownBatch dsubst
-        -- And now write it do the DB, deduplicating again
-        wsubst <- withMutex (wrLock writing) $ const $
-          reallyWriteBatch env repo odb lookup writing original_size True
-            deduped_batch
-              { Thrift.batch_owned = is
-              , Thrift.batch_dependencies = deps
-              }
-            maybeOwn
-        return $ dsubst <> wsubst
+        return (Just deduped_batch, dsubst)
     )
+
+  case maybe_deduped_batch of
+    Nothing -> return dsubst
+    Just deduped_batch -> do
+      let !is = coerce Subst.substIntervals dsubst
+            <$> Thrift.batch_owned batch
+          !deps = substDependencies dsubst
+            <$> Thrift.batch_dependencies batch
+      forM_ maybeOwn $ \ownBatch ->
+        Ownership.substDefineOwnership ownBatch dsubst
+      -- And now write it do the DB, deduplicating again
+      wsubst <- withMutex (wrLock writing) $ const $
+        reallyWriteBatch env repo odb lookup writing original_size True
+          deduped_batch
+            { Thrift.batch_owned = is
+            , Thrift.batch_dependencies = deps
+            }
+          maybeOwn
+      return $ dsubst <> wsubst
 
 withLookupCache
   :: Repo
