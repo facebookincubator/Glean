@@ -307,6 +307,10 @@ cxxGetHyperlinks path = do  -- ApplicativeDo makes these parallel:
         key <- Glean.getKey r
         target_range "namespace" $ Cxx.namespaceDeclaration_key_source key
 
+      Cxx.XRefTarget_declaration (Cxx.Declaration_namespaceAlias r) -> do
+        key <- Glean.getKey r
+        target_range "namespace" $ Cxx.namespaceAliasDeclaration_key_source key
+
       Cxx.XRefTarget_declaration Cxx.Declaration_usingDeclaration{} ->
         return Nothing
 

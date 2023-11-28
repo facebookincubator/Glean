@@ -78,6 +78,7 @@ instance Symbol Cxx.Declaration where
     Cxx.Declaration_objcMethod x -> toSymbolPredicate x
     Cxx.Declaration_objcProperty x -> toSymbolPredicate x
     Cxx.Declaration_typeAlias x -> toSymbolPredicate x
+    Cxx.Declaration_namespaceAlias x -> toSymbolPredicate x
     Cxx.Declaration_EMPTY -> return []
 
 -- Results of DeclToDef calls
@@ -239,6 +240,10 @@ instance Symbol Cxx.ObjcPropertyDeclaration_key where
 instance Symbol Cxx.TypeAliasDeclaration_key  where
   toSymbol (Cxx.TypeAliasDeclaration_key name _ _ _) = toSymbolPredicate name
 
+instance Symbol Cxx.NamespaceAliasDeclaration_key where
+  toSymbol (Cxx.NamespaceAliasDeclaration_key qname _ _) =
+    toSymbolPredicate qname
+
 instance Symbol Cxx.NamespaceQName_key where
   toSymbol (Cxx.NamespaceQName_key mname Nothing) = toMaybeName mname
   toSymbol (Cxx.NamespaceQName_key mname (Just ns)) = do
@@ -381,6 +386,7 @@ instance ToSymbolParent Cxx.Declaration where
     Cxx.Declaration_objcMethod{} -> return Nothing -- TODO
     Cxx.Declaration_objcProperty{} -> return Nothing -- TODO
     Cxx.Declaration_typeAlias x -> Glean.keyOf x >>= toSymbolParent
+    Cxx.Declaration_namespaceAlias x -> Glean.keyOf x >>= toSymbolParent
     Cxx.Declaration_EMPTY -> return Nothing
 
 instance ToSymbolParent Cxx.Enumerator_key where
@@ -428,9 +434,13 @@ instance ToSymbolParent Cxx.VariableDeclaration_key where
   toSymbolParent (Cxx.VariableDeclaration_key qname _ty _kind _) =
     cxxParentQNameScope qname
 
-instance ToSymbolParent Cxx.TypeAliasDeclaration_key  where
+instance ToSymbolParent Cxx.TypeAliasDeclaration_key where
   toSymbolParent (Cxx.TypeAliasDeclaration_key qname _ _ _) =
     cxxParentQNameScope qname
+
+instance ToSymbolParent Cxx.NamespaceAliasDeclaration_key where
+  toSymbolParent (Cxx.NamespaceAliasDeclaration_key qname _ _) =
+    Glean.keyOf qname >>= toSymbolParent
 
 instance ToNativeSymbol Cxx.Entity where
   toNativeSymbol = entityToUsr
@@ -521,6 +531,7 @@ toSymbolDeclKind e = case e of
   Cxx.Declaration_objcMethod{} -> return $ Just SymbolKind_Method
   Cxx.Declaration_objcProperty{} -> return $ Just SymbolKind_Property
   Cxx.Declaration_typeAlias{} -> return $ Just SymbolKind_Type
+  Cxx.Declaration_namespaceAlias{} -> return $ Just SymbolKind_Type
   Cxx.Declaration_EMPTY -> return Nothing
 
 toSymbolFunctionDeclKind

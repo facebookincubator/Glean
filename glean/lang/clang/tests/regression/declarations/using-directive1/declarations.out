@@ -93,6 +93,15 @@
   {
     "key": {
       "file": { "key": "test.cpp" },
+      "lineBegin": 27,
+      "columnBegin": 1,
+      "lineEnd": 27,
+      "columnEnd": 17
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
       "lineBegin": 29,
       "columnBegin": 1,
       "lineEnd": 37,

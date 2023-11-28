@@ -60,6 +60,7 @@ toDeclTag = \case
   Cxx.Declaration_objcMethod{} -> 8
   Cxx.Declaration_objcProperty{} -> 9
   Cxx.Declaration_typeAlias{} -> 10
+  Cxx.Declaration_namespaceAlias{} -> 11
   Cxx.Declaration_EMPTY -> error "unknown Cxx.Declaration"
 
 -- | Reconstruct the 'Cxx.Declaration' from the branch index (creatged by
@@ -77,6 +78,7 @@ fromDeclTag n i = case n of
   8 -> Cxx.Declaration_objcMethod $! justId (IdOf (Fid i))
   9 -> Cxx.Declaration_objcProperty $! justId (IdOf (Fid i))
   10 -> Cxx.Declaration_typeAlias $! justId (IdOf (Fid i))
+  11 -> Cxx.Declaration_namespaceAlias $! justId (IdOf (Fid i))
   _ -> error "impossible fromDeclTag"
 
 -- | Decompose the declaration into pieces, and it can be

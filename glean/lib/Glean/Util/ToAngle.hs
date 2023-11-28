@@ -78,6 +78,7 @@ instance ToAngle Cxx.Declaration where
     Cxx.Declaration_objcMethod x -> alt @"objcMethod" (mkKey x)
     Cxx.Declaration_objcProperty x -> alt @"objcProperty" (mkKey x)
     Cxx.Declaration_typeAlias x -> alt @"typeAlias" (mkKey x)
+    Cxx.Declaration_namespaceAlias x -> alt @"namespaceAlias" (mkKey x)
     Cxx.Declaration_EMPTY -> error "unknown Declaration"
 
 instance ToAngle Cxx.Definition where

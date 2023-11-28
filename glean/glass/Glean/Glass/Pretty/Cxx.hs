@@ -118,6 +118,7 @@ prettyDecl d qualified = case d of
   Cxx.Declaration_objcMethod _ -> intentionallyEmpty
   Cxx.Declaration_objcProperty _ -> intentionallyEmpty
   Cxx.Declaration_typeAlias x -> prettyTypeAlias x qualified
+  Cxx.Declaration_namespaceAlias x -> prettyNamespaceAlias x qualified
   Cxx.Declaration_record_ x -> prettyRecord x qualified
   Cxx.Declaration_function_ x -> prettyFunction x qualified
   Cxx.Declaration_EMPTY -> intentionallyEmpty
@@ -222,6 +223,30 @@ prettyTypeAlias (Cxx.TypeAliasDeclaration _ mkey) qualified = case mkey of
         , prettyType ttype
         ]
     Cxx.TypeAliasKind__UNKNOWN {} -> todoEmpty
+
+prettyNamespaceAlias :: Cxx.NamespaceAliasDeclaration -> Qualified -> Text
+prettyNamespaceAlias (Cxx.NamespaceAliasDeclaration _ mkey) qualified =
+  case mkey of
+    Nothing -> missingKey
+    Just (Cxx.NamespaceAliasDeclaration_key qname target _) ->
+      foldr1
+        (<+>)
+        [ "namespace", prettyNamespaceQName qname qualified, "=", targetName ]
+      where
+        targetName = case target of
+          Cxx.NamespaceTarget_namespace_
+            (Cxx.NamespaceDeclaration _ mkey) ->
+              case mkey of
+                Just (Cxx.NamespaceDeclaration_key qname _) ->
+                  prettyNamespaceQName qname Qualified
+                Nothing -> missingKey
+          Cxx.NamespaceTarget_namespaceAlias
+            (Cxx.NamespaceAliasDeclaration _ mkey) ->
+              case mkey of
+                Just (Cxx.NamespaceAliasDeclaration_key qname _ _) ->
+                  prettyNamespaceQName qname Qualified
+                Nothing -> missingKey
+          Cxx.NamespaceTarget_EMPTY -> todoEmpty
 
 prettyFunction :: Cxx.FunctionDeclaration -> Qualified -> Text
 prettyFunction (Cxx.FunctionDeclaration _ mkey) qualified = case mkey of
