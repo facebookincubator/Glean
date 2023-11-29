@@ -31,6 +31,7 @@ import Glean.Remote (ThriftBackend)
 import Glean.Util.Some ( Some )
 import Glean.Util.Time ( DiffTimePoints )
 
+import Glean.Glass.Base (RepoMapping)
 import Glean.Glass.Repos (ScmRevisions)
 import Glean.Glass.SnapshotBackend ( SnapshotBackend, SnapshotTier )
 
@@ -60,6 +61,7 @@ data Env = Env
   , gleanIndexBackend :: IndexBackend
   , snapshotBackend :: SnapshotBackend
   , gleanDB :: Maybe Glean.Repo -- if provided, use as target Glean DB
+  , repoMapping :: RepoMapping
   }
 
 -- | A backend to create incremental databases
