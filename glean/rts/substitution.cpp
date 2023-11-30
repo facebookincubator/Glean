@@ -59,17 +59,17 @@ std::vector<Id> transformIntervals(const std::vector<Id>& intervals, F&& add) {
 void Substitution::rebaseInterval(boost::icl::interval_set<Id>& is, size_t offset, Id start, Id end) const {
   if (end < base) {
     is.add({start, end});
+  } else if (start >= finish()) {
+    is.add({start + offset, end + offset});
   } else {
-    if (start >= finish()) {
-      is.add({start + offset, end + offset});
-    } else {
-      for (Id id = start; id <= end; ++id) {
-        if (id >= finish()) {
-          is.add(id + offset);
-        } else {
-          is.add(subst(id));
-        }
-      }
+    if (start < base) {
+      is.add({start, base-1});
+    }
+    for (Id id = std::max(start,base); id <= std::min(end,finish()-1); ++id) {
+      is.add(subst(id));
+    }
+    if (end >= finish()) {
+      is.add({finish() + offset, end + offset});
     }
   };
 }
@@ -81,8 +81,14 @@ std::vector<Id> Substitution::substIntervals(
         if (end < base || start >= finish()) {
           is.add({start, end});
         } else {
-          for (Id id = start; id <= end; ++id) {
+          if (start < base) {
+            is.add({start, base-1});
+          }
+          for (Id id = std::max(start,base); id <= std::min(end,finish()-1); ++id) {
             is.add(subst(id));
+          }
+          if (end >= finish()) {
+            is.add({finish(), end});
           }
         }
       });
