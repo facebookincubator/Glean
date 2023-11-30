@@ -47,7 +47,7 @@ std::vector<Id> transformIntervals(const std::vector<Id>& intervals, F&& add) {
   }
   std::vector<Id> results;
   results.reserve(is.iterative_size()*2);
-  for (auto p : is) {
+  for (const auto& p : is) {
     results.push_back(p.lower());
     results.push_back(p.upper());
   }
@@ -62,12 +62,13 @@ void Substitution::rebaseInterval(boost::icl::interval_set<Id>& is, size_t offse
   } else {
     if (start >= finish()) {
       is.add({start + offset, end + offset});
-    }
-    for (Id id = start; id <= end; ++id) {
-      if (id >= finish()) {
-        is.add(id + offset);
-      } else {
-        is.add(subst(id));
+    } else {
+      for (Id id = start; id <= end; ++id) {
+        if (id >= finish()) {
+          is.add(id + offset);
+        } else {
+          is.add(subst(id));
+        }
       }
     }
   };
