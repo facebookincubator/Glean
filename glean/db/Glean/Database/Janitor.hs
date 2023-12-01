@@ -140,8 +140,8 @@ runWithShards
   -> IO [JanitorSideEffect]
 runWithShards env myShards sm = do
   loggingAction (runLogCmd "janitor" env) (const mempty) $ do
-  logInfo "running database janitor"
-  logInfo $ "Assigned shards: " <> show (toList myShards)
+  logInfo $ "running database janitor with shard assignment "
+    <> show (toList myShards)
 
   ServerConfig.Config{..} <- Observed.get (envServerConfig env)
 
