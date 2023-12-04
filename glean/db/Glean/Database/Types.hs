@@ -13,13 +13,14 @@ module Glean.Database.Types (
   Env(..), WriteQueues(..), WriteQueue(..), WriteJob(..),
   Derivation(..),
   EnableRecursion(..),
-  JanitorRunResult(..), JanitorException(..)
+  JanitorRunResult(..), JanitorException(..),
 ) where
 
 import Control.DeepSeq
 import Control.Concurrent.Async
 import Control.Concurrent.MVar (MVar)
 import Control.Exception
+import Control.Trace (Tracer)
 import Data.ByteString (ByteString)
 import Data.HashMap.Strict (HashMap)
 import Data.HashSet (HashSet)
@@ -40,6 +41,7 @@ import Glean.Database.Config
 import Glean.Database.Meta
 import Glean.Database.Schema.Types
 import Glean.Database.Storage (Database, Storage, describe)
+import Glean.Database.Trace
 import Glean.Database.Work.Heartbeat (Heartbeats)
 import Glean.Database.Work.Queue (WorkQueue)
 import Glean.Logger.Server (GleanServerLogger)
@@ -271,6 +273,7 @@ data Env = forall storage. Storage storage => Env
       -- ^ Experimental support for recursive queries. For testing only.
   , envFilterAvailableDBs :: [Thrift.Repo] -> IO [Thrift.Repo]
     -- ^ Filter out DBs not currently available in the server tier
+  , envTracer :: Tracer GleanTrace
   }
 
 instance Show Env where

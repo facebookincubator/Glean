@@ -53,6 +53,7 @@ import Options.Applicative
 import System.FilePath
 import System.IO.Temp (withSystemTempDirectory)
 
+import Control.Trace (Tracer)
 import Thrift.Protocol.JSON
 import Thrift.Util
 import Util.IO (listDirectoryRecursive)
@@ -69,6 +70,7 @@ import Glean.Database.Schema.ComputeIds
 import Glean.Database.Storage
 import qualified Glean.Database.Storage.Memory as Memory
 import qualified Glean.Database.Storage.RocksDB as RocksDB
+import Glean.Database.Trace
 import qualified Glean.Internal.Types as Internal
 import Glean.DefaultConfigs
 import Glean.Logger.Database
@@ -158,6 +160,7 @@ data Config = Config
     -- ^ Enable experimental support for recursion
   , cfgFilterAvailableDBs :: [Repo] -> IO [Repo]
     -- ^ Filter out DBs not currently available in the server tier
+  , cfgTracer :: Tracer GleanTrace
   }
 
 instance Show Config where
@@ -185,6 +188,7 @@ instance Default Config where
     , cfgBackupBackends = HashMap.fromList [("mock", Backup.Mock.mock)]
     , cfgEnableRecursion = False
     , cfgFilterAvailableDBs = return
+    , cfgTracer = mempty
     }
 
 data SchemaIndex = SchemaIndex
@@ -434,6 +438,7 @@ options = do
     , cfgDatabaseLogger = cfgDatabaseLogger def
     , cfgBackupBackends = cfgBackupBackends def
     , cfgFilterAvailableDBs = return
+    , cfgTracer = mempty
     , .. }
   where
     recipesConfigThriftSource = option (eitherReader ThriftSource.parse)

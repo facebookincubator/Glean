@@ -514,6 +514,7 @@ library db
         Glean.Database.Storage.Memory
         Glean.Database.Storage.RocksDB
         Glean.Database.Tailer
+        Glean.Database.Trace
         Glean.Database.Types
         Glean.Database.Validate
         Glean.Database.Work.Controller

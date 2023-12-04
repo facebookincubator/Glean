@@ -38,6 +38,7 @@ import Glean.Facebook.Logger.Server
 import Glean.Facebook.Logger.Database
 import qualified Glean.Database.Backup.Manifold as Manifold
 import Glean.Server.Available ( withAvailableDBFilterViaSR )
+import Glean.Server.Tracing
 import Manifold.Client
 import Glean.Util.Some
 #endif
@@ -63,6 +64,7 @@ main =
   withConfigProvider cfgOpts $ \(configAPI :: ConfigAPI) ->
 #if GLEAN_FACEBOOK
   withLogger configAPI $ \logger ->
+  withTracing $ \tracer ->
   withAvailableDBFilterViaSR evb $ \filterAvailableDBs ->
 #endif
   let dbCfg = (cfgDBConfig cfg0){
@@ -71,6 +73,7 @@ main =
         , cfgServerLogger = Some (GleanServerFacebookLogger logger)
         , cfgDatabaseLogger = Some (GleanDatabaseFacebookLogger logger)
         , cfgFilterAvailableDBs = filterAvailableDBs
+        , cfgTracer = tracer
 #endif
       }
 

@@ -14,6 +14,7 @@ module Glean.Database.Write.Batch
 
 import Control.Exception
 import Control.Monad.Extra
+import Control.Trace (traceMsg)
 import qualified Data.ByteString as BS
 import qualified Data.HashMap.Strict as HashMap
 import Data.HashMap.Strict (HashMap)
@@ -35,6 +36,7 @@ import Glean.Database.Exception
 import Glean.Database.Repo
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Schema
+import Glean.Database.Trace
 import Glean.Database.Types
 import Glean.FFI
 import Glean.Internal.Types as Thrift
@@ -123,7 +125,7 @@ writeDatabase env repo (WriteContent batch maybeOwn) latency =
     Stats.bump (envStats env) Stats.mutatorLatency =<< endTick latency
     let !size = batchSize batch
 
-    Stats.tick (envStats env) Stats.mutatorInput size $ do
+    tick env repo WriteTraceInput Stats.mutatorInput size $ do
       -- If nobody is writing to the DB just write the batch directly.
       --
       -- TODO: What if someone is already deduplicating another batch? Should we
@@ -161,7 +163,7 @@ reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
     bracket
       (
         logExceptions (\s -> inRepo repo $ "rename error: " ++ s) $
-        Stats.tick (envStats env) Stats.renameThroughput real_size $
+        tick env repo WriteTraceRename Stats.renameThroughput real_size $
         withLookupCache repo writing lookup $ \cache -> do
           next_id <- readIORef (wrNextId writing)
           FactSet.renameFacts
@@ -195,7 +197,7 @@ reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
           $ when (not $ envMockWrites env)
           $ do
               mem <- fromIntegral <$> FactSet.factMemory facts
-              Stats.tick (envStats env)
+              tick env repo WriteTraceCommit
                 Stats.commitThroughput mem $ do
                   Storage.commit odbHandle facts is
                   forM_ derivedOwners $ \ownBatch ->
@@ -301,3 +303,9 @@ substDependencies subst dmap = map substFD dmap
 
 batchSize :: Thrift.Batch -> Word64
 batchSize = fromIntegral . BS.length . Thrift.batch_facts
+
+tick
+  :: Env -> Repo -> WriteTraceEvent -> Stats.Bump Tick -> Word64 -> IO a -> IO a
+tick env repo event ticker value cont =
+  traceMsg (envTracer env) (GleanTraceWrite repo event value)
+  $ Stats.tick (envStats env) ticker value cont
