@@ -196,9 +196,8 @@ reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
         logExceptions (\s -> inRepo repo $ "commit error: " ++ s)
           $ when (not $ envMockWrites env)
           $ do
-              mem <- fromIntegral <$> FactSet.factMemory facts
               tick env repo WriteTraceCommit
-                Stats.commitThroughput mem $ do
+                Stats.commitThroughput real_size $ do
                   Storage.commit odbHandle facts is
                   forM_ derivedOwners $ \ownBatch ->
                     Storage.addDefineOwnership odbHandle ownBatch
