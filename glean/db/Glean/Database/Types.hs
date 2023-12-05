@@ -8,7 +8,7 @@
 
 module Glean.Database.Types (
   Writing(..), OpenDB(..), DBState(..),
-  Write(..),
+  Write(..), WriteContent(..),
   Tailer(..), TailerKey, DB(..),
   Env(..), WriteQueues(..), WriteQueue(..), WriteJob(..),
   Derivation(..),
@@ -48,7 +48,7 @@ import Glean.Logger.Server (GleanServerLogger)
 import Glean.Logger.Database (GleanDatabaseLogger)
 import Glean.RTS.Foreign.LookupCache (LookupCache)
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
-import Glean.RTS.Foreign.Ownership (Ownership, Slice)
+import Glean.RTS.Foreign.Ownership (Ownership, Slice, DefineOwnership)
 import Glean.RTS.Foreign.Subst (Subst)
 import Glean.RTS.Types (Fid(..))
 import qualified Glean.Recipes.Types as Recipes
@@ -147,11 +147,18 @@ data Write = Write
   , writeTimeout :: TimePoint
   }
 
+-- | What we are going to write into the DB
+data WriteContent = WriteContent
+  { writeBatch :: !Thrift.Batch
+  , writeOwnership :: Maybe DefineOwnership
+  , writeSubst :: Subst -> Subst
+  }
+
 -- | A Write on the WriteQueue
 data WriteJob
   = WriteJob
     { writeSize :: {-# UNPACK #-} !Int
-    , writeTask :: Point -> IO Subst
+    , writeContentIO :: IO WriteContent
     , writeDone :: MVar (Either SomeException Subst)
     , writeStart :: Point
     }

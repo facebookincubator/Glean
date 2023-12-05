@@ -102,8 +102,8 @@ glean.db.write.rejected.avg.60
 -}
 
 -- | Create threads to process the write queues
-writerThread :: WriteQueues -> IO ()
-writerThread WriteQueues{..} = mask $ \restore ->
+writerThread :: Env -> WriteQueues -> IO ()
+writerThread env WriteQueues{..} = mask $ \restore ->
   forever $ handler restore $
     void $ tryBracket
       dequeue
@@ -172,7 +172,9 @@ writerThread WriteQueues{..} = mask $ \restore ->
               then do requeue; return (Just (job, repo, queue))
               else do unGetTQueue writeQueue job; dequeueLoop requeue
 
-  execute (Just (WriteJob{..}, _, _)) = writeTask writeStart
+  execute (Just (WriteJob{..}, repo, _)) = do
+    writeContent <- writeContentIO
+    writeDatabase env repo writeContent writeStart
   execute (Just (WriteCheckpoint io, _, _)) = do io; return Subst.empty
   execute _ = return Subst.empty
 
@@ -182,9 +184,9 @@ enqueueWrite
   :: Env
   -> Repo
   -> Int
-  -> (Point -> IO Subst.Subst)
+  -> IO WriteContent
   -> IO (MVar (Either SomeException Subst.Subst))
-enqueueWrite env@Env{..} repo size io = do
+enqueueWrite env@Env{..} repo size writeContent = do
   start <- beginTick 1
   ServerConfig.Config{..} <- Observed.get envServerConfig
   mvar <- newEmptyMVar
@@ -213,7 +215,7 @@ enqueueWrite env@Env{..} repo size io = do
             envWriteQueues
             WriteJob
               { writeSize = size
-              , writeTask = io
+              , writeContentIO = writeContent
               , writeDone = mvar
               , writeStart = start }
         queueCount <- now $ updateTVar writeQueueCount (+1)
@@ -269,9 +271,10 @@ enqueueBatch env ComputedBatch{..} ownership = do
   -- server restarts/crashes
   handle <- UUID.toText <$> UUID.nextRandom
 
-  r <- try $ enqueueWrite env computedBatch_repo size $
-    writeDatabase env computedBatch_repo
-      (WriteContent computedBatch_batch ownership)
+  r <- try $ enqueueWrite env computedBatch_repo size $ pure $
+        (writeContentFromBatch computedBatch_batch) {
+          writeOwnership= ownership
+        }
   case r of
     -- ToDo: make sendBatch use Retry exceptions instead of results too
     Left (Retry n) ->
@@ -293,8 +296,7 @@ enqueueJsonBatch env repo batch = do
     size = sum (map jsonFactBatchSize (sendJsonBatch_batches batch))
   traceMsg (envTracer env) (GleanTraceEnqueue repo EnqueueJsonBatch size) $ do
   handle <- UUID.toText <$> UUID.nextRandom
-  write <- enqueueWrite env repo size $
-    emptySubst $ writeJsonBatch env repo batch
+  write <- enqueueWrite env repo size $ writeJsonBatch env repo batch
   when (sendJsonBatch_remember batch) $ rememberWrite env handle write
   return $ def { sendJsonBatchResponse_handle = handle }
 
@@ -320,7 +322,7 @@ enqueueJsonBatchByteString env repo pred facts opts remember = do
   traceMsg (envTracer env) (GleanTraceEnqueue repo EnqueueJsonBatchBS size) $ do
   handle <- UUID.toText <$> UUID.nextRandom
   write <- enqueueWrite env repo size $
-    emptySubst $ writeJsonBatchByteString env repo pred facts opts
+    writeJsonBatchByteString env repo pred facts opts
   when remember $ rememberWrite env handle write
   return $ def { sendJsonBatchResponse_handle = handle }
 

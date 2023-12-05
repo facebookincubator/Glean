@@ -8,7 +8,6 @@
 
 module Glean.Write.JSON
   ( buildJsonBatch
-  , emptySubst
   , syncWriteJsonBatch
   , writeJsonBatch
   , writeJsonBatchByteString
@@ -47,18 +46,19 @@ import Glean.RTS as RTS
 import Glean.RTS.Builder
 import Glean.RTS.Constants
 import qualified Glean.RTS.Foreign.JSON as J
-import Glean.RTS.Foreign.Subst as Subst (Subst, empty)
+import Glean.RTS.Foreign.Subst as Subst (empty)
 import Glean.RTS.Types
 import Glean.Angle.Types hiding (Type)
 import Glean.Schema.Util
 import Glean.Types as Thrift hiding (Value, Nat, Byte)
-import Glean.Util.Metric
 
 
 -- just an empty Subst for now. Later we might implement
 -- returning substitutions from JSON writes.
-emptySubst :: (Point -> IO ()) -> (Point -> IO Subst.Subst)
-emptySubst f point = f point >> return Subst.empty
+emptySubst :: IO Batch -> IO WriteContent
+emptySubst batchIO = do
+  wc <- writeContentFromBatch <$> batchIO
+  return wc{writeSubst = const Subst.empty}
 
 syncWriteJsonBatch
   :: Env
@@ -67,25 +67,23 @@ syncWriteJsonBatch
   -> Maybe Thrift.SendJsonBatchOptions
   -> IO ()
 syncWriteJsonBatch env repo batches opts = do
-  tick <- beginTick 1
   let batch =
         Thrift.SendJsonBatch
           { Thrift.sendJsonBatch_batches = batches
           , Thrift.sendJsonBatch_options = opts
           , Thrift.sendJsonBatch_remember = False }
-  writeJsonBatch env repo batch tick
+  content <- writeJsonBatch env repo batch
+  void $ syncWriteContentDatabase env repo content
 
 writeJsonBatch
   :: Env
   -> Repo
   -> SendJsonBatch
-  -> Point -- ^ for measuring end-to-end latency of a write request
-  -> IO ()
-writeJsonBatch env repo SendJsonBatch{..} tick = do
+  -> IO WriteContent
+writeJsonBatch env repo SendJsonBatch{..} = do
   dbSchema <- withOpenDatabase env repo (return . Database.odbSchema)
-  batch <- buildJsonBatch dbSchema sendJsonBatch_options sendJsonBatch_batches
-  _ <- writeDatabase env repo (WriteContent batch Nothing) tick
-  return ()
+  emptySubst $
+    buildJsonBatch dbSchema sendJsonBatch_options sendJsonBatch_batches
 
 buildJsonBatch
   :: DbSchema
@@ -104,13 +102,12 @@ writeJsonBatchByteString
   -> PredicateRef
   -> [ByteString] -- ^ facts
   -> SendJsonBatchOptions
-  -> Point -- ^ for measuring end-to-end latency of a write request
-  -> IO ()
-writeJsonBatchByteString env repo pred facts opts tick = do
+  -> IO WriteContent
+writeJsonBatchByteString env repo pred facts opts = do
   dbSchema <- withOpenDatabase env repo (return . Database.odbSchema)
-  batch <- withFactBuilder $ \builder ->
-    writeFacts dbSchema opts builder pred facts Nothing{-TODO-}
-  void $ writeDatabase env repo (WriteContent batch Nothing) tick
+  emptySubst $ withFactBuilder $ \builder ->
+      writeFacts dbSchema opts builder pred facts Nothing{-TODO-}
+
 
 writeFacts
   :: DbSchema

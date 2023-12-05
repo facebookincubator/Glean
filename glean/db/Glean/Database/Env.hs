@@ -199,7 +199,7 @@ spawnThreads env@Env{..} = do
 
   replicateM_ (fromIntegral config_db_writer_threads)
     $ Warden.spawn_ envWarden
-    $ writerThread envWriteQueues
+    $ writerThread env envWriteQueues
 
   when envUpdateSchema $ do
     Warden.spawnDaemon envWarden "schema updater" $ do

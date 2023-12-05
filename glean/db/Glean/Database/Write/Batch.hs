@@ -7,9 +7,10 @@
 -}
 
 module Glean.Database.Write.Batch
-  ( WriteContent(..)
-  , syncWriteDatabase
+  ( syncWriteDatabase
+  , syncWriteContentDatabase
   , writeDatabase
+  , writeContentFromBatch
   ) where
 
 import Control.Exception
@@ -55,10 +56,11 @@ import Glean.Util.Metric
 import Glean.Util.Mutex
 import qualified Glean.Write.Stats as Stats
 
--- | What we are going to write into the DB
-data WriteContent = WriteContent
-  { writeBatch :: Thrift.Batch
-  , writeOwnership :: Maybe DefineOwnership
+writeContentFromBatch :: Thrift.Batch -> WriteContent
+writeContentFromBatch writeBatch = WriteContent
+  { writeBatch = writeBatch
+  , writeOwnership = Nothing
+  , writeSubst = id
   }
 
 syncWriteDatabase
@@ -66,9 +68,13 @@ syncWriteDatabase
   -> Repo
   -> Thrift.Batch
   -> IO Subst
-syncWriteDatabase env repo batch = do
-  point <- beginTick 1
-  writeDatabase env repo (WriteContent batch Nothing) point
+syncWriteDatabase env repo batch =
+  syncWriteContentDatabase env repo (writeContentFromBatch batch)
+
+syncWriteContentDatabase :: Env -> Repo -> WriteContent -> IO Subst
+syncWriteContentDatabase env repo content = do
+  tick <- beginTick 1
+  writeDatabase env repo content tick
 
 makeDefineOwnership
   :: Env
@@ -118,12 +124,12 @@ writeDatabase
   -> WriteContent
   -> Point
   -> IO Subst
-writeDatabase env repo (WriteContent batch maybeOwn) latency =
+writeDatabase env repo WriteContent{..} latency =
   readDatabase env repo $ \odb@OpenDB{..} lookup -> do
     writing <- checkWritable repo odb
-    checkComplete env repo batch
+    checkComplete env repo writeBatch
     Stats.bump (envStats env) Stats.mutatorLatency =<< endTick latency
-    let !size = batchSize batch
+    let !size = batchSize writeBatch
 
     tick env repo WriteTraceInput Stats.mutatorInput size $ do
       -- If nobody is writing to the DB just write the batch directly.
@@ -131,12 +137,13 @@ writeDatabase env repo (WriteContent batch maybeOwn) latency =
       -- TODO: What if someone is already deduplicating another batch? Should we
       -- not write in that case?
       r <- tryWithMutex (wrLock writing) $ const $
-        reallyWriteBatch env repo odb lookup writing size False batch maybeOwn
+        reallyWriteBatch
+          env repo odb lookup writing size False writeBatch writeOwnership
       case r of
         Just subst -> return subst
         Nothing ->
           -- Somebody is already writing to the DB - deduplicate the batch
-          deDupBatch env repo odb lookup writing size batch maybeOwn
+          deDupBatch env repo odb lookup writing size writeBatch writeOwnership
 
 reallyWriteBatch
   :: Env
