@@ -178,8 +178,33 @@ writerThread env WriteQueues{..} = mask $ \restore ->
   execute (Just (WriteCheckpoint io, _, _)) = do io; return Subst.empty
   execute _ = return Subst.empty
 
+-- | Check and update the in-memory write queue size
+checkMemoryAvailable
+  :: Env
+  -> ServerConfig.Config
+  -> Int -- ^ requested size
+  -> STM Bool
+checkMemoryAvailable Env{..} ServerConfig.Config{..} size = do
+  let WriteQueues{..} = envWriteQueues
+  pending <- readTVar writeQueuesSize
+  let !newSize = pending + size
+  if roundUp mb newSize <= fromIntegral config_db_write_queue_limit_mb
+    then do
+      writeTVar writeQueuesSize newSize
+      return True
+    else return False
 
--- | Add a write job to the queue, or throw 'Retry'
+-- | Update stats and throw a Retry exception
+rejectWrite :: Repo -> Int -> Double -> IO retry
+rejectWrite repo size elapsed = do
+  let clamped = min 1000.0 $ max 1.0 elapsed
+      repoB = Text.encodeUtf8 (repo_name repo)
+  addStatValueType "glean.db.write.rejected" (size `div` k) Sum
+  addStatValueType ("glean.db.write.retry_ms." <> repoB)
+    (round (elapsed*1000)) Avg
+  throwIO (Retry clamped)
+
+-- | Add a write job to the queue, or throw 'Retry' if no memory available
 enqueueWrite
   :: Env
   -> Repo
@@ -188,27 +213,14 @@ enqueueWrite
   -> IO (MVar (Either SomeException Subst.Subst))
 enqueueWrite env@Env{..} repo size writeContent = do
   start <- beginTick 1
-  ServerConfig.Config{..} <- Observed.get envServerConfig
+  config <- Observed.get envServerConfig
   mvar <- newEmptyMVar
   withWritableDatabase env repo $ \queue@WriteQueue{..} -> do
   let WriteQueues{..} = envWriteQueues
-  immediately $ do
-    pending <- now $ readTVar writeQueuesSize
-    let !newSize = pending + size
-    if roundUp mb newSize > fromIntegral config_db_write_queue_limit_mb
-      then do
-        latency <- now $ readTVar writeQueueLatency
-        later $ do
-          addStatValueType "glean.db.write.rejected" (size `div` k) Sum
-          let elapsed = fromIntegral (toNanoSecs latency) / 1000000000.0
-              clamped = min 1000.0 $ max 1.0 elapsed
-              repoB = Text.encodeUtf8 (repo_name repo)
-          addStatValueType ("glean.db.write.retry_ms." <> repoB)
-            (round (elapsed*1000)) Avg
-          throwIO (Retry clamped)
-      else do
+      enqueueIt = do
+        pending <- now $ readTVar writeQueuesSize
+        let !newSize = pending + size
         now $ do
-          writeTVar writeQueuesSize newSize
           addToWriteQueue
             repo
             queue
@@ -223,6 +235,12 @@ enqueueWrite env@Env{..} repo size writeContent = do
         later $ do
           addStatValueType "glean.db.write.enqueued" (size `div` k) Sum
           reportQueueSizes repo queueCount queueSize newSize Nothing
+  immediately $ do
+    check <- now $ checkMemoryAvailable env config size
+    if check then enqueueIt else do
+      latency <- now $ readTVar writeQueueLatency
+      let elapsed = fromIntegral (toNanoSecs latency) / 1000000000.0
+      later $ rejectWrite repo size elapsed
   return mvar
 
 -- | Add a checkpoint to the write queue, which will be performed when
