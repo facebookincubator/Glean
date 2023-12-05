@@ -9,6 +9,7 @@
 module Glean.Database.Trace
   ( GleanTrace(..)
   , WriteTraceEvent(..)
+  , EnqueueTraceEvent(..)
   ) where
 
 import Data.Word
@@ -16,7 +17,9 @@ import TextShow
 
 import qualified Glean.Types as Thrift
 
-data GleanTrace = GleanTraceWrite !Thrift.Repo !WriteTraceEvent !Word64
+data GleanTrace
+  = GleanTraceWrite !Thrift.Repo !WriteTraceEvent !Word64
+  | GleanTraceEnqueue !Thrift.Repo EnqueueTraceEvent !Int
 
 data WriteTraceEvent
   = WriteTraceInput
@@ -27,3 +30,12 @@ instance TextShow WriteTraceEvent where
   showb WriteTraceInput = "input"
   showb WriteTraceRename = "rename"
   showb WriteTraceCommit = "commit"
+
+data EnqueueTraceEvent
+  = EnqueueBatch
+  | EnqueueJsonBatch
+  | EnqueueJsonBatchBS
+  deriving Show
+
+instance TextShow EnqueueTraceEvent where
+  showb = fromString . show

@@ -44,6 +44,7 @@ import Control.Concurrent
 import Control.Exception
 import Control.Monad
 import Control.Monad.Extra (whenM)
+import Control.Trace (traceMsg)
 import qualified Data.ByteString as ByteString
 import Data.ByteString (ByteString)
 import Data.Default
@@ -65,6 +66,7 @@ import Util.Log
 import Util.STM
 
 import Glean.Database.Open
+import Glean.Database.Trace
 import Glean.Database.Write.Batch
 import Glean.Database.Types
 import qualified Glean.RTS.Foreign.Subst as Subst
@@ -259,12 +261,14 @@ reportQueueSizes repo repoQueueCount repoQueueSize totalQueueSize mLatency = do
 
 enqueueBatch :: Env -> ComputedBatch -> Maybe DefineOwnership -> IO SendResponse
 enqueueBatch env ComputedBatch{..} ownership = do
+  let size = ByteString.length (batch_facts computedBatch_batch)
+  traceMsg (envTracer env)
+    (GleanTraceEnqueue computedBatch_repo EnqueueBatch size) $ do
   -- NOTE: we use UUIDs here rather than, say, consecutive
   -- numbers because we want to avoid conflicts when the
   -- server restarts/crashes
   handle <- UUID.toText <$> UUID.nextRandom
 
-  let size = ByteString.length (batch_facts computedBatch_batch)
   r <- try $ enqueueWrite env computedBatch_repo size $
     writeDatabase env computedBatch_repo
       (WriteContent computedBatch_batch ownership)
@@ -282,12 +286,13 @@ enqueueJsonBatch
   -> Thrift.SendJsonBatch
   -> IO Thrift.SendJsonBatchResponse
 enqueueJsonBatch env repo batch = do
-  handle <- UUID.toText <$> UUID.nextRandom
   let
     jsonFactBatchSize JsonFactBatch{..} =
       sum (map ByteString.length jsonFactBatch_facts) +
       maybe 0 ByteString.length jsonFactBatch_unit
     size = sum (map jsonFactBatchSize (sendJsonBatch_batches batch))
+  traceMsg (envTracer env) (GleanTraceEnqueue repo EnqueueJsonBatch size) $ do
+  handle <- UUID.toText <$> UUID.nextRandom
   write <- enqueueWrite env repo size $
     emptySubst $ writeJsonBatch env repo batch
   when (sendJsonBatch_remember batch) $ rememberWrite env handle write
@@ -310,9 +315,10 @@ enqueueJsonBatchByteString
   -> Bool -- ^ remember?
   -> IO Thrift.SendJsonBatchResponse
 enqueueJsonBatchByteString env repo pred facts opts remember = do
-  handle <- UUID.toText <$> UUID.nextRandom
   let
     size = sum (map ByteString.length facts)
+  traceMsg (envTracer env) (GleanTraceEnqueue repo EnqueueJsonBatchBS size) $ do
+  handle <- UUID.toText <$> UUID.nextRandom
   write <- enqueueWrite env repo size $
     emptySubst $ writeJsonBatchByteString env repo pred facts opts
   when remember $ rememberWrite env handle write
