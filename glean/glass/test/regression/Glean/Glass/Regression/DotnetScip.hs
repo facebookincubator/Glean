@@ -16,5 +16,5 @@ main = mainGlassSnapshot testName testPath testIndexer (const [])
   where
     testName = "glass-regression-dotnet"
     testPath = "glean/glass/test/regression/tests/dotnet-scip"
-    testIndexer = DotnetScip.indexer
+    testIndexer = Dotnet.indexer
     

@@ -14,7 +14,7 @@ import Glean.Indexer.PythonScip as PythonScip
 main :: IO ()
 main = mainGlassSnapshot testName testPath testIndexer (const [])
   where
-    testName = "glass-regression-pythonscip"
+    testName = "glass-regression-python-scip"
     testPath = "glean/glass/test/regression/tests/python-scip"
     testIndexer = PythonScip.indexer
     
