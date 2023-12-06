@@ -72,8 +72,8 @@ setupFakeDBs dbdir = do
   schema <- parseSchemaDir schemaSourceDir
   schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent
   -- populate a dir with various DBs
-  makeFakeDB schema dbdir incompleteRepo now incomplete Nothing
-  makeFakeDB schema dbdir completeRepo now complete Nothing
+  makeFakeDB schema dbdir incompleteRepo now incomplete id
+  makeFakeDB schema dbdir completeRepo now complete id
 
 incomplete :: p -> Completeness
 incomplete _ = Incomplete DatabaseIncomplete_EMPTY
