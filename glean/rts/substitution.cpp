@@ -7,6 +7,7 @@
  */
 
 #include "glean/rts/substitution.h"
+#include "glean/rts/error.h"
 
 namespace facebook {
 namespace glean {
@@ -78,17 +79,18 @@ std::vector<Id> Substitution::substIntervals(
     const std::vector<Id>& intervals) const {
   return transformIntervals(
       intervals, [&](boost::icl::interval_set<Id>& is, Id start, Id end) {
-        if (end < base || start >= finish()) {
+        if (end >= finish()) {
+          error("interval out of range: {}-{} finish={}",
+                start.toWord(), end.toWord(), finish().toWord());
+        }
+        if (end < base) {
           is.add({start, end});
         } else {
           if (start < base) {
             is.add({start, base-1});
           }
-          for (Id id = std::max(start,base); id <= std::min(end,finish()-1); ++id) {
+          for (Id id = std::max(start,base); id <= end; ++id) {
             is.add(subst(id));
-          }
-          if (end >= finish()) {
-            is.add({finish(), end});
           }
         }
       });
