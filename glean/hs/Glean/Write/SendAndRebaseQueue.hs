@@ -177,14 +177,14 @@ toBatchOwnership =
     (HashMap.unionWith (<>) . fmap (: []) . ownershipUnits)
     HashMap.empty
 
-rebaseOwnershipList :: [Ownership] -> Subst -> Thrift.Id -> [Ownership]
-rebaseOwnershipList ownership subst boundary =
+rebaseOwnershipList :: [Ownership] -> Subst -> [Ownership]
+rebaseOwnershipList ownership subst =
   [ own {
       ownershipUnits = rebaseOwnership subst (ownershipUnits own),
       ownershipEnd =
         Fid (fromIntegral (substOffset subst) + fromFid (ownershipEnd own))
     }
-  | own <- takeWhile ((> boundary) . coerce . ownershipEnd) ownership
+  | own <- ownership
   ]
 
 substOwnership, rebaseOwnership
@@ -195,7 +195,7 @@ substOwnership subst = fmap (coerce . substIntervals subst . coerce)
 rebaseOwnership subst = fmap (coerce . rebaseIntervals subst . coerce)
 
 senderFlush :: SendAndRebaseQueue -> Sender -> IO ()
-senderFlush srq sender = withMVar (sFacts sender) $ \(facts, owned) -> do
+senderFlush srq sender = modifyMVar_ (sFacts sender) $ \(facts, owned) -> do
   factOnlyBatch <- FactSet.serialize facts
   let batch = factOnlyBatch { Thrift.batch_owned = toBatchOwnership owned }
   !size <- FactSet.factMemory facts
@@ -208,6 +208,7 @@ senderFlush srq sender = withMVar (sFacts sender) $ \(facts, owned) -> do
         Left e -> putTMVar (sSubstVar sender) (WaitSubstError e)
       forM_ callbacks ($ void result)
     writeTVar (sSent sender) start
+  return (facts, [])
 
 senderRebaseAndFlush :: Bool -> SendAndRebaseQueue -> Sender -> IO ()
 senderRebaseAndFlush wait srq sender = do
@@ -238,14 +239,7 @@ senderRebaseAndFlush wait srq sender = do
           bracket (deserialize thriftSubst) release $ \subst -> do
             newBase <-
               FactSet.rebase (srqInventory srq) subst (srqFacts srq) base
-            let
-                -- all facts below the boundary have now been written,
-                -- we'll use this to determine which ownership data to
-                -- retain.
-                boundary =
-                  Thrift.subst_firstId thriftSubst +
-                  fromIntegral (Vector.length (Thrift.subst_ids thriftSubst))
-                newOwned = rebaseOwnershipList owned subst boundary
+            let newOwned = rebaseOwnershipList owned subst
             _ <- evaluate (force (map ownershipUnits newOwned))
             return (newBase, newOwned)
       -- "Commit throughput" will be write throughput to the server
