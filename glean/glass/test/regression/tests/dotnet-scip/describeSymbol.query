@@ -1,0 +1,2 @@
+action: describeSymbol
+args: {"include_refs": true, "filepath":"Program.cs", "repository":"test"}

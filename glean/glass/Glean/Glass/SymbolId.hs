@@ -231,6 +231,7 @@ entityLanguage e = case e of
   Code.Entity_scip Scip.Entity_rust{} -> Language_Rust
   Code.Entity_scip Scip.Entity_go{} -> Language_Go
   Code.Entity_scip Scip.Entity_typescript{} -> Language_TypeScript
+  Code.Entity_scip Scip.Entity_python{} -> Language_Python
   Code.Entity_scip _ -> Language__UNKNOWN 0
   Code.Entity_EMPTY -> Language__UNKNOWN 0
 
@@ -301,6 +302,7 @@ instance Symbol Code.Entity where
       Scip.Entity_rust se -> toSymbolWithPath se p
       Scip.Entity_go se -> toSymbolWithPath se p
       Scip.Entity_typescript se -> toSymbolWithPath se p
+      Scip.Entity_python se -> toSymbolWithPath se p
       Scip.Entity_EMPTY -> throwM $ SymbolError "Unknown SCIP language"
 
     _ -> throwM $ SymbolError "Language not supported"
@@ -386,6 +388,7 @@ instance ToQName Code.Entity where
       Scip.Entity_rust x -> toQName x
       Scip.Entity_go x -> toQName x
       Scip.Entity_typescript x -> toQName x
+      Scip.Entity_python x -> toQName x
       Scip.Entity_EMPTY -> pure $ Left "SCIP: language unsupported"
     _ -> pure $ Left ("Language unsupported: " <> textShow (entityLanguage e))
 
