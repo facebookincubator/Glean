@@ -52,6 +52,8 @@ data Config = Config
   , cfgDebugPrintReferences :: Bool  -- ^ function-calls pass
   , cfgMaxQueueSize :: Int  -- ^ function-calls pass
   , cfgIncremental :: Bool  -- ^ derive incrementally
+  , cfgTestedFileShards :: Int -- Number of shards for --tested-file deriver
+  , cfgTestedFileShard :: Int -- Shard number for ---tested-file deriver
   }
 
 -- | Only used for regression testing derived passes
@@ -76,6 +78,8 @@ testConfig repo = Config
   , cfgDebugPrintReferences = False
   , cfgMaxQueueSize = 100000
   , cfgIncremental = False
+  , cfgTestedFileShards = 1
+  , cfgTestedFileShard = 0
   }
 
 -- | Command-line argument parser for "Derive" to get 'Config'
@@ -132,4 +136,14 @@ options = do
     <> O.help "function-calls: maximum queue size for cxx.FileXRefMap"
   cfgIncremental <- O.switch $
     O.long "incremental"
+  cfgTestedFileShards <- O.option O.auto $
+    O.long "tested-file-shards"
+    <> O.metavar "N"
+    <> O.value 1
+    <> O.help "number of file shards for the --tested-file deriver"
+  cfgTestedFileShard <- O.option O.auto $
+    O.long "tested-file-shard"
+    <> O.metavar "N"
+    <> O.value 0
+    <> O.help "the shard number to filter files for ---tested-file deriver"
   return Config{..}

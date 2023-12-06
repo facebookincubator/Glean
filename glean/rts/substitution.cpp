@@ -7,10 +7,13 @@
  */
 
 #include "glean/rts/substitution.h"
+#include "glean/rts/error.h"
 
 namespace facebook {
 namespace glean {
 namespace rts {
+
+using namespace boost::icl;
 
 Substitution::Substitution(Id first, size_t size)
   : base(first)
@@ -47,7 +50,7 @@ std::vector<Id> transformIntervals(const std::vector<Id>& intervals, F&& add) {
   }
   std::vector<Id> results;
   results.reserve(is.iterative_size()*2);
-  for (auto p : is) {
+  for (const auto& p : is) {
     results.push_back(p.lower());
     results.push_back(p.upper());
   }
@@ -56,19 +59,20 @@ std::vector<Id> transformIntervals(const std::vector<Id>& intervals, F&& add) {
 
 }
 
-void Substitution::rebaseInterval(boost::icl::interval_set<Id>& is, size_t offset, Id start, Id end) const {
+void Substitution::rebaseInterval(interval_set<Id>& is, size_t offset, Id start, Id end) const {
   if (end < base) {
-    is.add({start, end});
+    is.add({start, end, interval_bounds::closed()});
+  } else if (start >= finish()) {
+    is.add({start + offset, end + offset, interval_bounds::closed()});
   } else {
-    if (start >= finish()) {
-      is.add({start + offset, end + offset});
+    if (start < base) {
+      is.add({start, base-1, interval_bounds::closed()});
     }
-    for (Id id = start; id <= end; ++id) {
-      if (id >= finish()) {
-        is.add(id + offset);
-      } else {
-        is.add(subst(id));
-      }
+    for (Id id = std::max(start,base); id <= std::min(end,finish()-1); ++id) {
+      is.add(subst(id));
+    }
+    if (end >= finish()) {
+      is.add({finish() + offset, end + offset, interval_bounds::closed()});
     }
   };
 }
@@ -77,10 +81,17 @@ std::vector<Id> Substitution::substIntervals(
     const std::vector<Id>& intervals) const {
   return transformIntervals(
       intervals, [&](boost::icl::interval_set<Id>& is, Id start, Id end) {
-        if (end < base || start >= finish()) {
-          is.add({start, end});
+        if (end >= finish()) {
+          error("interval out of range: {}-{} base={} finish={}",
+                start.toWord(), end.toWord(), base.toWord(), finish().toWord());
+        }
+        if (end < base) {
+          is.add({start, end, interval_bounds::closed()});
         } else {
-          for (Id id = start; id <= end; ++id) {
+          if (start < base) {
+            is.add({start, base-1, interval_bounds::closed()});
+          }
+          for (Id id = std::max(start,base); id <= end; ++id) {
             is.add(subst(id));
           }
         }

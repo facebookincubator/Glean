@@ -131,6 +131,7 @@ instance Pretty Cxx.Declaration where
   pretty (Cxx.Declaration_function_ fnDecl) = prettyFnDecl fnDecl
   pretty (Cxx.Declaration_variable vDecl) = prettyVarDecl vDecl
   pretty (Cxx.Declaration_typeAlias tDecl) = prettyTypeAliasDecl tDecl
+  pretty (Cxx.Declaration_namespaceAlias ns) = prettyNamespaceAliasDecl ns
   pretty (Cxx.Declaration_usingDeclaration uDecl) = prettyUsingDecl uDecl
   pretty (Cxx.Declaration_usingDirective uDir) = prettyUsingDirective uDir
   pretty (Cxx.Declaration_objcMethod method) = prettyObjcMethodDecl method
@@ -288,6 +289,18 @@ prettyNamespaceDecl Cxx.NamespaceDeclaration { namespaceDeclaration_key = ns }
   | Just Cxx.NamespaceDeclaration_key {
       namespaceDeclaration_key_name = namespaceQName,
       namespaceDeclaration_key_source = namespaceSrc } <- ns =
+        vsep [
+          prettyScopeNamespace namespaceQName,
+          "at" <+> pretty namespaceSrc]
+  | otherwise = ""
+
+prettyNamespaceAliasDecl :: Cxx.NamespaceAliasDeclaration -> Doc ann
+prettyNamespaceAliasDecl Cxx.NamespaceAliasDeclaration {
+    namespaceAliasDeclaration_key = ns
+  }
+  | Just Cxx.NamespaceAliasDeclaration_key {
+      namespaceAliasDeclaration_key_name = namespaceQName,
+      namespaceAliasDeclaration_key_source = namespaceSrc } <- ns =
         vsep [
           prettyScopeNamespace namespaceQName,
           "at" <+> pretty namespaceSrc]

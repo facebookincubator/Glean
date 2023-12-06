@@ -44,11 +44,15 @@ public:
   //
   // The input doesn't need to be sorted or non-overlapping, but the
   // output will be non-overlapping and sorted in ascending order.
+  //
+  // It is an error if a range extends beyond finish(); that is, the
+  // ranges can only cover Ids included in the substitution and below.
   std::vector<Id> substIntervals(const std::vector<Id>& intervals) const;
 
-  // Exactly like substIntervals, except that we *also* rename Ids > finish() so
-  // that they don't clash with Ids in the range of the substitution, to match
-  // the transformation done by FactSet::rebase().
+  // Exactly like substIntervals, except that ranges are allowed to
+  // extend beyond finish() and Ids >= finish() are renamed so that
+  // they don't clash with Ids in the range of the substitution, to
+  // match the transformation done by FactSet::rebase().
   std::vector<Id> rebaseIntervals(const std::vector<Id>& intervals) const;
 
   // These are just like the functions above but return a boost::icl::interval_set<Id>

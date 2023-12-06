@@ -319,6 +319,7 @@ type DeclKind =
     objcMethod |
     objcProperty |
     typeAlias |
+    namespaceAlias |
     macro |
   }
 
@@ -409,6 +410,20 @@ predicate TypeAliasDeclaration :
     kind : TypeAliasKind,
     source : src.Range,
   }
+
+type NamespaceTarget =
+  {
+    namespace_ : NamespaceDeclaration |
+    namespaceAlias : NamespaceAliasDeclaration |
+  }
+
+predicate NamespaceAliasDeclaration :
+  {
+    name : NamespaceQName,
+    target : NamespaceTarget,
+    source : src.Range,
+  }
+
 # Using declaration
 predicate UsingDeclaration :
   {
@@ -515,6 +530,7 @@ type Declaration =
     objcMethod : ObjcMethodDeclaration |
     objcProperty : ObjcPropertyDeclaration |
     typeAlias : TypeAliasDeclaration |
+    namespaceAlias : NamespaceAliasDeclaration |
   }
 
 # A specific slot of an ObjC selector. The `index` field is the position
@@ -783,6 +799,11 @@ predicate DeclarationScope :
       { enum_ = { name = QN } } |
       { usingDirective = { name = QN } } = Decl;
       { scope = Scope } = QN
+    # NamespaceQName scopes
+    ) | (
+      { namespace_ = { name = NQN } } |
+      { namespaceAlias = { name = NQN } } = Decl;
+      Scope = cxx1.Scope { namespace_ = NQN }
     )
 
 # src.Range of an arbitrary Declaration.
@@ -813,7 +834,9 @@ predicate DeclarationSrcRange :
      ( { objcProperty = X } = D;
        X = ObjcPropertyDeclaration { source = R }) |
      ( { typeAlias = X } = D;
-       X = TypeAliasDeclaration { source = R })
+       X = TypeAliasDeclaration { source = R }) |
+     ( { namespaceAlias = X } = D;
+       X = NamespaceAliasDeclaration { source = R })
 
 # cxx1.RecordDefinition can lookup from Child to Parent. Reverse this
 # here to lookup from Parent to Child.
@@ -961,6 +984,13 @@ predicate DeclByName :
       where
       TypeAliasDeclaration { name = Q };
       Q = QName { name = N };
+      N = Name Str
+     ) |
+     (
+     { Str, DeclKind namespaceAlias, DeclIdent { name = N } }
+      where
+      NamespaceAliasDeclaration { name = Q };
+      Q = NamespaceQName { name = { just = N }};
       N = Name Str
      ) |
      (
@@ -1185,7 +1215,10 @@ predicate DeclarationLocationName :
       ( { objcProperty = X } = Decl;
         X = ObjcPropertyDeclaration { source = Range, name = Name }) |
       ( { typeAlias = X } = Decl;
-        X = TypeAliasDeclaration { source = Range, name = { name = Name }});
+        X = TypeAliasDeclaration { source = Range, name = { name = Name }}) |
+      ( { namespaceAlias = X } = Decl;
+        X = NamespaceAliasDeclaration { source = Range, name = QName };
+        NamespaceDeclarationName { QName, Name });
       Name = Name NameStr
     ) | (
       { function_ = X } = Decl;
@@ -1269,7 +1302,10 @@ predicate DeclarationLocationNameSpan :
       ( { objcProperty = X } = Decl;
         X = ObjcPropertyDeclaration { name = Name, source = Range }) |
       ( { typeAlias = X } = Decl;
-        X = TypeAliasDeclaration { name = { name = Name }, source = Range });
+        X = TypeAliasDeclaration { name = { name = Name }, source = Range }) |
+      ( { namespaceAlias = X } = Decl;
+        X = NamespaceAliasDeclaration { name = QName, source = Range };
+        NamespaceDeclarationName { QName, Name });
       Name = Name NameStr
     ) | (
       { function_ = X } = Decl;

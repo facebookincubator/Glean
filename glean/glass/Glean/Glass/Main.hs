@@ -47,6 +47,7 @@ import Glean.Util.ConfigProvider
 import Glean.Util.Some ( Some(Some) )
 import Glean.Util.Time ( DiffTimePoints )
 
+import Glean.Glass.RepoMapping -- site-specific
 import qualified Glean.Glass.Env as Glass
 import Glean.Glass.Repos (withLatestRepos)
 import qualified Glean.Glass.Options as Glass
@@ -92,7 +93,8 @@ withEnv name service snapshotTier _ refreshFreq listDatabasesRetry gleanDB f =
     $ \backend ->
   withLatestRepos backend (Just logger)
     (if isRemote service then listDatabasesRetry else Nothing) refreshFreq
-    $ \latestGleanRepos repoScmRevisions ->
+    $ \latestGleanRepos repoScmRevisions -> do
+      repoMapping <- getRepoMapping
       f Glass.Env
         { gleanBackend = Some backend
         , gleanIndexBackend = indexBackend backend
@@ -138,11 +140,17 @@ welcomeMessage Glass.Config{..} = do
     , ", config " <> configKey
     ]
 
+-- | Perform an operation with the latest RepoMapping
+withCurrentRepoMapping :: Glass.Env -> (Glass.Env -> IO a) -> IO a
+withCurrentRepoMapping env0 fn = do
+  current <- getRepoMapping
+  fn (env0 { Glass.repoMapping = current })
+
 -- Actual glass service handler, types from glass.thrift
 -- TODO: snapshot the env, rather than passing in the mutable fields
 --
 glassHandler :: Glass.Env -> GlassServiceCommand r -> IO r
-glassHandler env cmd = case cmd of
+glassHandler env0 cmd = withCurrentRepoMapping env0 $ \env -> case cmd of
   SuperFacebookService r -> fb303Handler (Glass.fb303 env) r
 
   -- Listing symbols in files

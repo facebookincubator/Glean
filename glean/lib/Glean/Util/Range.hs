@@ -102,6 +102,10 @@ instance HasSrcRange Cxx.TypeAliasDeclaration_key where
   srcRange = typeAliasDeclaration_key_source
   setSrcRange r a = a{ typeAliasDeclaration_key_source = r }
 
+instance HasSrcRange Cxx.NamespaceAliasDeclaration_key where
+  srcRange = namespaceAliasDeclaration_key_source
+  setSrcRange r a = a{ namespaceAliasDeclaration_key_source = r }
+
 instance HasSrcRange Cxx.VariableDeclaration_key where
   srcRange = variableDeclaration_key_source
   setSrcRange r a = a{ variableDeclaration_key_source = r }

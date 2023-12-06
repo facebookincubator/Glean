@@ -1,112 +1,239 @@
 schema csharp.1 {
   import src.1
 
-  # Namespace and type names (§7.8)
-  # https://fburl.com/d94ubqay
-  type AlphaV2Name = string
+  predicate Name: string
 
-  # Namespaces (§13.3)
-  # https://fburl.com/gv0o62tb
-  predicate AlphaV2NamespaceSymbol:
-    { name : AlphaV2Name
-    , containing_namespace : maybe AlphaV2NamespaceSymbol
+  predicate FullName:
+    { name: Name
+    , containingNamespace: Namespace
     }
 
-  # Classes (§14)
-  # https://fburl.com/mb38zzjh
-  predicate AlphaV2ClassSymbol:
-    { name : AlphaV2Name
-    , containing_namespace : AlphaV2NamespaceSymbol
+  predicate Namespace:
+    { name: Name
+    , containingNamespace: maybe Namespace
     }
 
-  # Interfaces (§18)
-  # https://fburl.com/9awakpxi
-  predicate AlphaV2InterfaceSymbol:
-    { name : AlphaV2Name
-    , containing_namespace : AlphaV2NamespaceSymbol
+  # Represents a symbol (namespace, class, method, parameter, etc.) exposed by the compiler (https://fburl.com/g1qzaga9)
+  type Definition =
+    { type: Type
+    | method: Method
+    | field: Field
+    | parameter: Parameter
+    | typeParameter: TypeParameter
+    | local: Local
+    | property: Property
     }
 
-  # MethodKind Enum
-  # https://fburl.com/f4f1gtl1
-  type AlphaV2MethodKind = enum
-    { anonymous_function
-    | builtin_operator
-    | constructor
-    | conversion
-    | declare_method
-    | delegate_invoke
-    | destructor
-    | event_add
-    | event_raise
-    | event_remove
-    | explicit_interface_implementation
-    | function_pointer_signature
-    | lambda_method
-    | local_function
-    | ordinary
-    | property_get
-    | property_set
-    | reduced_extension
-    | shared_constructor
-    | static_constructor
-    | user_defined_operator
+  # Represents a type other than an array, a pointer, a type parameter (https://fburl.com/9sh8231c)
+  type NamedType =
+    { class_: Class
+    | interface_: Interface
+    | record_: Record
+    | struct_: Struct
     }
 
-  # INamedTypeSymbol Interface
-  # https://fburl.com/9pg1rmon
-  type AlphaV2NamedTypeSymbol =
-    { class_ : AlphaV2ClassSymbol
-    | interface_ : AlphaV2InterfaceSymbol
+  predicate Class:
+    { name: FullName
+    , baseType: maybe Class
+    , typeParameters: [TypeParameter]
+    , containingType: maybe NamedType
+    , declaredAccessibility: Accessibility
+    , isAbstract: bool
+    , isStatic: bool
+    , isSealed: bool
     }
 
-  # IMethodSymbol Interface
-  # https://fburl.com/qh1vhxzs
-  predicate AlphaV2MethodSymbol:
-    { name : AlphaV2Name
-    , kind : AlphaV2MethodKind
-    , containing_type : AlphaV2NamedTypeSymbol
+  predicate Interface:
+    { name: FullName
+    , typeParameters: [TypeParameter]
+    , containingType: maybe NamedType
+    , declaredAccessibility: Accessibility
+    , isStatic: bool
     }
 
-  # NamespaceDeclarationSyntax Class
-  # https://fburl.com/rx4jbunu
-  predicate AlphaV2NamespaceDeclarationSyntax:
-    { symbol : AlphaV2NamespaceSymbol
-    , location : src.FileLocation
+  predicate Implements:
+    { type: NamedType
+    , interface_: Interface
     }
 
-  # ClassDeclarationSyntax Class
-  # https://fburl.com/oyak5vc7
-  predicate AlphaV2ClassDeclarationSyntax:
-    { symbol : AlphaV2ClassSymbol
-    , location : src.FileLocation
+  predicate Record:
+    { name: FullName
+    , baseType: maybe Record
+    , typeParameters: [TypeParameter]
+    , containingType: maybe NamedType
+    , declaredAccessibility: Accessibility
+    , isAbstract: bool
+    , isSealed: bool
     }
 
-  # ObjectCreationExpressionSyntax Class
-  # https://fburl.com/7r9cp3dp
-  predicate AlphaV2ObjectCreationExpressionSyntax:
-    { constructed_from : AlphaV2NamedTypeSymbol
-    , symbol : AlphaV2MethodSymbol
-    , location : src.FileLocation
+  predicate Struct:
+    { name: FullName
+    , typeParameters: [TypeParameter]
+    , containingType: maybe NamedType
+    , declaredAccessibility: Accessibility
     }
 
-  # InterfaceDeclarationSyntax Class
-  # https://fburl.com/6iyi7sc5
-  predicate AlphaV2InterfaceDeclarationSyntax:
-    { symbol : AlphaV2InterfaceSymbol
-    , location : src.FileLocation
+  # Enumeration for common accessibility combinations (https://fburl.com/bu2zzj2k)
+  type Accessibility = enum
+    { Friend
+    | Internal
+    | NotApplicable
+    | Private
+    | Protected
+    | ProtectedAndFriend
+    | ProtectedAndInternal
+    | ProtectedOrFriend
+    | ProtectedOrInternal
+    | Public
     }
 
-  # InvocationExpressionSyntax Class
-  # https://fburl.com/4yp4myhd
-  predicate AlphaV2InvocationExpressionSyntax:
-    { symbol : AlphaV2MethodSymbol
-    , location : src.FileLocation
+  # Represents a method or method-like symbol (including constructor, destructor, operator, or property/event accessor) (https://fburl.com/n0hrd48z)
+  predicate Method:
+    { name: Name
+    , containingType: NamedType
+    , typeParameters: [TypeParameter]
+    , parameters: [Parameter]
+    , isStatic: bool
+    , returnType: Type
+    , declaredAccessibility: Accessibility
     }
 
-  # MethodDeclarationSyntax Class
-  # https://fburl.com/h368lhr1
-  predicate AlphaV2MethodDeclarationSyntax:
-    { symbol : AlphaV2MethodSymbol
-    , location : src.FileLocation
+  # Enumeration for possible kinds of method symbols (https://fburl.com/yiw81ctn)
+  type MethodKind = enum
+    { AnonymousFunction
+    | BuiltinOperator
+    | Constructor
+    | Conversion
+    | DeclareMethod
+    | DelegateInvoke
+    | Destructor
+    | EventAdd
+    | EventRaise
+    | EventRemove
+    | ExplicitInterfaceImplementation
+    | FunctionPointerSignature
+    | LambdaMethod
+    | LocalFunction
+    | Ordinary
+    | PropertyGet
+    | PropertySet
+    | ReducedExtension
+    | SharedConstructor
+    | StaticConstructor
+    | UserDefinedOperator
+    }
+
+  # Represents a parameter of a method or property (https://fburl.com/1vhc37sw)
+  predicate Parameter:
+    { name: Name
+    , type: Type
+    , refKind: RefKind
+    , isThis: bool
+    , isParams: bool
+    , isOptional: bool
+    }
+
+  # Denotes the kind of reference (https://fburl.com/t5jo5fe2)
+  type RefKind = enum
+    { In
+    | None_
+    | Out
+    | Ref
+    | RefReadOnly
+    }
+
+  # An enumeration declaring the kinds of variance supported for generic type parameters (https://fburl.com/op4cyu1z)
+  type Variance = enum
+    { In
+    | None_
+    | Out
+    }
+
+  # Represents a field in a class, struct or enum (https://fburl.com/s0t65fue)
+  predicate Field:
+    { name: Name
+    , type: Type
+    , containingType: NamedType
+    , declaredAccessibility: Accessibility
+    , isConst: bool
+    , isReadonly: bool
+    , isVirtual: bool
+    }
+
+  # Represents a type (https://fburl.com/c0eftyms)
+  type Type =
+    { arrayType: ArrayType
+    | namedType: NamedType
+    | functionPointerType: FunctionPointerType
+    | pointerType: PointerType
+    | typeParameter: TypeParameter
+    }
+
+  # Represents an array (https://fburl.com/u86l8jp9)
+  predicate ArrayType:
+    { elementType: Type
+    , rank: byte
+    }
+
+  # epresents a pointer type such as "int *". Pointer types are used only in unsafe code (https://fburl.com/rwnza2j5)
+  predicate PointerType:
+    { pointedAtType: Type
+    }
+
+  # Represents a function pointer type such as "delegate*<void>" (https://fburl.com/kx4v0t2w)
+  predicate FunctionPointerType:
+    { name: FullName
+    , signature: Method
+    }
+
+  # Represents a type parameter in a generic type or generic method (https://fburl.com/pt267xpp)
+  predicate TypeParameter:
+    { name: Name
+    , variance: maybe Variance
+    , hasNotNullConstraint: bool
+    , hasReferenceTypeConstraint: bool
+    , hasValueTypeConstraint: bool
+    }
+
+  # Represents a local variable in method body (https://fburl.com/ebmq9edn)
+  predicate Local:
+    { name: Name
+    , type: Type
+    , containingMethod: Method
+    , refKind: RefKind
+    , isConst: bool
+    }
+
+  # Represents a property or indexer (https://fburl.com/051tvt5t)
+  predicate Property:
+    { name: Name
+    , containingType: NamedType
+    , type: Type
+    , parameters: [Parameter]
+    , getMethod: maybe Method
+    , setMethod: maybe Method
+    , isStatic: bool
+    , isIndexer: bool
+    }
+
+  type Location =
+    { fileLocation: src.FileLocation
+    , fileLines: src.FileLines
+    }
+
+  predicate DefinitionLocation:
+    { definition: Definition
+    , location: Location
+    }
+
+  predicate ObjectCreationLocation:
+    { type: Type
+    , constructor: Method
+    , location: Location
+    }
+
+  predicate MethodInvocationLocation:
+    { method: Method
+    , location: Location
     }
 }

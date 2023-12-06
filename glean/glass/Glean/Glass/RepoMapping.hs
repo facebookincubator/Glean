@@ -7,20 +7,28 @@
 -}
 
 module Glean.Glass.RepoMapping
-  ( gleanIndices
-  , gleanAttrIndices
+  ( getRepoMapping
   , gleanRequiredIndices
+  , allGleanRepos
   ) where
 
+import Data.Set (Set)
 import qualified Data.Set as Set
 import qualified Data.Map.Strict as Map
 
-import Glean.Glass.Base ( GleanDBAttrName, GleanDBName(..) )
+import Glean.Glass.Base (
+  GleanDBAttrName(..), GleanDBName(..), RepoMapping(..) )
 import Glean.Glass.Types ( Language(..), RepoName(..) )
 
+getRepoMapping :: IO RepoMapping
+getRepoMapping = return RepoMapping
+  { gleanIndices = gleanIndices_
+  , gleanAttrIndices = gleanAttrIndices_
+  }
+
 -- example: the open source react repo.
-gleanIndices :: Map.Map RepoName [(GleanDBName, Language)]
-gleanIndices = Map.fromList
+gleanIndices_ :: Map.Map RepoName [(GleanDBName, Language)]
+gleanIndices_ = Map.fromList
   -- demo
   [ (RepoName "react", [ ("react", Language_JavaScript) ])
   -- for running tests with locally-indexed repos:
@@ -40,8 +48,15 @@ gleanIndices = Map.fromList
   ]
 
 -- repos that contain symbol attributes
-gleanAttrIndices :: Map.Map GleanDBName [GleanDBAttrName]
-gleanAttrIndices = Map.empty
+gleanAttrIndices_ :: Map.Map GleanDBName [GleanDBAttrName]
+gleanAttrIndices_ = Map.empty
+
+-- | All the Glean db repo names we're aware of
+-- We will only be able to query members of this set
+allGleanRepos :: Set GleanDBName
+allGleanRepos = Set.fromList $
+  map fst (concat (Map.elems gleanIndices_)) ++
+  concatMap (map gleanAttrDBName) (Map.elems gleanAttrIndices_)
 
 -- repos that are required
 gleanRequiredIndices :: Set.Set GleanDBName

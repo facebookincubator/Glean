@@ -12,6 +12,7 @@ module SendAndRebaseQueueTest
   ( main
   ) where
 
+import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import Data.Default
@@ -106,15 +107,14 @@ sendAndRebaseQueueTest = TestCase $
     dbSchema <- loadDbSchema env base
     let inventory = schemaInventory dbSchema
     predicates <- loadPredicates env base [ Glean.Test.allPredicates ]
+    sent <- newEmptyTMVarIO
     withSendAndRebaseQueue env base inventory (settings fakeLog) $ \queue -> do
-      -- I tried to make this test deterministically stimulate the
-      -- rebase behaviour in the queue, but wasn't able to make
-      -- something that worked without deadlocking.
       batch <- buildBatch predicates Nothing $ do
         d <- mkD
         void $ mkB d
         void $ mkC d
-      writeSendAndRebaseQueue queue batch (const $ return ())
+      writeSendAndRebaseQueue queue batch (const $ putTMVar sent ())
+      atomically $ takeTMVar sent
       batch2 <- buildBatch predicates Nothing $ do
         d <- mkD
         b <- mkB d
@@ -128,7 +128,7 @@ sendAndRebaseQueueTest = TestCase $
         mkA2 b c
       writeSendAndRebaseQueue queue batch3 (const $ return ())
 
-    withSendAndRebaseQueue env base inventory (settings mempty) $ \queue -> do
+    withSendAndRebaseQueue env base inventory (settings fakeLog) $ \queue -> do
       batch <- mkReferencingBase env base dbSchema
       writeSendAndRebaseQueue queue batch (const $ return ())
 

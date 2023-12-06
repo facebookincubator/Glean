@@ -58,7 +58,8 @@ import qualified Glean
 import Util.STM ( readTVar, writeTVar, atomically, newTVarIO, TVar, STM )
 import qualified Glean.Repo as Glean
 
-import Glean.Glass.Base ( GleanDBAttrName(..), GleanDBName(..) )
+import Glean.Glass.Base ( GleanDBAttrName(..), GleanDBName(..),
+  RepoMapping(..) )
 import Glean.Glass.SymbolId ( toShortCode )
 import Glean.Glass.Types
     ( Path(Path),
@@ -78,25 +79,19 @@ newtype ScmRevisions = ScmRevisions
   }
 
 -- return a RepoName if indexed by glean
-toRepoName :: Text -> Maybe RepoName
-toRepoName repo = case Map.lookup repoName Mapping.gleanIndices of
+toRepoName :: RepoMapping -> Text -> Maybe RepoName
+toRepoName RepoMapping{..} repo =
+  case Map.lookup repoName gleanIndices of
     Just _ -> Just repoName
     Nothing -> Nothing
   where
     repoName = RepoName repo
 
 -- | Additional metadata about files and methods in attribute dbs
-firstAttrDB :: GleanDBName -> Maybe GleanDBAttrName
-firstAttrDB dbName
-  | Just (db:_) <- Map.lookup dbName Mapping.gleanAttrIndices = Just db
+firstAttrDB :: RepoMapping -> GleanDBName -> Maybe GleanDBAttrName
+firstAttrDB RepoMapping{..} dbName
+  | Just (db:_) <- Map.lookup dbName gleanAttrIndices = Just db
   | otherwise = Nothing
-
--- | All the Glean db repo names we're aware of
--- We will only be able to query members of this set
-allGleanRepos :: Set GleanDBName
-allGleanRepos = Set.fromList $
-  map fst (concat (Map.elems Mapping.gleanIndices)) ++
-  concatMap (map gleanAttrDBName) (Map.elems Mapping.gleanAttrIndices)
 
 -- | Expand generic string search request parameters into a set of candidate
 -- GleanDBs, grouped by logical SCM repo or corpus.
@@ -123,15 +118,16 @@ allGleanRepos = Set.fromList $
 -- - Overlapping dbs (e.g. fbsource and fbsource.arvr.cxx) are de-duped
 --
 selectGleanDBs
-  :: Maybe RepoName
+  :: RepoMapping
+  -> Maybe RepoName
   -> Set Language
   -> Either Text (Map.Map RepoName (Set GleanDBName))
-selectGleanDBs mRepoName langs0 =
+selectGleanDBs repoMapping mRepoName langs0 =
   case map flatten (filter matches candidates) of
     [] -> Left err
     dbs -> Right $ Map.fromListWith Set.union dbs
   where
-    candidates = listGleanIndices isTestOnly
+    candidates = listGleanIndices repoMapping isTestOnly
     langs = Set.map normalizeLanguages langs0
 
     flatten (repo,(dbname,_)) = (repo, Set.singleton dbname)
@@ -162,12 +158,12 @@ normalizeLanguages l = l
 
 -- | Select universe of glean repo,(db/language) pairs.
 -- Either just the test dbs, or all the non-test dbs.
-listGleanIndices :: Bool -> [(RepoName, (GleanDBName, Language))]
-listGleanIndices testsOnly
+listGleanIndices :: RepoMapping -> Bool -> [(RepoName, (GleanDBName, Language))]
+listGleanIndices RepoMapping{..} testsOnly
   | not testsOnly = concatMap flatten $ -- only non-test repos
-      Map.toList (Map.delete testRepo Mapping.gleanIndices)
+      Map.toList (Map.delete testRepo gleanIndices)
   | otherwise = map (testRepo,) $ -- just the test repos
-      Map.findWithDefault [] testRepo Mapping.gleanIndices
+      Map.findWithDefault [] testRepo gleanIndices
   where
     testRepo = RepoName "test"
 
@@ -177,9 +173,9 @@ listGleanIndices testsOnly
 -- Names from configerator/scm/myles/service as a start
 -- This should be in a config or SV to make onboarding simple, or from Glean
 -- properties?
-fromSCSRepo :: RepoName -> Maybe Language -> [GleanDBName]
-fromSCSRepo r hint
-  | Just rs <- Map.lookup r Mapping.gleanIndices
+fromSCSRepo :: RepoMapping -> RepoName -> Maybe Language -> [GleanDBName]
+fromSCSRepo RepoMapping{..} r hint
+  | Just rs <- Map.lookup r gleanIndices
   = nub $ map fst $ case hint of
       Nothing -> rs
       Just h -> filter ((== h) . snd) rs
@@ -247,13 +243,16 @@ filetype (Path file)
 -- | Fetch all latest dbs we care for
 getLatestRepos
   :: Glean.Backend b
-  => b -> Maybe Logger -> Maybe Int -> Set GleanDBName -> IO Glean.LatestRepos
-getLatestRepos backend mlogger mretry repoNames = go mretry
+  => b
+  -> Maybe Logger
+  -> Maybe Int
+  -> IO Glean.LatestRepos
+getLatestRepos backend mlogger mretry = go mretry
   where
     go :: Maybe Int -> IO Glean.LatestRepos
     go n = do
       latest <- Glean.getLatestRepos backend $ \name ->
-        GleanDBName name `Set.member` repoNames
+        GleanDBName name `Set.member` Mapping.allGleanRepos
       let advertised = Map.keysSet (Glean.latestRepos latest)
       if required `Set.isSubsetOf` advertised
         then return latest
@@ -343,7 +342,7 @@ withLatestRepos
    -> (TVar Glean.LatestRepos -> TVar ScmRevisions -> IO a)
    -> IO a
 withLatestRepos backend mlogger mretry freq f = do
-  repos <- getLatestRepos backend mlogger mretry allGleanRepos
+  repos <- getLatestRepos backend mlogger mretry
   scmRevisions <- getScmRevisions backend repos
   tvRepos <- newTVarIO repos
   tvRevs <- newTVarIO scmRevisions
@@ -362,10 +361,12 @@ withLatestRepos backend mlogger mretry freq f = do
 -- TODO: should take latest configuration repo list
 updateLatestRepos
   :: Glean.Backend b
-  => b -> Maybe Logger -> Maybe Int
+  => b
+  -> Maybe Logger
+  -> Maybe Int
   -> TVar Glean.LatestRepos -> TVar ScmRevisions -> IO ()
 updateLatestRepos backend mlogger mretry tvRepos tvRevs = do
-  repos <- getLatestRepos backend mlogger mretry allGleanRepos
+  repos <- getLatestRepos backend mlogger mretry
   revs <- getScmRevisions backend repos
   atomically $ do
     writeTVar tvRepos repos
@@ -383,19 +384,19 @@ lookupLatestRepos tv repoNames = do
     ]
 
 -- | Symbols of the form "/repo/lang/" where pRepo is a prefix of repo
-findRepos :: Text -> [SymbolId]
-findRepos pRepo =
+findRepos :: RepoMapping -> Text -> [SymbolId]
+findRepos RepoMapping{..} pRepo =
   let repos = Map.toList $ Map.filterWithKey
-        (const . Text.isPrefixOf pRepo . unRepoName) Mapping.gleanIndices
+        (const . Text.isPrefixOf pRepo . unRepoName) gleanIndices
   in concatMap (\(RepoName repo, repolangs) ->
       map (\(_, lang) -> SymbolId $ repo <> "/" <> toShortCode lang <> "/")
       repolangs) repos
 
 -- | Symbols of the form "/repo/lang/" where pLang is a prefix of lang
-findLanguages :: RepoName -> Text -> [SymbolId]
-findLanguages repoName@(RepoName repo) pLang =
+findLanguages :: RepoMapping -> RepoName -> Text -> [SymbolId]
+findLanguages RepoMapping{..} repoName@(RepoName repo) pLang =
   let allLangs = maybe [] (map (toShortCode . snd)) $
-        Map.lookup repoName Mapping.gleanIndices
+        Map.lookup repoName gleanIndices
       langs = filter (Text.isPrefixOf pLang) allLangs
   in map (\lang -> SymbolId $ repo <> "/" <> lang <> "/") langs
 

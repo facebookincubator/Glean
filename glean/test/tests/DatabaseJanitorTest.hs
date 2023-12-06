@@ -28,6 +28,7 @@ import Data.Int (Int64)
 import Data.IORef
 import Data.List
 import Data.Maybe
+import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Time.Clock
 import GHC.Stack (HasCallStack)
@@ -106,16 +107,17 @@ setupBasicDBs dbdir = do
   schema <- parseSchemaDir schemaSourceDir
   schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent
   -- populate a dir with various DBs
-  makeFakeDB schema dbdir (Repo "test" "0002") (age (days 2)) broken Nothing
-  makeFakeDB schema dbdir repo0001 (age (days 0)) (complete 1) Nothing
+  makeFakeDB schema dbdir repo0001 (age (days 0)) (complete 1)
+    (props [("bool","yes")])
+  makeFakeDB schema dbdir (Repo "test" "0002") (age (days 2)) broken id
   makeFakeDB schema dbdir (Repo "test" "0003") (age (days 3)) (complete 3) $
-    Just (Stacked "test" "0004" Nothing)
+    stacked (Stacked "test" "0004" Nothing)
   makeFakeDB schema dbdir (Repo "test" "0004") (age (days 4)) (complete 4) $
-    Just (Stacked "test" "0005" Nothing)
+    stacked (Stacked "test" "0005" Nothing)
   makeFakeDB schema dbdir (Repo "test" "0005") (age (days 5)) (complete 5) $
-    Just (Stacked "test2" "0006" Nothing)
-  makeFakeDB schema dbdir (Repo "test2" "0006") (age (days 6)) (complete 6)
-    Nothing
+    stacked (Stacked "test2" "0006" Nothing)
+  makeFakeDB schema dbdir (Repo "test2" "0006") (age (days 6)) (complete 6) id
+
 
 setupBasicCloudDBs :: FilePath -> IO ()
 setupBasicCloudDBs backupDir = do
@@ -124,19 +126,19 @@ setupBasicCloudDBs backupDir = do
   schema <- parseSchemaDir schemaSourceDir
   schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent
   makeFakeCloudDB schema backupDir (Repo "test" "0008")
-    (age(days 8)) (complete 8) Nothing
+    (age(days 8)) (complete 8) id
   makeFakeCloudDB schema backupDir (Repo "test2" "0009")
-    (age(days 7)) (complete 9) Nothing
+    (age(days 7)) (complete 9) id
   makeFakeCloudDB schema backupDir (Repo "test2" "0010")
-    (age(days 6)) (complete 9) Nothing
+    (age(days 6)) (complete 9) id
   makeFakeCloudDB schema backupDir (Repo "test2" "0011")
-    (age(days 5)) (complete 9) Nothing
+    (age(days 5)) (complete 9) id
   makeFakeCloudDB schema backupDir (Repo "test2" "0012")
-    (age(days 4)) (complete 9) Nothing
+    (age(days 4)) (complete 9) id
   makeFakeCloudDB schema backupDir (Repo "test2" "0013")
-    (age(days 3)) (complete 9) Nothing
+    (age(days 3)) (complete 9) id
   makeFakeCloudDB schema backupDir (Repo "test2" "0014")
-    (age(days 2)) (complete 9) Nothing
+    (age(days 2)) (complete 9) id
 
 withFakeDBs
   :: (EventBaseDataplane -> NullConfigProvider -> FilePath -> FilePath
@@ -150,24 +152,30 @@ withFakeCloudDBs
   -> IO ()
 withFakeCloudDBs = withTest (const $ pure ()) setupBasicCloudDBs
 
+stacked :: Stacked -> Meta -> Meta
+stacked st meta = meta { metaDependencies = Just (Thrift.Dependencies_stacked st) }
+
+props :: [(Text, Text)] -> Meta -> Meta
+props list meta = meta { metaProperties = HashMap.fromList list }
+
 makeFakeDB
   :: DbSchema
   -> FilePath
   -> Repo
   -> UTCTime
   -> (UTCTime -> Completeness)
-  -> Maybe Stacked
+  -> (Meta -> Meta)
   -> IO ()
-makeFakeDB schema root repo dbtime completeness stacked = do
+makeFakeDB schema root repo dbtime completeness opts = do
   let
-    meta = Meta
+    meta = opts $ Meta
       { metaVersion = Storage.currentVersion
       , metaCreated = utcTimeToPosixEpochTime dbtime
       , metaRepoHashTime = Nothing
       , metaCompleteness = completeness dbtime
       , metaBackup = Nothing
       , metaProperties = HashMap.empty
-      , metaDependencies = Thrift.Dependencies_stacked <$> stacked
+      , metaDependencies = Nothing
       , metaCompletePredicates = mempty
       , metaAxiomComplete = False
       }
@@ -190,9 +198,9 @@ makeFakeCloudDB
   -> Repo
   -> UTCTime
   -> (UTCTime -> Completeness)
-  -> Maybe Stacked
+  -> (Meta -> Meta)
   -> IO ()
-makeFakeCloudDB schema backupDir repo dbtime completeness stacked = do
+makeFakeCloudDB schema backupDir repo dbtime completeness opts = do
   let repoPath = databasePath backupDir repo
   createDirectoryIfMissing True repoPath
   storage <- RocksDB.newStorage backupDir def
@@ -213,14 +221,14 @@ makeFakeCloudDB schema backupDir repo dbtime completeness stacked = do
   where
     props = Map.fromList [
       ("meta"::String, LBS.unpack $ encode meta) ]
-    meta = Meta
+    meta = opts $ Meta
         { metaVersion = Storage.currentVersion
         , metaCreated = utcTimeToPosixEpochTime dbtime
         , metaRepoHashTime = Nothing
         , metaCompleteness = completeness dbtime
         , metaBackup = Nothing
         , metaProperties = HashMap.empty
-        , metaDependencies = Thrift.Dependencies_stacked <$> stacked
+        , metaDependencies = Nothing
         , metaCompletePredicates = mempty
         , metaAxiomComplete = False
         }
@@ -394,6 +402,22 @@ retainAtLeastTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   assertEqual "after-repeat"
     [ "0001", "0003", "0004", "0005", "0006"]
     (sort $ map repo_hash repos)
+
+requiredPropsTest :: Test
+requiredPropsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
+  let cfg = dbConfig dbdir $ (serverConfig backupdir)
+        { config_retention = def
+          { databaseRetentionPolicy_default_retention = def
+            { retention_required_properties =
+                HashMap.fromList [("bool","yes")]
+            }
+          }
+        }
+  withDatabases evb cfg cfgAPI $ \env -> do
+  runDatabaseJanitor env
+  dbs <- listDBs env
+  let repos = map database_repo dbs
+  assertEqual "after" [ "0001" ] (map repo_hash repos)
 
 backupRestoreTest :: Test
 backupRestoreTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
@@ -828,4 +852,5 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "ageCountersForOnlyNewestDBs" ageCountersOnlyNewestTest
   , TestLabel "ageCountersClear" ageCountersClearTest
   , TestLabel "stuck" stuckTest
+  , TestLabel "requiredPropsTest" requiredPropsTest
   ]

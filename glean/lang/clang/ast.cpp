@@ -62,11 +62,8 @@ class UsingTracker {
 public:
   explicit UsingTracker(const clang::DeclContext *context, ClangDB& d)
     : globalContext(getCanonicalDeclContext(context))
-    , currentContext(globalContext)
-    , db(d)
-  {
-    CHECK_NOTNULL(currentContext);
-  }
+    , currentContext(CHECK_NOTNULL(globalContext))
+    , db(d) {}
 
   void addNamespace(const clang::NamespaceDecl *decl) {
     if (decl->isAnonymousNamespace() || decl->isInline()) {
@@ -626,6 +623,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       return nullptr;
     }
 
+    static const clang::NamespaceAliasDecl* FOLLY_NULLABLE
+    getDefinition(const clang::NamespaceAliasDecl*) {
+      return nullptr;
+    }
+
     static const clang::FieldDecl * FOLLY_NULLABLE getDefinition(
         const clang::FieldDecl *) {
       return nullptr;
@@ -882,6 +884,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         add(visitor.typeAliasDecls, tatd->getTemplatedDecl());
       } else if (auto ns = clang::dyn_cast<clang::NamespaceDecl>(mem)) {
         add(visitor.namespaces, ns);
+      } else if (auto ns = clang::dyn_cast<clang::NamespaceAliasDecl>(mem)) {
+        add(visitor.namespaceAliasDecls, ns);
       }
     }
     return members;
@@ -948,7 +952,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     visitDeclaration(namespaces, decl);
     return true;
   }
-
 
   /**********************
    * Using declarations *
@@ -1150,6 +1153,52 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   bool VisitTypedefNameDecl(const clang::TypedefNameDecl *decl) {
     visitDeclaration(typeAliasDecls, decl);
+    return true;
+  }
+
+  struct NamespaceAliasDecl : Declare<NamespaceAliasDecl> {
+    Fact<Cxx::NamespaceAliasDeclaration> decl;
+
+    Cxx::Declaration declaration() const {
+      return Cxx::Declaration::namespaceAlias(decl);
+    }
+
+    static folly::Optional<NamespaceAliasDecl> declare(
+        ASTVisitor& visitor,
+        const clang::NamespaceAliasDecl* decl,
+        Cxx::Scope,
+        Src::Range range) {
+      auto qname = visitor.db.fact<Cxx::NamespaceQName>(
+          just(visitor.db.name(decl->getName())),
+          maybe(visitor.parentNamespace(decl)));
+      std::optional<Cxx::NamespaceTarget> target;
+      const auto* alias = CHECK_NOTNULL(decl->getAliasedNamespace());
+      if (auto x = clang::dyn_cast<clang::NamespaceDecl>(alias)) {
+        if (auto r = visitor.namespaces(x)) {
+          target = Cxx::NamespaceTarget::namespace_(r->decl);
+        }
+      } else if (auto x = clang::dyn_cast<clang::NamespaceAliasDecl>(alias)) {
+        if (auto r = visitor.namespaceAliasDecls(x)) {
+          target = Cxx::NamespaceTarget::namespaceAlias(r->decl);
+        }
+      }
+      if (target) {
+        return NamespaceAliasDecl{
+            {},
+            visitor.db.fact<Cxx::NamespaceAliasDeclaration>(
+                qname, std::move(target).value(), range)};
+      } else {
+        return folly::none;
+      }
+    }
+
+    void define(ASTVisitor&, const clang::NamespaceAliasDecl *) const {}
+  };
+
+  bool VisitNamespaceAliasDecl(clang::NamespaceAliasDecl *decl) {
+    visitDeclaration(namespaceAliasDecls, decl);
+    xrefExpr(
+        decl->getTargetNameLoc(), decl->getQualifier(), decl->getNamespace());
     return true;
   }
 
@@ -2221,6 +2270,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       XRef VisitTypedefNameDecl(const clang::TypedefNameDecl* d) {
         return XRef::toDecl(visitor_.typeAliasDecls, d);
       }
+      XRef VisitNamespaceAliasDecl(const clang::NamespaceAliasDecl* d) {
+        return XRef::toDecl(visitor_.namespaceAliasDecls, d);
+      }
       XRef VisitUsingShadowDecl(const clang::UsingShadowDecl* d) {
         return Visit(d->getTargetDecl());
       }
@@ -2425,6 +2477,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         if (spec) {
           if (auto ns = spec->getAsNamespace()) {
             xrefDecl(loc.getLocalBeginLoc(), ns->getCanonicalDecl());
+          } else if (auto ns = spec->getAsNamespaceAlias()) {
+            xrefDecl(loc.getLocalBeginLoc(), ns->getCanonicalDecl());
           }
         }
         return Base::TraverseNestedNameSpecifierLoc(loc);
@@ -2570,6 +2624,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     , enumDecls("enumDecls", *this)
     , enumeratorDecls("enumeratorDecls", *this)
     , typeAliasDecls("typeAliasDecls", *this)
+    , namespaceAliasDecls("namespaceAliasDecls", *this)
     , funDecls("funDecls", *this)
     , varDecls("varDecls", *this)
     , objcContainerDecls("objcContainerDecls", *this)
@@ -2614,6 +2669,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       TypeAliasDecl,
       TypeAliasDecl::GetTemplatableDecl>
     typeAliasDecls;
+
+  MemoOptional<
+      const clang::NamespaceAliasDecl*,
+      NamespaceAliasDecl>
+    namespaceAliasDecls;
 
   MemoOptional<
       const clang::FunctionDecl *,

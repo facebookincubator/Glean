@@ -140,8 +140,8 @@ runWithShards
   -> IO [JanitorSideEffect]
 runWithShards env myShards sm = do
   loggingAction (runLogCmd "janitor" env) (const mempty) $ do
-  logInfo "running database janitor"
-  logInfo $ "Assigned shards: " <> show (toList myShards)
+  logInfo $ "running database janitor with shard assignment "
+    <> show (toList myShards)
 
   ServerConfig.Config{..} <- Observed.get (envServerConfig env)
 
@@ -485,9 +485,16 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs = do
     isOlderThan secs Item{..} = dbAge t itemMeta >= secs
     isAvailable = isLocal |||> itemAvailable
 
-    -- all DBs sorted by most recent first
+    -- all DBs with the required properties, sorted by most recent first
     sorted =
-      sortOn (Down . metaCreated . itemMeta) (NonEmpty.toList dbs)
+      sortOn (Down . metaCreated . itemMeta) $
+      filter (hasProperties retention_required_properties) $
+      NonEmpty.toList dbs
+
+    hasProperties req Item{..} = all has (HashMap.toList req)
+      where
+      has (name,val) =
+        HashMap.lookup name (metaProperties itemMeta) == Just val
 
     -- whether to delete a DB according to the deletion policy
     delete =
