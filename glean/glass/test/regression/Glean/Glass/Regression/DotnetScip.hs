@@ -14,7 +14,7 @@ import Glean.Indexer.DotnetScip as Dotnet
 main :: IO ()
 main = mainGlassSnapshot testName testPath testIndexer (const [])
   where
-    testName = "glass-regression-dotnet"
+    testName = "glass-regression-dotnet-scip"
     testPath = "glean/glass/test/regression/tests/dotnet-scip"
     testIndexer = Dotnet.indexer
     
