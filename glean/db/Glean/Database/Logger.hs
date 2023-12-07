@@ -71,6 +71,10 @@ logDBStatistics env Thrift.Repo{..} preds maybeOwnershipStats size locator = do
               [ Logger.SetMetric "ownership_fact_owners"
               , Logger.SetCount $ fromIntegral numOwnerEntries
               , Logger.SetSize $ fromIntegral ownersSize
+              ],
+            mconcat
+              [ Logger.SetMetric "ownership_orphan_facts"
+              , Logger.SetCount $ fromIntegral numOrphanFacts
               ]
           ]
         | otherwise = []

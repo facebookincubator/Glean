@@ -18,45 +18,32 @@ namespace impl {
 
 using namespace rts;
 
-namespace {
-
 const char *admin_names[] = {
   "NEXT_ID",
   "VERSION",
   "STARTING_ID",
   "FIRST_UNIT_ID",
-  "NEXT_UNIT_ID"
+  "NEXT_UNIT_ID",
+  "ORPHAN_FACTS",
 };
 
+namespace {
+
 template <typename T, typename F>
-T getAdminValue(
+T initAdminValue(
     ContainerImpl& container_,
     AdminId id,
     T def,
     bool write,
     F&& notFound) {
-  container_.requireOpen();
-  rocksdb::PinnableSlice val;
-  binary::Output key;
-  key.fixed(id);
-  auto s = container_.db->Get(
-      rocksdb::ReadOptions(),
-      container_.family(Family::admin),
-      slice(key),
-      &val);
-  if (!s.IsNotFound()) {
-    check(s);
-    binary::Input value = input(val);
-    auto result = value.fixed<T>();
-    if (!value.empty()) {
-      rts::error(
-          "corrupt database - invalid {}",
-          admin_names[static_cast<uint32_t>(id)]);
-    }
-    return result;
+  auto current = readAdminValue<T>(container_, id);
+  if (current.hasValue()) {
+    return *current;
   } else {
     notFound();
     if (write) {
+      binary::Output key;
+      key.fixed(id);
       binary::Output value;
       value.fixed(def);
       check(container_.db->Put(
@@ -77,14 +64,14 @@ DatabaseImpl::DatabaseImpl(
     UsetId first_unit_id_,
     int64_t version)
     : container_(std::move(c)) {
-  starting_id = Id::fromWord(getAdminValue(
+  starting_id = Id::fromWord(initAdminValue(
       container_,
       AdminId::STARTING_ID,
       start.toWord(),
       container_.mode == Mode::Create,
       [] {}));
 
-  next_id = Id::fromWord(getAdminValue(
+  next_id = Id::fromWord(initAdminValue(
       container_,
       AdminId::NEXT_ID,
       start.toWord(),
@@ -95,7 +82,7 @@ DatabaseImpl::DatabaseImpl(
         }
       }));
 
-  first_unit_id = getAdminValue(
+  first_unit_id = initAdminValue(
       container_,
       AdminId::FIRST_UNIT_ID,
       first_unit_id_,
@@ -106,7 +93,7 @@ DatabaseImpl::DatabaseImpl(
       });
   VLOG(1) << folly::sformat("first_unit_id: {}", first_unit_id);
 
-  next_uset_id = getAdminValue(
+  next_uset_id = initAdminValue(
       container_,
       AdminId::NEXT_UNIT_ID,
       first_unit_id,
@@ -117,7 +104,7 @@ DatabaseImpl::DatabaseImpl(
       });
   VLOG(1) << folly::sformat("next_uset_id: {}", next_uset_id);
 
-  db_version = getAdminValue(
+  db_version = initAdminValue(
       container_,
       AdminId::VERSION,
       version,
