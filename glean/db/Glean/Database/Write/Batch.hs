@@ -13,6 +13,7 @@ module Glean.Database.Write.Batch
   , writeContentFromBatch
   ) where
 
+import Control.DeepSeq (force)
 import Control.Exception
 import Control.Monad.Extra
 import Control.Trace (traceMsg)
@@ -184,36 +185,36 @@ reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
         -- release the FactSet now that we're done with it,
         -- don't wait for the GC to free it.
       (\(facts, subst) -> do
-        updateLookupCacheStats env
-        let !is = Subst.substIntervals subst . coerce <$>
-              Thrift.batch_owned batch
-            !deps = substDependencies subst
-              <$> Thrift.batch_dependencies batch
+        logExceptions (\s -> inRepo repo $ "commit error: " ++ s) $ do
+          updateLookupCacheStats env
 
-        derivedOwners <-
-          if | Just owners <- maybeOwn -> do
-                Ownership.substDefineOwnership owners subst
-                return $ Just owners
-             | not $ HashMap.null deps ->
-                makeDefineOwnership env repo deps
-             | otherwise -> return Nothing
+          let !is = force $ coerce (Subst.substIntervals subst) <$>
+                Thrift.batch_owned batch
+              !deps = force $ substDependencies subst
+                <$> Thrift.batch_dependencies batch
 
-        -- before commit, because it may modify facts
-        new_next_id <- Lookup.firstFreeId facts
-        logExceptions (\s -> inRepo repo $ "commit error: " ++ s)
-          $ when (not $ envMockWrites env)
-          $ do
-              tick env repo WriteTraceCommit
-                Stats.commitThroughput real_size $ do
-                  Storage.commit odbHandle facts is
-                  forM_ derivedOwners $ \ownBatch ->
-                    Storage.addDefineOwnership odbHandle ownBatch
-        -- update wrNextId only *after* commit, otherwise we
-        -- will use an incomplete snapshot of the DB in
-        -- parallel de-dupliation below which leads to correctness
-        -- bugs.
-        atomicWriteIORef (wrNextId writing) new_next_id
-        return subst
+          derivedOwners <-
+            if | Just owners <- maybeOwn -> do
+                  Ownership.substDefineOwnership owners subst
+                  return $ Just owners
+               | not $ HashMap.null deps ->
+                  makeDefineOwnership env repo deps
+               | otherwise -> return Nothing
+
+          -- before commit, because it may modify facts
+          new_next_id <- Lookup.firstFreeId facts
+          when (not $ envMockWrites env) $ do
+            tick env repo WriteTraceCommit
+              Stats.commitThroughput real_size $ do
+                Storage.commit odbHandle facts is
+                forM_ derivedOwners $ \ownBatch ->
+                  Storage.addDefineOwnership odbHandle ownBatch
+          -- update wrNextId only *after* commit, otherwise we
+          -- will use an incomplete snapshot of the DB in
+          -- parallel de-dupliation below which leads to correctness
+          -- bugs.
+          atomicWriteIORef (wrNextId writing) new_next_id
+          return subst
       )
 
 deDupBatch
@@ -226,52 +227,52 @@ deDupBatch
   -> Thrift.Batch
   -> Maybe DefineOwnership
   -> IO Subst
-deDupBatch env repo odb lookup writing original_size batch maybeOwn = do
-  next_id <- readIORef $ wrNextId writing
-  (maybe_deduped_batch, dsubst) <- bracket
-    (
-      withLookupCache repo writing lookup $ \cache ->
-      -- We need a snapshot here because we don't want lookups to
-      -- return fact ids which conflict with ids in the renamed batch.
-      Lookup.withSnapshot cache next_id $ \snapshot ->
-      logExceptions (\s -> inRepo repo $ "dedup error: " ++ s) $
-        FactSet.renameFacts
-          (schemaInventory (odbSchema odb))
-          snapshot
-          next_id
-          batch
-          def
-    )
-    (\(deduped_facts, _) -> release deduped_facts)
-      -- release the FactSet now that we're done with it, don't wait for
-      -- the GC to free it.
-    (\(deduped_facts, dsubst) -> do
-      factCount <- FactSet.factCount deduped_facts
-      if factCount == 0 && isNothing maybeOwn then
-        return (Nothing, dsubst)
-      else do
-        deduped_batch <- FactSet.serialize deduped_facts
-        return (Just deduped_batch, dsubst)
-    )
+deDupBatch env repo odb lookup writing original_size batch maybeOwn =
+  logExceptions (\s -> inRepo repo $ "dedup error: " ++ s) $ do
+    next_id <- readIORef $ wrNextId writing
+    (maybe_deduped_batch, dsubst) <- bracket
+      (
+        withLookupCache repo writing lookup $ \cache ->
+        -- We need a snapshot here because we don't want lookups to
+        -- return fact ids which conflict with ids in the renamed batch.
+        Lookup.withSnapshot cache next_id $ \snapshot ->
+          FactSet.renameFacts
+            (schemaInventory (odbSchema odb))
+            snapshot
+            next_id
+            batch
+            def
+      )
+      (\(deduped_facts, _) -> release deduped_facts)
+        -- release the FactSet now that we're done with it, don't wait for
+        -- the GC to free it.
+      (\(deduped_facts, dsubst) -> do
+        factCount <- FactSet.factCount deduped_facts
+        if factCount == 0 && isNothing maybeOwn then
+          return (Nothing, dsubst)
+        else do
+          deduped_batch <- FactSet.serialize deduped_facts
+          return (Just deduped_batch, dsubst)
+      )
 
-  case maybe_deduped_batch of
-    Nothing -> return dsubst
-    Just deduped_batch -> do
-      let !is = coerce Subst.substIntervals dsubst
-            <$> Thrift.batch_owned batch
-          !deps = substDependencies dsubst
-            <$> Thrift.batch_dependencies batch
-      forM_ maybeOwn $ \ownBatch ->
-        Ownership.substDefineOwnership ownBatch dsubst
-      -- And now write it do the DB, deduplicating again
-      wsubst <- withMutex (wrLock writing) $ const $
-        reallyWriteBatch env repo odb lookup writing original_size True
-          deduped_batch
-            { Thrift.batch_owned = is
-            , Thrift.batch_dependencies = deps
-            }
-          maybeOwn
-      return $ dsubst <> wsubst
+    case maybe_deduped_batch of
+      Nothing -> return dsubst
+      Just deduped_batch -> do
+        let !is = force $ coerce Subst.substIntervals dsubst
+              <$> Thrift.batch_owned batch
+            !deps = force $ substDependencies dsubst
+              <$> Thrift.batch_dependencies batch
+        forM_ maybeOwn $ \ownBatch ->
+          Ownership.substDefineOwnership ownBatch dsubst
+        -- And now write it do the DB, deduplicating again
+        wsubst <- withMutex (wrLock writing) $ const $
+          reallyWriteBatch env repo odb lookup writing original_size True
+            deduped_batch
+              { Thrift.batch_owned = is
+              , Thrift.batch_dependencies = deps
+              }
+            maybeOwn
+        return $ dsubst <> wsubst
 
 withLookupCache
   :: Repo
