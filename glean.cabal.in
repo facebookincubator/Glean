@@ -1032,6 +1032,7 @@ library cli-types
         GleanCLI.Types
     build-depends:
         glean:client-hs-local,
+        glean:db,
         glean:util,
 
 executable glean
