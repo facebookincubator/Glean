@@ -71,12 +71,14 @@ jobs:
 
       - name: Install indexer (dotnet)
         run: |
-            export DOTNET=7.0
-            wget https://dot.net/v1/dotnet-install.sh
-            chmod +x dotnet-install.sh
-            ./dotnet-install.sh --channel ${DOTNET}
-            export DOTNET_ROOT=$HOME/.dotnet
-            $DOTNET_ROOT/dotnet tool install --global scip-dotnet
+          export DOTNET=7.0
+          wget https://dot.net/v1/dotnet-install.sh
+          chmod +x dotnet-install.sh
+          ./dotnet-install.sh --channel ${DOTNET}
+          export DOTNET_ROOT=$HOME/.dotnet
+          $DOTNET_ROOT/dotnet tool install --global scip-dotnet
+          echo "$HOME/.dotnet" >> "$GITHUB_PATH"
+          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
 
       - name: Install indexer (go)
         run: |
