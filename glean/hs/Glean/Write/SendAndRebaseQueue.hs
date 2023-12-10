@@ -47,6 +47,125 @@ import Glean.RTS.Types (Fid(..))
 import Glean.Util.Metric
 import qualified Glean.Types as Thrift
 
+{-
+SendAndRebaseQueue
+------------------
+
+This is a queue for sending facts to a Glean server. It has a couple
+of advantages over using a raw SendQueue:
+
+* The queue avoids sending duplicate facts to the server by performing
+  some de-duplication before sending the data.
+
+* When the input is JSON, the facts are serialized as binary before
+  being sent to the server.
+
+De-duplication
+--------------
+
+De-duplication happens in two ways:
+
+1. Each batch is added to the current fact buffer, and de-duplicatd
+against the facts already in the buffer.
+
+2. The contents of the buffer are sent to the server asynchronously,
+and when the server responds with a substitution (mapping facts in the
+buffer to their real fact IDs) the queue places the renamed facts in a
+cache, which is used to de-duplicate new batches.
+
+Details
+-------
+
+The queue looks like this:
+
+  +-------+     +-------------+
+  | cache |     | fact buffer |
+  +-------+     +-------------+
+
+when a new batch is added (via writeSendAndRebaseQueue), it is added
+to the fact buffer:
+
+                              +---------------+
+                              |   new facts   |
+                              +---------------+
+                              |              /
+                              |   rebase    /
+                              |            /
+  +-------+     +-------------+-----------+
+  | cache |     | fact buffer | new facts |
+  +-------+     +-------------+-----------+
+
+when this happens, any facts in the new batch that duplicate facts in
+the cache or the existing fact buffer are removed.
+
+The fact buffer is sent to the server as a single batch:
+
+  +-------+     +-------------+
+  | cache |     | fact buffer |
+  +-------+     +------+------+
+                       |
+                       v
+                    server
+
+which will later respond with a substitution. When the server
+responds, we will have added more facts to the buffer, so the
+situation is now:
+
+  +-------+     +-------------+-----------+
+  | cache |     | fact buffer | new facts |
+  +-------+     +------+------+-----------+
+                       |
+                       v
+                    server
+
+The server's substitution maps facts in the buffer to their real fact
+IDs. At this point we rename the fact buffer using the substitution,
+and move those facts into the cache, leaving the fact buffer
+containing just the new facts:
+
+  +-------+-------------+    +-----------+
+  | cache | fact buffer |    | new facts |
+  +-------+-------------+    +-----------+
+
+The new facts are then sent to the server:
+
+  +-------+-------------+    +-----------+
+  | cache | fact buffer |    | new facts |
+  +-------+-------------+    +-----+-----+
+                                   |
+                                   v
+                                server
+
+so over time we build up a cache of facts from the server:
+essentially a cache of part of the DB, and use it to avoid sending
+facts that are already in the DB, thereby reducing the amount of data
+we send to the server.
+
+All of this is subject to limits:
+
+- sendAndRebaseQueueFactCacheSize: a limit on the size of the cache
+  (we drop old entries according to an eviction policy)
+
+- sendAndRebaseQueueFactBufferSize: A limit on the size of the fact
+  buffer (writers will wait for the server to respond if the buffer is
+  full)
+
+Threads and SendQueue
+---------------------
+
+The fact buffer is a bottleneck if multiple threads are writing
+simultaneously. To avoid that, we can have multiple fact buffers that
+share a cache: this is done by setting sendAndRebaseQueueThreads to a
+value higher than 1.
+
+SendAndRebaseQueue is built on top of SendQueue, which manages sending
+the individual batches to the server, retrying and resending as
+necessary. SendQueue is automatically configured to use the same
+number of sender threads as SendAndRebaseQueue, to parallelise the
+sending.
+-}
+
+
 -- | When the send operation fails or is completed this is called once.
 type Callback = Either SomeException () -> STM ()
 
@@ -126,6 +245,8 @@ data SendAndRebaseQueueSettings = SendAndRebaseQueueSettings
   , sendAndRebaseQueueStats :: Maybe Stats
   }
 
+-- | Add a new batch to the fact buffer, de-duplicating against the
+-- buffer and the cache.
 rebase
   :: Inventory
   -> Thrift.Batch
@@ -193,6 +314,7 @@ substOwnership
   -> HashMap Thrift.UnitName (Vector Thrift.Id)
 substOwnership subst = fmap (coerce $ substIntervals subst)
 
+-- | Send the current fact buffer to the server
 senderFlush :: SendAndRebaseQueue -> Sender -> IO ()
 senderFlush srq sender = modifyMVar_ (sFacts sender) $ \(facts, owned) -> do
   factOnlyBatch <- FactSet.serialize facts
@@ -209,6 +331,9 @@ senderFlush srq sender = modifyMVar_ (sFacts sender) $ \(facts, owned) -> do
     writeTVar (sSent sender) start
   return (facts, [])
 
+-- | If the server has returned a substutition, rebase the current
+-- fact buffer against it. Send the current fact buffer to the server,
+-- unless we're already waiting for a substitution.
 senderRebaseAndFlush :: Bool -> SendAndRebaseQueue -> Sender -> IO ()
 senderRebaseAndFlush wait srq sender = do
   maybeSubst <- atomically $
