@@ -121,16 +121,6 @@ TEST(SubstitutionTest, intervals) {
   EXPECT_EQ(
       subst.substIntervals(intervals),
       (std::vector<Id>{p, p + 1, p + 8, p + 9, p + 11, p + 11}));
-
-  std::vector<Id> intervals2 = {p, p + 1, p + 8, p + 10, p + 11, p + 12};
-  // 0-1 8-10 11-12
-  //   rebase maps 10 -> 11 and 11-12 becomes 12-13
-  // 0-1 8-9 11-13
-
-  EXPECT_EQ(
-      subst.rebaseIntervals(intervals2),
-      (std::vector<Id>{p, p + 1, p + 8, p + 9, p + 11, p + 13})
-  );
 }
 
 }

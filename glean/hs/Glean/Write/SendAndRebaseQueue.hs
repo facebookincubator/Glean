@@ -180,19 +180,18 @@ toBatchOwnership =
 rebaseOwnershipList :: [Ownership] -> Subst -> [Ownership]
 rebaseOwnershipList ownership subst =
   [ own {
-      ownershipUnits = rebaseOwnership subst (ownershipUnits own),
+      ownershipUnits = substOwnership subst (ownershipUnits own),
       ownershipEnd =
         Fid (fromIntegral (substOffset subst) + fromFid (ownershipEnd own))
     }
   | own <- ownership
   ]
 
-substOwnership, rebaseOwnership
+substOwnership
   :: Subst
   -> HashMap Thrift.UnitName (Vector Thrift.Id)
   -> HashMap Thrift.UnitName (Vector Thrift.Id)
-substOwnership subst = fmap (coerce . substIntervals subst . coerce)
-rebaseOwnership subst = fmap (coerce . rebaseIntervals subst . coerce)
+substOwnership subst = fmap (coerce $ substIntervals subst)
 
 senderFlush :: SendAndRebaseQueue -> Sender -> IO ()
 senderFlush srq sender = modifyMVar_ (sFacts sender) $ \(facts, owned) -> do
@@ -237,9 +236,9 @@ senderRebaseAndFlush wait srq sender = do
         modifyMVar_ (sFacts sender) $ \(base,owned) ->
           -- eagerly release the subst when we're done
           bracket (deserialize thriftSubst) release $ \subst -> do
-            newBase <-
+            (newBase, newSubst) <-
               FactSet.rebase (srqInventory srq) subst (srqFacts srq) base
-            let newOwned = rebaseOwnershipList owned subst
+            let newOwned = rebaseOwnershipList owned newSubst
             _ <- evaluate (force (map ownershipUnits newOwned))
             return (newBase, newOwned)
       -- "Commit throughput" will be write throughput to the server

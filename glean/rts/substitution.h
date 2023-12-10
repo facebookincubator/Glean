@@ -32,6 +32,12 @@ public:
 
   Substitution(Id first, std::vector<Id> ids);
 
+  Substitution(Substitution&& other) = default;
+  Substitution(const Substitution& other) = delete;
+  Substitution& operator=(const Substitution& other) = delete;
+
+  ~Substitution() = default;
+
   Id subst(Id id) const {
     return id >= start() && id < finish()
       ? items[distance(start(),id)]
@@ -49,18 +55,9 @@ public:
   // ranges can only cover Ids included in the substitution and below.
   std::vector<Id> substIntervals(const std::vector<Id>& intervals) const;
 
-  // Exactly like substIntervals, except that ranges are allowed to
-  // extend beyond finish() and Ids >= finish() are renamed so that
-  // they don't clash with Ids in the range of the substitution, to
-  // match the transformation done by FactSet::rebase().
-  std::vector<Id> rebaseIntervals(const std::vector<Id>& intervals) const;
-
-  // These are just like the functions above but return a boost::icl::interval_set<Id>
+  // This is just like substIntervals but returns a boost::icl::interval_set<Id>
   // instead of a std::vector<Id>.
   boost::icl::interval_set<Id> substIntervals(
-      const boost::icl::interval_set<Id>& intervals) const;
-
-  boost::icl::interval_set<Id> rebaseIntervals(
       const boost::icl::interval_set<Id>& intervals) const;
 
   Id start() const {
@@ -96,8 +93,6 @@ private:
   std::vector<Id> items;
   mutable Id firstFreeId_ = Id::invalid(); // lazy cached firstFreeId()
   friend class MutableSubstitution;
-
-  void rebaseInterval(boost::icl::interval_set<Id>& is, size_t offset, Id start, Id end) const;
 };
 
 class MutableSubstitution {
@@ -117,7 +112,7 @@ class MutableSubstitution {
   Id subst(Id id) const { return subst_.subst(id); }
 
   Substitution freeze() {
-    return Substitution(subst_.base, subst_.items);
+    return std::move(subst_);
   }
 
   private:

@@ -318,7 +318,7 @@ public:
   // id >= subst.finish()) are assigned new Ids which don't clash with the
   // domain of the substitution and are added to the local part which is
   // returned by the function.
-  FactSet rebase(
+  std::pair<FactSet,Substitution> rebase(
     const Inventory& inventory,
     const Substitution& subst,
     Store& global) const;
