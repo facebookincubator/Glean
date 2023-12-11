@@ -32,10 +32,6 @@ public:
 
   Substitution(Id first, std::vector<Id> ids);
 
-  Substitution(Substitution&& other) = default;
-  Substitution(const Substitution& other) = delete;
-  Substitution& operator=(const Substitution& other) = delete;
-
   ~Substitution() = default;
 
   Id subst(Id id) const {

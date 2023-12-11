@@ -33,51 +33,49 @@ Id Substitution::firstFreeId() const {
   return firstFreeId_;
 }
 
-namespace {
-
-template <typename F>
-std::vector<Id> transformIntervals(const std::vector<Id>& intervals, F&& add) {
+std::vector<Id> Substitution::substIntervals(
+    const std::vector<Id>& intervals) const {
   CHECK_EQ(intervals.size() % 2, 0);
-  boost::icl::interval_set<Id> is;
+  boost::icl::interval_set<Id, std::less, closed_interval<Id>> is;
+
+  auto add = [&](Id start, Id end) {
+    if (end >= finish()) {
+      error(
+          "interval out of range: {}-{} base={} finish={}",
+          start.toWord(),
+          end.toWord(),
+          base.toWord(),
+          finish().toWord());
+    }
+    if (end < base) {
+      is.add({start, end});
+    } else {
+      if (start < base) {
+        is.add({start, base - 1});
+      }
+      for (Id id = std::max(start, base); id <= end; ++id) {
+        is.add(subst(id));
+      }
+    }
+  };
+
   auto i = intervals.begin();
   const auto e = intervals.end();
+
   while (i != e) {
     const auto start = i[0];
     const auto end = i[1];
     CHECK(start <= end);
-    add(is, start, end);
+    add(start, end);
     i += 2;
   }
   std::vector<Id> results;
-  results.reserve(is.iterative_size()*2);
+  results.reserve(is.iterative_size() * 2);
   for (const auto& p : is) {
     results.push_back(p.lower());
     results.push_back(p.upper());
   }
   return results;
-}
-
-}
-
-std::vector<Id> Substitution::substIntervals(
-    const std::vector<Id>& intervals) const {
-  return transformIntervals(
-      intervals, [&](boost::icl::interval_set<Id>& is, Id start, Id end) {
-        if (end >= finish()) {
-          error("interval out of range: {}-{} base={} finish={}",
-                start.toWord(), end.toWord(), base.toWord(), finish().toWord());
-        }
-        if (end < base) {
-          is.add({start, end, interval_bounds::closed()});
-        } else {
-          if (start < base) {
-            is.add({start, base-1, interval_bounds::closed()});
-          }
-          for (Id id = std::max(start,base); id <= end; ++id) {
-            is.add(subst(id));
-          }
-        }
-      });
 }
 
 boost::icl::interval_set<Id> Substitution::substIntervals(const boost::icl::interval_set<Id>& intervals) const {
