@@ -59,6 +59,7 @@ instance Storage s => Storage (MockStorage s) where
   store = store . unmockDatabase
   retrieve = retrieve . unmockDatabase
   commit = commit . unmockDatabase
+  addOwnership = addOwnership . unmockDatabase
   optimize = optimize . unmockDatabase
   computeOwnership = computeOwnership . unmockDatabase
   storeOwnership = storeOwnership . unmockDatabase

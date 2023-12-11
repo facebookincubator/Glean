@@ -13,6 +13,7 @@ module Glean.Database.Write.Batch
   , writeContentFromBatch
   ) where
 
+import Control.Concurrent.Async
 import Control.DeepSeq (force)
 import Control.Exception
 import Control.Monad.Extra
@@ -188,27 +189,32 @@ reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
         logExceptions (\s -> inRepo repo $ "commit error: " ++ s) $ do
           updateLookupCacheStats env
 
-          let !is = force $ coerce (Subst.substIntervals subst) <$>
-                Thrift.batch_owned batch
-              !deps = force $ substDependencies subst
-                <$> Thrift.batch_dependencies batch
-
-          derivedOwners <-
-            if | Just owners <- maybeOwn -> do
-                  Ownership.substDefineOwnership owners subst
-                  return $ Just owners
-               | not $ HashMap.null deps ->
-                  makeDefineOwnership env repo deps
-               | otherwise -> return Nothing
+          let
+            commitOwnership = do
+              Storage.addOwnership odbHandle $
+                coerce (Subst.substIntervals subst) <$>
+                  Thrift.batch_owned batch
+              let deps = substDependencies subst
+                    <$> Thrift.batch_dependencies batch
+              derivedOwners <-
+                if | Just owners <- maybeOwn -> do
+                      Ownership.substDefineOwnership owners subst
+                      return $ Just owners
+                   | not $ HashMap.null deps ->
+                      makeDefineOwnership env repo deps
+                   | otherwise -> return Nothing
+              forM_ derivedOwners $ \ownBatch ->
+                Storage.addDefineOwnership odbHandle ownBatch
 
           -- before commit, because it may modify facts
           new_next_id <- Lookup.firstFreeId facts
           when (not $ envMockWrites env) $ do
             tick env repo WriteTraceCommit
-              Stats.commitThroughput real_size $ do
-                Storage.commit odbHandle facts is
-                forM_ derivedOwners $ \ownBatch ->
-                  Storage.addDefineOwnership odbHandle ownBatch
+              Stats.commitThroughput real_size $
+                concurrently_
+                  (Storage.commit odbHandle facts)
+                  commitOwnership
+
           -- update wrNextId only *after* commit, otherwise we
           -- will use an incomplete snapshot of the DB in
           -- parallel de-dupliation below which leads to correctness
