@@ -189,52 +189,57 @@ fromSCSRepo RepoMapping{..} r hint
 --
 filetype :: Path -> Maybe Language
 filetype (Path file)
-  | ".c" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".cc" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".cpp" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".cu" `Text.isSuffixOf` file = Just Language_Cpp -- CUDA
-  | ".cxx" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".c++" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".h" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".hh" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".hip" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".hpp" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".hxx" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".h++" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".mm" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".m" `Text.isSuffixOf` file = Just Language_Cpp
-  | ".tcc" `Text.isSuffixOf` file = Just Language_Cpp
+  | is ".c"  = Just Language_Cpp
+  | is ".cc"  = Just Language_Cpp
+  | is ".cpp"  = Just Language_Cpp
+  | is ".cu"  = Just Language_Cpp -- CUDA
+  | is ".cxx"  = Just Language_Cpp
+  | is ".c++"  = Just Language_Cpp
+  | is ".h"  = Just Language_Cpp
+  | is ".hh"  = Just Language_Cpp
+  | is ".hip"  = Just Language_Cpp
+  | is ".hpp"  = Just Language_Cpp
+  | is ".hxx"  = Just Language_Cpp
+  | is ".h++"  = Just Language_Cpp
+  | is ".mm"  = Just Language_Cpp
+  | is ".m"  = Just Language_Cpp
+  | is ".tcc"  = Just Language_Cpp
 
-  | ".flow" `Text.isSuffixOf` file = Just Language_JavaScript
-  | ".js" `Text.isSuffixOf` file = Just Language_JavaScript
+  | is ".flow"  = Just Language_JavaScript
+  | is ".js"  = Just Language_JavaScript
 
-  | ".java" `Text.isSuffixOf` file = Just Language_Java
-  | ".kt" `Text.isSuffixOf` file = Just Language_Kotlin
+  | is ".java"  = Just Language_Java
+  | is ".kt"  = Just Language_Kotlin
 
-  | ".hhi" `Text.isSuffixOf` file = Just Language_Hack
-  | ".php" `Text.isSuffixOf` file = Just Language_Hack
+  | is ".hhi"  = Just Language_Hack
+  | is ".php"  = Just Language_Hack
 
-  | ".hs" `Text.isSuffixOf` file = Just Language_Haskell
+  | is ".hs"  = Just Language_Haskell
 
-  | ".py" `Text.isSuffixOf` file = Just Language_Python
-  | ".cinc" `Text.isSuffixOf` file = Just Language_Python
-  | ".cconf" `Text.isSuffixOf` file = Just Language_Python
-  | ".mcconf" `Text.isSuffixOf` file = Just Language_Python
-  | ".ctest" `Text.isSuffixOf` file = Just Language_Python
-  | ".thrift-cvalidator" `Text.isSuffixOf` file = Just Language_Python
+  | is ".py"  = Just Language_Python
+  | is ".cinc"  = Just Language_Python
+  | is ".cconf"  = Just Language_Python
+  | is ".mcconf"  = Just Language_Python
+  | is ".ctest"  = Just Language_Python
+  | is ".thrift-cvalidator"  = Just Language_Python
 
-  | ".thrift" `Text.isSuffixOf` file = Just Language_Thrift
+  | is ".thrift"  = Just Language_Thrift
 
-  | ".rs" `Text.isSuffixOf` file = Just Language_Rust
-  | ".erl" `Text.isSuffixOf` file = Just Language_Erlang
-  | ".go" `Text.isSuffixOf` file = Just Language_Go
-  | ".ts" `Text.isSuffixOf` file = Just Language_TypeScript
+  | is ".rs"  = Just Language_Rust
+  | is ".erl"  = Just Language_Erlang
+  | is ".go"  = Just Language_Go
+  | is ".ts"  = Just Language_TypeScript
 
-  | "TARGETS" `Text.isSuffixOf` file = Just Language_Buck
-  | "BUCK" `Text.isSuffixOf` file = Just Language_Buck
-  | ".bzl" `Text.isSuffixOf` file = Just Language_Buck
+  | is "TARGETS"  = Just Language_Buck
+  | is "BUCK"  = Just Language_Buck
+  | is ".bzl"  = Just Language_Buck
+
+  | is ".cs"  = Just Language_CSharp
 
   | otherwise = Nothing
+
+  where
+    is a =  a `Text.isSuffixOf` file
 
 --
 -- Operating on the latest repo statea
