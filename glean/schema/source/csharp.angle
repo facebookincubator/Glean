@@ -15,7 +15,7 @@ schema csharp.1 {
 
   # Represents a symbol (namespace, class, method, parameter, etc.) exposed by the compiler (https://fburl.com/g1qzaga9)
   type Definition =
-    { type: Type
+    { type: AType
     | method: Method
     | field: Field
     | parameter: Parameter
@@ -94,7 +94,7 @@ schema csharp.1 {
     , typeParameters: [TypeParameter]
     , parameters: [Parameter]
     , isStatic: bool
-    , returnType: Type
+    , returnType: AType
     , declaredAccessibility: Accessibility
     }
 
@@ -126,7 +126,7 @@ schema csharp.1 {
   # Represents a parameter of a method or property (https://fburl.com/1vhc37sw)
   predicate Parameter:
     { name: Name
-    , type: Type
+    , type: AType
     , refKind: RefKind
     , isThis: bool
     , isParams: bool
@@ -152,7 +152,7 @@ schema csharp.1 {
   # Represents a field in a class, struct or enum (https://fburl.com/s0t65fue)
   predicate Field:
     { name: Name
-    , type: Type
+    , type: AType
     , containingType: NamedType
     , declaredAccessibility: Accessibility
     , isConst: bool
@@ -161,7 +161,7 @@ schema csharp.1 {
     }
 
   # Represents a type (https://fburl.com/c0eftyms)
-  type Type =
+  type AType =
     { arrayType: ArrayType
     | namedType: NamedType
     | functionPointerType: FunctionPointerType
@@ -171,13 +171,13 @@ schema csharp.1 {
 
   # Represents an array (https://fburl.com/u86l8jp9)
   predicate ArrayType:
-    { elementType: Type
+    { elementType: AType
     , rank: byte
     }
 
   # epresents a pointer type such as "int *". Pointer types are used only in unsafe code (https://fburl.com/rwnza2j5)
   predicate PointerType:
-    { pointedAtType: Type
+    { pointedAtType: AType
     }
 
   # Represents a function pointer type such as "delegate*<void>" (https://fburl.com/kx4v0t2w)
@@ -198,7 +198,7 @@ schema csharp.1 {
   # Represents a local variable in method body (https://fburl.com/ebmq9edn)
   predicate Local:
     { name: Name
-    , type: Type
+    , type: AType
     , containingMethod: Method
     , refKind: RefKind
     , isConst: bool
@@ -208,7 +208,7 @@ schema csharp.1 {
   predicate Property:
     { name: Name
     , containingType: NamedType
-    , type: Type
+    , type: AType
     , parameters: [Parameter]
     , getMethod: maybe Method
     , setMethod: maybe Method
@@ -227,7 +227,7 @@ schema csharp.1 {
     }
 
   predicate ObjectCreationLocation:
-    { type: Type
+    { type: AType
     , constructor: Method
     , location: Location
     }
