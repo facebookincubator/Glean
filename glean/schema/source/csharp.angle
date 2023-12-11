@@ -1,239 +1,298 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
 schema csharp.1 {
-  import src.1
 
-  predicate Name: string
+import src.1
 
-  predicate FullName:
-    { name: Name
-    , containingNamespace: Namespace
-    }
+predicate Name: string
 
-  predicate Namespace:
-    { name: Name
-    , containingNamespace: maybe Namespace
-    }
+predicate FullName:
+  { name: Name
+  , containingNamespace: Namespace
+  }
 
-  # Represents a symbol (namespace, class, method, parameter, etc.) exposed by the compiler (https://fburl.com/g1qzaga9)
-  type Definition =
-    { type: AType
-    | method: Method
-    | field: Field
-    | parameter: Parameter
-    | typeParameter: TypeParameter
-    | local: Local
-    | property: Property
-    }
+predicate Namespace:
+  { name: Name
+  , containingNamespace: maybe Namespace
+  }
 
-  # Represents a type other than an array, a pointer, a type parameter (https://fburl.com/9sh8231c)
-  type NamedType =
-    { class_: Class
-    | interface_: Interface
-    | record_: Record
-    | struct_: Struct
-    }
+# Represents a symbol (namespace, class, method, parameter, etc.) exposed by the
+# compiler (https://fburl.com/g1qzaga9)
+type Definition =
+  { type: AType
+  | method: Method
+  | field: Field
+  | parameter: Parameter
+  | typeParameter: TypeParameter
+  | local: Local
+  | property: Property
+  }
 
-  predicate Class:
-    { name: FullName
-    , baseType: maybe Class
-    , typeParameters: [TypeParameter]
-    , containingType: maybe NamedType
-    , declaredAccessibility: Accessibility
-    , isAbstract: bool
-    , isStatic: bool
-    , isSealed: bool
-    }
+# Represents a type (https://fburl.com/c0eftyms)
+type AType =
+  { arrayType: ArrayType
+  | namedType: NamedType
+  | functionPointerType: FunctionPointerType
+  | pointerType: PointerType
+  | typeParameter: TypeParameter
+  }
 
-  predicate Interface:
-    { name: FullName
-    , typeParameters: [TypeParameter]
-    , containingType: maybe NamedType
-    , declaredAccessibility: Accessibility
-    , isStatic: bool
-    }
+# Represents a type other than an array, a pointer, a type parameter
+# (https://fburl.com/9sh8231c)
+type NamedType =
+  { class_: Class
+  | interface_: Interface
+  | record_: Record
+  | struct_: Struct
+  }
 
-  predicate Implements:
-    { type: NamedType
-    , interface_: Interface
-    }
+predicate Class:
+  { name: FullName
+  , baseType: maybe Class
+  , typeParameters: [TypeParameter]
+  , containingType: maybe NamedType
+  , declaredAccessibility: Accessibility
+  , isAbstract: bool
+  , isStatic: bool
+  , isSealed: bool
+  }
 
-  predicate Record:
-    { name: FullName
-    , baseType: maybe Record
-    , typeParameters: [TypeParameter]
-    , containingType: maybe NamedType
-    , declaredAccessibility: Accessibility
-    , isAbstract: bool
-    , isSealed: bool
-    }
+predicate Interface:
+  { name: FullName
+  , typeParameters: [TypeParameter]
+  , containingType: maybe NamedType
+  , declaredAccessibility: Accessibility
+  , isStatic: bool
+  }
 
-  predicate Struct:
-    { name: FullName
-    , typeParameters: [TypeParameter]
-    , containingType: maybe NamedType
-    , declaredAccessibility: Accessibility
-    }
+predicate Implements:
+  { type: NamedType
+  , interface_: Interface
+  }
 
-  # Enumeration for common accessibility combinations (https://fburl.com/bu2zzj2k)
-  type Accessibility = enum
-    { Friend
-    | Internal
-    | NotApplicable
-    | Private
-    | Protected
-    | ProtectedAndFriend
-    | ProtectedAndInternal
-    | ProtectedOrFriend
-    | ProtectedOrInternal
-    | Public
-    }
+predicate Record:
+  { name: FullName
+  , baseType: maybe Record
+  , typeParameters: [TypeParameter]
+  , containingType: maybe NamedType
+  , declaredAccessibility: Accessibility
+  , isAbstract: bool
+  , isSealed: bool
+  }
 
-  # Represents a method or method-like symbol (including constructor, destructor, operator, or property/event accessor) (https://fburl.com/n0hrd48z)
-  predicate Method:
-    { name: Name
-    , containingType: NamedType
-    , typeParameters: [TypeParameter]
-    , parameters: [Parameter]
-    , isStatic: bool
-    , returnType: AType
-    , declaredAccessibility: Accessibility
-    }
+predicate Struct:
+  { name: FullName
+  , typeParameters: [TypeParameter]
+  , containingType: maybe NamedType
+  , declaredAccessibility: Accessibility
+  }
 
-  # Enumeration for possible kinds of method symbols (https://fburl.com/yiw81ctn)
-  type MethodKind = enum
-    { AnonymousFunction
-    | BuiltinOperator
-    | Constructor
-    | Conversion
-    | DeclareMethod
-    | DelegateInvoke
-    | Destructor
-    | EventAdd
-    | EventRaise
-    | EventRemove
-    | ExplicitInterfaceImplementation
-    | FunctionPointerSignature
-    | LambdaMethod
-    | LocalFunction
-    | Ordinary
-    | PropertyGet
-    | PropertySet
-    | ReducedExtension
-    | SharedConstructor
-    | StaticConstructor
-    | UserDefinedOperator
-    }
+# Enumeration for common accessibility combinations (https://fburl.com/bu2zzj2k)
+type Accessibility = enum
+  { Friend
+  | Internal
+  | NotApplicable
+  | Private
+  | Protected
+  | ProtectedAndFriend
+  | ProtectedAndInternal
+  | ProtectedOrFriend
+  | ProtectedOrInternal
+  | Public
+  }
 
-  # Represents a parameter of a method or property (https://fburl.com/1vhc37sw)
-  predicate Parameter:
-    { name: Name
-    , type: AType
-    , refKind: RefKind
-    , isThis: bool
-    , isParams: bool
-    , isOptional: bool
-    }
+# Represents a method or method-like symbol (including constructor, destructor,
+# operator, or property/event accessor) (https://fburl.com/n0hrd48z)
+predicate Method:
+  { name: Name
+  , containingType: NamedType
+  , typeParameters: [TypeParameter]
+  , parameters: [Parameter]
+  , isStatic: bool
+  , returnType: AType
+  , declaredAccessibility: Accessibility
+  }
 
-  # Denotes the kind of reference (https://fburl.com/t5jo5fe2)
-  type RefKind = enum
-    { In
-    | None_
-    | Out
-    | Ref
-    | RefReadOnly
-    }
+# Enumeration for possible kinds of method symbols
+# (https://fburl.com/yiw81ctn)
+type MethodKind = enum
+  { AnonymousFunction
+  | BuiltinOperator
+  | Constructor
+  | Conversion
+  | DeclareMethod
+  | DelegateInvoke
+  | Destructor
+  | EventAdd
+  | EventRaise
+  | EventRemove
+  | ExplicitInterfaceImplementation
+  | FunctionPointerSignature
+  | LambdaMethod
+  | LocalFunction
+  | Ordinary
+  | PropertyGet
+  | PropertySet
+  | ReducedExtension
+  | SharedConstructor
+  | StaticConstructor
+  | UserDefinedOperator
+  }
 
-  # An enumeration declaring the kinds of variance supported for generic type parameters (https://fburl.com/op4cyu1z)
-  type Variance = enum
-    { In
-    | None_
-    | Out
-    }
+# Represents a parameter of a method or property (https://fburl.com/1vhc37sw)
+predicate Parameter:
+  { name: Name
+  , type: AType
+  , refKind: RefKind
+  , isThis: bool
+  , isParams: bool
+  , isOptional: bool
+  }
 
-  # Represents a field in a class, struct or enum (https://fburl.com/s0t65fue)
-  predicate Field:
-    { name: Name
-    , type: AType
-    , containingType: NamedType
-    , declaredAccessibility: Accessibility
-    , isConst: bool
-    , isReadonly: bool
-    , isVirtual: bool
-    }
+# Denotes the kind of reference (https://fburl.com/t5jo5fe2)
+type RefKind = enum
+  { In
+  | None_
+  | Out
+  | Ref
+  | RefReadOnly
+  }
 
-  # Represents a type (https://fburl.com/c0eftyms)
-  type AType =
-    { arrayType: ArrayType
-    | namedType: NamedType
-    | functionPointerType: FunctionPointerType
-    | pointerType: PointerType
-    | typeParameter: TypeParameter
-    }
+# An enumeration declaring the kinds of variance supported for generic type parameters (https://fburl.com/op4cyu1z)
+type Variance = enum
+  { In
+  | None_
+  | Out
+  }
 
-  # Represents an array (https://fburl.com/u86l8jp9)
-  predicate ArrayType:
-    { elementType: AType
-    , rank: byte
-    }
+# Represents a field in a class, struct or enum (https://fburl.com/s0t65fue)
+predicate Field:
+  { name: Name
+  , type: AType
+  , containingType: NamedType
+  , declaredAccessibility: Accessibility
+  , isConst: bool
+  , isReadonly: bool
+  , isVirtual: bool
+  }
 
-  # epresents a pointer type such as "int *". Pointer types are used only in unsafe code (https://fburl.com/rwnza2j5)
-  predicate PointerType:
-    { pointedAtType: AType
-    }
+# Represents an array (https://fburl.com/u86l8jp9)
+predicate ArrayType:
+  { elementType: AType
+  , rank: byte
+  }
 
-  # Represents a function pointer type such as "delegate*<void>" (https://fburl.com/kx4v0t2w)
-  predicate FunctionPointerType:
-    { name: FullName
-    , signature: Method
-    }
+# Represents a pointer type such as "int *". Pointer types are used only in
+# unsafe code (https://fburl.com/rwnza2j5)
+predicate PointerType:
+  { pointedAtType: AType
+  }
 
-  # Represents a type parameter in a generic type or generic method (https://fburl.com/pt267xpp)
-  predicate TypeParameter:
-    { name: Name
-    , variance: maybe Variance
-    , hasNotNullConstraint: bool
-    , hasReferenceTypeConstraint: bool
-    , hasValueTypeConstraint: bool
-    }
+# Represents a function pointer type such as "delegate*<void>"
+# (https://fburl.com/kx4v0t2w)
+predicate FunctionPointerType:
+  { name: FullName
+  , signature: Method
+  }
 
-  # Represents a local variable in method body (https://fburl.com/ebmq9edn)
-  predicate Local:
-    { name: Name
-    , type: AType
-    , containingMethod: Method
-    , refKind: RefKind
-    , isConst: bool
-    }
+# Represents a type parameter in a generic type or generic method
+# (https://fburl.com/pt267xpp)
+predicate TypeParameter:
+  { name: Name
+  , variance: maybe Variance
+  , hasNotNullConstraint: bool
+  , hasReferenceTypeConstraint: bool
+  , hasValueTypeConstraint: bool
+  }
 
-  # Represents a property or indexer (https://fburl.com/051tvt5t)
-  predicate Property:
-    { name: Name
-    , containingType: NamedType
-    , type: AType
-    , parameters: [Parameter]
-    , getMethod: maybe Method
-    , setMethod: maybe Method
-    , isStatic: bool
-    , isIndexer: bool
-    }
+# Represents a local variable in method body (https://fburl.com/ebmq9edn)
+predicate Local:
+  { name: Name
+  , type: AType
+  , containingMethod: Method
+  , refKind: RefKind
+  , isConst: bool
+  }
 
-  type Location =
-    { fileLocation: src.FileLocation
-    , fileLines: src.FileLines
-    }
+# Represents a property or indexer (https://fburl.com/051tvt5t)
+predicate Property:
+  { name: Name
+  , containingType: NamedType
+  , type: AType
+  , parameters: [Parameter]
+  , getMethod: maybe Method
+  , setMethod: maybe Method
+  , isStatic: bool
+  , isIndexer: bool
+  }
 
-  predicate DefinitionLocation:
-    { definition: Definition
-    , location: Location
-    }
+type Location =
+  { fileLocation: src.FileLocation
+  , fileLines: src.FileLines
+  }
 
-  predicate ObjectCreationLocation:
-    { type: AType
-    , constructor: Method
-    , location: Location
-    }
+predicate DefinitionLocation:
+  { definition: Definition
+  , location: Location
+  }
 
-  predicate MethodInvocationLocation:
-    { method: Method
-    , location: Location
-    }
+predicate ObjectCreationLocation:
+  { type: AType
+  , constructor: Method
+  , location: Location
+  }
+
+predicate MethodInvocationLocation:
+  { method: Method
+  , location: Location
+  }
+
+#
+# codemarkup compatibility layer
+#
+
+# some aliases for shorter names
+
+#
+# Re-index for file lookup
+#
+
+# file -> defn
+predicate FileDefinitions:
+  {
+    file: src.File,
+    defn: Definition
+  }
+  # todo: stored
+  { File, Defn } where
+    DefinitionLocation { Defn, { fileLocation = Loc } };
+    { file = File } = Loc;
+
+# defn -> file, span , name
+predicate DefinitionLocationName:
+  {
+    decl: Definition,
+    file: src.File,
+    span: src.ByteSpan,
+    name: string,
+  }
+  { Defn, File, Span, NameStr } where
+    ( { type = TDefn } = Defn;
+      { namedType = ADefn } = TDefn; # not all things have names yet
+      ( { class_ = { name = FullName } } |
+        { interface_ = { name = FullName } } |
+        { record_ = { name = FullName } } |
+        { struct_ = { name = FullName } } ) = ADefn;
+      { name = Name } = FullName
+    ) | (
+      ( { method = MDefn } = Defn; { name = Name } = MDefn ) |
+      ( { field = FDefn } = Defn; { name = Name } = FDefn ) |
+      ( { parameter = PDefn } = Defn; { name = Name } = PDefn ) |
+      ( { typeParameter = PDefn } = Defn; { name = Name } = PDefn ) |
+      ( { local = LDefn } = Defn; { name = Name } = LDefn ) |
+      ( { property = PDefn } = Defn; { name = Name } = PDefn );
+    );
+    csharp.Name NameStr = Name;
+    DefinitionLocation { Defn, { fileLocation = { File, Span }} };
+
 }

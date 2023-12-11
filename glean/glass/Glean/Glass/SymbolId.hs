@@ -211,6 +211,7 @@ fromShortCode code = Map.lookup code codeToLanguage
 -- | The language is the outermost tag of the code.Entity constructor
 entityLanguage :: Code.Entity -> Language
 entityLanguage e = case e of
+  Code.Entity_csharp{} -> Language_CSharp
   Code.Entity_cxx{} -> Language_Cpp
   Code.Entity_flow{} -> Language_JavaScript
   Code.Entity_hack{} -> Language_Hack
@@ -253,6 +254,7 @@ languageToCodeLang l = case l of
   Language_Erlang -> Just Code.Language_Erlang
   Language_TypeScript -> Just Code.Language_TypeScript
   Language_Go -> Just Code.Language_Go
+  Language_CSharp -> Just Code.Language_CSharp
   Language__UNKNOWN{} -> Nothing
 
 -- | Search queries for C++ should always imply the PreProcessor too

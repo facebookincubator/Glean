@@ -151,6 +151,7 @@ SCHEMAS= \
 	builtin \
 	code \
 	code_buck \
+	code_csharp \
 	code_cxx \
 	code_erlang \
 	code_flow \
@@ -161,6 +162,7 @@ SCHEMAS= \
 	code_lsif \
 	codemarkup \
 	codemarkup_buck \
+	codemarkup_csharp \
 	codemarkup_cxx \
 	codemarkup_erlang \
 	codemarkup_flow \
@@ -179,6 +181,7 @@ SCHEMAS= \
 	code_python \
 	code_scip \
 	code_thrift \
+	csharp \
 	cxx1 \
 	digest \
 	docmarkup \

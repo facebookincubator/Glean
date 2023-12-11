@@ -453,6 +453,7 @@ enum Language {
   TypeScript = 13,
   Go = 14,
   Kotlin = 15,
+  CSharp = 16,
 } (
   hack.attributes = "\GraphQLEnum('GlassLanguage'), \RelayFlowEnum, \SelfDescriptive, \Oncalls('code_indexing')",
 )
