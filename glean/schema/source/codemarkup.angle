@@ -221,7 +221,9 @@ predicate FileEntityXRefLocations:
     (codemarkup.java.JavalFileEntityXRefLocations { File, XRef, E };
      { java = E } = Entity) |
     (codemarkup.kotlin.KotlinFileEntityXRefLocations { File, XRef, E };
-     { kotlin = E } = Entity);
+     { kotlin = E } = Entity) |
+    (codemarkup.csharp.CSharpFileEntityXRefLocations { File, XRef, E };
+     { csharp = E } = Entity);
 
 # Xrefs without the target location. This can be useful in cases
 # where we don't have a target location, but we don't need it. This
@@ -257,7 +259,9 @@ predicate FileEntityXRefSpans:
       (codemarkup.java.JavalFileEntityXRefLocations { File, XRef, E };
       { java = E } = Entity) |
       (codemarkup.kotlin.KotlinFileEntityXRefLocations { File, XRef, E };
-      { kotlin = E } = Entity);
+      { kotlin = E } = Entity) |
+      (codemarkup.csharp.CSharpFileEntityXRefLocations { File, XRef, E };
+      { csharp = E } = Entity);
       { source = { span = Span }} = XRef
     )
 

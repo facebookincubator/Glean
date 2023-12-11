@@ -37,7 +37,14 @@ predicate CSharpFileEntityXRefLocations:
     file: src.File,
     xref: codemarkup.types.XRefLocation,
     entity: code.csharp.Entity,
-  } # no implementation
+  }
+  { File, XRef, { decl = Defn } } where
+    csharp.FileEntityXRefs { File, SrcSpan, Defn };
+    csharp.DefinitionLocationName { Defn, TargetFile, TargetSpan, Name };
+    TargetLoc = { Name, TargetFile, { span = TargetSpan }, nothing }
+      : codemarkup.types.Location;
+    { target = TargetLoc, source = { span = SrcSpan }} = XRef
+      : codemarkup.types.XRefLocation
 
 # find-refs: no implementation
 predicate CSharpEntityUses:

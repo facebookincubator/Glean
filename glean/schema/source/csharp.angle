@@ -295,4 +295,22 @@ predicate DefinitionLocationName:
     csharp.Name NameStr = Name;
     DefinitionLocation { Defn, { fileLocation = { File, Span }} };
 
+# xrefs
+
+predicate FileEntityXRefs:
+  {
+    file: src.File,
+    use: src.ByteSpan,
+    target: csharp.Definition
+  }
+  # todo stored
+  { File, Span, Defn } where
+    ( MethodInvocationLocation { MDefn, { fileLocation = SrcLoc } };
+      { method = MDefn } = Defn;
+    ) | (
+      ObjectCreationLocation { AType, _, { fileLocation = { File, Span }} };
+      { type = AType } = Defn;
+    );
+    { File, Span } = SrcLoc;
+
 }
