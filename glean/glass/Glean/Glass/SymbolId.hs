@@ -188,6 +188,7 @@ shortCodeTable =
   , (Language_TypeScript , "ts")
   , (Language_Java , "java")
   , (Language_Kotlin , "kotlin")
+  , (Language_CSharp, "cs")
   ]
 
 languageToCode :: Map.Map Language Text
