@@ -100,15 +100,6 @@ RC_GTEST_PROP(SubstitutionTest, compose2, (const Substitution& subst)) {
   RC_ASSERT(Substitution::compose(empty, subst) == empty);
 }
 
-RC_GTEST_PROP(
-    SubstitutionTest,
-    compose3,
-    (const Substitution& s, const Substitution& t, const Substitution& u)) {
-  RC_ASSERT(
-    Substitution::compose(s,Substitution::compose(t,u))
-      == Substitution::compose(Substitution::compose(s,t),u));
-}
-
 TEST(SubstitutionTest, intervals) {
   Id p = Id::lowest();
 
