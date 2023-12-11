@@ -116,7 +116,7 @@ instance LogResult SnapshotStatus where
     log <> logSnapshotStatus st
 
 instance LogResult (Maybe ErrorLogger) where
-  logResult = mempty
+  logResult (_, log) = log
 
 data QueryEachRepoLog
   = FoundMultiple { _discarded :: NonEmpty Glean.Repo}
