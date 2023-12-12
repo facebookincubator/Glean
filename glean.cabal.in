@@ -641,7 +641,7 @@ library schema
         Glean.Schema.Buck
         Glean.Schema.Builtin
         Glean.Schema.Code
-        Glean.Schema.CodeCSharp
+        Glean.Schema.CodeCsharp
         Glean.Schema.CodeCxx
         Glean.Schema.CodeErlang
         Glean.Schema.CodeHack
@@ -695,7 +695,7 @@ library schema
         Glean.Schema.Buck.Types
         Glean.Schema.Builtin.Types
         Glean.Schema.CodeBuck.Types
-        Glean.Schema.CodeCSharp.Types
+        Glean.Schema.CodeCsharp.Types
         Glean.Schema.CodeCxx.Types
         Glean.Schema.CodeErlang.Types
         Glean.Schema.CodeFlow.Types
