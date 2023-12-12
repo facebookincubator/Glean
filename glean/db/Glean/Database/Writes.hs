@@ -44,6 +44,7 @@ import Control.Concurrent
 import Control.Exception
 import Control.Monad
 import Control.Monad.Extra (whenM)
+import Control.Trace (traceMsg)
 import qualified Data.ByteString as ByteString
 import Data.ByteString (ByteString)
 import Data.Default
@@ -55,6 +56,7 @@ import qualified Data.Text.Encoding as Text
 import qualified Data.UUID as UUID
 import qualified Data.UUID.V4 as UUID
 import System.Clock
+import System.Timeout
 
 import ServiceData.GlobalStats
 import ServiceData.Types
@@ -64,6 +66,7 @@ import Util.Log
 import Util.STM
 
 import Glean.Database.Open
+import Glean.Database.Trace
 import Glean.Database.Write.Batch
 import Glean.Database.Types
 import qualified Glean.RTS.Foreign.Subst as Subst
@@ -99,8 +102,8 @@ glean.db.write.rejected.avg.60
 -}
 
 -- | Create threads to process the write queues
-writerThread :: WriteQueues -> IO ()
-writerThread WriteQueues{..} = mask $ \restore ->
+writerThread :: Env -> WriteQueues -> IO ()
+writerThread env WriteQueues{..} = mask $ \restore ->
   forever $ handler restore $
     void $ tryBracket
       dequeue
@@ -111,7 +114,6 @@ writerThread WriteQueues{..} = mask $ \restore ->
     latency <- do
       writeEnd <- getTime Monotonic
       return (writeEnd - pointStart writeStart)
-    void $ tryPutMVar writeDone result
     if isLeft result then
       addStatValueType "glean.db.write.failed" (writeSize `div` k) Sum
     else
@@ -123,6 +125,10 @@ writerThread WriteQueues{..} = mask $ \restore ->
       qSize <- now $ updateTVar writeQueueSize (subtract writeSize)
       size <- now $ updateTVar writeQueuesSize (subtract writeSize)
       later $ reportQueueSizes repo queueCount qSize size (Just latency)
+    -- don't put the MVar until we have updated writeQueueActive, otherwise
+    -- there is a race condition with workFinished which will fail because
+    -- active /= 0.
+    void $ tryPutMVar writeDone result
   done _ _ = return ()
 
   handler restore action = do
@@ -166,48 +172,62 @@ writerThread WriteQueues{..} = mask $ \restore ->
               then do requeue; return (Just (job, repo, queue))
               else do unGetTQueue writeQueue job; dequeueLoop requeue
 
-  execute (Just (WriteJob{..}, _, _)) = writeTask writeStart
+  execute (Just (WriteJob{..}, repo, _)) = do
+    writeContent <- writeContentIO
+    writeDatabase env repo writeContent writeStart
   execute (Just (WriteCheckpoint io, _, _)) = do io; return Subst.empty
   execute _ = return Subst.empty
 
+-- | Check and update the in-memory write queue size
+checkMemoryAvailable
+  :: Env
+  -> ServerConfig.Config
+  -> Int -- ^ requested size
+  -> STM Bool
+checkMemoryAvailable Env{..} ServerConfig.Config{..} size = do
+  let WriteQueues{..} = envWriteQueues
+  pending <- readTVar writeQueuesSize
+  let !newSize = pending + size
+  if roundUp mb newSize <= fromIntegral config_db_write_queue_limit_mb
+    then do
+      writeTVar writeQueuesSize newSize
+      return True
+    else return False
 
--- | Add a write job to the queue, or throw 'Retry'
+-- | Update stats and throw a Retry exception
+rejectWrite :: Repo -> Int -> Double -> IO retry
+rejectWrite repo size elapsed = do
+  let clamped = min 1000.0 $ max 1.0 elapsed
+      repoB = Text.encodeUtf8 (repo_name repo)
+  addStatValueType "glean.db.write.rejected" (size `div` k) Sum
+  addStatValueType ("glean.db.write.retry_ms." <> repoB)
+    (round (elapsed*1000)) Avg
+  throwIO (Retry clamped)
+
+-- | Add a write job to the queue, or throw 'Retry' if no memory available
 enqueueWrite
   :: Env
   -> Repo
   -> Int
-  -> (Point -> IO Subst.Subst)
+  -> IO WriteContent
   -> IO (MVar (Either SomeException Subst.Subst))
-enqueueWrite env@Env{..} repo size io = do
+enqueueWrite env@Env{..} repo size writeContent = do
   start <- beginTick 1
-  ServerConfig.Config{..} <- Observed.get envServerConfig
+  config <- Observed.get envServerConfig
   mvar <- newEmptyMVar
   withWritableDatabase env repo $ \queue@WriteQueue{..} -> do
   let WriteQueues{..} = envWriteQueues
-  immediately $ do
-    pending <- now $ readTVar writeQueuesSize
-    let !newSize = pending + size
-    if roundUp mb newSize > fromIntegral config_db_write_queue_limit_mb
-      then do
-        latency <- now $ readTVar writeQueueLatency
-        later $ do
-          addStatValueType "glean.db.write.rejected" (size `div` k) Sum
-          let elapsed = fromIntegral (toNanoSecs latency) / 1000000000.0
-              clamped = min 1000.0 $ max 1.0 elapsed
-              repoB = Text.encodeUtf8 (repo_name repo)
-          addStatValueType ("glean.db.write.retry_ms." <> repoB)
-            (round (elapsed*1000)) Avg
-          throwIO (Retry clamped)
-      else do
+      enqueueIt = do
+        pending <- now $ readTVar writeQueuesSize
+        let !newSize = pending + size
         now $ do
-          writeTVar writeQueuesSize newSize
           addToWriteQueue
             repo
             queue
             envWriteQueues
             WriteJob
               { writeSize = size
-              , writeTask = io
+              , writeContentIO = writeContent
               , writeDone = mvar
               , writeStart = start }
         queueCount <- now $ updateTVar writeQueueCount (+1)
@@ -215,6 +235,12 @@ enqueueWrite env@Env{..} repo size io = do
         later $ do
           addStatValueType "glean.db.write.enqueued" (size `div` k) Sum
           reportQueueSizes repo queueCount queueSize newSize Nothing
+  immediately $ do
+    check <- now $ checkMemoryAvailable env config size
+    if check then enqueueIt else do
+      latency <- now $ readTVar writeQueueLatency
+      let elapsed = fromIntegral (toNanoSecs latency) / 1000000000.0
+      later $ rejectWrite repo size elapsed
   return mvar
 
 -- | Add a checkpoint to the write queue, which will be performed when
@@ -255,15 +281,18 @@ reportQueueSizes repo repoQueueCount repoQueueSize totalQueueSize mLatency = do
 
 enqueueBatch :: Env -> ComputedBatch -> Maybe DefineOwnership -> IO SendResponse
 enqueueBatch env ComputedBatch{..} ownership = do
+  let size = ByteString.length (batch_facts computedBatch_batch)
+  traceMsg (envTracer env)
+    (GleanTraceEnqueue computedBatch_repo EnqueueBatch size) $ do
   -- NOTE: we use UUIDs here rather than, say, consecutive
   -- numbers because we want to avoid conflicts when the
   -- server restarts/crashes
   handle <- UUID.toText <$> UUID.nextRandom
 
-  let size = ByteString.length (batch_facts computedBatch_batch)
-  r <- try $ enqueueWrite env computedBatch_repo size $
-    writeDatabase env computedBatch_repo
-      (WriteContent computedBatch_batch ownership)
+  r <- try $ enqueueWrite env computedBatch_repo size $ pure $
+        (writeContentFromBatch computedBatch_batch) {
+          writeOwnership= ownership
+        }
   case r of
     -- ToDo: make sendBatch use Retry exceptions instead of results too
     Left (Retry n) ->
@@ -278,14 +307,14 @@ enqueueJsonBatch
   -> Thrift.SendJsonBatch
   -> IO Thrift.SendJsonBatchResponse
 enqueueJsonBatch env repo batch = do
-  handle <- UUID.toText <$> UUID.nextRandom
   let
     jsonFactBatchSize JsonFactBatch{..} =
       sum (map ByteString.length jsonFactBatch_facts) +
       maybe 0 ByteString.length jsonFactBatch_unit
     size = sum (map jsonFactBatchSize (sendJsonBatch_batches batch))
-  write <- enqueueWrite env repo size $
-    emptySubst $ writeJsonBatch env repo batch
+  traceMsg (envTracer env) (GleanTraceEnqueue repo EnqueueJsonBatch size) $ do
+  handle <- UUID.toText <$> UUID.nextRandom
+  write <- enqueueWrite env repo size $ writeJsonBatch env repo batch
   when (sendJsonBatch_remember batch) $ rememberWrite env handle write
   return $ def { sendJsonBatchResponse_handle = handle }
 
@@ -306,11 +335,12 @@ enqueueJsonBatchByteString
   -> Bool -- ^ remember?
   -> IO Thrift.SendJsonBatchResponse
 enqueueJsonBatchByteString env repo pred facts opts remember = do
-  handle <- UUID.toText <$> UUID.nextRandom
   let
     size = sum (map ByteString.length facts)
+  traceMsg (envTracer env) (GleanTraceEnqueue repo EnqueueJsonBatchBS size) $ do
+  handle <- UUID.toText <$> UUID.nextRandom
   write <- enqueueWrite env repo size $
-    emptySubst $ writeJsonBatchByteString env repo pred facts opts
+    writeJsonBatchByteString env repo pred facts opts
   when remember $ rememberWrite env handle write
   return $ def { sendJsonBatchResponse_handle = handle }
 
@@ -319,7 +349,11 @@ pollBatch env@Env{..} handle = do
   r <- HashMap.lookup handle <$> readTVarIO envWrites
   case r of
     Just write -> do
-      s <- tryReadMVar (writeWait write)
+      -- for tiny writes that will complete in a few ms, we would like
+      -- to wait synchronously. Otherwise we'll return a Retry to the
+      -- caller which will wait 1s before polling again. In particular
+      -- all those one-second delays make tests run slowly.
+      s <- timeout 100000 $ readMVar (writeWait write)
       case s of
         Just x -> do
           atomically $ void $ updateTVar envWrites $ HashMap.delete handle

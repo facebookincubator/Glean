@@ -167,12 +167,12 @@ flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
     l <- flattenSeqGenerators left
     r <- flattenSeqGenerators right
     return (l ++ r)
-  TcFactGen pid kpat vpat -> do
+  TcFactGen pid kpat vpat range -> do
     kpats <- flattenPattern kpat
     vpats <- flattenPattern vpat
     sequence
       [ do
-          (stmts, gen) <- flattenFactGen pid kpat vpat
+          (stmts, gen) <- flattenFactGen pid range kpat vpat
           return
             ( kstmts <> vstmts <> floatGroups (flattenStmtGroups stmts),
               gen )
@@ -214,15 +214,20 @@ bind var gens = mkStmt
   [(mempty, TermGenerator (RTS.Ref (MatchBind var)))]
   gens
 
-flattenFactGen :: PidRef -> Pat -> Pat -> F ([Statements], Generator)
-flattenFactGen pidRef@(PidRef pid _) kpat vpat = do
+flattenFactGen
+  :: PidRef
+  -> SeekSection
+  -> Pat
+  -> Pat
+  -> F ([Statements], Generator)
+flattenFactGen pidRef@(PidRef pid _) rng kpat vpat = do
   dbSchema <- gets flDbSchema
   deriveStored <- gets flDeriveStored
   case lookupPid pid dbSchema of
     Nothing -> lift $ throwError $
       "internal error: flatten: " <> Text.pack (show pid)
     Just details@PredicateDetails{..} -> do
-      let factGen = (mempty, FactGenerator pidRef kpat vpat SeekOnAllFacts)
+      let factGen = (mempty, FactGenerator pidRef kpat vpat rng)
       case predicateDeriving of
         Schema.NoDeriving ->
           return factGen

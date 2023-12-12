@@ -1,0 +1,117 @@
+[
+  "@generated",
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/__init__:" },
+      "docs": { "key": "(module) example" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/colors." },
+      "docs": { "key": "```python\u000abuiltins.str\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/delay." },
+      "docs": { "key": "```python\u000abuiltins.float\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/food." },
+      "docs": { "key": "```python\u000aturtle.Turtle\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/godown()." },
+      "docs": { "key": "```python\u000adef godown(): # -> None:\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/goleft()." },
+      "docs": { "key": "```python\u000adef goleft(): # -> None:\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/goright()." },
+      "docs": { "key": "```python\u000adef goright(): # -> None:\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/group()." },
+      "docs": { "key": "```python\u000adef group(): # -> None:\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/head." },
+      "docs": { "key": "```python\u000aturtle.Turtle\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/high_score." },
+      "docs": { "key": "```python\u000abuiltins.int\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/move()." },
+      "docs": { "key": "```python\u000adef move(): # -> None:\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/new_segment." },
+      "docs": { "key": "```python\u000aturtle.Turtle\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/pen." },
+      "docs": { "key": "```python\u000aturtle.Turtle\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/score." },
+      "docs": { "key": "```python\u000abuiltins.int\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/segments." },
+      "docs": { "key": "```python\u000abuiltins.list\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/shapes." },
+      "docs": { "key": "```python\u000abuiltins.str\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/wn." },
+      "docs": { "key": "```python\u000aturtle._Screen\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/x." },
+      "docs": { "key": "```python\u000abuiltins.int\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "scip-python python . test example/y." },
+      "docs": { "key": "```python\u000abuiltins.int\u000a```" }
+    }
+  }
+]

@@ -21,8 +21,9 @@ import Glean.Util.Time
 import Glean.Glass.Env as Glass
 import Glean.Glass.Repos
 import Glean.Glass.SnapshotBackend as SB
+import Glean.Glass.RepoMapping
 
-withTestEnv :: Some Backend -> (Glass.Env -> IO a) -> IO a
+withTestEnv :: Backend b => b -> (Glass.Env -> IO a) -> IO a
 withTestEnv backend f =
   withEventBaseDataplane $ \evp ->
   withConfigProvider defaultConfigOptions $ \cfgapi ->
@@ -35,5 +36,6 @@ withTestEnv backend f =
         , gleanIndexBackend = IndexBackend Nothing
         , snapshotBackend = SB.snapshotBackend SB.snapshotDefaultTier
         , gleanDB = Nothing
+        , repoMapping = fixedRepoMapping
         , ..
         }

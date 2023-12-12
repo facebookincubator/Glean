@@ -1,0 +1,125 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xrefs": [
+        {
+          "range": { "begin": 294, "end": 297 },
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "foo" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 13,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 299, "end": 302 },
+          "target": {
+            "declaration": {
+              "namespace_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "bar" },
+                      "parent": { "key": { "name": { "key": "foo" } } }
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 10,
+                    "columnBegin": 3,
+                    "lineEnd": 12,
+                    "columnEnd": 3
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 320, "end": 323 },
+          "target": {
+            "declaration": {
+              "namespaceAlias": {
+                "key": {
+                  "name": { "key": { "name": { "key": "baz" } } },
+                  "target": {
+                    "namespace_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "bar" },
+                            "parent": { "key": { "name": { "key": "foo" } } }
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 10,
+                          "columnBegin": 3,
+                          "lineEnd": 12,
+                          "columnEnd": 3
+                        }
+                      }
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 15,
+                    "columnBegin": 1,
+                    "lineEnd": 15,
+                    "columnEnd": 24
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 325, "end": 326 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "f" } } },
+                      "scope": {
+                        "namespace_": {
+                          "key": {
+                            "name": { "key": "bar" },
+                            "parent": { "key": { "name": { "key": "foo" } } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 11,
+                    "columnBegin": 5,
+                    "lineEnd": 11,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

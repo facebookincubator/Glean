@@ -33,10 +33,11 @@ import Glean.LocalOrRemote (loadDbSchema)
 import qualified Glean.LocalOrRemote as LocalOrRemote
 import Glean.Database.Schema
 import Glean.Datasource.Scribe.Write
+import Glean.Database.Write.Batch (syncWriteDatabase)
 import Glean.Types as Thrift
 import Glean.Util.Time
 import Glean.Write
-import Glean.Write.JSON ( buildJsonBatch )
+import Glean.Write.JSON ( buildJsonBatch, syncWriteJsonBatch )
 
 import GleanCLI.Common
 import GleanCLI.Finish
@@ -408,6 +409,26 @@ instance Plugin WriteCommand where
             atomically (flushTQueue logMessages) >>= mapM_ putStrLn
             return ()
       atomically (flushTQueue logMessages) >>= mapM_ putStrLn
+
+    write Write{useLocalCache = False, scribe = Nothing, ..}
+      | LocalOrRemote.BackendEnv env <- LocalOrRemote.backendKind backend = do
+        logMessages <- newTQueueIO
+        case writeFileFormat of
+          BinaryFormat ->
+            stream writeMaxConcurrency (forM_ writeFiles) $ \file -> do
+              r <- B.readFile file
+              case deserializeGen (Proxy :: Proxy Compact) r of
+                Left parseError -> die 3 $ "Parse error: " <> parseError
+                Right batch -> do
+                  void $ syncWriteDatabase env writeRepo batch
+                  atomically $ writeTQueue logMessages $ "Wrote " <> file
+                  atomically (flushTQueue logMessages) >>= mapM_ putStrLn
+          JsonFormat ->
+            stream writeMaxConcurrency (forM_ writeFiles) $ \file -> do
+              batches <- fileToBatches file
+              syncWriteJsonBatch env writeRepo batches Nothing
+              atomically $ writeTQueue logMessages $ "Wrote " <> file
+              atomically (flushTQueue logMessages) >>= mapM_ putStrLn
 
     write Write{useLocalCache = False, scribe = Nothing, ..} = do
       logMessages <- newTQueueIO

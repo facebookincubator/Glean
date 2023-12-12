@@ -1,0 +1,3 @@
+query: scip.LocalName _
+perf: True
+transform: [gensort,[]]

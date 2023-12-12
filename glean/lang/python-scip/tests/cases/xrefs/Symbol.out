@@ -1,0 +1,81 @@
+[
+  "@generated",
+  { "key": "scip-python python . test example/__init__:" },
+  { "key": "scip-python python . test example/colors." },
+  { "key": "scip-python python . test example/delay." },
+  { "key": "scip-python python . test example/food." },
+  { "key": "scip-python python . test example/godown()." },
+  { "key": "scip-python python . test example/goleft()." },
+  { "key": "scip-python python . test example/goright()." },
+  { "key": "scip-python python . test example/group()." },
+  { "key": "scip-python python . test example/head." },
+  { "key": "scip-python python . test example/high_score." },
+  { "key": "scip-python python . test example/index." },
+  { "key": "scip-python python . test example/move()." },
+  { "key": "scip-python python . test example/new_segment." },
+  { "key": "scip-python python . test example/pen." },
+  { "key": "scip-python python . test example/score." },
+  { "key": "scip-python python . test example/segment." },
+  { "key": "scip-python python . test example/segments." },
+  { "key": "scip-python python . test example/shapes." },
+  { "key": "scip-python python . test example/wn." },
+  { "key": "scip-python python . test example/x." },
+  { "key": "scip-python python . test example/y." },
+  { "key": "scip-python python python-stdlib 3.11 builtins/list#append()." },
+  { "key": "scip-python python python-stdlib 3.11 builtins/range#" },
+  { "key": "scip-python python python-stdlib 3.11 random/__init__:" },
+  { "key": "scip-python python python-stdlib 3.11 random/choice." },
+  { "key": "scip-python python python-stdlib 3.11 random/randint." },
+  { "key": "scip-python python python-stdlib 3.11 time/__init__:" },
+  { "key": "scip-python python python-stdlib 3.11 time/sleep()." },
+  { "key": "scip-python python python-stdlib 3.11 turtle/RawTurtle#clear()." },
+  { "key": "scip-python python python-stdlib 3.11 turtle/RawTurtle#shape()." },
+  { "key": "scip-python python python-stdlib 3.11 turtle/RawTurtle#write()." },
+  {
+    "key": "scip-python python python-stdlib 3.11 turtle/RawTurtle#write().(align)"
+  },
+  {
+    "key": "scip-python python python-stdlib 3.11 turtle/RawTurtle#write().(font)"
+  },
+  { "key": "scip-python python python-stdlib 3.11 turtle/Screen()." },
+  {
+    "key": "scip-python python python-stdlib 3.11 turtle/TNavigator#distance()."
+  },
+  { "key": "scip-python python python-stdlib 3.11 turtle/TNavigator#goto()." },
+  { "key": "scip-python python python-stdlib 3.11 turtle/TNavigator#setx()." },
+  { "key": "scip-python python python-stdlib 3.11 turtle/TNavigator#sety()." },
+  { "key": "scip-python python python-stdlib 3.11 turtle/TNavigator#xcor()." },
+  { "key": "scip-python python python-stdlib 3.11 turtle/TNavigator#ycor()." },
+  { "key": "scip-python python python-stdlib 3.11 turtle/TPen#color()." },
+  { "key": "scip-python python python-stdlib 3.11 turtle/TPen#hideturtle()." },
+  { "key": "scip-python python python-stdlib 3.11 turtle/TPen#penup()." },
+  { "key": "scip-python python python-stdlib 3.11 turtle/TPen#speed()." },
+  { "key": "scip-python python python-stdlib 3.11 turtle/Turtle#" },
+  {
+    "key": "scip-python python python-stdlib 3.11 turtle/TurtleScreen#bgcolor()."
+  },
+  {
+    "key": "scip-python python python-stdlib 3.11 turtle/TurtleScreen#listen()."
+  },
+  {
+    "key": "scip-python python python-stdlib 3.11 turtle/TurtleScreen#onkeypress()."
+  },
+  {
+    "key": "scip-python python python-stdlib 3.11 turtle/TurtleScreen#tracer()."
+  },
+  {
+    "key": "scip-python python python-stdlib 3.11 turtle/TurtleScreen#update()."
+  },
+  { "key": "scip-python python python-stdlib 3.11 turtle/_Screen#setup()." },
+  {
+    "key": "scip-python python python-stdlib 3.11 turtle/_Screen#setup().(height)"
+  },
+  {
+    "key": "scip-python python python-stdlib 3.11 turtle/_Screen#setup().(width)"
+  },
+  { "key": "scip-python python python-stdlib 3.11 turtle/_Screen#title()." },
+  { "key": "scip-python python python-stdlib 3.11 turtle/__init__:" },
+  {
+    "key": "scip-python python python-stdlib 3.11 typing/MutableSequence#clear()."
+  }
+]

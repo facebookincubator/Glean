@@ -13,15 +13,15 @@ import Control.Monad
 import Data.Default
 
 import Glean.Backend.Types
-import qualified Glean.Clang.Test as Clang
 import Glean.Indexer
+import qualified Glean.Clang.Test as Clang
 import Glean.Regression.Snapshot.Driver
 import Glean.Regression.Snapshot
 import Glean.Types
 
 import Derive.Env (withEnv)
 import Derive.Lib (dispatchDerive, DerivePass, allPredicates)
-import Derive.Types (testConfig)
+import Derive.Types (testConfig, Config(..))
 
 -- | Run the Clang indexer followed by the specified deriving passes
 driver :: [DerivePass] -> Driver Clang.Options
@@ -30,12 +30,13 @@ driver passes = Clang.driver { driverIndexer = indexer }
   indexer = driverIndexer Clang.driver `indexerThen` derivePasses passes
 
 derivePasses
-  :: Backend backend => [DerivePass] -> backend -> Repo -> p -> IO ()
-derivePasses passes backend repo _params = do
+  :: Backend backend => [DerivePass] -> Clang.Options -> backend -> Repo -> p -> IO ()
+derivePasses passes opts backend repo _params = do
     completePredicates backend repo (CompletePredicates_axiom def)
-    forM_ passes $ \thisPass ->
+    forM_ passes $ \thisPass -> do
       -- withTestWriter completes before next pass
-      withEnv (testConfig repo) allPredicates backend $ \env ->
+      let conf = (testConfig repo) { cfgIncremental = Clang.clangIncremental opts }
+      withEnv conf allPredicates backend $ \env ->
         dispatchDerive env thisPass
 
 testDeriver :: [DerivePass] -> IO ()

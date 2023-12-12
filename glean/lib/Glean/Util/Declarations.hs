@@ -78,6 +78,7 @@ applyDeclaration f = \case
   Cxx.Declaration_objcMethod d -> f d
   Cxx.Declaration_objcProperty d -> f d
   Cxx.Declaration_typeAlias d -> f d
+  Cxx.Declaration_namespaceAlias d -> f d
   Cxx.Declaration_EMPTY -> error "unknown declaration branch"
 
 
@@ -95,7 +96,8 @@ applyConstrainedDeclaration
      , k Cxx.ObjcContainerDeclaration
      , k Cxx.ObjcMethodDeclaration
      , k Cxx.ObjcPropertyDeclaration
-     , k Cxx.TypeAliasDeclaration )
+     , k Cxx.TypeAliasDeclaration
+     , k Cxx.NamespaceAliasDeclaration )
   => Proxy (k :: * -> Constraint)
   -> (forall a . (k a) => a -> b)
   -> Cxx.Declaration
@@ -112,6 +114,7 @@ applyConstrainedDeclaration Proxy f = \case
   Cxx.Declaration_objcMethod d -> f d
   Cxx.Declaration_objcProperty d -> f d
   Cxx.Declaration_typeAlias d -> f d
+  Cxx.Declaration_namespaceAlias d -> f d
   Cxx.Declaration_EMPTY -> error "unknown declaration"
 
 -- -----------------------------------------------------------------------------
@@ -223,6 +226,8 @@ declarationCxxName = \case
     CxxQName . Cxx.variableDeclaration_key_name <$> getFactKey d
   Cxx.Declaration_typeAlias d ->
     CxxQName . Cxx.typeAliasDeclaration_key_name <$> getFactKey d
+  Cxx.Declaration_namespaceAlias d ->
+    CxxNamespaceQName . Cxx.namespaceAliasDeclaration_key_name <$> getFactKey d
   Cxx.Declaration_objcContainer d ->
     CxxObjcContainer . Cxx.objcContainerDeclaration_key_id <$> getFactKey d
   Cxx.Declaration_objcMethod d -> do

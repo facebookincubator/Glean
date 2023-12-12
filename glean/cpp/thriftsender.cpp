@@ -73,6 +73,9 @@ public:
       tbatch.owned() = batch.serializeOwnership();
       cbatch.batch() = std::move(tbatch);
 
+      // We are sending this ownership data, so clear it
+      batch.clearOwnership();
+
       future = std::make_unique<folly::Future<facebook::glean::thrift::Subst>>(
         send(
           std::make_shared<facebook::glean::thrift::ComputedBatch>(std::move(cbatch)))

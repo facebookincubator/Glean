@@ -319,11 +319,11 @@ void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
   check(container_.db->Write(container_.writeOptions, &batch));
 
   for (auto i : touched) {
-    assert(i < first_unit_id + ownership_unit_counters.size());
+    CHECK_LT(i, first_unit_id + ownership_unit_counters.size());
     ++ownership_unit_counters[i - first_unit_id];
   }
   ownership_unit_counters.insert(ownership_unit_counters.end(), new_count, 1);
-  assert(next_uset_id == ownership_unit_counters.size() + first_unit_id);
+  CHECK_EQ(next_uset_id, ownership_unit_counters.size() + first_unit_id);
 }
 
 std::unique_ptr<rts::DerivedFactOwnershipIterator>
@@ -408,18 +408,20 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
     auto t = makeAutoTimer("storeOwnership(sets)");
     rocksdb::WriteBatch batch;
 
-    uint32_t id = ownership.firstId_;
-    assert(id >= next_uset_id);
+    auto serialized = ownership.sets_.toEliasFano();
+    uint32_t id = ownership.sets_.getFirstId();
+    CHECK_GE(id, next_uset_id);
 
-    for (auto& exp : ownership.sets_) {
+    for (auto& exp : serialized) {
       if ((id % 1000000) == 0) {
         VLOG(1) << "storeOwnership: " << id;
       }
       putOwnerSet(container_, batch, id, exp.op, exp.set);
+      exp.set.free();
       id++;
     }
 
-    next_uset_id = ownership.firstId_ + ownership.sets_.size();
+    next_uset_id = ownership.sets_.getFirstId() + ownership.sets_.size();
     check(batch.Put(
       container_.family(Family::admin),
       toSlice(AdminId::NEXT_UNIT_ID),
@@ -428,11 +430,15 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
     VLOG(1) << "storeOwnership: writing sets (" << ownership.sets_.size()
             << ")";
     check(container_.db->Write(container_.writeOptions, &batch));
+
+    if (usets_->size() == 0) {
+      // If usets_ is empty, then it will not have the correct firstId yet
+      usets_ = std::make_unique<Usets>(ownership.sets_.getFirstId());
+    }
+    usets_->append(std::move(ownership.sets_));
   }
 
-  // ToDo: just update usets_, don't load the whole thing
-  usets_ = loadOwnershipSets();
-  assert(usets_->size() == 0 || usets_->getNextId() == next_uset_id);
+  CHECK(usets_->size() == 0 || usets_->getNextId() == next_uset_id);
   // TODO: better not add new units after storing sets, we should fail if that happens
 
   if (ownership.facts_.size() > 0) {
@@ -591,6 +597,11 @@ struct StoredOwnership : Ownership {
     stats.sets_size = sets_size; // estimate
     stats.num_owner_entries = num_owners + num_owner_pages; // estimate
     stats.owners_size = owners_size + owner_pages_size; // estimate
+
+    auto orphans =
+        readAdminValue<int64_t>(db_->container_, AdminId::ORPHAN_FACTS);
+    stats.num_orphan_facts = orphans ? *orphans : -1;
+
     return stats;
   }
 
@@ -667,7 +678,7 @@ void DatabaseImpl::FactOwnerCache::enable(ContainerImpl& container) {
   }
 
   check(s);
-  assert(val.size() % sizeof(UsetId) == 0);
+  CHECK_EQ(val.size() % sizeof(UsetId), 0);
   size_t num = val.size() / sizeof(UsetId);
   std::vector<UsetId> index(num);
   const UsetId* start = reinterpret_cast<const UsetId*>(val.data());
@@ -829,6 +840,7 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
   std::vector<uint16_t> ids; // in the current page
   std::vector<UsetId> sets; // in the current page
   size_t populated = 0; // for stats
+  int64_t orphaned = 0; // counts the orphan facts
   rocksdb::WriteBatch batch;
 
   auto writePage = [&]() {
@@ -849,6 +861,7 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
     };
   };
 
+  uint64_t prev = Id::lowest().toWord();
   for (; iter->Valid(); iter->Next()) {
     binary::Input key(byteRange(iter->key()));
     uint64_t id = key.trustedNat();
@@ -866,10 +879,18 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
       ids.push_back(0);
       sets.push_back(set);
     }
+    if (set == INVALID_USET && id > prev) {
+      // track the number of orphaned facts
+      orphaned += id - prev;
+      VLOG(2) << folly::sformat("orphaned fact(s) {}-{}", prev, id-1);
+    }
+
     binary::Input val(byteRange(iter->value()));
     set = val.trustedNat();
     ids.push_back(this_offset);
     sets.push_back(set);
+
+    prev = id;
   }
 
   // write the last page
@@ -882,7 +903,17 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
           reinterpret_cast<const uint8_t*>(index.data()),
           index.size() * sizeof(UsetId))));
 
-  t.logFormat("{} index entries, {} populated", index.size(), populated);
+  t.logFormat(
+      "{} index entries, {} populated, {} orphans",
+      index.size(),
+      populated,
+      orphaned);
+
+  // record the number of orphaned facts, this will be fetched by ownershipStats
+  batch.Put(
+      container.family(Family::admin),
+      toSlice(AdminId::ORPHAN_FACTS),
+      toSlice(orphaned));
 
   check(container.db->Write(container.writeOptions, &batch));
 }

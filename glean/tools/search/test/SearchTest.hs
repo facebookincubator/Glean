@@ -21,7 +21,6 @@ import Glean.Schema.CodeCxx.Types as Cxx
 import Glean.Schema.Code.Types as Code
 import Glean.Schema.Cxx1.Types as Cxx
 import Glean.Search.Search
-import Glean.Util.Some
 import Glean.Util.SchemaRepos
 
 
@@ -38,7 +37,7 @@ main = do
             print (s, cs)
             let q = def { query = s, case_sensitive = cs }
                 lim = Just 100
-            rs <- map decl <$> findEntities lim (Some backend) repos q False
+            rs <- map decl <$> findEntities lim backend repos q False
             putStrLn $ "Result count: " <> show (length rs)
             print rs
             assertBool t (f rs)

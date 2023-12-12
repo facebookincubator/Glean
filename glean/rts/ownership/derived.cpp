@@ -19,7 +19,6 @@ namespace rts {
 
 void DefineOwnership::derivedFrom(Pid pid, Id id, const std::set<UsetId>& deps) {
   if (deps.size() == 0) {
-    LOG(ERROR) << "DefineOwnership::derivedFrom: empty deps";
     return;
   }
 
@@ -211,8 +210,6 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
     }
   }
 
-  auto sets = usets.toEliasFano();
-
   // convert factOwners into a vector of intervals. factOwners may be sparse,
   // because we may have derived facts that already existed in a base DB, so we
   // have to be careful to fill in gaps in the interval map with INVALID_USET
@@ -241,8 +238,7 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
 
   // Now build a ComputedOwnership that we can return
   return std::make_unique<ComputedOwnership>(
-      usets.getFirstId(),
-      std::move(sets),
+      std::move(usets),
       std::move(intervals));
 }
 
@@ -264,8 +260,10 @@ void addDerived(
       }
     }
 
-    for (auto id : facts) {
-      define->derivedFrom(pid, id, owners);
+    if (owners.size() > 0) {
+      for (auto id : facts) {
+        define->derivedFrom(pid, id, owners);
+      }
     }
   }
 }

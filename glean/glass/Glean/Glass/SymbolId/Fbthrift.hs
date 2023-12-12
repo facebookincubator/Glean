@@ -43,29 +43,29 @@ instance Symbol Thrift.File where
   toSymbol f = toSymbolPredicate f
 
 instance Symbol Thrift.NamedDecl_key where
-  toSymbol (Thrift.NamedDecl_key (Thrift.NamedType qualname _kind) _locName) =
+  toSymbol (Thrift.NamedDecl_key (Thrift.NamedType qualname _kind)) =
     toSymbolPredicate qualname
 
 instance Symbol Thrift.EnumValue_key where
-  toSymbol (Thrift.EnumValue_key (Thrift.NamedType qualname _kind) name _loc) =
+  toSymbol (Thrift.EnumValue_key (Thrift.NamedType qualname _kind) name) =
     qualname <:> name
 
 instance Symbol Thrift.Constant_key where
-  toSymbol (Thrift.Constant_key qualname _loc) =
+  toSymbol (Thrift.Constant_key qualname) =
     toSymbolPredicate qualname
 
 instance Symbol Thrift.ServiceName where
   toSymbol (Thrift.ServiceName _ key) = toSymbol key
 
 instance Symbol Thrift.ServiceName_key where
-  toSymbol (Thrift.ServiceName_key qualname _loc) =
+  toSymbol (Thrift.ServiceName_key qualname) =
     toSymbolPredicate qualname
 
 instance Symbol Thrift.FunctionName_key where
-  toSymbol (Thrift.FunctionName_key service name _loc) = service <:> name
+  toSymbol (Thrift.FunctionName_key service name) = service <:> name
 
 instance Symbol Thrift.ExceptionName_key where
-  toSymbol (Thrift.ExceptionName_key qualname _loc) =
+  toSymbol (Thrift.ExceptionName_key qualname) =
     toSymbolPredicate qualname
 
 instance Symbol Thrift.QualName_key where
@@ -96,19 +96,19 @@ instance ToQName Thrift.XRefTarget where
     Thrift.XRefTarget_EMPTY -> return $ Left "unknown thrift.Declaration"
 
 instance ToQName Thrift.NamedDecl_key where
-  toQName (Thrift.NamedDecl_key (Thrift.NamedType qname _kind) _loc) = do
+  toQName (Thrift.NamedDecl_key (Thrift.NamedType qname _kind)) = do
     toQName =<< Glean.keyOf qname
 
 instance ToQName Thrift.ExceptionName_key where
-  toQName (Thrift.ExceptionName_key qname _loc) = do
+  toQName (Thrift.ExceptionName_key qname ) = do
     toQName =<< Glean.keyOf qname
 
 instance ToQName Thrift.ServiceName_key where
-  toQName (Thrift.ServiceName_key qname _loc) = do
+  toQName (Thrift.ServiceName_key qname ) = do
     toQName =<< Glean.keyOf qname
 
 instance ToQName Thrift.FunctionName_key where
-  toQName (Thrift.FunctionName_key service name _loc) = do
+  toQName (Thrift.FunctionName_key service name ) = do
     eName <- toQName =<< Glean.keyOf service
     case eName of
       Left err -> pure (Left err)
@@ -117,11 +117,11 @@ instance ToQName Thrift.FunctionName_key where
         return $ Right (Name str, service)
 
 instance ToQName Thrift.Constant_key where
-  toQName (Thrift.Constant_key qname _loc) = do
+  toQName (Thrift.Constant_key qname ) = do
     toQName =<< Glean.keyOf qname
 
 instance ToQName Thrift.EnumValue_key where
-  toQName (Thrift.EnumValue_key (Thrift.NamedType qname _kind) ident _loc) = do
+  toQName (Thrift.EnumValue_key (Thrift.NamedType qname _kind) ident) = do
     Thrift.QualName_key _file parent <- Glean.keyOf qname
     name <- Glean.keyOf ident
     parentName <- Glean.keyOf parent

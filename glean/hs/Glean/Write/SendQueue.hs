@@ -177,8 +177,11 @@ readSendQueue sq = do
   case status of
     Open -> get
     Closed -> do
-      empty <- isEmptyTQueue $ sqOutQueue sq
-      if not empty then get else return Nothing
+      -- Don't exit the sendFromQueue until all batches are safely
+      -- written. We might have to resend batches if the server
+      -- forgets them.
+      count <- readTVar $ sqCount sq
+      if count /= 0 then get else return Nothing
     Failed exc -> throwSTM exc
   where
     get = do

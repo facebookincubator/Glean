@@ -293,7 +293,6 @@ const char *glean_subst_deserialize(
 
 const char *glean_subst_intervals(
   const Substitution *subst,
-  bool rebase,
   const glean_fact_id_t *ins,
   size_t ins_size,
   glean_fact_id_t **outs,
@@ -368,7 +367,8 @@ const char* glean_factset_rebase(
   const Inventory* inventory,
   const Substitution* subst,
   LookupCache* cache,
-  FactSet** result
+  FactSet** result,
+  Substitution** out_subst
 );
 
 const char *glean_stacked_lookup_new(
@@ -597,6 +597,18 @@ const char* glean_slice_compute(
     Slice** bases,
     size_t num_bases,
     Slice** result);
+
+const char* glean_slice_serialize(
+  Slice* slice,
+  const void **data,
+  size_t *size
+);
+
+const char* glean_slice_deserialize(
+  const void *data,
+  size_t size,
+  Slice **slice
+);
 
 void glean_slice_free(Slice *slice);
 

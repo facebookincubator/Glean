@@ -27,7 +27,8 @@ enum class AdminId : uint32_t {
   VERSION,
   STARTING_ID,
   FIRST_UNIT_ID,
-  NEXT_UNIT_ID
+  NEXT_UNIT_ID,
+  ORPHAN_FACTS,
 };
 
 struct DatabaseImpl final : Database {
@@ -203,6 +204,36 @@ struct DatabaseImpl final : Database {
 
   FactOwnerCache factOwnerCache_;
 };
+
+extern const char *admin_names[];
+
+template <typename T>
+folly::Optional<T> readAdminValue(
+    ContainerImpl& container_,
+    AdminId id) {
+  container_.requireOpen();
+  rocksdb::PinnableSlice val;
+  binary::Output key;
+  key.fixed(id);
+  auto s = container_.db->Get(
+      rocksdb::ReadOptions(),
+      container_.family(Family::admin),
+      slice(key),
+      &val);
+  if (!s.IsNotFound()) {
+    check(s);
+    binary::Input value = input(val);
+    auto result = value.fixed<T>();
+    if (!value.empty()) {
+      rts::error(
+          "corrupt database - invalid {}",
+          admin_names[static_cast<uint32_t>(id)]);
+    }
+    return result;
+  } else {
+    return {};
+  };
+}
 
 }
 }

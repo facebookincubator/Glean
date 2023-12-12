@@ -3,6 +3,7 @@
 schema code.24 {
 import src.1
 import code.buck.1
+import code.csharp.1
 import code.cxx.4
 import code.erlang.1
 import code.fbthrift.1
@@ -15,7 +16,6 @@ import code.lsif.2
 import code.pp.1
 import code.python.1
 import code.scip.1
-import code.thrift.5
 import codemarkup.types.1
 
 type Entity =
@@ -28,12 +28,12 @@ type Entity =
     python : code.python.Entity |
     hack : code.hack.Entity |
     flow : code.flow.Entity |
-    thrift : code.thrift.Entity |
     fbthrift : code.fbthrift.Entity |
     buck : code.buck.Entity |
     erlang : code.erlang.Entity |
     lsif : code.lsif.Entity |
     scip : code.scip.Entity |
+    csharp : code.csharp.Entity |
   }
 
 # language enum values for exactly the set of entity tags (including LSIF)
@@ -44,7 +44,7 @@ type Language =
   enum {
     Cpp | PreProcessor | Java | Haskell | Python | Hack | JavaScript | Rust |
     Thrift | Buck | Erlang | FSharp | Go | Kotlin | OCaml | Scala | Swift |
-    TypeScript
+    TypeScript | CSharp
   }
 
 # entity tag to language id
@@ -62,10 +62,10 @@ predicate EntityLanguage:
     ( { python = _ } = Entity; Python = Language ) |
     ( { hack = _ } = Entity; Hack = Language ) |
     ( { flow = _ } = Entity; JavaScript = Language ) |
-    ( { thrift = _ } = Entity; Thrift = Language ) |
     ( { fbthrift = _ } = Entity; Thrift = Language ) |
     ( { buck = _ } = Entity; Buck = Language ) |
     ( { erlang = _ } = Entity; Erlang = Language ) |
+    ( { csharp = _ } = Entity; CSharp = Language ) |
     ( { lsif = LSIF }  = Entity; EntityLanguageLSIF { LSIF, Language } ) |
     ( { scip = SCIP }  = Entity; EntityLanguageSCIP { SCIP, Language } );
 
@@ -103,7 +103,6 @@ type Annotations =
     java : code.java.Annotations |
     python : code.python.Annotations |
     hack : code.hack.Annotations |
-    thrift : code.thrift.Annotations |
     fbthrift : code.fbthrift.Annotations |
   }
 

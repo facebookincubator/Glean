@@ -15,6 +15,7 @@ import Data.Text (Text)
 import Glean.Indexer.Flow as Flow
 
 import Glean
+import Glean.LocalOrRemote
 import Glean.Util.Some
 import Glean.Glass.Types
 import Glean.Glass.Regression.Tests
@@ -35,7 +36,7 @@ unitTests get =
   , testFlowFindReferences get
   ]
 
-testSymbolIdLookup :: IO (Some Backend, Repo) -> Test
+testSymbolIdLookup :: IO (Some LocalOrRemote, Repo) -> Test
 testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
   "test/js/test/es_exports.js.flow/foo" --> "test/es_exports.js.flow",
   "test/js/test/es_exports.js.flow/bor" --> "test/es_exports.js.flow",
@@ -58,7 +59,7 @@ testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
         (Path expected)
         get
 
-testFlowFindReferences :: IO (Some Backend, Repo) -> Test
+testFlowFindReferences :: IO (Some LocalOrRemote, Repo) -> Test
 testFlowFindReferences get = TestLabel "findReferences" $ TestList [
   "test/js/test/es_exports.js.flow/foo" -->
    [("test/es_exports.js.flow", 1), ("test/imports.js", 2)],

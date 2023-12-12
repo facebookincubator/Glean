@@ -7,10 +7,13 @@
  */
 
 #include "glean/rts/substitution.h"
+#include "glean/rts/error.h"
 
 namespace facebook {
 namespace glean {
 namespace rts {
+
+using namespace boost::icl;
 
 Substitution::Substitution(Id first, size_t size)
   : base(first)
@@ -30,72 +33,49 @@ Id Substitution::firstFreeId() const {
   return firstFreeId_;
 }
 
-namespace {
-
-template <typename F>
-std::vector<Id> transformIntervals(const std::vector<Id>& intervals, F&& add) {
+std::vector<Id> Substitution::substIntervals(
+    const std::vector<Id>& intervals) const {
   CHECK_EQ(intervals.size() % 2, 0);
-  boost::icl::interval_set<Id> is;
-  auto i = intervals.begin();
-  const auto e = intervals.end();
-  while (i != e) {
-    const auto start = i[0];
-    const auto end = i[1];
-    CHECK(start <= end);
-    add(is, start, end);
-    i += 2;
-  }
-  std::vector<Id> results;
-  results.reserve(is.iterative_size()*2);
-  for (auto p : is) {
-    results.push_back(p.lower());
-    results.push_back(p.upper());
-  }
-  return results;
-}
+  boost::icl::interval_set<Id, std::less, closed_interval<Id>> is;
 
-}
-
-void Substitution::rebaseInterval(boost::icl::interval_set<Id>& is, size_t offset, Id start, Id end) const {
-  if (end < base) {
-    is.add({start, end});
-  } else {
-    if (start >= finish()) {
-      is.add({start + offset, end + offset});
+  auto add = [&](Id start, Id end) {
+    if (end >= finish()) {
+      error(
+          "interval out of range: {}-{} base={} finish={}",
+          start.toWord(),
+          end.toWord(),
+          base.toWord(),
+          finish().toWord());
     }
-    for (Id id = start; id <= end; ++id) {
-      if (id >= finish()) {
-        is.add(id + offset);
-      } else {
+    if (end < base) {
+      is.add({start, end});
+    } else {
+      if (start < base) {
+        is.add({start, base - 1});
+      }
+      for (Id id = std::max(start, base); id <= end; ++id) {
         is.add(subst(id));
       }
     }
   };
-}
 
-std::vector<Id> Substitution::substIntervals(
-    const std::vector<Id>& intervals) const {
-  return transformIntervals(
-      intervals, [&](boost::icl::interval_set<Id>& is, Id start, Id end) {
-        if (end < base || start >= finish()) {
-          is.add({start, end});
-        } else {
-          for (Id id = start; id <= end; ++id) {
-            is.add(subst(id));
-          }
-        }
-      });
-}
+  auto i = intervals.begin();
+  const auto e = intervals.end();
 
-std::vector<Id> Substitution::rebaseIntervals(
-    const std::vector<Id>& intervals) const {
-  const auto new_start = firstFreeId();
-  const auto offset = distance(finish(), new_start);
-  return transformIntervals(
-      intervals,
-      [&, offset](boost::icl::interval_set<Id>& is, Id start, Id end) {
-        rebaseInterval(is, offset, start, end);
-      });
+  while (i != e) {
+    const auto start = i[0];
+    const auto end = i[1];
+    CHECK(start <= end);
+    add(start, end);
+    i += 2;
+  }
+  std::vector<Id> results;
+  results.reserve(is.iterative_size() * 2);
+  for (const auto& p : is) {
+    results.push_back(p.lower());
+    results.push_back(p.upper());
+  }
+  return results;
 }
 
 boost::icl::interval_set<Id> Substitution::substIntervals(const boost::icl::interval_set<Id>& intervals) const {
@@ -110,15 +90,6 @@ boost::icl::interval_set<Id> Substitution::substIntervals(const boost::icl::inte
     }
   }
   return result;
-}
-
-boost::icl::interval_set<Id> Substitution::rebaseIntervals(const boost::icl::interval_set<Id>& intervals) const {
-  boost::icl::interval_set<Id> is;
-  const auto offset = distance(finish(), firstFreeId());
-  for (auto ival : intervals) {
-    rebaseInterval(is, offset, ival.lower(), ival.upper());
-  }
-  return is;
 }
 
 Substitution Substitution::compose(

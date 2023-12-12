@@ -18,6 +18,7 @@ module Glean.Util.PredMap
   , toList, toAscList
   , size
   , member, notMember
+  , filterValues
   ) where
 
 import Control.DeepSeq (NFData)
@@ -109,3 +110,6 @@ member p pm = IntMap.member (one p) (predMap pm)
 
 notMember :: IdOf p -> PredMap p v -> Bool
 notMember p pm = IntMap.notMember (one p) (predMap pm)
+
+filterValues :: (v -> Bool) -> PredMap p v -> PredMap p v
+filterValues f (PredMap m) = PredMap $ IntMap.filter f m

@@ -82,7 +82,11 @@ flag typescript-tests
 
 -- run tests that require python-scip
 flag python-tests
-     default: False
+     default: True
+
+-- run tests that require dotnet-scip
+flag dotnet-tests
+     default: True
 
 -- run tests that require lsif-go
 flag go-tests
@@ -510,6 +514,7 @@ library db
         Glean.Database.Storage.Memory
         Glean.Database.Storage.RocksDB
         Glean.Database.Tailer
+        Glean.Database.Trace
         Glean.Database.Types
         Glean.Database.Validate
         Glean.Database.Work.Controller
@@ -636,6 +641,7 @@ library schema
         Glean.Schema.Buck
         Glean.Schema.Builtin
         Glean.Schema.Code
+        Glean.Schema.CodeCsharp
         Glean.Schema.CodeCxx
         Glean.Schema.CodeErlang
         Glean.Schema.CodeHack
@@ -645,6 +651,7 @@ library schema
         Glean.Schema.CodeLsif
         Glean.Schema.Codemarkup
         Glean.Schema.CodemarkupBuck
+        Glean.Schema.CodemarkupCSharp
         Glean.Schema.CodemarkupCxx
         Glean.Schema.CodemarkupErlang
         Glean.Schema.CodemarkupFlow
@@ -655,12 +662,11 @@ library schema
         Glean.Schema.CodemarkupPython
         Glean.Schema.CodemarkupScip
         Glean.Schema.CodemarkupSearch
-        Glean.Schema.CodemarkupThrift
         Glean.Schema.CodemarkupTypes
         Glean.Schema.CodePp
         Glean.Schema.CodePython
-        Glean.Schema.CodeThrift
         Glean.Schema.CodeBuck
+        Glean.Schema.CSharp
         Glean.Schema.Cxx1
         Glean.Schema.Digest
         Glean.Schema.Glass
@@ -689,6 +695,7 @@ library schema
         Glean.Schema.Buck.Types
         Glean.Schema.Builtin.Types
         Glean.Schema.CodeBuck.Types
+        Glean.Schema.CodeCsharp.Types
         Glean.Schema.CodeCxx.Types
         Glean.Schema.CodeErlang.Types
         Glean.Schema.CodeFlow.Types
@@ -698,6 +705,7 @@ library schema
         Glean.Schema.CodeKotlin.Types
         Glean.Schema.CodeLsif.Types
         Glean.Schema.CodemarkupBuck.Types
+        Glean.Schema.CodemarkupCSharp.Types
         Glean.Schema.CodemarkupCxx.Types
         Glean.Schema.CodemarkupErlang.Types
         Glean.Schema.CodemarkupFlow.Types
@@ -708,15 +716,14 @@ library schema
         Glean.Schema.CodemarkupPython.Types
         Glean.Schema.CodemarkupScip.Types
         Glean.Schema.CodemarkupSearch.Types
-        Glean.Schema.CodemarkupThrift.Types
         Glean.Schema.Codemarkup.Types
         Glean.Schema.CodemarkupTypes.Types
         Glean.Schema.CodePp.Types
         Glean.Schema.CodePython.Types
         Glean.Schema.CodeScip.Types
-        Glean.Schema.CodeThrift.Types
         Glean.Schema.CodeFbthrift.Types
         Glean.Schema.Code.Types
+        Glean.Schema.CSharp.Types
         Glean.Schema.Cxx1.Types
         Glean.Schema.Digest.Types
         Glean.Schema.Docmarkup.Types
@@ -946,7 +953,6 @@ executable glean-server
         glean:db,
         glean:util,
         haskeline >=0.7.3 && <0.8,
-        http-client,
         json
 
 library shell-lib
@@ -990,6 +996,7 @@ library indexers
         glean/lang/lsif/indexer
         glean/lang/scip/indexer
         glean/lang/python-scip
+        glean/lang/dotnet-scip
         glean/lang/rust-lsif
         glean/lang/rust-scip
         glean/lang/typescript
@@ -1010,6 +1017,7 @@ library indexers
         Glean.Indexer.RustScip
         Glean.Indexer.Typescript
         Glean.Indexer.PythonScip
+        Glean.Indexer.DotnetScip
         Glean.Indexer.List
     build-depends:
         glean:client-hs,
@@ -1030,6 +1038,7 @@ library cli-types
         GleanCLI.Types
     build-depends:
         glean:client-hs-local,
+        glean:db,
         glean:util,
 
 executable glean
@@ -2264,6 +2273,18 @@ test-suite glean-snapshot-python-scip
     if !flag(python-tests)
         buildable: False
 
+test-suite glean-snapshot-dotnet-scip
+    import: fb-haskell, deps
+    hs-source-dirs: glean/lang/dotnet-scip/tests
+    type: exitcode-stdio-1.0
+    main-is: Glean/Regression/DotnetScip/Main.hs
+    ghc-options: -main-is Glean.Regression.DotnetScip.Main
+    build-depends:
+        glean:regression-test-lib,
+        glean:indexers
+    if !flag(dotnet-tests)
+        buildable: False
+
 test-suite glean-snapshot-typescript
     import: fb-haskell, deps
     hs-source-dirs: glean/lang/codemarkup/tests/typescript
@@ -2325,6 +2346,7 @@ library glass-regression
         glean:client-hs,
         glean:glass-lib,
         glean:if-glass-hs,
+        glean:client-hs-local,
         glean:indexers,
         glean:logger,
         glean:regression-test-lib,
@@ -2338,6 +2360,7 @@ common glass-regression-deps
     hs-source-dirs: glean/glass/test/regression
     build-depends:
         HUnit,
+        glean:client-hs-local,
         glean:glass-lib,
         glean:glass-regression,
         glean:if-glass-hs,
@@ -2410,6 +2433,19 @@ test-suite glass-regression-python-scip
         glean:indexers,
         glean:util,
     if !flag(python-tests)
+        buildable: False
+
+test-suite glass-regression-dotnet-scip
+    import: glass-regression-deps, fb-haskell, deps
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Regression/DotnetScip/Main.hs
+    ghc-options: -main-is Glean.Glass.Regression.DotnetScip.Main
+    other-modules: Glean.Glass.Regression.DotnetScip
+    build-depends:
+        glean:client-hs,
+        glean:indexers,
+        glean:util,
+    if !flag(dotnet-tests)
         buildable: False
 
 test-suite glass-regression-typescript

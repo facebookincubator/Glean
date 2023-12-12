@@ -20,6 +20,7 @@ namespace rts {
 namespace serialize {
 
 inline void put(binary::Output& o, uint64_t i) { o.nat(i); }
+inline void put(binary::Output& o, uint32_t i) { o.nat(i); }
 inline void put(binary::Output& o, int32_t i) { o.nat(i); }
 inline void put(binary::Output& o, bool b) { o.fixed(uint8_t{b}); }
 inline void put(binary::Output& o, Id p) { put(o, p.toWord()); }
@@ -89,6 +90,7 @@ void put(binary::Output& o, const std::shared_ptr<T>& s) {
 
 
 inline void get(binary::Input& i, uint64_t &r) { r = i.untrustedNat(); }
+inline void get(binary::Input& i, uint32_t &r) { r = i.untrustedNat(); }
 inline void get(binary::Input& i, int32_t &r) { r = i.untrustedNat(); }
 inline void get(binary::Input& i, bool &r) { r = i.byte(); }
 inline void get(binary::Input& i, Id &p) { uint64_t w; get(i, w); p = Id::fromWord(w); }

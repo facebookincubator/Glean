@@ -18,6 +18,8 @@ module Glean.RTS.Foreign.Ownership
   , slice
   , slicedStack
   , SlicedStack
+  , serializeSlice
+  , deserializeSlice
   , newDefineOwnership
   , DefineOwnership
   , substDefineOwnership
@@ -36,6 +38,8 @@ module Glean.RTS.Foreign.Ownership
 
 import Control.Exception
 import Control.Monad
+import Data.ByteString (ByteString)
+import Data.ByteString.Unsafe (unsafeUseAsCStringLen)
 import Data.Coerce
 import Data.List (unzip4)
 import Data.Text (Text)
@@ -123,6 +127,18 @@ slice ownership bases units exclude =
     (fromIntegral (fromEnum exclude))
     bases_arr
     (fromIntegral bases_arr_size)
+
+serializeSlice :: Slice -> IO ByteString
+serializeSlice slice =
+  with slice $ \p_slice -> do
+    (bytes, size) <- invoke $ glean_slice_serialize p_slice
+    unsafeMallocedByteString bytes size
+
+deserializeSlice :: ByteString -> IO Slice
+deserializeSlice bs =
+  unsafeUseAsCStringLen bs $ \(ptr, len) ->
+    construct $ invoke $
+      glean_slice_deserialize (castPtr ptr) (fromIntegral len)
 
 data SlicedStack base = SlicedStack [Slice] base
 
@@ -268,6 +284,7 @@ data OwnershipStats = OwnershipStats
   , setsSize :: Word64
   , numOwnerEntries :: Word64
   , ownersSize :: Word64
+  , numOrphanFacts :: Int64
   }
 
 showOwnershipStats :: OwnershipStats -> Text
@@ -277,7 +294,10 @@ showOwnershipStats OwnershipStats{..} =
   showt numSets <> " sets (" <>
     renderBytes (fromIntegral setsSize) <> "), " <>
   showt numOwnerEntries <> " owners (" <>
-    renderBytes (fromIntegral ownersSize) <> ")"
+    renderBytes (fromIntegral ownersSize) <> ")" <>
+  (if numOrphanFacts >= 0
+    then ", " <> showt numOrphanFacts <> " orphan facts"
+    else "")
 
 instance Storable OwnershipStats where
   peek p = do
@@ -285,8 +305,11 @@ instance Storable OwnershipStats where
     unitsSize <- (# peek facebook::glean::rts::OwnershipStats, units_size) p
     numSets <- (# peek facebook::glean::rts::OwnershipStats, num_sets) p
     setsSize <- (# peek facebook::glean::rts::OwnershipStats, sets_size) p
-    numOwnerEntries <- (# peek facebook::glean::rts::OwnershipStats, num_owner_entries) p
+    numOwnerEntries <-
+      (# peek facebook::glean::rts::OwnershipStats, num_owner_entries) p
     ownersSize <- (# peek facebook::glean::rts::OwnershipStats, owners_size) p
+    numOrphanFacts <-
+      (# peek facebook::glean::rts::OwnershipStats, num_orphan_facts) p
     return OwnershipStats{..}
   sizeOf _ = (# size facebook::glean::rts::OwnershipStats)
   alignment _ = (# alignment facebook::glean::rts::OwnershipStats)
@@ -384,6 +407,18 @@ foreign import ccall safe glean_slice_compute
   -> CSize
   -> CInt
   -> Ptr (Ptr Slice)
+  -> CSize
+  -> Ptr (Ptr Slice)
+  -> IO CString
+
+foreign import ccall unsafe glean_slice_serialize
+  :: Ptr Slice
+  -> Ptr (Ptr ())
+  -> Ptr CSize
+  -> IO CString
+
+foreign import ccall unsafe glean_slice_deserialize
+  :: Ptr ()
   -> CSize
   -> Ptr (Ptr Slice)
   -> IO CString

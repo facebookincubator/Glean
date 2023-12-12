@@ -76,8 +76,10 @@ instance Storage Memory where
   retrieve db key =
     atomically $ HashMap.lookup key <$> readTVar (dbData db)
 
+  commit db facts = FactSet.append (dbFacts db) facts
+
   -- TODO: ownership
-  commit db facts _ = FactSet.append (dbFacts db) facts
+  addOwnership _ _ = return ()
 
   optimize _ _ = return ()
 

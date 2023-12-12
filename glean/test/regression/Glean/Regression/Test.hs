@@ -29,6 +29,7 @@ import TestRunner
 import Util.IO
 
 import Glean
+import Glean.LocalOrRemote
 import Glean.Indexer
 import Glean.Init (withUnitTestOptions)
 import Glean.Regression.Config
@@ -37,7 +38,7 @@ import Glean.Regression.Snapshot.Driver
 import Glean.Regression.Snapshot.Options
 import Glean.Util.Some (Some(..))
 
-type TestIndex = IO (Some Backend, Repo) -> Test
+type TestIndex = IO (Some LocalOrRemote, Repo) -> Test
 
 withOutputDir :: String -> Maybe FilePath -> (FilePath -> IO a) -> IO a
 withOutputDir _dir (Just output) act = act output
@@ -69,7 +70,7 @@ mainTestIndexGeneric
   :: Driver driverOpts
   -> Parser extraOpts -- ^ parser for extra options to recognise
   -> String -- ^ just a string to identify this test
-  -> (extraOpts -> Config -> String -> TestConfig -> TestIndex)
+  -> (extraOpts -> driverOpts -> Config -> TestConfig -> TestIndex)
   -> IO ()
 mainTestIndexGeneric driver extraOptParser dir testIndex = do
   let
@@ -86,7 +87,6 @@ mainTestIndexGeneric driver extraOptParser dir testIndex = do
       (platforms, mkLabel) = if null theGroups
           then (["testhash"], const dir)
           else (theGroups, \group -> dir <> " : " <> group)
-      index = indexerRun indexer driverOpts
     withOutputDir dir (cfgOutput cfg) $ \ outDir -> do
       let
         withPlatformTest :: String -> (Test -> IO a) -> IO a
@@ -102,15 +102,16 @@ mainTestIndexGeneric driver extraOptParser dir testIndex = do
                 , testSchemaVersion = cfgSchemaVersion cfg
                 }
 
-              withSetup :: ((Some Backend, Repo) -> IO a) -> IO a
+              withSetup :: ((Some LocalOrRemote, Repo) -> IO a) -> IO a
               withSetup f =
-                withTestBackend testConfig $ \(Some backend) ->
-                withTestDatabase (Some backend) index testConfig $ \repo ->
-                  f (Some backend, repo)
+                withTestBackend testConfig $ \backend -> do
+                  driverCreateDatabase driver driverOpts backend
+                    (indexerRun indexer) testConfig
+                  f (backend, testRepo testConfig)
 
           withLazy withSetup $ \get ->
             fn $ TestLabel (mkLabel platform) $
-              testIndex extraOpts cfg platform testConfig get
+              testIndex extraOpts driverOpts cfg testConfig get
 
       withMany withPlatformTest platforms $ \tests ->
         testRunnerAction action (TestList tests)

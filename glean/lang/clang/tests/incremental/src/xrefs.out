@@ -1,0 +1,380 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "a.cpp" },
+      "xrefs": [
+        {
+          "range": { "begin": 259, "end": 260 },
+          "target": {
+            "declaration": {
+              "record_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "C" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "test" } } }
+                      }
+                    }
+                  },
+                  "kind": { "class_": { } },
+                  "source": {
+                    "file": { "key": "a.h" },
+                    "lineBegin": 13,
+                    "columnBegin": 1,
+                    "lineEnd": 19,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 277, "end": 278 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "C" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "test" } }
+                                }
+                              }
+                            }
+                          },
+                          "access": 2
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": { "field": { "mutable_": false } },
+                  "source": {
+                    "file": { "key": "a.h" },
+                    "lineBegin": 18,
+                    "columnBegin": 3,
+                    "lineEnd": 18,
+                    "columnEnd": 7
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 295, "end": 296 },
+          "target": {
+            "declaration": {
+              "record_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "C" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "test" } } }
+                      }
+                    }
+                  },
+                  "kind": { "class_": { } },
+                  "source": {
+                    "file": { "key": "a.h" },
+                    "lineBegin": 13,
+                    "columnBegin": 1,
+                    "lineEnd": 19,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 309, "end": 310 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "c" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "a" } } },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "test" } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "test::C" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "a.cpp" },
+                    "lineBegin": 18,
+                    "columnBegin": 3,
+                    "lineEnd": 18,
+                    "columnEnd": 5
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 311, "end": 312 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "f" } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "C" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "test" } }
+                                }
+                              }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                  },
+                  "method": {
+                    "isVirtual": false,
+                    "isConst": false,
+                    "isVolatile": false,
+                    "refQualifier": 0
+                  },
+                  "source": {
+                    "file": { "key": "a.cpp" },
+                    "lineBegin": 13,
+                    "columnBegin": 1,
+                    "lineEnd": 15,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "b.cpp" },
+      "xrefs": [
+        {
+          "range": { "begin": 363, "end": 364 },
+          "target": {
+            "declaration": {
+              "record_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "C" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "test" } } }
+                      }
+                    }
+                  },
+                  "kind": { "class_": { } },
+                  "source": {
+                    "file": { "key": "a.h" },
+                    "lineBegin": 13,
+                    "columnBegin": 1,
+                    "lineEnd": 19,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 377, "end": 378 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "c" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "bb" } } },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "test" } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "test::C" },
+                  "kind": { "local": { "kind": 0, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "b.cpp" },
+                    "lineBegin": 20,
+                    "columnBegin": 3,
+                    "lineEnd": 20,
+                    "columnEnd": 5
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 379, "end": 380 },
+          "target": {
+            "declaration": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "f" } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "C" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "test" } }
+                                }
+                              }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                  },
+                  "method": {
+                    "isVirtual": false,
+                    "isConst": false,
+                    "isVolatile": false,
+                    "refQualifier": 0
+                  },
+                  "source": {
+                    "file": { "key": "a.h" },
+                    "lineBegin": 15,
+                    "columnBegin": 3,
+                    "lineEnd": 15,
+                    "columnEnd": 9
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 385, "end": 386 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "x" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "bb" } } },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "test" } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": { "local": { "kind": 2, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "b.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 8,
+                    "lineEnd": 19,
+                    "columnEnd": 12
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "range": { "begin": 389, "end": 390 },
+          "target": {
+            "declaration": {
+              "variable": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "y" },
+                      "scope": {
+                        "local": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "bb" } } },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "test" } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "type": { "key": "int" },
+                  "kind": { "local": { "kind": 2, "attribute": 0 } },
+                  "source": {
+                    "file": { "key": "b.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 15,
+                    "lineEnd": 19,
+                    "columnEnd": 19
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

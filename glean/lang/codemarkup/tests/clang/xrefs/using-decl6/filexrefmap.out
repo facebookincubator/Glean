@@ -30,6 +30,37 @@
         {
           "target": {
             "declaration": {
+              "enum_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "Foo" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "N1" } } }
+                      }
+                    }
+                  },
+                  "isScoped": false,
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 10,
+                    "columnBegin": 1,
+                    "lineEnd": 10,
+                    "columnEnd": 12
+                  }
+                }
+              }
+            }
+          },
+          "from": {
+            "spans": [ { "length": 3, "offsets": [ 367 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
+          }
+        },
+        {
+          "target": {
+            "declaration": {
               "namespace_": {
                 "key": {
                   "name": { "key": { "name": { "key": "N2" } } },

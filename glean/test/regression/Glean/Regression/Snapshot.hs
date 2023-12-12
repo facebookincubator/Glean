@@ -33,7 +33,9 @@ import qualified Test.HUnit as HUnit
 
 import TestRunner
 import Util.JSON.Pretty ()
+import Util.Log
 
+import Glean (Backend)
 import Glean.Indexer
 import Glean.Init (withUnitTestOptions)
 import Glean.Regression.Config
@@ -66,34 +68,43 @@ runTest
   -> FilePath    -- ^ test root, canonicalized
   -> TestConfig
   -> IO [FilePath]
-runTest Driver{..} driverOpts root testIn =
-  withTestBackend testIn $ \backend ->
-    withTestDatabase backend (indexerRun driverIndexer driverOpts) testIn $
-      queryMakeOuts testIn backend
-  where
-    queryMakeOuts test backend repo = do
-      queries <- get_queries root mempty (testRoot test)
-      fmap concat $ forM (Map.elems queries) $ \query -> do
-        (result, perf) <- runQuery
-          backend
-          repo
-          (defaultTransforms <> driverTransforms)
-          query
-        let base = testOutput test </> dropExtension (takeFileName query)
-            out = base <.> "out"
-            perfOut = base <.> "perf"
-        writeFile out result
-        mapM_ (writeFile perfOut) perf
-        return $ if isJust perf then [out,perfOut] else [out]
+runTest driver@Driver{..} driverOpts root testIn =
+  withTestBackend testIn $ \backend -> do
+    let index = indexerRun driverIndexer
+    driverCreateDatabase driverOpts backend index testIn
+    runQueries backend driver root testIn
 
-    get_queries root qs path = do
-      files <- listDirectory path
-      let qs' = Map.union qs $ Map.fromList
-            [ (file, path </> file)
-            | file <- files, ".query" `isExtensionOf` file ]
-      if equalFilePath path root
-        then return qs'
-        else get_queries root qs' $ takeDirectory path
+-- | Run the queries
+runQueries
+  :: Backend b
+  => b
+  -> Driver opts
+  -> FilePath  -- ^ test root, canonicalized
+  -> TestConfig
+  -> IO [FilePath]
+runQueries backend Driver{..} root test  = do
+  queries <- get_queries root mempty (testRoot test)
+  fmap concat $ forM (Map.elems queries) $ \query -> do
+    (result, perf) <- runQuery
+      backend
+      (testRepo test)
+      (defaultTransforms <> driverTransforms)
+      query
+    let base = testOutput test </> dropExtension (takeFileName query)
+        out = base <.> "out"
+        perfOut = base <.> "perf"
+    writeFile out result
+    mapM_ (writeFile perfOut) perf
+    return $ if isJust perf then [out,perfOut] else [out]
+  where
+  get_queries root qs path = do
+    files <- listDirectory path
+    let qs' = Map.union qs $ Map.fromList
+          [ (file, path </> file)
+          | file <- files, ".query" `isExtensionOf` file ]
+    if equalFilePath path root
+      then return qs'
+      else get_queries root qs' $ takeDirectory path
 
 -- | Outputs to compare/regenerate.
 --
@@ -136,23 +147,34 @@ executeTest cfg driver driverOpts base_group group diff subdir =
         }
   createDirectoryIfMissing True $ testOutput test
   outputs <- runTest driver driverOpts (cfgRoot cfg) test
+  compareOutputs test diff base_group group outputs
+  where
+    with_outdir f = case cfgOutput cfg of
+      Just dir -> f dir
+      Nothing -> withSystemTempDirectory "glean-regression" f
+
+compareOutputs
+  :: TestConfig
+  -> (Outputs -> IO Result)  -- ^ compare or overwrite golden outputs
+  -> String
+  -> String
+  -> [FilePath]
+  -> IO Result
+compareOutputs test diff base_group group outputs = do
   fmap mconcat $ forM outputs $ \output -> do
     let base = testRoot test </> takeFileName output
         specific
           | group == base_group = base
-          | otherwise =
-              let (stem,ext) = splitExtension base
-              in
-              addExtension (stem <.> group) ext
+          | otherwise = outputFileForGroup base group
     diff Outputs
       { outGenerated = output
       , outGoldenBase = base
       , outGoldenGroup = specific
       }
-  where
-    with_outdir f = case cfgOutput cfg of
-      Just dir -> f dir
-      Nothing -> withSystemTempDirectory "glean-regression" f
+
+outputFileForGroup :: FilePath -> String -> FilePath
+outputFileForGroup base group = addExtension (stem <.> group) ext
+  where (stem,ext) = splitExtension base
 
 -- | Regenerate golden outputs. Do nothing if 'outGoldenBase' exists and is the
 -- same as 'outGenerated'. Otherwise, copy 'outGenerated' to 'outGoldenGroup'
@@ -186,22 +208,6 @@ diff Outputs{..} = do
           then ": unexpected result\n" ++ sout
           else ": fatal error\n" ++ serr
 
--- | Wrap 'executeTest' into an 'HUnit.Test'
-toHUnit
-  :: Config
-  -> Driver opts
-  -> opts
-  -> String
-  -> String
-  -> FilePath
-  -> HUnit.Test
-toHUnit cfg driver driverOpts base_group group subdir =
-  HUnit.TestLabel subdir $ HUnit.TestCase $ do
-    r <- executeTest cfg driver driverOpts base_group group diff subdir
-    case r of
-      Success _ -> return ()
-      Failure msg -> HUnit.assertFailure $ unlines $ msg []
-
 -- | Convert a 'Driver' into a regression test over --root parameter.
 --
 --  Normal mode: find all /testRoot/*/*/ directories and run all tests.
@@ -221,38 +227,56 @@ testAll act cfg driver opts = do
   tests' <- if null $ cfgTests cfg
     then discoverTests $ cfgRoot cfg
     else return $ cfgTests cfg
+
+  when (null tests') $
+    die $ "No .out files found under " <> cfgRoot cfg
+
   let tests = filter (`notElem` cfgOmitTests cfg) tests'
+
   let groups
         | null fromDriver = [""]
         | otherwise = fromDriver
         where fromDriver = driverGroups driver opts
 
   case cfgReplace cfg of
-    Just root -> do
-      forM_ tests $ \test -> do
-        -- regenerate outputs - use the first group as the base
-        results <- forM groups $ \group ->
-          executeTest cfg { cfgRoot = root } driver opts
-            (head groups) group regenerate test
-        case mconcat results of
-            Failure _ -> return ()
-            Success regenerated -> do
-              removeNonRegenerated root test regenerated
-    Nothing -> do
-      testRunnerAction act $ HUnit.TestList
-        [ (if null g then id else HUnit.TestLabel g)
-            $ HUnit.TestList
-            $ map (toHUnit cfg driver opts (head groups) g) tests
-          | g <- groups ]
+    Just root ->
+      let cfg' = cfg { cfgRoot = root }
+      in
+      testRunnerAction act $
+        HUnit.TestList $ flip map tests $ \subdir ->
+          HUnit.TestLabel subdir $ HUnit.TestCase $ do
+            -- With --replace, we have to run all groups serially,
+            -- because if we run them in parallel then it would be
+            -- non-deterministic whether we overwrite the output file
+            -- for the base group or a specific group.  Also we
+            -- wouldn't know which files we can remove in
+            -- removeNonRegenerated below.
+            result <- mconcat $ flip map groups $ \g ->
+              executeTest cfg' driver opts (head groups) g regenerate subdir
+            removeNonRegenerated root subdir result
+            toHUnit result
 
-    where
+    Nothing ->
+      testRunnerAction act $
+        HUnit.TestList $ flip map groups $ \g ->
+          (if null g then id else HUnit.TestLabel g) $
+            HUnit.TestList $ flip map tests $ \subdir ->
+              HUnit.TestLabel subdir $ HUnit.TestCase $
+                executeTest cfg driver opts (head groups) g diff subdir
+                  >>= toHUnit
+
+  where
       -- clean-up .out or .perf files which weren't regenerated
       -- for instance, if a .query file was removed.
-      removeNonRegenerated root test regenerated = do
+      removeNonRegenerated _ _ Failure{} = return ()
+      removeNonRegenerated root test (Success regenerated) = do
           let path = root </> test
           allFiles <- listDirectory path
           let allOutFiles = filter
                 (\x -> takeExtension x == ".out" || takeExtension x == ".perf")
                 ((path </>) <$> allFiles)
           let toDelete = filter (`notElem` regenerated) allOutFiles
+          when (not (null toDelete)) $
+            logInfo $ "Removing output files that were not regenerated: " <>
+              intercalate "," toDelete
           mapM_ removePathForcibly toDelete

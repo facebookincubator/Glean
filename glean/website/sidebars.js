@@ -80,6 +80,8 @@ module.exports = {
                    'indexer/lsif-go',
                    'indexer/lsif-rust',
                    'indexer/lsif-java',
+                   'indexer/scip-python',
+                   'indexer/scip-dotnet',
 
                ],
            },

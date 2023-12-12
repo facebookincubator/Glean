@@ -68,6 +68,17 @@ module Glean
   , DatabaseNotIncomplete(..)
   , WrongHandle(..)
   , FactIdRange(..)
+  , Tasks
+  , Task(..)
+  , TaskState(..)
+  , TaskRunning(..)
+  , TaskWaiting(..)
+  , TaskFinished(..)
+  , ParcelState(..)
+  , ParcelRunning(..)
+  , ParcelWaiting(..)
+  , ParcelFinished(..)
+  , GetDatabaseResult(..)
 
   -- * Repositories
   , Repo(..)

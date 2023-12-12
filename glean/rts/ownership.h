@@ -39,6 +39,8 @@ struct OwnershipStats {
 
   uint64_t num_owner_entries;
   size_t owners_size;
+
+  int64_t num_orphan_facts; // <0 means "don't know yet"
 };
 
 ///
@@ -73,24 +75,14 @@ struct Ownership {
 // Contains the canonical 'UsetId's that will be added to the database.
 //
 struct ComputedOwnership {
-  ~ComputedOwnership() {
-    for (auto &set: sets_) {
-      set.set.free();
-    }
-  }
-
   ComputedOwnership(
-        UsetId firstId,
-        std::vector<SetExpr<MutableOwnerSet>>&& sets,
+        Usets&& sets,
         std::vector<std::pair<Id,UsetId>>&& facts) :
-      firstId_(firstId),
       sets_(std::move(sets)),
       facts_(std::move(facts)) {}
 
-  UsetId firstId_;
-
   // Sets, indexed by UsetId starting at firstId_
-  std::vector<SetExpr<MutableOwnerSet>> sets_;
+  Usets sets_;
 
   // Maps fact Ids to owner sets, represented as intervals
   std::vector<std::pair<Id,UsetId>> facts_;

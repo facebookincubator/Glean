@@ -17,14 +17,16 @@ import Control.Monad
 import Data.Coerce
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
+import Data.Maybe
 import Data.Proxy
 import qualified Data.Set as Set
 import qualified Data.Vector as V
 
+import Control.Concurrent.Stream (streamWithState)
 import Util.Log (logInfo)
 
 import Glean
-import Glean.Typed (getPid)
+import Glean.Angle
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Util.PredMap as PredMap
@@ -35,9 +37,9 @@ import Derive.Common
 import Derive.Types
 
 data Ranges = Ranges
-  { ranges     :: Set.Set ByteRange
-  , expansions :: Set.Set ByteRange
-  , spellings  :: Set.Set ByteRange
+  { ranges     :: !(Set.Set ByteRange)
+  , expansions :: !(Set.Set ByteRange)
+  , spellings  :: !(Set.Set ByteRange)
   }
 
 instance Semigroup Ranges where
@@ -62,16 +64,28 @@ addUses indirects (target, Cxx.From{..})
   | otherwise = id
   where spansToRanges = Set.fromList . packedByteSpansToRanges
 
-deriveUses :: Backend e => e -> Config -> Writer -> IO ()
-deriveUses e cfg writer = do
-  logInfo "deriveUses"
-  indirects <- getIndirectTargets e cfg (getPid writer)
-  logInfo $ "loaded " ++ show (PredMap.size indirects) ++ " indirect targets"
-  xrefs <- getFileXRefs e cfg
-  logInfo $ "loaded " ++ show (PredMap.size xrefs) ++ " file xrefs"
+deriveUses
+  :: Backend e
+  => e
+  -> Config
+  -> (Int -> ([Writer] -> IO ()) -> IO ())
+  -> IO ()
 
-  let generateUses :: Maybe Src.File -> [IdOf Cxx.FileXRefs] -> Uses -> IO ()
-      generateUses (Just file) deps uses = do
+deriveUses e cfg withWriters = do
+  logInfo $ "deriveUses" <> if cfgIncremental cfg then " (incremental)" else ""
+  indirects <- getIndirectTargets e cfg
+    -- There are usually not many indirect targets, so we can get away
+    -- without doing anything special in incremental mode for
+    -- getIndirectTargets.
+  logInfo $ "loaded " ++ show (PredMap.size indirects) ++ " indirect targets"
+
+  let generateUses
+        :: Writer
+        -> Maybe Src.File
+        -> [IdOf Cxx.FileXRefs]
+        -> Uses
+        -> IO ()
+      generateUses writer (Just file) deps uses = do
         when (not $ cfgDryRun cfg) $ writeFacts writer $ do
           facts <- forM (HashMap.toList uses) $ \(target, Ranges{..}) -> do
             let rangesToSpans = rangesToPackedByteSpans . Set.toList
@@ -84,14 +98,21 @@ deriveUses e cfg writer = do
               }
           when (not (null deps)) $ derivedFrom (coerce deps) facts
 
-      generateUses _ _ _ = return ()
+      generateUses _ _ _ _ = return ()
+
+      ifIncremental f = if cfgIncremental cfg then f else id
 
       -- NOTE: We rely on the ordering property of the `allFacts` query.
       --       Specifically, we expect to encounter `FileXRefMap`s for
       --       a single file in a single sequence.
+      -- NOTE (incremental):
+      --   what's the rationale for only processing the new FileXRefMaps?
+      --   Provided we did the fanout correctly, this will include all
+      --   FileXRefMaps corresponding to files that have changed.
       q :: Query Cxx.FileXRefMap
       q = maybe id limit (cfgMaxQueryFacts cfg) $
-          limitBytes (cfgMaxQuerySize cfg) allFacts
+          limitBytes (cfgMaxQuerySize cfg) $ query $ ifIncremental new $
+            predicate @Cxx.FileXRefMap wild
 
       -- The dependencies we record for each cxx.TargetUses fact are
       -- the set of cxx.FileXRefs used to generate it. The other
@@ -107,24 +128,34 @@ deriveUses e cfg writer = do
       -- ownership like this is safe and more efficient because we
       -- generate fewer ownership sets.
 
-  (uses, deps, last_file) <-
-    runQueryEach e (cfgRepo cfg) q (mempty, [], Nothing)
-      $ \(uses, deps, last_file) (Cxx.FileXRefMap i k) -> do
-        key <- case k of
-          Just k -> return k
-          Nothing -> throwIO $ ErrorCall "internal error: deriveUses"
-        let file = Just $ Cxx.fileXRefMap_key_file key
-        (deps, uses) <- if last_file == file
-          then return (deps, uses)
-          else do
-            generateUses last_file deps uses
-            return ([], HashMap.empty)
+  let
+    producer yield = do
+      (file, final_facts) <- runQueryEach e (cfgRepo cfg) q (Nothing, [])
+        $ \(last_file, facts) fact@(Cxx.FileXRefMap _ k) -> do
+          key <- case k of
+            Just k -> return k
+            Nothing -> throwIO $ ErrorCall "internal error: deriveUses"
+          let file = Just $ Cxx.fileXRefMap_key_file key
+          if last_file == file
+            then return (file, fact:facts)
+            else do
+              yield (last_file, facts)
+              return (file, [fact])
+      when (isJust file) $ yield (file, final_facts)
 
-        let
-            (new_deps, map_targets) = case PredMap.lookup (IdOf $ Fid i) xrefs of
-              Nothing -> (PredSet.empty, mempty)
-              Just x -> x
-            new_uses = foldr (addUses indirects) uses $
+    worker writer (file, facts) = do
+      fileXRefs <- getFileXRefsFor e (map getId facts) cfg
+      let
+        (deps, uses) = foldr f (mempty, HashMap.empty) facts
+        f (Cxx.FileXRefMap i (Just key)) (deps, uses) =
+          (new_deps, new_uses)
+          where
+            !new_deps = PredSet.toList these_deps <> deps
+            (these_deps, map_targets) =
+              case PredMap.lookup (IdOf $ Fid i) fileXRefs of
+                Nothing -> (PredSet.empty, mempty)
+                Just x -> x
+            !new_uses = foldr (addUses indirects) uses $
               [ (target, from)
               | Cxx.FixedXRef target from <- Cxx.fileXRefMap_key_fixed key ]
               ++
@@ -132,9 +163,11 @@ deriveUses e cfg writer = do
               | (targets, from) <-
                   zip (V.toList map_targets) (Cxx.fileXRefMap_key_froms key)
               , target <- HashSet.toList targets ]
-        return (new_uses, PredSet.toList new_deps <> deps, file)
+        f _ x = x
+      generateUses writer file deps uses
 
-  generateUses last_file deps uses
+  withWriters (cfgWorkerThreads cfg) $ \writers ->
+    streamWithState producer writers worker
 
   completePredicates e (cfgRepo cfg) $
     CompletePredicates_derived $ CompleteDerivedPredicate $

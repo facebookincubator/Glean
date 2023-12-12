@@ -152,8 +152,11 @@ instance Storage RocksDB where
         then Just <$> unsafeMallocedByteString value_ptr value_size
         else return Nothing
 
-  commit db facts owned = withForeignPtr (dbPtr db) $ \db_ptr -> do
+  commit db facts = withForeignPtr (dbPtr db) $ \db_ptr -> do
     with facts $ \facts_ptr -> invoke $ glean_rocksdb_commit db_ptr facts_ptr
+
+  addOwnership db owned =
+    withForeignPtr (dbPtr db) $ \db_ptr ->
     when (not $ HashMap.null owned) $
       withMany entry (HashMap.toList owned) $ \xs ->
       let (unit_ptrs, unit_sizes, facts_ptrs, facts_sizes) = unzip4 xs

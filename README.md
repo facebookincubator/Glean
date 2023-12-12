@@ -42,17 +42,19 @@ We also support the [SCIP](https://github.com/sourcegraph/scip) or [LSIF](https:
 * [Go](https://glean.software/docs/indexer/lsif-go)
 * [TypeScript](https://glean.software/docs/indexer/lsif-typescript)
 * [Java](https://glean.software/docs/indexer/lsif-java)
+* [Python](https://glean.software/docs/indexer/scip-python)
+* [Dotnet](https://glean.software/docs/indexer/scip-dotnet)
 
-Indexers for these languages exist but aren't in the open source
-release yet; we hope to make these available in the future:
+Custom indexers for these languages exist but aren't in the open source release
+yet; we hope to make these available in the future:
 
 * Python
-* Objective-C
 * Java
 * Kotlin
 * Erlang
 * Thrift
-* Buck
+* Buck and Bazel
+* C#
 
 ## License
 

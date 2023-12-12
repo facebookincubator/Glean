@@ -84,7 +84,7 @@ import Glean.Glass.SymbolId.LSIF ({- instances -})
 import Glean.Glass.SymbolId.Pp ({- instances -})
 import Glean.Glass.SymbolId.Python ({- instances -})
 import Glean.Glass.SymbolId.SCIP ({- instances -})
-import Glean.Glass.SymbolId.Thrift ({- instances -})
+import Glean.Glass.SymbolId.CSharp ({- instances -})
 
 import qualified Glean.Glass.SymbolId.Cxx as Cxx
 import qualified Glean.Glass.SymbolId.Pp as Pp
@@ -98,8 +98,8 @@ import Glean.Schema.CodeHack.Types as Hack ( Entity(Entity_decl) )
 import Glean.Schema.CodeJava.Types as Java ( Entity(Entity_decl) )
 import Glean.Schema.CodeKotlin.Types as Kotlin ( Entity(Entity_decl) )
 import Glean.Schema.CodePython.Types as Python ( Entity(Entity_decl) )
-import Glean.Schema.CodeThrift.Types as Thrift ( Entity(Entity_decl) )
 import Glean.Schema.CodeFbthrift.Types as Fbthrift ( Entity(Entity_decl) )
+import Glean.Schema.CodeCsharp.Types as CSharp ( Entity(Entity_decl) )
 
 -- Introduce a SymbolId. This is essentially the semantic "path to this symbol
 -- in the Codex style. www/php/Glean/getLatestRepo
@@ -190,6 +190,7 @@ shortCodeTable =
   , (Language_TypeScript , "ts")
   , (Language_Java , "java")
   , (Language_Kotlin , "kotlin")
+  , (Language_CSharp, "cs")
   ]
 
 languageToCode :: Map.Map Language Text
@@ -213,6 +214,7 @@ fromShortCode code = Map.lookup code codeToLanguage
 -- | The language is the outermost tag of the code.Entity constructor
 entityLanguage :: Code.Entity -> Language
 entityLanguage e = case e of
+  Code.Entity_csharp{} -> Language_CSharp
   Code.Entity_cxx{} -> Language_Cpp
   Code.Entity_flow{} -> Language_JavaScript
   Code.Entity_hack{} -> Language_Hack
@@ -221,7 +223,6 @@ entityLanguage e = case e of
   Code.Entity_kotlin{} -> Language_Kotlin
   Code.Entity_pp{} -> Language_PreProcessor
   Code.Entity_python{} -> Language_Python
-  Code.Entity_thrift{} -> Language_Thrift
   Code.Entity_fbthrift{} -> Language_Thrift
   Code.Entity_buck{} -> Language_Buck
   Code.Entity_erlang{} -> Language_Erlang
@@ -256,6 +257,7 @@ languageToCodeLang l = case l of
   Language_Erlang -> Just Code.Language_Erlang
   Language_TypeScript -> Just Code.Language_TypeScript
   Language_Go -> Just Code.Language_Go
+  Language_CSharp -> Just Code.Language_CSharp
   Language__UNKNOWN{} -> Nothing
 
 -- | Search queries for C++ should always imply the PreProcessor too
@@ -277,6 +279,7 @@ instance Symbol Code.Entity where
     Code.Entity_hack (Hack.Entity_decl x) -> toSymbolWithPath x p
     Code.Entity_python (Python.Entity_decl x) -> toSymbolWithPath x p
     Code.Entity_flow x -> toSymbolWithPath x p
+    Code.Entity_csharp x -> toSymbolWithPath x p
     Code.Entity_cxx x -> toSymbolWithPath x p
     Code.Entity_buck x -> toSymbolWithPath x p
     Code.Entity_erlang x -> toSymbolWithPath x p
@@ -284,7 +287,6 @@ instance Symbol Code.Entity where
     Code.Entity_java x -> toSymbolWithPath x p
     Code.Entity_kotlin x -> toSymbolWithPath x p
     Code.Entity_pp x -> toSymbolWithPath x p
-    Code.Entity_thrift (Thrift.Entity_decl x) -> toSymbolWithPath x p
     Code.Entity_fbthrift (Fbthrift.Entity_decl x) -> toSymbolWithPath x p
     Code.Entity_lsif ent -> case ent of -- enumerate all variants for lsif
       Lsif.Entity_erlang se -> toSymbolWithPath se p
@@ -333,10 +335,10 @@ entityToAngle e = case e of
     alt @"java" (alt @"decl" (toAngle x))
   Code.Entity_kotlin (Kotlin.Entity_decl x) -> Right $
     alt @"kotlin" (alt @"decl" (toAngle x))
-  Code.Entity_thrift (Thrift.Entity_decl x) -> Right $
-    alt @"thrift" (alt @"decl" (toAngle x))
   Code.Entity_fbthrift (Fbthrift.Entity_decl x) -> Right $
     alt @"fbthrift" (alt @"decl" (toAngle x))
+  Code.Entity_csharp (CSharp.Entity_decl x) -> Right $
+    alt @"csharp" (alt @"decl" (toAngle x))
   -- lsif languages, enumerate all lang constructors
   Code.Entity_lsif se -> alt @"lsif" <$> case se of
       Lsif.Entity_erlang x -> Right $ alt @"erlang" (toAngle x)
@@ -360,7 +362,7 @@ entityToAngle e = case e of
       Scip.Entity_EMPTY -> Left "toAngle: Unknown SCIP language"
 
   _ -> Left $
-    "Unsupported language: " <> toShortCode (entityLanguage e)
+    "ToAngle: Unsupported language: " <> toShortCode (entityLanguage e)
 
 instance ToQName Code.Entity where
   toQName e = case e of
@@ -373,8 +375,8 @@ instance ToQName Code.Entity where
     Code.Entity_erlang x -> toQName x
     Code.Entity_java x -> toQName x
     Code.Entity_kotlin x -> toQName x
-    Code.Entity_thrift (Thrift.Entity_decl x) -> toQName x
     Code.Entity_fbthrift (Fbthrift.Entity_decl x) -> toQName x
+    Code.Entity_csharp x -> toQName x
     Code.Entity_lsif se -> case se of -- enumerate all cases for lsif
       Lsif.Entity_erlang x -> toQName x
       Lsif.Entity_fsharp x -> toQName x

@@ -45,8 +45,9 @@ import Data.Either.Extra
 import qualified Thrift.Protocol
 import qualified Thrift.Protocol.JSON as Thrift
 
-import Glean ( Repo, Backend )
-import Glean.Util.Some ( Some )
+import Glean ( Repo )
+import Glean.LocalOrRemote ( LocalOrRemote )
+import Glean.Util.Some ( Some(..) )
 import Glean.Regression.Test
 import qualified Glean.Indexer as Glean
 
@@ -78,7 +79,7 @@ instance FromJSON Query where
 
 type Output = FilePath
 
-type Getter = IO (Some Backend, Repo)
+type Getter = IO (Some LocalOrRemote, Repo)
 
 findQueries :: FilePath -> IO (Map.Map String FilePath)
 findQueries root = do

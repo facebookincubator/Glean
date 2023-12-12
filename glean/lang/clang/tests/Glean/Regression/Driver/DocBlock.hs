@@ -21,7 +21,7 @@ import Glean.Write (parseRef)
 indexer :: Indexer Clang.Options
 indexer = driverIndexer Clang.driver `indexerThen` docblocks
   where
-  docblocks backend repo params = do
+  docblocks _ backend repo params = do
     DocBlock.runIndexer backend repo params
     forM_ passes $ \predicate ->
       derivePredicate backend repo

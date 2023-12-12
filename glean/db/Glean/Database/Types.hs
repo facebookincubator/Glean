@@ -8,18 +8,19 @@
 
 module Glean.Database.Types (
   Writing(..), OpenDB(..), DBState(..),
-  Write(..),
+  Write(..), WriteContent(..),
   Tailer(..), TailerKey, DB(..),
   Env(..), WriteQueues(..), WriteQueue(..), WriteJob(..),
   Derivation(..),
   EnableRecursion(..),
-  JanitorRunResult(..), JanitorException(..)
+  JanitorRunResult(..), JanitorException(..),
 ) where
 
 import Control.DeepSeq
 import Control.Concurrent.Async
 import Control.Concurrent.MVar (MVar)
 import Control.Exception
+import Control.Trace (Tracer)
 import Data.ByteString (ByteString)
 import Data.HashMap.Strict (HashMap)
 import Data.HashSet (HashSet)
@@ -40,13 +41,14 @@ import Glean.Database.Config
 import Glean.Database.Meta
 import Glean.Database.Schema.Types
 import Glean.Database.Storage (Database, Storage, describe)
+import Glean.Database.Trace
 import Glean.Database.Work.Heartbeat (Heartbeats)
 import Glean.Database.Work.Queue (WorkQueue)
 import Glean.Logger.Server (GleanServerLogger)
 import Glean.Logger.Database (GleanDatabaseLogger)
 import Glean.RTS.Foreign.LookupCache (LookupCache)
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
-import Glean.RTS.Foreign.Ownership (Ownership, Slice)
+import Glean.RTS.Foreign.Ownership (Ownership, Slice, DefineOwnership)
 import Glean.RTS.Foreign.Subst (Subst)
 import Glean.RTS.Types (Fid(..))
 import qualified Glean.Recipes.Types as Recipes
@@ -145,11 +147,18 @@ data Write = Write
   , writeTimeout :: TimePoint
   }
 
+-- | What we are going to write into the DB
+data WriteContent = WriteContent
+  { writeBatch :: !Thrift.Batch
+  , writeOwnership :: Maybe DefineOwnership
+  , writeSubst :: Subst -> Subst
+  }
+
 -- | A Write on the WriteQueue
 data WriteJob
   = WriteJob
     { writeSize :: {-# UNPACK #-} !Int
-    , writeTask :: Point -> IO Subst
+    , writeContentIO :: IO WriteContent
     , writeDone :: MVar (Either SomeException Subst)
     , writeStart :: Point
     }
@@ -271,6 +280,7 @@ data Env = forall storage. Storage storage => Env
       -- ^ Experimental support for recursive queries. For testing only.
   , envFilterAvailableDBs :: [Thrift.Repo] -> IO [Thrift.Repo]
     -- ^ Filter out DBs not currently available in the server tier
+  , envTracer :: Tracer GleanTrace
   }
 
 instance Show Env where

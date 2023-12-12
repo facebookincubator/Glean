@@ -263,6 +263,19 @@ struct Usets {
 
   UsetId getNextId() const { return nextId; }
 
+  // Merge another Usets into this one. The other Usets must be
+  // disjoint and using sets numbered from nextId onwards.
+  void append(Usets&& other) {
+    CHECK_EQ(other.firstId, nextId);
+    CHECK_EQ(other.nextId, nextId + other.usets.size());
+    other.foreach([&](Uset* uset) {
+      auto p = add(uset);
+      CHECK(p == uset); // we should have added it
+    });
+    other.usets.clear(); // ownership of the underlying sets has been transferred
+    nextId = other.nextId;
+  }
+
   using MutableEliasFanoList = SetU32::MutableEliasFanoList;
   std::vector<SetExpr<MutableEliasFanoList>> toEliasFano();
 

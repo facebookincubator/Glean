@@ -5,7 +5,7 @@ schema src.1 {
 # Path to the source file relative to the repository root
 predicate File : string
 
-# Source code digests produced by unspecified hash function
+# Source code digests produced by unspecified hash function
 predicate FileDigest : File -> string
 
 # Common source code location type
@@ -37,13 +37,14 @@ type ByteRange = {
 predicate FileLines : {
   file : File,
   lengths : [nat],
-    # length of each line, including the terminating newline (if any)
+    # length in bytes of each line, including the terminating newline (if any)
     # NOTE: we store length rather than offset because it is shorter;
     # offsets can be recovered via scanl' (+) 0
   endsInNewline : bool,
     # does the last line end in a newline?
   hasUnicodeOrTabs : bool,
     # does the file have any multibyte UTF-8 code points or tabs
+    # i.e. char > 0x7F || c == '\t'
 }
 
 # A span of bytes within a file
@@ -139,7 +140,8 @@ type FileLocation = {
 type IndexFailureReason = enum {
   CompileError |
   BuildSystemError |
-  Unclassified
+  Unclassified |
+  DiscoveryError
 }
 
 # It is a good practice to add all errors directly into db

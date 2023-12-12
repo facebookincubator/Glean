@@ -438,7 +438,6 @@ const char *glean_serialize_subst(
 
 const char *glean_subst_intervals(
     const Substitution *subst,
-    bool rebase,
     const glean_fact_id_t *ins,
     size_t ins_size,
     glean_fact_id_t **outs,
@@ -451,7 +450,7 @@ const char *glean_subst_intervals(
       ins+ins_size,
       std::back_inserter(ids),
       Id::fromThrift);
-    auto res = rebase ? subst->rebaseIntervals(ids) : subst->substIntervals(ids);
+    auto res = subst->substIntervals(ids);
     auto fres = ffi::malloc_array<glean_fact_id_t>(res.size());
     std::transform(res.begin(), res.end(), fres.get(), [](auto id) { return id.toThrift(); });
     fres.release_to(outs, outs_size);
@@ -586,13 +585,16 @@ const char* glean_factset_rebase(
     const Inventory* inventory,
     const Substitution* subst,
     LookupCache* cache,
-    FactSet** result) {
+    FactSet** result,
+    Substitution** out_subst) {
   return ffi::wrap([=] {
     GLEAN_SANITY_CHECK(subst->sanityCheck(false));
     *result = nullptr;
     cache->withBulkStore([&](auto& store) {
       GLEAN_SANITY_CHECK(facts->sanityCheck());
-      *result = new FactSet(facts->rebase(*inventory, *subst, store));
+      auto [factset,local_subst] = facts->rebase(*inventory, *subst, store);
+      *result = new FactSet(std::move(factset));
+      *out_subst = new Substitution(std::move(local_subst));
       GLEAN_SANITY_CHECK((*result)->sanityCheck());
     });
   });
@@ -1015,6 +1017,27 @@ const char *glean_slice_compute(
     std::sort(vec.begin(), vec.end());
     std::vector<const Slice*> slices(bases, bases + num_bases);
     *result = slice(*ownership, Slices(std::move(slices)), vec, exclude != 0).release();
+  });
+}
+
+const char* glean_slice_serialize(
+  Slice* slice,
+  const void **data,
+  size_t *size) {
+  return ffi::wrap([=] {
+    binary::Output bytes;
+    slice->serialize(bytes);
+    ffi::clone_bytes(bytes.bytes()).release_to(data, size);
+  });
+}
+
+const char* glean_slice_deserialize(
+  const void *data,
+  size_t size,
+  Slice **slice) {
+  return ffi::wrap([=] {
+    binary::Input bytes(data, size);
+    *slice = Slice::deserialize(bytes).release();
   });
 }
 

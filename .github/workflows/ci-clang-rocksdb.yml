@@ -58,6 +58,16 @@ jobs:
           tar -xvf "${NODEARCH}.tar.xz"
           cp -r "${NODEARCH}"/* "$HOME"/.hsthrift/
           npm install -g @sourcegraph/scip-python
+          apt install -y python3-pip
+
+      - name: Install indexer (dotnet)
+        run: |
+            export DOTNET=7.0
+            wget https://dot.net/v1/dotnet-install.sh
+            chmod +x dotnet-install.sh
+            ./dotnet-install.sh --channel ${DOTNET}
+            export DOTNET_ROOT=$HOME/.dotnet
+            $DOTNET_ROOT/dotnet tool install --global scip-dotnet
 
       - name: Install indexer (go)
         run: |
@@ -73,7 +83,7 @@ jobs:
 
       - name: Install indexer (rust)
         run: |
-          export RUST_ANALYZER=2023-06-19
+          export RUST_ANALYZER=2023-11-06
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
           mkdir -p "$HOME"/.hsthrift/bin

@@ -24,7 +24,7 @@ module Glean.RTS.Foreign.FactSet
 
 import Control.Exception
 import Data.Int
-import Data.Vector.Storable as Vector
+import Data.Vector.Storable as Vector hiding (create)
 import Data.Word
 import Foreign.C.String
 import Foreign.C.Types
@@ -102,18 +102,20 @@ serializeReorder facts order =
       order_ptr
       (fromIntegral (Vector.length order))
 
-rebase :: Inventory -> Subst -> LookupCache -> FactSet -> IO FactSet
+rebase :: Inventory -> Subst -> LookupCache -> FactSet -> IO (FactSet, Subst)
 rebase inventory subst cache facts =
   with inventory $ \inventory_ptr ->
   with subst $ \subst_ptr ->
   with cache $ \cache_ptr ->
   with facts $ \facts_ptr ->
-  construct $ invoke $
-    glean_factset_rebase
-      facts_ptr
-      inventory_ptr
-      subst_ptr
-      cache_ptr
+  mask_ $ do
+    (p_factset, p_subst) <- invoke $
+      glean_factset_rebase
+        facts_ptr
+        inventory_ptr
+        subst_ptr
+        cache_ptr
+    (,) <$> create p_factset <*> create p_subst
 
 append :: FactSet -> FactSet -> IO ()
 append target source =
@@ -192,6 +194,7 @@ foreign import ccall unsafe glean_factset_rebase
   -> Ptr Subst
   -> Ptr LookupCache
   -> Ptr (Ptr FactSet)
+  -> Ptr (Ptr Subst)
   -> IO CString
 
 foreign import ccall unsafe glean_factset_append
