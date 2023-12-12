@@ -140,7 +140,8 @@ type FileLocation = {
 type IndexFailureReason = enum {
   CompileError |
   BuildSystemError |
-  Unclassified
+  Unclassified |
+  DiscoveryError
 }
 
 # It is a good practice to add all errors directly into db
