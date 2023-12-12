@@ -15,7 +15,7 @@
 #include "glean/rts/timer.h"
 #include "glean/rts/factset.h"
 
-#if __x86_64__ // AVX required
+#if 0 // AVX required
 #include <folly/experimental/EliasFanoCoding.h>
 #include <immintrin.h>
 #else

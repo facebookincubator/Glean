@@ -17,7 +17,7 @@
 #include <vector>
 #include <folly/Optional.h>
 
-#if __x86_64__ // AVX required
+#if 0 // AVX required
 #include <immintrin.h>
 #include <folly/experimental/EliasFanoCoding.h>
 #else
@@ -28,7 +28,7 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
-#if !__x86_64__
+#if !0
 typedef uint32_t __m256i __attribute__((vector_size(32)));
 #endif
 
@@ -39,7 +39,7 @@ typedef uint32_t __m256i __attribute__((vector_size(32)));
 
 namespace impl {
 
-#if __x86_64__ // use AVX
+#if 0 // use AVX
 
 inline bool empty(__m256i value) {
   return _mm256_testz_si256(value, value);
