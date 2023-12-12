@@ -6,6 +6,13 @@ import src.1
 
 predicate Name: string
 
+# Lower case normalized names (for case-insensive search)
+predicate NameLowerCase:
+  {
+    nameLowercase : string,
+    name : Name,
+  } stored { prim.toLower Str, N } where N = Name Str
+
 predicate FullName:
   { name: Name
   , containingNamespace: Namespace
@@ -312,5 +319,38 @@ predicate FileEntityXRefs:
       { type = AType } = Defn;
     );
     { File, Span } = SrcLoc;
+
+# search
+
+# find definitions knowing the local identifier name
+predicate SearchByName:
+  {
+    name: Name,
+    defn: Definition
+  }
+  { Name, Defn } where
+    # things that use FullNames
+    ( QName = csharp.FullName { name = Name };
+      TDefn = (
+        CDefn = Class { name = QName }; { class_ = CDefn } : NamedType ) | (
+        IDefn = Interface { name = QName }; { interface_ = IDefn } ) | (
+        RDefn = Record { name = QName }; { record_ = RDefn } ) | (
+        SDefn = Struct { name = QName }; { struct_ = SDefn }
+      );
+      { type = { namedType = TDefn } } = Defn;
+    # things that use Name only
+    ) | (
+      MDefn = Method { name = Name }; { method = MDefn } = Defn
+    ) | (
+      PDefn = Parameter { name = Name }; { parameter = PDefn } = Defn
+    ) | (
+      FDefn = Field { name = Name }; { field = FDefn } = Defn
+    ) | (
+      TDefn = TypeParameter { name = Name }; { typeParameter = TDefn } = Defn
+    ) | (
+      LDefn = Local { name = Name }; { local = LDefn } = Defn
+    ) | (
+      PDefn = Property { name = Name }; { property = PDefn } = Defn
+    )
 
 }

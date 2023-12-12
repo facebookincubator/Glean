@@ -84,6 +84,7 @@ import Glean.Glass.SymbolId.LSIF ({- instances -})
 import Glean.Glass.SymbolId.Pp ({- instances -})
 import Glean.Glass.SymbolId.Python ({- instances -})
 import Glean.Glass.SymbolId.SCIP ({- instances -})
+import Glean.Glass.SymbolId.CSharp ({- instances -})
 
 import qualified Glean.Glass.SymbolId.Cxx as Cxx
 import qualified Glean.Glass.SymbolId.Pp as Pp
@@ -98,6 +99,7 @@ import Glean.Schema.CodeJava.Types as Java ( Entity(Entity_decl) )
 import Glean.Schema.CodeKotlin.Types as Kotlin ( Entity(Entity_decl) )
 import Glean.Schema.CodePython.Types as Python ( Entity(Entity_decl) )
 import Glean.Schema.CodeFbthrift.Types as Fbthrift ( Entity(Entity_decl) )
+import Glean.Schema.CodeCsharp.Types as CSharp ( Entity(Entity_decl) )
 
 -- Introduce a SymbolId. This is essentially the semantic "path to this symbol
 -- in the Codex style. www/php/Glean/getLatestRepo
@@ -277,6 +279,7 @@ instance Symbol Code.Entity where
     Code.Entity_hack (Hack.Entity_decl x) -> toSymbolWithPath x p
     Code.Entity_python (Python.Entity_decl x) -> toSymbolWithPath x p
     Code.Entity_flow x -> toSymbolWithPath x p
+    Code.Entity_csharp x -> toSymbolWithPath x p
     Code.Entity_cxx x -> toSymbolWithPath x p
     Code.Entity_buck x -> toSymbolWithPath x p
     Code.Entity_erlang x -> toSymbolWithPath x p
@@ -334,6 +337,8 @@ entityToAngle e = case e of
     alt @"kotlin" (alt @"decl" (toAngle x))
   Code.Entity_fbthrift (Fbthrift.Entity_decl x) -> Right $
     alt @"fbthrift" (alt @"decl" (toAngle x))
+  Code.Entity_csharp (CSharp.Entity_decl x) -> Right $
+    alt @"csharp" (alt @"decl" (toAngle x))
   -- lsif languages, enumerate all lang constructors
   Code.Entity_lsif se -> alt @"lsif" <$> case se of
       Lsif.Entity_erlang x -> Right $ alt @"erlang" (toAngle x)
@@ -357,7 +362,7 @@ entityToAngle e = case e of
       Scip.Entity_EMPTY -> Left "toAngle: Unknown SCIP language"
 
   _ -> Left $
-    "Unsupported language: " <> toShortCode (entityLanguage e)
+    "ToAngle: Unsupported language: " <> toShortCode (entityLanguage e)
 
 instance ToQName Code.Entity where
   toQName e = case e of
@@ -371,6 +376,7 @@ instance ToQName Code.Entity where
     Code.Entity_java x -> toQName x
     Code.Entity_kotlin x -> toQName x
     Code.Entity_fbthrift (Fbthrift.Entity_decl x) -> toQName x
+    Code.Entity_csharp x -> toQName x
     Code.Entity_lsif se -> case se of -- enumerate all cases for lsif
       Lsif.Entity_erlang x -> toQName x
       Lsif.Entity_fsharp x -> toQName x
