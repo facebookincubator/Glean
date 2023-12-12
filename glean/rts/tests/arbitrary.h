@@ -21,7 +21,7 @@ struct Arbitrary<facebook::glean::rts::WordId<T>> {
     return gen::map(
       gen::inRange(
         facebook::glean::rts::WordId<T>::lowest().toWord(),
-        typename facebook::glean::rts::WordId<T>::word_type(0xFFFFFF)),
+        typename facebook::glean::rts::WordId<T>::word_type(0xFFFF)),
       facebook::glean::rts::WordId<T>::fromWord);
   }
 };

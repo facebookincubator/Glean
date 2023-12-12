@@ -110,11 +110,10 @@ class CanLookup (Database s) => Storage s where
 
   -- | Commit a set of facts to the database. The facts must have the right ids,
   -- they are NOT renamed.
-  commit
-    :: Database s
-    -> FactSet
-    -> AxiomOwnership
-    -> IO ()
+  commit :: Database s -> FactSet -> IO ()
+
+  -- | Add ownership data about a set of (committed) facts.
+  addOwnership :: Database s -> AxiomOwnership -> IO ()
 
   -- | Optimise a database for reading. This is typically done before backup.
   optimize :: Database s -> Bool {- compact -} -> IO ()

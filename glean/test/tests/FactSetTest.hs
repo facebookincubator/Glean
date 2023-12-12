@@ -65,7 +65,7 @@ rebaseTest = TestList
       r <- try $ FactSet.rebase inventory subst cache local
       result <- case r of
         Left err@SomeException{} -> assertFailure $ "Failed with: " <> show err
-        Right factset -> return factset
+        Right (factset,_) -> return factset
 
       count <- FactSet.factCount result
       assertEqual "facts created" count 1
@@ -107,7 +107,7 @@ rebaseTest = TestList
       r <- try $ FactSet.rebase inventory subst cache local
       result <- case r of
         Left err@SomeException{} -> assertFailure $ "Failed with: " <> show err
-        Right factset -> return factset
+        Right (factset,_) -> return factset
 
       count <- FactSet.factCount result
       assertEqual "facts created" count 1

@@ -1,0 +1,81 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema codemarkup.csharp.1 {
+
+import src.1
+import code.csharp.1
+import codemarkup.types.1
+import csharp.1
+
+#
+# Resolving locations to entities
+#
+
+# knowing a location, find entities
+predicate CSharpResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.csharp.Entity,
+  }
+  { { Name, File, { span = Span }, nothing }, { decl = Defn } } where
+    csharp.FileDefinitions { File, Defn };
+    csharp.DefinitionLocationName { Defn, File, Span, Name };
+
+# knowing an entity, find locations
+predicate CSharpEntityLocation:
+  {
+    entity : code.csharp.Entity,
+    location : codemarkup.types.Location,
+  }
+  { Entity, { Name, File, { span = Span }, nothing } } where
+    { decl = Defn } = Entity;
+    csharp.DefinitionLocationName { Defn, File, Span, Name };
+
+# XRefs : not supported by the CSharp schema yet
+predicate CSharpFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.csharp.Entity,
+  }
+  { File, XRef, { decl = Defn } } where
+    csharp.FileEntityXRefs { File, SrcSpan, Defn };
+    csharp.DefinitionLocationName { Defn, TargetFile, TargetSpan, Name };
+    TargetLoc = { Name, TargetFile, { span = TargetSpan }, nothing }
+      : codemarkup.types.Location;
+    { target = TargetLoc, source = { span = SrcSpan }} = XRef
+      : codemarkup.types.XRefLocation
+
+# find-refs: no implementation
+predicate CSharpEntityUses:
+  {
+    target: code.csharp.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  } # no implementation
+
+# kinds and symbol info
+predicate CSharpEntityKind:
+  {
+    entity: code.csharp.Entity,
+    kind: codemarkup.types.SymbolKind
+  }
+  { Entity, Kind} where
+    { decl = Defn } = Entity;
+    ( { type = TDefn } = Defn;
+      { namedType = NDefn } = TDefn;
+      ( { class_ = _ } = NDefn; Class_ = Kind ) |
+      ( { interface_ = _ } = NDefn; Interface = Kind ) |
+      ( { record_ = _ } = NDefn; Struct = Kind ) |
+      ( { struct_ = _ } = NDefn; Struct = Kind );
+    ) | (
+      { method = _ } = Defn; Method = Kind
+    ) | (
+      { field = _ } = Defn; Field = Kind
+    ) | (
+      { typeParameter = _ } = Defn; TypeParameter = Kind
+    ) | (
+      { property = _ } = Defn; Property = Kind
+    );
+
+}

@@ -13,7 +13,6 @@ module Glean.RTS.Foreign.Subst
   , substIntervals
   , subst
   , substVector
-  , rebaseIntervals
   , deserialize
   , substOffset
   ) where
@@ -63,10 +62,6 @@ substOffset :: Subst -> Int
 substOffset subst = fromIntegral $ unsafeDupablePerformIO $
   with subst glean_subst_offset
 
--- | Apply the given substitution to the intervals
-substIntervals :: Subst -> VS.Vector Fid -> VS.Vector Fid
-substIntervals subst ins = substIntervals_ subst False ins
-
 -- | Apply the given substitution to one Fid
 subst :: Subst -> Fid -> Fid
 subst subst old = unsafePerformIO $
@@ -84,39 +79,13 @@ substVector subst vec = unsafePerformIO $
       (fromIntegral $ VS.length vec)
     unsafeMallocedVector outs_ptr outs_size
 
-{-
-  How rebasing works:
-
-              |----------batch-----------|
-   ...........|---global---|----local----|.......... ---> increasing fact IDs
-             /              \             \
-            /     subst      \             \
-           /    maps these    \             \
-          /                    \             \
-   ......|----------------------|--new batch--|......
-                        -->|    |<--
-                           offset
-
-  After applying a substitution to "batch", we have
-    - global facts that are mapped by the substitution. We no longer
-      have to keep those.
-    - local facts that might now refer to global facts
-  Local facts must be adjusted by "offset" so they don't overlap with
-  global facts.
--}
-
--- | Rebase the given intervals with respect to the substitution.
--- Like FactSet.rebase but for fact ID intervals.
-rebaseIntervals :: Subst -> VS.Vector Fid -> VS.Vector Fid
-rebaseIntervals subst ins = substIntervals_ subst True ins
-
-substIntervals_ :: Subst -> Bool -> VS.Vector Fid -> VS.Vector Fid
-substIntervals_ subst rebase ins = unsafePerformIO $
+-- | Apply the given substitution to the intervals
+substIntervals :: Subst -> VS.Vector Fid -> VS.Vector Fid
+substIntervals subst ins = unsafePerformIO $
   with subst $ \subst_ptr ->
   VS.unsafeWith ins $ \ins_ptr -> mask_ $ do
     (outs_ptr, outs_size) <- invoke $ glean_subst_intervals
       subst_ptr
-      (fromIntegral (fromEnum rebase))
       ins_ptr
       (fromIntegral $ VS.length ins)
     unsafeMallocedVector outs_ptr outs_size
@@ -157,7 +126,6 @@ foreign import ccall unsafe glean_subst_deserialize
 
 foreign import ccall unsafe glean_subst_intervals
   :: Ptr Subst
-  -> CBool
   -> Ptr Fid
   -> CSize
   -> Ptr (Ptr Fid)

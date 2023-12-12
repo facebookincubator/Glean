@@ -54,27 +54,24 @@ std::map<std::string, std::vector<int64_t>> BatchBase::serializeOwnership() cons
   return ow;
 }
 
+void BatchBase::clearOwnership() {
+  owned.clear();
+}
+
 void BatchBase::rebase(const rts::Substitution& subst) {
-  const auto boundary = subst.finish();
   GLEAN_SANITY_CHECK(subst.sanityCheck(false));
+  std::unique_ptr<rts::Substitution> usubst;
   cache.withBulkStore([&](auto& store) {
-    buffer = buffer.rebase(inventory->inventory, subst, store);
+    auto r  = buffer.rebase(inventory->inventory, subst, store);
+    buffer = std::move(r.first);
+    usubst = std::make_unique<rts::Substitution>(std::move(r.second));
     facts = rts::Stacked<rts::Define>(&anchor, &buffer);
   });
   GLEAN_SANITY_CHECK(buffer.sanityCheck());
-  auto p = std::find_if(
-    owned.begin(),
-    owned.end(),
-    [boundary](const auto& p) { return p.finish > boundary; }
-  );
-  if (p - owned.begin() != last_serialized_units) {
-    LOG(ERROR) << "serialized " << last_serialized_units << " but rebasing "
-      << (p - owned.begin());
+
+  for (auto& p : owned) {
+    p.facts = usubst->substIntervals(p.facts);
   }
-  for (auto i = p; i != owned.end(); ++i) {
-    i->facts = subst.rebaseIntervals(i->facts);
-  }
-  owned.erase(owned.begin(), p);
 }
 
 BatchBase::CacheStats BatchBase::cacheStats() {

@@ -320,7 +320,29 @@ std::pair<binary::Output, size_t> substituteFact(
 
 }
 
-FactSet FactSet::rebase(
+/*
+  How rebasing works:
+
+              |----------batch-----------|
+   ...........|---global---|----local----|.......... ---> increasing fact IDs
+             /              \             \
+            /     subst      \             \
+           /    maps these    \             \
+          /                    \             \
+   ......|----------------------|--new batch--|......
+                        -->|    |<--
+                           offset
+
+  After applying a substitution to "batch", we have
+    - global facts that are mapped by the substitution. We no longer
+      have to keep those.
+    - local facts that might now refer to global facts
+
+  Local facts must be adjusted by "offset" so they don't overlap with
+  global facts.
+*/
+
+std::pair<FactSet,Substitution> FactSet::rebase(
     const Inventory& inventory,
     const Substitution& subst,
     Store& global) const {
@@ -340,16 +362,18 @@ FactSet FactSet::rebase(
     });
   }
 
-  const auto subst_start =
-    std::max(startingId(), std::min(subst.finish(), firstFreeId()));
+  // build a substitution that covers the whole of the FactSet,
+  // by copying the original substitution into the lower part
+  // and then filling the upper part as we add facts below.
   const auto subst_end = firstFreeId();
 
-  MutableSubstitution localSubst(subst_start, distance(subst_start, subst_end));
+  std::vector<Id> rebase_ids(distance(subst.start(), subst_end));
+  subst.with([&](Id base, const std::vector<Id>& items) {
+    std::copy(items.begin(), items.end(), rebase_ids.begin());
+  });
+  MutableSubstitution localSubst(subst.start(), rebase_ids);
 
-  const auto substituteLocal = syscall([&subst, &localSubst](Id id, Pid) {
-    if (id < subst.finish()) {
-      return subst.subst(id);
-    }
+  const auto substituteLocal = syscall([&localSubst](Id id, Pid) {
     return localSubst.subst(id);
   });
 
@@ -370,7 +394,7 @@ FactSet FactSet::rebase(
     localSubst.set(old_id, new_id);
   }
 
-  return local;
+  return std::make_pair<FactSet,Substitution>(std::move(local), localSubst.freeze());
 }
 
 void FactSet::append(FactSet other) {

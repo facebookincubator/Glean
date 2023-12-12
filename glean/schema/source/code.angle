@@ -3,6 +3,7 @@
 schema code.24 {
 import src.1
 import code.buck.1
+import code.csharp.1
 import code.cxx.4
 import code.erlang.1
 import code.fbthrift.1
@@ -32,6 +33,7 @@ type Entity =
     erlang : code.erlang.Entity |
     lsif : code.lsif.Entity |
     scip : code.scip.Entity |
+    csharp : code.csharp.Entity |
   }
 
 # language enum values for exactly the set of entity tags (including LSIF)
@@ -42,7 +44,7 @@ type Language =
   enum {
     Cpp | PreProcessor | Java | Haskell | Python | Hack | JavaScript | Rust |
     Thrift | Buck | Erlang | FSharp | Go | Kotlin | OCaml | Scala | Swift |
-    TypeScript
+    TypeScript | CSharp
   }
 
 # entity tag to language id
@@ -63,6 +65,7 @@ predicate EntityLanguage:
     ( { fbthrift = _ } = Entity; Thrift = Language ) |
     ( { buck = _ } = Entity; Buck = Language ) |
     ( { erlang = _ } = Entity; Erlang = Language ) |
+    ( { csharp = _ } = Entity; CSharp = Language ) |
     ( { lsif = LSIF }  = Entity; EntityLanguageLSIF { LSIF, Language } ) |
     ( { scip = SCIP }  = Entity; EntityLanguageSCIP { SCIP, Language } );
 

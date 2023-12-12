@@ -6,6 +6,7 @@ import code.cxx.4
 import code.hack.4
 import code.java.5
 import code.python.1
+import csharp.1
 import cxx1.5
 import flow.3
 import hack.6
@@ -49,7 +50,8 @@ predicate SearchByNameAndLanguage:
     ( Haskell = Language; HsSearchByName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByName { Name, Entity } ) |
     ( Thrift = Language; ThriftSearchByName { Name, Entity } ) |
-    ( Buck = Language; BuckSearchByName { Name, Entity } );
+    ( Buck = Language; BuckSearchByName { Name, Entity } ) |
+    ( CSharp = Language; CSharpSearchByName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
 # global symbol search normalized to lower case
@@ -70,7 +72,8 @@ predicate SearchByLowerCaseNameAndLanguage:
     ( Haskell = Language; HsSearchByLowerCaseName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByLowerCaseName { Name, Entity } ) |
     ( Thrift = Language; ThriftSearchByLowerCaseName { Name, Entity } ) |
-    ( Buck = Language; BuckSearchByLowerCaseName { Name, Entity } );
+    ( Buck = Language; BuckSearchByLowerCaseName { Name, Entity } ) |
+    ( CSharp = Language; CSharpSearchByLowerCaseName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
 # scoped search (experimental!)
@@ -462,6 +465,26 @@ predicate KotlinSearchByScopeWithName:
     QName = javakotlin.alpha.QName { name = Name, context = Path };
     search.kotlin.SearchByQName { QName, Decl };
     { kotlin = { decl = Decl } } = Entity;
+
+predicate CSharpSearchByName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { NameStr, Entity } where
+    Name = csharp.Name NameStr;
+    csharp.SearchByName { Name, Defn };
+    { csharp = { decl = Defn } } = Entity
+
+predicate CSharpSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { NameStr, Entity } where
+    csharp.NameLowerCase { NameStr, Name };
+    csharp.SearchByName { Name, Defn };
+    { csharp = { decl = Defn } } = Entity
 
 predicate CxxSearchByName:
   {

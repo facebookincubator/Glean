@@ -25,6 +25,7 @@ import qualified Glean.Schema.Thrift.Types as Thrift
 import qualified Glean.Schema.Fbthrift.Types as Fbthrift
 import qualified Glean.Schema.JavaAlpha.Types as Java
 import qualified Glean.Schema.KotlinAlpha.Types as Kotlin
+import qualified Glean.Schema.Csharp.Types as CSharp
 
 import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.CodePp.Types as Pp
@@ -224,6 +225,34 @@ instance ToAngle Kotlin.Declaration where
   toAngle (Kotlin.Declaration_method x) = alt @"method" (mkKey x)
   toAngle (Kotlin.Declaration_variable x) = alt @"variable" (mkKey x)
   toAngle Kotlin.Declaration_EMPTY = error "unknown Declaration"
+
+-- C#
+
+instance ToAngle CSharp.Definition where
+  toAngle (CSharp.Definition_type atype) = alt @"type" (toAngle atype)
+  toAngle (CSharp.Definition_method x) = alt @"method" (mkKey x)
+  toAngle (CSharp.Definition_field x) = alt @"field" (mkKey x)
+  toAngle (CSharp.Definition_parameter x) = alt @"parameter" (mkKey x)
+  toAngle (CSharp.Definition_typeParameter x) = alt @"typeParameter" (mkKey x)
+  toAngle (CSharp.Definition_local x) = alt @"local" (mkKey x)
+  toAngle (CSharp.Definition_property x) = alt @"property" (mkKey x)
+  toAngle CSharp.Definition_EMPTY = error "unknown Definition"
+
+instance ToAngle CSharp.AType where
+  toAngle (CSharp.AType_arrayType x) = alt @"arrayType" (mkKey x)
+  toAngle (CSharp.AType_namedType x) = alt @"namedType" (toAngle x)
+  toAngle (CSharp.AType_functionPointerType x) =
+    alt @"functionPointerType" (mkKey x)
+  toAngle (CSharp.AType_pointerType x) = alt @"pointerType" (mkKey x)
+  toAngle (CSharp.AType_typeParameter x) = alt @"typeParameter" (mkKey x)
+  toAngle CSharp.AType_EMPTY = error "unknown AType"
+
+instance ToAngle CSharp.NamedType where
+  toAngle (CSharp.NamedType_class_ x) = alt @"class_" (mkKey x)
+  toAngle (CSharp.NamedType_interface_ x) = alt @"interface_" (mkKey x)
+  toAngle (CSharp.NamedType_record_ x) = alt @"record_" (mkKey x)
+  toAngle (CSharp.NamedType_struct_ x) = alt @"struct_" (mkKey x)
+  toAngle CSharp.NamedType_EMPTY = error "unknown NamedType"
 
 -- LSIF and SCIP languages
 

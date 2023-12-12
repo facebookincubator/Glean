@@ -435,6 +435,7 @@ public:
 
   rts::FactSet::Serialized serialize() const;
   std::map<std::string, std::vector<int64_t>> serializeOwnership() const;
+  void clearOwnership();
 
   FactStats bufferStats() const {
     return FactStats{buffer.factMemory(), buffer.size()};

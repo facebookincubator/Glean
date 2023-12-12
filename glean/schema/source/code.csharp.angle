@@ -1,0 +1,12 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema code.csharp.1 {
+
+import csharp.1
+
+type Entity =
+  {
+    decl : csharp.Definition |
+  }
+
+}

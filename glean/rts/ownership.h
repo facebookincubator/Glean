@@ -39,6 +39,8 @@ struct OwnershipStats {
 
   uint64_t num_owner_entries;
   size_t owners_size;
+
+  int64_t num_orphan_facts; // <0 means "don't know yet"
 };
 
 ///

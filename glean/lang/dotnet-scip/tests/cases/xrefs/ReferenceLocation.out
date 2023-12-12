@@ -4,9 +4,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 1,
+        "lineBegin": 9,
         "columnBegin": 7,
-        "lineEnd": 1,
+        "lineEnd": 9,
         "columnEnd": 12
       },
       "xref": {
@@ -16,9 +16,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 1,
+                "lineBegin": 9,
                 "columnBegin": 7,
-                "lineEnd": 1,
+                "lineEnd": 9,
                 "columnEnd": 12
               }
             }
@@ -31,9 +31,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 6,
+        "lineBegin": 14,
         "columnBegin": 33,
-        "lineEnd": 6,
+        "lineEnd": 14,
         "columnEnd": 37
       },
       "xref": {
@@ -45,9 +45,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 6,
+                "lineBegin": 14,
                 "columnBegin": 33,
-                "lineEnd": 6,
+                "lineEnd": 14,
                 "columnEnd": 37
               }
             }
@@ -60,9 +60,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 9,
+        "lineBegin": 17,
         "columnBegin": 3,
-        "lineEnd": 9,
+        "lineEnd": 17,
         "columnEnd": 8
       },
       "xref": {
@@ -72,9 +72,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 9,
+                "lineBegin": 17,
                 "columnBegin": 3,
-                "lineEnd": 9,
+                "lineEnd": 17,
                 "columnEnd": 8
               }
             }
@@ -87,9 +87,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 14,
+        "lineBegin": 22,
         "columnBegin": 8,
-        "lineEnd": 14,
+        "lineEnd": 22,
         "columnEnd": 19
       },
       "xref": {
@@ -99,9 +99,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 14,
+                "lineBegin": 22,
                 "columnBegin": 8,
-                "lineEnd": 14,
+                "lineEnd": 22,
                 "columnEnd": 19
               }
             }
@@ -114,9 +114,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 14,
+        "lineBegin": 22,
         "columnBegin": 23,
-        "lineEnd": 14,
+        "lineEnd": 22,
         "columnEnd": 34
       },
       "xref": {
@@ -128,9 +128,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 14,
+                "lineBegin": 22,
                 "columnBegin": 23,
-                "lineEnd": 14,
+                "lineEnd": 22,
                 "columnEnd": 34
               }
             }
@@ -143,9 +143,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 15,
+        "lineBegin": 23,
         "columnBegin": 8,
-        "lineEnd": 15,
+        "lineEnd": 23,
         "columnEnd": 13
       },
       "xref": {
@@ -155,9 +155,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 15,
+                "lineBegin": 23,
                 "columnBegin": 8,
-                "lineEnd": 15,
+                "lineEnd": 23,
                 "columnEnd": 13
               }
             }
@@ -170,9 +170,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 15,
+        "lineBegin": 23,
         "columnBegin": 17,
-        "lineEnd": 15,
+        "lineEnd": 23,
         "columnEnd": 22
       },
       "xref": {
@@ -184,36 +184,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 15,
+                "lineBegin": 23,
                 "columnBegin": 17,
-                "lineEnd": 15,
-                "columnEnd": 22
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Program.cs" },
-      "range": {
-        "lineBegin": 22,
-        "columnBegin": 11,
-        "lineEnd": 22,
-        "columnEnd": 22
-      },
-      "xref": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#numberOfLegs." },
-          "location": {
-            "key": {
-              "file": { "key": "Program.cs" },
-              "range": {
-                "lineBegin": 22,
-                "columnBegin": 11,
-                "lineEnd": 22,
+                "lineEnd": 23,
                 "columnEnd": 22
               }
             }
@@ -229,6 +202,33 @@
         "lineBegin": 30,
         "columnBegin": 11,
         "lineEnd": 30,
+        "columnEnd": 22
+      },
+      "xref": {
+        "key": {
+          "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#numberOfLegs." },
+          "location": {
+            "key": {
+              "file": { "key": "Program.cs" },
+              "range": {
+                "lineBegin": 30,
+                "columnBegin": 11,
+                "lineEnd": 30,
+                "columnEnd": 22
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "Program.cs" },
+      "range": {
+        "lineBegin": 38,
+        "columnBegin": 11,
+        "lineEnd": 38,
         "columnEnd": 16
       },
       "xref": {
@@ -238,9 +238,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 30,
+                "lineBegin": 38,
                 "columnBegin": 11,
-                "lineEnd": 30,
+                "lineEnd": 38,
                 "columnEnd": 16
               }
             }
@@ -253,9 +253,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 35,
+        "lineBegin": 43,
         "columnBegin": 20,
-        "lineEnd": 35,
+        "lineEnd": 43,
         "columnEnd": 25
       },
       "xref": {
@@ -265,9 +265,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 35,
+                "lineBegin": 43,
                 "columnBegin": 20,
-                "lineEnd": 35,
+                "lineEnd": 43,
                 "columnEnd": 25
               }
             }
@@ -280,9 +280,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 42,
+        "lineBegin": 50,
         "columnBegin": 22,
-        "lineEnd": 42,
+        "lineEnd": 50,
         "columnEnd": 27
       },
       "xref": {
@@ -292,9 +292,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 42,
+                "lineBegin": 50,
                 "columnBegin": 22,
-                "lineEnd": 42,
+                "lineEnd": 50,
                 "columnEnd": 27
               }
             }
@@ -307,9 +307,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 51,
+        "lineBegin": 59,
         "columnBegin": 21,
-        "lineEnd": 51,
+        "lineEnd": 59,
         "columnEnd": 26
       },
       "xref": {
@@ -319,9 +319,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 51,
+                "lineBegin": 59,
                 "columnBegin": 21,
-                "lineEnd": 51,
+                "lineEnd": 59,
                 "columnEnd": 26
               }
             }
@@ -334,9 +334,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 52,
+        "lineBegin": 60,
         "columnBegin": 3,
-        "lineEnd": 52,
+        "lineEnd": 60,
         "columnEnd": 9
       },
       "xref": {
@@ -348,9 +348,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 52,
+                "lineBegin": 60,
                 "columnBegin": 3,
-                "lineEnd": 52,
+                "lineEnd": 60,
                 "columnEnd": 9
               }
             }
@@ -363,9 +363,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 52,
+        "lineBegin": 60,
         "columnBegin": 11,
-        "lineEnd": 52,
+        "lineEnd": 60,
         "columnEnd": 19
       },
       "xref": {
@@ -377,9 +377,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 52,
+                "lineBegin": 60,
                 "columnBegin": 11,
-                "lineEnd": 52,
+                "lineEnd": 60,
                 "columnEnd": 19
               }
             }
@@ -392,9 +392,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 52,
+        "lineBegin": 60,
         "columnBegin": 26,
-        "lineEnd": 52,
+        "lineEnd": 60,
         "columnEnd": 31
       },
       "xref": {
@@ -404,9 +404,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 52,
+                "lineBegin": 60,
                 "columnBegin": 26,
-                "lineEnd": 52,
+                "lineEnd": 60,
                 "columnEnd": 31
               }
             }
@@ -419,9 +419,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 52,
+        "lineBegin": 60,
         "columnBegin": 41,
-        "lineEnd": 52,
+        "lineEnd": 60,
         "columnEnd": 52
       },
       "xref": {
@@ -431,9 +431,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 52,
+                "lineBegin": 60,
                 "columnBegin": 41,
-                "lineEnd": 52,
+                "lineEnd": 60,
                 "columnEnd": 52
               }
             }
@@ -446,9 +446,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 54,
+        "lineBegin": 62,
         "columnBegin": 21,
-        "lineEnd": 54,
+        "lineEnd": 62,
         "columnEnd": 23
       },
       "xref": {
@@ -458,9 +458,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 54,
+                "lineBegin": 62,
                 "columnBegin": 21,
-                "lineEnd": 54,
+                "lineEnd": 62,
                 "columnEnd": 23
               }
             }
@@ -473,9 +473,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 55,
+        "lineBegin": 63,
         "columnBegin": 9,
-        "lineEnd": 55,
+        "lineEnd": 63,
         "columnEnd": 15
       },
       "xref": {
@@ -487,9 +487,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 55,
+                "lineBegin": 63,
                 "columnBegin": 9,
-                "lineEnd": 55,
+                "lineEnd": 63,
                 "columnEnd": 15
               }
             }
@@ -502,9 +502,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 55,
+        "lineBegin": 63,
         "columnBegin": 17,
-        "lineEnd": 55,
+        "lineEnd": 63,
         "columnEnd": 25
       },
       "xref": {
@@ -516,9 +516,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 55,
+                "lineBegin": 63,
                 "columnBegin": 17,
-                "lineEnd": 55,
+                "lineEnd": 63,
                 "columnEnd": 25
               }
             }
@@ -531,9 +531,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 55,
+        "lineBegin": 63,
         "columnBegin": 32,
-        "lineEnd": 55,
+        "lineEnd": 63,
         "columnEnd": 37
       },
       "xref": {
@@ -543,9 +543,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 55,
+                "lineBegin": 63,
                 "columnBegin": 32,
-                "lineEnd": 55,
+                "lineEnd": 63,
                 "columnEnd": 37
               }
             }
@@ -558,9 +558,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 55,
+        "lineBegin": 63,
         "columnBegin": 47,
-        "lineEnd": 55,
+        "lineEnd": 63,
         "columnEnd": 58
       },
       "xref": {
@@ -570,9 +570,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 55,
+                "lineBegin": 63,
                 "columnBegin": 47,
-                "lineEnd": 55,
+                "lineEnd": 63,
                 "columnEnd": 58
               }
             }
@@ -585,9 +585,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 57,
+        "lineBegin": 65,
         "columnBegin": 21,
-        "lineEnd": 57,
+        "lineEnd": 65,
         "columnEnd": 25
       },
       "xref": {
@@ -597,9 +597,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 57,
+                "lineBegin": 65,
                 "columnBegin": 21,
-                "lineEnd": 57,
+                "lineEnd": 65,
                 "columnEnd": 25
               }
             }
@@ -612,9 +612,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 58,
+        "lineBegin": 66,
         "columnBegin": 9,
-        "lineEnd": 58,
+        "lineEnd": 66,
         "columnEnd": 15
       },
       "xref": {
@@ -626,9 +626,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 58,
+                "lineBegin": 66,
                 "columnBegin": 9,
-                "lineEnd": 58,
+                "lineEnd": 66,
                 "columnEnd": 15
               }
             }
@@ -641,9 +641,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 58,
+        "lineBegin": 66,
         "columnBegin": 17,
-        "lineEnd": 58,
+        "lineEnd": 66,
         "columnEnd": 25
       },
       "xref": {
@@ -655,9 +655,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 58,
+                "lineBegin": 66,
                 "columnBegin": 17,
-                "lineEnd": 58,
+                "lineEnd": 66,
                 "columnEnd": 25
               }
             }
@@ -670,9 +670,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 58,
+        "lineBegin": 66,
         "columnBegin": 32,
-        "lineEnd": 58,
+        "lineEnd": 66,
         "columnEnd": 37
       },
       "xref": {
@@ -682,9 +682,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 58,
+                "lineBegin": 66,
                 "columnBegin": 32,
-                "lineEnd": 58,
+                "lineEnd": 66,
                 "columnEnd": 37
               }
             }
@@ -697,9 +697,9 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 58,
+        "lineBegin": 66,
         "columnBegin": 47,
-        "lineEnd": 58,
+        "lineEnd": 66,
         "columnEnd": 58
       },
       "xref": {
@@ -709,9 +709,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 58,
+                "lineBegin": 66,
                 "columnBegin": 47,
-                "lineEnd": 58,
+                "lineEnd": 66,
                 "columnEnd": 58
               }
             }

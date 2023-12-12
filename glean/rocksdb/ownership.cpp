@@ -597,6 +597,11 @@ struct StoredOwnership : Ownership {
     stats.sets_size = sets_size; // estimate
     stats.num_owner_entries = num_owners + num_owner_pages; // estimate
     stats.owners_size = owners_size + owner_pages_size; // estimate
+
+    auto orphans =
+        readAdminValue<int64_t>(db_->container_, AdminId::ORPHAN_FACTS);
+    stats.num_orphan_facts = orphans ? *orphans : -1;
+
     return stats;
   }
 
@@ -835,6 +840,7 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
   std::vector<uint16_t> ids; // in the current page
   std::vector<UsetId> sets; // in the current page
   size_t populated = 0; // for stats
+  int64_t orphaned = 0; // counts the orphan facts
   rocksdb::WriteBatch batch;
 
   auto writePage = [&]() {
@@ -855,6 +861,7 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
     };
   };
 
+  uint64_t prev = Id::lowest().toWord();
   for (; iter->Valid(); iter->Next()) {
     binary::Input key(byteRange(iter->key()));
     uint64_t id = key.trustedNat();
@@ -872,10 +879,18 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
       ids.push_back(0);
       sets.push_back(set);
     }
+    if (set == INVALID_USET && id > prev) {
+      // track the number of orphaned facts
+      orphaned += id - prev;
+      VLOG(2) << folly::sformat("orphaned fact(s) {}-{}", prev, id-1);
+    }
+
     binary::Input val(byteRange(iter->value()));
     set = val.trustedNat();
     ids.push_back(this_offset);
     sets.push_back(set);
+
+    prev = id;
   }
 
   // write the last page
@@ -888,7 +903,17 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
           reinterpret_cast<const uint8_t*>(index.data()),
           index.size() * sizeof(UsetId))));
 
-  t.logFormat("{} index entries, {} populated", index.size(), populated);
+  t.logFormat(
+      "{} index entries, {} populated, {} orphans",
+      index.size(),
+      populated,
+      orphaned);
+
+  // record the number of orphaned facts, this will be fetched by ownershipStats
+  batch.Put(
+      container.family(Family::admin),
+      toSlice(AdminId::ORPHAN_FACTS),
+      toSlice(orphaned));
 
   check(container.db->Write(container.writeOptions, &batch));
 }

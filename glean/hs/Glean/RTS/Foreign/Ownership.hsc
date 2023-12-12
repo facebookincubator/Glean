@@ -284,6 +284,7 @@ data OwnershipStats = OwnershipStats
   , setsSize :: Word64
   , numOwnerEntries :: Word64
   , ownersSize :: Word64
+  , numOrphanFacts :: Int64
   }
 
 showOwnershipStats :: OwnershipStats -> Text
@@ -293,7 +294,10 @@ showOwnershipStats OwnershipStats{..} =
   showt numSets <> " sets (" <>
     renderBytes (fromIntegral setsSize) <> "), " <>
   showt numOwnerEntries <> " owners (" <>
-    renderBytes (fromIntegral ownersSize) <> ")"
+    renderBytes (fromIntegral ownersSize) <> ")" <>
+  (if numOrphanFacts >= 0
+    then ", " <> showt numOrphanFacts <> " orphan facts"
+    else "")
 
 instance Storable OwnershipStats where
   peek p = do
@@ -301,8 +305,11 @@ instance Storable OwnershipStats where
     unitsSize <- (# peek facebook::glean::rts::OwnershipStats, units_size) p
     numSets <- (# peek facebook::glean::rts::OwnershipStats, num_sets) p
     setsSize <- (# peek facebook::glean::rts::OwnershipStats, sets_size) p
-    numOwnerEntries <- (# peek facebook::glean::rts::OwnershipStats, num_owner_entries) p
+    numOwnerEntries <-
+      (# peek facebook::glean::rts::OwnershipStats, num_owner_entries) p
     ownersSize <- (# peek facebook::glean::rts::OwnershipStats, owners_size) p
+    numOrphanFacts <-
+      (# peek facebook::glean::rts::OwnershipStats, num_orphan_facts) p
     return OwnershipStats{..}
   sizeOf _ = (# size facebook::glean::rts::OwnershipStats)
   alignment _ = (# alignment facebook::glean::rts::OwnershipStats)

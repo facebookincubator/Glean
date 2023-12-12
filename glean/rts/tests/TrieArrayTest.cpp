@@ -54,7 +54,9 @@ struct Arbitrary<UnitData> {
             [](std::vector<OwnershipUnit::Ids> ids) {
               // Ranges must be non-overlapping, so normalise using an
               // interval_set
-              boost::icl::interval_set<Id> is;
+              boost::icl::
+                  interval_set<Id, std::less, boost::icl::closed_interval<Id>>
+                      is;
               for (auto& id : ids) {
                 is.insert({id.start, id.finish});
               }
