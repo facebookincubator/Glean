@@ -8,6 +8,7 @@
 
 module Glean.Glass.RepoMapping
   ( getRepoMapping
+  , fixedRepoMapping
   , gleanRequiredIndices
   , allGleanRepos
   ) where
@@ -22,6 +23,12 @@ import Glean.Glass.Types ( Language(..), RepoName(..) )
 
 getRepoMapping :: IO RepoMapping
 getRepoMapping = return RepoMapping
+  { gleanIndices = gleanIndices_
+  , gleanAttrIndices = gleanAttrIndices_
+  }
+
+fixedRepoMapping :: RepoMapping
+fixedRepoMapping = RepoMapping
   { gleanIndices = gleanIndices_
   , gleanAttrIndices = gleanAttrIndices_
   }
