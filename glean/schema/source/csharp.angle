@@ -263,7 +263,7 @@ predicate FileDefinitions:
     file: src.File,
     defn: Definition
   }
-  # todo: stored
+  stored
   { File, Defn } where
     DefinitionLocation { Defn, { fileLocation = Loc } };
     { file = File } = Loc;
@@ -303,7 +303,7 @@ predicate FileEntityXRefs:
     use: src.ByteSpan,
     target: csharp.Definition
   }
-  # todo stored
+  stored
   { File, Span, Defn } where
     ( MethodInvocationLocation { MDefn, { fileLocation = SrcLoc } };
       { method = MDefn } = Defn;
