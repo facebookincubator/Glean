@@ -108,6 +108,7 @@ import Glean.Index.Types ( IndexRequest, IndexResponse )
 import qualified Glean.Index.GleanIndexingService.Client as IndexingService
 import Glean.Index.GleanIndexingService.Client ( GleanIndexingService )
 import Glean.Impl.ThriftService ( ThriftService )
+import Glean.Glass.RepoMapping ( supportsCxxDeclarationSources )
 
 import qualified Glean.Glass.Env as Glass
 
@@ -1608,7 +1609,8 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
     SearchRelatedRequest{..} = do
   withStrictErrorHandling gleanBackend opts $ do
   withSymbol "searchRelated" env sym $
-    \(gleanDBs, scmRevs, (repo, lang, toks)) ->
+    \(gleanDBs_, scmRevs, (repo, lang, toks)) ->
+      let gleanDBs = filterDBs lang gleanDBs_ in
       backendRunHaxl GleanBackend{..} $ do
         entity <- searchFirstEntity lang toks
         withRepo (entityRepo entity) $ do
@@ -1660,6 +1662,18 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
     limit = fromIntegral $ case requestOptions_limit of
       Just x | x < rELATED_SYMBOLS_MAX_LIMIT -> x
       _ -> rELATED_SYMBOLS_MAX_LIMIT
+
+    -- Caller hieararchy for C++ requires cxx1.DeclarationSources,
+    -- which may not be supported by all DBs.
+    filterDBs :: Language -> NonEmpty (GleanDBName,a) -> NonEmpty (GleanDBName,a)
+    filterDBs lang
+      | RelationType_Calls <- searchRelatedRequest_relatedBy
+      , RelationDirection_Parent <- searchRelatedRequest_relation
+      , Language_Cpp <- lang
+      = NonEmpty.fromList .
+        NonEmpty.filter (supportsCxxDeclarationSources . fst)
+      | otherwise
+      = id
 
     -- Implements Call hierarchy (check LSP spec)
     searchRelatedCalls

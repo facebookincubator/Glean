@@ -11,6 +11,7 @@ module Glean.Glass.RepoMapping
   , fixedRepoMapping
   , gleanRequiredIndices
   , allGleanRepos
+  , supportsCxxDeclarationSources
   ) where
 
 import Data.Set (Set)
@@ -68,3 +69,6 @@ allGleanRepos = Set.fromList $
 -- repos that are required
 gleanRequiredIndices :: Set.Set GleanDBName
 gleanRequiredIndices = Set.empty
+
+supportsCxxDeclarationSources :: GleanDBName -> Bool
+supportsCxxDeclarationSources = const True
