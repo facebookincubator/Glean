@@ -1283,6 +1283,7 @@ library glass-lib
         Glean.Glass.SymbolId
         Glean.Glass.SymbolId.Buck
         Glean.Glass.SymbolId.Class
+        Glean.Glass.SymbolId.CSharp
         Glean.Glass.SymbolId.Cxx
         Glean.Glass.SymbolId.Cxx.Parse
         Glean.Glass.SymbolId.Erlang
