@@ -50,6 +50,7 @@ import Control.Monad.Catch ( throwM, try )
 import Data.Bifunctor (second)
 import Data.Either.Extra (eitherToMaybe, partitionEithers)
 import Data.Default (def)
+import qualified Data.Foldable as Foldable
 import Data.List as List ( sortOn )
 import Data.List.Extra ( nubOrd, nubOrdOn, groupOn, groupSortOn )
 import Data.List.NonEmpty (NonEmpty(..), toList, nonEmpty)
@@ -158,7 +159,7 @@ runRepoFile
   -> RequestOptions
   -> IO t
 runRepoFile sym fn env req opts = do
-  withStrictErrorHandling opts $
+  withStrictErrorHandling (Glass.gleanBackend env) opts $
     withRepoFile sym env (req, opts) repo file $ \(dbs,_) mlang ->
         fn (Glass.repoMapping env) repos req opts
             (GleanBackend (Glass.gleanBackend env) dbs)
@@ -231,7 +232,7 @@ findReferences
   -> RequestOptions
   -> IO [Location]
 findReferences env@Glass.Env{..} sym opts@RequestOptions{..} = do
-  withStrictErrorHandling opts $ do
+  withStrictErrorHandling gleanBackend opts $ do
   withSymbol "findReferences" env sym $
     \(dbs,_revs,(repo, lang, toks)) ->
       fetchSymbolReferences repo lang toks limit
@@ -246,7 +247,7 @@ findReferenceRanges
   -> RequestOptions
   -> IO [LocationRange]
 findReferenceRanges env@Glass.Env{..} sym opts@RequestOptions{..} = do
-  withStrictErrorHandling opts $
+  withStrictErrorHandling gleanBackend opts $
     withSymbol "findReferenceRanges" env sym
       $ \(db,_revs,(repo, lang, toks)) ->
         fetchSymbolReferenceRanges repo lang toks limit
@@ -262,7 +263,7 @@ resolveSymbolRange
   -> RequestOptions
   -> IO LocationRange
 resolveSymbolRange env@Glass.Env{..} sym opts = do
-  withStrictErrorHandling opts $
+  withStrictErrorHandling gleanBackend opts $
     withSymbol "resolveSymbolRange" env sym
       $ \(db,_revs,(repo, lang, toks)) ->
         findSymbolLocationRange (GleanBackend gleanBackend db) repo lang toks
@@ -274,7 +275,7 @@ describeSymbol
   -> RequestOptions
   -> IO SymbolDescription
 describeSymbol env@Glass.Env{..} symId opts = do
-  withStrictErrorHandling opts $ do
+  withStrictErrorHandling gleanBackend opts $ do
   withSymbol "describeSymbol" env symId $
     \(gleanDBs, scmRevs, (scmRepo, lang, toks)) ->
       backendRunHaxl GleanBackend{..} $ do
@@ -325,7 +326,7 @@ fileIncludeLocations
   -> IO FileIncludeLocationResults
 fileIncludeLocations env@Glass.Env{..} req opts = do
   fmap fst $ do
-  withStrictErrorHandling opts $ do
+  withStrictErrorHandling gleanBackend opts $ do
   withRepoFile "fileIncludeLocations" env req repo rootfile
     $ \(gleanDBs,_) _ ->
       backendRunHaxl GleanBackend{..} $ do
@@ -357,7 +358,7 @@ clangUSRToDefinition
   -> RequestOptions
   -> IO (USRSymbolDefinition, QueryEachRepoLog)
 clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) opts = do
-  withStrictErrorHandling opts $ do
+  withStrictErrorHandling gleanBackend opts $ do
   withRepoLanguage "clangUSRToDefinition" env usr repo mlang
     $ \(gleanDBs,_) _ -> do
       backendRunHaxl GleanBackend{..} $ do
@@ -767,7 +768,7 @@ searchBySymbolId
   -> RequestOptions
   -> IO (SearchBySymbolIdResult)
 searchBySymbolId env@Glass.Env{..} symbolPrefix opts = do
-  withStrictErrorHandling opts $ do
+  withStrictErrorHandling gleanBackend opts $ do
   withLog "searchBySymbolId" env symbolPrefix $ \log -> do
     (symids, merr) <- case partialSymbolTokens repoMapping symbolPrefix of
           (Left pRepo, Left _, []) ->
@@ -1517,10 +1518,12 @@ withSymbol method env@Glass.Env{..} sym fn =
     (\db _mlang -> fn db)
 
 withStrictErrorHandling
-  :: RequestOptions
+  :: Glean.Backend b
+  => b
+  -> RequestOptions
   -> IO (res, Maybe ErrorLogger)
   -> IO res
-withStrictErrorHandling opts action = do
+withStrictErrorHandling backend opts action = do
   (res, merr) <- action
   case merr of
     Just err
@@ -1530,9 +1533,16 @@ withStrictErrorHandling opts action = do
       -- select the right exception type based on the error types
       if all isRevisionNotAvailable (errorTy err)
         then throwM RevisionNotAvailableException
-        else throwM $ GlassException
+        else do
+          revisionsByScm <-
+            mapM (Glean.getSCMrevisions backend) (errorGleanRepo err)
+          let getFirstRevision scmRevisions =
+                case Foldable.toList scmRevisions of
+                  rev : _ -> Just (Revision rev)
+                  _ -> Nothing
+          throwM $ GlassException
             (errorTy err)
-            (map (Revision . Glean.repo_hash) $ errorGleanRepo err)
+            (mapMaybe getFirstRevision revisionsByScm)
     _ -> return res
   where
     isRevisionNotAvailable GlassExceptionReason_exactRevisionNotAvailable{} =
@@ -1596,7 +1606,7 @@ searchRelated
   -> IO SearchRelatedResult
 searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
     SearchRelatedRequest{..} = do
-  withStrictErrorHandling opts $ do
+  withStrictErrorHandling gleanBackend opts $ do
   withSymbol "searchRelated" env sym $
     \(gleanDBs, scmRevs, (repo, lang, toks)) ->
       backendRunHaxl GleanBackend{..} $ do
@@ -1764,7 +1774,7 @@ searchRelatedNeighborhood
   -> RelatedNeighborhoodRequest
   -> IO RelatedNeighborhoodResult
 searchRelatedNeighborhood env@Glass.Env{..} sym opts@RequestOptions{..} req = do
-  withStrictErrorHandling opts $ do
+  withStrictErrorHandling gleanBackend opts $ do
   withSymbol "searchRelatedNeighborhood" env sym $
     \(gleanDBs, scmRevs, (repo, lang, toks)) ->
       backendRunHaxl GleanBackend{..} $ do
