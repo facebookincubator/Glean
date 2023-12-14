@@ -130,7 +130,7 @@ jobs:
         # External hh_server hasn't caught up with the internal
         # version yet so the test output differs. Disable the Hack
         # tests temporarily.
-        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests -f-rust-tests
+        run: env DOTNET_ROOT="$HOME/.dotnet" LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests -f-rust-tests
 
   # check the vscode extension builds
   vscode:
