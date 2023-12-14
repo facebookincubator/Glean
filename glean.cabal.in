@@ -2423,19 +2423,6 @@ test-suite glass-regression-hack
     if !flag(hack-tests)
         buildable: False
 
-test-suite glass-regression-python-scip
-    import: glass-regression-deps, fb-haskell, deps
-    type: exitcode-stdio-1.0
-    main-is: Glean/Glass/Regression/PythonScip/Main.hs
-    ghc-options: -main-is Glean.Glass.Regression.PythonScip.Main
-    other-modules: Glean.Glass.Regression.PythonScip
-    build-depends:
-        glean:client-hs,
-        glean:indexers,
-        glean:util,
-    if !flag(python-tests)
-        buildable: False
-
 test-suite glass-regression-dotnet-scip
     import: glass-regression-deps, fb-haskell, deps
     type: exitcode-stdio-1.0
