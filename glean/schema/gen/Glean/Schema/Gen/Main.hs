@@ -39,7 +39,7 @@ import qualified Data.Map.Strict as Map
 import Data.Map.Strict (Map)
 import Data.Maybe
 import qualified Data.Set as Set
-import Data.Text (Text)
+import Data.Text (Text, splitOn)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 import qualified Data.Tree as Tree
@@ -71,7 +71,9 @@ import Glean.Schema.Gen.Cpp ( genSchemaCpp )
 import Glean.Schema.Gen.HackJson ( genSchemaHackJson )
 import Glean.Schema.Gen.Haskell ( genSchemaHS )
 import Glean.Schema.Gen.Python ( genSchemaPy )
-import Glean.Schema.Gen.Utils ( Mode(..) )
+import Glean.Schema.Gen.OCaml ( genSchemaOCaml )
+import Glean.Schema.Gen.Utils ( Mode(..), NameSpaces )
+
 import Glean.Schema.Types
 import Glean.Types (SchemaId(..))
 
@@ -104,10 +106,21 @@ data GenOptions =  GenOptions
   , hackjson :: Maybe FilePath
   , hs :: Maybe FilePath
   , py :: Maybe FilePath
+  , ocaml :: Maybe FilePath
   , source :: Maybe FilePath
   , updateIndex :: Maybe FilePath
   , install_dir :: FilePath
+  , restrictSchemas :: Maybe [NameSpaces]
   }
+
+toNameSpaces :: [Text] -> [NameSpaces]
+toNameSpaces names = splitOn "." <$> names
+
+optSchemas :: Parser (Maybe [NameSpaces])
+optSchemas = optional ( toNameSpaces . splitOn "," <$> strOption
+        ( long "schemas"
+        <> metavar "SCHEMAS"
+        <> help "Restrict schemas to generate" ))
 
 options :: Parser Options
 options = do
@@ -177,6 +190,8 @@ options = do
         long "hs" <> metavar "FILE"
       py <- optional $ strOption $
         long "py" <> metavar "FILE"
+      ocaml <- optional $ strOption $
+        long "ocaml" <> metavar "FILE"
       source <- optional $ strOption $
         long "source" <> metavar "FILE"
       updateIndex <- optional $ strOption $
@@ -185,6 +200,7 @@ options = do
           "current schema")
       install_dir <- strOption $
         long "install_dir" <> short 'd' <> metavar "DIR" <> value ""
+      restrictSchemas <- optSchemas
       return GenOptions{..}
 
 main :: IO ()
@@ -412,6 +428,7 @@ gen GenOptions{..} versions =
       doGen genSchemaHackJson hackjson
       doGen genSchemaHS hs
       doGen genSchemaPy py
+      doGen (genSchemaOCaml restrictSchemas) ocaml
       doGen (genSchemaThrift Data dir hash) thrift
       doGen (genSchemaThrift Query dir hash) thrift
 
