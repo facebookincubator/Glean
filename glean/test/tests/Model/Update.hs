@@ -13,6 +13,7 @@ module Model.Update (
 
 import Control.Applicative ((<|>))
 import Control.Monad.State.Strict (evalState)
+import Data.Default
 import Data.Functor.Identity (Identity (..))
 import qualified Data.HashMap.Strict as HM
 import qualified Data.HashSet as Set
@@ -151,8 +152,8 @@ recomputeEntries model@Model {..} =
       localAndRestoring
     index = dbIndex allDBs
     retentionSet =
-      computeRetentionSet modelRetentionPolicy time (const $ pure True) index
-        `evalState` mempty
+      computeRetentionSet modelRetentionPolicy def time
+        (const $ pure True) index `evalState` mempty
     keepHereSet = [(itemRepo, itemMeta) | Item {..} <- retentionSet]
     entriesLiveHere' =
       foldl'

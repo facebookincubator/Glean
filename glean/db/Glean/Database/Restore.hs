@@ -9,7 +9,7 @@
 module Glean.Database.Restore (
   restoreDatabase,
   restoreDatabaseFromSite,
-  forRestoreSitesM, ifRestoreRepo,
+  forRestoreSitesM, ifRestoreRepo, restorable,
 ) where
 
 import Control.Exception hiding(handle)
@@ -54,13 +54,16 @@ ifRestoreRepo
   -> IO a
   -> IO a
 ifRestoreRepo Env{..} none repo inner = do
-  let repoName = Thrift.repo_name repo
-  ServerConfig.DatabaseRestorePolicy{..} <-
-    ServerConfig.config_restore <$> Observed.get envServerConfig
-  if (repoName `Set.member` databaseRestorePolicy_override)
-          /= databaseRestorePolicy_enabled
+  policy <- ServerConfig.config_restore <$> Observed.get envServerConfig
+  if restorable policy repo
     then inner
     else return none
+
+restorable :: ServerConfig.DatabaseRestorePolicy -> Repo -> Bool
+restorable ServerConfig.DatabaseRestorePolicy{..} repo =
+  (repoName `Set.member` databaseRestorePolicy_override)
+     /= databaseRestorePolicy_enabled
+  where repoName = Thrift.repo_name repo
 
 restoreDatabase :: Env -> Text -> IO ()
 restoreDatabase env loc

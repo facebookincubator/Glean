@@ -185,7 +185,7 @@ runWithShards env myShards sm = do
     index@DbIndex{byRepo, byRepoName, dependencies} = dbIndex allDBsByAge
 
   (keep, cachedAvailable) <- computeRetentionSet
-    config_retention now isAvailable index `runStateT` mempty
+    config_retention config_restore now isAvailable index `runStateT` mempty
 
   atomically $ writeTVar
     (envCachedAvailableDBs env)
@@ -424,12 +424,14 @@ dbIndex items = DbIndex{..}
 computeRetentionSet
   :: Monad m
   => ServerConfig.DatabaseRetentionPolicy
+  -> ServerConfig.DatabaseRestorePolicy
   -> UTCTime
   -> (Repo -> m Bool)
   -> DbIndex
   -> StateT (HashMap.HashMap Repo Bool) m [Item]
-computeRetentionSet config_retention time isAvailableM DbIndex{..} =
-  transitiveClosureBy itemRepo (catMaybes . dependencies) <$>
+computeRetentionSet config_retention config_restore
+    time isAvailableM DbIndex{..} =
+  transitiveClosureBy itemRepo (catMaybes . depsRestored) <$>
     concatMapM
       (\(repoNm, dbs) ->
         dbRetentionForRepo
@@ -439,6 +441,14 @@ computeRetentionSet config_retention time isAvailableM DbIndex{..} =
           dbs
       )
       byRepoName
+  where
+    -- Add transitive dependencies of a DB to the retention set only
+    -- if the DB is local or will be restored.
+    depsRestored :: Item -> [Maybe Item]
+    depsRestored item@Item{..}
+      | itemLocality == Local
+        || restorable config_restore itemRepo = dependencies item
+      | otherwise = []
 
 -- | The target set of DBs we want usable on the disk. This is a set of
 -- DBs that satisfies the policy.

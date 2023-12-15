@@ -28,6 +28,7 @@ import Data.Int (Int64)
 import Data.IORef
 import Data.List
 import Data.Maybe
+import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Time.Clock
@@ -139,6 +140,8 @@ setupBasicCloudDBs backupDir = do
     (age(days 3)) (complete 9) id
   makeFakeCloudDB schema backupDir (Repo "test2" "0014")
     (age(days 2)) (complete 9) id
+  makeFakeCloudDB schema backupDir (Repo "test" "0015")
+    (age(days 7)) (complete 7) (stacked (Stacked "test2" "0013" Nothing))
 
 withFakeDBs
   :: (EventBaseDataplane -> NullConfigProvider -> FilePath -> FilePath
@@ -419,6 +422,29 @@ requiredPropsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   let repos = map database_repo dbs
   assertEqual "after" [ "0001" ] (map repo_hash repos)
 
+-- | If we want to restore only one type of DB with a retention
+-- policy, check that we don't restore additional instances of that DB
+-- that are dependencies of other (non-restored) DBs.
+retentionRestoreDepsTest :: Test
+retentionRestoreDepsTest = TestCase $
+  withFakeCloudDBs $ \evb cfgAPI dbdir backupdir -> do
+    let cfg = dbConfig dbdir $ (serverConfig backupdir)
+          { config_retention = def
+            { databaseRetentionPolicy_default_retention = def
+              { retention_retain_at_most = Just 1
+              }
+            },
+            config_restore = def
+            { databaseRestorePolicy_enabled = False
+            , databaseRestorePolicy_override = Set.fromList ["test2"]
+            }
+          }
+    withDatabases evb cfg cfgAPI $ \env -> do
+    runDatabaseJanitor env
+    dbs <- listDBs env
+    let repos = map database_repo dbs
+    assertEqual "after" [ "0014" ] (map repo_hash repos)
+
 backupRestoreTest :: Test
 backupRestoreTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   let cfg = dbConfig dbdir $ (serverConfig backupdir)
@@ -689,7 +715,7 @@ elsewhereNotYetAvailableTest =
 
       assertEqual
         "at least 2 dbs actually available + at most 4 more not yet available"
-        ["0008", "0009", "0011", "0012", "0013", "0014"]
+        ["0008", "0009", "0011", "0012", "0013", "0014", "0015"]
         (sort $ map (repo_hash . database_repo) dbs)
 
 shardUnexpireTest :: Test
@@ -853,4 +879,5 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "ageCountersClear" ageCountersClearTest
   , TestLabel "stuck" stuckTest
   , TestLabel "requiredPropsTest" requiredPropsTest
+  , TestLabel "retentionRestoreDepsTest" retentionRestoreDepsTest
   ]
