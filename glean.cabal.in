@@ -2423,19 +2423,6 @@ test-suite glass-regression-hack
     if !flag(hack-tests)
         buildable: False
 
-test-suite glass-regression-dotnet-scip
-    import: glass-regression-deps, fb-haskell, deps
-    type: exitcode-stdio-1.0
-    main-is: Glean/Glass/Regression/DotnetScip/Main.hs
-    ghc-options: -main-is Glean.Glass.Regression.DotnetScip.Main
-    other-modules: Glean.Glass.Regression.DotnetScip
-    build-depends:
-        glean:client-hs,
-        glean:indexers,
-        glean:util,
-    if !flag(dotnet-tests)
-        buildable: False
-
 test-suite glass-regression-typescript
     import: glass-regression-deps, fb-haskell, deps
     type: exitcode-stdio-1.0
