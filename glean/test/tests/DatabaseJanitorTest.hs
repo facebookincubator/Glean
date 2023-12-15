@@ -19,6 +19,7 @@ import Control.Concurrent.STM
 import Control.Exception
 import Control.Monad
 import Data.Aeson
+import qualified Data.ByteString.Char8 as BS
 import qualified Data.ByteString.Lazy as LB
 import qualified Data.ByteString.Lazy.Char8 as LBS
 import Data.Default
@@ -27,6 +28,7 @@ import qualified Data.HashSet as HashSet
 import Data.Int (Int64)
 import Data.IORef
 import Data.List
+import qualified Data.Map as Map
 import Data.Maybe
 import qualified Data.Set as Set
 import Data.Text (Text)
@@ -70,8 +72,6 @@ import Glean.Util.ConfigProvider
 import Glean.Util.ShardManager
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.Time (seconds)
-import qualified Data.ByteString.Char8 as BS
-import qualified Data.Map as Map
 import Glean.Database.Backup.Backend
 import Glean.Database.Backup.Mock
 
@@ -116,7 +116,7 @@ setupBasicDBs dbdir = do
   makeFakeDB schema dbdir (Repo "test" "0004") (age (days 4)) (complete 4) $
     stacked (Stacked "test" "0005" Nothing)
   makeFakeDB schema dbdir (Repo "test" "0005") (age (days 5)) (complete 5) $
-    stacked (Stacked "test2" "0006" Nothing)
+    stacked (Stacked "test2" "0006" Nothing) . props [("bool","no")]
   makeFakeDB schema dbdir (Repo "test2" "0006") (age (days 6)) (complete 6) id
 
 
@@ -421,6 +421,33 @@ requiredPropsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   dbs <- listDBs env
   let repos = map database_repo dbs
   assertEqual "after" [ "0001" ] (map repo_hash repos)
+
+multiRetentionTest :: Test
+multiRetentionTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
+  let cfg = dbConfig dbdir $ (serverConfig backupdir)
+        { config_retention = def
+          { databaseRetentionPolicy_by_repo =
+            Map.fromList
+              [ ("test",
+                [ def
+                  { retention_required_properties =
+                      HashMap.fromList [("bool","yes")]
+                  , retention_retain_at_least = Just 1
+                  }
+                , def
+                  { retention_required_properties =
+                      HashMap.fromList [("bool","no")]
+                  , retention_retain_at_least = Just 1
+                  }
+                ])
+              ]
+            }
+          }
+  withDatabases evb cfg cfgAPI $ \env -> do
+  runDatabaseJanitor env
+  dbs <- listDBs env
+  let repos = sort $ map (repo_hash . database_repo) dbs
+  assertEqual "after" [ "0001", "0005", "0006" ] repos
 
 -- | If we want to restore only one type of DB with a retention
 -- policy, check that we don't restore additional instances of that DB
@@ -880,4 +907,5 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "stuck" stuckTest
   , TestLabel "requiredPropsTest" requiredPropsTest
   , TestLabel "retentionRestoreDepsTest" retentionRestoreDepsTest
+  , TestLabel "multiRetentionTest" multiRetentionTest
   ]

@@ -253,7 +253,7 @@ runWithShards env myShards sm = do
   forM_ delete $ \repo -> do
     let
       ServerConfig.Retention{..} =
-        repoRetention config_retention $ Thrift.repo_name repo
+        NonEmpty.head $ repoRetention config_retention $ Thrift.repo_name repo
     expireDatabase (fromIntegral <$> retention_expire_delay) env repo
       `catch` \UnknownDatabase{} ->
         -- DBs are deleted asynchronously and this code is not transactional,
@@ -422,7 +422,7 @@ dbIndex items = DbIndex{..}
 -- | The final set of DBs we want usable on disk.
 --  This is the set of 'keepRoots' DB extended with all the stacked dependencies
 computeRetentionSet
-  :: Monad m
+  :: forall m . Monad m
   => ServerConfig.DatabaseRetentionPolicy
   -> ServerConfig.DatabaseRestorePolicy
   -> UTCTime
@@ -432,15 +432,7 @@ computeRetentionSet
 computeRetentionSet config_retention config_restore
     time isAvailableM DbIndex{..} =
   transitiveClosureBy itemRepo (catMaybes . depsRestored) <$>
-    concatMapM
-      (\(repoNm, dbs) ->
-        dbRetentionForRepo
-          (repoRetention config_retention repoNm)
-          time
-          isAvailableM
-          dbs
-      )
-      byRepoName
+    concatMapM allRetention byRepoName
   where
     -- Add transitive dependencies of a DB to the retention set only
     -- if the DB is local or will be restored.
@@ -449,6 +441,15 @@ computeRetentionSet config_retention config_restore
       | itemLocality == Local
         || restorable config_restore itemRepo = dependencies item
       | otherwise = []
+
+    allRetention
+     :: (Text, NonEmpty Item)
+     -> StateT (HashMap.HashMap Repo Bool) m [Item]
+    allRetention (repo, dbs) = do
+      let policies = repoRetention config_retention repo
+      uniqBy (comparing itemRepo) . concat <$>
+        mapM (\pol -> dbRetentionForRepo pol time isAvailableM dbs) policies
+
 
 -- | The target set of DBs we want usable on the disk. This is a set of
 -- DBs that satisfies the policy.
@@ -572,12 +573,24 @@ timeDiffInSeconds t1 t2 =
   timeSpanInSeconds $ fromUTCTime t1 `timeDiff` fromUTCTime t2
 
 repoRetention
-  :: ServerConfig.DatabaseRetentionPolicy -> Text -> ServerConfig.Retention
+  :: ServerConfig.DatabaseRetentionPolicy
+  -> Text
+  -> NonEmpty ServerConfig.Retention
 repoRetention ServerConfig.DatabaseRetentionPolicy{..} repoNm =
-  Map.findWithDefault
-    databaseRetentionPolicy_default_retention
-    repoNm
-    databaseRetentionPolicy_repos
+  case NonEmpty.nonEmpty (old_retention <> new_retention) of
+    Nothing -> databaseRetentionPolicy_default_retention :| []
+    Just some -> some
+  where
+  old_retention =
+    maybeToList $
+      Map.lookup
+        repoNm
+        databaseRetentionPolicy_repos
+  new_retention =
+    Map.findWithDefault
+      []
+      repoNm
+      databaseRetentionPolicy_by_repo
 
 transitiveClosureBy
   :: (Eq k, Hashable k, Foldable f)
