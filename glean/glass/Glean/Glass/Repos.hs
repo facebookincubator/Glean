@@ -379,8 +379,11 @@ updateLatestRepos backend mlogger mretry tvRepos tvRevs = do
 
 -- | Lookup latest repo in the cache
 lookupLatestRepos
-  :: TVar Glean.LatestRepos -> [GleanDBName] -> STM [(GleanDBName, Glean.Repo)]
-lookupLatestRepos tv repoNames = do
+  :: TVar Glean.LatestRepos
+  -> Maybe Revision
+  -> [GleanDBName]
+  -> STM [(GleanDBName, Glean.Repo)]
+lookupLatestRepos tv _mRevision repoNames = do
   repos <- Glean.latestRepos <$> readTVar tv
   return $ catMaybes
     [ (dbName,) <$> mrepo

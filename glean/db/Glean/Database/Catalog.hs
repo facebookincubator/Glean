@@ -573,9 +573,9 @@ getLocalDatabases cat = do
     (local_db (Just Thrift.DatabaseStatus_Available))
     entriesLiveElsewhere
   return $ mconcat
-    [ HashMap.mapWithKey restoring_db entriesRestoring
+    [ elsewhere
     , updateFailed entriesFailed local
-    , elsewhere
+    , HashMap.mapWithKey restoring_db entriesRestoring
     ]
   where
     updateFailed entriesFailed = HashMap.mapWithKey $

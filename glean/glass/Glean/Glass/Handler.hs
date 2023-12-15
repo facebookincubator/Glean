@@ -161,7 +161,7 @@ runRepoFile
   -> IO t
 runRepoFile sym fn env req opts = do
   withStrictErrorHandling (Glass.gleanBackend env) opts $
-    withRepoFile sym env (req, opts) repo file $ \(dbs,_) mlang ->
+    withRepoFile sym env mRev (req, opts) repo file $ \(dbs,_) mlang ->
         fn (Glass.repoMapping env) repos req opts
             (GleanBackend (Glass.gleanBackend env) dbs)
             (Glass.snapshotBackend env)
@@ -170,6 +170,7 @@ runRepoFile sym fn env req opts = do
     repos = Glass.latestGleanRepos env
     repo = documentSymbolsRequest_repository req
     file = documentSymbolsRequest_filepath req
+    mRev = requestOptions_revision opts
 
 -- | Discover navigable symbols in this file, resolving all bytespans and
 -- adding any attributes
@@ -178,8 +179,12 @@ documentSymbolListX
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> IO DocumentSymbolListXResult
-documentSymbolListX env r opts = fst3 <$> runRepoFile "documentSymbolListX"
-  fetchSymbolsAndAttributes env r opts
+documentSymbolListX env r opts =
+  fst3 <$>
+    runRepoFile
+      "documentSymbolListX"
+      fetchSymbolsAndAttributes
+      env r opts
 
 -- | Same as documentSymbolList() but construct a line-indexed map for easy
 -- cursor/position lookup, and add extra metadata
@@ -188,8 +193,12 @@ documentSymbolIndex
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> IO DocumentSymbolIndex
-documentSymbolIndex env r opts = fst3 <$> runRepoFile "documentSymbolIndex"
-  fetchDocumentSymbolIndex env r opts
+documentSymbolIndex env r opts =
+  fst3 <$>
+    runRepoFile
+      "documentSymbolIndex"
+      fetchDocumentSymbolIndex
+      env r opts
 
 -- | Given a query, run it on all available repos and return the first success
 --   plus an explainer
@@ -234,7 +243,7 @@ findReferences
   -> IO [Location]
 findReferences env@Glass.Env{..} sym opts@RequestOptions{..} = do
   withStrictErrorHandling gleanBackend opts $ do
-  withSymbol "findReferences" env sym $
+  withSymbol "findReferences" env requestOptions_revision sym $
     \(dbs,_revs,(repo, lang, toks)) ->
       fetchSymbolReferences repo lang toks limit
         (GleanBackend gleanBackend dbs)
@@ -249,7 +258,7 @@ findReferenceRanges
   -> IO [LocationRange]
 findReferenceRanges env@Glass.Env{..} sym opts@RequestOptions{..} = do
   withStrictErrorHandling gleanBackend opts $
-    withSymbol "findReferenceRanges" env sym
+    withSymbol "findReferenceRanges" env requestOptions_revision sym
       $ \(db,_revs,(repo, lang, toks)) ->
         fetchSymbolReferenceRanges repo lang toks limit
           (GleanBackend gleanBackend db)
@@ -265,7 +274,7 @@ resolveSymbolRange
   -> IO LocationRange
 resolveSymbolRange env@Glass.Env{..} sym opts = do
   withStrictErrorHandling gleanBackend opts $
-    withSymbol "resolveSymbolRange" env sym
+    withSymbol "resolveSymbolRange" env (requestOptions_revision opts) sym
       $ \(db,_revs,(repo, lang, toks)) ->
         findSymbolLocationRange (GleanBackend gleanBackend db) repo lang toks
 
@@ -277,7 +286,7 @@ describeSymbol
   -> IO SymbolDescription
 describeSymbol env@Glass.Env{..} symId opts = do
   withStrictErrorHandling gleanBackend opts $ do
-  withSymbol "describeSymbol" env symId $
+  withSymbol "describeSymbol" env (requestOptions_revision opts) symId $
     \(gleanDBs, scmRevs, (scmRepo, lang, toks)) ->
       backendRunHaxl GleanBackend{..} $ do
         r <- Search.searchEntity lang toks
@@ -328,8 +337,8 @@ fileIncludeLocations
 fileIncludeLocations env@Glass.Env{..} req opts = do
   fmap fst $ do
   withStrictErrorHandling gleanBackend opts $ do
-  withRepoFile "fileIncludeLocations" env req repo rootfile
-    $ \(gleanDBs,_) _ ->
+  withRepoFile "fileIncludeLocations" env (requestOptions_revision opts)
+    req repo rootfile $ \(gleanDBs,_) _ ->
       backendRunHaxl GleanBackend{..} $ do
         result <- firstOrErrors $ do
           rev <- getRepoHash <$> Glean.haxlRepo
@@ -361,7 +370,7 @@ clangUSRToDefinition
 clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) opts = do
   withStrictErrorHandling gleanBackend opts $ do
   withRepoLanguage "clangUSRToDefinition" env usr repo mlang
-    $ \(gleanDBs,_) _ -> do
+    (requestOptions_revision opts) $ \(gleanDBs,_) _ -> do
       backendRunHaxl GleanBackend{..} $ do
         result <- firstOrErrors $ do
           rev <- getRepoHash <$> Glean.haxlRepo
@@ -464,13 +473,15 @@ searchSymbol
       -> IO (Query.RepoSearchResult, Maybe ErrorLogger)
     searchSymbolsIn repo dbs = case nonEmpty (Set.toList dbs) of
       Nothing -> pure ([], Nothing)
-      Just names -> withGleanDBs "searchSymbol" env req names $
-        \gleanDBs scmRevs -> do
-          res <- backendRunHaxl GleanBackend{..} $ Glean.queryAllRepos $ do
-            res <- mapM (runSearch querySpec
-                          repo scmRevs mlimitInner terse sString) searchQs
-            return (nubOrd (concat res)) -- remove latter duplicates in n*log n
-          pure (res, Nothing)
+      Just names ->
+        withGleanDBs "searchSymbol" env requestOptions_revision req names $
+          \gleanDBs scmRevs -> do
+            res <- backendRunHaxl GleanBackend{..} $ Glean.queryAllRepos $ do
+              res <- mapM (runSearch querySpec
+                            repo scmRevs mlimitInner terse sString) searchQs
+              return (nubOrd (concat res))
+              -- remove latter duplicates in n*log n
+            pure (res, Nothing)
 
     -- In lucky mode, we avoid flattening, instead selecting from the first
     -- unique result found in priority order. We don't de-dup as we go.
@@ -479,13 +490,14 @@ searchSymbol
     searchLuckySymbolsIn repo dbs = case nonEmpty (Set.toList dbs) of
       Nothing -> pure (FeelingLuckyResult [], Nothing)
       Just names ->
-        withGleanDBs "feelingLucky" env req names $ \gleanDBs scmRevs -> do
-          res <- backendRunHaxl GleanBackend{..} $ Glean.queryEachRepo $ do
-            -- we can conveniently limit to 2 matches per inner search
-            rs <- mapM (runSearch querySpec repo scmRevs (Just 2) terse sString)
-              searchQs
-            return (map (nubOrdOn symbolIdOrder) rs)
-          pure (FeelingLuckyResult res, Nothing)
+        withGleanDBs "feelingLucky" env requestOptions_revision req names $
+          \gleanDBs scmRevs -> do
+            res <- backendRunHaxl GleanBackend{..} $ Glean.queryEachRepo $ do
+              -- we can conveniently limit to 2 matches per inner search
+              rs <- forM searchQs $
+                runSearch querySpec repo scmRevs (Just 2) terse sString
+              return (map (nubOrdOn symbolIdOrder) rs)
+            pure (FeelingLuckyResult res, Nothing)
 
 -- cheap way to fix up entities with non-unique locations: uniq on symbol id
 symbolIdOrder :: (SymbolResult, a) -> SymbolId
@@ -793,7 +805,8 @@ searchBySymbolId env@Glass.Env{..} symbolPrefix opts = do
      -> [Text]
      -> IO ([SymbolId], Maybe ErrorLogger)
     findSymbols repo lang tokens =
-      withRepoLanguage "findSymbols" env symbolPrefix repo (Just lang) $
+      let mRev = requestOptions_revision opts in
+      withRepoLanguage "findSymbols" env symbolPrefix repo (Just lang) mRev $
         \(gleanDBs, _) _ -> do
           backendRunHaxl GleanBackend{..} $ do
             symids <- queryAllRepos $ do
@@ -942,7 +955,8 @@ fetchSymbolsAndAttributesGlean
 fetchSymbolsAndAttributesGlean repoMapping latest req opts be mlang = do
   (res1, gLogs, elogs) <- fetchDocumentSymbols file mlimit
     specificRev includeRefs be mlang
-  res2 <- addDynamicAttributes repoMapping latest file mlimit be res1
+  res2 <- addDynamicAttributes repoMapping latest (requestOptions_revision opts)
+    file mlimit be res1
   return ((res2, gLogs), elogs)
   where
     file = toFileReference (documentSymbolsRequest_repository req)
@@ -1111,14 +1125,17 @@ addDynamicAttributes
   :: Glean.Backend b
   => RepoMapping
   -> TVar Glean.LatestRepos
+  -> Maybe Revision
   -> FileReference
   -> Maybe Int
   -> GleanBackend b
   -> DocumentSymbols
   -> IO DocumentSymbolListXResult
-addDynamicAttributes repoMapping latestRepos repofile mlimit be syms = do
+addDynamicAttributes repoMapping latestRepos mRevision repofile
+    mlimit be syms = do
   -- combine additional dynamic attributes
-  mattrs <- getSymbolAttributes repoMapping latestRepos repofile mlimit be
+  mattrs <- getSymbolAttributes repoMapping latestRepos mRevision
+    repofile mlimit be
   return $ extend mattrs syms
   where
     extend [] syms = toDocumentSymbolResult syms
@@ -1191,14 +1208,16 @@ getSymbolAttributes
   :: Glean.Backend b
   => RepoMapping
   -> TVar Glean.LatestRepos
+  -> Maybe Revision
   -> FileReference
   -> Maybe Int
   -> GleanBackend b
   -> IO
      [(GleanDBAttrName, Map.Map Attributes.SymbolIdentifier Attributes)]
-getSymbolAttributes repoMapping repos repofile mlimit be@GleanBackend{..} = do
+getSymbolAttributes repoMapping repos mRevision repofile mlimit
+    be@GleanBackend{..} = do
   mAttrDBs <- forM (map fst $ toList gleanDBs) $
-    getLatestAttrDB repoMapping repos
+    getLatestAttrDB repoMapping repos mRevision
   attrs <- backendRunHaxl be $ do
     forM (catMaybes mAttrDBs) $
       \(attrDB, attr@(GleanDBAttrName _ attrKey){- existential key -}) ->
@@ -1368,17 +1387,19 @@ getGleanRepos
   -> TVar ScmRevisions
   -> RepoName
   -> Maybe Language
+  -> Maybe Revision
   -> Maybe Glean.Repo
   -> IO (NonEmpty (GleanDBName,Glean.Repo), ScmRevisions)
 getGleanRepos repoMapping latestGleanDBs scmRevisions scsrepo
-    mlanguage mGleanDB = do
+    mlanguage mRevision mGleanDB = do
   case mGleanDB of
     Nothing ->
       case fromSCSRepo repoMapping scsrepo mlanguage of
         [] ->  throwIO $ ServerException $ "No repository found for: " <>
           unRepoName scsrepo <>
             maybe "" (\x -> " (" <> toShortCode x <> ")") mlanguage
-        (x:xs) -> getSpecificGleanDBs latestGleanDBs scmRevisions (x :| xs)
+        (x:xs) ->
+          getSpecificGleanDBs latestGleanDBs scmRevisions mRevision (x :| xs)
     Just gleanDB@Glean.Repo{repo_name} -> do
       scmRevs <- atomically $ do readTVar scmRevisions
       return ((GleanDBName repo_name, gleanDB) :| [], scmRevs)
@@ -1387,11 +1408,12 @@ getGleanRepos repoMapping latestGleanDBs scmRevisions scsrepo
 getSpecificGleanDBs
   :: TVar Glean.LatestRepos
   -> TVar ScmRevisions
+  -> Maybe Revision
   -> NonEmpty GleanDBName
   -> IO (NonEmpty (GleanDBName,Glean.Repo), ScmRevisions)
-getSpecificGleanDBs latestGleanDBs scmRevisions gleanDBNames = do
+getSpecificGleanDBs latestGleanDBs scmRevisions mRevision gleanDBNames = do
   (dbs, scmRevs) <- atomically $ do
-    dbs <- lookupLatestRepos latestGleanDBs $ toList gleanDBNames
+    dbs <- lookupLatestRepos latestGleanDBs mRevision $ toList gleanDBNames
     scmRevs <- readTVar scmRevisions
     pure (dbs, scmRevs)
   case dbs of
@@ -1403,13 +1425,14 @@ getSpecificGleanDBs latestGleanDBs scmRevisions gleanDBNames = do
 getLatestAttrDB
   :: RepoMapping
   -> TVar Glean.LatestRepos
+  -> Maybe Revision
   -> GleanDBName
   -> IO (Maybe (Glean.Repo, GleanDBAttrName))
-getLatestAttrDB repoMapping allRepos gleanDBName =
+getLatestAttrDB repoMapping allRepos mRevision gleanDBName =
   case firstAttrDB repoMapping gleanDBName of
     Nothing -> return Nothing
     Just attrDBName -> atomically $ do
-      dbs <- lookupLatestRepos allRepos [gleanAttrDBName attrDBName]
+      dbs <- lookupLatestRepos allRepos mRevision [gleanAttrDBName attrDBName]
       return $ case dbs of
         [] -> Nothing
         db:_ -> Just (snd db, attrDBName)
@@ -1453,14 +1476,15 @@ withGleanDBs
   :: (LogError a, LogRequest a, LogResult b)
   => Text
   -> Glass.Env
+  -> Maybe Revision
   -> a
   -> NonEmpty GleanDBName
   -> (NonEmpty (GleanDBName, Glean.Repo)
         -> ScmRevisions -> IO (b, Maybe ErrorLogger))
   -> IO (b, Maybe ErrorLogger)
-withGleanDBs method env@Glass.Env{..} req dbNames fn = do
+withGleanDBs method env@Glass.Env{..} mRevision req dbNames fn = do
   withLogDB method env req
-    (getSpecificGleanDBs latestGleanRepos repoScmRevisions dbNames)
+    (getSpecificGleanDBs latestGleanRepos repoScmRevisions mRevision dbNames)
     Nothing
     (\(dbs,revs) _mlang -> fn dbs revs)
 
@@ -1472,20 +1496,22 @@ withRepoLanguage
   -> a
   -> RepoName
   -> Maybe Language
+  -> Maybe Revision
   -> (  (NonEmpty (GleanDBName,Glean.Repo), ScmRevisions)
      -> Maybe Language
      -> IO (b, Maybe ErrorLogger))
   -> IO (b, Maybe ErrorLogger)
-withRepoLanguage method env@Glass.Env{..} req repo mlanguage fn = do
+withRepoLanguage method env@Glass.Env{..} req repo mlanguage mRevision fn = do
   withLogDB method env req
     (getGleanRepos repoMapping latestGleanRepos
-      repoScmRevisions repo mlanguage gleanDB)
+      repoScmRevisions repo mlanguage mRevision gleanDB)
     mlanguage
     fn
 
 -- | Run an action that provides a repo and filepath, log it
 withRepoFile :: (LogError a, LogRequest a, LogResult b) => Text
   -> Glass.Env
+  -> Maybe Revision
   -> a
   -> RepoName
   -> Path
@@ -1493,27 +1519,28 @@ withRepoFile :: (LogError a, LogRequest a, LogResult b) => Text
      -> Maybe Language
      -> IO (b, Maybe ErrorLogger))
   -> IO (b, Maybe ErrorLogger)
-withRepoFile method env req repo file fn = do
-  withRepoLanguage method env req repo (filetype file) fn
+withRepoFile method env mRev req repo file fn = do
+  withRepoLanguage method env req repo (filetype file) mRev fn
 
 -- | Run an action that provides a symbol id, log it
 withSymbol
   :: LogResult c
   => Text
   -> Glass.Env
+  -> Maybe Revision
   -> SymbolId
   -> ((NonEmpty (GleanDBName, Glean.Repo),
         ScmRevisions, (RepoName, Language, [Text]))
   -> IO (c, Maybe ErrorLogger))
   -> IO (c, Maybe ErrorLogger)
-withSymbol method env@Glass.Env{..} sym fn =
+withSymbol method env@Glass.Env{..} mRevision sym fn =
   withLogDB method env sym
     (case symbolTokens sym of
       Left err -> throwM $ ServerException err
       Right req@(repo, lang, _toks) -> do
         (dbs, revs) <-
           getGleanRepos repoMapping latestGleanRepos repoScmRevisions repo
-            (Just lang) gleanDB
+            (Just lang) mRevision gleanDB
         return (dbs, revs, req))
     Nothing
     (\db _mlang -> fn db)
@@ -1608,7 +1635,7 @@ searchRelated
 searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
     SearchRelatedRequest{..} = do
   withStrictErrorHandling gleanBackend opts $ do
-  withSymbol "searchRelated" env sym $
+  withSymbol "searchRelated" env requestOptions_revision sym $
     \(gleanDBs_, scmRevs, (repo, lang, toks)) ->
       let gleanDBs = filterDBs lang gleanDBs_ in
       backendRunHaxl GleanBackend{..} $ do
@@ -1789,7 +1816,7 @@ searchRelatedNeighborhood
   -> IO RelatedNeighborhoodResult
 searchRelatedNeighborhood env@Glass.Env{..} sym opts@RequestOptions{..} req = do
   withStrictErrorHandling gleanBackend opts $ do
-  withSymbol "searchRelatedNeighborhood" env sym $
+  withSymbol "searchRelatedNeighborhood" env requestOptions_revision sym $
     \(gleanDBs, scmRevs, (repo, lang, toks)) ->
       backendRunHaxl GleanBackend{..} $ do
         baseEntity <- searchFirstEntity lang toks
