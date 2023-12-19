@@ -584,6 +584,10 @@ predicate FlowTypeImportXRef :
       { typeof_ = ModuleExport } = Import;
       { module = M, export_ = E } = ModuleExport;
       FlowExportLocation { M, E, Entity, TargetFile, TargetSpan };
+    ) | (
+      { type = ModuleExport } = Import;
+      { module = M, typeExport = { named = "default" } } = ModuleExport;
+      FlowExportLocation { M, { default_ = {} }, Entity, TargetFile, TargetSpan };
     )
 
 # Inverse map of definition entities to their import declarations
