@@ -981,16 +981,30 @@ fetchSymbolsAndAttributes
   -> Maybe Language
   -> IO ((DocumentSymbolListXResult, SnapshotStatus, QueryEachRepoLog)
         , Maybe ErrorLogger)
-fetchSymbolsAndAttributes repoMapping latest req opts be snapshotbe mlang =
-  case mrevision of
+fetchSymbolsAndAttributes repoMapping latest req opts be snapshotbe mlang = do
+  res <- case mrevision of
     Just revision -> do
       Async.withAsync getFromGlean $ \gleanRes -> do
-        esnapshot <- getSnapshot snapshotbe repo file revision
+        esnapshot <- getSnapshot snapshotbe repo file (Just revision)
         case esnapshot of
           Right queryResult ->
             return ((queryResult, Success, QueryEachRepoUnrequested), Nothing)
           Left status -> addStatus status <$> Async.wait gleanRes
     _ -> addStatus Unrequested <$> getFromGlean
+  -- Fall back to the best snapshot available for new files (not yet in repo)
+  case res of
+    ((_,_,_), Just ErrorLogger {errorTy})
+      -- assume it's a new file if no src.File fact
+      | all isNoSrcFileFact errorTy
+      -> do
+        bestSnapshot <- getSnapshot snapshotbe repo file Nothing
+        case bestSnapshot of
+          Right result ->
+            return ((result, Success, QueryEachRepoUnrequested), Nothing)
+          Left _ ->
+            return res
+    _ ->
+      return res
   where
     addStatus st ((res, gleanLog), mlogger) = ((res, st, gleanLog), mlogger)
     getFromGlean =
@@ -998,6 +1012,8 @@ fetchSymbolsAndAttributes repoMapping latest req opts be snapshotbe mlang =
     file = documentSymbolsRequest_filepath req
     repo = documentSymbolsRequest_repository req
     mrevision = requestOptions_revision opts
+    isNoSrcFileFact GlassExceptionReason_noSrcFileFact{} = True
+    isNoSrcFileFact _ = False
 
 -- | Whether the user requires the exact revision specified
 data RevisionSpecifier = ExactOnly Revision | AnyRevision
