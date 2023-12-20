@@ -985,7 +985,7 @@ fetchSymbolsAndAttributes repoMapping latest req opts be snapshotbe mlang =
   case mrevision of
     Just revision -> do
       Async.withAsync getFromGlean $ \gleanRes -> do
-        esnapshot <- getSnapshot snapshotbe repo file revision trySnapshot
+        esnapshot <- getSnapshot snapshotbe repo file revision
         case esnapshot of
           Right queryResult ->
             return ((queryResult, Success, QueryEachRepoUnrequested), Nothing)
@@ -998,10 +998,6 @@ fetchSymbolsAndAttributes repoMapping latest req opts be snapshotbe mlang =
     file = documentSymbolsRequest_filepath req
     repo = documentSymbolsRequest_repository req
     mrevision = requestOptions_revision opts
-
-    trySnapshot = case requestOptions_feature_flags opts of
-        Just (FeatureFlags (Just True)) -> True
-        _ -> False
 
 -- | Whether the user requires the exact revision specified
 data RevisionSpecifier = ExactOnly Revision | AnyRevision
