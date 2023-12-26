@@ -231,15 +231,16 @@ predicate FileEntityXRefLocations:
 # Xrefs without the target location. This can be useful in cases
 # where we don't have a target location, but we don't need it. This
 # happens when indexing a subset of Hack files in a repo, for example.
-predicate FileEntityXRefSpans:
+predicate FileEntityXRefRangeSpans:
   {
     file: src.File,
-    span: src.ByteSpan,
+    location: codemarkup.types.RangeSpan,
     entity: code.Entity,
   }
-  { File, Span, Entity } where
-    (codemarkup.hack.HackFileEntityXRefSpans { File, Span, E };
-     { hack = E } = Entity) |
+  { File, RangeSpan, Entity } where
+    ( codemarkup.hack.HackFileEntityXRefSpans { File, Span, E };
+      { hack = E } = Entity;
+      { span = Span } = RangeSpan) |
     (
       (codemarkup.flow.FlowFileEntityXRefLocations { File, XRef, E };
        { flow = E } = Entity) |
@@ -265,8 +266,20 @@ predicate FileEntityXRefSpans:
       { kotlin = E } = Entity) |
       (codemarkup.csharp.CSharpFileEntityXRefLocations { File, XRef, E };
       { csharp = E } = Entity);
-      { source = { span = Span }} = XRef
+      { source = RangeSpan} = XRef
     )
+
+# Like FileEntityXRefRangeSpans, but only returns spans and not ranges.
+# Deprecated, use FileEntityXRefRangeSpans or language-specific
+# predicates instead.
+predicate FileEntityXRefSpans:
+  {
+    file: src.File,
+    span: src.ByteSpan,
+    entity: code.Entity,
+  }
+  { File, Span, Entity } where
+    FileEntityXRefRangeSpans { File, { span = Span }, Entity }
 
 # Finding xrefs. All references in a file, and their kinds
 predicate FileEntityXRefKinds:
