@@ -234,12 +234,12 @@ std::unique_ptr<FactIterator>LookupCache::Anchor::seekWithinSection(
 }
 
 void LookupCache::insert(Fact::unique_ptr owned) {
-  folly::SharedMutex::WriteHolder delete_write(nullptr);
+  std::unique_lock<folly::SharedMutex> delete_write;
   Fact::intrusive_list dead;
   performUpdate([&](Index& index, Storage& storage) {
     insertOne(index, storage, std::move(owned), dead);
     if (!dead.empty()) {
-      delete_write = folly::SharedMutex::WriteHolder(index.delete_lock);
+      delete_write = std::unique_lock(index.delete_lock);
     }
   });
   // Perform the actual deletions after we've released all locks on the index
