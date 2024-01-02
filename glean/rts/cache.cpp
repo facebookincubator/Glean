@@ -393,7 +393,7 @@ void LookupCache::Inserter::insert(Fact::Ref fact) {
     Fact::create(fact, FULL),
     dead);
   if (!dead.empty()) {
-    folly::SharedMutex::WriteHolder delete_write(index.delete_lock);
+    std::unique_lock delete_write(index.delete_lock);
     dead.erase_and_dispose(dead.begin(), dead.end(), Fact::destroy);
   }
 }
