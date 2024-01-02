@@ -94,7 +94,11 @@ genTargets mode slashVn version info =
     ] ++
     [ "  hs_includes = [\"" <> namespace <> "_include.hs\"],"
     | mode == Data ] ++
-    [ "  thrift_rust_options = [\"serde\", \"skip_none_serialization\"],"
+    [ "  thrift_rust_options = ["
+    , "    \"serde\","
+    , "    \"skip_none_serialization\","
+    , "    \"deprecated_default_enum_min_i32\","
+    , "],"
     , "  thrift_cpp2_options = [" <> Text.intercalate ", " [
       "\"json\"",
       "\"types_cpp_splits=" <> cppSplits <> "\""
