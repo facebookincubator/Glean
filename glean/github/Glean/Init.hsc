@@ -15,6 +15,7 @@ module Glean.Init (
     InitOptions,
     parserInfo,
     setArgs,
+    setFromFilePrefix,
     setPrefs,
     setTransformGflags,
   ) where
@@ -72,6 +73,7 @@ data InitOptions a = InitOptions
   , initPrefs :: PrefsMod
   , initParser :: ParserInfo a
   , initTransformGflags :: a -> [String] -> [String]
+  , initFromFilePrefix :: Maybe Char
   }
 
 parserInfo :: ParserInfo a -> InitOptions a
@@ -81,6 +83,7 @@ parserInfo p =
     , initPrefs = idm
     , initParser = p
     , initTransformGflags = \_ x -> x
+    , initFromFilePrefix = Nothing
     }
 
 type InitSpec a = InitOptions a -> InitOptions a
@@ -94,13 +97,19 @@ setArgs a opts = opts { initArgs = Just a }
 setTransformGflags :: (a -> [String] -> [String]) -> InitSpec a
 setTransformGflags tr opts = opts { initTransformGflags = tr }
 
+setFromFilePrefix :: Char -> InitSpec a
+setFromFilePrefix c opts = opts { initFromFilesPrefix = Just c}
+
 withUnitTestOptions :: ParserInfo a -> (TestAction -> a -> IO b) -> IO b
 withUnitTestOptions opts f = withOptions opts $ f TestAction
 
 withOptionsGen :: InitOptions a -> (a -> IO b) -> IO b
 withOptionsGen InitOptions{..} act = do
   args <- maybe Sys.getArgs pure initArgs
-  r <- tryAll $ partialParse (prefs initPrefs) p' args
+  args' <- case initFromFilesPrefix of
+    Nothing -> return args
+    Just c -> expandFromFiles c args
+  r <- tryAll $ partialParse (prefs initPrefs) p' args'
   case r of
     Left e -> run (fixHelp args) $ throwIO e
     Right (opts, fbArgs) ->
@@ -117,6 +126,13 @@ withOptionsGen InitOptions{..} act = do
     fixHelp ("--help":r) = fixHelp r
     fixHelp ("--help-all":r) = "--help" : fixHelp r
     fixHelp (f:r) = f : fixHelp r
+
+-- | Expand argument files identified by the given char prefix
+expandFromFiles :: Char -> [String] -> IO [String]
+expandFromFiles prefix = fmap concat . mapM expandArg
+  where
+    expandArg (p:path) | p == prefix = lines <$> readFile path
+    expandArg arg = pure [arg]
 
 fbhelper :: Parser (a -> a)
 fbhelper = abortOption showHelpText $ mconcat

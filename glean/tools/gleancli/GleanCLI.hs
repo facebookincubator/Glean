@@ -145,6 +145,7 @@ main =
     spec =
       setTransformGflags tr $
       setPrefs subparserInline $
+      setFromFilePrefix '@' $
       parserInfo options
 
     tr (opts, _) = case cfgCommand opts of

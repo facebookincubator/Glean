@@ -80,7 +80,7 @@ import Glean.Glass.Main (withEnv)
 import qualified Glean.Glass.Options as Glass
 import Glean.Glass.SnapshotBackend (SnapshotBackend(NoSnapshotBackend))
 import qualified Glean.Glass.Types as Types
-import Glean.Init (withOptions)
+import Glean.Init (withOptionsGen, parserInfo, setFromFilePrefix)
 
 import qualified Glean.Snapshot.Types as Types
 import Glean.Glass.Types (GlassException(glassException_reasons))
@@ -304,7 +304,13 @@ uploadToXdb
 
 main :: IO ()
 main =
-  withOptions options $ \case
+  let
+    spec =
+      setFromFilePrefix '@' $
+      parserInfo options
+
+  in
+  withOptionsGen spec $ \case
     Left config -> realMain config
     Right snapshotPath -> printSnapshot snapshotPath
 
