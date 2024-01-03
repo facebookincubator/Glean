@@ -572,11 +572,10 @@ userQueryWrites env odb config bounds lookup repo pred q = do
   where
     -- We derive incrementally if
     --   1. the DB is stacked, and
-    --   2. the base DB also has the predicate we want to derive in its
-    --      stored schema.
+    --   2. the predicate was derived in the base DB
     --
-    -- (2) might be false if we stacked a DB with
-    -- --update-schema-for-stacked set, for testing derivation.
+    -- (2) might be false if we're deriving a predicate in a
+    -- stacked DB that we didn't derive on the base DB.
     shouldDeriveIncrementally meta =
       case Thrift.metaDependencies meta of
         Just (Thrift.Dependencies_stacked Thrift.Stacked{..}) ->
@@ -585,11 +584,9 @@ userQueryWrites env odb config bounds lookup repo pred q = do
           check (Thrift.pruned_base pruned)
         Nothing -> return False
       where
-      check base =
-        withOpenDatabase env base $ \OpenDB{..} ->
-          case HashMap.lookup pred (predicatesById odbSchema) of
-            Nothing -> return False
-            Just PredicateDetails{..} -> return predicateInStoredSchema
+      check base = do
+        meta <- atomically $ Catalog.readMeta (envCatalog env) base
+        return $ predicateIdRef pred `elem` Thrift.metaCompletePredicates meta
 
     -- Here the best we can do is say whether a Pid could have facts in a DB.
     -- Because of ownership slicing it may be that even though
