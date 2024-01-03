@@ -318,6 +318,39 @@ deriveIncrementalTest = TestLabel "incremental" $ TestList
         assertEqual "results" 3 (userQueryStats_result_count stats)
         assertEqual "facts searched" 4 $ maybe 0 (sum . Map.elems)
           (userQueryStats_facts_searched stats)
+
+  , TestLabel "disjunction followed by sequence(2)"  $ TestCase $
+    derivationStats def
+      [s|schema all.1 {
+        predicate Node1 : nat
+        predicate Node2 : nat
+        predicate Node1and2XNode2 : { a: nat, b: nat } stored
+          { A, B } where
+            (Node1 A | Node2 A);
+            Node2 B
+      }|]
+      [ mkBatch (PredicateRef "all.Node1" 1)
+          [ [s|{"key": 1}|]
+          , [s|{"key": 2}|]
+          , [s|{"key": 3}|]
+          ]
+      ]
+      [ mkBatch (PredicateRef "all.Node1" 1)
+          [ [s|{"key": 7}|]
+          ]
+      , mkBatch (PredicateRef "all.Node2" 1)
+          [ [s|{"key": 4}|]
+          , [s|{"key": 5}|]
+          , [s|{"key": 6}|]
+          ]
+      ]
+      (PredicateRef "all.Node1and2XNode2" 1)
+      $ \stats -> do
+        -- (new x old)
+        assertEqual "results" 21 (userQueryStats_result_count stats)
+        assertEqual "facts searched" 28 $ maybe 0 (sum . Map.elems)
+          (userQueryStats_facts_searched stats)
+
   , TestLabel "disjunction of expression and FactGenerator" $ TestCase $
     derivationStats def
       [s|schema all.1 {

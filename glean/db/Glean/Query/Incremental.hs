@@ -54,7 +54,7 @@ expandGenerators hasFacts stmts =
     Just xs -> xs
   where
   expandSequence :: [CgStatement] -> Incremental [CgStatement]
-  expandSequence [] = Incremental Nothing Nothing
+  expandSequence [] = Incremental Nothing (Just [])
   expandSequence (x:xs) = Incremental new old
     where
       Incremental mnew mold = expandStatement x
