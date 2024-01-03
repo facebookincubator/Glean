@@ -13,6 +13,7 @@ module Glean.Repo
   , getRepo
   , getRepos
   , getSCMrevisions
+  , scmRevisionsOfDatabase
   , LatestRepos(..)
   , NoDatabase(..)
   ) where
@@ -43,7 +44,7 @@ instance Control.Exception.Exception NoDatabase
 -- | Collecting 'getLatestRepo' for every available repo in the backend
 data LatestRepos = LatestRepos{
   latestRepos :: !(Map Text Repo),  -- ^ Guaranteed available
-  allLatestRepos :: Map Text [Repo] -- ^ Possibly unavailable
+  allLatestRepos :: !(Map Text [Database]) -- ^ Possibly unavailable
   }
 
 -- | Ask the server which databases are available, and return
@@ -52,7 +53,7 @@ getRepos
   :: Backend be
   => be
   -> (Repo -> Bool)  -- ^ Predicate to choose repo
-  -> IO ([Repo], [Repo])
+  -> IO ([Database], [Database])
 getRepos backend pred = do
   let
     -- If we're connecting to a tier and using shards, then we can
@@ -75,7 +76,7 @@ getRepos backend pred = do
         let
           sorted = sortBy (flip compare `on` database_created_since_epoch) xs
         available <- maybeToList <$> checkRestorableAvailable backend sorted
-        return (available, map database_repo sorted)
+        return (available, sorted)
   mconcat <$> mapM pickRepo xss
 
 
@@ -86,7 +87,8 @@ getRepo
   => be
   -> (Repo -> Bool)  -- ^ Predicate to choose repo
   -> IO (Maybe Repo)
-getRepo backend pred = listToMaybe . fst <$> getRepos backend pred
+getRepo backend pred =
+  listToMaybe . map database_repo . fst <$> getRepos backend pred
 
 -- | Ask the server which databases are available, and select the
 -- latest complete database for all repo names selected by the predicate.
@@ -96,10 +98,13 @@ getLatestRepos
   -> (Text -> Bool)  -- ^ Predicate to choose repo names to include
   -> IO LatestRepos
 getLatestRepos backend keepName = do
-  let assemble (rs, all) = LatestRepos
-        (Map.fromList [ (repo_name r, r) | r <- rs ])
-        (Map.fromListWith (++) [ (repo_name r, [r]) | r <- all])
-  assemble <$> getRepos backend (keepName . repo_name)
+  (latest, all) <- getRepos backend (keepName . repo_name)
+  let
+    avail = Map.fromList
+      [ (repo_name r, r) | d <- latest, let r = database_repo d ]
+    alldb = Map.fromListWith (++)
+      [ (repo_name (database_repo d), [d]) | d <- all]
+  return $ LatestRepos avail alldb
 
 -- | Ask the server which databases are available, and select the
 -- latest complete database for the given repo name.
@@ -123,12 +128,16 @@ getLatestRepo backend name = do
 -- otherwise we ignore restorable DBs when filtering above.
 --
 -- Otherwise return Nothing.
-checkRestorableAvailable :: Backend be => be -> [Database] -> IO (Maybe Repo)
+checkRestorableAvailable
+  :: Backend be
+  => be
+  -> [Database]
+  -> IO (Maybe Database)
 checkRestorableAvailable _ [] = return Nothing
-checkRestorableAvailable backend (Database{..}:dbs)
+checkRestorableAvailable backend (db@Database{..}:dbs)
   | database_status `notElem`
     [DatabaseStatus_Restoring, DatabaseStatus_Available] =
-    return (Just database_repo)
+    return (Just db)
   | not (usingShards backend) =
     checkRestorableAvailable backend dbs
   | otherwise = do
@@ -143,7 +152,7 @@ checkRestorableAvailable backend (Database{..}:dbs)
        ": " <> (if avail then "some" else "no") <> " hosts have it"
     if not avail
       then checkRestorableAvailable backend dbs
-      else return (Just database_repo)
+      else return (Just db)
 
 -- | Returns a mapping (SCM name -> SCM revision)
 --   of the SCM repositories indexed by the DB.
@@ -151,14 +160,16 @@ checkRestorableAvailable backend (Database{..}:dbs)
 getSCMrevisions :: Backend be => be -> Repo -> IO (HashMap Text Text)
 getSCMrevisions backend repo = do
   GetDatabaseResult{getDatabaseResult_database = db} <- getDatabase backend repo
+  return $ scmRevisionsOfDatabase db
 
-  let properties = HashMap.toList (database_properties db)
-
-  return $ HashMap.fromList
-      [ (scm_name, prop_value)
-      | (prop_name, prop_value) <- properties
-      , Just scm_name <- [T.stripPrefix "glean.scm." prop_name]
-      -- Want to filter out values that are not SCM names,
-      -- but lack an exhaustive list of valid SCM names.
-      , scm_name `notElem` ["repo", "revision"]
-      ]
+-- | Extract a mapping (SCM name -> SCM revision) from the DB properties
+scmRevisionsOfDatabase :: Database -> HashMap Text Text
+scmRevisionsOfDatabase Database{..} =
+  HashMap.fromList
+    [ (scm_name, prop_value)
+    | (prop_name, prop_value) <- HashMap.toList database_properties
+    , Just scm_name <- [T.stripPrefix "glean.scm." prop_name]
+    -- Want to filter out values that are not SCM names,
+    -- but lack an exhaustive list of valid SCM names.
+    , scm_name `notElem` ["repo", "revision"]
+    ]

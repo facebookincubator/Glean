@@ -39,7 +39,7 @@ module Glean.Glass.Repos
 import Data.List (nub)
 import qualified Data.Text as Text
 import qualified Data.Set as Set
-import Control.Concurrent.Async ( withAsync, forConcurrently )
+import Control.Concurrent.Async ( withAsync )
 import Control.Exception ( uninterruptibleMask_ )
 import Data.Maybe ( catMaybes )
 import Data.Set ( Set )
@@ -303,7 +303,7 @@ logIt mlogger latest missing attempt backend = do
       let remaining = subtract 1 <$> attempt
           reposListed = Text.unlines
             [ "Instances listed for " <> db <> " : " <> intercalate ","
-              [ Glean.repo_hash repo
+              [ Glean.repo_hash (Glean.database_repo repo)
               | Just repos <- [Map.lookup db (Glean.allLatestRepos latest)]
               , repo <- repos
               ]
@@ -329,12 +329,12 @@ logIt mlogger latest missing attempt backend = do
 formatBackend :: Glean.Backend b => b -> Text
 formatBackend = Text.pack . Glean.displayBackend
 
-getScmRevisions :: Glean.Backend b => b -> Glean.LatestRepos -> IO ScmRevisions
-getScmRevisions backend repos = ScmRevisions . HashMap.fromList <$>
-    forConcurrently repoList getScmRevision
-  where
-    repoList = Map.elems $ Glean.latestRepos repos
-    getScmRevision repo = (repo,) <$> Glean.getSCMrevisions backend repo
+getScmRevisions :: Glean.LatestRepos -> ScmRevisions
+getScmRevisions repos =
+  ScmRevisions $ HashMap.fromList
+    [ (Glean.database_repo db, Glean.scmRevisionsOfDatabase db)
+    | (_, dbs) <- Map.toList (Glean.allLatestRepos repos)
+    , db <- dbs ]
 
 -- | Introduce a latest repo cache.
 -- TODO: this should pass the configured repo list through
@@ -348,9 +348,8 @@ withLatestRepos
    -> IO a
 withLatestRepos backend mlogger mretry freq f = do
   repos <- getLatestRepos backend mlogger mretry
-  scmRevisions <- getScmRevisions backend repos
   tvRepos <- newTVarIO repos
-  tvRevs <- newTVarIO scmRevisions
+  tvRevs <- newTVarIO (getScmRevisions repos)
   withAsync (worker tvRepos tvRevs) $ \_async -> f tvRepos tvRevs
   where
     worker tvRepos tvRevs =
@@ -372,10 +371,9 @@ updateLatestRepos
   -> TVar Glean.LatestRepos -> TVar ScmRevisions -> IO ()
 updateLatestRepos backend mlogger mretry tvRepos tvRevs = do
   repos <- getLatestRepos backend mlogger mretry
-  revs <- getScmRevisions backend repos
   atomically $ do
     writeTVar tvRepos repos
-    writeTVar tvRevs revs
+    writeTVar tvRevs $! getScmRevisions repos
 
 -- | Lookup latest repo in the cache
 lookupLatestRepos
