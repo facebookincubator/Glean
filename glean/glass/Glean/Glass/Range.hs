@@ -136,7 +136,7 @@ getFileInfo fileRepo path = do
     Just fileInfoP -> do
       Glass.FileInfo_key srcFile infos <- Glean.keyOf fileInfoP
       let fileId = Glean.getId srcFile
-          Glass.FileMetadata isIndexed mLineOffsets fileDigest = infos
+          Glass.FileMetadata isIndexed mLineOffsets fileDigest _ = infos
       offsets <- memoLineOffsetsFileLines srcFile mLineOffsets
       return $ Right FileInfo{..}
 

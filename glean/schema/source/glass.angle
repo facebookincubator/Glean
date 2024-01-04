@@ -10,7 +10,8 @@ import codemarkup.30
 type FileMetadata = {
   indexed: bool,
   offsets: maybe src.FileLines,
-  digest: maybe digest.Digest
+  digest: maybe digest.Digest,
+  indexFailure: maybe src.IndexFailure
 }
 
 # Key by filepath to get blob of metadata back.
@@ -20,7 +21,7 @@ predicate FileInfo:
     file: src.File,
     info: FileMetadata
   }
-  { File, { Indexed, MOffsets, MDigest } } where
+  { File, { Indexed, MOffsets, MDigest, MFailure } } where
     src.File _ = File; # binding occurence
     MOffsets =
       if (Offsets = src.FileLines { file = File } )
@@ -31,5 +32,9 @@ predicate FileInfo:
       then ( { just = Digest } )
       else ( nothing );
     Indexed = if (codemarkup.IndexedFile File) then (true) else (false);
+    MFailure =
+      if (F = src.IndexFailure { file = File } )
+      then ( { just = F } )
+      else ( nothing );
 
 }
