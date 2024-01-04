@@ -251,7 +251,7 @@ public:
         currentContext = context;
       }
     };
-    return f();
+    return std::forward<F>(f)();
   }
 
   // Execute f in the context of a NestedNameSpecifier. Consider:
@@ -288,7 +288,8 @@ public:
     if (savedContext == nullptr) {
       savedContext = currentContext;
     }
-    return inContext(spec ? getSpecifierContext(spec) : savedContext, f);
+    return inContext(
+        spec ? getSpecifierContext(spec) : savedContext, std::forward<F>(f));
   }
 
   // We can't traverse the entire declaration in the context of the
@@ -303,7 +304,7 @@ public:
     SCOPE_EXIT {
       currentFunction = saved;
     };
-    return f();
+    return std::forward<F>(f)();
   }
 
   // Traverse function bodies in the context of the function.
@@ -318,7 +319,7 @@ public:
     if (currentFunction && body == currentFunction->getBody()) {
       return inContext(currentFunction, std::forward<F>(f));
     } else {
-      return f();
+      return std::forward<F>(f)();
     }
   }
 
@@ -2441,6 +2442,61 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       [&] { return Base::TraverseCoroutineBodyStmt(stmt); });
   }
 
+  // This helper is used to traverse the implicit and explicit components of
+  // a subtree. For example, given a coroutine coreturn statement:
+  //
+  //   Task<int> f() {
+  //     int x = 42;
+  //     co_return x;
+  //     //        ^ explicit xref to `x`.
+  //     // implicit xref to `Task<int>::promise_type::return_value(x)`.
+  //   }
+  //
+  // The explicit AST traversal (default) visits the xref to the local `x`.
+  // The implicit AST traversal (when `shouldVisitImplicitCode()` returns true)
+  // visits the hidden xref to `Task<int>::promise_type::return_value(x);`.
+  //
+  // We save and set the state of `shouldVisitImplicitCode_` to control the
+  // result of `shouldVisitImplicitCode()` used by the Clang traversal logic.
+  template <typename F>
+  bool traverseImplicitAndExplicitCode(F&& f) {
+    auto saved = shouldVisitImplicitCode_;
+    SCOPE_EXIT {
+      shouldVisitImplicitCode_ = saved;
+    };
+    for (bool b : {false, true}) {
+      shouldVisitImplicitCode_ = b;
+      if (!std::forward<F>(f)()) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool TraverseCoreturnStmt(clang::CoreturnStmt* stmt) {
+    return traverseImplicitAndExplicitCode([&] {
+      return Base::TraverseCoreturnStmt(stmt);
+    });
+  }
+
+  bool TraverseCoawaitExpr(clang::CoawaitExpr* expr) {
+    return traverseImplicitAndExplicitCode([&] {
+      return Base::TraverseCoawaitExpr(expr);
+    });
+  }
+
+  bool TraverseDependentCoawaitExpr(clang::DependentCoawaitExpr* expr) {
+    return traverseImplicitAndExplicitCode([&] {
+      return Base::TraverseDependentCoawaitExpr(expr);
+    });
+  }
+
+  bool TraverseCoyieldExpr(clang::CoyieldExpr* expr) {
+    return traverseImplicitAndExplicitCode([&] {
+      return Base::TraverseCoyieldExpr(expr);
+    });
+  }
+
   bool TraverseLambdaExpr(clang::LambdaExpr *lambda) {
     return usingTracker.inFunction(
       lambda->getCallOperator(),
@@ -2605,6 +2661,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return false;
   }
 
+  bool shouldVisitImplicitCode() const {
+    return shouldVisitImplicitCode_;
+  }
+
   void finish() {
     db.finish();
   }
@@ -2631,6 +2691,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   clang::ASTContext &astContext;
 
   UsingTracker usingTracker;
+  bool shouldVisitImplicitCode_ = false;
 
   Memo<const clang::DeclContext *,
        Scope,
