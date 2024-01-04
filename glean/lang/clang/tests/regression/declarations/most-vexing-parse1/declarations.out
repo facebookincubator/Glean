@@ -31,7 +31,14 @@
           "name": {
             "key": {
               "name": { "key": { "name": { "key": "guard" } } },
-              "scope": { "global_": { } }
+              "scope": {
+                "local": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "f6" } } },
+                    "scope": { "global_": { } }
+                  }
+                }
+              }
             }
           },
           "signature": {
@@ -83,7 +90,14 @@
                 "local": {
                   "key": {
                     "name": { "key": { "name": { "key": "guard" } } },
-                    "scope": { "global_": { } }
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "f6" } } },
+                          "scope": { "global_": { } }
+                        }
+                      }
+                    }
                   }
                 }
               }

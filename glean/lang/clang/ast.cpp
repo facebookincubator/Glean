@@ -1386,6 +1386,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           }
         }
 
+        if (auto ctx = decl->getLexicalDeclContext();
+            ctx && ctx->isFunctionOrMethod()) {
+          scope = visitor.scopeRepr(visitor.scopes(ctx), decl->getAccess());
+        }
         auto qname = visitor.db.fact<Cxx::FunctionQName>(name.value(), scope);
         auto decl_fact = visitor.db.fact<Cxx::FunctionDeclaration>(
           qname,
