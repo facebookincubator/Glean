@@ -1,3 +1,2 @@
-query: |
-    R where cxx1.DeclarationSrcRange { _, R }
+query: D where cxx1.DeclarationSrcRange { D, _ }
 transform: [gensort, []]

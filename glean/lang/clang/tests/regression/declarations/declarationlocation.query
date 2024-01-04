@@ -1,3 +1,0 @@
-query: |
-    { N, L } where cxx1.DeclarationLocationName { _, N, L }
-transform: [gensort, []]
