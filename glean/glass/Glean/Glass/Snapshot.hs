@@ -23,7 +23,7 @@ import Control.Concurrent.STM
     (atomically, writeTBQueue, readTBQueue, newTBQueueIO)
 import Control.Concurrent.Stream (stream)
 import Control.Exception (SomeException, try)
-import Control.Monad (forM_, when)
+import Control.Monad (forM_)
 import Data.Aeson.Encode.Pretty (encodePretty)
 import qualified Data.ByteString as BS
 import Data.Default (def)
@@ -61,7 +61,7 @@ import Options.Applicative (
  )
 import System.Directory (createDirectoryIfMissing)
 import System.Environment (lookupEnv)
-import System.Exit (exitWith, ExitCode (ExitFailure))
+import System.Exit (exitWith, ExitCode (ExitFailure, ExitSuccess))
 import System.FilePath ((</>), joinPath, splitDirectories, takeDirectory)
 import Thrift.Protocol (serializeGen, deserializeGen)
 import Thrift.Protocol.Compact (Compact)
@@ -394,10 +394,11 @@ realMain _config@Config{..} =
         atomically $ writeTBQueue uploadQueue $ UploadQueueDone
         errors <- wait uploadThread
 
-        -- Exit with error code = number of failed snapshots
         let errorsCount = length $ filter isFatalError errors
-        when (errorsCount > 0) $
-          exitWith (ExitFailure errorsCount)
+        exitWith $ if
+          | errorsCount == 0 -> ExitSuccess
+          | errorsCount == length files -> ExitFailure 1
+          | otherwise -> ExitFailure 10
 
 isFatalError :: SnapshotError -> Bool
 isFatalError = \case
