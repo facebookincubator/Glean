@@ -3,9 +3,8 @@
   {
     "key": {
       "file": { "key": "test.cpp" },
-      "xrefs": [
+      "fixed": [
         {
-          "range": { "begin": 396, "end": 403 },
           "target": {
             "declaration": {
               "record_": {
@@ -27,35 +26,14 @@
                 }
               }
             }
+          },
+          "from": {
+            "spans": [ { "length": 7, "offsets": [ 396, 39, 183, 29 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
           }
         },
         {
-          "range": { "begin": 435, "end": 442 },
-          "target": {
-            "declaration": {
-              "record_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "Promise" },
-                      "scope": { "global_": { } }
-                    }
-                  },
-                  "kind": { "struct_": { } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 13,
-                    "columnBegin": 1,
-                    "lineEnd": 25,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "range": { "begin": 472, "end": 476 },
           "target": {
             "declaration": {
               "record_": {
@@ -77,85 +55,14 @@
                 }
               }
             }
+          },
+          "from": {
+            "spans": [ { "length": 4, "offsets": [ 472, 210 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
           }
         },
         {
-          "range": { "begin": 618, "end": 625 },
-          "target": {
-            "declaration": {
-              "record_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "Promise" },
-                      "scope": { "global_": { } }
-                    }
-                  },
-                  "kind": { "struct_": { } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 13,
-                    "columnBegin": 1,
-                    "lineEnd": 25,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "range": { "begin": 647, "end": 654 },
-          "target": {
-            "declaration": {
-              "record_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "Promise" },
-                      "scope": { "global_": { } }
-                    }
-                  },
-                  "kind": { "struct_": { } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 13,
-                    "columnBegin": 1,
-                    "lineEnd": 25,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "range": { "begin": 682, "end": 686 },
-          "target": {
-            "declaration": {
-              "record_": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": "Task" },
-                      "scope": { "global_": { } }
-                    }
-                  },
-                  "kind": { "struct_": { } },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 27,
-                    "columnBegin": 1,
-                    "lineEnd": 29,
-                    "columnEnd": 1
-                  }
-                }
-              }
-            }
-          }
-        },
-        {
-          "range": { "begin": 722, "end": 724 },
           "target": {
             "declaration": {
               "namespace_": {
@@ -171,66 +78,19 @@
                 }
               }
             }
+          },
+          "from": {
+            "spans": [ { "length": 2, "offsets": [ 722 ] } ],
+            "expansions": [ ],
+            "spellings": [ ]
           }
-        },
+        }
+      ],
+      "froms": [
         {
-          "range": { "begin": 737, "end": 740 },
-          "target": {
-            "indirect": {
-              "key": {
-                "via": {
-                  "usingDirective": {
-                    "key": {
-                      "name": {
-                        "key": {
-                          "name": { "key": "N0" },
-                          "scope": { "global_": { } }
-                        }
-                      },
-                      "source": {
-                        "file": { "key": "test.cpp" },
-                        "lineBegin": 40,
-                        "columnBegin": 3,
-                        "lineEnd": 40,
-                        "columnEnd": 20
-                      }
-                    }
-                  }
-                },
-                "target": {
-                  "declaration": {
-                    "function_": {
-                      "key": {
-                        "name": {
-                          "key": {
-                            "name": { "key": { "name": { "key": "foo" } } },
-                            "scope": {
-                              "namespace_": {
-                                "key": { "name": { "key": "N0" } }
-                              }
-                            }
-                          }
-                        },
-                        "signature": {
-                          "key": {
-                            "returns": { "key": "Promise" },
-                            "parameters": [ ]
-                          }
-                        },
-                        "source": {
-                          "file": { "key": "test.cpp" },
-                          "lineBegin": 33,
-                          "columnBegin": 1,
-                          "lineEnd": 33,
-                          "columnEnd": 13
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
+          "spans": [ { "length": 3, "offsets": [ 737 ] } ],
+          "expansions": [ ],
+          "spellings": [ ]
         }
       ]
     }
