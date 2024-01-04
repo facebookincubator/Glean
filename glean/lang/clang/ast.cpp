@@ -1428,16 +1428,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
               visitor.db.fact<Cxx::MethodOverrides>(decl, cbase->decl);
             }
           }
-          // We have to traverse member initializers explicitly, the
-          // visitor doesn't capture these references.
-          if (auto ctor = clang::dyn_cast<clang::CXXConstructorDecl>(mtd);
-              ctor && !ctor->isDefaulted()) {
-            for (const auto* init : ctor->inits()) {
-              if (init->isMemberInitializer()) {
-                visitor.xrefDecl(init->getMemberLocation(), init->getMember());
-              }
-            }
-          }
         }
       }
     }
@@ -2440,10 +2430,15 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       [&] { return Base::TraverseCompoundStmt(stmt) ; });
   }
 
+  bool TraverseConstructorInitializer(clang::CXXCtorInitializer* init) {
+    xrefDecl(init->getMemberLocation(), init->getMember());
+    return Base::TraverseConstructorInitializer(init);
+  }
+
   bool TraverseCoroutineBodyStmt(clang::CoroutineBodyStmt *stmt) {
     return usingTracker.maybeBody(
       stmt,
-      [&] { return Base::TraverseCoroutineBodyStmt(stmt) ; });
+      [&] { return Base::TraverseCoroutineBodyStmt(stmt); });
   }
 
   bool TraverseLambdaExpr(clang::LambdaExpr *lambda) {
