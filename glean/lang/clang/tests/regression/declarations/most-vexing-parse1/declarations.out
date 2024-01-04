@@ -1,0 +1,135 @@
+[
+  "@generated",
+  {
+    "key": {
+      "function_": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": { "name": { "key": "f6" } } },
+              "scope": { "global_": { } }
+            }
+          },
+          "signature": {
+            "key": { "returns": { "key": "void" }, "parameters": [ ] }
+          },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 11,
+            "columnBegin": 1,
+            "lineEnd": 14,
+            "columnEnd": 1
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "function_": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": { "name": { "key": "guard" } } },
+              "scope": { "global_": { } }
+            }
+          },
+          "signature": {
+            "key": {
+              "returns": { "key": "int" },
+              "parameters": [
+                { "name": { "key": "" }, "type": { "key": "mutex" } }
+              ]
+            }
+          },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 13,
+            "columnBegin": 3,
+            "lineEnd": 13,
+            "columnEnd": 18
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "record_": {
+        "key": {
+          "name": {
+            "key": { "name": { "key": "mutex" }, "scope": { "global_": { } } }
+          },
+          "kind": { "struct_": { } },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 1,
+            "lineEnd": 9,
+            "columnEnd": 15
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "variable": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "" },
+              "scope": {
+                "local": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "guard" } } },
+                    "scope": { "global_": { } }
+                  }
+                }
+              }
+            }
+          },
+          "type": { "key": "mutex" },
+          "kind": { "local": { "kind": 2, "attribute": 0 } },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 13,
+            "columnBegin": 13,
+            "lineEnd": 13,
+            "columnEnd": 17
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "variable": {
+        "key": {
+          "name": {
+            "key": {
+              "name": { "key": "mutex_" },
+              "scope": {
+                "local": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "f6" } } },
+                    "scope": { "global_": { } }
+                  }
+                }
+              }
+            }
+          },
+          "type": { "key": "mutex" },
+          "kind": { "local": { "kind": 0, "attribute": 0 } },
+          "source": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 12,
+            "columnBegin": 3,
+            "lineEnd": 12,
+            "columnEnd": 14
+          }
+        }
+      }
+    }
+  }
+]
