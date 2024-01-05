@@ -120,7 +120,8 @@ data FileInfo = FileInfo {
     srcFile :: !Src.File,
     offsets :: !(Maybe Range.LineOffsets),
     isIndexed :: !Bool,
-    fileDigest :: Maybe Digest.Digest
+    fileDigest :: Maybe Digest.Digest,
+    indexFailure :: Maybe Src.IndexFailure_key
   }
 
 getFileInfo
@@ -136,7 +137,9 @@ getFileInfo fileRepo path = do
     Just fileInfoP -> do
       Glass.FileInfo_key srcFile infos <- Glean.keyOf fileInfoP
       let fileId = Glean.getId srcFile
-          Glass.FileMetadata isIndexed mLineOffsets fileDigest _ = infos
+          Glass.FileMetadata isIndexed mLineOffsets fileDigest mFailure
+            = infos
+          indexFailure = Src.indexFailure_key =<< mFailure
       offsets <- memoLineOffsetsFileLines srcFile mLineOffsets
       return $ Right FileInfo{..}
 

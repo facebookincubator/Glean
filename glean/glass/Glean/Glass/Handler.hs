@@ -1049,9 +1049,13 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit
         return $ case res of
           Left _ -> res
           Right fi@FileInfo{..}
-            | not isIndexed -> Left $
-              GlassExceptionReason_notIndexedFile $ "Not indexed: "
-                <> gleanPath path
+            | not isIndexed -> Left $ GlassExceptionReason_notIndexedFile $
+              case indexFailure of
+                Nothing -> "Not indexed: " <> gleanPath path
+                Just Src.IndexFailure_key{..} -> Text.pack $
+                    show indexFailure_key_reason
+                    <> ": " <>
+                    show indexFailure_key_details
             | otherwise -> Right fi
 
   case efile of
