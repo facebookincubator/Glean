@@ -93,7 +93,7 @@ withEnv name service snapshotTier _ refreshFreq listDatabasesRetry gleanDB f =
     $ \backend ->
   withLatestRepos backend (Just logger)
     (if isRemote service then listDatabasesRetry else Nothing) refreshFreq
-    $ \latestGleanRepos repoScmRevisions -> do
+    $ \latestGleanRepos -> do
       repoMapping <- getRepoMapping
       f Glass.Env
         { gleanBackend = Some backend

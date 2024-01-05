@@ -15,7 +15,8 @@ module Glean.Glass.Repos
   Language(..)
   , GleanDBName(..)
   , GleanDBAttrName(..)
-  , ScmRevisions(..)
+  , GleanDBInfo(..)
+  , ScmRevisions
 
   -- * Mappings
   , fromSCSRepo
@@ -73,9 +74,13 @@ import Glean.Glass.Types
 import qualified Glean.Glass.RepoMapping as Mapping -- site-specific
 import Glean.Repo (LatestRepos)
 
--- mapping from scm repo to hash for each db
-newtype ScmRevisions = ScmRevisions
-  { scmRevisions :: HashMap Glean.Repo (HashMap Text Text)
+-- | mapping from scm repo to hash for each db
+type ScmRevisions = HashMap Glean.Repo (HashMap Text Text)
+
+-- | info about which Glean DBs are currently available
+data GleanDBInfo = GleanDBInfo
+  { latestRepos :: Glean.LatestRepos
+  , scmRevisions :: ScmRevisions
   }
 
 -- return a RepoName if indexed by glean
@@ -251,16 +256,20 @@ getLatestRepos
   => b
   -> Maybe Logger
   -> Maybe Int
-  -> IO Glean.LatestRepos
+  -> IO GleanDBInfo
 getLatestRepos backend mlogger mretry = go mretry
   where
-    go :: Maybe Int -> IO Glean.LatestRepos
+    go :: Maybe Int -> IO GleanDBInfo
     go n = do
       latest <- Glean.getLatestRepos backend $ \name ->
         GleanDBName name `Set.member` Mapping.allGleanRepos
       let advertised = Map.keysSet (Glean.latestRepos latest)
+          info = GleanDBInfo
+            { latestRepos = latest
+            , scmRevisions = getScmRevisions latest
+            }
       if required `Set.isSubsetOf` advertised
-        then return latest
+        then return info
         else do
           -- some required dbs are missing! this is transient? and bad
           -- in prod/full service mode this would be bad
@@ -271,7 +280,7 @@ getLatestRepos backend mlogger mretry = go mretry
               | n > 1 -> do {- i.e. try more than 1 time -}
                 delay (seconds 1) >> go (Just (n-1))
 
-            _ -> return latest -- if no retries allowed, give up
+            _ -> return info -- if no retries allowed, give up
 
     required = Set.map unGleanDBName Mapping.gleanRequiredIndices
 
@@ -331,7 +340,7 @@ formatBackend = Text.pack . Glean.displayBackend
 
 getScmRevisions :: Glean.LatestRepos -> ScmRevisions
 getScmRevisions repos =
-  ScmRevisions $ HashMap.fromList
+  HashMap.fromList
     [ (Glean.database_repo db, Glean.scmRevisionsOfDatabase db)
     | (_, dbs) <- Map.toList (Glean.allLatestRepos repos)
     , db <- dbs ]
@@ -344,22 +353,21 @@ withLatestRepos
    -> Maybe Logger
    -> Maybe Int
    -> DiffTimePoints
-   -> (TVar Glean.LatestRepos -> TVar ScmRevisions -> IO a)
+   -> (TVar GleanDBInfo -> IO a)
    -> IO a
 withLatestRepos backend mlogger mretry freq f = do
   repos <- getLatestRepos backend mlogger mretry
   tvRepos <- newTVarIO repos
-  tvRevs <- newTVarIO (getScmRevisions repos)
-  withAsync (worker tvRepos tvRevs) $ \_async -> f tvRepos tvRevs
+  withAsync (worker tvRepos) $ \_async -> f tvRepos
   where
-    worker tvRepos tvRevs =
+    worker tvRepos =
       doPeriodicallySynchronised freq $
       uninterruptibleMask_ $
         -- prevents the update from being cancelled while in progress
         -- which can cause memory leaks if the process exits
         -- immediately. This is benign, but can lead to ASAN test
         -- failures.
-      updateLatestRepos backend mlogger mretry tvRepos tvRevs
+      updateLatestRepos backend mlogger mretry tvRepos
 
 -- | Update a TVar with the latest repos
 -- TODO: should take latest configuration repo list
@@ -368,21 +376,19 @@ updateLatestRepos
   => b
   -> Maybe Logger
   -> Maybe Int
-  -> TVar Glean.LatestRepos -> TVar ScmRevisions -> IO ()
-updateLatestRepos backend mlogger mretry tvRepos tvRevs = do
+  -> TVar GleanDBInfo -> IO ()
+updateLatestRepos backend mlogger mretry tvRepos = do
   repos <- getLatestRepos backend mlogger mretry
-  atomically $ do
-    writeTVar tvRepos repos
-    writeTVar tvRevs $! getScmRevisions repos
+  atomically $ writeTVar tvRepos repos
 
 -- | Lookup latest repo in the cache
 lookupLatestRepos
-  :: TVar Glean.LatestRepos
+  :: TVar GleanDBInfo
   -> Maybe Revision
   -> [GleanDBName]
   -> STM [(GleanDBName, Glean.Repo)]
 lookupLatestRepos tv _mRevision repoNames = do
-  repos <- Glean.latestRepos <$> readTVar tv
+  repos <- Glean.latestRepos . latestRepos <$> readTVar tv
   return $ catMaybes
     [ (dbName,) <$> mrepo
     | dbName@(GleanDBName name) <- repoNames
@@ -415,5 +421,5 @@ getRepoHashForLocation
   :: LocationRange -> ScmRevisions -> Glean.Repo -> Revision
 getRepoHashForLocation LocationRange{..} scmRevs repo =
   maybe (getRepoHash repo) Revision $ do
-    scmRepoToHash <- HashMap.lookup repo $ scmRevisions scmRevs
+    scmRepoToHash <- HashMap.lookup repo scmRevs
     HashMap.lookup (unRepoName locationRange_repository) scmRepoToHash

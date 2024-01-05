@@ -25,14 +25,13 @@ import Util.STM ( TVar )
 
 import qualified Glean
 import Glean.Impl.ConfigProvider (ConfigAPI)
-import qualified Glean.Repo as Glean
 import qualified Glean.LocalOrRemote as Glean
 import Glean.Remote (ThriftBackend)
 import Glean.Util.Some ( Some )
 import Glean.Util.Time ( DiffTimePoints )
 
 import Glean.Glass.Base (RepoMapping)
-import Glean.Glass.Repos (ScmRevisions)
+import Glean.Glass.Repos (GleanDBInfo)
 import Glean.Glass.SnapshotBackend ( SnapshotBackend, SnapshotTier )
 
 -- | Init-time configuration
@@ -56,8 +55,7 @@ data Env = Env
   , logger :: Logger
   , gleanBackend :: Some Glean.Backend
   , fb303 :: Fb303State
-  , latestGleanRepos :: TVar Glean.LatestRepos
-  , repoScmRevisions :: TVar ScmRevisions
+  , latestGleanRepos :: TVar GleanDBInfo
   , gleanIndexBackend :: IndexBackend
   , snapshotBackend :: SnapshotBackend
   , gleanDB :: Maybe Glean.Repo -- if provided, use as target Glean DB

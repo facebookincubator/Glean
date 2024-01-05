@@ -30,7 +30,7 @@ withTestEnv backend f =
   withLogger cfgapi $ \logger ->
   withFb303 "glass-test" $ \fb303 ->
   withLatestRepos backend Nothing Nothing (hours 1) $
-    \latestGleanRepos repoScmRevisions ->
+    \latestGleanRepos ->
       f Glass.Env
         { gleanBackend = Some backend
         , gleanIndexBackend = IndexBackend Nothing

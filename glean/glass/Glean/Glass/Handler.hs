@@ -149,7 +149,7 @@ runRepoFile
   :: (LogResult t)
   => Text
   -> ( RepoMapping
-    -> TVar Glean.LatestRepos
+    -> TVar GleanDBInfo
     -> DocumentSymbolsRequest
     -> RequestOptions
     -> GleanBackend (Glean.Some Glean.Backend)
@@ -947,7 +947,7 @@ withEntity f scsrepo lang toks = do
 fetchSymbolsAndAttributesGlean
   :: Glean.Backend b
   => RepoMapping
-  -> TVar Glean.LatestRepos
+  -> TVar GleanDBInfo
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> GleanBackend b
@@ -974,7 +974,7 @@ fetchSymbolsAndAttributesGlean repoMapping latest req opts be mlang = do
 fetchSymbolsAndAttributes
   :: Glean.Backend b
   => RepoMapping
-  -> TVar Glean.LatestRepos
+  -> TVar GleanDBInfo
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> GleanBackend b
@@ -1141,7 +1141,7 @@ toDocumentSymbolResult DocumentSymbols{..} = DocumentSymbolListXResult{..}
 addDynamicAttributes
   :: Glean.Backend b
   => RepoMapping
-  -> TVar Glean.LatestRepos
+  -> TVar GleanDBInfo
   -> Maybe Revision
   -> FileReference
   -> Maybe Int
@@ -1192,7 +1192,7 @@ documentSymbolsForLanguage mlimit _ includeRefs fileId = do
 fetchDocumentSymbolIndex
   :: Glean.Backend b
   => RepoMapping
-  -> TVar Glean.LatestRepos
+  -> TVar GleanDBInfo
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> GleanBackend b
@@ -1224,7 +1224,7 @@ fetchDocumentSymbolIndex repoMapping latest req opts be snapshotbe mlang = do
 getSymbolAttributes
   :: Glean.Backend b
   => RepoMapping
-  -> TVar Glean.LatestRepos
+  -> TVar GleanDBInfo
   -> Maybe Revision
   -> FileReference
   -> Maybe Int
@@ -1400,14 +1400,13 @@ getStaticAttributes e repo sym = do
 -- If a Glean.Repo is given, use it instead.
 getGleanRepos
   :: RepoMapping
-  -> TVar Glean.LatestRepos
-  -> TVar ScmRevisions
+  -> TVar GleanDBInfo
   -> RepoName
   -> Maybe Language
   -> Maybe Revision
   -> Maybe Glean.Repo
   -> IO (NonEmpty (GleanDBName,Glean.Repo), ScmRevisions)
-getGleanRepos repoMapping latestGleanDBs scmRevisions scsrepo
+getGleanRepos repoMapping latestGleanDBs scsrepo
     mlanguage mRevision mGleanDB = do
   case mGleanDB of
     Nothing ->
@@ -1416,22 +1415,21 @@ getGleanRepos repoMapping latestGleanDBs scmRevisions scsrepo
           unRepoName scsrepo <>
             maybe "" (\x -> " (" <> toShortCode x <> ")") mlanguage
         (x:xs) ->
-          getSpecificGleanDBs latestGleanDBs scmRevisions mRevision (x :| xs)
+          getSpecificGleanDBs latestGleanDBs mRevision (x :| xs)
     Just gleanDB@Glean.Repo{repo_name} -> do
-      scmRevs <- atomically $ do readTVar scmRevisions
+      scmRevs <- fmap scmRevisions $ atomically $ do readTVar latestGleanDBs
       return ((GleanDBName repo_name, gleanDB) :| [], scmRevs)
 
 -- | If you already know the set of dbs you need, just get them.
 getSpecificGleanDBs
-  :: TVar Glean.LatestRepos
-  -> TVar ScmRevisions
+  :: TVar GleanDBInfo
   -> Maybe Revision
   -> NonEmpty GleanDBName
   -> IO (NonEmpty (GleanDBName,Glean.Repo), ScmRevisions)
-getSpecificGleanDBs latestGleanDBs scmRevisions mRevision gleanDBNames = do
+getSpecificGleanDBs latestGleanDBs mRevision gleanDBNames = do
   (dbs, scmRevs) <- atomically $ do
     dbs <- lookupLatestRepos latestGleanDBs mRevision $ toList gleanDBNames
-    scmRevs <- readTVar scmRevisions
+    scmRevs <- scmRevisions <$> readTVar latestGleanDBs
     pure (dbs, scmRevs)
   case dbs of
     [] -> throwIO $ ServerException $ "No Glean dbs found for: " <>
@@ -1441,7 +1439,7 @@ getSpecificGleanDBs latestGleanDBs scmRevisions mRevision gleanDBNames = do
 -- | Get glean db for an attribute type
 getLatestAttrDB
   :: RepoMapping
-  -> TVar Glean.LatestRepos
+  -> TVar GleanDBInfo
   -> Maybe Revision
   -> GleanDBName
   -> IO (Maybe (Glean.Repo, GleanDBAttrName))
@@ -1501,7 +1499,7 @@ withGleanDBs
   -> IO (b, Maybe ErrorLogger)
 withGleanDBs method env@Glass.Env{..} mRevision req dbNames fn = do
   withLogDB method env req
-    (getSpecificGleanDBs latestGleanRepos repoScmRevisions mRevision dbNames)
+    (getSpecificGleanDBs latestGleanRepos mRevision dbNames)
     Nothing
     (\(dbs,revs) _mlang -> fn dbs revs)
 
@@ -1521,7 +1519,7 @@ withRepoLanguage
 withRepoLanguage method env@Glass.Env{..} req repo mlanguage mRevision fn = do
   withLogDB method env req
     (getGleanRepos repoMapping latestGleanRepos
-      repoScmRevisions repo mlanguage mRevision gleanDB)
+      repo mlanguage mRevision gleanDB)
     mlanguage
     fn
 
@@ -1556,7 +1554,7 @@ withSymbol method env@Glass.Env{..} mRevision sym fn =
       Left err -> throwM $ ServerException err
       Right req@(repo, lang, _toks) -> do
         (dbs, revs) <-
-          getGleanRepos repoMapping latestGleanRepos repoScmRevisions repo
+          getGleanRepos repoMapping latestGleanRepos repo
             (Just lang) mRevision gleanDB
         return (dbs, revs, req))
     Nothing
