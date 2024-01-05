@@ -394,7 +394,7 @@ The second line is the interesting one: `{ name = "Goldfish" } = Cs[..]` means
 * the left-hand side is a pattern, filtering only those `Class` facts that match `{ name = "Goldfish" }`
 
 
-We can also match the whole array with a pattern of the form `[ p1, p2, ... ]`
+We can also match the whole array with a pattern of the form `[ p1, p2, .. ]`
 
 ```lang=angle
 facts> X where [_,X,_] = [1,2,3]
