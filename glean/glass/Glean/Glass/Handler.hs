@@ -140,7 +140,8 @@ import Glean.Glass.Neighborhood ( searchNeighborhood )
 import Glean.Glass.SnapshotBackend
   ( getSnapshot,
     SnapshotBackend,
-    SnapshotStatus(..) )
+    SnapshotStatus() )
+import qualified Glean.Glass.SnapshotBackend as Snapshot
 import Glean.Glass.SymbolKind (findSymbolKind)
 
 -- | Runner for methods that are keyed by a file path
@@ -988,9 +989,9 @@ fetchSymbolsAndAttributes repoMapping latest req opts be snapshotbe mlang = do
         esnapshot <- getSnapshot snapshotbe repo file (Just revision)
         case esnapshot of
           Right queryResult ->
-            return ((queryResult, Success, QueryEachRepoUnrequested), Nothing)
+            return ((queryResult, Snapshot.ExactMatch, QueryEachRepoUnrequested), Nothing)
           Left status -> addStatus status <$> Async.wait gleanRes
-    _ -> addStatus Unrequested <$> getFromGlean
+    _ -> addStatus Snapshot.Unrequested <$> getFromGlean
   -- Fall back to the best snapshot available for new files (not yet in repo)
   case res of
     ((_,_,_), Just ErrorLogger {errorTy})
@@ -1000,7 +1001,7 @@ fetchSymbolsAndAttributes repoMapping latest req opts be snapshotbe mlang = do
         bestSnapshot <- getSnapshot snapshotbe repo file Nothing
         case bestSnapshot of
           Right result ->
-            return ((result, Success, QueryEachRepoUnrequested), Nothing)
+            return ((result, Snapshot.Latest, QueryEachRepoUnrequested), Nothing)
           Left _ ->
             return res
     _ ->

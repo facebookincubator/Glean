@@ -426,4 +426,5 @@ logSnapshotStatus st = case st of
   InternalError -> Logger.setSnapshot "Internal error"
   Timeout -> Logger.setSnapshot "Timeout"
   NotFound -> Logger.setSnapshot  "Not found"
-  Success -> Logger.setSnapshot  "Success"
+  ExactMatch -> Logger.setSnapshot  "Exact"
+  Latest -> Logger.setSnapshot "Latest"
