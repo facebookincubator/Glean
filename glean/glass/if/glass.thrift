@@ -91,6 +91,9 @@ struct RequestOptions {
   // maximum results to return.
   2: optional i32 limit;
 
+  // feature flags for internal use
+  3: optional FeatureFlags feature_flags;
+
   // throw exceptions instead of returning empty responses
   4: bool strict = false;
 
@@ -105,6 +108,15 @@ struct RequestOptions {
   // else
   //   use latest revision
   5: bool exact_revision = false;
+}
+
+struct FeatureFlags {
+  // control use of RequestOptions.revision to select DBs (default is False).
+  //
+  // Note: this flag does *not* affect snapshot selection: if there is
+  // a snapshot for documentSymbolIndex/documentSymbolListX for the
+  // requested revision, it is always used.
+  1: optional bool use_revision;
 }
 
 // List symbols in a file. Symbols are spans of one or more tokens Glean has
