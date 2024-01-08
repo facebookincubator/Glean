@@ -102,7 +102,6 @@ import GleanCLI.Types
 data Config = Config
   { cfgDatabase :: Maybe String
   , cfgQuery :: [String]
-  , cfgMode :: ShellMode
   , cfgLimit :: Int64
   , cfgWidth :: Maybe Int
   , cfgPager :: Bool
@@ -116,12 +115,6 @@ options = commandParser "shell" (progDesc "Start the Glean shell") parser
         (  long "db"
         <> metavar "NAME"
         <> O.help "database to use (default: use latest complete DB)" )
-      cfgMode <- option readMode
-        (  long "mode"
-        <> metavar "json|angle"
-        <> value ShellAngle
-        <> O.help "Which mode to start in (default: angle)"
-        )
       cfgLimit <- option auto
         (  long "limit"
         <> metavar "N"
@@ -144,12 +137,6 @@ options = commandParser "shell" (progDesc "Start the Glean shell") parser
         <> O.help "Use a pager for displaying long output"
         )
       return Config{..}
-     where
-      readMode = maybeReader $ \s ->
-        case s of
-          "json" -> Just ShellJSON
-          "angle" -> Just ShellAngle
-          _ -> Nothing
 
 output :: Doc Ann -> Eval ()
 output doc = do
@@ -417,18 +404,17 @@ hello = output msg
 help :: Eval ()
 help = do
   hello
-  mode <- getMode
-  output $ "" <> line <> helptext mode
+  output $ "" <> line <> helptext
 
-helptext :: ShellMode -> Doc ann
-helptext mode = vcat
+helptext :: Doc ann
+helptext = vcat
   [ "Commands:"
   , indent 2 $ vcat
       [ fillBreak (command_width + 2) (":" <> pretty command)
           <+> align (reflow text)
         | (command,text) <- commands ]
   , ""
-  , queries ]
+  , helpAngle ]
   where
     command_width = maximum $ map (Text.length . fst) commands
 
@@ -449,8 +435,6 @@ helptext mode = vcat
             "Like :list, but show more details")
       , ("describe-all [<db>]",
             "Like :list-all, but show more details")
-      , ("mode [json|angle]",
-            "Select mode for query syntax and results")
       , ("schema [predicate|type]",
             "Show schema for the given predicate or type")
       , ("edit",
@@ -484,32 +468,6 @@ helptext mode = vcat
       , ("quit",
             "Exit the shell")
       ]
-
-    queries = case mode of
-      ShellJSON -> helpSchema
-      ShellAngle -> helpAngle
-
-helpSchema :: Doc ann
-helpSchema = vcat
-  [ "Queries (schema mode):"
-  , "  {1234}                    Look up a fact by its Id"
-  , ""
-  , "Pattern syntax (schema mode):"
-  , "  1234                     :: byte or nat"
-  , "  \"abc\"                    :: string"
-  , "  True|False               :: bool"
-  , "  [ val, ... ]             :: array(T)"
-  , "  { \"field\" : val, ... }   :: record(fields), omitted fields are wild"
-  , "  { \"field\" : val }        :: sum(fields)"
-  , "  { \"id\" : 1234 }          :: fact with Id 1234"
-  , "  { \"key\" : val }          :: fact with key that matches val"
-  , "  { \"get\" : { } }          :: fetch fact"
-  , ""
-  , "Examples:"
-  , "  {1234}                                       fetch a fact by its Id"
-  , "  pp1.Define                                   all the pp1.Define facts"
-  , "  pp1.Define { \"macro\": { \"key\": \"NULL\" } }    every #define of NULL"
-  ]
 
 helpAngle :: Doc ann
 helpAngle = vcat
@@ -559,51 +517,12 @@ withTTY action = do
     return $ fst <$> r
 
 evaluate :: String -> Eval Bool
-evaluate s = do
-  m <- getMode
-  let
-    go :: Parse pat => (Statement pat -> Eval Bool) -> Eval Bool
-    go run = do
-      case runParser parse () "<input>" s of
-        Left err -> do
-          output $ "*** Syntax error:" <+> pretty (show err)
-          return False
-        Right stmt -> run stmt
-  case m of
-    ShellJSON -> go doJSONStmt
-    ShellAngle -> go doAngleStmt
-
-
-doJSONStmt :: Statement JSONQuery -> Eval Bool
-doJSONStmt (Command name arg) = doCmd name arg
-doJSONStmt (FactRef fid) = userFact fid >> return False
-doJSONStmt (Pattern query) = do
-  q <- fromJSONQuery query
-  runUserQuery q
-  return False
-
-fromJSONQuery :: JSONQuery -> Eval SchemaQuery
-fromJSONQuery (JSONQuery ide deprecatedRec stored pat) = do
-  exp <- expandResults <$> getState
-  when deprecatedRec deprecatedExpansionWarning
-  return SchemaQuery
-    { sqPredicate = pred
-    , sqRecursive = exp
-    , sqStored = stored
-    , sqQuery = pat
-    , sqCont = Nothing
-    , sqTransform = trans
-    , sqSyntax = Thrift.QuerySyntax_JSON
-    , sqOmitResults = False }
-  where
-    -- magic transformation when we query for "xrefs". This is to make
-    -- debugging of xref issues easier by presenting xref data in an
-    -- easier-to-comprehend format.
-    (pred, trans)
-#if GLEAN_FACEBOOK
-      | ide == "xrefs" = ("cxx1.FileXRefs", Just transformXRefs)
-#endif
-      | otherwise = (ide, Nothing)
+evaluate s =
+  case runParser parse () "<input>" s of
+    Left err -> do
+      output $ "*** Syntax error:" <+> pretty (show err)
+      return False
+    Right stmt -> doAngleStmt stmt
 
 doAngleStmt :: Statement AngleQuery -> Eval Bool
 doAngleStmt (Command name arg) = doCmd name arg
@@ -621,11 +540,21 @@ fromAngleQuery (AngleQuery deprecatedRec stored pat) = do
     { sqPredicate = ""
     , sqRecursive = exp
     , sqStored = stored
-    , sqQuery = pat
+    , sqQuery = pat'
     , sqCont = Nothing
-    , sqTransform = Nothing
+    , sqTransform = trans
     , sqSyntax = Thrift.QuerySyntax_ANGLE
     , sqOmitResults = False }
+  where
+    -- magic transformation when we query for "xrefs". This is to make
+    -- debugging of xref issues easier by presenting xref data in an
+    -- easier-to-comprehend format.
+    (pat', trans)
+#if GLEAN_FACEBOOK
+      | Just rest <- stripPrefix "xrefs " pat
+      = ("cxx1.FileXRefs " <> rest, Just transformXRefs)
+#endif
+      | otherwise = (pat, Nothing)
 
 deprecatedExpansionWarning :: Eval ()
 deprecatedExpansionWarning = output $ vcat
@@ -656,8 +585,6 @@ commands =
   , Cmd "list-all" completeDatabaseName $ const . displayDatabases True False
   , Cmd "dump" Haskeline.noCompletion $ \str _ -> dumpCmd str
   , Cmd "load" Haskeline.completeFilename $ \str _ -> loadCmd str
-  , Cmd "mode" (completeWords (pure ["json","angle"])) $
-      \str _ -> setModeCmd str
   , Cmd "more" Haskeline.noCompletion $ const $ const moreCmd
   , Cmd "database" completeDatabases $ const . dbCmd
   , Cmd "db" completeDatabaseName $ const . dbCmd
@@ -773,11 +700,6 @@ dumpCmd str =
   withRepo $ \repo ->
   liftIO $ Glean.dumpJsonToFile backend repo str
 
-setModeCmd :: String -> Eval ()
-setModeCmd "json" = setMode ShellJSON
-setModeCmd "angle" = setMode ShellAngle
-setModeCmd _ = liftIO $ throwIO $ ErrorCall "syntax: :mode [json|angle]"
-
 editCmd :: Eval ()
 editCmd = do
   file <- query_file <$> getState
@@ -822,19 +744,13 @@ timeoutCmd str
 countCmd :: String -> Eval ()
 countCmd str = do
   ShellState {..} <- getState
-  case mode of
-    ShellJSON -> run fromJSONQuery
-    ShellAngle -> run fromAngleQuery
-  where
-    run :: Parse query => (query -> Eval SchemaQuery) -> Eval ()
-    run from = do
-      case runParser parse () "<input>" str of
-        Left err -> do
-          output $ "*** Syntax error:" <+> pretty (show err)
-          return ()
-        Right query -> do
-          q <- from query
-          runUserQuery q { sqOmitResults = True }
+  case runParser parse () "<input>" str of
+    Left err -> do
+      output $ "*** Syntax error:" <+> pretty (show err)
+      return ()
+    Right query -> do
+      q <- fromAngleQuery query
+      runUserQuery q { sqOmitResults = True }
 
 statsCmd :: String -> Eval ()
 statsCmd "" = do
@@ -1442,7 +1358,6 @@ instance Plugin ShellCommand where
       State.evalStateT (unEval $ evalMain cfg) ShellState
         { backend = Some backend
         , repo = Nothing
-        , mode = cfgMode cfg
         , schemas = Nothing
         , schemaInfo = def
         , useSchemaId = Thrift.SelectSchema_current def

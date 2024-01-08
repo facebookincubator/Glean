@@ -18,7 +18,6 @@
     :debug off|[-]ir|[-]bytecode|all            Enable/disable query debugging options
     :describe [<db>]                            Like :list, but show more details
     :describe-all [<db>]                        Like :list-all, but show more details
-    :mode [json|angle]                          Select mode for query syntax and results
     :schema [predicate|type]                    Show schema for the given predicate or type
     :edit                                       Edit a query in an external editor. Set the EDITOR environment variable to choose an editor
     :limit <n>                                  Set limit on the number of query results

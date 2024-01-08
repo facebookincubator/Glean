@@ -9,7 +9,6 @@
 {-# LANGUAGE DeriveTraversable #-}
 module Glean.Shell.Types (
   Parse(..), Statement(..), JSONQuery(..), AngleQuery(..),
-  ShellMode(..),
   SchemaQuery(..),
   Stats(..),
   ShellState(..),
@@ -19,8 +18,6 @@ module Glean.Shell.Types (
   getState,
   getRepo,
   setRepo,
-  getMode,
-  setMode,
 ) where
 
 import Control.Concurrent
@@ -107,9 +104,6 @@ lexer = P.makeTokenParser P.emptyDef
   { P.identLetter = P.alphaNum P.<|> P.oneOf "_." }
 
 
-data ShellMode = ShellJSON | ShellAngle
-  deriving Eq
-
 data SchemaQuery = SchemaQuery
   { sqPredicate :: String
   , sqRecursive :: ExpandResults
@@ -127,7 +121,6 @@ data Stats = NoStats | SummaryStats | FullStats
 data ShellState = ShellState
   { backend :: Some LocalOrRemote
   , repo :: Maybe Repo
-  , mode :: ShellMode
   , schemas :: Maybe ProcessedSchema
   , schemaInfo :: Maybe Thrift.SchemaInfo
   , useSchemaId :: Thrift.SelectSchema
@@ -194,9 +187,3 @@ setRepo r = do
     proc <- either (liftIO . throwIO . ErrorCall) return $
       processSchema (Map.fromList sids) schemaInfo_schema
     Eval $ State.modify $ \s -> s { schemas = Just proc }
-
-getMode :: Eval ShellMode
-getMode = mode <$> getState
-
-setMode :: ShellMode -> Eval ()
-setMode m = Eval $ State.modify $ \s -> s{ mode = m }

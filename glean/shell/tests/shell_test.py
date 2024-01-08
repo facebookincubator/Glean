@@ -207,39 +207,6 @@ class GleanShellPredicates(GleanShellTest):
         self.assertIsNotNone(re.search("glean.test.Predicate", output))
 
 
-class GleanShellQuery(GleanShellTest):
-    def test(self):
-        self.shellCommand(":mode json")
-
-        # A query with no pattern - match all the facts.
-        output = self.shellCommand("sys.Blob")
-        self.assertIn('"hello"', output)
-        self.assertIn('"bye"', output)
-
-        # A query with a pattern
-        output = self.shellCommand(
-            'glean.test.Predicate.1 { "named_sum_" : { "tue" : 37 } }'
-        )
-        self.assertIn("1 results", output)
-        self.assertIn('"byt": 33', output)
-
-        # Match and recursively expand
-        output = self.shellCommand(
-            'glean.test.Predicate.5 { "pred" : { "key" : "bye" } }'
-        )
-        self.assertIn("2 results, 6 facts", output)
-
-        # Recursively expand a fact by Id
-        self.shellCommand(":limit 1")
-        output = self.shellCommand("cxx1.FunctionName ")
-        fact1 = output[output.find("{ ") : output.rfind("}") + 1]
-        j = json.loads(fact1)
-        output = self.shellCommand("{" + str(j["id"]) + "}")
-        self.assertIn("2 facts", output)
-        fact2 = output[output.find("{ ") : output.rfind("}") + 1]
-        self.assertEqual(fact1, fact2)
-
-
 class GleanShellLoad(GleanShellTest):
     def test(self):
         repo = "test"
