@@ -14,6 +14,7 @@ module Glean.Glass.Base
   , RepoMapping(..)
   ) where
 
+import Data.Hashable
 import qualified Data.Map as Map
 import Data.String
 import Data.Text (Text)
@@ -24,7 +25,7 @@ import Glean.Glass.Utils
 
 -- | Type of glean dbs
 newtype GleanDBName = GleanDBName { unGleanDBName :: Text }
-  deriving (Eq, Ord, Show)
+  deriving (Eq, Ord, Show, Hashable)
 
 instance IsString GleanDBName where fromString = GleanDBName . fromString
 

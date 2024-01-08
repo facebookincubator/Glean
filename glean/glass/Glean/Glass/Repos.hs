@@ -40,6 +40,7 @@ module Glean.Glass.Repos
 import Data.List (nub)
 import qualified Data.Text as Text
 import qualified Data.Set as Set
+import Control.Applicative
 import Control.Concurrent.Async ( withAsync )
 import Control.Exception ( uninterruptibleMask_ )
 import Data.Maybe ( catMaybes )
@@ -77,10 +78,14 @@ import Glean.Repo (LatestRepos)
 -- | mapping from scm repo to hash for each db
 type ScmRevisions = HashMap Glean.Repo (HashMap Text Text)
 
+-- | mapping from Glean DB name to rev->repo mapping
+type DbByRevision = HashMap GleanDBName (HashMap Text Glean.Repo)
+
 -- | info about which Glean DBs are currently available
 data GleanDBInfo = GleanDBInfo
   { latestRepos :: Glean.LatestRepos
   , scmRevisions :: ScmRevisions
+  , dbByRevision :: DbByRevision
   }
 
 -- return a RepoName if indexed by glean
@@ -267,6 +272,7 @@ getLatestRepos backend mlogger mretry = go mretry
           info = GleanDBInfo
             { latestRepos = latest
             , scmRevisions = getScmRevisions latest
+            , dbByRevision = getDbByRevision latest
             }
       if required `Set.isSubsetOf` advertised
         then return info
@@ -345,6 +351,20 @@ getScmRevisions repos =
     | (_, dbs) <- Map.toList (Glean.allLatestRepos repos)
     , db <- dbs ]
 
+getDbByRevision :: Glean.LatestRepos -> DbByRevision
+getDbByRevision repos =
+  HashMap.fromList
+    [ (GleanDBName name, revmap)
+    | (name, dbs) <- Map.toList (Glean.allLatestRepos repos)
+    , let
+        revmap = HashMap.fromList
+          [ (rev, Glean.database_repo db)
+          | db <- dbs
+          , (k,rev) <- HashMap.toList (Glean.database_properties db)
+          , "glean.scm." `Text.isPrefixOf` k
+          ]
+    ]
+
 -- | Introduce a latest repo cache.
 -- TODO: this should pass the configured repo list through
 withLatestRepos
@@ -387,12 +407,18 @@ lookupLatestRepos
   -> Maybe Revision
   -> [GleanDBName]
   -> STM [(GleanDBName, Glean.Repo)]
-lookupLatestRepos tv _mRevision repoNames = do
-  repos <- Glean.latestRepos . latestRepos <$> readTVar tv
+lookupLatestRepos tv mRevision repoNames = do
+  repos <- readTVar tv
   return $ catMaybes
-    [ (dbName,) <$> mrepo
+    [ (dbName,) <$> (dbForRevision <|> latestDb)
     | dbName@(GleanDBName name) <- repoNames
-    , let mrepo = Map.lookup name repos
+    , let
+        latestDb = Map.lookup name (Glean.latestRepos (latestRepos repos))
+        dbForRevision
+          | Just (Revision rev) <- mRevision =
+              HashMap.lookup dbName (dbByRevision repos) >>=
+              HashMap.lookup rev
+          | otherwise = Nothing
     ]
 
 -- | Symbols of the form "/repo/lang/" where pRepo is a prefix of repo
