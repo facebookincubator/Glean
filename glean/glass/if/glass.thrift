@@ -116,7 +116,7 @@ struct FeatureFlags {
   // Note: this flag does *not* affect snapshot selection: if there is
   // a snapshot for documentSymbolIndex/documentSymbolListX for the
   // requested revision, it is always used.
-  1: optional bool use_revision;
+  2: optional bool use_revision;
 }
 
 // List symbols in a file. Symbols are spans of one or more tokens Glean has
