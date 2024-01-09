@@ -31,28 +31,24 @@ import TextShow
 import Glean.Schema.Gen.Utils
 import Glean.Angle.Types
 import Glean.Schema.Types
-import Glean.Schema.Util
 import Glean.Types (SchemaId(..))
 
 genSchemaThrift
-  :: Mode
-  -> Maybe String
+  :: Maybe String
   -> SchemaId
   -> Version
   -> [ResolvedPredicateDef]
   -> [ResolvedTypeDef]
   -> [(FilePath, Text)]
-genSchemaThrift mode versionDir hash version preddefs typedefs =
+genSchemaThrift versionDir hash version preddefs typedefs =
   (dir </> "TARGETS",
-    genTargets mode slashVn version declsPerNamespace) :
+    genTargets slashVn version declsPerNamespace) :
   [ ( dir </> Text.unpack (underscored namespaces) ++ ".thrift"
-    , genNamespace mode slashVn namespaces version
+    , genNamespace slashVn namespaces version
         hash namePolicy deps preds types)
   | (namespaces, (deps, preds, types)) <- HashMap.toList declsPerNamespace ]
   where
-  dir = case mode of
-    Data -> "thrift"
-    Query -> "thrift/query"
+  dir = "thrift"
 
   slashVn = case versionDir of
     Nothing -> ""
@@ -63,37 +59,33 @@ genSchemaThrift mode versionDir hash version preddefs typedefs =
 
 
 genTargets
-  :: Mode
-  -> Text   -- "/v1" or ""
+  :: Text   -- "/v1" or ""
   -> Version
   -> HashMap NameSpaces ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
   -> Text
-genTargets mode slashVn version info =
+genTargets slashVn version info =
   Text.unlines
      ([ "# \x40generated"
      , "# to regenerate: ./glean/schema/sync"
      , "load(\"@fbcode_macros//build_defs:custom_rule.bzl\", \"custom_rule\")"
      , "" ] ++
      concatMap genTarget (HashMap.toList info)) <>
-  if mode == Data
-    then genSchemaRules version
-    else ""
+  genSchemaRules version
   where
   genTarget (ns, (deps, nsPredicates, _)) =
     let
       namespace = underscored ns
-      rustCrate = underscored [rustBaseModule mode, namespace]
+      rustCrate = underscored [rustBaseModule, namespace]
       cppSplits = showt $ min 20 (max 1 (length nsPredicates))
     in
     [ "thrift_library("
     , "  name = \"" <> namespace <> "\","
-    , "  hs_namespace = \"" <> hsNamespace mode <> "\","
-    , "  py3_namespace = \"" <> py3Namespace mode <> "\","
-    , "  py_base_module = \"" <> pyBaseModule mode <> "\","
+    , "  hs_namespace = \"" <> hsNamespace <> "\","
+    , "  py3_namespace = \"" <> py3Namespace <> "\","
+    , "  py_base_module = \"" <> pyBaseModule <> "\","
     , "  rust_crate_name = \"" <> rustCrate <> "\","
     ] ++
-    [ "  hs_includes = [\"" <> namespace <> "_include.hs\"],"
-    | mode == Data ] ++
+    [ "  hs_includes = [\"" <> namespace <> "_include.hs\"]," ] ++
     [ "  thrift_rust_options = ["
     , "    \"serde\","
     , "    \"skip_none_serialization\","
@@ -107,33 +99,23 @@ genTargets mode slashVn version info =
     , "  languages = [" <> Text.intercalate ", " langs <> "],"
     , "  thrift_srcs = { \"" <> namespace <> ".thrift\" : [] },"
     , "  deps = [" <> Text.intercalate ","
-      ( "\"//glean/if:glean\"" : depTargets mode ++
-          (case mode of
-            Query -> depTargets Data
-            Data -> [])) <> "],"
+      ( "\"//glean/if:glean\"" : depTargets ) <> "],"
     , "  hs2_deps = ["
     , "    \"//glean/hs:angle\","
     , "    \"//glean/hs:typed\","
     , "    \"//glean/hs:query-angle\","
     , "    \"//glean/if:glean-hs2\","
-    ] ++ (
-      case mode of
-        Data -> []
-        Query ->
-          ["    \"//" <> thriftDir Data slashVn <> ":" <> namespace <> "-hs2\""]
-    ) ++
+    ] ++
     [ "  ],"
     , ")"
     ]
     where
-    depTargets mode =
-      [ "\"//" <> thriftDir mode slashVn <> ":" <> underscored dep <> "\""
+    depTargets =
+      [ "\"//" <> thriftDir slashVn <> ":" <> underscored dep <> "\""
       | dep <- deps ]
 
     langs :: [Text]
-    langs = map (\x -> "\"" <> x <> "\"") $ case mode of
-      Query -> ["hs2", "py"] -- only needed for tests and legacy py client
-      Data -> [
+    langs = map (\x -> "\"" <> x <> "\"") [
         "hs2",
         "py",
         "py3",
@@ -160,41 +142,32 @@ genSchemaRules version = rule_schema_gen
       , ")"
       ]
 
-thriftDir :: Mode -> Text -> Text
-thriftDir Query slashVn = "glean/schema" <> slashVn <> "/thrift/query"
-thriftDir _ slashVn = "glean/schema" <> slashVn <> "/thrift"
+thriftDir :: Text -> Text
+thriftDir slashVn = "glean/schema" <> slashVn <> "/thrift"
 
-package :: Mode -> Text
-package Query = "facebook.com/glean/schema/query"
-package _ = "facebook.com/glean/schema"
+package :: Text
+package = "facebook.com/glean/schema"
 
-hsNamespace :: Mode -> Text
-hsNamespace Query = "Glean.Schema.Query"
-hsNamespace _ = "Glean.Schema"
+hsNamespace :: Text
+hsNamespace = "Glean.Schema"
 
-cpp2Namespace :: Mode -> Text
-cpp2Namespace Query = "facebook.glean.schema.query"
-cpp2Namespace _ = "facebook.glean.schema"
+cpp2Namespace :: Text
+cpp2Namespace = "facebook.glean.schema"
 
-phpNamespace :: Mode -> Text
-phpNamespace Query = "glean_schema_query"
-phpNamespace _ = "glean_schema"
+phpNamespace :: Text
+phpNamespace = "glean_schema"
 
-pyBaseModule :: Mode -> Text
-pyBaseModule Query = "glean.schema.query"
-pyBaseModule _ = "glean.schema"
+pyBaseModule :: Text
+pyBaseModule = "glean.schema"
 
-py3Namespace :: Mode -> Text
-py3Namespace Query = "glean.schema.query"
-py3Namespace _ = "glean.schema"
+py3Namespace :: Text
+py3Namespace = "glean.schema"
 
-javaBaseModule :: Mode -> Text
-javaBaseModule Query = "com.facebook.glean.schema.query"
-javaBaseModule _ = "com.facebook.glean.schema"
+javaBaseModule :: Text
+javaBaseModule = "com.facebook.glean.schema"
 
-rustBaseModule :: Mode -> Text
-rustBaseModule Query = "glean_schema_query"
-rustBaseModule _ = "glean_schema"
+rustBaseModule :: Text
+rustBaseModule = "glean_schema"
 
 {- -----------------------------------------------------------------------------
 Namespaces
@@ -223,8 +196,7 @@ inside cxx.thrift we will have
 -}
 
 genNamespace
-  :: Mode
-  -> Text                               -- "/v1" or ""
+  :: Text                               -- "/v1" or ""
   -> NameSpaces
   -> Version
   -> SchemaId
@@ -233,13 +205,13 @@ genNamespace
   -> [ResolvedPredicateDef]
   -> [ResolvedTypeDef]
   -> Text
-genNamespace mode slashVn namespaces version
+genNamespace slashVn namespaces version
     hash namePolicy deps preddefs typedefs
  = Text.intercalate (newline <> newline) (header : pieces)
  where
   someDecls = map PredicateDecl preddefs ++ map TypeDecl typedefs
   ordered = orderDecls someDecls
-  (gen :: [[Text]], extra :: [Text]) = runM mode [] namePolicy typedefs $ do
+  (gen :: [[Text]], extra :: [Text]) = runM [] namePolicy typedefs $ do
      ps <- mapM (genDecl namespaces) ordered
      return (map fst ps ++ map snd ps)
   pieces = concat gen ++ reverse extra
@@ -257,7 +229,7 @@ genNamespace mode slashVn namespaces version
       in return $ "\"" <> name <> "\": " <> ver <> ","
 
   predicateVersionPairs = fst $
-    runM mode [] namePolicy typedefs (mapM preddefToVersionPair preddefs)
+    runM [] namePolicy typedefs (mapM preddefToVersionPair preddefs)
 
   predicateVersionMap =
     [ "const map<string, i64> PREDICATE_VERSIONS = {" ] ++
@@ -273,26 +245,25 @@ genNamespace mode slashVn namespaces version
     , "// @" <> "nolint"
     , ""
     , "include \"glean/if/glean.thrift\"" ] ++
-    [ "include \"" <> thriftDir mode slashVn <> "/" <> underscored dep
+    [ "include \"" <> thriftDir slashVn <> "/" <> underscored dep
         <> ".thrift\""
     | dep <- deps ] ++
     [ ""
-    , "package \"" <> package mode <> "/" <> underscored namespaces <> "\""
+    , "package \"" <> package <> "/" <> underscored namespaces <> "\""
     ] ++
     [ ""
-    , "namespace cpp2 " <> cpp2Namespace mode <> "." <> dotted namespaces
-    , "namespace hs " <> hsNamespace mode
-    , "namespace php " <> phpNamespace mode <> "_" <> underscored namespaces
-    , "namespace py " <> pyBaseModule mode <> "." <> underscored namespaces
-    , "namespace py3 " <> py3Namespace mode
-    , "namespace java.swift " <> javaBaseModule mode <> "."
+    , "namespace cpp2 " <> cpp2Namespace <> "." <> dotted namespaces
+    , "namespace hs " <> hsNamespace
+    , "namespace php " <> phpNamespace <> "_" <> underscored namespaces
+    , "namespace py " <> pyBaseModule <> "." <> underscored namespaces
+    , "namespace py3 " <> py3Namespace
+    , "namespace java.swift " <> javaBaseModule <> "."
       <> underscored namespaces
     , ""
     ] ++
     [ "hs_include \"glean/schema" <> slashVn
-      <> "/thrift/" <> (case mode of Data -> ""; Query -> "query/")
+      <> "/thrift/"
       <>  underscored namespaces <> "_include.hs\""
-      | mode == Data
     ] ++
     predicateVersionMap ++
     -- builtin only
@@ -344,36 +315,18 @@ thriftTy here t = case t of
   -- Containers
   ArrayTy ByteTy -> return "binary"
   ArrayTy ty -> do
-    query <- isQuery <$> getMode
-    if query then do
-      -- like shareTypeDef but we want to hint the typedef name, not
-      -- the element type. This is so that the element type is
-      -- consistent with the non-query type.
-      (_, name) <- withRecordFieldHint "array" $ nameThisType t
-      let dNew = TypeDef
-            { typeDefRef = TypeRef name 0
-            , typeDefType = t }
-      pushDefs =<< genType here dNew
-      return name
-    else do
-      inner <- thriftTy here ty
-      return $ "list<" <> inner  <> ">"
+    inner <- thriftTy here ty
+    return $ "list<" <> inner  <> ">"
   RecordTy{} -> shareTypeDef here t
   SumTy{} -> shareTypeDef here t
   MaybeTy tInner -> do
-    query <- isQuery <$> getMode
-    if query then
-      shareTypeDef here (lowerMaybe tInner)
-    else do
-      inner <- thriftTy here tInner
-      return (optionalize inner)
+    inner <- thriftTy here tInner
+    return (optionalize inner)
   -- References
-  PredicateTy pred -> do
-    mode <- getMode
-    thriftName mode here <$> predicateName pred
+  PredicateTy pred ->
+    thriftName here <$> predicateName pred
   NamedTy typeRef -> do
-    mode <- getMode
-    thriftName mode here <$> typeName typeRef
+    thriftName here <$> typeName typeRef
   EnumeratedTy _ -> shareTypeDef here t
 
 mkField :: [Text] -> Text -> Int -> Name -> Text -> Text
@@ -412,14 +365,11 @@ makeRefField = mkField
 
 genPred :: NameSpaces -> ResolvedPredicateDef -> M ([Text], [Text])
 genPred here PredicateDef{..} = do
-  mode <- getMode
-  let query = isQuery mode
-      structOrUnion = if query then "union" else "struct"
+  let structOrUnion = "struct"
 
   pName <- predicateName predicateDefRef
-  let name = thriftName mode here pName
+  let name = thriftName here pName
 
-  -- Note: This withPredicateDefHint covers either Mode Data or Mode Query
   withPredicateDefHint (snd pName) $ do
 
   keyNeedsRef <- needsRefType predicateDefKeyType
@@ -433,10 +383,9 @@ genPred here PredicateDef{..} = do
     name_value = appendName "_value"
     has_value = predicateDefValueType /= unitT
 
-    -- key and value are optional unless we're generating query types
-    maybeOpt = if query then id else optionalize
+    -- key and value are optional
+    maybeOpt = optionalize
     maybeRef needed
-      | query = makeField structOrUnion
       | needed = makeRefField structOrUnion
       | otherwise = makeField structOrUnion
 
@@ -447,7 +396,7 @@ genPred here PredicateDef{..} = do
   (type_id, define_id) <- do
     let target_type = NamedTy (TypeRef "glean.Id" 0)
     type_id <- thriftTy here target_type
-    let d = "typedef " <> type_id <> " " <> thriftName mode here name_id
+    let d = "typedef " <> type_id <> " " <> thriftName here name_id
     new_alias <- thriftTy here (NamedTy (TypeRef (joinDot name_id) 0))
     return (new_alias, d)
 
@@ -482,24 +431,8 @@ genPred here PredicateDef{..} = do
       , [ structOrUnion <> " " <> name <> " {" ]
       , indentLines . catMaybes . zipWith (flip ($)) [1..] $
         [ \i -> Just $ mkField ["hs.strict"] structOrUnion i "id" type_id
-        , key ] ++
-        (if query then
-           [ \i -> Just $ makeField structOrUnion i "get" "builtin.Unit" ]
-         else
-           [ val ]
-        )
-      , [ "}" <>
-            -- The Haskell Thrift compiler will generate a constructor
-            -- <name>_key for the key alternative of the union type,
-            -- which would conflict with the <name>_key constructor we
-            -- generate for the type of the key field. So we use a custom
-            -- (hs_prefix = "<name>_with_") for the union type to avoid
-            -- the name clash. This gives us constructors like
-            -- Predicate_with_key, Predicate_with_id.
-            (if query
-              then " (hs.prefix = \"" <> name <> "_with_\")"
-              else "")
-        ]
+        , key, val ]
+      , [ "}" ]
       ]
   extra <- popDefs
   return (define_id : define,  extra ++ define_key ++ define_value)
@@ -551,9 +484,7 @@ makeEnumerated name vals = do
 genType :: NameSpaces -> ResolvedTypeDef -> M [Text]
 genType here TypeDef{..} = addExtraDecls $ do
   tName@(_, root) <- typeName typeDefRef
-  mode <- getMode
-  let query = isQuery mode
-  let name = thriftName mode here tName
+  let name = thriftName here tName
 
   withTypeDefHint root $ do
 
@@ -561,14 +492,7 @@ genType here TypeDef{..} = addExtraDecls $ do
     structLike structOrUnion fields withFieldHint extraFields = do
       fieldTexts <- forM (zip [1..] fields) $ \(ix, FieldDef nm ty) -> do
          tyName <- withFieldHint nm (thriftTy here ty)
-         if query
-           then do
-             b <- needsRefType ty
-             return $
-               (if b then makeRefField else makeField)
-                 structOrUnion ix nm (optionalize tyName)
-           else
-             return $ makeField structOrUnion ix nm tyName
+         return $ makeField structOrUnion ix nm tyName
       let
         define | null fields = "struct " <> name <> " {}"
                | otherwise = myUnlines $ concat
@@ -582,22 +506,8 @@ genType here TypeDef{..} = addExtraDecls $ do
     RecordTy fields -> structLike "struct" fields withRecordFieldHint []
     SumTy fields -> structLike structOrUnion fields withUnionFieldHint anyField
       where
-        structOrUnion = if query then "struct" else "union"
-        anyField
-          | query = [ showt (length fields + 1) <> ": bool any = false;" ]
-          | otherwise = []
-
-    -- queries on arrays:
-    ArrayTy ty | query, not (isByt ty) -> do
-      inner <- thriftTy here ty
-      let
-        fields =
-          [ "1: " <> inner <> " every;"
-          , "2: list<" <> inner <> "> exact;"
-          ]
-        define = myUnlines $
-          [ "union " <> name <> " {" ] ++ indentLines fields ++ [ "}" ]
-      return [define]
+        structOrUnion = "union"
+        anyField = []
 
     EnumeratedTy vals -> makeEnumerated name vals
 

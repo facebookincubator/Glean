@@ -284,9 +284,6 @@ thrift-schema-hs: thrift-compiler
 		$(THRIFT_COMPILE) --hs \
 			glean/schema/thrift/$$s.thrift \
 			-o $(CODEGEN_DIR)/$@/glean/schema/thrift; \
-		$(THRIFT_COMPILE) --hs \
-			glean/schema/thrift/query/$$s.thrift \
-			-o $(CODEGEN_DIR)/$@/glean/schema/thrift/query; \
 	done
 	# This depends on the schema .thrift files:
 	$(THRIFT_COMPILE) --hs glean/if/search.thrift \

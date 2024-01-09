@@ -31,7 +31,7 @@ genSchemaHS _version preddefs typedefs =
   ("hs" </> "TARGETS", genTargets declsPerNamespace) :
   [ ("thrift" </> Text.unpack (underscored namespaces) <> "_include" <.> "hs",
       Text.intercalate (newline <> newline)
-        (header Data namespaces deps : doGen Data preds types))
+        (header namespaces deps : doGen preds types))
   | (namespaces, (deps, preds, types)) <- schemas
   ] ++
   [ ("hs" </> "Glean" </> "Schema" </>
@@ -47,15 +47,14 @@ genSchemaHS _version preddefs typedefs =
     namePolicy = mkNamePolicy preddefs typedefs
 
     doGen
-      :: Mode
-      -> [ResolvedPredicateDef]
+      :: [ResolvedPredicateDef]
       -> [ResolvedTypeDef]
       -> [Text]
-    doGen mode preds types = concat gen ++ reverse extra
+    doGen preds types = concat gen ++ reverse extra
       where
-      (gen :: [[Text]], extra :: [Text]) = runM mode [] namePolicy typedefs $ do
-         ps <- mapM (genPredicate mode) preds
-         ts <- mapM (genType mode) types
+      (gen :: [[Text]], extra :: [Text]) = runM [] namePolicy typedefs $ do
+         ps <- mapM genPredicate preds
+         ts <- mapM genType types
          return (ps ++ ts)
 
 genTargets
@@ -110,8 +109,8 @@ genAllPredicates namespace preds = Text.unlines $
     encsep start mid end xs =
       zipWith (<>) (start : repeat mid) xs ++ [end]
 
-header :: Mode -> NameSpaces -> [NameSpaces] -> Text
-header mode here deps = Text.unlines $
+header :: NameSpaces -> [NameSpaces] -> Text
+header here deps = Text.unlines $
   [ "-- @" <> "generated"
   , "{-# LANGUAGE TypeFamilies, MultiParamTypeClasses, DataKinds #-}"
   , "{-# LANGUAGE FlexibleInstances, TypeSynonymInstances #-}"
@@ -130,11 +129,11 @@ header mode here deps = Text.unlines $
   , ""
   ] ++
   -- import dependencies
-  map (importSchema mode) deps ++
+  map importSchema deps ++
   -- inject this instance into the Builtin schema, because there's no
   -- other good place to put it.
-  (case (here, mode) of
-    (["builtin"], Data) ->
+  (case here of
+    ["builtin"] ->
       [ ""
       , "type instance Angle.SumFields (Prelude.Maybe t) ="
       , "  'Angle.TField \"nothing\" Unit ("
@@ -144,12 +143,10 @@ header mode here deps = Text.unlines $
     _ -> [])
 
 
-importSchema :: Mode -> NameSpaces -> Text
-importSchema mode ns
-  | Query <- mode = ""
-  | otherwise = data_
+importSchema :: NameSpaces -> Text
+importSchema ns =
+  "import qualified Glean.Schema." <> upperSquashNS <> ".Types"
   where
-  data_ = "import qualified Glean.Schema." <> upperSquashNS <> ".Types"
   upperSquashNS = Text.concat (map cap1 ns)
 
 
@@ -167,11 +164,11 @@ indentLines :: [Text] -> [Text]
 indentLines = map indent
 
 -- | These names are for predicates/struct/union of Maybe-tree
-haskellTypeName :: Mode -> (NameSpaces, Text) -> Text
-haskellTypeName query (ns, x) = haskellThriftName query (ns, cap1 x)
+haskellTypeName :: (NameSpaces, Text) -> Text
+haskellTypeName (ns, x) = haskellThriftName (ns, cap1 x)
 
 fieldName :: (NameSpaces, Text) -> Text
-fieldName (ns, x) = haskellThriftName Data (ns, low1 x)
+fieldName (ns, x) = haskellThriftName (ns, low1 x)
 
 -- | apply stupid and wrong heuristic
 paren :: Text -> Text
@@ -210,32 +207,31 @@ localOrExternal :: NameSpaces -> Text -> (NameSpaces, Text)
 localOrExternal here name = if null ns then (here,x) else (ns,x)
   where (ns,x) = splitDot name
 
-shareTypeDef :: Mode -> Bool -> NameSpaces -> ResolvedType -> M Text
-shareTypeDef mode genSub here t = do
+shareTypeDef :: Bool -> NameSpaces -> ResolvedType -> M Text
+shareTypeDef genSub here t = do
   (no, name) <- nameThisType t
   case no of
     New | genSub -> do
       let dNew = TypeDef
             { typeDefRef = TypeRef (joinDot (here,name)) 0
             , typeDefType = t }
-      pushDefs =<< genType mode dNew
+      pushDefs =<< genType dNew
     _otherwise -> return ()
-  return (haskellTypeName mode (localOrExternal here name))
+  return (haskellTypeName (localOrExternal here name))
 
 haskellTy :: NameSpaces -> ResolvedType -> M Text
-haskellTy = haskellTy_ PredName Data True
+haskellTy = haskellTy_ PredName True
 
 -- | how to render predicate types in haskellTy
 data PredTy = PredName | PredKey
 
 haskellTy_
   :: PredTy
-  -> Mode
   -> Bool -- ^ generate nested type definitions
   -> NameSpaces
   -> ResolvedType
   -> M Text
-haskellTy_ withId mode genSub here t = case t of
+haskellTy_ withId genSub here t = case t of
   -- Leafs
   ByteTy{} -> return "Glean.Byte"
   NatTy{} -> return "Glean.Nat"
@@ -243,33 +239,33 @@ haskellTy_ withId mode genSub here t = case t of
   StringTy{} -> return "Data.Text.Text"
   ArrayTy ByteTy -> return "Data.ByteString.ByteString"
   ArrayTy tInner -> do
-    inner <- haskellTy_ PredName mode genSub here tInner
+    inner <- haskellTy_ PredName genSub here tInner
     return $ "[" <> inner <> "]"
-  RecordTy{} -> shareTypeDef mode genSub here t
-  SumTy{} -> shareTypeDef mode genSub here t
+  RecordTy{} -> shareTypeDef genSub here t
+  SumTy{} -> shareTypeDef genSub here t
   MaybeTy ty -> do
-    inner <- haskellTy_ PredName mode genSub here ty
+    inner <- haskellTy_ PredName genSub here ty
     return (optionalize inner)
   -- References
   PredicateTy pred -> do
     let wrap = case withId of
           PredName -> id
           PredKey -> ("Glean.KeyType " <>)
-    wrap . haskellTypeName mode <$> predicateName pred
+    wrap . haskellTypeName <$> predicateName pred
 
   NamedTy typeRef ->
-    haskellTypeName mode <$> typeName typeRef
-  EnumeratedTy _ -> shareTypeDef mode genSub here t
+    haskellTypeName <$> typeName typeRef
+  EnumeratedTy _ -> shareTypeDef genSub here t
 
 
-genPredicate :: Mode -> ResolvedPredicateDef -> M [Text]
-genPredicate mode PredicateDef{..}
+genPredicate :: ResolvedPredicateDef -> M [Text]
+genPredicate PredicateDef{..}
   | provided (predicateRef_name predicateDefRef) = return []
   | otherwise = do
     pName <- predicateName predicateDefRef
     let
       here = fst pName
-      name = haskellTypeName Data pName -- e.g. Clang_File
+      name = haskellTypeName pName -- e.g. Clang_File
 
     withPredicateDefHint (snd pName) $ do
     let
@@ -282,14 +278,14 @@ genPredicate mode PredicateDef{..}
 
     (type_key, define_key) <-
       if shouldNameKeyType predicateDefKeyType then
-        define_kt mode here predicateDefKeyType name_key
+        define_kt here predicateDefKeyType name_key
       else do
-        ty <- haskellTy_ PredName mode True here predicateDefKeyType
+        ty <- haskellTy_ PredName True here predicateDefKeyType
         return (ty, [])
 
     (type_value, define_value) <-
       if not has_value then return ("Unit", []) else do
-        define_kt mode here predicateDefValueType name_value
+        define_kt here predicateDefValueType name_value
 
     let extra = define_key ++ define_value
     let ver = predicateRef_version predicateDefRef
@@ -322,20 +318,17 @@ genPredicate mode PredicateDef{..}
           , "sourceType = Glean.predicateSourceType"
           ]
 
-    return $ extra ++ case mode of
-      Data -> map myUnlines [def_Predicate, def_Type]
-      Query -> []
+    return $ extra ++ map myUnlines [def_Predicate, def_Type]
 
 
 -- Make the thriftTy type text, and the needed [Text] blocks
 define_kt
   :: HasCallStack
-  => Mode
-  -> NameSpaces
+  => NameSpaces
   -> ResolvedType
   -> (NameSpaces, Text)
   -> M (Text, [Text])
-define_kt mode here typ name_kt = case typ of
+define_kt here typ name_kt = case typ of
   ByteTy{} -> leaf
   NatTy{} -> leaf
   StringTy{} -> leaf
@@ -352,36 +345,36 @@ define_kt mode here typ name_kt = case typ of
  where
    gname = joinDot name_kt
 
-   leaf = (,) <$> return (haskellTypeName mode name_kt) <*> return []
+   leaf = (,) <$> return (haskellTypeName name_kt) <*> return []
 
    alias t = do
     ref <- haskellTy here (NamedTy (TypeRef gname 0))
-    def <- genType mode TypeDef
+    def <- genType TypeDef
       { typeDefRef = TypeRef (joinDot name_kt) 0
       , typeDefType = t }
     return (ref,def)
 
-genType :: Mode -> ResolvedTypeDef -> M [Text]
-genType mode TypeDef{typeDefRef = TypeRef{..}, ..}
+genType :: ResolvedTypeDef -> M [Text]
+genType TypeDef{typeDefRef = TypeRef{..}, ..}
   | provided typeRef_name = return []
   | otherwise =
   case typeDefType of
-    RecordTy fields -> structDef mode typeRef_name typeRef_version fields
-    SumTy fields -> unionDef mode typeRef_name typeRef_version fields
-    EnumeratedTy vals -> enumDef mode typeRef_name typeRef_version vals
+    RecordTy fields -> structDef typeRef_name typeRef_version fields
+    SumTy fields -> unionDef typeRef_name typeRef_version fields
+    EnumeratedTy vals -> enumDef typeRef_name typeRef_version vals
     _ -> return []
 
-structDef :: Mode -> Name -> Version -> [ResolvedFieldDef] -> M [Text]
-structDef mode ident ver fields = do
+structDef :: Name -> Version -> [ResolvedFieldDef] -> M [Text]
+structDef ident ver fields = do
   let typeRef = TypeRef ident ver
   sName@(here,root) <- typeName typeRef
-  let name = haskellTypeName Data sName
+  let name = haskellTypeName sName
 
   withTypeDefHint root $ do
   let
     fieldParamNames = genericParamNames "x" (length fields)
     makeTypeName (FieldDef p tField) =
-      withRecordFieldHint p (haskellTy_ PredKey mode True here tField)
+      withRecordFieldHint p (haskellTy_ PredKey True here tField)
     spaced = Text.intercalate " " fieldParamNames
     nameAndParams = if null fieldParamNames then name
                     else name <> " " <> spaced
@@ -407,30 +400,28 @@ structDef mode ident ver fields = do
       def_RecordFields =
         [ emitFieldTypes "Angle.RecordFields" name (zip fields tys) ]
 
-  return $ map myUnlines $ case mode of
-    Data -> [def_Type, def_RecordFields]
-    Query -> []
+  return $ map myUnlines [def_Type, def_RecordFields]
 
 
-unionDef :: Mode -> Name -> Version -> [ResolvedFieldDef] -> M [Text]
-unionDef mode ident ver fields = do
+unionDef :: Name -> Version -> [ResolvedFieldDef] -> M [Text]
+unionDef ident ver fields = do
   let typeRef = TypeRef ident ver
   uName@(here,root) <- typeName typeRef
-  let name = haskellTypeName Data uName
+  let name = haskellTypeName uName
   withTypeDefHint root $ do
   let
     shortConNames = map fieldDefName fields
     conNames = map toConName shortConNames
     toConName shortName = cap1 (prefix <> shortName)
       where prefix = name <> "_"
-    makeTypeName pred mode gen (FieldDef p tField) =
-      withUnionFieldHint p (haskellTy_ pred mode gen here tField)
+    makeTypeName pred gen (FieldDef p tField) =
+      withUnionFieldHint p (haskellTy_ pred gen here tField)
 
-  -- walk over the fields to generate nested types for the current mode first
-  mapM_ (makeTypeName PredName mode True) fields
+  -- walk over the fields to generate nested types first
+  mapM_ (makeTypeName PredName True) fields
 
-  conTypeNames <- mapM (makeTypeName PredName Data False) fields
-  keyTypeNames <- mapM (makeTypeName PredKey Data False) fields
+  conTypeNames <- mapM (makeTypeName PredName False) fields
+  keyTypeNames <- mapM (makeTypeName PredKey False) fields
 
   let def_Type = case conNames of
         [] ->
@@ -477,9 +468,7 @@ unionDef mode ident ver fields = do
       def_SumFields =
         [ emitFieldTypes "Angle.SumFields" name (zip fields keyTypeNames) ]
 
-  return $ map myUnlines $ case mode of
-    Data -> [def_Type, def_SumFields] ++ def_Sum
-    Query -> []
+  return $ map myUnlines $ [def_Type, def_SumFields] ++ def_Sum
   where
     mkBuildEmpty constructors emptyCon =
       let index = length constructors in
@@ -504,11 +493,11 @@ unionDef mode ident ver fields = do
         , ["]"]
         ]
 
-enumDef :: Mode -> Name -> Version -> [Name] -> M [Text]
-enumDef mode ident ver eVals = do
+enumDef :: Name -> Version -> [Name] -> M [Text]
+enumDef ident ver eVals = do
   let typeRef = TypeRef ident ver
   eName@(_,root) <- typeName typeRef
-  let name = haskellTypeName Data eName
+  let name = haskellTypeName eName
 
   withTypeDefHint root $ do
   let
@@ -529,9 +518,7 @@ enumDef mode ident ver eVals = do
         , "enumName v = Text.pack (Prelude.drop " <>
             showt (Text.length root + 1) <> " (Prelude.show v))"]
 
-  return $ map myUnlines $ case mode of
-    Data -> [def_Type, def_SumFields, def_AngleEnum]
-    Query -> []
+  return $ map myUnlines [def_Type, def_SumFields, def_AngleEnum]
 
 sourceTypeDef :: Name -> Version -> Text
 sourceTypeDef name version =

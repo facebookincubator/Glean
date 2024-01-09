@@ -29,12 +29,9 @@ module Glean.Schema.Gen.Utils
     -- * Monad for code generation
   , M
   , Env
-  , Mode(..)
   , NamePolicy(..)
   , mkNamePolicy
   , runM
-  , getMode
-  , isQuery
   , typeDef
   , repType
   , NewOrOld(..)
@@ -224,12 +221,8 @@ type M = ReaderT Env (State ExtraDefs)
 
 type ExtraDefs = [Text]
 
-data Mode = Data | Query
-  deriving (Eq, Show)
-
 data Env = Env
-  { mode :: Mode  -- ^ whether to generate the query format
-  , nameHint :: [Text]
+  { nameHint :: [Text]
       -- ^ stack of "hints": name components that will be used to
       -- to name an anonymous type from the schema. The hint at
       -- any given point is unique: a type generated from this name
@@ -301,12 +294,12 @@ typeName typeref = do
       return (splitDot (typeRef_name typeref))
 
 -- | The textual name to use for an entity relative to the current namespace
-thriftName :: Mode -> NameSpaces -> (NameSpaces, Text) -> Text
-thriftName mode here (ns, x)
-  | here == ns = getSafe $ safeThrift mode x
+thriftName :: NameSpaces -> (NameSpaces, Text) -> Text
+thriftName here (ns, x)
+  | here == ns = getSafe $ safeThrift x
   | otherwise = getSafe $ case ns of
-    [] -> checkSafe ("thriftName " ++ show (mode,here,(ns,x))) mode x
-    _  -> Safe $ underscored ns <> "." <> getSafe (safeThrift mode x)
+    [] -> checkSafe ("thriftName " ++ show (here,(ns,x))) x
+    _  -> Safe $ underscored ns <> "." <> getSafe (safeThrift x)
 
 -- | Witness that the name is fully mangled (see 'safeThrift' for the
 -- defining smart constructor)
@@ -315,59 +308,43 @@ newtype Safe x = Safe { getSafe :: x }
 -- | This asserts the input already qualifies as 'Safe' and that 'safeThift'
 -- would not transform it.  If 'safeThift' would transform the input then
 -- this throws an error.
-checkSafe :: String -> Mode -> Text -> Safe Text
-checkSafe msg mode x =
-  let safe = safeThrift mode x
+checkSafe :: String -> Text -> Safe Text
+checkSafe msg x =
+  let safe = safeThrift x
   in if x == getSafe safe
         then safe
         else error $ msg <> " : " <> show x <> " not really Safe in checkSafe"
 
--- | alas, we discovered that "Type" clashes with the Thrift-generated
--- C++ code, but only for the query types. It was too late to change
--- the schemas without a major upheaval, so we munge the name here.
---
--- This step acts to define the meaning of the 'Safe' newtype
-safeThrift :: Mode -> Text -> Safe Text
-safeThrift Query "Type" = Safe "Type_"
-safeThrift _ x = Safe x
+safeThrift :: Text -> Safe Text
+safeThrift x = Safe x
 
 -- The name of the Thrift type as it appears in Haskell
-haskellThriftName :: Mode -> (NameSpaces, Text) -> Text
-haskellThriftName query (ns, x) =
+haskellThriftName :: (NameSpaces, Text) -> Text
+haskellThriftName (ns, x) =
   dotted $
     prefix ++
-    [ Text.concat (map cap1 ns), "Types", getSafe $ safeThrift query x ]
+    [ Text.concat (map cap1 ns), "Types", getSafe $ safeThrift x ]
   where
-  prefix = "Glean" : "Schema" : case query of
-    Data -> []
-    Query -> ["Query"]
+  prefix = ["Glean", "Schema"]
 
 runM
-  :: Mode
-  -> s
+  :: s
   -> NamePolicy
   -> [ResolvedTypeDef]
   -> ReaderT Env (State s) a
   -> (a, s)
 
-runM mode initState namePolicy types act = (result, finalState)
+runM initState namePolicy types act = (result, finalState)
   where
     (result, finalState) = runState (runReaderT act env) initState
     env = Env
-      { mode = mode
-      , namePolicy = namePolicy
+      { namePolicy = namePolicy
       , nameHint = mempty
       , typeEnv = HashMap.fromList
           [ ((typeRef_name typeDefRef, typeRef_version typeDefRef), typedef)
           | typedef@TypeDef{..} <- types ]
       }
 
-
-getMode :: Monad m => ReaderT Env m Mode
-getMode = mode <$> ask
-
-isQuery :: Mode -> Bool
-isQuery = (== Query)
 
 -- | Returned by 'nameThisType'
 data NewOrOld = New | Old

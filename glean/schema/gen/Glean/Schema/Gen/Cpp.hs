@@ -35,7 +35,7 @@ genSchemaCpp version preddefs typedefs =
     namePolicy = mkNamePolicy preddefs typedefs
     someDecls = map PredicateDecl preddefs ++ map TypeDecl typedefs
     ordered = orderDecls someDecls
-    ((ds,schema), extra) = runM Data [] namePolicy typedefs $ do
+    ((ds,schema), extra) = runM [] namePolicy typedefs $ do
       ds <- mapM genDecl ordered
       sc <- defineSchema ordered
       return (ds, sc)

@@ -72,7 +72,7 @@ import Glean.Schema.Gen.HackJson ( genSchemaHackJson )
 import Glean.Schema.Gen.Haskell ( genSchemaHS )
 import Glean.Schema.Gen.Python ( genSchemaPy )
 import Glean.Schema.Gen.OCaml ( genSchemaOCaml )
-import Glean.Schema.Gen.Utils ( Mode(..), NameSpaces )
+import Glean.Schema.Gen.Utils ( NameSpaces )
 
 import Glean.Schema.Types
 import Glean.Types (SchemaId(..))
@@ -429,8 +429,7 @@ gen GenOptions{..} versions =
       doGen genSchemaHS hs
       doGen genSchemaPy py
       doGen (genSchemaOCaml restrictSchemas) ocaml
-      doGen (genSchemaThrift Data dir hash) thrift
-      doGen (genSchemaThrift Query dir hash) thrift
+      doGen (genSchemaThrift dir hash) thrift
 
 -- -----------------------------------------------------------------------------
 -- Working with the SchemaIndex
