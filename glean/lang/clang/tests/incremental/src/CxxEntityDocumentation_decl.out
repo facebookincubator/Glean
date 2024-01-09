@@ -1,0 +1,71 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "bb" } } },
+                  "scope": {
+                    "namespace_": { "key": { "name": { "key": "test" } } }
+                  }
+                }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "int" },
+                  "parameters": [
+                    { "name": { "key": "x" }, "type": { "key": "int" } },
+                    { "name": { "key": "y" }, "type": { "key": "int" } }
+                  ]
+                }
+              },
+              "source": {
+                "file": { "key": "b.cpp" },
+                "lineBegin": 20,
+                "columnBegin": 1,
+                "lineEnd": 23,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "b.cpp" },
+      "span": { "start": 298, "length": 46 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "C" },
+                  "scope": {
+                    "namespace_": { "key": { "name": { "key": "test" } } }
+                  }
+                }
+              },
+              "kind": { "class_": { } },
+              "source": {
+                "file": { "key": "a.h" },
+                "lineBegin": 17,
+                "columnBegin": 1,
+                "lineEnd": 23,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "a.h" },
+      "span": { "start": 253, "length": 61 }
+    }
+  }
+]

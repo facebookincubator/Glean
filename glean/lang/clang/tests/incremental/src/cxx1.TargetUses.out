@@ -2,10 +2,10 @@
   "@generated",
   {
     "key": {
-      "file": { "key": "a.cpp" },
+      "file": { "key": "b.cpp" },
       "from": {
         "expansions": [ ],
-        "spans": [ { "length": 1, "offsets": [ 36, 259 ] } ],
+        "spans": [ { "length": 1, "offsets": [ 389 ] } ],
         "spellings": [ ]
       },
       "target": {
@@ -25,151 +25,8 @@
                 "columnBegin": 1,
                 "columnEnd": 1,
                 "file": { "key": "a.h" },
-                "lineBegin": 13,
-                "lineEnd": 19
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "a.cpp" },
-      "from": {
-        "expansions": [ ],
-        "spans": [ { "length": 1, "offsets": [ 277 ] } ],
-        "spellings": [ ]
-      },
-      "target": {
-        "declaration": {
-          "variable": {
-            "key": {
-              "kind": { "field": { "mutable_": false } },
-              "name": {
-                "key": {
-                  "name": { "key": "x" },
-                  "scope": {
-                    "recordWithAccess": {
-                      "access": 2,
-                      "record": {
-                        "key": {
-                          "name": { "key": "C" },
-                          "scope": {
-                            "namespace_": {
-                              "key": { "name": { "key": "test" } }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "source": {
-                "columnBegin": 3,
-                "columnEnd": 7,
-                "file": { "key": "a.h" },
-                "lineBegin": 18,
-                "lineEnd": 18
-              },
-              "type": { "key": "int" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "a.cpp" },
-      "from": {
-        "expansions": [ ],
-        "spans": [ { "length": 1, "offsets": [ 309 ] } ],
-        "spellings": [ ]
-      },
-      "target": {
-        "declaration": {
-          "variable": {
-            "key": {
-              "kind": { "local": { "attribute": 0, "kind": 0 } },
-              "name": {
-                "key": {
-                  "name": { "key": "c" },
-                  "scope": {
-                    "local": {
-                      "key": {
-                        "name": { "key": { "name": { "key": "a" } } },
-                        "scope": {
-                          "namespace_": { "key": { "name": { "key": "test" } } }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "source": {
-                "columnBegin": 3,
-                "columnEnd": 5,
-                "file": { "key": "a.cpp" },
-                "lineBegin": 18,
-                "lineEnd": 18
-              },
-              "type": { "key": "test::C" }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "a.cpp" },
-      "from": {
-        "expansions": [ ],
-        "spans": [ { "length": 1, "offsets": [ 311 ] } ],
-        "spellings": [ ]
-      },
-      "target": {
-        "declaration": {
-          "function_": {
-            "key": {
-              "method": {
-                "isConst": false,
-                "isVirtual": false,
-                "isVolatile": false,
-                "refQualifier": 0
-              },
-              "name": {
-                "key": {
-                  "name": { "key": { "name": { "key": "f" } } },
-                  "scope": {
-                    "recordWithAccess": {
-                      "access": 0,
-                      "record": {
-                        "key": {
-                          "name": { "key": "C" },
-                          "scope": {
-                            "namespace_": {
-                              "key": { "name": { "key": "test" } }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "signature": {
-                "key": { "parameters": [ ], "returns": { "key": "int" } }
-              },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "a.cpp" },
-                "lineBegin": 13,
-                "lineEnd": 15
+                "lineBegin": 17,
+                "lineEnd": 23
               }
             }
           }
@@ -182,41 +39,7 @@
       "file": { "key": "b.cpp" },
       "from": {
         "expansions": [ ],
-        "spans": [ { "length": 1, "offsets": [ 363 ] } ],
-        "spellings": [ ]
-      },
-      "target": {
-        "declaration": {
-          "record_": {
-            "key": {
-              "kind": { "class_": { } },
-              "name": {
-                "key": {
-                  "name": { "key": "C" },
-                  "scope": {
-                    "namespace_": { "key": { "name": { "key": "test" } } }
-                  }
-                }
-              },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "a.h" },
-                "lineBegin": 13,
-                "lineEnd": 19
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "b.cpp" },
-      "from": {
-        "expansions": [ ],
-        "spans": [ { "length": 1, "offsets": [ 377 ] } ],
+        "spans": [ { "length": 1, "offsets": [ 403 ] } ],
         "spellings": [ ]
       },
       "target": {
@@ -243,8 +66,8 @@
                 "columnBegin": 3,
                 "columnEnd": 5,
                 "file": { "key": "b.cpp" },
-                "lineBegin": 20,
-                "lineEnd": 20
+                "lineBegin": 21,
+                "lineEnd": 21
               },
               "type": { "key": "test::C" }
             }
@@ -258,7 +81,7 @@
       "file": { "key": "b.cpp" },
       "from": {
         "expansions": [ ],
-        "spans": [ { "length": 1, "offsets": [ 379 ] } ],
+        "spans": [ { "length": 1, "offsets": [ 405 ] } ],
         "spellings": [ ]
       },
       "target": {
@@ -298,8 +121,8 @@
                 "columnBegin": 3,
                 "columnEnd": 9,
                 "file": { "key": "a.h" },
-                "lineBegin": 15,
-                "lineEnd": 15
+                "lineBegin": 19,
+                "lineEnd": 19
               }
             }
           }
@@ -312,7 +135,7 @@
       "file": { "key": "b.cpp" },
       "from": {
         "expansions": [ ],
-        "spans": [ { "length": 1, "offsets": [ 385 ] } ],
+        "spans": [ { "length": 1, "offsets": [ 411 ] } ],
         "spellings": [ ]
       },
       "target": {
@@ -339,8 +162,8 @@
                 "columnBegin": 8,
                 "columnEnd": 12,
                 "file": { "key": "b.cpp" },
-                "lineBegin": 19,
-                "lineEnd": 19
+                "lineBegin": 20,
+                "lineEnd": 20
               },
               "type": { "key": "int" }
             }
@@ -354,7 +177,7 @@
       "file": { "key": "b.cpp" },
       "from": {
         "expansions": [ ],
-        "spans": [ { "length": 1, "offsets": [ 389 ] } ],
+        "spans": [ { "length": 1, "offsets": [ 415 ] } ],
         "spellings": [ ]
       },
       "target": {
@@ -381,8 +204,8 @@
                 "columnBegin": 15,
                 "columnEnd": 19,
                 "file": { "key": "b.cpp" },
-                "lineBegin": 19,
-                "lineEnd": 19
+                "lineBegin": 20,
+                "lineEnd": 20
               },
               "type": { "key": "int" }
             }

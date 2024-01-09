@@ -21,9 +21,9 @@
                   "kind": { "class_": { } },
                   "source": {
                     "file": { "key": "a.h" },
-                    "lineBegin": 13,
+                    "lineBegin": 17,
                     "columnBegin": 1,
-                    "lineEnd": 19,
+                    "lineEnd": 23,
                     "columnEnd": 1
                   }
                 }
@@ -61,9 +61,9 @@
                   "kind": { "field": { "mutable_": false } },
                   "source": {
                     "file": { "key": "a.h" },
-                    "lineBegin": 18,
+                    "lineBegin": 22,
                     "columnBegin": 3,
-                    "lineEnd": 18,
+                    "lineEnd": 22,
                     "columnEnd": 7
                   }
                 }
@@ -88,9 +88,9 @@
                   "kind": { "class_": { } },
                   "source": {
                     "file": { "key": "a.h" },
-                    "lineBegin": 13,
+                    "lineBegin": 17,
                     "columnBegin": 1,
-                    "lineEnd": 19,
+                    "lineEnd": 23,
                     "columnEnd": 1
                   }
                 }
@@ -190,7 +190,7 @@
       "file": { "key": "b.cpp" },
       "xrefs": [
         {
-          "range": { "begin": 363, "end": 364 },
+          "range": { "begin": 389, "end": 390 },
           "target": {
             "declaration": {
               "record_": {
@@ -206,9 +206,9 @@
                   "kind": { "class_": { } },
                   "source": {
                     "file": { "key": "a.h" },
-                    "lineBegin": 13,
+                    "lineBegin": 17,
                     "columnBegin": 1,
-                    "lineEnd": 19,
+                    "lineEnd": 23,
                     "columnEnd": 1
                   }
                 }
@@ -217,7 +217,7 @@
           }
         },
         {
-          "range": { "begin": 377, "end": 378 },
+          "range": { "begin": 403, "end": 404 },
           "target": {
             "declaration": {
               "variable": {
@@ -243,9 +243,9 @@
                   "kind": { "local": { "kind": 0, "attribute": 0 } },
                   "source": {
                     "file": { "key": "b.cpp" },
-                    "lineBegin": 20,
+                    "lineBegin": 21,
                     "columnBegin": 3,
-                    "lineEnd": 20,
+                    "lineEnd": 21,
                     "columnEnd": 5
                   }
                 }
@@ -254,7 +254,7 @@
           }
         },
         {
-          "range": { "begin": 379, "end": 380 },
+          "range": { "begin": 405, "end": 406 },
           "target": {
             "declaration": {
               "function_": {
@@ -290,9 +290,9 @@
                   },
                   "source": {
                     "file": { "key": "a.h" },
-                    "lineBegin": 15,
+                    "lineBegin": 19,
                     "columnBegin": 3,
-                    "lineEnd": 15,
+                    "lineEnd": 19,
                     "columnEnd": 9
                   }
                 }
@@ -301,7 +301,7 @@
           }
         },
         {
-          "range": { "begin": 385, "end": 386 },
+          "range": { "begin": 411, "end": 412 },
           "target": {
             "declaration": {
               "variable": {
@@ -327,9 +327,9 @@
                   "kind": { "local": { "kind": 2, "attribute": 0 } },
                   "source": {
                     "file": { "key": "b.cpp" },
-                    "lineBegin": 19,
+                    "lineBegin": 20,
                     "columnBegin": 8,
-                    "lineEnd": 19,
+                    "lineEnd": 20,
                     "columnEnd": 12
                   }
                 }
@@ -338,7 +338,7 @@
           }
         },
         {
-          "range": { "begin": 389, "end": 390 },
+          "range": { "begin": 415, "end": 416 },
           "target": {
             "declaration": {
               "variable": {
@@ -364,9 +364,9 @@
                   "kind": { "local": { "kind": 2, "attribute": 0 } },
                   "source": {
                     "file": { "key": "b.cpp" },
-                    "lineBegin": 19,
+                    "lineBegin": 20,
                     "columnBegin": 15,
-                    "lineEnd": 19,
+                    "lineEnd": 20,
                     "columnEnd": 19
                   }
                 }

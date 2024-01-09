@@ -10,6 +10,10 @@
 
 namespace test {
 
+/** Docs for class C
+ * @class C
+ * @testname incremental
+ */
 class C {
   public:
   int f();

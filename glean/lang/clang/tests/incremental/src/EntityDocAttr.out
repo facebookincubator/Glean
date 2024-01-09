@@ -1,0 +1,72 @@
+[
+  "@generated",
+  {
+    "key": {
+      "cxx": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "bb" } } },
+                  "scope": {
+                    "namespace_": { "key": { "name": { "key": "test" } } }
+                  }
+                }
+              },
+              "signature": {
+                "key": {
+                  "returns": { "key": "int" },
+                  "parameters": [
+                    { "name": { "key": "x" }, "type": { "key": "int" } },
+                    { "name": { "key": "y" }, "type": { "key": "int" } }
+                  ]
+                }
+              },
+              "source": {
+                "file": { "key": "b.cpp" },
+                "lineBegin": 20,
+                "columnBegin": 1,
+                "lineEnd": 23,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": [ { "key": { "key": { "key": "type" }, "value": "int bb" } } ]
+  },
+  {
+    "key": {
+      "cxx": {
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "C" },
+                  "scope": {
+                    "namespace_": { "key": { "name": { "key": "test" } } }
+                  }
+                }
+              },
+              "kind": { "class_": { } },
+              "source": {
+                "file": { "key": "a.h" },
+                "lineBegin": 17,
+                "columnBegin": 1,
+                "lineEnd": 23,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": [
+      { "key": { "key": { "key": "class" }, "value": "C" } },
+      { "key": { "key": { "key": "testname" }, "value": "incremental" } }
+    ]
+  }
+]

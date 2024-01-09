@@ -14,8 +14,9 @@ int b() {
   return 4; // changed result
 }
 
-// Inserted comment
-
+/** New doc comment for bb
+ * @type int bb
+ */
 int bb(int x, int y) { // added parameter
   C c;
   return c.f() + x + y;

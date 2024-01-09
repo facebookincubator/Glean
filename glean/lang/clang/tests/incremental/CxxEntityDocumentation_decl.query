@@ -1,0 +1,13 @@
+query: |
+  codemarkup.cxx.CxxEntityDocumentation {
+    entity = { decl =
+        { function_ = _ } |
+        { record_ = _ } |
+        { enum_ = _ } |
+        { variable = _ } |
+        { typeAlias = _ } |
+        {objcContainer = _ } |
+        {objcMethod = _  } |
+         {objcProperty = _ }
+    } }
+transform: [gensort, []]

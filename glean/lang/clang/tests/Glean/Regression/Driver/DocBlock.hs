@@ -8,31 +8,14 @@
 
 module Glean.Regression.Driver.DocBlock (main) where
 
-import Control.Monad
-import Data.Default
-
-import Glean
 import qualified Glean.Clang.Test as Clang
-import qualified Glean.DocBlock.Test as DocBlock (runIndexer)
-import Glean.Indexer
+import qualified Glean.Clang.Test.DocBlock as DocBlock
 import Glean.Regression.Snapshot.Driver
 import Glean.Regression.Snapshot
-import Glean.Derive (derivePredicate)
-import Glean.Write (parseRef)
+import Glean.Indexer
 
-indexer :: Indexer Clang.Options
-indexer = driverIndexer Clang.driver `indexerThen` docblocks
-  where
-  docblocks _ backend repo params = do
-    completePredicates backend repo (CompletePredicates_axiom def)
-    DocBlock.runIndexer backend repo params
-    forM_ passes $ \predicate ->
-      derivePredicate backend repo
-        Nothing Nothing predicate Nothing
-    where
-    passes = map parseRef
-      [ "docmarkup.EntityByDocAttrKey"
-      ]
 
 main :: IO ()
 main = testMain (Clang.driver { driverIndexer = indexer })
+  where
+  indexer = driverIndexer Clang.driver `indexerThen` \_ -> DocBlock.indexer
