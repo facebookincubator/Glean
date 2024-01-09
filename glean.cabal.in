@@ -761,28 +761,6 @@ library schema
         glean:config,
         glean:core,
 
-library schema-query
-    import: fb-haskell, fb-cpp, deps
-    visibility: public
-    hs-source-dirs:
-        glean/schema/thrift/query/gen-hs2
-    exposed-modules:
-        -- Just the modules that are needed for the glean:jsonquery
-        -- test, nothing else uses this stuff
-        Glean.Schema.Query.Builtin.Types
-        Glean.Schema.Query.Buck.Types
-        Glean.Schema.Query.CodeCxx.Types
-        Glean.Schema.Query.Cxx1.Types
-        Glean.Schema.Query.Pp1.Types
-        Glean.Schema.Query.Src.Types
-        Glean.Schema.Query.Sys.Types
-        Glean.Schema.Query.GleanTest.Types
-    build-depends:
-        glean:if-glean-hs,
-        glean:config,
-        glean:core,
-        glean:schema,
-
 -- library clang-test-xref
 --     import: fb-haskell, fb-cpp, deps
 --     visibility: public
@@ -1787,20 +1765,6 @@ common angle-test
         glean:db,
         glean:if-glean-hs,
         glean:schema
-
-test-suite jsonquery
-    import: test
-    type: exitcode-stdio-1.0
-    main-is: JSONQueryTest.hs
-    ghc-options: -main-is JSONQueryTest
-    build-depends:
-        glean:stubs,
-        glean:core,
-        glean:db,
-        glean:if-glean-hs,
-        glean:schema,
-        glean:schema-query,
-        glean:config,
 
 test-suite angle-test-onemany
     import: test, angle-test
