@@ -6,8 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include <numeric>
-
 #ifdef OSS
 #include <cpp/memory.h> // @manual
 #else
@@ -746,7 +744,7 @@ UsetId DatabaseImpl::FactOwnerCache::lookup(
   // low is inclusive, high is exclusive
   // low..high always contains an element that is <= id, if there is one
   while (high - low > 1) {
-    mid = std::midpoint(low, high);
+    mid = (high + low) / 2;
     auto x = page.factIds[mid];
     if (x == ix) {
       return page.setIds[mid];
