@@ -73,7 +73,7 @@ data InitOptions a = InitOptions
   , initPrefs :: PrefsMod
   , initParser :: ParserInfo a
   , initTransformGflags :: a -> [String] -> [String]
-  , initFromFilePrefix :: Maybe Char
+  , initFromFilesPrefix :: Maybe Char
   }
 
 parserInfo :: ParserInfo a -> InitOptions a
@@ -83,7 +83,7 @@ parserInfo p =
     , initPrefs = idm
     , initParser = p
     , initTransformGflags = \_ x -> x
-    , initFromFilePrefix = Nothing
+    , initFromFilesPrefix = Nothing
     }
 
 type InitSpec a = InitOptions a -> InitOptions a
