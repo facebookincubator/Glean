@@ -421,30 +421,9 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
 
     addProgress (stats, _mcont, mWriteHandle) =
       void $ overDerivation env repo ref pred $ \d@Derivation{..} -> d
-        { derivationStats = mergeStats derivationStats stats
+        { derivationStats = derivationStats <> stats
         , derivationPendingWrites = maybeToList mWriteHandle
             ++ derivationPendingWrites
-        }
-
-    mergeStats a b =
-      let add f = f a + f b
-          addMaybe f = liftA2 (+) (f a) (f b) <|> f a <|> f b
-      in
-      -- bytecode_size does not accumulate. We take the last one.
-      b
-        { userQueryStats_compile_time_ns =
-            addMaybe userQueryStats_compile_time_ns
-        , userQueryStats_num_facts = add userQueryStats_num_facts
-        , userQueryStats_allocated_bytes = add userQueryStats_allocated_bytes
-        , userQueryStats_facts_searched =
-          let sa = userQueryStats_facts_searched a
-              sb = userQueryStats_facts_searched b
-              union = Map.unionWith (+) <$> sa <*> sb
-          in
-          union <|> sa <|> sb
-        , userQueryStats_execute_time_ns =
-            addMaybe userQueryStats_execute_time_ns
-        , userQueryStats_result_count = add userQueryStats_result_count
         }
 
 -- | Update envDerivations and the Catalog metadata to reflect the current

@@ -529,7 +529,7 @@ doAngleStmt (Command name arg) = doCmd name arg
 doAngleStmt (FactRef fid) = userFact fid >> return False
 doAngleStmt (Pattern query) = do
   q <- fromAngleQuery query
-  runUserQuery q
+  runUserQuery Nothing q
   return False
 
 fromAngleQuery :: AngleQuery -> Eval SchemaQuery
@@ -544,7 +544,8 @@ fromAngleQuery (AngleQuery deprecatedRec stored pat) = do
     , sqCont = Nothing
     , sqTransform = trans
     , sqSyntax = Thrift.QuerySyntax_ANGLE
-    , sqOmitResults = False }
+    , sqOmitResults = False
+    , sqContinue = False }
   where
     -- magic transformation when we query for "xrefs". This is to make
     -- debugging of xref issues easier by presenting xref data in an
@@ -653,7 +654,7 @@ moreCmd :: Eval ()
 moreCmd = do
   last_query <- lastSchemaQuery <$> getState
   case last_query of
-    Just q -> runUserQuery q
+    Just q -> runUserQuery Nothing q
     Nothing -> liftIO $ throwIO $ ErrorCall "no last query"
 
 reloadCmd :: Eval ()
@@ -750,7 +751,7 @@ countCmd str = do
       return ()
     Right query -> do
       q <- fromAngleQuery query
-      runUserQuery q { sqOmitResults = True }
+      runUserQuery Nothing q { sqOmitResults = True, sqContinue = True }
 
 statsCmd :: String -> Eval ()
 statsCmd "" = do
@@ -873,8 +874,8 @@ asBadQuery syntax query (Thrift.BadQuery err) =
      then BadQueryAngle (Text.pack query) err
      else BadQueryJSON err
 
-runUserQuery :: SchemaQuery -> Eval ()
-runUserQuery SchemaQuery
+runUserQuery :: Maybe Thrift.UserQueryStats -> SchemaQuery -> Eval ()
+runUserQuery prevStats SchemaQuery
     { sqPredicate = str
     , sqRecursive = exp
     , sqStored = stored
@@ -882,7 +883,8 @@ runUserQuery SchemaQuery
     , sqCont = cont
     , sqTransform = transform
     , sqSyntax = syntax
-    , sqOmitResults = omitResults } = do
+    , sqOmitResults = omitResults
+    , sqContinue = continue } = do
   let SourceRef pred maybeVer = parseRef (Text.pack str)
       (recursive, expandPreds) = expandResultsOpts exp
   ShellState{..} <- getState
@@ -914,14 +916,15 @@ runUserQuery SchemaQuery
           -- When running locally with --enable-logging, logs are emitted
           -- before the ThriftBackend has a chance to incude client_info in the
           -- request.  This makes sure client_info will appear in the logs
-          , Thrift.userQuery_client_info = Just client_info
+         , Thrift.userQuery_client_info = Just client_info
           , Thrift.userQuery_schema_id = schema_id
           }
-  output $ vcat $
+  when (not (null userQueryResults_diagnostics)) $ output $ vcat $
     [ "*** " <> pretty diag | diag <- userQueryResults_diagnostics ]
     ++
-    [ "" | not (null userQueryResults_diagnostics) ]
-    ++
+    [ "" ]
+
+  when (not (null userQueryResults_facts)) $ output $ vcat $
     [ case JSON.decode (UTF8.toString fact) of
           JSON.Error err -> pretty err
           JSON.Ok (value :: JSON.JSValue) -> case transform of
@@ -931,62 +934,81 @@ runUserQuery SchemaQuery
               JSON.Ok transformed -> pretty transformed
       | fact <- userQueryResults_facts
     ]
-    ++
-    [ "" ]
-    ++
-    [ case userQueryResults_stats of
-        Nothing -> pretty (length userQueryResults_facts) <+> "results"
-        Just Thrift.UserQueryStats{..} ->
-          pretty
-            ( printf "%d results, %d facts, %.2fms, %ld bytes"
-              userQueryStats_result_count
-              userQueryStats_num_facts
-              (realToFrac userQueryStats_elapsed_ns / 1000000 :: Double)
-              userQueryStats_allocated_bytes
-            :: String ) <>
-          maybe mempty (\n -> "," <+> pretty n <+> "compiled bytes")
-            userQueryStats_bytecode_size
-    | stats == SummaryStats || stats == FullStats
-    ]
-    ++
-    [ vcat $ "Facts searched:" :
-        [ pretty (printf "%40s : %d" (show (pretty ref)) count :: String)
-        | (pid, count) <- sortOn (Down . snd) $ Map.toList m
-        , Just info <- [schemaInfo]
-        , Just ref <- [Map.lookup pid (Thrift.schemaInfo_predicateIds info)] ]
-    | stats == FullStats
-    , Just stats <- [userQueryResults_stats]
-    , Just m <- [Thrift.userQueryStats_facts_searched stats]
-    ]
-    ++
-    [ vcat $ if Thrift.userQueryStats_result_count stats < fromIntegral limit
-        then
-            [ case timeout of
-                Nothing -> "timeout (server-side time limit)"
-                Just ms ->
-                  "timeout (currently " <> pretty ms <> "ms), " <>
-                  "use :timeout <ms> to change it"
-           , "Use :more to continue the query." ]
-        else
-          [ "results truncated (current limit " <> pretty limit <> ", " <>
-            "use :limit <n> to change it)"
-          , "Use :more to see more results"
-          ]
-    | isJust userQueryResults_continuation
-    , Just stats <- [userQueryResults_stats]
-    ]
-  Eval $ State.modify $ \s ->
-    s { lastSchemaQuery = userQueryResults_continuation <&>
-      \cont -> SchemaQuery
-        { sqPredicate = str
-        , sqRecursive = exp
-        , sqStored = stored
-        , sqQuery = rest
-        , sqCont = Just cont
-        , sqTransform = transform
-        , sqSyntax = syntax
-        , sqOmitResults = omitResults
-        }}
+
+  let nextQuery = userQueryResults_continuation <&>
+        \cont -> SchemaQuery
+          { sqPredicate = str
+          , sqRecursive = exp
+          , sqStored = stored
+          , sqQuery = rest
+          , sqCont = Just cont
+          , sqTransform = transform
+          , sqSyntax = syntax
+          , sqOmitResults = omitResults
+          , sqContinue = continue
+          }
+
+  let
+    finalStats = case (prevStats, userQueryResults_stats) of
+      (Nothing, Just stats) -> Just stats
+      (Just prev, Just stats) -> Just (prev <> stats)
+      (Just stats, Nothing) ->
+        Just stats { Thrift.userQueryStats_result_count =
+          Thrift.userQueryStats_result_count stats +
+            fromIntegral (length userQueryResults_facts) }
+      (Nothing, Nothing) -> Nothing
+
+    finalOutput = output $ vcat $
+      [ "" ]
+      ++
+      [ case finalStats of
+          Nothing -> pretty (length userQueryResults_facts) <+> "results"
+          Just Thrift.UserQueryStats{..} ->
+            pretty
+              ( printf "%d results, %d facts, %.2fms, %ld bytes"
+                userQueryStats_result_count
+                userQueryStats_num_facts
+                (realToFrac userQueryStats_elapsed_ns / 1000000 :: Double)
+                userQueryStats_allocated_bytes
+              :: String ) <>
+            maybe mempty (\n -> "," <+> pretty n <+> "compiled bytes")
+              userQueryStats_bytecode_size
+      | stats == SummaryStats || stats == FullStats
+      ]
+      ++
+      [ vcat $ "Facts searched:" :
+          [ pretty (printf "%40s : %d" (show (pretty ref)) count :: String)
+          | (pid, count) <- sortOn (Down . snd) $ Map.toList m
+          , Just info <- [schemaInfo]
+          , Just ref <- [Map.lookup pid (Thrift.schemaInfo_predicateIds info)] ]
+      | stats == FullStats
+      , Just stats <- [userQueryResults_stats]
+      , Just m <- [Thrift.userQueryStats_facts_searched stats]
+      ]
+      ++
+      [ vcat $ if Thrift.userQueryStats_result_count stats < fromIntegral limit
+          then
+              [ case timeout of
+                  Nothing -> "timeout (server-side time limit)"
+                  Just ms ->
+                    "timeout (currently " <> pretty ms <> "ms), " <>
+                    "use :timeout <ms> to change it"
+             , "Use :more to continue the query." ]
+          else
+            [ "results truncated (current limit " <> pretty limit <> ", " <>
+              "use :limit <n> to change it)"
+            , "Use :more to see more results"
+            ]
+      | isJust userQueryResults_continuation
+      , Just stats <- [userQueryResults_stats]
+      ]
+
+  if
+    | Just q <- nextQuery, continue -> runUserQuery finalStats q
+    | otherwise -> do
+      finalOutput
+      Eval $ State.modify $ \s -> s { lastSchemaQuery = nextQuery }
+
 
 -- | A line from the user (or entry on the command line) may end in a backslash
 -- and be a 'Cont' continued line, otherwise it is a 'Whole' line, see 'endBS'

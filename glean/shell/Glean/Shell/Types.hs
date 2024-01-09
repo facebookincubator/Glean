@@ -113,6 +113,7 @@ data SchemaQuery = SchemaQuery
   , sqTransform :: Maybe (JSON.JSValue -> JSON.Result JSON.JSValue)
   , sqSyntax :: Thrift.QuerySyntax
   , sqOmitResults :: Bool
+  , sqContinue :: Bool
   }
 
 data Stats = NoStats | SummaryStats | FullStats
