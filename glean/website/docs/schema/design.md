@@ -137,6 +137,12 @@ If you're choosing between arrays and separate facts, then consider:
 * Facts with large arrays are also slower to search through in a query
   than smaller facts.
 
+## Increase sharing
+
+If there is duplication in the data stored in our facts, we can often
+extract the common data into a predicate to increase sharing. One
+example of this was described in [What is the difference between a predicate and a type?](schema/syntax.md#what-is-the-difference-between-a-predicate-and-a-type).
+
 ## How to experiment with schema design
 
 * Generate some data and see how large it is, using `:stat` in the shell.
