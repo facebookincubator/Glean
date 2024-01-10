@@ -9,7 +9,6 @@
 module Glean.Query.Thrift
   ( -- * Types
     Query
-  , MkQuery(..)
     -- * Perform query
   , runQuery
   , runQuery_

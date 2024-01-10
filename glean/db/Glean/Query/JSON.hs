@@ -9,35 +9,21 @@
 module Glean.Query.JSON
   ( factToJSON
   , factToCompact
-
-  -- * Legacy code
-  , OrderedValue(..)
-  , runFactsToJSON
-  , queryToJSON
   ) where
 
 import Control.Exception
 import Control.Monad
-import Control.Monad.Except
 import Control.Monad.ST (ST, stToIO)
 import Control.Monad.ST.Unsafe (unsafeIOToST)
-import qualified Data.Aeson as Aeson
-import qualified Data.Aeson.Encoding as Aeson
-import Data.Aeson (toJSON, toEncoding)
 import Data.Bits
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Builder as Builder
 import qualified Data.ByteString.Lazy as LBS
-import qualified Data.ByteString.Lazy.Char8 as LBC
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
-import Data.Text.Prettyprint.Doc hiding ((<>))
-import Data.Text.Prettyprint.Doc.Render.String
-import Data.Vector (Vector)
-import qualified Data.Vector as Vector
 import Data.Word (Word8, Word64)
 import Foreign.Marshal.Utils (copyBytes)
 import Safe (atMay)
@@ -46,17 +32,12 @@ import Thrift.Protocol.JSON.Base64
 import Util.Buffer (ascii, liftST)
 import qualified Util.Buffer as Buffer
 
-import Glean.Display
-import Glean.Query.Nested.Types
 import Glean.RTS as RTS
 import qualified Glean.RTS.Foreign.JSON as RTS hiding (String, Array)
 import qualified Glean.RTS.Foreign.Thrift as Thrift
 import Glean.RTS.Types (Type, ExpandedType(..))
-import qualified Glean.RTS.Term as RTS
 import Glean.Database.Schema
-import qualified Glean.Types as Thrift
 import Glean.Angle.Types as Schema hiding (Type)
-import Glean.Schema.Util
 
 newtype EncodingError = EncodingError String
   deriving(Show)
@@ -404,124 +385,3 @@ compactEncoder = Encoder
   where
     bool True = 1
     bool False = 2
-
------------------
--- Legacy code --
------------------
-
--- -----------------------------------------------------------------------------
--- Converting Glean Terms to JSON-encoded Thrift
-
--- The order of fields is important in the JSON we return, since we
--- want the JSON to match the schema. Aeson doesn't preserve field
--- ordering because it uses HashMap to represent objects, so we need
--- to encode into our own JSON type and define custom encoding for it.
-data OrderedValue
-  = OrderedObject [(Text,OrderedValue)]
-  | OrderedArray (Vector OrderedValue)
-  | OrderedValue Aeson.Value
-
-instance Show OrderedValue where
-  show = LBC.unpack . Aeson.encode
-
-instance Aeson.ToJSON OrderedValue where
-  toJSON (OrderedObject fields) =
-    Aeson.object [ (f, toJSON v) | (f,v) <- fields ]
-  toJSON (OrderedArray arr) = Aeson.Array (Vector.map toJSON arr)
-  toJSON (OrderedValue val) = toJSON val
-
-  -- toEncoding preserves field order, but toJSON can't.
-  toEncoding (OrderedObject fields) =
-    Aeson.dict Aeson.text toEncoding (foldr . uncurry) fields
-  toEncoding (OrderedArray arr) = Aeson.list toEncoding (Vector.toList arr)
-  toEncoding (OrderedValue val) = toEncoding val
-
-type FactsToJSON = Except String
-
-runFactsToJSON :: FactsToJSON a -> Either String a
-runFactsToJSON = runExcept
-
-matchToJSON
-  :: DbSchema
-  -> Thrift.UserQueryOptions
-  -> Type
-  -> RTS.Match (Nested Fid)
-  -> FactsToJSON OrderedValue
-matchToJSON env opts typ term = case (typ,term) of
-  (PredicateTy{}, RTS.Wildcard) -> return (OrderedObject [])
-  (_, RTS.Wildcard) -> return $ OrderedValue Aeson.Null
-  (SumTy fieldTys, RTS.MatchTerm (NestedSum mode fields)) -> do
-    flds <- forM (zip fieldTys fields) $ \(FieldDef name ty, term) -> do
-      jsonField <- mapM (queryToJSON env opts ty) term
-      return $ (name,) <$> jsonField
-    let addAny | SumMatchAny <- mode =
-                  (("any", OrderedValue $ Aeson.Bool True) :)
-               | otherwise = id
-    return $ OrderedObject $ addAny $ catMaybes flds
-  (ArrayTy ty, RTS.MatchTerm (NestedArray term)) -> do
-    term' <- queryToJSON env opts ty term
-    return $ OrderedObject [ ("every", term') ]
-  (PredicateTy{}, RTS.MatchTerm (NestedRef (Fid id))) ->
-    return $ OrderedObject
-      [ ("id", OrderedValue $ Aeson.Number (fromIntegral id)) ]
-  (PredicateTy{}, RTS.MatchTerm (NestedPred details mids mterm)) -> do
-    let
-      idsField = case mids of
-        Nothing -> []
-        Just ids -> [ ("ids", OrderedArray (Vector.fromList (map doId ids))) ]
-          where doId (Fid fid) =
-                  OrderedValue $ Aeson.Number (fromIntegral fid)
-    case mterm of
-      Nothing -> return $ OrderedObject idsField
-      Just term -> do
-        let !PredicateDetails{..} = details
-        json <- queryToJSON env opts predicateKeyType term
-        return $ OrderedObject $ ("key", json) : idsField
-  (StringTy{}, RTS.PrefixWildcard s) -> return $
-    OrderedObject [("prefix", OrderedValue $ Aeson.String (Text.decodeUtf8 s))]
-  (_,_) ->
-   throwError $ "queryToJSON: "
-     ++ renderString (layoutCompact (displayVerbose term))
-     ++ " :: " ++ show typ
-
--- | Takes a Glean schema type and a pattern of that type, and returns a
--- JSON blob that can be decoded into the appropriate native Client Type
--- corresponding to the generated Thrift schema.
-queryToJSON
-  :: DbSchema
-  -> Thrift.UserQueryOptions
-  -> Type
-  -> RTS.Term (RTS.Match (Nested Fid))
-  -> FactsToJSON OrderedValue
-queryToJSON env opts@Thrift.UserQueryOptions{..} typ t = case (typ,t) of
-  (_, RTS.Byte w) -> return $ OrderedValue $ Aeson.Number (fromIntegral w)
-  (_, RTS.Nat w) -> return $ OrderedValue $ Aeson.Number (fromIntegral w)
-  (_, RTS.String s) -> return $ OrderedValue $ Aeson.String $ Text.decodeUtf8 s
-  (ArrayTy ByteTy, RTS.ByteArray bs)
-    | userQueryOptions_no_base64_binary ->
-      return $ OrderedValue $ Aeson.String (Text.decodeUtf8 bs)
-    | otherwise ->
-      return $ OrderedValue $ Aeson.String (encodeBase64Text bs)
-  (ArrayTy ty, RTS.Array vals) ->
-     OrderedArray . Vector.fromList <$> mapM (queryToJSON env opts ty) vals
-  (RecordTy fieldTys, RTS.Tuple terms) -> fmap OrderedObject
-    $ forM (zip fieldTys terms) $ \(FieldDef name ty, term) -> do
-      json <- queryToJSON env opts ty term
-      return (name, json)
-  (SumTy fieldTys, RTS.Alt n term)
-    | Just (FieldDef name ty) <- atMay fieldTys (fromIntegral n) -> do
-    json <- queryToJSON env opts ty term
-    return $ OrderedObject [(name,json)]
-  (NamedTy (ExpandedType _ ty), term) ->
-    queryToJSON env opts ty term
-  (EnumeratedTy _, RTS.Alt n _) ->
-    return $ OrderedValue $ Aeson.Number (fromIntegral n)
-  (MaybeTy ty, term) ->
-    queryToJSON env opts (lowerMaybe ty) term
-  (BooleanTy{}, RTS.Alt 0 _) -> return $ OrderedValue $ Aeson.Bool False
-  (BooleanTy{}, RTS.Alt 1 _) -> return $ OrderedValue $ Aeson.Bool True
-  (_, RTS.Ref ref) -> matchToJSON env opts typ ref
-  (typ, term) ->
-     throwError $ "queryToJSON: "
-       ++ renderString (layoutCompact (displayVerbose term))
-       ++ " :: " ++ show typ

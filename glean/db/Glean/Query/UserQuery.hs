@@ -18,11 +18,9 @@ import Control.DeepSeq
 import Control.Exception
 import Control.Monad
 import Control.Monad.Except
-import qualified Data.Aeson as Aeson
 import Data.Bifunctor (first)
 import Data.ByteString (ByteString)
 import qualified Data.ByteString as B
-import qualified Data.ByteString.Lazy as LB
 import Data.Coerce
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
@@ -34,7 +32,6 @@ import Data.List
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
-import Data.Scientific
 import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Text (Text)
@@ -49,7 +46,6 @@ import TextShow
 
 import ServiceData.GlobalStats as Stats
 import qualified ServiceData.Types as Stats
-import Thrift.Protocol.JSON.Base64
 import Util.AllocLimit
 import Util.Timing
 import Util.Log
@@ -87,15 +83,10 @@ import Glean.RTS.Foreign.Lookup
 import Glean.RTS.Foreign.Ownership
 import Glean.RTS.Foreign.Query
 import Glean.RTS.Foreign.Stacked (stacked)
-import Glean.RTS.Types (Type, FieldDef, PidRef(..), ExpandedType(..))
-import qualified Glean.RTS.Term as RTS
-import Glean.RTS.Term (Term(Ref,Alt,Tuple,ByteArray), Match(..))
+import Glean.RTS.Types (Type, PidRef(..))
 import qualified Glean.Types as Thrift
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Query.JSON
-import Glean.Query.Nested
-import Glean.Query.Nested.Compile
-import Glean.Query.Nested.Types
 import Glean.Schema.Resolve
 import Glean.Schema.Util
 import Glean.Util.Observed as Observed
@@ -621,7 +612,6 @@ userQueryImpl
   -> Thrift.UserQuery
   -> IO (Results Stats Thrift.Fact)
 
--- Angle queries:
 userQueryImpl
   env
   odb
@@ -630,9 +620,14 @@ userQueryImpl
   bounds
   lookup
   repo
-  Thrift.UserQuery{..}
-  | let opts = fromMaybe def userQuery_options
-  , Thrift.QuerySyntax_ANGLE <- Thrift.userQueryOptions_syntax opts = do
+  Thrift.UserQuery{..} = do
+    let opts = fromMaybe def userQuery_options
+
+    case Thrift.userQueryOptions_syntax opts of
+      Thrift.QuerySyntax_ANGLE -> return ()
+      other -> throwIO $ Thrift.Exception $
+        "query syntax not supported: " <> Text.pack (show other)
+
     let
       schema@DbSchema{..} = odbSchema odb
       opts = fromMaybe def userQuery_options
@@ -805,160 +800,6 @@ userQueryImpl
           , resCodegenTime = Just codegenTime
           , resExecutionTime = Just queryResultsElapsedNs
           }
-
-    return $ if Thrift.userQueryOptions_omit_results opts
-       then withoutFacts results
-       else results
-
--- JSON queries:
-userQueryImpl
-  env
-  odb
-  config
-  _
-  bounds
-  lookup
-  repo
-  Thrift.UserQuery{..} = do
-    let schema@DbSchema{..} = odbSchema odb
-    schemaVersion <-
-      schemaVersionForQuery env schema config Nothing
-        userQuery_schema_id
-    trans <- transformationsForQuery schema schemaVersion
-
-    let ref = SourceRef userQuery_predicate userQuery_predicate_version
-    details@PredicateDetails{..} <-
-      case lookupPredicateSourceRef ref schemaVersion schema of
-        Left err -> throwIO $ Thrift.BadQuery err
-        Right details -> return details
-
-    let
-      opts = fromMaybe def userQuery_options
-      stored = Thrift.userQueryOptions_store_derived_facts opts
-      pred = showRef (predicateRef details)
-
-      mkResults pids firstId derived qResults defineOwners fullScans = do
-        appliedTrans <- either (error . Text.unpack) return $ do
-          ktrans <- transformationsFor schema trans predicateKeyType
-          vtrans <- transformationsFor schema trans predicateKeyType
-          return (ktrans <> vtrans)
-
-        let QueryResults{..} = transformResultsBack appliedTrans qResults
-        userCont <- case queryResultsCont of
-          Nothing -> return Nothing
-          Just bs -> do
-            nextId <- firstFreeId derived
-            return $ Just $ mkUserQueryCont (Left pids) bs nextId
-
-        stats <- getStats schema fullScans qResults
-        when (isJust userCont) $
-          addStatValueType "glean.query.truncated" 1 Stats.Sum
-
-        -- If we're storing derived facts, queue them for writing and
-        -- return the handle.
-        maybeWriteHandle <-
-          if stored
-            then writeDerivedFacts env repo firstId derived defineOwners
-            else return Nothing
-        return Results
-          { resFacts = Vector.toList queryResultsFacts
-          , resPredicate = Just details
-          , resNestedFacts = mkNestedFacts queryResultsNestedFacts
-          , resCont = userCont
-          , resStats = stats
-          , resDiags = []
-          , resWriteHandle = maybeWriteHandle
-          , resFactsSearched = queryResultsStats
-          , resType = Just pred
-          , resCompileTime = Nothing
-          , resCodegenTime = Nothing
-          , resBytecodeSize = Nothing
-          , resExecutionTime = Just queryResultsElapsedNs
-          }
-
-    let
-      mkDefineOwners nextId = if stored
-        then do
-          maybeOwnership <- readTVarIO (odbOwnership odb)
-          forM maybeOwnership $ \ownership ->
-            newDefineOwnership ownership nextId
-        else return Nothing
-
-    results <- case Thrift.userQueryOptions_continuation opts of
-      Just ucont@Thrift.UserQueryCont{..} -> do
-        nextId <- if userQueryCont_nextId > 0
-          then return (Fid userQueryCont_nextId)
-          else firstFreeId lookup
-        derived <- FactSet.new nextId
-        defineOwners <- mkDefineOwners nextId
-        let stack = stacked lookup derived
-            pids = Set.fromList $ Pid <$> userQueryCont_pids
-            limits = mkQueryRuntimeOptions opts config pids
-        qResults <- restartCompiled schemaInventory defineOwners stack
-          (Just predicatePid) limits (Thrift.userQueryCont_continuation ucont)
-        mkResults pids nextId derived qResults defineOwners []
-
-      Nothing -> do
-        let
-          oops = throwIO . Thrift.BadQuery . ("invalid JSON query: " <>)
-          get_facts ids = userQueryFactsImpl env schema config lookup def
-            { Thrift.userQueryFacts_facts =
-              [ def { Thrift.factQuery_id = i
-                    , Thrift.factQuery_predicate_version =
-                        Just (predicateRef_version (predicateRef details)) }
-              | Fid i <- ids ]
-            , Thrift.userQueryFacts_options = Just opts }
-
-          -- Handle queries for a key pattern. Queries for a specific id
-          -- will be handed off to userQueryFactsImpl.
-          userQueryTerm query = do
-            -- 3. Do the nested queries
-            nextId <- firstFreeId lookup
-            let pids = getExpandPids query
-                limits = mkQueryRuntimeOptions opts config pids
-            gens <- either (throwIO . Thrift.BadQuery) return $
-              toGenerators (envEnableRecursion env) schema stored details query
-            derived <- FactSet.new nextId
-            defineOwners <- mkDefineOwners nextId
-            let stack = stacked lookup derived
-            (fullScans, qResults) <- bracket
-              (compileQuery (envEnableRecursion env) trans bounds gens)
-              (release . compiledQuerySub)
-              $ \sub -> (compiledQueryFullScans sub,) <$>
-                executeCompiled schemaInventory defineOwners stack sub limits
-            mkResults pids nextId derived qResults defineOwners fullScans
-
-        -- 1. Decode the JSON
-        pat <- case Aeson.eitherDecode (LB.fromStrict userQuery_query) of
-          Left err -> throwIO $ Thrift.BadQuery $
-            "query is not valid JSON: " <> Text.pack err
-          Right pat -> return pat
-
-        -- 2. Parse the JSON query
-        case runExcept $ parseQuery schema opts details pat of
-          Left err -> throwIO $ Thrift.BadQuery (Text.pack err)
-
-          -- The only two options for userQueryTerm
-          Right (MatchTerm (NestedPred _ Nothing (Just term))) ->
-            userQueryTerm term
-          Right (MatchTerm (NestedPred _ Nothing Nothing)) ->
-            userQueryTerm (Ref Wildcard)
-
-          -- No continuation
-          Right (MatchTerm (NestedRef id)) -> do
-            res@Results{resFacts = (fid,fact):_} <- get_facts [id]
-            return $! res{resFacts = [(fid,fact)], resType = Just pred}
-          Right (MatchTerm (NestedPred _ (Just ids) Nothing)) -> do
-            res <- get_facts ids
-            return res { resType = Just pred }
-          Right (MatchTerm (NestedPred _ (Just _) (Just _))) ->
-            oops "impossible NestedPred found"
-          Right (MatchTerm NestedSum{}) -> oops "impossible NestedSum found"
-          Right (MatchTerm NestedArray{}) -> oops "impossible NestedArray found"
-          Right Variable -> oops "impossible Variable found"
-          Right Wildcard -> oops "impossible Wildcard found"
-          Right PrefixVariable{} -> oops "impossible PrefixVariable found"
-          Right PrefixWildcard{} -> oops "impossible PrefixWildcard found"
 
     return $ if Thrift.userQueryOptions_omit_results opts
        then withoutFacts results
@@ -1225,203 +1066,6 @@ withStats io = do
         , Thrift.userQueryStats_full_scans = statFullScans $ resStats res
         }
   return res{ resStats = stats }
-
-
--- | Parse a JSON query into the internal representation
-parseQuery
-  :: DbSchema
-  -> Thrift.UserQueryOptions
-  -> PredicateDetails
-  -> Aeson.Value
-  -> Except String (Match (Nested Fid))
-parseQuery dbSchema Thrift.UserQueryOptions{..} details val =
-  jsonToPredMatch details val
-  where
-  jsonToPredMatch
-    :: PredicateDetails
-    -> Aeson.Value
-    -> Except String (Match (Nested Fid))
-  jsonToPredMatch details@PredicateDetails{..} val = do
-    let
-      badQuery :: Except String a
-      badQuery = queryError (PredicateTy (PidRef predicatePid predicateId)) val
-    case val of
-      Aeson.Object obj -> do
-        case sortOn fst $ HashMap.toList obj of
-          -- { } means "fetch the fact" (only if the user wrote JSON directly)
-          [] -> return (MatchTerm (NestedPred details Nothing Nothing))
-          -- { "get" = { } } means "fetch the fact"
-          [("get", _)] ->
-            return (MatchTerm (NestedPred details Nothing Nothing))
-          -- { id = N } means "match fact N" (and fetch it, if this is the root
-          -- of the query, or if we're expanding recursively)
-          [("id", n)] | Just id <- getId n ->
-              return (MatchTerm (NestedRef id))
-          [("ids", Aeson.Array ns)] | Just ids <- getIds ns ->
-              return (MatchTerm (NestedPred details (Just ids) Nothing))
-              -- TODO: we should probably have MatchRefs [Fid] for
-              -- this case, but since it isn't needed for paging
-              -- queries I'll leave it for later when we expose "ids" to
-              -- the user.
-          [("get", _), ("id", n)] | Just id <- getId n ->
-              return (MatchTerm (NestedPred details (Just [id]) Nothing))
-          [("id", n), ("key", key)] | Just id <- getId n ->
-            MatchTerm . NestedPred details (Just [id]) . Just <$>
-              jsonToValMatch predicateKeyType key
-          [("get", _), ("ids", Aeson.Array ns)] | Just ids <- getIds ns ->
-              return (MatchTerm (NestedPred details (Just ids) Nothing))
-          [("ids", Aeson.Array ns), ("key", key)] | Just ids <- getIds ns ->
-            MatchTerm . NestedPred details (Just ids) . Just <$>
-              jsonToValMatch predicateKeyType key
-          -- { key = T } means "match fact against T and fetch it"
-          [("key", key)] ->
-            MatchTerm . NestedPred details Nothing . Just <$>
-              jsonToValMatch predicateKeyType key
-          _ -> badQuery
-      _ -> badQuery
-
-  getId :: Aeson.Value -> Maybe Fid
-  getId (Aeson.Number n)
-    | Just id <- toBoundedInteger n, id /= 0 = Just (Fid id)
-  getId _ = Nothing
-
-  getIds :: Aeson.Array -> Maybe [Fid]
-  getIds ns = mapM getId (Vector.toList ns)
-
-  jsonToValMatch
-    :: Type
-    -> Aeson.Value
-    -> Except String (Term (Match (Nested Fid)))
-  jsonToValMatch typ val = case (typ,val) of
-    (NatTy, Aeson.Number n) | Just i <- toBoundedInteger n ->
-      return (RTS.Nat i)
-    (ByteTy, Aeson.Number n) | Just i <- toBoundedInteger n ->
-      return (RTS.Byte i)
-    (StringTy, Aeson.String s) -> return $ RTS.String $ Text.encodeUtf8 s
-    (StringTy, Aeson.Object obj)
-      | [("prefix", Aeson.String s)] <- HashMap.toList obj ->
-         return (Ref (PrefixWildcard (Text.encodeUtf8 s)))
-    (ArrayTy ByteTy, Aeson.String s)
-      | userQueryOptions_no_base64_binary ->
-        return (ByteArray (Text.encodeUtf8 s))
-      | otherwise ->
-        return (ByteArray (decodeBase64 (Text.encodeUtf8 s)))
-    (ArrayTy ty, Aeson.Object obj)
-      | Just val <- HashMap.lookup "every" obj -> do
-        query <- jsonToValMatch ty val
-        if refutableNested query
-          then throwError "array query with \"every\" must be irrefutable"
-          else return (Ref (MatchTerm (NestedArray query)))
-      | Just (Aeson.Array vec) <- HashMap.lookup "exact" obj ->
-        RTS.Array <$> mapM (jsonToValMatch ty) (Vector.toList vec)
-    (RecordTy fields, Aeson.Object obj)
-      -- ensure that all the fields mentioned in the query are valid
-      | all (`elem` map fieldDefName fields) (HashMap.keys obj) -> do
-      let
-        doField (Angle.FieldDef name ty)
-          | Just val <- HashMap.lookup name obj =
-            jsonToValMatch ty val
-        doField _ = return (Ref Wildcard) -- missing field is a wildcard
-      Tuple <$> mapM doField fields
-    (SumTy fields, Aeson.Object obj) -> matchSum fields obj
-    (NamedTy (ExpandedType _ ty), val) -> jsonToValMatch ty val
-    (PredicateTy (PidRef pid ref), val) ->
-      case lookupPid pid dbSchema of
-        Nothing ->
-          throwError $ "unknown predicate " ++ show (displayDefault ref)
-        Just deets -> Ref <$> jsonToPredMatch deets val
-    (EnumeratedTy vals, Aeson.Number n)
-      | Just i <- toBoundedInteger n, fromIntegral i < length vals ->
-        return (Alt i (Tuple []))
-    (MaybeTy ty, val) ->
-      jsonToValMatch (lowerMaybe ty) val
-    (BooleanTy{}, Aeson.Bool False) -> return (Alt 0 (Tuple []))
-    (BooleanTy{}, Aeson.Bool True) -> return (Alt 1 (Tuple []))
-    -- null can be used anywhere to indicate a wildcard. This is only
-    -- possible when sending raw JSON queries, not when using the
-    -- Thrift query types, but it enables a bit more flexibility. For
-    -- example, if we have maybe(nat), we can use { "just" : null } to
-    -- match the just case but without mathcing on the inner nat. To
-    -- enable this kind of query with the Thrift query types would
-    -- require adding an extra layer of wrapper types for sum and
-    -- maybe fields, which would add a lot of clutter.
-    (_any, Aeson.Null) -> return (Ref Wildcard)
-    _otherwise -> queryError typ val
-
-  queryError :: Type -> Aeson.Value -> Except String a
-  queryError typ val = throwError $ show $ vcat
-    [ "Error in query. Expecting a query for the " <> thing <> ":"
-    , indent 2 (displayDefault typ)
-    , "which should be of the form:"
-    , indent 2 (expecting typ)
-    , "but got:"
-    , indent 2 (pretty (Text.decodeUtf8 (LB.toStrict (Aeson.encode val))))
-    ]
-    where
-      thing
-        | PredicateTy{} <- typ = "predicate"
-        | otherwise = "type"
-
-      allowed fields = hcat $
-        punctuate ", " [ dquotes (pretty f) | Angle.FieldDef f _ <- fields ]
-
-      expecting :: Type -> Doc ann
-      expecting NatTy{} = "number"
-      expecting ByteTy{} = "number"
-      expecting StringTy{} = "string"
-      expecting (ArrayTy ByteTy{}) = "string"
-      expecting ArrayTy{} = vcat
-        [ "{ \"exact\": [...] } or"
-        , "{ \"every\": ... }" ]
-      expecting (RecordTy fields) =
-        "{..} (allowed fields: " <> allowed fields <> ")"
-      expecting (SumTy fields) =
-        "{\"any\": true|false, ..} (allowed fields: " <> allowed fields <> ")"
-      expecting (EnumeratedTy vals) =
-        "number (< " <> pretty (length vals) <> ")"
-      expecting (MaybeTy ty) =
-        expecting (lowerMaybe ty)
-      expecting BooleanTy{} = "true or false"
-      expecting PredicateTy{} = vcat
-        [ "{\"get\": {}} or"
-        , "{\"id\": N} or"
-        , "{\"key\": ...}" ]
-      expecting _ = error "expecting"
-
-  matchSum
-    :: [FieldDef]
-    -> Aeson.Object
-    -> Except String (Term (Match (Nested Fid)))
-  matchSum fields obj
-    -- when "any":True, we ignore unknown fields, to allow
-    -- backwards-compatible queries.
-    | Just (Aeson.Bool True) <-  HashMap.lookup "any" obj = do
-      alts <- parseAlts
-      if any (any refutableNested) alts
-        then
-          -- If there are refutable alternatives, we have to turn
-          -- this into a SumMatchThese and replace the missing alts
-          -- with wildcards. There's a danger that this could make
-          -- the query more expensive than the user expected, but
-          -- that's a problem we'll need to deal with elsewhere.
-          let
-              missingToWildcard Nothing = Just (Ref Wildcard)
-              missingToWildcard (Just t) = Just t
-          in
-          return $ Ref $ MatchTerm $ NestedSum SumMatchThese $
-            map missingToWildcard alts
-        else
-          return $ Ref $ MatchTerm $ NestedSum SumMatchAny alts
-
-    -- when "any":False, all fields must be present in the schema
-    | all (`elem` ("any" : map fieldDefName fields)) (HashMap.keys obj) = do
-      RTS.Ref . MatchTerm . NestedSum SumMatchThese <$> parseAlts
-    | otherwise = queryError (SumTy fields) (Aeson.Object obj)
-    where
-    parseAlts = forM fields $ \(Angle.FieldDef name ty) ->
-      case HashMap.lookup name obj of
-        Just val -> Just <$> jsonToValMatch ty val
-        Nothing -> return Nothing
 
 mkUserQueryCont
   :: Either (Set Pid) Type

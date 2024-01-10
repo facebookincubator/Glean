@@ -26,8 +26,6 @@ module Glean.Query.Thrift.Internal
   , store
   , allFacts
   , expanding
-    -- ** Query JSON
-  , MkQuery(..)
     -- * Support
   , reportUserQueryStats
   , showUserQueryStats
@@ -39,9 +37,6 @@ module Glean.Query.Thrift.Internal
 import Control.Exception
 import Control.Monad
 import Control.Monad.IO.Class
-import qualified Data.Aeson as Aeson
-import qualified Data.ByteString.Lazy as LBS (ByteString, toStrict)
-import Data.ByteString.UTF8 as Utf8String
 import Data.Default
 import Data.Dynamic
 import Data.Hashable
@@ -54,7 +49,6 @@ import Data.Proxy
 import Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Data.Text.Prettyprint.Doc hiding ((<>))
-import qualified Text.JSON
 import qualified Data.Vector as Vector
 import Text.Printf
 
@@ -118,7 +112,7 @@ queryPredicate (Query q) = case userQuery_predicate_version q of
   Just v -> PredicateRef{ predicateRef_name = userQuery_predicate q
                         , predicateRef_version = v }
 
--- | A human-readable form of the Query (as JSON).
+-- | A human-readable form of the Query.
 displayQuery :: Query a -> Text
 displayQuery (Query UserQuery{..}) = Text.decodeUtf8 userQuery_query
 
@@ -172,39 +166,6 @@ angleData query = Query { querySpec = spec  }
       , userQueryOptions_syntax = QuerySyntax_ANGLE
       }
     }
-
--- | Convert various JSON formats into Query, trusting the type, for
--- passing to `runQuery` (see "Glean.Query.Thrift")
-class MkQuery a where
-  mkQuery :: (Predicate q) => a -> Query q
-
-instance MkQuery ByteString where
-  mkQuery :: forall q. (Predicate q) => ByteString -> Query q
-  mkQuery queryBS = Query { querySpec = spec }
-   where
-   pref = getName (Proxy @q)
-   spec = def
-     { userQuery_predicate = predicateRef_name pref
-     , userQuery_predicate_version =
-       Just (fromIntegral (predicateRef_version pref))
-     , userQuery_query = queryBS
-     , userQuery_options = Just def { userQueryOptions_expand_results = False }
-     }
-
-instance MkQuery LBS.ByteString where
-  mkQuery = mkQuery . LBS.toStrict
-
-instance MkQuery Aeson.Value where
-  mkQuery = mkQuery . LBS.toStrict . Aeson.encode
-
-instance MkQuery Text where
-  mkQuery = mkQuery . Text.encodeUtf8
-
-instance MkQuery String where
-  mkQuery = mkQuery . Utf8String.fromString
-
-instance MkQuery Text.JSON.JSValue where
-  mkQuery = mkQuery . Utf8String.fromString . Text.JSON.encode
 
 -- | Make a query recursive
 recursive :: Query a -> Query a

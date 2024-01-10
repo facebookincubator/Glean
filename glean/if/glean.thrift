@@ -475,7 +475,7 @@ struct UserQueryCont {
 }
 
 enum QuerySyntax {
-  JSON = 1, // JSON query syntax
+  JSON = 1, // JSON query syntax (DEPRECATED)
   ANGLE = 2, // Glean's query language
 } (hs.nounknown)
 
@@ -707,9 +707,7 @@ union DerivationStatus {
 } (hs.nonempty)
 
 struct UserQuery {
-  1: string predicate;
-  // Name of the predicate to query
-  // (only necessary when using JSON query syntax)
+  1: string predicate; // DEPRECATED
 
   2: bytestring query;
   // Query string; syntax specified by UserQueryOptions.syntax
@@ -739,9 +737,7 @@ struct UserQuery {
 }
 
 struct UserQueryBatch {
-  1: string predicate;
-  // Name of the predicate to query
-  // (only necessary when using JSON query syntax)
+  1: string predicate; // DEPRECATED
 
   2: list<bytestring> queries;
   // Query strings; syntax specified by UserQueryOptions.syntax
