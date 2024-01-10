@@ -5,7 +5,6 @@ sidebar_label: Writing data to Glean
 ---
 
 import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
-import Scribe from './fb/scribe.md';
 import Backup from './fb/backup.md';
 import {SrcFile,SrcFileLink} from '@site/utils';
 
@@ -35,12 +34,6 @@ A database can be created by a client using any of these methods:
 1. Programmatically, using one of the APIs listed in [APIs for Writing](#apis-for-writing).
 2. On the command line: invoke the `glean` command-line tool to send data in JSON format, see [ Creating a database using the command line](#creating-a-database-using-the-command-line).
 3. In the shell, use `glean shell --db-root=<dir>` and then use the command `:load` to create a DB from a JSON file. See [Loading a DB from JSON in the shell](#loading-a-db-from-json-in-the-shell).
-
-<FbInternalOnly>
-
-4. Via Scribe, see [Writing data using Scribe](#writing-data-using-scribe)
-
-</FbInternalOnly>
 
 ## Server-driven writing
 
@@ -249,7 +242,5 @@ glean shell --service <write-server> :list
 ```
 This will list the DBs available on the write server.
 
-
-<Scribe />
 
 <Backup />
