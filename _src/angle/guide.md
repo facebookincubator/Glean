@@ -493,7 +493,7 @@ facts> C where C = example.Class _; !(example.Has { class_ = C, has = { method =
 Or we could find the maximum element in an array
 
 ```lang=angle
-facts> X where Values = [5,1,2,3]; X = Values[..]; !(Y = Values[..]; Y > X);
+facts> X where Values = [5,1,2,3]; X = Values[..]; !(Y = Values[..]; Y > X)
 { "id": 1091, "key": 5 }
 ```
 
