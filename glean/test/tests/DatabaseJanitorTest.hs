@@ -438,6 +438,7 @@ multiRetentionTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
                   { retention_required_properties =
                       HashMap.fromList [("bool","no")]
                   , retention_retain_at_least = Just 1
+                  , retention_keep_open = True
                   }
                 ])
               ]
@@ -448,6 +449,10 @@ multiRetentionTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   dbs <- listDBs env
   let repos = sort $ map (repo_hash . database_repo) dbs
   assertEqual "after" [ "0001", "0005", "0006" ] repos
+
+  -- 0005 should be open due to keep_open=True in the retention policy
+  closed <- atomically $ isDatabaseClosed env (Repo "test" "0005")
+  assertBool "open" (not closed)
 
 -- | If we want to restore only one type of DB with a retention
 -- policy, check that we don't restore additional instances of that DB

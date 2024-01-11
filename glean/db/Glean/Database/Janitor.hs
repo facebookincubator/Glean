@@ -283,10 +283,18 @@ runWithShards env myShards sm = do
   -- to avoid lag spikes. This will be the DB that clients will get
   -- by default unless they specify a particular DB instance.
   let
-      toOpen =
+      toOpen = uniqBy (comparing itemRepo) $
         [ item
         | (_, dbsByAge) <- byRepoName
         , item : _ <- [filter shouldOpen (NonEmpty.toList dbsByAge)]
+        ] <>
+        [ item
+        | (repoNm, dbs) <- byRepoName
+        , ServerConfig.Retention{retention_keep_open = True, ..} <-
+            NonEmpty.toList (repoRetention config_retention repoNm)
+        , item <- NonEmpty.toList dbs
+        , shouldOpen item
+        , hasProperties retention_required_properties item
         ]
 
       isComplete Complete{} = True
@@ -502,11 +510,6 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs = do
       filter (hasProperties retention_required_properties) $
       NonEmpty.toList dbs
 
-    hasProperties req Item{..} = all has (HashMap.toList req)
-      where
-      has (name,val) =
-        HashMap.lookup name (metaProperties itemMeta) == Just val
-
     -- whether to delete a DB according to the deletion policy
     delete =
       ifSet deleteIfOlder isOlderThan |||
@@ -526,6 +529,11 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs = do
 
   return $ uniqBy (comparing itemRepo) (atLeast ++ atMost)
 
+hasProperties :: HashMap.HashMap Text Text -> Item -> Bool
+hasProperties req Item{..} = all has (HashMap.toList req)
+  where
+  has (name,val) =
+    HashMap.lookup name (metaProperties itemMeta) == Just val
 
 data FetchBackups
   = ReusedPreviousBackups {
