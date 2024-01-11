@@ -213,7 +213,6 @@ newDB :: Repo -> STM DB
 newDB repo = DB repo
   <$> newTVar Closed
   <*> newTVar 0
-  <*> newTVar mempty
 
 acquireDB :: DB -> STM ()
 acquireDB db = modifyTVar' (dbUsers db) (+1)

@@ -112,7 +112,6 @@ asyncDeleteDatabase env@Env{..} repo = bracket
       case active of
         Just db -> do
           modifyTVar' envActive $ HashMap.delete repo
-          writeTVar (dbTailers db) mempty  -- this causes the tailers to stop
           deleteDB db
         Nothing -> do
           deleting <- HashMap.lookup repo <$> readTVar envDeleting
@@ -123,7 +122,6 @@ asyncDeleteDatabase env@Env{..} repo = bracket
                 db <- DB repo
                   <$> newTVar Closed
                   <*> newTVar 0
-                  <*> newTVar mempty
                 deleteDB db
             other -> do
               putTMVar todo Nothing

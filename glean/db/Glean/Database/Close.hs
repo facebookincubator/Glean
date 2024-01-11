@@ -14,7 +14,6 @@ module Glean.Database.Close (
   closeOpenDB,
 ) where
 
-import qualified Control.Concurrent.Async as Async
 import Control.Exception hiding(handle)
 import Control.Monad.Extra
 import qualified Data.HashMap.Strict as HashMap
@@ -37,12 +36,6 @@ import Glean.Util.Time
 closeDatabases :: Env -> IO ()
 closeDatabases env = do
   dbs <- readTVarIO $ envActive env
-  -- Cancel the tailer threads *before* we close the DBs, otherwise a
-  -- tailer thread may initiate a write which will open the DB again.
-  -- This is temporary until we have a better way of doing this.
-  forM_ dbs $ \db -> do
-    tailers <- readTVarIO (dbTailers db)
-    mapM_ (Async.cancel . tailerThread) tailers
   forM_ (HashMap.keys dbs) $ closeDatabase env
 
 isIdle :: (TimePoint -> Bool) -> DB -> OpenDB -> STM Bool

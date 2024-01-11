@@ -23,7 +23,6 @@ module Glean.Database.Work
 
 import Control.Applicative
 import Control.Concurrent (threadDelay)
-import qualified Control.Concurrent.Async as Async
 import Control.Monad
 import Control.Monad.Catch
 import Data.Default
@@ -39,7 +38,6 @@ import qualified Data.UUID as UUID
 import qualified Data.UUID.V4 as UUID
 import Data.Vector (Vector)
 import qualified Data.Vector as Vector
-import TextShow
 
 import Util.Control.Exception (tryAll)
 import Util.Defer
@@ -165,8 +163,6 @@ completenessFromFill
 completenessFromFill get_recipes repo mfill = Incomplete <$> case mfill of
   Just (KickOffFill_writeHandle handle) ->
     return $ DatabaseIncomplete_tasks $ tasksFromManual handle
-  Just (Thrift.KickOffFill_scribe writeFromScribe) ->
-    return $ DatabaseIncomplete_tasks $ tasksFromScribe writeFromScribe
   Just (Thrift.KickOffFill_recipes recipes) ->
     DatabaseIncomplete_tasks . tasksFromRecipes <$> get_recipes recipes
   Nothing ->
@@ -181,28 +177,6 @@ tasksFromRecipes = HashMap.fromList . fmap (fmap mkTask) . Map.toList
       { task_recipe = recipe
       , task_state = TaskState_waiting def
       }
-
-tasksFromScribe :: WriteFromScribe -> Tasks
-tasksFromScribe WriteFromScribe{..} = tasksFromRecipes $ Map.singleton "" $ def
-  { recipe_executor = Executor_External
-  , recipe_heartbeat = 0
-  , recipe_settings = Map.fromList $
-      [("handle", writeFromScribe_writeHandle)
-      ,("category", writeFromScribe_category)]
-      ++
-      (case writeFromScribe_bucket of
-        Nothing -> []
-        Just (PickScribeBucket_bucket bucket) -> [("bucket", showt bucket)])
-      ++
-      (case writeFromScribe_start of
-        Nothing -> []
-        Just (ScribeStart_start_time time) -> [("start_time", time)]
-        Just (ScribeStart_checkpoint c) -> [("checkpoint", c)])
-      ++
-      [("no_base64_binary", "true")
-        | maybe False sendJsonBatchOptions_no_base64_binary
-            writeFromScribe_options]
-  }
 
 tasksFromManual :: Handle -> Tasks
 tasksFromManual handle = tasksFromRecipes $ Map.singleton "" $ def
@@ -317,14 +291,7 @@ updateParcel env ParcelInfo{..} time state = do
           }
         _ -> meta
   real_meta <- case task_state of
-    TaskState_finished{} -> do
-      r <- lift $ lookupActiveDatabase env piRepo
-      forM_ r $ \DB{..} -> do
-        tailers <- lift $ readTVar dbTailers
-        forM_ (HashMap.lookup (parcelTask piParcel) tailers) $ \tailer -> do
-          lift $ writeTVar dbTailers
-            $! HashMap.delete (parcelTask piParcel) tailers
-          later $ Async.cancel $ tailerThread tailer
+    TaskState_finished{} ->
       scheduleTasks env piRepo new_meta
     _ -> return new_meta
   lift $ Catalog.writeMeta (envCatalog env) piRepo real_meta

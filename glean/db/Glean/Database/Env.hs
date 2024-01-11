@@ -120,8 +120,6 @@ initEnv evb envStorage envCatalog shardManager cfg
       <$> newTQueueIO
       <*> newTVarIO 0
 
-    envTailers <- newTVarIO HashMap.empty
-
     envSchemaUpdateSignal <- atomically newEmptyTMVar
 
     envCompleting <- newTVarIO HashMap.empty
@@ -136,7 +134,6 @@ initEnv evb envStorage envCatalog shardManager cfg
       , envDatabaseLogger = cfgDatabaseLogger cfg
       , envReadOnly = cfgReadOnly cfg
       , envMockWrites = cfgMockWrites cfg
-      , envTailerOpts = cfgTailerOpts cfg
       , envListener = cfgListener cfg
       , envGetCurrentTime = getCurrentTime
       , envUpdateSchema = cfgUpdateSchema cfg

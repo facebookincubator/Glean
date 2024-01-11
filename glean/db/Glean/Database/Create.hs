@@ -25,7 +25,6 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.UUID as Guid ( toText )
 import qualified Data.UUID.V4 as Guid ( nextRandom )
-import TextShow
 import Text.Printf
 
 #ifdef GLEAN_FACEBOOK
@@ -107,7 +106,6 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
           , serverProps
           , fbServerProps
           , guidProps
-          , scribeProperties kickOff_fill
           ]
         time = DBTimestamp
           { timestampCreated = creationTime
@@ -306,20 +304,6 @@ facebookServerProperties = do
 #else
   return HashMap.empty
 #endif
-
-scribeProperties :: Maybe Thrift.KickOffFill -> DatabaseProperties
-scribeProperties (Just (KickOffFill_scribe WriteFromScribe{..})) =
-  HashMap.fromList $
-    [ ("glean.scribe.category", writeFromScribe_category) ] ++
-    (case writeFromScribe_bucket of
-      Just (PickScribeBucket_bucket n) ->
-        [ ("glean.scribe.bucket", showt n) ]
-      _otherwise -> []) ++
-    (case writeFromScribe_start of
-      Just (ScribeStart_start_time t) ->
-        [ ("glean.scribe.start_time", showt t) ]
-      _otherwise -> [])
-scribeProperties _other = mempty
 
 updateProperties
   :: Env

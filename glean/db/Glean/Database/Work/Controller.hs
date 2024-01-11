@@ -18,7 +18,6 @@ import Control.Monad
 import Data.Char (isAlphaNum)
 import Data.Default
 import qualified Data.Map as Map
-import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Typeable (Typeable)
@@ -31,7 +30,6 @@ import Util.Control.Exception (handleAll)
 import Util.Defer
 import Util.STM
 
-import Glean.Database.Tailer
 import Glean.Database.Types
 import Glean.Database.Work.Queue
 import Glean.Recipes.Types
@@ -72,9 +70,7 @@ controller f ctx = f (getController $ ctxRecipe ctx) ctx
 getController :: Recipe -> Controller
 getController Recipe{..} = case recipe_executor of
   Executor_WorkQueue -> workQueueController
-  Executor_External
-    | Map.member "category" recipe_settings -> tailerController
-    | otherwise -> externalBinaryController
+  Executor_External -> externalBinaryController
   Executor_Manual -> manualController
   _ -> failController
 
@@ -95,28 +91,6 @@ workQueueController = Controller
               }
           _ -> return ()
   }
-
-tailerController :: Controller
-tailerController = Controller
-  { scheduleTask = \ctx -> do
-      let handle = fromMaybe ""
-            $ Map.lookup "handle"
-            $ recipe_settings
-            $ ctxRecipe ctx
-      start ctx mempty
-      return $ Vector.singleton $ ParcelState_running ParcelRunning
-        { parcelRunning_retries = 0
-        , parcelRunning_handle = handle
-        , parcelRunning_runner = "tailer"
-        , parcelRunning_progress = mempty
-        }
-  , resumeTask = \ctx parcels -> forM_ parcels $ \parcel -> case parcel of
-      ParcelState_running ParcelRunning{..} -> start ctx parcelRunning_progress
-      _ -> return ()
-  }
-  where
-    start Context{..} =
-      later . startTailer ctxEnv ctxRepo ctxTask (recipe_settings ctxRecipe)
 
 externalBinaryController :: Controller
 externalBinaryController = Controller

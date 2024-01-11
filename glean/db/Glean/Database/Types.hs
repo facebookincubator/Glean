@@ -9,7 +9,7 @@
 module Glean.Database.Types (
   Writing(..), OpenDB(..), DBState(..),
   Write(..), WriteContent(..),
-  Tailer(..), TailerKey, DB(..),
+  DB(..),
   Env(..), WriteQueues(..), WriteQueue(..), WriteJob(..),
   Derivation(..),
   EnableRecursion(..),
@@ -53,7 +53,6 @@ import Glean.RTS.Foreign.Subst (Subst)
 import Glean.RTS.Types (Fid(..))
 import qualified Glean.Recipes.Types as Recipes
 import qualified Glean.ServerConfig.Types as ServerConfig
-import qualified Glean.Tailer as Tailer
 import qualified Glean.Types as Thrift
 import Glean.Util.Metric (Point)
 import Glean.Util.Mutex
@@ -117,15 +116,6 @@ data DBState
     -- Currently closed
   | Closed
 
--- | An active tailer
-data Tailer = Tailer
-  { tailerRepo :: Thrift.Repo
-  , tailerTask :: Text
-  , tailerCategory :: Text
-  , tailerBucket :: Maybe Int
-  , tailerThread :: Async ()
-  }
-
 -- A known database
 data DB = DB
   { -- The repo the database refers to
@@ -136,9 +126,6 @@ data DB = DB
 
     -- Number of users
   , dbUsers :: TVar Int
-
-    -- Tailers associated with their tasks
-  , dbTailers :: TVar (HashMap Text Tailer)
   }
 
 -- | A Write in progress that we can query via pollBatch
@@ -186,9 +173,6 @@ data WriteQueues = WriteQueues
   { writeQueues :: TQueue (Thrift.Repo, WriteQueue)
   , writeQueuesSize :: TVar Int
   }
-
--- | Uniquely identifies a tailer by the repo name, category, and bucket
-type TailerKey = (Text, Text, Maybe Int)
 
 -- | Information about a derived stored predicate being derived
 data Derivation = Derivation
@@ -265,10 +249,6 @@ data Env = forall storage. Storage storage => Env
   , envWrites :: TVar (HashMap Text Write)
   , envDerivations :: TVar (HashMap (Thrift.Repo, PredicateId) Derivation)
   , envWriteQueues :: WriteQueues
-  , envTailerOpts :: Tailer.TailerOptions
-  , envTailers :: TVar (HashMap TailerKey Tailer)
-      -- ^ Tailers keyed on (repo_name, category). This is a temporary field
-      -- for killing duplicate tailers until we implement a better solution.
   , envListener :: Listener
       -- ^ A 'Listener' which might get notified about various events. This is
       -- for testing support only.

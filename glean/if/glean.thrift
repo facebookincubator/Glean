@@ -155,41 +155,8 @@ struct Task {
 
 typedef map<recipes.TaskName, Task> (hs.type = "HashMap") Tasks
 
-union ScribeStart {
-  1: string start_time;
-  // Time point to start reading (otherwise read all available data)
-
-  2: string checkpoint;
-// Checkpoint to start from
-} (hs.nonempty)
-
 struct SendJsonBatchOptions {
   1: bool no_base64_binary = false; // See UserQueryOptions
-}
-
-union PickScribeBucket {
-  1: i32 bucket;
-// use this specific bucket
-
-// This is a union type to allow for more options in the future: we
-// might have the server pick a bucket for us, for example.
-} (hs.nonempty)
-
-// How to populate a DB from a Scribe category
-struct WriteFromScribe {
-  1: WorkHandle writeHandle;
-  // The handle is used for finalizing the DB later via workFinished
-
-  2: string category;
-  // Scribe category to read from
-
-  3: optional ScribeStart start;
-  // Where to start from. If missing, use all the data in the bucket.
-
-  4: optional SendJsonBatchOptions options;
-
-  5: optional PickScribeBucket bucket;
-// how to choose a bucket; omit for no bucket
 }
 
 typedef map<string, string> (hs.type = "HashMap") DatabaseProperties
@@ -955,14 +922,12 @@ struct SendJsonBatchResponse {
 
 // How to fill a database
 union KickOffFill {
-  1: string recipes;
   // Use the recipe set with the given name
+  1: string recipes;
 
-  2: WorkHandle writeHandle;
   // Create a taskless DB which can be written to with the given handle
-
-  3: WriteFromScribe scribe;
-// Read from a scribe category to fill the database
+  2: WorkHandle writeHandle;
+// 3: deprecated
 }
 
 struct KickOff {

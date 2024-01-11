@@ -87,7 +87,6 @@ import Glean.Util.Some
 import Glean.Util.Trace (Listener)
 import Glean.Util.ThriftSource (ThriftSource)
 import qualified Glean.Util.ThriftSource as ThriftSource
-import qualified Glean.Tailer as Tailer
 
 data DataStore = DataStore
   { withDataStore
@@ -140,7 +139,6 @@ data Config = Config
   , cfgServerConfig :: ThriftSource ServerConfig.Config
   , cfgReadOnly :: Bool
   , cfgMockWrites :: Bool
-  , cfgTailerOpts :: Tailer.TailerOptions
   , cfgListener :: Listener
       -- ^ A 'Listener' which might get notified about various events related
       -- to databases. This is for testing support only.
@@ -180,7 +178,6 @@ instance Default Config where
     , cfgServerConfig = def
     , cfgReadOnly = False
     , cfgMockWrites = False
-    , cfgTailerOpts = def
     , cfgListener = mempty
     , cfgShardManager = \_ _ k -> k $ SomeShardManager noSharding
     , cfgServerLogger = Some NullGleanServerLogger
@@ -424,7 +421,6 @@ options = do
     pure def  -- default settings if no option given
   cfgReadOnly <- switch (long "db-read-only")
   cfgMockWrites <- switch (long "db-mock-writes")
-  cfgTailerOpts <- Tailer.options
   cfgEnableRecursion <- switch
     ( long "experimental-recursion"
     <> help "Experimental support for recursive predicates. For testing only"
