@@ -81,8 +81,6 @@ derived> example.Child _
 
 But we can create them automatically:
 
-(TODO: check this still works, do we need a `:derive` command now?)
-
 ```lang=angle
 derived> * example.Child _
 { "id": 1037, "key": { "parent": { "id": 1024 }, "child": { "id": 1025 } } }
