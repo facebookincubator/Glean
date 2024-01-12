@@ -200,7 +200,7 @@ data BuildSnapshot = BuildSnapshot
 isEmptySymbols :: Types.DocumentSymbolListXResult -> Bool
 isEmptySymbols Types.DocumentSymbolListXResult{..} =
     null documentSymbolListXResult_definitions &&
-    null documentSymbolListXResult_definitions
+    null documentSymbolListXResult_references
 
 data SnapshotError
  = SizeAboveThreshold { kb :: Int }
