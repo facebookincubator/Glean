@@ -136,12 +136,12 @@ compressParser = switch
 newtype SnapshotTier = SnapshotTier Text
 
 snapshotTierParser :: Parser SnapshotTier
-snapshotTierParser = SnapshotTier <$> (option auto (mconcat
-  [ long "snapshot-tier"
-  , help "snapshot tier"
-  , value "xdb.glass_snapshot_dev"
-  , showDefault
-  ]) :: Parser Text)
+snapshotTierParser = SnapshotTier <$> strOption
+  ( long "snapshot-tier"
+  <> help "snapshot tier"
+  <> value "xdb.glass_snapshot_dev"
+  <> showDefault
+  )
 
 gleanDBNameParser :: Parser (Maybe Glean.Repo)
 gleanDBNameParser =
