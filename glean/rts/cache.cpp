@@ -236,10 +236,10 @@ std::unique_ptr<FactIterator>LookupCache::Anchor::seekWithinSection(
 void LookupCache::insert(Fact::unique_ptr owned) {
   std::unique_lock<folly::SharedMutex> delete_write;
   Fact::intrusive_list dead;
-  performUpdate([&](Index& index, Storage& storage) {
-    insertOne(index, storage, std::move(owned), dead);
+  performUpdate([&](Index& index_2, Storage& storage_2) {
+    insertOne(index_2, storage_2, std::move(owned), dead);
     if (!dead.empty()) {
-      delete_write = std::unique_lock(index.delete_lock);
+      delete_write = std::unique_lock(index_2.delete_lock);
     }
   });
   // Perform the actual deletions after we've released all locks on the index
@@ -250,8 +250,8 @@ void LookupCache::insert(Fact::unique_ptr owned) {
 }
 
 void LookupCache::insertOne(
-    Index& index,
-    Storage& storage,
+    Index& index_2,
+    Storage& storage_2,
     Fact::unique_ptr owned,
     Fact::intrusive_list& dead) {
   const auto size = owned->size();
@@ -263,8 +263,8 @@ void LookupCache::insertOne(
   // check if we already have a fact with this id in the cache
   const Fact *existing = nullptr;
   {
-    auto o = index.ids.find(owned->id());
-    if (o != index.ids.end()) {
+    auto o = index_2.ids.find(owned->id());
+    if (o != index_2.ids.end()) {
       existing = *o;
     }
   }
@@ -274,13 +274,13 @@ void LookupCache::insertOne(
     return;
   }
 
-  if (existing || storage.factBytes() + size > options.capacity) {
+  if (existing || storage_2.factBytes() + size > options.capacity) {
     // Do deferred LRU operations if we're going to evict or replace. We need
     // to do this even when replacing because the hit buffers might reference
     // the fact we're going to delete.
     //
     // NOTE: drain is "lossy" but in this case, we're running under a
-    // write lock for the index so there will be no concurrent drainers
+    // write lock for the index_2 so there will be no concurrent drainers
     // and we'll have had a memory barrier before - so drain isn't
     // actually lossy here.
     //
@@ -289,7 +289,7 @@ void LookupCache::insertOne(
     // but we lose ordering across shards. It possible to fix this at the cost
     // of some performance but probably not worth doing.
     for (auto& t : touched) {
-      drain(storage, t);
+      drain(storage_2, t);
     }
 
     if (existing) {
@@ -298,31 +298,31 @@ void LookupCache::insertOne(
       } else {
         ++stats->values[Stats::factById_deletes];
       }
-      deleteFromIndex(index, existing);
+      deleteFromIndex(index_2, existing);
       // TODO: defer this, see comments in evict
-      auto fact = storage.release(existing);
+      auto fact = storage_2.release(existing);
       dead.push_back(*fact);
       // dead assumed ownership of the fact
       (void)fact.release();
     }
 
-    if (storage.factBytes() + size > options.capacity) {
+    if (storage_2.factBytes() + size > options.capacity) {
       // shrink cache to ~90% of capacity
       const auto wanted =
         options.capacity * 0.9 > size ? options.capacity * 0.9 - size : 0;
-      evict(index, storage, wanted, dead);
+      evict(index_2, storage_2, wanted, dead);
     }
   }
 
-  const auto fact = storage.push_back(std::move(owned));
+  const auto fact = storage_2.push_back(std::move(owned));
 
-  // For 'insert' (but not 'BulkStorage') we could unlock the storage here. It
+  // For 'insert' (but not 'BulkStorage') we could unlock the storage_2 here. It
   // doesn't matter, though, since nothing will really use it without getting a
-  // lock for index first.
+  // lock for index_2 first.
 
-  index.ids.insert(fact);
+  index_2.ids.insert(fact);
   if (fact->tag() != TYPE) {
-    index.keys.insert(fact);
+    index_2.keys.insert(fact);
   }
 }
 
