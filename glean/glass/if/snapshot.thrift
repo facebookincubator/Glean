@@ -9,6 +9,7 @@
 include "glean/glass/if/glass.thrift"
 
 namespace hs Glean
+namespace py3 glean
 
 // A precomputed DocumentSymbolListX query (query and result)
 struct DocumentSymbolListXQuery {
