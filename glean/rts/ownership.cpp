@@ -243,7 +243,7 @@ FOLLY_NOINLINE void completeOwnership(
     }
   };
 
-  auto processFact = [&, min_id, max_id](Fact::Ref fact) {
+  auto processFact = [&, min_id](Fact::Ref fact) {
     // `set == nullptr` means that the fact doesn't have an ownership set - we
     // might want to make that an error eventually?
     if (auto set = owner(fact.id)) {
