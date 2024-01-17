@@ -1006,6 +1006,7 @@ fetchSymbolsAndAttributes repoMapping latest req opts be snapshotbe mlang = do
     ((_,_,_), Just ErrorLogger {errorTy})
       -- assume it's a new file if no src.File fact
       | all isNoSrcFileFact errorTy
+      && not (requestOptions_exact_revision opts)
       -> do
         bestSnapshot <- getSnapshot snapshotbe repo file Nothing
         case bestSnapshot of
