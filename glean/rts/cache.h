@@ -188,7 +188,7 @@ private:
 
     // Only delete (as in free) facts while holding this lock exclusively. By
     // construction, it can only be acquired when holding a lock for the Index.
-    folly::SharedMutex delete_lock;
+    mutable folly::SharedMutex delete_lock;
   };
   using SyncIndex = folly::Synchronized<Index, folly::SharedMutex>;
   SyncIndex index; // index guarded by r/w lock
