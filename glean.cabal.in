@@ -198,15 +198,6 @@ library stubs
         mangle,
         template-haskell
 
-library tailer
-    import: fb-haskell, fb-cpp, deps
-    visibility: private
-    hs-source-dirs: glean/github
-    exposed-modules:
-        Glean.Tailer
-    build-depends:
-        glean:util
-
 library logger
     import: fb-haskell, fb-cpp, deps
     visibility: private
@@ -351,7 +342,6 @@ library util
         Glean.Impl.ThriftService
         Glean.Impl.ConfigProvider
         Glean.Impl.TestConfigProvider
-        Glean.Tailer.Types
         Glean.Util.Bisect
         Glean.Util.ConfigProvider
         Glean.Util.Cacher
@@ -471,7 +461,6 @@ library core
         glean:if-internal-hs,
         glean:rts,
         glean:stubs,
-        glean:tailer,
         glean:rocksdb,
 
 library db
@@ -513,7 +502,6 @@ library db
         Glean.Database.Storage
         Glean.Database.Storage.Memory
         Glean.Database.Storage.RocksDB
-        Glean.Database.Tailer
         Glean.Database.Trace
         Glean.Database.Types
         Glean.Database.Validate
@@ -562,7 +550,6 @@ library db
         glean:if-internal-hs,
         glean:rts,
         glean:stubs,
-        glean:tailer,
         glean:rocksdb,
 
 library client-hs
