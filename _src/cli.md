@@ -143,7 +143,7 @@ Maximum number of facts per page
 Fetch nested facts (slower)
 
 * `--limit FACTS`<br />
-Maximum number of facts to query
+Maximum number of facts to query (default: no limit)
 
 * `-o,--output FILE`<br />
 Output the facts to a file
