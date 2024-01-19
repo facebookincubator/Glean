@@ -355,6 +355,7 @@ changeSchemaTest = TestCase $ do
                 fakeSchemaKey (processOneSchema Map.empty)
             , cfgServerConfig = ThriftSource.value def
                 { ServerConfig.config_db_rocksdb_cache_mb = 0 }
+            , cfgExecutionMode = ExecutionModeServer
             }
 
         withDatabases evb dbConfig (realConfigAPI confApi) $ \env -> do

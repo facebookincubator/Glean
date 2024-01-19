@@ -43,7 +43,7 @@ import Manifold.Client
 import Glean.Util.Some
 #endif
 
-import Glean.Database.Config (Config(..))
+import Glean.Database.Config (Config(..), ExecutionMode (ExecutionModeServer))
 import Glean.Database.Env
 import Glean.Database.Types
 import qualified Glean.Handler as GleanHandler
@@ -68,6 +68,7 @@ main =
   withAvailableDBFilterViaSR evb $ \filterAvailableDBs ->
 #endif
   let dbCfg = (cfgDBConfig cfg0){
+        cfgExecutionMode = ExecutionModeServer,
         cfgShardManager = shardManagerConfig (cfgPort cfg)
 #if GLEAN_FACEBOOK
         , cfgServerLogger = Some (GleanServerFacebookLogger logger)

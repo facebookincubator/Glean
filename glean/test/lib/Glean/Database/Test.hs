@@ -115,6 +115,7 @@ withTestEnv settings action =
           , cfgSchemaSource = schemaSourceFiles
           , cfgServerConfig = ThriftSource.value def
               { ServerConfig.config_db_rocksdb_cache_mb = 0 }
+          , cfgExecutionMode = ExecutionModeServer
           }
         settings
 

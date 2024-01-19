@@ -13,6 +13,7 @@ module Glean.Database.Config (
   tmpDataStore,
   memoryDataStore,
   Config(..),
+  ExecutionMode(..),
   options,
   processSchema,
   processSchemaCached,
@@ -122,6 +123,11 @@ memoryDataStore = DataStore
   , dataStoreTag = "memory"
   }
 
+data ExecutionMode
+  = ExecutionModeBatch
+  | ExecutionModeServer
+  deriving (Eq, Ord, Show)
+
 data Config = Config
   { cfgDataStore :: DataStore
   , cfgSchemaSource :: ThriftSource SchemaIndex
@@ -159,6 +165,7 @@ data Config = Config
   , cfgFilterAvailableDBs :: [Repo] -> IO [Repo]
     -- ^ Filter out DBs not currently available in the server tier
   , cfgTracer :: Tracer GleanTrace
+  , cfgExecutionMode :: ExecutionMode
   }
 
 instance Show Config where
@@ -186,6 +193,7 @@ instance Default Config where
     , cfgEnableRecursion = False
     , cfgFilterAvailableDBs = return
     , cfgTracer = mempty
+    , cfgExecutionMode = ExecutionModeBatch
     }
 
 data SchemaIndex = SchemaIndex
@@ -435,6 +443,7 @@ options = do
     , cfgBackupBackends = cfgBackupBackends def
     , cfgFilterAvailableDBs = return
     , cfgTracer = mempty
+    , cfgExecutionMode = ExecutionModeBatch
     , .. }
   where
     recipesConfigThriftSource = option (eitherReader ThriftSource.parse)
