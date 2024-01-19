@@ -9,7 +9,7 @@
 {-# LANGUAGE NamedFieldPuns #-}
 module BackupTest (main) where
 
-import Control.Concurrent.STM
+import Util.STM
 import Control.Monad
 import Data.Default
 import qualified Data.HashSet as HashSet

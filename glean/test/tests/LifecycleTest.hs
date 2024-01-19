@@ -11,7 +11,7 @@ module LifecycleTest (main) where
 
 import Control.Concurrent.Async
 import Control.Concurrent.MVar
-import Control.Concurrent.STM
+import Util.STM
 import Control.Exception hiding (assert)
 import Control.Monad
 import Data.Default

@@ -8,7 +8,7 @@
 
 module WorkerTest (main) where
 
-import Control.Concurrent.STM (atomically)
+import Util.STM (atomically)
 import Control.Monad
 import Data.Default
 import Data.HashMap.Strict (HashMap)

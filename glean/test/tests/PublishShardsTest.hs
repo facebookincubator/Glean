@@ -9,7 +9,7 @@
 module PublishShardsTest (main) where
 
 import Control.Concurrent.Async
-import Control.Concurrent.STM
+import Util.STM
 import Data.Foldable (toList)
 import Data.Time
 import DatabaseJanitorTest (

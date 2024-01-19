@@ -9,7 +9,6 @@
 {-# LANGUAGE NamedFieldPuns #-}
 module Model.System(SystemState, modelState, readSystemState) where
 
-import Control.Concurrent.STM (atomically, readTVarIO)
 import Data.ByteString (ByteString)
 import Data.Functor.Identity (Identity (..))
 import Data.HashMap.Strict (HashMap)
@@ -26,6 +25,7 @@ import Glean.Internal.Types (Meta (..))
 import Glean.Types (Repo)
 import Model.Model ( Model(..), snapshotEntry )
 import ServiceData.GlobalStats (getCounters)
+import Util.STM (atomically, readTVarIO)
 
 data SystemState = SystemState
   { entries :: EntriesF (EntryF Identity)

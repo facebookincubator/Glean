@@ -26,7 +26,7 @@ module Glean.Database.Test
   , writeFactsIntoDB
   ) where
 
-import Control.Concurrent.STM
+import Util.STM
 import Data.Default
 import Data.Functor
 import Data.List (foldl')

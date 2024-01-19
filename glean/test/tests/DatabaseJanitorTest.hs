@@ -15,7 +15,7 @@ module DatabaseJanitorTest
   ) where
 
 import Control.Concurrent (threadDelay)
-import Control.Concurrent.STM
+import Util.STM
 import Control.Exception
 import Control.Monad
 import Data.Aeson

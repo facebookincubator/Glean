@@ -21,7 +21,7 @@ import Control.Concurrent
 import Control.Monad
 import Control.Concurrent.Async
 import qualified Data.HashMap.Strict as HashMap
-import Control.Concurrent.STM
+import Util.STM
 import System.IO.Temp (withSystemTempDirectory)
 import System.FilePath
 

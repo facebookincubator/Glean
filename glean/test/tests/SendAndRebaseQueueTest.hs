@@ -12,7 +12,7 @@ module SendAndRebaseQueueTest
   ( main
   ) where
 
-import Control.Concurrent.STM
+import Util.STM
 import Control.Exception
 import Control.Monad
 import Data.Default

@@ -18,7 +18,7 @@
 
 module Model.Model where
 
-import Control.Concurrent.STM (STM, readTVar)
+import Util.STM (STM, readTVar)
 import Data.Default (def)
 import Data.Functor.Identity (Identity (..))
 import Data.HashMap.Strict (HashMap)

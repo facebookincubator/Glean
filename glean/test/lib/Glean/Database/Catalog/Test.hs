@@ -14,7 +14,6 @@ module Glean.Database.Catalog.Test
   , checkConsistency
   ) where
 
-import Control.Concurrent.STM
 import Control.Exception hiding (assert)
 import Control.Monad
 import Data.Default
@@ -23,6 +22,8 @@ import Data.List ((\\))
 import Data.Proxy
 import qualified Data.Text as Text
 import Test.HUnit
+
+import Util.STM
 
 import Glean.Database.Catalog (Catalog)
 import qualified Glean.Database.Catalog as Catalog

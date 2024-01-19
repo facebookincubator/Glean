@@ -41,7 +41,7 @@
 module Model.Test (main) where
 
 import Control.Concurrent (newEmptyMVar, putMVar, takeMVar)
-import Control.Concurrent.STM (
+import Util.STM (
   atomically,
   modifyTVar,
   newTVarIO,

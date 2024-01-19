@@ -12,7 +12,7 @@ module Glean.Test.HUnit
   , assertThrowsType
   ) where
 
-import Control.Concurrent.STM
+import Util.STM
 import Control.Exception hiding(assert)
 import Data.Proxy
 import GHC.Stack (HasCallStack)
