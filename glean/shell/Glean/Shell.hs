@@ -982,7 +982,7 @@ runUserQuery prevStats SchemaQuery
           , Just info <- [schemaInfo]
           , Just ref <- [Map.lookup pid (Thrift.schemaInfo_predicateIds info)] ]
       | stats == FullStats
-      , Just stats <- [userQueryResults_stats]
+      , Just stats <- [finalStats]
       , Just m <- [Thrift.userQueryStats_facts_searched stats]
       ]
       ++
@@ -1000,7 +1000,7 @@ runUserQuery prevStats SchemaQuery
             , "Use :more to see more results"
             ]
       | isJust userQueryResults_continuation
-      , Just stats <- [userQueryResults_stats]
+      , Just stats <- [finalStats]
       ]
 
   if
