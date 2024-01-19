@@ -22,7 +22,6 @@ import qualified Control.Monad.Trans.State.Strict as State
 import qualified Data.ByteString.UTF8 as UTF8
 import Data.Char
 import Data.Default
-import Data.Functor
 import Data.Foldable (asum)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Int
@@ -529,7 +528,7 @@ doAngleStmt (Command name arg) = doCmd name arg
 doAngleStmt (FactRef fid) = userFact fid >> return False
 doAngleStmt (Pattern query) = do
   q <- fromAngleQuery query
-  runUserQuery Nothing q
+  runUserQuery q
   return False
 
 fromAngleQuery :: AngleQuery -> Eval SchemaQuery
@@ -654,7 +653,7 @@ moreCmd :: Eval ()
 moreCmd = do
   last_query <- lastSchemaQuery <$> getState
   case last_query of
-    Just q -> runUserQuery Nothing q
+    Just q -> runUserQuery q
     Nothing -> liftIO $ throwIO $ ErrorCall "no last query"
 
 reloadCmd :: Eval ()
@@ -751,7 +750,7 @@ countCmd str = do
       return ()
     Right query -> do
       q <- fromAngleQuery query
-      runUserQuery Nothing q { sqOmitResults = True, sqContinue = True }
+      runUserQuery q { sqOmitResults = True, sqContinue = True }
 
 statsCmd :: String -> Eval ()
 statsCmd "" = do
@@ -868,147 +867,155 @@ userFact fid = do
     JSON.Ok (value :: JSON.JSValue) ->
       output $ pretty pref <> line <> pretty value
 
-asBadQuery :: Thrift.QuerySyntax -> String -> Thrift.BadQuery -> BadQuery
-asBadQuery syntax query (Thrift.BadQuery err) =
-  if syntax == Thrift.QuerySyntax_ANGLE
-     then BadQueryAngle (Text.pack query) err
-     else BadQueryJSON err
+asBadQuery :: String -> Thrift.BadQuery -> BadQuery
+asBadQuery query (Thrift.BadQuery err) = BadQuery (Text.pack query) err
 
-runUserQuery :: Maybe Thrift.UserQueryStats -> SchemaQuery -> Eval ()
-runUserQuery prevStats SchemaQuery
+-- | Run a query, calling an accumulator function with each page of
+-- results.  The accumulator function returns a Bool to indicate
+-- whether to continue querying the next page or not.
+withQueryPages
+  :: forall s .
+     Thrift.UserQuery
+  -> s
+  -> (s -> Thrift.UserQueryResults -> Eval (s, Bool))
+  -> Eval s
+withQueryPages query s f = do
+  (s', results, continue) <- withRepo $ \repo -> withBackend $ \be -> do
+    results <- liftIO $ Glean.userQuery be repo query
+    (s', continue) <- f s results
+    return (s', results, continue)
+  case Thrift.userQueryResults_continuation results of
+    Just cont | continue ->
+      withQueryPages query {
+        Thrift.userQuery_options =
+          Just (fromMaybe def (Thrift.userQuery_options query)) {
+            Thrift.userQueryOptions_continuation = Just cont }} s' f
+    _otherwise -> return s'
+
+mkUserQuery :: SchemaQuery -> Eval Thrift.UserQuery
+mkUserQuery
+  SchemaQuery
     { sqPredicate = str
     , sqRecursive = exp
     , sqStored = stored
     , sqQuery = rest
     , sqCont = cont
-    , sqTransform = transform
     , sqSyntax = syntax
-    , sqOmitResults = omitResults
-    , sqContinue = continue } = do
+    , sqOmitResults = omitResults } = do
   let SourceRef pred maybeVer = parseRef (Text.pack str)
       (recursive, expandPreds) = expandResultsOpts exp
-  ShellState{..} <- getState
   schema_id <- getSchemaId
-  Thrift.UserQueryResults{..} <- withRepo $ \repo -> withBackend $ \be -> do
-    liftIO $ handle (throwIO . asBadQuery syntax rest) $ Glean.userQuery be repo
-      def { Thrift.userQuery_predicate = pred
-          , Thrift.userQuery_predicate_version = maybeVer
-          , Thrift.userQuery_query =
-            if syntax == Thrift.QuerySyntax_ANGLE then UTF8.fromString rest else
-            if all isSpace rest
-              then "{\"get\": {}}"
-              else "{\"key\":" <> UTF8.fromString rest <> "}"
-          , Thrift.userQuery_options = Just def
-             { Thrift.userQueryOptions_no_base64_binary = True
-             , Thrift.userQueryOptions_expand_results = True
-             , Thrift.userQueryOptions_recursive = recursive
-             , Thrift.userQueryOptions_max_results = Just limit
-             , Thrift.userQueryOptions_max_time_ms = timeout
-             , Thrift.userQueryOptions_continuation = cont
-             , Thrift.userQueryOptions_syntax = syntax
-             , Thrift.userQueryOptions_store_derived_facts = stored
-             , Thrift.userQueryOptions_collect_facts_searched =
-                 stats == FullStats
-             , Thrift.userQueryOptions_debug = debug
-             , Thrift.userQueryOptions_omit_results = omitResults
-             , Thrift.userQueryOptions_expand_predicates = expandPreds
-             }
-          -- When running locally with --enable-logging, logs are emitted
-          -- before the ThriftBackend has a chance to incude client_info in the
-          -- request.  This makes sure client_info will appear in the logs
-         , Thrift.userQuery_client_info = Just client_info
-          , Thrift.userQuery_schema_id = schema_id
-          }
-  when (not (null userQueryResults_diagnostics)) $ output $ vcat $
-    [ "*** " <> pretty diag | diag <- userQueryResults_diagnostics ]
-    ++
-    [ "" ]
+  ShellState{..} <- getState
+  return def {
+      Thrift.userQuery_predicate = pred
+    , Thrift.userQuery_predicate_version = maybeVer
+    , Thrift.userQuery_query = UTF8.fromString rest
+    , Thrift.userQuery_options = Just def
+        { Thrift.userQueryOptions_no_base64_binary = True
+        , Thrift.userQueryOptions_expand_results = True
+        , Thrift.userQueryOptions_recursive = recursive
+        , Thrift.userQueryOptions_max_results = Just limit
+        , Thrift.userQueryOptions_max_time_ms = timeout
+        , Thrift.userQueryOptions_continuation = cont
+        , Thrift.userQueryOptions_syntax = syntax
+        , Thrift.userQueryOptions_store_derived_facts = stored
+        , Thrift.userQueryOptions_collect_facts_searched =
+            stats == FullStats
+        , Thrift.userQueryOptions_debug = debug
+        , Thrift.userQueryOptions_omit_results = omitResults
+        , Thrift.userQueryOptions_expand_predicates = expandPreds
+        }
+     -- When running locally with --enable-logging, logs are emitted
+     -- before the ThriftBackend has a chance to incude client_info in the
+     -- request.  This makes sure client_info will appear in the logs
+    , Thrift.userQuery_client_info = Just client_info
+    , Thrift.userQuery_schema_id = schema_id
+    }
 
-  when (not (null userQueryResults_facts)) $ output $ vcat $
-    [ case JSON.decode (UTF8.toString fact) of
-          JSON.Error err -> pretty err
-          JSON.Ok (value :: JSON.JSValue) -> case transform of
-            Nothing -> pretty value
-            Just t -> case t value of
-              JSON.Error err -> pretty err
-              JSON.Ok transformed -> pretty transformed
-      | fact <- userQueryResults_facts
-    ]
+runUserQuery :: SchemaQuery -> Eval ()
+runUserQuery sQuery = do
+  ShellState{..} <- getState
+  query <- mkUserQuery sQuery
 
-  let nextQuery = userQueryResults_continuation <&>
-        \cont -> SchemaQuery
-          { sqPredicate = str
-          , sqRecursive = exp
-          , sqStored = stored
-          , sqQuery = rest
-          , sqCont = Just cont
-          , sqTransform = transform
-          , sqSyntax = syntax
-          , sqOmitResults = omitResults
-          , sqContinue = continue
-          }
+  C.handle (C.throwM . asBadQuery (sqQuery sQuery)) $ do
 
-  let
-    finalStats = case (prevStats, userQueryResults_stats) of
-      (Nothing, Just stats) -> Just stats
-      (Just prev, Just stats) -> Just (prev <> stats)
-      (Just stats, Nothing) ->
-        Just stats { Thrift.userQueryStats_result_count =
-          Thrift.userQueryStats_result_count stats +
-            fromIntegral (length userQueryResults_facts) }
-      (Nothing, Nothing) -> Nothing
+  (finalStats, finalResults) <- withQueryPages query (Nothing,def) $
+    \(prevStats,_) results@Thrift.UserQueryResults{..} -> do
 
-    finalOutput = output $ vcat $
+    when (not (null userQueryResults_diagnostics)) $ output $ vcat $
+      [ "*** " <> pretty diag | diag <- userQueryResults_diagnostics ]
+      ++
       [ "" ]
-      ++
-      [ case finalStats of
-          Nothing -> pretty (length userQueryResults_facts) <+> "results"
-          Just Thrift.UserQueryStats{..} ->
-            pretty
-              ( printf "%d results, %d facts, %.2fms, %ld bytes"
-                userQueryStats_result_count
-                userQueryStats_num_facts
-                (realToFrac userQueryStats_elapsed_ns / 1000000 :: Double)
-                userQueryStats_allocated_bytes
-              :: String ) <>
-            maybe mempty (\n -> "," <+> pretty n <+> "compiled bytes")
-              userQueryStats_bytecode_size
-      | stats == SummaryStats || stats == FullStats
-      ]
-      ++
-      [ vcat $ "Facts searched:" :
-          [ pretty (printf "%40s : %d" (show (pretty ref)) count :: String)
-          | (pid, count) <- sortOn (Down . snd) $ Map.toList m
-          , Just info <- [schemaInfo]
-          , Just ref <- [Map.lookup pid (Thrift.schemaInfo_predicateIds info)] ]
-      | stats == FullStats
-      , Just stats <- [finalStats]
-      , Just m <- [Thrift.userQueryStats_facts_searched stats]
-      ]
-      ++
-      [ vcat $ if Thrift.userQueryStats_result_count stats < fromIntegral limit
-          then
-              [ case timeout of
-                  Nothing -> "timeout (server-side time limit)"
-                  Just ms ->
-                    "timeout (currently " <> pretty ms <> "ms), " <>
-                    "use :timeout <ms> to change it"
-             , "Use :more to continue the query." ]
-          else
-            [ "results truncated (current limit " <> pretty limit <> ", " <>
-              "use :limit <n> to change it)"
-            , "Use :more to see more results"
-            ]
-      | isJust userQueryResults_continuation
-      , Just stats <- [finalStats]
+
+    when (not (null userQueryResults_facts)) $ output $ vcat $
+      [ case JSON.decode (UTF8.toString fact) of
+            JSON.Error err -> pretty err
+            JSON.Ok (value :: JSON.JSValue) -> case sqTransform sQuery of
+              Nothing -> pretty value
+              Just t -> case t value of
+                JSON.Error err -> pretty err
+                JSON.Ok transformed -> pretty transformed
+        | fact <- userQueryResults_facts
       ]
 
-  if
-    | Just q <- nextQuery, continue -> runUserQuery finalStats q
-    | otherwise -> do
-      finalOutput
-      Eval $ State.modify $ \s -> s { lastSchemaQuery = nextQuery }
+    let
+      stats
+        | Just s <- userQueryResults_stats = s
+        | otherwise = def { Thrift.userQueryStats_result_count =
+            fromIntegral (length userQueryResults_facts) }
 
+    return
+      ((Just (maybe stats (<> stats) prevStats), results),
+        sqContinue sQuery)
+
+  output $ vcat $
+     [ "" ]
+     ++
+     [ case finalStats of
+         Nothing -> mempty
+         Just Thrift.UserQueryStats{..} ->
+           pretty
+             ( printf "%d results, %d facts, %.2fms, %ld bytes"
+               userQueryStats_result_count
+               userQueryStats_num_facts
+               (realToFrac userQueryStats_elapsed_ns / 1000000 :: Double)
+               userQueryStats_allocated_bytes
+             :: String ) <>
+           maybe mempty (\n -> "," <+> pretty n <+> "compiled bytes")
+             userQueryStats_bytecode_size
+     | stats == SummaryStats || stats == FullStats
+     ]
+     ++
+     [ vcat $ "Facts searched:" :
+         [ pretty (printf "%40s : %d" (show (pretty ref)) count :: String)
+         | (pid, count) <- sortOn (Down . snd) $ Map.toList m
+         , Just info <- [schemaInfo]
+         , Just ref <- [Map.lookup pid (Thrift.schemaInfo_predicateIds info)] ]
+     | stats == FullStats
+     , Just stats <- [finalStats]
+     , Just m <- [Thrift.userQueryStats_facts_searched stats]
+     ]
+     ++
+     [ vcat $ if Thrift.userQueryStats_result_count stats < fromIntegral limit
+         then
+             [ case timeout of
+                 Nothing -> "timeout (server-side time limit)"
+                 Just ms ->
+                   "timeout (currently " <> pretty ms <> "ms), " <>
+                   "use :timeout <ms> to change it"
+            , "Use :more to continue the query." ]
+         else
+           [ "results truncated (current limit " <> pretty limit <> ", " <>
+             "use :limit <n> to change it)"
+           , "Use :more to see more results"
+           ]
+     | isJust (Thrift.userQueryResults_continuation finalResults)
+     , Just stats <- [finalStats]
+     ]
+
+  Eval $ State.modify $ \s -> s {
+    lastSchemaQuery = Just sQuery {
+      sqCont = Thrift.userQueryResults_continuation finalResults }}
 
 -- | A line from the user (or entry on the command line) may end in a backslash
 -- and be a 'Cont' continued line, otherwise it is a 'Whole' line, see 'endBS'

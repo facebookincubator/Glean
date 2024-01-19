@@ -28,17 +28,13 @@ import Glean.Angle.Types
 
 type Ann = Pretty.AnsiStyle
 
-data BadQuery
-  = BadQueryAngle { angleSource :: Text, angleError :: Text }
-  | BadQueryJSON Text
+data BadQuery = BadQuery { angleSource :: Text, angleError :: Text }
   deriving Show
 
 instance Exception BadQuery
 
 prettyBadQuery :: BadQuery -> Doc Ann
-prettyBadQuery = \case
-  BadQueryJSON err -> pretty err
-  BadQueryAngle source rawErr ->
+prettyBadQuery (BadQuery source rawErr) =
     case parseSrcSpan rawErr of
       Nothing -> pretty rawErr
       Just (span, err) -> prettyErrorAt span source err
