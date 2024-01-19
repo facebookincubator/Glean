@@ -56,7 +56,7 @@ instance Plugin QueryCommand where
       limitFacts <- optional $ option auto
         ( long "limit"
         <> metavar "FACTS"
-        <> help "maximum number of facts to query"
+        <> help "maximum number of facts to query (default: no limit)"
         )
       output <- optional $ strOption
         ( long "output"
