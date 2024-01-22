@@ -74,10 +74,10 @@ import Glean.Database.Config (
   Config (
     cfgDataStore,
     cfgSchemaSource,
-    cfgServerConfig, cfgExecutionMode
+    cfgServerConfig
   ),
   parseSchemaDir,
-  schemaSourceDir, ExecutionMode (ExecutionModeServer)
+  schemaSourceDir,
  )
 import Glean.Database.Data (storeSchema)
 import Glean.Database.Env (withDatabases)
@@ -211,7 +211,6 @@ dbConfig = do
         { cfgDataStore = mockedDataStore dataStore
         , cfgSchemaSource = ThriftSource.value schemaSources
         , cfgServerConfig = ThriftSource.value (serverConfig backupDir)
-        , cfgExecutionMode = ExecutionModeServer
         }
     , dataStore
     )

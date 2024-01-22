@@ -79,9 +79,8 @@ withDatabases evb cfg cfgapi act =
           server_config)
         closeEnv
         $ \env -> do
-            when (cfgExecutionMode cfg == ExecutionModeServer) $ do
-              resumeWork env
-              spawnThreads env
+            resumeWork env
+            spawnThreads env
             act env
 
 initEnv

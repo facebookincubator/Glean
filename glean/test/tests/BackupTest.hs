@@ -122,7 +122,6 @@ withTestEnv dbs init_server_cfg action evb cfgAPI backupdir = do
         , cfgReadOnly = False
         , cfgMockWrites = False
         , cfgListener = l
-        , cfgExecutionMode = ExecutionModeServer
         }
 
   withDatabases evb config cfgAPI $ \env -> do

@@ -249,7 +249,6 @@ dbConfig dbdir serverConfig = def
       -- opening will commit the schema instead of failing.
   , cfgMockWrites = False
   , cfgListener = mempty
-  , cfgExecutionMode = ExecutionModeServer
   }
 
 serverConfig :: FilePath -> ServerTypes.Config

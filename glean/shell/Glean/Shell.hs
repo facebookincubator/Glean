@@ -73,7 +73,7 @@ import Glean.Database.Schema.ComputeIds (
   emptyHashedSchema, HashedSchema(..), RefTargetId )
 import Glean.Database.Config (parseSchemaDir, SchemaIndex(..),
   ProcessedSchema(..))
-import qualified Glean.Database.Config as DB (Config(..), ExecutionMode (ExecutionModeServer))
+import qualified Glean.Database.Config as DB (Config(..))
 import Glean.Database.Storage (describe)
 import Glean.Database.Types (Env(..))
 import Glean.Indexer
@@ -1305,9 +1305,7 @@ setupLocalSchema service = do
   case service of
     Remote{} -> return (service, Nothing)
     Local dbConfig logging -> case DB.cfgSchemaDir dbConfig of
-      Nothing -> do
-        let dbConfig' = dbConfig { DB.cfgExecutionMode = DB.ExecutionModeServer }
-        return (Local dbConfig' logging, Nothing)
+      Nothing -> return (service, Nothing)
       Just dir -> do
         schema <- parseSchemaDir dir
           `catch` \(e :: ErrorCall) -> do
@@ -1360,8 +1358,7 @@ setupLocalSchema service = do
           -- DB is writable.
           dbConfig' = dbConfig {
             DB.cfgSchemaSource = schemaTS,
-            DB.cfgUpdateSchema = False,
-            DB.cfgExecutionMode = DB.ExecutionModeServer
+            DB.cfgUpdateSchema = False
           }
 
         return
