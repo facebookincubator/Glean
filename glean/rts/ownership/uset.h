@@ -94,7 +94,7 @@ struct Uset {
    */
   UsetId id = INVALID_USET;
 
-  bool promoted() const { return id != INVALID_USET; };
+  bool promoted() const { return id != INVALID_USET; }
 
   /**
    * Generic pointer used temporarily for a variety of things - it is much
