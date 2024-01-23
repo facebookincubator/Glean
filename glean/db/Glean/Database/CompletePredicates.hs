@@ -102,36 +102,16 @@ completeAxiomPredicates env@Env{..} repo = do
     setComplete = void $ atomically $
       Catalog.modifyMeta envCatalog repo $ \meta ->
         return meta { metaAxiomComplete = True }
-  mask_ $ do
-    -- speculatively spawn a thread to do the completion, we'll cancel
-    -- this if we don't need it. This is so that we can atomically
-    -- start the job and update the Env state together.
-    tmvar <- newEmptyTMVarIO
-    async <- Warden.spawn envWarden $
-      atomically (takeTMVar tmvar) >> doCompletion
-    join $ immediately $ do
-      meta <- now $ Catalog.readMeta envCatalog repo
-      if
-        | metaAxiomComplete meta -> do
-          later $ cancel async -- already done
-          return (return CompletePredicatesResponse{})
-        | Broken b <- metaCompleteness meta -> do
-          later $ cancel async
-          now $ throwSTM $ Exception $ databaseBroken_reason b
-        | envReadOnly -> do
-          later $ cancel async
-          now $ throwSTM $ Exception "DB is read-only"
-        | otherwise -> do
-          completing <- now $ readTVar envCompleting
-          case HashMap.lookup repo completing of
-            Just existingAsync -> do  -- in progress
-              later $ cancel async
-              return $ waitFor existingAsync CompletePredicatesResponse{}
-            Nothing -> now $ do  -- start async completion
-              void $ tryPutTMVar tmvar ()
-              modifyTVar envCompleting (HashMap.insert repo async)
-              return $ waitFor async CompletePredicatesResponse{}
 
+    isInProgress = do
+      completing <- now $ readTVar envCompleting
+      return (HashMap.lookup repo completing)
+
+    storeComputation async =
+      modifyTVar envCompleting (HashMap.insert repo async)
+
+  scheduleCompletion
+    env repo SkipIfComplete doCompletion isInProgress storeComputation
 
 -- | Propagate ownership information for an externally derived predicate.
 syncCompleteDerivedPredicate :: Env -> Repo -> Pid -> IO ()
@@ -163,6 +143,7 @@ completeDerivedPredicate
 completeDerivedPredicate env@Env{..} repo pred = do
   details <- withOpenDatabase env repo $ \odb ->
     predicateDetails (odbSchema odb) pred
+  completing <- readTVarIO envCompletingDerived
   let
       doCompletion = do -- we are masked in here
         r <- tryAll $
@@ -173,7 +154,42 @@ completeDerivedPredicate env@Env{..} repo pred = do
             throwIO e
           Right{} -> return ()
 
-  mask_ $ do
+      derivations = HashMap.lookupDefault mempty repo completing
+
+      predId = predicateId details
+
+      isInProgress = do
+        return (HashMap.lookup predId derivations)
+
+      storeComputation async =
+        modifyTVar envCompletingDerived $
+          HashMap.insert repo $
+          HashMap.insert predId async derivations
+
+  scheduleCompletion
+    env repo FailIfNotComplete doCompletion isInProgress storeComputation
+  where
+  predicateDetails schema pred =
+    case lookupPredicateSourceRef (convertRef pred) LatestSchemaAll schema of
+      Right details -> return details
+      Left err ->
+        throwIO $ Thrift.Exception $ "completeDerivedPredicate: " <> err
+
+data OnAxiomComplete
+  = SkipIfComplete
+  | FailIfNotComplete
+
+scheduleCompletion
+  :: Env
+  -> Repo
+  -> OnAxiomComplete
+  -> IO ()
+  -> Defer IO STM (Maybe (Async ()))
+  -> (Async () -> STM ())
+  -> IO CompletePredicatesResponse
+scheduleCompletion Env{..} repo onAxiomComplete
+  doCompletion isInProgress storeComputation = do
+    mask_ $ do
     -- speculatively spawn a thread to do the completion, we'll cancel
     -- this if we don't need it. This is so that we can atomically
     -- start the job and update the Env state together.
@@ -183,7 +199,10 @@ completeDerivedPredicate env@Env{..} repo pred = do
     join $ immediately $ do
       meta <- now $ Catalog.readMeta envCatalog repo
       if
-        | not $ metaAxiomComplete meta -> do
+        | SkipIfComplete <- onAxiomComplete, metaAxiomComplete meta -> do
+          later $ cancel async -- already done
+          return (return CompletePredicatesResponse{})
+        | FailIfNotComplete <- onAxiomComplete, not $ metaAxiomComplete meta ->
           now $ throwSTM $ Thrift.Exception "DB is not complete."
         | Broken b <- metaCompleteness meta -> do
           later $ cancel async
@@ -192,25 +211,15 @@ completeDerivedPredicate env@Env{..} repo pred = do
           later $ cancel async
           now $ throwSTM $ Exception "DB is read-only"
         | otherwise -> do
-          completing <- now $ readTVar envCompletingDerived
-          let derivations = HashMap.lookupDefault mempty repo completing
-              predId = predicateId details
-          case HashMap.lookup predId derivations of
-            Just existingAsync -> do -- in progress
+          inProgress <- isInProgress
+          case inProgress of
+            Just existingAsync -> do  -- in progress
               later $ cancel async
               return $ waitFor existingAsync CompletePredicatesResponse{}
             Nothing -> now $ do  -- start async completion
               void $ tryPutTMVar tmvar ()
-              modifyTVar envCompletingDerived $
-                HashMap.insert repo $
-                HashMap.insert predId async derivations
+              storeComputation async
               return $ waitFor async CompletePredicatesResponse{}
-  where
-  predicateDetails schema pred =
-    case lookupPredicateSourceRef (convertRef pred) LatestSchemaAll schema of
-      Right details -> return details
-      Left err ->
-        throwIO $ Thrift.Exception $ "completeDerivedPredicate: " <> err
 
 -- If a synchronous exception is thrown during completion, this is
 -- not recoverable, so mark the DB as broken. The exception is also
