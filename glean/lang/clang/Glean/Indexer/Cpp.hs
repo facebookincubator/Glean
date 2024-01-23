@@ -15,6 +15,7 @@ import Control.Concurrent (threadDelay)
 import Control.Concurrent.Async
 import Control.Exception
 import Control.Monad
+import qualified Data.ByteString as BS
 import Data.Proxy
 import Options.Applicative
 import qualified System.Console.ANSI as ANSI
@@ -37,16 +38,15 @@ import qualified Thrift.Server.CppServer as ThriftServer
 import qualified Thrift.Server.HTTP as ThriftServer
 #endif
 
-import Glean (sendBatch, clientConfig_serv, showRepo)
+import Glean (sendBatch, clientConfig_serv, showRepo, completePredicates, CompletePredicates (CompletePredicates_axiom))
 import Glean.Remote (thriftBackendClientConfig)
 import Glean.Indexer
 import Glean.LocalOrRemote ( BackendKind(..),
   LocalOrRemote(..), serializeInventory )
 import Glean.Util.Service
 import qualified Glean.Interprocess.Worklist as Worklist
-
-import qualified Data.ByteString as BS
 import qualified Glean.Handler as GleanHandler
+import Glean.Types (CompleteAxiomPredicates(CompleteAxiomPredicates))
 
 data Clang = Clang
   { clangIndexBin     :: Maybe FilePath -- ^ path to @clang-index@ binary
@@ -114,7 +114,9 @@ indexerWith deriveToo = Indexer {
     writeToDB backend repo indexerData
 
     -- deriving
-    when deriveToo $
+    when deriveToo $ do
+      completePredicates backend repo $
+        CompletePredicates_axiom CompleteAxiomPredicates
       derive clangVerbose clangDeriveBin backend repo
   }
 
