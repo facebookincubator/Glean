@@ -7,6 +7,22 @@
           "decl": {
             "container": {
               "class_": {
+                "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
                 "key": {
                   "name": {
                     "key": {
@@ -48,6 +64,22 @@
           "decl": {
             "container": {
               "class_": {
+                "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
                 "key": {
                   "name": {
                     "key": {
@@ -56,6 +88,22 @@
                     }
                   }
                 }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "Pilot" } } } }
               }
             }
           }
@@ -152,6 +200,24 @@
               "class_": {
                 "key": {
                   "name": { "key": { "name": { "key": "SuperClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SuperEngine" } } }
                 }
               }
             }
@@ -286,6 +352,38 @@
           "decl": {
             "container": {
               "interface_": {
+                "key": { "name": { "key": { "name": { "key": "CoolStuff" } } } }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": { "name": { "key": { "name": { "key": "Fliers" } } } }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
                 "key": {
                   "name": { "key": { "name": { "key": "IAInterface" } } }
                 }
@@ -322,9 +420,41 @@
           "decl": {
             "container": {
               "interface_": {
+                "key": { "name": { "key": { "name": { "key": "Jet" } } } }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
                 "key": {
                   "name": { "key": { "name": { "key": "SourceInterface" } } }
                 }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "trait": {
+                "key": { "name": { "key": { "name": { "key": "Plane" } } } }
               }
             }
           }
@@ -616,11 +746,80 @@
           "decl": {
             "method": {
               "key": {
+                "name": { "key": "closeDoors" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Machine" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
                 "name": { "key": "flatten" },
                 "container": {
                   "class_": {
                     "key": {
                       "name": { "key": { "name": { "key": "FancyTypes" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "fly" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "AirBus" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "fly" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Fliers" } } }
                     }
                   }
                 }
@@ -721,6 +920,29 @@
                   "class_": {
                     "key": {
                       "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "openDoors" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Machine" } } }
                     }
                   }
                 }
@@ -962,6 +1184,27 @@
                     "key": {
                       "name": { "key": { "name": { "key": "SourceTrait" } } }
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "annotations": { "hack": { "attributes": [ ] } }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "takeOff" },
+                "container": {
+                  "trait": {
+                    "key": { "name": { "key": { "name": { "key": "Plane" } } } }
                   }
                 }
               }

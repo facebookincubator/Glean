@@ -7,6 +7,39 @@
           "decl": {
             "container": {
               "class_": {
+                "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "fly" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "AirBus" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
                 "key": {
                   "name": {
                     "key": {
@@ -70,6 +103,72 @@
                   "class_": {
                     "key": {
                       "name": { "key": { "name": { "key": "FancyTypes" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "closeDoors" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Machine" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "openDoors" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Machine" } } }
                     }
                   }
                 }
@@ -1138,6 +1237,39 @@
           "decl": {
             "container": {
               "interface_": {
+                "key": { "name": { "key": { "name": { "key": "Fliers" } } } }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "fly" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Fliers" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
                 "key": {
                   "name": { "key": { "name": { "key": "SourceInterface" } } }
                 }
@@ -1233,6 +1365,37 @@
                         "key": { "name": { "key": "SourceInterface" } }
                       }
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hack": {
+          "decl": {
+            "container": {
+              "trait": {
+                "key": { "name": { "key": { "name": { "key": "Plane" } } } }
+              }
+            }
+          }
+        }
+      },
+      "child": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "takeOff" },
+                "container": {
+                  "trait": {
+                    "key": { "name": { "key": { "name": { "key": "Plane" } } } }
                   }
                 }
               }

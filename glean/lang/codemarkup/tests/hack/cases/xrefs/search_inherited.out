@@ -6,6 +6,94 @@
         "decl": {
           "container": {
             "class_": {
+              "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+            }
+          }
+        }
+      },
+      "parent": {
+        "decl": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "decl": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+            }
+          }
+        }
+      },
+      "parent": {
+        "decl": {
+          "container": {
+            "interface_": {
+              "key": { "name": { "key": { "name": { "key": "CoolStuff" } } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "decl": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+            }
+          }
+        }
+      },
+      "parent": {
+        "decl": {
+          "container": {
+            "interface_": {
+              "key": { "name": { "key": { "name": { "key": "Fliers" } } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "decl": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+            }
+          }
+        }
+      },
+      "parent": {
+        "decl": {
+          "container": {
+            "trait": {
+              "key": { "name": { "key": { "name": { "key": "Plane" } } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "decl": {
+          "container": {
+            "class_": {
               "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
             }
           }

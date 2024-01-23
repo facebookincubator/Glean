@@ -7,6 +7,33 @@
           "decl": {
             "container": {
               "class_": {
+                "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
                 "key": {
                   "name": {
                     "key": {
@@ -70,6 +97,33 @@
           "decl": {
             "container": {
               "class_": {
+                "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": true,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
                 "key": {
                   "name": {
                     "key": {
@@ -78,6 +132,33 @@
                     }
                   }
                 }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "Pilot" } } } }
               }
             }
           }
@@ -218,6 +299,35 @@
               "class_": {
                 "key": {
                   "name": { "key": { "name": { "key": "SuperClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SuperEngine" } } }
                 }
               }
             }
@@ -600,6 +710,40 @@
           "decl": {
             "method": {
               "key": {
+                "name": { "key": "closeDoors" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Machine" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
                 "name": { "key": "flatten" },
                 "container": {
                   "class_": {
@@ -615,6 +759,74 @@
       },
       "modifiers": {
         "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "fly" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "AirBus" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "fly" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Fliers" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": true,
         "isFinal": false,
         "isAsync": false,
         "isStatic": false,
@@ -756,6 +968,40 @@
         "isFinal": true,
         "isAsync": true,
         "isStatic": true,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "openDoors" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Machine" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
         "isReadonly": false,
         "isConst": false,
         "isMutable": false,
@@ -1088,6 +1334,38 @@
                     "key": {
                       "name": { "key": { "name": { "key": "SourceTrait" } } }
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "takeOff" },
+                "container": {
+                  "trait": {
+                    "key": { "name": { "key": { "name": { "key": "Plane" } } } }
                   }
                 }
               }

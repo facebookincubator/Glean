@@ -55,6 +55,23 @@
           "decl": {
             "container": {
               "class_": {
+                "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 605, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
                 "key": {
                   "name": { "key": { "name": { "key": "FancyTypes" } } }
                 }
@@ -65,6 +82,57 @@
       },
       "file": { "key": "www/SourceClass.php" },
       "span": { "start": 1237, "length": 10 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 551, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 784, "length": 7 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 927, "length": 7 }
     }
   },
   {
@@ -208,6 +276,25 @@
             "container": {
               "class_": {
                 "key": {
+                  "name": { "key": { "name": { "key": "SuperEngine" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 954, "length": 11 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
                   "name": { "key": { "name": { "key": "TestAnnotation" } } }
                 }
               }
@@ -284,6 +371,74 @@
           "decl": {
             "container": {
               "interface_": {
+                "key": { "name": { "key": { "name": { "key": "CoolStuff" } } } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 634, "length": 9 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": { "name": { "key": { "name": { "key": "CoolStuff" } } } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 811, "length": 9 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": { "name": { "key": { "name": { "key": "Fliers" } } } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 581, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": { "name": { "key": { "name": { "key": "Fliers" } } } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 803, "length": 6 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
                 "key": {
                   "name": { "key": { "name": { "key": "IAInterface" } } }
                 }
@@ -332,6 +487,23 @@
       },
       "file": { "key": "www/RefClass.php" },
       "span": { "start": 272, "length": 15 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "container": {
+              "trait": {
+                "key": { "name": { "key": { "name": { "key": "Plane" } } } }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 829, "length": 5 }
     }
   },
   {
@@ -567,6 +739,78 @@
           "decl": {
             "method": {
               "key": {
+                "name": { "key": "closeDoors" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Machine" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 717, "length": 10 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "fly" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "AirBus" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 749, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "fly" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Fliers" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 749, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
                 "name": { "key": "foo" },
                 "container": {
                   "class_": {
@@ -582,6 +826,30 @@
       },
       "file": { "key": "www/RefClass.php" },
       "span": { "start": 846, "length": 3 }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "openDoors" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Machine" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 693, "length": 9 }
     }
   },
   {

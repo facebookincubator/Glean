@@ -773,6 +773,372 @@
   },
   {
     "key": {
+      "file": { "key": "www/Require.php" },
+      "xref": {
+        "target": {
+          "name": "AirBus",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 769, "length": 6 } }
+        },
+        "source": { "span": { "start": 605, "length": 6 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "xref": {
+        "target": {
+          "name": "CoolStuff",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 451, "length": 9 } }
+        },
+        "source": { "span": { "start": 634, "length": 9 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": { "name": { "key": { "name": { "key": "CoolStuff" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "xref": {
+        "target": {
+          "name": "CoolStuff",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 451, "length": 9 } }
+        },
+        "source": { "span": { "start": 811, "length": 9 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": { "name": { "key": { "name": { "key": "CoolStuff" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "xref": {
+        "target": {
+          "name": "Fliers",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 476, "length": 6 } }
+        },
+        "source": { "span": { "start": 581, "length": 6 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": { "name": { "key": { "name": { "key": "Fliers" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "xref": {
+        "target": {
+          "name": "Fliers",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 476, "length": 6 } }
+        },
+        "source": { "span": { "start": 803, "length": 6 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": { "name": { "key": { "name": { "key": "Fliers" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "xref": {
+        "target": {
+          "name": "Machine",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 279, "length": 7 } }
+        },
+        "source": { "span": { "start": 551, "length": 7 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "xref": {
+        "target": {
+          "name": "Machine",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 279, "length": 7 } }
+        },
+        "source": { "span": { "start": 784, "length": 7 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "xref": {
+        "target": {
+          "name": "Machine",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 279, "length": 7 } }
+        },
+        "source": { "span": { "start": 927, "length": 7 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "xref": {
+        "target": {
+          "name": "Plane",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 525, "length": 5 } }
+        },
+        "source": { "span": { "start": 829, "length": 5 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "trait": {
+                "key": { "name": { "key": { "name": { "key": "Plane" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "xref": {
+        "target": {
+          "name": "SuperEngine",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 407, "length": 11 } }
+        },
+        "source": { "span": { "start": 954, "length": 11 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SuperEngine" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "xref": {
+        "target": {
+          "name": "closeDoors",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 361, "length": 10 } }
+        },
+        "source": { "span": { "start": 717, "length": 10 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "closeDoors" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Machine" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "xref": {
+        "target": {
+          "name": "fly",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 503, "length": 3 } }
+        },
+        "source": { "span": { "start": 749, "length": 3 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "fly" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Fliers" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "xref": {
+        "target": {
+          "name": "fly",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 855, "length": 3 } }
+        },
+        "source": { "span": { "start": 749, "length": 3 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "fly" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "AirBus" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "xref": {
+        "target": {
+          "name": "openDoors",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 307, "length": 9 } }
+        },
+        "source": { "span": { "start": 693, "length": 9 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "openDoors" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Machine" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "file": { "key": "www/SourceClass.php" },
       "xref": {
         "target": {

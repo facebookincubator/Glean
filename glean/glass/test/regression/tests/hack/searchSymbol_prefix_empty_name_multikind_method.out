@@ -7,6 +7,36 @@
                 "context": {
                     "qname": {
                         "container": "",
+                        "localName": "AirBus"
+                    },
+                    "symbol": "test/php/AirBus"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 52,
+                        "lineEnd": 54
+                    },
+                    "repository": "test"
+                },
+                "name": "fly",
+                "qname": {
+                    "container": "AirBus",
+                    "localName": "fly"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/AirBus/fly"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
                         "localName": "FancyTypes"
                     },
                     "symbol": "test/php/FancyTypes"
@@ -32,6 +62,96 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/FancyTypes/flatten"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Fliers"
+                    },
+                    "symbol": "test/php/Fliers"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 31,
+                        "lineBegin": 33,
+                        "lineEnd": 33
+                    },
+                    "repository": "test"
+                },
+                "name": "fly",
+                "qname": {
+                    "container": "Fliers",
+                    "localName": "fly"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Fliers/fly"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Machine"
+                    },
+                    "symbol": "test/php/Machine"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 18,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "closeDoors",
+                "qname": {
+                    "container": "Machine",
+                    "localName": "closeDoors"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Machine/closeDoors"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Machine"
+                    },
+                    "symbol": "test/php/Machine"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": "openDoors",
+                "qname": {
+                    "container": "Machine",
+                    "localName": "openDoors"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Machine/openDoors"
             },
             {
                 "context": {
@@ -92,6 +212,36 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/NS/NamespaceClass/class_function"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Plane"
+                    },
+                    "symbol": "test/php/Plane"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 42,
+                        "lineEnd": 46
+                    },
+                    "repository": "test"
+                },
+                "name": "takeOff",
+                "qname": {
+                    "container": "Plane",
+                    "localName": "takeOff"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Plane/takeOff"
             },
             {
                 "context": {

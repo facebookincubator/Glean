@@ -217,6 +217,117 @@
   },
   {
     "key": {
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 686, "length": 16 },
+      "arguments": [ ],
+      "callee_xref": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "openDoors" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Machine" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "dispatch_arg": { "span": { "start": 686, "length": 5 } },
+      "receiver_type": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "Plane" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 710, "length": 17 },
+      "arguments": [ ],
+      "callee_xref": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "closeDoors" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Machine" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "dispatch_arg": { "span": { "start": 710, "length": 5 } },
+      "receiver_type": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "Plane" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/Require.php" },
+      "span": { "start": 742, "length": 10 },
+      "arguments": [ ],
+      "callee_xref": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "fly" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "AirBus" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "dispatch_arg": { "span": { "start": 742, "length": 5 } },
+      "receiver_type": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "Plane" } } } }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "file": { "key": "www/SourceClass.php" },
       "span": { "start": 451, "length": 5 },
       "arguments": [ ],

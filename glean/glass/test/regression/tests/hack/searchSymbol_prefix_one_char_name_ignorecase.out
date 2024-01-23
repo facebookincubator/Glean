@@ -322,6 +322,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/SuperClass/superAdd"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 23,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "SuperEngine",
+                "qname": {
+                    "container": "",
+                    "localName": "SuperEngine"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SuperEngine"
             }
         ]
     }

@@ -9,6 +9,48 @@
             "decl": {
               "container": {
                 "class_": {
+                  "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Machine",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 264, "length": 135 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "AirBus",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 763, "length": 128 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 0,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
                   "key": {
                     "name": { "key": { "name": { "key": "SourceClass" } } }
                   }
@@ -148,6 +190,92 @@
               "container": {
                 "interface_": {
                   "key": {
+                    "name": { "key": { "name": { "key": "CoolStuff" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "CoolStuff",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 441, "length": 23 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "AirBus",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 763, "length": 128 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 0,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "interface_": {
+                  "key": { "name": { "key": { "name": { "key": "Fliers" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Fliers",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 466, "length": 51 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "AirBus",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 763, "length": 128 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 0,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "interface_": {
+                  "key": {
                     "name": { "key": { "name": { "key": "SourceInterface" } } }
                   }
                 }
@@ -179,6 +307,48 @@
           "name": "RefClass",
           "file": { "key": "www/RefClass.php" },
           "location": { "span": { "start": 226, "length": 785 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 0,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "trait": {
+                  "key": { "name": { "key": { "name": { "key": "Plane" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Plane",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 519, "length": 242 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "AirBus",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 763, "length": 128 } }
         }
       },
       "style": 0

@@ -522,6 +522,54 @@
                 },
                 "sym_other_locations": [],
                 "type_xrefs": []
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 23,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "SuperEngine"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/SuperEngine",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 23,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
             }
         ],
         "symbols": [
@@ -754,6 +802,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/SuperClass"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 23,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "SuperEngine",
+                "qname": {
+                    "container": "",
+                    "localName": "SuperEngine"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SuperEngine"
             }
         ]
     }

@@ -7,6 +7,52 @@
                 "kind": 7,
                 "language": 3,
                 "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 49,
+                        "lineEnd": 55
+                    },
+                    "repository": "test"
+                },
+                "name": "AirBus",
+                "qname": {
+                    "container": "",
+                    "localName": "AirBus"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/AirBus"
+            },
+            {
+                "kind": 13,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 29,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "name": "CoolStuff",
+                "qname": {
+                    "container": "",
+                    "localName": "CoolStuff"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/CoolStuff"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
                     "filepath": "www/SourceClass.php",
                     "range": {
                         "columnBegin": 1,
@@ -25,6 +71,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/FancyTypes"
+            },
+            {
+                "kind": 13,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 32,
+                        "lineEnd": 34
+                    },
+                    "repository": "test"
+                },
+                "name": "Fliers",
+                "qname": {
+                    "container": "",
+                    "localName": "Fliers"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Fliers"
             },
             {
                 "kind": 13,
@@ -103,6 +172,52 @@
                 "symbol": "test/php/InterfaceThis"
             },
             {
+                "kind": 13,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 57,
+                        "lineEnd": 60
+                    },
+                    "repository": "test"
+                },
+                "name": "Jet",
+                "qname": {
+                    "container": "",
+                    "localName": "Jet"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Jet"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 14,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": "Machine",
+                "qname": {
+                    "container": "",
+                    "localName": "Machine"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Machine"
+            },
+            {
                 "kind": 7,
                 "language": 3,
                 "location": {
@@ -147,6 +262,52 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/NS/NamespaceClass"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 26,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": "Pilot",
+                "qname": {
+                    "container": "",
+                    "localName": "Pilot"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Pilot"
+            },
+            {
+                "kind": 31,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 36,
+                        "lineEnd": 47
+                    },
+                    "repository": "test"
+                },
+                "name": "Plane",
+                "qname": {
+                    "container": "",
+                    "localName": "Plane"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Plane"
             },
             {
                 "kind": 7,
@@ -361,6 +522,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/SuperClass"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 23,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "SuperEngine",
+                "qname": {
+                    "container": "",
+                    "localName": "SuperEngine"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SuperEngine"
             },
             {
                 "kind": 7,

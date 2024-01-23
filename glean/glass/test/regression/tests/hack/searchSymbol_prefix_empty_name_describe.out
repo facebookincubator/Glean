@@ -3,6 +3,151 @@
     {
         "symbolDetails": [
             {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": true
+                },
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 49,
+                        "lineEnd": 55
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "AirBus"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/AirBus",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 49,
+                        "lineEnd": 55
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 52,
+                        "lineEnd": 54
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "AirBus",
+                    "localName": "fly"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/AirBus/fly",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 52,
+                        "lineEnd": 54
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 13,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 29,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "CoolStuff"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/CoolStuff",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 29,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
                 "annotations": [
                     {
                         "name": "__EnumClass",
@@ -171,6 +316,105 @@
                 "kind": 13,
                 "language": 3,
                 "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 32,
+                        "lineEnd": 34
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "Fliers"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/Fliers",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 32,
+                        "lineEnd": 34
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 31,
+                        "lineBegin": 33,
+                        "lineEnd": 33
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [
+                    1
+                ],
+                "name": {
+                    "container": "Fliers",
+                    "localName": "fly"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/Fliers/fly",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 31,
+                        "lineBegin": 33,
+                        "lineEnd": 33
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 13,
+                "language": 3,
+                "location": {
                     "filepath": "www/SourceEnum.php",
                     "range": {
                         "columnBegin": 1,
@@ -298,6 +542,226 @@
                 "sym_other_locations": [],
                 "type_xrefs": [],
                 "visibility": 50
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 13,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 57,
+                        "lineEnd": 60
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "Jet"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/Jet",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 57,
+                        "lineEnd": 60
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "annotations": [],
+                "comments": [
+                    {
+                        "filepath": "www/Require.php",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 10,
+                            "lineEnd": 12
+                        },
+                        "repository": "test"
+                    }
+                ],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 14,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [
+                    1
+                ],
+                "name": {
+                    "container": "",
+                    "localName": "Machine"
+                },
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "www/Require.php",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 10,
+                                "lineEnd": 12
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
+                "repo_hash": "testhash",
+                "sym": "test/php/Machine",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 14,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 18,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "Machine",
+                    "localName": "closeDoors"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/Machine/closeDoors",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 18,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "Machine",
+                    "localName": "openDoors"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/Machine/openDoors",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
             },
             {
                 "annotations": [],
@@ -486,6 +950,151 @@
                         "columnEnd": 6,
                         "lineBegin": 13,
                         "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 26,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "Pilot"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/Pilot",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 26,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 31,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 36,
+                        "lineEnd": 47
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "Plane"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/Plane",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 36,
+                        "lineEnd": 47
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 42,
+                        "lineEnd": 46
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "Plane",
+                    "localName": "takeOff"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/Plane/takeOff",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 42,
+                        "lineEnd": 46
                     },
                     "repository": "test"
                 },
@@ -2800,6 +3409,54 @@
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 23,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "SuperEngine"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/php/SuperEngine",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 23,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
                     "hasMoreChildren": true,
                     "hasMoreParents": false
                 },
@@ -3475,6 +4132,82 @@
         ],
         "symbols": [
             {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 49,
+                        "lineEnd": 55
+                    },
+                    "repository": "test"
+                },
+                "name": "AirBus",
+                "qname": {
+                    "container": "",
+                    "localName": "AirBus"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/AirBus"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "AirBus"
+                    },
+                    "symbol": "test/php/AirBus"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 52,
+                        "lineEnd": 54
+                    },
+                    "repository": "test"
+                },
+                "name": "fly",
+                "qname": {
+                    "container": "AirBus",
+                    "localName": "fly"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/AirBus/fly"
+            },
+            {
+                "kind": 13,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 29,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "name": "CoolStuff",
+                "qname": {
+                    "container": "",
+                    "localName": "CoolStuff"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/CoolStuff"
+            },
+            {
                 "kind": 12,
                 "language": 3,
                 "location": {
@@ -3554,6 +4287,59 @@
                 "kind": 13,
                 "language": 3,
                 "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 32,
+                        "lineEnd": 34
+                    },
+                    "repository": "test"
+                },
+                "name": "Fliers",
+                "qname": {
+                    "container": "",
+                    "localName": "Fliers"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Fliers"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Fliers"
+                    },
+                    "symbol": "test/php/Fliers"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 31,
+                        "lineBegin": 33,
+                        "lineEnd": 33
+                    },
+                    "repository": "test"
+                },
+                "name": "fly",
+                "qname": {
+                    "container": "Fliers",
+                    "localName": "fly"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Fliers/fly"
+            },
+            {
+                "kind": 13,
+                "language": 3,
+                "location": {
                     "filepath": "www/SourceEnum.php",
                     "range": {
                         "columnBegin": 1,
@@ -3625,6 +4411,112 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/InterfaceThis"
+            },
+            {
+                "kind": 13,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 57,
+                        "lineEnd": 60
+                    },
+                    "repository": "test"
+                },
+                "name": "Jet",
+                "qname": {
+                    "container": "",
+                    "localName": "Jet"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Jet"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 14,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": "Machine",
+                "qname": {
+                    "container": "",
+                    "localName": "Machine"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Machine"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Machine"
+                    },
+                    "symbol": "test/php/Machine"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 18,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "name": "closeDoors",
+                "qname": {
+                    "container": "Machine",
+                    "localName": "closeDoors"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Machine/closeDoors"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Machine"
+                    },
+                    "symbol": "test/php/Machine"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "name": "openDoors",
+                "qname": {
+                    "container": "Machine",
+                    "localName": "openDoors"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Machine/openDoors"
             },
             {
                 "kind": 7,
@@ -3731,6 +4623,82 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/NS/NamespaceClass/class_function"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 26,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": "Pilot",
+                "qname": {
+                    "container": "",
+                    "localName": "Pilot"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Pilot"
+            },
+            {
+                "kind": 31,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 36,
+                        "lineEnd": 47
+                    },
+                    "repository": "test"
+                },
+                "name": "Plane",
+                "qname": {
+                    "container": "",
+                    "localName": "Plane"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Plane"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "Plane"
+                    },
+                    "symbol": "test/php/Plane"
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 42,
+                        "lineEnd": 46
+                    },
+                    "repository": "test"
+                },
+                "name": "takeOff",
+                "qname": {
+                    "container": "Plane",
+                    "localName": "takeOff"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/Plane/takeOff"
             },
             {
                 "kind": 12,
@@ -4983,6 +5951,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/php/SuperClass/superAdd"
+            },
+            {
+                "kind": 7,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 23,
+                        "lineEnd": 24
+                    },
+                    "repository": "test"
+                },
+                "name": "SuperEngine",
+                "qname": {
+                    "container": "",
+                    "localName": "SuperEngine"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/php/SuperEngine"
             },
             {
                 "kind": 7,

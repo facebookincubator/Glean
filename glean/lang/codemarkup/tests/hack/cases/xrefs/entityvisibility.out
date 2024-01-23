@@ -216,12 +216,69 @@
         "decl": {
           "method": {
             "key": {
+              "name": { "key": "closeDoors" },
+              "container": {
+                "class_": {
+                  "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "method": {
+            "key": {
               "name": { "key": "flatten" },
               "container": {
                 "class_": {
                   "key": {
                     "name": { "key": { "name": { "key": "FancyTypes" } } }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "fly" },
+              "container": {
+                "class_": {
+                  "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "fly" },
+              "container": {
+                "interface_": {
+                  "key": { "name": { "key": { "name": { "key": "Fliers" } } } }
                 }
               }
             }
@@ -314,6 +371,25 @@
       }
     },
     "value": 3
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "openDoors" },
+              "container": {
+                "class_": {
+                  "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
   },
   {
     "key": {
@@ -518,6 +594,25 @@
                   "key": {
                     "name": { "key": { "name": { "key": "SourceTrait" } } }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "takeOff" },
+              "container": {
+                "trait": {
+                  "key": { "name": { "key": { "name": { "key": "Plane" } } } }
                 }
               }
             }
