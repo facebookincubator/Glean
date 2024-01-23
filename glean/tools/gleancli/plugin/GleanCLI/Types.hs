@@ -17,8 +17,7 @@ import Options.Applicative
 import Util.EventBase
 import Glean.Database.Env (withDatabases)
 import Glean.LocalOrRemote as Glean
-  -- Don't use Glean.LocalOrRemote, because we don't want to link to
-  -- the schema here.
+    ( Service(..), LocalOrRemote, withBackendWithDefaultOptions )
 import Glean.Impl.ConfigProvider
 import Glean.Util.ConfigProvider
 
