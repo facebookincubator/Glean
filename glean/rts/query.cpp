@@ -125,9 +125,9 @@ struct QueryExecutor {
       Id id,
       binary::Output *key,
       binary::Output *val,
-      Pid pid,
+      Pid pid_2,
       bool rec) {
-    recordResult(id, key, val, pid, rec);
+    recordResult(id, key, val, pid_2, rec);
   }
 
   //
@@ -335,9 +335,9 @@ Pid QueryExecutor::lookupKeyValue(
     binary::Output* kout,
     binary::Output* vout) {
   DVLOG(5) << "lookupKeyValue(" << fid.toWord() << ")";
-  Pid pid;
+  Pid pid_2;
   facts.factById(fid, [&](Pid pid_, auto clause) {
-    pid = pid_;
+    pid_2 = pid_;
     if (kout) {
       *kout = binary::Output();
       kout->put(clause.key());
@@ -347,7 +347,7 @@ Pid QueryExecutor::lookupKeyValue(
       vout->put(clause.value());
     }
   });
-  return pid;
+  return pid_2;
 };
 
 
@@ -419,10 +419,10 @@ SerializedCont QueryExecutor::queryCont(Subroutine::Activation& act) const {
   return out;
 };
 
-void QueryExecutor::nestedFact(Id id, Pid pid) {
+void QueryExecutor::nestedFact(Id id, Pid pid_2) {
   DVLOG(5) << "nestedFact: " << id.toWord();
   if (depth == Depth::ExpandPartial &&
-      expandPids.find(pid) == expandPids.end()) {
+      expandPids.find(pid_2) == expandPids.end()) {
     return;
   }
   auto added = nested_results_added.insert(id.toWord());
@@ -436,11 +436,11 @@ size_t QueryExecutor::recordResult(
     Id id,
     binary::Output *key,
     binary::Output *val,
-    Pid pid,
+    Pid pid_2,
     bool rec) {
   assert(id != Id::invalid());
   result_ids.emplace_back(id.toWord());
-  result_pids.emplace_back(pid.toWord());
+  result_pids.emplace_back(pid_2.toWord());
   result_keys.emplace_back(key ? key->string() : "");
   result_values.emplace_back(val ? val->string() : "");
   DVLOG(5) << "result added (" << id.toWord() << ")";
@@ -465,9 +465,9 @@ size_t QueryExecutor::recordResult(
           clause);
       ;
       } else {
-        auto predicate = inventory.lookupPredicate(pid);
+        auto predicate = inventory.lookupPredicate(pid_2);
         if (!predicate) {
-          error("unknown pid: {}", pid.toWord());
+          error("unknown pid_2: {}", pid_2.toWord());
         }
         predicate->traverse(
           syscalls<&QueryExecutor::nestedFact>(*this),
@@ -475,13 +475,13 @@ size_t QueryExecutor::recordResult(
       }
     }
     while (nested_result_pending.size() > 0) {
-      auto id = nested_result_pending[nested_result_pending.size() - 1];
+      auto id_2 = nested_result_pending[nested_result_pending.size() - 1];
       nested_result_pending.pop_back();
-      facts.factById(id, [&](Pid pid_, auto clause) {
+      facts.factById(id_2, [&](Pid pid_, auto clause) {
         inventory.lookupPredicate(pid_)->traverse(
           syscalls<&QueryExecutor::nestedFact>(*this),
           clause);
-        nested_result_ids.emplace_back(id.toWord());
+        nested_result_ids.emplace_back(id_2.toWord());
         nested_result_pids.emplace_back(pid_.toWord());
         auto key = binary::mkString(clause.key());
         auto val = binary::mkString(clause.value());
