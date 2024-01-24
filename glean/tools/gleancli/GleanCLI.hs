@@ -64,6 +64,7 @@ import GleanCLI.Index
 import GleanCLI.Restore
 import GleanCLI.Query
 import GleanCLI.Types
+import GleanCLI.Utils
 import GleanCLI.Write
 
 #if GLEAN_FACEBOOK
@@ -308,6 +309,8 @@ data ListCommand
       }
 
 instance Plugin ListCommand where
+  serverConfigTransform _ = disableJanitor . disableAutoBackups
+
   parseCommand =
     commandParser "list"
       (progDesc "List databases which match DBNAME")
