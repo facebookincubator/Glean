@@ -38,6 +38,7 @@ import Glean.Database.Meta (metaFromProps, metaToThriftDatabase)
 
 import GleanCLI.Common
 import GleanCLI.Types
+import GleanCLI.Utils
 import Glean.Database.Exception
 import Glean.Database.Repo (inRepo)
 import Glean.Database.Open (depParent)
@@ -56,6 +57,8 @@ data RestoreCommand
 type Locator = Text
 
 instance Plugin RestoreCommand where
+  serverConfigTransform _ = disableJanitor . disableAutoBackups
+
   parseCommand =
     commandParser "restore" (progDesc "Restore a database") $
       Restore <$> what <*> deps
