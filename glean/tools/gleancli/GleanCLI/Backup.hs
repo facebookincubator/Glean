@@ -23,6 +23,7 @@ import qualified Glean.LocalOrRemote as Glean
 import Glean.Database.Backup (backupDatabase)
 
 import GleanCLI.Types
+import GleanCLI.Utils
 
 data BackupCommand
   = Backup
@@ -51,3 +52,5 @@ instance Plugin BackupCommand where
       ok <- backupDatabase env repo locator
       unless ok $ exitWith (ExitFailure 1)
     _ -> die 2 "Can't backup a remote database"
+
+  serverConfigTransform _ = disableJanitor . disableAutoBackups
