@@ -341,6 +341,8 @@ newtype LatestDbCommand
   = LatestDb { dbName :: String }
 
 instance Plugin LatestDbCommand where
+  serverConfigTransform _ = disableJanitor . disableAutoBackups
+
   parseCommand =
     commandParser "db-latest"
       (progDesc "Return latest DBNAME instance available")
@@ -361,6 +363,8 @@ data StatusCommand
       }
 
 instance Plugin StatusCommand where
+  serverConfigTransform _ = disableJanitor . disableAutoBackups
+
   parseCommand =
     commandParser "status"
       (progDesc "Get the status of a db")
@@ -399,6 +403,8 @@ data PropertiesCommand
       }
 
 instance Plugin PropertiesCommand where
+  serverConfigTransform _ = disableJanitor . disableAutoBackups
+
   parseCommand =
     commandParser "properties"
       (progDesc "Get the properties of a db")
@@ -420,6 +426,8 @@ data DumpCommand
       }
 
 instance Plugin DumpCommand where
+  serverConfigTransform _ = disableJanitor . disableAutoBackups
+
   parseCommand =
     commandParser "dump"
       (progDesc "Dump the contents of the specified database into a file")
@@ -457,6 +465,8 @@ data ValidateCommand
       }
 
 instance Plugin ValidateCommand where
+  serverConfigTransform _ = disableJanitor . disableAutoBackups
+
   parseCommand =
     commandParser "validate" (progDesc "Validate a local database") $ do
       repo <- dbOpts
@@ -492,6 +502,8 @@ newtype ValidateSchemaCommand
       }
 
 instance Plugin ValidateSchemaCommand where
+  serverConfigTransform _ = disableJanitor . disableAutoBackups
+
   parseCommand =
     commandParser "validate-schema" (progDesc "Validate a schema") $ do
       file <- strArgument
@@ -518,6 +530,8 @@ data StatsCommand
       }
 
 instance Plugin StatsCommand where
+  serverConfigTransform _ = disableJanitor . disableAutoBackups
+
   parseCommand =
     commandParser "stats" (progDesc "Get fact counts and sizes") $ do
       statsRepo <- dbOpts
@@ -603,6 +617,8 @@ data WriteSerializedInventoryCommand
       }
 
 instance Plugin WriteSerializedInventoryCommand where
+  serverConfigTransform _ = disableJanitor . disableAutoBackups
+
   parseCommand =
     commandParser "write-serialized-inventory" (progDesc desc) $ do
       writeSerializedInventoryRepo <- optional dbOpts
