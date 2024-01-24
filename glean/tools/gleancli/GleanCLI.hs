@@ -38,7 +38,8 @@ import System.Exit (exitWith, ExitCode(..))
 import qualified Glean
 import Glean.Init
 import qualified Glean.LocalOrRemote as Glean
-import Glean.Database.Config (cfgSchemaSource, cfgSchemaId)
+import Glean.Database.Config (cfgSchemaSource, cfgSchemaId, cfgServerConfig)
+import qualified Glean.Database.Config as GleanDB
 import Glean.Database.Schema
   (newDbSchema, readWriteContent, DbSchema (schemaInventory))
 import Glean.Database.Schema.Types
@@ -46,6 +47,7 @@ import Glean.Database.Schema.Types
 import qualified Glean.Database.Work as Database
 import qualified Glean.RTS.Foreign.Inventory as Inventory
 import Glean.Schema.Util
+import qualified Glean.ServerConfig.Types as Server
 import Glean.Types as Thrift hiding (ValidateSchema)
 import qualified Glean.Types as Thrift
 import Glean.Impl.ConfigProvider
@@ -156,15 +158,30 @@ main =
   withConfigProvider cfgOpts $ \cfgAPI ->
   case cfgCommand of
     PluginCommand c ->
-      withService evb cfgAPI (withRemoteBackups evb cfgService) c
+      withService evb cfgAPI
+        (liftServerConfig (serverConfigTransform c) $
+          withRemoteBackups evb cfgService)
+        c
 
 withRemoteBackups :: EventBaseDataplane -> Glean.Service -> Glean.Service
-withRemoteBackups _evb svc = case svc of
+withRemoteBackups _evb = liftConfig
 #if GLEAN_FACEBOOK
-  Glean.Local cfg log -> Glean.Local (Manifold.withManifoldBackups _evb cfg) log
+  (Manifold.withManifoldBackups _evb)
+#else
+  id
 #endif
-  _other -> svc
 
+liftConfig
+  :: (GleanDB.Config -> GleanDB.Config)
+  -> Glean.Service -> Glean.Service
+liftConfig f (Glean.Local cfg log) = Glean.Local (f cfg) log
+liftConfig _ other@Glean.Remote{} = other
+
+liftServerConfig
+  :: (Server.Config -> Server.Config)
+  -> Glean.Service -> Glean.Service
+liftServerConfig f =
+  liftConfig $ \cfg -> cfg{cfgServerConfig = f <$> cfgServerConfig cfg}
 
 -- -----------------------------------------------------------------------------
 -- Commands
