@@ -19,6 +19,7 @@ import Glean.Database.Env (withDatabases)
 import Glean.LocalOrRemote as Glean
     ( Service(..), LocalOrRemote, withBackendWithDefaultOptions )
 import Glean.Impl.ConfigProvider
+import qualified Glean.ServerConfig.Types as Server
 import Glean.Util.ConfigProvider
 
 #if GLEAN_FACEBOOK
@@ -35,6 +36,11 @@ class Plugin c where
   -- to Gflags. This can be used to add --minloglevel=N for example.
   argTransform :: c -> [String] -> [String]
   argTransform _ = id
+
+  -- | Allows transforming the server config to e.g. disable the janitor.
+  --   Only relevant when using a local DB root and setting a server config
+  serverConfigTransform :: c -> (Server.Config -> Server.Config)
+  serverConfigTransform _ = id
 
   runCommand
     :: (Glean.LocalOrRemote backend, ConfigProvider cfg)
