@@ -998,6 +998,7 @@ library cli-types
     hs-source-dirs: glean/tools/gleancli/plugin
     exposed-modules:
         GleanCLI.Types
+        GleanCLI.Utils
     build-depends:
         glean:client-hs-local,
         glean:config,
