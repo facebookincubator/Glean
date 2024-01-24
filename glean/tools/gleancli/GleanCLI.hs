@@ -286,6 +286,8 @@ data UnfinishCommand
       }
 
 instance Plugin UnfinishCommand where
+  serverConfigTransform _ = disableJanitor . disableAutoBackups
+
   parseCommand =
     commandParser "unfinish"
       (progDesc $ "Unfinish a local database "<>
@@ -438,6 +440,8 @@ newtype DeleteCommand
       }
 
 instance Plugin DeleteCommand where
+  serverConfigTransform _ = disableJanitor . disableAutoBackups
+
   parseCommand =
     commandParser "delete" (progDesc "Delete a database") $ do
       Delete <$> dbOpts
