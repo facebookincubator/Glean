@@ -162,6 +162,7 @@ module Glean
   , completePredicates
   , CompletePredicates(..)
   , CompleteDerivedPredicate(..)
+  , CompleteAxiomPredicates(..)
   , basicWriter
   , FactBuilder
   , makeFact

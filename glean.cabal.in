@@ -986,7 +986,6 @@ library indexers
         glean:client-hs-local,
         glean:db,
         glean:handler,
-        glean:if-glean-hs,
         glean:interprocess,
         glean:lib,
         glean:lsif,
