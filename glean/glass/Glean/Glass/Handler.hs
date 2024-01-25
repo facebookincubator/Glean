@@ -1779,7 +1779,7 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
           Right query -> do
             let childRL = ((decl, file, rangespan, name), sym)
                 -- limit until we optimize the query to use DeclarationSource
-                limit = maybe 100 (min 100 . fromIntegral) requestOptions_limit
+                limit = maybe 200 fromIntegral requestOptions_limit
                 timeLimit = 2000 -- ms
             results <- searchWithTimeLimit (Just limit) timeLimit $
               Query.findReferenceEntities query
