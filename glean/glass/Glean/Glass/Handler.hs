@@ -1011,7 +1011,11 @@ fetchSymbolsAndAttributes repoMapping latest req opts be snapshotbe mlang = do
         bestSnapshot <- getSnapshot snapshotbe repo file Nothing
         case bestSnapshot of
           Right result ->
-            return ((result, Snapshot.Latest, QueryEachRepoUnrequested), Nothing)
+            return
+              (( result
+               , Snapshot.Latest (documentSymbolListXResult_revision result)
+               , QueryEachRepoUnrequested)
+              , Nothing)
           Left _ ->
             return res
     _ ->
