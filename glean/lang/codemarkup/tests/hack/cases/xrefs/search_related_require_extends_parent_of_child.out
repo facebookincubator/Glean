@@ -1,0 +1,131 @@
+[
+  "@generated",
+  {
+    "key": {
+      "query": 4,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Machine",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 264, "length": 135 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "interface_": {
+                  "key": { "name": { "key": { "name": { "key": "Jet" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Jet",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 893, "length": 75 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 4,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": { "name": { "key": { "name": { "key": "Machine" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Machine",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 264, "length": 135 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "trait": {
+                  "key": { "name": { "key": { "name": { "key": "Plane" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Plane",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 519, "length": 242 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 4,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SuperEngine" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SuperEngine",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 401, "length": 21 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "interface_": {
+                  "key": { "name": { "key": { "name": { "key": "Jet" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Jet",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 893, "length": 75 } }
+        }
+      },
+      "style": 0
+    }
+  }
+]

@@ -1,0 +1,89 @@
+[
+  "@generated",
+  {
+    "key": {
+      "query": 5,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "interface_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "CoolStuff" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "CoolStuff",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 441, "length": 23 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "trait": {
+                  "key": { "name": { "key": { "name": { "key": "Plane" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Plane",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 519, "length": 242 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 5,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "interface_": {
+                  "key": { "name": { "key": { "name": { "key": "Fliers" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Fliers",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 466, "length": 51 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "trait": {
+                  "key": { "name": { "key": { "name": { "key": "Plane" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Plane",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 519, "length": 242 } }
+        }
+      },
+      "style": 0
+    }
+  }
+]

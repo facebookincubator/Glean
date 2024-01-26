@@ -1,0 +1,45 @@
+[
+  "@generated",
+  {
+    "key": {
+      "query": 6,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "AirBus",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 763, "length": 128 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "container": {
+                "trait": {
+                  "key": { "name": { "key": { "name": { "key": "Plane" } } } }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "Plane",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 519, "length": 242 } }
+        }
+      },
+      "style": 0
+    }
+  }
+]

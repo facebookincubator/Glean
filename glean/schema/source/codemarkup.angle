@@ -646,6 +646,11 @@ type RelationType = enum {
   ExtendsChildOfParent |
   ContainsChildOfParent |
   ContainsParentOfChild |
+  # Trait And Interface Requirements, Hack specific
+  # https://docs.hhvm.com/hack/traits-and-interfaces/trait-and-interface-requirements
+  RequireExtendsParentOfChild |
+  RequireImplementsParentOfChild |
+  RequireClassParentOfChild |
 }
 
 # we can prune some of the relationships by hiding "uninteresting" results
@@ -671,7 +676,19 @@ predicate SearchRelatedEntities:
       ( ContainsParentOfChild = Query;
         ContainsParentEntity { C, P }) | # child key
       ( ContainsChildOfParent = Query;
-        ContainsChildEntity { P, C }); # parent key
+        ContainsChildEntity { P, C }) | # parent key
+      ( RequireExtendsParentOfChild = Query;
+        { hack = HC } = C;
+        { hack = HP } = P;
+        codemarkup.hack.HackRequiredConstraint { HC, extends_, HP }) |
+      ( RequireImplementsParentOfChild = Query;
+        { hack = HC } = C;
+        { hack = HP } = P;
+        codemarkup.hack.HackRequiredConstraint { HC, implements_, HP }) |
+      ( RequireClassParentOfChild = Query;
+        { hack = HC } = C;
+        { hack = HP } = P;
+        codemarkup.hack.HackRequiredConstraint { HC, class_, HP });
     ) | (
       HideUninteresting = Style; # only one hide unteresting relation style atm
       ExtendsParentOfChild = Query;

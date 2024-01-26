@@ -236,6 +236,9 @@ searchRelatedEntitiesQ queryTy styleTy entity = case queryTy of
     Code.RelationType_ContainsParentOfChild -> keyedByChild
     Code.RelationType_ExtendsChildOfParent -> keyedByParent
     Code.RelationType_ContainsChildOfParent -> keyedByParent
+    Code.RelationType_RequireClassParentOfChild -> keyedByChild
+    Code.RelationType_RequireImplementsParentOfChild -> keyedByChild
+    Code.RelationType_RequireExtendsParentOfChild -> keyedByChild
     Code.RelationType__UNKNOWN _ -> error "Unkonwn Code.RelationType"
   where
     keyedByChild = predicate @Code.SearchRelatedEntities $

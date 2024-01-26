@@ -644,4 +644,55 @@ predicate HackEntitySource:
   }
   { {decl=Decl}, {decl=Source}} where
     hack.DeclarationSource { Decl, Source };
+
+
+type RequiredRelation =
+  enum {
+    implements_ | extends_ | class_
+  }
+
+predicate HackRequiredConstraint:
+  {
+    entity : code.hack.Entity,
+    requiredRelation : RequiredRelation,
+    required_ : code.hack.Entity
+  }
+  (
+    {
+      { decl = { container = { interface_ = D } } },
+      extends_,
+      { decl = { container = { class_ = C } } }
+    }
+    where
+      RE[..] = C;
+      hack.InterfaceDefinition { declaration = D, requireExtends = RE }
+  ) | (
+    {
+      { decl = { container = { trait = D } } },
+      extends_,
+      { decl = { container = { class_ = C } } }
+    }
+    where
+      RE[..] = C;
+      hack.TraitDefinition { declaration = D, requireExtends = RE }
+  ) | (
+    {
+      { decl = { container = { trait = D } } },
+      implements_,
+      { decl = { container = { interface_ = I } } }
+    }
+    where
+      RE[..] = I;
+      hack.TraitDefinition { declaration = D, requireImplements = RE }
+  ) | (
+    {
+      {decl = { container = { trait = D } } },
+      class_,
+      { decl = { container = { class_ = C } } }
+    }
+    where
+      RE[..] = C;
+      hack.TraitDefinition { declaration = D, requireClass = { just = RE } }
+  )
+
 }
