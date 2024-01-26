@@ -108,8 +108,7 @@ search_
   :: (Typeable q, Show q, HasRepo u)
   => Query q
   -> GenHaxl u w [q]
-search_ q = haxlRepo >>= \repo ->
-  fmap (fromAppendList . fst) $ dataFetch $ mkQueryReq repo q True
+search_ = fmap fromAppendList . searchWith
 
 searchWith
   :: (Typeable r, Show r, Typeable q, Show q, HasRepo u, QueryResult q r)
