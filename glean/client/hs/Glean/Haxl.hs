@@ -24,6 +24,8 @@ module Glean.Haxl
   , keyOf
   , search
   , search_
+  , count
+  , countApprox
   , Query
   , recursive
   , limit

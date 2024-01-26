@@ -19,11 +19,17 @@ module Haxl.DataSource.Glean
   , haxlRepo
   , search
   , search_
+  , count
+  , countApprox
   , withRepo
   , HasRepo(..)
   ) where
 
 import Data.Default
+import Data.Hashable
+import Data.HashSet (HashSet)
+import qualified Data.HashSet as HashSet
+import Data.Monoid
 import Data.Typeable
 
 import Haxl.Core hiding (Env)
@@ -108,6 +114,33 @@ search_
 search_ q = haxlRepo >>= \repo ->
   fmap (fromAppendList . fst) $ dataFetch $ mkQueryReq repo q True
 
+newtype UniqueResults a = UniqueResults { fromUniqueResults :: HashSet a }
+  deriving (Semigroup, Monoid, Show)
+
+instance (Hashable q, Eq q) => QueryResult q (UniqueResults q) where
+  fromResults = UniqueResults . HashSet.fromList
+
+-- | Count the unique results of a query.
+count
+  :: forall q u w.
+     (Typeable q, Show q, Hashable q, Eq q, HasRepo u)
+  => Query q
+  -> GenHaxl u w Int
+count q = haxlRepo >>= \repo -> do
+  (UniqueResults (s :: HashSet q), _) <- dataFetch $ mkQueryReq repo q True
+  return (HashSet.size s)
+
+-- | Returns an upper bound on the number of unique results of a
+-- query. This is much more efficient than 'countUnique' because it
+-- doesn't keep all the results in memory, but since Glean might
+-- return duplicate results it can return a result greater than the
+-- true count.
+countApprox
+  :: (Typeable q, Show q, HasRepo u)
+  => Query q
+  -> GenHaxl u w Int
+countApprox q = haxlRepo >>= \repo ->
+  fmap (getSum . fst) $ dataFetch $ mkQueryReq repo q True
 
 -- -----------------------------------------------------------------------------
 
