@@ -203,9 +203,12 @@ syncGetOne env (repo, requests) = do
   results <- userQueryFacts env repo (mkUserQueryFacts Nothing schema requests)
   putResults results requests
 
-syncQueryOne env (Haxl.BlockedFetch (QueryReq q repo stream) rvar) =
-    runSyncQuery repo env q (if stream then Just mempty else Nothing) rvar
 syncQueryOne :: Env -> Haxl.BlockedFetch GleanQuery -> IO ()
+syncQueryOne env
+    (Haxl.BlockedFetch (QueryReq (Query q :: Query q) repo stream) rvar) =
+  runSyncQuery repo env
+    (Query (mkUserQuery Nothing (schemaId env) q) :: Query q)
+    (if stream then Just mempty else Nothing) rvar
 
 runSyncQuery
   :: forall q r. (Show q, Typeable q, QueryResult q r)

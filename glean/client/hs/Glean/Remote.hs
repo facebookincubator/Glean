@@ -425,7 +425,8 @@ remoteQuery (ThriftBackend config evb ts clientInfo schema) sem
               [(Haxl.BlockedFetch GleanQuery, Bool)]
         batches = HashMap.fromListWith (++)
           -- group by repo and query details minus the query itself
-          [( (repo, withClientInfo clientInfo q{userQuery_query = mempty})
+          [( (repo, mkUserQuery (Just clientInfo) schema
+                      q{userQuery_query = mempty})
            , [(b, stream)]
            )
           | b@(Haxl.BlockedFetch (QueryReq (Query q) repo stream) _) <- batch
@@ -448,7 +449,7 @@ remoteQuery (ThriftBackend config evb ts clientInfo schema) sem
   fetch (Haxl.BlockedFetch (QueryReq (Query q :: Query q) repo stream) rvar) =
     runRemoteQuery evb sem repo (Query q' :: Query q) (ts' repo) acc rvar
     where
-      q' = withClientInfo clientInfo q
+      q' = mkUserQuery (Just clientInfo) schema q
       acc = if stream then Just mempty else Nothing
 
   fetchBatch repo predicate reqs =
@@ -456,12 +457,6 @@ remoteQuery (ThriftBackend config evb ts clientInfo schema) sem
     -- chunking can be removed whenever query servers learn to fuse batches
     forM_ (chunksOf (max 1 maxBatchSize) reqs) $ \chunk ->
       runRemoteBatchQuery evb sem repo predicate chunk (ts' repo)
-
-  withClientInfo :: UserQueryClientInfo -> UserQuery -> UserQuery
-  withClientInfo info q = q {
-        userQuery_client_info = Just info,
-        userQuery_schema_id = schema
-      }
 
 runRemoteBatchQuery
   :: EventBaseDataplane

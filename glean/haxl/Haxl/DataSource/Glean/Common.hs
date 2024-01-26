@@ -12,6 +12,7 @@ module Haxl.DataSource.Glean.Common
   ( GleanGet(..)
   , GleanFetcher
   , mkUserQueryFacts
+  , mkUserQuery
   , putResults
   , requestByRepo
   , GleanQuery(..)
@@ -78,6 +79,17 @@ mkUserQueryFacts minfo schema requests = def
         (intId p)
         (Just (predicateRef_version (getName (Proxy @p))))
         rec
+
+mkUserQuery
+  :: Maybe UserQueryClientInfo
+  -> Maybe SchemaId
+  -> UserQuery
+  -> UserQuery
+mkUserQuery minfo schema q = q
+  { userQuery_encodings = [UserQueryEncoding_bin def]
+  , userQuery_client_info = minfo
+  , userQuery_schema_id = coerce schema
+  }
 
 requestByRepo :: [BlockedFetch GleanGet] -> HashMap Repo [BlockedFetch GleanGet]
 requestByRepo requests =

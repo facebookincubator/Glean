@@ -25,7 +25,6 @@ module Haxl.DataSource.Glean
   , HasRepo(..)
   ) where
 
-import Data.Default
 import Data.Hashable
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
@@ -35,7 +34,6 @@ import Haxl.Core hiding (Env)
 
 import Glean.Backend.Types
 import Glean.Query.Thrift
-import Glean.Query.Thrift.Internal
 import Glean.Types
 import Glean.Typed as Typed
 
@@ -145,6 +143,4 @@ mkQueryReq
   -> Query q
   -> Bool
   -> GleanQuery (r, Bool)
-mkQueryReq repo (Query q) b = QueryReq (Query q' :: Query q) repo b
-  where
-  q' = q { userQuery_encodings = [UserQueryEncoding_bin def] }
+mkQueryReq repo q b = QueryReq q repo b
