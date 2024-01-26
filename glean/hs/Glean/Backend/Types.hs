@@ -30,6 +30,9 @@ module Glean.Backend.Types
   , GleanFetcher
   , GleanQueryer
   , Haxl.State(..)
+  , QueryResult(..)
+  , AppendList(..)
+  , fromAppendList
 
     -- * Shards
   , dbShard
@@ -46,6 +49,7 @@ import Data.Either
 import Data.Hashable
 import qualified Data.HashMap.Strict as HashMap
 import Data.Map (Map)
+import Data.Monoid
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
@@ -350,13 +354,37 @@ queries as a Haxl data fetch would mean hashing the continuation and
 keeping it in the Haxl cache.
 -}
 
-data GleanQuery r where
+data GleanQuery a where
   QueryReq
-    :: (Show q, Typeable q)
+    :: (Show q, Typeable q, QueryResult q r)
     => Query q   -- The query
     -> Repo
     -> Bool -- stream all results?
-    -> GleanQuery ([q], Bool)
+    -> GleanQuery (r, Bool)
+
+-- | List with O(1) append and O(n) conversion to [], aka DList
+newtype AppendList a = AppendList ([a] -> [a])
+
+instance Semigroup (AppendList a) where
+  AppendList x <> AppendList y = AppendList (x . y)
+
+instance Monoid (AppendList a) where
+  mempty = AppendList id
+
+fromAppendList :: AppendList a -> [a]
+fromAppendList (AppendList f) = f []
+
+instance Show a => Show (AppendList a) where
+  show = show . fromAppendList
+
+class Monoid r => QueryResult q r where
+  fromResults :: [q] -> r
+
+instance QueryResult q (AppendList q) where
+  fromResults qs = AppendList (qs++)
+
+instance QueryResult q (Sum Int) where
+  fromResults = Sum . length
 
 deriving instance Show (GleanQuery q)
 instance Haxl.ShowP GleanQuery where showp = show

@@ -28,12 +28,11 @@ import Data.Typeable
 
 import Haxl.Core hiding (Env)
 
+import Glean.Backend.Types
 import Glean.Query.Thrift
 import Glean.Query.Thrift.Internal
 import Glean.Types
 import Glean.Typed as Typed
-
-import Haxl.DataSource.Glean.Common
 
 -- User Interface --------
 
@@ -96,7 +95,9 @@ search
   :: (Typeable q, Show q, HasRepo u)
   => Query q
   -> GenHaxl u w ([q], Bool)
-search q = haxlRepo >>= \repo -> dataFetch $ mkQueryReq repo q False
+search q = haxlRepo >>= \repo -> do
+  (a, b) <- dataFetch $ mkQueryReq repo q False
+  return (fromAppendList a, b)
 
 -- | Like 'search', but returns results only. Always returns all the
 -- results, streaming results from the server if necessary.
@@ -104,19 +105,19 @@ search_
   :: (Typeable q, Show q, HasRepo u)
   => Query q
   -> GenHaxl u w [q]
-search_ q = haxlRepo >>= \repo -> fmap fst $ dataFetch $ mkQueryReq repo q True
-
--- -----------------------------------------------------------------------------
+search_ q = haxlRepo >>= \repo ->
+  fmap (fromAppendList . fst) $ dataFetch $ mkQueryReq repo q True
 
 
 -- -----------------------------------------------------------------------------
 
 -- | smart constructor to ensure the query result encoding is set to binary
 mkQueryReq
-  :: (Show q, Typeable q)
+  :: forall q r . (Show q, Typeable q, QueryResult q r)
   => Repo
   -> Query q
   -> Bool
-  -> GleanQuery ([q], Bool)
-mkQueryReq repo (Query q) b = QueryReq (Query q') repo b
-  where q' = q { userQuery_encodings = [UserQueryEncoding_bin def] }
+  -> GleanQuery (r, Bool)
+mkQueryReq repo (Query q) b = QueryReq (Query q' :: Query q) repo b
+  where
+  q' = q { userQuery_encodings = [UserQueryEncoding_bin def] }

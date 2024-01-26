@@ -128,11 +128,12 @@ expectBinResults _ = throwIO $ Exception "server returned the wrong encoding"
 
 
 putQueryResults
-  :: Query q
+  :: forall q r . QueryResult q r
+  => Query q
   -> UserQueryResults
-  -> Maybe ([q] -> [q]) -- results so far
-  -> ResultVar ([q], Bool)
-  -> (Query q -> Maybe ([q] -> [q]) -> IO ())
+  -> Maybe r -- results so far
+  -> ResultVar (r, Bool)
+  -> (Query q -> Maybe r -> IO ())
      -- ^ How to resume if we're streaming
   -> IO ()
 putQueryResults (Query q) UserQueryResults{..} maybeAcc rvar more = do
@@ -143,31 +144,34 @@ putQueryResults (Query q) UserQueryResults{..} maybeAcc rvar more = do
     serialized = IntMap.fromList
       [ (fromIntegral id,f)
       | (id,f) <- Map.toList userQueryResultsBin_nestedFacts ]
-  results <- forM (Map.toList userQueryResultsBin_facts) $ \(fid, fact) -> do
-    liftIO $ decodeAsFact serialized cacheRef
-      (Typed.IdOf (Fid fid)) fact
+  results :: [q] <- forM (Map.toList userQueryResultsBin_facts) $
+    \(fid, fact) -> do
+      liftIO $ decodeAsFact serialized cacheRef
+        (Typed.IdOf (Fid fid)) fact
 
   if
     -- If the server gave us fewer results and streaming is enabled,
     -- fetch more results.
     | Just acc <- maybeAcc, Just cont <- userQueryResults_continuation
-      -> more
+      -> let !newAcc = acc <> fromResults results in
+         more
          (Query q { userQuery_options = Just
            (fromMaybe def (userQuery_options q))
              { userQueryOptions_continuation = Just cont } })
-         (Just (acc . (results++)))
+         (Just newAcc)
 
     | otherwise -> do
-      let allResults = fromMaybe id maybeAcc results
+      let allResults = fromMaybe mempty maybeAcc <> fromResults results
       putSuccess rvar (allResults, isJust userQueryResults_continuation)
 
 
 putQueryResultsOrException
-  :: Query q
+  :: QueryResult q r
+  => Query q
   -> UserQueryResultsOrException
-  -> Maybe ([q] -> [q]) -- results so far
-  -> ResultVar ([q], Bool)
-  -> (Query q -> Maybe ([q] -> [q]) -> IO ())
+  -> Maybe r -- results so far
+  -> ResultVar (r, Bool)
+  -> (Query q -> Maybe r -> IO ())
      -- ^ How to resume if we're streaming
   -> IO ()
 putQueryResultsOrException q r maybeAcc rvar more =

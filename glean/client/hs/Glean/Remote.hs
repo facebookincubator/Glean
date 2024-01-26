@@ -445,11 +445,11 @@ remoteQuery (ThriftBackend config evb ts clientInfo schema) sem
   maxBatchSize = fromIntegral $ clientConfig_max_batch_size config
 
   fetch :: Haxl.BlockedFetch GleanQuery -> IO ()
-  fetch (Haxl.BlockedFetch (QueryReq (Query q) repo stream) rvar) =
-    runRemoteQuery evb sem repo (Query q') (ts' repo) acc rvar
+  fetch (Haxl.BlockedFetch (QueryReq (Query q :: Query q) repo stream) rvar) =
+    runRemoteQuery evb sem repo (Query q' :: Query q) (ts' repo) acc rvar
     where
       q' = withClientInfo clientInfo q
-      acc = if stream then Just id else Nothing
+      acc = if stream then Just mempty else Nothing
 
   fetchBatch repo predicate reqs =
     -- avoid overwhelming a single query server with a large batch
@@ -505,7 +505,7 @@ runRemoteBatchQuery evb sem repo template batch ts = do
         -> UserQueryResultsOrException
         -> IO ()
       f (Haxl.BlockedFetch (QueryReq q _ _) rvar, stream) res = do
-        let acc = if stream then Just id else Nothing
+        let acc = if stream then Just mempty else Nothing
         putQueryResultsOrException q res acc rvar $
           \(q :: Query q) acc -> runRemoteQuery evb sem repo q ts acc rvar
   runThrift evb ts $
@@ -518,14 +518,14 @@ runRemoteBatchQuery evb sem repo template batch ts = do
       batchRequest
 
 runRemoteQuery
-  :: forall q. (Show q, Typeable q)
+  :: forall q r. (Show q, Typeable q, QueryResult q r)
   => EventBaseDataplane
   -> Semaphore
   -> Repo
   -> Query q
   -> ThriftService GleanService
-  -> Maybe ([q] -> [q]) -- results so far
-  -> Haxl.ResultVar ([q], Bool)
+  -> Maybe r -- results so far
+  -> Haxl.ResultVar (r, Bool)
   -> IO ()
 runRemoteQuery evb sem repo q@(Query req) ts acc rvar = do
   acquireSemaphore sem

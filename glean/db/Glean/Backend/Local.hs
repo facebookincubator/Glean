@@ -206,15 +206,15 @@ syncGetOne env (repo, requests) = do
 
 syncQueryOne :: Backend b => b -> Haxl.BlockedFetch GleanQuery -> IO ()
 syncQueryOne env (Haxl.BlockedFetch (QueryReq q repo stream) rvar) =
-    runSyncQuery repo env q (if stream then Just id else Nothing) rvar
+    runSyncQuery repo env q (if stream then Just mempty else Nothing) rvar
 
 runSyncQuery
-  :: forall q b. (Show q, Typeable q, Backend b)
+  :: forall q b r. (Show q, Typeable q, Backend b, QueryResult q r)
   => Thrift.Repo
   -> b
   -> Query q
-  -> Maybe ([q] -> [q]) -- results so far
-  -> Haxl.ResultVar ([q], Bool)
+  -> Maybe r -- results so far
+  -> Haxl.ResultVar (r, Bool)
   -> IO ()
 runSyncQuery repo env q@(Query req) acc rvar = do
   r <- tryAll $ userQuery env repo req
