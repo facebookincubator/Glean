@@ -130,8 +130,9 @@ module Glean
   , haxlRepo
   , search
   , search_
+  , searchWith
+  , QueryResult(..)
   , count
-  , countApprox
   , get
   , getRec
   , getKey
