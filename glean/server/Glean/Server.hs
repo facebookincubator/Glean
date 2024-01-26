@@ -37,6 +37,7 @@ import Logger.IO
 import Glean.Facebook.Logger.Server
 import Glean.Facebook.Logger.Database
 import qualified Glean.Database.Backup.Manifold as Manifold
+import qualified Glean.Database.Backup.XDBCatalog as XDB
 import Glean.Server.Available ( withAvailableDBFilterViaSR )
 import Glean.Server.Tracing
 import Manifold.Client
@@ -78,7 +79,8 @@ main =
       }
 
 #if GLEAN_FACEBOOK
-      cfg = cfg0{cfgDBConfig = Manifold.withManifoldBackups evb dbCfg}
+      cfg = cfg0{cfgDBConfig = XDB.withXdbCatalog "manifold" $
+                  Manifold.withManifoldBackups evb dbCfg}
 #else
       cfg = cfg0{cfgDBConfig = dbCfg}
 #endif

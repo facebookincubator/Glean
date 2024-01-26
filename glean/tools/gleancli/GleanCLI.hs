@@ -70,6 +70,7 @@ import GleanCLI.Write
 #if GLEAN_FACEBOOK
 import GleanCLI.Facebook
 import qualified Glean.Database.Backup.Manifold as Manifold
+import qualified Glean.Database.Backup.XDBCatalog as XDB
 #endif
 
 data Config = Config
@@ -167,7 +168,7 @@ main =
 withRemoteBackups :: EventBaseDataplane -> Glean.Service -> Glean.Service
 withRemoteBackups _evb = liftConfig
 #if GLEAN_FACEBOOK
-  (Manifold.withManifoldBackups _evb)
+  (XDB.withXdbCatalog "manifold" . Manifold.withManifoldBackups _evb)
 #else
   id
 #endif
