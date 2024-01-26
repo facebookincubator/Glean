@@ -409,7 +409,7 @@ remoteFetch (ThriftBackend config evb ts clientInfo schema) sem =
         (\x y -> do
           releaseSemaphore sem
           recvCob (GleanService.recv_userQueryFacts x) y)
-        (mkRequest (Just clientInfo) schema requests)
+        (mkUserQueryFacts (Just clientInfo) schema requests)
 
 putException :: SomeException -> [Haxl.BlockedFetch a] -> IO ()
 putException ex requests =

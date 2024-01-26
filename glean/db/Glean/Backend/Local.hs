@@ -197,21 +197,20 @@ instance Backend Database.Env where
 -- -----------------------------------------------------------------------------
 -- Haxl
 
-syncGetOne
-  :: Backend b => b -> (Thrift.Repo, [Haxl.BlockedFetch GleanGet]) -> IO ()
+syncGetOne :: Env -> (Thrift.Repo, [Haxl.BlockedFetch GleanGet]) -> IO ()
 syncGetOne env (repo, requests) = do
   let schema = schemaId env
-  results <- userQueryFacts env repo (mkRequest Nothing schema requests)
+  results <- userQueryFacts env repo (mkUserQueryFacts Nothing schema requests)
   putResults results requests
 
-syncQueryOne :: Backend b => b -> Haxl.BlockedFetch GleanQuery -> IO ()
 syncQueryOne env (Haxl.BlockedFetch (QueryReq q repo stream) rvar) =
     runSyncQuery repo env q (if stream then Just mempty else Nothing) rvar
+syncQueryOne :: Env -> Haxl.BlockedFetch GleanQuery -> IO ()
 
 runSyncQuery
-  :: forall q b r. (Show q, Typeable q, Backend b, QueryResult q r)
+  :: forall q r. (Show q, Typeable q, QueryResult q r)
   => Thrift.Repo
-  -> b
+  -> Env
   -> Query q
   -> Maybe r -- results so far
   -> Haxl.ResultVar (r, Bool)

@@ -11,7 +11,7 @@
 module Haxl.DataSource.Glean.Common
   ( GleanGet(..)
   , GleanFetcher
-  , mkRequest
+  , mkUserQueryFacts
   , putResults
   , requestByRepo
   , GleanQuery(..)
@@ -50,12 +50,12 @@ import qualified Haxl.Core.DataSource as Haxl
 intId :: IdOf p -> Id
 intId id = fromIntegral (fromFid (idOf id))
 
-mkRequest
+mkUserQueryFacts
   :: Maybe UserQueryClientInfo
   -> Maybe SchemaId
   -> [BlockedFetch GleanGet]
   -> UserQueryFacts
-mkRequest minfo schema requests = def
+mkUserQueryFacts minfo schema requests = def
   { userQueryFacts_facts = map toFactQuery requests
   , userQueryFacts_options = Just def
     { userQueryOptions_expand_results = False
