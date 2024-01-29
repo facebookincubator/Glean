@@ -144,11 +144,24 @@ public static class Discovery
 
     private static void MaterializeMSBuildProject(List<MaterializedWorkItem> materializedWorkItems, WorkItem.MSBuildProject msbuildProjectWorkItem)
     {
-        throw new NotImplementedException();
+        var absoluteProjectPath = Path.GetFullPath(msbuildProjectWorkItem.ProjectPath);
+        var materializedWorkItem = new MaterializedWorkItem.MSBuildProject(
+            absoluteProjectPath
+        );
+        materializedWorkItems.Add(materializedWorkItem);
     }
 
     private static void MaterializeMSBuildSolution(List<MaterializedWorkItem> materializedWorkItems, WorkItem.MSBuildSolution msbuildSolutionWorkItem)
     {
-        throw new NotImplementedException();
+        var absoluteSolutionPath = Path.GetFullPath(msbuildSolutionWorkItem.SolutionPath);
+        var absoluteProjectPaths = msbuildSolutionWorkItem
+            .ProjectPaths
+            .Select(Path.GetFullPath)
+            .ToArray();
+        var materializedWorkItem = new MaterializedWorkItem.MSBuildSolution(
+            absoluteSolutionPath,
+            absoluteProjectPaths
+        );
+        materializedWorkItems.Add(materializedWorkItem);
     }
 }
