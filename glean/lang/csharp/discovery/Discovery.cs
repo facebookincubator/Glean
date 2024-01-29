@@ -110,6 +110,45 @@ public static class Discovery
 
     public static void Materialize(string unityProjectTemplatePath, string outputPath)
     {
+        var encodedWork = Console.In.ReadToEnd();
+        var workItems = JsonSerializer.Deserialize<WorkItem[]>(encodedWork);
+        List<MaterializedWorkItem> materializedWorkItems = new ();
+        foreach (var workItem in workItems)
+        {
+            switch (workItem)
+            {
+                case WorkItem.MSBuildProject msbuildProjectWorkItem:
+                    MaterializeMSBuildProject(materializedWorkItems, msbuildProjectWorkItem);
+                    break;
+                case WorkItem.MSBuildSolution msbuildSolutionWorkItem:
+                    MaterializeMSBuildSolution(materializedWorkItems, msbuildSolutionWorkItem);
+                    break;
+                case WorkItem.UnityPackage unityWorkItem:
+                    MaterializeUnity(materializedWorkItems, unityProjectTemplatePath, unityWorkItem);
+                    break;
+                case WorkItem.BuckBuildTarget buckBuildTargetWorkItem:
+                    throw new NotImplementedException();
+                    break;
+            }
+        }
+
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        File.WriteAllText(outputPath, JsonSerializer.Serialize(materializedWorkItems, options));
+        Log.Information($"Wrote materialized work items to {outputPath}");
+    }
+
+    private static void MaterializeUnity(List<MaterializedWorkItem> materializedWorkItems, string unityProjectTemplatePath, WorkItem.UnityPackage unityWorkItem)
+    {
+        throw new NotImplementedException();
+    }
+
+    private static void MaterializeMSBuildProject(List<MaterializedWorkItem> materializedWorkItems, WorkItem.MSBuildProject msbuildProjectWorkItem)
+    {
+        throw new NotImplementedException();
+    }
+
+    private static void MaterializeMSBuildSolution(List<MaterializedWorkItem> materializedWorkItems, WorkItem.MSBuildSolution msbuildSolutionWorkItem)
+    {
         throw new NotImplementedException();
     }
 }
