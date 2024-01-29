@@ -6,7 +6,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+using Microsoft.Build.Construction;
+using Serilog;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
 
 namespace Glean.Discovery;
 
@@ -19,7 +25,70 @@ public static class Discovery
 
     public static void DiscoverMSBuild(string repoRoot, string outputPath)
     {
-        throw new NotImplementedException();
+        HashSet<string> projectPaths = new ();
+        HashSet<string> solutionPaths = new ();
+
+        using (StreamReader reader = new StreamReader(Console.OpenStandardInput()))
+        {
+            while (!reader.EndOfStream)
+            {
+                var line = reader.ReadLine();
+                var repoRelativePath = line.Trim();
+                switch (Path.GetExtension(repoRelativePath))
+                {
+                    case ".csproj":
+                        projectPaths.Add(repoRelativePath);
+                        continue;
+                    case ".sln":
+                        solutionPaths.Add(repoRelativePath);
+                        continue;
+                    default:
+                        continue;
+                }
+            }
+        }
+
+        List<WorkItem> workItems = new();
+        foreach (var solutionPath in solutionPaths)
+        {
+            try
+            {
+                var solution = SolutionFile.Parse(Path.Combine(repoRoot, solutionPath));
+
+                var projectPathsInSolution = solution
+                    .ProjectsInOrder
+                    .Select(project => Path.GetRelativePath(repoRoot, project.AbsolutePath))
+                    .Where(path => Path.GetExtension(path) == ".csproj")
+                    .ToList();
+
+                projectPaths.ExceptWith(projectPathsInSolution);
+
+                if (projectPathsInSolution.Any())
+                {
+                    Log.Information($"Discovered solution {solutionPath} ({projectPathsInSolution.Count()} project(s))");
+                    workItems.Add(new WorkItem.MSBuildSolution(solutionPath, projectPathsInSolution.ToArray()));
+                }
+                else
+                {
+                    Log.Information($"{solutionPath} does not contain any C# projects");
+                }
+            }
+            catch (Exception)
+            {
+                Log.Error($"Failed to parse {solutionPath}");
+            }
+        }
+
+        workItems.AddRange(projectPaths.Select(projectPath => new WorkItem.MSBuildProject(projectPath)));
+
+        WriteWorkItems(workItems, outputPath);
+    }
+
+    private static void WriteWorkItems(IEnumerable<WorkItem> workItems, string outputPath)
+    {
+        Log.Information($"Wrote work items to {Path.GetFullPath(outputPath)}");
+        var options = new JsonSerializerOptions { WriteIndented = true };
+        File.WriteAllText(outputPath, JsonSerializer.Serialize(workItems, options));
     }
 
     public static void Materialize(string unityProjectTemplatePath, string outputPath)
