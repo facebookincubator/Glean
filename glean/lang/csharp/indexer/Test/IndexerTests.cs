@@ -1,4 +1,10 @@
-// (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
+/*
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 using Indexer;
 using Indexer.Schema;
@@ -9,7 +15,7 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System.Linq;
 
-namespace Indexer.Test;
+namespace Glean.Indexer.Test;
 
 [TestFixture]
 public class IndexerTests

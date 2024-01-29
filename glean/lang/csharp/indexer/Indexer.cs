@@ -1,36 +1,39 @@
-// (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
+/*
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
-using System;
-using Microsoft.CodeAnalysis.MSBuild;
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Collections.Generic;
-using Indexer.Schema;
-using Indexer.Schema.CSharp;
+using Glean.Indexer.Schema;
+using Glean.Indexer.Schema.CSharp;
+using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.MSBuild;
 using Newtonsoft.Json.Linq;
-using Microsoft.Build.Locator;
 using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.Contracts;
+using System.IO;
+using System.Linq;
 using System.Text;
 
-using GleanLocation = Indexer.Schema.CSharp.Location;
-using GleanType = Indexer.Schema.CSharp.Type;
+using GleanLocation = Glean.Indexer.Schema.CSharp.Location;
+using GleanType = Glean.Indexer.Schema.CSharp.Type;
 
-namespace Indexer;
+namespace Glean.Indexer;
 
 public class GleanSyntaxWalker : CSharpSyntaxWalker
 {
+    public List<Fact> Facts { get; } = new List<Fact>();
     private SemanticModel Model { get; }
-    private FactFile FactFile { get; }
 
-    public GleanSyntaxWalker(SemanticModel model, FactFile factFile)
-    {
-        FactFile = factFile;
-        Model = model;
-    }
+    public GleanSyntaxWalker(SemanticModel model) => Model = model;
 
     public void VisitDeclaration(SyntaxNode node)
     {
@@ -40,7 +43,7 @@ public class GleanSyntaxWalker : CSharpSyntaxWalker
             DefinitionLocationFact.TryFromSymbol(symbol, out var definitionLocation) &&
             definitionLocation is not null)
         {
-            FactFile.AddFacts(definitionLocation.ToList());
+            Facts.AddRange(definitionLocation);
         }
     }
 
@@ -122,7 +125,7 @@ public class GleanSyntaxWalker : CSharpSyntaxWalker
             type is not null)
         {
             var key = new ObjectCreationLocationFactKey(type, method,location);
-            FactFile.AddFact(new ObjectCreationLocationFact(key));
+            Facts.Add(new ObjectCreationLocationFact(key));
         }
     }
 
@@ -139,82 +142,76 @@ public class GleanSyntaxWalker : CSharpSyntaxWalker
             location is not null)
         {
             var key = new MethodInvocationLocationFactKey(method,location);
-            FactFile.AddFact(new MethodInvocationLocationFact(key));
+            Facts.Add(new MethodInvocationLocationFact(key));
         }
     }
 }
 
 public class Indexer
 {
-    public static int IndexProject(string projectPath, string outputDirectory, int factsLimit)
+    public static void IndexProject(string projectPath, string outputPath)
     {
-        int factsTotalCount = 0;
-        Log.Information($"Indexing project: {projectPath}");
-
-        using (var workspace = MSBuildWorkspace.Create())
+        try
         {
-            Log.Debug($"Started building project: {projectPath}");
+            var facts = new List<Fact>();
 
-            Stopwatch stopwatch = Stopwatch.StartNew();
-
-            var compilation = Build.CompileProject(workspace, projectPath);
-            if (compilation == null)
+            using (var workspace = MSBuildWorkspace.Create())
             {
-                throw new Exception($"Failed to build project {projectPath}");
-            }
+                Log.Debug($"Started building project: {projectPath}");
 
-            stopwatch.Stop();
-            TimeSpan elapsed = stopwatch.Elapsed;
-            string formattedTime = string.Format
-            (
-                "{0:00}:{1:00}:{2:00}",
-                elapsed.Hours,
-                elapsed.Minutes,
-                elapsed.Seconds
-            );
+                Stopwatch stopwatch = Stopwatch.StartNew();
 
-            Log.Debug($"Finished building in {formattedTime}");
-
-            var diagnostics = compilation.GetDiagnostics();
-            if (diagnostics.Where(d => d.Severity >=  DiagnosticSeverity.Warning).Any())
-            {
-                Log.Warning($"Encountered one or more errors while building {projectPath}");
-            }
-
-            foreach (var diagnostic in diagnostics)
-            {
-                var code = diagnostic.Id;
-                var error = diagnostic.GetMessage();
-                var location = diagnostic.Location.GetLineSpan();
-                var message = $"[{code}] {error}\n  at {location}";
-
-                switch (diagnostic.Severity)
+                var compilation = Build.CompileProject(workspace, projectPath);
+                if (compilation == null)
                 {
-                    case DiagnosticSeverity.Error:
-                    case DiagnosticSeverity.Warning:
-                        Log.Warning(message);
-                        break;
-                    default:
-                        Log.Debug(message);
-                        break;
+                    throw new Exception($"Failed to build project {projectPath}");
+                }
+
+                stopwatch.Stop();
+                TimeSpan elapsed = stopwatch.Elapsed;
+                string formattedTime = string.Format
+                (
+                    "{0:00}:{1:00}:{2:00}",
+                    elapsed.Hours,
+                    elapsed.Minutes,
+                    elapsed.Seconds
+                );
+
+                Log.Debug($"Finished building in {formattedTime}");
+
+                var diagnostics = compilation.GetDiagnostics();
+                if (diagnostics.Where(d => d.Severity >= DiagnosticSeverity.Warning).Any())
+                {
+                    Log.Warning($"Encountered one or more errors while building {projectPath}");
+                }
+
+                foreach (var diagnostic in diagnostics)
+                {
+                    var code = diagnostic.Id;
+                    var error = diagnostic.GetMessage();
+                    var location = diagnostic.Location.GetLineSpan();
+                    var message = $"[{code}] {error}\n  at {location}";
+
+                    Log.Debug(message);
+                }
+
+                foreach (var syntaxTree in compilation.SyntaxTrees)
+                {
+                    var visitor = new GleanSyntaxWalker(compilation.GetSemanticModel(syntaxTree));
+                    visitor.Visit(syntaxTree.GetRoot());
+                    facts.AddRange(visitor.Facts);
                 }
             }
 
-            var factFile = new FactFile(projectPath, outputDirectory, factsLimit);
-
-            foreach (var syntaxTree in compilation.SyntaxTrees)
-            {
-                var visitor = new GleanSyntaxWalker(compilation.GetSemanticModel(syntaxTree), factFile);
-                visitor.Visit(syntaxTree.GetRoot());
-            }
-
-            // Add the last facts
-            factFile.CreateFile();
-            factsTotalCount = factFile.FactsTotalCount;
+            FactFile.Write(
+                outputPath,
+                projectPath,
+                facts
+            );
         }
-
-        Log.Information($"Created {factsTotalCount} facts");
-
-        return factsTotalCount;
+        catch (Exception e)
+        {
+            Log.Error(e.Message);
+        }
     }
 }

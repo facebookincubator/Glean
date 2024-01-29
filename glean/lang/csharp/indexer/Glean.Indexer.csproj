@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <OutputType>Exe</OutputType>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="Program.cs" />
+        <Compile Include="Build.cs" />
+        <Compile Include="FactFile.cs" />
+        <Compile Include="GleanSerializer.cs" />
+        <Compile Include="Hg.cs" />
+        <Compile Include="Indexer.cs" />
+        <Compile Include="Predicate.cs" />
+        <Compile Include="Schema/CSharp/ArrayTypeFact.cs" />
+        <Compile Include="Schema/CSharp/ClassFact.cs" />
+        <Compile Include="Schema/CSharp/Definition.cs" />
+        <Compile Include="Schema/CSharp/DefinitionLocationFact.cs" />
+        <Compile Include="Schema/CSharp/FieldFact.cs" />
+        <Compile Include="Schema/CSharp/FullNameFact.cs" />
+        <Compile Include="Schema/CSharp/InterfaceFact.cs" />
+        <Compile Include="Schema/CSharp/LocalFact.cs" />
+        <Compile Include="Schema/CSharp/Location.cs" />
+        <Compile Include="Schema/CSharp/MethodFact.cs" />
+        <Compile Include="Schema/CSharp/MethodInvocationLocationFact.cs" />
+        <Compile Include="Schema/CSharp/NamedType.cs" />
+        <Compile Include="Schema/CSharp/NameFact.cs" />
+        <Compile Include="Schema/CSharp/NamespaceFact.cs" />
+        <Compile Include="Schema/CSharp/ObjectCreationLocationFact.cs" />
+        <Compile Include="Schema/CSharp/ParameterFact.cs" />
+        <Compile Include="Schema/CSharp/PropertyFact.cs" />
+        <Compile Include="Schema/CSharp/RecordFact.cs" />
+        <Compile Include="Schema/CSharp/StructFact.cs" />
+        <Compile Include="Schema/CSharp/Type.cs" />
+        <Compile Include="Schema/CSharp/TypeParameterFact.cs" />
+        <Compile Include="Schema/Fact.cs" />
+        <Compile Include="Schema/Src/ByteSpan.cs" />
+        <Compile Include="Schema/Src/FileFact.cs" />
+        <Compile Include="Schema/Src/FileLinesFact.cs" />
+        <Compile Include="Schema/Src/FileLocation.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Build.Framework" Version="16.10.0" ExcludeAssets="runtime" />
+        <PackageReference Include="Microsoft.Build.Locator" Version="1.4.1" />
+        <PackageReference Include="Microsoft.Build.Tasks.Core" Version="16.10.0" ExcludeAssets="runtime" />
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.10.0" ExcludeAssets="runtime" />
+        <PackageReference Include="Microsoft.Build" Version="16.10.0" ExcludeAssets="runtime"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="4.6.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.6.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.6.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="4.6.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="4.6.0" />
+        <PackageReference Include="Microsoft.NET.StringTools" Version="1.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+        <PackageReference Include="Serilog" Version="3.0.1" />
+        <PackageReference Include="System.Collections.Immutable" Version="7.0.0" />
+        <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+        <PackageReference Include="System.Composition.AttributedModel" Version="7.0.0" />
+        <PackageReference Include="System.Composition.Hosting" Version="7.0.0" />
+        <PackageReference Include="System.Composition.Runtime" Version="7.0.0" />
+        <PackageReference Include="System.Composition.TypedParts" Version="7.0.0" />
+        <PackageReference Include="System.Security.Permissions" Version="7.0.0" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="../discovery/Glean.Discovery.Core.csproj" />
+    </ItemGroup>
+</Project>

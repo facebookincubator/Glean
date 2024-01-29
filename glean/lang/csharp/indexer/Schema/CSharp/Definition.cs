@@ -66,11 +66,11 @@ public record Definition
                 }
                 break;
             default:
-                Log.Error($"Unsupported symbol {symbol}");
+                Log.Debug($"Unsupported symbol {symbol}");
                 break;
         }
 
-        Log.Error($"Failed to create definition for {symbol}");
+        Log.Debug($"Failed to create definition for {symbol}");
         result = default;
         return false;
     }

@@ -1,34 +1,32 @@
-// (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
+/*
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
-using Indexer;
-using Indexer.Schema;
-using Indexer.Schema.CSharp;
-using System.Linq;
+using Glean.Indexer;
+using Glean.Indexer.Schema;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Serilog;
 
-namespace Indexer;
+namespace Glean.Indexer;
 
-public class FactFile
+public static class FactFile
 {
     private static HashSet<string> uniqueFileNames = new HashSet<string>();
-    private List<Fact> Facts = new List<Fact>();
-    private string ProjectPath = "";
-    private string OutputDirectory = "";
-    private int FactsLimit = 0;
-    private int FileIndex = 0;
-
-    public int FactsTotalCount {get;set;}
 
     /*
      * The set of disallowed characters on Unix is a subset of those disallowed on Windows, so we use the
      * stricter set (instead of using the platform-dependent Path.GetInvalidFileNameChars)
      */
-    public char[] GetInvalidFileNameChars() => new char[]
+    public static char[] GetInvalidFileNameChars() => new char[]
     {
         '\"', '<', '>', '|', '\0', ':', '*', '?', '\\', '/',
         (char)1,  (char)2,  (char)3,  (char)4,  (char)5,  (char)6,  (char)7,  (char)8,  (char)9,  (char)10,
@@ -37,7 +35,7 @@ public class FactFile
         (char)31,
     };
 
-    public string CleanFileName(string fileName)
+    public static string CleanFileName(string fileName)
     {
         string invalidChars = Regex.Escape(new string(GetInvalidFileNameChars()));
         string invalidRegexString = $"[{invalidChars}]+";
@@ -45,10 +43,9 @@ public class FactFile
         return Regex.Replace(fileName, invalidRegexString, "_");
     }
 
-    public string DisambiguateFileName(string[] pathParts)
+    public static string DisambiguateFileName(string[] pathParts, int startIndex)
     {
-        string filename = CleanFileName(string.Join("_", pathParts, 0, pathParts.Length - 1));
-        filename += $"_{FileIndex}";
+        string filename = CleanFileName(string.Join("_", pathParts, startIndex, pathParts.Length - startIndex));
 
         if (!uniqueFileNames.Contains(filename))
         {
@@ -57,82 +54,43 @@ public class FactFile
         }
         else
         {
-            FileIndex++;
-            return DisambiguateFileName(pathParts);
+            return DisambiguateFileName(pathParts, startIndex - 1);
         }
     }
 
-    public string GetFactFileNameForProject(string projectPath)
+    public static string GetFactFileNameForProject(string projectPath, int? shard)
     {
         string[] pathParts = projectPath.Split(Path.DirectorySeparatorChar);
-        return $"{DisambiguateFileName(pathParts)}.json";
+        var baseFileName = DisambiguateFileName(pathParts, pathParts.Length - 1);
+
+        return shard == null ? $"{baseFileName}.json" : $"{baseFileName}_{shard}.json";
     }
 
-    public FactFile(string projectPath, string outputDirectory, int factsLimit)
+    public static void Write(string outputPath, string projectPath, IEnumerable<Fact> facts, int? shard = null)
     {
-        Facts = new List<Fact>();
-        OutputDirectory = outputDirectory;
-        ProjectPath = projectPath;
-        FactsLimit = factsLimit;
+        var output = facts
+            .GroupBy(fact => fact.Predicate)
+            .ToDictionary(
+                group => group.Key,
+                group => group
+                .Select(fact => GleanSerializer.Serialize(fact))
+                .ToList()
+            )
+            .OrderBy(entry => entry.Key)
+            .Select(entry => new JObject()
+            {
+                { "predicate", entry.Key.GetFullName() },
+                { "facts", new JArray(entry.Value) }
+            });
 
-        FileIndex = 1;
-        FactsTotalCount = 0;
-    }
+        var factFileName = FactFile.GetFactFileNameForProject(projectPath, shard);
+        var factFilePath = Path.Join(outputPath, factFileName);
 
-    public void AddFact(Fact fact)
-    {
-        Facts.Add(fact);
-
-        if (FactsLimit > 0 && Facts.Count > FactsLimit)
-        {
-            CreateFile();
-        }
-    }
-
-    public void AddFacts(List<DefinitionLocationFact> facts)
-    {
-        Facts.AddRange(facts);
-
-        if (FactsLimit > 0 && Facts.Count >= FactsLimit)
-        {
-            CreateFile();
-        }
-    }
-
-    public void CreateFile()
-    {
-        if (Facts.Count > 0)
-        {
-            var factFileName = GetFactFileNameForProject(ProjectPath);
-            var factFilePath = Path.Join(OutputDirectory, factFileName);
-
-            var facts = Facts
-                        .GroupBy(fact => fact.Predicate)
-                        .ToDictionary(
-                            group => group.Key,
-                            group => group
-                            .Select(fact => GleanSerializer.Serialize(fact))
-                            .ToList()
-                        )
-                        .OrderBy(entry => entry.Key)
-                        .Select(entry => new JObject()
-                        {
-                            { "predicate", entry.Key.GetFullName() },
-                            { "facts", new JArray(entry.Value) }
-                        });
-
-            File.WriteAllTextAsync
-            (
-                factFilePath,
-                GleanSerializer.Encode(facts)
-            );
-
-            FactsTotalCount += Facts.Count;
-            Log.Information($"Wrote {Facts.Count} facts to {factFilePath}");
-
-        }
-
-        Facts = new List<Fact>();
-        FileIndex++;
+        Log.Information($"Wrote {facts.Count()} facts to {factFilePath}");
+        File.WriteAllText
+        (
+            factFilePath,
+            GleanSerializer.Encode(output)
+        );
     }
 }

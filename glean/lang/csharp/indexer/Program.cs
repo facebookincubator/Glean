@@ -1,26 +1,34 @@
-// (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
+/*
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
+using Glean.Discovery;
+using Glean.Indexer.Schema;
+using System.Text.Json;
+using Serilog;
 using System;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.CommandLine;
 using System.IO;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 using System.Linq;
-using Serilog;
+using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
-namespace Indexer;
+namespace Glean.Indexer;
 
 public class Program
 {
     const string LoggerTemplate = "[{Timestamp:yyyy-MM-ddTHH:mm:ss.fff}] [{Level:u4}] {Message:lj}{NewLine}{Exception}";
 
-    public static async Task Main(string[] args)
+    public static void Main(string[] args)
     {
-        var projectsArgument = new Argument<string>(
-            name: "projects",
-            description: "The path of a file containing a list of project paths (.csproj) to be indexed."
+        var workPathArgument = new Argument<string>(
+            name: "materialized-work-path",
+            description: "The path of a file containing work for the indexer, encoded as a JSON array"
         );
 
         var outOption = new Option<string>(
@@ -29,85 +37,88 @@ public class Program
             getDefaultValue: () => "indexer_output"
         );
 
-        var factsLimitOption = new Option<int>(
-            aliases: new [] { "--factslimit", "-l" },
-            description: "The maximum number of facts collected before writing to file. If used, several files with different index will be created.",
-            getDefaultValue: () => 0
-        );
-
         var rootCommand = new RootCommand("Index C# projects")
         {
-            projectsArgument,
-            outOption,
-            factsLimitOption
+            workPathArgument,
+            outOption
         };
 
         rootCommand.SetHandler
         (
-            async (projectsFile, @out, @factsLimit) =>
+            (workPath, outputPath) =>
             {
-                var logfile = Path.Join(@out, "debug.log");
-
                 Log.Logger = new LoggerConfiguration()
-                    .MinimumLevel.Verbose()
-                    .WriteTo.Console(
+                    .MinimumLevel
+                    .Verbose()
+                    .WriteTo
+                    .Console(
                         outputTemplate: LoggerTemplate,
                         restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information)
-                    .WriteTo.File(
-                        logfile,
-                        outputTemplate: LoggerTemplate,
-                        restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose)
                     .CreateLogger();
 
                 Log.Debug($"Repository root: {Hg.RepoRoot}");
                 Directory.SetCurrentDirectory(Hg.RepoRoot);
 
-                Log.Debug($"Creating output directory: {@out}");
-                Directory.CreateDirectory(@out);
+                Log.Debug($"Creating output directory: {outputPath}");
+                Directory.CreateDirectory(outputPath);
 
-                if (@factsLimit > 0)
-                {
-                    Log.Information($"Facts limit: {@factsLimit}");
-                }
-                else
-                {
-                    Log.Information($"No facts limit specified. All facts for a project will be saved in a single file.");
-                }
+                Log.Debug($"Reading work from: {workPath}");
+                var work = JsonSerializer.Deserialize<MaterializedWorkItem[]>(File.ReadAllText(workPath));
 
-                Log.Debug($"Reading projects from: {projectsFile}");
-                var projectPaths = JsonConvert.DeserializeObject<List<string>>
-                (
-                    File.ReadAllText(projectsFile)
-                );
-
-                if (projectPaths == null || !projectPaths.Any())
+                if (work == null || !work.Any())
                 {
-                    Log.Warning("No work to do: projects file was empty");
+                    Log.Warning("Nothing to do: work file was empty");
                     return;
                 }
 
                 Log.Debug("Initializing MSBuild");
                 Build.Initialize();
 
-                foreach (var projectPath in projectPaths)
+                foreach (var workItem in work)
                 {
-                    try
-                    {
-                        Indexer.IndexProject(projectPath, @out, @factsLimit);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(ex.Message);
-                    }
+                    IndexWorkItem(workItem, outputPath);
                 }
-
-                Log.Information($"See {logfile} for full logs");
             },
-            projectsArgument,
-            outOption,
-            factsLimitOption
+            workPathArgument,
+            outOption
         );
 
-        await rootCommand.InvokeAsync(args);
+        rootCommand.Invoke(args);
+    }
+
+    private static void IndexWorkItem(MaterializedWorkItem workItem, string outputPath)
+    {
+        switch (workItem)
+        {
+            case MaterializedWorkItem.MSBuildProject msbuildProjectWorkItem:
+            {
+                var projectPath = msbuildProjectWorkItem.ProjectPath;
+                Log.Information($"Indexing MSBuild project {projectPath}");
+                Indexer.IndexProject(projectPath, outputPath);
+                break;
+            }
+            case MaterializedWorkItem.MSBuildSolution msbuildSolutionWorkItem:
+            {
+                Log.Information($"Indexing MSBuild solution {msbuildSolutionWorkItem.SolutionPath}");
+                foreach (var projectPath in msbuildSolutionWorkItem.ProjectPaths)
+                {
+                    Indexer.IndexProject(projectPath, outputPath);
+                }
+
+                break;
+            }
+            case MaterializedWorkItem.UnityPackage unityPackageWorkItem:
+            {
+                var projectPath = unityPackageWorkItem.GeneratedProjectPath;
+                Log.Information($"Indexing generated project {projectPath} from package {unityPackageWorkItem.PackageName}");
+                Indexer.IndexProject(projectPath, outputPath);
+                break;
+            }
+            default:
+            {
+                Log.Error($"Unsupported work type: {workItem.Type}");
+                break;
+            }
+        }
     }
 }
