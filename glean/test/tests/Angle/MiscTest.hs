@@ -114,6 +114,14 @@ angleDSL modify = dbTestCase $ \env repo -> do
       ]
   assertEqual "angle - DSL 4" [toNat 2] results
 
+  -- This is just a compile test, inference should not fail with an
+  -- ambiguous type error.
+  _results <- runQuery_ env repo $ modify $ Angle.query $
+    vars $ \(x :: Angle Text) ->
+      x `where_` [
+        wild .= predicate @Glean.Test.Node (rec $ field @"label" x end)
+      ]
+
   results <- runQuery_ env repo $ modify $ Angle.query $
     var $ \p -> p `where_` [p .= sig (never @Glean.Test.Predicate)]
   assertEqual "angle - DSL 4" 0 (length results)

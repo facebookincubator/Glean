@@ -145,13 +145,12 @@ class AngleVars f r where
   --
   -- > let foo :: Angle a -> Angle b -> Angle c -> Angle d -> Angle e
   -- > vars foo == var $ \a -> var $ \b -> var $ \c -> var $ \d -> foo a b c d
-  vars :: f -> r
+  vars :: f -> Angle r
 
-instance AngleVars (Angle b) (Angle b) where
+instance (a ~ b) => AngleVars (Angle a) b where
   vars = id
 
-instance (Type a, AngleVars s (Angle r)) =>
-    AngleVars (Angle a -> s) (Angle r) where
+instance (Type a, AngleVars s r) => AngleVars (Angle a -> s) r where
   vars f = var $ \ a -> vars (f a)
 
 -- | Introduce an Angle variable

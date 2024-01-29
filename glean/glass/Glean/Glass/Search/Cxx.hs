@@ -504,7 +504,7 @@ lookupEntityFn ::
       -> Angle Text
       -> Angle (Cxx.Entity, Src.File, Code.RangeSpan, Text)) r
   => (P.Name -> [P.Name] -> Angle Cxx.Entity -> Angle t)
-  -> Text -> [P.Name] -> P.Name -> r
+  -> Text -> [P.Name] -> P.Name -> Angle r
 lookupEntityFn pred anchor ns name =
   vars $ \(entity :: Angle Cxx.Entity) (codeEntity :: Angle Code.Entity)
       (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
