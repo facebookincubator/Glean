@@ -6,6 +6,7 @@
     <ItemGroup>
         <Compile Include="Discovery.cs" />
         <Compile Include="WorkItem.cs" />
+        <Compile Include="WorkItemConverter.cs" />
         <Compile Include="WorkType.cs" />
     </ItemGroup>
     <ItemGroup>
