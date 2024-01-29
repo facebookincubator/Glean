@@ -1,9 +1,15 @@
-// (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
+/*
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 using Microsoft.CodeAnalysis;
-using Indexer.Schema.Src;
+using Glean.Indexer.Schema.Src;
 
-namespace Indexer.Schema.CSharp;
+namespace Glean.Indexer.Schema.CSharp;
 
 public record Location(FileLocation FileLocation, FileLinesFact FileLines)
 {
