@@ -7,11 +7,35 @@
         "inheritedSymbols": [],
         "parentsExtended": [],
         "requireClass": [],
-        "requireExtends": [],
+        "requireExtends": [
+            "test/php/Machine",
+            "test/php/SuperEngine"
+        ],
         "requireImplements": [],
-        "symbolBasicDetails": {},
+        "symbolBasicDetails": {
+            "test/php/Machine": {
+                "kind": 7,
+                "language": 3,
+                "name": {
+                    "container": "",
+                    "localName": "Machine"
+                },
+                "signature": "abstract class Machine",
+                "sym": "test/php/Machine"
+            },
+            "test/php/SuperEngine": {
+                "kind": 7,
+                "language": 3,
+                "name": {
+                    "container": "",
+                    "localName": "SuperEngine"
+                },
+                "signature": "class SuperEngine",
+                "sym": "test/php/SuperEngine"
+            }
+        },
         "symbolDetails": {
-            "test/php/fun/corge": {
+            "test/php/Jet": {
                 "annotations": [],
                 "comments": [],
                 "contains_relation": {
@@ -26,34 +50,34 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
-                "kind": 14,
+                "kind": 13,
                 "language": 3,
                 "location": {
-                    "filepath": "www/TopLevel.php",
+                    "filepath": "www/Require.php",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 12,
-                        "lineEnd": 14
+                        "lineBegin": 57,
+                        "lineEnd": 60
                     },
                     "repository": "test"
                 },
                 "modifiers": [],
                 "name": {
                     "container": "",
-                    "localName": "corge"
+                    "localName": "Jet"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "function corge(): int",
-                "sym": "test/php/fun/corge",
+                "signature": "interface Jet",
+                "sym": "test/php/Jet",
                 "sym_location": {
-                    "filepath": "www/TopLevel.php",
+                    "filepath": "www/Require.php",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 12,
-                        "lineEnd": 14
+                        "lineBegin": 57,
+                        "lineEnd": 60
                     },
                     "repository": "test"
                 },
@@ -61,10 +85,10 @@
                 "type_xrefs": [
                     {
                         "span": {
-                            "length": 5,
-                            "start": 9
+                            "length": 3,
+                            "start": 10
                         },
-                        "type": "test/php/fun/corge"
+                        "type": "test/php/Jet"
                     }
                 ]
             }

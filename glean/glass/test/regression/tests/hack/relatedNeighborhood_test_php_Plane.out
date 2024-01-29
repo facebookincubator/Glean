@@ -1,28 +1,75 @@
 [
     "@generated",
     {
-        "childrenContained": [],
-        "childrenExtended": [],
-        "containsParents": [
-            {
-                "child": "test/php/SourceTrait/quux",
-                "parent": "test/php/SourceTrait"
-            }
+        "childrenContained": [
+            "test/php/Plane/takeOff"
         ],
+        "childrenExtended": [
+            "test/php/AirBus"
+        ],
+        "containsParents": [],
         "inheritedSymbols": [],
         "parentsExtended": [],
-        "requireClass": [],
-        "requireExtends": [],
-        "requireImplements": [],
-        "symbolBasicDetails": {},
+        "requireClass": [
+            "test/php/AirBus"
+        ],
+        "requireExtends": [
+            "test/php/Machine"
+        ],
+        "requireImplements": [
+            "test/php/CoolStuff",
+            "test/php/Fliers"
+        ],
+        "symbolBasicDetails": {
+            "test/php/AirBus": {
+                "kind": 7,
+                "language": 3,
+                "name": {
+                    "container": "",
+                    "localName": "AirBus"
+                },
+                "signature": "class AirBus",
+                "sym": "test/php/AirBus"
+            },
+            "test/php/CoolStuff": {
+                "kind": 13,
+                "language": 3,
+                "name": {
+                    "container": "",
+                    "localName": "CoolStuff"
+                },
+                "signature": "interface CoolStuff",
+                "sym": "test/php/CoolStuff"
+            },
+            "test/php/Fliers": {
+                "kind": 13,
+                "language": 3,
+                "name": {
+                    "container": "",
+                    "localName": "Fliers"
+                },
+                "signature": "interface Fliers",
+                "sym": "test/php/Fliers"
+            },
+            "test/php/Machine": {
+                "kind": 7,
+                "language": 3,
+                "name": {
+                    "container": "",
+                    "localName": "Machine"
+                },
+                "signature": "abstract class Machine",
+                "sym": "test/php/Machine"
+            }
+        },
         "symbolDetails": {
-            "test/php/SourceTrait": {
+            "test/php/Plane": {
                 "annotations": [],
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
-                    "hasMoreChildren": true,
+                    "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
                 "extends_relation": {
@@ -34,31 +81,31 @@
                 "kind": 31,
                 "language": 3,
                 "location": {
-                    "filepath": "www/SourceTrait.php",
+                    "filepath": "www/Require.php",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 10,
-                        "lineEnd": 18
+                        "lineBegin": 36,
+                        "lineEnd": 47
                     },
                     "repository": "test"
                 },
                 "modifiers": [],
                 "name": {
                     "container": "",
-                    "localName": "SourceTrait"
+                    "localName": "Plane"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "trait SourceTrait",
-                "sym": "test/php/SourceTrait",
+                "signature": "trait Plane",
+                "sym": "test/php/Plane",
                 "sym_location": {
-                    "filepath": "www/SourceTrait.php",
+                    "filepath": "www/Require.php",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 10,
-                        "lineEnd": 18
+                        "lineBegin": 36,
+                        "lineEnd": 47
                     },
                     "repository": "test"
                 },
@@ -66,14 +113,14 @@
                 "type_xrefs": [
                     {
                         "span": {
-                            "length": 11,
+                            "length": 5,
                             "start": 6
                         },
-                        "type": "test/php/SourceTrait"
+                        "type": "test/php/Plane"
                     }
                 ]
             },
-            "test/php/SourceTrait/quux": {
+            "test/php/Plane/takeOff": {
                 "annotations": [],
                 "comments": [],
                 "contains_relation": {
@@ -91,31 +138,31 @@
                 "kind": 8,
                 "language": 3,
                 "location": {
-                    "filepath": "www/SourceTrait.php",
+                    "filepath": "www/Require.php",
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 11,
-                        "lineEnd": 13
+                        "lineBegin": 42,
+                        "lineEnd": 46
                     },
                     "repository": "test"
                 },
                 "modifiers": [],
                 "name": {
-                    "container": "SourceTrait",
-                    "localName": "quux"
+                    "container": "Plane",
+                    "localName": "takeOff"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "public function quux(int $i): int",
-                "sym": "test/php/SourceTrait/quux",
+                "signature": "public function takeOff(): bool",
+                "sym": "test/php/Plane/takeOff",
                 "sym_location": {
-                    "filepath": "www/SourceTrait.php",
+                    "filepath": "www/Require.php",
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 4,
-                        "lineBegin": 11,
-                        "lineEnd": 13
+                        "lineBegin": 42,
+                        "lineEnd": 46
                     },
                     "repository": "test"
                 },
@@ -123,10 +170,10 @@
                 "type_xrefs": [
                     {
                         "span": {
-                            "length": 4,
+                            "length": 7,
                             "start": 16
                         },
-                        "type": "test/php/SourceTrait/quux"
+                        "type": "test/php/Plane/takeOff"
                     }
                 ],
                 "visibility": 20

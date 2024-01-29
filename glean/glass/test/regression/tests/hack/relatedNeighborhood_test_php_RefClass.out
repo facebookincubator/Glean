@@ -44,6 +44,9 @@
             "test/php/SourceSecretTrait",
             "test/php/SourceTrait"
         ],
+        "requireClass": [],
+        "requireExtends": [],
+        "requireImplements": [],
         "symbolBasicDetails": {
             "test/php/SourceClass": {
                 "kind": 7,

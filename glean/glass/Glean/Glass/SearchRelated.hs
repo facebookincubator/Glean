@@ -165,6 +165,12 @@ searchRelation opts@SearchOptions{..} limit toVisit visited =
         baseSearchFn Code.RelationType_ContainsParentOfChild
       (RelationType_Contains, RelationDirection_Child) ->
         baseSearchFn Code.RelationType_ContainsChildOfParent
+      (RelationType_RequireExtends, RelationDirection_Parent) ->
+        baseSearchFn Code.RelationType_RequireExtendsParentOfChild
+      (RelationType_RequireImplements, RelationDirection_Parent) ->
+        baseSearchFn Code.RelationType_RequireImplementsParentOfChild
+      (RelationType_RequireClass, RelationDirection_Parent) ->
+        baseSearchFn Code.RelationType_RequireClassParentOfChild
       _ -> \_angle -> pure []
 
 -- recursively search up to limit

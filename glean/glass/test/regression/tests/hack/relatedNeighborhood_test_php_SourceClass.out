@@ -25,6 +25,9 @@
         "parentsExtended": [
             "test/php/SuperClass"
         ],
+        "requireClass": [],
+        "requireExtends": [],
+        "requireImplements": [],
         "symbolBasicDetails": {
             "test/php/RefClass": {
                 "kind": 7,

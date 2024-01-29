@@ -1,0 +1,3 @@
+action: searchRelated
+args: {"symbol":"test/php/Plane","request":{"relatedBy":4,"relation":1,"recursive":false,"detailedResults":true}}
+

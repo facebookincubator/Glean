@@ -38,7 +38,9 @@ import Glean.Glass.Types
       RelatedSymbols(RelatedSymbols),
       RelationDirection(RelationDirection_Parent,
                         RelationDirection_Child),
-      RelationType(RelationType_Extends, RelationType_Contains),
+      RelationType(RelationType_Extends, RelationType_Contains,
+                   RelationType_RequireExtends, RelationType_RequireImplements,
+                   RelationType_RequireClass),
       RepoName,
       SymbolBasicDescription,
       SymbolKind )
@@ -72,6 +74,9 @@ searchNeighborhood limit
     c <- parentContainsNLevel
           (fromIntegral relatedNeighborhoodRequest_parent_depth) entity repo
     d <- parentExtends1Level limit entity repo
+    e <- parentRequire RelationType_RequireExtends limit entity repo
+    f <- parentRequire RelationType_RequireImplements limit entity repo
+    g <- parentRequire RelationType_RequireClass limit entity repo
     -- all contained symbols of inherited parents
     -- n.b. not all are actually in scope after we resolve names
     (eFull, edges, kinds) <- inheritedNLevel limit
@@ -92,7 +97,7 @@ searchNeighborhood limit
     let !descriptions = patchDescriptions lang descs0 overrides'
     -- brief descriptions for inherited things
     basics <- Map.fromAscList <$> mapM (mkBriefDescribe repo scmRevs)
-      (uniqBy (comparing snd) $ (b ++ d) ++ map fst eFinal)
+      (uniqBy (comparing snd) $ (b ++ d ++ e ++ f ++ g) ++ map fst eFinal)
 
     return $ RelatedNeighborhoodResult {
         relatedNeighborhoodResult_childrenContained = map snd a,
@@ -102,7 +107,10 @@ searchNeighborhood limit
         relatedNeighborhoodResult_inheritedSymbols =
           map inheritedSymbolIdSets eFinal,
         relatedNeighborhoodResult_symbolDetails = descriptions,
-        relatedNeighborhoodResult_symbolBasicDetails = basics
+        relatedNeighborhoodResult_symbolBasicDetails = basics,
+        relatedNeighborhoodResult_requireExtends = map snd e,
+        relatedNeighborhoodResult_requireImplements = map snd f,
+        relatedNeighborhoodResult_requireClass = map snd g
       }
 
 
@@ -224,6 +232,24 @@ inheritedNLevel memberLimit inheritedLimit concise baseEntity repo = do
   -- and fetch their children concurrently
   inherited <- mapM (childrenOf memberLimit repo) parents
   return (inherited,symTable,toKindTable kinds)
+
+-- Fetch the "required" parent entities
+-- This only exists for Hack entity so we can avoid
+-- useless queries for other languages
+parentRequire :: RelationType -> Int -> SearchRelatedList u w
+parentRequire relationType limit baseEntity repo =
+  case baseEntity of
+    Code.Entity_hack _ ->
+        map Search.parentRL <$>
+          Search.searchRelatedEntities
+            limit
+            Search.ShowAll
+            Search.NotRecursive
+            RelationDirection_Parent
+            relationType
+            baseEntity
+            repo
+    _ -> return []
 
 childrenOf
   :: Int -> RepoName -> Search.LocatedEntity

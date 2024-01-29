@@ -539,6 +539,9 @@ enum RelationType {
   Extends = 1, // OOP inheritance
   Contains = 2, // Syntactically nested (usually)
   Calls = 3, // Callers(Parent) or Callees (Child)
+  RequireImplements = 4,
+  RequireExtends = 5,
+  RequireClass = 6,
 }
 
 enum RelationDirection {
@@ -587,7 +590,7 @@ struct InheritedSymbols {
   2: list<SymbolId> provides;
 }
 
-// Report of neighborhoood of a symbol in all directions (for API discovery)
+// Report of neighborhood of a symbol in all directions (for API discovery)
 // Even if there are no parents or children we guarantee to return details
 // of the base symbol. the contains and extends 1st level children redundantly
 // track the parent symbol id (even though its known from context)
@@ -600,6 +603,12 @@ struct RelatedNeighborhoodResult {
   5: list<InheritedSymbols> inheritedSymbols; // "inherited" children, in scope
   6: map<string, SymbolDescription> symbolDetails; // details for members
   10: map<string, SymbolBasicDescription> symbolBasicDetails; // details of rest
+
+  // Required constraints, Hack specific
+  // https://docs.hhvm.com/hack/traits-and-interfaces/trait-and-interface-requirements
+  11: list<SymbolId> requireImplements;
+  12: list<SymbolId> requireExtends;
+  13: list<SymbolId> requireClass;
 }
 
 # request xref locations (currently just #includes for C++ only)

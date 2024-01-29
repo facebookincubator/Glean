@@ -1,32 +1,18 @@
 [
     "@generated",
     {
-        "childrenContained": [],
-        "childrenExtended": [],
-        "containsParents": [
+        "edges": [
             {
-                "child": "test/php/SourceClass/:prop/daz",
-                "parent": "test/php/SourceClass"
+                "child": "test/php/Plane",
+                "parent": "test/php/Machine"
             }
         ],
-        "inheritedSymbols": [],
-        "parentsExtended": [],
-        "requireClass": [],
-        "requireExtends": [],
-        "requireImplements": [],
-        "symbolBasicDetails": {},
         "symbolDetails": {
-            "test/php/SourceClass": {
-                "annotations": [
-                    {
-                        "name": "TestAnnotation",
-                        "source": "TestAnnotation(\"Text\")",
-                        "symbol": "test/php/TestAnnotation"
-                    }
-                ],
+            "test/php/Machine": {
+                "annotations": [],
                 "comments": [
                     {
-                        "filepath": "www/SourceClass.php",
+                        "filepath": "www/Require.php",
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 4,
@@ -45,30 +31,32 @@
                 "extends_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
-                    "hasMoreChildren": true,
+                    "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
                 "kind": 7,
                 "language": 3,
                 "location": {
-                    "filepath": "www/SourceClass.php",
+                    "filepath": "www/Require.php",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 13,
-                        "lineEnd": 38
+                        "lineBegin": 14,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    1
+                ],
                 "name": {
                     "container": "",
-                    "localName": "SourceClass"
+                    "localName": "Machine"
                 },
                 "pretty_comments": [
                     {
                         "location": {
-                            "filepath": "www/SourceClass.php",
+                            "filepath": "www/Require.php",
                             "range": {
                                 "columnBegin": 1,
                                 "columnEnd": 4,
@@ -80,15 +68,15 @@
                     }
                 ],
                 "repo_hash": "testhash",
-                "signature": "class SourceClass",
-                "sym": "test/php/SourceClass",
+                "signature": "abstract class Machine",
+                "sym": "test/php/Machine",
                 "sym_location": {
-                    "filepath": "www/SourceClass.php",
+                    "filepath": "www/Require.php",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 13,
-                        "lineEnd": 38
+                        "lineBegin": 14,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 },
@@ -96,14 +84,14 @@
                 "type_xrefs": [
                     {
                         "span": {
-                            "length": 11,
-                            "start": 6
+                            "length": 7,
+                            "start": 15
                         },
-                        "type": "test/php/SourceClass"
+                        "type": "test/php/Machine"
                     }
                 ]
             },
-            "test/php/SourceClass/:prop/daz": {
+            "test/php/Plane": {
                 "annotations": [],
                 "comments": [],
                 "contains_relation": {
@@ -118,40 +106,47 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
-                "kind": 9,
+                "kind": 31,
                 "language": 3,
                 "location": {
-                    "filepath": "www/SourceClass.php",
+                    "filepath": "www/Require.php",
                     "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 23,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 36,
+                        "lineEnd": 47
                     },
                     "repository": "test"
                 },
                 "modifiers": [],
                 "name": {
-                    "container": "SourceClass",
-                    "localName": "daz"
+                    "container": "",
+                    "localName": "Plane"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "public int daz",
-                "sym": "test/php/SourceClass/:prop/daz",
+                "signature": "trait Plane",
+                "sym": "test/php/Plane",
                 "sym_location": {
-                    "filepath": "www/SourceClass.php",
+                    "filepath": "www/Require.php",
                     "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 23,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 36,
+                        "lineEnd": 47
                     },
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
-                "visibility": 20
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 6
+                        },
+                        "type": "test/php/Plane"
+                    }
+                ]
             }
         }
     }

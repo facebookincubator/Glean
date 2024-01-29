@@ -1,64 +1,56 @@
 [
     "@generated",
     {
-        "childrenContained": [],
-        "childrenExtended": [],
-        "containsParents": [
+        "edges": [
             {
-                "child": "test/php/Position/Center",
-                "parent": "test/php/Position"
+                "child": "test/php/Plane",
+                "parent": "test/php/AirBus"
             }
         ],
-        "inheritedSymbols": [],
-        "parentsExtended": [],
-        "requireClass": [],
-        "requireExtends": [],
-        "requireImplements": [],
-        "symbolBasicDetails": {},
         "symbolDetails": {
-            "test/php/Position": {
+            "test/php/AirBus": {
                 "annotations": [],
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
-                    "hasMoreChildren": true,
+                    "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
                 "extends_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
                     "hasMoreChildren": false,
-                    "hasMoreParents": false
+                    "hasMoreParents": true
                 },
-                "kind": 12,
+                "kind": 7,
                 "language": 3,
                 "location": {
-                    "filepath": "www/TopLevel.php",
+                    "filepath": "www/Require.php",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 16,
-                        "lineEnd": 22
+                        "lineBegin": 49,
+                        "lineEnd": 55
                     },
                     "repository": "test"
                 },
                 "modifiers": [],
                 "name": {
                     "container": "",
-                    "localName": "Position"
+                    "localName": "AirBus"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "enum Position : int as int",
-                "sym": "test/php/Position",
+                "signature": "class AirBus",
+                "sym": "test/php/AirBus",
                 "sym_location": {
-                    "filepath": "www/TopLevel.php",
+                    "filepath": "www/Require.php",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 16,
-                        "lineEnd": 22
+                        "lineBegin": 49,
+                        "lineEnd": 55
                     },
                     "repository": "test"
                 },
@@ -66,14 +58,15 @@
                 "type_xrefs": [
                     {
                         "span": {
-                            "length": 8,
-                            "start": 5
+                            "length": 6,
+                            "start": 6
                         },
-                        "type": "test/php/Position"
+                        "type": "test/php/AirBus"
                     }
                 ]
             },
-            "test/php/Position/Center": {
+            "test/php/Plane": {
+                "annotations": [],
                 "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -87,39 +80,47 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
-                "kind": 10,
+                "kind": 31,
                 "language": 3,
                 "location": {
-                    "filepath": "www/TopLevel.php",
+                    "filepath": "www/Require.php",
                     "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 9,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 36,
+                        "lineEnd": 47
                     },
                     "repository": "test"
                 },
                 "modifiers": [],
                 "name": {
-                    "container": "Position",
-                    "localName": "Center"
+                    "container": "",
+                    "localName": "Plane"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "Position::Center",
-                "sym": "test/php/Position/Center",
+                "signature": "trait Plane",
+                "sym": "test/php/Plane",
                 "sym_location": {
-                    "filepath": "www/TopLevel.php",
+                    "filepath": "www/Require.php",
                     "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 9,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 36,
+                        "lineEnd": 47
                     },
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 6
+                        },
+                        "type": "test/php/Plane"
+                    }
+                ]
             }
         }
     }
