@@ -1,11 +1,17 @@
-// (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
+/*
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 using Microsoft.CodeAnalysis;
 using Serilog;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace Indexer.Schema.CSharp;
+namespace Glean.Indexer.Schema.CSharp;
 
 public record struct PropertyFactKey
     ( NameFact Name
@@ -24,7 +30,7 @@ public record PropertyFact(PropertyFactKey Key) : FactWithKey<PropertyFactKey>(P
     {
         var name = new NameFact(symbol.Name);
 
-        if (!Type.TryFromSymbol(symbol.Type, out var type))
+        if (!Type.TryFromSymbol(symbol.Type, out var type) || type == null)
         {
             result = default;
             return false;

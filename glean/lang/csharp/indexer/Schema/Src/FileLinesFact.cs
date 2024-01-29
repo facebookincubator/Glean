@@ -1,11 +1,17 @@
-// (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
+/*
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using Serilog;
 using System.Linq;
 
-namespace Indexer.Schema.Src;
+namespace Glean.Indexer.Schema.Src;
 
 public record struct FileLinesFactKey
     ( FileFact File
@@ -30,10 +36,14 @@ public record FileLinesFact(FileLinesFactKey Key) : FactWithKey<FileLinesFactKey
         var repoRootRelativePath = Hg.GetRepoRootRelativePath(absolutePath);
         var lines = sourceTree.GetText().Lines;
         var lengths = lines.Select(l => (ulong)l.SpanIncludingLineBreak.Length).ToArray();
-        var lastLine = lines.LastOrDefault();
-        var endsInNewline = lastLine != null
-            ? lastLine.SpanIncludingLineBreak.Length == 0 || lastLine.EndIncludingLineBreak != lastLine.End
-            : false;
+
+        var endsInNewline = false;
+        if (lines.Any())
+        {
+            var lastLine = lines.LastOrDefault();
+            endsInNewline = lastLine.SpanIncludingLineBreak.Length == 0 || lastLine.EndIncludingLineBreak != lastLine.End;
+        }
+
         var key = new FileLinesFactKey
             ( new FileFact(repoRootRelativePath)
             , lengths

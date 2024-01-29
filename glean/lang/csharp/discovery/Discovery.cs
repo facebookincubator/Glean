@@ -128,7 +128,6 @@ public static class Discovery
                     break;
                 case WorkItem.BuckBuildTarget buckBuildTargetWorkItem:
                     throw new NotImplementedException();
-                    break;
             }
         }
 

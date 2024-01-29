@@ -1,9 +1,15 @@
-// (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
+/*
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 
 using Microsoft.CodeAnalysis;
 using Serilog;
 
-namespace Indexer.Schema.CSharp;
+namespace Glean.Indexer.Schema.CSharp;
 
 public record NamedType(ClassFact? Class_ = null, StructFact? Struct_ = null, RecordFact? Record_ = null, InterfaceFact? Interface_ = null)
 {
@@ -28,7 +34,7 @@ public record NamedType(ClassFact? Class_ = null, StructFact? Struct_ = null, Re
                         return true;
                     }
                 }
-                break; break;
+                break;
             case TypeKind.Struct:
                 if (StructFact.TryFromSymbol(symbol, out var struct_))
                 {
