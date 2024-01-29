@@ -21,4 +21,4 @@ function cleanup {
 }
 trap cleanup EXIT
 
-$DOTNET_HOST_PATH run --project "$PROJECT"
+$DOTNET_HOST_PATH run --project "$PROJECT" -- "$@"
