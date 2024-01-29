@@ -6,6 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+using Facebook.SocialVR.Packages;
 using Microsoft.Build.Construction;
 using Serilog;
 using System;
@@ -20,7 +21,23 @@ public static class Discovery
 {
     public static void DiscoverUnity(string repoRoot, string outputPath)
     {
-        throw new NotImplementedException();
+        var packageResolver = new PackageResolver();
+        var ovrsourceRoot = Package.GetOvrsourcePath();
+
+        var workItems = Package
+            .GetAllPackages(packageResolver, ovrsourceRoot)
+            .Select(package =>
+            {
+                var absoluteManifestPath = Path.Combine(ovrsourceRoot, Common.CONFIGS[package.type].path, package.name, "MANIFEST");
+                var relativeManifestPath = Path.GetRelativePath(repoRoot, absoluteManifestPath);
+
+                Log.Information($"Discovered Unity package {package.fullName}");
+                return new WorkItem.UnityPackage(package.type, package.name, relativeManifestPath);
+            })
+            .Cast<WorkItem>()
+            .ToList();
+
+        WriteWorkItems(workItems, outputPath);
     }
 
     public static void DiscoverMSBuild(string repoRoot, string outputPath)
