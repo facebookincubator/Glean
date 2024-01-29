@@ -130,7 +130,7 @@ size_t escaped_size(
         // \0 is represented as \0 \1 in the mangled representation
         assert (i < text_size);
         ++i;
-        FOLLY_FALLTHROUGH;
+        [[fallthrough]];
 
       case X:
         size += 6;
@@ -172,7 +172,7 @@ void escape(
           // \0 is represented as \0 \1 in the mangled representation
           assert(i < text_size);
           ++i;
-          FOLLY_FALLTHROUGH;
+          [[fallthrough]];
 
         case X:
           out[o++] = '\\';
