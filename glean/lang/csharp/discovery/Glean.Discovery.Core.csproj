@@ -5,6 +5,7 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="Discovery.cs" />
+        <Compile Include="MaterializedWorkItem.cs" />
         <Compile Include="WorkItem.cs" />
         <Compile Include="WorkItemConverter.cs" />
         <Compile Include="WorkType.cs" />
