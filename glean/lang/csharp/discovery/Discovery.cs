@@ -139,7 +139,80 @@ public static class Discovery
 
     private static void MaterializeUnity(List<MaterializedWorkItem> materializedWorkItems, string unityProjectTemplatePath, WorkItem.UnityPackage unityWorkItem)
     {
-        throw new NotImplementedException();
+        if (TryGetPackage(unityWorkItem.PackageType, unityWorkItem.PackageName, out Package package) && package is not null)
+        {
+            Package.ApplyFlags flags = Package.ApplyFlags.Default;
+            flags |= Package.ApplyFlags.SkipClones;
+
+            var projectTypes = new List<AssemblyDefinition.Type>()
+            {
+                AssemblyDefinition.Type.Package,
+                AssemblyDefinition.Type.Editor,
+                AssemblyDefinition.Type.Tests,
+                AssemblyDefinition.Type.TestsEditor,
+                AssemblyDefinition.Type.UnitTests,
+                AssemblyDefinition.Type.AllApis,
+            };
+
+            var generatedProjectsDirectory = Path.Combine(Path.GetTempPath(), package.type.ToString(), package.name);
+            Directory.CreateDirectory(generatedProjectsDirectory);
+
+            var projectGeneratorOptions = new CsProjGenerator.CsProjOptions(
+                projectTypes.Select(projectType => projectType.ToString()),
+                generatedProjectsDirectory,
+                unityProjectTemplatePath,
+                CsProjGenerator.JunctionMode.UseOnlyCanonicalPaths,
+                new HashSet<string>(),
+                new HashSet<string>()
+            );
+
+            var materializedWorkItem = new MaterializedWorkItem.UnityPackage(
+                generatedProjectsDirectory,
+                package.type,
+                package.name
+            );
+
+            try
+            {
+                package.Apply(
+                    flags,
+                    default,
+                    default,
+                    projectGeneratorOptions,
+                    isEdenRepo: true
+                );
+
+                var absoluteGeneratedProjectPaths = Directory.GetFiles(generatedProjectsDirectory, "*.csproj", SearchOption.AllDirectories);
+                materializedWorkItems.AddRange(absoluteGeneratedProjectPaths.Select(
+                    generatedProjectPath => new MaterializedWorkItem.UnityPackage(generatedProjectPath, package.type, package.name))
+                );
+
+                Log.Information($"Generated {absoluteGeneratedProjectPaths.Count()} projects for Unity package {package.fullName}");
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Failed to generate projects for Unity package {package.fullName}: {e.Message}");
+            }
+
+            return;
+        }
+
+        Log.Error($"Failed to resolve Unity package {unityWorkItem.PackageType}/{unityWorkItem.PackageName}");
+    }
+
+    private static bool TryGetPackage(PackageType packageType, string name, out Package package)
+    {
+        var ovrsourceRoot = Package.GetOvrsourcePath();
+        var packageResolver = new PackageResolver();
+
+        if (Package.DoesPackageExist(packageType, name, ovrsourceRoot))
+        {
+            package = packageResolver.GetPackage(packageType, name, ovrsourceRoot);
+            return true;
+        }
+
+        package = default;
+        return false;
     }
 
     private static void MaterializeMSBuildProject(List<MaterializedWorkItem> materializedWorkItems, WorkItem.MSBuildProject msbuildProjectWorkItem)
