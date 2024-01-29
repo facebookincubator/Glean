@@ -6,11 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-using Indexer;
-using Indexer.Schema;
+using Glean.Indexer;
+using Glean.Indexer.Schema;
 using Newtonsoft.Json.Linq;
 
-namespace Glean.Indexer.Test;
+namespace Glean.Indexer.Tests;
 
 public enum ArbitraryEnum
 {

@@ -30,10 +30,14 @@ namespace Glean.Indexer;
 
 public class GleanSyntaxWalker : CSharpSyntaxWalker
 {
-    public List<Fact> Facts { get; } = new List<Fact>();
-    private SemanticModel Model { get; }
+    public FactStore FactStore { get; init; }
+    private SemanticModel Model { get; init; }
 
-    public GleanSyntaxWalker(SemanticModel model) => Model = model;
+    public GleanSyntaxWalker(FactStore factStore, SemanticModel model)
+    {
+        Model = model;
+        FactStore = factStore;
+    }
 
     public void VisitDeclaration(SyntaxNode node)
     {
@@ -43,7 +47,7 @@ public class GleanSyntaxWalker : CSharpSyntaxWalker
             DefinitionLocationFact.TryFromSymbol(symbol, out var definitionLocation) &&
             definitionLocation is not null)
         {
-            Facts.AddRange(definitionLocation);
+            FactStore.AddRange(definitionLocation);
         }
     }
 
@@ -125,7 +129,7 @@ public class GleanSyntaxWalker : CSharpSyntaxWalker
             type is not null)
         {
             var key = new ObjectCreationLocationFactKey(type, method,location);
-            Facts.Add(new ObjectCreationLocationFact(key));
+            FactStore.Add(new ObjectCreationLocationFact(key));
         }
     }
 
@@ -142,14 +146,14 @@ public class GleanSyntaxWalker : CSharpSyntaxWalker
             location is not null)
         {
             var key = new MethodInvocationLocationFactKey(method,location);
-            Facts.Add(new MethodInvocationLocationFact(key));
+            FactStore.Add(new MethodInvocationLocationFact(key));
         }
     }
 }
 
 public class Indexer
 {
-    public static void IndexProject(string projectPath, string outputPath)
+    public static void IndexProject(FactStore factStore, string projectPath, string outputPath)
     {
         try
         {
@@ -197,17 +201,13 @@ public class Indexer
 
                 foreach (var syntaxTree in compilation.SyntaxTrees)
                 {
-                    var visitor = new GleanSyntaxWalker(compilation.GetSemanticModel(syntaxTree));
+                    var visitor = new GleanSyntaxWalker(
+                        factStore,
+                        compilation.GetSemanticModel(syntaxTree)
+                    );
                     visitor.Visit(syntaxTree.GetRoot());
-                    facts.AddRange(visitor.Facts);
                 }
             }
-
-            FactFile.Write(
-                outputPath,
-                projectPath,
-                facts
-            );
         }
         catch (Exception e)
         {

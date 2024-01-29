@@ -8,7 +8,7 @@
     <ItemGroup>
         <Compile Include="Program.cs" />
         <Compile Include="Build.cs" />
-        <Compile Include="FactFile.cs" />
+        <Compile Include="FactStore.cs" />
         <Compile Include="GleanSerializer.cs" />
         <Compile Include="Hg.cs" />
         <Compile Include="Indexer.cs" />

@@ -74,10 +74,17 @@ public class Program
                 Log.Debug("Initializing MSBuild");
                 Build.Initialize();
 
+                var factStore = new FactStore(
+                    capacity: 1000,
+                    outputPath
+                );
+
                 foreach (var workItem in work)
                 {
-                    IndexWorkItem(workItem, outputPath);
+                    IndexWorkItem(factStore, workItem, outputPath);
                 }
+
+                factStore.Flush();
             },
             workPathArgument,
             outOption
@@ -86,7 +93,7 @@ public class Program
         rootCommand.Invoke(args);
     }
 
-    private static void IndexWorkItem(MaterializedWorkItem workItem, string outputPath)
+    private static void IndexWorkItem(FactStore factStore, MaterializedWorkItem workItem, string outputPath)
     {
         switch (workItem)
         {
@@ -94,7 +101,7 @@ public class Program
             {
                 var projectPath = msbuildProjectWorkItem.ProjectPath;
                 Log.Information($"Indexing MSBuild project {projectPath}");
-                Indexer.IndexProject(projectPath, outputPath);
+                Indexer.IndexProject(factStore, projectPath, outputPath);
                 break;
             }
             case MaterializedWorkItem.MSBuildSolution msbuildSolutionWorkItem:
@@ -102,7 +109,7 @@ public class Program
                 Log.Information($"Indexing MSBuild solution {msbuildSolutionWorkItem.SolutionPath}");
                 foreach (var projectPath in msbuildSolutionWorkItem.ProjectPaths)
                 {
-                    Indexer.IndexProject(projectPath, outputPath);
+                    Indexer.IndexProject(factStore, projectPath, outputPath);
                 }
 
                 break;
@@ -111,7 +118,7 @@ public class Program
             {
                 var projectPath = unityPackageWorkItem.GeneratedProjectPath;
                 Log.Information($"Indexing generated project {projectPath} from package {unityPackageWorkItem.PackageName}");
-                Indexer.IndexProject(projectPath, outputPath);
+                Indexer.IndexProject(factStore, projectPath, outputPath);
                 break;
             }
             default:

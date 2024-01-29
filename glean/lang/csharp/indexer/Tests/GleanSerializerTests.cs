@@ -6,55 +6,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-using Indexer;
-using Indexer.Schema;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.MSBuild;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NUnit.Framework;
 using System.Linq;
 
-namespace Glean.Indexer.Test;
+namespace Glean.Indexer.Tests;
 
 [TestFixture]
-public class IndexerTests
+public class GleanSerializerTests
 {
-    string sampleProjectPath = null;
-    Compilation compilation = null;
-
-    [OneTimeSetUp]
-    public void SetUp()
-    {
-        Build.Initialize();
-
-        this.sampleProjectPath = Path.Combine
-        (
-            Hg.RepoRoot,
-            Environment.GetEnvironmentVariable("SAMPLE_PROJECT_PATH")
-        );
-
-        using (var workspace = MSBuildWorkspace.Create())
-        {
-            this.compilation = Build.CompileProject(workspace, this.sampleProjectPath);
-        }
-    }
-
-    [OneTimeTearDown]
-    public void TearDown()
-    {
-
-    }
-
     [Test]
-    public void CanIndexSampleProject()
-    {
-        var facts = Indexer.IndexProject(this.sampleProjectPath);
-        Assert.NotNull(facts);
-    }
-
-    [Test]
-    public void SerializeNestedFact()
+    public void TestSerializeNestedFact()
     {
         var outerFieldKey = "foo";
         var innerFieldKey = "bar";
@@ -80,7 +42,7 @@ public class IndexerTests
     }
 
     [Test]
-    public void SerializeFactCollection()
+    public void TestSerializeFactCollection()
     {
         var innerFieldKey = "bar";
         var innerFact = new ArbitraryFact1(innerFieldKey);
@@ -105,7 +67,7 @@ public class IndexerTests
     }
 
     [Test]
-    public void SerializeSumType()
+    public void TestSerializeSumType()
     {
         var outerFieldKey = "foo";
         var innerFieldKey = "bar";
@@ -150,7 +112,7 @@ public class IndexerTests
     }
 
     [Test]
-    public void SerializeEnum()
+    public void TestSerializeEnum()
     {
         var values = new [] { ArbitraryEnum.A, ArbitraryEnum.B, ArbitraryEnum.C };
         var fact = new ArbitraryFact4(values);
@@ -165,38 +127,5 @@ public class IndexerTests
             GleanSerializer.Encode(expected),
             GleanSerializer.Encode(actual)
         );
-    }
-
-    [Test]
-    public void TestCleanFileName()
-    {
-        string input = "invalid:file|name";
-        string expected = "invalid_file_name";
-        Assert.AreEqual(expected, FactFile.CleanFileName(input));
-    }
-
-    [Test]
-    public void TestDisambiguateFileName()
-    {
-        string[] parts = { "dir1", "dir2", "file" };
-        string expected1 = "file";
-        Assert.AreEqual(expected1, FactFile.DisambiguateFileName(parts, 2));
-
-        // Parent directory included to disambiguate
-        string expected2 = "dir2_file";
-        Assert.AreEqual(expected2, FactFile.DisambiguateFileName(parts, 2));
-    }
-
-    [Test]
-    public void TestGetFactFileNameForProject()
-    {
-        string path1 = @"dir1/dir2/solution.sln";
-        string expected1 = @"solution.sln.json";
-        Assert.AreEqual(expected1, FactFile.GetFactFileNameForProject(path1));
-
-        // Parent directory included to disambiguate
-        string path2 = @"dir1/dir3/solution.sln";
-        string expected2 = @"dir3_solution.sln.json";
-        Assert.AreEqual(expected2, FactFile.GetFactFileNameForProject(path2));
     }
 }
