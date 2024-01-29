@@ -250,6 +250,13 @@ predicate FileCall :
     call_args: [CallArgument],
   }
 
+# Callee function to caller function
+predicate CalleeToCaller :
+  {
+    callee: Name,
+    caller: Name,
+  }
+
 predicate DeclarationToName: Declaration -> Name
   D -> N where
     ({cls = { name = N }} = D) |
