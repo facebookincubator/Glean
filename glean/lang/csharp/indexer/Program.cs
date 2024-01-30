@@ -106,7 +106,7 @@ public class Program
 
                 foreach (var workItem in work)
                 {
-                    IndexWorkItem(factStore, workItem, outputPath);
+                    Indexer.IndexWorkItem(factStore, workItem, outputPath, logLevel);
                 }
 
                 factStore.Flush();
@@ -117,41 +117,5 @@ public class Program
         );
 
         rootCommand.Invoke(args);
-    }
-
-    private static void IndexWorkItem(FactStore factStore, MaterializedWorkItem workItem, string outputPath)
-    {
-        switch (workItem)
-        {
-            case MaterializedWorkItem.MSBuildProject msbuildProjectWorkItem:
-            {
-                var projectPath = msbuildProjectWorkItem.ProjectPath;
-                Log.Information($"Indexing MSBuild project {projectPath}");
-                Indexer.IndexProject(factStore, projectPath, outputPath);
-                break;
-            }
-            case MaterializedWorkItem.MSBuildSolution msbuildSolutionWorkItem:
-            {
-                Log.Information($"Indexing MSBuild solution {msbuildSolutionWorkItem.SolutionPath}");
-                foreach (var projectPath in msbuildSolutionWorkItem.ProjectPaths)
-                {
-                    Indexer.IndexProject(factStore, projectPath, outputPath);
-                }
-
-                break;
-            }
-            case MaterializedWorkItem.UnityPackage unityPackageWorkItem:
-            {
-                var projectPath = unityPackageWorkItem.GeneratedProjectPath;
-                Log.Information($"Indexing generated project {projectPath} from package {unityPackageWorkItem.PackageName}");
-                Indexer.IndexProject(factStore, projectPath, outputPath);
-                break;
-            }
-            default:
-            {
-                Log.Error($"Unsupported work type: {workItem.Type}");
-                break;
-            }
-        }
     }
 }

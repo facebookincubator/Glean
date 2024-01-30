@@ -31,17 +31,24 @@ public static class Build
         Environment.SetEnvironmentVariable("DOTNET_ROOT", dotnetRoot, EnvironmentVariableTarget.Process);
         Environment.SetEnvironmentVariable("MSBUILD_EXE_PATH", msbuildExePath, EnvironmentVariableTarget.Process);
 
-        Log.Information($"DOTNET_ROOT={dotnetRoot}");
-        Log.Information($"MSBUILD_EXE_PATH={msbuildExePath}");
-        Log.Information($"Using MSBuild from {msbuildPath}");
+        Log.Information($"DOTNET_ROOT={Hg.GetRepoRootRelativePath(dotnetRoot)}");
+        Log.Information($"MSBUILD_EXE_PATH={Hg.GetRepoRootRelativePath(msbuildExePath)}");
+        Log.Information($"Using MSBuild from {Hg.GetRepoRootRelativePath(msbuildPath)}");
 
         MSBuildLocator.RegisterMSBuildPath(msbuildPath);
     }
 
-    public static Compilation? CompileProject(MSBuildWorkspace workspace, string projectPath)
+    public static Compilation CompileProject(MSBuildWorkspace workspace, string projectPath)
     {
         var project = workspace.OpenProjectAsync(projectPath).Result;
-        return project.GetCompilationAsync().Result;
+        var compilation = project.GetCompilationAsync().Result;
+
+        if (compilation == null)
+        {
+            throw new Exception($"Failed to build project {projectPath}");
+        }
+
+        return compilation;
     }
 
     public static IEnumerable<ISymbol> EnumerateSymbols(INamespaceOrTypeSymbol symbol)
