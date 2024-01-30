@@ -21,6 +21,7 @@ module Glean.Query.Angle
   , where_
   , not_
   , (.=)
+  , stmt
   , (.|)
   , or_
   , (.->)
@@ -125,7 +126,7 @@ display (Angle m) = render $
 --
 -- >    query $ var $ \n ->
 -- >      n `where_` [
--- >        wild .= predicate @Hack.MethodDeclaration $
+-- >        stmt $ predicate @Hack.MethodDeclaration $
 -- >          rec $
 -- >            field @"name" "foo" $
 -- >            field @"container"
@@ -194,6 +195,17 @@ not_ stmts = unit' .= Angle (Negation DSL <$> gen t)
 -- | Build a statement, `A = B`
 (.=) :: Angle t -> Angle t -> AngleStatement
 l .= r = AngleStatement $ Angle.SourceStatement <$> gen l <*> gen r
+
+-- | Build a statement from a plain Angle expression, ignoring the result.
+-- `stmt A` is equivalent in Angle to the statement `_ = A`. For example
+--
+-- > var $ \x ->
+-- >   x `where_` [
+-- >      stmt $ predicate @Src.File x
+-- >   ]
+--
+stmt :: Angle t -> AngleStatement
+stmt = (wild .=)
 
 -- | Build an or-pattern, `A | B`
 (.|) :: Angle a -> Angle a -> Angle a
@@ -317,7 +329,7 @@ never = Angle $ pure (Variable DSL "never")
 --
 -- >  var $ \(n :: Angle Hack.Name) ->
 -- >    n `where_` [
--- >      wild .= predicate @Hack.MethodDeclaration $
+-- >      stmt $ predicate @Hack.MethodDeclaration $
 -- >        rec $
 -- >          field @"name" (asPredicate n) $
 -- >          field @"container"
