@@ -22,7 +22,7 @@ public record FullNameFact(FullNameFactKey Key) : FactWithKey<FullNameFactKey>(P
 
         if (containingNamespaceSymbol == null)
         {
-            Log.Error($"{symbol} does not have a containing namespace");
+            Log.Debug($"{symbol} does not have a containing namespace");
             result = default;
             return false;
         }

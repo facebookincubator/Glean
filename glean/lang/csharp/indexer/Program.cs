@@ -10,6 +10,7 @@ using Glean.Discovery;
 using Glean.Indexer.Schema;
 using System.Text.Json;
 using Serilog;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
@@ -37,15 +38,39 @@ public class Program
             getDefaultValue: () => "indexer_output"
         );
 
+        var validLogLevels = string.Join(", ", Enum.GetNames(typeof(LogEventLevel)));
+
+        var logLevelOption = new Option<LogEventLevel>(
+            "--log-level",
+            isDefault: true,
+            description: $"Sets the minimum log-level. Log events of lower severity will be discarded",
+            parseArgument: result =>
+            {
+                if (!result.Tokens.Any())
+                {
+                    return LogEventLevel.Information;
+                }
+
+                if (Enum.TryParse<LogEventLevel>(result.Tokens.Single().Value, ignoreCase: true, out LogEventLevel logLevel))
+                {
+                    return logLevel;
+                }
+
+                result.ErrorMessage = $"Expected one of [{validLogLevels}]";
+                return LogEventLevel.Information;
+            }
+        );
+
         var rootCommand = new RootCommand("Index C# projects")
         {
             workPathArgument,
-            outOption
+            outOption,
+            logLevelOption,
         };
 
         rootCommand.SetHandler
         (
-            (workPath, outputPath) =>
+            (workPath, outputPath, logLevel) =>
             {
                 Log.Logger = new LoggerConfiguration()
                     .MinimumLevel
@@ -53,16 +78,16 @@ public class Program
                     .WriteTo
                     .Console(
                         outputTemplate: LoggerTemplate,
-                        restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information)
+                        restrictedToMinimumLevel: logLevel)
                     .CreateLogger();
 
-                Log.Debug($"Repository root: {Hg.RepoRoot}");
+                Log.Information($"Repository root: {Hg.RepoRoot}");
                 Directory.SetCurrentDirectory(Hg.RepoRoot);
 
-                Log.Debug($"Creating output directory: {outputPath}");
+                Log.Information($"Creating output directory: {outputPath}");
                 Directory.CreateDirectory(outputPath);
 
-                Log.Debug($"Reading work from: {workPath}");
+                Log.Information($"Reading work from: {workPath}");
                 var work = JsonSerializer.Deserialize<MaterializedWorkItem[]>(File.ReadAllText(workPath));
 
                 if (work == null || !work.Any())
@@ -71,7 +96,7 @@ public class Program
                     return;
                 }
 
-                Log.Debug("Initializing MSBuild");
+                Log.Information("Initializing MSBuild");
                 Build.Initialize();
 
                 var factStore = new FactStore(
@@ -87,7 +112,8 @@ public class Program
                 factStore.Flush();
             },
             workPathArgument,
-            outOption
+            outOption,
+            logLevelOption
         );
 
         rootCommand.Invoke(args);

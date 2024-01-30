@@ -27,7 +27,7 @@ public record FileLinesFact(FileLinesFactKey Key) : FactWithKey<FileLinesFactKey
         var sourceTree = location.SourceTree;
         if (sourceTree == null)
         {
-            Log.Error("Invalid location: not in a syntax tree");
+            Log.Debug("Invalid location: not in a syntax tree");
             result = default;
             return false;
         }

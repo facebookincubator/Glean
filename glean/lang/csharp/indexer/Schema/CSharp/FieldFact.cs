@@ -40,11 +40,11 @@ public record FieldFact(FieldFactKey Key) : FactWithKey<FieldFactKey>(Predicate.
             // Why we get a null here is unknown. But adding a null value for containingType will cause glean to fail.
             if (symbol.ContainingType == null)
             {
-                Log.Information($"{symbol.Name} - ContainingType is null.");
+                Log.Debug($"{symbol.Name} - ContainingType is null.");
             }
             else
             {
-                Log.Information($"{symbol.Name} - Unable to determine ContainingType: {symbol.ContainingType.ToDisplayString()}");
+                Log.Debug($"{symbol.Name} - Unable to determine ContainingType: {symbol.ContainingType.ToDisplayString()}");
             }
             result = default;
             return false;

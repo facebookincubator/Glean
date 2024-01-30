@@ -161,7 +161,7 @@ public class Indexer
 
             using (var workspace = MSBuildWorkspace.Create())
             {
-                Log.Debug($"Started building project: {projectPath}");
+                Log.Information($"Started building project: {projectPath}");
 
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -181,7 +181,7 @@ public class Indexer
                     elapsed.Seconds
                 );
 
-                Log.Debug($"Finished building in {formattedTime}");
+                Log.Information($"Finished building in {formattedTime}");
 
                 var diagnostics = compilation.GetDiagnostics();
                 if (diagnostics.Where(d => d.Severity >= DiagnosticSeverity.Warning).Any())

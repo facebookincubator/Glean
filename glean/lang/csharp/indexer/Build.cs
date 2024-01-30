@@ -31,8 +31,8 @@ public static class Build
         Environment.SetEnvironmentVariable("DOTNET_ROOT", dotnetRoot, EnvironmentVariableTarget.Process);
         Environment.SetEnvironmentVariable("MSBUILD_EXE_PATH", msbuildExePath, EnvironmentVariableTarget.Process);
 
-        Log.Debug($"DOTNET_ROOT={dotnetRoot}");
-        Log.Debug($"MSBUILD_EXE_PATH={msbuildExePath}");
+        Log.Information($"DOTNET_ROOT={dotnetRoot}");
+        Log.Information($"MSBUILD_EXE_PATH={msbuildExePath}");
         Log.Information($"Using MSBuild from {msbuildPath}");
 
         MSBuildLocator.RegisterMSBuildPath(msbuildPath);

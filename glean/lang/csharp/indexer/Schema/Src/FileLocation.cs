@@ -18,7 +18,7 @@ public record FileLocation(FileFact File, ByteSpan Span)
         var absolutePath = location.SourceTree?.FilePath;
         if (absolutePath == null)
         {
-            Log.Error("Invalid location: not in a syntax tree");
+            Log.Debug("Invalid location: not in a syntax tree");
             fileLocation = default;
             return false;
         }

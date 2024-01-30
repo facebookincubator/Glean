@@ -36,7 +36,7 @@ public record Type(NamedType? NamedType = default, TypeParameterFact? TypeParame
                 }
                 break;
             default:
-                Log.Error($"Unsupported type {symbol}");
+                Log.Debug($"Unsupported type {symbol}");
                 break;
         }
 

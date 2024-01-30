@@ -42,11 +42,11 @@ public record PropertyFact(PropertyFactKey Key) : FactWithKey<PropertyFactKey>(P
             // Why we get a null here is unknown. But adding a null value for containingType will cause glean to fail.
             if (symbol.ContainingType == null)
             {
-                Log.Information($"Property {symbol.Name} - ContainingType is null.");
+                Log.Debug($"Property {symbol.Name} - ContainingType is null.");
             }
             else
             {
-                Log.Information($"Property {symbol.Name} - Unable to determine ContainingType: {symbol.ContainingType.ToDisplayString()}");
+                Log.Debug($"Property {symbol.Name} - Unable to determine ContainingType: {symbol.ContainingType.ToDisplayString()}");
             }
             result = default;
             return false;

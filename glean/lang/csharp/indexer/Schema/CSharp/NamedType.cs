@@ -50,7 +50,7 @@ public record NamedType(ClassFact? Class_ = null, StructFact? Struct_ = null, Re
                 }
                 break;
             default:
-                Log.Error($"Unsupported type kind: {symbol.TypeKind}");
+                Log.Debug($"Unsupported type kind: {symbol.TypeKind}");
                 break;
         }
 
