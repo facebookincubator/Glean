@@ -1,63 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema hack.1 {
-import src.1
-
-# Autocomplete-specific definitions follow. We would like to eventually migrate
-# and remove these.
-
-# An identifier in Hack
-predicate identifier :
-  {
-    kind : nat,  # later: enum
-    name : string,
-  }
-
-# Namespaces of symbols that appear in WWW
-predicate symbolNamespace :
-  {
-    namespace_id : nat,
-    namespace_name : string,
-  }
-
-# Definitions of kinds of symbols that appear in WWW
-predicate kind :
-  {
-    id : nat,
-    name : string,
-  }
-
-# Contexts where a symbol is a valid response
-type context =
-  {
-    acid : bool,
-    actype : bool,
-    acnew : bool,
-  }
-
-# Symbols that appear in WWW
-predicate symbol :
-  {
-    name_lowercase : string,
-    valid : context,
-    kind_id : nat,
-    ns_id : nat,
-    filehash_id : string,
-    is_abstract : bool,
-    is_final : bool,
-    canonical_name : string,
-  }
-
-# Files that appear in WWW
-predicate filename :
-  {
-    filename : string,
-    filehash_id : string,
-  }
-
-}
-
-schema hack.6 : hack.1 {
+schema hack.6 {
 import src.1
 
 # Name (identifier)
