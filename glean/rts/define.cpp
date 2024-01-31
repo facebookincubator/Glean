@@ -86,11 +86,11 @@ Substitution defineBatch(
       binary::Output out;
       uint64_t key_size;
       predicate->typecheck(rename, clause, out, key_size);
-      const auto clause = Fact::Clause::from(out.bytes(), key_size);
-      auto id = def.define(ty, clause, max_ref);
+      const auto clause_2 = Fact::Clause::from(out.bytes(), key_size);
+      auto id = def.define(ty, clause_2, max_ref);
 
       if (!id) {
-        const auto real_id = def.idByKey(ty, clause.key());
+        const auto real_id = def.idByKey(ty, clause_2.key());
         if (ignoreRedef) {
           id = real_id;
         } else  {
