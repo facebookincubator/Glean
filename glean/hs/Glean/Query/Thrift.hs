@@ -33,6 +33,7 @@ module Glean.Query.Thrift
   , displayQuery
   ) where
 
+import Control.Concurrent.Async
 import Control.Monad
 import Data.Default
 import Data.Maybe
@@ -52,15 +53,10 @@ runQuery_
   -> Repo       -- ^ Repo to query
   -> Query q    -- ^ The query, a Thrift-generated type from glean/schema
   -> IO [q]
-runQuery_ backend repo query = fetchAll id Nothing
-  where
-    fetchAll acc cont = do
-      (results, cont) <- runQueryPage backend repo cont query
-      let acc' = acc . (results++)
-      if isJust cont
-        then fetchAll acc' cont
-        else return (acc' [])
-
+runQuery_ backend repo query = do
+  r <- runQueryEachBatch backend repo query id $
+    \acc page -> return (acc . (page++))
+  return (r [])
 
 runQuery
   :: forall q backend . (Backend backend)
@@ -72,7 +68,8 @@ runQuery
        -- by a limit (either a user-supplied limit, or one imposed by
        -- the query server).
 runQuery backend repo query = do
-  (results, cont) <- runQueryPage backend repo Nothing query
+  (io, cont) <- runQueryPage backend repo Nothing query
+  results <- io
   return (results, isJust cont)
 
 
@@ -83,7 +80,7 @@ runQueryPage
   -> Repo
   -> Maybe UserQueryCont
   -> Query q
-  -> IO ([q], Maybe UserQueryCont)
+  -> IO (IO [q], Maybe UserQueryCont)
 
 runQueryPage be repo cont (Query query) = do
   let
@@ -101,7 +98,7 @@ runQueryPage be repo cont (Query query) = do
   mapM_ reportUserQueryStats userQueryResults_stats
   mapM_ (vlog 1) userQueryResults_diagnostics
   mapM_ (waitBatch be) userQueryResults_handle
-  results <- decodeResults userQueryResults_results decodeAsFact
+  let results = decodeResults userQueryResults_results decodeAsFact
   return (results, userQueryResults_continuation)
 
 
@@ -114,17 +111,13 @@ runQueryMapPages_
   -> ([q] -> IO ())
   -> Query q
   -> IO ()
-runQueryMapPages_ be repo fn query = go Nothing
-  where
-  go cont = do
-    (page, cont) <- runQueryPage be repo cont query
-    fn page
-    case cont of
-      Nothing -> return ()
-      Just _ -> go cont
+runQueryMapPages_ be repo fn query =
+  runQueryEachBatch be repo query () (const fn)
 
--- | Perform a query, by pages, and map a state function over each result in
--- each page.  Similar to 'Glean.Query.Stream.foldEach'
+-- | Perform a query, by pages, and map a state function over each
+-- result in each page. The query is pipelined so that each page of
+-- results are decoded and processed while the next page is being
+-- fetched.
 runQueryEach
   :: forall q backend s . (Backend backend)
   => backend
@@ -136,7 +129,7 @@ runQueryEach
 runQueryEach be repo query s fn =
   runQueryEachBatch be repo query s (foldM fn)
 
--- | Like runQueryEach, but process results in batches
+-- | Like runQueryEach, but process results in batches.
 runQueryEachBatch
   :: forall q backend s . (Backend backend)
   => backend
@@ -145,11 +138,13 @@ runQueryEachBatch
   -> s
   -> (s -> [q] -> IO s)
   -> IO s
-runQueryEachBatch be repo query init f = go Nothing init
+runQueryEachBatch be repo query init f = do
+  (page, cont) <- runQueryPage be repo Nothing query
+  go page cont init
   where
-  go cont s1 = do
-    (page, cont) <- runQueryPage be repo cont query
-    s2 <- f s1 page
-    case cont of
-      Nothing -> return s2
-      Just _ -> go cont s2
+  go page Nothing s = f s =<< page
+  go page cont@Just{} s = do
+    ((nextPage, nextCont), s2) <- concurrently
+      (runQueryPage be repo cont query)
+      (f s =<< page)
+    go nextPage nextCont s2

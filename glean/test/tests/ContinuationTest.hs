@@ -22,19 +22,19 @@ import Glean.Types
 import Glean.Test.HUnit
 import TestDB
 
--- | Tests for derived predicates using Angle syntax. See
--- JSONQueryTest.jsonDerivedTest for the Thrift-query-type versions of
--- these tests.
+-- | Tests for derived predicates using Angle syntax.
 continuationCheckTest :: (UserQueryCont -> UserQueryCont) -> Test
 continuationCheckTest f = dbTestCase $ \env repo -> do
   -- Several tests with the trivial derived predicate: IsThree ::= 3
-  (r, Just cont) <-
+  (io, Just cont) <-
     runQueryPage env repo Nothing $ limit 1 $ allFacts @Cxx.Name
+  r <- io
   assertEqual "first result" (length r) 1
 
   -- check that the continuation works
-  (r, _) <-
+  (io, _) <-
     runQueryPage env repo (Just cont) $ limit 1 $ allFacts @Cxx.Name
+  r <- io
   assertEqual "second result" (length r) 1
 
   -- check that fiddling with the continuation makes it not work
