@@ -46,23 +46,25 @@ import Glean.Backend.Types (Backend(..))
 import Glean.Query.Thrift.Internal
 import Glean.Write.SendBatch
 
--- | Perform a query using the Thrift query and result types.
+-- | Perform a query, fetching all results
 runQuery_
   :: forall q backend . (Backend backend)
   => backend    -- ^ Backend to use to perform the query
   -> Repo       -- ^ Repo to query
-  -> Query q    -- ^ The query, a Thrift-generated type from glean/schema
+  -> Query q    -- ^ The query
   -> IO [q]
 runQuery_ backend repo query = do
   r <- runQueryEachBatch backend repo query id $
     \acc page -> return (acc . (page++))
   return (r [])
 
+-- | Perform a query, fetching results up to the limits specified by
+-- the query ('limit', 'limitBytes', 'limitTime').
 runQuery
   :: forall q backend . (Backend backend)
   => backend    -- ^ Backend to use to perform the query
   -> Repo       -- ^ Repo to query
-  -> Query q    -- ^ The query, a Thrift-generated type from glean/schema
+  -> Query q    -- ^ The query
   -> IO ([q], Bool)
        -- ^ The 'Bool' is 'True' if the query results were truncated
        -- by a limit (either a user-supplied limit, or one imposed by
@@ -73,7 +75,9 @@ runQuery backend repo query = do
   return (results, isJust cont)
 
 
--- | Perform a query using the Thrift query and result types.
+-- | Perform a query, fetching results up to the limits specified by
+-- the query ('limit', 'limitBytes', 'limitTime'), and returning a
+-- continuation to fetch more results if a limit was hit.
 runQueryPage
   :: forall q backend . (Backend backend)
   => backend
