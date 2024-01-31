@@ -17,7 +17,6 @@ module Derive.Env
 where
 
 import Glean
-import Glean.FFI (withMany)
 import Glean.Util.Some
 import Glean.Write.SimpleAsync
 
@@ -50,7 +49,7 @@ withEnvWriter :: Env -> (Writer -> IO a) -> IO a
 withEnvWriter env = withSimpleWriter (envSender env) (envWriterSettings env)
 
 withEnvWriters :: Env -> Int -> ([Writer] -> IO a) -> IO a
-withEnvWriters env n = withMany withEnvWriter (replicate n env)
+withEnvWriters env = withSimpleWriters (envSender env) (envWriterSettings env)
 
 queryEnv :: forall p. Predicate p => Env -> Query p
 queryEnv env =

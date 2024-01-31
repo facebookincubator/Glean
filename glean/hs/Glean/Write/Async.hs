@@ -9,12 +9,14 @@
 module Glean.Write.Async (
   Sender, SendQueueSettings(..), SendQueueEvent(..), withSender,
   senderQueue,
-  Writer, WriterSettings(..), WriterEvent(..), withWriter, writeFacts,
+  Writer, WriterSettings(..), WriterEvent(..),
+  withWriter, withWriters, writeFacts,
   withBatchWriter,
   basicWriter
 ) where
 
 import Control.Applicative
+import Control.Concurrent.Async
 import Control.Concurrent.MVar
 import Control.Exception
 import Control.Monad
@@ -167,6 +169,22 @@ withWriter s settings action = do
   case r of
     Right _subst -> return result
     Left exc -> throwIO exc
+
+-- | Create many Writers for writing to a sender in parallel. Use this
+-- instead of `withMany withWriter`, because it will flush the writers
+-- in parallel rather than sequentially at the end.
+withWriters :: Sender -> WriterSettings -> Int -> ([Writer] -> IO a) -> IO a
+withWriters  s settings n action = do
+  ws <- replicateM n $ newWriter s settings
+  result <- action ws
+  forConcurrently_ ws $ \w -> do
+    done <- newEmptyTMVarIO
+    flushWriter w (void . tryPutTMVar done)
+    r <- atomically $ readTMVar done
+    case r of
+      Right _subst -> return ()
+      Left exc -> throwIO exc
+  return result
 
 -- | Create a new 'Writer' for regression testing.  This accumulates into
 -- a single 'Facts' and produces a single 'Batch' without sending to a backend.
