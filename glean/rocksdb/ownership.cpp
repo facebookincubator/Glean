@@ -204,8 +204,8 @@ std::unique_ptr<Usets> DatabaseImpl::loadOwnershipSets() {
 
   auto usets = std::make_unique<Usets>(first + size);
 
-  while (const auto pair = iter->get()) {
-    auto set = SetU32::fromEliasFano(*pair->second.set);
+  while (const auto pair_2 = iter->get()) {
+    auto set = SetU32::fromEliasFano(*pair_2->second.set);
     // paranoia: check the set contents make sense
     set.foreach([first, size](UsetId id) {
       if (id >= first + size) {
@@ -213,7 +213,7 @@ std::unique_ptr<Usets> DatabaseImpl::loadOwnershipSets() {
       }
     });
     auto p = usets->add(std::move(set), 0);
-    p->id = pair->first;
+    p->id = pair_2->first;
   }
   auto stats = usets->statistics();
 
