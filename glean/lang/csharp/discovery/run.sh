@@ -15,14 +15,81 @@ warning() {
   echo -e "\033[0;33m""$1""\033[0m" >&2
 }
 
+# The current changeset ID
+changeset=$(hg id)
+
+if [[ "$changeset" == *"+" ]]; then
+  warning "Warning: you have uncommitted changes. Do you want to run 'hg amend -i'? (y/n)"
+  read -r answer
+  if [[ "$answer" == "y" ]]; then
+    echo "">&2
+    hg amend -i
+    changeset=$(hg id)
+  fi
+  echo "">&2
+fi
+
+# Absolute path of the current repository's root directory
+repo_root=$(hg root)
+
+# A unique temporary directory into which all output is written (excluding C# build outputs)
+out=$(mktemp -d)
+
 enable_discovery_buck=default
 enable_discovery_msbuild=default
 enable_discovery_unity=default
 
+# The maximum number of (materialized) work-items that will be indexed
 limit=none
+
+# If deterministic is false, the list of discovered work will be shuffled before being indexed
 deterministic=false
+
+# The number of work-items to drop from (the start of) the list of discovered work
 skip=0
+
+# Minimum level of events logged by the indexer
 log_level=Information
+
+# A file containing an array of repo-root relative paths of MSBuild project/solution files, encoded as JSON
+paths=/tmp/"$changeset"/paths
+
+# A file containing an array of Unity work-items, encoded as JSON
+unity_work="$out"/unity_work.json
+
+# A file containing an array of MSBuild work-items, encoded as JSON
+msbuild_work="$out"/msbuild_work.json
+
+# A file containing an array of all discovered work-items (both MSBuild and Unity), encoded as JSON
+all_work="$out"/all_work.json
+
+# A file containing an array materialized work-items, encoded as JSON
+materialized_work="$out"/materialized_work.json
+
+# The directory into which the indexer will write fact files
+facts="$out"/facts
+
+# Absolute path of the directory containing the .NET CLI
+export dotnet_root="$repo_root"/arvr/projects/socialvr/third-party/dotnet/linux-x64
+
+# Absolute path of the .NET CLI
+dotnet_host_path="$dotnet_root"/dotnet
+
+discovery_project_root="$repo_root"/fbcode/glean/lang/csharp/discovery
+discovery_project="$discovery_project_root"/Glean.Discovery.csproj
+indexer_project_root="$repo_root"/fbcode/glean/lang/csharp/indexer
+indexer_project="$indexer_project_root"/Glean.Indexer.csproj
+
+# Absolute path of a template file used to generate Unity projects
+template="$repo_root"/arvr/projects/socialvr/tools/zero_unity_devtools/ZeroUnityDevTools/HorizonCsprojViaApplyTemplate.csproj_template
+
+db_root="$out"/db
+db_name=test/0
+
+glean_args=(--db-root "$db_root" --schema "$repo_root"/fbcode/glean/schema/source --db "$db_name")
+
+# An array of files containing work-items that will be collated before being fed to the indexer
+work_files=()
 
 while [[ "$#" -gt 0 ]]; do
   case $1 in
@@ -57,6 +124,18 @@ while [[ "$#" -gt 0 ]]; do
   shift
 done
 
+function cleanup {
+    set -e
+    rm -rf "${discovery_project_root:?}"/bin
+    rm -rf "${discovery_project_root:?}"/obj
+    rm -rf "${indexer_project_root:?}"/bin
+    rm -rf "${indexer_project_root:?}"/obj
+    if [[ "$changeset" == *"+" ]]; then
+      rm "$paths"
+    fi
+}
+trap cleanup EXIT
+
 if [ "$enable_discovery_buck" = "default" ]; then
   if jk check code_indexing/csharp:enable_discovery_buck --exit-with-code; then
     enable_discovery_buck="true"
@@ -81,50 +160,6 @@ if [ "$enable_discovery_unity" = "default" ]; then
   fi
 fi
 
-repo_root=$(hg root)
-out=$(mktemp -d)
-
-export dotnet_root="$repo_root"/arvr/projects/socialvr/third-party/dotnet/linux-x64
-dotnet_host_path="$dotnet_root"/dotnet
-
-discovery_project_root="$repo_root"/fbcode/glean/lang/csharp/discovery
-discovery_project="$discovery_project_root"/Glean.Discovery.csproj
-
-indexer_project_root="$repo_root"/fbcode/glean/lang/csharp/indexer
-indexer_project="$indexer_project_root"/Glean.Indexer.csproj
-
-changeset=$(hg id)
-
-if [[ "$changeset" == *"+" ]]; then
-  warning "Warning: you have uncommitted changes. Do you want to run 'hg amend -i'? (y/n)"
-  read -r answer
-  if [[ "$answer" == "y" ]]; then
-    echo "">&2
-    hg amend -i
-    changeset=$(hg id)
-  fi
-  echo "">&2
-fi
-
-paths=/tmp/"$changeset"/paths
-unity_work="$out"/unity_work.json
-msbuild_work="$out"/msbuild_work.json
-all_work="$out"/all_work.json
-materialized_work="$out"/materialized_work.json
-facts="$out"/facts
-
-function cleanup {
-    set -e
-    rm -rf "${discovery_project_root:?}"/bin
-    rm -rf "${discovery_project_root:?}"/obj
-    rm -rf "${indexer_project_root:?}"/bin
-    rm -rf "${indexer_project_root:?}"/obj
-    if [[ "$changeset" == *"+" ]]; then
-      rm "$paths"
-    fi
-}
-trap cleanup EXIT
-
 if [ "$enable_discovery_msbuild" = "true" ]; then
   if [ ! -f "$paths" ]; then
     mkdir -p "$(dirname "$paths")"
@@ -147,8 +182,6 @@ if [ "$enable_discovery_unity" = "true" ]; then
   $dotnet_host_path run --project "$discovery_project" -- discover unity "$repo_root" "$unity_work" >&2
   echo "">&2
 fi
-
-work_files=()
 
 if [ "$enable_discovery_msbuild" = "true" ]; then
   work_files+=("$msbuild_work")
@@ -176,8 +209,6 @@ if [ "$limit" != "none" ]; then
   echo "$temp" > "$all_work"
 fi
 
-template="$repo_root"/arvr/projects/socialvr/tools/zero_unity_devtools/ZeroUnityDevTools/HorizonCsprojViaApplyTemplate.csproj_template
-
 title "Materializing work"
 $dotnet_host_path run --project "$discovery_project" -- materialize "$template" "$materialized_work" < "$all_work" >&2
 echo "" >&2
@@ -190,14 +221,10 @@ fi
 title "Indexing work"
 $dotnet_host_path run --project "$indexer_project" -- "$materialized_work" --out "$facts" --log-level "$log_level" >&2
 
-db_root="$out"/db
-db_name=test/0
+echo "$facts"/*.json | xargs glean create "${glean_args[@]}"
 
-args=(--db-root "$db_root" --schema "$repo_root"/fbcode/glean/schema/source --db "$db_name")
-echo "$facts"/*.json | xargs glean create "${args[@]}"
+glean derive "${glean_args[@]}" csharp.FileDefinitions
+glean derive "${glean_args[@]}" csharp.FileEntityXRefs
+glean derive "${glean_args[@]}" csharp.NameLowerCase
 
-glean derive "${args[@]}" csharp.FileDefinitions
-glean derive "${args[@]}" csharp.FileEntityXRefs
-glean derive "${args[@]}" csharp.NameLowerCase
-
-glean shell "${args[@]}"
+glean shell "${glean_args[@]}"
