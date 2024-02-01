@@ -180,6 +180,7 @@ selectRevision :: RequestOptions -> Maybe Revision
 selectRevision RequestOptions{..}
   | Just FeatureFlags { featureFlags_use_revision = Just True }
       <- requestOptions_feature_flags = requestOptions_revision
+  | requestOptions_exact_revision = requestOptions_revision
   | otherwise = Nothing
 
 -- | Discover navigable symbols in this file, resolving all bytespans and
