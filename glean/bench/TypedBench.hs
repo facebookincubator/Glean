@@ -18,7 +18,7 @@ import Data.IORef
 import Glean.RTS
 import Glean.RTS.Builder
 import qualified Glean.Schema.Src.Types as Src
-import qualified Glean.Schema.Thrift.Types as Thrift_
+import qualified Glean.Schema.Fbthrift.Types as Thrift_
 import Glean.Typed
 import qualified Glean.Types as Thrift -- generated
 

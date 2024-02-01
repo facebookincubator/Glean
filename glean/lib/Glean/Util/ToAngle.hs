@@ -21,7 +21,6 @@ import qualified Glean.Schema.Hack.Types as Hack
 import qualified Glean.Schema.Lsif.Types as Lsif
 import qualified Glean.Schema.Scip.Types as Scip
 import qualified Glean.Schema.Python.Types as Py
-import qualified Glean.Schema.Thrift.Types as Thrift
 import qualified Glean.Schema.Fbthrift.Types as Fbthrift
 import qualified Glean.Schema.JavaAlpha.Types as Java
 import qualified Glean.Schema.KotlinAlpha.Types as Kotlin
@@ -180,18 +179,6 @@ instance ToAngle Py.Declaration where
   toAngle (Py.Declaration_variable x) = alt @"variable" (mkKey x)
   toAngle (Py.Declaration_imp x) = alt @"imp" (mkKey x)
   toAngle Py.Declaration_EMPTY = error "unknown Declaration"
-
--- Thrift
-
-instance ToAngle Thrift.XRefTarget where
-  toAngle (Thrift.XRefTarget_include_ x) = alt @"include_" (mkKey x)
-  toAngle (Thrift.XRefTarget_named x) = alt @"named" (mkKey x)
-  toAngle (Thrift.XRefTarget_exception_ x) = alt @"exception_" (mkKey x)
-  toAngle (Thrift.XRefTarget_service_ x) = alt @"service_" (mkKey x)
-  toAngle (Thrift.XRefTarget_constant x) = alt @"constant" (mkKey x)
-  toAngle (Thrift.XRefTarget_enumValue x) = alt @"enumValue" (mkKey x)
-  toAngle (Thrift.XRefTarget_function_ x) = alt @"function_" (mkKey x)
-  toAngle Thrift.XRefTarget_EMPTY = error "unknown Entity"
 
 -- Fbthrift
 
