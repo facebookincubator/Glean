@@ -56,7 +56,7 @@ retryChannelExceptions r@RetryPolicy{..} act = go 1
     case e of
       Right x -> return x
       Left ex@ChannelException{}
-        | n >= maxRetries -> do
+        | n > maxRetries -> do
           onError ex n maxRetries Nothing
           throwIO ex
         | otherwise -> do
