@@ -13,7 +13,6 @@ module Glean.Database.Write.Batch
   , writeContentFromBatch
   ) where
 
-import Control.Concurrent.Async
 import Control.DeepSeq (force)
 import Control.Exception
 import Control.Monad.Extra
@@ -26,7 +25,6 @@ import Data.Default
 import Data.Int (Int64)
 import Data.IORef
 import Data.Maybe
-import qualified Data.Text as Text
 import qualified Data.Vector.Storable as Vector
 import Data.Word
 
@@ -45,10 +43,11 @@ import Glean.FFI
 import Glean.Internal.Types as Thrift
 import Glean.RTS.Foreign.Define (trustRefs)
 import qualified Glean.RTS.Foreign.FactSet as FactSet
-import Glean.RTS.Foreign.Lookup (Lookup)
+import Glean.RTS.Foreign.Lookup (Lookup, withCanLookup)
 import qualified Glean.RTS.Foreign.Lookup as Lookup
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import Glean.RTS.Foreign.Ownership as Ownership
+import Glean.RTS.Foreign.Stacked (stacked)
 import Glean.RTS.Foreign.Subst (Subst)
 import qualified Glean.RTS.Foreign.Subst as Subst
 import Glean.RTS.Types (Pid(..))
@@ -142,7 +141,7 @@ writeDatabase env repo WriteContent{..} latency =
         reallyWriteBatch
           env repo odb lookup writing size False writeBatch writeOwnership
       case r of
-        Just subst -> return subst
+        Just cont -> cont
         Nothing ->
           -- Somebody is already writing to the DB - deduplicate the batch
           deDupBatch env repo odb lookup writing size writeBatch writeOwnership
@@ -157,7 +156,7 @@ reallyWriteBatch
   -> Bool  -- ^ has the batch already been de-duped?
   -> Thrift.Batch
   -> Maybe DefineOwnership
-  -> IO Subst
+  -> IO (IO Subst)
 reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
     batch maybeOwn = do
   let !real_size = batchSize batch
@@ -167,61 +166,76 @@ reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
           then Stats.mutatorDedupedThroughput
           else Stats.mutatorDupThroughput) real_size
     $ do
-    -- TODO: Start substituting the next batch while the current batch
-    -- is being committed (T34620702).
-    bracket
-      (
-        logExceptions (\s -> inRepo repo $ "rename error: " ++ s) $
-        tick env repo WriteTraceRename Stats.renameThroughput real_size $
-        withLookupCache repo writing lookup $ \cache -> do
-          next_id <- readIORef (wrNextId writing)
-          FactSet.renameFacts
-            (schemaInventory odbSchema)
-            cache
-            next_id
-            batch
-            def { trustRefs = deduped }
-      )
-      (\(facts, _) -> release facts)
-        -- release the FactSet now that we're done with it,
-        -- don't wait for the GC to free it.
-      (\(facts, subst) -> do
-        logExceptions (\s -> inRepo repo $ "commit error: " ++ s) $ do
-          updateLookupCacheStats env
 
-          let
-            commitOwnership = do
-              Storage.addOwnership odbHandle $
-                coerce (Subst.substIntervals subst) <$>
-                  Thrift.batch_owned batch
-              let deps = substDependencies subst
-                    <$> Thrift.batch_dependencies batch
-              derivedOwners <-
-                if | Just owners <- maybeOwn -> do
-                      Ownership.substDefineOwnership owners subst
-                      return $ Just owners
-                   | not $ HashMap.null deps ->
-                      makeDefineOwnership env repo deps
-                   | otherwise -> return Nothing
-              forM_ derivedOwners $ \ownBatch ->
-                Storage.addDefineOwnership odbHandle ownBatch
+    next_id <- readIORef (wrNextId writing)
 
-          -- before commit, because it may modify facts
-          new_next_id <- Lookup.firstFreeId facts
-          when (not $ envMockWrites env) $ do
-            tick env repo WriteTraceCommit
-              Stats.commitThroughput real_size $
-                concurrently_
-                  (Storage.commit odbHandle facts)
-                  commitOwnership
+    (facts, subst) <-
+      logExceptions (\s -> inRepo repo $ "rename error: " ++ s) $
+        tick env repo WriteTraceRename Stats.renameThroughput real_size $ do
+          let withBase f = do
+                r <- readTVarIO (wrCommit writing)
+                case r of
+                  Nothing -> f lookup
+                  Just (_, facts) -> withCanLookup (stacked lookup facts) f
+          withBase $ \base -> do
+            withLookupCache writing base $ \cache -> do
+              FactSet.renameFacts
+                (schemaInventory odbSchema)
+                cache
+                next_id
+                batch
+                def { trustRefs = deduped }
 
-          -- update wrNextId only *after* commit, otherwise we
-          -- will use an incomplete snapshot of the DB in
-          -- parallel de-dupliation below which leads to correctness
-          -- bugs.
-          atomicWriteIORef (wrNextId writing) new_next_id
-          return subst
-      )
+    logExceptions (\s -> inRepo repo $ "commit error: " ++ s) $ do
+      updateLookupCacheStats env
+
+      let
+        commitOwnership = do
+          Storage.addOwnership odbHandle $
+            coerce (Subst.substIntervals subst) <$>
+              Thrift.batch_owned batch
+          let deps = substDependencies subst
+                <$> Thrift.batch_dependencies batch
+          derivedOwners <-
+            if | Just owners <- maybeOwn -> do
+                  Ownership.substDefineOwnership owners subst
+                  return $ Just owners
+               | not $ HashMap.null deps ->
+                  makeDefineOwnership env repo deps
+               | otherwise -> return Nothing
+          forM_ derivedOwners $ \ownBatch ->
+            Storage.addDefineOwnership odbHandle ownBatch
+
+        doCommit =
+          tick env repo WriteTraceCommit
+            Stats.commitThroughput real_size $ do
+              Storage.commit odbHandle facts
+              commitOwnership
+
+      -- we're going to perform the actual commit outside the write
+      -- lock, so that the next batch can start renaming while we're
+      -- committing. But the next rename will need the current batch
+      -- to de-duplicate against, so we save it in wrCommit. There can
+      -- only be one commit happening at a time and there's no way to
+      -- queue more than one pending commit currently.
+      commit <-
+        if envMockWrites env
+          then do release facts; return (return ())
+          else do
+            atomically $ do
+               m <- readTVar (wrCommit writing)
+               case m of
+                 Just{} -> retry
+                 Nothing -> writeTVar (wrCommit writing) (Just (next_id, facts))
+            return $
+              doCommit
+                `finally`
+              do atomically $ writeTVar (wrCommit writing) Nothing
+
+      new_next_id <- Lookup.firstFreeId facts
+      atomicWriteIORef (wrNextId writing) new_next_id
+      return (commit >> return subst)
+        -- commit takes place outside the write lock
 
 deDupBatch
   :: Env
@@ -235,10 +249,16 @@ deDupBatch
   -> IO Subst
 deDupBatch env repo odb lookup writing original_size batch maybeOwn =
   logExceptions (\s -> inRepo repo $ "dedup error: " ++ s) $ do
-    next_id <- readIORef $ wrNextId writing
+    next_id <- do
+      r <- readTVarIO (wrCommit writing)
+      -- if there is a commit in progress, we use the ID boundary
+      -- before that commit for the snapshot.
+      case r of
+        Just (commit_id, _) -> return commit_id
+        _otherwise -> readIORef $ wrNextId writing
     (maybe_deduped_batch, dsubst) <- bracket
       (
-        withLookupCache repo writing lookup $ \cache ->
+        withLookupCache writing lookup $ \cache ->
         -- We need a snapshot here because we don't want lookups to
         -- return fact ids which conflict with ids in the renamed batch.
         Lookup.withSnapshot cache next_id $ \snapshot ->
@@ -271,34 +291,22 @@ deDupBatch env repo odb lookup writing original_size batch maybeOwn =
         forM_ maybeOwn $ \ownBatch ->
           Ownership.substDefineOwnership ownBatch dsubst
         -- And now write it do the DB, deduplicating again
-        wsubst <- withMutex (wrLock writing) $ const $
+        cont <- withMutex (wrLock writing) $ const $
           reallyWriteBatch env repo odb lookup writing original_size True
             deduped_batch
               { Thrift.batch_owned = is
               , Thrift.batch_dependencies = deps
               }
             maybeOwn
+        wsubst <- cont
         return $ dsubst <> wsubst
 
 withLookupCache
-  :: Repo
-  -> Writing
+  :: Writing
   -> Lookup.Lookup
   -> (Lookup.Lookup -> IO a)
   -> IO a
-withLookupCache repo Writing{..} lookup f = do
-  let baseName = Lookup.lookupName lookup
-  join $ atomically $ do
-    maybePrevName <- readTVar wrLookupCacheAnchorName
-    case maybePrevName of
-      Nothing -> do
-        writeTVar wrLookupCacheAnchorName (Just baseName)
-        return (return ())
-      Just prevName
-        | prevName == baseName -> return (return ())
-        | otherwise -> return $ dbError repo $
-          "base lookup mismatch: prev: " <> Text.unpack prevName <>
-          ", new: " <> Text.unpack baseName
+withLookupCache Writing{..} lookup f = do
   LookupCache.withCache lookup wrLookupCache LookupCache.FIFO f
 
 substDependencies

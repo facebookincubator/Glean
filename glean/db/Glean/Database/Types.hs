@@ -46,6 +46,7 @@ import Glean.Database.Work.Heartbeat (Heartbeats)
 import Glean.Database.Work.Queue (WorkQueue)
 import Glean.Logger.Server (GleanServerLogger)
 import Glean.Logger.Database (GleanDatabaseLogger)
+import Glean.RTS.Foreign.FactSet (FactSet)
 import Glean.RTS.Foreign.LookupCache (LookupCache)
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import Glean.RTS.Foreign.Ownership (Ownership, Slice, DefineOwnership)
@@ -78,6 +79,11 @@ data Writing = Writing
 
     -- Queue of writes to this DB
   , wrQueue :: WriteQueue
+
+    -- | If a commit is in progress, this contains the
+    -- value of 'wrNextIdId' from before the commit and
+    -- the 'FactSet' being committed.
+  , wrCommit :: TVar (Maybe (Fid, FactSet))
   }
 
 -- An open database

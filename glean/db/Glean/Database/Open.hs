@@ -412,12 +412,14 @@ setupWriting Env{..} lookup = do
   queue <- WriteQueue <$> newTQueueIO <*> newTVarIO 0 <*> newTVarIO 0
     <*> newTVarIO 0 <*> newTVarIO 0
   anchorName <- newTVarIO Nothing
+  commit <- newTVarIO Nothing
   return Writing
     { wrLock = mutex
     , wrNextId = next_id
     , wrLookupCache = lookupCache
     , wrLookupCacheAnchorName = anchorName
     , wrQueue = queue
+    , wrCommit = commit
     }
 
 -- | Open a database asynchronously, returning an 'Async' that can be waited on.

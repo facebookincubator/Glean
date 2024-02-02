@@ -17,6 +17,7 @@ module Glean.Database.Close (
 import Control.Exception hiding(handle)
 import Control.Monad.Extra
 import qualified Data.HashMap.Strict as HashMap
+import Data.Maybe
 import qualified Data.Text.Encoding as Text
 
 import ServiceData.GlobalStats as Stats
@@ -45,7 +46,8 @@ isIdle long_enough db odb = and <$> sequence
   , case odbWriting odb of
       Just Writing{..} -> do
         writeQueueSize <- readTVar (writeQueueSize wrQueue)
-        return $ writeQueueSize == 0
+        commit <- readTVar wrCommit
+        return $ writeQueueSize == 0 && isNothing commit
       Nothing -> return True
   ]
 
@@ -74,6 +76,11 @@ closeDatabase env = closeIf
     Opening -> retry
     Open odb -> do
       deleteWriteQueues env odb
+      case odbWriting odb of
+        Just Writing{..} -> do
+          r <- readTVar wrCommit
+          when (isJust r) retry
+        Nothing -> return ()
       return $ Just odb
     Closing -> retry
     Closed -> return Nothing)
