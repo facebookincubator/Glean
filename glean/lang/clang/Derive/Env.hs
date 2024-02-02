@@ -17,6 +17,7 @@ module Derive.Env
 where
 
 import Glean
+import Glean.Remote
 import Glean.Util.Some
 import Glean.Write.SimpleAsync
 
@@ -40,7 +41,7 @@ withEnv cfg allPredicates be action =
   withSimpleSender be (cfgRepo cfg) allPredicates (cfgSendQueue cfg)
     $ \sender -> action Env
     { envConfig = cfg
-    , envBackend = Some be
+    , envBackend = Some (backendRetryReads be defaultRetryPolicy)
     , envSender = sender
     , envWriterSettings = cfgWriter cfg
     }

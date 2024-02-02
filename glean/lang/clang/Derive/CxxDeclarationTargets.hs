@@ -36,6 +36,7 @@ import GHC.Compact as Compact
 import GHC.Stack (HasCallStack)
 import Text.Printf
 
+import Thrift.Channel
 import Util.Control.Exception (catchAll)
 import Util.Log (logError, logInfo)
 import Util.STM
@@ -484,10 +485,13 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
 
             logExceptions (Src.File fid file) action =
               action `catchAll` \e ->
-                logError $ printf
-                  "Unhandled exception deriving predicates for file %s:\n%s\n"
-                  (maybe (show fid) Text.unpack file) (show e)
-
+                if
+                  | Just ChannelException{} <- fromException e ->
+                    throwIO e
+                  | otherwise -> do
+                    logError $ printf
+                      "Unhandled exception deriving predicates for file %s:\n%s\n"
+                      (maybe (show fid) Text.unpack file) (show e)
         loop
 
   -- ---------------------------------------------------------------------------
