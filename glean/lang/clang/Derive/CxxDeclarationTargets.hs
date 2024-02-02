@@ -42,11 +42,11 @@ import Util.Log (logError, logInfo)
 import Util.STM
 
 import Glean
+import Glean.Angle
 import Glean.FFI (withMany)
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Src.Types as Src
-import Glean.Typed (PidOf, getPid)
-import Glean.Util.Declarations ( DeclBranch, applyDeclaration, getDeclId )
+import Glean.Util.Declarations ( applyDeclaration, getDeclId )
 import Glean.Util.PredMap (PredMap)
 import qualified Glean.Util.PredMap as PredMap
 import Glean.Util.Range
@@ -61,7 +61,7 @@ import Derive.Types
 -- The second derived pass will reverse this map
 
 -- | a map from a file id to the declaration in the file
-type Decls = PredMap Src.File [Cxx.Declaration]
+type Decls = PredMap Src.File [(Cxx.Declaration,Src.Range)]
 type FileLines = PredMap Src.File LineOffsets
 
 -- | Helper to pick out the declaration branch
@@ -71,48 +71,32 @@ toPredicateRef = applyDeclaration (getName . mkProxy)
     mkProxy :: a -> Proxy a
     mkProxy _ = Proxy
 
-{-# INLINE getDeclarationsOfType #-}
-getDeclarationsOfType
-  :: forall a e. ( DeclBranch a
-     , SumBranches a Cxx.Declaration
-     , HasSrcRange (KeyType a)
-     , Backend e )
-  => PidOf a
-  -> e
-  -> Config
-  -> IO Decls
-getDeclarationsOfType _pid = go
-  where
-    go e cfg = do
-      let
-        q :: Query a
-        q = maybe id limit (cfgMaxQueryFacts cfg) $
-           limitBytes (cfgMaxQuerySize cfg) allFacts
+getDeclarations :: Backend e => e -> Config -> IO Decls
+getDeclarations e cfg = do
+  let
+    q :: Query (Cxx.Declaration, Src.Range)
+    q = maybe id limit (cfgMaxQueryFacts cfg) $
+       limitBytes (cfgMaxQuerySize cfg) $ query $
+         vars $ \decl range ->
+         tuple (decl,range) `where_` [
+           stmt $
+             (sig unit `where_` [
+               alt @"function_" (rec $ field @"source" range end) .= decl
+             ]) .|
+             (sig unit `where_` [
+               alt @"objcContainer" (rec $ field @"source" range end) .= decl
+             ]) .|
+             (sig unit `where_` [
+               alt @"objcMethod" (rec $ field @"source" range end) .= decl
+             ]) .|
+             (sig unit `where_` [
+               alt @"objcProperty" (rec $ field @"source" range end) .= decl
+             ])
+         ]
 
-      runQueryEach e (cfgRepo cfg) q mempty $ \newdecls b -> do
-        key <- case getFactKey b of
-          Just k -> return k
-          Nothing -> throwIO $ ErrorCall "internal error: getDeclarationsOfType"
-        let
-          source = srcRange key
-          fileId = getId $ Src.range_file source
-          d = injectBranch (mkFact (getId b) (Just key) Nothing :: a)
-
-        return $! PredMap.insertWith (const (d:)) fileId [d] newdecls
-
-getDeclarations
-  :: Backend e
-  => e
-  -> Config
-  -> (forall p. Predicate p => PidOf p)
-  -> IO Decls
-getDeclarations e cfg somePid = do
-  declss <- mapM (\f -> f e cfg)
-    [ getDeclarationsOfType (somePid :: PidOf Cxx.FunctionDeclaration)
-    , getDeclarationsOfType (somePid :: PidOf Cxx.ObjcContainerDeclaration)
-    , getDeclarationsOfType (somePid :: PidOf Cxx.ObjcMethodDeclaration)
-    , getDeclarationsOfType (somePid :: PidOf Cxx.ObjcPropertyDeclaration) ]
-  return $! PredMap.unionsWith (++) declss
+  runQueryEach e (cfgRepo cfg) q mempty $ \newdecls p@(_,range) -> do
+    let fileId = getId $ Src.range_file range
+    return $! PredMap.insertWith (const (p:)) fileId [p] newdecls
 
 getFileLines ::  Backend e => e -> Config -> IO FileLines
 getFileLines e cfg = do
@@ -332,12 +316,10 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
 
   let done :: String -> a -> IO a  -- useful for seeing timing in logs
       done msg x = logInfo msg >> return x
-      somePid :: forall p. Predicate p => PidOf p
-      somePid = getPid (head writers)
 
   (decls, fileliness, indirects) <- do
     maps <- runConcurrently $ (,,)
-      <$> Concurrently (getDeclarations e cfg somePid >>= done "declarations")
+      <$> Concurrently (getDeclarations e cfg >>= done "declarations")
       <*> Concurrently (getFileLines e cfg >>= done "fileLines")
       <*> Concurrently (getIndirectTargets e cfg >>= done "indirect")
     logInfo "loaded predmaps, compacting"
@@ -368,18 +350,9 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
               (Just offsets) -> offsets
               _ -> error $ "no file lines for file" ++ show fileId
 
-          toSrcRange :: Cxx.Declaration -> Src.Range
-          toSrcRange = applyDeclaration getSrcRange
-            where
-              getSrcRange =
-                srcRange .
-                fromMaybe (error "generateCalls toSrcRange: Nothing") .
-                getFactKey
-
           sources =
             [ ( srcRangeToSimpleByteRange offsets srcRange, decl)
-            | decl <- PredMap.findWithDefault [] fileId decls
-            , let srcRange = toSrcRange decl
+            | (decl, srcRange) <- PredMap.findWithDefault [] fileId decls
             ]
 
           calls = matchTargetsToSources targetss sources
