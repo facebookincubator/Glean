@@ -267,7 +267,12 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
   let
     q :: Query Cxx.FileXRefMap
     q = maybe id limit (cfgMaxQueryFacts cfg) $
-        limitBytes (cfgMaxQuerySize cfg) allFacts
+        limitBytes (cfgMaxQuerySize cfg) $ expanding @Src.File allFacts
+
+    maybeFilter :: Src.File -> [a] -> [a]
+    maybeFilter (Src.File _ (Just f)) xmaps =
+      cfgCxxDeclarationTargetsFilter cfg f xmaps
+    maybeFilter _ xmaps = xmaps
 
     doFoldEach go = do
       fileTargetCountAcc <-
@@ -285,14 +290,14 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
             let !file = Cxx.fileXRefMap_key_file key
             case mLastFile of
               (Just lastFile) | getId lastFile /= getId file -> do
-                go (lastFile, targetssIn)
+                go (lastFile, maybeFilter lastFile targetssIn)
                 return (Just file, [(id, key)], succ countIn, succ nIn)
               _ ->
                 return (Just file, (id, key):targetssIn, countIn, succ nIn)
       (countF, nF) <- case fileTargetCountAcc of
         (Nothing, _empty, countIn, nIn) -> return (countIn, nIn)
         (Just file, targetssIn, countIn, nIn) -> do
-          go (file, targetssIn)
+          go (file, maybeFilter file targetssIn)
           return (succ countIn, nIn)
       logInfo $ "(file count, FileXRefMap count) final: " ++ show (countF, nF)
 
