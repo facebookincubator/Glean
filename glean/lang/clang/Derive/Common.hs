@@ -8,15 +8,13 @@
 
 {-# LANGUAGE TypeApplications #-}
 module Derive.Common
-  ( getFileXRefs
-  , getFileXRefsFor
+  ( getFileXRefsFor
   , getIndirectTargets
   , resolve
   , Indirects
   , XRefs
   ) where
 
-import Control.Exception
 import Control.Monad
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
@@ -25,7 +23,6 @@ import qualified Data.Vector as V
 import qualified Data.Vector.Mutable as VM
 
 import Util.List
-import Util.Log
 
 import Glean
 import Glean.Angle
@@ -82,51 +79,6 @@ resolve :: Indirects -> Cxx.XRefTarget -> Maybe Cxx.XRefTarget
 resolve indirects (Cxx.XRefTarget_indirect x) =
   PredMap.lookup (getId x) indirects
 resolve _ x = Just x
-
-getFileXRefs :: Backend e => e -> Config -> IO XRefs
-getFileXRefs e cfg = do
-  -- Collect all of the `XRefTargets` facts first rather than expanding them.
-  -- Since there's a lot of sharing of these facts, the cache hit rate is high.
-  targetsMap <- do
-    let q :: Query Cxx.XRefTargets
-        q = maybe id limit (cfgMaxQueryFacts cfg) $
-            limitBytes (cfgMaxQuerySize cfg) allFacts
-    runQueryEach e (cfgRepo cfg) q mempty
-        $ \targetsMap (Cxx.XRefTargets i k) -> do
-      key <- case k of
-        Just k -> return k
-        Nothing -> throwIO $ ErrorCall "internal error: getFileXRefs"
-      return $ PredMap.insert (IdOf $ Fid i) (HashSet.fromList key) targetsMap
-  logInfo $ "loaded " ++ show (PredMap.size targetsMap) ++ " XRefTargets"
-
-  let
-    q :: Query Cxx.FileXRefs
-    q = maybe id limit (cfgMaxQueryFacts cfg) $
-        limitBytes (cfgMaxQuerySize cfg) allFacts
-
-  xrefs <- runQueryEach e (cfgRepo cfg) q mempty
-      $ \xrefs (Cxx.FileXRefs i k) -> do
-    key <- case k of
-      Just k -> return k
-      Nothing -> throwIO $ ErrorCall "internal error: getFileXRefs"
-    let targets =
-          [ PredMap.findWithDefault
-              (error "missing XRefTargets") (getId targets) targetsMap
-          | targets <- Cxx.fileXRefs_key_targets key ]
-        id = getId (Cxx.fileXRefs_key_xmap key)
-    case PredMap.lookup id xrefs of
-      Just (deps, xs) -> do
-        forM_ (zip [0 .. VM.length xs - 1] targets) $ \(i, ts) -> do
-          x <- VM.unsafeRead xs i
-          VM.unsafeWrite xs i $! HashSet.union ts x
-        let !newDeps = PredSet.insert (IdOf $ Fid i) deps
-        return $ PredMap.insert id (newDeps, xs) xrefs
-      Nothing -> do
-        xs <- VM.new (length targets)
-        forM_ (zip [0..] targets) $ \(i, ts) ->
-          VM.unsafeWrite xs i $! ts
-        return $ PredMap.insert id (PredSet.singleton (IdOf $ Fid i), xs) xrefs
-  traverse (\(deps, xs) -> (deps,) <$> V.unsafeFreeze xs) xrefs
 
 getFileXRefsFor
   :: Backend e
