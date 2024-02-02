@@ -31,8 +31,10 @@ module Glean.Remote
   , dbShardWord
 
     -- * Retries
-  , RetryBackend(..)
+  , RetryWritesBackend(..)
   , backendRetryWrites
+  , RetryReadsBackend(..)
+  , backendRetryReads
   , RetryPolicy(..)
   , defaultRetryPolicy
 
