@@ -82,6 +82,9 @@ getDeclarations e cfg = do
                alt @"function_" (rec $ field @"source" range end) .= decl
              ]) .|
              (sig unit `where_` [
+               alt @"record_" (rec $ field @"source" range end) .= decl
+             ]) .|
+             (sig unit `where_` [
                alt @"objcContainer" (rec $ field @"source" range end) .= decl
              ]) .|
              (sig unit `where_` [
