@@ -24,6 +24,7 @@ import Data.Maybe
 import qualified Data.Vector as V
 import qualified Data.Vector.Mutable as VM
 
+import Util.List
 import Util.Log
 
 import Glean
@@ -46,6 +47,11 @@ type XRefs =
   PredMap
     Cxx.FileXRefMap
     (PredSet Cxx.FileXRefs, V.Vector (HashSet Cxx.XRefTarget))
+
+type MutableXRefs =
+  PredMap
+    Cxx.FileXRefMap
+    (PredSet Cxx.FileXRefs, VM.IOVector (HashSet Cxx.XRefTarget))
 
 getIndirectTargets
   :: Backend e => e -> Config -> IO Indirects
@@ -132,8 +138,7 @@ getFileXRefsFor _ [] _ = return PredMap.empty
 getFileXRefsFor e xmapIds cfg = do
   let
     q :: Query Cxx.FileXRefs
-    q = maybe id limit (cfgMaxQueryFacts cfg) $
-        limitBytes (cfgMaxQuerySize cfg) $ query $
+    q = limitBytes (cfgMaxQuerySize cfg) $ query $
           vars $ \(xmap :: Angle Cxx.FileXRefMap) xrefs ->
             xrefs `where_` [
               xmap .= elementsOf (factIdsArray xmapIds),
@@ -141,31 +146,55 @@ getFileXRefsFor e xmapIds cfg = do
                 field @"xmap" (asPredicate xmap) end)
             ]
 
-  trips <- runHaxl e (cfgRepo cfg) $ do
-    fileXRefs <- search_ q
-    forM fileXRefs $ \(Cxx.FileXRefs i k) -> do
-      key <- case k of
-        Just k -> return k
-        Nothing -> throw $ ErrorCall "internal error: getFileXRefs"
-      let id = getId (Cxx.fileXRefs_key_xmap key)
-      targets <- mapM keyOf (Cxx.fileXRefs_key_targets key)
-      return (i, id, map HashSet.fromList targets)
-
-  let
-    add xrefs (i, id, targets) =
-      case PredMap.lookup id xrefs of
-        Just (deps, xs) -> do
-          forM_ (zip [0 .. VM.length xs - 1] targets) $ \(i, ts) -> do
-            x <- VM.unsafeRead xs i
-            VM.unsafeWrite xs i $! HashSet.union ts x
-          let !newDeps = PredSet.insert (IdOf $ Fid i) deps
-          return $ PredMap.insert id (newDeps, xs) xrefs
-        Nothing -> do
-          xs <- VM.new (length targets)
-          forM_ (zip [0..] targets) $ \(i, ts) ->
-            VM.unsafeWrite xs i $! ts
-          return $
-            PredMap.insert id (PredSet.singleton (IdOf $ Fid i), xs) xrefs
-
-  xrefs <- foldM add mempty trips
+  (_, xrefs) <- runQueryEachBatch e (cfgRepo cfg) q (mempty, mempty)
+    withFileXRefs
   traverse (\(deps, xs) -> (deps,) <$> V.unsafeFreeze xs) xrefs
+
+  where
+  withFileXRefs
+    :: (PredMap Cxx.XRefTargets (HashSet Cxx.XRefTarget), MutableXRefs)
+    -> [Cxx.FileXRefs]
+    -> IO (PredMap Cxx.XRefTargets (HashSet Cxx.XRefTarget), MutableXRefs)
+  withFileXRefs (oldTargetMap, xrefs) fileXRefs = do
+    let
+      newTargetIds = uniq
+          [ t
+          | Cxx.FileXRefs _ (Just (Cxx.FileXRefs_key _ targets)) <- fileXRefs
+          , t <- map getId targets
+          , not (t `PredMap.member` oldTargetMap)
+          ]
+
+      q2 :: Query Cxx.XRefTargets
+      q2 = maybe id limit (cfgMaxQueryFacts cfg) $
+          limitBytes (cfgMaxQuerySize cfg) $ query $
+            elementsOf (factIdsArray newTargetIds)
+
+    newTargets <- runQuery_ e (cfgRepo cfg) q2
+    let newTargetMap = PredMap.fromList
+          [ (IdOf $ Fid i, HashSet.fromList k)
+          | Cxx.XRefTargets i (Just k) <- newTargets
+          ]
+        targetMap = PredMap.union newTargetMap oldTargetMap
+
+    let
+      add xrefs (Cxx.FileXRefs i (Just (Cxx.FileXRefs_key xmap targetIds))) = do
+        let !id = getId xmap
+            targets = [ key | t <- targetIds,
+              Just key <- [PredMap.lookup (getId t) targetMap]]
+        case PredMap.lookup id xrefs of
+          Just (deps, xs) -> do
+            forM_ (zip [0 .. VM.length xs - 1] targets) $ \(i, ts) -> do
+              x <- VM.unsafeRead xs i
+              VM.unsafeWrite xs i $! HashSet.union ts x
+            let !newDeps = PredSet.insert (IdOf $ Fid i) deps
+            return $ PredMap.insert id (newDeps, xs) xrefs
+          Nothing -> do
+            xs <- VM.new (length targets)
+            forM_ (zip [0..] targets) $ \(i, ts) ->
+              VM.unsafeWrite xs i ts
+            return $
+              PredMap.insert id (PredSet.singleton (IdOf $ Fid i), xs) xrefs
+      add xrefs _ = return xrefs
+
+    newXrefs <- foldM add xrefs fileXRefs
+    return (targetMap, newXrefs)

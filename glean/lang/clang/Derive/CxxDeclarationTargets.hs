@@ -334,10 +334,9 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
       somePid :: forall p. Predicate p => PidOf p
       somePid = getPid (head writers)
 
-  (xrefs, decls, fileliness, indirects) <- do
-    maps <- runConcurrently $ (,,,)
-      <$> Concurrently (getFileXRefs e cfg >>= done "fileXRefs")
-      <*> Concurrently (getDeclarations e cfg somePid >>= done "declarations")
+  (decls, fileliness, indirects) <- do
+    maps <- runConcurrently $ (,,)
+      <$> Concurrently (getDeclarations e cfg somePid >>= done "declarations")
       <*> Concurrently (getFileLines e cfg >>= done "fileLines")
       <*> Concurrently (getIndirectTargets e cfg >>= done "indirect")
     logInfo "loaded predmaps, compacting"
@@ -345,7 +344,6 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
     size <- Compact.compactSize compactMaps
     logInfo $ "compact complete (" ++ show size ++ " bytes)"
     return (Compact.getCompact compactMaps)
-  logInfo $ "loaded " ++ show (PredMap.size xrefs) ++ " file xrefs"
   logInfo $ "loaded " ++ show (PredMap.size decls) ++ " declarations"
   logInfo $ "loaded " ++ show (PredMap.size fileliness) ++ " file liness"
   logInfo $ "loaded " ++ show (PredMap.size indirects) ++ " indirect targets"
@@ -430,9 +428,10 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
 
   let -- This should be called only once per 'IdOf Cxx.FileXRefMap'
       oneFileXRefMap
-        :: (IdOf Cxx.FileXRefMap, Cxx.FileXRefMap_key)
+        :: XRefs
+        -> (IdOf Cxx.FileXRefMap, Cxx.FileXRefMap_key)
         -> [(ByteRange, [Cxx.Declaration])]
-      oneFileXRefMap (i, key) =
+      oneFileXRefMap xrefs (i, key) =
         let fixedTargets =
               [ (range, [decl])
               | Cxx.FixedXRef target from <- Cxx.fileXRefMap_key_fixed key
@@ -471,8 +470,9 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
                 Nothing -> readIORef localCount
                 Just (file, fileXRefMaps) -> do
                   logExceptions file $ do
+                    xrefs <- getFileXRefsFor e (map fst fileXRefMaps) cfg
                     targetss <- forM fileXRefMaps $ \ fileXRefMap -> do
-                      let newTargets = oneFileXRefMap fileXRefMap
+                      let newTargets = oneFileXRefMap xrefs fileXRefMap
                       _ <- evaluate (force (length newTargets))
                       return newTargets
                     count <- generateCalls writer file targetss
