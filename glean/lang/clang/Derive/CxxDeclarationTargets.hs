@@ -12,7 +12,6 @@ module Derive.CxxDeclarationTargets
   ) where
 
 import Control.Concurrent.Async (Concurrently(..), runConcurrently)
-import qualified Control.Concurrent.Async as Async (withAsync, wait)
 import Control.DeepSeq
 import Control.Exception
 import Control.Monad
@@ -37,13 +36,12 @@ import GHC.Stack (HasCallStack)
 import Text.Printf
 
 import Thrift.Channel
+import Control.Concurrent.Stream
 import Util.Control.Exception (catchAll)
 import Util.Log (logError, logInfo)
-import Util.STM
 
 import Glean
 import Glean.Angle
-import Glean.FFI (withMany)
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Src.Types as Src
 import Glean.Util.Declarations ( applyDeclaration, getDeclId )
@@ -236,9 +234,6 @@ matchSourceVector targetss sources =
   in
     [ (s, ts) | ((_, s), ts) <- zip sortedSources $ elems targetsBySource]
 
--- | Helper: type for @incomingQ@ inside 'deriveFunctionCalls'
-type QueuePackage = (Src.File, [(IdOf Cxx.FileXRefMap, Cxx.FileXRefMap_key)])
-
 -- | Make 'Cxx.DeclarationTargets' and then 'Cxx.DeclarationSources' facts
 --
 -- Works by matching target coordinates to span of source declarations. There
@@ -263,12 +258,6 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
   -- For cfgDebugPrintReferences, track sparse matrix of count of references
   summaryRef <- newIORef (Map.empty :: Map (PredicateRef, PredicateRef) Int)
 
-  -- Queue of one item per Src.File, ends with Nothings to shutdown workers
-  -- Unlimited runs of RAM. Limit of 150,000 worked with 202GB max resident.
-  -- Now takes limit from command line, defaults to queue limit of 10,000.
-  (incomingQ :: TBQueue (Maybe QueuePackage)) <-
-    newTBQueueIO (fromIntegral $ cfgMaxQueueSize cfg)
-
   -- ---------------------------------------------------------------------------
   -- We are limited by the loading of cxx.FileXRefMap facts, start it first
 
@@ -280,7 +269,7 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
     q = maybe id limit (cfgMaxQueryFacts cfg) $
         limitBytes (cfgMaxQuerySize cfg) allFacts
 
-    doFoldEach = do
+    doFoldEach go = do
       fileTargetCountAcc <-
         runQueryEach e (cfgRepo cfg) q (Nothing, [], 0::Int, 0::Int) $
           \ (!mLastFile, !targetssIn, !countIn, !nIn)
@@ -295,21 +284,17 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
                 "internal error: deriveFunctionCalls"
             let !file = Cxx.fileXRefMap_key_file key
             case mLastFile of
-              (Just lastFile) | lastFile /= file -> do
-                atomically $ writeTBQueue incomingQ
-                  (Just (lastFile, targetssIn))
+              (Just lastFile) | getId lastFile /= getId file -> do
+                go (lastFile, targetssIn)
                 return (Just file, [(id, key)], succ countIn, succ nIn)
               _ ->
                 return (Just file, (id, key):targetssIn, countIn, succ nIn)
       (countF, nF) <- case fileTargetCountAcc of
         (Nothing, _empty, countIn, nIn) -> return (countIn, nIn)
         (Just file, targetssIn, countIn, nIn) -> do
-          atomically $ writeTBQueue incomingQ (Just (file, targetssIn))
+          go (file, targetssIn)
           return (succ countIn, nIn)
       logInfo $ "(file count, FileXRefMap count) final: " ++ show (countF, nF)
-
-  logInfo "start foldEach Cxx.FileXRefMap async"
-  Async.withAsync doFoldEach $ \ fileCountAsync -> do  -- not indenting
 
   -- ---------------------------------------------------------------------------
   -- Load state needed for processing cxx.FileXRefMap
@@ -436,26 +421,18 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
 
         in newTargets
 
-  let fileWorker writer = do
-        localCount <- newIORef (0::Int)
-        let loop = do
-              m <- atomically $ readTBQueue incomingQ
-              case m of
-                Nothing -> readIORef localCount
-                Just (file, fileXRefMaps) -> do
-                  logExceptions file $ do
-                    xrefs <- getFileXRefsFor e (map fst fileXRefMaps) cfg
-                    targetss <- forM fileXRefMaps $ \ fileXRefMap -> do
-                      let newTargets = oneFileXRefMap xrefs fileXRefMap
-                      _ <- evaluate (force (length newTargets))
-                      return newTargets
-                    count <- generateCalls writer file targetss
-                    modifyIORef' localCount (+ count)
-                  -- continue with the next incoming item ignoring errors
-                  -- we'd rather get a DB with missing derived facts
-                  -- than no DB at all
-                  loop
-
+  let fileWorker writer (file, fileXRefMaps) = do
+        logExceptions file $ do
+          xrefs <- getFileXRefsFor e (map fst fileXRefMaps) cfg
+          targetss <- forM fileXRefMaps $ \ fileXRefMap -> do
+            let newTargets = oneFileXRefMap xrefs fileXRefMap
+            _ <- evaluate (force (length newTargets))
+            return newTargets
+          void $ generateCalls writer file targetss
+        -- continue with the next incoming item ignoring errors
+        -- we'd rather get a DB with missing derived facts
+        -- than no DB at all
+        where
             logExceptions (Src.File fid file) action =
               action `catchAll` \e ->
                 if
@@ -465,22 +442,10 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
                     logError $ printf
                       "Unhandled exception deriving predicates for file %s:\n%s\n"
                       (maybe (show fid) Text.unpack file) (show e)
-        loop
 
   -- ---------------------------------------------------------------------------
 
-  logInfo "Launch worker threads to process cxx.FileXRefMap"
-  counts <- withMany Async.withAsync (map fileWorker writers) $
-    \ workerAsyncs -> do
-      logInfo "Wait for fileCountAsync forEach"
-      () <- Async.wait fileCountAsync
-      logInfo "fileCountAsync forEach done, closing worker threads"
-      atomically $ replicateM_ workers $ writeTBQueue incomingQ Nothing
-      logInfo "Waiting on Worker threads"
-      forM workerAsyncs Async.wait
-  logInfo "Worker threads closed"
-  logInfo $ "Per worker counts: " ++ show counts
-  logInfo $ "found " ++ show (sum counts) ++ " decl calls"
+  streamWithState doFoldEach writers fileWorker
 
   when (cfgBenchmark cfg) $ do
     foldEachTime <- toDiffMicros <$> getElapsedTime startTimePoint
