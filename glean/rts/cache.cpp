@@ -174,7 +174,7 @@ bool LookupCache::Anchor::factById(
       // no facts will be deleted until we're done.
       //
       // We might consider finer-grained locking if this becomes an issue.
-      folly::SharedMutex::ReadHolder dont_delete(rindex->delete_lock);
+      std::shared_lock dont_delete(rindex->delete_lock);
       if (replacementPolicy == ReplacementPolicy::LRU) {
         cache->touch(std::move(rindex), fact);
       } else {
