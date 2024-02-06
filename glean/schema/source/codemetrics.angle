@@ -1,0 +1,44 @@
+schema codemetrics.1 {
+
+import cxx1.5
+import code.24
+import code.cxx.4
+
+predicate ReferencesFrom : {
+  source : code.Entity,
+  target : code.Entity
+}
+  { { cxx = S }, { cxx = T } } where CxxReferencesFrom { S, T }
+
+predicate CxxReferencesFrom : {
+  source : code.cxx.Entity,
+  target : code.cxx.Entity
+}
+  { { defn = { record_ = R }}, { decl = T } }
+    where CxxRecordReference { R, T }
+
+predicate CxxRecordReference : {
+  source : cxx1.RecordDefinition,
+  target : cxx1.Declaration
+}
+  { Source, D } where
+    cxx1.DefToBaseDecl { defn = { record_ = Source }, decl = { record_ = Decl } };
+    { name = QName } = Decl;
+    { members = Members : [cxx1.Declaration] } = Source;
+
+    # Look at the declaration itself and the members, because some of
+    # them might be out-of-line
+    DeclOrMember = ({record_ = Decl} : cxx1.Declaration | Members[..]);
+
+    # Targets for each declaration
+    cxx1.DeclarationTargets { source = DeclOrMember, targets = T };
+    D = T[..];
+
+    # We don't care about references to namespaces
+    !({ namespace_ = _ } = D);
+
+    # We don't care about references to things in this class
+    cxx1.DeclarationScope { decl = D, scope = Scope };
+    !({ recordWithAccess = { record = QName }} = Scope);
+
+}
