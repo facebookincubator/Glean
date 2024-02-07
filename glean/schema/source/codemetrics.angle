@@ -4,12 +4,23 @@ import cxx1.5
 import code.24
 import code.cxx.4
 
+#
+# 'target' is referenced in the definition of 'source'
+#
+# Note that this is the dual of codemarkup.EntitySource, which finds
+# references *to* an entity.
+#
 predicate ReferencesFrom : {
   source : code.Entity,
   target : code.Entity
 }
   { { cxx = S }, { cxx = T } } where CxxReferencesFrom { S, T }
 
+#
+# For cxx we want to use cxx1.DeclarationTargets which efficiently
+# maps declarations to references, and we also want to account for
+# out-of-line parts of the definition (methods, in particular).
+#
 predicate CxxReferencesFrom : {
   source : code.cxx.Entity,
   target : code.cxx.Entity
