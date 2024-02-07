@@ -495,7 +495,7 @@ reservedWords :: HashSet Text
 reservedWords = HashSet.fromList [
     -- Thrift reserved words, seems like a good idea to avoid these
     "binary", "bool", "byte", "const", "cpp_include",
-    "double", "enum", "exception", "extends", "false", "float",
+    "double", "enum", "exception", "export", "extends", "false", "float",
     "hash_map", "hash_set", "hs_include", "i16", "i32", "i64", "include",
     "list", "map", "namespace", "oneway", "optional", "required", "senum",
     "service", "set", "stream", "string", "struct", "throws", "true",
