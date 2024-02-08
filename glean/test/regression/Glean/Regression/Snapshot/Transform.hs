@@ -10,6 +10,7 @@ module Glean.Regression.Snapshot.Transform
   ( Transform(..)
   , Transforms
   , defaultTransforms
+  , nukeIds
   ) where
 
 import qualified Data.Aeson as Aeson
@@ -65,3 +66,14 @@ normOrd _ = sort . map norm
       JSON.JSArray v -> JSON.JSArray $ sort $ map norm v
       JSON.JSObject o -> JSON.JSObject $ JSON.toJSObject $
         sort $ map (fmap norm) $ JSON.fromJSObject o
+
+nukeIds :: JSON.JSValue -> JSON.JSValue
+nukeIds (JSON.JSArray xs) = JSON.JSArray $ map nukeIds xs
+nukeIds (JSON.JSObject xs) = JSON.JSObject $ JSON.toJSObject
+  [(s, nukeIds v) | (s,v) <- JSON.fromJSObject xs, keep s v]
+  where
+    keep "id" JSON.JSRational{} =
+      any ((`notElem` ["id","key","value"]) . fst)
+      $ JSON.fromJSObject xs
+    keep _ _ = True
+nukeIds x = x

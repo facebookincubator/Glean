@@ -133,16 +133,6 @@ runQuery backend repo xforms qfile = do
       return (resultString, perfString)
 
   where
-    nukeIds (JSON.JSArray xs) = JSON.JSArray $ map nukeIds xs
-    nukeIds (JSON.JSObject xs) = JSON.JSObject $ JSON.toJSObject
-      [(s, nukeIds v) | (s,v) <- JSON.fromJSObject xs, keep s v]
-      where
-        keep "id" JSON.JSRational{} =
-          any ((`notElem` ["id","key","value"]) . fst)
-          $ JSON.fromJSObject xs
-        keep _ _ = True
-    nukeIds x = x
-
     getTransform (name, arg)
       | Just (Transform f) <- HashMap.lookup name xforms =
           case Aeson.fromJSON arg of
