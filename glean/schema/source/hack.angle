@@ -549,7 +549,14 @@ predicate NamespaceMember :
     decl : hack.Declaration
   }
   stored
-  { NS, Decl } where
+  { NS, Decl } where DeclarationNamespace { Decl, NS }
+
+predicate DeclarationNamespace :
+  {
+    decl : hack.Declaration,
+    namespace_ : hack.NamespaceQName
+  }
+  { Decl, NS } where
   Decl =
     hack.Declaration { container = { class_ = { name = { namespace_ = { just = NS }}}}} |
     hack.Declaration { container = { enum_ = { name = { namespace_ = { just = NS }}}}} |

@@ -291,7 +291,7 @@ predicate HackContainsParentEntity :
       { enumerator = { enumeration = Enumeration } } = Child;
       Parent = hack.Declaration { container = {enum_ = Enumeration} }
     ) | (
-      hack.NamespaceMember { namespace_ = Name, decl = Child};
+      hack.DeclarationNamespace { decl = Child, namespace_ = Name };
       Parent = hack.Declaration { namespace_ = {name = Name }}
     ) | (
       hack.ModuleParent { Child, Module };
