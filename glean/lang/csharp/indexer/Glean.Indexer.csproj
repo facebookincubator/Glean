@@ -35,6 +35,7 @@
         <Compile Include="Schema/CSharp/ProjectSource.cs" />
         <Compile Include="Schema/CSharp/PropertyFact.cs" />
         <Compile Include="Schema/CSharp/RecordFact.cs" />
+        <Compile Include="Schema/CSharp/SolutionFact.cs" />
         <Compile Include="Schema/CSharp/StructFact.cs" />
         <Compile Include="Schema/CSharp/Type.cs" />
         <Compile Include="Schema/CSharp/TypeParameterFact.cs" />

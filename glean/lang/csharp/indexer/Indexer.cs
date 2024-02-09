@@ -49,6 +49,8 @@ public class Indexer
             }
             case MaterializedWorkItem.MSBuildSolution msbuildSolutionWorkItem:
             {
+                factStore.Add(new SolutionFact(Hg.GetRepoRootRelativePath(msbuildSolutionWorkItem.SolutionPath)));
+
                 foreach (var projectPath in msbuildSolutionWorkItem.ProjectPaths)
                 {
                     BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
