@@ -7,7 +7,7 @@
 -}
 
 {-# LANGUAGE CPP #-}
-{-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE NamedFieldPuns #-}
 module Glean.Glass.Main
   ( main
 
@@ -55,7 +55,9 @@ import qualified Glean.Glass.Handler as Handler
 import Glean.Glass.GlassService.Service ( GlassServiceCommand(..) )
 
 import Glean.Glass.SnapshotBackend ( snapshotBackend, SnapshotTier )
-import Glean.Glass.Types (RevisionNotAvailableException(..))
+import Glean.Glass.Types
+  ( GlassException (GlassException, glassException_reasons),
+    GlassExceptionReason (GlassExceptionReason_exactRevisionNotAvailable))
 
 kThriftCacheNoCache :: Text
 kThriftCacheNoCache = "nocache"
@@ -128,8 +130,16 @@ runGlass res@Glass.Env{..} conf@Glass.Config{..} = do
   runFacebookService' fb303 (glassHandler res) assignHeaders options
 
 assignHeaders :: GlassServiceCommand r -> Either SomeException r -> Header
-assignHeaders _ (Left (fromException -> Just RevisionNotAvailableException{})) =
+assignHeaders _ (Left e) | isRevisionNotAvailableException e =
   [ (encodeUtf8 kThriftCacheNoCache, "1")]
+  where
+    isRevisionNotAvailableException e = case fromException e of
+      Just GlassException{glassException_reasons} ->
+        all isExactRevisionNotAvailable glassException_reasons
+      _ -> False
+    isExactRevisionNotAvailable GlassExceptionReason_exactRevisionNotAvailable{}
+      = True
+    isExactRevisionNotAvailable _ = False
 assignHeaders _ _ = []
 
 welcomeMessage :: Glass.Config -> IO Text
