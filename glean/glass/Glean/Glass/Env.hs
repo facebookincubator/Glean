@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE DuplicateRecordFields #-}
 module Glean.Glass.Env
   (
     -- * Read-only configuration
@@ -32,7 +33,7 @@ import Glean.Util.Time ( DiffTimePoints )
 
 import Glean.Glass.Base (RepoMapping)
 import Glean.Glass.Repos (GleanDBInfo)
-import Glean.Glass.SnapshotBackend ( SnapshotBackend, SnapshotTier )
+import Glean.Glass.SnapshotBackend ( SnapshotBackend(..) )
 
 -- | Init-time configuration
 data Config = Config
@@ -45,7 +46,7 @@ data Config = Config
   , listDatabasesRetry :: Maybe Int
       -- ^ whether to trust listDatabases and how often to wait to retry N times
   , numWorkerThreads :: Maybe Int
-  , snapshotTier :: SnapshotTier
+  , snapshotBackend :: Some SnapshotBackend
   }
 
 -- | Read-only, scoped, dynamic resources.
@@ -57,7 +58,7 @@ data Env = Env
   , fb303 :: Fb303State
   , latestGleanRepos :: TVar GleanDBInfo
   , gleanIndexBackend :: IndexBackend
-  , snapshotBackend :: SnapshotBackend
+  , snapshotBackend :: Some SnapshotBackend
   , gleanDB :: Maybe Glean.Repo -- if provided, use as target Glean DB
   , repoMapping :: RepoMapping
   }

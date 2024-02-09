@@ -34,7 +34,7 @@ withTestEnv backend f =
       f Glass.Env
         { gleanBackend = Some backend
         , gleanIndexBackend = IndexBackend Nothing
-        , snapshotBackend = SB.snapshotBackend SB.snapshotDefaultTier
+        , snapshotBackend = Some SB.NilSnapshotBackend
         , gleanDB = Nothing
         , repoMapping = fixedRepoMapping
         , ..

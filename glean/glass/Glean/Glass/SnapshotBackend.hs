@@ -13,29 +13,34 @@ of Glass
 -}
 
 module Glean.Glass.SnapshotBackend
-  ( getSnapshot
-  , snapshotBackend
-  , SnapshotBackend
-  , SnapshotTier
-  , snapshotTierParser
-  , snapshotDefaultTier
+  ( SnapshotBackend(..)
   , SnapshotStatus(..)
+  , snapshotBackendParser
+  , NilSnapshotBackend(..)
   ) where
 
 import Data.Text ( Text )
-import qualified Glean.Glass.Types as Types
-
 import Options.Applicative
     ( Parser, auto, help, long, option, value )
 
+import qualified Glean.Glass.Types as Types
+import Glean.Util.Some (Some(..))
 import Glean.Glass.Types (
       Revision,
       Path,
       RepoName(..),
       Path (..) )
 
-type SnapshotTier = ()
-type SnapshotBackend = ()
+class SnapshotBackend backend where
+  getSnapshot
+    :: backend
+    -> RepoName
+    -> Path
+    -> Maybe Revision
+    -> IO (Either SnapshotStatus Types.DocumentSymbolListXResult)
+
+instance SnapshotBackend (Some SnapshotBackend) where
+  getSnapshot (Some backend) = getSnapshot backend
 
 data SnapshotStatus
   = Unrequested
@@ -44,25 +49,17 @@ data SnapshotStatus
   | Timeout
   | NotFound
   | ExactMatch
-  | Latest
+  | Latest Revision
 
-snapshotDefaultTier :: SnapshotTier
-snapshotDefaultTier = ()
-
-snapshotBackend :: SnapshotTier -> SnapshotBackend
-snapshotBackend _ = ()
-
-snapshotTierParser :: Parser SnapshotTier
-snapshotTierParser = () <$ (option auto (mconcat
+-- | Always produces the 'NilSnapshotBackend'
+snapshotBackendParser :: Parser (Some SnapshotBackend)
+snapshotBackendParser = Some NilSnapshotBackend <$ (option auto (mconcat
   [ long "snapshot-tier-name"
   , help "snapshot tier name (unused)"
   , value "unused"
   ]) :: Parser Text)
 
-getSnapshot
-  :: SnapshotBackend
-  -> RepoName
-  -> Path
-  -> Maybe Revision
-  -> IO (Either SnapshotStatus Types.DocumentSymbolListXResult)
-getSnapshot _ _ _ _ = return $ Left Unrequested
+data NilSnapshotBackend = NilSnapshotBackend
+
+instance SnapshotBackend NilSnapshotBackend where
+  getSnapshot _ _ _ _ = return $ Left Unrequested

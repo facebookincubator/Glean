@@ -70,10 +70,9 @@ options = info (helper <*> parser) fullDesc
 
 main :: IO ()
 main =
-  withOptions options $ \Config{..} ->
-  Glass.withEnv "glass-symbol" (Glass.gleanService cfgGlass)
-    (Glass.snapshotTier cfgGlass) (Glass.configKey cfgGlass)
-    (Glass.refreshFreq cfgGlass) Nothing Nothing $ \env -> do
+  withOptions options $ \Config{cfgGlass = Glass.Config{..}, ..} ->
+  Glass.withEnv "glass-symbol" gleanService snapshotBackend configKey
+    refreshFreq Nothing Nothing $ \env -> do
 
     syms <- case (cfgSymbol, cfgFile) of
       (Nothing, Nothing) ->
