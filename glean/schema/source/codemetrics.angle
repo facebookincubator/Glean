@@ -3,6 +3,9 @@ schema codemetrics.1 {
 import cxx1.5
 import code.24
 import code.cxx.4
+import code.hack.4
+import codemarkup.hack.2
+import hack.6
 
 #
 # 'target' is referenced in the definition of 'source'
@@ -14,7 +17,11 @@ predicate ReferencesFrom : {
   source : code.Entity,
   target : code.Entity
 }
-  { { cxx = S }, { cxx = T } } where CxxReferencesFrom { S, T }
+  (
+    { { cxx = S }, { cxx = T } } where CxxReferencesFrom { S, T }
+  ) | (
+    { { hack = S }, { hack = T } } where HackReferencesFrom { S, T }
+  )
 
 #
 # For cxx we want to use cxx1.DeclarationTargets which efficiently
@@ -54,4 +61,24 @@ predicate CxxRecordReference : {
 
     # We don't care about references to the class itself
     !({ record_ = Decl } = D);
+
+predicate HackReferencesFrom : {
+  source : code.hack.Entity,
+  target : code.hack.Entity
+}
+  { { decl = Decl }, { decl = T } } where
+    { container = { class_ = C } } = Decl;
+    hack.DeclarationTarget { Decl, T };
+
+    # Filter out references to this class
+    !(T = Decl);
+
+    # Filter out references to members of this class
+    !(codemarkup.hack.HackContainsParentEntity {
+        child = { decl = T },
+        parent = { decl = Parent }
+      };
+      { container = { class_ = C } } = Parent
+     )
+
 }
