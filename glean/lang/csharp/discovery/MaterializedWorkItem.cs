@@ -21,8 +21,13 @@ public abstract record MaterializedWorkItem([property: JsonConverter(typeof(Json
     public record MSBuildSolution(string SolutionPath, string[] ProjectPaths)
         : MaterializedWorkItem(WorkType.MSBuildSolution);
 
-    public record UnityPackage(string GeneratedProjectPath, [property: JsonConverter(typeof(JsonStringEnumConverter))] PackageType PackageType, string PackageName)
-        : MaterializedWorkItem(WorkType.UnityPackage);
+    public record UnityPackage
+        ( string GeneratedProjectPath
+        , [property: JsonConverter(typeof(JsonStringEnumConverter))] PackageType PackageType
+        , string PackageName
+        , string TemplatePath
+        , [property: JsonConverter(typeof(JsonStringEnumConverter))] AssemblyDefinition.Type AssemblyDefinitionType
+        ) : MaterializedWorkItem(WorkType.UnityPackage);
 
     public record BuckBuildTarget(string GeneratedProjectPath, string BuildTarget)
         : MaterializedWorkItem(WorkType.BuckBuildTarget);

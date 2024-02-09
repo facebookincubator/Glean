@@ -165,15 +165,9 @@ public static class Discovery
                 new HashSet<string>()
             );
 
-            var materializedWorkItem = new MaterializedWorkItem.UnityPackage(
-                generatedProjectsDirectory,
-                package.type,
-                package.name
-            );
-
             try
             {
-                package.Apply(
+                var asmdefs = package.Apply(
                     flags,
                     default,
                     default,
@@ -181,12 +175,16 @@ public static class Discovery
                     isEdenRepo: true
                 );
 
-                var absoluteGeneratedProjectPaths = Directory.GetFiles(generatedProjectsDirectory, "*.csproj", SearchOption.AllDirectories);
-                materializedWorkItems.AddRange(absoluteGeneratedProjectPaths.Select(
-                    generatedProjectPath => new MaterializedWorkItem.UnityPackage(generatedProjectPath, package.type, package.name))
-                );
+                materializedWorkItems.AddRange(asmdefs.Select(
+                    asmdef => new MaterializedWorkItem.UnityPackage
+                        ( Path.Combine(generatedProjectsDirectory, asmdef.name + ".csproj")
+                        , package.type
+                        , package.name
+                        , Path.GetFullPath(unityProjectTemplatePath)
+                        , asmdef.type
+                        )));
 
-                Log.Information($"Generated {absoluteGeneratedProjectPaths.Count()} projects for Unity package {package.fullName}");
+                Log.Information($"Generated {asmdefs.Count()} projects for Unity package {package.fullName}");
             }
             catch (Exception e)
             {
