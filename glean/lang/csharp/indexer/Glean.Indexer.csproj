@@ -36,6 +36,7 @@
         <Compile Include="Schema/CSharp/StructFact.cs" />
         <Compile Include="Schema/CSharp/Type.cs" />
         <Compile Include="Schema/CSharp/TypeParameterFact.cs" />
+        <Compile Include="Schema/CSharp/UnityPackageFact.cs" />
         <Compile Include="Schema/Fact.cs" />
         <Compile Include="Schema/Src/ByteSpan.cs" />
         <Compile Include="Schema/Src/FileFact.cs" />

@@ -56,6 +56,13 @@ public class Indexer
             case MaterializedWorkItem.UnityPackage unityPackageWorkItem:
             {
                 var projectPath = unityPackageWorkItem.GeneratedProjectPath;
+
+                var unityPackageFactKey = new UnityPackageFactKey
+                    ( unityPackageWorkItem.PackageType
+                    , unityPackageWorkItem.PackageName
+                    );
+                factStore.Add(new UnityPackageFact(unityPackageFactKey));
+
                 BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 break;
             }
