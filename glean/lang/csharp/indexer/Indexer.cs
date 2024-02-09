@@ -40,19 +40,26 @@ public class Indexer
             case MaterializedWorkItem.MSBuildProject msbuildProjectWorkItem:
             {
                 var projectPath = msbuildProjectWorkItem.ProjectPath;
-                var msbuildProjectSourceFact = new MSBuildProjectSourceFact(Hg.GetRepoRootRelativePath(projectPath));
-                var projectSource = ProjectSource.MSBuild(msbuildProjectSourceFact);
-                factStore.Add(new ProjectFact(new ProjectFactKey(projectSource)));
+
+                var projectFact = ProjectFact.MSBuild(projectPath);
+                factStore.Add(projectFact);
 
                 BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 break;
             }
             case MaterializedWorkItem.MSBuildSolution msbuildSolutionWorkItem:
             {
-                factStore.Add(new SolutionFact(Hg.GetRepoRootRelativePath(msbuildSolutionWorkItem.SolutionPath)));
+                var solutionFact = new SolutionFact(Hg.GetRepoRootRelativePath(msbuildSolutionWorkItem.SolutionPath));
 
                 foreach (var projectPath in msbuildSolutionWorkItem.ProjectPaths)
                 {
+                    var projectFact = ProjectFact.MSBuild(projectPath);
+                    var solutionToProjectFactKey = new SolutionToProjectFactKey
+                        ( solutionFact
+                        , projectFact
+                        );
+                    factStore.Add(new SolutionToProjectFact(solutionToProjectFactKey));
+
                     BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 }
 

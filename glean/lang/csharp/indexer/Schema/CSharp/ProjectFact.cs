@@ -12,4 +12,12 @@ public record struct ProjectFactKey
     ( ProjectSource Source
     );
 
-public record ProjectFact(ProjectFactKey Key) : FactWithKey<ProjectFactKey>(Predicate.Project, Key);
+public record ProjectFact(ProjectFactKey Key) : FactWithKey<ProjectFactKey>(Predicate.Project, Key)
+{
+    public static ProjectFact MSBuild(string absoluteProjectPath)
+    {
+        var msbuildProjectSourceFact = new MSBuildProjectSourceFact(Hg.GetRepoRootRelativePath(absoluteProjectPath));
+        var projectSource = ProjectSource.MSBuild(msbuildProjectSourceFact);
+        return new ProjectFact(new ProjectFactKey(projectSource));
+    }
+}
