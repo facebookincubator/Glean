@@ -10,6 +10,8 @@ using Glean.Discovery;
 using Glean.Indexer.Schema;
 using Glean.Indexer.Schema.CSharp;
 using Glean.Indexer.Schema.Src;
+using Microsoft.Build.Evaluation;
+using Microsoft.Build.Exceptions;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -27,6 +29,9 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 
+using UnevaluatedProject = Microsoft.Build.Construction.ProjectRootElement;
+using EvaluatedProject = Microsoft.Build.Evaluation.Project;
+
 namespace Glean.Indexer;
 
 public class Indexer
@@ -40,10 +45,9 @@ public class Indexer
             case MaterializedWorkItem.MSBuildProject msbuildProjectWorkItem:
             {
                 var projectPath = msbuildProjectWorkItem.ProjectPath;
-
-                var projectFact = ProjectFact.MSBuild(projectPath);
+                var projectFact = ProjectFact.MSBuild(msbuildProjectWorkItem);
                 factStore.Add(projectFact);
-
+                IndexProjectFile(factStore, projectPath, projectFact);
                 BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 break;
             }
@@ -53,13 +57,11 @@ public class Indexer
 
                 foreach (var projectPath in msbuildSolutionWorkItem.ProjectPaths)
                 {
-                    var projectFact = ProjectFact.MSBuild(projectPath);
-                    var solutionToProjectFactKey = new SolutionToProjectFactKey
-                        ( solutionFact
-                        , projectFact
-                        );
+                    var msbuildProjectWorkItem = new MaterializedWorkItem.MSBuildProject(projectPath);
+                    var projectFact = ProjectFact.MSBuild(msbuildProjectWorkItem);
+                    var solutionToProjectFactKey = new SolutionToProjectFactKey(solutionFact, projectFact);
                     factStore.Add(new SolutionToProjectFact(solutionToProjectFactKey));
-
+                    IndexProjectFile(factStore, projectPath, projectFact);
                     BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 }
 
@@ -68,21 +70,9 @@ public class Indexer
             case MaterializedWorkItem.UnityPackage unityPackageWorkItem:
             {
                 var projectPath = unityPackageWorkItem.GeneratedProjectPath;
-
-                var unityPackageFactKey = new UnityPackageFactKey
-                    ( Type: unityPackageWorkItem.PackageType
-                    , Name: unityPackageWorkItem.PackageName
-                    );
-                var unityProjectSourceFactKey = new UnityProjectSourceFactKey
-                    ( ProjectBasename: Path.GetFileName(projectPath)
-                    , UnityPackage: new UnityPackageFact(unityPackageFactKey)
-                    , AssemblyType: unityPackageWorkItem.AssemblyDefinitionType
-                    , ProjectTemplate: new FileFact(Hg.GetRepoRootRelativePath(unityPackageWorkItem.TemplatePath))
-                    );
-                var unityProjectSourceFact = new UnityProjectSourceFact(unityProjectSourceFactKey);
-                var projectSource = ProjectSource.Unity(unityProjectSourceFact);
-                factStore.Add(new ProjectFact(new ProjectFactKey(projectSource)));
-
+                var projectFact = ProjectFact.Unity(unityPackageWorkItem);
+                factStore.Add(projectFact);
+                IndexProjectFile(factStore, projectPath, projectFact);
                 BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 break;
             }
@@ -171,6 +161,63 @@ public class Indexer
             var message = $"[{code}] {error}\n  at {location}";
 
             Log.Debug(message);
+        }
+    }
+
+    private static void IndexProjectFile(FactStore factStore, string projectPath, ProjectFact projectFact)
+    {
+        var projectRoot = Path.GetDirectoryName(projectPath) ?? string.Empty;
+
+        WithUnevaluatedProject(projectPath, unevaluatedProject =>
+        {
+            WithEvaluatedProject(unevaluatedProject, evaluatedProject =>
+            {
+                foreach (var item in evaluatedProject.Items)
+                {
+                    switch (item.ItemType)
+                    {
+                        case "Compile":
+                        case "Content":
+                            var projectRootRelativeIncludePath = item.EvaluatedInclude.Replace('\\', Path.DirectorySeparatorChar);
+                            var absoluteIncludePath = Path.Combine(projectRoot, projectRootRelativeIncludePath);
+                            var repoRootRelativeIncludePath = Hg.GetRepoRootRelativePath(absoluteIncludePath);
+                            var projectToSourceFileFactKey = new ProjectToSourceFileFactKey(projectFact, new FileFact(repoRootRelativeIncludePath));
+                            factStore.Add(new ProjectToSourceFileFact(projectToSourceFileFactKey));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+        });
+    }
+
+    private static void WithUnevaluatedProject(string projectPath, Action<UnevaluatedProject> action)
+    {
+        try
+        {
+            var unevaluatedProject = UnevaluatedProject.Open(projectPath);
+            action(unevaluatedProject);
+        }
+        catch (Exception e) when (e is InvalidProjectFileException)
+        {
+            Log.Error($"Failed to open project {projectPath}: {e.Message}");
+        }
+    }
+
+    private static void WithEvaluatedProject(UnevaluatedProject unevaluatedProject, Action<EvaluatedProject> action)
+    {
+        using (var projectCollection = new ProjectCollection())
+        {
+            try
+            {
+                var evaluatedProject = new EvaluatedProject(unevaluatedProject, null, null, projectCollection);
+                action(evaluatedProject);
+            }
+            catch (Exception e) when (e is InvalidProjectFileException || e is InvalidOperationException)
+            {
+                Log.Error($"Failed to evaluate project {unevaluatedProject.FullPath}: {e.Message}");
+            }
         }
     }
 }
