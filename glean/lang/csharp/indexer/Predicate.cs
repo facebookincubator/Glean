@@ -35,6 +35,13 @@ namespace Glean.Indexer.Schema
         Record,
         Struct,
         TypeParameter,
+        UnityPackage,
+        UnityProjectSource,
+        MSBuildProjectSource,
+        Project,
+        ProjectToSourceFile,
+        Solution,
+        SolutionToProject,
     }
 
     static class PredicateExtensions
