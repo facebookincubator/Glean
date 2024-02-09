@@ -226,5 +226,8 @@ echo "$facts"/*.json | xargs glean create "${glean_args[@]}"
 glean derive "${glean_args[@]}" csharp.FileDefinitions
 glean derive "${glean_args[@]}" csharp.FileEntityXRefs
 glean derive "${glean_args[@]}" csharp.NameLowerCase
+glean derive "${glean_args[@]}" csharp.UnityPackageToProject
+glean derive "${glean_args[@]}" csharp.SourceFileToProject
+glean derive "${glean_args[@]}" csharp.ProjectToSolution
 
 glean shell "${glean_args[@]}"
