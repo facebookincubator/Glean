@@ -36,7 +36,7 @@ namespace Glean.Indexer;
 
 public class Indexer
 {
-    public static void IndexWorkItem(FactStore factStore, MaterializedWorkItem workItem, string outputPath, LogEventLevel logLevel)
+    public static void IndexWorkItem(FactStore factStore, MaterializedWorkItem workItem, string outputPath, LogEventLevel logLevel, bool indexProjectFiles)
     {
         Log.Information($"Discovered work-item:\n{JsonSerializer.Serialize(workItem, new JsonSerializerOptions { WriteIndented = true })}");
 
@@ -45,9 +45,12 @@ public class Indexer
             case MaterializedWorkItem.MSBuildProject msbuildProjectWorkItem:
             {
                 var projectPath = msbuildProjectWorkItem.ProjectPath;
-                var projectFact = ProjectFact.MSBuild(msbuildProjectWorkItem);
-                factStore.Add(projectFact);
-                IndexProjectFile(factStore, projectPath, projectFact);
+                if (indexProjectFiles)
+                {
+                    var projectFact = ProjectFact.MSBuild(msbuildProjectWorkItem);
+                    factStore.Add(projectFact);
+                    IndexProjectFile(factStore, projectPath, projectFact);
+                }
                 BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 break;
             }
@@ -58,10 +61,13 @@ public class Indexer
                 foreach (var projectPath in msbuildSolutionWorkItem.ProjectPaths)
                 {
                     var msbuildProjectWorkItem = new MaterializedWorkItem.MSBuildProject(projectPath);
-                    var projectFact = ProjectFact.MSBuild(msbuildProjectWorkItem);
-                    var solutionToProjectFactKey = new SolutionToProjectFactKey(solutionFact, projectFact);
-                    factStore.Add(new SolutionToProjectFact(solutionToProjectFactKey));
-                    IndexProjectFile(factStore, projectPath, projectFact);
+                    if (indexProjectFiles)
+                    {
+                        var projectFact = ProjectFact.MSBuild(msbuildProjectWorkItem);
+                        var solutionToProjectFactKey = new SolutionToProjectFactKey(solutionFact, projectFact);
+                        factStore.Add(new SolutionToProjectFact(solutionToProjectFactKey));
+                        IndexProjectFile(factStore, projectPath, projectFact);
+                    }
                     BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 }
 
@@ -70,9 +76,12 @@ public class Indexer
             case MaterializedWorkItem.UnityPackage unityPackageWorkItem:
             {
                 var projectPath = unityPackageWorkItem.GeneratedProjectPath;
-                var projectFact = ProjectFact.Unity(unityPackageWorkItem);
-                factStore.Add(projectFact);
-                IndexProjectFile(factStore, projectPath, projectFact);
+                if (indexProjectFiles)
+                {
+                    var projectFact = ProjectFact.Unity(unityPackageWorkItem);
+                    factStore.Add(projectFact);
+                    IndexProjectFile(factStore, projectPath, projectFact);
+                }
                 BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 break;
             }

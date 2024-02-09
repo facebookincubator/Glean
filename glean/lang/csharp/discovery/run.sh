@@ -38,6 +38,7 @@ out=$(mktemp -d)
 enable_discovery_buck=default
 enable_discovery_msbuild=default
 enable_discovery_unity=default
+index_project_files=default
 
 # The maximum number of (materialized) work-items that will be indexed
 limit=none
@@ -120,6 +121,10 @@ while [[ "$#" -gt 0 ]]; do
     --deterministic)
     deterministic=true
     ;;
+    --index-project-files)
+    index_project_files="$2"
+    shift
+    ;;
   esac
   shift
 done
@@ -157,6 +162,14 @@ if [ "$enable_discovery_unity" = "default" ]; then
     enable_discovery_unity="true"
   else
     enable_discovery_unity="false"
+  fi
+fi
+
+if [ "$index_project_files" = "default" ]; then
+  if jk check code_indexing/csharp:index_project_files --exit-with-code; then
+    index_project_files="true"
+  else
+    index_project_files="false"
   fi
 fi
 
@@ -219,7 +232,7 @@ if [ "$limit" != "none" ]; then
 fi
 
 title "Indexing work"
-$dotnet_host_path run --project "$indexer_project" -- "$materialized_work" --out "$facts" --log-level "$log_level" >&2
+$dotnet_host_path run --project "$indexer_project" -- "$materialized_work" --out "$facts" --log-level "$log_level" --index-project-files "$index_project_files" >&2
 
 echo "$facts"/*.json | xargs glean create "${glean_args[@]}"
 

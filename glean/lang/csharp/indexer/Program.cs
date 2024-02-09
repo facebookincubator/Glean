@@ -32,6 +32,12 @@ public class Program
             description: "The path of a file containing work for the indexer, encoded as a JSON array"
         );
 
+        var indexProjectFilesOption = new Option<bool>(
+            name: "--index-project-files",
+            description: "Include build metadata in the index",
+            getDefaultValue: () => true
+        );
+
         var outOption = new Option<string>(
             aliases: new [] { "--out", "-o" },
             description: "The path of a directory into which the indexer will write facts",
@@ -66,11 +72,12 @@ public class Program
             workPathArgument,
             outOption,
             logLevelOption,
+            indexProjectFilesOption
         };
 
         rootCommand.SetHandler
         (
-            (workPath, outputPath, logLevel) =>
+            (workPath, outputPath, logLevel, indexProjectFiles) =>
             {
                 Log.Logger = new LoggerConfiguration()
                     .MinimumLevel
@@ -96,6 +103,11 @@ public class Program
                     return;
                 }
 
+                if (!indexProjectFiles)
+                {
+                    Log.Warning($"Indexing of project files is disabled");
+                }
+
                 Log.Information("Initializing MSBuild");
                 Build.Initialize();
 
@@ -106,14 +118,15 @@ public class Program
 
                 foreach (var workItem in work)
                 {
-                    Indexer.IndexWorkItem(factStore, workItem, outputPath, logLevel);
+                    Indexer.IndexWorkItem(factStore, workItem, outputPath, logLevel, indexProjectFiles);
                 }
 
                 factStore.Flush();
             },
             workPathArgument,
             outOption,
-            logLevelOption
+            logLevelOption,
+            indexProjectFilesOption
         );
 
         rootCommand.Invoke(args);
