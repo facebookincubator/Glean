@@ -40,7 +40,10 @@ public class Indexer
             case MaterializedWorkItem.MSBuildProject msbuildProjectWorkItem:
             {
                 var projectPath = msbuildProjectWorkItem.ProjectPath;
-                factStore.Add(new MSBuildProjectSourceFact(Hg.GetRepoRootRelativePath(projectPath)));
+                var msbuildProjectSourceFact = new MSBuildProjectSourceFact(Hg.GetRepoRootRelativePath(projectPath));
+                var projectSource = ProjectSource.MSBuild(msbuildProjectSourceFact);
+                factStore.Add(new ProjectFact(new ProjectFactKey(projectSource)));
+
                 BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 break;
             }
@@ -67,7 +70,9 @@ public class Indexer
                     , AssemblyType: unityPackageWorkItem.AssemblyDefinitionType
                     , ProjectTemplate: new FileFact(Hg.GetRepoRootRelativePath(unityPackageWorkItem.TemplatePath))
                     );
-                factStore.Add(new UnityProjectSourceFact(unityProjectSourceFactKey));
+                var unityProjectSourceFact = new UnityProjectSourceFact(unityProjectSourceFactKey);
+                var projectSource = ProjectSource.Unity(unityProjectSourceFact);
+                factStore.Add(new ProjectFact(new ProjectFactKey(projectSource)));
 
                 BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 break;

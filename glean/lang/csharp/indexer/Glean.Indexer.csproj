@@ -31,6 +31,8 @@
         <Compile Include="Schema/CSharp/NamespaceFact.cs" />
         <Compile Include="Schema/CSharp/ObjectCreationLocationFact.cs" />
         <Compile Include="Schema/CSharp/ParameterFact.cs" />
+        <Compile Include="Schema/CSharp/ProjectFact.cs" />
+        <Compile Include="Schema/CSharp/ProjectSource.cs" />
         <Compile Include="Schema/CSharp/PropertyFact.cs" />
         <Compile Include="Schema/CSharp/RecordFact.cs" />
         <Compile Include="Schema/CSharp/StructFact.cs" />
