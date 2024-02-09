@@ -58,10 +58,16 @@ public class Indexer
                 var projectPath = unityPackageWorkItem.GeneratedProjectPath;
 
                 var unityPackageFactKey = new UnityPackageFactKey
-                    ( unityPackageWorkItem.PackageType
-                    , unityPackageWorkItem.PackageName
+                    ( Type: unityPackageWorkItem.PackageType
+                    , Name: unityPackageWorkItem.PackageName
                     );
-                factStore.Add(new UnityPackageFact(unityPackageFactKey));
+                var unityProjectSourceFactKey = new UnityProjectSourceFactKey
+                    ( ProjectBasename: Path.GetFileName(projectPath)
+                    , UnityPackage: new UnityPackageFact(unityPackageFactKey)
+                    , AssemblyType: unityPackageWorkItem.AssemblyDefinitionType
+                    , ProjectTemplate: new FileFact(Hg.GetRepoRootRelativePath(unityPackageWorkItem.TemplatePath))
+                    );
+                factStore.Add(new UnityProjectSourceFact(unityProjectSourceFactKey));
 
                 BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 break;
