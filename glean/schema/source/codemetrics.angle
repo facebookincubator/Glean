@@ -52,4 +52,6 @@ predicate CxxRecordReference : {
     cxx1.DeclarationScope { decl = D, scope = Scope };
     !({ recordWithAccess = { record = QName }} = Scope);
 
+    # We don't care about references to the class itself
+    !({ record_ = Decl } = D);
 }
