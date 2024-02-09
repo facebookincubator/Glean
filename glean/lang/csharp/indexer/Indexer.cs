@@ -9,6 +9,7 @@
 using Glean.Discovery;
 using Glean.Indexer.Schema;
 using Glean.Indexer.Schema.CSharp;
+using Glean.Indexer.Schema.Src;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -39,14 +40,15 @@ public class Indexer
             case MaterializedWorkItem.MSBuildProject msbuildProjectWorkItem:
             {
                 var projectPath = msbuildProjectWorkItem.ProjectPath;
-                Indexer.IndexProject(factStore, projectPath, outputPath, logLevel);
+                factStore.Add(new MSBuildProjectSourceFact(Hg.GetRepoRootRelativePath(projectPath)));
+                BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 break;
             }
             case MaterializedWorkItem.MSBuildSolution msbuildSolutionWorkItem:
             {
                 foreach (var projectPath in msbuildSolutionWorkItem.ProjectPaths)
                 {
-                    Indexer.IndexProject(factStore, projectPath, outputPath, logLevel);
+                    BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 }
 
                 break;
@@ -54,7 +56,7 @@ public class Indexer
             case MaterializedWorkItem.UnityPackage unityPackageWorkItem:
             {
                 var projectPath = unityPackageWorkItem.GeneratedProjectPath;
-                Indexer.IndexProject(factStore, projectPath, outputPath, logLevel);
+                BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 break;
             }
             default:
@@ -65,7 +67,7 @@ public class Indexer
         }
     }
 
-    public static void IndexProject(FactStore factStore, string projectPath, string outputPath, LogEventLevel logLevel)
+    public static void BuildAndIndexProject(FactStore factStore, string projectPath, string outputPath, LogEventLevel logLevel)
     {
         try
         {

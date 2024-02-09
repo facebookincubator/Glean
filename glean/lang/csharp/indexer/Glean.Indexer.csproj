@@ -6,7 +6,6 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="Program.cs" />
         <Compile Include="Build.cs" />
         <Compile Include="FactStore.cs" />
         <Compile Include="GleanSerializer.cs" />
@@ -14,6 +13,7 @@
         <Compile Include="Hg.cs" />
         <Compile Include="Indexer.cs" />
         <Compile Include="Predicate.cs" />
+        <Compile Include="Program.cs" />
         <Compile Include="Schema/CSharp/ArrayTypeFact.cs" />
         <Compile Include="Schema/CSharp/ClassFact.cs" />
         <Compile Include="Schema/CSharp/Definition.cs" />
@@ -25,6 +25,7 @@
         <Compile Include="Schema/CSharp/Location.cs" />
         <Compile Include="Schema/CSharp/MethodFact.cs" />
         <Compile Include="Schema/CSharp/MethodInvocationLocationFact.cs" />
+        <Compile Include="Schema/CSharp/MSBuildProjectSourceFact.cs" />
         <Compile Include="Schema/CSharp/NamedType.cs" />
         <Compile Include="Schema/CSharp/NameFact.cs" />
         <Compile Include="Schema/CSharp/NamespaceFact.cs" />
