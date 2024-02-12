@@ -138,8 +138,7 @@ import Glean.Glass.SearchRelated
 import Glean.Glass.Neighborhood ( searchNeighborhood )
 
 import Glean.Glass.SnapshotBackend
-  ( getSnapshot,
-    SnapshotBackend,
+  ( SnapshotBackend(getSnapshot),
     SnapshotStatus() )
 import qualified Glean.Glass.SnapshotBackend as Snapshot
 import Glean.Glass.SymbolKind (findSymbolKind)
@@ -148,25 +147,25 @@ import Glean.Glass.SymbolKind (findSymbolKind)
 runRepoFile
   :: (LogResult t)
   => Text
-  -> ( RepoMapping
+  -> (RepoMapping
     -> TVar GleanDBInfo
     -> DocumentSymbolsRequest
     -> RequestOptions
     -> GleanBackend (Glean.Some Glean.Backend)
-    -> SnapshotBackend
+    -> Glean.Some SnapshotBackend
     -> Maybe Language
     -> IO (t, Maybe ErrorLogger))
   -> Glass.Env
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> IO t
-runRepoFile sym fn env req opts = do
-  withStrictErrorHandling (Glass.gleanBackend env) opts $
+runRepoFile sym fn env@Glass.Env{..} req opts = do
+  withStrictErrorHandling gleanBackend opts $
     withRepoFile sym env mRev (req, opts) repo file $ \(dbs,_) mlang ->
         fn (Glass.repoMapping env) repos req opts
-            (GleanBackend (Glass.gleanBackend env) dbs)
-            (Glass.snapshotBackend env)
-              mlang
+           (GleanBackend gleanBackend dbs)
+           snapshotBackend
+           mlang
   where
     repos = Glass.latestGleanRepos env
     repo = documentSymbolsRequest_repository req
@@ -982,13 +981,13 @@ fetchSymbolsAndAttributesGlean repoMapping latest req opts be mlang = do
 
 -- Find all symbols and refs in file and add all attributes
 fetchSymbolsAndAttributes
-  :: Glean.Backend b
+  :: (Glean.Backend b, SnapshotBackend snapshotBackend)
   => RepoMapping
   -> TVar GleanDBInfo
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> GleanBackend b
-  -> SnapshotBackend
+  -> snapshotBackend
   -> Maybe Language
   -> IO ((DocumentSymbolListXResult, SnapshotStatus, QueryEachRepoLog)
         , Maybe ErrorLogger)
@@ -1207,13 +1206,13 @@ documentSymbolsForLanguage mlimit _ includeRefs fileId = do
 -- And build a line-indexed map of symbols, resolved to spans
 -- With extra attributes loaded from any associated attr db
 fetchDocumentSymbolIndex
-  :: Glean.Backend b
+  :: (Glean.Backend b, SnapshotBackend snapshotBackend)
   => RepoMapping
   -> TVar GleanDBInfo
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> GleanBackend b
-  -> SnapshotBackend
+  -> snapshotBackend
   -> Maybe Language
   -> IO ((DocumentSymbolIndex, SnapshotStatus, QueryEachRepoLog), Maybe ErrorLogger)
 fetchDocumentSymbolIndex repoMapping latest req opts be snapshotbe mlang = do

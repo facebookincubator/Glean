@@ -54,7 +54,7 @@ import qualified Glean.Glass.Options as Glass
 import qualified Glean.Glass.Handler as Handler
 import Glean.Glass.GlassService.Service ( GlassServiceCommand(..) )
 
-import Glean.Glass.SnapshotBackend ( snapshotBackend, SnapshotTier )
+import Glean.Glass.SnapshotBackend (SnapshotBackend )
 import Glean.Glass.Types
   ( GlassException (GlassException, glassException_reasons),
     GlassExceptionReason (GlassExceptionReason_exactRevisionNotAvailable))
@@ -72,21 +72,21 @@ type Server = Glass.Env -> Glass.Config -> IO ()
 withGlass :: Server -> IO ()
 withGlass f =
   withOptions Glass.options $ \config@Glass.Config{..} ->
-  withEnv serviceName gleanService snapshotTier
+  withEnv serviceName gleanService snapshotBackend
       configKey refreshFreq listDatabasesRetry Nothing $ \env -> f env config
 
 -- | Construct a server environment
 withEnv
   :: Text
   -> Glean.Service
-  -> SnapshotTier
+  -> Some SnapshotBackend
   -> Text
   -> DiffTimePoints
   -> Maybe Int
   -> Maybe Glean.Repo
   -> (Glass.Env -> IO a)
   -> IO a
-withEnv name service snapshotTier _ refreshFreq listDatabasesRetry gleanDB f =
+withEnv name service snapshotBackend _ refreshFreq listDatabasesRetry gleanDB f=
   withEventBaseDataplane $ \evp ->
   withConfigProvider defaultConfigOptions $ \cfgapi ->
   withLogger cfgapi $ \logger ->
@@ -100,7 +100,6 @@ withEnv name service snapshotTier _ refreshFreq listDatabasesRetry gleanDB f =
       f Glass.Env
         { gleanBackend = Some backend
         , gleanIndexBackend = indexBackend backend
-        , snapshotBackend = snapshotBackend snapshotTier
         , gleanDB = gleanDB
         , ..
         }
@@ -119,7 +118,7 @@ indexBackend b = Glass.IndexBackend $ case backendKind b of
 
 -- | Kick off the server
 runGlass :: Server
-runGlass res@Glass.Env{..} conf@Glass.Config{..} = do
+runGlass res@Glass.Env{fb303} conf@Glass.Config{..} = do
 
   logInfo =<< welcomeMessage conf
 
