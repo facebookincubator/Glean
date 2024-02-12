@@ -13,6 +13,7 @@
  store the results in OUTPUT as a serialized thrift value Snapshot
 -}
 
+{-# LANGUAGE DuplicateRecordFields #-}
 {-# LANGUAGE NamedFieldPuns #-}
 module Glean.Glass.Snapshot
   ( main ) where
@@ -78,9 +79,10 @@ import qualified Glean.Glass.Env as Glass
 import qualified Glean.Glass.Handler as Handler
 import Glean.Glass.Main (withEnv)
 import qualified Glean.Glass.Options as Glass
-import Glean.Glass.SnapshotBackend (SnapshotBackend(NoSnapshotBackend))
+import Glean.Glass.SnapshotBackend (NilSnapshotBackend(..))
 import qualified Glean.Glass.Types as Types
 import Glean.Init (withOptionsGen, parserInfo, setFromFilePrefix)
+import Glean.Util.Some (Some(Some))
 
 import qualified Glean.Snapshot.Types as Types
 import Glean.Glass.Types (GlassException(glassException_reasons))
@@ -284,8 +286,7 @@ uploadToXdb
     let num_rows :: IO Int64 = withConnection (TE.encodeUtf8 xdbTier) Master $
           \conn -> do
           DB.execute conn
-            "INSERT IGNORE INTO snapshot (repo, revision, file, snapshot)\
-            \VALUES (?, ?, ?, ?)"
+            "INSERT IGNORE INTO snapshot (repo, revision, file, snapshot) VALUES (?, ?, ?, ?)"
             (repo, rev, path, bytes)
     res <- try num_rows
     case res of
@@ -319,11 +320,10 @@ realMain _config@Config{..} =
   withEnv
     (Glass.serviceName glassConfig)
     (Glass.gleanService glassConfig)
-    (Glass.snapshotTier glassConfig)
+    (Some NilSnapshotBackend)
     (Glass.configKey glassConfig)
     (Glass.refreshFreq glassConfig) Nothing
-    gleanDBName $ \env0@Glass.Env{..} -> do
-      let env = env0 { Glass.snapshotBackend = NoSnapshotBackend}
+    gleanDBName $ \env@Glass.Env{..} -> do
       numCores <- getNumCapabilities
       skycastleJobId <- lookupEnv "SKYCASTLE_WORKFLOW_RUN_ID"
       let logJobProperties =
