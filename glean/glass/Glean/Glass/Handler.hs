@@ -1589,11 +1589,7 @@ withStrictErrorHandling backend opts action = do
     Just err
       | requestOptions_strict opts
       , not $ null $ errorTy err
-      ->
-      -- select the right exception type based on the error types
-      if all isRevisionNotAvailable (errorTy err)
-        then throwM RevisionNotAvailableException
-        else do
+      -> do
           revisionsByScm <-
             mapM (Glean.getSCMrevisions backend) (errorGleanRepo err)
           let getFirstRevision scmRevisions =
@@ -1604,10 +1600,6 @@ withStrictErrorHandling backend opts action = do
             (errorTy err)
             (mapMaybe getFirstRevision revisionsByScm)
     _ -> return res
-  where
-    isRevisionNotAvailable GlassExceptionReason_exactRevisionNotAvailable{} =
-      True
-    isRevisionNotAvailable _ = False
 
 runLog :: Glass.Env -> Text -> GleanGlassLogger -> IO ()
 runLog env cmd log = Logger.runLog (Glass.logger env) $
