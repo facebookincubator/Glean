@@ -360,10 +360,20 @@ getDbByRevision repos =
         revmap = HashMap.fromList
           [ (rev, Glean.database_repo db)
           | db <- dbs
-          , (k,rev) <- HashMap.toList (Glean.database_properties db)
-          , "glean.scm." `Text.isPrefixOf` k
+          , rev <- getDBRevisions db
           ]
     ]
+    where
+      getDBRevisions db =
+        case getDBRevisionsFromProperties db of
+          -- fall back to the DB hash, mainly for testing
+          [] -> [Glean.repo_hash (Glean.database_repo db)]
+          revs -> revs
+      getDBRevisionsFromProperties db =
+          [ rev
+          | (k,rev) <- HashMap.toList (Glean.database_properties db)
+          , "glean.scm." `Text.isPrefixOf` k
+          ]
 
 -- | Introduce a latest repo cache.
 -- TODO: this should pass the configured repo list through
