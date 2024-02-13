@@ -3,6 +3,7 @@
 schema codemarkup.30 {
 import src.1
 import code.24
+import code.python.1
 import codemarkup.buck.2
 import codemarkup.csharp.1
 import codemarkup.cxx.4
@@ -19,6 +20,7 @@ import codemarkup.python.2
 import codemarkup.scip.1
 import codemarkup.types.1
 import cxx1.5
+import flow.3
 import hack.6
 import python.4
 
@@ -471,6 +473,24 @@ predicate EntityModifiers:
       { java = E } = Entity;
       codemarkup.java.JavaModifiers { E, Modifiers }
     );
+
+# Entities that represent the canonical definition of the thing. Does
+# not hold for declarations in C++, imports in Python, or imports in JS
+predicate EntityIsDefinition: code.Entity
+  ({ cxx = D } where { defn = _ } = D) |
+  ({ python = { decl = D }} where D : python.Declaration; !({ imp = _ } = D)) |
+  ({ hack = _ }) |
+  ({ pp = _ }) |
+  ({ erlang = _ }) |
+  ({ lsif = _ }) |
+  ({ scip = _ }) |
+  ({ flow = { decl = { localDecl = D }}} where
+     D : flow.Declaration;
+     !(flow.ImportDeclaration { declaration = D })) |
+  ({ buck = _ }) |
+  ({ java = _ }) |
+  ({ fbthrift = _ }) |
+  ({ kotlin = _ })
 
 #
 # Relations todo to code.search.*
