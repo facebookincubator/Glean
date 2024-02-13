@@ -10,37 +10,36 @@ using System.IO;
 using Glean.Discovery;
 using Glean.Indexer.Schema.Src;
 
+using UnevaluatedProject = Microsoft.Build.Construction.ProjectRootElement;
+using EvaluatedProject = Microsoft.Build.Evaluation.Project;
+
 namespace Glean.Indexer.Schema.CSharp;
 
 public record struct ProjectFactKey
     ( ProjectSource Source
+    , string? PlatformTarget
+    , string? TargetFramework
+    , string? Sdk
+    , string? OutputType
+    , string? AssemblyName
+    , string? RootNamespace
     );
 
 public record ProjectFact(ProjectFactKey Key) : FactWithKey<ProjectFactKey>(Predicate.Project, Key)
 {
-    public static ProjectFact MSBuild(MaterializedWorkItem.MSBuildProject msbuildProjectWorkItem)
-    {
-        var msbuildProjectSourceFact = new MSBuildProjectSourceFact(Hg.GetRepoRootRelativePath(msbuildProjectWorkItem.ProjectPath));
-        var projectSource = ProjectSource.MSBuild(msbuildProjectSourceFact);
-        return new ProjectFact(new ProjectFactKey(projectSource));
-    }
+    public ProjectFact
+        ( ProjectSource projectSource
+        , UnevaluatedProject unevaluatedProject
+        , EvaluatedProject evaluatedProject
+        ) : this(new ProjectFactKey
+            ( projectSource
+            , OmitIfNullOrWhitespace(evaluatedProject.GetPropertyValue("PlatformTarget"))
+            , OmitIfNullOrWhitespace(evaluatedProject.GetPropertyValue("TargetFramework"))
+            , OmitIfNullOrWhitespace(unevaluatedProject.Sdk)
+            , OmitIfNullOrWhitespace(evaluatedProject.GetPropertyValue("OutputType"))
+            , OmitIfNullOrWhitespace(evaluatedProject.GetPropertyValue("AssemblyName"))
+            , OmitIfNullOrWhitespace(evaluatedProject.GetPropertyValue("RootNamespace"))
+            )) {}
 
-    public static ProjectFact Unity(MaterializedWorkItem.UnityPackage unityPackageWorkItem)
-    {
-        var projectPath = unityPackageWorkItem.GeneratedProjectPath;
-
-        var unityPackageFactKey = new UnityPackageFactKey
-            ( Type: unityPackageWorkItem.PackageType
-            , Name: unityPackageWorkItem.PackageName
-            );
-        var unityProjectSourceFactKey = new UnityProjectSourceFactKey
-            ( ProjectBasename: Path.GetFileName(projectPath)
-            , UnityPackage: new UnityPackageFact(unityPackageFactKey)
-            , AssemblyType: unityPackageWorkItem.AssemblyDefinitionType
-            , ProjectTemplate: new FileFact(Hg.GetRepoRootRelativePath(unityPackageWorkItem.TemplatePath))
-            );
-        var unityProjectSourceFact = new UnityProjectSourceFact(unityProjectSourceFactKey);
-        var projectSource = ProjectSource.Unity(unityProjectSourceFact);
-        return new ProjectFact(new ProjectFactKey(projectSource));
-    }
+    private static string? OmitIfNullOrWhitespace(string? s) => string.IsNullOrWhiteSpace(s) ? default : s;
 }

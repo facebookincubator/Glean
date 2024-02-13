@@ -318,10 +318,14 @@ type ProjectSource =
 # A "design time" MSBuild project, i.e. one that has been evaluated by MSBuild
 # for a given configuration, on a given host platform, with all conditions evaluated,
 # and imported projects expanded.
-#
-# This will be expanded later with information extracted from the project (e.g. SDK, output-type, etc.)
 predicate Project:
   { source: ProjectSource
+  , platformTarget: maybe string
+  , targetFramework: maybe string
+  , sdk: maybe string
+  , outputType: maybe string
+  , assemblyName: maybe string
+  , rootNamespace: maybe string
   }
 
 predicate UnityPackageToProject:

@@ -45,13 +45,19 @@ public class Indexer
             case MaterializedWorkItem.MSBuildProject msbuildProjectWorkItem:
             {
                 var projectPath = msbuildProjectWorkItem.ProjectPath;
+
                 if (indexProjectFiles)
                 {
-                    var projectFact = ProjectFact.MSBuild(msbuildProjectWorkItem);
-                    factStore.Add(projectFact);
-                    IndexProjectFile(factStore, projectPath, projectFact);
+                    var projectSource = ProjectSource.MSBuild(msbuildProjectWorkItem);
+                    var projectFact = IndexProjectFile(factStore, projectPath, projectSource);
+                    if (projectFact is not null)
+                    {
+                        factStore.Add(projectFact);
+                    }
                 }
+
                 BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
+
                 break;
             }
             case MaterializedWorkItem.MSBuildSolution msbuildSolutionWorkItem:
@@ -61,13 +67,18 @@ public class Indexer
                 foreach (var projectPath in msbuildSolutionWorkItem.ProjectPaths)
                 {
                     var msbuildProjectWorkItem = new MaterializedWorkItem.MSBuildProject(projectPath);
+
                     if (indexProjectFiles)
                     {
-                        var projectFact = ProjectFact.MSBuild(msbuildProjectWorkItem);
-                        var solutionToProjectFactKey = new SolutionToProjectFactKey(solutionFact, projectFact);
-                        factStore.Add(new SolutionToProjectFact(solutionToProjectFactKey));
-                        IndexProjectFile(factStore, projectPath, projectFact);
+                        var projectSource = ProjectSource.MSBuild(msbuildProjectWorkItem);
+                        var projectFact = IndexProjectFile(factStore, projectPath, projectSource);
+                        if (projectFact is not null)
+                        {
+                            var solutionToProjectFactKey = new SolutionToProjectFactKey(solutionFact, projectFact);
+                            factStore.Add(new SolutionToProjectFact(solutionToProjectFactKey));
+                        }
                     }
+
                     BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 }
 
@@ -78,9 +89,12 @@ public class Indexer
                 var projectPath = unityPackageWorkItem.GeneratedProjectPath;
                 if (indexProjectFiles)
                 {
-                    var projectFact = ProjectFact.Unity(unityPackageWorkItem);
-                    factStore.Add(projectFact);
-                    IndexProjectFile(factStore, projectPath, projectFact);
+                    var projectSource = ProjectSource.Unity(unityPackageWorkItem);
+                    var projectFact = IndexProjectFile(factStore, projectPath, projectSource);
+                    if (projectFact is not null)
+                    {
+                        factStore.Add(projectFact);
+                    }
                 }
                 BuildAndIndexProject(factStore, projectPath, outputPath, logLevel);
                 break;
@@ -173,60 +187,71 @@ public class Indexer
         }
     }
 
-    private static void IndexProjectFile(FactStore factStore, string projectPath, ProjectFact projectFact)
+    private static ProjectFact? IndexProjectFile(FactStore factStore, string projectPath, ProjectSource projectSource, bool indexIncludes = true)
     {
         var projectRoot = Path.GetDirectoryName(projectPath) ?? string.Empty;
 
-        WithUnevaluatedProject(projectPath, unevaluatedProject =>
-        {
+        return WithUnevaluatedProject(projectPath, unevaluatedProject =>
             WithEvaluatedProject(unevaluatedProject, evaluatedProject =>
             {
+                var projectFact = new ProjectFact(projectSource, unevaluatedProject, evaluatedProject);
+
                 foreach (var item in evaluatedProject.Items)
                 {
                     switch (item.ItemType)
                     {
                         case "Compile":
                         case "Content":
-                            var projectRootRelativeIncludePath = item.EvaluatedInclude.Replace('\\', Path.DirectorySeparatorChar);
-                            var absoluteIncludePath = Path.Combine(projectRoot, projectRootRelativeIncludePath);
-                            var repoRootRelativeIncludePath = Hg.GetRepoRootRelativePath(absoluteIncludePath);
-                            var projectToSourceFileFactKey = new ProjectToSourceFileFactKey(projectFact, new FileFact(repoRootRelativeIncludePath));
-                            factStore.Add(new ProjectToSourceFileFact(projectToSourceFileFactKey));
+                            if (indexIncludes)
+                            {
+                                var projectRootRelativeIncludePath = item.EvaluatedInclude.Replace('\\', Path.DirectorySeparatorChar);
+                                var absoluteIncludePath = Path.Combine(projectRoot, projectRootRelativeIncludePath);
+                                var repoRootRelativeIncludePath = Hg.GetRepoRootRelativePath(absoluteIncludePath);
+                                var projectToSourceFileFactKey = new ProjectToSourceFileFactKey(projectFact, new FileFact(repoRootRelativeIncludePath));
+
+                                factStore.Add(new ProjectToSourceFileFact(projectToSourceFileFactKey));
+                            }
                             break;
                         default:
                             break;
                     }
                 }
-            });
-        });
+
+                return projectFact;
+            })
+        );
     }
 
-    private static void WithUnevaluatedProject(string projectPath, Action<UnevaluatedProject> action)
+    private static T? WithUnevaluatedProject<T>(string projectPath, Func<UnevaluatedProject, T> f)
     {
         try
         {
             var unevaluatedProject = UnevaluatedProject.Open(projectPath);
-            action(unevaluatedProject);
+            return f(unevaluatedProject);
         }
         catch (Exception e) when (e is InvalidProjectFileException)
         {
             Log.Error($"Failed to open project {projectPath}: {e.Message}");
         }
+
+        return default;
     }
 
-    private static void WithEvaluatedProject(UnevaluatedProject unevaluatedProject, Action<EvaluatedProject> action)
+    private static T? WithEvaluatedProject<T>(UnevaluatedProject unevaluatedProject, Func<EvaluatedProject, T> f)
     {
         using (var projectCollection = new ProjectCollection())
         {
             try
             {
                 var evaluatedProject = new EvaluatedProject(unevaluatedProject, null, null, projectCollection);
-                action(evaluatedProject);
+                return f(evaluatedProject);
             }
             catch (Exception e) when (e is InvalidProjectFileException || e is InvalidOperationException)
             {
                 Log.Error($"Failed to evaluate project {unevaluatedProject.FullPath}: {e.Message}");
             }
+
+            return default;
         }
     }
 }
