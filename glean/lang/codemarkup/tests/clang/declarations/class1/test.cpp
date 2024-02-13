@@ -19,4 +19,5 @@ struct A {
 
 struct B : A {
   U u;
+  static void f();
 };

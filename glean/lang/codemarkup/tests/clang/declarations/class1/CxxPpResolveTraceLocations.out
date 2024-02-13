@@ -231,7 +231,7 @@
             "file": { "key": "test.cpp" },
             "lineBegin": 20,
             "columnBegin": 1,
-            "lineEnd": 22,
+            "lineEnd": 23,
             "columnEnd": 1
           }
         },
@@ -258,7 +258,7 @@
                       "file": { "key": "test.cpp" },
                       "lineBegin": 20,
                       "columnBegin": 1,
-                      "lineEnd": 22,
+                      "lineEnd": 23,
                       "columnEnd": 1
                     }
                   }
@@ -316,6 +316,41 @@
                             "columnBegin": 3,
                             "lineEnd": 21,
                             "columnEnd": 5
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "f" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "B" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 3,
+                            "lineEnd": 22,
+                            "columnEnd": 17
                           }
                         }
                       }
@@ -753,6 +788,63 @@
                   "columnBegin": 3,
                   "lineEnd": 17,
                   "columnEnd": 18
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "f",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 22,
+            "columnBegin": 3,
+            "lineEnd": 22,
+            "columnEnd": 17
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 368, "length": 1 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "f" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "B" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 22,
+                  "columnBegin": 3,
+                  "lineEnd": 22,
+                  "columnEnd": 17
                 }
               }
             }

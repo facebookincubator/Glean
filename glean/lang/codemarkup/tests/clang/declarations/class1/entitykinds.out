@@ -141,6 +141,43 @@
           "key": {
             "name": {
               "key": {
+                "name": { "key": { "name": { "key": "f" } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "B" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 22,
+              "columnBegin": 3,
+              "lineEnd": 22,
+              "columnEnd": 17
+            }
+          }
+        }
+      },
+      "kind": 13
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
                 "name": { "key": { "operator_": "operator=" } },
                 "scope": {
                   "recordWithAccess": {
@@ -217,7 +254,7 @@
               "file": { "key": "test.cpp" },
               "lineBegin": 20,
               "columnBegin": 1,
-              "lineEnd": 22,
+              "lineEnd": 23,
               "columnEnd": 1
             }
           }

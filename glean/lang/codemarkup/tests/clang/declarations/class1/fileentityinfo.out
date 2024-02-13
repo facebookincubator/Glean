@@ -159,6 +159,48 @@
               "key": {
                 "name": {
                   "key": {
+                    "name": { "key": { "name": { "key": "f" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "B" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 22,
+                  "columnBegin": 3,
+                  "lineEnd": 22,
+                  "columnEnd": 17
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 13, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
                     "name": { "key": { "operator_": "operator=" } },
                     "scope": {
                       "recordWithAccess": {
@@ -440,7 +482,7 @@
                       "file": { "key": "test.cpp" },
                       "lineBegin": 20,
                       "columnBegin": 1,
-                      "lineEnd": 22,
+                      "lineEnd": 23,
                       "columnEnd": 1
                     }
                   }
@@ -498,6 +540,41 @@
                             "columnBegin": 3,
                             "lineEnd": 21,
                             "columnEnd": 5
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "f" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "B" },
+                                      "scope": { "global_": { } }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 22,
+                            "columnBegin": 3,
+                            "lineEnd": 22,
+                            "columnEnd": 17
                           }
                         }
                       }

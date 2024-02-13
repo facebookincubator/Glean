@@ -523,11 +523,14 @@ predicate CxxDeclarationModifiers:
     keywords: codemarkup.types.Modifiers
   }
   { Decl, Modifiers } where
-    ( { function_ = { method = MSig } } = Decl;
+    ( { function_ = { method = MSig, name = { scope = Scope } } } = Decl;
       if ( { just = { isVirtual = V, isConst = C, isVolatile = Vol } } = MSig )
         then ( Virtual = V; Const = C; Volatile = Vol )
-        else ( Virtual = false; Const = false; Volatile = false);
-      Inline = false; Readonly = false; Static = false; Mutable = false;
+        else ( Virtual = false; Const = false; Volatile = false );
+      Static = if (nothing = MSig; { recordWithAccess = _ } = Scope)
+        then true
+        else false;
+      Inline = false; Readonly = false; Static = Static; Mutable = false;
     ) | (
       { objcProperty = { isReadOnly = Readonly } } = Decl;
       Const = false; Volatile = false; Virtual = false; Inline = false;
