@@ -9,7 +9,7 @@
 {-# LANGUAGE CPP #-}
 {-# LANGUAGE NamedFieldPuns #-}
 module Glean.Glass.Main
-  ( main
+  ( mainWith
 
   -- * Useful helpers
   , withEnv
@@ -33,6 +33,7 @@ import Control.Exception (SomeException, fromException)
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Text.Encoding (encodeUtf8)
+import Options.Applicative (Parser)
 
 import qualified Glean
 import Glean.Init ( withOptions )
@@ -63,15 +64,15 @@ kThriftCacheNoCache :: Text
 kThriftCacheNoCache = "nocache"
 
 -- | Ok, go.
-main :: IO ()
-main = withGlass runGlass
+mainWith :: Parser (Some SnapshotBackend) -> IO ()
+mainWith = withGlass runGlass
 
 type Server = Glass.Env -> Glass.Config -> IO ()
 
 -- | Set up the resources we'll need
-withGlass :: Server -> IO ()
-withGlass f =
-  withOptions Glass.options $ \config@Glass.Config{..} ->
+withGlass :: Server -> Parser (Some SnapshotBackend) -> IO ()
+withGlass f snapshotBackendP =
+  withOptions (Glass.options snapshotBackendP) $ \config@Glass.Config{..} ->
   withEnv serviceName gleanService snapshotBackend
       configKey refreshFreq listDatabasesRetry Nothing $ \env -> f env config
 
@@ -101,6 +102,7 @@ withEnv name service snapshotBackend _ refreshFreq listDatabasesRetry gleanDB f=
         { gleanBackend = Some backend
         , gleanIndexBackend = indexBackend backend
         , gleanDB = gleanDB
+        , snapshotBackend = snapshotBackend
         , ..
         }
 

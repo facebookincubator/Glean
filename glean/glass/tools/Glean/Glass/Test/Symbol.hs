@@ -35,6 +35,7 @@ import qualified Glean.Glass.Env as Glass
 import qualified Glean.Glass.Handler as Handle
 import qualified Glean.Glass.Main as Glass
 import qualified Glean.Glass.Options as Glass
+import Glean.Glass.SnapshotBackend (snapshotBackendParser)
 
 data Config = Config
   { cfgGlass :: Glass.Config
@@ -54,7 +55,7 @@ options = info (helper <*> parser) fullDesc
   where
     parser :: Parser Config
     parser = do
-      cfgGlass <- Glass.configParser
+      cfgGlass <- Glass.configParser snapshotBackendParser
       cfgCmd <- (\(cmd::String) -> case cmd of
                     "references" -> FindReferences
                     "describe" -> Describe

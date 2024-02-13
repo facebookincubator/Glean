@@ -17,17 +17,18 @@ import Options.Applicative
 import Data.Text (Text)
 
 import qualified Glean.LocalOrRemote as Glean
+import Glean.Util.Some (Some)
 import Glean.Util.Time
 
 import qualified Glean.Glass.Env as Glass
 import qualified Glean.Glass.Config as Glass
-import Glean.Glass.SnapshotBackend ( snapshotBackendParser )
+import Glean.Glass.SnapshotBackend (SnapshotBackend)
 
-options :: ParserInfo Glass.Config
-options = info (helper <*> configParser) fullDesc
+options :: Parser (Some SnapshotBackend) -> ParserInfo Glass.Config
+options snapshotP = info (helper <*> configParser snapshotP) fullDesc
 
-configParser :: Parser Glass.Config
-configParser = do
+configParser :: Parser (Some SnapshotBackend) -> Parser Glass.Config
+configParser snapshotBackendParser = do
   gleanService <- Glean.options
   listenPort <- portParser
   serviceName <- serviceNameParser
