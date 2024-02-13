@@ -207,19 +207,33 @@ l .= r = AngleStatement $ Angle.SourceStatement <$> gen l <*> gen r
 stmt :: Angle t -> AngleStatement
 stmt = (wild .=)
 
--- | Build an or-pattern, `A | B`
-(.|) :: Angle a -> Angle a -> Angle a
-a .| b = Angle $ OrPattern DSL <$> gen a <*> gen b
-
 infix 1 .=
 infixr 2 `or_`
 infixr 3 .|
 
--- | Build an or-pattern between statements
+class ToExpr a where
+  type Result a
+  toExpr :: a -> Angle (Result a)
+
+instance ToExpr (Angle a) where
+  type Result (Angle a) = a
+  toExpr = id
+
+instance ToExpr AngleStatement where
+  type Result AngleStatement = ()
+  toExpr stmt = sig unit `where_` [stmt]
+
+instance ToExpr [AngleStatement] where
+  type Result [AngleStatement] = ()
+  toExpr stmts = sig unit `where_` stmts
+
+-- | Build an or-pattern, `A | B`
+(.|) :: (Result a ~ Result b, ToExpr a, ToExpr b) => a -> b -> Angle (Result a)
+a .| b = Angle $ OrPattern DSL <$> gen (toExpr a) <*> gen (toExpr b)
+
+-- | Build an or-pattern between statements (deprecated: just use '.|' instead)
 or_ :: [AngleStatement] -> [AngleStatement] -> Angle ()
-or_ left right = (unit' `where_` left) .| (unit' `where_` right)
-  where
-  unit' = sig unit
+or_ = (.|)
 
 -- | Build a key-value pattern, `A -> B`
 (.->) :: Angle a -> Angle b -> Angle c
