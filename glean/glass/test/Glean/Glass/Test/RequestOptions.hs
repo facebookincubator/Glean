@@ -209,6 +209,37 @@ testUseRevisionJK env = TestLabel "incr" $ TestList
       assertEqual "Expected matching revision"
         (SimpleSymbolsListXResult (Glass.Revision "1") False)
         result
+  , TestLabel "snapshot and stale DB" $ TestCase $ do
+      sb <- mockSnapshotBackendSimple [(examplePath, Glass.Revision "3")]
+      let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
+      result <- symbolsList env' def{
+        revision = Glass.Revision "3",
+        exact = True,
+        useRevision = Just (Just True)}
+      assertEqual "Expected snapshot"
+        (SimpleSymbolsListXResult (Glass.Revision "3") True)
+        result
+  , TestLabel "snapshot and exact DB" $ TestCase $ do
+      sb <- mockSnapshotBackendSimple [(examplePath, Glass.Revision "1")]
+      let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
+      result <- symbolsList env' def{
+        revision = Glass.Revision "1",
+        exact = True,
+        useRevision = Just (Just True)}
+      assertEqual "Expected snapshot"
+        (SimpleSymbolsListXResult (Glass.Revision "1") True)
+        result
+  , TestLabel "snapshot only" $ TestCase $ do
+      sb <- mockSnapshotBackendSimple [(newPath, Glass.Revision "3")]
+      let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
+      result <- symbolsList env' def{
+        path = newPath,
+        revision = Glass.Revision "3",
+        exact = True,
+        useRevision = Just (Just True)}
+      assertEqual "Expected snapshot"
+        (SimpleSymbolsListXResult (Glass.Revision "3") True)
+        result
   ]
 --------------------------------------------------------------------------------
 -- helpers
