@@ -309,6 +309,7 @@ data ListCommand
       { listDbNames :: [String]
       , listFormat :: Maybe ShellPrintFormat
       , listVerbosity :: DbVerbosity
+      , listIncludeBackups :: Bool
       }
 
 instance Plugin ListCommand where
@@ -325,10 +326,14 @@ instance Plugin ListCommand where
         long "verbose" <>
         help "include more details in tty/plain formats"
         )
+      listIncludeBackups <- switch (
+        long "include-backups" <>
+        help "also list DBs in backup storage")
       return List{..}
 
   runCommand _ _ backend List{..} = do
-    r <- Glean.listDatabases backend def
+    r <- Glean.listDatabases backend def {
+      listDatabases_includeBackups = listIncludeBackups }
     let
       repoFilter db str =
         str `isInfixOf` Glean.showRepo repo
