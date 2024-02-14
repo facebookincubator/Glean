@@ -12,16 +12,6 @@ The `glean` tool accepts all the [common
 options](./running.md#common-options) to specify how to connect to access
 the databases.
 
-:::note
-
-The `--db` flag used to be called `--repo`, `--db-name` used to be
-`--repo-name`, and `--db-instance` used to be `--repo-hash`. The
-terminology was changed because databases don't necessarily correspond
-to repositories, and the instance doesn't necessarily correspond to a
-hash or revision of a repository.
-
-:::
-
 The available commands are as follows:
 
 ### `glean list`
