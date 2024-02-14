@@ -90,7 +90,9 @@ getFileXRefsFor _ [] _ = return PredMap.empty
 getFileXRefsFor e xmapIds cfg = do
   let
     q :: Query Cxx.FileXRefs
-    q = limitBytes (cfgMaxQuerySize cfg) $ query $
+    q = limitBytes (cfgMaxQuerySize cfg) $
+          expanding @Cxx.XRefTargets $
+          query $
           vars $ \(xmap :: Angle Cxx.FileXRefMap) xrefs ->
             xrefs `where_` [
               xmap .= elementsOf (factIdsArray xmapIds),
@@ -109,24 +111,19 @@ getFileXRefsFor e xmapIds cfg = do
     -> IO (PredMap Cxx.XRefTargets (HashSet Cxx.XRefTarget), MutableXRefs)
   withFileXRefs (oldTargetMap, xrefs) fileXRefs = do
     let
-      newTargetIds = uniq
+      newTargets = uniq
           [ t
           | Cxx.FileXRefs _ (Just (Cxx.FileXRefs_key _ targets)) <- fileXRefs
-          , t <- map getId targets
-          , not (t `PredMap.member` oldTargetMap)
+          , t <- targets
+          , not (getId t `PredMap.member` oldTargetMap)
           ]
 
-      q2 :: Query Cxx.XRefTargets
-      q2 = maybe id limit (cfgMaxQueryFacts cfg) $
-          limitBytes (cfgMaxQuerySize cfg) $ query $
-            elementsOf (factIdsArray newTargetIds)
-
-    newTargets <- runQuery_ e (cfgRepo cfg) q2
-    let newTargetMap = PredMap.fromList
+      newTargetMap = PredMap.fromList
           [ (IdOf $ Fid i, HashSet.fromList k)
           | Cxx.XRefTargets i (Just k) <- newTargets
           ]
-        targetMap = PredMap.union newTargetMap oldTargetMap
+
+      targetMap = PredMap.union newTargetMap oldTargetMap
 
     let
       add xrefs (Cxx.FileXRefs i (Just (Cxx.FileXRefs_key xmap targetIds))) = do
