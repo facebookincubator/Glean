@@ -24,6 +24,20 @@ hash or revision of a repository.
 
 The available commands are as follows:
 
+### `glean list`
+
+List the available databases.
+
+* `[DBNAME]` <br />
+List only databases that match `DBNAME`
+* `--format (tty|plain|json|compact-json)` <br />
+Various different formats for the output. JSON is useful for
+processing and filtering the result in a script, e.g. using `jq`.
+* `-v` / `--verbose` <br />
+Show the full metadata associated with each database.
+* `--include-backups` <br />
+Also list databases in backup storage (note: may be slow).
+
 ### `glean create`
 
 Create a new database.
