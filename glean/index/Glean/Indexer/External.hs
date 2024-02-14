@@ -54,6 +54,17 @@ import Glean.Indexer
 import Glean.Write
 import Glean.Util.Service
 
+listDirectoryRecursive :: FilePath -> IO [FilePath]
+listDirectoryRecursive dir = do
+  contents <- listDirectory dir
+  paths <- forM contents $ \name -> do
+      let path = dir </> name
+      isDirectory <- doesDirectoryExist path
+      if isDirectory
+          then listDirectoryRecursive path
+          else return [path]
+  return (concat paths)
+
 externalIndexer :: Indexer Ext
 externalIndexer = Indexer
   { indexerShortName = "external"
@@ -127,7 +138,7 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
       let jsonVars = HashMap.insert "JSON_BATCH_DIR" jsonBatchDir vars
       callCommand
         (unwords (extRunScript : map (quoteArg . subst jsonVars) extArgs))
-      files <- listDirectory jsonBatchDir
+      files <- listDirectoryRecursive jsonBatchDir
       stream maxConcurrency (forM_ files) $ \file -> do
         batches <- fileToBatches (jsonBatchDir </> file)
         void $ LocalOrRemote.sendJsonBatch env repo batches Nothing
