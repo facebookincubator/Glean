@@ -109,7 +109,7 @@ struct Input {
       : buf(static_cast<const unsigned char*>(start),
             static_cast<const unsigned char*>(finish)) {}
 
-  void wantError(size_t n) const {
+  [[noreturn]] void wantError(size_t n) const {
     rts::error("truncated input: expected {} bytes, got {}", n, buf.size());
   }
 
