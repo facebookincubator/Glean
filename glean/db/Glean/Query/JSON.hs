@@ -226,6 +226,7 @@ encode expanded Encoder{..} !d = enc
           Nothing ->
             enc_field Nothing (length fieldTys + 1) "UNKNOWN" (RecordTy []) d
         encObjectEnd
+      SetTy _ -> error "Set"
       NamedTy (ExpandedType _ ty) -> enc ty
       EnumeratedTy _ -> do
         x <- liftST $ RTS.dSelector d

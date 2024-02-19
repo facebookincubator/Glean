@@ -319,6 +319,9 @@ thriftTy here t = case t of
     return $ "list<" <> inner  <> ">"
   RecordTy{} -> shareTypeDef here t
   SumTy{} -> shareTypeDef here t
+  SetTy ty -> do
+    inner <- thriftTy here ty
+    return $ "set<" <> inner <> ">"
   MaybeTy tInner -> do
     inner <- thriftTy here tInner
     return (optionalize inner)

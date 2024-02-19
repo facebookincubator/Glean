@@ -71,6 +71,8 @@ tokens :-
   "nat"         { basicToken T_Nat }
   "predicate"   { basicToken T_Predicate }
   "schema"      { basicToken T_Schema }
+  "set"         { versionDependentToken (AngleVersion 8) T_Set (T_Ident . ByteString.toStrict) }
+  "all"         { versionDependentToken (AngleVersion 8) T_All (T_Ident . ByteString.toStrict) }
   "string"      { basicToken T_String }
   "type"        { basicToken T_Type }
   "stored"      { basicToken T_Stored }
@@ -135,6 +137,8 @@ data TokenType
   | T_Nat
   | T_Predicate
   | T_Schema
+  | T_Set
+  | T_All
   | T_String
   | T_Type
   | T_Stored
@@ -197,6 +201,14 @@ setVersion ver = Alex $ \state -> Right
 basicToken :: TokenType -> AlexAction (SrcLoc, Token)
 basicToken t (AlexPn _ line col,_,b,_) len =
   return $ (SrcLoc line col, Token (ByteString.take len b) t)
+
+versionDependentToken :: AngleVersion -> TokenType -> (ByteString -> TokenType) -> AlexAction (SrcLoc, Token)
+versionDependentToken firstSupportedVersion newToken oldToken =
+  tokenContentP $ \bs -> do
+    currentVersion <- getVersion
+    if currentVersion >= firstSupportedVersion
+      then return newToken
+      else return $ oldToken bs
 
 tokenContent :: (ByteString -> TokenType) -> AlexAction (SrcLoc, Token)
 tokenContent f = tokenContentP (return . f)

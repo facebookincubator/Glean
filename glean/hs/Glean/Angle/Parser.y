@@ -41,6 +41,8 @@ import Glean.Angle.Types as Schema
   'nat'         { L _ (Token _ T_Nat) }
   'predicate'   { L _ (Token _ T_Predicate) }
   'schema'      { L _ (Token _ T_Schema) }
+  'set'         { L _ (Token _ T_Set) }
+  'all'         { L _ (Token _ T_All) }
   'string'      { L _ (Token _ T_String) }
   'stored'      { L _ (Token _ T_Stored) }
   'type'        { L _ (Token _ T_Type) }
@@ -151,6 +153,8 @@ apat
   | '[' seplist__(pattern,',') '..' ']'  { ArrayPrefix (s $1 $4) (let (h:t) = $2 in h:|t) }
   | '{' seplist2(pattern,',') '}'   { Tuple (s $1 $3) $2 }
   | '{' seplist0_(field,',') '}'    { Struct (s $1 $3) $2 }
+  | 'set' '(' seplist0(pattern,',') ')' { error "Set" }
+  | 'all' '(' pattern ')'           { error "Set" }
   | '_'                             { Wildcard (sspan $1) }
   | var                             { Variable (sspan $1) (lval $1) }
   | 'never'                         { Never (sspan $1) }
@@ -249,6 +253,7 @@ type
   | '{' seplist0_(fielddef, ',') '}'        { L (s $1 $3)  $ Schema.RecordTy $2 }
   | '{' fielddef '|' '}'                    { L (s $1 $4)  $ Schema.SumTy [$2] }
   | '{' seplist2_(fielddef, '|')  '}'       { L (s $1 $3)  $ Schema.SumTy $2 }
+  | 'set' type                              { L (s $1 $2)  $ Schema.SetTy (lval $2) }
   | 'enum' '{' seplist_(fieldname, '|') '}' { L (s $1 $4)  $ Schema.EnumeratedTy $3 }
   | name                                    { L (sspan $1) $ Schema.PredicateTy (parseRef $ lval $1) }
      -- resolved to typedef/predicate later

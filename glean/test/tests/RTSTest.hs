@@ -79,6 +79,7 @@ valueFor (T.RecordTy fields) =
 valueFor (T.SumTy fields) = do
   (i, field) <- elements $ zip [0..] fields
   Alt i <$> valueFor (T.fieldDefType field)
+valueFor (T.SetTy _ty) = error "Set"
 valueFor T.PredicateTy{} = Ref <$> arbitrary
 valueFor (T.NamedTy (ExpandedType _ ty)) = valueFor ty
 valueFor (T.MaybeTy ty) = do

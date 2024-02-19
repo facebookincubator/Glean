@@ -437,6 +437,7 @@ resolveType typ = go typ
     ArrayTy ty -> ArrayTy <$> go ty
     RecordTy fields -> do checkFields fields; RecordTy <$> mapM goField fields
     SumTy fields -> do checkFields fields; SumTy <$> mapM goField fields
+    SetTy ty -> SetTy <$> go ty
     PredicateTy ref -> goRef ref
     NamedTy ref -> goRef ref  -- shouldn't happen, but handle it anyway
     MaybeTy ty -> MaybeTy <$> go ty

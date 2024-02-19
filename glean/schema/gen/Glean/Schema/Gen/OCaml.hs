@@ -31,8 +31,7 @@ import Glean.Angle.Types
                     predicateDefValueType),
       TypeDef_(typeDefRef, typeDefType),
       FieldDef_(fieldDefType, fieldDefName),
-      Type_(RecordTy, NatTy, StringTy, ByteTy, ArrayTy, SumTy,
-            PredicateTy, NamedTy, MaybeTy, EnumeratedTy, BooleanTy) )
+      Type_(..) )
 import Glean.Schema.Types
     ( ResolvedPredicateDef, ResolvedTypeDef, ResolvedType )
 import Data.Char (isUpper, toLower)
@@ -219,6 +218,7 @@ genOCamlType ns namePolicy t = case t of
   RecordTy [] -> "unit"
   RecordTy fields -> "{\n" <> Text.unlines (genField Record <$> fields) <> "  }"
   SumTy fields -> "\n" <> Text.intercalate "\n" (genField Sum <$> fields)
+  SetTy _ty -> error "Set"
   PredicateTy pred -> predToModule ns pred namePolicy <> ".t"
   NamedTy tref -> typeToModule ns tref namePolicy <> ".t"
   MaybeTy ty -> genOCamlType ns namePolicy ty <> " option"
@@ -278,6 +278,7 @@ genOCamlToJson ns namePolicy t = case t of
           Text.concat [ "     | ", constr, " ", var,
                         " -> JSON_Object [(\"", key, "\", ", genType, ")]"] in
       ("", "function\n" <> Text.unlines (typeSumField <$> fields))
+  SetTy _ -> error "Set"
   PredicateTy pred ->
     let moduleName = predToModule ns pred namePolicy in
         ("x",  moduleName <> ".to_json x")
@@ -309,6 +310,7 @@ genOCamlToJson' var ns namePolicy t = case t of
     "JSON_Array (List.map (fun x -> " <> code  <> ") " <> var <> ")"
   RecordTy _ -> "(ignore " <>  var <> "; JSON_Object []) (* unsupported *)"
   SumTy _ -> "(ignore " <>  var <> "; JSON_Object []) (* unsupported *)"
+  SetTy _ -> error "Set"
   PredicateTy pred ->
     let moduleName = predToModule ns pred namePolicy in
         (moduleName <> ".to_json " <> var)

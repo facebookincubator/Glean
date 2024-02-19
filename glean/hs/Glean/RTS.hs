@@ -253,6 +253,7 @@ decodeValue d ty = case ty of
   SumRep tys -> do
     sel <- dSelector d
     Alt (fromIntegral sel) <$> decodeValue d (tys !! fromIntegral sel)
+  SetRep _ -> error "Set"
   StringRep -> String <$> dString d
   PredicateRep _ -> Ref <$> dFact d
 

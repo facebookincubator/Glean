@@ -307,6 +307,7 @@ mkRtsType lookupType lookupPid = rtsType
     rtsType (Schema.ArrayTy elty) = Schema.ArrayTy <$> rtsType elty
     rtsType (Schema.RecordTy fields) = Schema.RecordTy <$> mapM fieldType fields
     rtsType (Schema.SumTy fields) = Schema.SumTy <$> mapM fieldType fields
+    rtsType (Schema.SetTy elty) = Schema.SetTy <$> rtsType elty
     rtsType Schema.StringTy = return Schema.StringTy
     rtsType (Schema.PredicateTy ref) = do
       pid <- lookupPid ref

@@ -243,6 +243,9 @@ haskellTy_ withId genSub here t = case t of
     return $ "[" <> inner <> "]"
   RecordTy{} -> shareTypeDef genSub here t
   SumTy{} -> shareTypeDef genSub here t
+  SetTy tInner -> do
+    inner <- haskellTy_ PredName genSub here tInner
+    return $ "Data.Set.Set " <> inner
   MaybeTy ty -> do
     inner <- haskellTy_ PredName genSub here ty
     return (optionalize inner)

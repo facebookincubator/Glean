@@ -193,6 +193,7 @@ skipTrusted input inputend ty = skip (repType ty)
         return alt
       end <- label
       return ()
+    SetRep _ -> error "Set"
     StringRep -> inputSkipTrustedString input inputend
     PredicateRep _ -> inputSkipNat input inputend
 

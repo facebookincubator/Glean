@@ -274,6 +274,7 @@ reprTy here t = case t of
   SumTy fields -> do
     ts <- mapM (reprTy here . fieldDefType) fields
     return $ "Sum<" <> Text.intercalate ", " ts <> ">"
+  SetTy _ty -> error "Set"
   MaybeTy ty -> do
     rTy <- reprTy here ty
     return $ "Maybe<" <> rTy <> ">"
@@ -321,6 +322,7 @@ valueTy here t = case t of
   SumTy fields -> do
     ts <- mapM (valueTy here .fieldDefType) fields
     return $ "boost::variant<" <> Text.intercalate ", " (altsOf ts) <> ">"
+  SetTy _ty -> error "Set"
   MaybeTy ty ->
     valueTy here $ SumTy
       [ FieldDef "^Nothing^" unitT

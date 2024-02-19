@@ -356,6 +356,7 @@ data Type_ pref tref
   | ArrayTy (Type_ pref tref)
   | RecordTy [FieldDef_ pref tref]
   | SumTy [FieldDef_ pref tref]
+  | SetTy (Type_ pref tref)
   | PredicateTy pref
   | NamedTy tref
 
@@ -381,6 +382,7 @@ instance Bifunctor Type_ where
     ArrayTy ty -> ArrayTy $ bimap f g ty
     RecordTy xs -> RecordTy $ bimap f g <$> xs
     SumTy xs -> SumTy $ bimap f g <$> xs
+    SetTy ty -> SetTy $ bimap f g ty
     PredicateTy pref -> PredicateTy (f pref)
     NamedTy tref -> NamedTy (g tref)
     MaybeTy ty -> MaybeTy (bimap f g ty)
@@ -395,6 +397,7 @@ instance Bifoldable Type_ where
     ArrayTy ty -> bifoldr f g r ty
     RecordTy xs -> foldr (flip $ bifoldr f g) r xs
     SumTy xs -> foldr (flip $ bifoldr f g) r xs
+    SetTy ty -> bifoldr f g r ty
     PredicateTy pref -> f pref r
     NamedTy tref -> g tref r
     MaybeTy ty -> bifoldr f g r ty
@@ -651,6 +654,7 @@ instance (Display pref, Display tref) => Display (Type_ pref tref) where
     sep
       [ nest 2 $ vsep $ "{" :  map ((<> " |") . display opts) fields
       , "}" ]
+  display opts (SetTy ty) = "set " <> display opts ty
   display opts (PredicateTy p) = display opts p
   display opts (NamedTy t) = display opts t
   display opts (MaybeTy t) = "maybe" <+> display opts t

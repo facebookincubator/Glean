@@ -72,6 +72,7 @@ traversal callback input inputend ty = go False (repType ty)
             return alt
           end <- label
           return ()
+    go _ (SetRep _elty) = error "Set"
     go _ (PredicateRep (Pid pid)) = local $ \ide -> do
       inputNat input inputend ide
       pidr <- constant (fromIntegral pid)
@@ -96,6 +97,7 @@ hasRefs StringRep = False
 hasRefs (ArrayRep elty) = hasRefs elty
 hasRefs (TupleRep tys) = any hasRefs tys
 hasRefs (SumRep tys) = any hasRefs tys
+hasRefs (SetRep elty) = hasRefs elty
 hasRefs PredicateRep{} = True
 
 isUnit :: Rep a -> Bool
@@ -105,4 +107,5 @@ isUnit StringRep = False
 isUnit ArrayRep{} = False
 isUnit (TupleRep tys) = all isUnit tys
 isUnit SumRep{} = False
+isUnit SetRep{} = False
 isUnit PredicateRep{} = False

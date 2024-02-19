@@ -274,6 +274,7 @@ angleTypeInnerReprFor (SumTy fields) =
   where
     f FieldDef{..} =
       (,) fieldDefName <$> angleTypeInnerReprFor fieldDefType
+angleTypeInnerReprFor (SetTy _ty) = error "Set"
 angleTypeInnerReprFor (PredicateTy ref) = do
   ctx <- ask
   case lookupPredDefKeyValue ctx ref of
@@ -418,6 +419,7 @@ cyclesInDefs ctx defs = concatMap hasCycles sccs
   outEdgesT (MaybeTy ty) = outEdgesT ty
   outEdgesT (RecordTy fields)  = outEdgesFields fields
   outEdgesT (SumTy fields)  = outEdgesFields fields
+  outEdgesT (SetTy ty) = outEdgesT ty
   outEdgesT (NamedTy (TypeRef name ver)) = [(name,ver)]
   outEdgesT (PredicateTy (PredicateRef name ver)) = [(name,ver)]
   outEdgesT EnumeratedTy{} = []

@@ -103,6 +103,7 @@ decodeResults ty getFacts eitherRes = runExceptT $ do
           RTS.SumRep tys ->
             let unknown = RTS.TupleRep [] in
             RTS.SumRep $ fmap withUnknown tys ++ [unknown]
+          RTS.SetRep _tys -> error "Set"
           RTS.StringRep -> rep
           RTS.PredicateRep _ -> rep
 

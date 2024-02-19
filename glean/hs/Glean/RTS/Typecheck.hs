@@ -77,6 +77,7 @@ typecheck rename input inputend output = tc
         return alt
       end <- label
       return ()
+    tc (SetTy _elty) = undefined
     tc (PredicateTy (PidRef (Pid pid) _)) = local $ \ide -> do
       t <- constant $ fromIntegral pid
       inputNat input inputend ide

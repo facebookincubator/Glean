@@ -122,6 +122,7 @@ repType (RecordTy fields) =
   TupleRep [ repType ty | FieldDef _ ty <- fields ]
 repType (SumTy fields) =
   SumRep [ repType ty | FieldDef _ ty <- fields ]
+repType (SetTy ty)  = SetRep (repType ty)
 repType (PredicateTy (PidRef pid _)) = PredicateRep pid
 repType (NamedTy (ExpandedType _ ty)) = repType ty
 repType (MaybeTy ty) = repType (lowerMaybe ty)
@@ -187,6 +188,7 @@ data Rep id
   | ArrayRep (Rep id)
   | TupleRep [Rep id]
   | SumRep [Rep id]
+  | SetRep (Rep id)
   | StringRep
   | PredicateRep id
   deriving (Eq, Show, Functor, Foldable, Traversable)
@@ -197,5 +199,6 @@ instance Pretty id => Pretty (Rep id) where
   pretty (ArrayRep ty) = "[" <> pretty ty <> "]"
   pretty (TupleRep ty) = align $ encloseSep "(" ")" "," $ map pretty ty
   pretty (SumRep ty) = align $ encloseSep "(|" "|)" "," $ map pretty ty
+  pretty (SetRep ty) = "set " <> pretty ty
   pretty StringRep = "string#"
   pretty (PredicateRep id) = pretty id
