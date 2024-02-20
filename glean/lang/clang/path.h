@@ -10,9 +10,7 @@
 
 #include <filesystem>
 
-namespace facebook {
-namespace glean {
-namespace clangx {
+namespace facebook::glean::clangx {
 
 /// Munge a Clang path into something nice.
 ///
@@ -40,6 +38,4 @@ std::filesystem::path goodPath(
 //
 std::filesystem::path followSymlinksInsideRoot(
     std::filesystem::path root, std::filesystem::path source);
-}
-}
 }

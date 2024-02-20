@@ -35,9 +35,7 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& xs) {
 
 }
 
-namespace facebook {
-namespace glean {
-namespace worklist {
+namespace facebook::glean::worklist {
 
 
 namespace {
@@ -113,14 +111,14 @@ TEST(WorklistTest, Steal2) {
   std::vector<std::thread> threads;
   boost::barrier barrier(values.size());
   for (auto i = 0; i < values.size(); ++i) {
-    threads.push_back(std::thread([&,i] {
+    threads.emplace_back([&,i] {
       auto counter = stealingCounter(file.path(), i, values.size());
       barrier.count_down_and_wait();
       while (auto r = counter->next()) {
         CHECK_LT(r.value().start, len);
         ++atomic_visits[r.value().start];
       }
-    }));
+    });
   }
   for (auto& t : threads) {
     t.join();
@@ -133,6 +131,4 @@ TEST(WorklistTest, Steal2) {
   CHECK_EQ(visits, std::vector<size_t>(values.back().end, 1));
 }
 
-}
-}
 }

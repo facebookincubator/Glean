@@ -205,9 +205,7 @@ void glean_interprocess_worklist_next(
 
 }
 
-namespace facebook {
-namespace glean {
-namespace worklist {
+namespace facebook::glean::worklist {
 
 namespace {
 
@@ -272,6 +270,4 @@ void stealingCounterSetup(
   glean_interprocess_worklist_t::create(path.c_str(), values);
 }
 
-}
-}
 }

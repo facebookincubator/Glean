@@ -12,9 +12,7 @@
 #include <folly/experimental/TestUtil.h>
 #include <filesystem>
 
-namespace facebook {
-namespace glean {
-namespace clangx {
+namespace facebook::glean::clangx {
 
 TEST(PathTest, goodPath) {
   EXPECT_EQ(goodPath("/foo", "bar").native(), "bar");
@@ -84,7 +82,5 @@ TEST(PathTest, followSymlinksInsideRoot) {
 
   // escape from root and then go back via a relative symlink
   EXPECT_EQ(followSymlinksInsideRoot(root, path("escape/back")), path("a/c"));
-}
-}
 }
 }

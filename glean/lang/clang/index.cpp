@@ -133,7 +133,7 @@ struct Counters {
         auto e = std::find(b,end,',');
         auto index = folly::to<size_t>(std::string(b,e));
         size = std::max(size, index+1);
-        names.push_back({std::string(pos,a), index});
+        names.emplace_back(std::string(pos,a), index);
         pos = e;
         if (pos != end) {
           ++pos;
@@ -320,7 +320,7 @@ struct Config {
         fail("missing --cdb-dir");
       }
       auto cdb = loadCompilationDatabase(FLAGS_cdb_dir);
-      for(auto file : cdb->getAllFiles()){
+      for(const auto& file : cdb->getAllFiles()){
         sources.push_back(SourceFile{
             FLAGS_cdb_target.c_str(),
             folly::Optional<std::string>(),

@@ -12,9 +12,7 @@
 #include <cassert>
 #include <glog/logging.h>
 
-namespace facebook {
-namespace glean {
-namespace clangx {
+namespace facebook::glean::clangx {
 
 std::filesystem::path goodPath(
     std::filesystem::path root,
@@ -112,6 +110,4 @@ std::filesystem::path followSymlinksInsideRoot(
   return path;
 }
 
-}
-}
 }

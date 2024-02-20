@@ -16,9 +16,7 @@
 #define LOG_VIA_LOGGER_ASYNC(l)
 #endif
 
-namespace facebook {
-namespace glean {
-namespace clangx {
+namespace facebook::glean::clangx {
 
 ActionLogger::ActionLogger(const std::string& name,
                            const std::string& task,
@@ -97,6 +95,4 @@ void ActionLogger::log(std::function<void()> &&callback) {
   callback();
 }
 
-}
-}
 }

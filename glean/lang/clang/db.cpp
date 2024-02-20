@@ -16,9 +16,7 @@
 #include "glean/facebook/lang/clang/path.h"
 #endif
 
-namespace facebook {
-namespace glean {
-namespace clangx {
+namespace facebook::glean::clangx {
 
 namespace {
 
@@ -557,6 +555,4 @@ void ClangDB::finish() {
 }
 
 
-}
-}
 }

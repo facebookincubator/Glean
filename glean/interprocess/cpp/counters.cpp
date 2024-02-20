@@ -101,9 +101,7 @@ const char *glean_interprocess_counters_get(
 
 }
 
-namespace facebook {
-namespace glean {
-namespace interprocess {
+namespace facebook::glean::interprocess {
 
 void countersSetup(const std::string& path, size_t size) {
   glean_interprocess_counters_t::create(path.c_str(), size);
@@ -113,6 +111,4 @@ std::unique_ptr<Counters> counters(const std::string& path, size_t size) {
   return std::make_unique<glean_interprocess_counters_t>(path.c_str(), size);
 }
 
-}
-}
 }

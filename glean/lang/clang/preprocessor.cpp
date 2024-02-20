@@ -301,14 +301,10 @@ struct PPCallbacks final : public clang::PPCallbacks {
 
 }
 
-namespace facebook {
-namespace glean {
-namespace clangx {
+namespace facebook::glean::clangx {
 
 std::unique_ptr<clang::PPCallbacks> newPPCallbacks(ClangDB* db) {
   return std::make_unique<PPCallbacks>(db);
 }
 
-}
-}
 }

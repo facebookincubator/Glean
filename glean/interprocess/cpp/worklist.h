@@ -13,9 +13,7 @@
 
 #include <folly/Optional.h>
 
-namespace facebook {
-namespace glean {
-namespace worklist {
+namespace facebook::glean::worklist {
 
 struct Counter {
   struct Value {
@@ -64,6 +62,4 @@ void stealingCounterSetup(
   const std::vector<Counter::Value>& values
 );
 
-}
-}
 }

@@ -21,9 +21,7 @@
 #include "glean/lang/clang/gleandiagnosticbuffer.h"
 #include "glean/lang/clang/schema.h"
 
-namespace facebook {
-namespace glean {
-namespace clangx {
+namespace facebook::glean::clangx {
 
 using namespace facebook::glean::cpp;
 namespace Buck = schema::Buck;
@@ -201,7 +199,7 @@ public:
 
   void declaration(const SourceRange& range, Cxx::Declaration decl) {
     if (range.file) {
-      range.file->declarations.push_back({range.span, decl});
+      range.file->declarations.emplace_back(range.span, decl);
     }
   }
 
@@ -289,6 +287,4 @@ private:
   }
 };
 
-}
-}
 }

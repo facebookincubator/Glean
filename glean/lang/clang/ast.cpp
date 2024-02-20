@@ -1965,7 +1965,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         visitor.objcContainerMembers(d));
 
       auto xs = implements(visitor, d);
-      for (auto x : xs) {
+      for (const auto& x : xs) {
         visitor.db.fact<Cxx::ObjcImplements>(decl, x.decl);
       }
 
@@ -2812,14 +2812,10 @@ struct ASTConsumer : public clang::ASTConsumer {
 
 }
 
-namespace facebook {
-namespace glean {
-namespace clangx {
+namespace facebook::glean::clangx {
 
 std::unique_ptr<clang::ASTConsumer> newASTConsumer(ClangDB* db) {
   return std::make_unique<ASTConsumer>(db);
 }
 
-}
-}
 }

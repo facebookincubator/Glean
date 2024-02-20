@@ -23,9 +23,7 @@ namespace facebook::logger {
 }
 #endif
 
-namespace facebook {
-namespace glean {
-namespace clangx {
+namespace facebook::glean::clangx {
 
 #if GLEAN_FACEBOOK
 using Logger = facebook::logger::GleanClangIndexerLogger;
@@ -95,6 +93,4 @@ private:
   std::unique_ptr<Logger> logger;
 };
 
-}
-}
 }
