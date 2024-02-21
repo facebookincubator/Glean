@@ -29,6 +29,7 @@ import Glean.Glass.Pretty.LSIF as LSIF ( prettyLsifSignature )
 import Glean.Glass.Pretty.SCIP as SCIP ( prettyScipSignature )
 import Glean.Glass.Pretty.Python as Python ( prettyPythonSignature )
 import Glean.Glass.Pretty.Java as Java ( prettyJavaSignature )
+import Glean.Glass.Pretty.Fbthrift as Fbthrift ( prettyFbthriftSignature )
 import Glean.Glass.Types
     ( RepoName, SymbolId(..), TypeSymSpan(..), ByteSpan(..) )
 import qualified Data.Text.Lazy.Builder as TLB
@@ -128,6 +129,8 @@ instance ToSymbolSignature Code.Entity where
     Code.Entity_flow x -> Flow.prettyFlowSignature opts x
     -- python pretty signatures
     Code.Entity_python x -> Python.prettyPythonSignature opts repo sym x
+    -- thrift pretty signatures
+    Code.Entity_fbthrift x -> Fbthrift.prettyFbthriftSignature opts repo sym x
     -- python pretty signatures
     Code.Entity_java x -> Java.prettyJavaSignature opts repo sym x
 

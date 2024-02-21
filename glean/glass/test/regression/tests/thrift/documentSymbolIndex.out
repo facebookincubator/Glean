@@ -19,6 +19,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::Range"
                         }
                     },
                     "range": {
@@ -54,6 +57,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::AttributeList"
                         }
                     },
                     "range": {
@@ -89,6 +95,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SymbolX"
                         }
                     },
                     "range": {
@@ -114,6 +123,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::SymbolId"
                         }
                     },
                     "range": {
@@ -149,6 +161,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::Range"
                         }
                     },
                     "range": {
@@ -184,6 +199,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::LocationRange"
                         }
                     },
                     "range": {
@@ -219,6 +237,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::Attributes"
                         }
                     },
                     "range": {
@@ -254,6 +275,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SymbolPath"
                         }
                     },
                     "range": {
@@ -279,6 +303,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::RepoName"
                         }
                     },
                     "range": {
@@ -314,6 +341,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::Path"
                         }
                     },
                     "range": {
@@ -349,6 +379,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::Range"
                         }
                     },
                     "range": {
@@ -384,6 +417,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::DocumentSymbolListXResult"
                         }
                     },
                     "range": {
@@ -409,6 +445,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::ReferenceRangeSymbolX"
                         }
                     },
                     "range": {
@@ -444,6 +483,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::DefinitionSymbolX"
                         }
                     },
                     "range": {
@@ -479,6 +521,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::Revision"
                         }
                     },
                     "range": {
@@ -514,6 +559,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::DocumentSymbolIndex"
                         }
                     },
                     "range": {
@@ -539,6 +587,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SymbolX"
                         }
                     },
                     "range": {
@@ -574,6 +625,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::Revision"
                         }
                     },
                     "range": {
@@ -609,6 +663,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception lib::ServerException"
                         }
                     },
                     "range": {
@@ -632,6 +689,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::ServerException"
                         }
                     },
                     "range": {
@@ -657,6 +717,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::RepoName"
                         }
                     },
                     "range": {
@@ -682,6 +745,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::Name"
                         }
                     },
                     "range": {
@@ -707,6 +773,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::QualifiedName"
                         }
                     },
                     "range": {
@@ -732,6 +801,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::Name"
                         }
                     },
                     "range": {
@@ -767,6 +839,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::Name"
                         }
                     },
                     "range": {
@@ -802,6 +877,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SymbolDescription"
                         }
                     },
                     "range": {
@@ -827,6 +905,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::SymbolId"
                         }
                     },
                     "range": {
@@ -862,6 +943,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SymbolPath"
                         }
                     },
                     "range": {
@@ -897,6 +981,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::QualifiedName"
                         }
                     },
                     "range": {
@@ -932,6 +1019,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum lib::SymbolKind"
                         }
                     },
                     "range": {
@@ -967,6 +1057,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SearchContext"
                         }
                     },
                     "range": {
@@ -992,6 +1085,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::RepoName"
                         }
                     },
                     "range": {
@@ -1027,6 +1123,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum lib::Language"
                         }
                     },
                     "range": {
@@ -1062,6 +1161,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::Path"
                         }
                     },
                     "range": {
@@ -1087,6 +1189,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum lib::SymbolKind"
                         }
                     },
                     "range": {
@@ -1122,6 +1227,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum lib::SymbolKind"
                         }
                     },
                     "range": {
@@ -1147,6 +1255,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Package"
                         }
                     },
                     "range": {
@@ -1172,6 +1283,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Type"
                         }
                     },
                     "range": {
@@ -1197,6 +1311,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Value"
                         }
                     },
                     "range": {
@@ -1222,6 +1339,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::File"
                         }
                     },
                     "range": {
@@ -1247,6 +1367,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Module"
                         }
                     },
                     "range": {
@@ -1272,6 +1395,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Namespace"
                         }
                     },
                     "range": {
@@ -1297,6 +1423,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Class_"
                         }
                     },
                     "range": {
@@ -1322,6 +1451,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Method"
                         }
                     },
                     "range": {
@@ -1347,6 +1479,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Property"
                         }
                     },
                     "range": {
@@ -1372,6 +1507,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Field"
                         }
                     },
                     "range": {
@@ -1397,6 +1535,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Constructor"
                         }
                     },
                     "range": {
@@ -1422,6 +1563,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Enum"
                         }
                     },
                     "range": {
@@ -1447,6 +1591,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Interface"
                         }
                     },
                     "range": {
@@ -1472,6 +1619,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Function"
                         }
                     },
                     "range": {
@@ -1497,6 +1647,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Variable"
                         }
                     },
                     "range": {
@@ -1522,6 +1675,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Constant"
                         }
                     },
                     "range": {
@@ -1547,6 +1703,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::Revision"
                         }
                     },
                     "range": {
@@ -1572,6 +1731,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::String"
                         }
                     },
                     "range": {
@@ -1597,6 +1759,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Number"
                         }
                     },
                     "range": {
@@ -1622,6 +1787,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Boolean"
                         }
                     },
                     "range": {
@@ -1647,6 +1815,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Array"
                         }
                     },
                     "range": {
@@ -1672,6 +1843,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Object"
                         }
                     },
                     "range": {
@@ -1697,6 +1871,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Key"
                         }
                     },
                     "range": {
@@ -1722,6 +1899,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Null"
                         }
                     },
                     "range": {
@@ -1747,6 +1927,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Enumerator"
                         }
                     },
                     "range": {
@@ -1772,6 +1955,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Struct"
                         }
                     },
                     "range": {
@@ -1797,6 +1983,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Event"
                         }
                     },
                     "range": {
@@ -1822,6 +2011,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Operator"
                         }
                     },
                     "range": {
@@ -1847,6 +2039,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::TypeParameter"
                         }
                     },
                     "range": {
@@ -1872,6 +2067,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Union"
                         }
                     },
                     "range": {
@@ -1897,6 +2095,9 @@
                         },
                         "symbolParent": {
                             "aString": "SymbolKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::SymbolKind::Macro"
                         }
                     },
                     "range": {
@@ -1922,6 +2123,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum lib::Language"
                         }
                     },
                     "range": {
@@ -1947,6 +2151,9 @@
                         },
                         "symbolParent": {
                             "aString": "Language"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::Language::Cpp"
                         }
                     },
                     "range": {
@@ -1972,6 +2179,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::LineRange"
                         }
                     },
                     "range": {
@@ -1997,6 +2207,9 @@
                         },
                         "symbolParent": {
                             "aString": "Language"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::Language::JavaScript"
                         }
                     },
                     "range": {
@@ -2022,6 +2235,9 @@
                         },
                         "symbolParent": {
                             "aString": "Language"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::Language::Hack"
                         }
                     },
                     "range": {
@@ -2047,6 +2263,9 @@
                         },
                         "symbolParent": {
                             "aString": "Language"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::Language::Haskell"
                         }
                     },
                     "range": {
@@ -2072,6 +2291,9 @@
                         },
                         "symbolParent": {
                             "aString": "Language"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::Language::Java"
                         }
                     },
                     "range": {
@@ -2097,6 +2319,9 @@
                         },
                         "symbolParent": {
                             "aString": "Language"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::Language::ObjectiveC"
                         }
                     },
                     "range": {
@@ -2122,6 +2347,9 @@
                         },
                         "symbolParent": {
                             "aString": "Language"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::Language::Python"
                         }
                     },
                     "range": {
@@ -2147,6 +2375,9 @@
                         },
                         "symbolParent": {
                             "aString": "Language"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::Language::PreProcessor"
                         }
                     },
                     "range": {
@@ -2172,6 +2403,9 @@
                         },
                         "symbolParent": {
                             "aString": "Language"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::Language::Thrift"
                         }
                     },
                     "range": {
@@ -2197,6 +2431,9 @@
                         },
                         "symbolParent": {
                             "aString": "Language"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::Language::Rust"
                         }
                     },
                     "range": {
@@ -2222,6 +2459,9 @@
                         },
                         "symbolParent": {
                             "aString": "Language"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::Language::Buck"
                         }
                     },
                     "range": {
@@ -2247,6 +2487,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum lib::DefinitionKind"
                         }
                     },
                     "range": {
@@ -2272,6 +2515,9 @@
                         },
                         "symbolParent": {
                             "aString": "DefinitionKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::DefinitionKind::Definition"
                         }
                     },
                     "range": {
@@ -2297,6 +2543,9 @@
                         },
                         "symbolParent": {
                             "aString": "DefinitionKind"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value lib::DefinitionKind::Declaration"
                         }
                     },
                     "range": {
@@ -2322,6 +2571,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SearchByNameRequest"
                         }
                     },
                     "range": {
@@ -2347,6 +2599,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SearchContext"
                         }
                     },
                     "range": {
@@ -2382,6 +2637,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SearchByNameResult"
                         }
                     },
                     "range": {
@@ -2407,6 +2665,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::SymbolId"
                         }
                     },
                     "range": {
@@ -2442,6 +2703,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SymbolDescription"
                         }
                     },
                     "range": {
@@ -2477,6 +2741,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SearchBySymbolIdResult"
                         }
                     },
                     "range": {
@@ -2502,6 +2769,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::SymbolId"
                         }
                     },
                     "range": {
@@ -2537,6 +2807,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "service lib::ZeroService"
                         }
                     },
                     "range": {
@@ -2562,6 +2835,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "service lib::BaseService"
                         }
                     },
                     "range": {
@@ -2585,6 +2861,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "service lib::ZeroService"
                         }
                     },
                     "range": {
@@ -2620,6 +2899,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "service lib::BaseService"
                         }
                     },
                     "range": {
@@ -2653,6 +2935,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "service lib::GlassService"
                         }
                     },
                     "range": {
@@ -2678,6 +2963,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::DocumentSymbolListXResult"
                         }
                     },
                     "range": {
@@ -2711,6 +2999,9 @@
                         },
                         "symbolParent": {
                             "aString": "GlassService"
+                        },
+                        "symbolSignature": {
+                            "aString": "function lib::GlassService::documentSymbolListX"
                         }
                     },
                     "range": {
@@ -2736,6 +3027,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::DocumentSymbolsRequest"
                         }
                     },
                     "range": {
@@ -2771,6 +3065,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::RequestOptions"
                         }
                     },
                     "range": {
@@ -2806,6 +3103,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception lib::ServerException"
                         }
                     },
                     "range": {
@@ -2841,6 +3141,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::DocumentSymbolIndex"
                         }
                     },
                     "range": {
@@ -2874,6 +3177,9 @@
                         },
                         "symbolParent": {
                             "aString": "GlassService"
+                        },
+                        "symbolSignature": {
+                            "aString": "function lib::GlassService::documentSymbolIndex"
                         }
                     },
                     "range": {
@@ -2899,6 +3205,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::DocumentSymbolsRequest"
                         }
                     },
                     "range": {
@@ -2934,6 +3243,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::RequestOptions"
                         }
                     },
                     "range": {
@@ -2969,6 +3281,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception lib::ServerException"
                         }
                     },
                     "range": {
@@ -3004,6 +3319,9 @@
                         },
                         "symbolParent": {
                             "aString": "GlassService"
+                        },
+                        "symbolSignature": {
+                            "aString": "function lib::GlassService::jumpTo"
                         }
                     },
                     "range": {
@@ -3027,6 +3345,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::Location"
                         }
                     },
                     "range": {
@@ -3060,6 +3381,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::Range"
                         }
                     },
                     "range": {
@@ -3093,6 +3417,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::RequestOptions"
                         }
                     },
                     "range": {
@@ -3128,6 +3455,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception lib::ServerException"
                         }
                     },
                     "range": {
@@ -3163,6 +3493,9 @@
                         },
                         "symbolParent": {
                             "aString": "GlassService"
+                        },
+                        "symbolSignature": {
+                            "aString": "function lib::GlassService::findReferences"
                         }
                     },
                     "range": {
@@ -3186,6 +3519,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::Location"
                         }
                     },
                     "range": {
@@ -3221,6 +3557,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::SymbolId"
                         }
                     },
                     "range": {
@@ -3256,6 +3595,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::RequestOptions"
                         }
                     },
                     "range": {
@@ -3291,6 +3633,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception lib::ServerException"
                         }
                     },
                     "range": {
@@ -3326,6 +3671,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::Range"
                         }
                     },
                     "range": {
@@ -3351,6 +3699,9 @@
                         },
                         "symbolParent": {
                             "aString": "GlassService"
+                        },
+                        "symbolSignature": {
+                            "aString": "function lib::GlassService::findReferenceRanges"
                         }
                     },
                     "range": {
@@ -3374,6 +3725,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::LocationRange"
                         }
                     },
                     "range": {
@@ -3409,6 +3763,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::SymbolId"
                         }
                     },
                     "range": {
@@ -3444,6 +3801,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::RequestOptions"
                         }
                     },
                     "range": {
@@ -3479,6 +3839,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception lib::ServerException"
                         }
                     },
                     "range": {
@@ -3514,6 +3877,9 @@
                         },
                         "symbolParent": {
                             "aString": "GlassService"
+                        },
+                        "symbolSignature": {
+                            "aString": "function lib::GlassService::resolveSymbol"
                         }
                     },
                     "range": {
@@ -3537,6 +3903,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::Location"
                         }
                     },
                     "range": {
@@ -3570,6 +3939,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::RequestOptions"
                         }
                     },
                     "range": {
@@ -3603,6 +3975,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::SymbolId"
                         }
                     },
                     "range": {
@@ -3638,6 +4013,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception lib::ServerException"
                         }
                     },
                     "range": {
@@ -3673,6 +4051,9 @@
                         },
                         "symbolParent": {
                             "aString": "GlassService"
+                        },
+                        "symbolSignature": {
+                            "aString": "function lib::GlassService::describeSymbol"
                         }
                     },
                     "range": {
@@ -3696,6 +4077,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SymbolDescription"
                         }
                     },
                     "range": {
@@ -3731,6 +4115,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::SymbolId"
                         }
                     },
                     "range": {
@@ -3766,6 +4153,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::RequestOptions"
                         }
                     },
                     "range": {
@@ -3801,6 +4191,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception lib::ServerException"
                         }
                     },
                     "range": {
@@ -3836,6 +4229,9 @@
                         },
                         "symbolParent": {
                             "aString": "GlassService"
+                        },
+                        "symbolSignature": {
+                            "aString": "function lib::GlassService::searchByName"
                         }
                     },
                     "range": {
@@ -3859,6 +4255,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SearchByNameResult"
                         }
                     },
                     "range": {
@@ -3894,6 +4293,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SearchByNameRequest"
                         }
                     },
                     "range": {
@@ -3929,6 +4331,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::RequestOptions"
                         }
                     },
                     "range": {
@@ -3964,6 +4369,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception lib::ServerException"
                         }
                     },
                     "range": {
@@ -3999,6 +4407,9 @@
                         },
                         "symbolParent": {
                             "aString": "GlassService"
+                        },
+                        "symbolSignature": {
+                            "aString": "function lib::GlassService::searchByNamePrefix"
                         }
                     },
                     "range": {
@@ -4022,6 +4433,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SearchByNameResult"
                         }
                     },
                     "range": {
@@ -4057,6 +4471,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SearchByNameRequest"
                         }
                     },
                     "range": {
@@ -4092,6 +4509,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::RequestOptions"
                         }
                     },
                     "range": {
@@ -4127,6 +4547,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception lib::ServerException"
                         }
                     },
                     "range": {
@@ -4162,6 +4585,9 @@
                         },
                         "symbolParent": {
                             "aString": "GlassService"
+                        },
+                        "symbolSignature": {
+                            "aString": "function lib::GlassService::searchBySymbolId"
                         }
                     },
                     "range": {
@@ -4185,6 +4611,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::SearchBySymbolIdResult"
                         }
                     },
                     "range": {
@@ -4220,6 +4649,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::SymbolId"
                         }
                     },
                     "range": {
@@ -4255,6 +4687,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::RequestOptions"
                         }
                     },
                     "range": {
@@ -4290,6 +4725,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception lib::ServerException"
                         }
                     },
                     "range": {
@@ -4325,6 +4763,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::ByteSpan"
                         }
                     },
                     "range": {
@@ -4350,6 +4791,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::Location"
                         }
                     },
                     "range": {
@@ -4375,6 +4819,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::RepoName"
                         }
                     },
                     "range": {
@@ -4410,6 +4857,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::Path"
                         }
                     },
                     "range": {
@@ -4445,6 +4895,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::ByteSpan"
                         }
                     },
                     "range": {
@@ -4480,6 +4933,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::LocationRange"
                         }
                     },
                     "range": {
@@ -4505,6 +4961,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::RepoName"
                         }
                     },
                     "range": {
@@ -4540,6 +4999,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::Path"
                         }
                     },
                     "range": {
@@ -4575,6 +5037,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::Range"
                         }
                     },
                     "range": {
@@ -4610,6 +5075,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::RequestOptions"
                         }
                     },
                     "range": {
@@ -4635,6 +5103,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::Revision"
                         }
                     },
                     "range": {
@@ -4670,6 +5141,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::DocumentSymbolsRequest"
                         }
                     },
                     "range": {
@@ -4695,6 +5169,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::RepoName"
                         }
                     },
                     "range": {
@@ -4730,6 +5207,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::Path"
                         }
                     },
                     "range": {
@@ -4765,6 +5245,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::LineRange"
                         }
                     },
                     "range": {
@@ -4800,6 +5283,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::SymbolId"
                         }
                     },
                     "range": {
@@ -4825,6 +5311,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "union lib::Attribute"
                         }
                     },
                     "range": {
@@ -4850,6 +5339,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "union lib::Attribute"
                         }
                     },
                     "range": {
@@ -4883,6 +5375,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::Attributes"
                         }
                     },
                     "range": {
@@ -4908,6 +5403,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::KeyedAttribute"
                         }
                     },
                     "range": {
@@ -4933,6 +5431,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "union lib::Attribute"
                         }
                     },
                     "range": {
@@ -4968,6 +5469,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::AttributeList"
                         }
                     },
                     "range": {
@@ -4991,6 +5495,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::KeyedAttribute"
                         }
                     },
                     "range": {
@@ -5026,6 +5533,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::ReferenceRangeSymbolX"
                         }
                     },
                     "range": {
@@ -5051,6 +5561,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::SymbolId"
                         }
                     },
                     "range": {
@@ -5086,6 +5599,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::Range"
                         }
                     },
                     "range": {
@@ -5121,6 +5637,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::LocationRange"
                         }
                     },
                     "range": {
@@ -5156,6 +5675,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::AttributeList"
                         }
                     },
                     "range": {
@@ -5191,6 +5713,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct lib::DefinitionSymbolX"
                         }
                     },
                     "range": {
@@ -5216,6 +5741,9 @@
                         },
                         "symbolParent": {
                             "aString": "lib"
+                        },
+                        "symbolSignature": {
+                            "aString": "typedef lib::SymbolId"
                         }
                     },
                     "range": {

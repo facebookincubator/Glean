@@ -57,6 +57,7 @@
             }
         ],
         "repo_hash": "testhash",
+        "signature": "union lib::Attribute",
         "sym": "test/thrift/lib.thrift/Attribute",
         "sym_location": {
             "filepath": "lib.thrift",
