@@ -8,7 +8,8 @@
 
 module Server ( main ) where
 
-import qualified Glean.Glass.Main ( main )
+import qualified Glean.Glass.Main ( mainWith )
+import Glean.Glass.SnapshotBackend ( snapshotBackendParser )
 
 main :: IO ()
-main = Glean.Glass.Main.main
+main = Glean.Glass.Main.mainWith snapshotBackendParser
