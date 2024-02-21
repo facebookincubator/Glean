@@ -79,6 +79,7 @@ encodeValue b (Array xs) = do
   mapM_ (encodeValue b) xs
 encodeValue b (ByteArray xs) = encodeByteArray b xs
 encodeValue b (Tuple xs) = mapM_ (encodeValue b) xs
+encodeValue _ (Set _) = error "Set"
 encodeValue b (Alt n x) = do
   FFI.call $ glean_push_value_selector b $ fromIntegral n
   encodeValue b x

@@ -130,6 +130,7 @@ prune hasFacts (QueryWithInfo q _ t) = do
     String{} -> Just pat
     Array xs -> Array <$> traverse prunePat xs
     Tuple xs -> Tuple <$> traverse prunePat xs
+    Set xs -> Set <$> traverse prunePat xs
     Alt i x -> Alt i <$> prunePat x
     Ref m -> case m of
       MatchWild{} -> Just pat

@@ -46,7 +46,7 @@ import Glean.Query.Codegen.Types
 import Glean.Query.Typecheck.Types
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term hiding
-  (Tuple, ByteArray, String, Array, Nat, Wildcard, Variable, Match(..))
+  (Tuple, ByteArray, String, Array, Nat, Set, Wildcard, Variable, Match(..))
 import qualified Glean.RTS.Term as RTS
 import Glean.Database.Schema.Types
 import Glean.Schema.Util
@@ -320,6 +320,25 @@ inferExpr ctx pat = case pat of
             , "expression: " <> display opts e
             , "does not have an array type"
             ]
+  All _ e -> do
+    (_e', ty) <- inferExpr ContextExpr e
+    case ty of
+      SetTy elemTy ->
+        return (error "Set", elemTy)
+      _other -> do
+        opts <- gets tcDisplayOpts
+        prettyErrorIn pat $
+          nest 4 $ vcat
+            [ "type error in all:"
+            , "expression: " <> display opts e
+            , "does not have a set type"
+            ]
+  Set _ [] ->
+      return (error "Set", SetTy (RecordTy []))
+  Set _ (t:ts) -> do
+    (_t',ty) <- inferExpr ctx t
+    _ts' <- mapM (typecheckPattern ctx ty) ts
+    return (error "Set", SetTy ty)
   -- we can infer { just = E } as a maybe:
   Struct _ [ Field "just" e ] -> do
     (e', ty) <- inferExpr ctx e
@@ -971,6 +990,7 @@ tcPatUsesNegation = \case
   RTS.Array xs -> firstJust tcPatUsesNegation xs
   RTS.ByteArray _ -> Nothing
   RTS.Tuple xs -> firstJust tcPatUsesNegation xs
+  RTS.Set xs -> firstJust tcPatUsesNegation xs
   RTS.Alt _ t -> tcPatUsesNegation t
   RTS.String _ -> Nothing
   RTS.Ref match -> matchUsesNegation match

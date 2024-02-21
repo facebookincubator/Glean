@@ -43,6 +43,7 @@ data Term ref
   | Array [Term ref]
   | ByteArray {-# UNPACK #-} !ByteString
   | Tuple [Term ref]
+  | Set [Term ref]
   | Alt {-# UNPACK #-} !Word64 (Term ref)
   | String {-# UNPACK #-} !ByteString -- utf8-encoded
   | Ref ref
@@ -58,6 +59,8 @@ instance Display ref => Display (Term ref) where
   display _ (ByteArray xs) = pretty (show xs) <> "#"
   display opts (Tuple xs) =
     align $ encloseSep "{" "}" "," $ map (display opts) xs
+  display opts (Set xs) =
+    align $ "set" <> encloseSep "(" ")" "," (map (display opts) xs)
   display opts (Alt s x) = "(" <> pretty s <> "|" <> display opts x <> ")"
   -- display opts (String s) = "\"" <> display opts s <> "\""
   display _ (String s) =
