@@ -153,8 +153,8 @@ apat
   | '[' seplist__(pattern,',') '..' ']'  { ArrayPrefix (s $1 $4) (let (h:t) = $2 in h:|t) }
   | '{' seplist2(pattern,',') '}'   { Tuple (s $1 $3) $2 }
   | '{' seplist0_(field,',') '}'    { Struct (s $1 $3) $2 }
-  | 'set' '(' seplist0(pattern,',') ')' { error "Set" }
-  | 'all' '(' pattern ')'           { error "Set" }
+  | 'set' '(' seplist0(pattern,',') ')' { Set (s $1 $4) $3 }
+  | 'all' '(' pattern ')'           { All (s $1 $4) $3 }
   | '_'                             { Wildcard (sspan $1) }
   | var                             { Variable (sspan $1) (lval $1) }
   | 'never'                         { Never (sspan $1) }
@@ -360,7 +360,7 @@ parseQueryWithVersion ver bs =
   runAlex (LB.fromStrict bs) (setVersion ver >> query)
 
 parseSchema :: ByteString -> Either String Schema.SourceSchemas
-parseSchema bs = parseSchemaWithVersion rest ver
+parseSchema bs = parseSchemaWithVersion ver rest
   where (ver, rest) = stripAngleVersion bs
 
 stripAngleVersion :: ByteString -> (AngleVersion, ByteString)
@@ -371,10 +371,10 @@ stripAngleVersion bs
   -- if the header is omitted, assume we are using the latest version
 
 parseSchemaWithVersion
-  :: ByteString
-  -> AngleVersion
+  :: AngleVersion
+  -> ByteString
   -> Either String Schema.SourceSchemas
-parseSchemaWithVersion bs ver =
+parseSchemaWithVersion ver bs =
   runAlex (LB.fromStrict bs) $ do
     setVersion ver
     (srcEvolves, srcSchemas) <- partitionEithers <$> schema

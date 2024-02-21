@@ -195,6 +195,8 @@ data SourcePat_ s p t
   | Struct s [Field s p t]
   | App s (SourcePat_ s p t) [SourcePat_ s p t]
   | KeyValue s (SourcePat_ s p t) (SourcePat_ s p t)
+  | Set s [SourcePat_ s p t]
+  | All s (SourcePat_ s p t)
   | Wildcard s
   | Variable s Name
   | ElementsOfArray s (SourcePat_ s p t)
@@ -250,6 +252,8 @@ instance Bifunctor (SourcePat_ s) where
     Struct s fields -> Struct s (map (bimap f g) fields)
     App s l r -> App s (bimap f g l) (map (bimap f g) r)
     KeyValue s k v -> KeyValue s (bimap f g k) (bimap f g v)
+    Set s pats -> Set s (fmap (bimap f g) pats)
+    All s pat -> All s (bimap f g pat)
     Wildcard s -> Wildcard s
     Variable s n -> Variable s n
     ElementsOfArray s pat -> ElementsOfArray s (bimap f g pat)
@@ -277,6 +281,8 @@ instance Bifoldable (SourcePat_ s) where
     Struct _ fields -> foldMap (bifoldMap f g) fields
     App _ l r -> foldMap (bifoldMap f g) (l:r)
     KeyValue _ k v -> bifoldMap f g k <> bifoldMap f g v
+    Set _ pats -> foldMap (bifoldMap f g) pats
+    All _ pat -> bifoldMap f g pat
     Wildcard{} -> mempty
     Variable{} -> mempty
     ElementsOfArray _ pat -> bifoldMap f g pat
@@ -331,6 +337,8 @@ sourcePatSpan = \case
   Struct s _ -> s
   App s _ _ -> s
   KeyValue s _ _ -> s
+  Set s _ -> s
+  All s _ -> s
   Wildcard s -> s
   Variable s _ -> s
   ElementsOfArray s _ -> s
@@ -785,6 +793,10 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
     display opts l <+> hsep (punctuate " " (map (displayAtom opts) pats))
   display opts (KeyValue _ k v) =
     displayAtom opts k <+> "->" <+> displayAtom opts v
+  display opts (Set _ pats) =
+    "set" <> parens (hsep (punctuate "," (map (display opts) pats)))
+  display opts (All _ pat) =
+    "all" <> parens (display opts pat)
   display _ (Wildcard _) = "_"
   display _ (Variable _ name) = pretty name
   display opts (ElementsOfArray _ pat) = displayAtom opts pat <> "[..]"
@@ -826,6 +838,8 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
     Tuple{} -> display opts pat
     Struct{} -> display opts pat
     ElementsOfArray{} -> display opts pat
+    Set{} -> display opts pat
+    All{} -> display opts pat
     Wildcard{} -> display opts pat
     Variable{} -> display opts pat
     NestedQuery{} -> display opts pat
@@ -912,6 +926,8 @@ rmLocPat = \case
   Struct _ xs -> Struct () (rmLocField <$> xs)
   App _ x xs -> App () (rmLocPat x) (rmLocPat <$> xs)
   KeyValue _ x y -> KeyValue () (rmLocPat x) (rmLocPat y)
+  Set _ pats -> Set () (rmLocPat <$> pats)
+  All _ pat -> All () (rmLocPat pat)
   Wildcard _ -> Wildcard ()
   Never _ -> Never ()
   Variable _ v -> Variable () v

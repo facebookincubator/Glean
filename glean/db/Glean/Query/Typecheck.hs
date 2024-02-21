@@ -499,7 +499,10 @@ typecheckPattern ctx typ pat = case (typ, pat) of
   -- or a variable does a nested match on the key of the predicate:
   (PredicateTy (PidRef _ ref), pat) | not (isVar pat) ->
     fst <$> tcFactGenerator ref pat SeekOnAllFacts
-
+  (SetTy elemTy, Set _ pats) -> do
+    error "Set" <$> mapM (typecheckPattern ctx elemTy) pats
+  (ty, All _ pat) ->
+    error "Set" <$> typecheckPattern ctx (SetTy ty) pat
   (ty, Wildcard{}) -> return (mkWild ty)
   (ty, Never{}) -> return $ Ref (MatchNever ty)
   (ty, Variable span name) -> varOcc ctx span name ty
@@ -888,6 +891,8 @@ varsPat pat r = case pat of
   App _ f ps -> varsPat f $! foldr varsPat r ps
   KeyValue _ k v -> varsPat k (varsPat v r)
   ElementsOfArray _ p -> varsPat p r
+  Set _ pats -> foldr varsPat r pats
+  All _ pat -> varsPat pat r
   OrPattern{} -> r -- ignore nested or-patterns. Note (1) above
   IfPattern{} -> r -- ignore nested if-patterns
   NestedQuery _ q -> varsQuery q r
