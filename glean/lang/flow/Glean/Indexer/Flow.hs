@@ -17,6 +17,8 @@ import Glean.Indexer.External
 data Flow = Flow
   { flowBinary :: FilePath
   , flowWriteRoot :: String
+  , flowIncludeDirectDeps :: Bool
+  , flowIncludeTransitiveDeps :: Bool
   }
 
 options :: Parser Flow
@@ -26,6 +28,8 @@ options = do
     value "flow" <>
     help "path to the flow binary"
   flowWriteRoot <- strOption $ long "write-root" <> value "test"
+  flowIncludeDirectDeps <- switch (long "include-direct-deps")
+  flowIncludeTransitiveDeps <- switch (long "include-transitive-deps")
   return Flow{..}
 
 indexer :: Indexer Flow
@@ -44,7 +48,9 @@ indexer = Indexer {
             , "${JSON_BATCH_DIR}"
             , "--write-root"
             , flowWriteRoot
-            ],
+            ] ++
+            [ "--include-direct-deps" | flowIncludeDirectDeps] ++
+            [ "--include-transitive-deps" | flowIncludeTransitiveDeps],
           extDerivePredicates =
             [ "flow.StringToFileModule"
             , "flow.FileXRef"
