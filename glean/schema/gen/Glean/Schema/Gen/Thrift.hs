@@ -75,7 +75,6 @@ genTargets slashVn version info =
   genTarget (ns, (deps, nsPredicates, _)) =
     let
       namespace = underscored ns
-      rustCrate = underscored [rustBaseModule, namespace]
       cppSplits = showt $ min 20 (max 1 (length nsPredicates))
     in
     [ "thrift_library("
@@ -83,7 +82,6 @@ genTargets slashVn version info =
     , "  hs_namespace = \"" <> hsNamespace <> "\","
     , "  py3_namespace = \"" <> py3Namespace <> "\","
     , "  py_base_module = \"" <> pyBaseModule <> "\","
-    , "  rust_crate_name = \"" <> rustCrate <> "\","
     ] ++
     [ "  hs_includes = [\"" <> namespace <> "_include.hs\"]," ] ++
     [ "  thrift_rust_options = ["
@@ -259,6 +257,7 @@ genNamespace slashVn namespaces version
     , "namespace py3 " <> py3Namespace
     , "namespace java.swift " <> javaBaseModule <> "."
       <> underscored namespaces
+    , "namespace rust " <> rustBaseModule <> "_" <> underscored namespaces
     , ""
     ] ++
     [ "hs_include \"glean/schema" <> slashVn
