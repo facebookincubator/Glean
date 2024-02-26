@@ -146,6 +146,7 @@ findOutputs q = findOutputsQuery q IntSet.empty
   findOutputsGen (DerivedFactGenerator _ k v) r =
     findOutputsPat k (findOutputsPat v r)
   findOutputsGen (ArrayElementGenerator _ _) r = r
+  findOutputsGen (All _ _) r = r
   findOutputsGen (PrimCall _ args) r = foldr findOutputsPat r args
 
   findOutputsPat pat r = foldr findOutputsMatch r pat
@@ -760,6 +761,10 @@ compileStatements
             jumpIfLt off len loop
             done <- label
             return a
+
+      compileGen (All _ _) Nothing inner = inner
+      compileGen (All _ _) (Just _reg) _inner =
+        error "TODO: All"
 
       -- derived fact where we don't bind the Fid: no need to store it
       compileGen DerivedFactGenerator{} Nothing inner = inner

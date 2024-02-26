@@ -94,6 +94,8 @@ instance FixBindOrder Generator where
     TermGenerator <$> fixBindOrder isPat p
   fixBindOrder _ (ArrayElementGenerator ty p) =
     ArrayElementGenerator ty <$> fixBindOrder IsExpr p
+  fixBindOrder _ (All ty p) =
+    All ty <$> fixBindOrder IsExpr p
   fixBindOrder isPat (DerivedFactGenerator pid key val) =
     DerivedFactGenerator pid
       <$> fixBindOrder isPat key

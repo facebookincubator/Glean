@@ -34,7 +34,7 @@ import Data.List.NonEmpty (NonEmpty(..))
 import Data.Text (Text)
 import Data.Text.Prettyprint.Doc hiding ((<>))
 
-import Glean.Angle.Types hiding (Type)
+import Glean.Angle.Types ( PredicateId )
 import Glean.Query.Codegen.Types
 import Glean.Database.Schema
 import Glean.Database.Types (EnableRecursion(..))
@@ -153,6 +153,8 @@ freshWildGen gen = case gen of
       <*> freshWild val
   ArrayElementGenerator ty expr ->
     ArrayElementGenerator ty <$> freshWild expr
+  All ty expr ->
+    All ty <$> freshWild expr
   PrimCall op args ->
     PrimCall op <$> mapM freshWild args
 

@@ -189,6 +189,8 @@ instance Apply Generator where
     DerivedFactGenerator pid <$> apply key <*> apply val
   apply (ArrayElementGenerator ty arr) =
     ArrayElementGenerator ty <$> apply arr
+  apply (All ty arr) =
+    All ty <$> apply arr
   apply (PrimCall op args) =
     PrimCall op <$> mapM apply args
 
@@ -547,6 +549,7 @@ genScope (FactGenerator _ key val _) r = termScope key $! termScope val r
 genScope (TermGenerator pat) r = termScope pat r
 genScope (DerivedFactGenerator _ key val) r = termScope key $! termScope val r
 genScope (ArrayElementGenerator _ exp) r = termScope exp r
+genScope (All _ exp) r = termScope exp r
 genScope (PrimCall _ args) r = foldr termScope r args
 
 addToCurrentScope :: Var -> VarSet -> VarSet
