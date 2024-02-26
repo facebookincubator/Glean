@@ -211,9 +211,10 @@ withSymbol
   -> Glass.Env
   -> RequestOptions
   -> SymbolId
-  -> ((NonEmpty (GleanDBName, Glean.Repo),
-        GleanDBInfo, (RepoName, Language, [Text]))
-  -> IO (c, Maybe ErrorLogger))
+  -> (  NonEmpty (GleanDBName, Glean.Repo)
+     -> GleanDBInfo
+     -> (RepoName, Language, [Text])
+     -> IO (c, Maybe ErrorLogger))
   -> IO c
 withSymbol method env@Glass.Env{..} opts sym fn =
   withRequest method env sym opts $ \dbInfo log ->
@@ -222,7 +223,7 @@ withSymbol method env@Glass.Env{..} opts sym fn =
       Right req@(repo, lang, _toks) -> do
         dbs <- getGleanRepos repoMapping dbInfo repo
           (Just lang) (selectRevision opts) gleanDB
-        withLogDB dbs log $ fn (dbs, dbInfo, req)
+        withLogDB dbs log $ fn dbs dbInfo req
 
 withStrictErrorHandling
   :: GleanDBInfo

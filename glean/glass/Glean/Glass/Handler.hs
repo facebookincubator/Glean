@@ -197,7 +197,7 @@ findReferences
   -> IO [Location]
 findReferences env@Glass.Env{..} sym opts@RequestOptions{..} =
   withSymbol "findReferences" env opts sym $
-    \(dbs,_revs,(repo, lang, toks)) ->
+    \dbs _dbInfo (repo, lang, toks) ->
       fetchSymbolReferences repo lang toks limit
         (GleanBackend gleanBackend dbs)
   where
@@ -211,7 +211,7 @@ findReferenceRanges
   -> IO [LocationRange]
 findReferenceRanges env@Glass.Env{..} sym opts@RequestOptions{..} =
   withSymbol "findReferenceRanges" env opts sym
-    $ \(db,_revs,(repo, lang, toks)) ->
+    $ \db _dbInfo (repo, lang, toks) ->
       fetchSymbolReferenceRanges repo lang toks limit
         (GleanBackend gleanBackend db)
   where
@@ -226,7 +226,7 @@ resolveSymbolRange
   -> IO LocationRange
 resolveSymbolRange env@Glass.Env{..} sym opts = do
   withSymbol "resolveSymbolRange" env opts sym
-    $ \(db,_revs,(repo, lang, toks)) ->
+    $ \db _dbInfo (repo, lang, toks) ->
       findSymbolLocationRange (GleanBackend gleanBackend db) repo lang toks
 
 -- | Describe characteristics of a symbol
@@ -237,7 +237,7 @@ describeSymbol
   -> IO SymbolDescription
 describeSymbol env@Glass.Env{..} symId opts =
   withSymbol "describeSymbol" env opts symId $
-    \(gleanDBs, dbInfo, (scmRepo, lang, toks)) ->
+    \gleanDBs dbInfo (scmRepo, lang, toks) ->
       backendRunHaxl GleanBackend{..} $ do
         r <- Search.searchEntity lang toks
         (first :| rest, err) <- case r of
@@ -1379,7 +1379,7 @@ searchRelated
 searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
     SearchRelatedRequest{..} =
   withSymbol "searchRelated" env opts sym $
-    \(gleanDBs_, dbInfo, (repo, lang, toks)) ->
+    \gleanDBs_ dbInfo (repo, lang, toks) ->
       let gleanDBs = filterDBs lang gleanDBs_ in
       backendRunHaxl GleanBackend{..} $ do
         entity <- searchFirstEntity lang toks
@@ -1560,7 +1560,7 @@ searchRelatedNeighborhood
   -> IO RelatedNeighborhoodResult
 searchRelatedNeighborhood env@Glass.Env{..} sym opts@RequestOptions{..} req =
   withSymbol "searchRelatedNeighborhood" env opts sym $
-    \(gleanDBs, dbInfo, (repo, lang, toks)) ->
+    \gleanDBs dbInfo (repo, lang, toks) ->
       backendRunHaxl GleanBackend{..} $ do
         baseEntity <- searchFirstEntity lang toks
         let lang = entityLanguage (decl baseEntity)
