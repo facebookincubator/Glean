@@ -119,15 +119,18 @@ instance LogResult (Maybe ErrorLogger) where
   logResult (_, log) = log
 
 data QueryEachRepoLog
-  = FoundMultiple { _discarded :: NonEmpty Glean.Repo}
-  | FoundNone
-  | FoundOne
+  = FoundNone
+  | FoundSome (NonEmpty Glean.Repo)
   | QueryEachRepoUnrequested
 
 instance LogResult QueryEachRepoLog where
-  logResult(glog, log) = log <> case glog of
-    FoundMultiple repos ->
-      Logger.setRepoOther (map Glean.repo_name $ NE.toList repos)
+  logResult (glog, log) = log <> case glog of
+    FoundSome (one :| more) ->
+      Logger.setDbUsedName (Glean.repo_name one) <>
+      Logger.setDbUsedInstance (Glean.repo_hash one) <>
+      if null more
+        then mempty
+        else Logger.setRepoOther (map Glean.repo_name more)
     _ -> mempty
 
 instance LogResult DocumentSymbolIndex where

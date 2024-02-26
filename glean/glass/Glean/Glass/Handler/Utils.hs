@@ -70,12 +70,8 @@ firstOrErrors act = do
     return $ (repo,) <$> result
   let (fail, success) = partitionEithers results
   return $ case success of
-    (_, x) : rest -> Right
-      ( x
-      , case nonEmpty rest of
-          Nothing -> FoundOne
-          Just otherSuccesses ->  FoundMultiple (fmap fst otherSuccesses)
-      )
+    (repo, x) : rest ->
+      Right (x, FoundSome (repo :| fmap fst rest))
     [] -> Left $ fromMaybe (error "unreachable") $ nonEmpty fail
 
 allOrError :: NonEmpty (Either a1 a2) -> Either a1 (NonEmpty a2)
