@@ -26,6 +26,7 @@ module Glean.Glass.Logging
   ) where
 
 import Control.Applicative ((<|>))
+import Data.Coerce
 import Data.List.Extra (nubOrd)
 import Data.List.NonEmpty(NonEmpty(..))
 import qualified Data.List.NonEmpty as NE
@@ -102,7 +103,8 @@ instance LogResult DocumentSymbolListXResult  where
     log <>
     Logger.setTruncated documentSymbolListXResult_truncated <>
     Logger.setItemCount (length documentSymbolListXResult_references +
-      length documentSymbolListXResult_definitions)
+      length documentSymbolListXResult_definitions) <>
+    Logger.setRevisionUsed (coerce documentSymbolListXResult_revision)
 
 instance LogResult FileIncludeLocationResults where
   logResult (FileIncludeLocationResults{..}, log) =
@@ -137,6 +139,7 @@ instance LogResult DocumentSymbolIndex where
   logResult (DocumentSymbolIndex{..}, log) =
     log <> Logger.setItemCount (fromIntegral documentSymbolIndex_size)
         <> Logger.setTruncated documentSymbolIndex_truncated
+        <> Logger.setRevisionUsed (coerce documentSymbolIndex_revision)
 
 instance LogResult Range where
   logResult (_, log) = log
