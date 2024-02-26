@@ -1,0 +1,149 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "Nothing",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Nothing" },
+                        "scope": {
+                          "namespace_": {
+                            "key": { "name": { "key": "maybe" } }
+                          }
+                        }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 69,
+                      "columnBegin": 1,
+                      "lineEnd": 73,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "enum_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "_secret" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Nothing" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "maybe" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "isScoped": true,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 70,
+                            "columnBegin": 3,
+                            "lineEnd": 70,
+                            "columnEnd": 31
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "constructor": { } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Nothing" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "maybe" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 0
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "" },
+                                  "type": { "key": "maybe::Nothing::_secret" }
+                                }
+                              ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 72,
+                            "columnBegin": 3,
+                            "lineEnd": 72,
+                            "columnEnd": 40
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "Nothing",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 69,
+            "columnBegin": 1,
+            "lineEnd": 73,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 928, "length": 7 }
+        }
+      },
+      "kind": 24,
+      "language": 0
+    }
+  }
+]

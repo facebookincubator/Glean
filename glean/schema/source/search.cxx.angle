@@ -88,16 +88,16 @@ predicate SearchByNameAndScope :
       );
       Entity = code.cxx.Entity { enumerator = E };
     ) | (
-      ( { namespace_ = Parent } = Scope;
-        NSQName = cxx1.NamespaceQName { name = { just = N },
-                parent = { just = Parent } };
+      ( NSQName = cxx1.NamespaceQName { name = { just = N },
+          parent = { just = Parent } };
+        { namespace_ = Parent } = Scope;
         NS = cxx1.NamespaceDeclaration { name = NSQName };
         { decl = { namespace_ = NS } } = Entity;
       # or re-interpret the null case (global_ as a namespace root)
       # to find namespaces at the top level (e.g. "folly")
       ) | (
-        { global_ = {} } = Scope;
         NSQName = cxx1.NamespaceQName { name = { just = N }, parent = nothing };
+        { global_ = {} } = Scope;
         NS = cxx1.NamespaceDeclaration { name = NSQName };
         { decl = { namespace_ = NS } } = Entity;
       )
