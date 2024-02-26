@@ -33,7 +33,7 @@ import Control.Exception
 import Control.Monad
 import Control.Monad.Catch ( throwM )
 import Data.Either
-import qualified Data.Foldable as Foldable
+import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
 import Data.List.NonEmpty ( NonEmpty(..), nonEmpty, toList )
 import Data.Text ( Text )
@@ -47,7 +47,6 @@ import qualified Logger.GleanGlass as Logger
 import qualified Logger.GleanGlassErrors as ErrorsLogger
 
 import qualified Glean
-import qualified Glean.Repo as Glean
 import Glean.Haxl.Repos as Glean
 
 import Glean.Glass.Base
@@ -163,7 +162,7 @@ withRequest
   -> IO res
 withRequest method env@Glass.Env{..} req opts fn = do
   dbInfo <- readTVarIO latestGleanRepos
-  withStrictErrorHandling gleanBackend opts $
+  withStrictErrorHandling dbInfo opts $
     withLog method env req $
       fn dbInfo
 
@@ -226,28 +225,27 @@ withSymbol method env@Glass.Env{..} opts sym fn =
         withLogDB dbs log $ fn (dbs, dbInfo, req)
 
 withStrictErrorHandling
-  :: Glean.Backend b
-  => b
+  :: GleanDBInfo
   -> RequestOptions
   -> IO (res, Maybe ErrorLogger)
   -> IO res
-withStrictErrorHandling backend opts action = do
+withStrictErrorHandling dbInfo opts action = do
   (res, merr) <- action
   case merr of
     Just err
       | requestOptions_strict opts
       , not $ null $ errorTy err
       -> do
-          revisionsByScm <-
-            mapM (Glean.getSCMrevisions backend) (errorGleanRepo err)
-          let getFirstRevision scmRevisions =
-                case Foldable.toList scmRevisions of
-                  rev : _ -> Just (Revision rev)
+          let getFirstRevision repo =
+                case HashMap.lookup repo (scmRevisions dbInfo) of
+                  Just m | rev : _ <- HashMap.elems m ->
+                    Just (Revision rev)
                   _ -> Nothing
           throwM $ GlassException
             (errorTy err)
-            (mapMaybe getFirstRevision revisionsByScm)
+            (mapMaybe getFirstRevision (errorGleanRepo err))
     _ -> return res
+
 
 withLog
   :: (LogRequest req, LogError req, LogResult res)
