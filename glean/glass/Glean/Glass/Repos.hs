@@ -25,7 +25,7 @@ module Glean.Glass.Repos
 
   -- * Operation on a pool of latest repos
   , withLatestRepos
-  , lookupLatestRepos
+  , chooseGleanDBs
   , updateLatestRepos
 
   -- * Misc
@@ -57,7 +57,7 @@ import Glean.Util.Periodic ( doPeriodicallySynchronised )
 import Util.Text ( textShow )
 import Glean.Util.Time
 import qualified Glean
-import Util.STM ( readTVar, writeTVar, atomically, newTVarIO, TVar, STM )
+import Util.STM
 import qualified Glean.Repo as Glean
 
 import Glean.Glass.Base ( GleanDBAttrName(..), GleanDBName(..),
@@ -411,22 +411,21 @@ updateLatestRepos backend mlogger mretry tvRepos = do
   repos <- getLatestRepos backend mlogger mretry
   atomically $ writeTVar tvRepos repos
 
--- | Lookup latest repo in the cache
-lookupLatestRepos
-  :: TVar GleanDBInfo
+-- | Choose DBs for the given DB names and (optional) revision
+chooseGleanDBs
+  :: GleanDBInfo
   -> Maybe Revision
   -> [GleanDBName]
-  -> STM [(GleanDBName, Glean.Repo)]
-lookupLatestRepos tv mRevision repoNames = do
-  repos <- readTVar tv
-  return $ catMaybes
+  -> [(GleanDBName, Glean.Repo)]
+chooseGleanDBs dbInfo mRevision repoNames =
+  catMaybes
     [ (dbName,) <$> (dbForRevision <|> latestDb)
     | dbName@(GleanDBName name) <- repoNames
     , let
-        latestDb = Map.lookup name (Glean.latestRepos (latestRepos repos))
+        latestDb = Map.lookup name (Glean.latestRepos (latestRepos dbInfo))
         dbForRevision
           | Just (Revision rev) <- mRevision =
-              HashMap.lookup dbName (dbByRevision repos) >>=
+              HashMap.lookup dbName (dbByRevision dbInfo) >>=
               HashMap.lookup rev
           | otherwise = Nothing
     ]

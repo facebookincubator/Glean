@@ -7,7 +7,27 @@
 -}
 
 {-# LANGUAGE NamedFieldPuns #-}
-module Glean.Glass.Handler.Utils where
+module Glean.Glass.Handler.Utils (
+    -- * Handler wrappers: handlers should call one of these
+    withRepoFile,
+    withRepoLanguage,
+    withSymbol,
+    withRequest,
+
+    -- * deprecated handler wrappers
+    withGleanDBs,
+    getLatestAttrDB,
+
+    -- * Utils for building handlers
+    GleanBackend(..),
+    backendRunHaxl,
+
+    RevisionSpecifier(..),
+    revisionSpecifierError,
+
+    firstOrErrors,
+    allOrError,
+  ) where
 
 import Control.Exception
 import Control.Monad
@@ -96,15 +116,16 @@ revisionSpecifierError (ExactOnly (Revision rev))= "Requested exactly " <> rev
 -- | Get glean db for an attribute type
 getLatestAttrDB
   :: RepoMapping
-  -> TVar GleanDBInfo
-  -> Maybe Revision
+  -> GleanDBInfo
+  -> RequestOptions
   -> GleanDBName
   -> IO (Maybe (Glean.Repo, GleanDBAttrName))
-getLatestAttrDB repoMapping allRepos mRevision gleanDBName =
+getLatestAttrDB repoMapping dbInfo opts gleanDBName =
   case firstAttrDB repoMapping gleanDBName of
     Nothing -> return Nothing
     Just attrDBName -> atomically $ do
-      dbs <- lookupLatestRepos allRepos mRevision [gleanAttrDBName attrDBName]
+      let dbs = chooseGleanDBs dbInfo (selectRevision opts)
+            [gleanAttrDBName attrDBName]
       return $ case dbs of
         [] -> Nothing
         db:_ -> Just (snd db, attrDBName)
@@ -113,17 +134,38 @@ withGleanDBs
   :: (LogError a, LogRequest a, LogResult b)
   => Text
   -> Glass.Env
-  -> Maybe Revision
+  -> RequestOptions
   -> a
   -> NonEmpty GleanDBName
   -> (NonEmpty (GleanDBName, Glean.Repo)
-        -> ScmRevisions -> IO (b, Maybe ErrorLogger))
+        -> GleanDBInfo -> IO (b, Maybe ErrorLogger))
   -> IO (b, Maybe ErrorLogger)
-withGleanDBs method env@Glass.Env{..} mRevision req dbNames fn = do
-  withLogDB method env req
-    (getSpecificGleanDBs latestGleanRepos mRevision dbNames)
-    Nothing
-    (\(dbs,revs) _mlang -> fn dbs revs)
+withGleanDBs method env@Glass.Env{..} opts req dbNames fn = do
+  dbInfo <- readTVarIO latestGleanRepos
+  dbs <- getSpecificGleanDBs dbInfo (selectRevision opts) dbNames
+  withLog method env req $ \log ->
+    withLogDB dbs log $
+      fn dbs dbInfo
+
+-- | Top-level wrapper for all requests.
+--
+-- * Snapshots the GleanDBInfo
+-- * Implements strict vs. non-strict error handling
+-- * Logs the request and result
+--
+withRequest
+  :: (LogRequest req, LogError req, LogResult res)
+  => Text
+  -> Glass.Env
+  -> req
+  -> RequestOptions
+  -> (GleanDBInfo -> GleanGlassLogger -> IO (res, GleanGlassLogger, Maybe ErrorLogger))
+  -> IO res
+withRequest method env@Glass.Env{..} req opts fn = do
+  dbInfo <- readTVarIO latestGleanRepos
+  withStrictErrorHandling gleanBackend opts $
+    withLog method env req $
+      fn dbInfo
 
 -- | Run an action that provides a repo and maybe a language, log it
 withRepoLanguage
@@ -133,54 +175,55 @@ withRepoLanguage
   -> a
   -> RepoName
   -> Maybe Language
-  -> Maybe Revision
-  -> (  (NonEmpty (GleanDBName,Glean.Repo), ScmRevisions)
+  -> RequestOptions
+  -> (  NonEmpty (GleanDBName,Glean.Repo)
+     -> GleanDBInfo
      -> Maybe Language
      -> IO (b, Maybe ErrorLogger))
-  -> IO (b, Maybe ErrorLogger)
-withRepoLanguage method env@Glass.Env{..} req repo mlanguage mRevision fn = do
-  withLogDB method env req
-    (getGleanRepos repoMapping latestGleanRepos
-      repo mlanguage mRevision gleanDB)
-    mlanguage
-    fn
+  -> IO b
+withRepoLanguage method env@Glass.Env{..} req repo mlanguage opts fn =
+  withRequest method env req opts $ \dbInfo logger -> do
+    dbs <- getGleanRepos repoMapping dbInfo
+      repo mlanguage (selectRevision opts) gleanDB
+    withLogDB dbs logger $
+      fn dbs dbInfo mlanguage
 
 -- | Run an action that provides a repo and filepath, log it
-withRepoFile :: (LogError a, LogRequest a, LogResult b) => Text
+withRepoFile
+  :: (LogError a, LogRequest a, LogResult b)
+  => Text
   -> Glass.Env
-  -> Maybe Revision
+  -> RequestOptions
   -> a
   -> RepoName
   -> Path
-  -> (  (NonEmpty (GleanDBName,Glean.Repo), ScmRevisions)
+  -> (  NonEmpty (GleanDBName,Glean.Repo)
+     -> GleanDBInfo
      -> Maybe Language
      -> IO (b, Maybe ErrorLogger))
-  -> IO (b, Maybe ErrorLogger)
-withRepoFile method env mRev req repo file fn = do
-  withRepoLanguage method env req repo (filetype file) mRev fn
+  -> IO b
+withRepoFile method env opts req repo file fn = do
+  withRepoLanguage method env req repo (filetype file) opts fn
 
 -- | Run an action that provides a symbol id, log it
 withSymbol
   :: LogResult c
   => Text
   -> Glass.Env
-  -> Maybe Revision
+  -> RequestOptions
   -> SymbolId
   -> ((NonEmpty (GleanDBName, Glean.Repo),
-        ScmRevisions, (RepoName, Language, [Text]))
+        GleanDBInfo, (RepoName, Language, [Text]))
   -> IO (c, Maybe ErrorLogger))
-  -> IO (c, Maybe ErrorLogger)
-withSymbol method env@Glass.Env{..} mRevision sym fn =
-  withLogDB method env sym
-    (case symbolTokens sym of
+  -> IO c
+withSymbol method env@Glass.Env{..} opts sym fn =
+  withRequest method env sym opts $ \dbInfo log ->
+    case symbolTokens sym of
       Left err -> throwM $ ServerException err
       Right req@(repo, lang, _toks) -> do
-        (dbs, revs) <-
-          getGleanRepos repoMapping latestGleanRepos repo
-            (Just lang) mRevision gleanDB
-        return (dbs, revs, req))
-    Nothing
-    (\db _mlang -> fn db)
+        dbs <- getGleanRepos repoMapping dbInfo repo
+          (Just lang) (selectRevision opts) gleanDB
+        withLogDB dbs log $ fn (dbs, dbInfo, req)
 
 withStrictErrorHandling
   :: Glean.Backend b
@@ -206,14 +249,6 @@ withStrictErrorHandling backend opts action = do
             (mapMaybe getFirstRevision revisionsByScm)
     _ -> return res
 
-runLog :: Glass.Env -> Text -> GleanGlassLogger -> IO ()
-runLog env cmd log = Logger.runLog (Glass.logger env) $
-  log <> Logger.setMethod cmd
-
-runErrorLog :: Glass.Env -> Text -> ErrorLogger -> IO ()
-runErrorLog env cmd err = ErrorsLogger.runLog (Glass.logger env) $
-  errorsLogger err <> ErrorsLogger.setMethod cmd
-
 withLog
   :: (LogRequest req, LogError req, LogResult res)
   => Text
@@ -231,23 +266,26 @@ withLog cmd env req action = do
       return ((res, merr), log))
   return res
 
+runLog :: Glass.Env -> Text -> GleanGlassLogger -> IO ()
+runLog env cmd log = Logger.runLog (Glass.logger env) $
+  log <> Logger.setMethod cmd
+
+runErrorLog :: Glass.Env -> Text -> ErrorLogger -> IO ()
+runErrorLog env cmd err = ErrorsLogger.runLog (Glass.logger env) $
+  errorsLogger err <> ErrorsLogger.setMethod cmd
+
 -- | Wrapper to enable perf logging, log the db names, and stats for
 -- intermediate steps, and internal errors.
 withLogDB
-  :: (LogRequest req, LogError req, LogError dbs, LogRepo dbs, LogResult res)
-  => Text
-  -> Glass.Env
-  -> req
-  -> IO dbs
-  -> Maybe Language
-  -> (dbs -> Maybe Language -> IO (res, Maybe ErrorLogger))
+  :: (LogError dbs, LogRepo dbs)
+  => dbs
+  -> GleanGlassLogger
   -> IO (res, Maybe ErrorLogger)
-withLogDB cmd env req fetch mlanguage run =
-  withLog cmd env req $ \log -> do
-    dbs <- fetch
-    (res,merr) <- run dbs mlanguage
-    let err = fmap (<> logError dbs) merr
-    return (res, log <> logRepo dbs, err)
+  -> IO (res, GleanGlassLogger, Maybe ErrorLogger)
+withLogDB dbs log fn = do
+  (res, merr) <- fn
+  let err = fmap (<> logError dbs) merr
+  return (res, log <> logRepo dbs, err)
 
 -- | Revision to use when selecting Glean DBs.
 --     Just rev -> select DBs that match rev, or latest otherwise
@@ -263,14 +301,13 @@ selectRevision RequestOptions{..}
 -- If a Glean.Repo is given, use it instead.
 getGleanRepos
   :: RepoMapping
-  -> TVar GleanDBInfo
+  -> GleanDBInfo
   -> RepoName
   -> Maybe Language
   -> Maybe Revision
   -> Maybe Glean.Repo
-  -> IO (NonEmpty (GleanDBName,Glean.Repo), ScmRevisions)
-getGleanRepos repoMapping latestGleanDBs scsrepo
-    mlanguage mRevision mGleanDB = do
+  -> IO (NonEmpty (GleanDBName,Glean.Repo))
+getGleanRepos repoMapping dbInfo scsrepo mlanguage mRevision mGleanDB =
   case mGleanDB of
     Nothing ->
       case fromSCSRepo repoMapping scsrepo mlanguage of
@@ -278,23 +315,18 @@ getGleanRepos repoMapping latestGleanDBs scsrepo
           unRepoName scsrepo <>
             maybe "" (\x -> " (" <> toShortCode x <> ")") mlanguage
         (x:xs) ->
-          getSpecificGleanDBs latestGleanDBs mRevision (x :| xs)
-    Just gleanDB@Glean.Repo{repo_name} -> do
-      scmRevs <- fmap scmRevisions $ atomically $ do readTVar latestGleanDBs
-      return ((GleanDBName repo_name, gleanDB) :| [], scmRevs)
+          getSpecificGleanDBs dbInfo mRevision (x :| xs)
+    Just gleanDB@Glean.Repo{repo_name} ->
+      return ((GleanDBName repo_name, gleanDB) :| [])
 
 -- | If you already know the set of dbs you need, just get them.
 getSpecificGleanDBs
-  :: TVar GleanDBInfo
+  :: GleanDBInfo
   -> Maybe Revision
   -> NonEmpty GleanDBName
-  -> IO (NonEmpty (GleanDBName,Glean.Repo), ScmRevisions)
-getSpecificGleanDBs latestGleanDBs mRevision gleanDBNames = do
-  (dbs, scmRevs) <- atomically $ do
-    dbs <- lookupLatestRepos latestGleanDBs mRevision $ toList gleanDBNames
-    scmRevs <- scmRevisions <$> readTVar latestGleanDBs
-    pure (dbs, scmRevs)
-  case dbs of
+  -> IO (NonEmpty (GleanDBName,Glean.Repo))
+getSpecificGleanDBs dbInfo mRevision gleanDBNames =
+  case chooseGleanDBs dbInfo mRevision (toList gleanDBNames) of
     [] -> throwIO $ ServerException $ "No Glean dbs found for: " <>
             Text.intercalate ", " (map unGleanDBName $ toList gleanDBNames)
-    db:dbs -> return (db :| dbs, scmRevs)
+    db:dbs -> return (db :| dbs)
