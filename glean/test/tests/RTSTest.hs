@@ -79,7 +79,9 @@ valueFor (T.RecordTy fields) =
 valueFor (T.SumTy fields) = do
   (i, field) <- elements $ zip [0..] fields
   Alt i <$> valueFor (T.fieldDefType field)
-valueFor (T.SetTy _ty) = error "Set"
+valueFor (T.SetTy ty) = fmap Set $ sized $ \n -> do
+      k <- choose (0,n)
+      vectorOf k $ resize (n `div` k) $ valueFor ty
 valueFor T.PredicateTy{} = Ref <$> arbitrary
 valueFor (T.NamedTy (ExpandedType _ ty)) = valueFor ty
 valueFor (T.MaybeTy ty) = do

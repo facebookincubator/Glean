@@ -181,6 +181,9 @@ flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
   TcElementsOfArray pat -> do
     r <- flattenPattern pat
     return [(stmts, ArrayElementGenerator ty pat') | (stmts,pat') <- r ]
+  TcAll pat -> do
+    r <- flattenPattern pat
+    return [(stmts, error "TODO: All") | (stmts, _pat') <- r]
   TcQueryGen query -> do
     (stmts, term, _) <- flattenQuery' query
     return [(floatGroups (flattenStmtGroups stmts), TermGenerator term)]

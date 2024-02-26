@@ -149,6 +149,7 @@ prune hasFacts (QueryWithInfo q _ t) = do
           <$> (TcFactGen pidref <$> prunePat k <*> prunePat v <*> pure range)
         TcElementsOfArray x -> Ref . MatchExt . Typed ty . TcElementsOfArray
           <$> prunePat x
+        TcAll x -> Ref . MatchExt . Typed ty . TcAll <$> prunePat x
         TcQueryGen q ->
           Ref . MatchExt . Typed ty . TcQueryGen <$> pruneTcQuery q
         -- we dont' want to handle negation here because if it tries to match
@@ -215,6 +216,7 @@ renumberVars ty q =
     TcFactGen ref k v range ->
       TcFactGen ref <$> renamePat k <*> renamePat v <*> pure range
     TcElementsOfArray x -> TcElementsOfArray <$> renamePat x
+    TcAll x -> TcAll <$> renamePat x
     TcQueryGen q -> TcQueryGen <$> renameQuery q
     TcNegation xs -> TcNegation <$> traverse renameStmt xs
     TcPrimCall op xs -> TcPrimCall op <$> traverse renamePat xs

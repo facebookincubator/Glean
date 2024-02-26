@@ -321,10 +321,10 @@ inferExpr ctx pat = case pat of
             , "does not have an array type"
             ]
   All _ e -> do
-    (_e', ty) <- inferExpr ContextExpr e
+    (e', ty) <- inferExpr ContextExpr e
     case ty of
       SetTy elemTy ->
-        return (error "Set", elemTy)
+        return (Ref (MatchExt (Typed ty (TcAll e'))), elemTy)
       _other -> do
         opts <- gets tcDisplayOpts
         prettyErrorIn pat $
@@ -334,11 +334,11 @@ inferExpr ctx pat = case pat of
             , "does not have a set type"
             ]
   Set _ [] ->
-      return (error "Set", SetTy (RecordTy []))
+      return (RTS.Set [], SetTy (RecordTy []))
   Set _ (t:ts) -> do
     (_t',ty) <- inferExpr ctx t
-    _ts' <- mapM (typecheckPattern ctx ty) ts
-    return (error "Set", SetTy ty)
+    ts' <- mapM (typecheckPattern ctx ty) ts
+    return (RTS.Set ts', SetTy ty)
   -- we can infer { just = E } as a maybe:
   Struct _ [ Field "just" e ] -> do
     (e', ty) <- inferExpr ctx e
@@ -964,6 +964,7 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
       TcOr x y -> overPat x <> overPat y
       TcFactGen pref x y _ -> pref : overPat x <> overPat y
       TcElementsOfArray x -> overPat x
+      TcAll x -> overPat x
       TcQueryGen q -> overQuery q
       TcNegation stmts -> foldMap overStatement stmts
       TcPrimCall _ xs -> foldMap overPat xs
@@ -1012,6 +1013,7 @@ tcTermUsesNegation = \case
   TcOr x y -> tcPatUsesNegation x <|> tcPatUsesNegation y
   TcFactGen _ x y _ -> tcPatUsesNegation x <|> tcPatUsesNegation y
   TcElementsOfArray x -> tcPatUsesNegation x
+  TcAll x -> tcPatUsesNegation x
   TcQueryGen q -> tcQueryUsesNegation q
   TcNegation _ -> Just PatternNegation
   TcPrimCall _ xs -> firstJust tcPatUsesNegation xs

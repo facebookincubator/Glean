@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE DeriveTraversable #-}
 module Glean.Query.Typecheck.Types
   ( TypecheckedQuery
   , TcQuery(..)
@@ -52,6 +51,7 @@ data TcTerm
   = TcOr TcPat TcPat
   | TcFactGen PidRef TcPat TcPat SeekSection
   | TcElementsOfArray TcPat
+  | TcAll TcPat
   | TcQueryGen TcQuery
   | TcNegation [TcStatement]
   | TcPrimCall PrimOp [TcPat]
@@ -77,6 +77,7 @@ instance Display TcTerm where
     isUnit (RTS.Tuple []) = True
     isUnit _ = False
   display opts (TcElementsOfArray arr) = displayAtom opts arr <> "[..]"
+  display opts (TcAll set) = "all" <+> display opts set
   display opts (TcQueryGen q) = parens (display opts q)
   display opts (TcNegation q) =
     "!" <> parens (sep (punctuate ";" (map (display opts) q)))
