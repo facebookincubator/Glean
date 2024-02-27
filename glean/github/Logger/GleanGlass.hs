@@ -62,6 +62,15 @@ setMethod _ = GleanGlassLogger
 setRevision :: Text -> GleanGlassLogger
 setRevision _ = GleanGlassLogger
 
+setRevisionUsed :: Text -> GleanGlassLogger
+setRevisionUsed _ = GleanGlassLogger
+
+setDbUsedName :: Text -> GleanGlassLogger
+setDbUsedName _ = GleanGlassLogger
+
+setDbUsedInstance :: Text -> GleanGlassLogger
+setDbUsedInstance _ = GleanGlassLogger
+
 setSnapshot :: Text -> GleanGlassLogger
 setSnapshot _ = GleanGlassLogger
 
