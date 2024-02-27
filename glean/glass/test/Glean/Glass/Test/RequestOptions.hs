@@ -165,8 +165,8 @@ testExactRevision env = TestLabel "exact-revision" $ TestList
 
       result' <-
         symbolsList env' def{revision = Glass.Revision "2", exact = True}
-      assertEqual "Snapshot match has priority over DB match"
-        (SimpleSymbolsListXResult (Glass.Revision "2") True)
+      assertEqual "DB match has priority over snapshot match"
+        (SimpleSymbolsListXResult (Glass.Revision "2") False)
         result'
   ]
 
@@ -227,7 +227,7 @@ testUseRevisionJK env = TestLabel "incr" $ TestList
         exact = True,
         useRevision = Just (Just True)}
       assertEqual "Expected snapshot"
-        (SimpleSymbolsListXResult (Glass.Revision "1") True)
+        (SimpleSymbolsListXResult (Glass.Revision "1") False)
         result
   , TestLabel "snapshot only" $ TestCase $ do
       sb <- mockSnapshotBackendSimple [(newPath, Glass.Revision "3")]

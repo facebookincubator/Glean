@@ -433,5 +433,6 @@ logSnapshotStatus st = case st of
   Timeout -> Logger.setSnapshot "Timeout"
   NotFound -> Logger.setSnapshot  "Not found"
   ExactMatch -> Logger.setSnapshot  "Exact"
+  Ignored -> Logger.setSnapshot  "Ignored"
   Latest rev ->
     Logger.setSnapshot (unRevision rev)

@@ -49,6 +49,7 @@ data SnapshotStatus
   | Timeout
   | NotFound
   | ExactMatch
+  | Ignored
   | Latest Revision
 
 -- | Always produces the 'NilSnapshotBackend'

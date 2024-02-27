@@ -920,12 +920,15 @@ fetchSymbolsAndAttributes
 fetchSymbolsAndAttributes repoMapping dbInfo req opts be snapshotbe mlang = do
   res <- case mrevision of
     Just revision -> do
-      Async.withAsync getFromGlean $ \gleanRes -> do
-        esnapshot <- getSnapshot snapshotbe repo file (Just revision)
-        case esnapshot of
-          Right queryResult ->
-            return ((queryResult, Snapshot.ExactMatch, QueryEachRepoUnrequested), Nothing)
-          Left status -> addStatus status <$> Async.wait gleanRes
+      (esnapshot, glean) <- Async.concurrently
+        (getSnapshot snapshotbe repo file (Just revision))
+        getFromGlean
+      return $ case esnapshot of
+        Right queryResult | not (isRevisionHit revision glean) ->
+          ((queryResult, Snapshot.ExactMatch, QueryEachRepoUnrequested),
+            Nothing)
+        _otherwise ->
+          addStatus (either id (const Snapshot.Ignored) esnapshot) glean
     _ -> addStatus Snapshot.Unrequested <$> getFromGlean
   -- Fall back to the best snapshot available for new files (not yet in repo)
   case res of
@@ -957,6 +960,9 @@ fetchSymbolsAndAttributes repoMapping dbInfo req opts be snapshotbe mlang = do
       -- not DB selection.
     isNoSrcFileFact GlassExceptionReason_noSrcFileFact{} = True
     isNoSrcFileFact _ = False
+
+    isRevisionHit rev ((res, _), _) =
+      documentSymbolListXResult_revision res == rev
 
 -- Find all references and definitions in a file that might be in a set of repos
 fetchDocumentSymbols
