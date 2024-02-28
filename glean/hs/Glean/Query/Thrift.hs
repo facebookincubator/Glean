@@ -29,7 +29,6 @@ module Glean.Query.Thrift
   , store
   , allFacts
     -- * Support
-  , queryPredicate
   , displayQuery
   ) where
 

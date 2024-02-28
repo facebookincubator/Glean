@@ -29,7 +29,6 @@ module Glean.Query.Thrift.Internal
     -- * Support
   , reportUserQueryStats
   , showUserQueryStats
-  , queryPredicate
   , displayQuery
   , decodeResults
   ) where
@@ -102,15 +101,6 @@ decodeResults results decoder =
 
     _other -> throwIO $ ErrorCall
       "runQueryPage: server returned the wrong encoding"
-
--- | Extract the predicate.  If there is a version then
--- this is reported as 'PredicateRef' otherwise only the predicate name.
-queryPredicate :: Query a -> PredicateRef
-queryPredicate (Query q) = case userQuery_predicate_version q of
-  Nothing -> error $ "queryPredicate unexpected Nothing version for: " <>
-    show (userQuery_predicate q)
-  Just v -> PredicateRef{ predicateRef_name = userQuery_predicate q
-                        , predicateRef_version = v }
 
 -- | A human-readable form of the Query.
 displayQuery :: Query a -> Text

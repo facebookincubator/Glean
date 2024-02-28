@@ -120,7 +120,6 @@ module Glean
   , store
 
   -- ** Inspecting Query
-  , queryPredicate
   , displayQuery
 
   -- * Haxl: high-performance query API
