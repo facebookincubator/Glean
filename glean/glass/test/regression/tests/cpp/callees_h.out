@@ -11,8 +11,8 @@
                         "range": {
                             "columnBegin": 13,
                             "columnEnd": 14,
-                            "lineBegin": 60,
-                            "lineEnd": 60
+                            "lineBegin": 65,
+                            "lineEnd": 65
                         },
                         "repository": "test"
                     }
@@ -27,8 +27,8 @@
                         "range": {
                             "columnBegin": 8,
                             "columnEnd": 9,
-                            "lineBegin": 58,
-                            "lineEnd": 58
+                            "lineBegin": 63,
+                            "lineEnd": 63
                         },
                         "repository": "test"
                     }
@@ -43,8 +43,8 @@
                         "range": {
                             "columnBegin": 8,
                             "columnEnd": 11,
-                            "lineBegin": 59,
-                            "lineEnd": 59
+                            "lineBegin": 64,
+                            "lineEnd": 64
                         },
                         "repository": "test"
                     }
@@ -59,8 +59,8 @@
                         "range": {
                             "columnBegin": 8,
                             "columnEnd": 11,
-                            "lineBegin": 59,
-                            "lineEnd": 59
+                            "lineBegin": 64,
+                            "lineEnd": 64
                         },
                         "repository": "test"
                     }
@@ -75,8 +75,8 @@
                         "range": {
                             "columnBegin": 5,
                             "columnEnd": 6,
-                            "lineBegin": 55,
-                            "lineEnd": 55
+                            "lineBegin": 60,
+                            "lineEnd": 60
                         },
                         "repository": "test"
                     }
@@ -91,8 +91,8 @@
                         "range": {
                             "columnBegin": 6,
                             "columnEnd": 7,
-                            "lineBegin": 54,
-                            "lineEnd": 54
+                            "lineBegin": 59,
+                            "lineEnd": 59
                         },
                         "repository": "test"
                     }
@@ -326,7 +326,18 @@
                 "type_xrefs": []
             },
             "test/cpp//h": {
-                "comments": [],
+                "comments": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 56,
+                            "lineEnd": 58
+                        },
+                        "repository": "test"
+                    }
+                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -346,8 +357,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 62
+                        "lineBegin": 59,
+                        "lineEnd": 67
                     },
                     "repository": "test"
                 },
@@ -359,7 +370,20 @@
                 "native_sym": {
                     "sym": "BBD3198879108CE7"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test.cpp",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 56,
+                                "lineEnd": 58
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "signature": "void ::h(int i)",
                 "sym": "test/cpp//h",
@@ -368,8 +392,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 62
+                        "lineBegin": 59,
+                        "lineEnd": 67
                     },
                     "repository": "test"
                 },
@@ -377,7 +401,18 @@
                 "type_xrefs": []
             },
             "test/cpp//h/.f/int": {
-                "comments": [],
+                "comments": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 56,
+                            "lineEnd": 58
+                        },
+                        "repository": "test"
+                    }
+                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -397,8 +432,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 62
+                        "lineBegin": 59,
+                        "lineEnd": 67
                     },
                     "repository": "test"
                 },
@@ -410,7 +445,20 @@
                 "native_sym": {
                     "sym": "BBD3198879108CE7"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test.cpp",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 56,
+                                "lineEnd": 58
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "signature": "void ::h(int i)",
                 "sym": "test/cpp//h/.f/int",
@@ -419,8 +467,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 62
+                        "lineBegin": 59,
+                        "lineEnd": 67
                     },
                     "repository": "test"
                 },
@@ -429,7 +477,18 @@
             },
             "test/cpp//h/.f/int/.decl": {
                 "annotations": [],
-                "comments": [],
+                "comments": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 51,
+                            "lineEnd": 53
+                        },
+                        "repository": "test"
+                    }
+                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -449,8 +508,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 15,
-                        "lineBegin": 52,
-                        "lineEnd": 52
+                        "lineBegin": 54,
+                        "lineEnd": 54
                     },
                     "repository": "test"
                 },
@@ -462,7 +521,20 @@
                 "native_sym": {
                     "sym": "BBD3198879108CE7"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test.cpp",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 51,
+                                "lineEnd": 53
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "signature": "void ::h(int _i)",
                 "sym": "test/cpp//h/.f/int/.decl",
@@ -471,8 +543,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 15,
-                        "lineBegin": 52,
-                        "lineEnd": 52
+                        "lineBegin": 54,
+                        "lineEnd": 54
                     },
                     "repository": "test"
                 },

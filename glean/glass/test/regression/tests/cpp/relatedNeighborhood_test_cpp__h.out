@@ -12,7 +12,18 @@
         "symbolBasicDetails": {},
         "symbolDetails": {
             "test/cpp//h": {
-                "comments": [],
+                "comments": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 56,
+                            "lineEnd": 58
+                        },
+                        "repository": "test"
+                    }
+                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -32,8 +43,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 62
+                        "lineBegin": 59,
+                        "lineEnd": 67
                     },
                     "repository": "test"
                 },
@@ -45,7 +56,20 @@
                 "native_sym": {
                     "sym": "BBD3198879108CE7"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test.cpp",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 56,
+                                "lineEnd": 58
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "signature": "void ::h(int i)",
                 "sym": "test/cpp//h",
@@ -54,8 +78,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 62
+                        "lineBegin": 59,
+                        "lineEnd": 67
                     },
                     "repository": "test"
                 },

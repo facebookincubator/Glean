@@ -23,8 +23,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 201,
-                        "lineEnd": 203
+                        "lineBegin": 206,
+                        "lineEnd": 208
                     },
                     "repository": "test"
                 },
@@ -44,8 +44,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 201,
-                        "lineEnd": 203
+                        "lineBegin": 206,
+                        "lineEnd": 208
                     },
                     "repository": "test"
                 },
@@ -74,8 +74,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 184,
-                        "lineEnd": 184
+                        "lineBegin": 189,
+                        "lineEnd": 189
                     },
                     "repository": "test"
                 },
@@ -95,8 +95,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 184,
-                        "lineEnd": 184
+                        "lineBegin": 189,
+                        "lineEnd": 189
                     },
                     "repository": "test"
                 },
@@ -124,8 +124,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 27,
-                        "lineBegin": 131,
-                        "lineEnd": 131
+                        "lineBegin": 136,
+                        "lineEnd": 136
                     },
                     "repository": "test"
                 },
@@ -145,8 +145,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 27,
-                        "lineBegin": 131,
-                        "lineEnd": 131
+                        "lineBegin": 136,
+                        "lineEnd": 136
                     },
                     "repository": "test"
                 },
@@ -425,7 +425,18 @@
                 "type_xrefs": []
             },
             {
-                "comments": [],
+                "comments": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 56,
+                            "lineEnd": 58
+                        },
+                        "repository": "test"
+                    }
+                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -445,8 +456,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 62
+                        "lineBegin": 59,
+                        "lineEnd": 67
                     },
                     "repository": "test"
                 },
@@ -458,7 +469,20 @@
                 "native_sym": {
                     "sym": "BBD3198879108CE7"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test.cpp",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 56,
+                                "lineEnd": 58
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//h/.f/int",
                 "sym_location": {
@@ -466,8 +490,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 62
+                        "lineBegin": 59,
+                        "lineEnd": 67
                     },
                     "repository": "test"
                 },
@@ -476,7 +500,18 @@
             },
             {
                 "annotations": [],
-                "comments": [],
+                "comments": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 4,
+                            "lineBegin": 51,
+                            "lineEnd": 53
+                        },
+                        "repository": "test"
+                    }
+                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -496,8 +531,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 15,
-                        "lineBegin": 52,
-                        "lineEnd": 52
+                        "lineBegin": 54,
+                        "lineEnd": 54
                     },
                     "repository": "test"
                 },
@@ -509,7 +544,20 @@
                 "native_sym": {
                     "sym": "BBD3198879108CE7"
                 },
-                "pretty_comments": [],
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test.cpp",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 51,
+                                "lineEnd": 53
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
                 "repo_hash": "testhash",
                 "sym": "test/cpp//h/.f/int/.decl",
                 "sym_location": {
@@ -517,8 +565,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 15,
-                        "lineBegin": 52,
-                        "lineEnd": 52
+                        "lineBegin": 54,
+                        "lineEnd": 54
                     },
                     "repository": "test"
                 },
@@ -547,8 +595,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 14,
-                        "lineBegin": 197,
-                        "lineEnd": 197
+                        "lineBegin": 202,
+                        "lineEnd": 202
                     },
                     "repository": "test"
                 },
@@ -565,8 +613,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 14,
-                        "lineBegin": 197,
-                        "lineEnd": 197
+                        "lineBegin": 202,
+                        "lineEnd": 202
                     },
                     "repository": "test"
                 },
@@ -583,8 +631,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 201,
-                        "lineEnd": 203
+                        "lineBegin": 206,
+                        "lineEnd": 208
                     },
                     "repository": "test"
                 },
@@ -606,8 +654,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 184,
-                        "lineEnd": 184
+                        "lineBegin": 189,
+                        "lineEnd": 189
                     },
                     "repository": "test"
                 },
@@ -629,8 +677,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 27,
-                        "lineBegin": 131,
-                        "lineEnd": 131
+                        "lineBegin": 136,
+                        "lineEnd": 136
                     },
                     "repository": "test"
                 },
@@ -767,8 +815,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 62
+                        "lineBegin": 59,
+                        "lineEnd": 67
                     },
                     "repository": "test"
                 },
@@ -790,8 +838,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 15,
-                        "lineBegin": 52,
-                        "lineEnd": 52
+                        "lineBegin": 54,
+                        "lineEnd": 54
                     },
                     "repository": "test"
                 },
@@ -813,8 +861,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 14,
-                        "lineBegin": 197,
-                        "lineEnd": 197
+                        "lineBegin": 202,
+                        "lineEnd": 202
                     },
                     "repository": "test"
                 },

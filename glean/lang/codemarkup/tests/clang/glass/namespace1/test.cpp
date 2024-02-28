@@ -48,9 +48,14 @@ int fooFn(int fooI) {
 
 }
 
-// add decl occurrence
+/**
+ * add decl occurrence
+ */
 void h(int _i);
 
+/**
+ * and defn comment
+ */
 void h(int i) {
   ::h(i);
   foo::S s;

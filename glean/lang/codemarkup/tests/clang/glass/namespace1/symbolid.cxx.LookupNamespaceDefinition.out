@@ -12,9 +12,9 @@
                   "name": { "key": { "name": { "key": "N1" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 173,
+                    "lineBegin": 178,
                     "columnBegin": 1,
-                    "lineEnd": 193,
+                    "lineEnd": 198,
                     "columnEnd": 1
                   }
                 }
@@ -32,9 +32,9 @@
                         },
                         "source": {
                           "file": { "key": "test.cpp" },
-                          "lineBegin": 175,
+                          "lineBegin": 180,
                           "columnBegin": 1,
-                          "lineEnd": 191,
+                          "lineEnd": 196,
                           "columnEnd": 1
                         }
                       }
@@ -66,9 +66,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 175,
+                    "lineBegin": 180,
                     "columnBegin": 1,
-                    "lineEnd": 191,
+                    "lineEnd": 196,
                     "columnEnd": 1
                   }
                 }
@@ -91,9 +91,9 @@
                         },
                         "source": {
                           "file": { "key": "test.cpp" },
-                          "lineBegin": 177,
+                          "lineBegin": 182,
                           "columnBegin": 1,
-                          "lineEnd": 177,
+                          "lineEnd": 182,
                           "columnEnd": 31
                         }
                       }
@@ -132,9 +132,9 @@
                         },
                         "source": {
                           "file": { "key": "test.cpp" },
-                          "lineBegin": 184,
+                          "lineBegin": 189,
                           "columnBegin": 1,
-                          "lineEnd": 184,
+                          "lineEnd": 189,
                           "columnEnd": 24
                         }
                       }
@@ -161,9 +161,9 @@
                         "kind": { "struct_": { } },
                         "source": {
                           "file": { "key": "test.cpp" },
-                          "lineBegin": 186,
+                          "lineBegin": 191,
                           "columnBegin": 1,
-                          "lineEnd": 189,
+                          "lineEnd": 194,
                           "columnEnd": 1
                         }
                       }
@@ -205,9 +205,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 177,
+                    "lineBegin": 182,
                     "columnBegin": 1,
-                    "lineEnd": 177,
+                    "lineEnd": 182,
                     "columnEnd": 31
                   }
                 }
@@ -240,9 +240,9 @@
                         "kind": { "struct_": { } },
                         "source": {
                           "file": { "key": "test.cpp" },
-                          "lineBegin": 177,
+                          "lineBegin": 182,
                           "columnBegin": 16,
-                          "lineEnd": 177,
+                          "lineEnd": 182,
                           "columnEnd": 28
                         }
                       }
@@ -268,9 +268,9 @@
                   "name": { "key": { "name": { "key": "Q" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 129,
+                    "lineBegin": 134,
                     "columnBegin": 1,
-                    "lineEnd": 171,
+                    "lineEnd": 176,
                     "columnEnd": 1
                   }
                 }
@@ -298,9 +298,9 @@
                         },
                         "source": {
                           "file": { "key": "test.cpp" },
-                          "lineBegin": 131,
+                          "lineBegin": 136,
                           "columnBegin": 3,
-                          "lineEnd": 131,
+                          "lineEnd": 136,
                           "columnEnd": 26
                         }
                       }
@@ -322,9 +322,9 @@
                         "kind": { "struct_": { } },
                         "source": {
                           "file": { "key": "test.cpp" },
-                          "lineBegin": 133,
+                          "lineBegin": 138,
                           "columnBegin": 3,
-                          "lineEnd": 148,
+                          "lineEnd": 153,
                           "columnEnd": 3
                         }
                       }
@@ -346,9 +346,9 @@
                         "kind": { "struct_": { } },
                         "source": {
                           "file": { "key": "test.cpp" },
-                          "lineBegin": 150,
+                          "lineBegin": 155,
                           "columnBegin": 3,
-                          "lineEnd": 164,
+                          "lineEnd": 169,
                           "columnEnd": 3
                         }
                       }
@@ -386,9 +386,9 @@
                         },
                         "source": {
                           "file": { "key": "test.cpp" },
-                          "lineBegin": 166,
+                          "lineBegin": 171,
                           "columnBegin": 3,
-                          "lineEnd": 169,
+                          "lineEnd": 174,
                           "columnEnd": 3
                         }
                       }
@@ -572,9 +572,9 @@
                   "name": { "key": { "name": { "key": "baz" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 90,
+                    "lineBegin": 95,
                     "columnBegin": 1,
-                    "lineEnd": 97,
+                    "lineEnd": 102,
                     "columnEnd": 1
                   }
                 }
@@ -597,9 +597,9 @@
                         "kind": { "struct_": { } },
                         "source": {
                           "file": { "key": "test.cpp" },
-                          "lineBegin": 92,
+                          "lineBegin": 97,
                           "columnBegin": 1,
-                          "lineEnd": 95,
+                          "lineEnd": 100,
                           "columnEnd": 1
                         }
                       }
@@ -818,9 +818,9 @@
                   "name": { "key": { "name": { "key": "maybe" } } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 64,
+                    "lineBegin": 69,
                     "columnBegin": 1,
-                    "lineEnd": 83,
+                    "lineEnd": 88,
                     "columnEnd": 1
                   }
                 }
@@ -843,9 +843,9 @@
                         "kind": { "struct_": { } },
                         "source": {
                           "file": { "key": "test.cpp" },
-                          "lineBegin": 69,
+                          "lineBegin": 74,
                           "columnBegin": 1,
-                          "lineEnd": 73,
+                          "lineEnd": 78,
                           "columnEnd": 1
                         }
                       }
@@ -874,9 +874,9 @@
                         },
                         "source": {
                           "file": { "key": "test.cpp" },
-                          "lineBegin": 74,
+                          "lineBegin": 79,
                           "columnBegin": 1,
-                          "lineEnd": 74,
+                          "lineEnd": 79,
                           "columnEnd": 51
                         }
                       }
@@ -898,9 +898,9 @@
                         "kind": { "struct_": { } },
                         "source": {
                           "file": { "key": "test.cpp" },
-                          "lineBegin": 76,
+                          "lineBegin": 81,
                           "columnBegin": 1,
-                          "lineEnd": 80,
+                          "lineEnd": 85,
                           "columnEnd": 1
                         }
                       }

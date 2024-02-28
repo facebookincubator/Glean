@@ -44,14 +44,14 @@
                 "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 12,
-                    "lineBegin": 99,
-                    "lineEnd": 99
+                    "lineBegin": 104,
+                    "lineEnd": 104
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 27,
-                    "lineBegin": 99,
-                    "lineEnd": 99
+                    "lineBegin": 104,
+                    "lineEnd": 104
                 },
                 "sym": "test/cpp//Global"
             },
@@ -97,8 +97,8 @@
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 17,
-                    "lineBegin": 99,
-                    "lineEnd": 99
+                    "lineBegin": 104,
+                    "lineEnd": 104
                 },
                 "sym": "test/cpp//Global/GA"
             },
@@ -144,8 +144,8 @@
                 "range": {
                     "columnBegin": 19,
                     "columnEnd": 21,
-                    "lineBegin": 99,
-                    "lineEnd": 99
+                    "lineBegin": 104,
+                    "lineEnd": 104
                 },
                 "sym": "test/cpp//Global/GB"
             },
@@ -191,8 +191,8 @@
                 "range": {
                     "columnBegin": 23,
                     "columnEnd": 25,
-                    "lineBegin": 99,
-                    "lineEnd": 99
+                    "lineBegin": 104,
+                    "lineEnd": 104
                 },
                 "sym": "test/cpp//Global/GC"
             },
@@ -238,14 +238,14 @@
                 "nameRange": {
                     "columnBegin": 12,
                     "columnEnd": 23,
-                    "lineBegin": 100,
-                    "lineEnd": 100
+                    "lineBegin": 105,
+                    "lineEnd": 105
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 41,
-                    "lineBegin": 100,
-                    "lineEnd": 100
+                    "lineBegin": 105,
+                    "lineEnd": 105
                 },
                 "sym": "test/cpp//GlobalClass"
             },
@@ -291,8 +291,8 @@
                 "range": {
                     "columnBegin": 26,
                     "columnEnd": 29,
-                    "lineBegin": 100,
-                    "lineEnd": 100
+                    "lineBegin": 105,
+                    "lineEnd": 105
                 },
                 "sym": "test/cpp//GlobalClass/GCA"
             },
@@ -338,8 +338,8 @@
                 "range": {
                     "columnBegin": 31,
                     "columnEnd": 34,
-                    "lineBegin": 100,
-                    "lineEnd": 100
+                    "lineBegin": 105,
+                    "lineEnd": 105
                 },
                 "sym": "test/cpp//GlobalClass/GCB"
             },
@@ -385,8 +385,8 @@
                 "range": {
                     "columnBegin": 36,
                     "columnEnd": 39,
-                    "lineBegin": 100,
-                    "lineEnd": 100
+                    "lineBegin": 105,
+                    "lineEnd": 105
                 },
                 "sym": "test/cpp//GlobalClass/GCC"
             },
@@ -432,14 +432,14 @@
                 "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 13,
-                    "lineBegin": 173,
-                    "lineEnd": 173
+                    "lineBegin": 178,
+                    "lineEnd": 178
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 173,
-                    "lineEnd": 193
+                    "lineBegin": 178,
+                    "lineEnd": 198
                 },
                 "sym": "test/cpp//N1"
             },
@@ -485,14 +485,14 @@
                 "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 13,
-                    "lineBegin": 175,
-                    "lineEnd": 175
+                    "lineBegin": 180,
+                    "lineEnd": 180
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 175,
-                    "lineEnd": 191
+                    "lineBegin": 180,
+                    "lineEnd": 196
                 },
                 "sym": "test/cpp//N1/N2"
             },
@@ -538,14 +538,14 @@
                 "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 11,
-                    "lineBegin": 186,
-                    "lineEnd": 186
+                    "lineBegin": 191,
+                    "lineEnd": 191
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 186,
-                    "lineEnd": 189
+                    "lineBegin": 191,
+                    "lineEnd": 194
                 },
                 "sym": "test/cpp//N1/N2/Bar"
             },
@@ -591,14 +591,14 @@
                 "nameRange": {
                     "columnBegin": 20,
                     "columnEnd": 23,
-                    "lineBegin": 205,
-                    "lineEnd": 205
+                    "lineBegin": 210,
+                    "lineEnd": 210
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 205,
-                    "lineEnd": 207
+                    "lineBegin": 210,
+                    "lineEnd": 212
                 },
                 "sym": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo"
             },
@@ -644,14 +644,14 @@
                 "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 12,
-                    "lineBegin": 188,
-                    "lineEnd": 188
+                    "lineBegin": 193,
+                    "lineEnd": 193
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 27,
-                    "lineBegin": 188,
-                    "lineEnd": 188
+                    "lineBegin": 193,
+                    "lineEnd": 193
                 },
                 "sym": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo/.decl"
             },
@@ -697,14 +697,14 @@
                 "nameRange": {
                     "columnBegin": 17,
                     "columnEnd": 18,
-                    "lineBegin": 188,
-                    "lineEnd": 188
+                    "lineBegin": 193,
+                    "lineEnd": 193
                 },
                 "range": {
                     "columnBegin": 13,
                     "columnEnd": 18,
-                    "lineBegin": 188,
-                    "lineEnd": 188
+                    "lineBegin": 193,
+                    "lineEnd": 193
                 },
                 "sym": "test/cpp//N1/N2/Bar/bar/x/.decl"
             },
@@ -750,14 +750,14 @@
                 "nameRange": {
                     "columnBegin": 28,
                     "columnEnd": 29,
-                    "lineBegin": 205,
-                    "lineEnd": 205
+                    "lineBegin": 210,
+                    "lineEnd": 210
                 },
                 "range": {
                     "columnBegin": 24,
                     "columnEnd": 29,
-                    "lineBegin": 205,
-                    "lineEnd": 205
+                    "lineBegin": 210,
+                    "lineEnd": 210
                 },
                 "sym": "test/cpp//N1/N2/Bar/bar/x/.decl"
             },
@@ -803,14 +803,14 @@
                 "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 13,
-                    "lineBegin": 177,
-                    "lineEnd": 177
+                    "lineBegin": 182,
+                    "lineEnd": 182
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 32,
-                    "lineBegin": 177,
-                    "lineEnd": 177
+                    "lineBegin": 182,
+                    "lineEnd": 182
                 },
                 "sym": "test/cpp//N1/N2/N3"
             },
@@ -856,14 +856,14 @@
                 "nameRange": {
                     "columnBegin": 23,
                     "columnEnd": 26,
-                    "lineBegin": 177,
-                    "lineEnd": 177
+                    "lineBegin": 182,
+                    "lineEnd": 182
                 },
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 29,
-                    "lineBegin": 177,
-                    "lineEnd": 177
+                    "lineBegin": 182,
+                    "lineEnd": 182
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo"
             },
@@ -909,8 +909,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 14,
-                    "lineBegin": 179,
-                    "lineEnd": 179
+                    "lineBegin": 184,
+                    "lineEnd": 184
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl"
             },
@@ -956,8 +956,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 22,
-                    "lineBegin": 195,
-                    "lineEnd": 195
+                    "lineBegin": 200,
+                    "lineEnd": 200
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl"
             },
@@ -1003,14 +1003,14 @@
                 "nameRange": {
                     "columnBegin": 15,
                     "columnEnd": 18,
-                    "lineBegin": 201,
-                    "lineEnd": 201
+                    "lineBegin": 206,
+                    "lineEnd": 206
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 201,
-                    "lineEnd": 203
+                    "lineBegin": 206,
+                    "lineEnd": 208
                 },
                 "sym": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo"
             },
@@ -1056,14 +1056,14 @@
                 "nameRange": {
                     "columnBegin": 7,
                     "columnEnd": 10,
-                    "lineBegin": 184,
-                    "lineEnd": 184
+                    "lineBegin": 189,
+                    "lineEnd": 189
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 25,
-                    "lineBegin": 184,
-                    "lineEnd": 184
+                    "lineBegin": 189,
+                    "lineEnd": 189
                 },
                 "sym": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo/.decl"
             },
@@ -1109,14 +1109,14 @@
                 "nameRange": {
                     "columnBegin": 15,
                     "columnEnd": 16,
-                    "lineBegin": 184,
-                    "lineEnd": 184
+                    "lineBegin": 189,
+                    "lineEnd": 189
                 },
                 "range": {
                     "columnBegin": 11,
                     "columnEnd": 16,
-                    "lineBegin": 184,
-                    "lineEnd": 184
+                    "lineBegin": 189,
+                    "lineEnd": 189
                 },
                 "sym": "test/cpp//N1/N2/foo/x/.decl"
             },
@@ -1162,14 +1162,14 @@
                 "nameRange": {
                     "columnBegin": 23,
                     "columnEnd": 24,
-                    "lineBegin": 201,
-                    "lineEnd": 201
+                    "lineBegin": 206,
+                    "lineEnd": 206
                 },
                 "range": {
                     "columnBegin": 19,
                     "columnEnd": 24,
-                    "lineBegin": 201,
-                    "lineEnd": 201
+                    "lineBegin": 206,
+                    "lineEnd": 206
                 },
                 "sym": "test/cpp//N1/N2/foo/x/.decl"
             },
@@ -1215,14 +1215,14 @@
                 "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 12,
-                    "lineBegin": 129,
-                    "lineEnd": 129
+                    "lineBegin": 134,
+                    "lineEnd": 134
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 129,
-                    "lineEnd": 171
+                    "lineBegin": 134,
+                    "lineEnd": 176
                 },
                 "sym": "test/cpp//Q"
             },
@@ -1268,14 +1268,14 @@
                 "nameRange": {
                     "columnBegin": 10,
                     "columnEnd": 12,
-                    "lineBegin": 150,
-                    "lineEnd": 150
+                    "lineBegin": 155,
+                    "lineEnd": 155
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 4,
-                    "lineBegin": 150,
-                    "lineEnd": 164
+                    "lineBegin": 155,
+                    "lineEnd": 169
                 },
                 "sym": "test/cpp//Q/OO"
             },
@@ -1321,14 +1321,14 @@
                 "nameRange": {
                     "columnBegin": 15,
                     "columnEnd": 23,
-                    "lineBegin": 162,
-                    "lineEnd": 162
+                    "lineBegin": 167,
+                    "lineEnd": 167
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 35,
-                    "lineBegin": 162,
-                    "lineEnd": 162
+                    "lineBegin": 167,
+                    "lineEnd": 167
                 },
                 "sym": "test/cpp//Q/OO/.t/T+%26/const,lvalue/.decl"
             },
@@ -1374,14 +1374,14 @@
                 "nameRange": {
                     "columnBegin": 15,
                     "columnEnd": 23,
-                    "lineBegin": 160,
-                    "lineEnd": 160
+                    "lineBegin": 165,
+                    "lineEnd": 165
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 36,
-                    "lineBegin": 160,
-                    "lineEnd": 160
+                    "lineBegin": 165,
+                    "lineEnd": 165
                 },
                 "sym": "test/cpp//Q/OO/.t/T+%26/const,rvalue/.decl"
             },
@@ -1427,14 +1427,14 @@
                 "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 17,
-                    "lineBegin": 157,
-                    "lineEnd": 157
+                    "lineBegin": 162,
+                    "lineEnd": 162
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 33,
-                    "lineBegin": 157,
-                    "lineEnd": 157
+                    "lineBegin": 162,
+                    "lineEnd": 162
                 },
                 "sym": "test/cpp//Q/OO/operator%3D/.o/Q::OO+%26%26/.decl"
             },
@@ -1480,14 +1480,14 @@
                 "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 17,
-                    "lineBegin": 156,
-                    "lineEnd": 156
+                    "lineBegin": 161,
+                    "lineEnd": 161
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 29,
-                    "lineBegin": 156,
-                    "lineEnd": 156
+                    "lineBegin": 161,
+                    "lineEnd": 161
                 },
                 "sym": "test/cpp//Q/OO/operator%3D/.o/const+Q::OO+%26/.decl"
             },
@@ -1533,14 +1533,14 @@
                 "nameRange": {
                     "columnBegin": 28,
                     "columnEnd": 29,
-                    "lineBegin": 156,
-                    "lineEnd": 156
+                    "lineBegin": 161,
+                    "lineEnd": 161
                 },
                 "range": {
                     "columnBegin": 19,
                     "columnEnd": 28,
-                    "lineBegin": 156,
-                    "lineEnd": 156
+                    "lineBegin": 161,
+                    "lineEnd": 161
                 },
                 "sym": "test/cpp//Q/OO/operator%3D//.decl"
             },
@@ -1586,14 +1586,14 @@
                 "nameRange": {
                     "columnBegin": 23,
                     "columnEnd": 24,
-                    "lineBegin": 157,
-                    "lineEnd": 157
+                    "lineBegin": 162,
+                    "lineEnd": 162
                 },
                 "range": {
                     "columnBegin": 19,
                     "columnEnd": 23,
-                    "lineBegin": 157,
-                    "lineEnd": 157
+                    "lineBegin": 162,
+                    "lineEnd": 162
                 },
                 "sym": "test/cpp//Q/OO/operator%3D//.decl"
             },
@@ -1639,14 +1639,14 @@
                 "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 17,
-                    "lineBegin": 154,
-                    "lineEnd": 154
+                    "lineBegin": 159,
+                    "lineEnd": 159
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 21,
-                    "lineBegin": 154,
-                    "lineEnd": 154
+                    "lineBegin": 159,
+                    "lineEnd": 159
                 },
                 "sym": "test/cpp//Q/OO/operator++/.o//.decl"
             },
@@ -1692,14 +1692,14 @@
                 "nameRange": {
                     "columnBegin": 10,
                     "columnEnd": 12,
-                    "lineBegin": 133,
-                    "lineEnd": 133
+                    "lineBegin": 138,
+                    "lineEnd": 138
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 4,
-                    "lineBegin": 133,
-                    "lineEnd": 148
+                    "lineBegin": 138,
+                    "lineEnd": 153
                 },
                 "sym": "test/cpp//Q/QQ"
             },
@@ -1745,14 +1745,14 @@
                 "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
-                    "lineBegin": 147,
-                    "lineEnd": 147
+                    "lineBegin": 152,
+                    "lineEnd": 152
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 19,
-                    "lineBegin": 147,
-                    "lineEnd": 147
+                    "lineBegin": 152,
+                    "lineEnd": 152
                 },
                 "sym": "test/cpp//Q/QQ/.d/.decl"
             },
@@ -1798,14 +1798,14 @@
                 "nameRange": {
                     "columnBegin": 10,
                     "columnEnd": 15,
-                    "lineBegin": 135,
-                    "lineEnd": 135
+                    "lineBegin": 140,
+                    "lineEnd": 140
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 17,
-                    "lineBegin": 135,
-                    "lineEnd": 135
+                    "lineBegin": 140,
+                    "lineEnd": 140
                 },
                 "sym": "test/cpp//Q/QQ/bozzo/.f//.decl"
             },
@@ -1851,14 +1851,14 @@
                 "nameRange": {
                     "columnBegin": 12,
                     "columnEnd": 21,
-                    "lineBegin": 137,
-                    "lineEnd": 137
+                    "lineBegin": 142,
+                    "lineEnd": 142
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 30,
-                    "lineBegin": 137,
-                    "lineEnd": 137
+                    "lineBegin": 142,
+                    "lineEnd": 142
                 },
                 "sym": "test/cpp//Q/QQ/getDouble/.f//const,lvalue/.decl"
             },
@@ -1904,14 +1904,14 @@
                 "nameRange": {
                     "columnBegin": 13,
                     "columnEnd": 22,
-                    "lineBegin": 138,
-                    "lineEnd": 138
+                    "lineBegin": 143,
+                    "lineEnd": 143
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 26,
-                    "lineBegin": 138,
-                    "lineEnd": 138
+                    "lineBegin": 143,
+                    "lineEnd": 143
                 },
                 "sym": "test/cpp//Q/QQ/getDouble/.f//lvalue/.decl"
             },
@@ -1957,14 +1957,14 @@
                 "nameRange": {
                     "columnBegin": 12,
                     "columnEnd": 21,
-                    "lineBegin": 139,
-                    "lineEnd": 139
+                    "lineBegin": 144,
+                    "lineEnd": 144
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 26,
-                    "lineBegin": 139,
-                    "lineEnd": 139
+                    "lineBegin": 144,
+                    "lineEnd": 144
                 },
                 "sym": "test/cpp//Q/QQ/getDouble/.f//rvalue/.decl"
             },
@@ -2010,14 +2010,14 @@
                 "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 15,
-                    "lineBegin": 143,
-                    "lineEnd": 143
+                    "lineBegin": 148,
+                    "lineEnd": 148
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 29,
-                    "lineBegin": 143,
-                    "lineEnd": 143
+                    "lineBegin": 148,
+                    "lineEnd": 148
                 },
                 "sym": "test/cpp//Q/QQ/thango/.f/int,Q::QQ+%26%26/rvalue/.decl"
             },
@@ -2063,14 +2063,14 @@
                 "nameRange": {
                     "columnBegin": 10,
                     "columnEnd": 16,
-                    "lineBegin": 142,
-                    "lineEnd": 142
+                    "lineBegin": 147,
+                    "lineEnd": 147
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 28,
-                    "lineBegin": 142,
-                    "lineEnd": 142
+                    "lineBegin": 147,
+                    "lineEnd": 147
                 },
                 "sym": "test/cpp//Q/QQ/thango/.f/int,Q::QQ+%26/lvalue/.decl"
             },
@@ -2116,14 +2116,14 @@
                 "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 15,
-                    "lineBegin": 141,
-                    "lineEnd": 141
+                    "lineBegin": 146,
+                    "lineEnd": 146
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 38,
-                    "lineBegin": 141,
-                    "lineEnd": 141
+                    "lineBegin": 146,
+                    "lineEnd": 146
                 },
                 "sym": "test/cpp//Q/QQ/thango/.f/int,const+Q::QQ+%26/const,lvalue/.decl"
             },
@@ -2169,14 +2169,14 @@
                 "nameRange": {
                     "columnBegin": 19,
                     "columnEnd": 20,
-                    "lineBegin": 141,
-                    "lineEnd": 141
+                    "lineBegin": 146,
+                    "lineEnd": 146
                 },
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 19,
-                    "lineBegin": 141,
-                    "lineEnd": 141
+                    "lineBegin": 146,
+                    "lineEnd": 146
                 },
                 "sym": "test/cpp//Q/QQ/thango//.decl"
             },
@@ -2222,14 +2222,14 @@
                 "nameRange": {
                     "columnBegin": 30,
                     "columnEnd": 31,
-                    "lineBegin": 141,
-                    "lineEnd": 141
+                    "lineBegin": 146,
+                    "lineEnd": 146
                 },
                 "range": {
                     "columnBegin": 21,
                     "columnEnd": 30,
-                    "lineBegin": 141,
-                    "lineEnd": 141
+                    "lineBegin": 146,
+                    "lineEnd": 146
                 },
                 "sym": "test/cpp//Q/QQ/thango//.decl"
             },
@@ -2275,14 +2275,14 @@
                 "nameRange": {
                     "columnBegin": 20,
                     "columnEnd": 21,
-                    "lineBegin": 142,
-                    "lineEnd": 142
+                    "lineBegin": 147,
+                    "lineEnd": 147
                 },
                 "range": {
                     "columnBegin": 17,
                     "columnEnd": 20,
-                    "lineBegin": 142,
-                    "lineEnd": 142
+                    "lineBegin": 147,
+                    "lineEnd": 147
                 },
                 "sym": "test/cpp//Q/QQ/thango//.decl"
             },
@@ -2328,14 +2328,14 @@
                 "nameRange": {
                     "columnBegin": 25,
                     "columnEnd": 26,
-                    "lineBegin": 142,
-                    "lineEnd": 142
+                    "lineBegin": 147,
+                    "lineEnd": 147
                 },
                 "range": {
                     "columnBegin": 22,
                     "columnEnd": 25,
-                    "lineBegin": 142,
-                    "lineEnd": 142
+                    "lineBegin": 147,
+                    "lineEnd": 147
                 },
                 "sym": "test/cpp//Q/QQ/thango//.decl"
             },
@@ -2381,14 +2381,14 @@
                 "nameRange": {
                     "columnBegin": 19,
                     "columnEnd": 20,
-                    "lineBegin": 143,
-                    "lineEnd": 143
+                    "lineBegin": 148,
+                    "lineEnd": 148
                 },
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 19,
-                    "lineBegin": 143,
-                    "lineEnd": 143
+                    "lineBegin": 148,
+                    "lineEnd": 148
                 },
                 "sym": "test/cpp//Q/QQ/thango//.decl"
             },
@@ -2434,14 +2434,14 @@
                 "nameRange": {
                     "columnBegin": 25,
                     "columnEnd": 26,
-                    "lineBegin": 143,
-                    "lineEnd": 143
+                    "lineBegin": 148,
+                    "lineEnd": 148
                 },
                 "range": {
                     "columnBegin": 21,
                     "columnEnd": 25,
-                    "lineBegin": 143,
-                    "lineEnd": 143
+                    "lineBegin": 148,
+                    "lineEnd": 148
                 },
                 "sym": "test/cpp//Q/QQ/thango//.decl"
             },
@@ -2487,14 +2487,14 @@
                 "nameRange": {
                     "columnBegin": 9,
                     "columnEnd": 15,
-                    "lineBegin": 145,
-                    "lineEnd": 145
+                    "lineBegin": 150,
+                    "lineEnd": 150
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 43,
-                    "lineBegin": 145,
-                    "lineEnd": 145
+                    "lineBegin": 150,
+                    "lineEnd": 150
                 },
                 "sym": "test/cpp//Q/QQ/thingo/.f/pear%3Cint%20+char%3E,Q::QQ+%26%26/const/.decl"
             },
@@ -2540,14 +2540,14 @@
                 "nameRange": {
                     "columnBegin": 30,
                     "columnEnd": 31,
-                    "lineBegin": 145,
-                    "lineEnd": 145
+                    "lineBegin": 150,
+                    "lineEnd": 150
                 },
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 30,
-                    "lineBegin": 145,
-                    "lineEnd": 145
+                    "lineBegin": 150,
+                    "lineEnd": 150
                 },
                 "sym": "test/cpp//Q/QQ/thingo//.decl"
             },
@@ -2593,14 +2593,14 @@
                 "nameRange": {
                     "columnBegin": 36,
                     "columnEnd": 37,
-                    "lineBegin": 145,
-                    "lineEnd": 145
+                    "lineBegin": 150,
+                    "lineEnd": 150
                 },
                 "range": {
                     "columnBegin": 32,
                     "columnEnd": 36,
-                    "lineBegin": 145,
-                    "lineEnd": 145
+                    "lineBegin": 150,
+                    "lineEnd": 150
                 },
                 "sym": "test/cpp//Q/QQ/thingo//.decl"
             },
@@ -2646,14 +2646,14 @@
                 "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 13,
-                    "lineBegin": 131,
-                    "lineEnd": 131
+                    "lineBegin": 136,
+                    "lineEnd": 136
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 27,
-                    "lineBegin": 131,
-                    "lineEnd": 131
+                    "lineBegin": 136,
+                    "lineEnd": 136
                 },
                 "sym": "test/cpp//Q/bozzo/.f/"
             },
@@ -2699,14 +2699,14 @@
                 "nameRange": {
                     "columnBegin": 18,
                     "columnEnd": 26,
-                    "lineBegin": 166,
-                    "lineEnd": 166
+                    "lineBegin": 171,
+                    "lineEnd": 171
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 4,
-                    "lineBegin": 166,
-                    "lineEnd": 169
+                    "lineBegin": 171,
+                    "lineEnd": 174
                 },
                 "sym": "test/cpp//Q/operator%22%22_glean/.o/const+char32_t+*,unsigned+long"
             },
@@ -2752,14 +2752,14 @@
                 "nameRange": {
                     "columnBegin": 42,
                     "columnEnd": 45,
-                    "lineBegin": 167,
-                    "lineEnd": 167
+                    "lineBegin": 172,
+                    "lineEnd": 172
                 },
                 "range": {
                     "columnBegin": 28,
                     "columnEnd": 45,
-                    "lineBegin": 167,
-                    "lineEnd": 167
+                    "lineBegin": 172,
+                    "lineEnd": 172
                 },
                 "sym": "test/cpp//Q/operator%22%22_glean/len/.decl"
             },
@@ -2805,14 +2805,14 @@
                 "nameRange": {
                     "columnBegin": 23,
                     "columnEnd": 26,
-                    "lineBegin": 167,
-                    "lineEnd": 167
+                    "lineBegin": 172,
+                    "lineEnd": 172
                 },
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 26,
-                    "lineBegin": 167,
-                    "lineEnd": 167
+                    "lineBegin": 172,
+                    "lineEnd": 172
                 },
                 "sym": "test/cpp//Q/operator%22%22_glean/str/.decl"
             },
@@ -2858,14 +2858,14 @@
                 "nameRange": {
                     "columnBegin": 17,
                     "columnEnd": 25,
-                    "lineBegin": 152,
-                    "lineEnd": 152
+                    "lineBegin": 157,
+                    "lineEnd": 157
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 53,
-                    "lineBegin": 152,
-                    "lineEnd": 152
+                    "lineBegin": 157,
+                    "lineEnd": 157
                 },
                 "sym": "test/cpp//Q/operator%3D%3D/.o/const+Q::OO+%26,const+Q::OO+%26/.decl"
             },
@@ -2911,14 +2911,14 @@
                 "nameRange": {
                     "columnBegin": 38,
                     "columnEnd": 39,
-                    "lineBegin": 152,
-                    "lineEnd": 152
+                    "lineBegin": 157,
+                    "lineEnd": 157
                 },
                 "range": {
                     "columnBegin": 28,
                     "columnEnd": 39,
-                    "lineBegin": 152,
-                    "lineEnd": 152
+                    "lineBegin": 157,
+                    "lineEnd": 157
                 },
                 "sym": "test/cpp//Q/operator%3D%3D/a/.decl"
             },
@@ -2964,14 +2964,14 @@
                 "nameRange": {
                     "columnBegin": 51,
                     "columnEnd": 52,
-                    "lineBegin": 152,
-                    "lineEnd": 152
+                    "lineBegin": 157,
+                    "lineEnd": 157
                 },
                 "range": {
                     "columnBegin": 41,
                     "columnEnd": 52,
-                    "lineBegin": 152,
-                    "lineEnd": 152
+                    "lineBegin": 157,
+                    "lineEnd": 157
                 },
                 "sym": "test/cpp//Q/operator%3D%3D/b/.decl"
             },
@@ -3017,14 +3017,14 @@
                 "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 14,
-                    "lineBegin": 90,
-                    "lineEnd": 90
+                    "lineBegin": 95,
+                    "lineEnd": 95
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 90,
-                    "lineEnd": 97
+                    "lineBegin": 95,
+                    "lineEnd": 102
                 },
                 "sym": "test/cpp//baz"
             },
@@ -3070,14 +3070,14 @@
                 "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 9,
-                    "lineBegin": 92,
-                    "lineEnd": 92
+                    "lineBegin": 97,
+                    "lineEnd": 97
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 92,
-                    "lineEnd": 95
+                    "lineBegin": 97,
+                    "lineEnd": 100
                 },
                 "sym": "test/cpp//baz/U"
             },
@@ -3123,14 +3123,14 @@
                 "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 11,
-                    "lineBegin": 93,
-                    "lineEnd": 93
+                    "lineBegin": 98,
+                    "lineEnd": 98
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 26,
-                    "lineBegin": 93,
-                    "lineEnd": 93
+                    "lineBegin": 98,
+                    "lineEnd": 98
                 },
                 "sym": "test/cpp//baz/U/InU"
             },
@@ -3176,8 +3176,8 @@
                 "range": {
                     "columnBegin": 14,
                     "columnEnd": 16,
-                    "lineBegin": 93,
-                    "lineEnd": 93
+                    "lineBegin": 98,
+                    "lineEnd": 98
                 },
                 "sym": "test/cpp//baz/U/InU/UA"
             },
@@ -3223,8 +3223,8 @@
                 "range": {
                     "columnBegin": 18,
                     "columnEnd": 20,
-                    "lineBegin": 93,
-                    "lineEnd": 93
+                    "lineBegin": 98,
+                    "lineEnd": 98
                 },
                 "sym": "test/cpp//baz/U/InU/UB"
             },
@@ -3270,8 +3270,8 @@
                 "range": {
                     "columnBegin": 22,
                     "columnEnd": 24,
-                    "lineBegin": 93,
-                    "lineEnd": 93
+                    "lineBegin": 98,
+                    "lineEnd": 98
                 },
                 "sym": "test/cpp//baz/U/InU/UC"
             },
@@ -3317,14 +3317,14 @@
                 "nameRange": {
                     "columnBegin": 14,
                     "columnEnd": 22,
-                    "lineBegin": 94,
-                    "lineEnd": 94
+                    "lineBegin": 99,
+                    "lineEnd": 99
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 40,
-                    "lineBegin": 94,
-                    "lineEnd": 94
+                    "lineBegin": 99,
+                    "lineEnd": 99
                 },
                 "sym": "test/cpp//baz/U/InUClass"
             },
@@ -3370,8 +3370,8 @@
                 "range": {
                     "columnBegin": 25,
                     "columnEnd": 28,
-                    "lineBegin": 94,
-                    "lineEnd": 94
+                    "lineBegin": 99,
+                    "lineEnd": 99
                 },
                 "sym": "test/cpp//baz/U/InUClass/UCA"
             },
@@ -3417,8 +3417,8 @@
                 "range": {
                     "columnBegin": 30,
                     "columnEnd": 33,
-                    "lineBegin": 94,
-                    "lineEnd": 94
+                    "lineBegin": 99,
+                    "lineEnd": 99
                 },
                 "sym": "test/cpp//baz/U/InUClass/UCB"
             },
@@ -3464,8 +3464,8 @@
                 "range": {
                     "columnBegin": 35,
                     "columnEnd": 38,
-                    "lineBegin": 94,
-                    "lineEnd": 94
+                    "lineBegin": 99,
+                    "lineEnd": 99
                 },
                 "sym": "test/cpp//baz/U/InUClass/UCC"
             },
@@ -3511,14 +3511,14 @@
                 "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 9,
-                    "lineBegin": 107,
-                    "lineEnd": 107
+                    "lineBegin": 112,
+                    "lineEnd": 112
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 107,
-                    "lineEnd": 127
+                    "lineBegin": 112,
+                    "lineEnd": 132
                 },
                 "sym": "test/cpp//d"
             },
@@ -3564,14 +3564,14 @@
                 "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
-                    "lineBegin": 115,
-                    "lineEnd": 115
+                    "lineBegin": 120,
+                    "lineEnd": 120
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 8,
-                    "lineBegin": 115,
-                    "lineEnd": 115
+                    "lineBegin": 120,
+                    "lineEnd": 120
                 },
                 "sym": "test/cpp//d/.c/.decl"
             },
@@ -3617,14 +3617,14 @@
                 "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
-                    "lineBegin": 121,
-                    "lineEnd": 121
+                    "lineBegin": 126,
+                    "lineEnd": 126
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 36,
-                    "lineBegin": 121,
-                    "lineEnd": 121
+                    "lineBegin": 126,
+                    "lineEnd": 126
                 },
                 "sym": "test/cpp//d/.c/char,int,const+char+*/.decl"
             },
@@ -3670,14 +3670,14 @@
                 "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
-                    "lineBegin": 119,
-                    "lineEnd": 119
+                    "lineBegin": 124,
+                    "lineEnd": 124
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 35,
-                    "lineBegin": 119,
-                    "lineEnd": 119
+                    "lineBegin": 124,
+                    "lineEnd": 124
                 },
                 "sym": "test/cpp//d/.c/const+char+*,void+%28*%29%28%29/.decl"
             },
@@ -3723,14 +3723,14 @@
                 "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
-                    "lineBegin": 117,
-                    "lineEnd": 117
+                    "lineBegin": 122,
+                    "lineEnd": 122
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 23,
-                    "lineBegin": 117,
-                    "lineEnd": 117
+                    "lineBegin": 122,
+                    "lineEnd": 122
                 },
                 "sym": "test/cpp//d/.c/const+char+*/.decl"
             },
@@ -3776,14 +3776,14 @@
                 "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
-                    "lineBegin": 123,
-                    "lineEnd": 123
+                    "lineBegin": 128,
+                    "lineEnd": 128
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 16,
-                    "lineBegin": 123,
-                    "lineEnd": 123
+                    "lineBegin": 128,
+                    "lineEnd": 128
                 },
                 "sym": "test/cpp//d/.c/const+d+%26/.decl"
             },
@@ -3829,14 +3829,14 @@
                 "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 6,
-                    "lineBegin": 125,
-                    "lineEnd": 125
+                    "lineBegin": 130,
+                    "lineEnd": 130
                 },
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 35,
-                    "lineBegin": 125,
-                    "lineEnd": 125
+                    "lineBegin": 130,
+                    "lineEnd": 130
                 },
                 "sym": "test/cpp//d/.c/pear%3Cint%20+bool%3E+%26,char/.decl"
             },
@@ -3882,14 +3882,14 @@
                 "nameRange": {
                     "columnBegin": 31,
                     "columnEnd": 32,
-                    "lineBegin": 119,
-                    "lineEnd": 119
+                    "lineBegin": 124,
+                    "lineEnd": 124
                 },
                 "range": {
                     "columnBegin": 24,
                     "columnEnd": 34,
-                    "lineBegin": 119,
-                    "lineEnd": 119
+                    "lineBegin": 124,
+                    "lineEnd": 124
                 },
                 "sym": "test/cpp//d/.ctor//.decl"
             },
@@ -3935,14 +3935,14 @@
                 "nameRange": {
                     "columnBegin": 15,
                     "columnEnd": 16,
-                    "lineBegin": 123,
-                    "lineEnd": 123
+                    "lineBegin": 128,
+                    "lineEnd": 128
                 },
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 15,
-                    "lineBegin": 123,
-                    "lineEnd": 123
+                    "lineBegin": 128,
+                    "lineEnd": 128
                 },
                 "sym": "test/cpp//d/.ctor//.decl"
             },
@@ -3988,14 +3988,14 @@
                 "nameRange": {
                     "columnBegin": 12,
                     "columnEnd": 13,
-                    "lineBegin": 121,
-                    "lineEnd": 121
+                    "lineBegin": 126,
+                    "lineEnd": 126
                 },
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 13,
-                    "lineBegin": 121,
-                    "lineEnd": 121
+                    "lineBegin": 126,
+                    "lineEnd": 126
                 },
                 "sym": "test/cpp//d/.ctor/c/.decl"
             },
@@ -4041,14 +4041,14 @@
                 "nameRange": {
                     "columnBegin": 32,
                     "columnEnd": 34,
-                    "lineBegin": 125,
-                    "lineEnd": 125
+                    "lineBegin": 130,
+                    "lineEnd": 130
                 },
                 "range": {
                     "columnBegin": 27,
                     "columnEnd": 34,
-                    "lineBegin": 125,
-                    "lineEnd": 125
+                    "lineBegin": 130,
+                    "lineEnd": 130
                 },
                 "sym": "test/cpp//d/.ctor/cp/.decl"
             },
@@ -4094,14 +4094,14 @@
                 "nameRange": {
                     "columnBegin": 19,
                     "columnEnd": 20,
-                    "lineBegin": 121,
-                    "lineEnd": 121
+                    "lineBegin": 126,
+                    "lineEnd": 126
                 },
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 20,
-                    "lineBegin": 121,
-                    "lineEnd": 121
+                    "lineBegin": 126,
+                    "lineEnd": 126
                 },
                 "sym": "test/cpp//d/.ctor/i/.decl"
             },
@@ -4147,14 +4147,14 @@
                 "nameRange": {
                     "columnBegin": 34,
                     "columnEnd": 35,
-                    "lineBegin": 121,
-                    "lineEnd": 121
+                    "lineBegin": 126,
+                    "lineEnd": 126
                 },
                 "range": {
                     "columnBegin": 22,
                     "columnEnd": 35,
-                    "lineBegin": 121,
-                    "lineEnd": 121
+                    "lineBegin": 126,
+                    "lineEnd": 126
                 },
                 "sym": "test/cpp//d/.ctor/p/.decl"
             },
@@ -4200,14 +4200,14 @@
                 "nameRange": {
                     "columnBegin": 24,
                     "columnEnd": 25,
-                    "lineBegin": 125,
-                    "lineEnd": 125
+                    "lineBegin": 130,
+                    "lineEnd": 130
                 },
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 25,
-                    "lineBegin": 125,
-                    "lineEnd": 125
+                    "lineBegin": 130,
+                    "lineEnd": 130
                 },
                 "sym": "test/cpp//d/.ctor/p/.decl"
             },
@@ -4253,14 +4253,14 @@
                 "nameRange": {
                     "columnBegin": 19,
                     "columnEnd": 22,
-                    "lineBegin": 117,
-                    "lineEnd": 117
+                    "lineBegin": 122,
+                    "lineEnd": 122
                 },
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 22,
-                    "lineBegin": 117,
-                    "lineEnd": 117
+                    "lineBegin": 122,
+                    "lineEnd": 122
                 },
                 "sym": "test/cpp//d/.ctor/val/.decl"
             },
@@ -4306,14 +4306,14 @@
                 "nameRange": {
                     "columnBegin": 19,
                     "columnEnd": 22,
-                    "lineBegin": 119,
-                    "lineEnd": 119
+                    "lineBegin": 124,
+                    "lineEnd": 124
                 },
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 22,
-                    "lineBegin": 119,
-                    "lineEnd": 119
+                    "lineBegin": 124,
+                    "lineEnd": 124
                 },
                 "sym": "test/cpp//d/.ctor/val/.decl"
             },
@@ -4359,14 +4359,14 @@
                 "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 7,
-                    "lineBegin": 109,
-                    "lineEnd": 109
+                    "lineBegin": 114,
+                    "lineEnd": 114
                 },
                 "range": {
                     "columnBegin": 2,
                     "columnEnd": 7,
-                    "lineBegin": 109,
-                    "lineEnd": 109
+                    "lineBegin": 114,
+                    "lineEnd": 114
                 },
                 "sym": "test/cpp//d/i/.decl"
             },
@@ -5260,14 +5260,14 @@
                 "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 7,
-                    "lineBegin": 54,
-                    "lineEnd": 54
+                    "lineBegin": 59,
+                    "lineEnd": 59
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 54,
-                    "lineEnd": 62
+                    "lineBegin": 59,
+                    "lineEnd": 67
                 },
                 "sym": "test/cpp//h/.f/int"
             },
@@ -5313,14 +5313,14 @@
                 "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 7,
-                    "lineBegin": 52,
-                    "lineEnd": 52
+                    "lineBegin": 54,
+                    "lineEnd": 54
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 15,
-                    "lineBegin": 52,
-                    "lineEnd": 52
+                    "lineBegin": 54,
+                    "lineEnd": 54
                 },
                 "sym": "test/cpp//h/.f/int/.decl"
             },
@@ -5366,14 +5366,14 @@
                 "nameRange": {
                     "columnBegin": 12,
                     "columnEnd": 14,
-                    "lineBegin": 52,
-                    "lineEnd": 52
+                    "lineBegin": 54,
+                    "lineEnd": 54
                 },
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 14,
-                    "lineBegin": 52,
-                    "lineEnd": 52
+                    "lineBegin": 54,
+                    "lineEnd": 54
                 },
                 "sym": "test/cpp//h/_i/.decl"
             },
@@ -5419,14 +5419,14 @@
                 "nameRange": {
                     "columnBegin": 12,
                     "columnEnd": 13,
-                    "lineBegin": 54,
-                    "lineEnd": 54
+                    "lineBegin": 59,
+                    "lineEnd": 59
                 },
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 13,
-                    "lineBegin": 54,
-                    "lineEnd": 54
+                    "lineBegin": 59,
+                    "lineEnd": 59
                 },
                 "sym": "test/cpp//h/i/.decl"
             },
@@ -5472,14 +5472,14 @@
                 "nameRange": {
                     "columnBegin": 10,
                     "columnEnd": 11,
-                    "lineBegin": 56,
-                    "lineEnd": 56
+                    "lineBegin": 61,
+                    "lineEnd": 61
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 11,
-                    "lineBegin": 56,
-                    "lineEnd": 56
+                    "lineBegin": 61,
+                    "lineEnd": 61
                 },
                 "sym": "test/cpp//h/s/.decl"
             },
@@ -5525,14 +5525,14 @@
                 "nameRange": {
                     "columnBegin": 15,
                     "columnEnd": 16,
-                    "lineBegin": 57,
-                    "lineEnd": 57
+                    "lineBegin": 62,
+                    "lineEnd": 62
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 16,
-                    "lineBegin": 57,
-                    "lineEnd": 57
+                    "lineBegin": 62,
+                    "lineEnd": 62
                 },
                 "sym": "test/cpp//h/t/.decl"
             },
@@ -5578,14 +5578,14 @@
                 "nameRange": {
                     "columnBegin": 5,
                     "columnEnd": 7,
-                    "lineBegin": 197,
-                    "lineEnd": 197
+                    "lineBegin": 202,
+                    "lineEnd": 202
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 14,
-                    "lineBegin": 197,
-                    "lineEnd": 197
+                    "lineBegin": 202,
+                    "lineEnd": 202
                 },
                 "sym": "test/cpp//id/.f/N1::N2::N3::Foo/.decl"
             },
@@ -5631,14 +5631,14 @@
                 "nameRange": {
                     "columnBegin": 12,
                     "columnEnd": 13,
-                    "lineBegin": 197,
-                    "lineEnd": 197
+                    "lineBegin": 202,
+                    "lineEnd": 202
                 },
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 13,
-                    "lineBegin": 197,
-                    "lineEnd": 197
+                    "lineBegin": 202,
+                    "lineEnd": 202
                 },
                 "sym": "test/cpp//id/x/.decl"
             },
@@ -5684,14 +5684,14 @@
                 "nameRange": {
                     "columnBegin": 11,
                     "columnEnd": 16,
-                    "lineBegin": 64,
-                    "lineEnd": 64
+                    "lineBegin": 69,
+                    "lineEnd": 69
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 64,
-                    "lineEnd": 83
+                    "lineBegin": 69,
+                    "lineEnd": 88
                 },
                 "sym": "test/cpp//maybe"
             },
@@ -5737,14 +5737,14 @@
                 "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 15,
-                    "lineBegin": 69,
-                    "lineEnd": 69
+                    "lineBegin": 74,
+                    "lineEnd": 74
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 69,
-                    "lineEnd": 73
+                    "lineBegin": 74,
+                    "lineEnd": 78
                 },
                 "sym": "test/cpp//maybe/Nothing"
             },
@@ -5790,14 +5790,14 @@
                 "nameRange": {
                     "columnBegin": 22,
                     "columnEnd": 29,
-                    "lineBegin": 72,
-                    "lineEnd": 72
+                    "lineBegin": 77,
+                    "lineEnd": 77
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 41,
-                    "lineBegin": 72,
-                    "lineEnd": 72
+                    "lineBegin": 77,
+                    "lineEnd": 77
                 },
                 "sym": "test/cpp//maybe/Nothing/.c/maybe::Nothing::_secret"
             },
@@ -5843,14 +5843,14 @@
                 "nameRange": {
                     "columnBegin": 37,
                     "columnEnd": 38,
-                    "lineBegin": 72,
-                    "lineEnd": 72
+                    "lineBegin": 77,
+                    "lineEnd": 77
                 },
                 "range": {
                     "columnBegin": 30,
                     "columnEnd": 37,
-                    "lineBegin": 72,
-                    "lineEnd": 72
+                    "lineBegin": 77,
+                    "lineEnd": 77
                 },
                 "sym": "test/cpp//maybe/Nothing/.ctor//.decl"
             },
@@ -5896,14 +5896,14 @@
                 "nameRange": {
                     "columnBegin": 14,
                     "columnEnd": 21,
-                    "lineBegin": 70,
-                    "lineEnd": 70
+                    "lineBegin": 75,
+                    "lineEnd": 75
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 32,
-                    "lineBegin": 70,
-                    "lineEnd": 70
+                    "lineBegin": 75,
+                    "lineEnd": 75
                 },
                 "sym": "test/cpp//maybe/Nothing/_secret"
             },
@@ -5949,8 +5949,8 @@
                 "range": {
                     "columnBegin": 24,
                     "columnEnd": 30,
-                    "lineBegin": 70,
-                    "lineEnd": 70
+                    "lineBegin": 75,
+                    "lineEnd": 75
                 },
                 "sym": "test/cpp//maybe/Nothing/_secret/_magic"
             },
@@ -5996,14 +5996,14 @@
                 "nameRange": {
                     "columnBegin": 8,
                     "columnEnd": 17,
-                    "lineBegin": 76,
-                    "lineEnd": 76
+                    "lineBegin": 81,
+                    "lineEnd": 81
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 76,
-                    "lineEnd": 80
+                    "lineBegin": 81,
+                    "lineEnd": 85
                 },
                 "sym": "test/cpp//maybe/Something"
             },
@@ -6049,14 +6049,14 @@
                 "nameRange": {
                     "columnBegin": 3,
                     "columnEnd": 12,
-                    "lineBegin": 78,
-                    "lineEnd": 78
+                    "lineBegin": 83,
+                    "lineEnd": 83
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 28,
-                    "lineBegin": 78,
-                    "lineEnd": 78
+                    "lineBegin": 83,
+                    "lineEnd": 83
                 },
                 "sym": "test/cpp//maybe/Something/.c/int"
             },
@@ -6102,14 +6102,14 @@
                 "nameRange": {
                     "columnBegin": 17,
                     "columnEnd": 18,
-                    "lineBegin": 78,
-                    "lineEnd": 78
+                    "lineBegin": 83,
+                    "lineEnd": 83
                 },
                 "range": {
                     "columnBegin": 13,
                     "columnEnd": 18,
-                    "lineBegin": 78,
-                    "lineEnd": 78
+                    "lineBegin": 83,
+                    "lineEnd": 83
                 },
                 "sym": "test/cpp//maybe/Something/.ctor/a/.decl"
             },
@@ -6155,14 +6155,14 @@
                 "nameRange": {
                     "columnBegin": 3,
                     "columnEnd": 4,
-                    "lineBegin": 79,
-                    "lineEnd": 79
+                    "lineBegin": 84,
+                    "lineEnd": 84
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 18,
-                    "lineBegin": 79,
-                    "lineEnd": 79
+                    "lineBegin": 84,
+                    "lineEnd": 84
                 },
                 "sym": "test/cpp//maybe/Something/.d"
             },
@@ -6208,14 +6208,14 @@
                 "nameRange": {
                     "columnBegin": 7,
                     "columnEnd": 9,
-                    "lineBegin": 77,
-                    "lineEnd": 77
+                    "lineBegin": 82,
+                    "lineEnd": 82
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 9,
-                    "lineBegin": 77,
-                    "lineEnd": 77
+                    "lineBegin": 82,
+                    "lineEnd": 82
                 },
                 "sym": "test/cpp//maybe/Something/a_/.decl"
             },
@@ -6261,14 +6261,14 @@
                 "nameRange": {
                     "columnBegin": 19,
                     "columnEnd": 26,
-                    "lineBegin": 74,
-                    "lineEnd": 74
+                    "lineBegin": 79,
+                    "lineEnd": 79
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 52,
-                    "lineBegin": 74,
-                    "lineEnd": 74
+                    "lineBegin": 79,
+                    "lineEnd": 79
                 },
                 "sym": "test/cpp//maybe/nothing/.decl"
             },
@@ -6314,14 +6314,14 @@
                 "nameRange": {
                     "columnBegin": 10,
                     "columnEnd": 14,
-                    "lineBegin": 105,
-                    "lineEnd": 105
+                    "lineBegin": 110,
+                    "lineEnd": 110
                 },
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 14,
-                    "lineBegin": 105,
-                    "lineEnd": 105
+                    "lineBegin": 110,
+                    "lineEnd": 110
                 },
                 "sym": "test/cpp//pear/.decl"
             },
@@ -6367,14 +6367,14 @@
                 "nameRange": {
                     "columnBegin": 23,
                     "columnEnd": 24,
-                    "lineBegin": 184,
-                    "lineEnd": 184
+                    "lineBegin": 189,
+                    "lineEnd": 189
                 },
                 "range": {
                     "columnBegin": 19,
                     "columnEnd": 24,
-                    "lineBegin": 184,
-                    "lineEnd": 184
+                    "lineBegin": 189,
+                    "lineEnd": 189
                 },
                 "sym": "test/cpp//y/.decl"
             },
@@ -6420,14 +6420,14 @@
                 "nameRange": {
                     "columnBegin": 25,
                     "columnEnd": 26,
-                    "lineBegin": 188,
-                    "lineEnd": 188
+                    "lineBegin": 193,
+                    "lineEnd": 193
                 },
                 "range": {
                     "columnBegin": 21,
                     "columnEnd": 26,
-                    "lineBegin": 188,
-                    "lineEnd": 188
+                    "lineBegin": 193,
+                    "lineEnd": 193
                 },
                 "sym": "test/cpp//y/.decl"
             },
@@ -6473,14 +6473,14 @@
                 "nameRange": {
                     "columnBegin": 31,
                     "columnEnd": 32,
-                    "lineBegin": 201,
-                    "lineEnd": 201
+                    "lineBegin": 206,
+                    "lineEnd": 206
                 },
                 "range": {
                     "columnBegin": 27,
                     "columnEnd": 32,
-                    "lineBegin": 201,
-                    "lineEnd": 201
+                    "lineBegin": 206,
+                    "lineEnd": 206
                 },
                 "sym": "test/cpp//y/.decl"
             },
@@ -6526,14 +6526,14 @@
                 "nameRange": {
                     "columnBegin": 36,
                     "columnEnd": 37,
-                    "lineBegin": 205,
-                    "lineEnd": 205
+                    "lineBegin": 210,
+                    "lineEnd": 210
                 },
                 "range": {
                     "columnBegin": 32,
                     "columnEnd": 37,
-                    "lineBegin": 205,
-                    "lineEnd": 205
+                    "lineBegin": 210,
+                    "lineEnd": 210
                 },
                 "sym": "test/cpp//y/.decl"
             },
@@ -6573,8 +6573,8 @@
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 10,
-                    "lineBegin": 87,
-                    "lineEnd": 87
+                    "lineBegin": 92,
+                    "lineEnd": 92
                 },
                 "sym": "test/pp/define/test.cpp/A"
             },
@@ -6614,21 +6614,21 @@
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 10,
-                    "lineBegin": 88,
-                    "lineEnd": 88
+                    "lineBegin": 93,
+                    "lineEnd": 93
                 },
                 "sym": "test/pp/define/test.cpp/B"
             }
         ],
         "digest": {
-            "hash": "d572817cc1cddfd1be0b72fb785f2421ce28e009",
-            "size": 2992
+            "hash": "954c29835af06ef209fcc232d159e8ed31eba451",
+            "size": 3028
         },
         "referenced_file_digests": {
             "test": {
                 "test.cpp": {
-                    "hash": "d572817cc1cddfd1be0b72fb785f2421ce28e009",
-                    "size": 2992
+                    "hash": "954c29835af06ef209fcc232d159e8ed31eba451",
+                    "size": 3028
                 },
                 "test.h": {
                     "hash": "ce71a4bc848a767198c61bd5c21d1ead3be6a19b",
@@ -6683,8 +6683,8 @@
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 9,
-                    "lineBegin": 195,
-                    "lineEnd": 195
+                    "lineBegin": 200,
+                    "lineEnd": 200
                 },
                 "sym": "test/cpp//N1",
                 "target": {
@@ -6692,8 +6692,8 @@
                     "range": {
                         "columnBegin": 11,
                         "columnEnd": 13,
-                        "lineBegin": 173,
-                        "lineEnd": 173
+                        "lineBegin": 178,
+                        "lineEnd": 178
                     },
                     "repository": "test"
                 }
@@ -6740,8 +6740,8 @@
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 9,
-                    "lineBegin": 201,
-                    "lineEnd": 201
+                    "lineBegin": 206,
+                    "lineEnd": 206
                 },
                 "sym": "test/cpp//N1",
                 "target": {
@@ -6749,8 +6749,8 @@
                     "range": {
                         "columnBegin": 11,
                         "columnEnd": 13,
-                        "lineBegin": 173,
-                        "lineEnd": 173
+                        "lineBegin": 178,
+                        "lineEnd": 178
                     },
                     "repository": "test"
                 }
@@ -6797,8 +6797,8 @@
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 9,
-                    "lineBegin": 205,
-                    "lineEnd": 205
+                    "lineBegin": 210,
+                    "lineEnd": 210
                 },
                 "sym": "test/cpp//N1",
                 "target": {
@@ -6806,8 +6806,8 @@
                     "range": {
                         "columnBegin": 11,
                         "columnEnd": 13,
-                        "lineBegin": 173,
-                        "lineEnd": 173
+                        "lineBegin": 178,
+                        "lineEnd": 178
                     },
                     "repository": "test"
                 }
@@ -6854,8 +6854,8 @@
                 "range": {
                     "columnBegin": 11,
                     "columnEnd": 13,
-                    "lineBegin": 195,
-                    "lineEnd": 195
+                    "lineBegin": 200,
+                    "lineEnd": 200
                 },
                 "sym": "test/cpp//N1/N2",
                 "target": {
@@ -6863,8 +6863,8 @@
                     "range": {
                         "columnBegin": 11,
                         "columnEnd": 13,
-                        "lineBegin": 175,
-                        "lineEnd": 175
+                        "lineBegin": 180,
+                        "lineEnd": 180
                     },
                     "repository": "test"
                 }
@@ -6911,8 +6911,8 @@
                 "range": {
                     "columnBegin": 11,
                     "columnEnd": 13,
-                    "lineBegin": 201,
-                    "lineEnd": 201
+                    "lineBegin": 206,
+                    "lineEnd": 206
                 },
                 "sym": "test/cpp//N1/N2",
                 "target": {
@@ -6920,8 +6920,8 @@
                     "range": {
                         "columnBegin": 11,
                         "columnEnd": 13,
-                        "lineBegin": 175,
-                        "lineEnd": 175
+                        "lineBegin": 180,
+                        "lineEnd": 180
                     },
                     "repository": "test"
                 }
@@ -6968,8 +6968,8 @@
                 "range": {
                     "columnBegin": 11,
                     "columnEnd": 13,
-                    "lineBegin": 205,
-                    "lineEnd": 205
+                    "lineBegin": 210,
+                    "lineEnd": 210
                 },
                 "sym": "test/cpp//N1/N2",
                 "target": {
@@ -6977,8 +6977,8 @@
                     "range": {
                         "columnBegin": 11,
                         "columnEnd": 13,
-                        "lineBegin": 175,
-                        "lineEnd": 175
+                        "lineBegin": 180,
+                        "lineEnd": 180
                     },
                     "repository": "test"
                 }
@@ -7025,8 +7025,8 @@
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 18,
-                    "lineBegin": 205,
-                    "lineEnd": 205
+                    "lineBegin": 210,
+                    "lineEnd": 210
                 },
                 "sym": "test/cpp//N1/N2/Bar",
                 "target": {
@@ -7034,8 +7034,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 186,
-                        "lineEnd": 186
+                        "lineBegin": 191,
+                        "lineEnd": 191
                     },
                     "repository": "test"
                 }
@@ -7082,8 +7082,8 @@
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 12,
-                    "lineBegin": 188,
-                    "lineEnd": 188
+                    "lineBegin": 193,
+                    "lineEnd": 193
                 },
                 "sym": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo",
                 "target": {
@@ -7091,8 +7091,8 @@
                     "range": {
                         "columnBegin": 20,
                         "columnEnd": 23,
-                        "lineBegin": 205,
-                        "lineEnd": 205
+                        "lineBegin": 210,
+                        "lineEnd": 210
                     },
                     "repository": "test"
                 }
@@ -7139,8 +7139,8 @@
                 "range": {
                     "columnBegin": 20,
                     "columnEnd": 23,
-                    "lineBegin": 205,
-                    "lineEnd": 205
+                    "lineBegin": 210,
+                    "lineEnd": 210
                 },
                 "sym": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo/.decl",
                 "target": {
@@ -7148,8 +7148,8 @@
                     "range": {
                         "columnBegin": 9,
                         "columnEnd": 12,
-                        "lineBegin": 188,
-                        "lineEnd": 188
+                        "lineBegin": 193,
+                        "lineEnd": 193
                     },
                     "repository": "test"
                 }
@@ -7196,8 +7196,8 @@
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 9,
-                    "lineBegin": 179,
-                    "lineEnd": 179
+                    "lineBegin": 184,
+                    "lineEnd": 184
                 },
                 "sym": "test/cpp//N1/N2/N3",
                 "target": {
@@ -7205,8 +7205,8 @@
                     "range": {
                         "columnBegin": 11,
                         "columnEnd": 13,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -7253,8 +7253,8 @@
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 17,
-                    "lineBegin": 195,
-                    "lineEnd": 195
+                    "lineBegin": 200,
+                    "lineEnd": 200
                 },
                 "sym": "test/cpp//N1/N2/N3",
                 "target": {
@@ -7262,8 +7262,8 @@
                     "range": {
                         "columnBegin": 11,
                         "columnEnd": 13,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -7310,8 +7310,8 @@
                 "range": {
                     "columnBegin": 11,
                     "columnEnd": 14,
-                    "lineBegin": 179,
-                    "lineEnd": 179
+                    "lineBegin": 184,
+                    "lineEnd": 184
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo",
                 "target": {
@@ -7319,8 +7319,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -7367,8 +7367,8 @@
                 "range": {
                     "columnBegin": 19,
                     "columnEnd": 22,
-                    "lineBegin": 195,
-                    "lineEnd": 195
+                    "lineBegin": 200,
+                    "lineEnd": 200
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo",
                 "target": {
@@ -7376,8 +7376,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -7424,8 +7424,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 14,
-                    "lineBegin": 179,
-                    "lineEnd": 179
+                    "lineBegin": 184,
+                    "lineEnd": 184
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -7433,8 +7433,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -7481,8 +7481,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 4,
-                    "lineBegin": 184,
-                    "lineEnd": 184
+                    "lineBegin": 189,
+                    "lineEnd": 189
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -7490,8 +7490,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -7538,8 +7538,8 @@
                 "range": {
                     "columnBegin": 11,
                     "columnEnd": 14,
-                    "lineBegin": 184,
-                    "lineEnd": 184
+                    "lineBegin": 189,
+                    "lineEnd": 189
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -7547,8 +7547,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -7595,8 +7595,8 @@
                 "range": {
                     "columnBegin": 19,
                     "columnEnd": 22,
-                    "lineBegin": 184,
-                    "lineEnd": 184
+                    "lineBegin": 189,
+                    "lineEnd": 189
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -7604,8 +7604,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -7652,8 +7652,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 6,
-                    "lineBegin": 188,
-                    "lineEnd": 188
+                    "lineBegin": 193,
+                    "lineEnd": 193
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -7661,8 +7661,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -7709,8 +7709,8 @@
                 "range": {
                     "columnBegin": 13,
                     "columnEnd": 16,
-                    "lineBegin": 188,
-                    "lineEnd": 188
+                    "lineBegin": 193,
+                    "lineEnd": 193
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -7718,8 +7718,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -7766,8 +7766,8 @@
                 "range": {
                     "columnBegin": 21,
                     "columnEnd": 24,
-                    "lineBegin": 188,
-                    "lineEnd": 188
+                    "lineBegin": 193,
+                    "lineEnd": 193
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -7775,8 +7775,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -7823,8 +7823,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 22,
-                    "lineBegin": 195,
-                    "lineEnd": 195
+                    "lineBegin": 200,
+                    "lineEnd": 200
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -7832,8 +7832,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -7880,8 +7880,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 4,
-                    "lineBegin": 197,
-                    "lineEnd": 197
+                    "lineBegin": 202,
+                    "lineEnd": 202
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -7889,8 +7889,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -7937,8 +7937,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 11,
-                    "lineBegin": 197,
-                    "lineEnd": 197
+                    "lineBegin": 202,
+                    "lineEnd": 202
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -7946,8 +7946,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -7994,8 +7994,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 4,
-                    "lineBegin": 201,
-                    "lineEnd": 201
+                    "lineBegin": 206,
+                    "lineEnd": 206
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -8003,8 +8003,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -8051,8 +8051,8 @@
                 "range": {
                     "columnBegin": 19,
                     "columnEnd": 22,
-                    "lineBegin": 201,
-                    "lineEnd": 201
+                    "lineBegin": 206,
+                    "lineEnd": 206
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -8060,8 +8060,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -8108,8 +8108,8 @@
                 "range": {
                     "columnBegin": 27,
                     "columnEnd": 30,
-                    "lineBegin": 201,
-                    "lineEnd": 201
+                    "lineBegin": 206,
+                    "lineEnd": 206
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -8117,8 +8117,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -8165,8 +8165,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 4,
-                    "lineBegin": 205,
-                    "lineEnd": 205
+                    "lineBegin": 210,
+                    "lineEnd": 210
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -8174,8 +8174,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -8222,8 +8222,8 @@
                 "range": {
                     "columnBegin": 24,
                     "columnEnd": 27,
-                    "lineBegin": 205,
-                    "lineEnd": 205
+                    "lineBegin": 210,
+                    "lineEnd": 210
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -8231,8 +8231,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -8279,8 +8279,8 @@
                 "range": {
                     "columnBegin": 32,
                     "columnEnd": 35,
-                    "lineBegin": 205,
-                    "lineEnd": 205
+                    "lineBegin": 210,
+                    "lineEnd": 210
                 },
                 "sym": "test/cpp//N1/N2/N3/Foo/.decl",
                 "target": {
@@ -8288,8 +8288,8 @@
                     "range": {
                         "columnBegin": 23,
                         "columnEnd": 26,
-                        "lineBegin": 177,
-                        "lineEnd": 177
+                        "lineBegin": 182,
+                        "lineEnd": 182
                     },
                     "repository": "test"
                 }
@@ -8336,8 +8336,8 @@
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 10,
-                    "lineBegin": 184,
-                    "lineEnd": 184
+                    "lineBegin": 189,
+                    "lineEnd": 189
                 },
                 "sym": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo",
                 "target": {
@@ -8345,8 +8345,8 @@
                     "range": {
                         "columnBegin": 15,
                         "columnEnd": 18,
-                        "lineBegin": 201,
-                        "lineEnd": 201
+                        "lineBegin": 206,
+                        "lineEnd": 206
                     },
                     "repository": "test"
                 }
@@ -8393,8 +8393,8 @@
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 18,
-                    "lineBegin": 201,
-                    "lineEnd": 201
+                    "lineBegin": 206,
+                    "lineEnd": 206
                 },
                 "sym": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo/.decl",
                 "target": {
@@ -8402,8 +8402,8 @@
                     "range": {
                         "columnBegin": 7,
                         "columnEnd": 10,
-                        "lineBegin": 184,
-                        "lineEnd": 184
+                        "lineBegin": 189,
+                        "lineEnd": 189
                     },
                     "repository": "test"
                 }
@@ -8450,8 +8450,8 @@
                 "range": {
                     "columnBegin": 28,
                     "columnEnd": 30,
-                    "lineBegin": 152,
-                    "lineEnd": 152
+                    "lineBegin": 157,
+                    "lineEnd": 157
                 },
                 "sym": "test/cpp//Q/OO",
                 "target": {
@@ -8459,8 +8459,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 12,
-                        "lineBegin": 150,
-                        "lineEnd": 150
+                        "lineBegin": 155,
+                        "lineEnd": 155
                     },
                     "repository": "test"
                 }
@@ -8507,8 +8507,8 @@
                 "range": {
                     "columnBegin": 41,
                     "columnEnd": 43,
-                    "lineBegin": 152,
-                    "lineEnd": 152
+                    "lineBegin": 157,
+                    "lineEnd": 157
                 },
                 "sym": "test/cpp//Q/OO",
                 "target": {
@@ -8516,8 +8516,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 12,
-                        "lineBegin": 150,
-                        "lineEnd": 150
+                        "lineBegin": 155,
+                        "lineEnd": 155
                     },
                     "repository": "test"
                 }
@@ -8564,8 +8564,8 @@
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 7,
-                    "lineBegin": 154,
-                    "lineEnd": 154
+                    "lineBegin": 159,
+                    "lineEnd": 159
                 },
                 "sym": "test/cpp//Q/OO",
                 "target": {
@@ -8573,8 +8573,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 12,
-                        "lineBegin": 150,
-                        "lineEnd": 150
+                        "lineBegin": 155,
+                        "lineEnd": 155
                     },
                     "repository": "test"
                 }
@@ -8621,8 +8621,8 @@
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 7,
-                    "lineBegin": 156,
-                    "lineEnd": 156
+                    "lineBegin": 161,
+                    "lineEnd": 161
                 },
                 "sym": "test/cpp//Q/OO",
                 "target": {
@@ -8630,8 +8630,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 12,
-                        "lineBegin": 150,
-                        "lineEnd": 150
+                        "lineBegin": 155,
+                        "lineEnd": 155
                     },
                     "repository": "test"
                 }
@@ -8678,8 +8678,8 @@
                 "range": {
                     "columnBegin": 19,
                     "columnEnd": 21,
-                    "lineBegin": 156,
-                    "lineEnd": 156
+                    "lineBegin": 161,
+                    "lineEnd": 161
                 },
                 "sym": "test/cpp//Q/OO",
                 "target": {
@@ -8687,8 +8687,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 12,
-                        "lineBegin": 150,
-                        "lineEnd": 150
+                        "lineBegin": 155,
+                        "lineEnd": 155
                     },
                     "repository": "test"
                 }
@@ -8735,8 +8735,8 @@
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 7,
-                    "lineBegin": 157,
-                    "lineEnd": 157
+                    "lineBegin": 162,
+                    "lineEnd": 162
                 },
                 "sym": "test/cpp//Q/OO",
                 "target": {
@@ -8744,8 +8744,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 12,
-                        "lineBegin": 150,
-                        "lineEnd": 150
+                        "lineBegin": 155,
+                        "lineEnd": 155
                     },
                     "repository": "test"
                 }
@@ -8792,8 +8792,8 @@
                 "range": {
                     "columnBegin": 19,
                     "columnEnd": 21,
-                    "lineBegin": 157,
-                    "lineEnd": 157
+                    "lineBegin": 162,
+                    "lineEnd": 162
                 },
                 "sym": "test/cpp//Q/OO",
                 "target": {
@@ -8801,8 +8801,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 12,
-                        "lineBegin": 150,
-                        "lineEnd": 150
+                        "lineBegin": 155,
+                        "lineEnd": 155
                     },
                     "repository": "test"
                 }
@@ -8849,8 +8849,8 @@
                 "range": {
                     "columnBegin": 21,
                     "columnEnd": 23,
-                    "lineBegin": 141,
-                    "lineEnd": 141
+                    "lineBegin": 146,
+                    "lineEnd": 146
                 },
                 "sym": "test/cpp//Q/QQ",
                 "target": {
@@ -8858,8 +8858,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 12,
-                        "lineBegin": 133,
-                        "lineEnd": 133
+                        "lineBegin": 138,
+                        "lineEnd": 138
                     },
                     "repository": "test"
                 }
@@ -8906,8 +8906,8 @@
                 "range": {
                     "columnBegin": 22,
                     "columnEnd": 24,
-                    "lineBegin": 142,
-                    "lineEnd": 142
+                    "lineBegin": 147,
+                    "lineEnd": 147
                 },
                 "sym": "test/cpp//Q/QQ",
                 "target": {
@@ -8915,8 +8915,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 12,
-                        "lineBegin": 133,
-                        "lineEnd": 133
+                        "lineBegin": 138,
+                        "lineEnd": 138
                     },
                     "repository": "test"
                 }
@@ -8963,8 +8963,8 @@
                 "range": {
                     "columnBegin": 21,
                     "columnEnd": 23,
-                    "lineBegin": 143,
-                    "lineEnd": 143
+                    "lineBegin": 148,
+                    "lineEnd": 148
                 },
                 "sym": "test/cpp//Q/QQ",
                 "target": {
@@ -8972,8 +8972,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 12,
-                        "lineBegin": 133,
-                        "lineEnd": 133
+                        "lineBegin": 138,
+                        "lineEnd": 138
                     },
                     "repository": "test"
                 }
@@ -9020,8 +9020,8 @@
                 "range": {
                     "columnBegin": 32,
                     "columnEnd": 34,
-                    "lineBegin": 145,
-                    "lineEnd": 145
+                    "lineBegin": 150,
+                    "lineEnd": 150
                 },
                 "sym": "test/cpp//Q/QQ",
                 "target": {
@@ -9029,8 +9029,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 12,
-                        "lineBegin": 133,
-                        "lineEnd": 133
+                        "lineBegin": 138,
+                        "lineEnd": 138
                     },
                     "repository": "test"
                 }
@@ -9077,8 +9077,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 8,
-                    "lineBegin": 147,
-                    "lineEnd": 147
+                    "lineBegin": 152,
+                    "lineEnd": 152
                 },
                 "sym": "test/cpp//Q/QQ",
                 "target": {
@@ -9086,8 +9086,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 12,
-                        "lineBegin": 133,
-                        "lineEnd": 133
+                        "lineBegin": 138,
+                        "lineEnd": 138
                     },
                     "repository": "test"
                 }
@@ -9134,8 +9134,8 @@
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 8,
-                    "lineBegin": 123,
-                    "lineEnd": 123
+                    "lineBegin": 128,
+                    "lineEnd": 128
                 },
                 "sym": "test/cpp//d",
                 "target": {
@@ -9143,8 +9143,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 9,
-                        "lineBegin": 107,
-                        "lineEnd": 107
+                        "lineBegin": 112,
+                        "lineEnd": 112
                     },
                     "repository": "test"
                 }
@@ -9191,8 +9191,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 6,
-                    "lineBegin": 56,
-                    "lineEnd": 56
+                    "lineBegin": 61,
+                    "lineEnd": 61
                 },
                 "sym": "test/cpp//foo",
                 "target": {
@@ -9248,8 +9248,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 6,
-                    "lineBegin": 57,
-                    "lineEnd": 57
+                    "lineBegin": 62,
+                    "lineEnd": 62
                 },
                 "sym": "test/cpp//foo",
                 "target": {
@@ -9305,8 +9305,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 6,
-                    "lineBegin": 58,
-                    "lineEnd": 58
+                    "lineBegin": 63,
+                    "lineEnd": 63
                 },
                 "sym": "test/cpp//foo",
                 "target": {
@@ -9362,8 +9362,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 6,
-                    "lineBegin": 59,
-                    "lineEnd": 59
+                    "lineBegin": 64,
+                    "lineEnd": 64
                 },
                 "sym": "test/cpp//foo",
                 "target": {
@@ -9419,8 +9419,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 6,
-                    "lineBegin": 60,
-                    "lineEnd": 60
+                    "lineBegin": 65,
+                    "lineEnd": 65
                 },
                 "sym": "test/cpp//foo",
                 "target": {
@@ -9476,8 +9476,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 9,
-                    "lineBegin": 56,
-                    "lineEnd": 56
+                    "lineBegin": 61,
+                    "lineEnd": 61
                 },
                 "sym": "test/cpp//foo/S",
                 "target": {
@@ -9533,8 +9533,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 11,
-                    "lineBegin": 57,
-                    "lineEnd": 57
+                    "lineBegin": 62,
+                    "lineEnd": 62
                 },
                 "sym": "test/cpp//foo/bar",
                 "target": {
@@ -9590,8 +9590,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 11,
-                    "lineBegin": 60,
-                    "lineEnd": 60
+                    "lineBegin": 65,
+                    "lineEnd": 65
                 },
                 "sym": "test/cpp//foo/bar",
                 "target": {
@@ -9647,8 +9647,8 @@
                 "range": {
                     "columnBegin": 13,
                     "columnEnd": 14,
-                    "lineBegin": 57,
-                    "lineEnd": 57
+                    "lineBegin": 62,
+                    "lineEnd": 62
                 },
                 "sym": "test/cpp//foo/bar/T",
                 "target": {
@@ -9704,8 +9704,8 @@
                 "range": {
                     "columnBegin": 13,
                     "columnEnd": 14,
-                    "lineBegin": 60,
-                    "lineEnd": 60
+                    "lineBegin": 65,
+                    "lineEnd": 65
                 },
                 "sym": "test/cpp//foo/bar/g/.f//.decl",
                 "target": {
@@ -9761,8 +9761,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 9,
-                    "lineBegin": 58,
-                    "lineEnd": 58
+                    "lineBegin": 63,
+                    "lineEnd": 63
                 },
                 "sym": "test/cpp//foo/f/.f//.decl",
                 "target": {
@@ -9875,8 +9875,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 11,
-                    "lineBegin": 59,
-                    "lineEnd": 59
+                    "lineBegin": 64,
+                    "lineEnd": 64
                 },
                 "sym": "test/cpp//foo/foo/.f/",
                 "target": {
@@ -9989,8 +9989,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 11,
-                    "lineBegin": 59,
-                    "lineEnd": 59
+                    "lineBegin": 64,
+                    "lineEnd": 64
                 },
                 "sym": "test/cpp//foo/foo/.f//.decl",
                 "target": {
@@ -10103,8 +10103,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 7,
-                    "lineBegin": 52,
-                    "lineEnd": 52
+                    "lineBegin": 54,
+                    "lineEnd": 54
                 },
                 "sym": "test/cpp//h/.f/int",
                 "target": {
@@ -10112,8 +10112,8 @@
                     "range": {
                         "columnBegin": 6,
                         "columnEnd": 7,
-                        "lineBegin": 54,
-                        "lineEnd": 54
+                        "lineBegin": 59,
+                        "lineEnd": 59
                     },
                     "repository": "test"
                 }
@@ -10160,8 +10160,8 @@
                 "range": {
                     "columnBegin": 5,
                     "columnEnd": 6,
-                    "lineBegin": 55,
-                    "lineEnd": 55
+                    "lineBegin": 60,
+                    "lineEnd": 60
                 },
                 "sym": "test/cpp//h/.f/int",
                 "target": {
@@ -10169,8 +10169,8 @@
                     "range": {
                         "columnBegin": 6,
                         "columnEnd": 7,
-                        "lineBegin": 54,
-                        "lineEnd": 54
+                        "lineBegin": 59,
+                        "lineEnd": 59
                     },
                     "repository": "test"
                 }
@@ -10217,8 +10217,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 7,
-                    "lineBegin": 54,
-                    "lineEnd": 54
+                    "lineBegin": 59,
+                    "lineEnd": 59
                 },
                 "sym": "test/cpp//h/.f/int/.decl",
                 "target": {
@@ -10226,8 +10226,8 @@
                     "range": {
                         "columnBegin": 6,
                         "columnEnd": 7,
-                        "lineBegin": 52,
-                        "lineEnd": 52
+                        "lineBegin": 54,
+                        "lineEnd": 54
                     },
                     "repository": "test"
                 }
@@ -10274,8 +10274,8 @@
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 8,
-                    "lineBegin": 55,
-                    "lineEnd": 55
+                    "lineBegin": 60,
+                    "lineEnd": 60
                 },
                 "sym": "test/cpp//h/i/.decl",
                 "target": {
@@ -10283,8 +10283,8 @@
                     "range": {
                         "columnBegin": 12,
                         "columnEnd": 13,
-                        "lineBegin": 54,
-                        "lineEnd": 54
+                        "lineBegin": 59,
+                        "lineEnd": 59
                     },
                     "repository": "test"
                 }
@@ -10331,8 +10331,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 4,
-                    "lineBegin": 61,
-                    "lineEnd": 61
+                    "lineBegin": 66,
+                    "lineEnd": 66
                 },
                 "sym": "test/cpp//h/i/.decl",
                 "target": {
@@ -10340,8 +10340,8 @@
                     "range": {
                         "columnBegin": 12,
                         "columnEnd": 13,
-                        "lineBegin": 54,
-                        "lineEnd": 54
+                        "lineBegin": 59,
+                        "lineEnd": 59
                     },
                     "repository": "test"
                 }
@@ -10388,8 +10388,8 @@
                 "range": {
                     "columnBegin": 11,
                     "columnEnd": 13,
-                    "lineBegin": 202,
-                    "lineEnd": 202
+                    "lineBegin": 207,
+                    "lineEnd": 207
                 },
                 "sym": "test/cpp//id/.f/N1::N2::N3::Foo/.decl",
                 "target": {
@@ -10397,8 +10397,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 7,
-                        "lineBegin": 197,
-                        "lineEnd": 197
+                        "lineBegin": 202,
+                        "lineEnd": 202
                     },
                     "repository": "test"
                 }
@@ -10445,8 +10445,8 @@
                 "range": {
                     "columnBegin": 11,
                     "columnEnd": 13,
-                    "lineBegin": 206,
-                    "lineEnd": 206
+                    "lineBegin": 211,
+                    "lineEnd": 211
                 },
                 "sym": "test/cpp//id/.f/N1::N2::N3::Foo/.decl",
                 "target": {
@@ -10454,8 +10454,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 7,
-                        "lineBegin": 197,
-                        "lineEnd": 197
+                        "lineBegin": 202,
+                        "lineEnd": 202
                     },
                     "repository": "test"
                 }
@@ -10502,8 +10502,8 @@
                 "range": {
                     "columnBegin": 11,
                     "columnEnd": 18,
-                    "lineBegin": 74,
-                    "lineEnd": 74
+                    "lineBegin": 79,
+                    "lineEnd": 79
                 },
                 "sym": "test/cpp//maybe/Nothing",
                 "target": {
@@ -10511,8 +10511,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 15,
-                        "lineBegin": 69,
-                        "lineEnd": 69
+                        "lineBegin": 74,
+                        "lineEnd": 74
                     },
                     "repository": "test"
                 }
@@ -10559,8 +10559,8 @@
                 "range": {
                     "columnBegin": 27,
                     "columnEnd": 34,
-                    "lineBegin": 74,
-                    "lineEnd": 74
+                    "lineBegin": 79,
+                    "lineEnd": 79
                 },
                 "sym": "test/cpp//maybe/Nothing",
                 "target": {
@@ -10568,8 +10568,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 15,
-                        "lineBegin": 69,
-                        "lineEnd": 69
+                        "lineBegin": 74,
+                        "lineEnd": 74
                     },
                     "repository": "test"
                 }
@@ -10616,8 +10616,8 @@
                 "range": {
                     "columnBegin": 19,
                     "columnEnd": 52,
-                    "lineBegin": 74,
-                    "lineEnd": 74
+                    "lineBegin": 79,
+                    "lineEnd": 79
                 },
                 "sym": "test/cpp//maybe/Nothing/.c/maybe::Nothing::_secret",
                 "target": {
@@ -10625,8 +10625,8 @@
                     "range": {
                         "columnBegin": 22,
                         "columnEnd": 29,
-                        "lineBegin": 72,
-                        "lineEnd": 72
+                        "lineBegin": 77,
+                        "lineEnd": 77
                     },
                     "repository": "test"
                 }
@@ -10673,8 +10673,8 @@
                 "range": {
                     "columnBegin": 30,
                     "columnEnd": 37,
-                    "lineBegin": 72,
-                    "lineEnd": 72
+                    "lineBegin": 77,
+                    "lineEnd": 77
                 },
                 "sym": "test/cpp//maybe/Nothing/_secret",
                 "target": {
@@ -10682,8 +10682,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 21,
-                        "lineBegin": 70,
-                        "lineEnd": 70
+                        "lineBegin": 75,
+                        "lineEnd": 75
                     },
                     "repository": "test"
                 }
@@ -10730,8 +10730,8 @@
                 "range": {
                     "columnBegin": 36,
                     "columnEnd": 43,
-                    "lineBegin": 74,
-                    "lineEnd": 74
+                    "lineBegin": 79,
+                    "lineEnd": 79
                 },
                 "sym": "test/cpp//maybe/Nothing/_secret",
                 "target": {
@@ -10739,8 +10739,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 21,
-                        "lineBegin": 70,
-                        "lineEnd": 70
+                        "lineBegin": 75,
+                        "lineEnd": 75
                     },
                     "repository": "test"
                 }
@@ -10787,8 +10787,8 @@
                 "range": {
                     "columnBegin": 45,
                     "columnEnd": 51,
-                    "lineBegin": 74,
-                    "lineEnd": 74
+                    "lineBegin": 79,
+                    "lineEnd": 79
                 },
                 "sym": "test/cpp//maybe/Nothing/_secret/_magic",
                 "target": {
@@ -10796,8 +10796,8 @@
                     "range": {
                         "columnBegin": 24,
                         "columnEnd": 30,
-                        "lineBegin": 70,
-                        "lineEnd": 70
+                        "lineBegin": 75,
+                        "lineEnd": 75
                     },
                     "repository": "test"
                 }
@@ -10844,8 +10844,8 @@
                 "range": {
                     "columnBegin": 4,
                     "columnEnd": 13,
-                    "lineBegin": 79,
-                    "lineEnd": 79
+                    "lineBegin": 84,
+                    "lineEnd": 84
                 },
                 "sym": "test/cpp//maybe/Something",
                 "target": {
@@ -10853,8 +10853,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 17,
-                        "lineBegin": 76,
-                        "lineEnd": 76
+                        "lineBegin": 81,
+                        "lineEnd": 81
                     },
                     "repository": "test"
                 }
@@ -10901,8 +10901,8 @@
                 "range": {
                     "columnBegin": 24,
                     "columnEnd": 25,
-                    "lineBegin": 78,
-                    "lineEnd": 78
+                    "lineBegin": 83,
+                    "lineEnd": 83
                 },
                 "sym": "test/cpp//maybe/Something/.ctor/a/.decl",
                 "target": {
@@ -10910,8 +10910,8 @@
                     "range": {
                         "columnBegin": 17,
                         "columnEnd": 18,
-                        "lineBegin": 78,
-                        "lineEnd": 78
+                        "lineBegin": 83,
+                        "lineEnd": 83
                     },
                     "repository": "test"
                 }
@@ -10958,8 +10958,8 @@
                 "range": {
                     "columnBegin": 21,
                     "columnEnd": 23,
-                    "lineBegin": 78,
-                    "lineEnd": 78
+                    "lineBegin": 83,
+                    "lineEnd": 83
                 },
                 "sym": "test/cpp//maybe/Something/a_/.decl",
                 "target": {
@@ -10967,8 +10967,8 @@
                     "range": {
                         "columnBegin": 7,
                         "columnEnd": 9,
-                        "lineBegin": 77,
-                        "lineEnd": 77
+                        "lineBegin": 82,
+                        "lineEnd": 82
                     },
                     "repository": "test"
                 }
@@ -11015,8 +11015,8 @@
                 "range": {
                     "columnBegin": 7,
                     "columnEnd": 11,
-                    "lineBegin": 125,
-                    "lineEnd": 125
+                    "lineBegin": 130,
+                    "lineEnd": 130
                 },
                 "sym": "test/cpp//pear/.decl",
                 "target": {
@@ -11024,8 +11024,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 14,
-                        "lineBegin": 105,
-                        "lineEnd": 105
+                        "lineBegin": 110,
+                        "lineEnd": 110
                     },
                     "repository": "test"
                 }
@@ -11072,8 +11072,8 @@
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 20,
-                    "lineBegin": 145,
-                    "lineEnd": 145
+                    "lineBegin": 150,
+                    "lineEnd": 150
                 },
                 "sym": "test/cpp//pear/.decl",
                 "target": {
@@ -11081,8 +11081,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 14,
-                        "lineBegin": 105,
-                        "lineEnd": 105
+                        "lineBegin": 110,
+                        "lineEnd": 110
                     },
                     "repository": "test"
                 }
@@ -11225,8 +11225,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 18,
-                    "lineBegin": 85,
-                    "lineEnd": 85
+                    "lineBegin": 90,
+                    "lineEnd": 90
                 },
                 "sym": "test/pp/test.h",
                 "target": {
