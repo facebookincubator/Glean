@@ -446,7 +446,7 @@ arrayPrefix pats = Angle $ do
   return (ArrayPrefix DSL pats)
 
 unit :: Angle ()
-unit = Angle $ pure (Variable DSL "{}")
+unit = Angle $ pure (Struct DSL  [])
 
 if_ :: Angle cond -> Angle a -> Angle a -> Angle a
 if_ cond t e = Angle $ IfPattern DSL <$> gen cond <*> gen t <*> gen e
