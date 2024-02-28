@@ -113,7 +113,13 @@ newtype AngleStatement =
 
 -- | Render to angle text, to aid logging and debugging
 display :: Angle t -> Text
-display (Angle m) = render $
+display = render . build
+
+render :: SourceQuery -> Text
+render q = renderStrict (layoutCompact (Display.displayDefault q))
+
+build :: Angle t -> SourceQuery
+build (Angle m) =
   case evalState m 0 of
     NestedQuery _ q -> q
     t -> Angle.SourceQuery (Just t) []
@@ -137,9 +143,6 @@ display (Angle m) = render $
 -- >      ]
 query :: (Type t) => Angle t -> Query t
 query = Thrift.angleData . display
-
-render :: SourceQuery -> Text
-render q = renderStrict (layoutCompact (Display.displayDefault q))
 
 class AngleVars f r where
   -- | Use `vars` to batch up a series of nested `var` calls:
