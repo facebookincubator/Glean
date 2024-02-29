@@ -783,7 +783,8 @@ executable gen-schema
         glean:config,
         glean:if-glean-hs,
         glean:if-internal-hs,
-        aeson-pretty
+        aeson-pretty,
+        fuzzy
 
 library bytecode-instruction
     import: fb-haskell, fb-cpp, deps

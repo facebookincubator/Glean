@@ -47,6 +47,7 @@ import Options.Applicative
 import System.Directory
 import System.FilePath
 import System.IO
+import qualified Text.Fuzzy as Fuzzy
 import Text.Printf
 
 import Thrift.Util
@@ -316,11 +317,21 @@ graph :: GraphOptions -> DbSchema -> SourceSchemas -> [Version] -> IO ()
 graph opts dbschema sourceSchemas versions =
   Text.putStrLn $ drawGraph opts graph roots
   where
+    predicatesGraph = predicateGraph (ignoreDerivations opts) dbschema
     (roots, graph) = case graphType opts of
       PredicateGraph ->
-        let graph = predicateGraph (ignoreDerivations opts) dbschema
-            roots = maybe (Map.keys graph) pure (target opts)
-        in (roots, graph)
+        case target opts of
+          Nothing -> (Map.keys predicatesGraph, predicatesGraph)
+          Just t -> case Map.lookup t predicatesGraph of
+            Nothing
+              | cand:_ <- Fuzzy.simpleFilter t (Map.keys predicatesGraph)
+              -> errorWithoutStackTrace $ Text.unpack $
+                "did you mean " <> cand <> " ?"
+            Nothing
+              -> errorWithoutStackTrace $ Text.unpack $
+                "predicate not found in graph: " <> t
+            Just _
+              -> (pure t, predicatesGraph)
       SchemaGraph ->
         let everyAllSchema  = map (\v -> "all." <> Text.pack (show v)) versions
             roots = maybe everyAllSchema pure (target opts)
