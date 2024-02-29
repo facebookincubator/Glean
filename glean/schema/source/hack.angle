@@ -20,7 +20,15 @@ predicate QName :
     namespace_ : maybe NamespaceQName,
   }
 
-# Hack type (textual representation)
+# Type and contexts are represented as strings.
+# Qualified names use "\\" as separator, don't start with a leading "\\".
+# The most common types don't start with HH https://fburl.com/code/uavv841q
+#
+# Example: fully qualified name -> representation in DB
+# \\HH\\Contexts\\throws<\\FooException> -> HH\\Contexts\\throws<FooException>
+# \\HH\\Awaitable -> Awaitable
+# \\HH\\Contexts\\defaults -> HH\\Contexts\\defaults
+# \\HH\\Traversable -> Traversable
 predicate Type : string
 
 predicate Context_ : string
