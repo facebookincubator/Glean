@@ -50,7 +50,6 @@ data Config = Config
   , cfgBenchmark :: Bool  -- ^ function-calls pass
   , cfgMatchAlgorithm :: MatchAlgorithm  -- ^ function-calls pass
   , cfgDebugPrintReferences :: Bool  -- ^ function-calls pass
-  , cfgMaxQueueSize :: Int  -- ^ function-calls pass
   , cfgIncremental :: Bool  -- ^ derive incrementally
   , cfgTestedFileShards :: Int -- Number of shards for --tested-file deriver
   , cfgTestedFileShard :: Int -- Shard number for ---tested-file deriver
@@ -78,7 +77,6 @@ testConfig repo = Config
   , cfgBenchmark = False
   , cfgMatchAlgorithm = def
   , cfgDebugPrintReferences = False
-  , cfgMaxQueueSize = 100000
   , cfgIncremental = False
   , cfgTestedFileShards = 1
   , cfgTestedFileShard = 0
@@ -132,11 +130,8 @@ options = do
         O.flag' SourceVector (O.long "match-source-vector") <|>
         pure def
   cfgDebugPrintReferences <- O.switch $ O.long "debug-print"
-  cfgMaxQueueSize <- O.option O.auto $
-    O.long "max-queue-size"
-    <> O.metavar "N"
-    <> O.value 10000
-    <> O.help "function-calls: maximum queue size for cxx.FileXRefMap"
+  _ <- O.switch $ O.long "max-queue-size" <> O.hidden
+    -- ignored for backwards-compat
   cfgIncremental <- O.switch $
     O.long "incremental"
   cfgTestedFileShards <- O.option O.auto $
