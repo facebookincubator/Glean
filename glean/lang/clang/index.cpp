@@ -26,7 +26,7 @@
 #include <folly/Conv.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/FileUtil.h>
-#include <folly/json.h>
+#include <folly/json/json.h>
 #include <folly/Range.h>
 
 #if GLEAN_FACEBOOK

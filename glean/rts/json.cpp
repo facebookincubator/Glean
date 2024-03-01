@@ -15,9 +15,9 @@
 #endif
 #include "glean/rts/json.h"
 
-#include <folly/dynamic.h>
+#include <folly/json/dynamic.h>
 #include <folly/lang/ToAscii.h>
-#include <folly/json.h>
+#include <folly/json/json.h>
 
 using namespace facebook::hs;
 
