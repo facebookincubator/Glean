@@ -761,7 +761,8 @@ toContext (Hack.Context_ _ (Just ctx)) = Context ctx'
     --
     -- If we switch to proper declarations and auto-import tables we can avoid
     -- the string handling here.
-    ctx' | Just tidy <- Text.stripPrefix "\\HH\\Contexts\\" ctx = tidy
+    ctx' | Just tidy <- Text.stripPrefix "HH\\Contexts\\" ctx = tidy
+         | Just tidy <- Text.stripPrefix "\\HH\\Contexts\\" ctx = tidy
          | otherwise = ctx
 
 toVariance :: Hack.Variance -> Variance

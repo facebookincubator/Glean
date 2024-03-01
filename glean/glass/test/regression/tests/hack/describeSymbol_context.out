@@ -39,7 +39,7 @@
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
-        "signature": "private function io_good()[HH\\Contexts\\io]: void",
+        "signature": "private function io_good()[io]: void",
         "sym": "test/php/TestAnnotation/io_good",
         "sym_location": {
             "filepath": "www/SourceClass.php",
