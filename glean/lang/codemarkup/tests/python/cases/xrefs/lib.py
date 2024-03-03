@@ -60,5 +60,4 @@ class Child(Parent1, Parent2):
 
 class AbstractClass(ABC):
     @abstractmethod
-    def abstract_method(self):
-        ...
+    def abstract_method(self): ...

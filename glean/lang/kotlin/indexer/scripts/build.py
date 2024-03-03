@@ -12,6 +12,7 @@ import sys
 import tempfile
 from pathlib import Path
 
+
 # get buck cell root
 def getBuckCellRoot():
     return subprocess.check_output(["buck", "root"]).decode("utf-8").strip()
