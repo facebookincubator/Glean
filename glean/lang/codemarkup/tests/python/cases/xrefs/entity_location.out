@@ -57,7 +57,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 88, "start": 945 } },
+        "location": { "span": { "length": 80, "start": 945 } },
         "name": "lib.AbstractClass"
       }
     }
@@ -177,7 +177,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 38, "start": 995 } },
+        "location": { "span": { "length": 30, "start": 995 } },
         "name": "lib.AbstractClass.abstract_method"
       }
     }
@@ -751,7 +751,7 @@
       },
       "location": {
         "file": { "key": "lib.py" },
-        "location": { "span": { "length": 1034, "start": 0 } },
+        "location": { "span": { "length": 1026, "start": 0 } },
         "name": "lib"
       }
     }

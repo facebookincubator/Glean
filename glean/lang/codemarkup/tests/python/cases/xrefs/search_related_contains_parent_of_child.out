@@ -7,44 +7,6 @@
         "parent": {
           "python": {
             "decl": {
-              "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
-            }
-          }
-        },
-        "location": {
-          "name": "lib.AbstractClass",
-          "file": { "key": "lib.py" },
-          "location": { "span": { "start": 945, "length": 88 } }
-        }
-      },
-      "child": {
-        "child": {
-          "python": {
-            "decl": {
-              "func": {
-                "key": {
-                  "name": { "key": "lib.AbstractClass.abstract_method" }
-                }
-              }
-            }
-          }
-        },
-        "location": {
-          "name": "lib.AbstractClass.abstract_method",
-          "file": { "key": "lib.py" },
-          "location": { "span": { "start": 995, "length": 38 } }
-        }
-      },
-      "style": 0
-    }
-  },
-  {
-    "key": {
-      "query": 3,
-      "parent": {
-        "parent": {
-          "python": {
-            "decl": {
               "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
             }
           }
@@ -754,7 +716,7 @@
         "location": {
           "name": "lib",
           "file": { "key": "lib.py" },
-          "location": { "span": { "start": 0, "length": 1034 } }
+          "location": { "span": { "start": 0, "length": 1026 } }
         }
       },
       "child": {
@@ -768,7 +730,7 @@
         "location": {
           "name": "lib.AbstractClass",
           "file": { "key": "lib.py" },
-          "location": { "span": { "start": 945, "length": 88 } }
+          "location": { "span": { "start": 945, "length": 80 } }
         }
       },
       "style": 0
@@ -786,7 +748,7 @@
         "location": {
           "name": "lib",
           "file": { "key": "lib.py" },
-          "location": { "span": { "start": 0, "length": 1034 } }
+          "location": { "span": { "start": 0, "length": 1026 } }
         }
       },
       "child": {
@@ -816,7 +778,7 @@
         "location": {
           "name": "lib",
           "file": { "key": "lib.py" },
-          "location": { "span": { "start": 0, "length": 1034 } }
+          "location": { "span": { "start": 0, "length": 1026 } }
         }
       },
       "child": {
@@ -848,7 +810,7 @@
         "location": {
           "name": "lib",
           "file": { "key": "lib.py" },
-          "location": { "span": { "start": 0, "length": 1034 } }
+          "location": { "span": { "start": 0, "length": 1026 } }
         }
       },
       "child": {
@@ -878,7 +840,7 @@
         "location": {
           "name": "lib",
           "file": { "key": "lib.py" },
-          "location": { "span": { "start": 0, "length": 1034 } }
+          "location": { "span": { "start": 0, "length": 1026 } }
         }
       },
       "child": {
@@ -908,7 +870,7 @@
         "location": {
           "name": "lib",
           "file": { "key": "lib.py" },
-          "location": { "span": { "start": 0, "length": 1034 } }
+          "location": { "span": { "start": 0, "length": 1026 } }
         }
       },
       "child": {

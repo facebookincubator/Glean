@@ -4,26 +4,6 @@
     "key": {
       "parent": {
         "python": {
-          "decl": {
-            "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
-          }
-        }
-      },
-      "child": {
-        "python": {
-          "decl": {
-            "func": {
-              "key": { "name": { "key": "lib.AbstractClass.abstract_method" } }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "parent": {
-        "python": {
           "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
         }
       },
