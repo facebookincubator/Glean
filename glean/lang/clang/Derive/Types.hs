@@ -50,6 +50,7 @@ data Config = Config
   , cfgBenchmark :: Bool  -- ^ function-calls pass
   , cfgMatchAlgorithm :: MatchAlgorithm  -- ^ function-calls pass
   , cfgDebugPrintReferences :: Bool  -- ^ function-calls pass
+  , cfgBatchSize :: Int -- ^ batch size for function-calls
   , cfgIncremental :: Bool  -- ^ derive incrementally
   , cfgTestedFileShards :: Int -- Number of shards for --tested-file deriver
   , cfgTestedFileShard :: Int -- Shard number for ---tested-file deriver
@@ -80,6 +81,7 @@ testConfig repo = Config
   , cfgIncremental = False
   , cfgTestedFileShards = 1
   , cfgTestedFileShard = 0
+  , cfgBatchSize = 1
   , cfgCxxDeclarationTargetsFilter = const id
   }
 
@@ -144,4 +146,9 @@ options = do
     <> O.metavar "N"
     <> O.value 0
     <> O.help "the shard number to filter files for ---tested-file deriver"
+  cfgBatchSize <- O.option O.auto $
+    O.long "batch-size"
+    <> O.metavar "N"
+    <> O.value 1
+    <> O.help "batch size for function-calls"
   return Config{cfgCxxDeclarationTargetsFilter = const id, ..}

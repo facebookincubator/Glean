@@ -261,9 +261,6 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
   -- For cfgDebugPrintReferences, track sparse matrix of count of references
   summaryRef <- newIORef (Map.empty :: Map (PredicateRef, PredicateRef) Int)
 
-  -- ---------------------------------------------------------------------------
-  -- We are limited by the loading of cxx.FileXRefMap facts, start it first
-
   -- NOTE: We rely on the ordering property of the `allFacts` query.
   --       Specifically, we expect to encounter `FileXRefMap`s for
   --       a single file in a single sequence.
@@ -277,10 +274,25 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
       cfgCxxDeclarationTargetsFilter cfg f xmaps
     maybeFilter _ xmaps = xmaps
 
+    -- we are going to process files in batches, because latency to
+    -- the server might be high and one-file-per-worker is too
+    -- fine-grained to keep the client busy.
+    --
+    -- However a high batch size might result in high memory usage. To
+    -- mitigate this to some extent we bound the batch size by the
+    -- number of FileXRefMap facts, rather than the number of
+    -- files. So we won't accidentally create a batch of multiple
+    -- files each with a gazillion xmaps.
+
+    addOne :: ([a] -> IO ()) -> Int -> a -> (Int, [a]) -> IO (Int, [a])
+    addOne go n item (size, batch)
+      | size+n >= cfgBatchSize cfg = do go (item:batch); return (0, [])
+      | otherwise = return (size+n, item:batch)
+
     doFoldEach go = do
       fileTargetCountAcc <-
-        runQueryEach e (cfgRepo cfg) q (Nothing, [], 0::Int, 0::Int) $
-          \ (!mLastFile, !targetssIn, !countIn, !nIn)
+        runQueryEach e (cfgRepo cfg) q (Nothing, [], (0, []), 0::Int, 0::Int) $
+          \ (!mLastFile, !targetssIn, !batch, !countIn, !nIn)
             (Cxx.FileXRefMap i k) -> do
             when (mod nIn 10000 == 0) $ logInfo $
               "(file count, FileXRefMap count) progress: "
@@ -293,14 +305,19 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
             let !file = Cxx.fileXRefMap_key_file key
             case mLastFile of
               (Just lastFile) | getId lastFile /= getId file -> do
-                go (lastFile, maybeFilter lastFile targetssIn)
-                return (Just file, [(id, key)], succ countIn, succ nIn)
+                let filtered = maybeFilter lastFile targetssIn
+                batch <- addOne go (length filtered) (lastFile, filtered) batch
+                return (Just file, [(id, key)], batch, succ countIn, succ nIn)
               _ ->
-                return (Just file, (id, key):targetssIn, countIn, succ nIn)
+                return (Just file, (id, key):targetssIn, batch, countIn,
+                  succ nIn)
       (countF, nF) <- case fileTargetCountAcc of
-        (Nothing, _empty, countIn, nIn) -> return (countIn, nIn)
-        (Just file, targetssIn, countIn, nIn) -> do
-          go (file, maybeFilter file targetssIn)
+        (Nothing, _empty, (_,[]), countIn, nIn) ->
+          return (countIn, nIn)
+        (Nothing, _empty, (_,batch), countIn, nIn) -> do
+          go batch; return (countIn, nIn)
+        (Just file, targetssIn, (_,batch), countIn, nIn) -> do
+          go ((file, maybeFilter file targetssIn) : batch)
           return (succ countIn, nIn)
       logInfo $ "(file count, FileXRefMap count) final: " ++ show (countF, nF)
 
@@ -429,14 +446,15 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
 
         in newTargets
 
-  let fileWorker writer (file, fileXRefMaps) = do
-        logExceptions file $ do
-          xrefs <- getFileXRefsFor e (map fst fileXRefMaps) cfg
-          targetss <- forM fileXRefMaps $ \ fileXRefMap -> do
-            let newTargets = oneFileXRefMap xrefs fileXRefMap
-            _ <- evaluate (force (length newTargets))
-            return newTargets
-          void $ generateCalls writer file targetss
+  let fileWorker writer batch = do
+        xrefs <- getFileXRefsFor e (concatMap (map fst . snd) batch) cfg
+        forM_ batch $ \(file, fileXRefMaps) -> do
+          logExceptions file $ do
+            targetss <- forM fileXRefMaps $ \ fileXRefMap -> do
+              let newTargets = oneFileXRefMap xrefs fileXRefMap
+              _ <- evaluate (force (length newTargets))
+              return newTargets
+            void $ generateCalls writer file targetss
         -- continue with the next incoming item ignoring errors
         -- we'd rather get a DB with missing derived facts
         -- than no DB at all
