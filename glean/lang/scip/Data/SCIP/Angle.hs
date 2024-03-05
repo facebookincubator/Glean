@@ -26,7 +26,7 @@ module Data.SCIP.Angle (
 import Lens.Micro ((^.))
 import Data.Bits ( Bits(testBit) )
 import Data.Maybe ( catMaybes ) -- , fromMaybe )
-import Util.Text ( textShow, textToInt )
+import Util.Text ( textToInt )
 import Data.Text ( Text )
 import qualified Data.Text as Text
 import Data.Set ( Set )
@@ -186,11 +186,13 @@ decodeScipOccurence fileId occ = do
     let eSym = symbolFromString scipSymbol
     symbolFacts <- case eSym of
           Left err -> error (show err) -- Can't handle this symbol format
-          Right (Local _n) -> pure []
         -- support for locals not implemented
         --   pure $ SCIP.Predicate "scip.Local" [
         --           object [ SCIP.factId symbolId, "key" .= n ]
         --         ]
+          Right (Local _n) -> pure []
+          Right (LocalWithName _s) -> pure []
+
           Right Global{..} -> decodeGlobalOccurence scipSymbol symRoles
               fileRangeId descriptor
     return (symbolFacts <> fileRange)
@@ -308,6 +310,7 @@ decodeScipRange range = error $
 
 data ScipSymbol
   = Local {-# UNPACK #-}!Int
+  | LocalWithName !Text
   | Global
       { scheme :: !Text
       , package :: !Package
@@ -340,7 +343,7 @@ symbolFromString str
   -- 'local ' <local-id>
   | ("local", rest) <- split normalStr
   = case textToInt rest of
-      Left err -> Left (textShow err)
+      Left _ -> Right (LocalWithName rest)
       Right n -> Right (Local n) -- locals are numbered and anonymous
 
   --  <scheme> ' ' <package> ' ' { <descriptor> }
