@@ -284,13 +284,9 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
     -- files. So we won't accidentally create a batch of multiple
     -- files each with a gazillion xmaps.
 
-    addOne :: ([a] -> IO ()) -> Int -> a -> (Int, [a]) -> IO (Int, [a])
-    addOne go n item (size, batch)
-      | size+n >= cfgBatchSize cfg = do go (item:batch); return (0, [])
-      | otherwise = return (size+n, item:batch)
-
-    doFoldEach go = do
-      fileTargetCountAcc <-
+    doFoldEach yield = do
+      let item = batchingYield (cfgBatchSize cfg) yield
+      (file, targetss, batch, count, n) <-
         runQueryEach e (cfgRepo cfg) q (Nothing, [], (0, []), 0::Int, 0::Int) $
           \ (!mLastFile, !targetssIn, !batch, !countIn, !nIn)
             (Cxx.FileXRefMap i k) -> do
@@ -306,20 +302,16 @@ deriveCxxDeclarationTargets e cfg withWriters = withWriters workers $ \ writers 
             case mLastFile of
               (Just lastFile) | getId lastFile /= getId file -> do
                 let filtered = maybeFilter lastFile targetssIn
-                batch <- addOne go (length filtered) (lastFile, filtered) batch
+                batch <- item (length filtered) (lastFile, filtered) batch
                 return (Just file, [(id, key)], batch, succ countIn, succ nIn)
               _ ->
                 return (Just file, (id, key):targetssIn, batch, countIn,
                   succ nIn)
-      (countF, nF) <- case fileTargetCountAcc of
-        (Nothing, _empty, (_,[]), countIn, nIn) ->
-          return (countIn, nIn)
-        (Nothing, _empty, (_,batch), countIn, nIn) -> do
-          go batch; return (countIn, nIn)
-        (Just file, targetssIn, (_,batch), countIn, nIn) -> do
-          go ((file, maybeFilter file targetssIn) : batch)
-          return (succ countIn, nIn)
-      logInfo $ "(file count, FileXRefMap count) final: " ++ show (countF, nF)
+
+      yield (maybe [] (\f -> [(f,targetss)]) file <> snd batch)
+
+      logInfo $ "(file count, FileXRefMap count) final: " ++
+        show (count + if isJust file then 1 else 0, n)
 
   -- ---------------------------------------------------------------------------
   -- Load state needed for processing cxx.FileXRefMap

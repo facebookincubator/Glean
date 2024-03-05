@@ -13,6 +13,8 @@ module Derive.Common
   , resolve
   , Indirects
   , XRefs
+  , emptyBatch
+  , batchingYield
   ) where
 
 import Control.Monad
@@ -147,3 +149,20 @@ getFileXRefsFor e xmapIds cfg = do
 
     newXrefs <- foldM add xrefs fileXRefs
     return (targetMap, newXrefs)
+
+-- -----------------------------------------------------------------------------
+-- Batching utils
+
+emptyBatch :: (Int, [a])
+emptyBatch = (0, [])
+
+batchingYield
+  :: Int  -- batch size
+  -> ([a] -> IO ())  -- yield a complete batch
+  -> Int -- size of item
+  -> a -- item
+  -> (Int, [a]) -- current accumuulated batch
+  -> IO (Int, [a]) -- new accumulated batch
+batchingYield batchSize yield n item (size, batch)
+  | size+n >= batchSize = do yield (item:batch); return emptyBatch
+  | otherwise = return (size+n, item:batch)

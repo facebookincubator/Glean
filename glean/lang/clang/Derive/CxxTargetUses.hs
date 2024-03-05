@@ -130,41 +130,44 @@ deriveUses e cfg withWriters = do
 
   let
     producer yield = do
-      (file, final_facts) <- runQueryEach e (cfgRepo cfg) q (Nothing, [])
-        $ \(last_file, facts) fact@(Cxx.FileXRefMap _ k) -> do
-          key <- case k of
-            Just k -> return k
-            Nothing -> throwIO $ ErrorCall "internal error: deriveUses"
-          let file = Just $ Cxx.fileXRefMap_key_file key
-          if last_file == file
-            then return (file, fact:facts)
-            else do
-              yield (last_file, facts)
-              return (file, [fact])
-      when (isJust file) $ yield (file, final_facts)
+      let item = batchingYield (cfgBatchSize cfg) yield
+      (file, final_facts, batch) <-
+        runQueryEach e (cfgRepo cfg) q (Nothing, [], emptyBatch)
+          $ \(last_file, facts, batch) fact@(Cxx.FileXRefMap _ k) -> do
+            key <- case k of
+              Just k -> return k
+              Nothing -> throwIO $ ErrorCall "internal error: deriveUses"
+            let file = Just $ Cxx.fileXRefMap_key_file key
+            if last_file == file
+              then return (file, fact:facts, batch)
+              else do
+                batch <- item (length facts) (last_file, facts) batch
+                return (file, [fact], batch)
+      yield ([(file, final_facts) | isJust file] <> snd batch)
 
-    worker writer (file, facts) = do
-      fileXRefs <- getFileXRefsFor e (map getId facts) cfg
-      let
-        (deps, uses) = foldr f (mempty, HashMap.empty) facts
-        f (Cxx.FileXRefMap i (Just key)) (deps, uses) =
-          (new_deps, new_uses)
-          where
-            !new_deps = PredSet.toList these_deps <> deps
-            (these_deps, map_targets) =
-              case PredMap.lookup (IdOf $ Fid i) fileXRefs of
-                Nothing -> (PredSet.empty, mempty)
-                Just x -> x
-            !new_uses = foldr (addUses indirects) uses $
-              [ (target, from)
-              | Cxx.FixedXRef target from <- Cxx.fileXRefMap_key_fixed key ]
-              ++
-              [ (target, from)
-              | (targets, from) <-
-                  zip (V.toList map_targets) (Cxx.fileXRefMap_key_froms key)
-              , target <- HashSet.toList targets ]
-        f _ x = x
-      generateUses writer file deps uses
+    worker writer files = do
+      fileXRefs <- getFileXRefsFor e (map getId (concatMap snd files)) cfg
+      forM_ files $ \(file, facts) -> do
+        let
+          (deps, uses) = foldr f (mempty, HashMap.empty) facts
+          f (Cxx.FileXRefMap i (Just key)) (deps, uses) =
+            (new_deps, new_uses)
+            where
+              !new_deps = PredSet.toList these_deps <> deps
+              (these_deps, map_targets) =
+                case PredMap.lookup (IdOf $ Fid i) fileXRefs of
+                  Nothing -> (PredSet.empty, mempty)
+                  Just x -> x
+              !new_uses = foldr (addUses indirects) uses $
+                [ (target, from)
+                | Cxx.FixedXRef target from <- Cxx.fileXRefMap_key_fixed key ]
+                ++
+                [ (target, from)
+                | (targets, from) <-
+                    zip (V.toList map_targets) (Cxx.fileXRefMap_key_froms key)
+                , target <- HashSet.toList targets ]
+          f _ x = x
+        generateUses writer file deps uses
 
   withWriters (cfgWorkerThreads cfg) $ \writers ->
     streamWithState producer writers worker
