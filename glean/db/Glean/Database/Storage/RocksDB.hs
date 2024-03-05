@@ -252,20 +252,35 @@ instance Storage RocksDB where
 
   restore rocks repo scratch scratch_file =
     withTempDirectory scratch "restore" $ \scratch_restore -> do
-      createDirectoryIfMissing True scratch_db
       unTar scratch_file scratch_restore
       -- to avoid retaining an extra copy of the DB during restore,
       -- delete the input file now.
       removeFile scratch_file
-      withCString scratch_db $ \p_target ->
-        withCString (scratch_restore </> "backup") $ \p_source ->
-        invoke $ glean_rocksdb_restore p_target p_source
-      createDirectoryIfMissing True $ takeDirectory target
-      renameDirectory scratch_db target
-    where
-      scratch_db = scratch </> "db"
 
-      target = containerPath rocks repo
+      -- If the tarfile contains "backup/.." then it is a RocksDB backup
+      -- If the tarfile contains "db/.." then it is a plain tarball of the DB
+      let scratch_restore_backup = scratch_restore </> "backup"
+      is_rocksdb_backup <- doesDirectoryExist scratch_restore_backup
+      db <-
+        if is_rocksdb_backup
+          then do
+            let scratch_db = scratch </> "db"
+            createDirectoryIfMissing True scratch_db
+            withCString scratch_db $ \p_target ->
+              withCString (scratch_restore </> "backup") $ \p_source ->
+                invoke $ glean_rocksdb_restore p_target p_source
+            return scratch_db
+          else do
+            let scratch_restore_db = scratch_restore </> "db"
+            is_copy <- doesDirectoryExist scratch_restore_db
+            if is_copy
+              then return scratch_restore_db
+              else throwIO $ userError "unrecognised backup"
+
+      let target = containerPath rocks repo
+      createDirectoryIfMissing True $ takeDirectory target
+      renameDirectory db target
+
 
 unTar :: FilePath -> FilePath -> IO ()
 unTar scratch_file scratch_restore =
