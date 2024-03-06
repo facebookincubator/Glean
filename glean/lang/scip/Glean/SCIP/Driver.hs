@@ -45,7 +45,7 @@ data ScipIndexerParams = ScipIndexerParams
   , scipLanguage :: Maybe LanguageId -- ^ a default language if known
   }
 
--- | Run a generic SCIP-producing indexer, and convert to a Glean's lsif.angle
+-- | Run a generic SCIP-producing indexer, and convert to a Glean's scip.angle
 -- database returning a single JSON value that can be sent to the Glean server
 runIndexer :: ScipIndexerParams -> IO Aeson.Value
 runIndexer params@ScipIndexerParams{..} = do
@@ -56,7 +56,7 @@ runIndexer params@ScipIndexerParams{..} = do
     when scipWritesLocal $ do
         copyFile (repoDir </> "index.scip") scipFile
         removeFile (repoDir </> "index.scip")
-    processSCIP scipLanguage scipFile
+    processSCIP scipLanguage Nothing scipFile
 
 -- | Run a SCIP indexer on a repository, put scip dump output into outputFile
 runSCIPIndexer :: ScipIndexerParams -> FilePath -> IO ()
@@ -67,7 +67,7 @@ runSCIPIndexer ScipIndexerParams{..} outputFile =
     callProcess scipBinary args
 
 -- | Convert an scip protobufs encoded file into Glean lsif.angle JSON object
-processSCIP :: Maybe LanguageId -> FilePath -> IO Aeson.Value
-processSCIP mlang scipFile = do
+processSCIP :: Maybe LanguageId -> Maybe FilePath -> FilePath -> IO Aeson.Value
+processSCIP mlang mPathPrefix scipFile = do
   logInfo $ "Using SCIP from " <> scipFile
-  scipToAngle mlang <$> B.readFile scipFile
+  scipToAngle mlang mPathPrefix <$> B.readFile scipFile

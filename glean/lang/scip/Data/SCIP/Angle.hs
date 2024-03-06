@@ -110,20 +110,29 @@ getOrSetFact sym = do
 --
 -- Uses the proto-lens interface to scip.proto
 --
-scipToAngle :: Maybe SCIP.LanguageId -> B.ByteString -> Aeson.Value
-scipToAngle mlang scip = Aeson.Array $ V.fromList $
+scipToAngle
+  :: Maybe SCIP.LanguageId
+  -> Maybe FilePath
+  -> B.ByteString
+  -> Aeson.Value
+scipToAngle mlang mPathPrefix scip = Aeson.Array $ V.fromList $
     SCIP.generateSCIPJSON (SCIP.insertPredicateMap HashMap.empty result)
   where
-    (result,_) = runState (runTranslate mlang scip) emptyState
+    (result,_) = runState
+      (runTranslate mlang mPathPrefix scip) emptyState
 
 -- | First pass, grab all the occurences with _role := Definition
 -- build up symbol string -> fact id for all defs
-runTranslate :: Maybe SCIP.LanguageId -> B.ByteString -> Parse [SCIP.Predicate]
-runTranslate mlang scip = case Proto.decodeMessage scip of
+runTranslate
+  :: Maybe SCIP.LanguageId
+  -> Maybe FilePath
+  -> B.ByteString
+  -> Parse [SCIP.Predicate]
+runTranslate mlang mPathPrefix scip = case Proto.decodeMessage scip of
   Left err -> error err
   Right (v :: Scip.Index) -> do
     a <- decodeScipMetadata (v ^. Scip.metadata)
-    bs <- mapM (decodeScipDoc mlang) (v ^. Scip.documents)
+    bs <- mapM (decodeScipDoc mlang mPathPrefix) (v ^. Scip.documents)
     return (a <> concat bs)
 
 --
@@ -132,10 +141,16 @@ runTranslate mlang scip = case Proto.decodeMessage scip of
 -- then cross-reference with occurences in second pass
 --
 decodeScipDoc
-  :: Maybe SCIP.LanguageId -> Scip.Document -> Parse [SCIP.Predicate]
-decodeScipDoc mlang doc = do
+  :: Maybe SCIP.LanguageId
+  -> Maybe FilePath
+  -> Scip.Document
+  -> Parse [SCIP.Predicate]
+decodeScipDoc mlang mPathPrefix doc = do
   srcFileId <- nextId
-  let filepath = doc ^. Scip.relativePath
+  let filepath' = doc ^. Scip.relativePath
+      filepath = case Text.pack <$> mPathPrefix of
+        Nothing -> filepath'
+        Just prefix -> prefix <> filepath'
   setDefFact filepath srcFileId
   let srcFile = SCIP.srcFile srcFileId filepath
   langFileId <- nextId
