@@ -5,6 +5,7 @@ import buck.4
 import builtin.1
 import pp1.1
 import src.1
+import fbthrift.1
 
 # A name (identifier)
 predicate Name : string
@@ -1424,5 +1425,14 @@ predicate FilePPTraceXRefs:
       { include_ = { include_ = Include } } = PPEvent;
       { TargetFile, SrcRange, SrcSpan } = Include;
       { include_ = TargetFile } = Entity; )
+
+  # Experimental: do not rely on this!
+  # This maps generated Cxx code (declaration, enum)
+  # to their defining Thrift declaration
+  predicate CxxToThrift:
+    {
+      from: cxx1.XRefTarget,
+      to: fbthrift.Declaration
+    }
 
 }
