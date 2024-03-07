@@ -47,6 +47,7 @@ import Glean.RTS.Types (Fid(..), invalidFid, Pid(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types (Repo)
 import Glean.Util.Disk
+import Glean.Util.Observed as Observed
 import System.IO.Extra (withTempFile)
 
 newtype Cache = Cache (ForeignPtr Cache)
@@ -68,10 +69,12 @@ data RocksDB = RocksDB
   { rocksRoot :: FilePath
   , rocksCache :: Maybe Cache
   , rocksCacheIndexAndFilterBlocks :: Bool
+  , rocksServerConfig :: Observed ServerConfig.Config
   }
 
-newStorage :: FilePath -> ServerConfig.Config -> IO RocksDB
-newStorage root ServerConfig.Config{..} = do
+newStorage :: FilePath -> Observed ServerConfig.Config -> IO RocksDB
+newStorage root obs = do
+  ServerConfig.Config{..} <- Observed.get obs
   cache <- if config_db_rocksdb_cache_mb > 0
     then
       Just <$> newCache (fromIntegral config_db_rocksdb_cache_mb * 1024 * 1024)
@@ -81,6 +84,7 @@ newStorage root ServerConfig.Config{..} = do
     , rocksCache = cache
     , rocksCacheIndexAndFilterBlocks =
         config_db_rocksdb_cache_index_and_filter_blocks
+    , rocksServerConfig = obs
     }
 
 newtype Container = Container (Ptr Container)
@@ -239,16 +243,21 @@ instance Storage RocksDB where
 
   withScratchRoot rocks f = f $ rocksRoot rocks </> ".scratch"
 
-  backup db scratch process = do
-    createDirectoryIfMissing True path
-    withContainer db $ \s_ptr ->
-      withCString path $ invoke . glean_rocksdb_container_backup s_ptr
+  backup rocks db scratch process = do
+    ServerConfig.Config{..} <- Observed.get (rocksServerConfig rocks)
+    path <- if config_backup_plain_tarfile
+      then
+        return (containerPath rocks (dbRepo db))
+      else do
+        let dir = scratch </> "backup"
+        createDirectoryIfMissing True dir
+        withContainer db $ \s_ptr ->
+          withCString dir $ invoke . glean_rocksdb_container_backup s_ptr
+        return dir
     withTempFile $ \tarFile -> do
-      tar ["-cf", tarFile, "-C", scratch, "backup"]
+      tar ["-cf", tarFile, "-C", takeDirectory path, takeFileName path]
       size <- getFileSize tarFile
       process tarFile (Data $ fromIntegral size)
-    where
-      path = scratch </> "backup"
 
   restore rocks repo scratch scratch_file =
     withTempDirectory scratch "restore" $ \scratch_restore -> do

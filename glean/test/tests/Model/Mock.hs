@@ -74,7 +74,7 @@ instance Storage s => Storage (MockStorage s) where
   getUsedCapacity MockStorage {mockedStorage} = getUsedCapacity mockedStorage
   getFreeCapacity MockStorage {mockedStorage} = getFreeCapacity mockedStorage
   withScratchRoot MockStorage {mockedStorage} = withScratchRoot mockedStorage
-  backup = backup . unmockDatabase
+  backup MockStorage {mockedStorage} = backup mockedStorage . unmockDatabase
   restore MockStorage {mockRestore} = call mockRestore
 
 deriving instance

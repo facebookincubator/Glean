@@ -181,7 +181,8 @@ class CanLookup (Database s) => Storage s where
   -- intermediate files is guaranteed to be empty and will be deleted after
   -- the operation completes.
   backup
-    :: Database s  -- ^ database
+    :: s
+    -> Database s  -- ^ database
     -> FilePath  -- ^ scratch directory
     -> (FilePath -> Data -> IO a)
           -- ^ function which expects the serialised database

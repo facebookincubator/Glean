@@ -108,7 +108,7 @@ instance Storage Memory where
   withScratchRoot _ f = withSystemTempDirectory "glean" f
 
   -- TODO
-  backup db _ _ = dbError (dbRepo db) "unimplemented 'backup'"
+  backup _ db _ _ = dbError (dbRepo db) "unimplemented 'backup'"
   -- TODO
   restore _ repo _ _ = dbError repo "unimplemented 'restore'"
 
