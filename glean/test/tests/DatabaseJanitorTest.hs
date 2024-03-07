@@ -114,7 +114,8 @@ setupBasicDBs dbdir = do
   makeFakeDB schema dbdir (Repo "test" "0002") (age (days 2)) broken id
   makeFakeDB schema dbdir (Repo "test" "0003") (age (days 3)) (complete 3) $
     stacked (Stacked "test" "0004" Nothing)
-  makeFakeDB schema dbdir (Repo "test" "0004") (age (days 4)) (complete 4) $
+  makeFakeDB schema dbdir (Repo "test" "0004") (age (days 0)) (complete 4) $
+    sourceTime (age (days 4)) .  -- source 4 days ago, created 0 days ago
     stacked (Stacked "test" "0005" Nothing)
   makeFakeDB schema dbdir (Repo "test" "0005") (age (days 5)) (complete 5) $
     stacked (Stacked "test2" "0006" Nothing) . props [("bool","no")]
@@ -161,6 +162,9 @@ stacked st meta = meta { metaDependencies = Just (Thrift.Dependencies_stacked st
 
 props :: [(Text, Text)] -> Meta -> Meta
 props list meta = meta { metaProperties = HashMap.fromList list }
+
+sourceTime :: UTCTime -> Meta -> Meta
+sourceTime t meta = meta { metaRepoHashTime = Just (utcTimeToPosixEpochTime t) }
 
 makeFakeDB
   :: DbSchema
@@ -301,18 +305,23 @@ deleteOldDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   waitDel env
   dbs <- listDBs env
   assertEqual "after"
-    [ "0001" ]
+    [ "0001", "0004", "0005", "0006" ]
+      -- we don't delete 0004 because even though its source is old,
+      -- it was created recently. 0004 depends on 0005, and 0005
+      -- depends on 0006
     (sort (map (repo_hash . database_repo) dbs))
 
   dbdirs1 <- listDirectory (dbdir </> "test")
   dbdirs2 <- listDirectory (dbdir </> "test2")
-  assertEqual "directories deleted" (dbdirs1 ++ dbdirs2) [ "0001" ]
+  assertEqual "directories deleted"
+    [ "0001", "0004", "0005", "0006" ]
+    (dbdirs1 ++ dbdirs2)
 
   runDatabaseJanitor env
   waitDel env
   dbs <- listDBs env
   assertEqual "after-repeat"
-    [ "0001" ]
+    [ "0001", "0004", "0005", "0006" ]
     (sort (map (repo_hash . database_repo) dbs))
 
 deleteIncompleteDBsTest :: Test

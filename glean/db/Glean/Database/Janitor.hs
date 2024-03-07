@@ -361,14 +361,12 @@ runWithShards env myShards sm = do
         db:_ -> do
           let
               meta = itemMeta db
-              dbConceived = metaRepoHashTime meta
-              dbCreated = metaCreated meta
-              dbStart = fromMaybe dbCreated dbConceived
+              dbStart = dbTime meta
               ageFrom t0 = timeSpanInSeconds $
                 fromUTCTime now `timeDiff` posixEpochTimeToTime t0
           -- .age is the age of the data, .span is the age of the DB
           publishCounter (prefix <> ".age") (ageFrom dbStart)
-          publishCounter (prefix <> ".span") (ageFrom dbCreated)
+          publishCounter (prefix <> ".span") (ageFrom (metaCreated meta))
           publishCounter (prefix <> ".newest")
             (fromIntegral (unPosixEpochTime dbStart))
 
@@ -386,9 +384,13 @@ runWithShards env myShards sm = do
       , shard `notElem` Set.fromList (map snd keepInThisNode)]
 
 
+-- | We sort DBs by metaRepoHashTime if available, or otherwise metaCreated
+dbTime :: Meta -> PosixEpochTime
+dbTime meta = fromMaybe (metaCreated meta) (metaRepoHashTime meta)
+
 mergeLocalAndRemote :: [(Repo, Meta)] -> [Item] -> [Item]
 mergeLocalAndRemote backups localAndRestoring =
-  sortOn (metaCreated . itemMeta) $
+  sortOn (dbTime . itemMeta) $
       localAndRestoring ++
         [ Item repo Cloud meta ItemMissing
           -- DBs we could restore
@@ -506,7 +508,7 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs = do
 
     -- all DBs with the required properties, sorted by most recent first
     sorted =
-      sortOn (Down . metaCreated . itemMeta) $
+      sortOn (Down . dbTime . itemMeta) $
       filter (hasProperties retention_required_properties) $
       NonEmpty.toList dbs
 
