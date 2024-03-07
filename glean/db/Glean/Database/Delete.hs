@@ -62,7 +62,12 @@ expireDatabase delay env@Env{..} repo = do
   when expired $ void $ asyncDeleteDatabase env repo
 
 -- | Database deletion thread
-removeDatabase :: Env -> Repo -> TMVar (Maybe DB) -> IO ()
+removeDatabase
+  :: Storage.Storage s
+  => Env
+  -> Repo
+  -> TMVar (Maybe (DB s))
+  -> IO ()
 removeDatabase env@Env{..} repo todo = uninterruptibleMask_ $
   -- This runs under uninterruptibleMask_ because there is really nothing
   -- sensible we can do if we get interrupted.

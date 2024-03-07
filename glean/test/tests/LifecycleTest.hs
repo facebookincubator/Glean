@@ -17,7 +17,6 @@ import Control.Monad
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
 import Data.List
-import Data.Maybe
 import Data.Proxy
 import GHC.Stack (HasCallStack)
 import Test.HUnit
@@ -126,18 +125,21 @@ repo1 = Repo "foo" "1"
 repo2 :: Repo
 repo2 = Repo "foo" "2"
 
+hasActiveDatabase :: Env -> Repo -> IO Bool
+hasActiveDatabase Env{..} repo = HashMap.member repo <$> readTVarIO envActive
+
 kickOffTwice :: Test
 kickOffTwice = TestCase $ withTEnv $ \TEnv{..} -> do
   assert $ not <$> kickOff tEnv repo1
-  assert $ isJust <$> lookupActiveDatabase tEnv repo1
+  assert $ hasActiveDatabase tEnv repo1
   assert $ kickOff tEnv repo1
-  assert $ isJust <$> lookupActiveDatabase tEnv repo1
+  assert $ hasActiveDatabase tEnv repo1
 
 kickOffFail :: Test
 kickOffFail = TestCase $ withTEnv $ \TEnv{..} -> do
   prepare (storeCreate tStore) [ doBefore $ throwIO TestError ]
   assertThrows "" TestError $ kickOff tEnv repo1
-  assert $ isNothing <$> lookupActiveDatabase tEnv repo1
+  assert $ fmap not $ hasActiveDatabase tEnv repo1
 
 kickOffRace :: Test
 kickOffRace = TestCase $ withTEnv $ \TEnv{..} -> do
@@ -147,10 +149,10 @@ kickOffRace = TestCase $ withTEnv $ \TEnv{..} -> do
   withAsync (kickOff tEnv repo1) $ \k -> do
     takeMVar v1
     assert $ kickOff tEnv repo1
-    assert $ isNothing <$> lookupActiveDatabase tEnv repo1
+    assert $ fmap not $ hasActiveDatabase tEnv repo1
     putMVar v2 ()
     assert $ not <$> wait k
-  assert $ isJust <$> lookupActiveDatabase tEnv repo1
+  assert $ hasActiveDatabase tEnv repo1
 
 kickOffConcurrently :: Test
 kickOffConcurrently = TestCase $ withTEnv $ \TEnv{..} -> do
@@ -160,11 +162,11 @@ kickOffConcurrently = TestCase $ withTEnv $ \TEnv{..} -> do
   withAsync (kickOff tEnv repo1) $ \k -> do
     takeMVar v1
     assert $ not <$> kickOff tEnv repo2
-    assert $ isNothing <$> lookupActiveDatabase tEnv repo1
-    assert $ isJust <$> lookupActiveDatabase tEnv repo2
+    assert $ fmap not $ hasActiveDatabase tEnv repo1
+    assert $ hasActiveDatabase tEnv repo2
     putMVar v2 ()
     assert $ not <$> wait k
-  assert $ isJust <$> lookupActiveDatabase tEnv repo1
+  assert $ hasActiveDatabase tEnv repo1
 
 closeIdle :: Test
 closeIdle = TestCase $ withTEnv $ \TEnv{..} -> do

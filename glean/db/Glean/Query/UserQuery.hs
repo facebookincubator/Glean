@@ -538,7 +538,7 @@ userQueryFactsTransformations qtrans selector schema query results = do
 -- caused by the query. Used for stored predicate derivation.
 userQueryWrites
   :: Database.Env
-  -> OpenDB
+  -> OpenDB s
   -> ServerConfig.Config
   -> Boundaries
   -> Lookup
@@ -603,7 +603,7 @@ userQueryWrites env odb config bounds lookup repo pred q = do
 
 userQueryImpl
   :: Database.Env
-  -> OpenDB
+  -> OpenDB s
   -> ServerConfig.Config
   -> CompilationMode
   -> Boundaries

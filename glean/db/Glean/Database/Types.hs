@@ -87,9 +87,9 @@ data Writing = Writing
   }
 
 -- An open database
-data OpenDB = forall storage. Storage storage => OpenDB
+data OpenDB s = OpenDB
   { -- The database handle
-    odbHandle :: Database storage
+    odbHandle :: Database s
 
     -- Write queue, caches etc. Nothing means DB is read only.
   , odbWriting :: Maybe Writing
@@ -109,12 +109,12 @@ data OpenDB = forall storage. Storage storage => OpenDB
   }
 
 -- State of a databases
-data DBState
+data DBState s
     -- In the process of being open
   = Opening
 
     -- Currently open
-  | Open OpenDB
+  | Open (OpenDB s)
 
     -- In the process of being closed
   | Closing
@@ -123,12 +123,12 @@ data DBState
   | Closed
 
 -- A known database
-data DB = DB
+data DB s = DB
   { -- The repo the database refers to
     dbRepo :: Thrift.Repo
 
     -- Database state
-  , dbState :: TVar DBState
+  , dbState :: TVar (DBState s)
 
     -- Number of users
   , dbUsers :: TVar Int
@@ -236,7 +236,7 @@ data Env = forall storage. Storage storage => Env
   , envRecipeConfig :: Observed Recipes.Config
   , envServerConfig :: Observed ServerConfig.Config
   , envBackupBackends :: Backup.Backends
-  , envActive :: TVar (HashMap Thrift.Repo DB)
+  , envActive :: TVar (HashMap Thrift.Repo (DB storage))
   , envDeleting :: TVar (HashMap Thrift.Repo (Async ()))
   , envCompleting :: TVar (HashMap Thrift.Repo (Async ()))
   , envCompletingDerived ::

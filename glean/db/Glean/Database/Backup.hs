@@ -54,7 +54,7 @@ import qualified Glean.Database.Logger as Logger
 import Glean.Database.Meta
 import Glean.Database.Repo
 import qualified Glean.Database.Storage as Storage
-import Glean.Database.Open (withOpenDatabase, schemaUpdated)
+import Glean.Database.Open
 import Glean.Database.Types
 import Glean.Database.Schema
 import Glean.Logger
@@ -200,7 +200,7 @@ doBackup env@Env{..} repo prefix site =
   loggingAction (runLogRepo "backup" env repo) (const mempty) $ do
     atomically $ notify envListener $ BackupStarted repo
     say logInfo "starting"
-    withOpenDatabase env repo $ \OpenDB{..} -> do
+    withOpenDatabaseStorage env repo $ \_storage OpenDB{..} -> do
     say logInfo "packing"
     stats <- mapMaybe
       (\(pid,stats) -> (,stats) . predicateRef <$> lookupPid pid odbSchema)

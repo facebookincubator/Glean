@@ -7,8 +7,9 @@
 -}
 
 module Glean.Database.Open (
-  lookupActiveDatabase, withActiveDatabase, usingActiveDatabase,
+  usingActiveDatabase,
   withOpenDatabase, withOpenDatabaseStack, withWritableDatabase,
+  withOpenDatabaseStorage,
   readDatabase, readDatabaseWithBoundaries,
   asyncOpenDB,
   newDB, acquireDB, releaseDB,
@@ -73,9 +74,22 @@ import Glean.Util.Time
 import qualified Glean.Util.Warden as Warden
 import qualified Glean.Write.Stats as Stats
 
-withOpenDatabase :: HasCallStack => Env -> Repo -> (OpenDB -> IO a) -> IO a
-withOpenDatabase env@Env{..} repo action =
-  withActiveDatabase env repo $ \db@DB{..} -> do
+withOpenDatabase
+ :: HasCallStack
+ => Env
+ -> Repo
+ -> (forall s . Storage s => OpenDB s -> IO a)
+ -> IO a
+withOpenDatabase env repo act = withOpenDatabaseStorage env repo (const act)
+
+withOpenDatabaseStorage
+  :: HasCallStack
+  => Env
+  -> Repo
+  -> (forall s . Storage s => s -> OpenDB s -> IO a)
+  -> IO a
+withOpenDatabaseStorage env@Env{..} repo action =
+  withActiveDatabase env repo $ \storage db@DB{..} -> do
     odb <- mask $ \restore -> do
       r <- atomically $ do
         state <- readTVar dbState
@@ -107,14 +121,18 @@ withOpenDatabase env@Env{..} repo action =
           -- opening a DB has long uninterruptible sections so do it on a
           -- separate thread in case we get cancelled
           opener <-
-            asyncOpenDB env db version mode deps (return ()) onFailure
+            asyncOpenDB env storage db version mode deps (return ()) onFailure
           restore $ wait opener
-    action odb `finally` do
+    action storage odb `finally` do
       t <- getTimePoint
       atomically $ writeTVar (odbIdleSince odb) t
 
 -- | Runs the action on each DB in the stack, in top-to-bottom order
-withOpenDatabaseStack :: Env -> Repo -> (OpenDB -> IO a) -> IO [a]
+withOpenDatabaseStack
+  :: Env
+  -> Repo
+  -> (forall s . Storage s => OpenDB s -> IO a)
+  -> IO [a]
 withOpenDatabaseStack env repo action = do
   parents <- repoParents env repo
   mapM (\repo -> withOpenDatabase env repo action) (repo : parents)
@@ -140,9 +158,10 @@ depParent deps = case deps of
   Thrift.Dependencies_stacked Thrift.Stacked{..} -> Thrift.Repo stacked_name stacked_hash
 
 withOpenDBLookup
-  :: Env
+  :: Storage s
+  => Env
   -> Repo
-  -> OpenDB
+  -> OpenDB s
   -> (Boundaries -> Lookup -> IO a)
   -> IO a
 withOpenDBLookup env repo OpenDB{ odbBaseSlices = baseSlices, .. } f =
@@ -193,7 +212,7 @@ withWritableDatabase env repo action =
 readDatabase
   :: Env
   -> Repo
-  -> (OpenDB -> Lookup.Lookup -> IO a)
+  -> (forall s . Storage s => OpenDB s -> Lookup.Lookup -> IO a)
   -> IO a
 readDatabase env repo f =
   readDatabaseWithBoundaries env repo $ \odb _ lookup ->
@@ -202,40 +221,49 @@ readDatabase env repo f =
 readDatabaseWithBoundaries
   :: Env
   -> Repo
-  -> (OpenDB -> Boundaries -> Lookup -> IO a)
+  -> (forall s. Storage s => OpenDB s -> Boundaries -> Lookup -> IO a)
   -> IO a
 readDatabaseWithBoundaries env repo f =
   withOpenDatabase env repo $ \odb ->
   withOpenDBLookup env repo odb $ \bounds lookup ->
     f odb bounds lookup
 
-newDB :: Repo -> STM DB
+newDB :: Repo -> STM (DB s)
 newDB repo = DB repo
   <$> newTVar Closed
   <*> newTVar 0
 
-acquireDB :: DB -> STM ()
+acquireDB :: DB s -> STM ()
 acquireDB db = modifyTVar' (dbUsers db) (+1)
 
 -- | MUST be paired with 'acquireDB'
-releaseDB :: Env -> DB -> STM ()
-releaseDB env DB{..} = do
+releaseDB
+  :: Catalog.Catalog
+  -> TVar (HashMap Thrift.Repo (DB storage))
+  -> DB s
+  -> STM ()
+releaseDB catalog active DB{..} = do
   users <- readTVar dbUsers
   writeTVar dbUsers $! users - 1
   when (users == 1) $ do
     state <- readTVar dbState
     case state of
       Closed -> do
-        meta <- try $ Catalog.readMeta (envCatalog env) dbRepo
+        meta <- try $ Catalog.readMeta catalog dbRepo
         case meta :: Either SomeException Meta of
           Right Meta{metaCompleteness = Thrift.Incomplete{}} -> return ()
-          _ -> modifyTVar' (envActive env) $ HashMap.delete dbRepo
+          _ -> modifyTVar' active $ HashMap.delete dbRepo
       _ -> return ()
 
-withActiveDatabase :: HasCallStack => Env -> Repo -> (DB -> IO a) -> IO a
-withActiveDatabase env@Env{..} repo = bracket
+withActiveDatabase
+  :: HasCallStack
+  => Env
+  -> Repo
+  -> (forall s . Storage s => s -> DB s -> IO a)
+  -> IO a
+withActiveDatabase Env{..} repo act = bracket
   (atomically $ do
-    r <- lookupActiveDatabase env repo
+    r <- HashMap.lookup repo <$> readTVar envActive
     db <- case r of
       Just db -> return db
       Nothing -> do
@@ -249,18 +277,29 @@ withActiveDatabase env@Env{..} repo = bracket
         return db
     acquireDB db
     return db)
-  (atomically . releaseDB env)
+  (atomically . releaseDB envCatalog envActive)
+  (\db -> act envStorage db)
 
-usingActiveDatabase :: Env -> Repo -> (Maybe DB -> IO a) -> IO a
-usingActiveDatabase env repo = bracket
+usingActiveDatabase
+  :: Env
+  -> Repo
+  -> (forall s. Storage s => Maybe (DB s) -> IO a)
+  -> IO a
+usingActiveDatabase Env{..} repo = bracket
   (atomically $ do
-    r <- lookupActiveDatabase env repo
+    r <- HashMap.lookup repo <$> readTVar envActive
     mapM_ acquireDB r
     return r)
-  (atomically . mapM_ (releaseDB env))
+  (atomically . mapM_ (releaseDB envCatalog envActive))
 
-lookupActiveDatabase :: Env -> Repo -> STM (Maybe DB)
-lookupActiveDatabase Env{..} repo = HashMap.lookup repo <$> readTVar envActive
+withMaybeActiveDatabase
+  :: Env
+  -> Repo
+  -> (forall s . Storage s => Maybe (DB s) -> STM a)
+  -> STM a
+withMaybeActiveDatabase Env{..} repo fn = do
+  active <- readTVar envActive
+  fn (HashMap.lookup repo active)
 
 updateLookupCacheStats :: Env -> IO ()
 updateLookupCacheStats env =
@@ -347,7 +386,7 @@ schemaUpdated env@Env{..} mbRepo = do
       active <- just <$> readTVar envActive
       mapM_ acquireDB active
       return active
-    release = atomically . mapM_ (releaseDB env)
+    release = atomically . mapM_ (releaseDB envCatalog envActive)
 
   -- Empty the DbSchema cache. We probably have a new SchemaIndex now
   -- which invalidates all the entries anyway, and also we don't prune
@@ -429,8 +468,10 @@ setupWriting Env{..} lookup = do
 -- NOTE: This should be called with 'dbState' set to 'Opening' and async
 -- exceptions masked.
 asyncOpenDB
-  :: Env
-  -> DB
+  :: Storage s
+  => Env
+  -> s
+  -> DB s
   -> DBVersion
   -> Mode
   -> Maybe Thrift.Dependencies
@@ -439,16 +480,19 @@ asyncOpenDB
       -- 'Open'. If this fails, we will call the failure action.
   -> (SomeException -> IO ())
       -- ^ Action to run on any failure.
-  -> IO (Async OpenDB)
-asyncOpenDB env@Env{..} db@DB{..} version mode deps on_success on_failure =
+  -> IO (Async (OpenDB s))
+asyncOpenDB env@Env{..} storage db@DB{..} version mode deps
+    on_success on_failure =
   -- Be paranoid about 'spawnMask' itself throwing.
   handling_failures $ Warden.spawnMask envWarden $ \restore ->
   loggingAction (runLogRepo "open" env dbRepo) (const mempty) $
-  bracket_ (atomically $ acquireDB db) (atomically $ releaseDB env db) $
+  bracket_
+    (atomically $ acquireDB db)
+    (atomically $ releaseDB envCatalog envActive db) $
   handling_failures $ do
     logInfo $ inRepo dbRepo "opening"
     bracketOnError
-      (Storage.open envStorage dbRepo mode version)
+      (Storage.open storage dbRepo mode version)
       Storage.close
       $ \handle -> do
           odb <- restore $ do
@@ -615,12 +659,12 @@ baseSlices env deps stored_units = case deps of
             units `Set.intersection` depUnits
 
 isDatabaseClosed :: Env -> Repo -> STM Bool
-isDatabaseClosed env repo = do
-  r <- lookupActiveDatabase env repo
-  case r of
-    Just db -> do
-      st <- readTVar $ dbState db
-      case st of
-        Closed -> return True
-        _ -> return False
-    _ -> return True
+isDatabaseClosed env repo =
+  withMaybeActiveDatabase env repo $ \r ->
+    case r of
+      Just db -> do
+        st <- readTVar $ dbState db
+        case st of
+          Closed -> return True
+          _ -> return False
+      _ -> return True

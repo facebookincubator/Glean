@@ -49,7 +49,7 @@ import Glean.Database.Catalog.Filter
 import Glean.Database.Exception
 import Glean.Database.Meta
 import Glean.Database.Repo
-import Glean.Database.Open (lookupActiveDatabase)
+import Glean.Database.Open ()
 import Glean.Database.Types
 import Glean.Database.Work.Controller
 import Glean.Database.Work.Heartbeat
@@ -274,8 +274,8 @@ failParcel env ParcelInfo{..} reason = do
   lift $ Catalog.writeMeta (envCatalog env) piRepo new_meta
 
 updateParcel :: Env -> ParcelInfo -> UTCTime -> ParcelState -> Defer IO STM ()
-updateParcel env ParcelInfo{..} time state = do
-  meta <- lift $ Catalog.readMeta (envCatalog env) piRepo
+updateParcel env@Env{..} ParcelInfo{..} time state = do
+  meta <- lift $ Catalog.readMeta envCatalog piRepo
   let new_parcels = piParcels Vector.// [(parcelIndex piParcel, state)]
       task_state
         | Vector.all finished new_parcels =
@@ -294,7 +294,7 @@ updateParcel env ParcelInfo{..} time state = do
     TaskState_finished{} ->
       scheduleTasks env piRepo new_meta
     _ -> return new_meta
-  lift $ Catalog.writeMeta (envCatalog env) piRepo real_meta
+  lift $ Catalog.writeMeta envCatalog piRepo real_meta
   case metaCompleteness real_meta of
     Finalizing{} -> do
       later $ logInfo $ inRepo piRepo "database finalizing"
@@ -308,7 +308,7 @@ updateParcel env ParcelInfo{..} time state = do
     -- writes. It is an error to call workFinished on the final task
     -- if there are outstanding writes in the queue.
     makeReadOnly = do
-      mdb <- lookupActiveDatabase env piRepo
+      mdb <- HashMap.lookup piRepo <$> readTVar envActive
       forM_ mdb $ \db -> do
         st <- readTVar (dbState db)
         case st of

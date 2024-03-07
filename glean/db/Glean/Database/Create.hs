@@ -138,13 +138,14 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
                 modifyTVar' envActive $ HashMap.insert kickOff_repo db
                 writeTVar (dbState db) Opening
                 acquireDB db)
-          (atomically $ releaseDB env db) $
+          (atomically $ releaseDB envCatalog envActive db) $
           do
             -- Open the new db in Create mode which will create the
             -- physical storage. This might fail - in that case, we
             -- mark the db as failed. NB. pass the full dependencies
             -- here, not lightDeps.
-            opener <- asyncOpenDB env db version mode kickOff_dependencies'
+            opener <- asyncOpenDB env envStorage db version mode
+                kickOff_dependencies'
               (do
                 -- On success, schedule the db's tasks. If this throws,
                 -- 'asyncOpenDB' will close the db and call our failure action

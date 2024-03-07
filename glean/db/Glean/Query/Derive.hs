@@ -47,7 +47,9 @@ import Glean.Database.Writes
 import Glean.Internal.Types
 import qualified Glean.Query.UserQuery as UserQuery
 import Glean.Query.Typecheck (tcQueryDeps)
+import Glean.Query.Codegen (Boundaries)
 import Glean.Query.Codegen.Types
+import Glean.RTS.Foreign.Lookup (Lookup)
 import Glean.Schema.Types
 import Glean.Schema.Util
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -296,6 +298,7 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
       Just par -> parallelDerivation odb bounds lookup par
 
   where
+    deriveQuery :: OpenDB s -> Boundaries -> Lookup -> UserQuery -> IO ()
     deriveQuery odb bounds lookup q = do
       config <- Observed.get (envServerConfig env)
       result <- try $
@@ -309,6 +312,12 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
             Just cont -> deriveQuery odb bounds lookup $ q `withCont` cont
             Nothing -> return ()
 
+    parallelDerivation
+      :: OpenDB s
+      -> Boundaries
+      -> Lookup
+      -> ParallelDerivation
+      -> IO ()
     parallelDerivation odb bounds lookup ParallelDerivation{..} = do
       outerPred <- getPredicate env repo (odbSchema odb)
         (parseRef parallelDerivation_outer_predicate)

@@ -17,7 +17,6 @@ import Data.Coerce
 import Data.Maybe
 import qualified Data.Vector.Storable as Vector
 import Data.Word
-import Foreign.Marshal.Utils (withMany)
 
 import Util.STM
 
@@ -43,30 +42,32 @@ factOwnership
   -> IO (Maybe OwnerExpr)
 factOwnership env repo fid = do
   maybeSet <- readDatabase env repo $ \_ lookup -> getFactOwner lookup fid
-  parents <- repoParents env repo
-  withMany (withOpenDatabase env) (repo:parents) $ \odbs -> do
-    ownerships <- catMaybes <$> mapM (readTVarIO . odbOwnership) odbs
-    let
-      getUnit unitId [] = getUset (coerce unitId) ownerships
-      getUnit unitId (OpenDB{..} : odbs) = do
-        maybeUnit <- Storage.getUnit odbHandle unitId
-        case maybeUnit of
-          Just unit -> return (Unit unit)
-          Nothing -> getUnit unitId odbs
+  stack <- withOpenDatabaseStack env repo $ \OpenDB{..} -> do
+    ownership <- readTVarIO odbOwnership
+    return (ownership, Storage.getUnit odbHandle)
+  let
+    ownerships = mapMaybe fst stack
 
-      getUset usetId [] = throwIO $ ErrorCall $
-        "unknown UsetId: " <> show (coerce usetId :: Word32)
-      getUset usetId (own : owns) = do
-        maybeExpr <- getOwnershipSet own usetId
-        case maybeExpr of
-          Nothing -> getUset usetId owns
-          Just (op, vec) -> do
-            contents <- mapM unpackSet (Vector.toList vec)
-            case op of
-              And -> return (AndOwners contents)
-              Or -> return (OrOwners contents)
+    getUnit unitId [] = getUset (coerce unitId) ownerships
+    getUnit unitId (getUnitDB : rest) = do
+      maybeUnit <- getUnitDB unitId
+      case maybeUnit of
+        Just unit -> return (Unit unit)
+        Nothing -> getUnit unitId rest
 
-      unpackSet :: UsetId -> IO OwnerExpr
-      unpackSet usetId = getUnit (coerce usetId) odbs
+    getUset usetId [] = throwIO $ ErrorCall $
+      "unknown UsetId: " <> show (coerce usetId :: Word32)
+    getUset usetId (own : owns) = do
+      maybeExpr <- getOwnershipSet own usetId
+      case maybeExpr of
+        Nothing -> getUset usetId owns
+        Just (op, vec) -> do
+          contents <- mapM unpackSet (Vector.toList vec)
+          case op of
+            And -> return (AndOwners contents)
+            Or -> return (OrOwners contents)
 
-    mapM unpackSet maybeSet
+    unpackSet :: UsetId -> IO OwnerExpr
+    unpackSet usetId = getUnit (coerce usetId) (map snd stack)
+
+  mapM unpackSet maybeSet

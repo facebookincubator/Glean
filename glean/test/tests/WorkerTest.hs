@@ -31,8 +31,7 @@ import Util.Testing
 
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Create (kickOffDatabase)
-import Glean.Database.Storage.Memory (newStorage)
-import Glean.Database.Test (withTestEnv, setRecipes)
+import Glean.Database.Test (withTestEnv, setRecipes, setMemoryStorage)
 import Glean.Database.Types (Env(..))
 import Glean.Database.Work
 import Glean.Init
@@ -229,10 +228,8 @@ execTrace env repo (Trace actions expected) = do
 prop_workQueue :: Property
 prop_workQueue = forAll (genTrace $ initialState fbsource_recipes) $ \trace ->
   monadicIO $ run $
-  withTestEnv [setRecipes recipes] $ \Env{..} -> do
-  storage <- newStorage
-  let env = Env{envStorage = storage, ..}
-      repo = Repo "fbsource" "foobar"
+  withTestEnv [setRecipes recipes, setMemoryStorage] $ \env@Env{..} -> do
+  let repo = Repo "fbsource" "foobar"
   Thrift.KickOffResponse{kickOffResponse_alreadyExists=False}
     <- kickOffDatabase env def{ Thrift.kickOff_repo = repo }
   execTrace env repo trace

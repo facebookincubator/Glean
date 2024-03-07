@@ -523,5 +523,7 @@ openTest = withSystemTempDirectory "backupdir" $ \backupDir -> do
     runDatabaseJanitor (mockedEnv tEnv)
     waitAll $ w3 <> w4
     runDatabaseJanitor (mockedEnv tEnv)
-    openDBs <- readTVarIO $ envActive (mockedEnv tEnv)
-    HM.keys openDBs @?= [r]
+    case mockedEnv tEnv of
+      Env{..} -> do
+        openDBs <- readTVarIO envActive
+        HM.keys openDBs @?= [r]

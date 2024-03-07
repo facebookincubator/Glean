@@ -35,11 +35,11 @@ import Glean.Util.Time
 
 
 closeDatabases :: Env -> IO ()
-closeDatabases env = do
-  dbs <- readTVarIO $ envActive env
+closeDatabases env@Env{..} = do
+  dbs <- readTVarIO envActive
   forM_ (HashMap.keys dbs) $ closeDatabase env
 
-isIdle :: (TimePoint -> Bool) -> DB -> OpenDB -> STM Bool
+isIdle :: (TimePoint -> Bool) -> DB s -> OpenDB s -> STM Bool
 isIdle long_enough db odb = and <$> sequence
   [ (== 1) <$> readTVar (dbUsers db)  -- we are the only user
   , long_enough <$> readTVar (odbIdleSince odb)
@@ -51,7 +51,11 @@ isIdle long_enough db odb = and <$> sequence
       Nothing -> return True
   ]
 
-closeIf :: (DB -> DBState -> STM (Maybe OpenDB)) -> Env -> Repo -> IO ()
+closeIf
+  :: (forall s . DB s -> DBState s -> STM (Maybe (OpenDB s)))
+  -> Env
+  -> Repo
+  -> IO ()
 closeIf should_close env repo = usingActiveDatabase env repo $ \r ->
   forM_ r $ \db -> mask_ $ do
     r <- atomically $ do
@@ -106,8 +110,8 @@ closeIdleDatabase env repo duration = do
     repo
 
 closeIdleDatabases :: Env -> DiffTimePoints -> [Repo] -> IO ()
-closeIdleDatabases env duration blocklist = do
-  dbs <- readTVarIO $ envActive env
+closeIdleDatabases env@Env{..} duration blocklist = do
+  dbs <- readTVarIO envActive
   let notBlocklisted = filter (not . (`elem` blocklist)) (HashMap.keys dbs)
   forM_ notBlocklisted $ \repo -> closeIdleDatabase env repo duration
   exportOpenDBStats env
@@ -115,9 +119,9 @@ closeIdleDatabases env duration blocklist = do
 -- | set a counter glean.db.<repo>.open to the number of currently
 -- open DBs for that particular repo name.
 exportOpenDBStats :: Env -> IO ()
-exportOpenDBStats env = do
+exportOpenDBStats Env{..} = do
   opens <- atomically $ do
-    dbs <- readTVar $ envActive env
+    dbs <- readTVar envActive
     forM (HashMap.toList dbs) $ \(repo, db) -> do
       state <- readTVar (dbState db)
       case state of
@@ -128,7 +132,7 @@ exportOpenDBStats env = do
   forM_ (HashMap.toList repoOpenCounts) $ \(repoNm,count) -> do
     setCounter ("glean.db." <> Text.encodeUtf8 repoNm <> ".open") count
 
-closeOpenDB :: Env -> OpenDB -> IO ()
+closeOpenDB :: Storage.Storage s => Env -> OpenDB s -> IO ()
 closeOpenDB env OpenDB{..} = do
   case odbWriting of
     Just Writing{..} -> do
