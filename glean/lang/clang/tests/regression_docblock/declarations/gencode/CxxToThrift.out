@@ -1,0 +1,70 @@
+[
+  "@generated",
+  {
+    "key": {
+      "from": {
+        "declaration": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": {
+                    "key": { "name": { "key": "generated_from_thrift" } }
+                  },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 16,
+                "columnBegin": 3,
+                "lineEnd": 16,
+                "columnEnd": 38
+              }
+            }
+          }
+        }
+      },
+      "to": {
+        "function_": {
+          "key": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": {
+                      "key": {
+                        "key": "thrift/compiler/test/fixtures/inheritance/src/module.thrift"
+                      }
+                    },
+                    "name": { "key": "MyRoot" }
+                  }
+                }
+              }
+            },
+            "name": { "key": "do_root" }
+          }
+        }
+      }
+    }
+  }
+]

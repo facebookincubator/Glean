@@ -1,0 +1,51 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": {
+                    "key": { "name": { "key": "generated_from_thrift" } }
+                  },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 16,
+                "columnBegin": 3,
+                "lineEnd": 16,
+                "columnEnd": 38
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 237, "length": 141 }
+    }
+  }
+]

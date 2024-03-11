@@ -21,6 +21,7 @@
 #include "folly/ScopeGuard.h"
 #include "glean/lang/clang/ast.h"
 #include "glean/lang/clang/index.h"
+#include <re2/re2.h>
 
 // This file implements the Clang AST traversal.
 
@@ -28,6 +29,7 @@ namespace {
 
 using namespace facebook::glean::clangx;
 using namespace facebook::glean::cpp;
+using namespace re2;
 
 template<typename T> T identity(T x) { return x; }
 
@@ -818,6 +820,33 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
               result->declaration(),
               crange.range.file,   // might be "<builtin>"
               crange.span);
+
+            // Some comments represent thrift generated functions. Their
+            // content is used to generate Cxx1.CxxToThrift facts.
+
+            std::string thrift_file;
+            std::string thrift_service;
+            std::string thrift_function;
+            static const RE2 thrift_regex(
+              ".*\n.*thrift file: (.*)\n.*thrift service: (.*)\n.*thrift function: (.*)\n.*"
+            );
+            auto comment_str = comment->getRawText(visitor.db.sourceManager()).str();
+            if (RE2::FullMatch(comment_str, thrift_regex, &thrift_file, &thrift_service, &thrift_function)) {
+
+                auto qual_name = visitor.db.fact<Fbthrift::QualName>(
+                  visitor.db.fact<Fbthrift::File>(visitor.db.fact<Src::File>(thrift_file)),
+                  visitor.db.fact<Fbthrift::Identifier>(thrift_service)
+                );
+                auto function_name = visitor.db.fact<Fbthrift::FunctionName>(
+                  visitor.db.fact<Fbthrift::ServiceName>(qual_name),
+                  visitor.db.fact<Fbthrift::Identifier>(thrift_function)
+                );
+
+                visitor.db.fact<Cxx::CxxToThrift>(
+                  Cxx::XRefTarget::declaration(result->declaration()),
+                  Fbthrift::XRefTarget::function_(function_name)
+                );
+            };
           }
         }
       }
