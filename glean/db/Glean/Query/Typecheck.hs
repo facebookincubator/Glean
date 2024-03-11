@@ -482,12 +482,16 @@ typecheckPattern ctx typ pat = case (typ, pat) of
         -- not considered bound outside of it.
         enclose tc = do
           before <- get
+          modify $ \s -> s {
+            tcVisible = varsPat pat (tcVisible before)
+          }
           res <- tc
           modify $ \after -> after
             { tcBindings = tcBindings before
             , tcUses = tcUses after `HashSet.intersection` tcVisible before
             , tcScope = tcScope after
                 `HashMap.intersection` HashSet.toMap (tcVisible before)
+            , tcVisible = tcVisible before
             }
           return res
 

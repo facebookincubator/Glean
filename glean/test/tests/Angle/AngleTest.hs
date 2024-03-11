@@ -442,6 +442,14 @@ angleTest modify = dbTestCase $ \env repo -> do
   print r
   assertEqual "negation - scope 5" 2 (length r)
 
+  r <- runQuery_ env repo $ modify $ angleData @Text
+    [s|
+      !(A = 1; (A > 2 | A < 0));
+      "A"
+    |]
+  print r
+  assertEqual "negation - scope 6" 1 (length r)
+
   -- a negated query's head is replaced with {}
   r <- runQuery_ env repo $ modify $ angleData @Nat
     [s|
