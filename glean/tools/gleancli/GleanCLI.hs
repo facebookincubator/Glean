@@ -61,6 +61,7 @@ import GleanCLI.Common
 import GleanCLI.Complete
 import GleanCLI.Derive
 import GleanCLI.Index
+import GleanCLI.Merge
 import GleanCLI.Restore
 import GleanCLI.Query
 import GleanCLI.Types
@@ -111,6 +112,7 @@ plugins =
   , plugin @CompleteCommand
   , plugin @IndexCommand
   , plugin @ScriptCommand
+  , plugin @MergeCommand
 #if GLEAN_FACEBOOK
   , plugin @FacebookPlugin
 #endif
