@@ -13,8 +13,9 @@ import Control.Exception.Safe (catch)
 import Control.Monad (forM_, forM)
 import Control.Monad.Extra (firstJustM)
 import Control.Concurrent
+import Data.List (sortOn)
 import Data.Text (Text)
-import Data.Maybe (listToMaybe)
+import Data.Maybe
 import qualified Data.Text as Text
 import Data.Time
 import Data.Time.Clock.POSIX
@@ -83,7 +84,9 @@ instance Plugin RestoreCommand where
         parseTimeOrError False defaultTimeLocale (iso8601DateFormat Nothing)
 
       dayOpt = option (eitherReader parseDay)
-        (long "date" <> metavar "YYYY-MM-DD")
+        (  long "date"
+        <> metavar "YYYY-MM-DD"
+        <> help "find a DB for this date (UTC)")
 
   runCommand _ _ backend Restore{..} = do
     targets <- locatorsToRestore
@@ -109,13 +112,16 @@ instance Plugin RestoreCommand where
             withLocator databases $ repo : deps
         RestoreDbOnDay repoName day -> do
           databases <- listWithBackups
-          let matchingDay = listToMaybe
+          let
+            dbTime Database{..} =
+              fromMaybe database_created_since_epoch
+                database_repo_hash_time
+            matchingDay = listToMaybe
                 [ database_repo
-                | Database{..} <- databases
+                | db@Database{..} <- sortOn dbTime databases
                 , repo_name database_repo == repoName
-                , let t = database_created_since_epoch
                 , day == utctDay (posixSecondsToUTCTime $ fromIntegral $
-                    Glean.unPosixEpochTime t)
+                    Glean.unPosixEpochTime (dbTime db))
                 ]
           case matchingDay of
             Just repo -> do
