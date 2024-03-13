@@ -69,6 +69,8 @@ import Glean.Display
 import Glean.Remote (clientInfo, thriftBackendClientConfig)
 import Glean.Database.Ownership
 import Glean.Database.Open
+import Glean.Database.Schema ( newDbSchema, readWriteContent )
+import Glean.Database.Schema.Types ( SchemaSelector(..) )
 import Glean.Database.Schema.ComputeIds (
   emptyHashedSchema, HashedSchema(..), RefTargetId )
 import Glean.Database.Config (parseSchemaDir, SchemaIndex(..),
@@ -661,7 +663,9 @@ reloadCmd = do
   state <- getState
   case updateSchema state of
     Nothing -> output ":reload requires the shell to be started with --schema"
-    Just io -> io
+    Just io ->
+      io `C.catch` \(ErrorCall err) ->
+        output (pretty err)
   case repo state of
     Nothing -> return ()
     Just repo -> do
@@ -1273,14 +1277,22 @@ reportService backend = case backendKind backend of
         output $ "Using service at " <> pretty host <> ":" <> pretty port
       _ -> error "shouldn't happen"
 
-evalMain :: Config -> Eval ()
-evalMain cfg = do
+evalMain :: Config -> Maybe String -> Eval ()
+evalMain cfg maybeErr = do
   case cfgQuery cfg of
     [] -> do
       hello
       reportService . backend =<< getState
       output "type :help for help."
       initialize cfg
+      case maybeErr of
+        Nothing -> return ()
+        Just err -> do
+          output $ vcat [
+            "schema failed to load:", "",
+            pretty err,
+            "", "use :reload to try again"
+            ]
       home <- liftIO $ lookupEnv "HOME"
 
       let settings = Haskeline.setComplete completion Haskeline.defaultSettings
@@ -1300,21 +1312,33 @@ evalMain cfg = do
             output $ prettyBadQuery e
             liftIO exitFailure
 
-setupLocalSchema :: Glean.Service -> IO (Glean.Service, Maybe (Eval ()))
+parseAndTypecheckSchema :: Maybe Env -> FilePath -> IO SchemaIndex
+parseAndTypecheckSchema env dir = do
+  parsed <- parseSchemaDir dir
+  -- typecheck the schema now, so that we find out about
+  -- errors before we try updating the schema for DBs.
+  void $ liftIO $ newDbSchema (fmap envDbSchemaCache env) parsed
+    LatestSchemaAll readWriteContent
+  return parsed
+
+setupLocalSchema
+  :: Glean.Service
+  -> IO (Glean.Service, Maybe (Eval ()), Maybe String)
 setupLocalSchema service = do
   case service of
-    Remote{} -> return (service, Nothing)
+    Remote{} -> return (service, Nothing, Nothing)
     Local dbConfig logging -> case DB.cfgSchemaDir dbConfig of
-      Nothing -> return (service, Nothing)
+      Nothing -> return (service, Nothing, Nothing)
       Just dir -> do
-        schema <- parseSchemaDir dir
-          `catch` \(e :: ErrorCall) -> do
-            print e
+        r <- try $ parseAndTypecheckSchema Nothing dir
+        (schema, maybeErr) <- case r of
+          Right schema -> return (schema, Nothing)
+          Left (ErrorCall err) -> do
             let proc = ProcessedSchema
                   (SourceSchemas (AngleVersion 0) [] [])
                   (ResolvedSchemas Nothing [])
                   emptyHashedSchema
-            return (SchemaIndex proc [])
+            return (SchemaIndex proc [], Just err)
         (schemaTS, update) <- ThriftSource.mutable schema
         let
           updateSchema :: Eval ()
@@ -1323,7 +1347,7 @@ setupLocalSchema service = do
             case backendKind be of
               BackendThrift{} -> return ()
               BackendEnv env -> do
-                new <- liftIO $ parseSchemaDir dir
+                new <- liftIO $ parseAndTypecheckSchema (Just env) dir
                 liftIO $ update (const new)
                 let current = schemaIndexCurrent new
 
@@ -1364,6 +1388,7 @@ setupLocalSchema service = do
         return
           ( Local dbConfig' logging
           , Just updateSchema
+          , maybeErr
           )
 
 type ShellCommand = Config
@@ -1376,7 +1401,7 @@ instance Plugin ShellCommand where
     | otherwise = "--minloglevel=2" : args
 
   withService evb cfgAPI service cfg = do
-    (service', updateSchema) <- setupLocalSchema service
+    (service', updateSchema, maybeErr) <- setupLocalSchema service
     Glean.withBackendWithDefaultOptions evb cfgAPI
       service' Nothing $ \backend -> do
     withSystemTempFile "scratch-query.angle" $ \q handle -> do
@@ -1384,25 +1409,27 @@ instance Plugin ShellCommand where
       client_info <- clientInfo
       tty <- hIsTerminalDevice stdout
       outh <- newMVar stdout
-      State.evalStateT (unEval $ evalMain cfg) ShellState
-        { backend = Some backend
-        , repo = Nothing
-        , schemas = Nothing
-        , schemaInfo = def
-        , useSchemaId = Thrift.SelectSchema_current def
-        , limit = cfgLimit cfg
-        , timeout = Just 10000      -- Sensible default for fresh shell.
-        , stats = SummaryStats
-        , lastSchemaQuery = Nothing
-        , updateSchema = updateSchema
-        , isTTY = tty
-        , pageWidth =
-            (\n -> if n == 0 then Unbounded else AvailablePerLine n 1)
-            <$> cfgWidth cfg
-        , expandResults = ExpandRecursive
-        , outputHandle = outh
-        , pager = cfgPager cfg
-        , debug = def
-        , client_info = client_info
-        , query_file = q
-        }
+      let state = ShellState
+            { backend = Some backend
+            , repo = Nothing
+            , schemas = Nothing
+            , schemaInfo = def
+            , useSchemaId = Thrift.SelectSchema_current def
+            , limit = cfgLimit cfg
+            , timeout = Just 10000      -- Sensible default for fresh shell.
+            , stats = SummaryStats
+            , lastSchemaQuery = Nothing
+            , updateSchema = updateSchema
+            , isTTY = tty
+            , pageWidth =
+                (\n -> if n == 0 then Unbounded else AvailablePerLine n 1)
+                <$> cfgWidth cfg
+            , expandResults = ExpandRecursive
+            , outputHandle = outh
+            , pager = cfgPager cfg
+            , debug = def
+            , client_info = client_info
+            , query_file = q
+            }
+      flip State.evalStateT state $ unEval $
+        evalMain cfg maybeErr
