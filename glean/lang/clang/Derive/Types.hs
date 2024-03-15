@@ -132,7 +132,8 @@ options = do
         O.flag' SourceVector (O.long "match-source-vector") <|>
         pure def
   cfgDebugPrintReferences <- O.switch $ O.long "debug-print"
-  _ :: Int <- O.option O.auto $ O.long "max-queue-size" <> O.hidden
+  _ :: Maybe Int <- O.optional $ O.option O.auto $
+    O.long "max-queue-size" <> O.hidden
     -- ignored for backwards-compat
   cfgIncremental <- O.switch $
     O.long "incremental"
