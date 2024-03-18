@@ -47,16 +47,18 @@ instance Plugin MergeCommand where
     mergeInventory <- strOption $
       long "inventory" <>
       metavar "FILE" <>
-      help "Inventory created with --write-serialized-inventory"
+      help ("Inventory created with --write-serialized-inventory and which "
+        <> "was used to create those files of facts")
     mergeFileSize <- option auto $
       long "max-file-size" <>
-      help "Create output files with (approximately) this size" <>
+      metavar "BYTES" <>
+      help "Create output files with (approximately) this size in bytes" <>
       showDefault <>
-        value (256 * 1024 * 1024)
+      value (256 * 1024 * 1024)
     mergeOutDir <- strOption $
       long "output" <>
       metavar "DIR" <>
-      help "Desination directory for the merged fact files"
+      help "Destination directory for the merged fact files"
     return MergeCommand{..}
 
   withService _evb _cfgAPI _svc MergeCommand{..} = do
