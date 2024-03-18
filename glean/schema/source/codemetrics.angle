@@ -81,4 +81,74 @@ predicate HackReferencesFrom : {
       { container = { class_ = C } } = Parent
      )
 
+predicate ReferencesTo : {
+  target : code.Entity,
+  source : code.Entity
+}
+  (
+    { { cxx = T }, { cxx = S } } where CxxReferencesTo { T, S }
+  ) | (
+    { { hack = T }, { hack = S } } where HackReferencesTo { T, S }
+  )
+
+predicate CxxReferencesTo : {
+  target : code.cxx.Entity,
+  source : code.cxx.Entity
+}
+  { { defn = { record_ = R }}, { decl = S } }
+    where CxxRecordReferenceTo { R, S }
+
+predicate CxxRecordReferenceTo : {
+  target : cxx1.RecordDefinition,
+  source : cxx1.Declaration,
+}
+  { Target, D } where
+    cxx1.DefToBaseDecl { defn = { record_ = Target }, decl = { record_ = Decl } };
+    { name = QName } = Decl;
+
+    cxx1.DeclarationSources { target = { record_ = Decl }, sources = S };
+    D = S[..];
+
+    # We don't care about references from things in this class
+    cxx1.DeclarationScope { decl = D, scope = Scope };
+    !({ recordWithAccess = { record = QName }} = Scope);
+
+    # Ignore references from inline methods, because they are already
+    # counted as references from the enclosing class
+    !(
+       { recordWithAccess = { record = QN }} = Scope;
+       Rec = cxx1.RecordDeclaration { name = QN };
+       cxx1.DeclarationLocationName {
+         decl = { record_ = Rec }, source = { F, LR0, CR0, LR1, CR1 } };
+       cxx1.DeclarationLocationName {
+         decl = D, source = { F, LF0, CF0, LF1, CF1 } };
+       ((LF0 = LR0; CR0 <= CF0) | (LR0 < LF0));
+       ((LR1 = LF1; CR1 >= CF1) | (LR1 > LF1));
+    );
+
+    # We don't care about references from the class itself
+    !({ record_ = Decl } = D);
+
+predicate HackReferencesTo : {
+  target : code.hack.Entity,
+  source : code.hack.Entity
+}
+  { { decl = Decl }, { decl = S } } where
+    { container = { class_ = C } } = Decl;
+    hack.DeclarationSource { Decl, S };
+
+    # Filter out references from this class
+    !(S = Decl);
+
+    # Filter out references from members of this class
+    !(codemarkup.hack.HackContainsParentEntity {
+        child = { decl = S },
+        parent = { decl = Parent }
+      };
+      { container = { class_ = C } } = Parent
+     );
+
+    # Ignore references from methods, because they are already
+    # counted as references from the enclosing class
+    !({ method = _ } = S);
 }
