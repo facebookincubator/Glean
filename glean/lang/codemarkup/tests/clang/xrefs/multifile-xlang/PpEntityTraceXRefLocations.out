@@ -1,0 +1,79 @@
+[
+  "@generated",
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "declarations": {
+            "key": [
+              {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "main" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 14,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "preprocessor": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "events": [
+                {
+                  "include_": {
+                    "include_": {
+                      "key": {
+                        "file": { "key": "a.h" },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 9,
+                          "columnEnd": 14
+                        },
+                        "pathSpan": { "start": 230, "length": 5 }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "a.h",
+          "file": { "key": "a.h" },
+          "location": { "span": { "start": 0, "length": 0 } }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 1,
+            "lineEnd": 9,
+            "columnEnd": 14
+          }
+        }
+      },
+      "entity": { "include_": { "key": "a.h" } }
+    }
+  }
+]

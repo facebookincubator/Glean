@@ -679,5 +679,43 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "name": { "key": { "name": { "key": "thriftCaller" } } },
+      "scope": { "global_": { } },
+      "signature": {
+        "key": { "returns": { "key": "void" }, "parameters": [ ] }
+      },
+      "entity": {
+        "defn": {
+          "function_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "thriftCaller" } } },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 222,
+                    "columnBegin": 1,
+                    "lineEnd": 225,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "isInline": false
+            }
+          }
+        }
+      }
+    }
   }
 ]

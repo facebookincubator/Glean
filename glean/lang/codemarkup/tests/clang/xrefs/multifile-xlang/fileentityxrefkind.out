@@ -1,0 +1,10 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "entity": { "pp": { "include_": { "key": "a.h" } } },
+      "kind": 3
+    }
+  }
+]

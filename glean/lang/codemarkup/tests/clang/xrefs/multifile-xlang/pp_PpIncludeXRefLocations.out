@@ -1,0 +1,39 @@
+[
+  "@generated",
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "events": [
+            {
+              "include_": {
+                "include_": {
+                  "key": {
+                    "file": { "key": "a.h" },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 9,
+                      "columnEnd": 14
+                    },
+                    "pathSpan": { "start": 230, "length": 5 }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "range": {
+        "file": { "key": "test.cpp" },
+        "lineBegin": 9,
+        "columnBegin": 1,
+        "lineEnd": 9,
+        "columnEnd": 14
+      },
+      "target": { "key": "a.h" }
+    }
+  }
+]

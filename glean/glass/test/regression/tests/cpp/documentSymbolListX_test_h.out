@@ -6,6 +6,59 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "thrift2"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "void thrift2()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 6,
+                    "columnEnd": 13,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 15,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test/cpp//thrift2/.f//.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "C"
                         },
                         "key": "symbolName"
@@ -45,8 +98,8 @@
             }
         ],
         "digest": {
-            "hash": "ce71a4bc848a767198c61bd5c21d1ead3be6a19b",
-            "size": 273
+            "hash": "6672ff750e546c5a047602cefb864fb2ef9a1a36",
+            "size": 432
         },
         "referenced_file_digests": {
             "test": {

@@ -1,0 +1,50 @@
+[
+  "@generated",
+  {
+    "key": {
+      "xmap": {
+        "key": {
+          "file": { "key": "test.cpp" },
+          "fixed": [ ],
+          "froms": [
+            {
+              "spans": [ { "length": 1, "offsets": [ 252 ] } ],
+              "expansions": [ ],
+              "spellings": [ ]
+            }
+          ]
+        }
+      },
+      "targets": [
+        {
+          "key": [
+            {
+              "declaration": {
+                "function_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "g" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "a.h" },
+                      "lineBegin": 14,
+                      "columnBegin": 1,
+                      "lineEnd": 15,
+                      "columnEnd": 1
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

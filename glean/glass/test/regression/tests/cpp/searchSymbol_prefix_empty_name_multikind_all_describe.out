@@ -1564,6 +1564,200 @@
                 "sym_other_locations": [],
                 "type_xrefs": [],
                 "visibility": 20
+            },
+            {
+                "annotations": [],
+                "comments": [
+                    {
+                        "filepath": "test.cpp",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 5,
+                            "lineBegin": 214,
+                            "lineEnd": 218
+                        },
+                        "repository": "test"
+                    }
+                ],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 15,
+                        "lineBegin": 219,
+                        "lineEnd": 219
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "thrift1"
+                },
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test.cpp",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 5,
+                                "lineBegin": 214,
+                                "lineEnd": 218
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//thrift1/.f//.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 15,
+                        "lineBegin": 219,
+                        "lineEnd": 219
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "annotations": [],
+                "comments": [
+                    {
+                        "filepath": "test.h",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 5,
+                            "lineBegin": 13,
+                            "lineEnd": 17
+                        },
+                        "repository": "test"
+                    }
+                ],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 15,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "thrift2"
+                },
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test.h",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 5,
+                                "lineBegin": 13,
+                                "lineEnd": 17
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//thrift2/.f//.decl",
+                "sym_location": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 15,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 222,
+                        "lineEnd": 225
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "thriftCaller"
+                },
+                "native_sym": {
+                    "sym": "00E1D9381CA8FEFC"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//thriftCaller/.f/",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 222,
+                        "lineEnd": 225
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
             }
         ],
         "symbols": [
@@ -2333,6 +2527,75 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//maybe/Nothing/_secret"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 15,
+                        "lineBegin": 219,
+                        "lineEnd": 219
+                    },
+                    "repository": "test"
+                },
+                "name": "thrift1",
+                "qname": {
+                    "container": "",
+                    "localName": "thrift1"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//thrift1/.f//.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 15,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": "thrift2",
+                "qname": {
+                    "container": "",
+                    "localName": "thrift2"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//thrift2/.f//.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 222,
+                        "lineEnd": 225
+                    },
+                    "repository": "test"
+                },
+                "name": "thriftCaller",
+                "qname": {
+                    "container": "",
+                    "localName": "thriftCaller"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//thriftCaller/.f/"
             }
         ]
     }

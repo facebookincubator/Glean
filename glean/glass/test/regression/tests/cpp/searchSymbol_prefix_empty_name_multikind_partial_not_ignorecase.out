@@ -255,6 +255,75 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//id/.f/N1::N2::N3::Foo/.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 15,
+                        "lineBegin": 219,
+                        "lineEnd": 219
+                    },
+                    "repository": "test"
+                },
+                "name": "thrift1",
+                "qname": {
+                    "container": "",
+                    "localName": "thrift1"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//thrift1/.f//.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 15,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test"
+                },
+                "name": "thrift2",
+                "qname": {
+                    "container": "",
+                    "localName": "thrift2"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//thrift2/.f//.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 222,
+                        "lineEnd": 225
+                    },
+                    "repository": "test"
+                },
+                "name": "thriftCaller",
+                "qname": {
+                    "container": "",
+                    "localName": "thriftCaller"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//thriftCaller/.f/"
             }
         ]
     }

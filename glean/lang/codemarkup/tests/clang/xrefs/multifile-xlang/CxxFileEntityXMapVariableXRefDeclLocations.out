@@ -1,0 +1,96 @@
+[
+  "@generated",
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [ ],
+              "froms": [
+                {
+                  "spans": [ { "length": 1, "offsets": [ 252 ] } ],
+                  "expansions": [ ],
+                  "spellings": [ ]
+                }
+              ]
+            }
+          },
+          "targets": [
+            {
+              "key": [
+                {
+                  "declaration": {
+                    "function_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "g" } } },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "void" },
+                            "parameters": [ ]
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "a.h" },
+                          "lineBegin": 14,
+                          "columnBegin": 1,
+                          "lineEnd": 15,
+                          "columnEnd": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "source": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "g" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "a.h" },
+              "lineBegin": 14,
+              "columnBegin": 1,
+              "lineEnd": 15,
+              "columnEnd": 1
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "g",
+        "file": { "key": "a.h" },
+        "location": {
+          "range": {
+            "file": { "key": "a.h" },
+            "lineBegin": 14,
+            "columnBegin": 1,
+            "lineEnd": 15,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "a.h" },
+          "span": { "start": 358, "length": 1 }
+        }
+      }
+    }
+  }
+]

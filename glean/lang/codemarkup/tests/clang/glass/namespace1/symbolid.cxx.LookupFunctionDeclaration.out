@@ -1869,6 +1869,90 @@
   },
   {
     "key": {
+      "name": { "key": { "name": { "key": "thrift1" } } },
+      "scope": { "global_": { } },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "thrift1" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 219,
+              "columnBegin": 1,
+              "lineEnd": 219,
+              "columnEnd": 14
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "name": { "key": "thrift2" } } },
+      "scope": { "global_": { } },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "thrift2" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.h" },
+              "lineBegin": 18,
+              "columnBegin": 1,
+              "lineEnd": 18,
+              "columnEnd": 14
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": { "name": { "key": "thriftCaller" } } },
+      "scope": { "global_": { } },
+      "decl": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "thriftCaller" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 222,
+              "columnBegin": 1,
+              "lineEnd": 225,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": { "key": { "operator_": "operator++" } },
       "scope": {
         "recordWithAccess": {

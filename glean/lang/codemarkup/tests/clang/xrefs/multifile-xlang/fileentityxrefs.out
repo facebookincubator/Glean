@@ -1,0 +1,25 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "a.h",
+          "file": { "key": "a.h" },
+          "location": { "span": { "start": 0, "length": 0 } }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 1,
+            "lineEnd": 9,
+            "columnEnd": 14
+          }
+        }
+      },
+      "entity": { "pp": { "include_": { "key": "a.h" } } }
+    }
+  }
+]

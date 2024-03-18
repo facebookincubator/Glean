@@ -1,0 +1,13 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": { "include_": { "key": "a.h" } },
+      "location": {
+        "name": "a.h",
+        "file": { "key": "a.h" },
+        "location": { "span": { "start": 0, "length": 0 } }
+      }
+    }
+  }
+]
