@@ -266,6 +266,20 @@ predicate ServiceDefinition : {
 #
 type Declaration = XRefTarget
 
+predicate DeclarationFile :
+  {
+    declaration : Declaration,
+    file : File,
+  }
+  { D, F } where
+    ({ include_ = F } = D) |
+    ({ named = { name = { name = { file = F } } } } = D) |
+    ({ exception_ = { name = { file = F } } } = D) |
+    ({ service_ = { name = { file = F } } } = D) |
+    ({ constant = { name = { file = F } } } = D) |
+    ({ enumValue = { enum_ = { name = { file = F } } } } = D) |
+    ({ function_ = { service_ = { name = { file = F } } } } = D)
+
 # All declarations in a thrift file
 predicate FileDeclaration :
   {
