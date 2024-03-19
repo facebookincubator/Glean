@@ -984,7 +984,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "RefClass",
                     "localName": "JAZZ"
@@ -1003,7 +1005,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             },
             {
                 "annotations": [],
@@ -1461,7 +1464,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "SourceClass",
                     "localName": "BAZ"
@@ -1480,7 +1485,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             },
             {
                 "annotations": [],
@@ -1509,7 +1515,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "SourceClass",
                     "localName": "T"
@@ -1528,7 +1536,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             },
             {
                 "annotations": [],
@@ -1903,7 +1912,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "SourceInterface",
                     "localName": "JAZZ"
@@ -1922,7 +1933,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             },
             {
                 "annotations": [],
@@ -2376,7 +2388,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "SuperClass",
                     "localName": "BAZ"
@@ -2395,7 +2409,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             },
             {
                 "annotations": [],
@@ -2769,7 +2784,10 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    4,
+                    6
+                ],
                 "name": {
                     "container": "",
                     "localName": "WALDO"

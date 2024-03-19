@@ -130,7 +130,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "SourceClass",
                     "localName": "T"
@@ -158,7 +160,8 @@
                         },
                         "type": "test/php/SourceClass/T"
                     }
-                ]
+                ],
+                "visibility": 20
             }
         }
     }

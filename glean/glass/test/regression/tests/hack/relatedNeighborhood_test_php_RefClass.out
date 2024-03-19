@@ -233,7 +233,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "RefClass",
                     "localName": "JAZZ"
@@ -261,7 +263,8 @@
                         },
                         "type": "test/php/RefClass/JAZZ"
                     }
-                ]
+                ],
+                "visibility": 20
             },
             "test/php/RefClass/bar": {
                 "annotations": [],
@@ -591,7 +594,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "SourceClass",
                     "localName": "BAZ"
@@ -619,7 +624,8 @@
                         },
                         "type": "test/php/SourceClass/BAZ"
                     }
-                ]
+                ],
+                "visibility": 20
             },
             "test/php/SourceClass/T": {
                 "annotations": [],
@@ -648,7 +654,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "SourceClass",
                     "localName": "T"
@@ -676,7 +684,8 @@
                         },
                         "type": "test/php/SourceClass/T"
                     }
-                ]
+                ],
+                "visibility": 20
             },
             "test/php/SourceClass/overrideMe": {
                 "annotations": [],

@@ -4,6 +4,90 @@
     "key": {
       "hack": {
         "decl": {
+          "classConst": {
+            "key": {
+              "name": { "key": "BAZ" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "classConst": {
+            "key": {
+              "name": { "key": "BAZ" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SuperClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "classConst": {
+            "key": {
+              "name": { "key": "JAZZ" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "RefClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "classConst": {
+            "key": {
+              "name": { "key": "JAZZ" },
+              "container": {
+                "interface_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceInterface" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
           "container": {
             "class_": {
               "key": { "name": { "key": { "name": { "key": "SecretClass" } } } }
@@ -684,6 +768,27 @@
       }
     },
     "value": 2
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "typeConst": {
+            "key": {
+              "name": { "key": "T" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
   },
   {
     "key": {

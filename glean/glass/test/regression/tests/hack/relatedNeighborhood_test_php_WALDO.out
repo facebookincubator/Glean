@@ -37,7 +37,10 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    4,
+                    6
+                ],
                 "name": {
                     "container": "",
                     "localName": "WALDO"

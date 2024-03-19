@@ -129,7 +129,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "SourceClass",
                     "localName": "BAZ"
@@ -157,7 +159,8 @@
                         },
                         "type": "test/php/SourceClass/BAZ"
                     }
-                ]
+                ],
+                "visibility": 20
             }
         }
     }

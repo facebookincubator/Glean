@@ -5,6 +5,144 @@
       "entity": {
         "hack": {
           "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "BAZ" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": true,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "BAZ" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SuperClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": true,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "JAZZ" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": true,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "JAZZ" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "SourceInterface" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": true,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
             "container": {
               "class_": {
                 "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
@@ -482,6 +620,31 @@
         "isStatic": false,
         "isReadonly": false,
         "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "globalConst": {
+              "key": { "name": { "key": { "name": { "key": "WALDO" } } } }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": true,
+        "isReadonly": false,
+        "isConst": true,
         "isMutable": false,
         "isVolatile": false,
         "isVirtual": false,
@@ -1482,6 +1645,40 @@
         "isStatic": false,
         "isReadonly": false,
         "isConst": false,
+        "isMutable": false,
+        "isVolatile": false,
+        "isVirtual": false,
+        "isInline": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "typeConst": {
+              "key": {
+                "name": { "key": "T" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isFinal": false,
+        "isAsync": false,
+        "isStatic": false,
+        "isReadonly": false,
+        "isConst": true,
         "isMutable": false,
         "isVolatile": false,
         "isVirtual": false,

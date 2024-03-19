@@ -161,7 +161,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "RefClass",
                     "localName": "JAZZ"
@@ -189,7 +191,8 @@
                         },
                         "type": "test/php/RefClass/JAZZ"
                     }
-                ]
+                ],
+                "visibility": 20
             },
             "test/php/RefClass/bar": {
                 "annotations": [],

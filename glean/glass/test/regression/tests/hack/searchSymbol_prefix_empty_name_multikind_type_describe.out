@@ -78,7 +78,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "SourceClass",
                     "localName": "T"
@@ -97,7 +99,8 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": []
+                "type_xrefs": [],
+                "visibility": 20
             }
         ],
         "symbols": [

@@ -111,7 +111,9 @@
                     },
                     "repository": "test"
                 },
-                "modifiers": [],
+                "modifiers": [
+                    6
+                ],
                 "name": {
                     "container": "SourceInterface",
                     "localName": "JAZZ"
@@ -139,7 +141,8 @@
                         },
                         "type": "test/php/SourceInterface/JAZZ"
                     }
-                ]
+                ],
+                "visibility": 20
             },
             "test/php/SourceInterface/foo": {
                 "annotations": [],

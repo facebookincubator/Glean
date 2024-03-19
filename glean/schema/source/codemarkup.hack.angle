@@ -213,7 +213,14 @@ predicate HackVisibility :
       );
       { just = { internal = true } } = M;
       Internal = Vis;
+    ) | (
+      { classConst = _ } = D;
+      Public = Vis;
+    ) | (
+      { typeConst = _ } = D;
+      Public = Vis;
     );
+
     FromHackVisibility { Vis, V };
 
 # helper from Hack visibility to the codemarkup.types version
@@ -238,22 +245,36 @@ predicate HackModifiers:
       hack.MethodDefinition { declaration = Method,
         isAbstract = Abstract, isFinal = Final,
         isAsync = Async, isStatic = Static };
-        Readonly = false;
+        Readonly = false; Const = false;
     ) | (
       { property_ = Property } = Decl;
       hack.PropertyDefinition { declaration = Property,
         isAbstract = Abstract, isFinal = Final, isStatic = Static };
-      Async = false; Readonly = false;
-    ) | ( { function_ = Func } = Decl;
+      Async = false; Readonly = false; Const = false;
+    ) | (
+      { function_ = Func } = Decl;
       hack.FunctionDefinition { declaration = Func, isAsync = Async };
         Abstract = false; Final = false; Static = false; Readonly = false;
+        Const = false;
     ) | (
       { container = { class_ = Class } } = Decl;
       hack.ClassDefinition { declaration = Class,
         isAbstract = Abstract, isFinal = Final };
-      Async = false; Static = false; Readonly = false;
+      Async = false; Static = false; Readonly = false; Const = false;
+    ) | (
+      { classConst = _ } = Decl;
+      Async = false; Static = false; Abstract = false; Final = false;
+      Const = true;
+    ) | (
+      { typeConst = _ } = Decl;
+      Async = false; Static = false; Abstract = false; Final = false;
+      Const = true;
+    ) | (
+      { globalConst = _ } = Decl;
+      Async = false; Static = true; Abstract = false; Final = false;
+      Const = true;
     );
-    Const = false; Volatile = false; Virtual = false; Inline = false;
+    Volatile = false; Virtual = false; Inline = false;
      Readonly = false; Mutable = false;
     { Abstract, Final, Async, Static, Readonly, Const, Mutable,
        Volatile, Virtual, Inline } = Modifiers;
