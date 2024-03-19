@@ -34,6 +34,9 @@ module Glean.RTS.Foreign.Ownership
   , getOwnershipStats
   , showOwnershipStats
   , nextUsetId
+  , FactOwnership(..)
+  , substOwnership
+  , unionOwnership
   ) where
 
 import Control.Exception
@@ -41,9 +44,12 @@ import Control.Monad
 import Data.ByteString (ByteString)
 import Data.ByteString.Unsafe (unsafeUseAsCStringLen)
 import Data.Coerce
+import Data.HashMap.Strict (HashMap)
+import qualified Data.HashMap.Strict as HashMap
 import Data.List (unzip4)
 import Data.Text (Text)
 import qualified Data.Vector.Storable as VS
+import Data.Vector.Storable (Vector)
 import Foreign hiding (with)
 import Foreign.C
 import TextShow
@@ -324,6 +330,30 @@ nextUsetId :: Ownership -> IO UsetId
 nextUsetId ownership =
   with ownership $ \ownership_ptr -> do
     invoke $ glean_ownership_next_set_id ownership_ptr
+
+-- -----------------------------------------------------------------------------
+-- Fact ownership
+
+-- | Ownership associated with a fact batch
+newtype FactOwnership = FactOwnership
+  { ownershipUnits :: HashMap Thrift.UnitName (Vector Thrift.Id)
+     -- ^ exactly the same as Batch.owned in glean.thrift
+  }
+
+substOwnership :: Subst -> FactOwnership -> FactOwnership
+substOwnership subst (FactOwnership owned) =
+  FactOwnership (fmap (coerce $ substIntervals subst) owned)
+
+unionOwnership :: [FactOwnership] -> FactOwnership
+unionOwnership =
+  FactOwnership
+  . fmap VS.concat
+  . foldr
+      (HashMap.unionWith (<>) . fmap (: []) . ownershipUnits)
+      HashMap.empty
+
+-- -----------------------------------------------------------------------------
+-- FFI
 
 foreign import ccall safe glean_get_ownership_stats
   :: Ptr Ownership

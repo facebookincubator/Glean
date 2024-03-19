@@ -18,12 +18,7 @@ import Control.DeepSeq
 import Control.Exception
 import Control.Monad
 import qualified Data.ByteString as BS
-import Data.Coerce
 import Data.Word
-import Data.Vector.Storable (Vector)
-import qualified Data.Vector.Storable as Vector
-import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HashMap
 
 import Util.Log
 import Util.STM
@@ -35,6 +30,7 @@ import Glean.Write.SendQueue (SendQueue)
 import Glean.RTS.Constants (firstAnonId)
 import Glean.Write.Stats as Stats
 import Glean.RTS.Foreign.Define
+import Glean.RTS.Foreign.Ownership
 import Glean.RTS.Foreign.Stacked
 import qualified Glean.RTS.Foreign.Lookup as Lookup
 import qualified Glean.RTS.Foreign.LookupCache as LookupCache
@@ -169,11 +165,6 @@ sending.
 -- | When the send operation fails or is completed this is called once.
 type Callback = Either SomeException () -> STM ()
 
-newtype Ownership = Ownership
-  { ownershipUnits :: HashMap Thrift.UnitName (Vector Thrift.Id)
-     -- ^ exactly the same as Batch.owned in glean.thrift
-  }
-
 data WaitSubst
   = WaitSubstNone
   | WaitSubstError SomeException
@@ -184,7 +175,7 @@ data Sender = Sender
   , sSubstVar :: TMVar WaitSubst
   , sSent :: TVar Point
     -- ^ Records the size and time the last batch was sent, for stats
-  , sFacts :: MVar (FactSet, [Ownership])
+  , sFacts :: MVar (FactSet, [FactOwnership])
     -- ^ [Ownership] is the ownership assignments for facts in the FactSet
   , sCallbacks :: TQueue Callback
   }
@@ -245,7 +236,7 @@ rebase
   -> Thrift.Batch
   -> LookupCache
   -> FactSet.FactSet
-  -> IO (FactSet.FactSet, Ownership)
+  -> IO (FactSet.FactSet, FactOwnership)
 rebase inventory batch cache base = do
   LookupCache.withCache Lookup.EmptyLookup cache LookupCache.FIFO $ \cache -> do
     -- when there are multiple senders, the cache may have new facts since
@@ -260,8 +251,9 @@ rebase inventory batch cache base = do
         { trustRefs = True
         , ignoreRedef = True  -- see Note [redefinition]
         }
-      let owned = substOwnership subst (Thrift.batch_owned batch)
-      return (factSet, Ownership owned)
+      let owned = substOwnership subst $
+            FactOwnership $ Thrift.batch_owned batch
+      return (factSet, owned)
 
 {- Note [redefinition]
 
@@ -283,30 +275,12 @@ but I don't see an alternative.
 
 -}
 
-toBatchOwnership :: [Ownership] -> HashMap Thrift.UnitName (Vector Thrift.Id)
-toBatchOwnership =
-  fmap Vector.concat .
-  foldr
-    (HashMap.unionWith (<>) . fmap (: []) . ownershipUnits)
-    HashMap.empty
-
-rebaseOwnershipList :: [Ownership] -> Subst -> [Ownership]
-rebaseOwnershipList ownership subst =
-  [ Ownership (substOwnership subst own)
-  | Ownership own <- ownership
-  ]
-
-substOwnership
-  :: Subst
-  -> HashMap Thrift.UnitName (Vector Thrift.Id)
-  -> HashMap Thrift.UnitName (Vector Thrift.Id)
-substOwnership subst = fmap (coerce $ substIntervals subst)
-
 -- | Send the current fact buffer to the server
 senderFlush :: SendAndRebaseQueue -> Sender -> IO ()
 senderFlush srq sender = modifyMVar_ (sFacts sender) $ \(facts, owned) -> do
   factOnlyBatch <- FactSet.serialize facts
-  let batch = factOnlyBatch { Thrift.batch_owned = toBatchOwnership owned }
+  let batch = factOnlyBatch {
+        Thrift.batch_owned = ownershipUnits (unionOwnership owned) }
   !size <- FactSet.factMemory facts
   start <- beginTick (fromIntegral size)
   atomically $ do
@@ -351,7 +325,7 @@ senderRebaseAndFlush wait srq sender = do
           bracket (deserialize thriftSubst) release $ \subst -> do
             (newBase, newSubst) <-
               FactSet.rebase (srqInventory srq) subst (srqFacts srq) base
-            let newOwned = rebaseOwnershipList owned newSubst
+            let newOwned = map (substOwnership newSubst) owned
             _ <- evaluate (force (map ownershipUnits newOwned))
             return (newBase, newOwned)
       -- "Commit throughput" will be write throughput to the server
