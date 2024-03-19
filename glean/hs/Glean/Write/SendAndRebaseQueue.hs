@@ -169,11 +169,9 @@ sending.
 -- | When the send operation fails or is completed this is called once.
 type Callback = Either SomeException () -> STM ()
 
-data Ownership = Ownership
+newtype Ownership = Ownership
   { ownershipUnits :: HashMap Thrift.UnitName (Vector Thrift.Id)
      -- ^ exactly the same as Batch.owned in glean.thrift
-  , ownershipEnd :: !Fid
-     -- ^ exclusive upper bound on the facts covered by ownershipUnits
   }
 
 data WaitSubst
@@ -187,12 +185,7 @@ data Sender = Sender
   , sSent :: TVar Point
     -- ^ Records the size and time the last batch was sent, for stats
   , sFacts :: MVar (FactSet, [Ownership])
-    -- ^ [Ownership] is the ownership assignments for facts in the
-    -- FactSet, in descending order by ownershipEnd (newest at the
-    -- front of the list). Each time we add a new batch to the
-    -- FactSet, we prepend its ownership to the list. When rebasing,
-    -- we will discard ownership for facts already written by taking a
-    -- prefix of the list.
+    -- ^ [Ownership] is the ownership assignments for facts in the FactSet
   , sCallbacks :: TQueue Callback
   }
 
@@ -268,8 +261,7 @@ rebase inventory batch cache base = do
         , ignoreRedef = True  -- see Note [redefinition]
         }
       let owned = substOwnership subst (Thrift.batch_owned batch)
-      nextId <- Lookup.firstFreeId factSet
-      return (factSet, Ownership owned nextId)
+      return (factSet, Ownership owned)
 
 {- Note [redefinition]
 
@@ -300,12 +292,8 @@ toBatchOwnership =
 
 rebaseOwnershipList :: [Ownership] -> Subst -> [Ownership]
 rebaseOwnershipList ownership subst =
-  [ own {
-      ownershipUnits = substOwnership subst (ownershipUnits own),
-      ownershipEnd =
-        Fid (fromIntegral (substOffset subst) + fromFid (ownershipEnd own))
-    }
-  | own <- ownership
+  [ Ownership (substOwnership subst own)
+  | Ownership own <- ownership
   ]
 
 substOwnership
@@ -410,9 +398,6 @@ senderSendOrAppend srq sender batch callback latency = do
         (facts, owned) <- rebase (srqInventory srq) batch (srqFacts srq) base
         FactSet.append base facts
         atomically $ writeTQueue (sCallbacks sender) callback
-        assert (case ownership of
-          [] -> True
-          (next:_) -> ownershipEnd owned >= ownershipEnd next) $ return ()
         newSize <- FactSet.factMemory base
         return ((base, owned : ownership), newSize)
   updateLookupCacheStats srq
