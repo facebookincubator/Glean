@@ -1287,6 +1287,18 @@
       "entity": {
         "hack": {
           "decl": {
+            "module": { "key": { "name": { "key": "glean.test.thing" } } }
+          }
+        }
+      },
+      "info": { "kind": 4, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
             "namespace_": {
               "key": {
                 "name": {
