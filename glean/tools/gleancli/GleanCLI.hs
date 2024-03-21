@@ -19,7 +19,6 @@ import Data.Default
 import Data.Either
 import Data.Foldable
 import qualified Data.HashMap.Strict as HashMap
-import Data.List (isInfixOf)
 import Data.List.Split
 import qualified Data.Map.Strict as Map
 import Data.Proxy
@@ -28,6 +27,7 @@ import qualified Data.Text as Text
 import Options.Applicative
 import Options.Applicative.Help (vcat)
 import System.IO
+import System.FilePath.Glob as Glob
 
 import Util.EventBase
 import Util.IO
@@ -319,9 +319,13 @@ instance Plugin ListCommand where
 
   parseCommand =
     commandParser "list"
-      (progDesc "List databases which match DBNAME")
+      (progDesc "List databases")
       $ do
-      listDbNames <- many $ strArgument (metavar "DBNAME")
+      listDbNames <- many $ strArgument (
+        metavar "DBNAME | DBNAME/INSTANCE | GLOB" <>
+        help ("specifies which DBs to list. Globs may be used, " <>
+          "for example mydb-* would match mydb-cxx and mydb-py")
+        )
       listFormat <- shellFormatOpt
       listVerbosity <- flag DbSummarise DbDescribe (
         short 'v' <>
@@ -337,13 +341,19 @@ instance Plugin ListCommand where
     r <- Glean.listDatabases backend def {
       listDatabases_includeBackups = listIncludeBackups }
     let
-      repoFilter db str =
-        str `isInfixOf` Glean.showRepo repo
+      repoFilter db str
+        | isGlob str, let glob = Glob.compileWith Glob.compPosix str =
+            Glob.match glob (Glean.showRepo repo) ||
+            Glob.match glob (Text.unpack (Thrift.repo_name repo))
+        | Just db <- Glean.parseRepo str = db == repo
+        | otherwise = Text.pack str == Thrift.repo_name repo
         where repo = Thrift.database_repo db
       xs = Thrift.listDatabasesResult_databases r
       dbs = filter f xs
       f db = null listDbNames || any (repoFilter db) listDbNames
     putShellPrintLn listFormat $ dbs `withFormatOpts` listVerbosity
+    where
+      isGlob = any (`elem` ['*','?','[',']'])
 
 newtype LatestDbCommand
   = LatestDb { dbName :: String }
