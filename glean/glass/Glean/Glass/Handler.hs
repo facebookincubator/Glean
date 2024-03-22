@@ -112,6 +112,7 @@ import Glean.Glass.Query (
     QueryExpr(..)
   )
 import qualified Glean.Glass.Query.Cxx as Cxx
+import Glean.Glass.XRefs ( XRef )
 
 import Glean.Glass.SymbolMap ( toSymbolIndex )
 import Glean.Glass.Search as Search
@@ -1105,7 +1106,6 @@ addDynamicAttributes repoMapping dbInfo opts repofile
             (defs syms)
       in extend xs $ syms { refs = refs' , defs = defs' }
 
-type XRefs = [(Code.XRefLocation,Code.Entity)]
 type Defns = [(Code.Location,Code.Entity)]
 
 -- | Which fileEntityLocations and fileEntityXRefLocation implementations to use
@@ -1114,7 +1114,7 @@ documentSymbolsForLanguage
   -> Maybe Language
   -> Bool  -- ^ include references?
   -> Glean.IdOf Src.File
-  -> Glean.RepoHaxl u w (XRefs, Defns, Bool)
+  -> Glean.RepoHaxl u w ([XRef], Defns, Bool)
 
 -- For Cpp, we need to do a bit of client-side processing
 documentSymbolsForLanguage mlimit (Just Language_Cpp) includeRefs fileId =
@@ -1253,7 +1253,7 @@ toReferenceSymbol
   :: RepoName
   -> Src.File
   -> Maybe Range.LineOffsets
-  -> (Code.XRefLocation, Code.Entity)
+  -> XRef
   -> Glean.RepoHaxl u w XRefData
 toReferenceSymbol repoName file srcOffsets (Code.XRefLocation {..}, entity) = do
   path <- GleanPath <$> Glean.keyOf file

@@ -39,6 +39,7 @@ import qualified Glean.Schema.Src.Types as Src
 import Glean.Util.ToAngle ( ToAngle(toAngle) )
 import qualified Glean.Util.Range as Range
 
+import Glean.Glass.XRefs ( XRef )
 import Glean.Glass.Utils
 import qualified Glean.Schema.Codemarkup.Types as Code
 
@@ -79,7 +80,7 @@ documentSymbolsForCxx
   -> Bool  -- ^ include references?
   -> Glean.IdOf Src.File
   -> Glean.RepoHaxl u w
-      ([(Code.XRefLocation,Code.Entity)] , [(Code.Location,Code.Entity)], Bool)
+      ([XRef], [(Code.Location,Code.Entity)], Bool)
 documentSymbolsForCxx mlimit includeRefs fileId = do
   mTraceId <- getFirstFileTrace fileId
   case mTraceId of
@@ -134,7 +135,7 @@ fileEntityXRefLocations
   :: Maybe Int
   -> Glean.IdOf Src.File
   -> Glean.IdOf Cxx.Trace
-  -> Glean.RepoHaxl u w ([(Code.XRefLocation,Code.Entity)], Bool)
+  -> Glean.RepoHaxl u w ([XRef], Bool)
 fileEntityXRefLocations mlimit fileId traceId = do
   mresult <- getFirstFileXRefs fileId
   fixedAndVariable <- case mresult of -- C++ xrefs rely on a cxxFileXRefs fact
@@ -154,7 +155,7 @@ fileEntityXRefLocations mlimit fileId traceId = do
 spellingXRefs
   :: Maybe Int
   -> Glean.IdOf Src.File
-  -> Glean.RepoHaxl u w ([(Code.XRefLocation, Code.Entity)], Bool)
+  -> Glean.RepoHaxl u w ([XRef], Bool)
 spellingXRefs mlimit fileId = searchRecursiveWithLimit mlimit $
   cxxFileEntitySpellingXRefLocations fileId
 
@@ -162,7 +163,7 @@ spellingXRefs mlimit fileId = searchRecursiveWithLimit mlimit $
 fixedXRefs
   :: Maybe Int
   -> Glean.IdOf Cxx.FileXRefs
-  -> Glean.RepoHaxl u w ([(Code.XRefLocation, Code.Entity)], Bool)
+  -> Glean.RepoHaxl u w ([XRef], Bool)
 fixedXRefs mlimit xmapId = searchRecursiveWithLimit mlimit $
   cxxFileEntityXMapFixedXRefLocations xmapId
 
@@ -171,7 +172,7 @@ externalXRefs
   :: Maybe Int
   -> Glean.IdOf Cxx.FileXRefs
   -> Glean.IdOf Src.File
-  -> Glean.RepoHaxl u w ([(Code.XRefLocation, Code.Entity)], Bool)
+  -> Glean.RepoHaxl u w ([XRef], Bool)
 externalXRefs mlimit xrefId fileId = do
   -- process concurrently
   maybeRawXRefs <- variableXRefs xrefId
@@ -204,7 +205,7 @@ externalXRefs mlimit xrefId fileId = do
 mkIndirectXRef
   :: Glean.IdOf Src.File -- ^ we only want indirect xrefs whose use is here
   -> Cxx.XRefIndirectTarget
-  -> Glean.RepoHaxl u w (Maybe (Code.XRefLocation, Code.Entity))
+  -> Glean.RepoHaxl u w (Maybe XRef)
 mkIndirectXRef fileId viaFact = do
   (Cxx.XRefIndirectTarget_key via target) <- Glean.keyOf viaFact
   mXRefTarget <- cxxXRefTargetToLocation mempty target
@@ -246,7 +247,7 @@ getXRefViaRange via = case via of
 zipXRefSourceAndTargets
   :: [[Src.ByteSpan]]
   -> [[Maybe (Code.Entity, Code.Location)]]
-  -> [(Code.XRefLocation, Code.Entity)]
+  -> [XRef]
 zipXRefSourceAndTargets sources targets =
   [ (xrefFromLocationAndSpan targetLocation span, entity)
   | (spans, xrefs) <- zip sources targets
@@ -260,7 +261,7 @@ zipXRefSourcesAndDefinitions
   :: DeclToDefMap
   -> [[Src.ByteSpan]]
   -> [[Maybe (Code.Entity, Code.Location)]]
-  -> [(Code.XRefLocation, Code.Entity)]
+  -> [XRef]
 zipXRefSourcesAndDefinitions declToDefMap sources targets = catMaybes
   [ case entity of
       Cxx.Entity_decl decl -> do
@@ -327,7 +328,7 @@ externalDeclToLocations mlimit xrefId = do
 ppXRefs
   :: Maybe Int
   -> Glean.IdOf Cxx.Trace
-  -> Glean.RepoHaxl u w ([(Code.XRefLocation, Code.Entity)], Bool)
+  -> Glean.RepoHaxl u w ([XRef], Bool)
 ppXRefs mlimit traceId = searchRecursiveWithLimit mlimit $
   ppEntityTraceXRefLocations traceId
 
@@ -335,7 +336,7 @@ ppXRefs mlimit traceId = searchRecursiveWithLimit mlimit $
 declToDefXRefs
   :: Maybe Int
   -> Glean.IdOf Cxx.Trace
-  -> Glean.RepoHaxl u w ([(Code.XRefLocation, Code.Entity)], Bool)
+  -> Glean.RepoHaxl u w ([XRef], Bool)
 declToDefXRefs mlimit traceId = searchRecursiveWithLimit mlimit $
   cxxFileEntityTraceDeclToDefXRefLocations traceId
 
@@ -496,7 +497,7 @@ cxxPpResolveTraceLocations traceId =
 -- Spelling XRefs associated with a file
 cxxFileEntitySpellingXRefLocations
   :: Glean.IdOf Src.File
-  -> Angle (Code.XRefLocation, Code.Entity)
+  -> Angle XRef
 cxxFileEntitySpellingXRefLocations fileId =
   vars $ \(xref :: Angle Code.XRefLocation) (entity :: Angle Cxx.Entity) ->
     tuple (xref, sig (alt @"cxx" entity) :: Angle Code.Entity) `where_` [
@@ -511,7 +512,7 @@ cxxFileEntitySpellingXRefLocations fileId =
 -- Fixed XRefs associated with a file and xmap /xref set
 cxxFileEntityXMapFixedXRefLocations
   :: Glean.IdOf Cxx.FileXRefs
-  -> Angle (Code.XRefLocation, Code.Entity)
+  -> Angle XRef
 cxxFileEntityXMapFixedXRefLocations xrefId =
   vars $ \(xref :: Angle Code.XRefLocation) (entity :: Angle Cxx.Entity) ->
     tuple (xref, sig (alt @"cxx" entity) :: Angle Code.Entity) `where_` [
@@ -547,7 +548,7 @@ cxxFileEntityXMapVariableXRefLocations xrefId =
 --
 cxxFileEntityTraceDeclToDefXRefLocations
   :: Glean.IdOf Cxx.Trace
-  -> Angle (Code.XRefLocation, Code.Entity)
+  -> Angle XRef
 cxxFileEntityTraceDeclToDefXRefLocations traceId =
   vars $ \(xref :: Angle Code.XRefLocation) (entity :: Angle Cxx.Entity) ->
     tuple (xref, sig (alt @"cxx" entity) :: Angle Code.Entity) `where_` [
@@ -622,7 +623,7 @@ cxxFileEntityXMapVariableXRefDeclToDefs xrefId =
 -- C preprocessor #define and #include uses associated with a cxx1.Trace
 ppEntityTraceXRefLocations
   :: Glean.IdOf Cxx.Trace
-  -> Angle (Code.XRefLocation, Code.Entity)
+  -> Angle XRef
 ppEntityTraceXRefLocations traceId =
   vars $ \(xref :: Angle Code.XRefLocation) (entity :: Angle Pp.Entity) ->
     tuple (xref, sig (alt @"pp" entity) :: Angle Code.Entity) `where_` [
