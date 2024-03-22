@@ -241,10 +241,11 @@ folly::Optional<uint32_t> DatabaseImpl::getUnitId(folly::ByteRange unit) {
 
 folly::Optional<std::string> DatabaseImpl::getUnit(uint32_t unit_id) {
   rocksdb::PinnableSlice val;
+  EncodedNat key(unit_id);
   auto s = container_.db->Get(
       rocksdb::ReadOptions(),
       container_.family(Family::ownershipUnitIds),
-      slice(EncodedNat(unit_id).byteRange()),
+      slice(key.byteRange()),
       &val);
   if (!s.IsNotFound()) {
     check(s);
@@ -287,9 +288,10 @@ void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
           container_.family(Family::ownershipUnits),
           slice(set.unit),
           toSlice(unit_id)));
+      EncodedNat key(unit_id);
       check(batch.Put(
           container_.family(Family::ownershipUnitIds),
-          slice(EncodedNat(unit_id).byteRange()),
+          slice(key.byteRange()),
           slice(set.unit)));
       ++new_count;
     }
@@ -508,10 +510,11 @@ struct StoredOwnership : Ownership {
 
   folly::Optional<SetExpr<SetU32>> getUset(UsetId id) override {
     rocksdb::PinnableSlice val;
+    EncodedNat key(id);
     auto s = db_->container_.db->Get(
         rocksdb::ReadOptions(),
         db_->container_.family(Family::ownershipSets),
-        slice(EncodedNat(id).byteRange()),
+        slice(key.byteRange()),
         &val);
     binary::Input inp(byteRange(val));
     if (!s.IsNotFound()) {
