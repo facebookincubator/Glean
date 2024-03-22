@@ -117,4 +117,26 @@ type CallArgument =
   , span : src.ByteSpan
   , argument : maybe Argument
   }
+
+# An IdlEntity typically represents an entity defined in
+# a different db than the one the codemarkup predicates
+# evaluate against. We attach it to a generated entity
+# using codemarkup.EntityIdl.
+#
+# Example: a thrift declaration defined in fbsource.fbthrift, while
+# the codemarkup predicates evaluate on fbsource
+#
+# location and entity are optional as we may not able to generate
+# them from the referring db. We need at least the source file
+# to provide some minimal navigation. Location is a range,
+# since we won't have src.FileLines for idl files
+#
+# Also see doc of `codemarkup.EntityIdl`.
+#
+type IdlEntity =
+  { lang : Language
+  , file : src.File
+  , entity : maybe code.Entity
+  , range : maybe src.Range
+  }
 }

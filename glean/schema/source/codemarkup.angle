@@ -193,6 +193,20 @@ predicate EntityLocation:
     (codemarkup.csharp.CSharpEntityLocation { E, Location };
      { csharp = E } = Entity);
 
+# Maps a (generated) entity to its defining IDL.
+# By joining with FileEntityXRefLocations, we can get
+# generate xrefs to idl entities.
+predicate EntityIdl:
+  {
+    entity: code.Entity,
+    idlEntity: code.IdlEntity,
+  }
+  { Entity, IdlEntity } where
+    (codemarkup.hack.HackEntityIdl { E, IdlEntity };
+     { hack = E } = Entity) |
+    (codemarkup.cxx.CxxEntityIdl { E, IdlEntity };
+     { cxx = E } = Entity)
+
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:
   {

@@ -5,6 +5,8 @@ import src.1
 import code.cxx.4
 import codemarkup.types.1
 import cxx1.5
+import fbthrift.1
+import code.24
 
 # Resolving locations to entities
 
@@ -278,6 +280,29 @@ predicate CxxFileEntityXMapVariableXRefDeclLocations:
     { file = TargetFile } = Range;
     Destination = { just = { NameFile, NameSpan } };
     { Name, TargetFile, { range = Range }, Destination } = Location;
+
+predicate EntityToXRefTarget:
+  {
+    ent: code.cxx.Entity,
+    xrefTarget: cxx1.XRefTarget
+  }
+  { E, X } where
+    ({ decl = D } = E; { declaration = D } = X) |
+    ({ enumerator = En } = E; { enumerator = En } = X)
+
+predicate CxxEntityIdl:
+  {
+    ent: code.cxx.Entity,
+    idlEnt: code.IdlEntity,
+  }
+  { E, I } where
+    EntityToXRefTarget { E, XRefTarget };
+    cxx1.CxxToThrift { from = XRefTarget, to = Thrift };
+    fbthrift.DeclarationFile { Thrift, fbthrift.File F };
+    { lang = Thrift,
+      file = F,
+      entity = { just = { fbthrift = { decl = Thrift } } },
+      range = nothing } = I
 
 # Bulk fetch any definitions associated with the external decls in the filexrefs
 predicate CxxFileEntityXMapVariableXRefDeclToDefs:
