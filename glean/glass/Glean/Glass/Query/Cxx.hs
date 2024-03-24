@@ -78,9 +78,10 @@ import qualified Glean.Schema.Codemarkup.Types as Code
 documentSymbolsForCxx
   :: Maybe Int
   -> Bool  -- ^ include references?
+  -> Bool  -- ^ include xlang references?
   -> Glean.IdOf Src.File
   -> Glean.RepoHaxl u w ([GenXRef], [(Code.Location, Code.Entity)], Bool)
-documentSymbolsForCxx mlimit includeRefs fileId = do
+documentSymbolsForCxx mlimit includeRefs includeXlangRefs fileId = do
   mTraceId <- getFirstFileTrace fileId
   case mTraceId of
     Nothing -> return ([], [], False)
@@ -88,7 +89,7 @@ documentSymbolsForCxx mlimit includeRefs fileId = do
       -- these can run concurrently
       (defns, trunc1) <- fileEntityLocations mlimit traceId
       (xrefs, trunc2{- one of the sub queries truncated-}) <- if includeRefs
-        then fileEntityXRefLocations mlimit fileId traceId
+        then fileEntityXRefLocations mlimit fileId traceId includeXlangRefs
         else return ([], False)
       let (xrefs', trunc3) = maybeTake mlimit xrefs
       return (xrefs', defns, trunc1 || trunc2 || trunc3)
@@ -134,14 +135,15 @@ fileEntityXRefLocations
   :: Maybe Int
   -> Glean.IdOf Src.File
   -> Glean.IdOf Cxx.Trace
+  -> Bool  -- ^ include xlang refs
   -> Glean.RepoHaxl u w ([GenXRef], Bool)
-fileEntityXRefLocations mlimit fileId traceId = do
+fileEntityXRefLocations mlimit fileId traceId includeXlangRefs = do
   let reg (locEntities, trunc) = (PlainXRef <$> locEntities, trunc)
   mresult <- getFirstFileXRefs fileId
-  extractIdl :: (([XRef], Bool) -> ([GenXRef], Bool)) <- case mresult of
-    Nothing -> return reg
+  extractIdl <- case (mresult, includeXlangRefs) of
     -- fetch from Glean a map from generated entities to their idl entity
-    Just xrefId -> fetchCxxIdlXRefs mlimit xrefId
+    (Just xrefId, True) -> fetchCxxIdlXRefs mlimit xrefId
+    _ -> return reg
   fixedAndVariable <- case mresult of -- C++ xrefs rely on a cxxFileXRefs fact
     Nothing -> return []
     Just xrefId -> do

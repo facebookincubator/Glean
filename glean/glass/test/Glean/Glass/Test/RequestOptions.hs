@@ -315,7 +315,10 @@ instance Simplify (DocumentSymbolsRequest, RequestOptions) where
     , RequestOptions
           { requestOptions_revision = Just revision
           , requestOptions_limit = Nothing
-          , requestOptions_feature_flags = fmap Glass.FeatureFlags use
+          , requestOptions_feature_flags =
+            fmap (\x -> Glass.FeatureFlags
+              { featureFlags_use_revision = x,
+                featureFlags_include_xlang_refs = Nothing }) use
           , requestOptions_strict = True
           , requestOptions_exact_revision = exact
           }

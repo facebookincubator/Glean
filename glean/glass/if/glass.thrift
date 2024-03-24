@@ -117,6 +117,9 @@ struct FeatureFlags {
   // a snapshot for documentSymbolIndex/documentSymbolListX for the
   // requested revision, it is always used.
   2: optional bool use_revision;
+
+  // include xlang? default is false
+  3: optional bool include_xlang_refs;
 }
 
 // List symbols in a file. Symbols are spans of one or more tokens Glean has

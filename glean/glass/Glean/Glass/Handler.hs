@@ -893,7 +893,7 @@ fetchSymbolsAndAttributesGlean
   -> IO ((DocumentSymbolListXResult, QueryEachRepoLog), Maybe ErrorLogger)
 fetchSymbolsAndAttributesGlean repoMapping dbInfo req opts be mlang = do
   (res1, gLogs, elogs) <- fetchDocumentSymbols file mlimit
-    specificRev includeRefs be mlang
+    specificRev includeRefs includeXlangRefs be mlang
   res2 <- addDynamicAttributes repoMapping dbInfo opts
     file mlimit be res1
   return ((res2, gLogs), elogs)
@@ -901,6 +901,11 @@ fetchSymbolsAndAttributesGlean repoMapping dbInfo req opts be mlang = do
     file = toFileReference (documentSymbolsRequest_repository req)
       (documentSymbolsRequest_filepath req)
     includeRefs = documentSymbolsRequest_include_refs req
+    includeXlangRefs = case opts of
+      RequestOptions { requestOptions_feature_flags = Just
+        FeatureFlags { featureFlags_include_xlang_refs = Just True } } -> True
+      _ -> False
+
     mlimit = Just (fromIntegral (fromMaybe mAXIMUM_SYMBOLS_QUERY_LIMIT
       (requestOptions_limit opts)))
 
@@ -974,11 +979,12 @@ fetchDocumentSymbols
   -> Maybe Int
   -> RevisionSpecifier
   -> Bool  -- ^ include references?
+  -> Bool  -- ^ include xlang references?
   -> GleanBackend b
   -> Maybe Language
   -> IO (DocumentSymbols, QueryEachRepoLog, Maybe ErrorLogger)
 fetchDocumentSymbols (FileReference scsrepo path) mlimit
-    revSpec includeRefs b mlang = backendRunHaxl b $ do
+    revSpec includeRefs includeXlangRefs b mlang = backendRunHaxl b $ do
   --
   -- we pick the first db in the list that has the full FileInfo{..}
   -- and in exact_revision mode the rev also has to match precisely
@@ -1018,7 +1024,8 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit
 
       -- from Glean, fetch xrefs and defs in two batches
       (xrefs, defns, truncated) <- withRepo fileRepo $
-        documentSymbolsForLanguage mlimit mlang includeRefs fileId
+        documentSymbolsForLanguage mlimit mlang includeRefs includeXlangRefs
+          fileId
       (kindMap, merr) <- withRepo fileRepo $
         documentSymbolKinds mlimit mlang fileId
 
@@ -1113,15 +1120,17 @@ documentSymbolsForLanguage
   :: Maybe Int
   -> Maybe Language
   -> Bool  -- ^ include references?
+  -> Bool -- ^ include xlang references
   -> Glean.IdOf Src.File
   -> Glean.RepoHaxl u w ([GenXRef], Defns, Bool)
 
 -- For Cpp, we need to do a bit of client-side processing
-documentSymbolsForLanguage mlimit (Just Language_Cpp) includeRefs fileId =
-  Cxx.documentSymbolsForCxx mlimit includeRefs fileId
+documentSymbolsForLanguage
+  mlimit (Just Language_Cpp) includeRefs includeXlangRefs fileId =
+  Cxx.documentSymbolsForCxx mlimit includeRefs includeXlangRefs fileId
 
 -- For everyone else, we just query the generic codemarkup predicates
-documentSymbolsForLanguage mlimit _ includeRefs fileId = do
+documentSymbolsForLanguage mlimit _ includeRefs _ fileId = do
   (xrefs, trunc1) <- if includeRefs
     then searchRecursiveWithLimit mlimit $ Query.fileEntityXRefLocations fileId
     else return ([], False)
@@ -1559,7 +1568,8 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
       parentRange <-
         locationRange_range <$> rangeSpanToLocationRange repoName file rangespan
       (xrefs_, _, _) <-
-        documentSymbolsForLanguage Nothing (Just lang) True (Glean.getId file)
+        documentSymbolsForLanguage Nothing (Just lang) True False
+          (Glean.getId file)
       -- only consider non-Idl xrefs
       let xrefs = [x | PlainXRef x <- xrefs_]
       xrefsRanges <- forM xrefs $ \(Code.XRefLocation{..}, entity) -> do
