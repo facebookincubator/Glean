@@ -22,7 +22,7 @@
             }
         },
         "revision": "testhash",
-        "size": 212,
+        "size": 214,
         "symbols": {
             "104": [
                 {
@@ -4591,6 +4591,42 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolIdl": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "thrift1"
+                        },
+                        "symbolParent": {
+                            "aString": "MyRoot"
+                        },
+                        "symbolSignature": {
+                            "aString": "function thrift/compiler/test/fixtures/inheritance/src/module::MyRoot::thrift1"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 10,
+                        "lineBegin": 223,
+                        "lineEnd": 223
+                    },
+                    "sym": "test/thrift/thrift/compiler/test/fixtures/inheritance/src/module.thrift/MyRoot/thrift1",
+                    "target": {
+                        "filepath": "thrift/compiler/test/fixtures/inheritance/src/module.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 1,
+                            "lineEnd": 1
+                        },
+                        "repository": "test"
+                    }
                 }
             ],
             "224": [
@@ -4629,6 +4665,42 @@
                             "columnEnd": 13,
                             "lineBegin": 18,
                             "lineEnd": 18
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolIdl": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "thrift2"
+                        },
+                        "symbolParent": {
+                            "aString": "MyRoot"
+                        },
+                        "symbolSignature": {
+                            "aString": "function thrift/compiler/test/fixtures/inheritance/src/module::MyRoot::thrift2"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 10,
+                        "lineBegin": 224,
+                        "lineEnd": 224
+                    },
+                    "sym": "test/thrift/thrift/compiler/test/fixtures/inheritance/src/module.thrift/MyRoot/thrift2",
+                    "target": {
+                        "filepath": "thrift/compiler/test/fixtures/inheritance/src/module.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 1,
+                            "lineEnd": 1
                         },
                         "repository": "test"
                     }

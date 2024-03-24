@@ -281,6 +281,15 @@ predicate CxxFileEntityXMapVariableXRefDeclLocations:
     Destination = { just = { NameFile, NameSpan } };
     { Name, TargetFile, { range = Range }, Destination } = Location;
 
+predicate XRefTargetToEntity:
+  {
+    xrefTarget: cxx1.XRefTarget,
+    ent: code.cxx.Entity
+  }
+  { X, E } where
+    ({ declaration = D } = X; { decl = D } = E) |
+    ({ enumerator = En } = X; { enumerator = En } = E)
+
 predicate EntityToXRefTarget:
   {
     ent: code.cxx.Entity,
@@ -303,6 +312,26 @@ predicate CxxEntityIdl:
       file = F,
       entity = { just = { fbthrift = { decl = Thrift } } },
       range = nothing } = I
+
+# Bulk fetch any idl entities associated with the xref in the filexrefs
+predicate CxxFileEntityIdl:
+  {
+    trace: cxx1.FileXRefs,
+    ent: code.Entity,
+    idlEnt: code.IdlEntity,
+  }
+  { Trace, { cxx = Entity }, Idl } where
+    cxx1.FileXRefs { xmap = { fixed = Fs }, targets = Ts } = Trace;
+    cxx1.XRefTargets Targets = Ts[..];
+    (
+      XRefTarget = Targets[..];
+      XRefTargetToEntity { XRefTarget, Entity };
+      CxxEntityIdl { ent = Entity, idlEnt = Idl }
+    ) | (
+       { target = XRefTarget } = Fs[..];
+       XRefTargetToEntity { XRefTarget, Entity };
+       CxxEntityIdl { ent = Entity, idlEnt = Idl };
+    )
 
 # Bulk fetch any definitions associated with the external decls in the filexrefs
 predicate CxxFileEntityXMapVariableXRefDeclToDefs:

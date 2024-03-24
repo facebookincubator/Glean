@@ -39,7 +39,7 @@ import qualified Glean.Schema.Src.Types as Src
 import Glean.Util.ToAngle ( ToAngle(toAngle) )
 import qualified Glean.Util.Range as Range
 
-import Glean.Glass.XRefs ( XRef )
+import Glean.Glass.XRefs ( XRef, GenXRef(..), fetchCxxIdlXRefs )
 import Glean.Glass.Utils
 import qualified Glean.Schema.Codemarkup.Types as Code
 
@@ -79,8 +79,7 @@ documentSymbolsForCxx
   :: Maybe Int
   -> Bool  -- ^ include references?
   -> Glean.IdOf Src.File
-  -> Glean.RepoHaxl u w
-      ([XRef], [(Code.Location,Code.Entity)], Bool)
+  -> Glean.RepoHaxl u w ([GenXRef], [(Code.Location, Code.Entity)], Bool)
 documentSymbolsForCxx mlimit includeRefs fileId = do
   mTraceId <- getFirstFileTrace fileId
   case mTraceId of
@@ -135,9 +134,14 @@ fileEntityXRefLocations
   :: Maybe Int
   -> Glean.IdOf Src.File
   -> Glean.IdOf Cxx.Trace
-  -> Glean.RepoHaxl u w ([XRef], Bool)
+  -> Glean.RepoHaxl u w ([GenXRef], Bool)
 fileEntityXRefLocations mlimit fileId traceId = do
+  let reg (locEntities, trunc) = (PlainXRef <$> locEntities, trunc)
   mresult <- getFirstFileXRefs fileId
+  extractIdl :: (([XRef], Bool) -> ([GenXRef], Bool)) <- case mresult of
+    Nothing -> return reg
+    -- fetch from Glean a map from generated entities to their idl entity
+    Just xrefId -> fetchCxxIdlXRefs mlimit xrefId
   fixedAndVariable <- case mresult of -- C++ xrefs rely on a cxxFileXRefs fact
     Nothing -> return []
     Just xrefId -> do
@@ -148,7 +152,8 @@ fileEntityXRefLocations mlimit fileId traceId = do
   ppxrefs <- ppXRefs mlimit traceId
   defXRefs <- declToDefXRefs mlimit traceId
   spellingXRefs <- spellingXRefs mlimit fileId
-  let result = fixedAndVariable ++ [ppxrefs, defXRefs, spellingXRefs]
+  let result = (extractIdl <$> fixedAndVariable) ++
+        (reg <$> [ppxrefs, defXRefs, spellingXRefs])
   return (concatMap fst result, any snd result)
 
 -- spelling (easily discoverable) xrefs

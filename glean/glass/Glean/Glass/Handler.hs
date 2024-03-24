@@ -112,7 +112,7 @@ import Glean.Glass.Query (
     QueryExpr(..)
   )
 import qualified Glean.Glass.Query.Cxx as Cxx
-import Glean.Glass.XRefs ( XRef )
+import Glean.Glass.XRefs ( GenXRef(..) )
 
 import Glean.Glass.SymbolMap ( toSymbolIndex )
 import Glean.Glass.Search as Search
@@ -1023,7 +1023,7 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit
         documentSymbolKinds mlimit mlang fileId
 
       -- mark up symbols into normal format with static attributes
-      refs1 <- withRepo fileRepo $
+      refs1 <- withRepo fileRepo $ catMaybes <$>
         mapM (toReferenceSymbol scsrepo srcFile offsets) xrefs
       defs1 <- withRepo fileRepo $
         mapM (toDefinitionSymbol scsrepo srcFile offsets) defns
@@ -1114,7 +1114,7 @@ documentSymbolsForLanguage
   -> Maybe Language
   -> Bool  -- ^ include references?
   -> Glean.IdOf Src.File
-  -> Glean.RepoHaxl u w ([XRef], Defns, Bool)
+  -> Glean.RepoHaxl u w ([GenXRef], Defns, Bool)
 
 -- For Cpp, we need to do a bit of client-side processing
 documentSymbolsForLanguage mlimit (Just Language_Cpp) includeRefs fileId =
@@ -1127,7 +1127,8 @@ documentSymbolsForLanguage mlimit _ includeRefs fileId = do
     else return ([], False)
   (defns, trunc2) <- searchRecursiveWithLimit mlimit $
     Query.fileEntityLocations fileId
-  return (xrefs,defns, trunc1 || trunc2)
+  -- No IDL for languages other than C++ yet
+  return (PlainXRef <$> xrefs, defns, trunc1 || trunc2)
 
 -- And build a line-indexed map of symbols, resolved to spans
 -- With extra attributes loaded from any associated attr db
@@ -1248,35 +1249,63 @@ data XRefData = XRefData
   , xrefFile :: {-# UNPACK #-}!(Glean.IdOf Src.File)
   }
 
--- | Convert the xref target to a src.Range
-toReferenceSymbol
+toReferenceSymbolGen
   :: RepoName
   -> Src.File
   -> Maybe Range.LineOffsets
-  -> XRef
+  -> Code.RangeSpan
+  -> Src.File
+  -> Code.Entity
+  -> Code.RangeSpan
+  -> Maybe Src.FileLocation
+  -> Maybe Code.Language
   -> Glean.RepoHaxl u w XRefData
-toReferenceSymbol repoName file srcOffsets (Code.XRefLocation {..}, entity) = do
+toReferenceSymbolGen repoName file srcOffsets
+  rangeSpanSrc xrefFile xrefEntity xrefRangeSpan mDestination mLang = do
   path <- GleanPath <$> Glean.keyOf file
-  sym <- toSymbolId (fromGleanPath repoName path) entity
-  attributes <- getStaticAttributes entity repoName sym
-  (target, xrefFile) <- case location_destination of
-    Just Src.FileLocation{..} -> do -- if we have a best identifier location
+  sym <- toSymbolId (fromGleanPath repoName path) xrefEntity
+  attributes <- getStaticAttributes xrefEntity repoName sym mLang
+  (target, xrefFile) <- case mDestination of
+    -- if we have a best identifier location
+    Just (Src.FileLocation fileLocation_file fileLocation_span) -> do
       let rangeSpan = Code.RangeSpan_span fileLocation_span
       t <- rangeSpanToLocationRange repoName fileLocation_file rangeSpan
       return (t, Glean.getId fileLocation_file)
     _ -> do
-      t <- rangeSpanToLocationRange repoName location_file location_location
-      return (t, Glean.getId location_file)
-
-  let xrefEntity = entity
+      t <- rangeSpanToLocationRange repoName xrefFile xrefRangeSpan
+      return (t, Glean.getId xrefFile)
+  -- resolved the local span to a location
+  let range = rangeSpanToRange srcOffsets rangeSpanSrc
       xrefSymbol = ReferenceRangeSymbolX sym range target attributes
-  return XRefData{..}
+  return $ XRefData xrefEntity xrefSymbol xrefFile
 
-  where
+-- | Convert a generic XRef ("plain" or idl) defined from
+--   Codemarkup types into a common type which can be
+--   returned a Glasss
+toReferenceSymbol
+  :: RepoName
+  -> Src.File
+  -> Maybe Range.LineOffsets
+  -> GenXRef
+  -> Glean.RepoHaxl u w (Maybe XRefData)
+toReferenceSymbol repoName file srcOffsets xref = case xref of
+  PlainXRef (Code.XRefLocation{..}, xrefEntity) ->
     -- reference target is a Declaration and an Entity
-    Code.Location{..} = xRefLocation_target
-    -- resolved the local span to a location
-    range = rangeSpanToRange srcOffsets xRefLocation_source
+    let Code.Location{..} = xRefLocation_target in
+    Just <$> toReferenceSymbolGen repoName file srcOffsets xRefLocation_source
+      location_file xrefEntity location_location location_destination Nothing
+  IdlXRef (rangeSpanSrc, Code.IdlEntity lang idlFile (Just xrefEntity)
+       mRange) ->
+    -- if idl range isn't provided by Codemarkup, we use a
+    -- default location. TODO have glass resolve it
+    let one = Glean.Nat 1
+        firstCharSpan = Src.Range file one one one one
+        destRangeSpan = Code.RangeSpan_range $ fromMaybe firstCharSpan mRange in
+    Just <$> toReferenceSymbolGen repoName file srcOffsets rangeSpanSrc idlFile
+      xrefEntity destRangeSpan Nothing (Just lang)
+  -- we filtered out idl without entity for now.
+  -- TODO return a location and unknown symbol id
+  IdlXRef (_, Code.IdlEntity _ _ Nothing _) -> return Nothing
 
 -- | Building a resolved definition symbol is just taking a direct xref to it,
 -- and converting the bytespan, adding any static attributes
@@ -1291,7 +1320,7 @@ toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
   let symbolRepoPath@(SymbolRepoPath symbolRepo symbolPath) =
         fromGleanPath repoName path
   sym <- toSymbolId symbolRepoPath entity
-  attributes <- getStaticAttributes entity repoName sym
+  attributes <- getStaticAttributes entity repoName sym Nothing
   destination <- forM location_destination $ \Src.FileLocation{..} ->
     let rangeSpan = Code.RangeSpan_span fileLocation_span in
     rangeSpanToLocationRange repoName fileLocation_file rangeSpan
@@ -1312,8 +1341,12 @@ toDefinitionSymbol repoName file offsets (Code.Location {..}, entity) = do
 -- schema information alone, without additional repos.
 -- They're expected to be cheap, as we call these once per entity in a file
 getStaticAttributes
-  :: Code.Entity -> RepoName -> SymbolId -> Glean.RepoHaxl u w AttributeList
-getStaticAttributes e repo sym = do
+  :: Code.Entity
+  -> RepoName
+  -> SymbolId
+  -> Maybe Code.Language  -- Idl language
+  -> Glean.RepoHaxl u w AttributeList
+getStaticAttributes e repo sym mLang = do
   mLocalName <- toSymbolLocalName e
   mParent <- toSymbolQualifiedContainer e -- the "parent" of the symbol
   (mSignature, _xrefs) <- toSymbolSignatureText e repo sym Cxx.Unqualified
@@ -1325,6 +1358,7 @@ getStaticAttributes e repo sym = do
     , asKind <$> mKind
     , Just $ asLanguage (entityLanguage e)
     , asDefinitionType <$> entityDefinitionType e
+    , asLang =<< mLang
     ]
   where
     asLocalName (Name local) = ("symbolName", Attribute_aString local)
@@ -1336,6 +1370,9 @@ getStaticAttributes e repo sym = do
       Attribute_aInteger (fromIntegral $ fromThriftEnum lang))
     asDefinitionType kind = ("symbolDefinitionType",
       Attribute_aInteger (fromIntegral $ fromThriftEnum kind))
+    asLang Code.Language_Thrift  = Just ("symbolIdl",
+      Attribute_aString "thrift")
+    asLang _ = Nothing
 
 parentContainer
   :: RepoName -> Code.Entity -> Glean.RepoHaxl u w (Maybe SymbolContext)
@@ -1521,8 +1558,10 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
           parentRL = ((decl, file, rangespan, name), sym)
       parentRange <-
         locationRange_range <$> rangeSpanToLocationRange repoName file rangespan
-      (xrefs, _, _) <-
+      (xrefs_, _, _) <-
         documentSymbolsForLanguage Nothing (Just lang) True (Glean.getId file)
+      -- only consider non-Idl xrefs
+      let xrefs = [x | PlainXRef x <- xrefs_]
       xrefsRanges <- forM xrefs $ \(Code.XRefLocation{..}, entity) -> do
         gleanPath <- GleanPath <$>
           Glean.keyOf (Code.location_file xRefLocation_target)
