@@ -200,7 +200,7 @@ doBackup env@Env{..} repo prefix site =
   loggingAction (runLogRepo "backup" env repo) (const mempty) $ do
     atomically $ notify envListener $ BackupStarted repo
     say logInfo "starting"
-    withOpenDatabaseStorage env repo $ \storage OpenDB{..} -> do
+    withOpenDatabaseStorage env repo $ \_storage OpenDB{..} -> do
     say logInfo "packing"
     stats <- mapMaybe
       (\(pid,stats) -> (,stats) . predicateRef <$> lookupPid pid odbSchema)
@@ -209,7 +209,7 @@ doBackup env@Env{..} repo prefix site =
       maybeOwnership <- readTVarIO odbOwnership
       mapM getOwnershipStats maybeOwnership
     Backend.Data{..} <- withScratchDirectory envStorage repo $ \scratch ->
-      Storage.backup storage odbHandle scratch $ \path Data{dataSize} -> do
+      Storage.backup odbHandle scratch $ \path Data{dataSize} -> do
         say logInfo "uploading"
         policy <- ServerConfig.databaseBackupPolicy_repos
           . ServerConfig.config_backup <$> Observed.get envServerConfig

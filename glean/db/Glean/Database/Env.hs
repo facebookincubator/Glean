@@ -63,7 +63,8 @@ withDatabases evb cfg cfgapi act =
     (if cfgReadOnly cfg then ThriftSource.value def else cfgRecipeConfig cfg)
     $ \recipe_config ->
   ThriftSource.withValue cfgapi (cfgServerConfig cfg) $ \server_config -> do
-  withDataStore (cfgDataStore cfg) server_config $ \catalog storage -> do
+  server_cfg <- Observed.get server_config
+  withDataStore (cfgDataStore cfg) server_cfg $ \catalog storage -> do
     envCatalog <- Catalog.open catalog
     cfgShardManager cfg envCatalog server_config $ \shardManager ->
       bracket

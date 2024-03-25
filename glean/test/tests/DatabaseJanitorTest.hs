@@ -69,7 +69,6 @@ import Glean.ServerConfig.Types as ServerTypes
 import Glean.Internal.Types
 import Glean.Types as Thrift
 import Glean.Util.ConfigProvider
-import qualified Glean.Util.Observed as Observed
 import Glean.Util.ShardManager
 import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.Time (seconds)
@@ -189,7 +188,7 @@ makeFakeDB schema root repo dbtime completeness opts = do
       }
   let repoPath = databasePath root repo
   createDirectoryIfMissing True repoPath
-  storage <- RocksDB.newStorage root (Observed.fixedValue def)
+  storage <- RocksDB.newStorage root def
   bracket
     (Storage.open
       storage
@@ -211,7 +210,7 @@ makeFakeCloudDB
 makeFakeCloudDB schema backupDir repo dbtime completeness opts = do
   let repoPath = databasePath backupDir repo
   createDirectoryIfMissing True repoPath
-  storage <- RocksDB.newStorage backupDir (Observed.fixedValue def)
+  storage <- RocksDB.newStorage backupDir def
   bracket
     (Storage.open
       storage
@@ -223,7 +222,7 @@ makeFakeCloudDB schema backupDir repo dbtime completeness opts = do
       storeSchema hdl $ toStoredSchema schema
       tmpDir <- getCanonicalTemporaryDirectory
       withTempDirectory tmpDir "scratch" $ \scratch ->
-        Storage.backup storage hdl scratch $ \file _data ->
+        Storage.backup hdl scratch $ \file _data ->
           void $ backup (mockSite backupDir) repo props Nothing file
     )
   where

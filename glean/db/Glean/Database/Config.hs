@@ -90,7 +90,7 @@ import qualified Glean.Util.ThriftSource as ThriftSource
 
 data DataStore = DataStore
   { withDataStore
-      :: forall a. Observed ServerConfig.Config
+      :: forall a. ServerConfig.Config
       -> (forall c s. (Catalog.Store c, Storage s) => c -> s -> IO a)
       -> IO a
   , dataStoreTag :: String
