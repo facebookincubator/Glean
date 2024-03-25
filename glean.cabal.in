@@ -1017,6 +1017,7 @@ executable glean
         GleanCLI.Complete
         GleanCLI.Derive
         GleanCLI.Finish
+        GleanCLI.Merge
         GleanCLI.Index
         GleanCLI.Query
         GleanCLI.Restore
