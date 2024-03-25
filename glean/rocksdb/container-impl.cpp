@@ -311,10 +311,13 @@ std::unique_ptr<Database> ContainerImpl::openDatabase(
 
 namespace {
 
-std::unique_ptr<rocksdb::BackupEngine> backupEngine(const std::string& path) {
-  rocksdb::BackupEngine* p;
-  check(rocksdb::BackupEngine::Open(
-      rocksdb::Env::Default(), rocksdb::BackupEngineOptions(path), &p));
+std::unique_ptr<rocksdb::BackupEngine> backupEngine(const std::string &path,
+                                                    bool sync = true) {
+  rocksdb::BackupEngine *p;
+  rocksdb::BackupEngineOptions opts{path};
+  opts.sync = sync;
+  opts.max_background_operations = 16;
+  check(rocksdb::BackupEngine::Open(rocksdb::Env::Default(), opts, &p));
   return std::unique_ptr<rocksdb::BackupEngine>(p);
 }
 }
@@ -322,7 +325,8 @@ std::unique_ptr<rocksdb::BackupEngine> backupEngine(const std::string& path) {
 void ContainerImpl::backup(const std::string& path) {
   requireOpen();
   bool flush{mode != Mode::ReadOnly};
-  check(backupEngine(path)->CreateNewBackup(db.get(), flush));
+  // no need to sync on backup: we're going to upload and delete it immediately
+  check(backupEngine(path, false)->CreateNewBackup(db.get(), flush));
 }
 
 } // namespace impl
