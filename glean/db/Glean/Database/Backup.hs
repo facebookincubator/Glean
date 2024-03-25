@@ -197,7 +197,15 @@ data Staleness
 
 doBackup :: Site site => Env -> Repo -> Text -> site -> IO Bool
 doBackup env@Env{..} repo prefix site =
-  loggingAction (runLogRepo "backup" env repo) (const mempty) $ do
+  backup `catch` \exc -> do
+    atomically $ notify envListener $ BackupFailed repo
+    say logError $ "failed: " ++ show (exc :: SomeException)
+    rethrowAsync exc
+    return False
+  where
+  say log s = log $ inRepo repo $ "backup: " ++ s
+
+  backup = loggingAction (runLogRepo "backup" env repo) (const mempty) $ do
     atomically $ notify envListener $ BackupStarted repo
     say logInfo "starting"
     withOpenDatabaseStorage env repo $ \_storage OpenDB{..} -> do
@@ -242,13 +250,6 @@ doBackup env@Env{..} repo prefix site =
         }
       notify envListener $ BackupFinished repo
     return True
-  `catch` \exc -> do
-    atomically $ notify envListener $ BackupFailed repo
-    say logError $ "failed: " ++ show (exc :: SomeException)
-    rethrowAsync exc
-    return False
-  where
-    say log s = log $ inRepo repo $ "backup: " ++ s
 
 backupDatabase :: Env -> Repo -> Text -> IO Bool
 backupDatabase env repo loc
