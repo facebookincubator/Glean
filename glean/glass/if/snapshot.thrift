@@ -24,3 +24,7 @@ struct DocumentSymbolListXQuery {
 struct Snapshot {
   1: list<DocumentSymbolListXQuery> queries;
 }
+
+union SnapshotLocator {
+  1: string manifoldPath;
+}
