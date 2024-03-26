@@ -18,6 +18,7 @@ module Glean.Regression.Snapshot
   ( testMain
   ) where
 
+import Control.Exception
 import Control.Monad
 import qualified Data.ByteString as BS
 import qualified Data.Map.Strict as Map
@@ -84,6 +85,8 @@ runQueries
   -> IO [FilePath]
 runQueries backend Driver{..} root test  = do
   queries <- get_queries root mempty (testRoot test)
+  when (null queries) $
+    throwIO $ ErrorCall $ "no .query files found; root=" <> show root
   fmap concat $ forM (Map.elems queries) $ \query -> do
     (result, perf) <- runQuery
       backend

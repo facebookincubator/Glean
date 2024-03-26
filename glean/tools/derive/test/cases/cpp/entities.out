@@ -34,6 +34,10 @@
         }
       },
       "location": {
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "length": 4, "start": 244 }
+        },
         "file": { "key": "test.cpp" },
         "location": {
           "range": {
@@ -44,8 +48,7 @@
             "lineEnd": 15
           }
         },
-        "name": "main",
-        "span": { "length": 4, "start": 244 }
+        "name": "main"
       }
     }
   },
@@ -83,6 +86,10 @@
         }
       },
       "location": {
+        "destination": {
+          "file": { "key": "test.h" },
+          "span": { "length": 4, "start": 239 }
+        },
         "file": { "key": "test.h" },
         "location": {
           "range": {
@@ -93,8 +100,7 @@
             "lineEnd": 10
           }
         },
-        "name": "test",
-        "span": { "length": 4, "start": 239 }
+        "name": "test"
       }
     }
   }
