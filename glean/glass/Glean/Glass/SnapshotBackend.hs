@@ -51,6 +51,7 @@ data SnapshotStatus
   | ExactMatch
   | Ignored
   | Latest Revision
+  deriving Show
 
 -- | Always produces the 'NilSnapshotBackend'
 snapshotBackendParser :: Parser (Some SnapshotBackend)
