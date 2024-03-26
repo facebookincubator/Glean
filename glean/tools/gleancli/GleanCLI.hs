@@ -322,7 +322,7 @@ instance Plugin ListCommand where
       (progDesc "List databases")
       $ do
       listDbNames <- many $ strArgument (
-        metavar "DBNAME | DBNAME/INSTANCE | GLOB" <>
+        metavar "GLOB" <>
         help ("specifies which DBs to list. Globs may be used, " <>
           "for example mydb-* would match mydb-cxx and mydb-py")
         )
@@ -341,19 +341,19 @@ instance Plugin ListCommand where
     r <- Glean.listDatabases backend def {
       listDatabases_includeBackups = listIncludeBackups }
     let
-      repoFilter db str
-        | isGlob str, let glob = Glob.compileWith Glob.compPosix str =
-            Glob.match glob (Glean.showRepo repo) ||
-            Glob.match glob (Text.unpack (Thrift.repo_name repo))
-        | Just db <- Glean.parseRepo str = db == repo
-        | otherwise = Text.pack str == Thrift.repo_name repo
-        where repo = Thrift.database_repo db
-      xs = Thrift.listDatabasesResult_databases r
-      dbs = filter f xs
+      repoFilter db str =
+        Glob.match glob dbid ||
+        Glob.match glob dbname ||
+        Glob.match glob (dbname <> "/")
+        where
+          glob = Glob.compileWith Glob.compPosix str
+          repo = Thrift.database_repo db
+          dbname = Text.unpack (Thrift.repo_name repo)
+          dbid = Glean.showRepo repo
+
+      dbs = filter f (Thrift.listDatabasesResult_databases r)
       f db = null listDbNames || any (repoFilter db) listDbNames
     putShellPrintLn listFormat $ dbs `withFormatOpts` listVerbosity
-    where
-      isGlob = any (`elem` ['*','?','[',']'])
 
 newtype LatestDbCommand
   = LatestDb { dbName :: String }
