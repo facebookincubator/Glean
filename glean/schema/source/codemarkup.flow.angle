@@ -229,4 +229,14 @@ predicate FlowDocumentationSpan :
     ( { file = File } = M ) |
     ( { string_ = Str } = M; flow.StringToFileModule { Str , File } )
 
+predicate FlowEntityModuleName :
+  {
+    entity : code.flow.Entity,
+    name : string
+  }
+  { { module_ = Module }, Name } where
+    flow.ModuleLocation { module_ = Module, name = Name };
+
 }
+
+

@@ -1,0 +1,4 @@
+query: |
+  hack.DeclarationLocation { declaration = D};
+  codemarkup.EntityModuleName { entity = {hack = {decl = D}}}
+transform: [gensort, []]

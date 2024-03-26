@@ -284,6 +284,12 @@ predicate PythonExtendsChildEntity :
       { decl = { func = ChildMethodDecl } } = Child;
     )
 
+predicate PythonEntityModuleName :
+  {
+    entity: code.python.Entity,
+    name: string
+  }
+  { { decl = { module = { name = python.Name Name } } }, Name }
 
 #
 # file call processing

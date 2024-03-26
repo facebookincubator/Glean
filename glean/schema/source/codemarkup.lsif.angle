@@ -108,4 +108,17 @@ predicate LsifKindToKind:
     ( TypeParameter = Lsif; TypeParameter = Kind );
     # no Unknown, and can't distinguish Union, Macro or Trait
 
+#
+# Entity Module name for codemarkup.EntityModuleName
+#
+
+predicate LsifEntityModuleName:
+  {
+    lsif: code.lsif.Entity,
+    name: string
+  }
+  { Entity, Name } where
+    lsif.EntityKind { Entity, Module };
+    lsif.EntityLocation { Entity, { name = Name }};
+
 }

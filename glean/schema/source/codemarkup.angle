@@ -769,6 +769,27 @@ predicate EntityComments:
       nothing = Text
     )
 
+# Find module name as string given entity.
+# No result if the entity is a non-module.
+predicate EntityModuleName:
+  {
+    entity: code.Entity,
+    name: string,
+  }
+  { Entity, Name } where
+    ( { hack = Decl } = Entity;
+      codemarkup.hack.HackEntityModuleName { Decl, Name }
+    ) | (
+      { flow = Decl } = Entity;
+      codemarkup.flow.FlowEntityModuleName { Decl, Name }
+    ) | (
+      { python = Decl } = Entity;
+      codemarkup.python.PythonEntityModuleName { Decl, Name }
+    ) | (
+      { lsif = Decl } = Entity;
+      codemarkup.lsif.LsifEntityModuleName { Decl, Name }
+    )
+
 # Identifies indexed files
 predicate IndexedFile: src.File
    File where

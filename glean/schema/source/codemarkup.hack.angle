@@ -717,6 +717,13 @@ predicate HackRequiredConstraint:
       hack.TraitDefinition { declaration = D, requireClass = { just = RE } }
   )
 
+predicate HackEntityModuleName:
+  {
+    entity : code.hack.Entity,
+    name : string
+  }
+  { { decl = { module = { name = hack.Name Name } } }, Name }
+
 # TODO after hack.HackEntityIdl is implemented
 predicate HackEntityIdl:
   {
