@@ -258,7 +258,8 @@ predicate FunctionSpecification : {
 predicate ServiceDefinition : {
   name : ServiceName,
   functions : [FunctionSpecification],
-  structuredAnnotations : [StructuredAnnotation]
+  structuredAnnotations : [StructuredAnnotation],
+  interactions : [InteractionName]
 }
 
 #
@@ -463,6 +464,14 @@ predicate DeclarationComment:
     declaration : Declaration,
     file : src.File,
     span : src.ByteSpan,
+  }
+
+  predicate InteractionName : { name : QualName }
+
+  predicate InteractionDefinition : {
+    name : InteractionName,
+    functions : [FunctionSpecification],
+    structuredAnnotations : [StructuredAnnotation]
   }
 
 }
