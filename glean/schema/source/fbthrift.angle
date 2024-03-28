@@ -474,4 +474,14 @@ predicate DeclarationComment:
     structuredAnnotations : [StructuredAnnotation]
   }
 
+  predicate ServiceInteractionFunctions : {
+    name : ServiceName,
+    function_ : FunctionSpecification
+  }
+  {N, F} where
+    fbthrift.ServiceDefinition { name = N, interactions = I };
+    IntName = I[..];
+    fbthrift.InteractionDefinition { name = IntName, functions = Fs };
+    F = Fs[..]
+
 }
