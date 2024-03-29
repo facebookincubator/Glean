@@ -416,7 +416,7 @@ Subroutine::Activation::get(binary::Input& in) {
   Subroutine::Activation::State state{
       pc, std::move(locals), std::move(outputs)};
   return { std::move(sub), std::move(state) };
-};
+}
 
 }
 }
