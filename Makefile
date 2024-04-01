@@ -165,6 +165,7 @@ SCHEMAS= \
 	codemarkup_csharp \
 	codemarkup_cxx \
 	codemarkup_erlang \
+	codemarkup_fbthrift \
 	codemarkup_flow \
 	codemarkup_hack \
 	codemarkup_haskell \
@@ -174,13 +175,11 @@ SCHEMAS= \
 	codemarkup_python \
 	codemarkup_scip \
 	codemarkup_search \
-	codemarkup_thrift \
 	codemarkup_types \
 	code_fbthrift \
 	code_pp \
 	code_python \
 	code_scip \
-	code_thrift \
 	csharp \
 	cxx1 \
 	digest \
