@@ -627,7 +627,7 @@ int main(int argc, char **argv) {
 #if GLEAN_FACEBOOK
   facebook::initFacebook(&argc, &argv);
 #else
-  folly::init(&argc, &argv);
+  folly::Init init(&argc, &argv);
 #endif
 
   std::signal(SIGTERM, [](int) {
