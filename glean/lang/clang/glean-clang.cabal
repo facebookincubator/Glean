@@ -135,7 +135,8 @@ executable clang-index
         pthread,
         fmt,
         gflags,
-        atomic
+        atomic,
+        re2
     cxx-options: -fexceptions -DOSS=1 -std=c++17
     if arch(x86_64)
       cxx-options: -DGLEAN_X86_64 -march=haswell
