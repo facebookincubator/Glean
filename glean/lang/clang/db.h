@@ -45,6 +45,7 @@ using SCHEMA = schema::SCHEMA;
 class ClangDB {
 public:
   struct Env {
+    folly::Optional<std::string> cell;
     Fact<Buck::Locator> locator;
     folly::Optional<Fact<Buck::Platform>> platform;
     std::filesystem::path root;
@@ -57,7 +58,8 @@ public:
       const Env& env,
       clang::CompilerInstance& ci,
       GleanDiagnosticBuffer* diagnosticBuffer)
-      : locator(env.locator),
+      : cell(env.cell),
+        locator(env.locator),
         platform(env.platform),
         root(env.root),
         subdir(env.subdir),
@@ -246,6 +248,8 @@ public:
   clang::Preprocessor& preprocessor() const {
     return compilerInstance.getPreprocessor();
   }
+
+  const folly::Optional<std::string> cell;
 
 private:
   Fact<Buck::Locator> locator;

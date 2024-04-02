@@ -408,9 +408,11 @@ struct SourceIndexer {
                           .string());
     }
     auto pcdb = cdb.load(source);
+    auto cellLocator = locatorOf(source);
     ClangCfg cfg{
       ClangDB::Env{
-        locatorOf(source),
+        cellLocator.first,
+        cellLocator.second,
         platformOf(source),
         config.root,
         config.target_subdir,
@@ -475,7 +477,7 @@ struct SourceIndexer {
 private:
   folly::Optional<std::string> blank_cell_name;
 
-  Fact<Buck::Locator> locatorOf(const SourceFile& source) {
+  std::pair<folly::Optional<std::string>, Fact<Buck::Locator>> locatorOf(const SourceFile& source) {
     // Parsing source.target as cell//path:name
     const auto slashes = source.target.find("//");
     const size_t cell_len = (slashes == std::string::npos) ? 0 : slashes;
@@ -498,11 +500,11 @@ private:
       cell = folly::none;
     }
 
-    return batch.fact<Buck::Locator>(
+    return {cell, batch.fact<Buck::Locator>(
       maybe(cell),
       source.target.substr(path_start, path_len),
       source.target.substr(name_start)
-    );
+    )};
   }
 
   folly::Optional<Fact<Buck::Platform>> platformOf(

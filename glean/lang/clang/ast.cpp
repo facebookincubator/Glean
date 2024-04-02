@@ -833,8 +833,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
               ".*\n.*thrift file: (.*)\n.*thrift service: (.*)\n.*thrift function: (.*)\n.*"
             );
             auto comment_str = comment->getRawText(visitor.db.sourceManager()).str();
+            auto cell = visitor.db.cell;
             if (RE2::FullMatch(comment_str, thrift_regex, &thrift_file, &thrift_service, &thrift_function)) {
-
+                if (cell.has_value() && cell.value() != "fbsource") {
+                  thrift_file = cell.value() + "/" + thrift_file;
+                }
                 auto qual_name = visitor.db.fact<Fbthrift::QualName>(
                   visitor.db.fact<Fbthrift::File>(visitor.db.fact<Src::File>(thrift_file)),
                   visitor.db.fact<Fbthrift::Identifier>(thrift_service)
