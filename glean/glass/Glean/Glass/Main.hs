@@ -46,7 +46,6 @@ import Glean.Schema.Builtin.Types (schema_id)
 import Glean.Util.ConfigProvider
     ( ConfigProvider(defaultConfigOptions, withConfigProvider) )
 import Glean.Util.Some ( Some(Some) )
-import Glean.Util.Time ( DiffTimePoints )
 
 import Glean.Glass.RepoMapping -- site-specific
 import qualified Glean.Glass.Env as Glass
@@ -73,29 +72,23 @@ type Server = Glass.Env -> Glass.Config -> IO ()
 withGlass :: Server -> Parser (Some SnapshotBackend) -> IO ()
 withGlass f snapshotBackendP =
   withOptions (Glass.options snapshotBackendP) $ \config@Glass.Config{..} ->
-  withEnv serviceName gleanService snapshotBackend
-      configKey refreshFreq listDatabasesRetry Nothing $ \env -> f env config
+  withEnv config Nothing $ \env -> f env config
 
 -- | Construct a server environment
 withEnv
-  :: Text
-  -> Glean.Service
-  -> Some SnapshotBackend
-  -> Text
-  -> DiffTimePoints
-  -> Maybe Int
+  :: Glass.Config
   -> Maybe Glean.Repo
   -> (Glass.Env -> IO a)
   -> IO a
-withEnv name service snapshotBackend _ refreshFreq listDatabasesRetry gleanDB f=
+withEnv Glass.Config{..} gleanDB f =
   withEventBaseDataplane $ \evp ->
   withConfigProvider defaultConfigOptions $ \cfgapi ->
   withLogger cfgapi $ \logger ->
-  withFb303 name $ \fb303 ->
-  withBackendWithDefaultOptions evp cfgapi service (Just schema_id)
+  withFb303 serviceName $ \fb303 ->
+  withBackendWithDefaultOptions evp cfgapi gleanService (Just schema_id)
     $ \backend ->
   withLatestRepos backend (Just logger)
-    (if isRemote service then listDatabasesRetry else Nothing) refreshFreq
+    (if isRemote gleanService then listDatabasesRetry else Nothing) refreshFreq
     $ \latestGleanRepos -> do
       repoMapping <- getRepoMapping
       f Glass.Env
