@@ -1039,6 +1039,7 @@ executable glean
         glean:util,
         json,
         split,
+        Glob,
 
 executable glean-search
     import: fb-haskell, fb-cpp, deps, exe
