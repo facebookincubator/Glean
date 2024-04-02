@@ -222,11 +222,7 @@
               14,
               2,
               1,
-              4,
-              77,
-              27,
-              29,
-              5,
+              129,
               16,
               1,
               27,
@@ -240,8 +236,8 @@
           }
         },
         "digest": {
-          "hash": "824e920799596626369bc3e1e752c2a620bd6a81",
-          "size": 3265
+          "hash": "9e463d619fda09bded1e0ccb723cc469cf77f8ec",
+          "size": 3252
         }
       }
     }
@@ -254,33 +250,14 @@
         "offsets": {
           "key": {
             "file": { "key": "test.h" },
-            "lengths": [
-              3,
-              54,
-              24,
-              3,
-              73,
-              59,
-              4,
-              1,
-              14,
-              19,
-              19,
-              1,
-              4,
-              77,
-              27,
-              29,
-              5,
-              16
-            ],
+            "lengths": [ 3, 54, 24, 3, 73, 59, 4, 1, 14, 19, 19, 1, 129, 16 ],
             "endsInNewline": true,
             "hasUnicodeOrTabs": false
           }
         },
         "digest": {
-          "hash": "6672ff750e546c5a047602cefb864fb2ef9a1a36",
-          "size": 432
+          "hash": "8c68dec748a9a80f2a5de7afed102af34c135bb3",
+          "size": 419
         }
       }
     }

@@ -211,11 +211,7 @@ Foo (*N1::N2::Bar::bar(Foo x))(Foo y) {
   return &id;
 }
 
-/**
-  * thrift file: thrift/compiler/test/fixtures/inheritance/src/module.thrift
-  * thrift service: MyRoot
-  * thrift function: thrift1
-  */
+/** Glean { "file": "thrift/compiler/test/fixtures/inheritance/src/module.thrift", "service":"MyRoot", "function": "thrift1"} */
 void thrift1();
 
 // test thrift annotations

@@ -44,14 +44,14 @@
                 "nameRange": {
                     "columnBegin": 6,
                     "columnEnd": 13,
-                    "lineBegin": 18,
-                    "lineEnd": 18
+                    "lineBegin": 14,
+                    "lineEnd": 14
                 },
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 15,
-                    "lineBegin": 18,
-                    "lineEnd": 18
+                    "lineBegin": 14,
+                    "lineEnd": 14
                 },
                 "sym": "test/cpp//thrift2/.f//.decl"
             },
@@ -98,8 +98,8 @@
             }
         ],
         "digest": {
-            "hash": "6672ff750e546c5a047602cefb864fb2ef9a1a36",
-            "size": 432
+            "hash": "8c68dec748a9a80f2a5de7afed102af34c135bb3",
+            "size": 419
         },
         "referenced_file_digests": {
             "test": {

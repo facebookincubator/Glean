@@ -21,6 +21,7 @@
 #include "folly/Overload.h"
 #include "folly/ScopeGuard.h"
 #include "folly/lang/Assume.h"
+#include <folly/json/json.h>
 #include "glean/lang/clang/ast.h"
 #include "glean/lang/clang/index.h"
 
@@ -829,28 +830,37 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
             std::string thrift_file;
             std::string thrift_service;
             std::string thrift_function;
-            static const RE2 thrift_regex(
-              ".*\n.*thrift file: (.*)\n.*thrift service: (.*)\n.*thrift function: (.*)\n.*"
-            );
+            std::string json_annotation;
             auto comment_str = comment->getRawText(visitor.db.sourceManager()).str();
-            auto cell = visitor.db.cell;
-            if (RE2::FullMatch(comment_str, thrift_regex, &thrift_file, &thrift_service, &thrift_function)) {
-                if (cell.has_value() && cell.value() != "fbsource") {
-                  thrift_file = cell.value() + "/" + thrift_file;
-                }
-                auto qual_name = visitor.db.fact<Fbthrift::QualName>(
-                  visitor.db.fact<Fbthrift::File>(visitor.db.fact<Src::File>(thrift_file)),
-                  visitor.db.fact<Fbthrift::Identifier>(thrift_service)
-                );
-                auto function_name = visitor.db.fact<Fbthrift::FunctionName>(
-                  visitor.db.fact<Fbthrift::ServiceName>(qual_name),
-                  visitor.db.fact<Fbthrift::Identifier>(thrift_function)
-                );
+            static const RE2 thrift_regex(
+              R"(Glean.*({.*}))"
+            );
+            if (RE2::PartialMatch(comment_str, thrift_regex, &json_annotation)) {
+               try {
+                 folly::dynamic jsonObject = folly::parseJson(json_annotation);
+                 thrift_file = jsonObject["file"].asString();
+                 auto cell = visitor.db.cell;
+                 if (cell.has_value() && cell.value() != "fbsource") {
+                    thrift_file = cell.value() + "/" + thrift_file;
+                 }
+                 thrift_service = jsonObject["service"].asString();
+                 thrift_function = jsonObject["function"].asString();
 
-                visitor.db.fact<Cxx::CxxToThrift>(
-                  Cxx::XRefTarget::declaration(result->declaration()),
-                  Fbthrift::XRefTarget::function_(function_name)
-                );
+                 auto qual_name = visitor.db.fact<Fbthrift::QualName>(
+                   visitor.db.fact<Fbthrift::File>(visitor.db.fact<Src::File>(thrift_file)),
+                   visitor.db.fact<Fbthrift::Identifier>(thrift_service)
+                 );
+                 auto function_name = visitor.db.fact<Fbthrift::FunctionName>(
+                   visitor.db.fact<Fbthrift::ServiceName>(qual_name),
+                   visitor.db.fact<Fbthrift::Identifier>(thrift_function)
+                 );
+
+                 visitor.db.fact<Cxx::CxxToThrift>(
+                   Cxx::XRefTarget::declaration(result->declaration()),
+                   Fbthrift::XRefTarget::function_(function_name)
+                 );
+               } catch (...) {
+               }
             };
           }
         }

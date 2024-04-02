@@ -35,9 +35,9 @@
               },
               "source": {
                 "file": { "key": "test.cpp" },
-                "lineBegin": 16,
+                "lineBegin": 12,
                 "columnBegin": 3,
-                "lineEnd": 16,
+                "lineEnd": 12,
                 "columnEnd": 38
               }
             }
@@ -45,7 +45,193 @@
         }
       },
       "file": { "key": "test.cpp" },
-      "span": { "start": 237, "length": 141 }
+      "span": { "start": 237, "length": 128 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": {
+                    "key": { "name": { "key": "generated_from_thrift_2" } }
+                  },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 26,
+                "columnBegin": 3,
+                "lineEnd": 26,
+                "columnEnd": 40
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 684, "length": 81 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "missing_value" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 18,
+                "columnBegin": 3,
+                "lineEnd": 18,
+                "columnEnd": 30
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 480, "length": 61 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "not_json" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 15,
+                "columnBegin": 3,
+                "lineEnd": 15,
+                "columnEnd": 25
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 409, "length": 40 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "decl": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "wrong_types" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 3,
+                "lineEnd": 21,
+                "columnEnd": 28
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 577, "length": 73 }
     }
   }
 ]

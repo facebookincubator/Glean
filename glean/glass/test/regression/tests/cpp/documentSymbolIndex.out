@@ -2,18 +2,18 @@
     "@generated",
     {
         "digest": {
-            "hash": "824e920799596626369bc3e1e752c2a620bd6a81",
-            "size": 3265
+            "hash": "9e463d619fda09bded1e0ccb723cc469cf77f8ec",
+            "size": 3252
         },
         "referenced_file_digests": {
             "test": {
                 "test.cpp": {
-                    "hash": "824e920799596626369bc3e1e752c2a620bd6a81",
-                    "size": 3265
+                    "hash": "9e463d619fda09bded1e0ccb723cc469cf77f8ec",
+                    "size": 3252
                 },
                 "test.h": {
-                    "hash": "6672ff750e546c5a047602cefb864fb2ef9a1a36",
-                    "size": 432
+                    "hash": "8c68dec748a9a80f2a5de7afed102af34c135bb3",
+                    "size": 419
                 },
                 "test2.h": {
                     "hash": "c522430338f3620e08fe42afbcff1f66599c0efe",
@@ -4490,7 +4490,7 @@
                     }
                 }
             ],
-            "219": [
+            "215": [
                 {
                     "attributes": {
                         "symbolDefinitionType": {
@@ -4515,13 +4515,13 @@
                     "range": {
                         "columnBegin": 6,
                         "columnEnd": 13,
-                        "lineBegin": 219,
-                        "lineEnd": 219
+                        "lineBegin": 215,
+                        "lineEnd": 215
                     },
                     "sym": "test/cpp//thrift1/.f//.decl"
                 }
             ],
-            "222": [
+            "218": [
                 {
                     "attributes": {
                         "symbolDefinitionType": {
@@ -4546,13 +4546,13 @@
                     "range": {
                         "columnBegin": 6,
                         "columnEnd": 18,
-                        "lineBegin": 222,
-                        "lineEnd": 222
+                        "lineBegin": 218,
+                        "lineEnd": 218
                     },
                     "sym": "test/cpp//thriftCaller/.f/"
                 }
             ],
-            "223": [
+            "219": [
                 {
                     "attributes": {
                         "symbolDefinitionType": {
@@ -4577,8 +4577,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 10,
-                        "lineBegin": 223,
-                        "lineEnd": 223
+                        "lineBegin": 219,
+                        "lineEnd": 219
                     },
                     "sym": "test/cpp//thrift1/.f//.decl",
                     "target": {
@@ -4586,8 +4586,8 @@
                         "range": {
                             "columnBegin": 6,
                             "columnEnd": 13,
-                            "lineBegin": 219,
-                            "lineEnd": 219
+                            "lineBegin": 215,
+                            "lineEnd": 215
                         },
                         "repository": "test"
                     }
@@ -4613,8 +4613,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 10,
-                        "lineBegin": 223,
-                        "lineEnd": 223
+                        "lineBegin": 219,
+                        "lineEnd": 219
                     },
                     "sym": "test/thrift/thrift/compiler/test/fixtures/inheritance/src/module.thrift/MyRoot/thrift1",
                     "target": {
@@ -4629,7 +4629,7 @@
                     }
                 }
             ],
-            "224": [
+            "220": [
                 {
                     "attributes": {
                         "symbolDefinitionType": {
@@ -4654,8 +4654,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 10,
-                        "lineBegin": 224,
-                        "lineEnd": 224
+                        "lineBegin": 220,
+                        "lineEnd": 220
                     },
                     "sym": "test/cpp//thrift2/.f//.decl",
                     "target": {
@@ -4663,8 +4663,8 @@
                         "range": {
                             "columnBegin": 6,
                             "columnEnd": 13,
-                            "lineBegin": 18,
-                            "lineEnd": 18
+                            "lineBegin": 14,
+                            "lineEnd": 14
                         },
                         "repository": "test"
                     }
@@ -4690,8 +4690,8 @@
                     "range": {
                         "columnBegin": 3,
                         "columnEnd": 10,
-                        "lineBegin": 224,
-                        "lineEnd": 224
+                        "lineBegin": 220,
+                        "lineEnd": 220
                     },
                     "sym": "test/thrift/thrift/compiler/test/fixtures/inheritance/src/module.thrift/MyRoot/thrift2",
                     "target": {

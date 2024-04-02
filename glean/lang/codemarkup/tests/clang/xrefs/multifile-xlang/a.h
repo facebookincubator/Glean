@@ -7,9 +7,7 @@
  */
 
 /**
- * thrift file: thrift/compiler/test/fixtures/inheritance/src/module.thrift
- * thrift service: MyRoot
- * thrift function: g
+ * Glean {"file": "thrift/compiler/test/fixtures/inheritance/src/module.thrift", "service": "MyRoot", "function": "g"}
  */
 void g() {
 }

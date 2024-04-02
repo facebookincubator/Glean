@@ -35,9 +35,9 @@
               },
               "source": {
                 "file": { "key": "test.cpp" },
-                "lineBegin": 16,
+                "lineBegin": 12,
                 "columnBegin": 3,
-                "lineEnd": 16,
+                "lineEnd": 12,
                 "columnEnd": 38
               }
             }
@@ -62,6 +62,130 @@
               }
             },
             "name": { "key": "do_root" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "declaration": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": {
+                    "key": { "name": { "key": "generated_from_thrift_2" } }
+                  },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 26,
+                "columnBegin": 3,
+                "lineEnd": 26,
+                "columnEnd": 40
+              }
+            }
+          }
+        }
+      },
+      "to": {
+        "function_": {
+          "key": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "12" } },
+                    "name": { "key": "BadInteraction" }
+                  }
+                }
+              }
+            },
+            "name": { "key": "foo" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "from": {
+        "declaration": {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "wrong_types" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "record": {
+                        "key": {
+                          "name": { "key": "Foo" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "access": 0
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": { "returns": { "key": "void" }, "parameters": [ ] }
+              },
+              "method": {
+                "isVirtual": true,
+                "isConst": false,
+                "isVolatile": false,
+                "refQualifier": 0
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 3,
+                "lineEnd": 21,
+                "columnEnd": 28
+              }
+            }
+          }
+        }
+      },
+      "to": {
+        "function_": {
+          "key": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "12" } },
+                    "name": { "key": "BadInteraction" }
+                  }
+                }
+              }
+            },
+            "name": { "key": "foo" }
           }
         }
       }

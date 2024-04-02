@@ -23,9 +23,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 14,
+                  "lineBegin": 10,
                   "columnBegin": 1,
-                  "lineEnd": 14,
+                  "lineEnd": 10,
                   "columnEnd": 13
                 }
               }
@@ -34,7 +34,7 @@
         }
       },
       "file": { "key": "test.cpp" },
-      "range": { "span": { "start": 386, "length": 3 } }
+      "range": { "span": { "start": 377, "length": 3 } }
     }
   }
 ]

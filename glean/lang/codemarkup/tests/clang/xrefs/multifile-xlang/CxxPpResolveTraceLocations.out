@@ -8,15 +8,15 @@
         "location": {
           "range": {
             "file": { "key": "a.h" },
-            "lineBegin": 14,
+            "lineBegin": 12,
             "columnBegin": 1,
-            "lineEnd": 15,
+            "lineEnd": 13,
             "columnEnd": 1
           }
         },
         "destination": {
           "file": { "key": "a.h" },
-          "span": { "start": 358, "length": 1 }
+          "span": { "start": 353, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -37,9 +37,9 @@
                     },
                     "source": {
                       "file": { "key": "a.h" },
-                      "lineBegin": 14,
+                      "lineBegin": 12,
                       "columnBegin": 1,
-                      "lineEnd": 15,
+                      "lineEnd": 13,
                       "columnEnd": 1
                     }
                   }

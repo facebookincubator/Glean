@@ -27,9 +27,9 @@
                       },
                       "source": {
                         "file": { "key": "test.cpp" },
-                        "lineBegin": 14,
+                        "lineBegin": 10,
                         "columnBegin": 1,
-                        "lineEnd": 14,
+                        "lineEnd": 10,
                         "columnEnd": 13
                       }
                     }
@@ -37,7 +37,7 @@
                 }
               },
               "from": {
-                "spans": [ { "length": 3, "offsets": [ 386 ] } ],
+                "spans": [ { "length": 3, "offsets": [ 377 ] } ],
                 "expansions": [ ],
                 "spellings": [ ]
               }

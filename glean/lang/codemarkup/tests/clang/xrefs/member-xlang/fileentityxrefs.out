@@ -10,18 +10,18 @@
           "location": {
             "range": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 14,
+              "lineBegin": 10,
               "columnBegin": 1,
-              "lineEnd": 14,
+              "lineEnd": 10,
               "columnEnd": 13
             }
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 360, "length": 3 }
+            "span": { "start": 351, "length": 3 }
           }
         },
-        "source": { "span": { "start": 386, "length": 3 } }
+        "source": { "span": { "start": 377, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -44,9 +44,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 14,
+                  "lineBegin": 10,
                   "columnBegin": 1,
-                  "lineEnd": 14,
+                  "lineEnd": 10,
                   "columnEnd": 13
                 }
               }

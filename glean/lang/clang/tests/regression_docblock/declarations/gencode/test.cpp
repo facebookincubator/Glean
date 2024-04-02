@@ -8,10 +8,21 @@
 
 struct Foo {
 
-  /**
-  * thrift file: thrift/compiler/test/fixtures/inheritance/src/module.thrift
-  * thrift service: MyRoot
-  * thrift function: do_root
-  */
+  /** Glean {"file": "thrift/compiler/test/fixtures/inheritance/src/module.thrift", "service": "MyRoot", "function": "do_root"} */
   virtual void generated_from_thrift();
+
+  /** Glean {"file": "thri BROKEN JSON} */
+  virtual void not_json();
+
+  /** Glean {"service": "BadInteraction", "function": "foo"} */
+  virtual void missing_value();
+
+  /** Glean {"file": 12, "service": "BadInteraction", "function": "foo"} */
+  virtual void wrong_types();
+
+  /**
+   * Glean {"file": 12, "service": "BadInteraction", "function": "foo"}
+   */
+  virtual void generated_from_thrift_2();
+
 };

@@ -32,9 +32,9 @@
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 14,
+                            "lineBegin": 10,
                             "columnBegin": 1,
-                            "lineEnd": 14,
+                            "lineEnd": 10,
                             "columnEnd": 13
                           }
                         }
@@ -42,7 +42,7 @@
                     }
                   },
                   "from": {
-                    "spans": [ { "length": 3, "offsets": [ 386 ] } ],
+                    "spans": [ { "length": 3, "offsets": [ 377 ] } ],
                     "expansions": [ ],
                     "spellings": [ ]
                   }
@@ -61,18 +61,18 @@
           "location": {
             "range": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 14,
+              "lineBegin": 10,
               "columnBegin": 1,
-              "lineEnd": 14,
+              "lineEnd": 10,
               "columnEnd": 13
             }
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 360, "length": 3 }
+            "span": { "start": 351, "length": 3 }
           }
         },
-        "source": { "span": { "start": 386, "length": 3 } }
+        "source": { "span": { "start": 377, "length": 3 } }
       },
       "entity": {
         "decl": {
@@ -94,9 +94,9 @@
               },
               "source": {
                 "file": { "key": "test.cpp" },
-                "lineBegin": 14,
+                "lineBegin": 10,
                 "columnBegin": 1,
-                "lineEnd": 14,
+                "lineEnd": 10,
                 "columnEnd": 13
               }
             }
