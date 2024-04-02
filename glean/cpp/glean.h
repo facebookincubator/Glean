@@ -130,6 +130,7 @@ template<> struct Repr_<unsigned char> { using Type = Byte; };
 struct Nat;
 
 template<> struct Repr_<unsigned long> { using Type = Nat; };
+template<> struct Repr_<unsigned long long> { using Type = Nat; };
 
 struct String;
 
