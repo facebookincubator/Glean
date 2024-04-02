@@ -11,16 +11,21 @@
 module Glean.Glass.Test.RequestOptions ( main) where
 
 import Control.Exception (try)
-import Data.Coerce
 import Data.Default
+import Data.Text (Text)
 import qualified Data.Map.Strict as Map
-import qualified Options.Applicative as O
-import System.Environment (getEnv)
-import System.IO.Temp (withSystemTempDirectory)
 import Test.HUnit
-import TestRunner ( testRunnerAction )
 
 import JustKnobs (evalKnob)
+
+import qualified Glean
+import qualified Glean.Clang.Test.DerivePass as DerivePass
+import Glean.Regression.Config (TestConfig(..))
+import Glean.Regression.Indexer (runIndexerForTest)
+import Glean.Regression.Snapshot.Driver
+import Glean.Regression.Test
+import Glean.Test.Mock ( Mock, call, implement )
+import Glean.Util.Some
 
 import Glean.Glass.SnapshotBackend
   (SnapshotStatus (..), SnapshotBackend (getSnapshot))
@@ -29,74 +34,58 @@ import Glean.Glass.Types (
   DocumentSymbolsRequest (..),
   GlassExceptionReason (..),
   RequestOptions (..),
-  GlassException (..), RepoName (RepoName)
+  GlassException (..),
  )
-import Glean.Indexer (Indexer(indexerOptParser, indexerRun))
-import Glean.Init ( withUnitTestOptions )
-import Glean.Regression.Config (TestConfig(..))
-import Glean.Regression.Indexer (withTestBackend, runIndexerForTest)
-import Glean.Util.Some
-import qualified Glean
 import qualified Glean.Glass.Env as Glass
 import qualified Glean.Glass.Handler as Glass
 import qualified Glean.Glass.Regression.Util as Glass
 import qualified Glean.Glass.Types as Glass
-import Glean.Test.Mock ( Mock, call, implement )
-import qualified Glean.Clang.Test.DerivePass as Cxx
-import qualified Glean.Clang.Test as Cxx
 
-cxxRepo :: RepoName
-cxxRepo = RepoName "fbsource.fbcode.cxx.incr"
+cxxRepo :: Text
+cxxRepo = "fbsource.fbcode.cxx.incr"
 
 examplePath, newPath :: Glass.Path
 examplePath = Glass.Path "main.cpp"
 newPath = Glass.Path "NewFile.cpp"
 
-parse :: O.ParserInfo Cxx.Options
-parse = O.info p mempty where
-  p = indexerOptParser Cxx.indexer
+type WithEnv = forall a . ((Glass.Env -> IO a) -> IO a)
 
 main :: IO ()
-main = withSystemTempDirectory "glass" $ \ outDir ->
-  withUnitTestOptions parse $ \action cxxDriverOpts -> do
-  clangSrcs <- getEnv "CLANG_SRCS"
-  let
-    mkTestConfig repo rev = TestConfig
-      { testRepo = Glean.Repo repo rev
-      , testOutput = outDir
-      , testRoot = clangSrcs
-      , testProjectRoot = clangSrcs
-      , testGroup = "platform010"
-      , testSchemaVersion = Nothing
-      }
+main = do
+  useJK <- evalKnob "code_indexing/glean:glass_use_fbcode_cxx_incr"
 
-    indexCxx =
-      indexerRun Cxx.indexer cxxDriverOpts <> Cxx.derivePasses [] cxxDriverOpts
-
-    testConfigCxxIncr1 = mkTestConfig (coerce cxxRepo) "1"
-    testConfigCxxIncr2 = mkTestConfig (coerce cxxRepo) "2"
-
-  withTestBackend testConfigCxxIncr1 $ \backend -> do
-    let createTestDatabase index testConfig =
-          Glean.fillDatabase backend (testRepo testConfig) "" Nothing
-            (error "repo already exists") $
-              runIndexerForTest
-                backend index testConfig
-
-    createTestDatabase indexCxx testConfigCxxIncr1
-    createTestDatabase indexCxx testConfigCxxIncr2
-
-    useJK <- evalKnob "code_indexing/glean:glass_use_fbcode_cxx_incr"
-
-    Glass.withTestEnv backend $ \env -> do
-      testRunnerAction action $ TestList
-        [ testBaselineDB env
-        , testBaselineSnapshot env
-        , testExactRevision env
+  mainTestIndexGeneric driver (pure ()) "glass-request-options"
+    $ \_ _ _ _ get ->
+      let
+        withEnv :: WithEnv
+        withEnv f = do
+          (backend, _) <- get
+          Glass.withTestEnv backend f
+      in
+      TestList
+        [ testBaselineDB withEnv
+        , testBaselineSnapshot withEnv
+        , testExactRevision withEnv
         , TestLabel "use-revision" $ TestList $
-           [testUseRevision env] <>
-           [testUseRevisionJK env | useJK == Right True]
+           [testUseRevision withEnv] <>
+           [testUseRevisionJK withEnv | useJK == Right True]
         ]
+  where
+  baseDriver = DerivePass.driver []
+  driver = baseDriver {
+    driverCreateDatabase = createDB,  -- override so we can create 2 DBs
+    driverGroups = take 1 . driverGroups baseDriver  -- we only need 1 platform
+    }
+
+  createDB opts backend indexer testConfig = do
+    let createTestDatabase cfg =
+          Glean.fillDatabase backend (testRepo cfg) "" Nothing
+            (error "repo already exists") $
+              runIndexerForTest backend (indexer opts) cfg
+
+    createTestDatabase testConfig { testRepo = Glean.Repo cxxRepo "1" }
+    createTestDatabase testConfig { testRepo = Glean.Repo cxxRepo "2" }
+
 
 --------------------------------------------------------------------------------
 -- tests
@@ -104,8 +93,8 @@ main = withSystemTempDirectory "glass" $ \ outDir ->
 -- All tests start with a DB root containing two DBs for revisions 1 and 2
 -- The snapshot backend is empty, but tests can mock it to add snapshots
 
-testBaselineDB :: Glass.Env -> Test
-testBaselineDB env = TestLabel "DBs" $ TestCase $ do
+testBaselineDB :: WithEnv -> Test
+testBaselineDB withEnv = TestLabel "DBs" $ TestCase $ withEnv $ \env -> do
 
   result <- symbolsList env def{revision = Glass.Revision "3"}
   assertEqual "should return the latest DB available"
@@ -117,8 +106,8 @@ testBaselineDB env = TestLabel "DBs" $ TestCase $ do
     (SimpleSymbolsListXResult (Glass.Revision "1") False)
     result
 
-testBaselineSnapshot :: Glass.Env -> Test
-testBaselineSnapshot env = TestLabel "snaphots" $ TestCase $ do
+testBaselineSnapshot :: WithEnv -> Test
+testBaselineSnapshot withEnv = TestLabel "snaphots" $ TestCase $ withEnv $ \env -> do
   sb <- mockSnapshotBackendSimple
     [(examplePath, Glass.Revision "3")
     ,(newPath, Glass.Revision "4")
@@ -137,21 +126,21 @@ testBaselineSnapshot env = TestLabel "snaphots" $ TestCase $ do
     (SimpleSymbolsListXResult (Glass.Revision "4") True)
     resultNewFile
 
-testExactRevision :: Glass.Env -> Test
-testExactRevision env = TestLabel "exact-revision" $ TestList
-  [ TestLabel "DB match" $ TestCase $ do
+testExactRevision :: WithEnv -> Test
+testExactRevision withEnv = TestLabel "exact-revision" $ TestList
+  [ TestLabel "DB match" $ TestCase $ withEnv $ \env -> do
       result <- symbolsList env def{revision = Glass.Revision "2", exact = True}
       assertEqual "DB match"
         (SimpleSymbolsListXResult (Glass.Revision "2") False)
         result
-  , TestLabel "no match" $ TestCase $ do
+  , TestLabel "no match" $ TestCase $ withEnv $ \env -> do
       result <- try $
         symbolsList env def{revision = Glass.Revision "3", exact = True}
       assertGlassException
         "exact revision throws if no match"
         (GlassExceptionReason_exactRevisionNotAvailable "Requested exactly 3")
         result
-  , TestLabel "snapshot match" $ TestCase $ do
+  , TestLabel "snapshot match" $ TestCase $ withEnv $ \env -> do
       sb <- mockSnapshotBackendSimple
             [(examplePath, Glass.Revision "2"),
              (examplePath, Glass.Revision "3")]
@@ -170,9 +159,9 @@ testExactRevision env = TestLabel "exact-revision" $ TestList
         result'
   ]
 
-testUseRevision :: Glass.Env -> Test
-testUseRevision env = TestList
-  [ TestLabel "exact" $ TestCase $ do
+testUseRevision :: WithEnv -> Test
+testUseRevision withEnv = TestList
+  [ TestLabel "exact" $ TestCase $ withEnv $ \env -> do
       result <- try $ symbolsList env def{
         revision = Glass.Revision "3",
         exact = True}
@@ -180,7 +169,7 @@ testUseRevision env = TestList
         "exact revision throws if no match"
         (GlassExceptionReason_exactRevisionNotAvailable "Requested exactly 3")
         result
-  , TestLabel "default" $ TestCase $ do
+  , TestLabel "default" $ TestCase $ withEnv $ \env -> do
       result <- symbolsList env def{
         revision = Glass.Revision "3",
         exact = False}
@@ -189,23 +178,23 @@ testUseRevision env = TestList
         result
   ]
 
-testUseRevisionJK :: Glass.Env -> Test
-testUseRevisionJK env = TestLabel "incr" $ TestList
-  [ TestLabel "default" $ TestCase $ do
+testUseRevisionJK :: WithEnv -> Test
+testUseRevisionJK withEnv = TestLabel "incr" $ TestList
+  [ TestLabel "default" $ TestCase $ withEnv $ \env -> do
       result <- symbolsList env def{
         revision = Glass.Revision "1",
         exact = False}
       assertEqual "Expected matching revision"
         (SimpleSymbolsListXResult (Glass.Revision "1") False)
         result
-  , TestLabel "exact" $ TestCase $ do
+  , TestLabel "exact" $ TestCase $ withEnv $ \env -> do
       result <- symbolsList env def{
         revision = Glass.Revision "1",
         exact = True}
       assertEqual "Expected matching revision"
         (SimpleSymbolsListXResult (Glass.Revision "1") False)
         result
-  , TestLabel "snapshot and stale DB" $ TestCase $ do
+  , TestLabel "snapshot and stale DB" $ TestCase $ withEnv $ \env -> do
       sb <- mockSnapshotBackendSimple [(examplePath, Glass.Revision "3")]
       let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
       result <- symbolsList env' def{
@@ -214,7 +203,7 @@ testUseRevisionJK env = TestLabel "incr" $ TestList
       assertEqual "Expected snapshot"
         (SimpleSymbolsListXResult (Glass.Revision "3") True)
         result
-  , TestLabel "snapshot and exact DB" $ TestCase $ do
+  , TestLabel "snapshot and exact DB" $ TestCase $ withEnv $ \env -> do
       sb <- mockSnapshotBackendSimple [(examplePath, Glass.Revision "1")]
       let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
       result <- symbolsList env' def{
@@ -223,7 +212,7 @@ testUseRevisionJK env = TestLabel "incr" $ TestList
       assertEqual "Expected snapshot"
         (SimpleSymbolsListXResult (Glass.Revision "1") False)
         result
-  , TestLabel "snapshot only" $ TestCase $ do
+  , TestLabel "snapshot only" $ TestCase $ withEnv $ \env -> do
       sb <- mockSnapshotBackendSimple [(newPath, Glass.Revision "3")]
       let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
       result <- symbolsList env' def{
