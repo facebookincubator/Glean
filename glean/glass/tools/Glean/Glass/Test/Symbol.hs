@@ -55,7 +55,9 @@ options = info (helper <*> parser) fullDesc
   where
     parser :: Parser Config
     parser = do
-      cfgGlass <- Glass.configParser snapshotBackendParser
+      cfgGlass <- Glass.setSnapshotBackend
+        <$> snapshotBackendParser
+        <*> Glass.configParser
       cfgCmd <- (\(cmd::String) -> case cmd of
                     "references" -> FindReferences
                     "describe" -> Describe

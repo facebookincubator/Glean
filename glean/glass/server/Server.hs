@@ -8,8 +8,9 @@
 
 module Server ( main ) where
 
+import Glean.Glass.Env
 import qualified Glean.Glass.Main ( mainWith )
 import Glean.Glass.SnapshotBackend ( snapshotBackendParser )
 
 main :: IO ()
-main = Glean.Glass.Main.mainWith snapshotBackendParser
+main = Glean.Glass.Main.mainWith $ setSnapshotBackend <$> snapshotBackendParser

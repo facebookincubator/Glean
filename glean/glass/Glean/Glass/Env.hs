@@ -11,6 +11,7 @@ module Glean.Glass.Env
   (
     -- * Read-only configuration
     Config(..),
+    setSnapshotBackend,
 
     -- * Session resources
     Env(..),
@@ -48,6 +49,10 @@ data Config = Config
   , numWorkerThreads :: Maybe Int
   , snapshotBackend :: Some SnapshotBackend
   }
+
+setSnapshotBackend :: Some SnapshotBackend -> Config -> Config
+setSnapshotBackend snapshotBackend config =
+  config { snapshotBackend = snapshotBackend }
 
 -- | Read-only, scoped, dynamic resources.
 data Env = Env

@@ -54,7 +54,6 @@ import qualified Glean.Glass.Options as Glass
 import qualified Glean.Glass.Handler as Handler
 import Glean.Glass.GlassService.Service ( GlassServiceCommand(..) )
 
-import Glean.Glass.SnapshotBackend (SnapshotBackend )
 import Glean.Glass.Types
   ( GlassException (GlassException, glassException_reasons),
     GlassExceptionReason (GlassExceptionReason_exactRevisionNotAvailable))
@@ -63,15 +62,15 @@ kThriftCacheNoCache :: Text
 kThriftCacheNoCache = "nocache"
 
 -- | Ok, go.
-mainWith :: Parser (Some SnapshotBackend) -> IO ()
+mainWith :: Parser (Glass.Config -> Glass.Config) -> IO ()
 mainWith = withGlass runGlass
 
 type Server = Glass.Env -> Glass.Config -> IO ()
 
 -- | Set up the resources we'll need
-withGlass :: Server -> Parser (Some SnapshotBackend) -> IO ()
-withGlass f snapshotBackendP =
-  withOptions (Glass.options snapshotBackendP) $ \config@Glass.Config{..} ->
+withGlass :: Server -> Parser (Glass.Config -> Glass.Config) -> IO ()
+withGlass f backendsP =
+  withOptions (Glass.options backendsP) $ \config@Glass.Config{..} ->
   withEnv config Nothing $ \env -> f env config
 
 -- | Construct a server environment
