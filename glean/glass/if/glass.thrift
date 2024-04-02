@@ -111,13 +111,6 @@ struct RequestOptions {
 }
 
 struct FeatureFlags {
-  // control use of RequestOptions.revision to select DBs (default is False).
-  //
-  // Note: this flag does *not* affect snapshot selection: if there is
-  // a snapshot for documentSymbolIndex/documentSymbolListX for the
-  // requested revision, it is always used.
-  2: optional bool use_revision;
-
   // include xlang? default is false
   3: optional bool include_xlang_refs;
 }

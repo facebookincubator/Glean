@@ -119,7 +119,7 @@ getLatestAttrDB repoMapping dbInfo opts gleanDBName =
   case firstAttrDB repoMapping gleanDBName of
     Nothing -> return Nothing
     Just attrDBName -> atomically $ do
-      let dbs = chooseGleanDBs dbInfo (selectRevision opts)
+      let dbs = chooseGleanDBs dbInfo (requestOptions_revision opts)
             [gleanAttrDBName attrDBName]
       return $ case dbs of
         [] -> Nothing
@@ -137,7 +137,7 @@ withGleanDBs
   -> IO (b, Maybe ErrorLogger)
 withGleanDBs method env@Glass.Env{..} opts req dbNames fn = do
   dbInfo <- readTVarIO latestGleanRepos
-  dbs <- getSpecificGleanDBs dbInfo (selectRevision opts) dbNames
+  dbs <- getSpecificGleanDBs dbInfo (requestOptions_revision opts) dbNames
   withLog method env req $ \log ->
     withLogDB dbs log $
       fn dbs dbInfo
@@ -179,7 +179,7 @@ withRepoLanguage
 withRepoLanguage method env@Glass.Env{..} req repo mlanguage opts fn =
   withRequest method env req opts $ \dbInfo logger -> do
     dbs <- getGleanRepos repoMapping dbInfo
-      repo mlanguage (selectRevision opts) gleanDB
+      repo mlanguage (requestOptions_revision opts) gleanDB
     withLogDB dbs logger $
       fn dbs dbInfo mlanguage
 
@@ -218,7 +218,7 @@ withSymbol method env@Glass.Env{..} opts sym fn =
       Left err -> throwM $ ServerException err
       Right req@(repo, lang, _toks) -> do
         dbs <- getGleanRepos repoMapping dbInfo repo
-          (Just lang) (selectRevision opts) gleanDB
+          (Just lang) (requestOptions_revision opts) gleanDB
         withLogDB dbs log $ fn dbs dbInfo req
 
 withStrictErrorHandling
@@ -281,15 +281,6 @@ withLogDB dbs log fn = do
   (res, merr) <- fn
   let err = fmap (<> logError dbs) merr
   return (res, log <> logRepo dbs, err)
-
--- | Revision to use when selecting Glean DBs.
---     Just rev -> select DBs that match rev, or latest otherwise
---     Nothing -> always choose the latest
-selectRevision :: RequestOptions -> Maybe Revision
-selectRevision RequestOptions{..}
-  | Just FeatureFlags { featureFlags_use_revision = Just True }
-      <- requestOptions_feature_flags = requestOptions_revision
-  | otherwise = Nothing
 
 -- | Given an SCS repo name, and a candidate path, find latest Glean dbs or
 -- throw. Returns the chosen db name and Glean repo handle.

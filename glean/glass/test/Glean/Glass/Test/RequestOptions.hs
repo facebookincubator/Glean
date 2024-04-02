@@ -113,28 +113,28 @@ testBaselineDB env = TestLabel "DBs" $ TestCase $ do
     result
 
   result <- symbolsList env def{revision = Glass.Revision "1"}
-  assertEqual "should ignore exact DB match, just return latest"
-    (SimpleSymbolsListXResult (Glass.Revision "2") False)
+  assertEqual "should return exact DB match"
+    (SimpleSymbolsListXResult (Glass.Revision "1") False)
     result
 
 testBaselineSnapshot :: Glass.Env -> Test
 testBaselineSnapshot env = TestLabel "snaphots" $ TestCase $ do
   sb <- mockSnapshotBackendSimple
-    [(examplePath, Glass.Revision "1")
-    ,(newPath, Glass.Revision "3")
+    [(examplePath, Glass.Revision "3")
+    ,(newPath, Glass.Revision "4")
     ]
   let env' :: Glass.Env = env {Glass.snapshotBackend = Some sb}
 
   resultOlderMatch <-
-    symbolsList env' def{revision = Glass.Revision "1", exact = True}
+    symbolsList env' def{revision = Glass.Revision "3", exact = True}
   assertEqual "Older snapshot match is honored"
-    (SimpleSymbolsListXResult (Glass.Revision "1") True)
+    (SimpleSymbolsListXResult (Glass.Revision "3") True)
     resultOlderMatch
 
   resultNewFile <-
-    symbolsList env' def{revision = Glass.Revision "4", path = newPath}
+    symbolsList env' def{revision = Glass.Revision "5", path = newPath}
   assertEqual "Latest snapshot available is used for a new file"
-    (SimpleSymbolsListXResult (Glass.Revision "3") True)
+    (SimpleSymbolsListXResult (Glass.Revision "4") True)
     resultNewFile
 
 testExactRevision :: Glass.Env -> Test
@@ -175,8 +175,7 @@ testUseRevision env = TestList
   [ TestLabel "exact" $ TestCase $ do
       result <- try $ symbolsList env def{
         revision = Glass.Revision "3",
-        exact = True,
-        useRevision = Just (Just True)}
+        exact = True}
       assertGlassException
         "exact revision throws if no match"
         (GlassExceptionReason_exactRevisionNotAvailable "Requested exactly 3")
@@ -184,8 +183,7 @@ testUseRevision env = TestList
   , TestLabel "default" $ TestCase $ do
       result <- symbolsList env def{
         revision = Glass.Revision "3",
-        exact = False,
-        useRevision = Just (Just True)}
+        exact = False}
       assertEqual "Pick latest if missing"
         (SimpleSymbolsListXResult (Glass.Revision "2") False)
         result
@@ -196,16 +194,14 @@ testUseRevisionJK env = TestLabel "incr" $ TestList
   [ TestLabel "default" $ TestCase $ do
       result <- symbolsList env def{
         revision = Glass.Revision "1",
-        exact = False,
-        useRevision = Just (Just True)}
+        exact = False}
       assertEqual "Expected matching revision"
         (SimpleSymbolsListXResult (Glass.Revision "1") False)
         result
   , TestLabel "exact" $ TestCase $ do
       result <- symbolsList env def{
         revision = Glass.Revision "1",
-        exact = True,
-        useRevision = Just (Just True)}
+        exact = True}
       assertEqual "Expected matching revision"
         (SimpleSymbolsListXResult (Glass.Revision "1") False)
         result
@@ -214,8 +210,7 @@ testUseRevisionJK env = TestLabel "incr" $ TestList
       let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
       result <- symbolsList env' def{
         revision = Glass.Revision "3",
-        exact = True,
-        useRevision = Just (Just True)}
+        exact = True}
       assertEqual "Expected snapshot"
         (SimpleSymbolsListXResult (Glass.Revision "3") True)
         result
@@ -224,8 +219,7 @@ testUseRevisionJK env = TestLabel "incr" $ TestList
       let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
       result <- symbolsList env' def{
         revision = Glass.Revision "1",
-        exact = True,
-        useRevision = Just (Just True)}
+        exact = True}
       assertEqual "Expected snapshot"
         (SimpleSymbolsListXResult (Glass.Revision "1") False)
         result
@@ -235,8 +229,7 @@ testUseRevisionJK env = TestLabel "incr" $ TestList
       result <- symbolsList env' def{
         path = newPath,
         revision = Glass.Revision "3",
-        exact = True,
-        useRevision = Just (Just True)}
+        exact = True}
       assertEqual "Expected snapshot"
         (SimpleSymbolsListXResult (Glass.Revision "3") True)
         result
@@ -301,11 +294,10 @@ instance Simplify (DocumentSymbolsRequest, RequestOptions) where
       repo :: Glass.RepoName,
       path :: Glass.Path,
       revision :: Glass.Revision,
-      exact :: Bool,
-      useRevision :: Maybe (Maybe Bool)
+      exact :: Bool
     }
   simplify _ = error "Not implemented"
-  fromSimple (SimpleDocumentSymbolsRequest repo path revision exact use) =
+  fromSimple (SimpleDocumentSymbolsRequest repo path revision exact) =
     ( DocumentSymbolsRequest
           { documentSymbolsRequest_repository = repo
           , documentSymbolsRequest_filepath = path
@@ -316,9 +308,7 @@ instance Simplify (DocumentSymbolsRequest, RequestOptions) where
           { requestOptions_revision = Just revision
           , requestOptions_limit = Nothing
           , requestOptions_feature_flags =
-            fmap (\x -> Glass.FeatureFlags
-              { featureFlags_use_revision = x,
-                featureFlags_include_xlang_refs = Nothing }) use
+            Just Glass.FeatureFlags { featureFlags_include_xlang_refs = Nothing }
           , requestOptions_strict = True
           , requestOptions_exact_revision = exact
           }
@@ -330,7 +320,6 @@ instance Default (Simple (DocumentSymbolsRequest, RequestOptions)) where
     , path = examplePath
     , revision = Glass.Revision "1"
     , exact = False
-    , useRevision = Nothing
     }
 
 --------------------------------------------------------------------------------
