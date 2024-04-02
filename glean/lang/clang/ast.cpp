@@ -11,17 +11,18 @@
 #include <clang/AST/DeclBase.h>
 #include <clang/AST/DeclVisitor.h>
 #include <clang/AST/RecursiveASTVisitor.h>
+#include <clang/Index/USRGeneration.h>
 #include <clang/Sema/SemaConsumer.h>
 #include <llvm/Config/llvm-config.h>
-#include <clang/Index/USRGeneration.h>
 #include <llvm/Support/SHA1.h>
+#include <re2/re2.h>
 
 #include "folly/MapUtil.h"
 #include "folly/Overload.h"
 #include "folly/ScopeGuard.h"
+#include "folly/lang/Assume.h"
 #include "glean/lang/clang/ast.h"
 #include "glean/lang/clang/index.h"
-#include <re2/re2.h>
 
 // This file implements the Clang AST traversal.
 
@@ -492,6 +493,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       case clang::DeclarationName::CXXUsingDirective:
         return folly::none;
     }
+    folly::assume_unreachable();
   }
 
 
@@ -1529,16 +1531,16 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
       if (decl->isStaticDataMember()) {
         return Cxx::GlobalVariableKind::StaticMember;
-      } else {
-        switch (decl->getStorageClass()) {
-          case clang::SC_None: return Cxx::GlobalVariableKind::SimpleVariable;
-          case clang::SC_Extern: return Cxx::GlobalVariableKind::SimpleVariable;
-          case clang::SC_Static: return Cxx::GlobalVariableKind::StaticVariable;
-          case clang::SC_PrivateExtern: return {};
-          case clang::SC_Auto: return {};
-          case clang::SC_Register: return {};
-        }
       }
+      switch (decl->getStorageClass()) {
+        case clang::SC_None: return Cxx::GlobalVariableKind::SimpleVariable;
+        case clang::SC_Extern: return Cxx::GlobalVariableKind::SimpleVariable;
+        case clang::SC_Static: return Cxx::GlobalVariableKind::StaticVariable;
+        case clang::SC_PrivateExtern: return {};
+        case clang::SC_Auto: return {};
+        case clang::SC_Register: return {};
+      }
+      folly::assume_unreachable();
     }
 
     static Cxx::GlobalVariableAttribute globalAttribute(

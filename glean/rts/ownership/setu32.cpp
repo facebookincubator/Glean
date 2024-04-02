@@ -8,6 +8,8 @@
 
 #include "glean/rts/ownership/setu32.h"
 
+#include <folly/lang/Assume.h>
+
 #include <xxhash.h>
 
 using namespace folly::compression;
@@ -51,6 +53,7 @@ bool SetU32::Block::operator==(const SetU32::Block& other) const {
     case SetU32::Hdr::Full:
       return true;
   }
+  folly::assume_unreachable();
 }
 
 bool SetU32::Block::includes(const SetU32::Block& other) const {
@@ -91,6 +94,8 @@ bool SetU32::Block::includes(const SetU32::Block& other) const {
     case SetU32::Hdr::Full:
       return true;
   }
+
+  folly::assume_unreachable();
 }
 
 SetU32::SetU32(const SetU32& other, SetU32::copy_capacity_tag) {
@@ -205,6 +210,7 @@ uint32_t SetU32::upper() const {
       return id | 255;
     }
   }
+  folly::assume_unreachable();
 }
 
 void SetU32::append(uint32_t value) {
