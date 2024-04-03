@@ -500,7 +500,18 @@ private:
       cell = folly::none;
     }
 
-    return {cell, batch.fact<Buck::Locator>(
+    auto repo_cell = cell;
+    #if GLEAN_FACEBOOK
+    // TODO make this more general
+    // some source.targets are of the form fbsource//path:name.
+    // Consequently, cell (and a locator subdir field) can be
+    // fbsource. We only want cell relative to the repo root.
+    if (cell == "fbsource") {
+      repo_cell = folly::none;
+    }
+    #endif
+
+    return {repo_cell, batch.fact<Buck::Locator>(
       maybe(cell),
       source.target.substr(path_start, path_len),
       source.target.substr(name_start)

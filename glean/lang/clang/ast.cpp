@@ -839,9 +839,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
                try {
                  folly::dynamic jsonObject = folly::parseJson(json_annotation);
                  thrift_file = jsonObject["file"].asString();
-                 auto cell = visitor.db.cell;
-                 if (cell.has_value() && cell.value() != "fbsource") {
-                    thrift_file = cell.value() + "/" + thrift_file;
+                 if (visitor.db.cell.has_value()) {
+                    thrift_file = visitor.db.cell.value() + "/" + thrift_file;
                  }
                  thrift_service = jsonObject["service"].asString();
                  thrift_function = jsonObject["function"].asString();

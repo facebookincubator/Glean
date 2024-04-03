@@ -45,6 +45,7 @@ using SCHEMA = schema::SCHEMA;
 class ClangDB {
 public:
   struct Env {
+    // Buck cell of the file being indexed, relative to repo root
     folly::Optional<std::string> cell;
     Fact<Buck::Locator> locator;
     folly::Optional<Fact<Buck::Platform>> platform;
