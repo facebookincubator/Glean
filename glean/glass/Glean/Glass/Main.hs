@@ -94,7 +94,7 @@ withEnv Glass.Config{..} gleanDB f =
         { gleanBackend = Some backend
         , gleanIndexBackend = indexBackend backend
         , gleanDB = gleanDB
-        , snapshotBackend = snapshotBackend
+        , snapshotBackend = snapshotBackend evp
         , ..
         }
 

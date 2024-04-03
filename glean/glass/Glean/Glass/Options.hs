@@ -35,7 +35,7 @@ configParser = do
   refreshFreq <- refreshFreqParser
   listDatabasesRetry <- listDatabasesRetryParser
   numWorkerThreads <- workerThreadsParser
-  snapshotBackend <- pure (Some NilSnapshotBackend)
+  snapshotBackend <- pure (const $ Some NilSnapshotBackend)
   return Glass.Config{configKey = Glass.defaultConfigKey, ..}
 
 portParser :: Parser Int

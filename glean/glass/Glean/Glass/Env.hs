@@ -47,10 +47,11 @@ data Config = Config
   , listDatabasesRetry :: Maybe Int
       -- ^ whether to trust listDatabases and how often to wait to retry N times
   , numWorkerThreads :: Maybe Int
-  , snapshotBackend :: Some SnapshotBackend
+  , snapshotBackend :: EventBaseDataplane -> Some SnapshotBackend
   }
 
-setSnapshotBackend :: Some SnapshotBackend -> Config -> Config
+setSnapshotBackend
+  :: (EventBaseDataplane -> Some SnapshotBackend) -> Config -> Config
 setSnapshotBackend snapshotBackend config =
   config { snapshotBackend = snapshotBackend }
 
