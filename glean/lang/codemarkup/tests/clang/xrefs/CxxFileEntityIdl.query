@@ -1,0 +1,3 @@
+query: codemarkup.cxx.CxxFileEntityIdl _
+perf: true
+transform: [gensort, []]

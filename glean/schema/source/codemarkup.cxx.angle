@@ -322,8 +322,8 @@ predicate CxxFileEntityIdl:
   }
   { Trace, { cxx = Entity }, Idl } where
     cxx1.FileXRefs { xmap = { fixed = Fs }, targets = Ts } = Trace;
-    cxx1.XRefTargets Targets = Ts[..];
     (
+      cxx1.XRefTargets Targets = Ts[..];
       XRefTarget = Targets[..];
       XRefTargetToEntity { XRefTarget, Entity };
       CxxEntityIdl { ent = Entity, idlEnt = Idl }

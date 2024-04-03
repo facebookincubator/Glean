@@ -1,0 +1,114 @@
+[
+  "@generated",
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [ ],
+              "froms": [
+                {
+                  "spans": [ { "length": 1, "offsets": [ 252 ] } ],
+                  "expansions": [ ],
+                  "spellings": [ ]
+                }
+              ]
+            }
+          },
+          "targets": [
+            {
+              "key": [
+                {
+                  "declaration": {
+                    "function_": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "g" } } },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "void" },
+                            "parameters": [ ]
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "a.h" },
+                          "lineBegin": 12,
+                          "columnBegin": 1,
+                          "lineEnd": 13,
+                          "columnEnd": 1
+                        }
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "ent": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "g" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "a.h" },
+                  "lineBegin": 12,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEnt": {
+        "lang": 8,
+        "file": {
+          "key": "thrift/compiler/test/fixtures/inheritance/src/module.thrift"
+        },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "function_": {
+                "key": {
+                  "service_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "file": {
+                            "key": {
+                              "key": "thrift/compiler/test/fixtures/inheritance/src/module.thrift"
+                            }
+                          },
+                          "name": { "key": "MyRoot" }
+                        }
+                      }
+                    }
+                  },
+                  "name": { "key": "g" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]
