@@ -17,6 +17,7 @@ module Glean.Glass.Repos
   , GleanDBAttrName(..)
   , GleanDBInfo(..)
   , ScmRevisions
+  , ScmRevisionInfo(..)
 
   -- * Mappings
   , fromSCSRepo
@@ -25,6 +26,7 @@ module Glean.Glass.Repos
 
   -- * Operation on a pool of latest repos
   , withLatestRepos
+  , ChooseGleanDBs(..)
   , chooseGleanDBs
   , updateLatestRepos
 
@@ -37,55 +39,66 @@ module Glean.Glass.Repos
   , getRepoHashForLocation
   ) where
 
+import Control.Concurrent.Stream
+import Control.Monad
+import qualified Data.IntMap as IntMap
+import Data.IntMap (IntMap)
 import Data.List (nub)
 import qualified Data.Text as Text
 import qualified Data.Set as Set
 import Control.Applicative
 import Control.Concurrent.Async ( withAsync )
 import Control.Exception ( uninterruptibleMask_ )
-import Data.Maybe ( catMaybes )
+import Data.Maybe ( catMaybes, fromMaybe )
 import Data.Set ( Set )
 import qualified Data.Map.Strict as Map
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Text ( Text, intercalate )
 import qualified Logger.GleanGlassErrors as Errors
+import Text.Printf
 
+import Util.Log
 import Logger.IO (Logger)
 import qualified Util.Log as LocalLog
+import Glean.Util.Some
 import Glean.Util.Periodic ( doPeriodicallySynchronised )
 import Util.Text ( textShow )
 import Glean.Util.Time
+import Util.Timing
 import qualified Glean
 import Util.STM
 import qualified Glean.Repo as Glean
 
-import Glean.Glass.Base ( GleanDBAttrName(..), GleanDBName(..),
-  RepoMapping(..) )
+import Glean.Glass.Base
+import Glean.Glass.SourceControl
 import Glean.Glass.SymbolId ( toShortCode )
 import Glean.Glass.Types
-    ( Path(Path),
-      RepoName(RepoName),
-      Language(..),
-      SymbolId(SymbolId),
-      unRepoName,
-      Revision(..),
-      LocationRange(..)
-    )
 import qualified Glean.Glass.RepoMapping as Mapping -- site-specific
 import Glean.Repo (LatestRepos)
 
--- | mapping from scm repo to hash for each db
-type ScmRevisions = HashMap Glean.Repo (HashMap Text Text)
+-- | mapping from Glean DB to info about the scm repositories it covers
+type ScmRevisions = HashMap Glean.Repo (HashMap RepoName ScmRevisionInfo)
 
--- | mapping from Glean DB name to rev->repo mapping
-type DbByRevision = HashMap GleanDBName (HashMap Text Glean.Repo)
+-- | Information about a source control revision
+data ScmRevisionInfo = ScmRevisionInfo
+  { scmRevision :: Revision
+  , scmGeneration :: Maybe ScmGeneration
+  } deriving Show
+
+-- | mapping from revision to Glean DB. We assume that revisions are
+-- globally unique hashes, so there's no need to include the
+-- repository in the key.
+type DbByRevision = HashMap Revision Glean.Repo
+
+-- | mapping from scm repo to (generation -> DB mapping)
+type DbByGeneration = HashMap RepoName (IntMap Glean.Repo)
 
 -- | info about which Glean DBs are currently available
 data GleanDBInfo = GleanDBInfo
   { latestRepos :: Glean.LatestRepos
   , scmRevisions :: ScmRevisions
-  , dbByRevision :: DbByRevision
+  , dbByRevision :: HashMap GleanDBName (DbByRevision, DbByGeneration)
   }
 
 -- return a RepoName if indexed by glean
@@ -259,20 +272,22 @@ filetype (Path file)
 getLatestRepos
   :: Glean.Backend b
   => b
+  -> Some SourceControl
   -> Maybe Logger
   -> Maybe Int
   -> IO GleanDBInfo
-getLatestRepos backend mlogger mretry = go mretry
+getLatestRepos backend scm mlogger mretry = go mretry
   where
     go :: Maybe Int -> IO GleanDBInfo
     go n = do
       latest <- Glean.getLatestRepos backend $ \name ->
         GleanDBName name `Set.member` Mapping.allGleanRepos
+      scmRevisions <- getScmRevisions scm latest
       let advertised = Map.keysSet (Glean.latestRepos latest)
           info = GleanDBInfo
             { latestRepos = latest
-            , scmRevisions = getScmRevisions latest
-            , dbByRevision = getDbByRevision latest
+            , scmRevisions = scmRevisions
+            , dbByRevision = getDbByRevision latest scmRevisions
             }
       if required `Set.isSubsetOf` advertised
         then return info
@@ -344,49 +359,68 @@ logIt mlogger latest missing attempt backend = do
 formatBackend :: Glean.Backend b => b -> Text
 formatBackend = Text.pack . Glean.displayBackend
 
-getScmRevisions :: Glean.LatestRepos -> ScmRevisions
-getScmRevisions repos =
-  HashMap.fromList
-    [ (Glean.database_repo db, Glean.scmRevisionsOfDatabase db)
-    | (_, dbs) <- Map.toList (Glean.allLatestRepos repos)
-    , db <- dbs ]
+getScmRevisions
+  :: Some SourceControl
+  -> Glean.LatestRepos
+  -> IO ScmRevisions
+getScmRevisions scm repos = do
+  let all = Map.toList (Glean.allLatestRepos repos)
+  (time, _, r) <- timeIt $ fmap HashMap.fromList $
+    forConcurrently_unordered 16 (concatMap snd all) $ \db -> do
+      revmap <- revMap db
+      return (Glean.database_repo db, revmap)
+  logInfo $ printf "fetched commit generations for %d DBs in %s"
+    (HashMap.size r) (showTime time)
+  return r
+  where
+  revMap db =
+    fmap HashMap.fromList $ forM revs $ \(repo, r) -> do
+      let repoName = RepoName repo
+          rev = Revision r
+      gen <- getGeneration scm repoName rev
+      return (repoName, ScmRevisionInfo rev gen)
+    where
+    revs = HashMap.toList (Glean.scmRevisionsOfDatabase db)
 
-getDbByRevision :: Glean.LatestRepos -> DbByRevision
-getDbByRevision repos =
+getDbByRevision
+  :: Glean.LatestRepos
+  -> ScmRevisions
+  -> HashMap GleanDBName (DbByRevision, DbByGeneration)
+getDbByRevision repos scmRevs =
   HashMap.fromList
-    [ (GleanDBName name, revmap)
+    [ (GleanDBName name, (revmap, genmap))
     | (name, dbs) <- Map.toList (Glean.allLatestRepos repos)
     , let
         revmap = HashMap.fromList
-          [ (rev, Glean.database_repo db)
+          [ (scmRevision info, Glean.database_repo db)
           | db <- dbs
-          , rev <- getDBRevisions db
+          , (_repo, info) <- getDBRevisions db
+          ]
+        genmap = HashMap.fromListWith IntMap.union
+          [ (repo, IntMap.fromList [(fromIntegral gen, Glean.database_repo db)])
+          | db <- dbs
+          , (repo, ScmRevisionInfo { scmGeneration =
+              Just (ScmGeneration gen) }) <- getDBRevisions db
           ]
     ]
     where
       getDBRevisions db =
-        case getDBRevisionsFromProperties db of
-          -- fall back to the DB hash, mainly for testing
-          [] -> [Glean.repo_hash (Glean.database_repo db)]
-          revs -> revs
-      getDBRevisionsFromProperties db =
-          [ rev
-          | (k,rev) <- HashMap.toList (Glean.database_properties db)
-          , "glean.scm." `Text.isPrefixOf` k
-          ]
+        maybe [] HashMap.toList $
+          HashMap.lookup (Glean.database_repo db) scmRevs
 
 -- | Introduce a latest repo cache.
 -- TODO: this should pass the configured repo list through
 withLatestRepos
   :: Glean.Backend b
    => b
+   -> Some SourceControl
    -> Maybe Logger
    -> Maybe Int
    -> DiffTimePoints
    -> (TVar GleanDBInfo -> IO a)
    -> IO a
-withLatestRepos backend mlogger mretry freq f = do
-  repos <- getLatestRepos backend mlogger mretry
+withLatestRepos backend scm mlogger mretry freq f = do
+  repos <- getLatestRepos backend scm mlogger mretry
   tvRepos <- newTVarIO repos
   withAsync (worker tvRepos) $ \_async -> f tvRepos
   where
@@ -397,38 +431,77 @@ withLatestRepos backend mlogger mretry freq f = do
         -- which can cause memory leaks if the process exits
         -- immediately. This is benign, but can lead to ASAN test
         -- failures.
-      updateLatestRepos backend mlogger mretry tvRepos
+      updateLatestRepos backend scm mlogger mretry tvRepos
 
 -- | Update a TVar with the latest repos
 -- TODO: should take latest configuration repo list
 updateLatestRepos
   :: Glean.Backend b
   => b
+  -> Some SourceControl
   -> Maybe Logger
   -> Maybe Int
   -> TVar GleanDBInfo -> IO ()
-updateLatestRepos backend mlogger mretry tvRepos = do
-  repos <- getLatestRepos backend mlogger mretry
+updateLatestRepos backend scm mlogger mretry tvRepos = do
+  repos <- getLatestRepos backend scm mlogger mretry
   atomically $ writeTVar tvRepos repos
 
--- | Choose DBs for the given DB names and (optional) revision
+data ChooseGleanDBs
+  = ChooseLatest
+  | ChooseExactOrLatest Revision
+  | ChooseNearest RepoName Revision
+
+-- | Choose DBs for the given DB names and ChooseGleanDBs spec
 chooseGleanDBs
-  :: GleanDBInfo
-  -> Maybe Revision
+  :: Some SourceControl
+  -> GleanDBInfo
+  -> ChooseGleanDBs
   -> [GleanDBName]
-  -> [(GleanDBName, Glean.Repo)]
-chooseGleanDBs dbInfo mRevision repoNames =
-  catMaybes
+  -> IO [(GleanDBName, Glean.Repo)]
+chooseGleanDBs _ dbInfo ChooseLatest repoNames =
+  return $ catMaybes
+    [ (dbName,) <$> Map.lookup name (Glean.latestRepos (latestRepos dbInfo))
+    | dbName@(GleanDBName name) <- repoNames
+    ]
+chooseGleanDBs _ dbInfo (ChooseExactOrLatest rev) repoNames =
+  return $ catMaybes
     [ (dbName,) <$> (dbForRevision <|> latestDb)
     | dbName@(GleanDBName name) <- repoNames
     , let
         latestDb = Map.lookup name (Glean.latestRepos (latestRepos dbInfo))
-        dbForRevision
-          | Just (Revision rev) <- mRevision =
-              HashMap.lookup dbName (dbByRevision dbInfo) >>=
-              HashMap.lookup rev
-          | otherwise = Nothing
+        dbForRevision =
+          HashMap.lookup dbName (dbByRevision dbInfo) >>= \(byrev, _) ->
+          HashMap.lookup rev byrev
     ]
+chooseGleanDBs scm dbInfo (ChooseNearest repo rev) repoNames = do
+  maybeGen <- getGeneration scm repo rev
+  case maybeGen of
+    Nothing -> chooseGleanDBs scm dbInfo (ChooseExactOrLatest rev) repoNames
+    Just (ScmGeneration gen) -> do
+      return $ catMaybes
+        [ (dbName,) <$> (dbForRevision <|> latestDb)
+        | dbName@(GleanDBName name) <- repoNames
+        , let
+            latestDb = Map.lookup name (Glean.latestRepos (latestRepos dbInfo))
+            dbForRevision =
+              HashMap.lookup dbName (dbByRevision dbInfo) >>= \(_, repos) ->
+              HashMap.lookup repo repos >>= best gen
+        ]
+  where
+  -- find the DB with the closest generation number
+  best gen bygen =
+   case (low, high) of
+      (Nothing, Nothing) -> Nothing
+      (Nothing, Just (_, db)) -> Just db
+      (Just (_, db), Nothing) -> Just db
+      (Just (lowgen, lowdb), Just (highgen, highdb))
+        | gen' - lowgen < highgen - gen' -> Just lowdb
+        | otherwise -> Just highdb
+     where
+      gen' = fromIntegral gen
+      low = IntMap.lookupLE gen' bygen
+      high = IntMap.lookupGT gen' bygen
+
 
 -- | Symbols of the form "/repo/lang/" where pRepo is a prefix of repo
 findRepos :: RepoMapping -> Text -> [SymbolId]
@@ -455,6 +528,6 @@ getRepoHash repo = Revision (Text.take 40 (Glean.repo_hash repo))
 getRepoHashForLocation
   :: LocationRange -> ScmRevisions -> Glean.Repo -> Revision
 getRepoHashForLocation LocationRange{..} scmRevs repo =
-  maybe (getRepoHash repo) Revision $ do
+  fromMaybe (getRepoHash repo) $ do
     scmRepoToHash <- HashMap.lookup repo scmRevs
-    HashMap.lookup (unRepoName locationRange_repository) scmRepoToHash
+    scmRevision <$> HashMap.lookup locationRange_repository scmRepoToHash

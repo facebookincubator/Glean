@@ -48,10 +48,12 @@ import qualified Logger.GleanGlassErrors as ErrorsLogger
 
 import qualified Glean
 import Glean.Haxl.Repos as Glean
+import Glean.Util.Some
 
 import Glean.Glass.Base
 import Glean.Glass.Logging
 import Glean.Glass.Repos
+import Glean.Glass.SourceControl
 import Glean.Glass.SymbolId
 import Glean.Glass.Types
 
@@ -108,19 +110,32 @@ revisionSpecifierError :: RevisionSpecifier -> Text
 revisionSpecifierError AnyRevision = "AnyRevision"
 revisionSpecifierError (ExactOnly (Revision rev))= "Requested exactly " <> rev
 
+dbChooser :: RepoName -> RequestOptions -> ChooseGleanDBs
+dbChooser repo opts =
+  case requestOptions_revision opts of
+    Nothing -> ChooseLatest
+    Just rev
+      | Just True <- nearest, not exact -> ChooseNearest repo rev
+      | otherwise -> ChooseExactOrLatest rev
+ where
+ nearest = requestOptions_feature_flags opts >>= featureFlags_nearest_revision
+ exact = requestOptions_exact_revision opts
+
 -- | Get glean db for an attribute type
 getLatestAttrDB
-  :: RepoMapping
+  :: Some SourceControl
+  -> RepoMapping
   -> GleanDBInfo
+  -> RepoName
   -> RequestOptions
   -> GleanDBName
   -> IO (Maybe (Glean.Repo, GleanDBAttrName))
-getLatestAttrDB repoMapping dbInfo opts gleanDBName =
+getLatestAttrDB scm repoMapping dbInfo repo opts gleanDBName =
   case firstAttrDB repoMapping gleanDBName of
     Nothing -> return Nothing
-    Just attrDBName -> atomically $ do
-      let dbs = chooseGleanDBs dbInfo (requestOptions_revision opts)
-            [gleanAttrDBName attrDBName]
+    Just attrDBName -> do
+      dbs <- chooseGleanDBs scm dbInfo (dbChooser repo opts)
+        [gleanAttrDBName attrDBName]
       return $ case dbs of
         [] -> Nothing
         db:_ -> Just (snd db, attrDBName)
@@ -131,13 +146,14 @@ withGleanDBs
   -> Glass.Env
   -> RequestOptions
   -> a
+  -> RepoName
   -> NonEmpty GleanDBName
   -> (NonEmpty (GleanDBName, Glean.Repo)
         -> GleanDBInfo -> IO (b, Maybe ErrorLogger))
   -> IO (b, Maybe ErrorLogger)
-withGleanDBs method env@Glass.Env{..} opts req dbNames fn = do
+withGleanDBs method env@Glass.Env{..} opts req repo dbNames fn = do
   dbInfo <- readTVarIO latestGleanRepos
-  dbs <- getSpecificGleanDBs dbInfo (requestOptions_revision opts) dbNames
+  dbs <- getSpecificGleanDBs sourceControl dbInfo (dbChooser repo opts) dbNames
   withLog method env req $ \log ->
     withLogDB dbs log $
       fn dbs dbInfo
@@ -178,8 +194,8 @@ withRepoLanguage
   -> IO b
 withRepoLanguage method env@Glass.Env{..} req repo mlanguage opts fn =
   withRequest method env req opts $ \dbInfo logger -> do
-    dbs <- getGleanRepos repoMapping dbInfo
-      repo mlanguage (requestOptions_revision opts) gleanDB
+    dbs <- getGleanRepos sourceControl repoMapping dbInfo repo
+      mlanguage (dbChooser repo opts) gleanDB
     withLogDB dbs logger $
       fn dbs dbInfo mlanguage
 
@@ -217,8 +233,8 @@ withSymbol method env@Glass.Env{..} opts sym fn =
     case symbolTokens sym of
       Left err -> throwM $ ServerException err
       Right req@(repo, lang, _toks) -> do
-        dbs <- getGleanRepos repoMapping dbInfo repo
-          (Just lang) (requestOptions_revision opts) gleanDB
+        dbs <- getGleanRepos sourceControl repoMapping dbInfo repo
+          (Just lang) (dbChooser repo opts) gleanDB
         withLogDB dbs log $ fn dbs dbInfo req
 
 withStrictErrorHandling
@@ -236,7 +252,7 @@ withStrictErrorHandling dbInfo opts action = do
           let getFirstRevision repo =
                 case HashMap.lookup repo (scmRevisions dbInfo) of
                   Just m | rev : _ <- HashMap.elems m ->
-                    Just (Revision rev)
+                    Just (scmRevision rev)
                   _ -> Nothing
           throwM $ GlassException
             (errorTy err)
@@ -286,14 +302,15 @@ withLogDB dbs log fn = do
 -- throw. Returns the chosen db name and Glean repo handle.
 -- If a Glean.Repo is given, use it instead.
 getGleanRepos
-  :: RepoMapping
+  :: Some SourceControl
+  -> RepoMapping
   -> GleanDBInfo
   -> RepoName
   -> Maybe Language
-  -> Maybe Revision
+  -> ChooseGleanDBs
   -> Maybe Glean.Repo
   -> IO (NonEmpty (GleanDBName,Glean.Repo))
-getGleanRepos repoMapping dbInfo scsrepo mlanguage mRevision mGleanDB =
+getGleanRepos scm repoMapping dbInfo scsrepo mlanguage chooser mGleanDB =
   case mGleanDB of
     Nothing ->
       case fromSCSRepo repoMapping scsrepo mlanguage of
@@ -301,18 +318,20 @@ getGleanRepos repoMapping dbInfo scsrepo mlanguage mRevision mGleanDB =
           unRepoName scsrepo <>
             maybe "" (\x -> " (" <> toShortCode x <> ")") mlanguage
         (x:xs) ->
-          getSpecificGleanDBs dbInfo mRevision (x :| xs)
+          getSpecificGleanDBs scm dbInfo chooser (x :| xs)
     Just gleanDB@Glean.Repo{repo_name} ->
       return ((GleanDBName repo_name, gleanDB) :| [])
 
 -- | If you already know the set of dbs you need, just get them.
 getSpecificGleanDBs
-  :: GleanDBInfo
-  -> Maybe Revision
+  :: Some SourceControl
+  -> GleanDBInfo
+  -> ChooseGleanDBs
   -> NonEmpty GleanDBName
   -> IO (NonEmpty (GleanDBName,Glean.Repo))
-getSpecificGleanDBs dbInfo mRevision gleanDBNames =
-  case chooseGleanDBs dbInfo mRevision (toList gleanDBNames) of
+getSpecificGleanDBs scm dbInfo chooser gleanDBNames = do
+  dbs <- chooseGleanDBs scm dbInfo chooser (toList gleanDBNames)
+  case dbs of
     [] -> throwIO $ ServerException $ "No Glean dbs found for: " <>
             Text.intercalate ", " (map unGleanDBName $ toList gleanDBNames)
     db:dbs -> return (db :| dbs)

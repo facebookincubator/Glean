@@ -10,8 +10,10 @@
 {-# OPTIONS_GHC -Wno-name-shadowing #-}
 module Glean.Glass.Test.RequestOptions ( main) where
 
-import Control.Exception (try)
+import Control.Exception
+import Data.Bifunctor
 import Data.Default
+import qualified Data.HashMap.Strict as HashMap
 import Data.Text (Text)
 import qualified Data.Map.Strict as Map
 import Test.HUnit
@@ -39,10 +41,11 @@ import Glean.Glass.Types (
 import qualified Glean.Glass.Env as Glass
 import qualified Glean.Glass.Handler as Glass
 import qualified Glean.Glass.Regression.Util as Glass
+import Glean.Glass.SourceControl
 import qualified Glean.Glass.Types as Glass
 
 cxxRepo :: Text
-cxxRepo = "fbsource.fbcode.cxx.incr"
+cxxRepo = "fbsource"
 
 examplePath, newPath :: Glass.Path
 examplePath = Glass.Path "main.cpp"
@@ -60,7 +63,7 @@ main = do
         withEnv :: WithEnv
         withEnv f = do
           (backend, _) <- get
-          Glass.withTestEnv backend f
+          Glass.withTestEnvScm backend (Some MockSourceControl) f
       in
       TestList
         [ testBaselineDB withEnv
@@ -69,6 +72,7 @@ main = do
         , TestLabel "use-revision" $ TestList $
            [testUseRevision withEnv] <>
            [testUseRevisionJK withEnv | useJK == Right True]
+        , testNearestRevision withEnv
         ]
   where
   baseDriver = DerivePass.driver []
@@ -80,7 +84,10 @@ main = do
   createDB opts backend indexer testConfig = do
     let createTestDatabase cfg =
           Glean.fillDatabase backend (testRepo cfg) "" Nothing
-            (error "repo already exists") $
+            (error "repo already exists") $ do
+              let Glean.Repo name hash = testRepo cfg
+              _ <- Glean.updateProperties backend (testRepo cfg)
+                (HashMap.fromList [("glean.scm." <> name, hash)]) []
               runIndexerForTest backend (indexer opts) cfg
 
     createTestDatabase testConfig { testRepo = Glean.Repo cxxRepo "1" }
@@ -129,13 +136,14 @@ testBaselineSnapshot withEnv = TestLabel "snaphots" $ TestCase $ withEnv $ \env 
 testExactRevision :: WithEnv -> Test
 testExactRevision withEnv = TestLabel "exact-revision" $ TestList
   [ TestLabel "DB match" $ TestCase $ withEnv $ \env -> do
-      result <- symbolsList env def{revision = Glass.Revision "2", exact = True}
+      result <- symbolsList (failSourceControl env)
+        def{revision = Glass.Revision "2", exact = True}
       assertEqual "DB match"
         (SimpleSymbolsListXResult (Glass.Revision "2") False)
         result
   , TestLabel "no match" $ TestCase $ withEnv $ \env -> do
-      result <- try $
-        symbolsList env def{revision = Glass.Revision "3", exact = True}
+      result <- try $ symbolsList (failSourceControl env)
+        def{revision = Glass.Revision "3", exact = True}
       assertGlassException
         "exact revision throws if no match"
         (GlassExceptionReason_exactRevisionNotAvailable "Requested exactly 3")
@@ -147,13 +155,15 @@ testExactRevision withEnv = TestLabel "exact-revision" $ TestList
       let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
 
       result' <-
-        symbolsList env' def{revision = Glass.Revision "3", exact = True}
+        symbolsList (failSourceControl env')
+          def{revision = Glass.Revision "3", exact = True}
       assertEqual "Snapshot match"
         (SimpleSymbolsListXResult (Glass.Revision "3") True)
         result'
 
       result' <-
-        symbolsList env' def{revision = Glass.Revision "2", exact = True}
+        symbolsList (failSourceControl env')
+          def{revision = Glass.Revision "2", exact = True}
       assertEqual "DB match has priority over snapshot match"
         (SimpleSymbolsListXResult (Glass.Revision "2") False)
         result'
@@ -223,6 +233,64 @@ testUseRevisionJK withEnv = TestLabel "incr" $ TestList
         (SimpleSymbolsListXResult (Glass.Revision "3") True)
         result
   ]
+
+--------------------------------------------------------------------------------
+-- Nearest revision
+
+testNearestRevision :: WithEnv -> Test
+testNearestRevision withEnv = TestLabel "nearest" $ TestList
+  [ TestLabel "pick" $ TestCase $ withEnv $ \env -> do
+    result <- symbolsList env def {
+      revision = Glass.Revision "1a",
+      nearest = Just True}
+    assertEqual "Nearest DB to 1a should be 1"
+      (SimpleSymbolsListXResult (Glass.Revision "1") False)
+      result
+
+    result <- symbolsList env def {
+      revision = Glass.Revision "1b",
+      nearest = Just True}
+    assertEqual "Nearest DB to 1b should be 2"
+      (SimpleSymbolsListXResult (Glass.Revision "2") False)
+      result
+
+    result <- symbolsList env def {
+      revision = Glass.Revision "2a",
+      nearest = Just True}
+    assertEqual "Nearest DB to 2a should be 2"
+      (SimpleSymbolsListXResult (Glass.Revision "2") False)
+      result
+
+    result <- symbolsList env def {
+      revision = Glass.Revision "1",
+      nearest = Just True}
+    assertEqual "Nearest DB to 1 should be 1"
+      (SimpleSymbolsListXResult (Glass.Revision "1") False)
+      result
+  ]
+
+data MockSourceControl = MockSourceControl
+
+instance SourceControl MockSourceControl where
+  getGeneration _ _repo (Glass.Revision "1") = return (Just (ScmGeneration 10))
+  getGeneration _ _repo (Glass.Revision "1a") = return (Just (ScmGeneration 11))
+  getGeneration _ _repo (Glass.Revision "1b") = return (Just (ScmGeneration 19))
+  getGeneration _ _repo (Glass.Revision "2") = return (Just (ScmGeneration 20))
+  getGeneration _ _repo (Glass.Revision "2a") = return (Just (ScmGeneration 21))
+  getGeneration _ _repo (Glass.Revision "2b") = return (Just (ScmGeneration 29))
+  getGeneration _ _repo (Glass.Revision "3") = return (Just (ScmGeneration 30))
+  getGeneration _ _repo _ = return Nothing
+
+-- Used to check scenarios where we don't expect to call
+-- getGeneration, such as when exact_revision = True
+data FailSourceControl = FailSourceControl
+
+instance SourceControl FailSourceControl where
+  getGeneration _ _ _ = throwIO $ ErrorCall "FailSourceControl"
+
+failSourceControl :: Glass.Env -> Glass.Env
+failSourceControl env = env { Glass.sourceControl = Some FailSourceControl }
+
 --------------------------------------------------------------------------------
 -- helpers
 
@@ -233,11 +301,7 @@ assertGlassException
   -> Either GlassException b
   -> Assertion
 assertGlassException msg reason =
-  assertEqual msg
-    (Left $ GlassException
-      {glassException_reasons = [reason]
-      ,glassException_revisions = []
-      })
+  assertEqual msg (Left [reason]) . first glassException_reasons
 
 symbolsList
   :: Glass.Env
@@ -283,10 +347,11 @@ instance Simplify (DocumentSymbolsRequest, RequestOptions) where
       repo :: Glass.RepoName,
       path :: Glass.Path,
       revision :: Glass.Revision,
-      exact :: Bool
+      exact :: Bool,
+      nearest :: Maybe Bool
     }
   simplify _ = error "Not implemented"
-  fromSimple (SimpleDocumentSymbolsRequest repo path revision exact) =
+  fromSimple (SimpleDocumentSymbolsRequest repo path revision exact nearest) =
     ( DocumentSymbolsRequest
           { documentSymbolsRequest_repository = repo
           , documentSymbolsRequest_filepath = path
@@ -297,7 +362,10 @@ instance Simplify (DocumentSymbolsRequest, RequestOptions) where
           { requestOptions_revision = Just revision
           , requestOptions_limit = Nothing
           , requestOptions_feature_flags =
-            Just Glass.FeatureFlags { featureFlags_include_xlang_refs = Nothing }
+            Just Glass.FeatureFlags {
+              featureFlags_include_xlang_refs = Nothing,
+              featureFlags_nearest_revision = nearest
+            }
           , requestOptions_strict = True
           , requestOptions_exact_revision = exact
           }
@@ -309,6 +377,7 @@ instance Default (Simple (DocumentSymbolsRequest, RequestOptions)) where
     , path = examplePath
     , revision = Glass.Revision "1"
     , exact = False
+    , nearest = Nothing
     }
 
 --------------------------------------------------------------------------------

@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module Glean.Glass.Regression.Util (withTestEnv) where
+module Glean.Glass.Regression.Util (withTestEnv, withTestEnvScm) where
 
 import Util.EventBase
 import Glean.Util.ConfigProvider
@@ -22,14 +22,23 @@ import Glean.Glass.Env as Glass
 import Glean.Glass.Repos
 import Glean.Glass.SnapshotBackend as SB
 import Glean.Glass.RepoMapping
+import Glean.Glass.SourceControl
 
 withTestEnv :: Backend b => b -> (Glass.Env -> IO a) -> IO a
-withTestEnv backend f =
+withTestEnv b = withTestEnvScm b (Some NilSourceControl)
+
+withTestEnvScm
+  :: Backend b
+  => b
+  -> Some SourceControl
+  -> (Glass.Env -> IO a)
+  -> IO a
+withTestEnvScm backend scm f =
   withEventBaseDataplane $ \evp ->
   withConfigProvider defaultConfigOptions $ \cfgapi ->
   withLogger cfgapi $ \logger ->
   withFb303 "glass-test" $ \fb303 ->
-  withLatestRepos backend Nothing Nothing (hours 1) $
+  withLatestRepos backend scm Nothing Nothing (hours 1) $
     \latestGleanRepos ->
       f Glass.Env
         { gleanBackend = Some backend
@@ -37,5 +46,6 @@ withTestEnv backend f =
         , snapshotBackend = Some SB.NilSnapshotBackend
         , gleanDB = Nothing
         , repoMapping = fixedRepoMapping
+        , sourceControl = scm
         , ..
         }

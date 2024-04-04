@@ -1250,6 +1250,7 @@ library glass-lib
         Glean.Glass.Search.SCIP
         Glean.Glass.Search.Thrift
         Glean.Glass.SnapshotBackend
+        Glean.Glass.SourceControl
         Glean.Glass.SymbolId
         Glean.Glass.SymbolId.Buck
         Glean.Glass.SymbolId.Class

@@ -113,6 +113,11 @@ struct RequestOptions {
 struct FeatureFlags {
   // include xlang? default is false
   3: optional bool include_xlang_refs;
+
+  // pick DBs with the nearest revision when revision is set and
+  // exact_revision = false
+  // default is false
+  4: optional bool nearest_revision;
 }
 
 // List symbols in a file. Symbols are spans of one or more tokens Glean has

@@ -12,6 +12,7 @@ module Glean.Glass.Env
     -- * Read-only configuration
     Config(..),
     setSnapshotBackend,
+    setSourceControl,
 
     -- * Session resources
     Env(..),
@@ -35,6 +36,7 @@ import Glean.Util.Time ( DiffTimePoints )
 import Glean.Glass.Base (RepoMapping)
 import Glean.Glass.Repos (GleanDBInfo)
 import Glean.Glass.SnapshotBackend ( SnapshotBackend(..) )
+import Glean.Glass.SourceControl
 
 -- | Init-time configuration
 data Config = Config
@@ -48,12 +50,19 @@ data Config = Config
       -- ^ whether to trust listDatabases and how often to wait to retry N times
   , numWorkerThreads :: Maybe Int
   , snapshotBackend :: EventBaseDataplane -> Some SnapshotBackend
+  , sourceControl :: EventBaseDataplane -> Some SourceControl
   }
 
 setSnapshotBackend
   :: (EventBaseDataplane -> Some SnapshotBackend) -> Config -> Config
 setSnapshotBackend snapshotBackend config =
   config { snapshotBackend = snapshotBackend }
+
+setSourceControl
+  :: (EventBaseDataplane -> Some SourceControl)
+  -> Config -> Config
+setSourceControl sourceControl config =
+  config { sourceControl = sourceControl }
 
 -- | Read-only, scoped, dynamic resources.
 data Env = Env
@@ -67,6 +76,7 @@ data Env = Env
   , snapshotBackend :: Some SnapshotBackend
   , gleanDB :: Maybe Glean.Repo -- if provided, use as target Glean DB
   , repoMapping :: RepoMapping
+  , sourceControl :: Some SourceControl
   }
 
 -- | A backend to create incremental databases

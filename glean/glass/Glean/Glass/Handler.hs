@@ -75,7 +75,7 @@ import Glean.Angle as Angle ( Angle )
 import Glean.Remote ( ThriftBackend(..), thriftServiceWithTimeout )
 import qualified Glean
 import Glean.Haxl.Repos as Glean
-import qualified Glean.Util.Some as Glean
+import Glean.Util.Some as Glean
 import qualified Glean.Util.Range as Range
 import Glean.Util.ThriftService ( ThriftServiceOptions(..), runThrift )
 
@@ -125,6 +125,7 @@ import Glean.Glass.Utils
 import Glean.Glass.Attributes.SymbolKind
     ( symbolKindToSymbolKind, symbolKindFromSymbolKind )
 import qualified Glean.Glass.SearchRelated as Search
+import Glean.Glass.SourceControl
 import Glean.Glass.SearchRelated
     ( RelatedLocatedEntities(childRL, parentRL),
       Recursive(NotRecursive) )
@@ -140,7 +141,8 @@ import Glean.Glass.SymbolKind (findSymbolKind)
 runRepoFile
   :: (LogResult t)
   => Text
-  -> (RepoMapping
+  -> (Some SourceControl
+    -> RepoMapping
     -> GleanDBInfo
     -> DocumentSymbolsRequest
     -> RequestOptions
@@ -154,7 +156,7 @@ runRepoFile
   -> IO t
 runRepoFile sym fn env@Glass.Env{..} req opts =
   withRepoFile sym env opts (req, opts) repo file $ \dbs dbInfo mlang ->
-      fn (Glass.repoMapping env) dbInfo req opts
+      fn sourceControl (Glass.repoMapping env) dbInfo req opts
          (GleanBackend gleanBackend dbs)
          snapshotBackend
          mlang
@@ -426,7 +428,7 @@ searchSymbol
     searchSymbolsIn repo dbs = case nonEmpty (Set.toList dbs) of
       Nothing -> pure ([], Nothing)
       Just names ->
-        withGleanDBs "searchSymbol" env opts req names $
+        withGleanDBs "searchSymbol" env opts req repo names $
           \gleanDBs dbInfo -> do
             res <- backendRunHaxl GleanBackend{..} $ Glean.queryAllRepos $ do
               let scmRevs = scmRevisions dbInfo
@@ -443,7 +445,7 @@ searchSymbol
     searchLuckySymbolsIn repo dbs = case nonEmpty (Set.toList dbs) of
       Nothing -> pure (FeelingLuckyResult [], Nothing)
       Just names ->
-        withGleanDBs "feelingLucky" env opts req names $
+        withGleanDBs "feelingLucky" env opts req repo names $
           \gleanDBs dbInfo -> do
             res <- backendRunHaxl GleanBackend{..} $ Glean.queryEachRepo $ do
               -- we can conveniently limit to 2 matches per inner search
@@ -884,22 +886,23 @@ withEntity f scsrepo lang toks = do
 
 fetchSymbolsAndAttributesGlean
   :: Glean.Backend b
-  => RepoMapping
+  => Some SourceControl
+  -> RepoMapping
   -> GleanDBInfo
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> GleanBackend b
   -> Maybe Language
   -> IO ((DocumentSymbolListXResult, QueryEachRepoLog), Maybe ErrorLogger)
-fetchSymbolsAndAttributesGlean repoMapping dbInfo req opts be mlang = do
+fetchSymbolsAndAttributesGlean scm repoMapping dbInfo req opts be mlang = do
   (res1, gLogs, elogs) <- fetchDocumentSymbols file mlimit
     specificRev includeRefs includeXlangRefs be mlang
-  res2 <- addDynamicAttributes repoMapping dbInfo opts
+  res2 <- addDynamicAttributes scm repoMapping dbInfo repo opts
     file mlimit be res1
   return ((res2, gLogs), elogs)
   where
-    file = toFileReference (documentSymbolsRequest_repository req)
-      (documentSymbolsRequest_filepath req)
+    repo = documentSymbolsRequest_repository req
+    file = toFileReference repo (documentSymbolsRequest_filepath req)
     includeRefs = documentSymbolsRequest_include_refs req
     includeXlangRefs = case opts of
       RequestOptions { requestOptions_feature_flags = Just
@@ -916,7 +919,8 @@ fetchSymbolsAndAttributesGlean repoMapping dbInfo req opts be mlang = do
 -- Find all symbols and refs in file and add all attributes
 fetchSymbolsAndAttributes
   :: (Glean.Backend b, SnapshotBackend snapshotBackend)
-  => RepoMapping
+  => Some SourceControl
+  -> RepoMapping
   -> GleanDBInfo
   -> DocumentSymbolsRequest
   -> RequestOptions
@@ -925,7 +929,8 @@ fetchSymbolsAndAttributes
   -> Maybe Language
   -> IO ((DocumentSymbolListXResult, SnapshotStatus, QueryEachRepoLog)
         , Maybe ErrorLogger)
-fetchSymbolsAndAttributes repoMapping dbInfo req opts be snapshotbe mlang = do
+fetchSymbolsAndAttributes scm repoMapping dbInfo req opts be
+    snapshotbe mlang = do
   res <- case mrevision of
     Just revision -> do
       (esnapshot, glean) <- Async.concurrently
@@ -960,7 +965,7 @@ fetchSymbolsAndAttributes repoMapping dbInfo req opts be snapshotbe mlang = do
   where
     addStatus st ((res, gleanLog), mlogger) = ((res, st, gleanLog), mlogger)
     getFromGlean =
-      fetchSymbolsAndAttributesGlean repoMapping dbInfo req opts be mlang
+      fetchSymbolsAndAttributesGlean scm repoMapping dbInfo req opts be mlang
     file = documentSymbolsRequest_filepath req
     repo = documentSymbolsRequest_repository req
     mrevision = requestOptions_revision opts
@@ -1090,18 +1095,20 @@ toDocumentSymbolResult DocumentSymbols{..} = DocumentSymbolListXResult{..}
 --
 addDynamicAttributes
   :: Glean.Backend b
-  => RepoMapping
+  => Some SourceControl
+  -> RepoMapping
   -> GleanDBInfo
+  -> RepoName
   -> RequestOptions
   -> FileReference
   -> Maybe Int
   -> GleanBackend b
   -> DocumentSymbols
   -> IO DocumentSymbolListXResult
-addDynamicAttributes repoMapping dbInfo opts repofile
+addDynamicAttributes scm repoMapping dbInfo repo opts repofile
     mlimit be syms = do
   -- combine additional dynamic attributes
-  mattrs <- getSymbolAttributes repoMapping dbInfo opts
+  mattrs <- getSymbolAttributes scm repoMapping dbInfo repo opts
     repofile mlimit be
   return $ extend mattrs syms
   where
@@ -1143,17 +1150,20 @@ documentSymbolsForLanguage mlimit _ includeRefs _ fileId = do
 -- With extra attributes loaded from any associated attr db
 fetchDocumentSymbolIndex
   :: (Glean.Backend b, SnapshotBackend snapshotBackend)
-  => RepoMapping
+  => Some SourceControl
+  -> RepoMapping
   -> GleanDBInfo
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> GleanBackend b
   -> snapshotBackend
   -> Maybe Language
-  -> IO ((DocumentSymbolIndex, SnapshotStatus, QueryEachRepoLog), Maybe ErrorLogger)
-fetchDocumentSymbolIndex repoMapping latest req opts be snapshotbe mlang = do
+  -> IO ((DocumentSymbolIndex, SnapshotStatus, QueryEachRepoLog),
+       Maybe ErrorLogger)
+fetchDocumentSymbolIndex scm repoMapping latest req opts be
+    snapshotbe mlang = do
   ((DocumentSymbolListXResult{..}, status, gleanDataLog), merr1) <-
-    fetchSymbolsAndAttributes repoMapping latest req opts be snapshotbe mlang
+    fetchSymbolsAndAttributes scm repoMapping latest req opts be snapshotbe mlang
 
   --  refs defs revision truncated digest = result
   let lineIndex = toSymbolIndex documentSymbolListXResult_references
@@ -1175,18 +1185,20 @@ fetchDocumentSymbolIndex repoMapping latest req opts be snapshotbe mlang = do
 -- Work out if we have extra attribute dbs and then run the queries
 getSymbolAttributes
   :: Glean.Backend b
-  => RepoMapping
+  => Some SourceControl
+  -> RepoMapping
   -> GleanDBInfo
+  -> RepoName
   -> RequestOptions
   -> FileReference
   -> Maybe Int
   -> GleanBackend b
   -> IO
      [(GleanDBAttrName, Map.Map Attributes.SymbolIdentifier Attributes)]
-getSymbolAttributes repoMapping dbInfo opts repofile mlimit
+getSymbolAttributes scm repoMapping dbInfo repo opts repofile mlimit
     be@GleanBackend{..} = do
   mAttrDBs <- forM (map fst $ toList gleanDBs) $
-    getLatestAttrDB repoMapping dbInfo opts
+    getLatestAttrDB scm repoMapping dbInfo repo opts
   attrs <- backendRunHaxl be $ do
     forM (catMaybes mAttrDBs) $
       \(attrDB, attr@(GleanDBAttrName _ attrKey){- existential key -}) ->
