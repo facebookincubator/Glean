@@ -15,7 +15,7 @@ module Glean.Util.Time
 , epochClockToUTCTime, showUTC, readUTC, showEpochTime, showNominalDiffTime
   -- * time point differences
 , TimePoint(..), DiffTimePoints(..), getTimePoint
-, diffTimePoints, addDiffTimePoints, getElapsedTime, addToTimePoint
+, diffTimePoints, addDiffTimePoints, getElapsedTime, elapsedTime, addToTimePoint
 , toDiffMillis, toDiffMicros, toDiffNanos, toDiffSeconds
   -- * utils
 , delay, nanoseconds, seconds, minutes, hours
@@ -109,6 +109,14 @@ getElapsedTime :: TimePoint -> IO DiffTimePoints
 getElapsedTime small = do
   big <- getTimePoint
   return (diffTimePoints small big)
+
+-- | Measure the elapsed time of an IO action
+elapsedTime :: IO a -> IO (DiffTimePoints, a)
+elapsedTime io = do
+  t0 <- getTimePoint
+  a <- io
+  delta <- getElapsedTime t0
+  return (delta, a)
 
 -- | We want to log milliseconds, use 'round'
 toDiffMillis :: DiffTimePoints -> Int
