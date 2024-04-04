@@ -35,9 +35,10 @@ RUN mkdir -p /root/.hsthrift/bin && mv flow/flow /root/.hsthrift/bin/ && rm -rf 
 WORKDIR /
 RUN git clone https://github.com/facebook/react.git --depth 1 react-code
 RUN cat /react-code/scripts/flow/config/flowconfig \
-      | grep -v REACT_RENDERER_FLOW_OPTIONS \
+      | grep -v REACT_RENDERER_FLOW_ \
       | grep -v CI_MAX_WORKERS \
-      | grep -v suppress_comment > /react-code/.flowconfig
+      | grep -v FLOW_VERSION
+      | sed '/^\[options\]/a exact_by_default=false' > /react-code/.flowconfig
 
 FROM ubuntu:20.04 AS demo
 
