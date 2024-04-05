@@ -571,6 +571,9 @@ fetchBackups env = do
           concatMap HashMap.toList <$>
             forRestoreSitesM env mempty listRestorable
 
+      when (null dbs) $
+        logWarning "found no restorable databases"
+
       for_ dbs $ \dbs ->
         atomically $ writeTVar (envCachedRestorableDBs env) (Just (now,dbs))
 

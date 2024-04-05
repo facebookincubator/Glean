@@ -62,7 +62,7 @@ import Glean.RTS.Foreign.Ownership (getOwnershipStats, showOwnershipStats)
 import Glean.ServerConfig.Types (DatabaseBackupPolicy(..))
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Internal.Types as Thrift
-import Glean.Types as Thrift
+import Glean.Types as Thrift hiding (Exception)
 import Glean.Util.Some
 import Glean.Util.Observed as Observed
 import Glean.Util.Trace
@@ -95,6 +95,13 @@ type SinBin = HashSet Repo
 --   more for RocksDB to expand it
 dbSizeDownloadFactor :: Double
 dbSizeDownloadFactor = 2.1
+
+newtype BackupException = BackupException Text
+  deriving (Typeable)
+
+instance Show BackupException where
+  show (BackupException t) = Text.unpack t
+instance Exception BackupException where
 
 -- | Get the next thing to do. Prioritises restores over backups and prefers
 -- newer databases.
@@ -137,7 +144,10 @@ getTodo env@Env{..} sinbin = getFinalize <|> getRestore <|> getBackup
           case dsite of
             Just (prefix, Some site) ->
               return (itemRepo, doBackup env itemRepo prefix site)
-            Nothing -> retry
+            Nothing ->
+              return (itemRepo, throwIO $ BackupException $
+                "Could not backup " <> repo_name itemRepo <>
+                ". Could not resolve the site")
 
     latest = do
       repoV `notInF` sinbin
