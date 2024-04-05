@@ -1379,6 +1379,7 @@ getStaticAttributes e repo sym mLang = do
     , asKind <$> mKind
     , Just $ asLanguage (entityLanguage e)
     , asDefinitionType <$> entityDefinitionType e
+    , asLangDeprecated =<< mLang
     , asLang =<< mLang
     ]
   where
@@ -1391,7 +1392,10 @@ getStaticAttributes e repo sym mLang = do
       Attribute_aInteger (fromIntegral $ fromThriftEnum lang))
     asDefinitionType kind = ("symbolDefinitionType",
       Attribute_aInteger (fromIntegral $ fromThriftEnum kind))
-    asLang Code.Language_Thrift  = Just ("symbolIdl",
+    asLangDeprecated Code.Language_Thrift  = Just ("symbolIdl",
+      Attribute_aString "thrift")
+    asLangDeprecated _ = Nothing
+    asLang Code.Language_Thrift = Just ("crossLanguage",
       Attribute_aString "thrift")
     asLang _ = Nothing
 

@@ -4594,6 +4594,9 @@
                 },
                 {
                     "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
                         "symbolIdl": {
                             "aString": "thrift"
                         },
@@ -4671,6 +4674,9 @@
                 },
                 {
                     "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
                         "symbolIdl": {
                             "aString": "thrift"
                         },
