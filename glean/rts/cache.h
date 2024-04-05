@@ -179,6 +179,8 @@ public:
     });
   }
 
+  ~LookupCache();
+
 private:
   Options options;
 

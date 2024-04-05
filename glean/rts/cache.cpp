@@ -92,6 +92,15 @@ LookupCache::LookupCache(
   }
 }
 
+LookupCache::~LookupCache() {
+  if (stats) {
+    storage.withLock([&](auto& wstorage) {
+      stats->values[Stats::factBytes] -= wstorage.factBytes();
+      stats->values[Stats::factCount] -= wstorage.factCount();
+    });
+  }
+}
+
 void LookupCache::clear() {
   storage.withLock([&](const auto& rstorage) {
     // NOTE: we don't seem to be able to this in the destructor because
