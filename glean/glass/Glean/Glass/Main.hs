@@ -59,6 +59,7 @@ import Glean.Glass.Types
   ( GlassException (GlassException, glassException_reasons),
     GlassExceptionReason (GlassExceptionReason_exactRevisionNotAvailable))
 import Glean.Glass.Env (Env(tracer))
+import Glean.Glass.Tracer ( isTracingEnabled )
 import Glean.Glass.Tracing (GlassTrace(TraceCommand))
 
 kThriftCacheNoCache :: Text
@@ -153,11 +154,18 @@ withCurrentRepoMapping env0 fn = do
   current <- getRepoMapping
   fn (env0 { Glass.repoMapping = current })
 
+withRequestTracing :: Env -> (Env -> IO b) -> IO b
+withRequestTracing env k = do
+  enabled <- isTracingEnabled
+  k $ if enabled then env else env { tracer = mempty }
+
 -- Actual glass service handler, types from glass.thrift
 -- TODO: snapshot the env, rather than passing in the mutable fields
 --
 glassHandler :: Glass.Env -> GlassServiceCommand r -> IO r
-glassHandler env0 cmd = withCurrentRepoMapping env0 $ \env ->
+glassHandler env0 cmd =
+  withCurrentRepoMapping env0 $ \env1 ->
+  withRequestTracing env1 $ \env ->
   traceMsg (tracer env) (TraceCommand cmd) $ case cmd of
   SuperFacebookService r -> fb303Handler (Glass.fb303 env) r
 
