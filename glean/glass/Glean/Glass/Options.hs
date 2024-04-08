@@ -38,6 +38,7 @@ configParser = do
   numWorkerThreads <- workerThreadsParser
   snapshotBackend <- pure (const $ Some NilSnapshotBackend)
   sourceControl <- pure (const (Some NilSourceControl))
+  tracer <- pure mempty
   return Glass.Config{configKey = Glass.defaultConfigKey, ..}
 
 portParser :: Parser Int
