@@ -23,6 +23,7 @@ main = getArgs >>= \args ->
     expectedFailures = map ("--omit="++)
       [ "declarations/typeAlias1"
       , "declarations/objc-property1"
-      , "xrefs/using-directive4"
+      , "xrefs/coro1"             -- Needs Clang 15
+      , "xrefs/using-directive4"  -- Needs Clang 15
       , "index_failure/cpp"
       ]
