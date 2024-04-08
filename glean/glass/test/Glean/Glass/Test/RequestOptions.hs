@@ -396,7 +396,7 @@ newtype MockSnapshotBackend = MockSnapshotBackend {
 }
 
 instance SnapshotBackend MockSnapshotBackend where
-  getSnapshot (MockSnapshotBackend get) repo path revision =
+  getSnapshot _ (MockSnapshotBackend get) repo path revision =
     call get repo path revision
 
 -- | Create a mock snapshot backend containing the given snapshots

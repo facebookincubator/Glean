@@ -136,6 +136,8 @@ import Glean.Glass.SnapshotBackend
     SnapshotStatus() )
 import qualified Glean.Glass.SnapshotBackend as Snapshot
 import Glean.Glass.SymbolKind (findSymbolKind)
+import Glean.Glass.Env (Env (tracer))
+import Glean.Glass.Tracing (GlassTracer, traceSpan)
 
 -- | Runner for methods that are keyed by a file path
 runRepoFile
@@ -175,7 +177,7 @@ documentSymbolListX env r opts =
   fst3 <$>
     runRepoFile
       "documentSymbolListX"
-      fetchSymbolsAndAttributes
+      (fetchSymbolsAndAttributes (tracer env))
       env r opts
 
 -- | Same as documentSymbolList() but construct a line-indexed map for easy
@@ -189,7 +191,7 @@ documentSymbolIndex env r opts =
   fst3 <$>
     runRepoFile
       "documentSymbolIndex"
-      fetchDocumentSymbolIndex
+      (fetchDocumentSymbolIndex (tracer env))
       env r opts
 
 -- | Symbol-based find-refernces.
@@ -886,7 +888,8 @@ withEntity f scsrepo lang toks = do
 
 fetchSymbolsAndAttributesGlean
   :: Glean.Backend b
-  => Some SourceControl
+  => GlassTracer
+  -> Some SourceControl
   -> RepoMapping
   -> GleanDBInfo
   -> DocumentSymbolsRequest
@@ -894,11 +897,13 @@ fetchSymbolsAndAttributesGlean
   -> GleanBackend b
   -> Maybe Language
   -> IO ((DocumentSymbolListXResult, QueryEachRepoLog), Maybe ErrorLogger)
-fetchSymbolsAndAttributesGlean scm repoMapping dbInfo req opts be mlang = do
-  (res1, gLogs, elogs) <- fetchDocumentSymbols file mlimit
-    specificRev includeRefs includeXlangRefs be mlang
-  res2 <- addDynamicAttributes scm repoMapping dbInfo repo opts
-    file mlimit be res1
+fetchSymbolsAndAttributesGlean tracer scm repoMapping dbInfo req opts be mlang = do
+  (res1, gLogs, elogs) <- traceSpan tracer "fetchDocumentSymbols" $
+    fetchDocumentSymbols file mlimit
+      specificRev includeRefs includeXlangRefs be mlang
+  res2 <- traceSpan tracer "addDynamicAttributes" $
+    addDynamicAttributes scm repoMapping dbInfo repo opts
+      file mlimit be res1
   return ((res2, gLogs), elogs)
   where
     repo = documentSymbolsRequest_repository req
@@ -919,7 +924,8 @@ fetchSymbolsAndAttributesGlean scm repoMapping dbInfo req opts be mlang = do
 -- Find all symbols and refs in file and add all attributes
 fetchSymbolsAndAttributes
   :: (Glean.Backend b, SnapshotBackend snapshotBackend)
-  => Some SourceControl
+  => GlassTracer
+  -> Some SourceControl
   -> RepoMapping
   -> GleanDBInfo
   -> DocumentSymbolsRequest
@@ -929,13 +935,15 @@ fetchSymbolsAndAttributes
   -> Maybe Language
   -> IO ((DocumentSymbolListXResult, SnapshotStatus, QueryEachRepoLog)
         , Maybe ErrorLogger)
-fetchSymbolsAndAttributes scm repoMapping dbInfo req opts be
+fetchSymbolsAndAttributes tracer scm repoMapping dbInfo req opts be
     snapshotbe mlang = do
   res <- case mrevision of
     Just revision -> do
       (esnapshot, glean) <- Async.concurrently
-        (getSnapshot snapshotbe repo file (Just revision))
-        getFromGlean
+        (traceSpan tracer "getSnapshot" $
+          getSnapshot tracer snapshotbe repo file (Just revision))
+        (traceSpan tracer "getFromGlean"
+          getFromGlean)
       return $ case esnapshot of
         Right queryResult | not (isRevisionHit revision glean) ->
           ((queryResult, Snapshot.ExactMatch, QueryEachRepoUnrequested),
@@ -950,7 +958,7 @@ fetchSymbolsAndAttributes scm repoMapping dbInfo req opts be
       | all isNoSrcFileFact errorTy
       && not (requestOptions_exact_revision opts)
       -> do
-        bestSnapshot <- getSnapshot snapshotbe repo file Nothing
+        bestSnapshot <- getSnapshot tracer snapshotbe repo file Nothing
         case bestSnapshot of
           Right result ->
             return
@@ -965,7 +973,8 @@ fetchSymbolsAndAttributes scm repoMapping dbInfo req opts be
   where
     addStatus st ((res, gleanLog), mlogger) = ((res, st, gleanLog), mlogger)
     getFromGlean =
-      fetchSymbolsAndAttributesGlean scm repoMapping dbInfo req opts be mlang
+      fetchSymbolsAndAttributesGlean
+        tracer scm repoMapping dbInfo req opts be mlang
     file = documentSymbolsRequest_filepath req
     repo = documentSymbolsRequest_repository req
     mrevision = requestOptions_revision opts
@@ -1150,7 +1159,8 @@ documentSymbolsForLanguage mlimit _ includeRefs _ fileId = do
 -- With extra attributes loaded from any associated attr db
 fetchDocumentSymbolIndex
   :: (Glean.Backend b, SnapshotBackend snapshotBackend)
-  => Some SourceControl
+  => GlassTracer
+  -> Some SourceControl
   -> RepoMapping
   -> GleanDBInfo
   -> DocumentSymbolsRequest
@@ -1160,10 +1170,10 @@ fetchDocumentSymbolIndex
   -> Maybe Language
   -> IO ((DocumentSymbolIndex, SnapshotStatus, QueryEachRepoLog),
        Maybe ErrorLogger)
-fetchDocumentSymbolIndex scm repoMapping latest req opts be
+fetchDocumentSymbolIndex tracer scm repoMapping latest req opts be
     snapshotbe mlang = do
   ((DocumentSymbolListXResult{..}, status, gleanDataLog), merr1) <-
-    fetchSymbolsAndAttributes scm repoMapping latest req opts be snapshotbe mlang
+    fetchSymbolsAndAttributes tracer scm repoMapping latest req opts be snapshotbe mlang
 
   --  refs defs revision truncated digest = result
   let lineIndex = toSymbolIndex documentSymbolListXResult_references

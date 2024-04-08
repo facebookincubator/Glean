@@ -1270,6 +1270,7 @@ library glass-lib
         Glean.Glass.SymbolKind
         Glean.Glass.SymbolMap
         Glean.Glass.SymbolSig
+        Glean.Glass.Tracing
         Glean.Glass.Utils
         Glean.Glass.Visibility
         Glean.Glass.XRefs

@@ -16,6 +16,7 @@ module Glean.Glass.Main
   ) where
 
 
+import Control.Trace (traceMsg)
 import Facebook.Service ( runFacebookService' )
 import Facebook.Fb303 ( fb303Handler, withFb303 )
 import Thrift.Channel (Header)
@@ -57,6 +58,8 @@ import Glean.Glass.GlassService.Service ( GlassServiceCommand(..) )
 import Glean.Glass.Types
   ( GlassException (GlassException, glassException_reasons),
     GlassExceptionReason (GlassExceptionReason_exactRevisionNotAvailable))
+import Glean.Glass.Env (Env(tracer))
+import Glean.Glass.Tracing (GlassTrace(TraceCommand))
 
 kThriftCacheNoCache :: Text
 kThriftCacheNoCache = "nocache"
@@ -154,7 +157,8 @@ withCurrentRepoMapping env0 fn = do
 -- TODO: snapshot the env, rather than passing in the mutable fields
 --
 glassHandler :: Glass.Env -> GlassServiceCommand r -> IO r
-glassHandler env0 cmd = withCurrentRepoMapping env0 $ \env -> case cmd of
+glassHandler env0 cmd = withCurrentRepoMapping env0 $ \env ->
+  traceMsg (tracer env) (TraceCommand cmd) $ case cmd of
   SuperFacebookService r -> fb303Handler (Glass.fb303 env) r
 
   -- Listing symbols in files

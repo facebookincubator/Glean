@@ -47,5 +47,6 @@ withTestEnvScm backend scm f =
         , gleanDB = Nothing
         , repoMapping = fixedRepoMapping
         , sourceControl = scm
+        , tracer = mempty
         , ..
         }

@@ -30,17 +30,19 @@ import Glean.Glass.Types (
       Path,
       RepoName(..),
       Path (..) )
+import Glean.Glass.Tracing (GlassTracer)
 
 class SnapshotBackend backend where
   getSnapshot
-    :: backend
+    :: GlassTracer
+    -> backend
     -> RepoName
     -> Path
     -> Maybe Revision
     -> IO (Either SnapshotStatus Types.DocumentSymbolListXResult)
 
 instance SnapshotBackend (Some SnapshotBackend) where
-  getSnapshot (Some backend) = getSnapshot backend
+  getSnapshot t (Some backend) = getSnapshot t backend
 
 data SnapshotStatus
   = Unrequested
@@ -64,4 +66,4 @@ snapshotBackendParser = Some NilSnapshotBackend <$ (option auto (mconcat
 data NilSnapshotBackend = NilSnapshotBackend
 
 instance SnapshotBackend NilSnapshotBackend where
-  getSnapshot _ _ _ _ = return $ Left Unrequested
+  getSnapshot _ _ _ _ _ = return $ Left Unrequested
