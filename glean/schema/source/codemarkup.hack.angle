@@ -321,6 +321,7 @@ predicate HackContainsParentEntity :
     )
 
 # parent contains child
+# Enums inherits from HH\builtinEnum
 predicate HackContainsChildEntity :
   {
     parent: code.hack.Entity,
@@ -364,8 +365,15 @@ predicate HackExtendsChildEntity :
   ) |
   (
     hack.MethodOverridden{base=P, derived=C};
-    {method=P}=Parent;
-    {method=C}=Child
+    { method = P } = Parent;
+    { method = C } = Child
+  ) |
+  ( { container =
+      { class_ =
+          { name = { name = "BuiltinEnum",  namespace_ = { just = { name = "HH" } } } }
+      }
+    } = Parent;
+    { container = { enum_ = _ } } = Child
   )
 
 # child extends parent
@@ -382,7 +390,25 @@ predicate HackExtendsParentEntity :
       hack.MethodOverrides { derived=C, base=P };
       { method = C } = Child;
       { method = P } = Parent
-    )
+    ) | (
+      { container = { enum_ = _ } } = Child;
+      { container =
+        { class_ =
+            { name = { name = "BuiltinEnum",  namespace_ = { just = { name = "HH" } } } }
+        }
+      } = Parent
+  )
+
+# All method in HH\builtinEnum which are inherited by enum types
+predicate HackEnumInheritedMembers :
+{
+  member_ : hack.MethodDeclaration
+} { member_ = Md } where
+  hack.ClassDefinition {
+    declaration = { name = { name = "BuiltinEnum",  namespace_ = {just = { name = "HH" } } } },
+    members = Ms
+  };
+  { method = Md } = Ms[..]
 
 # Inherited parents but drop those with "HideFromDocs" annotations
 # Used to reduce the search space to "interesting" containers only
