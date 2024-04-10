@@ -764,6 +764,9 @@ predicate EntityComments:
       codemarkup.java.JavaEntityDocumentation { Decl, File, Span };
       nothing = Text
     ) | (
+      { erlang = Decl } = Entity;
+      codemarkup.erlang.ErlangEntityDocumentation { Decl, File, Span, Text}
+    ) | (
       { fbthrift = Decl } = Entity;
       codemarkup.fbthrift.FbthriftEntityDocumentation { Decl, File, Span };
       nothing = Text

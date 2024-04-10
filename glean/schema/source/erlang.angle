@@ -20,6 +20,14 @@ predicate FunctionDeclaration :
     span : src.ByteSpan,
   }
 
+predicate DeclarationComment:
+  {
+    declaration : FunctionDeclaration,
+    file : src.File,
+    span : src.ByteSpan,
+    text : maybe string,
+  }
+
 ## types
 
 type Declaration =

@@ -92,4 +92,15 @@ predicate ErlangEntityInfo:
   { E, { kind = K, isAbstract = false } } where
   ErlangEntityKind { E, K }
 
+  predicate ErlangEntityDocumentation :
+  {
+    entity : code.erlang.Entity,
+    file : src.File,
+    span : src.ByteSpan,
+    text : maybe string,
+  }
+  { Entity, File, Span, Text } where
+  { decl = Decl } = Entity;
+  erlang.DeclarationComment { Decl1, File, Span, Text };
+  erlang.Declaration { func = Decl1 } = Decl
 }
