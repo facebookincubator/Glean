@@ -21,7 +21,7 @@
                   }
                 }
               },
-              "type": { "key": "Bar<N1::Foo>" },
+              "type": { "key": "Bar<Foo>" },
               "kind": { "local": { "kind": 0, "attribute": 0 } },
               "source": {
                 "file": { "key": "test.cpp" },
@@ -72,7 +72,7 @@
                   }
                 }
               },
-              "type": { "key": "N1::Bar<N1::Foo>" },
+              "type": { "key": "N1::Bar<Foo>" },
               "kind": { "local": { "kind": 0, "attribute": 0 } },
               "source": {
                 "file": { "key": "test.cpp" },
@@ -123,7 +123,7 @@
                   }
                 }
               },
-              "type": { "key": "Bar<N1::Foo>" },
+              "type": { "key": "Bar<Foo>" },
               "kind": { "local": { "kind": 0, "attribute": 0 } },
               "source": {
                 "file": { "key": "test.cpp" },
