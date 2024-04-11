@@ -157,9 +157,9 @@ runRepoFile
   -> RequestOptions
   -> IO t
 runRepoFile sym fn env@Glass.Env{..} req opts =
-  withRepoFile sym env opts (req, opts) repo file $ \dbs dbInfo mlang ->
+  withRepoFile sym env opts (req, opts) repo file $ \gleanDBs dbInfo mlang ->
       fn sourceControl (Glass.repoMapping env) dbInfo req opts
-         (GleanBackend gleanBackend dbs)
+         GleanBackend{..}
          snapshotBackend
          mlang
   where
@@ -173,11 +173,11 @@ documentSymbolListX
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> IO DocumentSymbolListXResult
-documentSymbolListX env r opts =
+documentSymbolListX env@Glass.Env{tracer} r opts =
   fst3 <$>
     runRepoFile
       "documentSymbolListX"
-      (fetchSymbolsAndAttributes (tracer env))
+      (fetchSymbolsAndAttributes tracer)
       env r opts
 
 -- | Same as documentSymbolList() but construct a line-indexed map for easy
@@ -187,11 +187,11 @@ documentSymbolIndex
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> IO DocumentSymbolIndex
-documentSymbolIndex env r opts =
+documentSymbolIndex env@Glass.Env{tracer} r opts =
   fst3 <$>
     runRepoFile
       "documentSymbolIndex"
-      (fetchDocumentSymbolIndex (tracer env))
+      (fetchDocumentSymbolIndex tracer)
       env r opts
 
 -- | Symbol-based find-refernces.
@@ -202,9 +202,9 @@ findReferences
   -> IO [Location]
 findReferences env@Glass.Env{..} sym opts@RequestOptions{..} =
   withSymbol "findReferences" env opts sym $
-    \dbs _dbInfo (repo, lang, toks) ->
+    \gleanDBs _dbInfo (repo, lang, toks) ->
       fetchSymbolReferences repo lang toks limit
-        (GleanBackend gleanBackend dbs)
+        GleanBackend{..}
   where
     limit = fmap fromIntegral requestOptions_limit
 
@@ -216,9 +216,9 @@ findReferenceRanges
   -> IO [LocationRange]
 findReferenceRanges env@Glass.Env{..} sym opts@RequestOptions{..} =
   withSymbol "findReferenceRanges" env opts sym
-    $ \db _dbInfo (repo, lang, toks) ->
+    $ \gleanDBs _dbInfo (repo, lang, toks) ->
       fetchSymbolReferenceRanges repo lang toks limit
-        (GleanBackend gleanBackend db)
+        GleanBackend{..}
   where
     limit = fmap fromIntegral requestOptions_limit
 
@@ -231,8 +231,8 @@ resolveSymbolRange
   -> IO LocationRange
 resolveSymbolRange env@Glass.Env{..} sym opts = do
   withSymbol "resolveSymbolRange" env opts sym
-    $ \db _dbInfo (repo, lang, toks) ->
-      findSymbolLocationRange (GleanBackend gleanBackend db) repo lang toks
+    $ \gleanDBs _dbInfo (repo, lang, toks) ->
+      findSymbolLocationRange GleanBackend{..} repo lang toks
 
 -- | Describe characteristics of a symbol
 describeSymbol
@@ -1208,7 +1208,7 @@ getSymbolAttributes
 getSymbolAttributes scm repoMapping dbInfo repo opts repofile mlimit
     be@GleanBackend{..} = do
   mAttrDBs <- forM (map fst $ toList gleanDBs) $
-    getLatestAttrDB scm repoMapping dbInfo repo opts
+    getLatestAttrDB tracer scm repoMapping dbInfo repo opts
   attrs <- backendRunHaxl be $ do
     forM (catMaybes mAttrDBs) $
       \(attrDB, attr@(GleanDBAttrName _ attrKey){- existential key -}) ->

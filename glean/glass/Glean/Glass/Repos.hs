@@ -76,6 +76,7 @@ import Glean.Glass.SymbolId ( toShortCode )
 import Glean.Glass.Types
 import qualified Glean.Glass.RepoMapping as Mapping -- site-specific
 import Glean.Repo (LatestRepos)
+import Glean.Glass.Tracing (GlassTracer, traceSpan)
 
 -- | mapping from Glean DB to info about the scm repositories it covers
 type ScmRevisions = HashMap Glean.Repo (HashMap RepoName ScmRevisionInfo)
@@ -453,17 +454,18 @@ data ChooseGleanDBs
 
 -- | Choose DBs for the given DB names and ChooseGleanDBs spec
 chooseGleanDBs
-  :: Some SourceControl
+  :: GlassTracer
+  -> Some SourceControl
   -> GleanDBInfo
   -> ChooseGleanDBs
   -> [GleanDBName]
   -> IO [(GleanDBName, Glean.Repo)]
-chooseGleanDBs _ dbInfo ChooseLatest repoNames =
+chooseGleanDBs _ _ dbInfo ChooseLatest repoNames =
   return $ catMaybes
     [ (dbName,) <$> Map.lookup name (Glean.latestRepos (latestRepos dbInfo))
     | dbName@(GleanDBName name) <- repoNames
     ]
-chooseGleanDBs _ dbInfo (ChooseExactOrLatest rev) repoNames =
+chooseGleanDBs _ _ dbInfo (ChooseExactOrLatest rev) repoNames =
   return $ catMaybes
     [ (dbName,) <$> (dbForRevision <|> latestDb)
     | dbName@(GleanDBName name) <- repoNames
@@ -473,10 +475,11 @@ chooseGleanDBs _ dbInfo (ChooseExactOrLatest rev) repoNames =
           HashMap.lookup dbName (dbByRevision dbInfo) >>= \(byrev, _) ->
           HashMap.lookup rev byrev
     ]
-chooseGleanDBs scm dbInfo (ChooseNearest repo rev) repoNames = do
-  maybeGen <- getGeneration scm repo rev
+chooseGleanDBs tracer scm dbInfo (ChooseNearest repo rev) repoNames = do
+  maybeGen <- traceSpan tracer "getGeneration" $ getGeneration scm repo rev
   case maybeGen of
-    Nothing -> chooseGleanDBs scm dbInfo (ChooseExactOrLatest rev) repoNames
+    Nothing ->
+      chooseGleanDBs tracer scm dbInfo (ChooseExactOrLatest rev) repoNames
     Just (ScmGeneration gen) -> do
       return $ catMaybes
         [ (dbName,) <$> (dbForRevision <|> latestDb)

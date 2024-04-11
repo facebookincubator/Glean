@@ -43,14 +43,16 @@ glassTraceEvent (TraceCommand cmd) = case cmd of
     , json $ pairs $
        "filepath" .= documentSymbolsRequest_filepath <>
        "repository" .= documentSymbolsRequest_repository <>
-       "revision" .= requestOptions_revision opts
+       "revision" .= requestOptions_revision opts <>
+       "exact" .= requestOptions_exact_revision opts
     )
   Glass.DocumentSymbolIndex DocumentSymbolsRequest{..} opts ->
     ("DocumentSymbolIndex"
     , json $ pairs $
        "filepath" .= documentSymbolsRequest_filepath <>
        "repository" .= documentSymbolsRequest_repository <>
-       "revision" .= requestOptions_revision opts
+       "revision" .= requestOptions_revision opts <>
+       "exact" .= requestOptions_exact_revision opts
     )
   Glass.FindReferences r opts ->
     ( "FindReferences" , json $ toEncoding r)
