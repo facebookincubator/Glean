@@ -379,7 +379,6 @@ const char *glean_diff(
   folly::Future<folly::Unit> read_db = folly::via(executor, [&](){
     std::atomic<int> next_batch = 0;
     std::list<folly::Future<Group>> read_queue {};
-    bool finished_reading = false;
 
     for (auto i = 0; i < parallel_reads; i++) {
       read_queue.push_back(folly::via(executor, [&](){

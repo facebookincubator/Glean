@@ -36,7 +36,6 @@ struct Arbitrary<Substitution> {
 template <>
 struct Arbitrary<Intervals> {
   static Gen<Intervals> arbitrary() {
-    const auto l = Id::lowest().toWord();
     return gen::mapcat(
         gen::arbitrary<Substitution>(),
         [](const Substitution& subst) -> Gen<Intervals> {
