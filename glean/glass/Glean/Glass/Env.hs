@@ -14,6 +14,7 @@ module Glean.Glass.Env
     setSnapshotBackend,
     setSourceControl,
     setTracer,
+    updateWelcomeMessage,
 
     -- * Session resources
     Env(..),
@@ -54,6 +55,7 @@ data Config = Config
   , snapshotBackend :: EventBaseDataplane -> Some SnapshotBackend
   , sourceControl :: EventBaseDataplane -> Some SourceControl
   , tracer :: GlassTracer
+  , welcomeMessage :: EventBaseDataplane -> Config -> IO Text
   }
 
 setSnapshotBackend
@@ -69,6 +71,14 @@ setSourceControl sourceControl config =
 
 setTracer :: GlassTracer -> Config -> Config
 setTracer tracer config = config{ tracer = tracer }
+
+updateWelcomeMessage
+  :: ( (EventBaseDataplane -> Config -> IO Text)
+      -> EventBaseDataplane -> Config -> IO Text)
+  -> Config
+  -> Config
+updateWelcomeMessage f config =
+  config{ welcomeMessage = f (welcomeMessage config)}
 
 -- | Read-only, scoped, dynamic resources.
 data Env = Env

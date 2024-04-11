@@ -12,11 +12,14 @@ module Glean.Glass.Config
     defaultPort,
     defaultServiceName,
     defaultRefreshFreq,
-    defaultListDatabasesRetry
+    defaultListDatabasesRetry,
+    defaultWelcomeMessage
   ) where
 
 import Data.Text (Text)
 import Glean.Util.Time
+import Glean.Glass.Env
+import Util.Text (textShow)
 
 defaultPort :: Int
 defaultPort = 26073
@@ -32,3 +35,10 @@ defaultRefreshFreq = minutes 5
 
 defaultListDatabasesRetry :: Int
 defaultListDatabasesRetry = 5
+
+defaultWelcomeMessage :: Config -> Text
+defaultWelcomeMessage Config{..} = mconcat
+          [ "glass"
+          , ": port " <> textShow listenPort
+          , ", config " <> configKey
+          ]

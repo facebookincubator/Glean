@@ -24,6 +24,7 @@ import qualified Glean.Glass.Env as Glass
 import qualified Glean.Glass.Config as Glass
 import Glean.Glass.SnapshotBackend
 import Glean.Glass.SourceControl
+import Glean.Glass.Config (defaultWelcomeMessage)
 
 options :: Parser (Glass.Config -> Glass.Config) -> ParserInfo Glass.Config
 options mod = info (helper <*> mod <*> configParser) fullDesc
@@ -39,6 +40,7 @@ configParser = do
   snapshotBackend <- pure (const $ Some NilSnapshotBackend)
   sourceControl <- pure (const (Some NilSourceControl))
   tracer <- pure mempty
+  welcomeMessage <- pure (pure (pure . defaultWelcomeMessage))
   return Glass.Config{configKey = Glass.defaultConfigKey, ..}
 
 portParser :: Parser Int

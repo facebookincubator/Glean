@@ -27,12 +27,10 @@ import qualified Thrift.Server.HTTP as Thrift
 #endif
 import Util.EventBase ( withEventBaseDataplane )
 import Util.Log.Text ( logInfo )
-import Util.Text ( textShow )
 import Logger.IO (withLogger)
 
 import Control.Exception (SomeException, fromException)
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Data.Text.Encoding (encodeUtf8)
 import Options.Applicative (Parser)
 
@@ -117,9 +115,9 @@ indexBackend b = Glass.IndexBackend $ case backendKind b of
 
 -- | Kick off the server
 runGlass :: Server
-runGlass res@Glass.Env{fb303} conf@Glass.Config{..} = do
+runGlass res@Glass.Env{fb303, evp} conf@Glass.Config{..} = do
 
-  logInfo =<< welcomeMessage conf
+  logInfo =<< welcomeMessage evp conf
 
   let options = Thrift.defaultOptions
         { Thrift.desiredPort = Just listenPort
@@ -139,14 +137,6 @@ assignHeaders _ (Left e) | isRevisionNotAvailableException e =
       = True
     isExactRevisionNotAvailable _ = False
 assignHeaders _ _ = []
-
-welcomeMessage :: Glass.Config -> IO Text
-welcomeMessage Glass.Config{..} = do
-  return $ Text.concat
-    [ "glass"
-    , ": port " <> textShow listenPort
-    , ", config " <> configKey
-    ]
 
 -- | Perform an operation with the latest RepoMapping
 withCurrentRepoMapping :: Glass.Env -> (Glass.Env -> IO a) -> IO a
