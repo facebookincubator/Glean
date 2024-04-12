@@ -234,7 +234,6 @@ FOLLY_NOINLINE void completeOwnership(
 
   // Iterate over facts backwards - this ensures that we get all dependencies.
   const auto min_id = lookup.startingId();
-  const auto max_id = lookup.firstFreeId();
   const auto owner = [&](Id id) -> Uset*& {
     if (id < min_id) {
       return sparse[id.toWord()];
