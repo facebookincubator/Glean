@@ -870,14 +870,14 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   template<typename Memo, typename Decl>
   void visitDeclaration(Memo& memo, const Decl *decl) {
-    if (auto cdecl = memo(decl)) {
-      decl = cdecl->key;
+    if (auto mdecl = memo(decl)) {
+      decl = mdecl->key;
       if (DeclTraits::isDefinition(decl)) {
-        cdecl->define(*this, decl);
+        mdecl->define(*this, decl);
       }
-      auto same = representative(memo, decl, cdecl.value());
+      auto same = representative(memo, decl, mdecl.value());
       if (same) {
-        const auto this_decl = cdecl->declaration();
+        const auto this_decl = mdecl->declaration();
         const auto other_decl = same->declaration();
         if (this_decl != other_decl) {
           db.fact<Cxx::Same>(this_decl, other_decl);
