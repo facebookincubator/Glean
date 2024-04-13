@@ -26,7 +26,6 @@ Inventory::Inventory() : first_id(Pid::lowest())
 {}
 
 Inventory::Inventory(std::vector<Predicate> ps) {
-  size_t n;
   first_id = Pid::invalid();
   auto last_id = Pid::lowest();
   for (const auto& p : ps) {
