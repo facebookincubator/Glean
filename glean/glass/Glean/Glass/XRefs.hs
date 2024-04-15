@@ -12,21 +12,30 @@ module Glean.Glass.XRefs
  (
     GenXRef(..),
     XRef,
+    resolveEntitiesRange,
    fetchCxxIdlXRefs
   ) where
 
 import Data.Map.Strict ( Map )
 import qualified Data.Map as Map
-import Data.Bifunctor ( bimap )
+import Data.Bifunctor ( bimap, Bifunctor (first) )
+import Data.List ( foldl' )
+import Data.List.NonEmpty
 
 import qualified Glean
 import Glean.Angle
+import Glean.Util.ToAngle ( ToAngleFull(toAngleFull), Normalize(normalize) )
 import Glean.Haxl.Repos as Glean
+import Glean.Glass.Range ( rangeSpanToLocationRange )
+import Glean.Glass.Utils
+import Glean.Glass.Types ( LocationRange, RepoName(..) )
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.CodemarkupCxx.Types as Code
-import Glean.Glass.Utils
+import qualified Glean.Schema.Codemarkup.Types as Code
+import qualified Glean.Schema.Src.Types as Src
+import Data.Maybe (catMaybes)
 
 type XRef = (Code.XRefLocation, Code.Entity)
 type IdlXRef = (Code.RangeSpan, Code.IdlEntity)
@@ -35,7 +44,6 @@ data GenXRef = PlainXRef XRef | IdlXRef IdlXRef
 type EntityIdlMap = Map Code.Entity Code.IdlEntity
 
 -- | extract idl xrefs from the regular ones
--- simply ignore idl xrefs which don't have an entity.
 extractIdlXRefs
   :: EntityIdlMap -> [(Code.XRefLocation, Code.Entity)] -> [GenXRef]
 extractIdlXRefs entityIdlMap xRefs =
@@ -80,3 +88,61 @@ fetchCxxIdlXRefs mlimit xrefId =
   do
     (map, trunc) <- entityIdlCxxMap mlimit xrefId
     return $ Data.Bifunctor.bimap (extractIdlXRefs map)(trunc ||)
+
+fetchEntityLocation
+ :: [Code.Entity]
+ -> Glean.RepoHaxl u w [(Code.Entity, Code.Location)]
+fetchEntityLocation ents = do
+  -- careful to not rely on fact ids in this query
+  let angleEntities = toAngleFull <$> ents
+  case angleEntities of
+    [] -> return []
+    hd : tl ->
+      fst <$> searchRecursiveWithLimit Nothing (declarationLocation (hd :| tl))
+  where
+    declarationLocation
+      :: NonEmpty (Angle Code.Entity)
+      -> Angle (Code.Entity, Code.Location)
+    declarationLocation (hd :| tl) =
+      let or_ents = foldl' (.|) hd tl in
+      vars $ \ent loc ->
+        tuple (ent, loc) `where_` [
+          or_ents .= ent,
+          wild .= predicate @Code.EntityLocation (
+            rec $
+              field @"entity" ent $
+              field @"location" loc
+            end)
+          ]
+
+-- | Annotate a list of items keyed by an entity, with the
+--  LocationRange/File for that entity. This can't be done
+--  in Codemarkup for xlang entities as the entity facts
+--  and ent EntityLocation facts may live in different dbs.
+resolveEntitiesRange
+ :: RepoName
+ -> (a -> Code.Entity)
+ -> [a]
+ -> Glean.RepoHaxl u w [(a, (Src.File, LocationRange))]
+resolveEntitiesRange repo key xrefs = do
+    let entsToResolve = key <$> xrefs
+    entsRange <- entityLocRange repo entsToResolve
+    -- normalize fact ids so we can compare entities from
+    -- different dbs
+    let normalizedEnts = first normalize <$> entsRange
+        entityLocRangeMap = Map.fromList normalizedEnts
+    return $ catMaybes $ annotate entityLocRangeMap <$> xrefs
+    where
+      annotate map item =
+        let ent = key item in
+        (item,) <$> Map.lookup (normalize ent) map
+
+      -- | fetch idl entity location and compute location range
+      entityLocRange reponame ents =
+          fetchEntityLocation ents >>= mapM convertSpan
+        where
+          convertSpan (ent, loc) = do
+            let file = Code.location_file loc
+            range <- rangeSpanToLocationRange reponame file
+              (Code.location_location loc)
+            return (ent, (file, range))

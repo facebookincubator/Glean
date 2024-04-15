@@ -22,7 +22,7 @@
             }
         },
         "revision": "testhash",
-        "size": 214,
+        "size": 212,
         "symbols": {
             "104": [
                 {
@@ -4591,45 +4591,6 @@
                         },
                         "repository": "test"
                     }
-                },
-                {
-                    "attributes": {
-                        "crossLanguage": {
-                            "aString": "thrift"
-                        },
-                        "symbolIdl": {
-                            "aString": "thrift"
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 9
-                        },
-                        "symbolName": {
-                            "aString": "thrift1"
-                        },
-                        "symbolParent": {
-                            "aString": "MyRoot"
-                        },
-                        "symbolSignature": {
-                            "aString": "function thrift/compiler/test/fixtures/inheritance/src/module::MyRoot::thrift1"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 10,
-                        "lineBegin": 219,
-                        "lineEnd": 219
-                    },
-                    "sym": "test/thrift/thrift/compiler/test/fixtures/inheritance/src/module.thrift/MyRoot/thrift1",
-                    "target": {
-                        "filepath": "thrift/compiler/test/fixtures/inheritance/src/module.thrift",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
-                            "lineBegin": 1,
-                            "lineEnd": 1
-                        },
-                        "repository": "test"
-                    }
                 }
             ],
             "220": [
@@ -4668,45 +4629,6 @@
                             "columnEnd": 13,
                             "lineBegin": 14,
                             "lineEnd": 14
-                        },
-                        "repository": "test"
-                    }
-                },
-                {
-                    "attributes": {
-                        "crossLanguage": {
-                            "aString": "thrift"
-                        },
-                        "symbolIdl": {
-                            "aString": "thrift"
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 9
-                        },
-                        "symbolName": {
-                            "aString": "thrift2"
-                        },
-                        "symbolParent": {
-                            "aString": "MyRoot"
-                        },
-                        "symbolSignature": {
-                            "aString": "function thrift/compiler/test/fixtures/inheritance/src/module::MyRoot::thrift2"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 10,
-                        "lineBegin": 220,
-                        "lineEnd": 220
-                    },
-                    "sym": "test/thrift/thrift/compiler/test/fixtures/inheritance/src/module.thrift/MyRoot/thrift2",
-                    "target": {
-                        "filepath": "thrift/compiler/test/fixtures/inheritance/src/module.thrift",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
-                            "lineBegin": 1,
-                            "lineEnd": 1
                         },
                         "repository": "test"
                     }
