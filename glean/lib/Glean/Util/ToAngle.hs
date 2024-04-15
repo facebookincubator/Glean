@@ -9,11 +9,14 @@
 {-# LANGUAGE TypeApplications #-}
 module Glean.Util.ToAngle
   ( ToAngle(..)
+  , ToAngleFull(..)
+  , Normalize(..)
   ) where
 
 import Glean
 import Glean.Angle
 
+import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Erlang.Types as Erlang
 import qualified Glean.Schema.Flow.Types as Flow
@@ -26,21 +29,38 @@ import qualified Glean.Schema.JavaAlpha.Types as Java
 import qualified Glean.Schema.KotlinAlpha.Types as Kotlin
 import qualified Glean.Schema.Csharp.Types as CSharp
 
+import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.CodePp.Types as Pp
 import qualified Glean.Schema.CodeBuck.Types as Buck
 import qualified Glean.Schema.CodeFlow.Types as Flow
+import qualified Glean.Schema.CodeFbthrift.Types as Fbthrift
 import qualified Glean.Schema.CodeHs.Types as Hs
 
 -- | Convert a value to a query for that value. Useful when we want to
 -- use a result we got back from a query in another query.
 --
--- Note that the query will be shallow and will use fact IDs instead
+-- toAngle returns a shallow query and will use fact IDs instead
 -- of matching by structure, so the resulting query only works on the
 -- same DB that the value was obtained from.
+--
+-- toAngleFull returns deep queries, provided the parameter is fully
+-- resolved. Useful for querying a different db from the one the value
+-- was obtained.
+--
+-- normalize returns a canonical representation of Glean fact where
+-- identifiers are replaced with 0. Useful for comparing facts generated
+-- from different dbs, as long as the facts are fully computed (all keys
+-- are present).
 
 class ToAngle a where
   toAngle :: a -> Angle a
+
+class ToAngleFull a where
+  toAngleFull :: a -> Angle a
+
+class Normalize a where
+  normalize :: a -> a
 
 -- | Generically get an Angle key query
 mkKey :: Glean.Predicate p => p -> Angle (Glean.KeyType p)
@@ -180,7 +200,87 @@ instance ToAngle Py.Declaration where
   toAngle (Py.Declaration_imp x) = alt @"imp" (mkKey x)
   toAngle Py.Declaration_EMPTY = error "unknown Declaration"
 
+-- Src
+
+instance Normalize Src.File where
+  normalize (Src.File _ (Just k)) = Src.File 0 (Just k)
+  normalize  _ = error "Not fully resolved"
+
+instance ToAngleFull Src.File where
+  toAngleFull (Src.File _ (Just k)) = predicate $ string k
+  toAngleFull  _ = error "Not fully resolved"
+
 -- Fbthrift
+
+instance Normalize Fbthrift.File where
+  normalize (Fbthrift.File _ (Just k)) = Fbthrift.File 0 (Just (normalize k))
+  normalize  _ = error "Not Fully resolved"
+
+instance Normalize Fbthrift.QualName_key where
+  normalize
+    (Fbthrift.QualName_key (Fbthrift.File _ (Just file))
+    (Fbthrift.Identifier _ (Just identifier))) =
+    Fbthrift.QualName_key (Fbthrift.File 0 (Just (normalize file)))
+    (Fbthrift.Identifier 0 (Just identifier))
+  normalize  _ = error "Not Fully resolved"
+
+instance Normalize Fbthrift.ServiceName_key where
+  normalize (Fbthrift.ServiceName_key (Fbthrift.QualName _ (Just qualname)))
+    =
+    Fbthrift.ServiceName_key (Fbthrift.QualName 0 (Just (normalize qualname)))
+
+  normalize  _ = error "Not Fully resolved"
+
+instance Normalize Fbthrift.FunctionName_key where
+  normalize
+    (Fbthrift.FunctionName_key (Fbthrift.ServiceName _ (Just service_))
+      (Fbthrift.Identifier _ (Just identifier))) =
+    Fbthrift.FunctionName_key (Fbthrift.ServiceName 0
+      (Just (normalize service_))) (Fbthrift.Identifier 0 (Just identifier))
+
+  normalize  _ = error "Not Fully resolved"
+
+instance Normalize Fbthrift.XRefTarget where
+  normalize
+    (Fbthrift.XRefTarget_function_
+      (Fbthrift.FunctionName _ (Just x))) =
+    Fbthrift.XRefTarget_function_ (Fbthrift.FunctionName 0 (Just (normalize x)))
+  normalize _ = error "unknown Entity"
+
+instance ToAngleFull Fbthrift.File where
+  toAngleFull (Fbthrift.File _ (Just k)) = predicate $ toAngleFull k
+  toAngleFull  _ = error "Not Fully resolved"
+
+instance ToAngleFull Fbthrift.QualName_key where
+  toAngleFull
+    (Fbthrift.QualName_key (Fbthrift.File _ (Just file))
+    (Fbthrift.Identifier _ (Just identifier))) = rec $
+        field @"file" (sig (toAngleFull file)) $
+        field @"name" (string identifier)
+    end
+  toAngleFull  _ = error "Not Fully resolved"
+
+instance ToAngleFull Fbthrift.ServiceName_key where
+  toAngleFull (Fbthrift.ServiceName_key (Fbthrift.QualName _ (Just qualname)))
+    = rec $
+        field @"name" (toAngleFull qualname)
+    end
+  toAngleFull  _ = error "Not Fully resolved"
+
+instance ToAngleFull Fbthrift.FunctionName_key where
+  toAngleFull
+    (Fbthrift.FunctionName_key (Fbthrift.ServiceName _ (Just service_))
+    (Fbthrift.Identifier _ (Just identifier))) = rec $
+      field @"service_" (toAngleFull service_) $
+      field @"name" (string identifier)
+    end
+  toAngleFull  _ = error "Not Fully resolved"
+
+instance ToAngleFull Fbthrift.XRefTarget where
+  toAngleFull
+    (Fbthrift.XRefTarget_function_ (Fbthrift.FunctionName _ (Just x))) =
+    alt @"function_" (toAngleFull x)
+  toAngleFull _ = error "unknown Entity"
 
 instance ToAngle Fbthrift.XRefTarget where
   toAngle (Fbthrift.XRefTarget_include_ x) = alt @"include_" (mkKey x)
@@ -252,3 +352,17 @@ instance ToAngle Lsif.SomeEntity where
 instance ToAngle Scip.SomeEntity where
   toAngle (Scip.SomeEntity defn) = rec $ field @"defn" (mkKey defn) end
     -- note: singleton type, not a sum.
+
+-- Codemarkup
+
+instance ToAngleFull Code.Entity where
+    toAngleFull entity = case entity of
+      Code.Entity_fbthrift (Fbthrift.Entity_decl x) ->
+        alt @"fbthrift" (alt @"decl" (toAngleFull x))
+      _ -> error "Only thrift entities are expected"
+
+instance Normalize Code.Entity where
+    normalize entity = case entity of
+      Code.Entity_fbthrift (Fbthrift.Entity_decl x) ->
+        Code.Entity_fbthrift (Fbthrift.Entity_decl (normalize x))
+      _ -> error "Only thrift entities are expected"
