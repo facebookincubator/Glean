@@ -53,7 +53,7 @@ data Config = Config
       -- ^ whether to trust listDatabases and how often to wait to retry N times
   , numWorkerThreads :: Maybe Int
   , snapshotBackend :: EventBaseDataplane -> Some SnapshotBackend
-  , sourceControl :: EventBaseDataplane -> Some SourceControl
+  , sourceControl :: EventBaseDataplane -> IO (Some SourceControl)
   , tracer :: GlassTracer
   , welcomeMessage :: EventBaseDataplane -> Config -> IO Text
   }
@@ -64,7 +64,7 @@ setSnapshotBackend snapshotBackend config =
   config { snapshotBackend = snapshotBackend }
 
 setSourceControl
-  :: (EventBaseDataplane -> Some SourceControl)
+  :: (EventBaseDataplane -> IO (Some SourceControl))
   -> Config -> Config
 setSourceControl sourceControl config =
   config { sourceControl = sourceControl }

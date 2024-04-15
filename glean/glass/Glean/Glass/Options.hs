@@ -38,7 +38,7 @@ configParser = do
   listDatabasesRetry <- listDatabasesRetryParser
   numWorkerThreads <- workerThreadsParser
   snapshotBackend <- pure (const $ Some NilSnapshotBackend)
-  sourceControl <- pure (const (Some NilSourceControl))
+  sourceControl <- pure (const (return (Some NilSourceControl)))
   tracer <- pure mempty
   welcomeMessage <- pure (pure (pure . defaultWelcomeMessage))
   return Glass.Config{configKey = Glass.defaultConfigKey, ..}
