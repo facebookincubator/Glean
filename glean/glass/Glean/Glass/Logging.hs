@@ -60,11 +60,22 @@ class LogRequest a where
   logRequest :: a -> GleanGlassLogger
 
 instance LogRequest (DocumentSymbolsRequest, RequestOptions)  where
-  logRequest (d, RequestOptions{..}) = logRequest d <> options
-    where
-    options = case requestOptions_revision of
-      Nothing -> mempty
-      Just revision -> Logger.setRevision $ unRevision revision
+  logRequest (d, r) = logRequest d <> logRequest r
+
+instance LogRequest a => LogRequest (Maybe a) where
+  logRequest = maybe mempty logRequest
+
+instance LogRequest RequestOptions where
+  logRequest RequestOptions{..} =
+    maybe mempty (Logger.setRevision . unRevision) requestOptions_revision <>
+    maybe mempty (Logger.setLimit . fromIntegral) requestOptions_limit <>
+    Logger.setExactRevision requestOptions_exact_revision <>
+    logRequest requestOptions_feature_flags
+
+instance LogRequest FeatureFlags where
+  logRequest FeatureFlags{..} =
+    maybe mempty Logger.setNearestRevision featureFlags_nearest_revision <>
+    maybe mempty Logger.setIncludeXlangXrefs featureFlags_include_xlang_refs
 
 instance LogRequest DocumentSymbolsRequest where
   logRequest = logDocumentSymbolsRequestSG Logger.setFilepath Logger.setRepo
