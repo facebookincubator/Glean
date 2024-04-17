@@ -24,11 +24,13 @@ import Control.Concurrent.Stream
 import Util.OptParse
 import Thrift.Protocol.Compact
 
+import Glean.Types
 import Glean.RTS.Types
 import Glean.RTS.Foreign.FactSet (FactSet)
 import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.Define (DefineFlags(..), defineBatch)
 import qualified Glean.RTS.Foreign.Inventory as Inventory
+import Glean.RTS.Foreign.Ownership
 
 import GleanCLI.Types
 
@@ -86,7 +88,7 @@ instance Plugin MergeCommand where
       -- whole file.
       writeToFile
         :: IORef [FilePath]
-        -> (Int, Either FilePath FactSet)
+        -> (Int, Either FilePath (FactSet, [FactOwnership]))
         -> IO ()
       writeToFile ref (n, factSet) = do
         let out = mergeOutDir </> show n <.> "bin"
@@ -97,15 +99,18 @@ instance Plugin MergeCommand where
             hPutStrLn stderr $ "Copying " <> file <> " (" <> show size <>
               ") to " <> out
             callProcess "cp" ["--reflink=auto", file, out]
-          Right factSet -> do
-            batch <- serializeCompact <$> FactSet.serialize factSet
+          Right (factSet, ownership) -> do
+            batch0 <- FactSet.serialize factSet
+            let batch = serializeCompact $
+                  batch0 { batch_owned =
+                    ownershipUnits (unionOwnership ownership) }
             hPutStrLn stderr $ "Writing " <> out <>
               " (" <> show (B.length batch) <> ")"
             B.writeFile out batch
 
       merge inventory files write = loop 0 0 Nothing files
         where
-        read :: FilePath -> Int -> FactSet -> IO ()
+        read :: FilePath -> Int -> FactSet -> IO FactOwnership
         read file size factSet = do
           hPutStrLn stderr $ "Reading " <> file <> " (" <> show size <> ")"
           bytes <- B.readFile file
@@ -113,11 +118,12 @@ instance Plugin MergeCommand where
             Left err -> throwIO $ ErrorCall $
               "failed to deserialize " <> file <> ": " <> err
             Right batch -> do
-              _subst <- defineBatch factSet inventory batch
+              subst <- defineBatch factSet inventory batch
                 DefineFlags {
                   trustRefs = True,
                   ignoreRedef = True }
-              return ()
+              return $ substOwnership subst $
+                FactOwnership (batch_owned batch)
 
         loop !_ _ Nothing [] = return ()
         loop !n _ (Just set) [] = write (n, Right set)
@@ -128,12 +134,13 @@ instance Plugin MergeCommand where
               write (n, Left f)
               loop (n+1) currentSize acc files
             else do
-              factSet <- case acc of
-                Nothing -> FactSet.new lowestFid
-                Just factSet -> return factSet
-              read f size factSet
+              (factSet, ownership) <- case acc of
+                Nothing -> (,[]) <$> FactSet.new lowestFid
+                Just facts -> return facts
+              owners <- read f size factSet
               newSize <- factSetSize factSet
+              let facts = (factSet, owners : ownership)
               (n, acc) <- if newSize > mergeFileSize
-                then do write (n, Right factSet); return (n+1, Nothing)
-                else return (n, Just factSet)
+                then do write (n, Right facts); return (n+1, Nothing)
+                else return (n, Just facts)
               loop n newSize acc files
