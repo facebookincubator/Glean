@@ -35,9 +35,10 @@ import qualified Glean.Glass.Env as Glass
 import qualified Glean.Glass.Handler as Handle
 import qualified Glean.Glass.Main as Glass
 import qualified Glean.Glass.Options as Glass
+import Glean.Glass.Tracing (GlassTrace)
 
 data Config = Config
-  { cfgGlass :: Glass.Config
+  { cfgGlass :: Glass.Config GlassTrace
   , cfgSymbol :: Maybe SymbolId
   , cfgFile :: Maybe Text
   , cfgCmd :: Cmd

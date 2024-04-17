@@ -136,7 +136,7 @@ import Glean.Glass.SnapshotBackend
     SnapshotStatus() )
 import qualified Glean.Glass.SnapshotBackend as Snapshot
 import Glean.Glass.SymbolKind (findSymbolKind)
-import Glean.Glass.Env (Env (tracer))
+import Glean.Glass.Env (Env' (tracer))
 import Glean.Glass.Tracing (GlassTracer, traceSpan)
 
 -- | Runner for methods that are keyed by a file path

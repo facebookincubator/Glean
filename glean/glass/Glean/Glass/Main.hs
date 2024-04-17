@@ -16,7 +16,10 @@ module Glean.Glass.Main
   ) where
 
 
-import Control.Trace (traceMsg)
+import Control.Concurrent (myThreadId)
+import Control.Trace (traceMsg, (>$<))
+import Data.Hashable (hash)
+import Data.List (stripPrefix)
 import Facebook.Service ( runFacebookService' )
 import Facebook.Fb303 ( fb303Handler, withFb303 )
 import Thrift.Channel (Header)
@@ -56,30 +59,34 @@ import Glean.Glass.GlassService.Service ( GlassServiceCommand(..) )
 import Glean.Glass.Types
   ( GlassException (GlassException, glassException_reasons),
     GlassExceptionReason (GlassExceptionReason_exactRevisionNotAvailable))
-import Glean.Glass.Env (Env(tracer))
+import Glean.Glass.Env (Env'(tracer), Env)
 import Glean.Glass.Tracer ( isTracingEnabled )
-import Glean.Glass.Tracing (GlassTrace(TraceCommand))
+import Glean.Glass.Tracing
+  (GlassTrace(TraceCommand), GlassTraceWithId (GlassTraceWithId))
 
 kThriftCacheNoCache :: Text
 kThriftCacheNoCache = "nocache"
 
 -- | Ok, go.
-mainWith :: Parser (Glass.Config -> Glass.Config) -> IO ()
+mainWith
+  :: Parser (Glass.Config GlassTraceWithId -> Glass.Config GlassTraceWithId)
+  -> IO ()
 mainWith = withGlass runGlass
 
-type Server = Glass.Env -> Glass.Config -> IO ()
+type Server trace = Glass.Env' trace -> Glass.Config trace -> IO ()
 
 -- | Set up the resources we'll need
-withGlass :: Server -> Parser (Glass.Config -> Glass.Config) -> IO ()
+withGlass
+  :: Server trace -> Parser (Glass.Config trace -> Glass.Config trace) -> IO ()
 withGlass f backendsP =
   withOptions (Glass.options backendsP) $ \config@Glass.Config{..} ->
   withEnv config Nothing $ \env -> f env config
 
 -- | Construct a server environment
 withEnv
-  :: Glass.Config
+  :: Glass.Config trace
   -> Maybe Glean.Repo
-  -> (Glass.Env -> IO a)
+  -> (Glass.Env' trace -> IO a)
   -> IO a
 withEnv Glass.Config{..} gleanDB f =
   withEventBaseDataplane $ \evp ->
@@ -115,7 +122,7 @@ indexBackend b = Glass.IndexBackend $ case backendKind b of
   BackendThrift b -> Just b
 
 -- | Kick off the server
-runGlass :: Server
+runGlass :: Server GlassTraceWithId
 runGlass res@Glass.Env{fb303, evp} conf@Glass.Config{..} = do
 
   logInfo =<< welcomeMessage evp conf
@@ -145,18 +152,30 @@ withCurrentRepoMapping env0 fn = do
   current <- getRepoMapping
   fn (env0 { Glass.repoMapping = current })
 
-withRequestTracing :: Env -> (Env -> IO b) -> IO b
+withRequestTracing :: Env' GlassTraceWithId -> (Env -> IO b) -> IO b
 withRequestTracing env k = do
   enabled <- isTracingEnabled
-  k $ if enabled then env else env { tracer = mempty }
+  if enabled
+    then do
+      -- Fix the trace id for this request traces.
+      -- Since every request is handled by a fresh new thread,
+      -- we reuse thread ids as trace ids
+      tid <- tidToIndex <$> myThreadId
+      k env{tracer = GlassTraceWithId tid >$< tracer env}
+    else k env { tracer = mempty }
+  where
+    tidToIndex tid = case stripPrefix "ThreadId " (show tid) of
+      Just n | [(i, "")] <- reads n -> i
+      _ -> hash tid -- should be unreachable
 
 -- Actual glass service handler, types from glass.thrift
 -- TODO: snapshot the env, rather than passing in the mutable fields
 --
-glassHandler :: Glass.Env -> GlassServiceCommand r -> IO r
+glassHandler :: Glass.Env' GlassTraceWithId -> GlassServiceCommand r -> IO r
 glassHandler env0 cmd =
-  withCurrentRepoMapping env0 $ \env1 ->
-  withRequestTracing env1 $ \env ->
+  withRequestTracing env0 $ \env1 ->
+  withCurrentRepoMapping env1 $ \env ->
+
   traceMsg (tracer env) (TraceCommand cmd) $ case cmd of
   SuperFacebookService r -> fb303Handler (Glass.fb303 env) r
 

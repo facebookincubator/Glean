@@ -36,7 +36,7 @@ defaultRefreshFreq = minutes 5
 defaultListDatabasesRetry :: Int
 defaultListDatabasesRetry = 5
 
-defaultWelcomeMessage :: Config -> Text
+defaultWelcomeMessage :: Config a -> Text
 defaultWelcomeMessage Config{..} = mconcat
           [ "glass"
           , ": port " <> textShow listenPort

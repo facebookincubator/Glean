@@ -17,7 +17,8 @@ module Glean.Glass.Env
     updateWelcomeMessage,
 
     -- * Session resources
-    Env(..),
+    Env,
+    Env'(..),
     IndexBackend(..),
   ) where
 
@@ -39,10 +40,10 @@ import Glean.Glass.Base (RepoMapping)
 import Glean.Glass.Repos (GleanDBInfo)
 import Glean.Glass.SnapshotBackend ( SnapshotBackend(..) )
 import Glean.Glass.SourceControl
-import Glean.Glass.Tracing (GlassTracer)
+import Glean.Glass.Tracing (Tracer, GlassTrace)
 
 -- | Init-time configuration
-data Config = Config
+data Config trace = Config
   { listenPort :: Int
   , configKey :: Text
   , gleanService :: Glean.Service
@@ -54,34 +55,36 @@ data Config = Config
   , numWorkerThreads :: Maybe Int
   , snapshotBackend :: EventBaseDataplane -> Some SnapshotBackend
   , sourceControl :: EventBaseDataplane -> IO (Some SourceControl)
-  , tracer :: GlassTracer
-  , welcomeMessage :: EventBaseDataplane -> Config -> IO Text
+  , tracer :: Tracer trace
+  , welcomeMessage :: forall a. EventBaseDataplane -> Config a -> IO Text
   }
 
 setSnapshotBackend
-  :: (EventBaseDataplane -> Some SnapshotBackend) -> Config -> Config
+  :: (EventBaseDataplane -> Some SnapshotBackend) -> Config a -> Config a
 setSnapshotBackend snapshotBackend config =
   config { snapshotBackend = snapshotBackend }
 
 setSourceControl
   :: (EventBaseDataplane -> IO (Some SourceControl))
-  -> Config -> Config
+  -> Config a -> Config a
 setSourceControl sourceControl config =
   config { sourceControl = sourceControl }
 
-setTracer :: GlassTracer -> Config -> Config
-setTracer tracer config = config{ tracer = tracer }
+setTracer :: Tracer trace -> Config a -> Config trace
+setTracer tracer' Config{..}= Config{ tracer = tracer', .. }
 
 updateWelcomeMessage
-  :: ( (EventBaseDataplane -> Config -> IO Text)
-      -> EventBaseDataplane -> Config -> IO Text)
-  -> Config
-  -> Config
+  :: ( forall a. (EventBaseDataplane -> Config a -> IO Text)
+      -> EventBaseDataplane -> Config a -> IO Text)
+  -> Config a
+  -> Config a
 updateWelcomeMessage f config =
   config{ welcomeMessage = f (welcomeMessage config)}
 
 -- | Read-only, scoped, dynamic resources.
-data Env = Env
+type Env = Env' GlassTrace
+
+data Env' trace = Env
   { evp :: EventBaseDataplane
   , cfgapi :: ConfigAPI
   , logger :: Logger
@@ -93,7 +96,7 @@ data Env = Env
   , gleanDB :: Maybe Glean.Repo -- if provided, use as target Glean DB
   , repoMapping :: RepoMapping
   , sourceControl :: Some SourceControl
-  , tracer :: GlassTracer
+  , tracer :: Tracer trace
   }
 
 -- | A backend to create incremental databases

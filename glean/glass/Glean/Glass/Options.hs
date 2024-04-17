@@ -26,10 +26,11 @@ import Glean.Glass.SnapshotBackend
 import Glean.Glass.SourceControl
 import Glean.Glass.Config (defaultWelcomeMessage)
 
-options :: Parser (Glass.Config -> Glass.Config) -> ParserInfo Glass.Config
+options
+  :: Parser (Glass.Config a -> Glass.Config a) -> ParserInfo (Glass.Config a)
 options mod = info (helper <*> mod <*> configParser) fullDesc
 
-configParser :: Parser Glass.Config
+configParser :: Parser (Glass.Config a)
 configParser = do
   gleanService <- Glean.options
   listenPort <- portParser
@@ -40,8 +41,10 @@ configParser = do
   snapshotBackend <- pure (const $ Some NilSnapshotBackend)
   sourceControl <- pure (const (return (Some NilSourceControl)))
   tracer <- pure mempty
-  welcomeMessage <- pure (pure (pure . defaultWelcomeMessage))
-  return Glass.Config{configKey = Glass.defaultConfigKey, ..}
+  return $ Glass.Config{
+        configKey = Glass.defaultConfigKey,
+        welcomeMessage = pure (pure . defaultWelcomeMessage),
+         ..}
 
 portParser :: Parser Int
 portParser = option auto $ mconcat

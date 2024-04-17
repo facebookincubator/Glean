@@ -9,7 +9,10 @@
 {-# OPTIONS_GHC -Wno-unused-matches #-}
 module Glean.Glass.Tracing
   ( GlassTrace(..)
+  , GlassTraceWithId(..)
   , GlassTracer
+  , TraceId
+  , Tracer
   , traceSpan
   , glassTraceEvent
   ) where
@@ -27,19 +30,29 @@ import Data.Binary.Builder ( toLazyByteString )
 
 type GlassTracer = Tracer GlassTrace
 
-traceSpan :: GlassTracer -> Text -> IO a -> IO a
-traceSpan tracer span = traceMsg tracer (TraceSpan span Nothing)
+type TraceId = Int
+
+data GlassTraceWithId = GlassTraceWithId
+  { traceId :: !TraceId
+  , traceEvent :: !GlassTrace
+  }
 
 data GlassTrace where
   TraceCommand :: forall r . GlassServiceCommand r -> GlassTrace
   TraceSpan :: !Text -> Maybe Text -> GlassTrace
 
-glassTraceEvent :: GlassTrace -> (Text, Maybe Text)
-glassTraceEvent (TraceSpan event args) = (event, args)
-glassTraceEvent (TraceCommand cmd) = case cmd of
-  Glass.SuperFacebookService r -> ("SuperFacebookService", Nothing)
+traceSpan :: GlassTracer -> Text -> IO a -> IO a
+traceSpan tracer span = traceMsg tracer (TraceSpan span Nothing)
+
+{-# INLINE glassTraceEvent #-}
+glassTraceEvent :: GlassTraceWithId -> (Text, Int, Maybe Text)
+glassTraceEvent (GlassTraceWithId tid (TraceSpan event args)) =
+  (event, tid, args)
+glassTraceEvent (GlassTraceWithId tid (TraceCommand cmd)) = case cmd of
+  Glass.SuperFacebookService r -> ("SuperFacebookService", tid, Nothing)
   Glass.DocumentSymbolListX DocumentSymbolsRequest{..} opts ->
     ( "DocumentSymbolListX"
+    , tid
     , json $ pairs $
        "filepath" .= documentSymbolsRequest_filepath <>
        "repository" .= documentSymbolsRequest_repository <>
@@ -48,6 +61,7 @@ glassTraceEvent (TraceCommand cmd) = case cmd of
     )
   Glass.DocumentSymbolIndex DocumentSymbolsRequest{..} opts ->
     ("DocumentSymbolIndex"
+    , tid
     , json $ pairs $
        "filepath" .= documentSymbolsRequest_filepath <>
        "repository" .= documentSymbolsRequest_repository <>
@@ -55,27 +69,27 @@ glassTraceEvent (TraceCommand cmd) = case cmd of
        "exact" .= requestOptions_exact_revision opts
     )
   Glass.FindReferences r opts ->
-    ( "FindReferences" , json $ toEncoding r)
+    ( "FindReferences", tid, json $ toEncoding r)
   Glass.FindReferenceRanges r opts ->
-    ("FindReferenceRanges", json $ toEncoding r)
+    ("FindReferenceRanges", tid, json $ toEncoding r)
   Glass.ResolveSymbolRange r opts ->
-    ("ResolveSymbolRange", json $ toEncoding r)
+    ("ResolveSymbolRange", tid, json $ toEncoding r)
   Glass.DescribeSymbol r opts ->
-    ("DescribeSymbol", json $ toEncoding r)
+    ("DescribeSymbol", tid, json $ toEncoding r)
   Glass.SearchSymbol r opts ->
-    ("SearchSymbol", json $ toEncoding r)
+    ("SearchSymbol", tid, json $ toEncoding r)
   Glass.SearchRelated r opts req ->
-    ("SearchRelated", json $ toEncoding r)
+    ("SearchRelated", tid, json $ toEncoding r)
   Glass.SearchRelatedNeighborhood r opts req ->
-    ("SearchRelatedNeighborhood", json $ toEncoding r)
+    ("SearchRelatedNeighborhood", tid, json $ toEncoding r)
   Glass.SearchBySymbolId r opts ->
-    ("SearchBySymbolId", json $ toEncoding r)
+    ("SearchBySymbolId", tid, json $ toEncoding r)
   Glass.Index r ->
-    ("Index", json $ toEncoding r)
+    ("Index", tid, json $ toEncoding r)
   Glass.FileIncludeLocations r opts ->
-    ("FileIncludeLocations", json $ toEncoding r)
+    ("FileIncludeLocations", tid, json $ toEncoding r)
   Glass.ClangUSRToDefinition r opts ->
-    ("ClangUSRToDefinition", json $ toEncoding r)
+    ("ClangUSRToDefinition", tid, json $ toEncoding r)
 
   where
     json =
