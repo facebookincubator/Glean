@@ -59,9 +59,6 @@ instance ActionLog GleanGlassLogger where
 class LogRequest a where
   logRequest :: a -> GleanGlassLogger
 
-instance LogRequest (DocumentSymbolsRequest, RequestOptions)  where
-  logRequest (d, r) = logRequest d <> logRequest r
-
 instance LogRequest a => LogRequest (Maybe a) where
   logRequest = maybe mempty logRequest
 

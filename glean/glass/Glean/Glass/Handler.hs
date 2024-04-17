@@ -157,7 +157,7 @@ runRepoFile
   -> RequestOptions
   -> IO t
 runRepoFile sym fn env@Glass.Env{..} req opts =
-  withRepoFile sym env opts (req, opts) repo file $ \gleanDBs dbInfo mlang ->
+  withRepoFile sym env opts req repo file $ \gleanDBs dbInfo mlang ->
       fn sourceControl (Glass.repoMapping env) dbInfo req opts
          GleanBackend{..}
          snapshotBackend

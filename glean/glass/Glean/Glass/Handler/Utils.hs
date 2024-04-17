@@ -158,7 +158,7 @@ withGleanDBs
 withGleanDBs method env@Glass.Env{..} opts req repo dbNames fn = do
   dbInfo <- readTVarIO latestGleanRepos
   dbs <- getSpecificGleanDBs tracer sourceControl dbInfo (dbChooser repo opts) dbNames
-  withLog method env req $ \log ->
+  withLog method env opts req $ \log ->
     withLogDB dbs log $
       fn dbs dbInfo
 
@@ -179,7 +179,7 @@ withRequest
 withRequest method env@Glass.Env{..} req opts fn = do
   dbInfo <- readTVarIO latestGleanRepos
   withStrictErrorHandling dbInfo opts $
-    withLog method env req $
+    withLog method env opts req $
       fn dbInfo
 
 -- | Run an action that provides a repo and maybe a language, log it
@@ -268,15 +268,16 @@ withLog
   :: (LogRequest req, LogError req, LogResult res)
   => Text
   -> Glass.Env
+  -> RequestOptions
   -> req
   -> (GleanGlassLogger -> IO (res, GleanGlassLogger, Maybe ErrorLogger))
   -> IO (res, Maybe ErrorLogger)
-withLog cmd env req action = do
+withLog cmd env opts req action = do
   (res, _) <- loggingAction
     (runLog env cmd)
     logResult
     (do
-      (res, log, merr) <- action $ logRequest req
+      (res, log, merr) <- action $ logRequest req <> logRequest opts
       forM_ merr $ \e -> runErrorLog env cmd (e <> logError req)
       return ((res, merr), log))
   return res
