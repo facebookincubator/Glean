@@ -52,7 +52,7 @@ data SnapshotStatus
   | NotFound
   | ExactMatch
   | Ignored
-  | Latest Revision
+  | Latest
   deriving Show
 
 -- | Always produces the 'NilSnapshotBackend'

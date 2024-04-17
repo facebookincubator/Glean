@@ -963,7 +963,7 @@ fetchSymbolsAndAttributes tracer scm repoMapping dbInfo req opts be
           Right result ->
             return
               (( result
-               , Snapshot.Latest (documentSymbolListXResult_revision result)
+               , Snapshot.Latest
                , QueryEachRepoUnrequested)
               , Nothing)
           Left _ ->

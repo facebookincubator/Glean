@@ -434,5 +434,4 @@ logSnapshotStatus st = case st of
   NotFound -> Logger.setSnapshot  "Not found"
   ExactMatch -> Logger.setSnapshot  "Exact"
   Ignored -> Logger.setSnapshot  "Ignored"
-  Latest rev ->
-    Logger.setSnapshot (unRevision rev)
+  Latest -> Logger.setSnapshot "Latest"
