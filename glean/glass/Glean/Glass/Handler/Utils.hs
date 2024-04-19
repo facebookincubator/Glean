@@ -16,7 +16,6 @@ module Glean.Glass.Handler.Utils (
 
     -- * deprecated handler wrappers
     withGleanDBs,
-    getLatestAttrDB,
 
     -- * Utils for building handlers
     GleanBackend(..),
@@ -123,26 +122,6 @@ dbChooser repo opts =
  where
  nearest = requestOptions_feature_flags opts >>= featureFlags_nearest_revision
  exact = requestOptions_exact_revision opts
-
--- | Get glean db for an attribute type
-getLatestAttrDB
-  :: GlassTracer
-  -> Some SourceControl
-  -> RepoMapping
-  -> GleanDBInfo
-  -> RepoName
-  -> RequestOptions
-  -> GleanDBName
-  -> IO (Maybe (Glean.Repo, GleanDBAttrName))
-getLatestAttrDB tracer scm repoMapping dbInfo repo opts gleanDBName =
-  case firstAttrDB repoMapping gleanDBName of
-    Nothing -> return Nothing
-    Just attrDBName -> do
-      dbs <- chooseGleanDBs tracer scm dbInfo (dbChooser repo opts)
-        [gleanAttrDBName attrDBName]
-      return $ case dbs of
-        [] -> Nothing
-        db:_ -> Just (snd db, attrDBName)
 
 withGleanDBs
   :: (LogError a, LogRequest a, LogResult b)
