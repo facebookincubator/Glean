@@ -251,6 +251,24 @@ predicate ObjectCreationLocation:
 predicate MethodInvocationLocation:
   { method: Method
   , location: Location
+  , expression: maybe MethodInvocationExpression
+  }
+
+type MethodInvocationExpression =
+  { memberAccess: MemberAccessLocation
+  }
+
+predicate MemberAccessLocation:
+  { expression: MemberAccessExpression
+  , location: Location
+  }
+
+type MemberAccessExpression =
+  { local: Local
+  | parameter: Parameter
+  | field: Field
+  | property: Property
+  | method: Method
   }
 
 # A Horizon Unity platform package, e.g. apps/horizon
@@ -428,11 +446,23 @@ predicate FileEntityXRefs:
   }
   stored
   { File, Span, Defn } where
-    ( MethodInvocationLocation { MDefn, { fileLocation = SrcLoc } };
+    ( MethodInvocationLocation { MDefn, { fileLocation = SrcLoc }, _ };
       { method = MDefn } = Defn;
     ) | (
       ObjectCreationLocation { AType, _, { fileLocation = { File, Span }} };
       { type = AType } = Defn;
+    ) | (
+      MemberAccessLocation { expression = Expr, location = { fileLocation = SrcLoc } };
+      ( { local = Local } = Expr; { local = Local } = Defn
+      ) | (
+        { parameter = Param } = Expr; { parameter = Param } = Defn
+      ) | (
+        { field = Field } = Expr; { field = Field } = Defn
+      ) | (
+        { property = Prop } = Expr; { property = Prop } = Defn
+      ) | (
+        { method = Method } = Expr; { method = Method } = Defn
+      );
     );
     { File, Span } = SrcLoc;
 
