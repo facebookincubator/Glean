@@ -1269,15 +1269,27 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
       folly::Optional<Cxx::RecordKind> kind;
       switch (decl->getTagKind()) {
+#if LLVM_VERSION_MAJOR >= 18
+        case clang::TagTypeKind::Struct:
+#else
         case clang::TTK_Struct:
+#endif
           kind = Cxx::RecordKind::struct_();
           break;
 
+#if LLVM_VERSION_MAJOR >= 18
+        case clang::TagTypeKind::Class:
+#else
         case clang::TTK_Class:
+#endif
           kind = Cxx::RecordKind::class_();
           break;
 
+#if LLVM_VERSION_MAJOR >= 18
+        case clang::TagTypeKind::Union:
+#else
         case clang::TTK_Union:
+#endif
           kind = Cxx::RecordKind::union_();
           break;
 

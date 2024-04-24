@@ -74,7 +74,7 @@ public:
   // Files
 
   std::optional<std::pair<Fact<Src::File>, std::filesystem::path>>
-  fileFromEntry(const clang::FileEntry& entry);
+  fileFromEntry(const clang::FileEntryRef& entry);
 
   bool isPhysicalFile(clang::FileID id) {
     return sourceManager().getFileEntryForID(id);
@@ -85,7 +85,7 @@ public:
     std::optional<std::pair<Fact<Src::File>, std::filesystem::path>> res;
     if (auto data = folly::get_default(files, id, nullptr)) {
       res = {data->fact, data->path};
-    } else if (auto entry = sourceManager().getFileEntryForID(id)) {
+    } else if (auto entry = sourceManager().getFileEntryRefForID(id)) {
       res = fileFromEntry(*entry);
     }
     if (res) {
@@ -199,7 +199,7 @@ public:
     Fact<Src::File> file,
     folly::Optional<clang::FileID> id);
   void enterFile(clang::SourceLocation loc, folly::Optional<Include> inc);
-  void skipFile(folly::Optional<Include> inc, const clang::FileEntry *entry);
+  void skipFile(folly::Optional<Include> inc, const clang::FileEntryRef& entry);
 
   void declaration(const SourceRange& range, Cxx::Declaration decl) {
     if (range.file) {

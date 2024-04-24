@@ -38,7 +38,7 @@ struct PPCallbacks final : public clang::PPCallbacks {
       const clang::FileEntryRef& entry,
       const clang::Token&,
       clang::SrcMgr::CharacteristicKind) override {
-    db.skipFile(last_include, &entry.getFileEntry());
+    db.skipFile(last_include, entry);
     last_include.reset();
   }
 #else

@@ -58,7 +58,7 @@ std::filesystem::path subpath(
 
 std::optional<std::pair<Fact<Src::File>, std::filesystem::path>>
 ClangDB::fileFromEntry(
-    const clang::FileEntry& entry) {
+    const clang::FileEntryRef& entry) {
   auto path = goodPath(root, subpath(subdir, entry.getName().str()));
   if (path.is_relative()) {
     path = followSymlinksInsideRoot(root, path);
@@ -68,7 +68,7 @@ ClangDB::fileFromEntry(
   }
   const auto buffer = [&] {
 #if LLVM_VERSION_MAJOR >= 12
-    return sourceManager().getMemoryBufferForFileOrNone(&entry);
+    return sourceManager().getMemoryBufferForFileOrNone(entry);
 #else
     bool invalid = false;
     auto buffer = sourceManager().getMemoryBufferForFile(&entry, &invalid);
@@ -165,9 +165,9 @@ void ClangDB::enterFile(
 }
 
 void ClangDB::skipFile(
-    folly::Optional<Include> inc, const clang::FileEntry *entry) {
+    folly::Optional<Include> inc, const clang::FileEntryRef& entry) {
   if (inc && inc->entry != nullptr && inc->entry == entry) {
-    if (auto file = fileFromEntry(*entry)) {
+    if (auto file = fileFromEntry(entry)) {
       include(inc.value(), file->first, folly::none);
     }
   }
