@@ -76,13 +76,13 @@ ClangDB::fileFromEntry(
 #endif
   }();
   if (!buffer) {
-    LOG(WARNING) << "Couldn't get MemoryBuffer for " << path.string();
+    LOG(WARNING) << "Couldn't get MemoryBuffer for " << path.generic_string();
 #if GLEAN_FACEBOOK
     if (isBuckOutPath(path)) {
       return {};
     }
 #endif
-    const auto file = batch.fact<Src::File>(path.string());
+    const auto file = batch.fact<Src::File>(path.generic_string());
     return std::pair{file, std::move(path)};
   }
   // compute the SHA1 digest of the file content and get the file size
@@ -94,7 +94,7 @@ ClangDB::fileFromEntry(
     path = replaceBuckOutHash(path, hash);
   }
 #endif
-  const auto file = batch.fact<Src::File>(path.string());
+  const auto file = batch.fact<Src::File>(path.generic_string());
   const uint64_t size = entry.getSize();
   batch.fact<Digest::FileDigest>(file, Digest::Digest{hash, size});
 

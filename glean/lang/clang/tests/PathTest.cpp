@@ -15,28 +15,34 @@
 namespace facebook::glean::clangx {
 
 TEST(PathTest, goodPath) {
-  EXPECT_EQ(goodPath("/foo", "bar").native(), "bar");
+  static std::filesystem::path root =
+#ifdef _WIN32
+    "C:\\";
+#else
+    "/";
+#endif
 
-  EXPECT_EQ(goodPath("/foo", "bar/../baz").native(), "baz");
+  EXPECT_EQ(goodPath(root/"foo", "bar").generic_string(), "bar");
 
-  EXPECT_EQ(goodPath("/foo", "../foo/bar").native(), "bar");
-  EXPECT_EQ(goodPath("/1/2/3", "../../2/3/foo").native(), "foo");
+  EXPECT_EQ(goodPath(root/"foo", "bar/../baz").generic_string(), "baz");
 
-  EXPECT_EQ(goodPath("/1/2", "/1/2/3/foo").native(), "3/foo");
+  EXPECT_EQ(goodPath(root/"foo", "../foo/bar").generic_string(), "bar");
+  EXPECT_EQ(goodPath(root/"1/2/3", "../../2/3/foo").generic_string(), "foo");
+
+  EXPECT_EQ(goodPath(root/"1/2", root/"1/2/3/foo").generic_string(), "3/foo");
   // FIXME: should this be ../bar?
-  EXPECT_EQ(goodPath("/foo", "/bar").native(), "/bar");
+  EXPECT_EQ(goodPath(root/"foo", root/"bar").generic_string(), root/"bar");
   // FIXME: should this be ../4/5?
-  EXPECT_EQ(goodPath("/1/2/3", "/1/2/4/5").native(), "/1/2/4/5");
+  EXPECT_EQ(goodPath(root/"1/2/3", root/"1/2/4/5").generic_string(), root/"1/2/4/5");
 
-  EXPECT_EQ(goodPath("/1/2/3","../4/5").native(), "../4/5");
+  EXPECT_EQ(goodPath(root/"1/2/3","../4/5").generic_string(), "../4/5");
 
-  EXPECT_EQ(goodPath("/1/2/3", "4/../../3/5").native(), "5");
+  EXPECT_EQ(goodPath(root/"1/2/3", "4/../../3/5").generic_string(), "5");
 
   // FIXME: don't know what we want here
-  EXPECT_TRUE(goodPath("/foo", "/foo").empty());
+  EXPECT_TRUE(goodPath(root/"foo", root/"foo").empty());
 
-  EXPECT_TRUE(goodPath("/foo","").empty());
-
+  EXPECT_TRUE(goodPath(root/"foo", "").empty());
 }
 
 TEST(PathTest, followSymlinksInsideRoot) {
@@ -53,14 +59,14 @@ TEST(PathTest, followSymlinksInsideRoot) {
 
   create_directory(root/"a");
   create_directory(root/"a/c");
-  create_symlink("a", root/"b");
-  create_symlink(out, root/"escape");
+  create_directory_symlink("a", root/"b");
+  create_directory_symlink(out, root/"escape");
 
   // symlink that traverses another symlink
-  create_symlink("../b/c", root/"a/d");
+  create_directory_symlink("../b/c", root/"a/d");
 
   // symlink going back into root
-  create_symlink("../root/a/c", out/"back");
+  create_directory_symlink("../root/a/c", out/"back");
 
   // no symlinks
   EXPECT_EQ(followSymlinksInsideRoot(root, path("a/c")), path("a/c"));
