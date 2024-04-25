@@ -474,11 +474,12 @@ mkDbSchema toList cacheVar knownPids dbContent
         legacyAllVersions =
           hashedSchemaAllVersions $ procSchemaHashed latestSchema
 
-        latestSchemaId =
-          case IntMap.lookupMax legacyAllVersions of
-            Nothing -> error "no \"all\" schema"
-            Just (_, id) -> id
+    latestSchemaId <-
+        case IntMap.lookupMax legacyAllVersions of
+            Nothing -> throwIO $ ErrorCall "no \"all\" schema"
+            Just (_, id) -> return id
 
+    let
         dbSchemaId =
           case IntMap.lookupMax (hashedSchemaAllVersions stored) of
             Nothing -> error "no \"all\" schema in DB"
