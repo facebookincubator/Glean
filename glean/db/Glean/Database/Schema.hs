@@ -479,12 +479,12 @@ mkDbSchema toList cacheVar knownPids dbContent
             Nothing -> throwIO $ ErrorCall "no \"all\" schema"
             Just (_, id) -> return id
 
-    let
-        dbSchemaId =
+    dbSchemaId <-
           case IntMap.lookupMax (hashedSchemaAllVersions stored) of
-            Nothing -> error "no \"all\" schema in DB"
-            Just (_, id) -> id
+            Nothing -> throwIO $ ErrorCall "no \"all\" schema in DB"
+            Just (_, id) -> return id
 
+    let
         predicatesById = tcEnvPredicates tcEnv
         derivationDepends = HashMap.fromListWith (++)
           [ (p, pp) | (_, p, pp) <- derivationEdges predicatesById]
