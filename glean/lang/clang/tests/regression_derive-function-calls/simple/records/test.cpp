@@ -33,3 +33,13 @@ class E {
   private:
   C c;                          // E should reference C
 };
+
+void h() {
+  struct F {                    // nested record: h does not reference A
+    static void i() {
+      A a;
+    }
+  };
+
+  F::i();
+}

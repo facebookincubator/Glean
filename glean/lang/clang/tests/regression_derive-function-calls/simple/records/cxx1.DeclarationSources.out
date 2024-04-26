@@ -42,6 +42,67 @@
           }
         },
         {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "h" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": { "parameters": [ ], "returns": { "key": "void" } }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "test.cpp" },
+                "lineBegin": 37,
+                "lineEnd": 45
+              }
+            }
+          }
+        },
+        {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "i" } } },
+                  "scope": {
+                    "recordWithAccess": {
+                      "access": 0,
+                      "record": {
+                        "key": {
+                          "name": { "key": "F" },
+                          "scope": {
+                            "local": {
+                              "key": {
+                                "name": { "key": { "name": { "key": "h" } } },
+                                "scope": { "global_": { } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "signature": {
+                "key": { "parameters": [ ], "returns": { "key": "void" } }
+              },
+              "source": {
+                "columnBegin": 5,
+                "columnEnd": 5,
+                "file": { "key": "test.cpp" },
+                "lineBegin": 39,
+                "lineEnd": 41
+              }
+            }
+          }
+        },
+        {
           "record_": {
             "key": {
               "kind": { "struct_": { } },
@@ -71,6 +132,33 @@
                 "file": { "key": "test.cpp" },
                 "lineBegin": 21,
                 "lineEnd": 26
+              }
+            }
+          }
+        },
+        {
+          "record_": {
+            "key": {
+              "kind": { "struct_": { } },
+              "name": {
+                "key": {
+                  "name": { "key": "F" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "h" } } },
+                        "scope": { "global_": { } }
+                      }
+                    }
+                  }
+                }
+              },
+              "source": {
+                "columnBegin": 3,
+                "columnEnd": 3,
+                "file": { "key": "test.cpp" },
+                "lineBegin": 38,
+                "lineEnd": 42
               }
             }
           }
@@ -228,6 +316,128 @@
               "file": { "key": "test.cpp" },
               "lineBegin": 13,
               "lineEnd": 15
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "sources": [
+        {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "h" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": { "parameters": [ ], "returns": { "key": "void" } }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "test.cpp" },
+                "lineBegin": 37,
+                "lineEnd": 45
+              }
+            }
+          }
+        }
+      ],
+      "target": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "i" } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "access": 0,
+                    "record": {
+                      "key": {
+                        "name": { "key": "F" },
+                        "scope": {
+                          "local": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "h" } } },
+                              "scope": { "global_": { } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "parameters": [ ], "returns": { "key": "void" } }
+            },
+            "source": {
+              "columnBegin": 5,
+              "columnEnd": 5,
+              "file": { "key": "test.cpp" },
+              "lineBegin": 39,
+              "lineEnd": 41
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "sources": [
+        {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "h" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": { "parameters": [ ], "returns": { "key": "void" } }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 1,
+                "file": { "key": "test.cpp" },
+                "lineBegin": 37,
+                "lineEnd": 45
+              }
+            }
+          }
+        }
+      ],
+      "target": {
+        "record_": {
+          "key": {
+            "kind": { "struct_": { } },
+            "name": {
+              "key": {
+                "name": { "key": "F" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "h" } } },
+                      "scope": { "global_": { } }
+                    }
+                  }
+                }
+              }
+            },
+            "source": {
+              "columnBegin": 3,
+              "columnEnd": 3,
+              "file": { "key": "test.cpp" },
+              "lineBegin": 38,
+              "lineEnd": 42
             }
           }
         }

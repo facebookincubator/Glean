@@ -1,0 +1,53 @@
+[
+  "@generated",
+  {
+    "key": {
+      "source": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "g" } } },
+                "scope": { "global_": { } }
+              }
+            },
+            "signature": {
+              "key": { "parameters": [ ], "returns": { "key": "void" } }
+            },
+            "source": {
+              "columnBegin": 1,
+              "columnEnd": 1,
+              "file": { "key": "test.cpp" },
+              "lineBegin": 11,
+              "lineEnd": 13
+            }
+          }
+        }
+      },
+      "targets": [
+        {
+          "function_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": { "name": { "key": "f" } } },
+                  "scope": { "global_": { } }
+                }
+              },
+              "signature": {
+                "key": { "parameters": [ ], "returns": { "key": "void" } }
+              },
+              "source": {
+                "columnBegin": 1,
+                "columnEnd": 11,
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "lineEnd": 9
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]
