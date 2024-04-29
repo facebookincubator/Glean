@@ -1,0 +1,63 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "info": {
+        "indexed": true,
+        "offsets": {
+          "key": {
+            "file": { "key": "test.cpp" },
+            "lengths": [
+              3,
+              54,
+              24,
+              3,
+              73,
+              59,
+              4,
+              1,
+              18,
+              1,
+              86,
+              16,
+              1,
+              27,
+              22,
+              13,
+              13,
+              2
+            ],
+            "endsInNewline": true,
+            "hasUnicodeOrTabs": false
+          }
+        },
+        "digest": {
+          "hash": "c19eedb242a1867935300bf022d4b8ab3d92ae00",
+          "size": 420
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.h" },
+      "info": {
+        "indexed": true,
+        "offsets": {
+          "key": {
+            "file": { "key": "test.h" },
+            "lengths": [ 3, 54, 24, 3, 73, 59, 4, 1, 1, 86, 16 ],
+            "endsInNewline": true,
+            "hasUnicodeOrTabs": false
+          }
+        },
+        "digest": {
+          "hash": "d31759d38b8e2df1b27e81d34d0d077bf3c73c8d",
+          "size": 324
+        }
+      }
+    }
+  },
+  { "key": { "file": { "key": "test.thrift" }, "info": { "indexed": false } } }
+]

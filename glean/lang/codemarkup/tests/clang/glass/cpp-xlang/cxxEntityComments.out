@@ -1,0 +1,67 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "thrift1" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 12,
+                  "columnBegin": 1,
+                  "lineEnd": 12,
+                  "columnEnd": 14
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "span": { "start": 240, "length": 85 }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "thrift2" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.h" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 14
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.h" },
+      "span": { "start": 222, "length": 85 }
+    }
+  }
+]

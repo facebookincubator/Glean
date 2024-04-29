@@ -10,6 +10,7 @@ module Glean.Regression.Snapshot.Driver
   ( Driver(..)
   , driverFromIndexer
   , externalDriver
+  , defaultCreateDatabase
   ) where
 
 import System.Exit
@@ -47,6 +48,12 @@ type CreateDatabase opts
 
 type Group = String
 
+defaultCreateDatabase :: CreateDatabase opts
+defaultCreateDatabase opts backend indexer test = do
+  let repo = testRepo test
+  fillDatabase backend repo "" Nothing (die "repo already exists") $
+    runIndexerForTest backend (indexer opts) test
+
 driverFromIndexer :: Indexer opts -> Driver opts
 driverFromIndexer indexer = Driver
   { driverIndexer = indexer
@@ -54,12 +61,6 @@ driverFromIndexer indexer = Driver
   , driverTransforms = mempty
   , driverCreateDatabase = defaultCreateDatabase
   }
-  where
-  defaultCreateDatabase :: CreateDatabase opts
-  defaultCreateDatabase opts backend indexer test = do
-    let repo = testRepo test
-    fillDatabase backend repo "" Nothing (die "repo already exists") $
-      runIndexerForTest backend (indexer opts) test
 
 -- | A 'Driver' using an external 'Indexer'. See
 -- "Glean.Indexer.External".

@@ -15,6 +15,7 @@
 module Glean.Glass.Regression.Snapshot (
     mainGlassSnapshot,
     mainGlassSnapshotGeneric,
+    mainGlassSnapshotXLang,
     Cfg(..),
     Output, Getter
   ) where
@@ -46,6 +47,7 @@ import qualified Thrift.Protocol
 import qualified Thrift.Protocol.JSON as Thrift
 
 import Glean ( Repo )
+import Glean.Indexer
 import Glean.LocalOrRemote ( LocalOrRemote )
 import Glean.Util.Some ( Some(..) )
 import Glean.Regression.Test
@@ -133,6 +135,24 @@ mainGlassSnapshot_ testName testRoot driver extraOpts extras = do
   withOutput cfgOutput $ \temp ->
     mainTestIndexGeneric driver extraOpts testName $ \_ _ _ _ get ->
       TestList $ testAll cfgReplace temp qs get : extras get
+  where
+    cfgOutput = Nothing
+
+    withOutput (Just out) f = f out
+    withOutput Nothing f = withSystemTempDirectory testName f
+
+mainGlassSnapshotXLang
+  :: String
+  -> FilePath
+  -> (Glean.Driver opt, Text)
+  -> (Indexer opts, Text)
+  -> IO ()
+mainGlassSnapshotXLang testName testRoot driver indexer = do
+  cfgReplace <- any (`elem` ["--replace", "--replace-all"]) <$> getArgs
+  qs <- findQueries testRoot
+  withOutput cfgOutput $ \temp ->
+    mainTestIndexXlang driver indexer testName $
+      \get -> TestList [testAll cfgReplace temp qs get]
   where
     cfgOutput = Nothing
 

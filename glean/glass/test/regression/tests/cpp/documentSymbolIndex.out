@@ -2,18 +2,18 @@
     "@generated",
     {
         "digest": {
-            "hash": "9e463d619fda09bded1e0ccb723cc469cf77f8ec",
-            "size": 3252
+            "hash": "954c29835af06ef209fcc232d159e8ed31eba451",
+            "size": 3028
         },
         "referenced_file_digests": {
             "test": {
                 "test.cpp": {
-                    "hash": "9e463d619fda09bded1e0ccb723cc469cf77f8ec",
-                    "size": 3252
+                    "hash": "954c29835af06ef209fcc232d159e8ed31eba451",
+                    "size": 3028
                 },
                 "test.h": {
-                    "hash": "8c68dec748a9a80f2a5de7afed102af34c135bb3",
-                    "size": 419
+                    "hash": "ce71a4bc848a767198c61bd5c21d1ead3be6a19b",
+                    "size": 273
                 },
                 "test2.h": {
                     "hash": "c522430338f3620e08fe42afbcff1f66599c0efe",
@@ -22,7 +22,7 @@
             }
         },
         "revision": "testhash",
-        "size": 212,
+        "size": 208,
         "symbols": {
             "104": [
                 {
@@ -4485,150 +4485,6 @@
                             "columnEnd": 7,
                             "lineBegin": 202,
                             "lineEnd": 202
-                        },
-                        "repository": "test"
-                    }
-                }
-            ],
-            "215": [
-                {
-                    "attributes": {
-                        "symbolDefinitionType": {
-                            "aInteger": 2
-                        },
-                        "symbolKind": {
-                            "aInteger": 14
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 1
-                        },
-                        "symbolName": {
-                            "aString": "thrift1"
-                        },
-                        "symbolParent": {
-                            "aString": ""
-                        },
-                        "symbolSignature": {
-                            "aString": "void thrift1()"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 6,
-                        "columnEnd": 13,
-                        "lineBegin": 215,
-                        "lineEnd": 215
-                    },
-                    "sym": "test/cpp//thrift1/.f//.decl"
-                }
-            ],
-            "218": [
-                {
-                    "attributes": {
-                        "symbolDefinitionType": {
-                            "aInteger": 1
-                        },
-                        "symbolKind": {
-                            "aInteger": 14
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 1
-                        },
-                        "symbolName": {
-                            "aString": "thriftCaller"
-                        },
-                        "symbolParent": {
-                            "aString": ""
-                        },
-                        "symbolSignature": {
-                            "aString": "void thriftCaller()"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 6,
-                        "columnEnd": 18,
-                        "lineBegin": 218,
-                        "lineEnd": 218
-                    },
-                    "sym": "test/cpp//thriftCaller/.f/"
-                }
-            ],
-            "219": [
-                {
-                    "attributes": {
-                        "symbolDefinitionType": {
-                            "aInteger": 2
-                        },
-                        "symbolKind": {
-                            "aInteger": 14
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 1
-                        },
-                        "symbolName": {
-                            "aString": "thrift1"
-                        },
-                        "symbolParent": {
-                            "aString": ""
-                        },
-                        "symbolSignature": {
-                            "aString": "void thrift1()"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 10,
-                        "lineBegin": 219,
-                        "lineEnd": 219
-                    },
-                    "sym": "test/cpp//thrift1/.f//.decl",
-                    "target": {
-                        "filepath": "test.cpp",
-                        "range": {
-                            "columnBegin": 6,
-                            "columnEnd": 13,
-                            "lineBegin": 215,
-                            "lineEnd": 215
-                        },
-                        "repository": "test"
-                    }
-                }
-            ],
-            "220": [
-                {
-                    "attributes": {
-                        "symbolDefinitionType": {
-                            "aInteger": 2
-                        },
-                        "symbolKind": {
-                            "aInteger": 14
-                        },
-                        "symbolLanguage": {
-                            "aInteger": 1
-                        },
-                        "symbolName": {
-                            "aString": "thrift2"
-                        },
-                        "symbolParent": {
-                            "aString": ""
-                        },
-                        "symbolSignature": {
-                            "aString": "void thrift2()"
-                        }
-                    },
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 10,
-                        "lineBegin": 220,
-                        "lineEnd": 220
-                    },
-                    "sym": "test/cpp//thrift2/.f//.decl",
-                    "target": {
-                        "filepath": "test.h",
-                        "range": {
-                            "columnBegin": 6,
-                            "columnEnd": 13,
-                            "lineBegin": 14,
-                            "lineEnd": 14
                         },
                         "repository": "test"
                     }

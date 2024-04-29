@@ -176,15 +176,12 @@ normalizeLanguages l = l
 -- | Select universe of glean repo,(db/language) pairs.
 -- Either just the test dbs, or all the non-test dbs.
 listGleanIndices :: RepoMapping -> Bool -> [(RepoName, (GleanDBName, Language))]
-listGleanIndices RepoMapping{..} testsOnly
-  | not testsOnly = concatMap flatten $ -- only non-test repos
-      Map.toList (Map.delete testRepo gleanIndices)
-  | otherwise = map (testRepo,) $ -- just the test repos
-      Map.findWithDefault [] testRepo gleanIndices
-  where
-    testRepo = RepoName "test"
-
-    flatten (repo,langs) = map (repo,) langs
+listGleanIndices RepoMapping{..} testsOnly =
+  let testRepos = [RepoName "test", RepoName "test-xlang"]
+      flatten (repo,langs) = map (repo,) langs
+      flattened = concatMap flatten $ Map.toList gleanIndices
+      isTest = \(repo, _) -> elem repo testRepos in
+    filter (if testsOnly then isTest else not . isTest) flattened
 
 -- Do something simple to map SCS repo to Glean repos
 -- Names from configerator/scm/myles/service as a start

@@ -1220,68 +1220,6 @@
               "key": {
                 "name": {
                   "key": {
-                    "name": { "key": { "name": { "key": "thrift1" } } },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "signature": {
-                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 215,
-                  "columnBegin": 1,
-                  "lineEnd": 215,
-                  "columnEnd": 14
-                }
-              }
-            }
-          }
-        }
-      },
-      "annotations": { "cxx": { "attributes": [ ] } }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "thrift2" } } },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "signature": {
-                  "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                },
-                "source": {
-                  "file": { "key": "test.h" },
-                  "lineBegin": 14,
-                  "columnBegin": 1,
-                  "lineEnd": 14,
-                  "columnEnd": 14
-                }
-              }
-            }
-          }
-        }
-      },
-      "annotations": { "cxx": { "attributes": [ ] } }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
                     "name": { "key": { "operator_": "operator++" } },
                     "scope": {
                       "recordWithAccess": {

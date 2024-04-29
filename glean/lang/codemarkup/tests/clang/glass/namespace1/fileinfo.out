@@ -220,15 +220,6 @@
               1,
               40,
               14,
-              2,
-              1,
-              129,
-              16,
-              1,
-              27,
-              22,
-              13,
-              13,
               2
             ],
             "endsInNewline": true,
@@ -236,8 +227,8 @@
           }
         },
         "digest": {
-          "hash": "9e463d619fda09bded1e0ccb723cc469cf77f8ec",
-          "size": 3252
+          "hash": "954c29835af06ef209fcc232d159e8ed31eba451",
+          "size": 3028
         }
       }
     }
@@ -250,14 +241,14 @@
         "offsets": {
           "key": {
             "file": { "key": "test.h" },
-            "lengths": [ 3, 54, 24, 3, 73, 59, 4, 1, 14, 19, 19, 1, 129, 16 ],
+            "lengths": [ 3, 54, 24, 3, 73, 59, 4, 1, 14, 19, 19 ],
             "endsInNewline": true,
             "hasUnicodeOrTabs": false
           }
         },
         "digest": {
-          "hash": "8c68dec748a9a80f2a5de7afed102af34c135bb3",
-          "size": 419
+          "hash": "ce71a4bc848a767198c61bd5c21d1ead3be6a19b",
+          "size": 273
         }
       }
     }
@@ -300,14 +291,6 @@
           "size": 235
         }
       }
-    }
-  },
-  {
-    "key": {
-      "file": {
-        "key": "thrift/compiler/test/fixtures/inheritance/src/module.thrift"
-      },
-      "info": { "indexed": false }
     }
   }
 ]

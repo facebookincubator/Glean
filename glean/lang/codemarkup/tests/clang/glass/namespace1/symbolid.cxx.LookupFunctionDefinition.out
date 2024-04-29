@@ -566,40 +566,5 @@
         }
       }
     }
-  },
-  {
-    "key": {
-      "name": { "key": { "name": { "key": "thriftCaller" } } },
-      "scope": { "global_": { } },
-      "entity": {
-        "defn": {
-          "function_": {
-            "key": {
-              "declaration": {
-                "key": {
-                  "name": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "thriftCaller" } } },
-                      "scope": { "global_": { } }
-                    }
-                  },
-                  "signature": {
-                    "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                  },
-                  "source": {
-                    "file": { "key": "test.cpp" },
-                    "lineBegin": 218,
-                    "columnBegin": 1,
-                    "lineEnd": 221,
-                    "columnEnd": 1
-                  }
-                }
-              },
-              "isInline": false
-            }
-          }
-        }
-      }
-    }
   }
 ]

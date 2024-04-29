@@ -167,45 +167,6 @@
             "Right": {
                 "declaration": true,
                 "errors": [],
-                "localname": "thrift1",
-                "params": [],
-                "path": "",
-                "qualifiers": [],
-                "returns": null,
-                "scopes": [],
-                "tag": "Function"
-            }
-        },
-        {
-            "Right": {
-                "declaration": true,
-                "errors": [],
-                "localname": "thrift2",
-                "params": [],
-                "path": "",
-                "qualifiers": [],
-                "returns": null,
-                "scopes": [],
-                "tag": "Function"
-            }
-        },
-        {
-            "Right": {
-                "declaration": false,
-                "errors": [],
-                "localname": "thriftCaller",
-                "params": [],
-                "path": "",
-                "qualifiers": [],
-                "returns": null,
-                "scopes": [],
-                "tag": "Function"
-            }
-        },
-        {
-            "Right": {
-                "declaration": true,
-                "errors": [],
                 "localname": "y",
                 "params": [],
                 "path": "",

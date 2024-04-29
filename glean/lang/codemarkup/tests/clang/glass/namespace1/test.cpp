@@ -210,12 +210,3 @@ Foo (*N1::N2::foo(Foo x))(Foo y) {
 Foo (*N1::N2::Bar::bar(Foo x))(Foo y) {
   return &id;
 }
-
-/** Glean { "file": "thrift/compiler/test/fixtures/inheritance/src/module.thrift", "service":"MyRoot", "function": "thrift1"} */
-void thrift1();
-
-// test thrift annotations
-void thriftCaller() {
-  thrift1();
-  thrift2();
-}

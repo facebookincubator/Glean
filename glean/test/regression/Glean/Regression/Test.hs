@@ -17,6 +17,7 @@ module Glean.Regression.Test
   , mainTestIndex
   , mainTestIndexExternal
   , mainTestIndexGeneric
+  , mainTestIndexXlang
   ) where
 
 import Foreign.Marshal.Utils
@@ -65,6 +66,19 @@ mainTestIndexExternal
 mainTestIndexExternal dir testIndex =
   mainTestIndexGeneric externalDriver (pure ()) dir (\_ _ _ _ -> testIndex)
 
+createTestConfig :: Text.Text -> String -> String -> Config -> TestConfig
+createTestConfig repo group outDir cfg =
+   TestConfig
+      { testRepo = Repo repo (Text.pack group)
+      , testOutput = if null group
+          then outDir
+          else outDir </> group
+      , testRoot = cfgRoot cfg
+      , testProjectRoot = cfgProjectRoot cfg
+      , testGroup = group
+      , testSchemaVersion = cfgSchemaVersion cfg
+      }
+
 -- | Run a test with an arbitrary indexer
 mainTestIndexGeneric
   :: Driver driverOpts
@@ -91,17 +105,7 @@ mainTestIndexGeneric driver extraOptParser dir testIndex = do
       let
         withPlatformTest :: String -> (Test -> IO a) -> IO a
         withPlatformTest platform fn = do
-          let testConfig = TestConfig
-                { testRepo = Repo "test" (Text.pack platform)
-                , testOutput = if null platform
-                    then outDir
-                    else outDir </> platform
-                , testRoot = cfgRoot cfg
-                , testProjectRoot = cfgProjectRoot cfg
-                , testGroup = platform
-                , testSchemaVersion = cfgSchemaVersion cfg
-                }
-
+          let testConfig = createTestConfig "test" platform outDir cfg
               withSetup :: ((Some LocalOrRemote, Repo) -> IO a) -> IO a
               withSetup f =
                 withTestBackend testConfig $ \backend -> do
@@ -112,6 +116,54 @@ mainTestIndexGeneric driver extraOptParser dir testIndex = do
           withLazy withSetup $ \get ->
             fn $ TestLabel (mkLabel platform) $
               testIndex extraOpts driverOpts cfg testConfig get
+
+      withMany withPlatformTest platforms $ \tests ->
+        testRunnerAction action (TestList tests)
+
+-- | Run a test which runs two indexers, the one in the driver
+--   plus an extra one
+mainTestIndexXlang
+  :: (Driver driverOpts, Text.Text) -- ^ Driver and name of db to be created
+  -> (Indexer opts, Text.Text) -- ^ Indexer and name of db to be created
+  -> String -- ^ just a string to identify this test
+  -> TestIndex
+  -> IO ()
+mainTestIndexXlang
+  (driver, repoName) (indexer', repoName') dir testIndex = do
+  let
+    indexer = driverIndexer driver
+    parse = (,) <$> indexerOptParser indexer <*> indexerOptParser indexer'
+  withUnitTestOptions (optionsWith parse) $
+          \ action (mkcfg, (driverOpts, driverOpts')) -> do
+    -- TODO: we're using the options for snapshot tests which have a
+    -- couple of flags that don't make sense here: --replace for
+    -- example.
+    cfg <- mkcfg
+    let
+      -- We ignore groups of second driver
+      theGroups = driverGroups driver driverOpts
+      (platforms, mkLabel) = if null theGroups
+          then (["testhash"], const dir)
+          else (theGroups, \group -> dir <> " : " <> group)
+    withOutputDir dir (cfgOutput cfg) $ \ outDir -> do
+      let
+        withPlatformTest :: String -> (Test -> IO a) -> IO a
+        withPlatformTest platform fn = do
+          let testConfig = createTestConfig repoName platform outDir cfg
+              testConfig' = testConfig {
+                testRepo = Repo repoName' (Text.pack platform)
+              }
+              withSetup :: ((Some LocalOrRemote, Repo) -> IO a) -> IO a
+              withSetup f =
+                withTestBackend testConfig $ \backend -> do
+                  driverCreateDatabase driver driverOpts backend
+                    (indexerRun indexer) testConfig
+                  defaultCreateDatabase driverOpts' backend
+                    (indexerRun indexer') testConfig'
+                  f (backend, testRepo testConfig')
+
+          withLazy withSetup $ \get ->
+            fn $ TestLabel (mkLabel platform) $ testIndex get
 
       withMany withPlatformTest platforms $ \tests ->
         testRunnerAction action (TestList tests)
