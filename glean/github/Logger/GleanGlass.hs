@@ -62,6 +62,12 @@ setMethod _ = GleanGlassLogger
 setRevision :: Text -> GleanGlassLogger
 setRevision _ = GleanGlassLogger
 
+setExactRevision :: Bool -> GleanGlassLogger
+setExactRevision _ = GleanGlassLogger
+
+setNearestRevision :: Bool -> GleanGlassLogger
+setNearestRevision _ = GleanGlassLogger
+
 setRevisionUsed :: Text -> GleanGlassLogger
 setRevisionUsed _ = GleanGlassLogger
 
@@ -76,3 +82,9 @@ setSnapshot _ = GleanGlassLogger
 
 setTruncated :: Bool -> GleanGlassLogger
 setTruncated _ = GleanGlassLogger
+
+setLimit :: Int -> GleanGlassLogger
+setLimit _ = GleanGlassLogger
+
+setIncludeXlangXrefs :: Bool -> GleanGlassLogger
+setIncludeXlangXrefs _ = GleanGlassLogger
