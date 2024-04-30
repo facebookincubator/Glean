@@ -29,7 +29,7 @@
 #include <folly/json/json.h>
 #include <folly/Range.h>
 
-#if GLEAN_FACEBOOK
+#if GLEAN_FACEBOOK && !defined(_WIN32)
 #include "common/init/Init.h"
 #else
 #include <folly/init/Init.h>
@@ -38,7 +38,7 @@
 #include "glean/cpp/glean.h"
 #include "glean/cpp/sender.h"
 #include "glean/cpp/filewriter.h"
-#if GLEAN_FACEBOOK
+#if GLEAN_FACEBOOK && !defined(_WIN32)
 #include "glean/cpp/thriftsender.h"
 #endif
 #include "glean/interprocess/cpp/counters.h"
@@ -248,7 +248,7 @@ struct Config {
     }
     log_pfx = folly::to<std::string>(FLAGS_worker_index) + ": ";
 
-    #if GLEAN_FACEBOOK
+    #if GLEAN_FACEBOOK && !defined(_WIN32)
     if (!FLAGS_service.empty()) {
       // Full logging if we are talking to a remote service
       should_log = true;
@@ -635,14 +635,14 @@ int getSelfRSS() {
 }
 
 int main(int argc, char **argv) {
-#if GLEAN_FACEBOOK
+#if GLEAN_FACEBOOK && !defined(_WIN32)
   facebook::initFacebook(&argc, &argv);
 #else
   folly::Init init(&argc, &argv);
 #endif
 
   std::signal(SIGTERM, [](int) {
-    #if GLEAN_FACEBOOK
+    #if GLEAN_FACEBOOK && !defined(_WIN32)
     LOG(CRITICAL)
     #else
     LOG(ERROR)

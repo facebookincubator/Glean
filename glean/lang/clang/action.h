@@ -17,7 +17,7 @@
 
 #include <folly/Optional.h>
 
-#if GLEAN_FACEBOOK
+#if GLEAN_FACEBOOK && !defined(_WIN32)
 namespace facebook::logger {
   class GleanClangIndexerLogger;
 }
@@ -25,7 +25,7 @@ namespace facebook::logger {
 
 namespace facebook::glean::clangx {
 
-#if GLEAN_FACEBOOK
+#if GLEAN_FACEBOOK && !defined(_WIN32)
 using Logger = facebook::logger::GleanClangIndexerLogger;
 #else
 class Logger {

@@ -8,4 +8,6 @@
 
 #pragma once
 
+#include <gflags/gflags_declare.h>
+
 DECLARE_bool(index_on_error);
