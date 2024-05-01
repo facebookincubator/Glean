@@ -383,8 +383,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -402,8 +402,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -431,8 +431,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -450,8 +450,56 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 36,
+                        "lineEnd": 36
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 30,
+                        "lineBegin": 32,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "es_exports",
+                    "localName": "Introduction"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "Introduction: any (implicit)",
+                "sym": "test/js/es_exports/Introduction",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 30,
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
@@ -479,8 +527,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 13,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },
@@ -497,8 +545,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 13,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },
@@ -526,8 +574,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -545,8 +593,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -574,8 +622,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -593,8 +641,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -608,8 +656,8 @@
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 4,
-                            "lineBegin": 13,
-                            "lineEnd": 15
+                            "lineBegin": 15,
+                            "lineEnd": 17
                         },
                         "repository": "test"
                     }
@@ -633,8 +681,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 16,
-                        "lineEnd": 18
+                        "lineBegin": 18,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
@@ -650,8 +698,8 @@
                             "range": {
                                 "columnBegin": 1,
                                 "columnEnd": 4,
-                                "lineBegin": 13,
-                                "lineEnd": 15
+                                "lineBegin": 15,
+                                "lineEnd": 17
                             },
                             "repository": "test"
                         }
@@ -665,8 +713,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 16,
-                        "lineEnd": 18
+                        "lineBegin": 18,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
@@ -694,8 +742,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 25,
-                        "lineBegin": 22,
-                        "lineEnd": 22
+                        "lineBegin": 24,
+                        "lineEnd": 24
                     },
                     "repository": "test"
                 },
@@ -713,8 +761,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 25,
-                        "lineBegin": 22,
-                        "lineEnd": 22
+                        "lineBegin": 24,
+                        "lineEnd": 24
                     },
                     "repository": "test"
                 },
@@ -742,8 +790,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 11,
-                        "lineEnd": 11
+                        "lineBegin": 13,
+                        "lineEnd": 13
                     },
                     "repository": "test"
                 },
@@ -761,8 +809,56 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 11,
-                        "lineEnd": 11
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 31,
+                        "columnEnd": 35,
+                        "lineBegin": 32,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "es_exports",
+                    "localName": "name"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "name: any (implicit)",
+                "sym": "test/js/es_exports/name",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 31,
+                        "columnEnd": 35,
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
@@ -790,8 +886,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 26,
-                        "lineBegin": 28,
-                        "lineEnd": 28
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -809,8 +905,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 26,
-                        "lineBegin": 28,
-                        "lineEnd": 28
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -838,8 +934,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 15,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },
@@ -857,8 +953,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 15,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },
@@ -958,8 +1054,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 12,
-                        "lineBegin": 31,
-                        "lineEnd": 31
+                        "lineBegin": 34,
+                        "lineEnd": 34
                     },
                     "repository": "test"
                 },
@@ -977,8 +1073,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 12,
-                        "lineBegin": 31,
-                        "lineEnd": 31
+                        "lineBegin": 34,
+                        "lineEnd": 34
                     },
                     "repository": "test"
                 },
@@ -1006,8 +1102,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -1025,8 +1121,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -1054,8 +1150,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -1073,8 +1169,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -1102,8 +1198,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 18,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "lineBegin": 24,
+                        "lineEnd": 24
                     },
                     "repository": "test"
                 },
@@ -1121,8 +1217,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 18,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "lineBegin": 24,
+                        "lineEnd": 24
                     },
                     "repository": "test"
                 },
@@ -1150,8 +1246,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 19,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 35,
+                        "lineEnd": 35
                     },
                     "repository": "test"
                 },
@@ -1169,8 +1265,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 19,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 35,
+                        "lineEnd": 35
                     },
                     "repository": "test"
                 },
@@ -1198,8 +1294,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 26,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -1217,8 +1313,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 26,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -1246,8 +1342,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 26,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 },
@@ -1265,8 +1361,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 26,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 },
@@ -1294,8 +1390,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 19,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },
@@ -1313,8 +1409,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 19,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },
@@ -1476,8 +1572,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -1499,8 +1595,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -1515,6 +1611,29 @@
                 "symbol": "test/js/es_exports/C"
             },
             {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 30,
+                        "lineBegin": 32,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "name": "Introduction",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "Introduction"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/Introduction"
+            },
+            {
                 "kind": 9,
                 "language": 2,
                 "location": {
@@ -1522,8 +1641,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 13,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },
@@ -1552,8 +1671,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -1575,8 +1694,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -1598,8 +1717,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 16,
-                        "lineEnd": 18
+                        "lineBegin": 18,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 },
@@ -1621,8 +1740,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 25,
-                        "lineBegin": 22,
-                        "lineEnd": 22
+                        "lineBegin": 24,
+                        "lineEnd": 24
                     },
                     "repository": "test"
                 },
@@ -1644,8 +1763,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 11,
-                        "lineEnd": 11
+                        "lineBegin": 13,
+                        "lineEnd": 13
                     },
                     "repository": "test"
                 },
@@ -1658,6 +1777,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/js/es_exports/foo"
+            },
+            {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 31,
+                        "columnEnd": 35,
+                        "lineBegin": 32,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "name": "name",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "name"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/name"
             },
             {
                 "context": {
@@ -1674,8 +1816,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 26,
-                        "lineBegin": 28,
-                        "lineEnd": 28
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -1697,8 +1839,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 15,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 },
@@ -1750,8 +1892,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 12,
-                        "lineBegin": 31,
-                        "lineEnd": 31
+                        "lineBegin": 34,
+                        "lineEnd": 34
                     },
                     "repository": "test"
                 },
@@ -1780,8 +1922,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -1803,8 +1945,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -1826,8 +1968,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 18,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "lineBegin": 24,
+                        "lineEnd": 24
                     },
                     "repository": "test"
                 },
@@ -1849,8 +1991,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 19,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 35,
+                        "lineEnd": 35
                     },
                     "repository": "test"
                 },
@@ -1872,8 +2014,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 26,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 },
@@ -1895,8 +2037,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 26,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 },
@@ -1918,8 +2060,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 19,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },

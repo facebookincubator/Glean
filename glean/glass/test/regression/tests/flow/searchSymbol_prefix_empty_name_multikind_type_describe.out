@@ -23,8 +23,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -42,6 +42,102 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 18,
+                        "lineBegin": 36,
+                        "lineEnd": 36
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "es_exports",
+                    "localName": "baz"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "baz: class baz",
+                "sym": "test/js/es_exports/baz",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 26,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "es_exports",
+                    "localName": "num"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "num: type num = number",
+                "sym": "test/js/es_exports/num",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 26,
                         "lineBegin": 30,
                         "lineEnd": 30
                     },
@@ -67,108 +163,12 @@
                 "kind": 2,
                 "language": 2,
                 "location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 20,
-                        "lineEnd": 20
-                    },
-                    "repository": "test"
-                },
-                "modifiers": [],
-                "name": {
-                    "container": "es_exports",
-                    "localName": "baz"
-                },
-                "pretty_comments": [],
-                "repo_hash": "testhash",
-                "signature": "baz: class baz",
-                "sym": "test/js/es_exports/baz",
-                "sym_location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 20,
-                        "lineEnd": 20
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "type_xrefs": []
-            },
-            {
-                "comments": [],
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 2,
-                "language": 2,
-                "location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 8,
-                        "columnEnd": 26,
-                        "lineBegin": 28,
-                        "lineEnd": 28
-                    },
-                    "repository": "test"
-                },
-                "modifiers": [],
-                "name": {
-                    "container": "es_exports",
-                    "localName": "num"
-                },
-                "pretty_comments": [],
-                "repo_hash": "testhash",
-                "signature": "num: type num = number",
-                "sym": "test/js/es_exports/num",
-                "sym_location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 8,
-                        "columnEnd": 26,
-                        "lineBegin": 28,
-                        "lineEnd": 28
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "type_xrefs": []
-            },
-            {
-                "comments": [],
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 2,
-                "language": 2,
-                "location": {
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 12,
-                        "lineBegin": 31,
-                        "lineEnd": 31
+                        "lineBegin": 34,
+                        "lineEnd": 34
                     },
                     "repository": "test"
                 },
@@ -186,8 +186,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 12,
-                        "lineBegin": 31,
-                        "lineEnd": 31
+                        "lineBegin": 34,
+                        "lineEnd": 34
                     },
                     "repository": "test"
                 },
@@ -215,8 +215,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -234,8 +234,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -259,8 +259,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -289,8 +289,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 13,
-                        "lineBegin": 20,
-                        "lineEnd": 20
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -319,8 +319,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 26,
-                        "lineBegin": 28,
-                        "lineEnd": 28
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },
@@ -349,8 +349,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 12,
-                        "lineBegin": 31,
-                        "lineEnd": 31
+                        "lineBegin": 34,
+                        "lineEnd": 34
                     },
                     "repository": "test"
                 },
@@ -379,8 +379,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "repository": "test"
                 },

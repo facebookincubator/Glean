@@ -18,6 +18,9 @@ import fn from 'cjs_exports';  // ES import -> commonJS export
 
 import type {num} from './es_exports';
 
+import Component from './es_exports';
+import type Component from './es_exports';
+
 let e: string = d;
 
 let x: num = bar(a);

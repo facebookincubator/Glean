@@ -2,20 +2,20 @@
   "@generated",
   {
     "key": {
-      "searchcase": 1,
-      "name": "foo",
+      "searchcase": 0,
+      "name": "Introduction",
       "entity": {
         "flow": {
           "decl": {
             "localDecl": {
               "key": {
-                "name": { "key": "foo" },
+                "name": { "key": "Introduction" },
                 "loc": {
                   "key": {
                     "module": {
                       "key": { "file": { "key": "test/es_exports.js.flow" } }
                     },
-                    "span": { "start": 268, "length": 3 }
+                    "span": { "start": 504, "length": 12 }
                   }
                 }
               }
@@ -24,9 +24,9 @@
         }
       },
       "location": {
-        "name": "foo",
+        "name": "Introduction",
         "file": { "key": "test/es_exports.js.flow" },
-        "location": { "span": { "start": 268, "length": 15 } }
+        "location": { "span": { "start": 504, "length": 12 } }
       },
       "kind": 20,
       "language": 6

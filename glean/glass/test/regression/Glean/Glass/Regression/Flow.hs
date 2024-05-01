@@ -66,7 +66,7 @@ testFlowFindReferences get = TestLabel "findReferences" $ TestList [
   "test/js/test/es_exports.js.flow/bor" -->
    [("test/es_exports.js.flow", 1), ("test/imports.js", 2)],
   "test/js/test/es_exports.js.flow/d" -->
-   [("test/es_exports.js.flow", 1), ("test/imports.js", 4)],
+   [("test/es_exports.js.flow", 1), ("test/imports.js", 6)],
   "test/js/test/es_exports.js.flow/C" --> [("test/imports.js", 2)],
   "test/js/test/es_exports.js.flow/num" --> [("test/imports.js", 4)],
   "test/js/test/cjs_exports.js/plus" -->

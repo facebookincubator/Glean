@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 54,
+        "size": 58,
         "symbols": {
             "1": [
                 {
@@ -144,8 +144,8 @@
                         "range": {
                             "columnBegin": 7,
                             "columnEnd": 10,
-                            "lineBegin": 20,
-                            "lineEnd": 20
+                            "lineBegin": 22,
+                            "lineEnd": 22
                         },
                         "repository": "test"
                     }
@@ -180,8 +180,8 @@
                         "range": {
                             "columnBegin": 10,
                             "columnEnd": 13,
-                            "lineBegin": 16,
-                            "lineEnd": 16
+                            "lineBegin": 18,
+                            "lineEnd": 18
                         },
                         "repository": "test"
                     }
@@ -216,8 +216,8 @@
                         "range": {
                             "columnBegin": 5,
                             "columnEnd": 6,
-                            "lineBegin": 22,
-                            "lineEnd": 22
+                            "lineBegin": 24,
+                            "lineEnd": 24
                         },
                         "repository": "test"
                     }
@@ -252,8 +252,8 @@
                         "range": {
                             "columnBegin": 5,
                             "columnEnd": 8,
-                            "lineBegin": 11,
-                            "lineEnd": 11
+                            "lineBegin": 13,
+                            "lineEnd": 13
                         },
                         "repository": "test"
                     }
@@ -522,8 +522,8 @@
                         "range": {
                             "columnBegin": 13,
                             "columnEnd": 16,
-                            "lineBegin": 28,
-                            "lineEnd": 28
+                            "lineBegin": 30,
+                            "lineEnd": 30
                         },
                         "repository": "test"
                     }
@@ -572,8 +572,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 17,
-                        "columnEnd": 18,
+                        "columnBegin": 8,
+                        "columnEnd": 17,
                         "lineBegin": 21,
                         "lineEnd": 21
                     },
@@ -583,8 +583,133 @@
                         "range": {
                             "columnBegin": 5,
                             "columnEnd": 6,
-                            "lineBegin": 22,
-                            "lineEnd": 22
+                            "lineBegin": 24,
+                            "lineEnd": 24
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 21
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "Component"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "Component: string"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 17,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "sym": "test/js/imports/Component"
+                }
+            ],
+            "22": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 21
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "d"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "d: string"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 22,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "sym": "test/js/es_exports/d",
+                    "target": {
+                        "filepath": "test/es_exports.js.flow",
+                        "range": {
+                            "columnBegin": 5,
+                            "columnEnd": 6,
+                            "lineBegin": 24,
+                            "lineEnd": 24
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 2
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "Component"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 22,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "sym": "test/js/imports/Component"
+                }
+            ],
+            "24": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 21
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "d"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "d: string"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 18,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "sym": "test/js/es_exports/d",
+                    "target": {
+                        "filepath": "test/es_exports.js.flow",
+                        "range": {
+                            "columnBegin": 5,
+                            "columnEnd": 6,
+                            "lineBegin": 24,
+                            "lineEnd": 24
                         },
                         "repository": "test"
                     }
@@ -610,8 +735,8 @@
                     "range": {
                         "columnBegin": 17,
                         "columnEnd": 18,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "lineBegin": 24,
+                        "lineEnd": 24
                     },
                     "sym": "test/js/imports/d",
                     "target": {
@@ -646,13 +771,13 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "lineBegin": 24,
+                        "lineEnd": 24
                     },
                     "sym": "test/js/imports/e"
                 }
             ],
-            "23": [
+            "26": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -674,8 +799,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 17,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 26,
+                        "lineEnd": 26
                     },
                     "sym": "test/js/es_exports/bor",
                     "target": {
@@ -683,8 +808,8 @@
                         "range": {
                             "columnBegin": 10,
                             "columnEnd": 13,
-                            "lineBegin": 16,
-                            "lineEnd": 16
+                            "lineBegin": 18,
+                            "lineEnd": 18
                         },
                         "repository": "test"
                     }
@@ -710,8 +835,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 26,
+                        "lineEnd": 26
                     },
                     "sym": "test/js/es_exports/num",
                     "target": {
@@ -719,8 +844,8 @@
                         "range": {
                             "columnBegin": 13,
                             "columnEnd": 16,
-                            "lineBegin": 28,
-                            "lineEnd": 28
+                            "lineBegin": 30,
+                            "lineEnd": 30
                         },
                         "repository": "test"
                     }
@@ -746,8 +871,8 @@
                     "range": {
                         "columnBegin": 18,
                         "columnEnd": 19,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 26,
+                        "lineEnd": 26
                     },
                     "sym": "test/js/imports/a",
                     "target": {
@@ -782,8 +907,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 17,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 26,
+                        "lineEnd": 26
                     },
                     "sym": "test/js/imports/bar",
                     "target": {
@@ -815,8 +940,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 26,
+                        "lineEnd": 26
                     },
                     "sym": "test/js/imports/num",
                     "target": {
@@ -851,13 +976,13 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
-                        "lineBegin": 23,
-                        "lineEnd": 23
+                        "lineBegin": 26,
+                        "lineEnd": 26
                     },
                     "sym": "test/js/imports/x"
                 }
             ],
-            "24": [
+            "27": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -879,8 +1004,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 17,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "sym": "test/js/es_exports",
                     "target": {
@@ -912,8 +1037,8 @@
                     "range": {
                         "columnBegin": 18,
                         "columnEnd": 21,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "sym": "test/js/es_exports/bar",
                     "target": {
@@ -921,8 +1046,8 @@
                         "range": {
                             "columnBegin": 10,
                             "columnEnd": 13,
-                            "lineBegin": 16,
-                            "lineEnd": 16
+                            "lineBegin": 18,
+                            "lineEnd": 18
                         },
                         "repository": "test"
                     }
@@ -948,8 +1073,8 @@
                     "range": {
                         "columnBegin": 22,
                         "columnEnd": 25,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "sym": "test/js/es_exports/foo",
                     "target": {
@@ -957,8 +1082,8 @@
                         "range": {
                             "columnBegin": 5,
                             "columnEnd": 8,
-                            "lineBegin": 11,
-                            "lineEnd": 11
+                            "lineBegin": 13,
+                            "lineEnd": 13
                         },
                         "repository": "test"
                     }
@@ -984,8 +1109,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "sym": "test/js/es_exports/num",
                     "target": {
@@ -993,8 +1118,8 @@
                         "range": {
                             "columnBegin": 13,
                             "columnEnd": 16,
-                            "lineBegin": 28,
-                            "lineEnd": 28
+                            "lineBegin": 30,
+                            "lineEnd": 30
                         },
                         "repository": "test"
                     }
@@ -1020,8 +1145,8 @@
                     "range": {
                         "columnBegin": 22,
                         "columnEnd": 25,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "sym": "test/js/imports/foo",
                     "target": {
@@ -1053,8 +1178,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "sym": "test/js/imports/num",
                     "target": {
@@ -1089,8 +1214,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 17,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "sym": "test/js/imports/qux",
                     "target": {
@@ -1125,13 +1250,13 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "sym": "test/js/imports/y"
                 }
             ],
-            "25": [
+            "28": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -1153,8 +1278,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 16,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "sym": "test/js/cjs_exports/plus",
                     "target": {
@@ -1189,8 +1314,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "sym": "test/js/es_exports/num",
                     "target": {
@@ -1198,8 +1323,8 @@
                         "range": {
                             "columnBegin": 13,
                             "columnEnd": 16,
-                            "lineBegin": 28,
-                            "lineEnd": 28
+                            "lineBegin": 30,
+                            "lineEnd": 30
                         },
                         "repository": "test"
                     }
@@ -1225,8 +1350,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 16,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "sym": "test/js/imports/fn",
                     "target": {
@@ -1258,8 +1383,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "sym": "test/js/imports/num",
                     "target": {
@@ -1294,13 +1419,13 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
-                        "lineBegin": 25,
-                        "lineEnd": 25
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "sym": "test/js/imports/z"
                 }
             ],
-            "27": [
+            "30": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -1322,8 +1447,8 @@
                     "range": {
                         "columnBegin": 19,
                         "columnEnd": 22,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "sym": "test/js/es_exports/baz",
                     "target": {
@@ -1331,8 +1456,8 @@
                         "range": {
                             "columnBegin": 7,
                             "columnEnd": 10,
-                            "lineBegin": 20,
-                            "lineEnd": 20
+                            "lineBegin": 22,
+                            "lineEnd": 22
                         },
                         "repository": "test"
                     }
@@ -1358,8 +1483,8 @@
                     "range": {
                         "columnBegin": 19,
                         "columnEnd": 22,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "sym": "test/js/imports/baz",
                     "target": {
@@ -1394,8 +1519,8 @@
                     "range": {
                         "columnBegin": 7,
                         "columnEnd": 10,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "sym": "test/js/imports/caz"
                 },
@@ -1420,13 +1545,13 @@
                     "range": {
                         "columnBegin": 7,
                         "columnEnd": 10,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 30,
+                        "lineEnd": 30
                     },
                     "sym": "test/js/imports/caz"
                 }
             ],
-            "29": [
+            "32": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -1448,8 +1573,8 @@
                     "range": {
                         "columnBegin": 21,
                         "columnEnd": 22,
-                        "lineBegin": 29,
-                        "lineEnd": 29
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "sym": "test/js/es_exports/C",
                     "target": {
@@ -1457,8 +1582,8 @@
                         "range": {
                             "columnBegin": 14,
                             "columnEnd": 15,
-                            "lineBegin": 30,
-                            "lineEnd": 30
+                            "lineBegin": 36,
+                            "lineEnd": 36
                         },
                         "repository": "test"
                     }
@@ -1484,8 +1609,8 @@
                     "range": {
                         "columnBegin": 15,
                         "columnEnd": 18,
-                        "lineBegin": 29,
-                        "lineEnd": 29
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "sym": "test/js/es_exports/d",
                     "target": {
@@ -1493,8 +1618,8 @@
                         "range": {
                             "columnBegin": 5,
                             "columnEnd": 6,
-                            "lineBegin": 22,
-                            "lineEnd": 22
+                            "lineBegin": 24,
+                            "lineEnd": 24
                         },
                         "repository": "test"
                     }
@@ -1517,8 +1642,8 @@
                     "range": {
                         "columnBegin": 21,
                         "columnEnd": 22,
-                        "lineBegin": 29,
-                        "lineEnd": 29
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "sym": "test/js/imports/C"
                 },
@@ -1540,13 +1665,13 @@
                     "range": {
                         "columnBegin": 15,
                         "columnEnd": 18,
-                        "lineBegin": 29,
-                        "lineEnd": 29
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "sym": "test/js/imports/str"
                 }
             ],
-            "31": [
+            "34": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -1568,8 +1693,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 11,
-                        "lineBegin": 31,
-                        "lineEnd": 31
+                        "lineBegin": 34,
+                        "lineEnd": 34
                     },
                     "sym": "test/js/es_exports/C",
                     "target": {
@@ -1577,8 +1702,8 @@
                         "range": {
                             "columnBegin": 14,
                             "columnEnd": 15,
-                            "lineBegin": 30,
-                            "lineEnd": 30
+                            "lineBegin": 36,
+                            "lineEnd": 36
                         },
                         "repository": "test"
                     }
@@ -1601,8 +1726,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 11,
-                        "lineBegin": 31,
-                        "lineEnd": 31
+                        "lineBegin": 34,
+                        "lineEnd": 34
                     },
                     "sym": "test/js/imports/C",
                     "target": {
@@ -1610,8 +1735,8 @@
                         "range": {
                             "columnBegin": 21,
                             "columnEnd": 22,
-                            "lineBegin": 29,
-                            "lineEnd": 29
+                            "lineBegin": 32,
+                            "lineEnd": 32
                         },
                         "repository": "test"
                     }
@@ -1637,13 +1762,13 @@
                     "range": {
                         "columnBegin": 6,
                         "columnEnd": 7,
-                        "lineBegin": 31,
-                        "lineEnd": 31
+                        "lineBegin": 34,
+                        "lineEnd": 34
                     },
                     "sym": "test/js/imports/D"
                 }
             ],
-            "32": [
+            "35": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -1665,8 +1790,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 35,
+                        "lineEnd": 35
                     },
                     "sym": "test/js/es_exports/d",
                     "target": {
@@ -1674,8 +1799,8 @@
                         "range": {
                             "columnBegin": 5,
                             "columnEnd": 6,
-                            "lineBegin": 22,
-                            "lineEnd": 22
+                            "lineBegin": 24,
+                            "lineEnd": 24
                         },
                         "repository": "test"
                     }
@@ -1701,8 +1826,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 35,
+                        "lineEnd": 35
                     },
                     "sym": "test/js/imports/s"
                 },
@@ -1724,8 +1849,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 35,
+                        "lineEnd": 35
                     },
                     "sym": "test/js/imports/str",
                     "target": {
@@ -1733,8 +1858,8 @@
                         "range": {
                             "columnBegin": 15,
                             "columnEnd": 18,
-                            "lineBegin": 29,
-                            "lineEnd": 29
+                            "lineBegin": 32,
+                            "lineEnd": 32
                         },
                         "repository": "test"
                     }

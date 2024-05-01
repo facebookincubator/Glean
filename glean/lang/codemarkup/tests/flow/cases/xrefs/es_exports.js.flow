@@ -8,6 +8,8 @@
 
 //@flow
 
+import * as React from 'react';
+
 let foo: number = 1;
 
 /**
@@ -26,5 +28,9 @@ export {foo, bor as bar, baz};
 export default d;
 
 export type num = number;
+
+export component Introduction(name: string) {
+  return <h1>My name is {name}</h1>
+}
 
 export class C {}

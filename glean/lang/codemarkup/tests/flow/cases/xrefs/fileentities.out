@@ -6,7 +6,7 @@
       "location": {
         "name": "C",
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "start": 634, "length": 1 } }
+        "location": { "span": { "start": 716, "length": 1 } }
       },
       "entity": {
         "flow": {
@@ -19,7 +19,65 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 634, "length": 1 }
+                    "span": { "start": 716, "length": 1 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test/imports.js" },
+      "location": {
+        "name": "Component",
+        "file": { "key": "test/imports.js" },
+        "location": { "span": { "start": 506, "length": 9 } }
+      },
+      "entity": {
+        "flow": {
+          "decl": {
+            "localDecl": {
+              "key": {
+                "name": { "key": "Component" },
+                "loc": {
+                  "key": {
+                    "module": {
+                      "key": { "file": { "key": "test/imports.js" } }
+                    },
+                    "span": { "start": 506, "length": 9 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test/imports.js" },
+      "location": {
+        "name": "Component",
+        "file": { "key": "test/imports.js" },
+        "location": { "span": { "start": 549, "length": 9 } }
+      },
+      "entity": {
+        "flow": {
+          "decl": {
+            "typeDecl": {
+              "key": {
+                "name": { "key": "Component" },
+                "loc": {
+                  "key": {
+                    "module": {
+                      "key": { "file": { "key": "test/imports.js" } }
+                    },
+                    "span": { "start": 549, "length": 9 }
                   }
                 }
               }
@@ -35,7 +93,7 @@
       "location": {
         "name": "D",
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "start": 664, "length": 1 } }
+        "location": { "span": { "start": 746, "length": 1 } }
       },
       "entity": {
         "flow": {
@@ -48,7 +106,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 664, "length": 1 }
+                    "span": { "start": 746, "length": 1 }
                   }
                 }
               }
@@ -209,7 +267,7 @@
       "location": {
         "name": "caz",
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "start": 594, "length": 3 } }
+        "location": { "span": { "start": 676, "length": 3 } }
       },
       "entity": {
         "flow": {
@@ -222,7 +280,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 594, "length": 3 }
+                    "span": { "start": 676, "length": 3 }
                   }
                 }
               }
@@ -238,7 +296,7 @@
       "location": {
         "name": "caz",
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "start": 594, "length": 3 } }
+        "location": { "span": { "start": 676, "length": 3 } }
       },
       "entity": {
         "flow": {
@@ -251,7 +309,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 594, "length": 3 }
+                    "span": { "start": 676, "length": 3 }
                   }
                 }
               }
@@ -296,7 +354,7 @@
       "location": {
         "name": "e",
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "start": 503, "length": 1 } }
+        "location": { "span": { "start": 585, "length": 1 } }
       },
       "entity": {
         "flow": {
@@ -309,7 +367,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 503, "length": 1 }
+                    "span": { "start": 585, "length": 1 }
                   }
                 }
               }
@@ -441,7 +499,7 @@
       "location": {
         "name": "s",
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "start": 675, "length": 1 } }
+        "location": { "span": { "start": 757, "length": 1 } }
       },
       "entity": {
         "flow": {
@@ -454,7 +512,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 675, "length": 1 }
+                    "span": { "start": 757, "length": 1 }
                   }
                 }
               }
@@ -470,7 +528,7 @@
       "location": {
         "name": "str",
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "start": 628, "length": 3 } }
+        "location": { "span": { "start": 710, "length": 3 } }
       },
       "entity": {
         "flow": {
@@ -483,7 +541,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 628, "length": 3 }
+                    "span": { "start": 710, "length": 3 }
                   }
                 }
               }
@@ -514,7 +572,7 @@
       "location": {
         "name": "x",
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "start": 523, "length": 1 } }
+        "location": { "span": { "start": 605, "length": 1 } }
       },
       "entity": {
         "flow": {
@@ -527,7 +585,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 523, "length": 1 }
+                    "span": { "start": 605, "length": 1 }
                   }
                 }
               }
@@ -543,7 +601,7 @@
       "location": {
         "name": "y",
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "start": 544, "length": 1 } }
+        "location": { "span": { "start": 626, "length": 1 } }
       },
       "entity": {
         "flow": {
@@ -556,7 +614,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 544, "length": 1 }
+                    "span": { "start": 626, "length": 1 }
                   }
                 }
               }
@@ -572,7 +630,7 @@
       "location": {
         "name": "z",
         "file": { "key": "test/imports.js" },
-        "location": { "span": { "start": 571, "length": 1 } }
+        "location": { "span": { "start": 653, "length": 1 } }
       },
       "entity": {
         "flow": {
@@ -585,7 +643,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 571, "length": 1 }
+                    "span": { "start": 653, "length": 1 }
                   }
                 }
               }

@@ -50,11 +50,26 @@ predicate FlowSearchByNameNonImport:
     ({ localDecl = LocalDecl } = Decl;
      !flow.ImportDeclaration { declaration = LocalDecl }
     ) | (
+     # for type declarations, we filter our `import type` occurences
+     # and also any remnant `import` occurences.
      { typeDecl = TypeDecl } = Decl;
-     !flow.TypeImportDeclaration { typeDeclaration = TypeDecl }
+     !flow.TypeImportDeclaration { typeDeclaration = TypeDecl };
+     !(TypeDeclarationAsDeclaration { TypeDecl, DeclImport };
+       flow.ImportDeclaration { declaration = DeclImport })
     ) | (
      { memberDecl = _ } = Decl;
     )
 
+# Sometimes types are imported without the `import type` syntax,
+# so are not captured. If this is true, the type decl is also captured
+# as possibly an `import` occurence
+predicate TypeDeclarationAsDeclaration:
+  {
+    typeDecl : flow.TypeDeclaration,
+    decl : flow.Declaration
+  }
+  { TypeDecl, Decl } where
+    { Name, Range } = TypeDecl;
+    flow.Declaration { Name, Range } = Decl
 
 }
