@@ -54,8 +54,6 @@ data Config = Config
   , cfgIncremental :: Bool  -- ^ derive incrementally
   , cfgTestedFileShards :: Int -- Number of shards for --tested-file deriver
   , cfgTestedFileShard :: Int -- Shard number for ---tested-file deriver
-  , cfgCxxDeclarationTargetsFilter :: forall xmap . Text -> [xmap] -> [xmap]
-      -- vendor-specific filter for CxxDeclarationTargets
   }
 
 -- | Only used for regression testing derived passes
@@ -82,7 +80,6 @@ testConfig repo = Config
   , cfgTestedFileShards = 1
   , cfgTestedFileShard = 0
   , cfgBatchSize = 1
-  , cfgCxxDeclarationTargetsFilter = const id
   }
 
 -- | Command-line argument parser for "Derive" to get 'Config'
@@ -152,4 +149,4 @@ options = do
     <> O.metavar "N"
     <> O.value 1
     <> O.help "batch size for function-calls"
-  return Config{cfgCxxDeclarationTargetsFilter = const id, ..}
+  return Config{..}

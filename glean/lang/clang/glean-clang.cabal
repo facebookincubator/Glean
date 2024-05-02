@@ -161,7 +161,6 @@ executable clang-derive
     other-modules:
         Derive.Common
         Derive.CxxDeclarationSources
-        Derive.CxxDeclarationTargets
         Derive.CxxSame
         Derive.CxxTargetUses
         Derive.Env

@@ -152,6 +152,23 @@ public:
     FileData *file;
     Src::ByteSpan span;
     Src::Range range;
+
+    bool operator<(const SourceRange& y) const {
+        if (bool(file) != bool(y.file)) {
+          return bool(file) < bool(y.file);
+        }
+        return file && y.file && file->path != y.file->path
+            ? file->path < y.file->path
+            : span < y.span;
+      }
+      bool operator==(const SourceRange& y) const {
+        if ((!file && !y.file) ||
+            (file && y.file && file->path == y.file->path)) {
+          return span == y.span;
+        } else {
+          return false;
+        }
+      }
   };
 
   using FullSourceRange = std::variant<

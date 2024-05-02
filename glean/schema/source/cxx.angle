@@ -728,14 +728,27 @@ predicate DeclarationNameSpan :
 # Generalization of Function call facts, which handles references between
 # any kinds of declarations.
 
-# Declarations referred from a given declaration.
+# Declarations referenced from a given declaration. This can be used
+# for constructing call graphs, for example.
+#
+# Notes:
+#   - source is limited to RecordDeclaration, FunctionDeclaration,
+#     ObjcContainerDeclaration, ObjcPropertyDeclaration, ObjcMethodDeclaration
+#
+#   - Each reference in the source is attributed to exactly one
+#     declaration. So for example, a reference inside a method is
+#     attributed to the method, but not the enclosing class declaration.
+#
+#   - The order of the declarations in the list is non-deterministic,
+#     but there are no duplicates (it should be a set, really)
+#
 predicate DeclarationTargets :
   {
     source : Declaration,
     targets : [Declaration],
   }
 
-# Declarations referring to a given declaration.
+# Declarations referring to a given declaration. The inverse of DeclarationTargets.
 predicate DeclarationSources :
   {
     target : Declaration,

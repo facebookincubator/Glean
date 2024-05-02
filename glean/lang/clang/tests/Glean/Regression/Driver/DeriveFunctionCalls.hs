@@ -12,4 +12,4 @@ import Derive.Lib
 import Glean.Clang.Test.DerivePass
 
 main :: IO ()
-main = testDeriver [DeriveFunctionCalls, DeriveFunctionCalls_Pass_2]
+main = testDeriver [DeriveFunctionCalls_Pass_2]

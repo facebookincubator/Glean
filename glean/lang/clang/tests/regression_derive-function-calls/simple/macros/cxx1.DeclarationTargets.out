@@ -7,78 +7,6 @@
           "key": {
             "name": {
               "key": {
-                "name": { "key": { "name": { "key": "f" } } },
-                "scope": { "global_": { } }
-              }
-            },
-            "signature": {
-              "key": { "parameters": [ ], "returns": { "key": "void" } }
-            },
-            "source": {
-              "columnBegin": 1,
-              "columnEnd": 1,
-              "file": { "key": "test.cpp" },
-              "lineBegin": 14,
-              "lineEnd": 14
-            }
-          }
-        }
-      },
-      "targets": [
-        {
-          "function_": {
-            "key": {
-              "name": {
-                "key": {
-                  "name": { "key": { "name": { "key": "f" } } },
-                  "scope": { "global_": { } }
-                }
-              },
-              "signature": {
-                "key": { "parameters": [ ], "returns": { "key": "void" } }
-              },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "test.cpp" },
-                "lineBegin": 14,
-                "lineEnd": 14
-              }
-            }
-          }
-        },
-        {
-          "function_": {
-            "key": {
-              "name": {
-                "key": {
-                  "name": { "key": { "name": { "key": "g" } } },
-                  "scope": { "global_": { } }
-                }
-              },
-              "signature": {
-                "key": { "parameters": [ ], "returns": { "key": "void" } }
-              },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "test.cpp" },
-                "lineBegin": 14,
-                "lineEnd": 14
-              }
-            }
-          }
-        }
-      ]
-    }
-  },
-  {
-    "key": {
-      "source": {
-        "function_": {
-          "key": {
-            "name": {
-              "key": {
                 "name": { "key": { "name": { "key": "g" } } },
                 "scope": { "global_": { } }
               }
@@ -103,28 +31,6 @@
               "name": {
                 "key": {
                   "name": { "key": { "name": { "key": "f" } } },
-                  "scope": { "global_": { } }
-                }
-              },
-              "signature": {
-                "key": { "parameters": [ ], "returns": { "key": "void" } }
-              },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "test.cpp" },
-                "lineBegin": 14,
-                "lineEnd": 14
-              }
-            }
-          }
-        },
-        {
-          "function_": {
-            "key": {
-              "name": {
-                "key": {
-                  "name": { "key": { "name": { "key": "g" } } },
                   "scope": { "global_": { } }
                 }
               },
@@ -169,28 +75,6 @@
         }
       },
       "targets": [
-        {
-          "function_": {
-            "key": {
-              "name": {
-                "key": {
-                  "name": { "key": { "name": { "key": "f" } } },
-                  "scope": { "global_": { } }
-                }
-              },
-              "signature": {
-                "key": { "parameters": [ ], "returns": { "key": "void" } }
-              },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "test.cpp" },
-                "lineBegin": 14,
-                "lineEnd": 14
-              }
-            }
-          }
-        },
         {
           "function_": {
             "key": {

@@ -4,20 +4,6 @@
     "key": {
       "sources": [
         {
-          "objcContainer": {
-            "key": {
-              "id": { "implementation": { "key": "I" } },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "test.m" },
-                "lineBegin": 18,
-                "lineEnd": 36
-              }
-            }
-          }
-        },
-        {
           "objcMethod": {
             "key": {
               "container": { "implementation": { "key": "I" } },
@@ -98,20 +84,6 @@
     "key": {
       "sources": [
         {
-          "objcContainer": {
-            "key": {
-              "id": { "implementation": { "key": "I" } },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "test.m" },
-                "lineBegin": 18,
-                "lineEnd": 36
-              }
-            }
-          }
-        },
-        {
           "objcMethod": {
             "key": {
               "container": { "implementation": { "key": "I" } },
@@ -173,20 +145,6 @@
     "key": {
       "sources": [
         {
-          "objcContainer": {
-            "key": {
-              "id": { "implementation": { "key": "I" } },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "test.m" },
-                "lineBegin": 18,
-                "lineEnd": 36
-              }
-            }
-          }
-        },
-        {
           "objcMethod": {
             "key": {
               "container": { "implementation": { "key": "I" } },
@@ -247,20 +205,6 @@
   {
     "key": {
       "sources": [
-        {
-          "objcContainer": {
-            "key": {
-              "id": { "implementation": { "key": "I" } },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "test.m" },
-                "lineBegin": 18,
-                "lineEnd": 36
-              }
-            }
-          }
-        },
         {
           "objcMethod": {
             "key": {
@@ -326,20 +270,6 @@
   {
     "key": {
       "sources": [
-        {
-          "objcContainer": {
-            "key": {
-              "id": { "implementation": { "key": "I" } },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "test.m" },
-                "lineBegin": 18,
-                "lineEnd": 36
-              }
-            }
-          }
-        },
         {
           "objcMethod": {
             "key": {
@@ -415,20 +345,6 @@
   {
     "key": {
       "sources": [
-        {
-          "objcContainer": {
-            "key": {
-              "id": { "implementation": { "key": "I" } },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "test.m" },
-                "lineBegin": 18,
-                "lineEnd": 36
-              }
-            }
-          }
-        },
         {
           "objcMethod": {
             "key": {

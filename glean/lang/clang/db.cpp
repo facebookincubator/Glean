@@ -415,12 +415,7 @@ std::vector<Cxx::FixedXRef> finishRefs(std::deque<ClangDB::CrossRef>&& v) {
             x.sort_id,
             [&y_id = y.sort_id](const ClangDB::SourceRange& x) {
               const auto& y = std::get<ClangDB::SourceRange>(y_id);
-              if (bool(x.file) != bool(y.file)) {
-                return bool(x.file) < bool(y.file);
-              }
-              return x.file && y.file && x.file->path != y.file->path
-                  ? x.file->path < y.file->path
-                  : x.span < y.span;
+              return x < y;
             },
             [&y_id = y.sort_id](const std::vector<std::string>& x) {
               return x < std::get<std::vector<std::string>>(y_id);

@@ -28,7 +28,6 @@ import Glean.Typed
 import Derive.Env
 
 import Derive.CxxDeclarationSources (deriveCxxDeclarationSources)
-import Derive.CxxDeclarationTargets (deriveCxxDeclarationTargets)
 import Derive.CxxSame (deriveSame)
 import Derive.CxxTargetUses (deriveUses)
 import Derive.Generic (derivePredicate)
@@ -40,7 +39,7 @@ dispatchDerive :: Env -> DerivePass -> IO ()
 dispatchDerive env = \case
   DeriveTargetUses -> execN deriveUses
   DeriveDeclFamilies -> exec deriveSame
-  DeriveFunctionCalls -> execN deriveCxxDeclarationTargets
+  DeriveFunctionCalls -> return () -- no-op; facts now emitted by the indexer
   DeriveFunctionCalls_Pass_2 -> exec deriveCxxDeclarationSources
   DeriveGeneric p -> storedPredicate p
   where
@@ -58,7 +57,7 @@ allPredicates =
 data DerivePass
   = DeriveTargetUses
   | DeriveDeclFamilies
-  | DeriveFunctionCalls
+  | DeriveFunctionCalls  -- backwards compat, this pass is a no-op
   | DeriveFunctionCalls_Pass_2
   | DeriveGeneric Text
   deriving (Eq,Ord)
@@ -67,7 +66,6 @@ allManualPasses :: [DerivePass]
 allManualPasses =
   [ DeriveTargetUses
   , DeriveDeclFamilies
-  , DeriveFunctionCalls
   , DeriveFunctionCalls_Pass_2
   ]
 

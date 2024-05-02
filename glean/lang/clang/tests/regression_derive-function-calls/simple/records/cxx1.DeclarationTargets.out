@@ -208,23 +208,6 @@
             "key": {
               "kind": { "struct_": { } },
               "name": {
-                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-              },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "lineEnd": 11
-              }
-            }
-          }
-        },
-        {
-          "record_": {
-            "key": {
-              "kind": { "struct_": { } },
-              "name": {
                 "key": {
                   "name": { "key": "F" },
                   "scope": {
@@ -425,96 +408,6 @@
                 "file": { "key": "test.cpp" },
                 "lineBegin": 13,
                 "lineEnd": 15
-              }
-            }
-          }
-        }
-      ]
-    }
-  },
-  {
-    "key": {
-      "source": {
-        "record_": {
-          "key": {
-            "kind": { "struct_": { } },
-            "name": {
-              "key": { "name": { "key": "D" }, "scope": { "global_": { } } }
-            },
-            "source": {
-              "columnBegin": 1,
-              "columnEnd": 1,
-              "file": { "key": "test.cpp" },
-              "lineBegin": 21,
-              "lineEnd": 26
-            }
-          }
-        }
-      },
-      "targets": [
-        {
-          "record_": {
-            "key": {
-              "kind": { "struct_": { } },
-              "name": {
-                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-              },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "lineEnd": 11
-              }
-            }
-          }
-        }
-      ]
-    }
-  },
-  {
-    "key": {
-      "source": {
-        "record_": {
-          "key": {
-            "kind": { "struct_": { } },
-            "name": {
-              "key": {
-                "name": { "key": "F" },
-                "scope": {
-                  "local": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "h" } } },
-                      "scope": { "global_": { } }
-                    }
-                  }
-                }
-              }
-            },
-            "source": {
-              "columnBegin": 3,
-              "columnEnd": 3,
-              "file": { "key": "test.cpp" },
-              "lineBegin": 38,
-              "lineEnd": 42
-            }
-          }
-        }
-      },
-      "targets": [
-        {
-          "record_": {
-            "key": {
-              "kind": { "struct_": { } },
-              "name": {
-                "key": { "name": { "key": "A" }, "scope": { "global_": { } } }
-              },
-              "source": {
-                "columnBegin": 1,
-                "columnEnd": 1,
-                "file": { "key": "test.cpp" },
-                "lineBegin": 9,
-                "lineEnd": 11
               }
             }
           }

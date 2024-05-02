@@ -170,7 +170,6 @@ private:
     /// The context of the parent enum decl if we are looking for an enumerator
     const clang::DeclContext * FOLLY_NULLABLE parentContext;
 
-
     /// List of XRefVia populated by the lookup
     std::list<Cxx::XRefVia> via;
 
@@ -370,6 +369,48 @@ private:
   };
 
   folly::F14FastMap<const clang::DeclContext *, std::vector<Forward>> forwards;
+};
+
+class DeclarationTargets {
+  public:
+  explicit DeclarationTargets(ClangDB& d) : db(d) {}
+
+  template <typename F>
+  auto inDeclaration(Cxx::Declaration decl, F&& f) {
+    std::set<DeclRef> savedRefs = std::move(refsInContext);
+    SCOPE_EXIT {
+      if (!refsInContext.empty()) {
+        std::vector<Cxx::Declaration> decls;
+        decls.reserve(refsInContext.size());
+        for (const auto& [decl, _] : refsInContext) {
+            decls.push_back(decl);
+        }
+        db.fact<Cxx::DeclarationTargets>(decl, std::move(decls));
+      }
+      refsInContext = std::move(savedRefs);
+    };
+    return std::forward<F>(f)();
+  }
+
+  void contextXRef(Cxx::Declaration target, ClangDB::SourceRange sort_id) {
+    refsInContext.insert({ target, sort_id });
+  }
+
+  private:
+    struct DeclRef {
+      Cxx::Declaration decl;
+      ClangDB::SourceRange sort_id;
+
+      bool operator<(const DeclRef& other) const {
+        return sort_id < other.sort_id;
+      }
+      bool operator==(const DeclRef& other) const {
+        return sort_id == other.sort_id;
+      }
+    };
+
+    ClangDB& db;
+    std::set<DeclRef> refsInContext;
 };
 
 struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
@@ -754,13 +795,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       // anyway.
       return false;
     }
-  };
+    };
 
   template<typename Memo, typename Decl>
-  folly::Optional<typename Memo::value_type> representative(
+  static typename Memo::value_type representative(
       Memo& memo,
       const Decl *decl,
-      folly::Optional<typename Memo::value_type> me) {
+      typename Memo::value_type me) {
     auto defn = DeclTraits::getDefinition(decl);
     if (defn == decl) {
       return me;
@@ -876,12 +917,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         mdecl->define(*this, decl);
       }
       auto same = representative(memo, decl, mdecl.value());
-      if (same) {
-        const auto this_decl = mdecl->declaration();
-        const auto other_decl = same->declaration();
-        if (this_decl != other_decl) {
-          db.fact<Cxx::Same>(this_decl, other_decl);
-        }
+      const auto this_decl = mdecl->declaration();
+      const auto other_decl = same.declaration();
+      if (this_decl != other_decl) {
+        db.fact<Cxx::Same>(this_decl, other_decl);
       }
     }
   }
@@ -2213,22 +2252,30 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   struct XRef {
     const clang::Decl *primary;
     const clang::Decl *decl;
+    folly::Optional<Cxx::Declaration> gleanDecl;
     folly::Optional<Cxx::XRefTarget> target;
 
     static XRef unknown(const clang::Decl* d) {
-      return {d, d, folly::none};
+      return {d, d, folly::none, folly::none};
     }
 
     static XRef to(const clang::Decl* d, Cxx::XRefTarget t) {
-      return {d, d, std::move(t)};
+      return {d, d, folly::none, std::move(t)};
     }
 
     template <typename Memo, typename Decl>
     static XRef toDecl(Memo& memo, const Decl* decl) {
       auto b = memo(decl);
       auto d = b ? b->key : decl;
-      return b ? to(d, Cxx::XRefTarget::declaration(b->declaration()))
-               : unknown(d);
+      if (b) {
+        return {
+            d,
+            d,
+            representative(memo,d,*b).declaration(),
+            Cxx::XRefTarget::declaration(b->declaration())};
+      } else {
+        return unknown(d);
+      }
     }
   };
 
@@ -2242,6 +2289,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     const auto wrapped = usingTracker.retarget(xref.primary, raw);
     auto sort_id = db.srcRange(xref.decl->getLocation());
     db.xref(range, wrapped, sort_id, raw == wrapped);
+    if (xref.gleanDecl && !clang::isa<clang::NamespaceDecl>(xref.decl)) {
+      declTargets.contextXRef(*xref.gleanDecl, sort_id);
+    }
   }
 
   Cxx::XRefTarget unknownTarget(const clang::Decl* decl) {
@@ -2462,6 +2512,17 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   bool TraverseDecl(clang::Decl *decl) {
     clang::DeclContext *context = nullptr;
+
+    folly::Optional<Cxx::Declaration> gleanDecl;
+    auto traverse = [&]() {
+      if (gleanDecl) {
+        return declTargets.inDeclaration(*gleanDecl, [&] {
+          return Base::TraverseDecl(decl); });
+      } else {
+        return Base::TraverseDecl(decl);
+      }
+    };
+
     if (decl) {
       if (auto tunit = clang::dyn_cast<clang::TranslationUnitDecl>(decl)) {
         context = tunit;
@@ -2474,14 +2535,89 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         // traversed in the enclosing context. Not sure about base classes.
         context = tag;
       } else if (auto fun = clang::dyn_cast<clang::FunctionDecl>(decl)) {
-        return usingTracker.inFunction(
-          fun,
-          [&] { return Base::TraverseDecl(decl); });
+        if (auto f = funDecls(fun)) {
+          gleanDecl = f->declaration();
+        }
+        return usingTracker.inFunction(fun, traverse);
       }
+
+      struct GetGleanDecl : clang::DeclVisitor<
+                               GetGleanDecl,
+                               folly::Optional<Cxx::Declaration>> {
+        ASTVisitor& visitor_;
+
+        explicit GetGleanDecl(ASTVisitor& v) : visitor_(v) {}
+        folly::Optional<Cxx::Declaration> VisitDecl(clang::Decl *d) {
+          return folly::none;
+        }
+        folly::Optional<Cxx::Declaration> VisitCXXRecordDecl(
+            clang::CXXRecordDecl* d) {
+          if (auto g = visitor_.classDecls(d)) {
+            return g->declaration();
+          } else {
+            return folly::none;
+          }
+        }
+        folly::Optional<Cxx::Declaration> VisitObjCCategoryDecl(
+            clang::ObjCCategoryDecl* d) {
+          if (auto g = visitor_.objcContainerDecls(d)) {
+            return g->declaration();
+          } else {
+            return folly::none;
+          }
+        }
+        folly::Optional<Cxx::Declaration> VisitObjCCategoryImplDecl(
+            clang::ObjCCategoryImplDecl* d) {
+          if (auto g = visitor_.objcContainerDecls(d)) {
+            return g->declaration();
+          } else {
+            return folly::none;
+          }
+        }
+        folly::Optional<Cxx::Declaration> VisitObjCImplementationDecl(
+            clang::ObjCImplementationDecl* d) {
+          if (auto g = visitor_.objcContainerDecls(d)) {
+            return g->declaration();
+          } else {
+            return folly::none;
+          }
+        }
+        folly::Optional<Cxx::Declaration> VisitObjCInterfaceDecl(
+            clang::ObjCInterfaceDecl* d) {
+          if (auto g = visitor_.objcContainerDecls(d)) {
+            return g->declaration();
+          } else {
+            return folly::none;
+          }
+        }
+        folly::Optional<Cxx::Declaration> VisitObjCProtocolDecl(
+            clang::ObjCProtocolDecl* d) {
+          if (auto g = visitor_.objcContainerDecls(d)) {
+            return g->declaration();
+          } else {
+            return folly::none;
+          }
+        }
+        folly::Optional<Cxx::Declaration> VisitObjCMethodDecl(
+            clang::ObjCMethodDecl* d) {
+          if (auto g = visitor_.objcMethodDecls(d)) {
+            return g->declaration();
+          } else {
+            return folly::none;
+          }
+        }
+        folly::Optional<Cxx::Declaration> VisitObjCPropertyDecl(
+            clang::ObjCPropertyDecl* d) {
+          if (auto g = visitor_.objcPropertyDecls(d)) {
+            return g->declaration();
+          } else {
+            return folly::none;
+          }
+        }
+      };
+      gleanDecl = GetGleanDecl(*this).Visit(decl);
     }
-    return usingTracker.inContext(
-      context,
-      [&] { return Base::TraverseDecl(decl); });
+    return usingTracker.inContext(context, traverse);
   }
 
   bool TraverseCompoundStmt(clang::CompoundStmt *stmt) {
@@ -2732,6 +2868,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     : db(*d)
     , astContext(ctx)
     , usingTracker(ctx.getTranslationUnitDecl(), *d)
+    , declTargets(*d)
     , scopes(*this)
     , namespaces("namespaces", *this)
     , classDecls("classDecls", *this)
@@ -2750,6 +2887,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   clang::ASTContext &astContext;
 
   UsingTracker usingTracker;
+  DeclarationTargets declTargets;
   bool shouldVisitImplicitCode_ = false;
 
   Memo<const clang::DeclContext *,
@@ -2804,7 +2942,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   MemoOptional<
       const clang::ObjCContainerDecl *,
-      ObjcContainerDecl>
+        ObjcContainerDecl>
     objcContainerDecls;
 
   MemoOptional<
@@ -2816,7 +2954,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       const clang::ObjCPropertyDecl *,
       ObjcPropertyDecl>
     objcPropertyDecls;
-};
+    };
 
 // ASTConsumer uses ASTVisitor to traverse the Clang AST
 //

@@ -113,19 +113,6 @@ predicate CxxRecordReferenceTo : {
     cxx1.DeclarationScope { decl = D, scope = Scope };
     !({ recordWithAccess = { record = QName }} = Scope);
 
-    # Ignore references from inline methods, because they are already
-    # counted as references from the enclosing class
-    !(
-       { recordWithAccess = { record = QN }} = Scope;
-       Rec = cxx1.RecordDeclaration { name = QN };
-       cxx1.DeclarationLocationName {
-         decl = { record_ = Rec }, source = { F, LR0, CR0, LR1, CR1 } };
-       cxx1.DeclarationLocationName {
-         decl = D, source = { F, LF0, CF0, LF1, CF1 } };
-       ((LF0 = LR0; CR0 <= CF0) | (LR0 < LF0));
-       ((LR1 = LF1; CR1 >= CF1) | (LR1 > LF1));
-    );
-
     # We don't care about references from the class itself
     !({ record_ = Decl } = D);
 

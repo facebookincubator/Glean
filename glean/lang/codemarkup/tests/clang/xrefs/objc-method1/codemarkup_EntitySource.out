@@ -227,53 +227,6 @@
       "source": {
         "cxx": {
           "decl": {
-            "objcContainer": {
-              "key": {
-                "id": { "implementation": { "key": "Bar" } },
-                "source": {
-                  "file": { "key": "test.mm" },
-                  "lineBegin": 25,
-                  "columnBegin": 1,
-                  "lineEnd": 35,
-                  "columnEnd": 1
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "target": {
-        "cxx": {
-          "defn": {
-            "variable": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "foo" },
-                    "scope": { "global_": { } }
-                  }
-                },
-                "type": { "key": "id<Foo>" },
-                "kind": { "ivar": { "synthesize": false } },
-                "source": {
-                  "file": { "key": "test.mm" },
-                  "lineBegin": 20,
-                  "columnBegin": 3,
-                  "lineEnd": 20,
-                  "columnEnd": 13
-                }
-              }
-            }
-          }
-        }
-      },
-      "source": {
-        "cxx": {
-          "decl": {
             "objcMethod": {
               "key": {
                 "selector": { "key": [ "fooBar" ] },
