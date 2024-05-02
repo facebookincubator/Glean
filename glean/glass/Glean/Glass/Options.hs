@@ -38,7 +38,7 @@ configParser = do
   refreshFreq <- refreshFreqParser
   listDatabasesRetry <- listDatabasesRetryParser
   numWorkerThreads <- workerThreadsParser
-  snapshotBackend <- pure (const $ Some NilSnapshotBackend)
+  snapshotBackend <- pure $ pure $ pure $ Some NilSnapshotBackend
   sourceControl <- pure (const (return (Some NilSourceControl)))
   tracer <- pure mempty
   return $ Glass.Config{

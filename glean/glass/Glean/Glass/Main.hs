@@ -96,6 +96,7 @@ withEnv Glass.Config{..} gleanDB f =
   withBackendWithDefaultOptions evp cfgapi gleanService (Just schema_id)
     $ \backend -> do
   scm <- sourceControl evp
+  snapshotBackend <- snapshotBackend evp
   withLatestRepos backend scm (Just logger)
     (if isRemote gleanService then listDatabasesRetry else Nothing) refreshFreq
     $ \latestGleanRepos -> do
@@ -104,7 +105,7 @@ withEnv Glass.Config{..} gleanDB f =
         { gleanBackend = Some backend
         , gleanIndexBackend = indexBackend backend
         , gleanDB = gleanDB
-        , snapshotBackend = snapshotBackend evp
+        , snapshotBackend = snapshotBackend
         , sourceControl = scm
         , ..
         }

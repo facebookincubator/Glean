@@ -53,14 +53,14 @@ data Config trace = Config
   , listDatabasesRetry :: Maybe Int
       -- ^ whether to trust listDatabases and how often to wait to retry N times
   , numWorkerThreads :: Maybe Int
-  , snapshotBackend :: EventBaseDataplane -> Some SnapshotBackend
+  , snapshotBackend :: EventBaseDataplane -> IO (Some SnapshotBackend)
   , sourceControl :: EventBaseDataplane -> IO (Some SourceControl)
   , tracer :: Tracer trace
   , welcomeMessage :: forall a. EventBaseDataplane -> Config a -> IO Text
   }
 
 setSnapshotBackend
-  :: (EventBaseDataplane -> Some SnapshotBackend) -> Config a -> Config a
+  :: (EventBaseDataplane -> IO(Some SnapshotBackend)) -> Config a -> Config a
 setSnapshotBackend snapshotBackend config =
   config { snapshotBackend = snapshotBackend }
 
