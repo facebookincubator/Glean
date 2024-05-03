@@ -273,12 +273,26 @@ getLatestRepos backend scm mlogger mretry = go mretry
     go n = do
       latest <- Glean.getLatestRepos backend $ \name ->
         GleanDBName name `Set.member` Mapping.allGleanRepos
-      scmRevisions <- getScmRevisions scm latest
-      let advertised = Map.keysSet (Glean.latestRepos latest)
+
+      -- Filter unavailable DBs using hasDatabase. Glean.getLatestRepos does
+      -- this for latestRepos but not allLatestRepos, in that case it's up to
+      -- the client (us). Since we're fetching DBs periodically and caching
+      -- them, it's no problem to check availability for the whole set.
+      let available = Glean.hasDatabase backend . Glean.database_repo
+      (time, _, dbs) <- timeIt $ do
+        avail <- mapM (filterM available) (Glean.allLatestRepos latest)
+        return latest { Glean.allLatestRepos = avail }
+      let numDBs = sum (fmap length (Glean.allLatestRepos latest))
+          numAvailableDBs = sum (fmap length (Glean.allLatestRepos dbs))
+      logInfo $ printf "filtered available DBs in %s, %d/%d unavailable"
+        (showTime time) (numDBs - numAvailableDBs) numDBs
+
+      scmRevisions <- getScmRevisions scm dbs
+      let advertised = Map.keysSet (Glean.latestRepos dbs)
           info = GleanDBInfo
-            { latestRepos = latest
+            { latestRepos = dbs
             , scmRevisions = scmRevisions
-            , dbByRevision = getDbByRevision latest scmRevisions
+            , dbByRevision = getDbByRevision dbs scmRevisions
             }
       if required `Set.isSubsetOf` advertised
         then return info
@@ -286,7 +300,7 @@ getLatestRepos backend scm mlogger mretry = go mretry
           -- some required dbs are missing! this is transient? and bad
           -- in prod/full service mode this would be bad
           let missing = required `Set.difference` advertised
-          logIt mlogger latest missing n backend
+          logIt mlogger dbs missing n backend
           case n of
             Just n
               | n > 1 -> do {- i.e. try more than 1 time -}
