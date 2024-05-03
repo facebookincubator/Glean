@@ -741,16 +741,16 @@ searchBySymbolId env@Glass.Env{..} symbolPrefix opts = do
   case parsed of
     (Right repo, Right lang, tokens) -> findSymbols repo lang tokens
     _ ->
-      withRequest "searchBySymbolId" env symbolPrefix opts $ \_ log -> do
+      withRequest "searchBySymbolId" env symbolPrefix opts $ \_ -> do
         case parsed of
           (Left pRepo, Left _, []) ->
             pure (SearchBySymbolIdResult (findRepos repoMapping pRepo),
-              log, Nothing)
+              mempty, Nothing)
           (Left pRepo, _, _) -> throwM $
             ServerException $ pRepo <> " is not a known repo"
           (Right repo, Left pLang, []) -> pure
             (SearchBySymbolIdResult $ findLanguages repoMapping repo $
-              fromMaybe (Text.pack "") pLang, log, Nothing)
+              fromMaybe (Text.pack "") pLang, mempty, Nothing)
           (Right (RepoName repo), Left (Just pLang), _) -> throwM $
             ServerException $ pLang <> " is not a supported language in "<> repo
           (Right (RepoName repo), Left Nothing, _) -> throwM $
