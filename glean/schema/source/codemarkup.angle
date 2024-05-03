@@ -506,6 +506,24 @@ predicate EntityIsDefinition: code.Entity
   ({ fbthrift = _ }) |
   ({ kotlin = _ })
 
+# If an entity is a declaration, try to find its definition, which
+# might be in a different file. There can be multiple definitions.
+# If `entity` has no separate definition, `definition == entity`.
+predicate FindEntityDefinition:
+  {
+    entity: code.Entity,
+    definition: code.Entity
+  }
+  { Decl, Defn } where
+    if (
+      { cxx = E } = Decl;
+    ) then (
+      codemarkup.cxx.CxxFindDefinitionOfEntity { E, CxxDefn };
+      { cxx = CxxDefn } = Defn
+    ) else (
+      Decl = Defn
+    )
+
 #
 # Relations todo to code.search.*
 #

@@ -266,3 +266,27 @@ instance (Type a, Type b, Type c, Type d, Type e) => Type (a,b,c,d,e) where
       , sourceType (Proxy @d)
       , sourceType (Proxy @e)
       ]
+
+instance (Type a, Type b, Type c, Type d, Type e, Type f) => Type (a,b,c,d,e,f) where
+  buildRtsValue builder (a,b,c,d,e,f) = do
+    buildRtsValue builder a
+    buildRtsValue builder b
+    buildRtsValue builder c
+    buildRtsValue builder d
+    buildRtsValue builder e
+    buildRtsValue builder f
+  decodeRtsValue = (,,,,,)
+    <$> decodeRtsValue
+    <*> decodeRtsValue
+    <*> decodeRtsValue
+    <*> decodeRtsValue
+    <*> decodeRtsValue
+    <*> decodeRtsValue
+  sourceType _ = Angle.tupleSchema
+      [ sourceType (Proxy @a)
+      , sourceType (Proxy @b)
+      , sourceType (Proxy @c)
+      , sourceType (Proxy @d)
+      , sourceType (Proxy @e)
+      , sourceType (Proxy @f)
+      ]

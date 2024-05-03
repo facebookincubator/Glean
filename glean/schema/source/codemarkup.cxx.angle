@@ -97,6 +97,29 @@ predicate CxxResolveDeclarationToEntity:
       { decl = Decl } = Entity
     )
 
+# If an entity is a declaration, try to find its definition, which
+# might be in a different file. There might be multiple definitions
+# (but presumably not linked in the same binary, because that would
+# violate the One Definition Rule).
+predicate CxxFindDefinitionOfEntity:
+  {
+    entity: code.cxx.Entity,
+    definition: code.cxx.Entity,
+  }
+  ( { { defn = A }, { defn = B } } where A = B )
+  |
+   (
+     { { decl = D }, DefEnt }
+     where
+      if (
+        code.cxx.DeclToDef { D, Defn };
+      ) then (
+        { defn = Defn } = DefEnt;
+      ) else (
+        { decl = D } = DefEnt;
+      )
+   )
+
 # Finding entities' locations
 
 predicate CxxEntityLocation:
