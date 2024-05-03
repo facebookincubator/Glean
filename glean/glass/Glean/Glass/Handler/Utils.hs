@@ -117,10 +117,9 @@ dbChooser repo opts =
   case requestOptions_revision opts of
     Nothing -> ChooseLatest
     Just rev
-      | Just True <- nearest, not exact -> ChooseNearest repo rev
+      | not exact -> ChooseNearest repo rev
       | otherwise -> ChooseExactOrLatest rev
  where
- nearest = requestOptions_feature_flags opts >>= featureFlags_nearest_revision
  exact = requestOptions_exact_revision opts
 
 withGleanDBs

@@ -430,7 +430,7 @@ dbIndex items = DbIndex{..}
     stacked Nothing = []
 
 -- | The final set of DBs we want usable on disk.
---  This is the set of 'keepRoots' DB extended with all the stacked dependencies
+--  This is the set of 'keepRoots' DBs extended with all the stacked dependencies
 computeRetentionSet
   :: forall m . Monad m
   => ServerConfig.DatabaseRetentionPolicy

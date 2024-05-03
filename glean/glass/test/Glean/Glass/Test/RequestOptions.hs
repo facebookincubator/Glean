@@ -241,29 +241,25 @@ testNearestRevision :: WithEnv -> Test
 testNearestRevision withEnv = TestLabel "nearest" $ TestList
   [ TestLabel "pick" $ TestCase $ withEnv $ \env -> do
     result <- symbolsList env def {
-      revision = Glass.Revision "1a",
-      nearest = Just True}
+      revision = Glass.Revision "1a"}
     assertEqual "Nearest DB to 1a should be 1"
       (SimpleSymbolsListXResult (Glass.Revision "1") False)
       result
 
     result <- symbolsList env def {
-      revision = Glass.Revision "1b",
-      nearest = Just True}
+      revision = Glass.Revision "1b"}
     assertEqual "Nearest DB to 1b should be 2"
       (SimpleSymbolsListXResult (Glass.Revision "2") False)
       result
 
     result <- symbolsList env def {
-      revision = Glass.Revision "2a",
-      nearest = Just True}
+      revision = Glass.Revision "2a"}
     assertEqual "Nearest DB to 2a should be 2"
       (SimpleSymbolsListXResult (Glass.Revision "2") False)
       result
 
     result <- symbolsList env def {
-      revision = Glass.Revision "1",
-      nearest = Just True}
+      revision = Glass.Revision "1"}
     assertEqual "Nearest DB to 1 should be 1"
       (SimpleSymbolsListXResult (Glass.Revision "1") False)
       result
@@ -347,11 +343,10 @@ instance Simplify (DocumentSymbolsRequest, RequestOptions) where
       repo :: Glass.RepoName,
       path :: Glass.Path,
       revision :: Glass.Revision,
-      exact :: Bool,
-      nearest :: Maybe Bool
+      exact :: Bool
     }
   simplify _ = error "Not implemented"
-  fromSimple (SimpleDocumentSymbolsRequest repo path revision exact nearest) =
+  fromSimple (SimpleDocumentSymbolsRequest repo path revision exact) =
     ( DocumentSymbolsRequest
           { documentSymbolsRequest_repository = repo
           , documentSymbolsRequest_filepath = path
@@ -363,8 +358,7 @@ instance Simplify (DocumentSymbolsRequest, RequestOptions) where
           , requestOptions_limit = Nothing
           , requestOptions_feature_flags =
             Just Glass.FeatureFlags {
-              featureFlags_include_xlang_refs = Nothing,
-              featureFlags_nearest_revision = nearest
+              featureFlags_include_xlang_refs = Nothing
             }
           , requestOptions_strict = True
           , requestOptions_exact_revision = exact
@@ -377,7 +371,6 @@ instance Default (Simple (DocumentSymbolsRequest, RequestOptions)) where
     , path = examplePath
     , revision = Glass.Revision "1"
     , exact = False
-    , nearest = Nothing
     }
 
 --------------------------------------------------------------------------------

@@ -71,7 +71,6 @@ instance LogRequest RequestOptions where
 
 instance LogRequest FeatureFlags where
   logRequest FeatureFlags{..} =
-    maybe mempty Logger.setNearestRevision featureFlags_nearest_revision <>
     maybe mempty Logger.setIncludeXlangXrefs featureFlags_include_xlang_refs
 
 instance LogRequest DocumentSymbolsRequest where
