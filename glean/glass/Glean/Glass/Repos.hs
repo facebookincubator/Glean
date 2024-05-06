@@ -243,6 +243,7 @@ filetype (Path file)
   | is ".erl"  = Just Language_Erlang
   | is ".go"  = Just Language_Go
   | is ".ts"  = Just Language_TypeScript
+  | is ".tsx"  = Just Language_TypeScript
 
   | is "TARGETS"  = Just Language_Buck
   | is "BUCK"  = Just Language_Buck
