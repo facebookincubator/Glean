@@ -21,6 +21,7 @@ import qualified HieDBIndexer.Options as HieDB
 import HieDBIndexer.Trace (vlogTextTracer)
 import Options.Applicative
 import Util.EventBase
+import HieDBIndexer.Options
 
 main :: IO ()
 main = do
@@ -35,7 +36,9 @@ main = do
           evb
           cfgAPI
           svc
-          (Just schema_id)
+          (case mode of
+            BinaryMode _ given_schema_id -> Just given_schema_id
+            _ -> Just schema_id)
           $ case mode of
               HieDB.BinaryMode{..} ->
                 outputMain tracer cfg outputPath schemaId
