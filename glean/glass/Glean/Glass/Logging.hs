@@ -62,6 +62,9 @@ class LogRequest a where
 instance LogRequest a => LogRequest (Maybe a) where
   logRequest = maybe mempty logRequest
 
+instance LogResult GleanGlassLogger where
+  logResult = id
+
 instance LogRequest RequestOptions where
   logRequest RequestOptions{..} =
     maybe mempty (Logger.setRevision . unRevision) requestOptions_revision <>
@@ -97,35 +100,33 @@ instance LogRequest FileIncludeLocationRequest where
       Logger.setRepo (unRepoName fileIncludeLocationRequest_repository)
 
 class LogResult a where
-  logResult :: (a, GleanGlassLogger) -> GleanGlassLogger
+  logResult :: a -> GleanGlassLogger
 
 instance (LogResult a, LogResult b) => LogResult (a,b) where
-  logResult ((a,b), log) = logResult (b, logResult (a, log))
+  logResult (a,b) = logResult a <> logResult b
 
 instance (LogResult a, LogResult b, LogResult c) => LogResult (a,b,c) where
-  logResult ((a,b,c), log) = logResult(c, logResult (b, logResult (a, log)))
+  logResult (a,b,c) = logResult a <> logResult b <> logResult c
 
 instance LogResult DocumentSymbolListXResult  where
-  logResult (DocumentSymbolListXResult{..}, log) =
-    log <>
+  logResult DocumentSymbolListXResult{..} =
     Logger.setTruncated documentSymbolListXResult_truncated <>
     Logger.setItemCount (length documentSymbolListXResult_references +
       length documentSymbolListXResult_definitions) <>
     Logger.setRevisionUsed (coerce documentSymbolListXResult_revision)
 
 instance LogResult FileIncludeLocationResults where
-  logResult (FileIncludeLocationResults{..}, log) =
-    log <> Logger.setItemCount (sum
+  logResult FileIncludeLocationResults{..} =
+    Logger.setItemCount (sum
        (map (length . fileIncludeXRef_includes)
           (unXRefFileList fileIncludeLocationResults_references)
        ))
 
 instance LogResult SnapshotStatus where
-  logResult (st, log) =
-    log <> logSnapshotStatus st
+  logResult st = logSnapshotStatus st
 
 instance LogResult (Maybe ErrorLogger) where
-  logResult (_, log) = log
+  logResult _ = mempty
 
 data QueryEachRepoLog
   = FoundNone
@@ -133,7 +134,7 @@ data QueryEachRepoLog
   | QueryEachRepoUnrequested
 
 instance LogResult QueryEachRepoLog where
-  logResult (glog, log) = log <> case glog of
+  logResult glog = case glog of
     FoundSome (one :| more) ->
       Logger.setDbUsedName (Glean.repo_name one) <>
       Logger.setDbUsedInstance (Glean.repo_hash one) <>
@@ -143,70 +144,70 @@ instance LogResult QueryEachRepoLog where
     _ -> mempty
 
 instance LogResult DocumentSymbolIndex where
-  logResult (DocumentSymbolIndex{..}, log) =
-    log <> Logger.setItemCount (fromIntegral documentSymbolIndex_size)
+  logResult DocumentSymbolIndex{..} =
+    Logger.setItemCount (fromIntegral documentSymbolIndex_size)
         <> Logger.setTruncated documentSymbolIndex_truncated
         <> Logger.setRevisionUsed (coerce documentSymbolIndex_revision)
 
 instance LogResult Range where
-  logResult (_, log) = log
+  logResult _ = mempty
 
 instance LogResult [Location] where
-  logResult (xs,log) = log <> Logger.setItemCount (length xs)
+  logResult xs = Logger.setItemCount (length xs)
 
 instance LogResult [LocationRange] where
-  logResult (xs,log) = log <> Logger.setItemCount (length xs)
+  logResult xs = Logger.setItemCount (length xs)
 
 instance LogResult Location where
-  logResult (Location{..},log) = log <> mconcat
+  logResult Location{..} = mconcat
     [ Logger.setItemCount 1
     , Logger.setRepo $ unRepoName location_repository
     ]
 
 instance LogResult LocationRange where
-  logResult (LocationRange{..},log) = log <> mconcat
+  logResult LocationRange{..} = mconcat
     [ Logger.setItemCount 1
     , Logger.setRepo $ unRepoName locationRange_repository
     ]
 
 instance LogResult SymbolDescription where
-  logResult (SymbolDescription{..}, log) = log <>
-    logResult (symbolDescription_location, log) <>
-    logResult (symbolDescription_sym, log) <>
+  logResult SymbolDescription{..} =
+    logResult symbolDescription_location <>
+    logResult symbolDescription_sym <>
     Logger.setItemCount 1
 
 instance LogResult SymbolPath where
-  logResult (SymbolPath{..}, log) = log <>
+  logResult SymbolPath{..} =
     Logger.setRepo (unRepoName symbolPath_repository)
 
 instance LogResult SymbolId where
-  logResult (sym, log) = log <> logSymbolSG Logger.setSymbol sym
+  logResult sym = logSymbolSG Logger.setSymbol sym
 
 instance LogResult [SymbolId] where
-  logResult (xs, log) = log <> Logger.setItemCount (length xs)
+  logResult xs = Logger.setItemCount (length xs)
 
 instance LogResult SymbolSearchResult where
-  logResult (SymbolSearchResult{..}, log) =
-    log <> Logger.setItemCount (length symbolSearchResult_symbols)
+  logResult SymbolSearchResult{..} =
+    Logger.setItemCount (length symbolSearchResult_symbols)
 
 instance LogResult RepoSearchResult where
-  logResult (rs, log) = log <> Logger.setItemCount (length rs)
+  logResult rs = Logger.setItemCount (length rs)
 
 instance LogResult FeelingLuckyResult where
-  logResult (FeelingLuckyResult rs, log) =
-    log <> Logger.setItemCount
+  logResult (FeelingLuckyResult rs) =
+    Logger.setItemCount
       (sum (map (sum . map length) rs))
 
 instance LogResult SearchBySymbolIdResult where
-  logResult (SearchBySymbolIdResult symids, log) = logResult (symids, log)
+  logResult (SearchBySymbolIdResult symids) = logResult symids
 
 instance LogResult SearchRelatedResult where
-  logResult (SearchRelatedResult{..}, log) =
-    logResult (searchRelatedResult_edges, log)
+  logResult SearchRelatedResult{..} =
+    logResult searchRelatedResult_edges
 
 instance LogResult RelatedNeighborhoodResult where
-  logResult (RelatedNeighborhoodResult{..}, log) =
-    log <> Logger.setItemCount
+  logResult RelatedNeighborhoodResult{..} =
+    Logger.setItemCount
       (length relatedNeighborhoodResult_childrenContained +
         length relatedNeighborhoodResult_childrenExtended +
         length relatedNeighborhoodResult_containsParents +
@@ -217,21 +218,21 @@ instance LogResult RelatedNeighborhoodResult where
       )
 
 instance LogResult USRSymbolDefinition where
-  logResult (USRSymbolDefinition{..}, log) = log <>
-    logResult (uSRSymbolDefinition_location, log) <>
+  logResult USRSymbolDefinition{..} =
+    logResult uSRSymbolDefinition_location <>
     Logger.setItemCount 1
 
 
 instance LogResult USRSymbolReference  where
-  logResult (USRSymbolReference{..}, log) = log <>
-    logResult (uSRSymbolReference_location, log) <>
+  logResult USRSymbolReference{..} =
+    logResult uSRSymbolReference_location <>
     Logger.setItemCount 1
 
 instance LogResult [USRSymbolReference] where
-  logResult (xs, log) = log <> Logger.setItemCount (length xs)
+  logResult xs = Logger.setItemCount (length xs)
 
 instance LogResult [RelatedSymbols] where
-  logResult (edges, log) = log <> Logger.setItemCount (length edges)
+  logResult edges = Logger.setItemCount (length edges)
 
 class LogRepo a where
   logRepo :: a -> GleanGlassLogger
