@@ -29,7 +29,6 @@ module Glean.Glass.Handler.Utils (
   ) where
 
 import Control.Exception
-import Control.Monad
 import Control.Monad.Catch ( throwM )
 import Data.Either
 import qualified Data.HashMap.Strict as HashMap
@@ -43,7 +42,6 @@ import Logger.GleanGlass ( GleanGlassLogger )
 import Util.Logger ( loggingAction )
 import Util.STM
 import qualified Logger.GleanGlass as Logger
-import qualified Logger.GleanGlassErrors as ErrorsLogger
 
 import qualified Glean
 import Glean.Haxl.Repos as Glean
@@ -123,7 +121,7 @@ dbChooser repo opts =
  exact = requestOptions_exact_revision opts
 
 withGleanDBs
-  :: (LogError a, LogRequest a, LogResult b)
+  :: (LogRequest a, LogResult b)
   => Text
   -> Glass.Env
   -> RequestOptions
@@ -147,7 +145,7 @@ withGleanDBs method env@Glass.Env{..} opts req repo dbNames fn = do
 -- * Logs the request and result
 --
 withRequest
-  :: (LogRequest req, LogError req, LogResult res)
+  :: (LogRequest req, LogResult res)
   => Text
   -> Glass.Env
   -> req
@@ -162,7 +160,7 @@ withRequest method env@Glass.Env{..} req opts fn = do
 
 -- | Run an action that provides a repo and maybe a language, log it
 withRepoLanguage
-  :: (LogError a, LogRequest a, LogResult b)
+  :: (LogRequest a, LogResult b)
   => Text
   -> Glass.Env
   -> a
@@ -183,7 +181,7 @@ withRepoLanguage method env@Glass.Env{..} req repo mlanguage opts fn =
 
 -- | Run an action that provides a repo and filepath, log it
 withRepoFile
-  :: (LogError a, LogRequest a, LogResult b)
+  :: (LogRequest a, LogResult b)
   => Text
   -> Glass.Env
   -> RequestOptions
@@ -243,7 +241,7 @@ withStrictErrorHandling dbInfo opts action = do
 
 
 withLog
-  :: (LogRequest req, LogError req, LogResult res)
+  :: (LogRequest req, LogResult res)
   => Text
   -> Glass.Env
   -> RequestOptions
@@ -255,18 +253,11 @@ withLog cmd env opts req action = do
         Logger.setMethod cmd <>
         logRequest req <>
         logRequest opts
-  (res, _) <- loggingAction
+  (res, _, err) <- loggingAction
     (Logger.runLog (Glass.logger env) . (requestLogs <>))
     logResult
-    (do
-      (res, log, merr) <- action
-      forM_ merr $ \e -> runErrorLog env cmd (e <> logError req)
-      return ((res, merr), log))
-  return res
-
-runErrorLog :: Glass.Env -> Text -> ErrorLogger -> IO ()
-runErrorLog env cmd err = ErrorsLogger.runLog (Glass.logger env) $
-  errorsLogger err <> ErrorsLogger.setMethod cmd
+    action
+  return (res, err)
 
 -- | Wrapper to enable perf logging, log the db names, and stats for
 -- intermediate steps, and internal errors.

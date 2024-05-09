@@ -39,8 +39,6 @@ import Util.Logger (ActionLog(..))
 
 import Logger.GleanGlass (GleanGlassLogger)
 import qualified Logger.GleanGlass as Logger
-import Logger.GleanGlassErrors (GleanGlassErrorsLogger)
-import qualified Logger.GleanGlassErrors as Errors
 
 import Glean ( Repo(..) )
 import Glean.Glass.Types
@@ -102,6 +100,9 @@ instance LogRequest FileIncludeLocationRequest where
 class LogResult a where
   logResult :: a -> GleanGlassLogger
 
+instance LogResult a => LogResult (Maybe a) where
+  logResult = maybe mempty logResult
+
 instance (LogResult a, LogResult b) => LogResult (a,b) where
   logResult (a,b) = logResult a <> logResult b
 
@@ -124,9 +125,6 @@ instance LogResult FileIncludeLocationResults where
 
 instance LogResult SnapshotStatus where
   logResult st = logSnapshotStatus st
-
-instance LogResult (Maybe ErrorLogger) where
-  logResult _ = mempty
 
 data QueryEachRepoLog
   = FoundNone
@@ -293,107 +291,60 @@ errorsText errs =
 data ErrorLogger = ErrorLogger
   { errorTy :: ![GlassExceptionReason]
   , errorGleanRepo :: ![Glean.Repo]
-  , errorsLogger :: !GleanGlassErrorsLogger
   }
 
 instance Semigroup ErrorLogger where
   e1 <> e2 = ErrorLogger
     { errorTy = errorTy e1 <|> errorTy e2
     , errorGleanRepo = errorGleanRepo e1 <> errorGleanRepo e2
-    , errorsLogger = errorsLogger e1 <> errorsLogger e2
     }
 
 instance Monoid ErrorLogger where
-  mempty = ErrorLogger [] [] mempty
+  mempty = ErrorLogger mempty []
+
+instance LogResult ErrorLogger where
+  logResult ErrorLogger{..} =
+    case errorTy of
+      [] -> mempty
+      [e] ->
+        Logger.setInternalError (errorText e) <>
+        Logger.setInternalErrorType (case e of
+          GlassExceptionReason_noSrcFileFact{} -> "NoSrcFileFact"
+          GlassExceptionReason_noSrcFileLinesFact{} -> "NoSrcFileLinesFact"
+          GlassExceptionReason_entitySearchFail{} -> "EntitySearchFail"
+          GlassExceptionReason_entityNotSupported{} -> "EntityNotSupported"
+          GlassExceptionReason_attributesError{} -> "AttributesError"
+          GlassExceptionReason_notIndexedFile{} -> "NotIndexedFile"
+          GlassExceptionReason_exactRevisionNotAvailable{} ->
+            "ExactRevisionNotAvaiable"
+          GlassExceptionReason_EMPTY{} -> "EMPTY"
+        )
+      (e:es) ->
+        Logger.setInternalError (errorsText (e :| es)) <>
+        Logger.setInternalErrorType "AggregateError"
 
 class LogError a where
   logError :: a -> ErrorLogger
-  logError = logError . logGleanGlassError
-
-  logGleanGlassError :: a -> GleanGlassErrorsLogger
-  logGleanGlassError = errorsLogger . logError
-
-instance LogError GleanGlassErrorsLogger where
-  logError = ErrorLogger [] []
 
 instance LogError GlassExceptionReason where
-  logError e = ErrorLogger [e] [] $
-    Errors.setError (errorText e) <>
-    Errors.setErrorType (case e of
-      GlassExceptionReason_noSrcFileFact{} -> "NoSrcFileFact"
-      GlassExceptionReason_noSrcFileLinesFact{} -> "NoSrcFileLinesFact"
-      GlassExceptionReason_entitySearchFail{} -> "EntitySearchFail"
-      GlassExceptionReason_entityNotSupported{} -> "EntityNotSupported"
-      GlassExceptionReason_attributesError{} -> "AttributesError"
-      GlassExceptionReason_notIndexedFile{} -> "NotIndexedFile"
-      GlassExceptionReason_exactRevisionNotAvailable{} ->
-        "ExactRevisionNotAvaiable"
-      GlassExceptionReason_EMPTY{} -> "EMPTY"
-    )
+  logError e = ErrorLogger [e] []
 
 instance LogError (NonEmpty GlassExceptionReason) where
   logError (e :| []) = logError e
-  logError errors = ErrorLogger (NE.toList errors) [] $
-    Errors.setError errorT <>
-    Errors.setErrorType "AggregateError"
-    where
-      errorT = case errors of
-        e :| [] -> errorText e
-        _ -> errorsText errors
+  logError errors = ErrorLogger (NE.toList errors) []
 
 instance LogError Glean.Repo where
   logError x =
-    ErrorLogger [] [x] $
-      logRepoSG Errors.setRepoName Errors.setRepoHash x
-
-instance LogError USR where
-  logGleanGlassError (USR hash) = Errors.setSymbol hash
+    ErrorLogger [] [x]
 
 instance LogError (NonEmpty (a, Glean.Repo)) where
   logError = logError . NE.map snd
 
 instance LogError (NonEmpty Glean.Repo) where
   logError (repo :| []) = logError repo
-  logError rs0 =
-    ErrorLogger [] (NE.toList rs) $
-      Errors.setRepoName (commas repo_name rs) <>
-      Errors.setRepoHash (commas (Text.take 12 . repo_hash) rs)
+  logError rs0 = ErrorLogger [] (NE.toList rs)
     where
     rs = NE.sortBy (compare `on` Glean.repo_name) rs0
-
--- sometimes we return more than just the repo result
-instance LogError (a,Glean.Repo) where
-  logError (_,repo) = logError repo
-
-instance LogError (Glean.Repo,a) where
-  logError (repo,_) = logError repo
-
-instance {-# OVERLAPPABLE #-} LogError a => LogError (a,b) where
-  logError (repo,_) = logError repo
-
-instance {-# OVERLAPPABLE #-} LogError a => LogError (a,b,c) where
-  logError (repo,_,_) = logError repo
-
-instance LogError DocumentSymbolsRequest where
-  logGleanGlassError =
-    logDocumentSymbolsRequestSG Errors.setFilepath Errors.setRepo
-
-instance LogError SymbolId where
-  logGleanGlassError = logSymbolSG Errors.setSymbol
-
-instance LogError SymbolPath where
-  logGleanGlassError = logSymbolPathSG Errors.setFilepath Errors.setRepo
-
-instance LogError Location where
-  logGleanGlassError = logLocationSG Errors.setFilepath Errors.setRepo
-
-instance LogError SymbolSearchRequest where
-  logGleanGlassError = logSymbolSearchRequestSG Errors.setSymbol Errors.setRepo
-
-instance LogError FileIncludeLocationRequest where
-  logGleanGlassError FileIncludeLocationRequest{..} =
-    Errors.setFilepath (unPath fileIncludeLocationRequest_filepath) <>
-      Errors.setRepo (unRepoName fileIncludeLocationRequest_repository)
 
 --
 -- Lift log accessors generically over Glass types
