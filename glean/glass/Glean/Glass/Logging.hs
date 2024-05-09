@@ -286,7 +286,7 @@ errorsText :: NonEmpty GlassExceptionReason -> Text
 errorsText errs =
   Text.unlines $ "Multiple errors:": map
     (("  " <>) . errorText)
-    (nubOrd $ NE.toList errs)
+    (NE.toList errs)
 
 data ErrorLogger = ErrorLogger
   { errorTy :: ![GlassExceptionReason]
@@ -304,7 +304,7 @@ instance Monoid ErrorLogger where
 
 instance LogResult ErrorLogger where
   logResult ErrorLogger{..} =
-    case errorTy of
+    case nubOrd errorTy of
       [] -> mempty
       [e] ->
         Logger.setInternalError (errorText e) <>
