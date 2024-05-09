@@ -11,8 +11,7 @@
 module Glean.Glass.Logging
   (
   -- * classes for convenient typed logging
-    LogRepo(..)
-  , LogResult(..)
+    LogResult(..)
   , LogRequest(..)
   , LogError(..)
 
@@ -41,6 +40,7 @@ import Logger.GleanGlass (GleanGlassLogger)
 import qualified Logger.GleanGlass as Logger
 
 import Glean ( Repo(..) )
+import Glean.Glass.Base ( GleanDBName )
 import Glean.Glass.Types
 import Glean.Glass.Query (FeelingLuckyResult(..), RepoSearchResult)
 import Glean.Glass.SnapshotBackend ( SnapshotStatus(..) )
@@ -59,9 +59,6 @@ class LogRequest a where
 
 instance LogRequest a => LogRequest (Maybe a) where
   logRequest = maybe mempty logRequest
-
-instance LogResult GleanGlassLogger where
-  logResult = id
 
 instance LogRequest RequestOptions where
   logRequest RequestOptions{..} =
@@ -232,35 +229,15 @@ instance LogResult [USRSymbolReference] where
 instance LogResult [RelatedSymbols] where
   logResult edges = Logger.setItemCount (length edges)
 
-class LogRepo a where
-  logRepo :: a -> GleanGlassLogger
-
-instance LogRepo Glean.Repo where
-  logRepo = logRepoSG Logger.setRepoName Logger.setRepoHash
-
-instance LogRepo (Glean.Repo,a) where
-  logRepo (repo,_) = logRepo repo
-
-instance LogRepo (a,Glean.Repo) where
-  logRepo (_,repo) = logRepo repo
-
-instance {-# OVERLAPPABLE #-} LogRepo a => LogRepo (a,b) where
-  logRepo (repo,_) = logRepo repo
-
-instance {-# OVERLAPPABLE #-} LogRepo a => LogRepo (a,b,c) where
-  logRepo (repo,_,_) = logRepo repo
-
--- For queries that search multiple repos, better log the set of dbs we touch
-instance LogRepo (NonEmpty (a, Glean.Repo)) where
-  logRepo = logRepo . NE.map snd
-
-instance LogRepo (NonEmpty Glean.Repo) where
-  logRepo (repo :| []) = logRepo repo
-  logRepo rs0@(_ :| _) =
+instance LogResult (NonEmpty (GleanDBName, Glean.Repo)) where
+  logResult ((_, repo) :| []) =
+    Logger.setRepoName (Glean.repo_name repo) <>
+    Logger.setRepoHash (Glean.repo_hash repo)
+  logResult rs0@(_ :| _) =
     Logger.setRepoName (commas repo_name rs) <>
     Logger.setRepoHash (commas (Text.take 12 . repo_hash) rs)
     where
-      rs = NE.sortBy (compare `on` Glean.repo_name) rs0
+      rs = NE.sortBy (compare `on` Glean.repo_name) (fmap snd rs0)
 
 commas :: (Glean.Repo -> Text) -> NonEmpty Glean.Repo -> Text
 commas f = Text.intercalate "," . map f . NE.toList
@@ -291,6 +268,7 @@ errorsText errs =
 data ErrorLogger = ErrorLogger
   { errorTy :: ![GlassExceptionReason]
   , errorGleanRepo :: ![Glean.Repo]
+    -- ^ The repo(s) in which the error(s) occurred.
   }
 
 instance Semigroup ErrorLogger where
@@ -353,10 +331,6 @@ instance LogError (NonEmpty Glean.Repo) where
 logSymbolSG :: Semigroup a => (Text -> a)
   -> SymbolId -> a
 logSymbolSG f (SymbolId s) = f s
-
-logRepoSG :: Semigroup a => (Text -> a) -> (Text -> a)
-  -> Repo -> a
-logRepoSG f g Glean.Repo{..} = f repo_name <> g repo_hash
 
 logSymbolPathSG :: Semigroup a => (Text -> a) -> (Text -> a)
   -> SymbolPath -> a

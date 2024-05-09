@@ -38,7 +38,6 @@ import Data.Text ( Text )
 import qualified Data.Text as Text
 
 import Haxl.DataSource.Glean (HasRepo)
-import Logger.GleanGlass ( GleanGlassLogger )
 import Util.Logger ( loggingAction )
 import Util.STM
 import qualified Logger.GleanGlass as Logger
@@ -56,6 +55,9 @@ import Glean.Glass.Tracing
 import Glean.Glass.Types
 
 import qualified Glean.Glass.Env as Glass
+
+-- | The DBs we've chosen for this request
+type ChosenDBs = NonEmpty (GleanDBName, Glean.Repo)
 
 -- | Given a query, run it on all available repos and return the first success
 --   plus an explainer
@@ -92,7 +94,7 @@ allOrError = go (Right [])
 data GleanBackend b =
   GleanBackend {
     gleanBackend :: b,
-    gleanDBs :: NonEmpty (GleanDBName, Glean.Repo),
+    gleanDBs :: ChosenDBs,
     tracer :: GlassTracer
   }
 
@@ -120,24 +122,6 @@ dbChooser repo opts =
  where
  exact = requestOptions_exact_revision opts
 
-withGleanDBs
-  :: (LogRequest a, LogResult b)
-  => Text
-  -> Glass.Env
-  -> RequestOptions
-  -> a
-  -> RepoName
-  -> NonEmpty GleanDBName
-  -> (NonEmpty (GleanDBName, Glean.Repo)
-        -> GleanDBInfo -> IO (b, Maybe ErrorLogger))
-  -> IO (b, Maybe ErrorLogger)
-withGleanDBs method env@Glass.Env{..} opts req repo dbNames fn = do
-  dbInfo <- readTVarIO latestGleanRepos
-  dbs <- getSpecificGleanDBs tracer sourceControl dbInfo (dbChooser repo opts) dbNames
-  withLog method env opts req $
-    withLogDB dbs $
-      fn dbs dbInfo
-
 -- | Top-level wrapper for all requests.
 --
 -- * Snapshots the GleanDBInfo
@@ -150,7 +134,7 @@ withRequest
   -> Glass.Env
   -> req
   -> RequestOptions
-  -> (GleanDBInfo -> IO (res, GleanGlassLogger, Maybe ErrorLogger))
+  -> (GleanDBInfo -> IO (res, Maybe ErrorLogger))
   -> IO res
 withRequest method env@Glass.Env{..} req opts fn = do
   dbInfo <- readTVarIO latestGleanRepos
@@ -167,13 +151,13 @@ withRepoLanguage
   -> RepoName
   -> Maybe Language
   -> RequestOptions
-  -> (  NonEmpty (GleanDBName,Glean.Repo)
+  -> (  ChosenDBs
      -> GleanDBInfo
      -> Maybe Language
      -> IO (b, Maybe ErrorLogger))
   -> IO b
 withRepoLanguage method env@Glass.Env{..} req repo mlanguage opts fn =
-  withRequest method env req opts $ \dbInfo -> do
+  fmap fst $ withRequest method env req opts $ \dbInfo -> do
     dbs <- getGleanRepos tracer sourceControl repoMapping dbInfo repo
       mlanguage (dbChooser repo opts) gleanDB
     withLogDB dbs $
@@ -198,7 +182,7 @@ withRepoFile method env opts req repo file fn = do
 
 -- | Run an action that provides a symbol id, log it
 withSymbol
-  :: LogResult c
+  :: LogResult res
   => Text
   -> Glass.Env
   -> RequestOptions
@@ -206,10 +190,10 @@ withSymbol
   -> (  NonEmpty (GleanDBName, Glean.Repo)
      -> GleanDBInfo
      -> (RepoName, Language, [Text])
-     -> IO (c, Maybe ErrorLogger))
-  -> IO c
+     -> IO (res, Maybe ErrorLogger))
+  -> IO res
 withSymbol method env@Glass.Env{..} opts sym fn =
-  withRequest method env sym opts $ \dbInfo ->
+  fmap fst $ withRequest method env sym opts $ \dbInfo ->
     case symbolTokens sym of
       Left err -> throwM $ ServerException err
       Right req@(repo, lang, _toks) -> do
@@ -239,37 +223,33 @@ withStrictErrorHandling dbInfo opts action = do
             (mapMaybe getFirstRevision (errorGleanRepo err))
     _ -> return res
 
-
+-- | Perform logging for a request. Logs the request and the response
+-- or errors that were thrown.
 withLog
   :: (LogRequest req, LogResult res)
   => Text
   -> Glass.Env
   -> RequestOptions
   -> req
-  -> IO (res, GleanGlassLogger, Maybe ErrorLogger)
-  -> IO (res, Maybe ErrorLogger)
+  -> IO res
+  -> IO res
 withLog cmd env opts req action = do
   let requestLogs =
         Logger.setMethod cmd <>
         logRequest req <>
         logRequest opts
-  (res, _, err) <- loggingAction
+  loggingAction
     (Logger.runLog (Glass.logger env) . (requestLogs <>))
     logResult
     action
-  return (res, err)
 
--- | Wrapper to enable perf logging, log the db names, and stats for
--- intermediate steps, and internal errors.
 withLogDB
-  :: (LogError dbs, LogRepo dbs)
-  => dbs
-  -> IO (res, Maybe ErrorLogger)
-  -> IO (res, GleanGlassLogger, Maybe ErrorLogger)
-withLogDB dbs fn = do
-  (res, merr) <- fn
-  let err = fmap (<> logError dbs) merr
-  return (res, logRepo dbs, err)
+  :: ChosenDBs
+  -> IO (b, Maybe ErrorLogger)
+  -> IO ((b, ChosenDBs), Maybe ErrorLogger)
+withLogDB dbs act = do
+  (b, merr) <- act
+  return ((b,dbs), merr)
 
 -- | Given an SCS repo name, and a candidate path, find latest Glean dbs or
 -- throw. Returns the chosen db name and Glean repo handle.
@@ -283,7 +263,7 @@ getGleanRepos
   -> Maybe Language
   -> ChooseGleanDBs
   -> Maybe Glean.Repo
-  -> IO (NonEmpty (GleanDBName,Glean.Repo))
+  -> IO ChosenDBs
 getGleanRepos tracer scm repoMapping dbInfo scsrepo mlanguage chooser mGleanDB =
   case mGleanDB of
     Nothing ->
@@ -303,10 +283,28 @@ getSpecificGleanDBs
   -> GleanDBInfo
   -> ChooseGleanDBs
   -> NonEmpty GleanDBName
-  -> IO (NonEmpty (GleanDBName,Glean.Repo))
+  -> IO ChosenDBs
 getSpecificGleanDBs tracer scm dbInfo chooser gleanDBNames = do
   dbs <- chooseGleanDBs tracer scm dbInfo chooser (toList gleanDBNames)
   case dbs of
     [] -> throwIO $ ServerException $ "No Glean dbs found for: " <>
             Text.intercalate ", " (map unGleanDBName $ toList gleanDBNames)
     db:dbs -> return (db :| dbs)
+
+-- | Legacy API that (a) doesn't do strict error handling and (b) chooses
+-- DBs by name, not repo. TODO: clean this up
+withGleanDBs
+  :: (LogRequest req, LogResult res)
+  => Text
+  -> Glass.Env
+  -> RequestOptions
+  -> req
+  -> RepoName
+  -> NonEmpty GleanDBName
+  -> (ChosenDBs -> GleanDBInfo -> IO res)
+  -> IO res
+withGleanDBs method env@Glass.Env{..} opts req repo dbNames fn = do
+  dbInfo <- readTVarIO latestGleanRepos
+  dbs <- getSpecificGleanDBs tracer sourceControl dbInfo (dbChooser repo opts) dbNames
+  fmap fst $ withLog method env opts req $
+    (,dbs) <$> fn dbs dbInfo
