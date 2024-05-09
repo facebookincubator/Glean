@@ -1,6 +1,6 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema graphql.2 {
+schema graphql.3 {
 import src.1
 
 # Core graphql predicates built from the graphql IR
@@ -60,6 +60,14 @@ predicate Fragment :
     directives: [Directive],
     selectionSet: SelectionSet,
     loc: src.FileLocation,
+  }
+
+predicate FragmentSpread :
+  {
+    name: Value,
+    loc: src.FileLocation,
+    arguments: [Argument],
+    directives: [Directive],
   }
 
 predicate Field :
@@ -138,7 +146,7 @@ type SelectionSet =
   {
     fields: [Field],
     inlineFragments: [InlineFragment],
-    fragmentSpreads: [Value],
+    fragmentSpreads: [FragmentSpread],
   }
 
 predicate UnionTypeDef :
