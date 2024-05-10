@@ -58,7 +58,7 @@ import Glean.Glass.GlassService.Service ( GlassServiceCommand(..) )
 
 import Glean.Glass.Types
   ( GlassException (GlassException, glassException_reasons),
-    GlassExceptionReason (GlassExceptionReason_exactRevisionNotAvailable))
+    GlassExceptionReason (..))
 import Glean.Glass.Env (Env'(tracer), Env)
 import Glean.Glass.Tracer ( isTracingEnabled )
 import Glean.Glass.Tracing
@@ -140,11 +140,12 @@ assignHeaders _ (Left e) | isRevisionNotAvailableException e =
   where
     isRevisionNotAvailableException e = case fromException e of
       Just GlassException{glassException_reasons} ->
-        all isExactRevisionNotAvailable glassException_reasons
+        all isRevisionNotAvailable glassException_reasons
       _ -> False
-    isExactRevisionNotAvailable GlassExceptionReason_exactRevisionNotAvailable{}
-      = True
-    isExactRevisionNotAvailable _ = False
+    isRevisionNotAvailable e = case e of
+      GlassExceptionReason_exactRevisionNotAvailable{} -> True
+      GlassExceptionReason_matchingRevisionNotAvailable{} -> True
+      _ -> False
 assignHeaders _ _ = []
 
 -- | Perform an operation with the latest RepoMapping

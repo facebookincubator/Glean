@@ -44,6 +44,7 @@ module Glean.Glass.Handler
 
   ) where
 
+import Control.Concurrent.Async (async, wait)
 import Control.Monad
 import Control.Exception ( throwIO, SomeException )
 import Control.Monad.Catch ( throwM, try )
@@ -54,7 +55,7 @@ import Data.List as List ( sortOn )
 import Data.List.Extra ( nubOrd, nubOrdOn, groupOn, groupSortOn )
 import Data.List.NonEmpty (NonEmpty(..), nonEmpty)
 import qualified Data.List.NonEmpty as NonEmpty
-import Data.Maybe ( mapMaybe, catMaybes, fromMaybe, listToMaybe )
+import Data.Maybe ( mapMaybe, catMaybes, fromMaybe, listToMaybe, maybeToList )
 import Data.Ord ( comparing )
 import Data.Text ( Text )
 import Data.Tuple.Extra ( fst3 )
@@ -135,7 +136,9 @@ import Glean.Glass.SnapshotBackend
     SnapshotStatus() )
 import qualified Glean.Glass.SnapshotBackend as Snapshot
 import Glean.Glass.SymbolKind (findSymbolKind)
-import Glean.Glass.Env (Env' (tracer))
+import Glean.Glass.Env (Env' (tracer, sourceControl))
+import Glean.Glass.SourceControl
+  (SourceControl (checkMatchingRevisions, getGeneration))
 import Glean.Glass.Tracing (GlassTracer, traceSpan)
 
 -- | Runner for methods that are keyed by a file path
@@ -175,7 +178,7 @@ documentSymbolListX env@Glass.Env{tracer} r opts =
   fst3 <$>
     runRepoFile
       "documentSymbolListX"
-      (fetchSymbolsAndAttributes tracer)
+      (fetchSymbolsAndAttributes tracer (sourceControl env))
       env r opts
 
 -- | Same as documentSymbolList() but construct a line-indexed map for easy
@@ -185,11 +188,11 @@ documentSymbolIndex
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> IO DocumentSymbolIndex
-documentSymbolIndex env@Glass.Env{tracer} r opts =
+documentSymbolIndex env@Glass.Env{sourceControl, tracer} r opts =
   fst3 <$>
     runRepoFile
       "documentSymbolIndex"
-      (fetchDocumentSymbolIndex tracer)
+      (fetchDocumentSymbolIndex tracer sourceControl)
       env r opts
 
 -- | Symbol-based find-refernces.
@@ -920,6 +923,7 @@ fetchSymbolsAndAttributesGlean tracer repoMapping dbInfo req opts be mlang = do
 fetchSymbolsAndAttributes
   :: (Glean.Backend b, SnapshotBackend snapshotBackend)
   => GlassTracer
+  -> Some SourceControl
   -> RepoMapping
   -> GleanDBInfo
   -> DocumentSymbolsRequest
@@ -929,55 +933,123 @@ fetchSymbolsAndAttributes
   -> Maybe Language
   -> IO ((DocumentSymbolListXResult, SnapshotStatus, QueryEachRepoLog)
         , Maybe ErrorLogger)
-fetchSymbolsAndAttributes tracer repoMapping dbInfo req opts be
-    snapshotbe mlang = do
+fetchSymbolsAndAttributes tracer scs repoMapping dbInfo req
+  opts@RequestOptions{..} be snapshotbe mlang = do
   res <- case mrevision of
+    Nothing ->
+      addStatus Snapshot.Unrequested <$> getFromGlean
     Just revision -> do
       (esnapshot, glean) <- Async.concurrently
-        (traceSpan tracer "getSnapshot" $
-          getSnapshot tracer snapshotbe repo file (Just revision))
-        (traceSpan tracer "getFromGlean"
-          getFromGlean)
-      return $ case esnapshot of
-        Right queryResult | not (isRevisionHit revision glean) ->
-          ((queryResult, Snapshot.ExactMatch, QueryEachRepoUnrequested),
-            Nothing)
-        _otherwise ->
+        (traceSpan tracer "getSnapshot" $ getFromSnapshot revision)
+        (traceSpan tracer "getFromGlean" getFromGlean)
+
+      snapshotResult <- case esnapshot of
+        Right (_, fetch) -> do
+          a <- async fetch
+          return $ do
+            res <- wait a
+            return $ maybe (Left Snapshot.InternalError) Right res
+        Left e -> return $ pure (Left e)
+
+      let
+        snapshotRevision = either (const Nothing) (Just . fst) esnapshot
+
+        returnGlean = return $
           addStatus (either id (const Snapshot.Ignored) esnapshot) glean
-    _ -> addStatus Snapshot.Unrequested <$> getFromGlean
+
+        snapshotOrGlean = returnSnapshotOr snapshotResult (`addStatus` glean)
+
+        snapshotOrFailWith error = returnSnapshotOr snapshotResult $ \s ->
+          ((toDocumentSymbolResult(emptyDocumentSymbols revision)
+            , s
+            , FoundNone)
+          , return $ logError error)
+
+        doMatching = do
+          let candidates =
+                getGleanResultRevision glean : maybeToList snapshotRevision
+          matchingResults <- traceSpan tracer "checkMatchingRevisions" $
+              checkMatchingRevisions
+                scs
+                (documentSymbolsRequest_repository req)
+                (documentSymbolsRequest_filepath req)
+                revision
+                candidates
+          case matchingResults of
+            gleanMatch : snapshotMatch
+              | gleanMatch
+              -> return $ addStatus Snapshot.Ignored glean
+              | [True] <- snapshotMatch
+              -> snapshotOrFailWith
+                    (GlassExceptionReason_matchingRevisionNotAvailable $
+                      unRevision revision)
+                    Snapshot.CompatibleMatch
+            _ ->
+              return
+                ((toDocumentSymbolResult(emptyDocumentSymbols revision)
+                  , Snapshot.NotFound
+                  , FoundNone)
+                , Just $ logError $
+                    GlassExceptionReason_matchingRevisionNotAvailable $
+                        unRevision revision
+                )
+
+      if  | isRevisionHit revision glean
+          -> returnGlean
+          | snapshotRevision == Just revision
+          -> snapshotOrGlean Snapshot.ExactMatch
+          | requestOptions_matching_revision &&
+            not requestOptions_exact_revision
+          -> doMatching
+          | otherwise
+          -> returnGlean
+
   -- Fall back to the best snapshot available for new files (not yet in repo)
-  case res of
-    ((_,_,_), Just ErrorLogger {errorTy})
+  case (res, mrevision) of
+    (((_,_,_), Just ErrorLogger {errorTy}), Just revision)
       -- assume it's a new file if no src.File fact
       | all isNoSrcFileFact errorTy
-      && not (requestOptions_exact_revision opts)
+      && not requestOptions_exact_revision
       -> do
-        bestSnapshot <- getSnapshot tracer snapshotbe repo file Nothing
+        gen <- getGeneration scs repo revision
+        bestSnapshot <-
+          getSnapshot tracer snapshotbe repo file Nothing gen
         case bestSnapshot of
-          Right result ->
-            return
-              (( result
-               , Snapshot.Latest
-               , QueryEachRepoUnrequested)
-              , Nothing)
+          Right (_, fetchSnapshot) -> returnSnapshotOr
+              (maybe (Left ()) Right <$> fetchSnapshot)
+              (const res) Snapshot.Latest
           Left _ ->
             return res
     _ ->
       return res
   where
     addStatus st ((res, gleanLog), mlogger) = ((res, st, gleanLog), mlogger)
+    getFromSnapshot revision
+      | requestOptions_matching_revision && not requestOptions_exact_revision
+      = do
+        gen <- getGeneration scs repo revision
+        getSnapshot tracer snapshotbe repo file (Just revision) gen
+      | otherwise =
+        getSnapshot tracer snapshotbe repo file (Just revision) Nothing
     getFromGlean =
       fetchSymbolsAndAttributesGlean tracer repoMapping dbInfo req opts be mlang
     file = documentSymbolsRequest_filepath req
     repo = documentSymbolsRequest_repository req
-    mrevision = requestOptions_revision opts
+    mrevision = requestOptions_revision
       -- Note: not selectRevision, this is used to control snapshot use
       -- not DB selection.
     isNoSrcFileFact GlassExceptionReason_noSrcFileFact{} = True
     isNoSrcFileFact _ = False
 
-    isRevisionHit rev ((res, _), _) =
-      documentSymbolListXResult_revision res == rev
+    getGleanResultRevision ((x, _), _) = documentSymbolListXResult_revision x
+    isRevisionHit rev = (== rev) . getGleanResultRevision
+
+    returnSnapshotOr tryFetch fallback match = do
+      result <- tryFetch
+      return $ case result of
+        Left e -> fallback e
+        Right queryResult ->
+          ((queryResult, match, QueryEachRepoUnrequested), Nothing)
 
 -- Find all references and definitions in a file that might be in a set of repos
 fetchDocumentSymbols
@@ -1020,10 +1092,8 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit
 
   case efile of
     Left err -> do
-      let emptyResponse = DocumentSymbols [] []
-            (revision b) False Nothing mempty
-          logs = logError err <> logError (gleanDBs b)
-      return (emptyResponse, FoundNone, Just logs)
+      let logs = logError err <> logError (gleanDBs b)
+      return (emptyDocumentSymbols (revision b), FoundNone, Just logs)
 
       where
         -- Use first db's revision
@@ -1107,6 +1177,10 @@ data DocumentSymbols = DocumentSymbols
   , xref_digests :: Map.Map Text FileDigestMap
   }
 
+emptyDocumentSymbols :: Revision -> DocumentSymbols
+emptyDocumentSymbols revision =
+  DocumentSymbols [] [] revision False Nothing mempty
+
 -- | Drop any remnant entities after we are done with them
 toDocumentSymbolResult :: DocumentSymbols -> DocumentSymbolListXResult
 toDocumentSymbolResult DocumentSymbols{..} = DocumentSymbolListXResult{..}
@@ -1149,6 +1223,7 @@ documentSymbolsForLanguage mlimit _ includeRefs _ fileId = do
 fetchDocumentSymbolIndex
   :: (Glean.Backend b, SnapshotBackend snapshotBackend)
   => GlassTracer
+  -> Some SourceControl
   -> RepoMapping
   -> GleanDBInfo
   -> DocumentSymbolsRequest
@@ -1158,11 +1233,11 @@ fetchDocumentSymbolIndex
   -> Maybe Language
   -> IO ((DocumentSymbolIndex, SnapshotStatus, QueryEachRepoLog),
        Maybe ErrorLogger)
-fetchDocumentSymbolIndex tracer repoMapping latest req opts be
+fetchDocumentSymbolIndex tracer scs repoMapping latest req opts be
     snapshotbe mlang = do
   ((DocumentSymbolListXResult{..}, status, gleanDataLog), merr1) <-
     fetchSymbolsAndAttributes
-      tracer repoMapping latest req opts be snapshotbe mlang
+      tracer scs repoMapping latest req opts be snapshotbe mlang
 
   --  refs defs revision truncated digest = result
   let lineIndex = toSymbolIndex documentSymbolListXResult_references

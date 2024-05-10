@@ -25,6 +25,7 @@ import Options.Applicative
 
 import qualified Glean.Glass.Types as Types
 import Glean.Util.Some (Some(..))
+import Glean.Glass.SourceControl (ScmGeneration)
 import Glean.Glass.Types (
       Revision,
       Path,
@@ -39,7 +40,8 @@ class SnapshotBackend backend where
     -> RepoName
     -> Path
     -> Maybe Revision
-    -> IO (Either SnapshotStatus Types.DocumentSymbolListXResult)
+    -> Maybe ScmGeneration
+    -> IO (Either SnapshotStatus (Revision, IO (Maybe Types.DocumentSymbolListXResult)))
 
 instance SnapshotBackend (Some SnapshotBackend) where
   getSnapshot t (Some backend) = getSnapshot t backend
@@ -51,6 +53,7 @@ data SnapshotStatus
   | Timeout
   | NotFound
   | ExactMatch
+  | CompatibleMatch
   | Ignored
   | Latest
   deriving Show
@@ -66,4 +69,4 @@ snapshotBackendParser = Some NilSnapshotBackend <$ (option auto (mconcat
 data NilSnapshotBackend = NilSnapshotBackend
 
 instance SnapshotBackend NilSnapshotBackend where
-  getSnapshot _ _ _ _ _ = return $ Left Unrequested
+  getSnapshot _ _ _ _ _ _ = return $ Left Unrequested

@@ -14,6 +14,7 @@ import Control.Exception
 import Data.Bifunctor
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
+import Data.List (find)
 import Data.Text (Text)
 import qualified Data.Map.Strict as Map
 import Test.HUnit
@@ -73,6 +74,7 @@ main = do
            [testUseRevision withEnv] <>
            [testUseRevisionJK withEnv | useJK == Right True]
         , testNearestRevision withEnv
+        , testMatchingRevision withEnv
         ]
   where
   baseDriver = DerivePass.driver []
@@ -116,8 +118,8 @@ testBaselineDB withEnv = TestLabel "DBs" $ TestCase $ withEnv $ \env -> do
 testBaselineSnapshot :: WithEnv -> Test
 testBaselineSnapshot withEnv = TestLabel "snaphots" $ TestCase $ withEnv $ \env -> do
   sb <- mockSnapshotBackendSimple
-    [(examplePath, Glass.Revision "3")
-    ,(newPath, Glass.Revision "4")
+    [(examplePath, Glass.Revision "3", gen0)
+    ,(newPath, Glass.Revision "4", gen0)
     ]
   let env' :: Glass.Env = env {Glass.snapshotBackend = Some sb}
 
@@ -150,8 +152,8 @@ testExactRevision withEnv = TestLabel "exact-revision" $ TestList
         result
   , TestLabel "snapshot match" $ TestCase $ withEnv $ \env -> do
       sb <- mockSnapshotBackendSimple
-            [(examplePath, Glass.Revision "2"),
-             (examplePath, Glass.Revision "3")]
+            [(examplePath, Glass.Revision "2", gen0),
+             (examplePath, Glass.Revision "3", gen0)]
       let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
 
       result' <-
@@ -205,7 +207,7 @@ testUseRevisionJK withEnv = TestLabel "incr" $ TestList
         (SimpleSymbolsListXResult (Glass.Revision "1") False)
         result
   , TestLabel "snapshot and stale DB" $ TestCase $ withEnv $ \env -> do
-      sb <- mockSnapshotBackendSimple [(examplePath, Glass.Revision "3")]
+      sb <- mockSnapshotBackendSimple [(examplePath, Glass.Revision "3", gen0)]
       let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
       result <- symbolsList env' def{
         revision = Glass.Revision "3",
@@ -214,7 +216,7 @@ testUseRevisionJK withEnv = TestLabel "incr" $ TestList
         (SimpleSymbolsListXResult (Glass.Revision "3") True)
         result
   , TestLabel "snapshot and exact DB" $ TestCase $ withEnv $ \env -> do
-      sb <- mockSnapshotBackendSimple [(examplePath, Glass.Revision "1")]
+      sb <- mockSnapshotBackendSimple [(examplePath, Glass.Revision "1", gen0)]
       let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
       result <- symbolsList env' def{
         revision = Glass.Revision "1",
@@ -223,7 +225,7 @@ testUseRevisionJK withEnv = TestLabel "incr" $ TestList
         (SimpleSymbolsListXResult (Glass.Revision "1") False)
         result
   , TestLabel "snapshot only" $ TestCase $ withEnv $ \env -> do
-      sb <- mockSnapshotBackendSimple [(newPath, Glass.Revision "3")]
+      sb <- mockSnapshotBackendSimple [(newPath, Glass.Revision "3", gen0)]
       let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
       result <- symbolsList env' def{
         path = newPath,
@@ -265,11 +267,43 @@ testNearestRevision withEnv = TestLabel "nearest" $ TestList
       result
   ]
 
+--------------------------------------------------------------------------------
+-- Matching revision
+
+testMatchingRevision :: WithEnv -> Test
+testMatchingRevision withEnv = TestLabel "matching" $ TestList
+  [
+    TestLabel "snapshot" $ TestCase $ withEnv $ \env -> do
+    sb <- mockSnapshotBackendSimple
+      [(examplePath, Glass.Revision "14", ScmGeneration 14)
+      ,(examplePath, Glass.Revision "16", ScmGeneration 16)]
+    let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
+    result <- symbolsList env' def
+      { revision = Glass.Revision "15", exact = False, matching = True }
+    assertEqual "Nearest DB to 15 should be 16"
+      (SimpleSymbolsListXResult (Glass.Revision "16") True)
+      result
+  , TestLabel "no match" $ TestCase $ withEnv $ \env -> do
+    sb <- mockSnapshotBackendSimple
+      [(examplePath, Glass.Revision "21", ScmGeneration 21)]
+    let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
+    result <- try $ symbolsList env' def
+      { revision = Glass.Revision "1b", exact = False, matching = True }
+    assertGlassException
+      "Nothing matches revision 1b"
+      (GlassExceptionReason_matchingRevisionNotAvailable "1b")
+      result
+  ]
+
+--------------------------------------------------------------------------------
+-- Mocks
+
 data MockSourceControl = MockSourceControl
 
 instance SourceControl MockSourceControl where
   getGeneration _ _repo (Glass.Revision "1") = return (Just (ScmGeneration 10))
   getGeneration _ _repo (Glass.Revision "1a") = return (Just (ScmGeneration 11))
+  getGeneration _ _repo (Glass.Revision "15") = return (Just (ScmGeneration 15))
   getGeneration _ _repo (Glass.Revision "1b") = return (Just (ScmGeneration 19))
   getGeneration _ _repo (Glass.Revision "2") = return (Just (ScmGeneration 20))
   getGeneration _ _repo (Glass.Revision "2a") = return (Just (ScmGeneration 21))
@@ -277,12 +311,20 @@ instance SourceControl MockSourceControl where
   getGeneration _ _repo (Glass.Revision "3") = return (Just (ScmGeneration 30))
   getGeneration _ _repo _ = return Nothing
 
+  checkMatchingRevisions _ _repo _path rev0 revs = return (map (f rev0) revs)
+    where
+      f (Glass.Revision "15") (Glass.Revision "14") = True
+      f (Glass.Revision "15") (Glass.Revision "16") = True
+      f _ _ = False
+
 -- Used to check scenarios where we don't expect to call
 -- getGeneration, such as when exact_revision = True
 data FailSourceControl = FailSourceControl
 
 instance SourceControl FailSourceControl where
-  getGeneration _ _ _ = throwIO $ ErrorCall "FailSourceControl"
+  getGeneration _ _ _ = throwIO $ ErrorCall "FailSourceControl.getGeneration"
+  checkMatchingRevisions _ _ _ _ revs =
+    return $ map (const True) revs
 
 failSourceControl :: Glass.Env -> Glass.Env
 failSourceControl env = env { Glass.sourceControl = Some FailSourceControl }
@@ -343,25 +385,21 @@ instance Simplify (DocumentSymbolsRequest, RequestOptions) where
       repo :: Glass.RepoName,
       path :: Glass.Path,
       revision :: Glass.Revision,
-      exact :: Bool
+      exact :: Bool,
+      matching :: Bool
     }
   simplify _ = error "Not implemented"
-  fromSimple (SimpleDocumentSymbolsRequest repo path revision exact) =
-    ( DocumentSymbolsRequest
+  fromSimple SimpleDocumentSymbolsRequest{..} =
+    ( def
           { documentSymbolsRequest_repository = repo
           , documentSymbolsRequest_filepath = path
-          , documentSymbolsRequest_range = Nothing
           , documentSymbolsRequest_include_refs = False
           }
-    , RequestOptions
+    , def
           { requestOptions_revision = Just revision
-          , requestOptions_limit = Nothing
-          , requestOptions_feature_flags =
-            Just Glass.FeatureFlags {
-              featureFlags_include_xlang_refs = Nothing
-            }
           , requestOptions_strict = True
           , requestOptions_exact_revision = exact
+          , requestOptions_matching_revision = matching
           }
     )
 
@@ -371,6 +409,7 @@ instance Default (Simple (DocumentSymbolsRequest, RequestOptions)) where
     , path = examplePath
     , revision = Glass.Revision "1"
     , exact = False
+    , matching = False
     }
 
 --------------------------------------------------------------------------------
@@ -380,49 +419,63 @@ type GetSnapshot
   = Glass.RepoName
   -> Glass.Path
   -> Maybe Glass.Revision
+  -> Maybe ScmGeneration
   -> IO GetSnapshotResult
 
-type GetSnapshotResult = Either SnapshotStatus DocumentSymbolListXResult
+type GetSnapshotResult = Either
+  SnapshotStatus
+  (Glass.Revision, IO (Maybe DocumentSymbolListXResult))
 
 newtype MockSnapshotBackend = MockSnapshotBackend {
   mockGetSnapshot :: Mock GetSnapshot
 }
 
 instance SnapshotBackend MockSnapshotBackend where
-  getSnapshot _ (MockSnapshotBackend get) repo path revision =
-    call get repo path revision
+  getSnapshot _ (MockSnapshotBackend get) = call get
+
+gen0 :: ScmGeneration
+gen0 = ScmGeneration 0
 
 -- | Create a mock snapshot backend containing the given snapshots
 mockSnapshotBackend
-  :: [(Glass.RepoName, Glass.Path, DocumentSymbolListXResult)]
+  :: [(Glass.RepoName, Glass.Path, ScmGeneration, DocumentSymbolListXResult)]
   -> IO MockSnapshotBackend
 mockSnapshotBackend snapshots = do
-  mockGetSnapshot <- implement "getSnapshot" $ \repo path mb_rev ->
-    return $
-    case Map.lookup (repo, path) snapshotsMap of
-      Just matches -> case mb_rev of
-        Nothing -> case Map.toList matches of
-          (_, snap) : _ -> Right snap
-          [] -> Left NotFound
-        Just rev -> case Map.lookup rev matches of
-          Just snap -> Right snap
-          Nothing -> Left NotFound
-      Nothing -> Left NotFound
+  mockGetSnapshot <- implement "getSnapshot" implementation
   return MockSnapshotBackend {..}
   where
+    -- TODO replace with a test XDB instance
+    implementation repo path mb_rev mb_gen = return $
+      case Map.lookup (repo, path) snapshotsMap of
+        Just (byRev, byGen) -> case (mb_rev, mb_gen) of
+          (Nothing, Nothing) -> case Map.toList byRev of
+            (_, snap) : _ -> wrapSnapshot snap
+            [] -> Left NotFound
+          (Just rev, _)
+            | Just snap <- Map.lookup rev byRev
+            -> wrapSnapshot snap
+          (_ , Just gen)
+            | Just (_, snap) <- find (\(gen',_) -> gen'>=gen) (Map.toList byGen)
+            -> wrapSnapshot snap
+          _ -> Left NotFound
+        _ -> Left NotFound
+    wrapSnapshot snap =
+      Right (documentSymbolListXResult_revision snap, return $ Just snap)
     snapshotsMap = Map.fromListWith (<>)
       [ ( (repo, path)
-        , Map.singleton (documentSymbolListXResult_revision result) result
+        , (Map.singleton (documentSymbolListXResult_revision result) result
+          ,Map.singleton gen result
+          )
         )
-      | (repo, path, result) <- snapshots
+      | (repo, path, gen, result) <- snapshots
       ]
 
 -- | Create a mock snapshot backend containing simple snapshots
 mockSnapshotBackendSimple
-  :: [(Glass.Path, Glass.Revision)] -> IO MockSnapshotBackend
+  :: [(Glass.Path, Glass.Revision, ScmGeneration)] -> IO MockSnapshotBackend
 mockSnapshotBackendSimple revs =
   mockSnapshotBackend
-    [(Glass.RepoName "fbsource", path, fromSimple result)
-    | (path, rev) <- revs
+    [(Glass.RepoName "fbsource", path, gen, fromSimple result)
+    | (path, rev, gen) <- revs
     , let result = SimpleSymbolsListXResult rev True
     ]

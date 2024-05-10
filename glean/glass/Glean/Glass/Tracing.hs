@@ -57,7 +57,8 @@ glassTraceEvent (GlassTraceWithId tid (TraceCommand cmd)) = case cmd of
        "filepath" .= documentSymbolsRequest_filepath <>
        "repository" .= documentSymbolsRequest_repository <>
        "revision" .= requestOptions_revision opts <>
-       "exact" .= requestOptions_exact_revision opts
+       "exact" .= requestOptions_exact_revision opts <>
+       "matching" .= requestOptions_matching_revision opts
     )
   Glass.DocumentSymbolIndex DocumentSymbolsRequest{..} opts ->
     ("DocumentSymbolIndex"
@@ -66,7 +67,8 @@ glassTraceEvent (GlassTraceWithId tid (TraceCommand cmd)) = case cmd of
        "filepath" .= documentSymbolsRequest_filepath <>
        "repository" .= documentSymbolsRequest_repository <>
        "revision" .= requestOptions_revision opts <>
-       "exact" .= requestOptions_exact_revision opts
+       "exact" .= requestOptions_exact_revision opts <>
+       "matching" .= requestOptions_matching_revision opts
     )
   Glass.FindReferences r opts ->
     ( "FindReferences", tid, json $ toEncoding r)

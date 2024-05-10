@@ -65,6 +65,7 @@ instance LogRequest RequestOptions where
     maybe mempty (Logger.setRevision . unRevision) requestOptions_revision <>
     maybe mempty (Logger.setLimit . fromIntegral) requestOptions_limit <>
     Logger.setExactRevision requestOptions_exact_revision <>
+    Logger.setMatchingRevision requestOptions_matching_revision <>
     logRequest requestOptions_feature_flags
 
 instance LogRequest FeatureFlags where
@@ -257,6 +258,7 @@ errorText e = case e of
   GlassExceptionReason_entityNotSupported t -> t
   GlassExceptionReason_attributesError t -> t
   GlassExceptionReason_exactRevisionNotAvailable t -> t
+  GlassExceptionReason_matchingRevisionNotAvailable t -> t
   GlassExceptionReason_EMPTY -> ""
 
 errorsText :: NonEmpty GlassExceptionReason -> Text
@@ -295,6 +297,8 @@ instance LogResult ErrorLogger where
           GlassExceptionReason_notIndexedFile{} -> "NotIndexedFile"
           GlassExceptionReason_exactRevisionNotAvailable{} ->
             "ExactRevisionNotAvaiable"
+          GlassExceptionReason_matchingRevisionNotAvailable{} ->
+            "MatchingRevisionNotAvailable"
           GlassExceptionReason_EMPTY{} -> "EMPTY"
         )
       (e:es) ->
@@ -366,5 +370,6 @@ logSnapshotStatus st = case st of
   Timeout -> Logger.setSnapshot "Timeout"
   NotFound -> Logger.setSnapshot  "Not found"
   ExactMatch -> Logger.setSnapshot  "Exact"
+  CompatibleMatch -> Logger.setSnapshot  "Matching"
   Ignored -> Logger.setSnapshot  "Ignored"
   Latest -> Logger.setSnapshot "Latest"

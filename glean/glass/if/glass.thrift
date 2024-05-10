@@ -99,15 +99,21 @@ struct RequestOptions {
 
   // handling revision preferences:
   // if revision:
-  //   if revision exists:
+  //   if revision exists including snapshots:
+  //     return results
+  //   else if matching_revision and matching revision exists including snapshots and is document symbols request:
   //     return results
   //   else if exact_revision:
-  //     fail exactRevisionNotAvailable
+  //     fail exactRevisionNotAvailable without caching
+  //   else if matching_revision:
+  //     fail matchingRevisionNotAvailable without caching
   //   else
-  //     use latest revision
+  //     use closest revision
   // else
   //   use latest revision
   5: bool exact_revision = false;
+  // succeed only if the source code in the request and index revisions match,
+  6: bool matching_revision = false;
 }
 
 struct FeatureFlags {
@@ -282,6 +288,7 @@ union GlassExceptionReason {
   5: string entityNotSupported;
   6: string attributesError;
   7: string exactRevisionNotAvailable;
+  8: string matchingRevisionNotAvailable;
 }
 
 // Only thrown when strict request option is set

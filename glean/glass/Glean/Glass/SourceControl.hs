@@ -20,16 +20,22 @@ import Glean.Util.Some
 
 -- | Source control generation, used for ordering revisions
 newtype ScmGeneration = ScmGeneration Int64
-  deriving (Hashable, Show)
+  deriving (Eq, Hashable, Ord, Show)
 
 -- | Interface to source control operations
 class SourceControl scm where
   getGeneration :: scm -> RepoName -> Revision -> IO (Maybe ScmGeneration)
+  -- | @checkMatchingRevisions repo file rev0 revs@ answers the question
+  --   "Which of revs satisfy that the contents of filepath match rev0?"
+  checkMatchingRevisions
+    :: scm -> RepoName -> Path -> Revision -> [Revision] -> IO [Bool]
 
 data NilSourceControl = NilSourceControl
 
 instance SourceControl NilSourceControl where
   getGeneration _ _ _ = return Nothing
+  checkMatchingRevisions _ _ _ _ revs = return $ map (const False) revs
 
 instance SourceControl (Some SourceControl) where
   getGeneration (Some scm) = getGeneration scm
+  checkMatchingRevisions (Some scm) = checkMatchingRevisions scm
