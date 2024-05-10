@@ -68,6 +68,7 @@ genTargets slashVn version info =
      ([ "# \x40generated"
      , "# to regenerate: ./glean/schema/sync"
      , "load(\"@fbcode_macros//build_defs:custom_rule.bzl\", \"custom_rule\")"
+     , "load(\"@fbcode_macros//build_defs:thrift_library.bzl\", \"thrift_library\")"
      , "" ] ++
      concatMap genTarget (HashMap.toList info)) <>
   genSchemaRules version
