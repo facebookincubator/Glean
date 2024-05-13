@@ -276,8 +276,9 @@ inferExpr ctx pat = case pat of
       -- "nothing" by itself can't be inferred, we want to fall
       -- through to the type error message.
   Prim span primOp args -> do
-    let (primArgTys, retTy) = primOpType primOp
-    args' <- primInferAndCheck span args primOp primArgTys
+    let (primArgTys, mkRetTy) = primOpType primOp
+    (args', argTys) <- primInferAndCheck span args primOp primArgTys
+    let retTy = mkRetTy argTys
     return
       ( RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args')))
       , retTy )
@@ -418,10 +419,11 @@ typecheckPattern ctx typ pat = case (typ, pat) of
   (NamedTy (ExpandedType _ ty), term) -> typecheckPattern ctx ty term
   (ty, Prim span primOp args) -> do
     ver <- gets tcAngleVersion
-    let (primArgTys, retTy) = primOpType primOp
+    let (primArgTys, mkRetTy) = primOpType primOp
+    (args', argTys) <- primInferAndCheck span args primOp primArgTys
+    let retTy = mkRetTy argTys
     unless (eqType ver ty retTy) $
       patTypeError pat ty
-    args' <- primInferAndCheck span args primOp primArgTys
     return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))))
   (PredicateTy (PidRef _ ref), Clause _ ref' arg range) ->
     if ref == ref'
@@ -827,9 +829,9 @@ primInferAndCheck
   -> [Pat' s]
   -> PrimOp
   -> [PrimArgType]
-  -> T [TcPat]
+  -> T ([TcPat], [Type])
 primInferAndCheck span args primOp argTys =
-  reverse . map fst <$> checkArgs [] args argTys
+  unzip . reverse <$> checkArgs [] args argTys
   where
     checkArgs :: IsSrcSpan s =>
       [(TcPat, Type)] -> [Pat' s] -> [PrimArgType] -> T [(TcPat, Type)]
@@ -866,35 +868,35 @@ primInferAndCheckError span primOp debugString = do
     , pretty debugString
     ]
 
-primOpType :: PrimOp -> ([PrimArgType], Type)
+primOpType :: PrimOp -> ([PrimArgType], [Type] -> Type)
 primOpType op = case op of
-  PrimOpToLower -> ([Check StringTy], StringTy)
+  PrimOpToLower -> ([Check StringTy], const StringTy)
   PrimOpLength ->
     let
       polyArray (ArrayTy _) = True
       polyArray _ = False
     in
     ( [InferAndCheck polyArray "prim.length takes an array as input"]
-    , NatTy)
+    , const NatTy)
   PrimOpRelToAbsByteSpans ->
     -- prim.relToAbsByteSpans takes an array of pairs as input and
     -- returns an array of pairs as output
     ( [Check (ArrayTy (tupleSchema [NatTy, NatTy]))]
-    , ArrayTy (tupleSchema [NatTy, NatTy]) )
+    , const $ ArrayTy (tupleSchema [NatTy, NatTy]) )
   PrimOpUnpackByteSpans ->
     -- prim.unpackByteSpans takes an array of (nat, [nat]) as input and
     -- returns an array of pairs as output
     ( [Check (ArrayTy (tupleSchema [NatTy, ArrayTy NatTy]))]
-    , ArrayTy (tupleSchema [NatTy, NatTy]) )
+    , const $ ArrayTy (tupleSchema [NatTy, NatTy]) )
   PrimOpGtNat -> binaryNatOp
   PrimOpGeNat -> binaryNatOp
   PrimOpLtNat -> binaryNatOp
   PrimOpLeNat -> binaryNatOp
   PrimOpNeNat -> binaryNatOp
-  PrimOpAddNat -> ([Check NatTy, Check NatTy], NatTy)
-  PrimOpNeExpr -> ([CheckAllEqual, CheckAllEqual], unit)
+  PrimOpAddNat -> ([Check NatTy, Check NatTy], const NatTy)
+  PrimOpNeExpr -> ([CheckAllEqual, CheckAllEqual], const unit)
   where
-    binaryNatOp = ([Check NatTy, Check NatTy], unit)
+    binaryNatOp = ([Check NatTy, Check NatTy], const unit)
 
 type VarSet = HashSet Name
 
