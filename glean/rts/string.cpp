@@ -11,7 +11,6 @@
 #include "glean/rts/string.h"
 #include <cassert>
 #include <cstring>
-#include <folly/Memory.h>
 #include <glog/logging.h>
 #include <unicode/utf8.h>
 #include <unicode/uchar.h>

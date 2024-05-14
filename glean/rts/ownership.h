@@ -10,7 +10,6 @@
 
 #include "glean/rts/id.h"
 #include "glean/rts/ownership/uset.h"
-#include "glean/rts/id.h"
 
 #include <folly/Optional.h>
 #include <folly/Range.h>

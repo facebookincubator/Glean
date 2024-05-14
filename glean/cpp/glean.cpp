@@ -7,7 +7,6 @@
  */
 
 #include <folly/gen/Base.h>
-#include <folly/FBString.h>
 #include <iterator>
 #include <algorithm>
 #include "glean/cpp/glean.h"

@@ -16,7 +16,6 @@
 #include "glean/rts/factset.h"
 
 #if __x86_64__ // AVX required
-#include <folly/experimental/EliasFanoCoding.h>
 #include <immintrin.h>
 #else
 #include "glean/rts/ownership/fallbackavx.h"
@@ -26,10 +25,7 @@
 #include <folly/container/F14Set.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/futures/Future.h>
-#include <folly/Hash.h>
 #include <folly/MPMCQueue.h>
-
-#include <xxhash.h>
 
 #include <algorithm>
 #include <initializer_list>

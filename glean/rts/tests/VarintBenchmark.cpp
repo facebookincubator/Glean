@@ -6,8 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include <iostream>
-
 #include <common/init/Init.h>
 #include <folly/Benchmark.h>
 

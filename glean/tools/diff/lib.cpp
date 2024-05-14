@@ -18,7 +18,6 @@
 #include "glean/rts/inventory.h"
 #include "glean/rts/lookup.h"
 #include "glean/rts/stacked.h"
-#include "glean/rts/substitution.h"
 #include <folly/MPMCQueue.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/futures/Future.h>

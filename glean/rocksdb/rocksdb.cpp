@@ -9,8 +9,6 @@
 #include "glean/rocksdb/rocksdb.h"
 #include "glean/rocksdb/container-impl.h"
 
-#include <rocksdb/db.h>
-
 namespace facebook {
 namespace glean {
 namespace rocks {

@@ -7,7 +7,6 @@
  */
 
 #include "glean/rts/lookup.h"
-#include "glean/rts/error.h"
 
 namespace facebook {
 namespace glean {

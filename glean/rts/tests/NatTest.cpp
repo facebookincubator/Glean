@@ -11,8 +11,6 @@
 #include <rapidcheck/gtest.h>
 
 #include "glean/rts/binary.h"
-#include "glean/rts/nat.h"
-
 
 template <class T>
 struct NatTest : testing::Test {};
