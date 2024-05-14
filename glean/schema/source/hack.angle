@@ -2,6 +2,7 @@
 
 schema hack.6 {
 import src.1
+import fbthrift.1
 
 # Name (identifier)
 predicate Name : string
@@ -775,5 +776,11 @@ predicate AttributeToDeclaration :
 
 # Generated from `auto_namespace_map` in .hhconfig
 predicate GlobalNamespaceAlias : { from: Name, to: NamespaceQName }
+
+predicate HackToThrift:
+  {
+    from: hack.Declaration,
+    to: fbthrift.Declaration
+  }
 
 }

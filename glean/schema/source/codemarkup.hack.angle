@@ -6,6 +6,7 @@ import code.24
 import code.hack.4
 import hack.6
 import codemarkup.types.1
+import fbthrift.1
 
 predicate HackResolveLocation:
   {
@@ -750,11 +751,18 @@ predicate HackEntityModuleName:
   }
   { { decl = { module = { name = hack.Name Name } } }, Name }
 
-# TODO after hack.HackEntityIdl is implemented
 predicate HackEntityIdl:
   {
     ent : code.hack.Entity,
     idlEnt : code.IdlEntity,
   }
+  { E, I } where
+  hack.HackToThrift { from = Hack, to = Thrift };
+  fbthrift.DeclarationFile { Thrift, fbthrift.File F };
+  { lang = Thrift,
+    file = F,
+    entity = { just = { fbthrift = { decl = Thrift } } },
+    range = nothing } = I;
+  { decl = Hack } = E
 
 }
