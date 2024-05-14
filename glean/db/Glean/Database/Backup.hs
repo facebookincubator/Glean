@@ -25,6 +25,7 @@ import qualified Data.HashMap.Strict as HashMap
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
 import Data.Hashable (Hashable)
+import Data.Int
 import Data.List
 import qualified Data.Map as Map
 import Data.Maybe
@@ -35,6 +36,7 @@ import Data.Typeable (Typeable)
 import GHC.Generics hiding (Meta)
 import System.Directory
 import System.FilePath
+import System.Timeout
 import Text.Printf
 import TextShow
 
@@ -271,54 +273,21 @@ backupDatabase env repo loc
 doRestore :: Env -> Repo -> Meta -> IO Bool
 doRestore env@Env{..} repo meta
   | Just loc <- metaBackup meta
-  , Complete DatabaseComplete{databaseComplete_bytes}
+  , Complete DatabaseComplete{databaseComplete_bytes = size}
   <- metaCompleteness meta
   , Just (_, Some site, r_repo) <- fromRepoLocator envBackupBackends loc
   , r_repo == repo =
-    loggingAction (runLogRepo "restore" env repo) (const mempty) (do
-      atomically $ notify envListener $ RestoreStarted repo
-      mbFreeBytes <- (Just <$> Storage.getFreeCapacity envStorage)
-                    `catch` \(_ :: IOException) -> return Nothing
-      case (mbFreeBytes, databaseComplete_bytes)  of
-        (Just freeBytes, Just size) -> do
-          let neededBytes = ceiling $ dbSizeDownloadFactor * fromIntegral size
-          when (freeBytes < neededBytes) $
-            -- the catch-all exception handler will log and cancel the download
-            throwIO $ ErrorCall $
-              printf "Not enough disk space: %d needed, %d available"
-                neededBytes freeBytes
-        _ -> return ()
+    loggingAction (runLogRepo "restore" env repo) (const mempty) $ do
+      ServerConfig.Config{..} <- Observed.get envServerConfig
+      let maybeTimeout =
+            case config_restore_timeout of
+              Just seconds -> void . timeout (fromIntegral seconds * 1000000)
+              Nothing -> id
+      maybeTimeout $ restore site size `catch` handler
 
-      withScratchDirectory envStorage repo $ \scratch -> do
-      say logInfo "starting"
-      say logInfo "downloading"
-      let scratch_restore = scratch </> "restore"
-          scratch_file = scratch </> "file"
-      -- TODO: implement buffered downloads in Manifold client
-      void $ Backend.restore site repo scratch_file
-      say logInfo "restoring"
-      createDirectoryIfMissing True scratch_restore
-      Storage.restore envStorage repo scratch_restore scratch_file
-      say logInfo "adding"
-      Catalog.finishRestoring envCatalog repo
-      atomically $ notify envListener $ RestoreFinished repo
-      say logInfo "finished"
+      -- NOTE: No point in adding the repo to the sinbin if there was
+      -- an exception, the handler removed it from the list of known DBs
       return True
-  )
-  `catch` \exc -> do
-    failed <- atomically $ do
-      failed <- Catalog.exists envCatalog [Restoring] repo
-      when failed $ do
-        Catalog.abortRestoring envCatalog repo
-        notify envListener $ RestoreFailed repo
-      return failed
-    when failed $ do
-      say logError $ "failed: " ++ show exc
-      swallow $ Storage.safeRemoveForcibly envStorage repo
-    rethrowAsync exc
-    -- NOTE: No point in adding the repo to the sinbin, we just removed
-    -- it from the list of known DBs anyway.
-    return True
 
   | otherwise = do
       atomically $ notify envListener $ RestoreStarted repo
@@ -329,7 +298,50 @@ doRestore env@Env{..} repo meta
       atomically $ notify envListener $ RestoreFailed repo
       return False
   where
-    say log s = log $ inRepo repo $ "restore: " ++ s
+  say log s = log $ inRepo repo $ "restore: " ++ s
+
+  restore :: Site s => s -> Maybe Int64 -> IO ()
+  restore site bytes = do
+    atomically $ notify envListener $ RestoreStarted repo
+    mbFreeBytes <- (Just <$> Storage.getFreeCapacity envStorage)
+                  `catch` \(_ :: IOException) -> return Nothing
+    case (mbFreeBytes, bytes)  of
+      (Just freeBytes, Just size) -> do
+        let neededBytes = ceiling $ dbSizeDownloadFactor * fromIntegral size
+        when (freeBytes < neededBytes) $
+          -- the catch-all exception handler will log and cancel the download
+          throwIO $ ErrorCall $
+            printf "Not enough disk space: %d needed, %d available"
+              neededBytes freeBytes
+      _ -> return ()
+
+    withScratchDirectory envStorage repo $ \scratch -> do
+    say logInfo "starting"
+    say logInfo "downloading"
+    let scratch_restore = scratch </> "restore"
+        scratch_file = scratch </> "file"
+    -- TODO: implement buffered downloads in Manifold client
+    void $ Backend.restore site repo scratch_file
+    say logInfo "restoring"
+    createDirectoryIfMissing True scratch_restore
+    Storage.restore envStorage repo scratch_restore scratch_file
+    say logInfo "adding"
+    Catalog.finishRestoring envCatalog repo
+    atomically $ notify envListener $ RestoreFinished repo
+    say logInfo "finished"
+
+  handler exc = do
+    failed <- atomically $ do
+      failed <- Catalog.exists envCatalog [Restoring] repo
+      when failed $ do
+        Catalog.abortRestoring envCatalog repo
+        notify envListener $ RestoreFailed repo
+      return failed
+    when failed $ do
+      say logError $ "failed: " ++ show exc
+      swallow $ Storage.safeRemoveForcibly envStorage repo
+    rethrowAsync exc
+
 
 doFinalize :: Env -> Repo -> IO Bool
 doFinalize env@Env{..} repo =
