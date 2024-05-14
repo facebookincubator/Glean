@@ -1,0 +1,57 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N3" } } }
+                }
+              }
+            },
+            "type": { "key": "Bar<N1::Foo>" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 20,
+              "columnBegin": 1,
+              "lineEnd": 20,
+              "columnEnd": 14
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N3" } } }
+                }
+              }
+            },
+            "type": { "key": "Bar<N1::Foo>" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 20,
+              "columnBegin": 1,
+              "lineEnd": 20,
+              "columnEnd": 14
+            }
+          }
+        }
+      }
+    }
+  }
+]

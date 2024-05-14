@@ -2992,6 +2992,10 @@ struct ASTConsumer : public clang::ASTConsumer {
       // We should remove this once platform009 is fully gone.
       policy.SplitTemplateClosers = true;
 #endif
+#if LLVM_VERSION_MAJOR >= 17
+      // Without this, the type printer omits scope specifiers
+      policy.SuppressElaboration = true;
+#endif
       return policy;
     }());
     ASTVisitor visitor(db, ctx);

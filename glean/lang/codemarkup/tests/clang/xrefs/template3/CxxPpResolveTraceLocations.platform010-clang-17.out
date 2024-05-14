@@ -2,8 +2,7 @@
   "@generated",
   {
     "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
+      "tuplefield0": {
         "name": "Bar",
         "file": { "key": "test.cpp" },
         "location": {
@@ -20,7 +19,7 @@
           "span": { "start": 317, "length": 3 }
         }
       },
-      "entity": {
+      "tuplefield1": {
         "cxx": {
           "defn": {
             "record_": {
@@ -56,8 +55,7 @@
   },
   {
     "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
+      "tuplefield0": {
         "name": "Foo",
         "file": { "key": "test.cpp" },
         "location": {
@@ -74,7 +72,7 @@
           "span": { "start": 265, "length": 3 }
         }
       },
-      "entity": {
+      "tuplefield1": {
         "cxx": {
           "defn": {
             "record_": {
@@ -110,8 +108,7 @@
   },
   {
     "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
+      "tuplefield0": {
         "name": "Foo",
         "file": { "key": "test.cpp" },
         "location": {
@@ -124,7 +121,7 @@
           }
         }
       },
-      "entity": {
+      "tuplefield1": {
         "cxx": {
           "decl": {
             "usingDeclaration": {
@@ -153,8 +150,7 @@
   },
   {
     "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
+      "tuplefield0": {
         "name": "N1",
         "file": { "key": "test.cpp" },
         "location": {
@@ -171,7 +167,7 @@
           "span": { "start": 231, "length": 2 }
         }
       },
-      "entity": {
+      "tuplefield1": {
         "cxx": {
           "defn": {
             "namespace_": {
@@ -278,8 +274,7 @@
   },
   {
     "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
+      "tuplefield0": {
         "name": "N1",
         "file": { "key": "test.cpp" },
         "location": {
@@ -292,7 +287,7 @@
           }
         }
       },
-      "entity": {
+      "tuplefield1": {
         "cxx": {
           "decl": {
             "usingDirective": {
@@ -319,8 +314,7 @@
   },
   {
     "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
+      "tuplefield0": {
         "name": "f1",
         "file": { "key": "test.cpp" },
         "location": {
@@ -337,7 +331,7 @@
           "span": { "start": 331, "length": 2 }
         }
       },
-      "entity": {
+      "tuplefield1": {
         "cxx": {
           "defn": {
             "function_": {
@@ -374,8 +368,7 @@
   },
   {
     "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
+      "tuplefield0": {
         "name": "f2",
         "file": { "key": "test.cpp" },
         "location": {
@@ -392,7 +385,7 @@
           "span": { "start": 363, "length": 2 }
         }
       },
-      "entity": {
+      "tuplefield1": {
         "cxx": {
           "defn": {
             "function_": {
@@ -427,8 +420,7 @@
   },
   {
     "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
+      "tuplefield0": {
         "name": "f3",
         "file": { "key": "test.cpp" },
         "location": {
@@ -445,7 +437,7 @@
           "span": { "start": 413, "length": 2 }
         }
       },
-      "entity": {
+      "tuplefield1": {
         "cxx": {
           "defn": {
             "function_": {
@@ -480,8 +472,7 @@
   },
   {
     "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
+      "tuplefield0": {
         "name": "x",
         "file": { "key": "test.cpp" },
         "location": {
@@ -498,7 +489,7 @@
           "span": { "start": 349, "length": 1 }
         }
       },
-      "entity": {
+      "tuplefield1": {
         "cxx": {
           "decl": {
             "variable": {
@@ -536,8 +527,7 @@
   },
   {
     "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
+      "tuplefield0": {
         "name": "x",
         "file": { "key": "test.cpp" },
         "location": {
@@ -554,7 +544,7 @@
           "span": { "start": 402, "length": 1 }
         }
       },
-      "entity": {
+      "tuplefield1": {
         "cxx": {
           "decl": {
             "variable": {
@@ -572,7 +562,7 @@
                     }
                   }
                 },
-                "type": { "key": "N1::Bar<N1::Foo>" },
+                "type": { "key": "Bar<N1::Foo>" },
                 "kind": { "local": { "kind": 0, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
@@ -590,8 +580,7 @@
   },
   {
     "key": {
-      "file": { "key": "test.cpp" },
-      "location": {
+      "tuplefield0": {
         "name": "x",
         "file": { "key": "test.cpp" },
         "location": {
@@ -608,7 +597,7 @@
           "span": { "start": 453, "length": 1 }
         }
       },
-      "entity": {
+      "tuplefield1": {
         "cxx": {
           "decl": {
             "variable": {

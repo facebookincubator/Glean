@@ -1,0 +1,435 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x1" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "N1::T" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 36,
+              "columnBegin": 1,
+              "lineEnd": 36,
+              "columnEnd": 4
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x1" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "N1::T" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 36,
+              "columnBegin": 1,
+              "lineEnd": 36,
+              "columnEnd": 4
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x2" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "N1::E" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 37,
+              "columnBegin": 1,
+              "lineEnd": 37,
+              "columnEnd": 9
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x2" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "N1::E" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 37,
+              "columnBegin": 1,
+              "lineEnd": 37,
+              "columnEnd": 9
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x3" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "N1::F" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 38,
+              "columnBegin": 1,
+              "lineEnd": 38,
+              "columnEnd": 12
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x3" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "N1::F" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 38,
+              "columnBegin": 1,
+              "lineEnd": 38,
+              "columnEnd": 12
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x4" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "N1::U" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 39,
+              "columnBegin": 1,
+              "lineEnd": 39,
+              "columnEnd": 4
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x4" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "N1::U" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 39,
+              "columnBegin": 1,
+              "lineEnd": 39,
+              "columnEnd": 4
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x5" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "N1::V" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 40,
+              "columnBegin": 1,
+              "lineEnd": 40,
+              "columnEnd": 4
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x5" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "N1::V" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 40,
+              "columnBegin": 1,
+              "lineEnd": 40,
+              "columnEnd": 4
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x6" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "W<int>" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 41,
+              "columnBegin": 1,
+              "lineEnd": 41,
+              "columnEnd": 9
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x6" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "W<int>" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 41,
+              "columnBegin": 1,
+              "lineEnd": 41,
+              "columnEnd": 9
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x7" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "N1::W<double>::Type" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 42,
+              "columnBegin": 1,
+              "lineEnd": 42,
+              "columnEnd": 18
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x7" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "N1::W<double>::Type" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 42,
+              "columnBegin": 1,
+              "lineEnd": 42,
+              "columnEnd": 18
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x8" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 43,
+              "columnBegin": 1,
+              "lineEnd": 43,
+              "columnEnd": 23
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "x8" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "N2" } } }
+                }
+              }
+            },
+            "type": { "key": "int" },
+            "kind": {
+              "global_": { "kind": 0, "attribute": 0, "definition": true }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 43,
+              "columnBegin": 1,
+              "lineEnd": 43,
+              "columnEnd": 23
+            }
+          }
+        }
+      }
+    }
+  }
+]
