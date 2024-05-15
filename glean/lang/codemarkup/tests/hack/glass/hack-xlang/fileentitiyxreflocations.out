@@ -1,0 +1,467 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "GetCardRequest",
+          "file": { "key": "www/test_types.php" },
+          "location": { "span": { "start": 9256, "length": 14 } }
+        },
+        "source": { "span": { "start": 857, "length": 14 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "GetCardRequest" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "GetNavigationException",
+          "file": { "key": "www/test_types.php" },
+          "location": { "span": { "start": 7256, "length": 22 } }
+        },
+        "source": { "span": { "start": 494, "length": 22 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": { "name": { "key": "GetNavigationException" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "GetNavigationRequest",
+          "file": { "key": "www/test_types.php" },
+          "location": { "span": { "start": 3397, "length": 20 } }
+        },
+        "source": { "span": { "start": 380, "length": 20 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": { "name": { "key": "GetNavigationRequest" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "TestServiceAsyncClient",
+          "file": { "key": "www/TestService.php" },
+          "location": { "span": { "start": 2297, "length": 22 } }
+        },
+        "source": { "span": { "start": 335, "length": 22 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": { "name": { "key": "TestServiceAsyncClient" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "TestServiceAsyncClient",
+          "file": { "key": "www/TestService.php" },
+          "location": { "span": { "start": 2297, "length": 22 } }
+        },
+        "source": { "span": { "start": 812, "length": 22 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": { "name": { "key": "TestServiceAsyncClient" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "__construct",
+          "file": { "key": "www/test_types.php" },
+          "location": { "span": { "start": 3956, "length": 11 } }
+        },
+        "source": { "span": { "start": 380, "length": 20 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "__construct" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "GetNavigationRequest" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "__construct",
+          "file": { "key": "www/test_types.php" },
+          "location": { "span": { "start": 7860, "length": 11 } }
+        },
+        "source": { "span": { "start": 494, "length": 22 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "__construct" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "GetNavigationException" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "__construct",
+          "file": { "key": "www/test_types.php" },
+          "location": { "span": { "start": 10037, "length": 11 } }
+        },
+        "source": { "span": { "start": 857, "length": 14 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "__construct" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "GetCardRequest" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "card",
+          "file": { "key": "www/test_types.php" },
+          "location": { "span": { "start": 12400, "length": 5 } }
+        },
+        "source": { "span": { "start": 995, "length": 4 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "card" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "GetCardResponse" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "identifier",
+          "file": { "key": "www/test_types.php" },
+          "location": { "span": { "start": 3924, "length": 11 } }
+        },
+        "source": { "span": { "start": 436, "length": 10 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "identifier" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "GetNavigationRequest" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "message_detail",
+          "file": { "key": "www/test_types.php" },
+          "location": { "span": { "start": 7824, "length": 15 } }
+        },
+        "source": { "span": { "start": 556, "length": 14 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "message_detail" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "GetNavigationException" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "static_card",
+          "file": { "key": "www/test_types.php" },
+          "location": { "span": { "start": 869, "length": 12 } }
+        },
+        "source": { "span": { "start": 1041, "length": 11 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "static_card" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "ResponseCard" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "tab_group",
+          "file": { "key": "www/test_types.php" },
+          "location": { "span": { "start": 5852, "length": 10 } }
+        },
+        "source": { "span": { "start": 714, "length": 9 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "tab_group" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "GetNavigationResponse" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "thrift1",
+          "file": { "key": "www/TestService.php" },
+          "location": { "span": { "start": 2627, "length": 7 } }
+        },
+        "source": { "span": { "start": 637, "length": 7 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "thrift1" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "TestServiceAsyncClient" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "thrift2",
+          "file": { "key": "www/TestService.php" },
+          "location": { "span": { "start": 3493, "length": 7 } }
+        },
+        "source": { "span": { "start": 924, "length": 7 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "thrift2" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "TestServiceAsyncClient" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,1324 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "GetCardException" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "exception_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "GetCardException" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "GetCardRequest" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "GetCardRequest" }
+                      }
+                    },
+                    "kind": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "GetCardResponse" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "GetCardResponse" }
+                      }
+                    },
+                    "kind": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": { "name": { "key": "GetNavigationException" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "exception_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "GetNavigationException" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": { "name": { "key": "GetNavigationRequest" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "GetNavigationRequest" }
+                      }
+                    },
+                    "kind": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": { "name": { "key": "GetNavigationResponse" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "GetNavigationResponse" }
+                      }
+                    },
+                    "kind": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "ResponseCard" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "ResponseCard" }
+                      }
+                    },
+                    "kind": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": {
+                    "key": { "name": { "key": "TestServiceAsyncClientIf" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "service_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "TestService" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "TestServiceAsyncIf" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "service_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "TestService" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": {
+                    "key": { "name": { "key": "TestServiceClientIf" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "service_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "TestService" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "TestServiceIf" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "service_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "TestService" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "trait": {
+                "key": {
+                  "name": {
+                    "key": { "name": { "key": "TestServiceClientBase" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "service_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "TestService" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "thrift1" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "TestServiceAsyncClient" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "function_": {
+                "key": {
+                  "service_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "file": { "key": { "key": "test.thrift" } },
+                          "name": { "key": "TestService" }
+                        }
+                      }
+                    }
+                  },
+                  "name": { "key": "thrift1" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "thrift1" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "TestServiceClient" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "function_": {
+                "key": {
+                  "service_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "file": { "key": { "key": "test.thrift" } },
+                          "name": { "key": "TestService" }
+                        }
+                      }
+                    }
+                  },
+                  "name": { "key": "thrift1" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "thrift1" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "TestServiceAsyncIf" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "function_": {
+                "key": {
+                  "service_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "file": { "key": { "key": "test.thrift" } },
+                          "name": { "key": "TestService" }
+                        }
+                      }
+                    }
+                  },
+                  "name": { "key": "thrift1" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "thrift1" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "TestServiceClientIf" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "function_": {
+                "key": {
+                  "service_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "file": { "key": { "key": "test.thrift" } },
+                          "name": { "key": "TestService" }
+                        }
+                      }
+                    }
+                  },
+                  "name": { "key": "thrift1" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "thrift1" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "TestServiceIf" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "function_": {
+                "key": {
+                  "service_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "file": { "key": { "key": "test.thrift" } },
+                          "name": { "key": "TestService" }
+                        }
+                      }
+                    }
+                  },
+                  "name": { "key": "thrift1" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "thrift2" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "TestServiceAsyncClient" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "function_": {
+                "key": {
+                  "service_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "file": { "key": { "key": "test.thrift" } },
+                          "name": { "key": "TestService" }
+                        }
+                      }
+                    }
+                  },
+                  "name": { "key": "thrift2" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "thrift2" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "TestServiceClient" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "function_": {
+                "key": {
+                  "service_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "file": { "key": { "key": "test.thrift" } },
+                          "name": { "key": "TestService" }
+                        }
+                      }
+                    }
+                  },
+                  "name": { "key": "thrift2" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "thrift2" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "TestServiceAsyncIf" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "function_": {
+                "key": {
+                  "service_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "file": { "key": { "key": "test.thrift" } },
+                          "name": { "key": "TestService" }
+                        }
+                      }
+                    }
+                  },
+                  "name": { "key": "thrift2" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "thrift2" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "TestServiceClientIf" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "function_": {
+                "key": {
+                  "service_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "file": { "key": { "key": "test.thrift" } },
+                          "name": { "key": "TestService" }
+                        }
+                      }
+                    }
+                  },
+                  "name": { "key": "thrift2" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "thrift2" },
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "TestServiceIf" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "function_": {
+                "key": {
+                  "service_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "file": { "key": { "key": "test.thrift" } },
+                          "name": { "key": "TestService" }
+                        }
+                      }
+                    }
+                  },
+                  "name": { "key": "thrift2" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "card" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "GetCardResponse" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "GetCardResponse" }
+                      }
+                    },
+                    "kind": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "card_name" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "GetCardRequest" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "GetCardRequest" }
+                      }
+                    },
+                    "kind": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "identifier" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "GetCardRequest" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "GetCardRequest" }
+                      }
+                    },
+                    "kind": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "identifier" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "GetNavigationRequest" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "GetNavigationRequest" }
+                      }
+                    },
+                    "kind": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "message_detail" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "GetCardException" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "exception_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "GetCardException" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "message_detail" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "GetNavigationException" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "exception_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "GetNavigationException" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "static_card" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "ResponseCard" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "ResponseCard" }
+                      }
+                    },
+                    "kind": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "tab_group" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "GetNavigationResponse" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "GetNavigationResponse" }
+                      }
+                    },
+                    "kind": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]
