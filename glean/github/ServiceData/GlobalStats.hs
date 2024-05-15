@@ -27,3 +27,9 @@ addStatValue _ _ = return ()
 
 addStatValueType :: ByteString -> Int -> ExportType -> IO ()
 addStatValueType _ _ _ = return ()
+
+addHistogram :: ByteString -> Int -> Int -> Int -> IO ()
+addHistogram _ _ _ _ = return ()
+
+exportHistogramPercentile :: ByteString -> Int -> IO ()
+exportHistogramPercentile _ _ = return ()
