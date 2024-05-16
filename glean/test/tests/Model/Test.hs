@@ -40,7 +40,6 @@
  -}
 module Model.Test (main) where
 
-import Control.Concurrent (newEmptyMVar, putMVar, takeMVar)
 import Util.STM (
   atomically,
   modifyTVar,
@@ -48,7 +47,7 @@ import Util.STM (
   readTVar,
   readTVarIO,
   retry,
-  writeTVar,
+  writeTVar, putTMVar, takeTMVar, newEmptyTMVarIO, TQueue
  )
 import Control.Exception (SomeException, throwIO, try)
 import Control.Monad (guard, unless, void, when)
@@ -66,15 +65,16 @@ import Data.Text (Text, pack)
 import qualified Data.Text.Lazy.IO as Text
 import GHC.Stack (HasCallStack)
 import Glean.Database.Backup.Backend (Backend (fromPath))
+import Glean.Database.Backup (Event (RestoreFinished, Waiting, RestoreStarted))
 import qualified Glean.Database.Backup.Backend as Site
 import Glean.Database.Backup.Mock (mockSite)
 import qualified Glean.Database.Backup.Mock as Backup.Mock
-import Glean.Database.Catalog (entriesEphemeral, entriesRestoring, getEntries)
+import Glean.Database.Catalog (entriesEphemeral, getEntries)
 import Glean.Database.Config (
   Config (
     cfgDataStore,
     cfgSchemaSource,
-    cfgServerConfig
+    cfgServerConfig, cfgListener
   ),
   parseSchemaDir,
   schemaSourceDir,
@@ -138,6 +138,7 @@ import Glean.Util.ShardManager (
  )
 import Glean.Util.Some (Some (Some))
 import qualified Glean.Util.ThriftSource as ThriftSource
+import Glean.Util.Trace (Expect, recorder, expect, want, wants, opt)
 import Glean.Util.IO (withTempFileContents)
 import Model.Command (
   Command (..),
@@ -246,8 +247,10 @@ withTEnv ::
   IO b
 withTEnv backupDir (dbConfig, mDataStore) f = withEventBaseDataplane $ \evb ->
   withConfigProvider defaultConfigOptions $ \(cfgAPI :: NullConfigProvider) ->
-    withDatabases evb dbConfig cfgAPI $ \env -> do
-      tEnv <- mockEnv backupDir env mDataStore
+    do
+    (listener, eventQueue) <- recorder
+    withDatabases evb dbConfig{cfgListener = listener} cfgAPI $ \env -> do
+      tEnv <- mockEnv backupDir env mDataStore eventQueue
       f TEnv {..}
 
 --------------------------------------------------------------------------------
@@ -256,23 +259,27 @@ data MockedEnv = MockedEnv
   { mockedEnv :: Env
   , mockedTime :: Mock (IO PosixEpochTime)
   , mockedShardAssignment :: IORef (HashSet Text)
-  , mockedCompleteRestore :: IO ()
+  , mockedCompleteRestore :: IO Repo
   , backupDir :: FilePath
+  , mockedExpect :: Expect Event -> IO ()
   }
 
-mockEnv :: FilePath -> Env -> MockDataStore Memory -> IO MockedEnv
-mockEnv backupDir Env {..} MockDataStore {..} = do
+mockEnv
+  :: FilePath -> Env -> MockDataStore Memory -> TQueue Event -> IO MockedEnv
+mockEnv backupDir Env {..} MockDataStore {..} eventQueue = do
   schemaSource <- Observed.get envSchemaSource
   schema <- newDbSchema (Just envDbSchemaCache) schemaSource
     LatestSchemaAll readWriteContent
   let storedSchema = toStoredSchema schema
   mockedTime <- implement "getCurrentTime" (pure zeroTime)
   mockedShardAssignment <- newIORef mempty
-  restoreSemaphore <- newEmptyMVar
+  restoreQueue <- newEmptyTMVarIO
+  restoreSemaphore <- newEmptyTMVarIO
   reimplement
     (mockRestore mockDataStoreStorage)
     ( \dbRepo _ _ -> do
-        takeMVar restoreSemaphore
+        atomically $ putTMVar restoreQueue dbRepo
+        atomically $ takeTMVar restoreSemaphore
         dbFacts <- FactSet.new lowestFid
         dbData <- newTVarIO mempty
         let db = Glean.Database.Storage.Memory.Database {..}
@@ -292,9 +299,15 @@ mockEnv backupDir Env {..} MockDataStore {..} = do
           , envShardManager = SomeShardManager envShardManager
           , ..
           }
-      mockedCompleteRestore = do
+      mockedCompleteRestore = timeoutWithError "mockedCompleteRestore" 1 $ do
         logInfo "restore: go ahead"
-        putMVar restoreSemaphore ()
+        atomically $ do
+          repo <- takeTMVar restoreQueue
+          putTMVar restoreSemaphore ()
+          return repo
+
+      mockedExpect = expect eventQueue
+
   return MockedEnv {..}
 
 --------------------------------------------------------------------------------
@@ -428,24 +441,21 @@ mutateSystem MockedEnv {..} (ShardingAssignmentChange (ShardRemoved x)) = do
   modifyIORef mockedShardAssignment (Set.delete x)
   return $ waitOne $ waitForDeletions mockedEnv
 mutateSystem MockedEnv {..} DBDownloaded = do
-  restorePending <-
-    atomically $ entriesRestoring <$> getEntries (envCatalog mockedEnv)
-  if null restorePending
-    then return noWait
-    else do
-      mockedCompleteRestore
-      return $
-        Wait
-          [ timeoutWithError "waitForDownloadCompleted" 1 $
-              atomically $ do
-                entries <- getEntries (envCatalog mockedEnv)
-                let restorePending' = entriesRestoring entries
-                guard (length restorePending' == length restorePending - 1)
-                guard (null $ entriesEphemeral entries)
-          , -- the download is only processed *after* the next Janitor run
-            -- it can still lead to a deletion in the follow-up Janitor run
-            waitForDeletions mockedEnv
-          ]
+  restoreInProgress <- timeout 1 mockedCompleteRestore
+  case restoreInProgress of
+    Nothing -> return noWait
+    Just repo -> return $ Wait
+      [ timeoutWithError "waitForDownloadCompleted" 1 $ do
+          mockedExpect $
+            opt (want Waiting) <>
+            wants [RestoreStarted repo, RestoreFinished repo]
+          atomically $ do
+            entries <- getEntries (envCatalog mockedEnv)
+            guard (null $ entriesEphemeral entries)
+      , -- the download is only processed *after* the next Janitor run
+        -- it can still lead to a deletion in the follow-up Janitor run
+        waitForDeletions mockedEnv
+      ]
 
 waitForDeletions :: HasCallStack => Env -> IO ()
 waitForDeletions env =
@@ -454,14 +464,14 @@ waitForDeletions env =
       done <- null <$> readTVar (envDeleting env)
       when (not done) retry
 
-timeoutWithError :: HasCallStack => String -> Seconds -> IO () -> IO ()
+timeoutWithError :: HasCallStack => String -> Seconds -> IO a -> IO a
 timeoutWithError msg seconds action = do
   res <- timeout seconds action
   case res of
     Nothing -> do
       logError $ "timeout: " <> msg
       error $ "timeout: " <> msg
-    _ -> return ()
+    Just a -> return a
 
 --------------------------------------------------------------------------------
 -- Test assumptions
