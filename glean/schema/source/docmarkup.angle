@@ -52,68 +52,6 @@ predicate EntityByDocAttrKey :
     {key = Key} = DAS[..];
 
 ##############################################################################
-# Combining annotations from comments or custom language syntax
-
-# Language-agnostic annotation. The Annotations can come from doc block comments
-# or language specific syntax
-#
-# Array order from original indexer is significant
-#
-# TODO : once they are supported as predicates, add python decorators
-type GeneralAnnotations = {
-  doc : DocAttrs |
-  hack : [hack.UserAttribute] |
-  java : [java.alpha.Annotation] |
-}
-
-# Derived view mapping language-agnostic symbol to language-agnostic annotation.
-#
-# The entity key may not be unique, for instance a hack class might
-# have both {doc : DocAttrs} and {hack : [hack.UserAttribute]} annotations.
-#
-# The GeneralAnnotations alternatives will be non-empty.
-predicate EntityAnnotations :
-  {
-    entity : code.Entity,
-    annotations : GeneralAnnotations
-  }
-  { Entity, Annotations } where
-    Annotations =
-      ( EntityDocAttr Entity -> Attrs;
-        { doc = Attrs } : GeneralAnnotations
-      )
-      |
-      ( { hack = { decl = D } } = Entity;
-        Attrs =
-          ( {container={class_=X}} = D;
-            hack.ClassDefinition{declaration = X, attributes = A}; A ) |
-          ( {container={interface_=X}} = D;
-            hack.InterfaceDefinition{declaration = X, attributes = A}; A ) |
-          ( {container={trait=X}} = D;
-            hack.TraitDefinition{declaration = X, attributes = A}; A ) |
-          ( {container={enum_=X}} = D;
-            hack.EnumDefinition{declaration = X, attributes = A}; A ) |
-          ( {function_ = X} = D;
-            hack.FunctionDefinition{declaration = X, attributes = A}; A ) |
-          ( {method = X} = D;
-            hack.MethodDefinition{declaration = X, attributes = A}; A ) |
-          ( {property_ = X} = D;
-            hack.PropertyDefinition{declaration = X, attributes = A}; A ) |
-          ( {typeConst = X} = D;
-            hack.TypeConstDefinition{declaration = X, attributes = A}; A ) |
-          ( {typedef_ = X} = D;
-            hack.TypedefDefinition{declaration = X, attributes = A}; A );
-        1 <= prim.length Attrs;
-        { hack = Attrs }
-      )
-      |
-      ( { java = { decl = D } } = Entity;
-        java.alpha.DeclarationAnnotations { D, Annots };
-        1 <= prim.length Annots;
-        { java = Annots }
-      )
-
-##############################################################################
 # Comment indexing support
 
 # Derived query to collect all comments, represented by file and span
