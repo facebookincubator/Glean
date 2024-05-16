@@ -21,9 +21,17 @@ An example of an *incompatible* change would be changing the type of a
 field, for example from `nat` to `bool`.
 
 Of course it's fine to make arbitrary changes to a schema that you're
-working on; the compatibility rules only come into effect when you
-have existing databases and want to preserve compability with clients
-during the schema change.
+working on; the compatibility rules only come into effect when the
+schema is landed. From that point there might be existing clients and
+databases in use, so Glean will reject any incompatible schema changes.
+
+<FbInternalOnly>
+The compatibility check shows up in CI as `sync-cf-main-diff` and is
+performed on any diff that changes a schema. It checks that the new
+schema is compatible with the existing schema and all previous
+versions of the schema still in use, so it will catch things like
+removing a field and then re-adding it with a different type.
+</FbInternalOnly>
 
 ### Compatibility
 
@@ -62,8 +70,30 @@ following table:
 
 ### What if my schema changes are incompatible?
 
-You can add new predicates representing the new data. Then you have
-the option of
+If you don't care about backwards compatibility, then an easy
+workaround is to just bump the version of the whole schema, so for
+example if you have
+
+```
+schema graphql.1 {
+...
+}
+```
+
+then change it to
+
+```
+schema graphql.2 {
+...
+}
+```
+
+and make whatever changes you need. The new version of the schema is
+entirely separate from the old version as far as Glean is concerned,
+so there are no restrictions on what changes can be made.
+
+If you want to retain some backwards compatibility, then you can add
+new predicates representing the new data. You have the option of
 
 1. Writing both the old and the new data to the database
 2. Producing two databases, one with the old data and one with the new data. The databases can be distinguished by different names or different properties.
