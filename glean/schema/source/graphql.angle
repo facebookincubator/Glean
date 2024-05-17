@@ -127,9 +127,17 @@ predicate ObjectTypeDef :
     directives: [Directive],
   }
 
-predicate Query :
+type OperationKind =
+  enum {
+    QUERY  |
+    MUTATION |
+    SUBSCRIPTION
+  }
+
+predicate Operation :
   {
     name: Value,
+    kind: OperationKind,
     directives: [Directive],
     variableDefs: [VariableDef],
     selectionSet: SelectionSet,
@@ -170,7 +178,7 @@ predicate Value : string
 # Derived predicates/helpers used to power glass, codesearch, etc.
 type Declaration =
   {
-    query_ : Query |
+    operation_ : Operation |
     fragment_ : Fragment |
     field_ : FieldDef |
     enum_ : EnumTypeDef |
@@ -184,7 +192,7 @@ predicate DeclarationLocation :
     span: src.ByteSpan,
   }
   { Decl, File, Span} where
-    ({ query_ = Q } = Decl; Q = Query { loc = { file = File, span = Span} }) |
+    ({ operation_ = Q } = Decl; Q = Operation { loc = { file = File, span = Span} }) |
     ({ fragment_ = F } = Decl; F = Fragment { loc = { file = File, span = Span} });
     # TODO (calebtho): add support for declarations located in the schema
 
@@ -200,7 +208,7 @@ predicate FileDeclarations :
 predicate DeclarationName: Declaration -> Value
   D -> Value where
     Value =
-      (N where { query_ = X} = D; { name = N } = X) |
+      (N where { operation_ = X} = D; { name = N } = X) |
       (N where { fragment_ = X } = D; { name = N } = X);
 
 }
