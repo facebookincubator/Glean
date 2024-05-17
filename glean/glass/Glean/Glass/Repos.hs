@@ -35,6 +35,7 @@ module Glean.Glass.Repos
   , selectGleanDBs
   , getRepoHash
   , getRepoHashForLocation
+  , getDBRevision
   , getLatestRepo
   ) where
 
@@ -535,10 +536,14 @@ getRepoHash repo = Revision (Text.take 40 (Glean.repo_hash repo))
 
 getRepoHashForLocation
   :: LocationRange -> ScmRevisions -> Glean.Repo -> Revision
-getRepoHashForLocation LocationRange{..} scmRevs repo =
-  fromMaybe (getRepoHash repo) $ do
-    scmRepoToHash <- HashMap.lookup repo scmRevs
-    scmRevision <$> HashMap.lookup locationRange_repository scmRepoToHash
+getRepoHashForLocation LocationRange{..} scmRevs gleanDB =
+  getDBRevision scmRevs gleanDB locationRange_repository
+
+getDBRevision :: ScmRevisions -> Glean.Repo -> RepoName -> Revision
+getDBRevision scmRevs gleanDB repo =
+  fromMaybe (getRepoHash gleanDB) $ do
+    scmRepoToHash <- HashMap.lookup gleanDB scmRevs
+    scmRevision <$> HashMap.lookup repo scmRepoToHash
 
 getLatestRepo
   :: RepoMapping -> GleanDBInfo -> RepoName -> Language -> Maybe Glean.Repo

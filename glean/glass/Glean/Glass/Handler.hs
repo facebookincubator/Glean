@@ -1098,7 +1098,7 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit
       where
         -- Use first db's revision
         revision GleanBackend {gleanDBs = ((_, repo) :| _)} =
-          Revision $ Glean.repo_hash repo
+          getDBRevision (scmRevisions dbInfo) repo scsrepo
 
     Right (FileInfo{..}, gleanDataLog) -> do
 
@@ -1148,7 +1148,7 @@ fetchDocumentSymbols (FileReference scsrepo path) mlimit
             (Attributes.fromSymbolId Attributes.SymbolKindAttr)
               kindMap (map (\XRefData{..} -> (xrefEntity, xrefSymbol)) refs1)
                 defs1
-      let revision = getRepoHash fileRepo
+      let revision = getDBRevision (scmRevisions dbInfo) fileRepo scsrepo
           digest = toDigest <$> fileDigest
       return (DocumentSymbols {..}, gleanDataLog, merr)
 
