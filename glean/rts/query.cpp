@@ -151,7 +151,7 @@ struct QueryExecutor {
     if (added.second) {
       return recordResult(id, key, val, pid, 0);
     } else {
-      DVLOG(3) << "result skipped dup (" << id.toWord() << ")";
+      DVLOG(5) << "result skipped dup (" << id.toWord() << ")";
       return 0;
     }
   }
@@ -245,7 +245,7 @@ uint64_t QueryExecutor::seek(
     const unsigned char *key_end) {
   const folly::ByteRange key(key_begin, key_end);
   auto token = iters.size();
-  DVLOG(3) << "seek(" << type.toWord() << ") = " << token;
+  DVLOG(5) << "seek(" << type.toWord() << ") = " << token;
   iters.emplace_back(Iter{facts.seek(type, key, key.size()),
                           type, Id::invalid(), key.size(), true});
   return static_cast<uint64_t>(token);
@@ -259,7 +259,7 @@ uint64_t QueryExecutor::seekWithinSection(
     Id upto) {
   const folly::ByteRange key(key_begin, key_end);
   auto token = iters.size();
-  DVLOG(3) << "seekWithinSection(" << type.toWord() << ") = " << token;
+  DVLOG(5) << "seekWithinSection(" << type.toWord() << ") = " << token;
   iters.emplace_back(Iter{
       facts.seekWithinSection(type, key, key.size(), from, upto),
       type,
@@ -276,7 +276,7 @@ uint64_t QueryExecutor::currentSeek() {
 }
 
 void QueryExecutor::endSeek(uint64_t token) {
-  DVLOG(3) << "endSeek(" << token << ")";
+  DVLOG(5) << "endSeek(" << token << ")";
   while (iters.size() > token) {
     iters.pop_back();
   }
@@ -314,7 +314,7 @@ void QueryExecutor::next(
       stats[iters[token].type.toWord()]++;
     }
   }
-  DVLOG(3) << "next(" << token << ") = " << (res ? res.id.toWord() : 0);
+  DVLOG(5) << "next(" << token << ") = " << (res ? res.id.toWord() : 0);
 
 
   if (!res) {
@@ -334,7 +334,7 @@ Pid QueryExecutor::lookupKeyValue(
     Id fid,
     binary::Output* kout,
     binary::Output* vout) {
-  DVLOG(3) << "lookupKeyValue(" << fid.toWord() << ")";
+  DVLOG(5) << "lookupKeyValue(" << fid.toWord() << ")";
   Pid pid_2;
   facts.factById(fid, [&](Pid pid_, auto clause) {
     pid_2 = pid_;
@@ -420,7 +420,7 @@ SerializedCont QueryExecutor::queryCont(Subroutine::Activation& act) const {
 };
 
 void QueryExecutor::nestedFact(Id id, Pid pid_2) {
-  DVLOG(3) << "nestedFact: " << id.toWord();
+  DVLOG(5) << "nestedFact: " << id.toWord();
   if (depth == Depth::ExpandPartial &&
       expandPids.find(pid_2) == expandPids.end()) {
     return;
@@ -443,7 +443,7 @@ size_t QueryExecutor::recordResult(
   result_pids.emplace_back(pid_2.toWord());
   result_keys.emplace_back(key ? key->string() : "");
   result_values.emplace_back(val ? val->string() : "");
-  DVLOG(3) << "result added (" << id.toWord() << ")";
+  DVLOG(5) << "result added (" << id.toWord() << ")";
   auto key_size = key ? key->size() : 0;
   auto val_size = val ? val->size() : 0;
   size_t bytes = sizeof(Id) + key_size + val_size;
