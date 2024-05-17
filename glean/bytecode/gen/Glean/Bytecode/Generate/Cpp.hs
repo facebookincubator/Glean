@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# OPTIONS_GHC  -fno-warn-incomplete-patterns #-}
 module Glean.Bytecode.Generate.Cpp (main)
 where
 
@@ -97,7 +98,9 @@ genInsnEval Insn{..} =
   , ""
   , "FOLLY_ALWAYS_INLINE " <> retType <> " eval_" <> insnName <> "() {"
   , "  " <> insnName <> " args;" ]
-  ++ map indent (concatMap decode insnArgs) ++
+  ++ map indent (concatMap decode insnArgs)
+  ++ [indent ("DVLOG(5) << " <> "\"" <> insnName  <> "\"" <>
+      Text.concat (map ((" << \"  \" << " <>) . logArg) insnArgs) <> ";")] ++
   [ "  return execute(args);"
   , "}" ]
   where
@@ -135,6 +138,24 @@ genInsnEval Insn{..} =
     decode (Arg name (Regs _)) =
       [ "args." <> name <> " = pc;"
       , "pc += args." <> name <> "_arity;" ]
+
+    logArg (Arg name (Imm _))
+      = "args." <> name
+    logArg (Arg name (Reg _ regTy _))
+      | regTy == Word || regTy == Lit || regTy == Offset
+      = "args." <> name
+    logArg (Arg _name (Reg _ regTy _))
+      | regTy == DataPtr || regTy == WordPtr
+      = "\"<<ptr>>\""
+    logArg (Arg _name (Reg _ BinaryOutputPtr _))
+      = "\"<<binary::Output>>\""
+    logArg (Arg _name (Reg _ (Fun _) _))
+      = "\"<<funptr>>\""
+    logArg (Arg _name Offsets)
+      = "\"<<offsets>>\""
+    logArg (Arg _name (Regs _))
+      = "\"<<reg arguments>>\""
+
 
 cppType :: Ty -> Text
 cppType DataPtr = "const unsigned char *"

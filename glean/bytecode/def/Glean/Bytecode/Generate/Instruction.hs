@@ -55,6 +55,7 @@ data ArgTy
   | Reg (Maybe Text) Ty Usage -- ^ register argument
   | Offsets -- ^ array of jump offsets (length + array in the insn stream)
   | Regs [Ty] -- ^ list of registers (array without length in the insn stream)
+  deriving(Eq)
 
 -- | Type of an immediate value
 data ImmTy

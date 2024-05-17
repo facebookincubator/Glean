@@ -108,6 +108,12 @@ private:
   }
 };
 
+template<typename T>
+inline std::ostream& operator<<(std::ostream& os, const Reg<T>& reg)
+{
+    return (os << reg.get());
+}
+
 /// Arguments to syscalls.
 ///
 /// The primary template handles inputs which are passed by value
