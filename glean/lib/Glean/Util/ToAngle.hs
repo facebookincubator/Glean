@@ -214,7 +214,7 @@ instance ToAngleFull Src.File where
 
 instance Normalize Fbthrift.File where
   normalize (Fbthrift.File _ (Just k)) = Fbthrift.File 0 (Just (normalize k))
-  normalize  _ = error "Not Fully resolved"
+  normalize  _ = error "Not fully resolved"
 
 instance Normalize Fbthrift.QualName_key where
   normalize
@@ -222,14 +222,28 @@ instance Normalize Fbthrift.QualName_key where
     (Fbthrift.Identifier _ (Just identifier))) =
     Fbthrift.QualName_key (Fbthrift.File 0 (Just (normalize file)))
     (Fbthrift.Identifier 0 (Just identifier))
-  normalize  _ = error "Not Fully resolved"
+  normalize  _ = error "Not fully resolved"
+
+instance Normalize Fbthrift.ExceptionName_key where
+  normalize (Fbthrift.ExceptionName_key (Fbthrift.QualName _ (Just qualname)))
+    =
+    Fbthrift.ExceptionName_key (Fbthrift.QualName 0 (Just (normalize qualname)))
+  normalize  _ = error "Not fully resolved"
 
 instance Normalize Fbthrift.ServiceName_key where
   normalize (Fbthrift.ServiceName_key (Fbthrift.QualName _ (Just qualname)))
     =
     Fbthrift.ServiceName_key (Fbthrift.QualName 0 (Just (normalize qualname)))
+  normalize  _ = error "Not fully resolved"
 
-  normalize  _ = error "Not Fully resolved"
+instance Normalize Fbthrift.NamedDecl_key where
+  normalize
+    (Fbthrift.NamedDecl_key
+      (Fbthrift.NamedType (Fbthrift.QualName _ (Just qualname)) kind)) =
+    Fbthrift.NamedDecl_key
+      (Fbthrift.NamedType
+        (Fbthrift.QualName 0 (Just (normalize qualname))) kind)
+  normalize  _ = error "Not fully resolved"
 
 instance Normalize Fbthrift.FunctionName_key where
   normalize
@@ -237,14 +251,23 @@ instance Normalize Fbthrift.FunctionName_key where
       (Fbthrift.Identifier _ (Just identifier))) =
     Fbthrift.FunctionName_key (Fbthrift.ServiceName 0
       (Just (normalize service_))) (Fbthrift.Identifier 0 (Just identifier))
-
-  normalize  _ = error "Not Fully resolved"
+  normalize  _ = error "Not fully resolved"
 
 instance Normalize Fbthrift.XRefTarget where
   normalize
     (Fbthrift.XRefTarget_function_
       (Fbthrift.FunctionName _ (Just x))) =
     Fbthrift.XRefTarget_function_ (Fbthrift.FunctionName 0 (Just (normalize x)))
+  normalize (Fbthrift.XRefTarget_service_
+      (Fbthrift.ServiceName _ (Just x))) =
+    Fbthrift.XRefTarget_service_ (Fbthrift.ServiceName 0 (Just (normalize x)))
+  normalize (Fbthrift.XRefTarget_exception_
+      (Fbthrift.ExceptionName _ (Just x))) =
+    Fbthrift.XRefTarget_exception_
+      (Fbthrift.ExceptionName 0 (Just (normalize x)))
+  normalize (Fbthrift.XRefTarget_named
+      (Fbthrift.NamedDecl _ (Just x))) =
+    Fbthrift.XRefTarget_named (Fbthrift.NamedDecl 0 (Just (normalize x)))
   normalize _ = error "unknown Entity"
 
 instance ToAngleFull Fbthrift.File where
@@ -267,6 +290,27 @@ instance ToAngleFull Fbthrift.ServiceName_key where
     end
   toAngleFull  _ = error "Not Fully resolved"
 
+instance ToAngleFull Fbthrift.NamedDecl_key where
+  toAngleFull
+    (Fbthrift.NamedDecl_key
+      (Fbthrift.NamedType (Fbthrift.QualName _ (Just qualname)) kind)) =
+      let namedType :: Angle Fbthrift.NamedType = rec $
+            field @"name" (toAngleFull qualname) $
+            field @"kind" (enum kind)
+            end
+      in
+      rec $
+        field @"name" namedType
+    end
+  toAngleFull  _ = error "Not fully resolved"
+
+instance ToAngleFull Fbthrift.ExceptionName_key where
+  toAngleFull (Fbthrift.ExceptionName_key (Fbthrift.QualName _ (Just qualname)))
+    = rec $
+        field @"name" (toAngleFull qualname)
+    end
+  toAngleFull  _ = error "Not Fully resolved"
+
 instance ToAngleFull Fbthrift.FunctionName_key where
   toAngleFull
     (Fbthrift.FunctionName_key (Fbthrift.ServiceName _ (Just service_))
@@ -280,6 +324,15 @@ instance ToAngleFull Fbthrift.XRefTarget where
   toAngleFull
     (Fbthrift.XRefTarget_function_ (Fbthrift.FunctionName _ (Just x))) =
     alt @"function_" (toAngleFull x)
+  toAngleFull
+    (Fbthrift.XRefTarget_service_ (Fbthrift.ServiceName _ (Just x))) =
+    alt @"service_" (toAngleFull x)
+  toAngleFull
+    (Fbthrift.XRefTarget_exception_ (Fbthrift.ExceptionName _ (Just x))) =
+    alt @"exception_" (toAngleFull x)
+  toAngleFull
+    (Fbthrift.XRefTarget_named (Fbthrift.NamedDecl _ (Just x))) =
+    alt @"named" (toAngleFull x)
   toAngleFull _ = error "unknown Entity"
 
 instance ToAngle Fbthrift.XRefTarget where
