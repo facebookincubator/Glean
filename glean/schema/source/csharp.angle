@@ -271,6 +271,11 @@ type MemberAccessExpression =
   | method: Method
   }
 
+predicate TypeLocation:
+  { type: AType
+  , location: Location
+  }
+
 # A Horizon Unity platform package, e.g. apps/horizon
 # C# class: https://fburl.com/code/qwzlquxw
 # Wiki: https://fburl.com/wiki/bho3z437
@@ -463,6 +468,9 @@ predicate FileEntityXRefs:
       ) | (
         { method = Method } = Expr; { method = Method } = Defn
       );
+    ) | (
+      TypeLocation { AType, { fileLocation = { File, Span }} };
+      { type = AType } = Defn;
     );
     { File, Span } = SrcLoc;
 
