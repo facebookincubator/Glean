@@ -16,14 +16,12 @@ import System.Exit
 import System.FilePath
 
 import Glean
-import Glean.Indexer
-import Glean.Regression.Config
 import Glean.Regression.Indexer
+import Glean.Regression.Config
 import Glean.Regression.Snapshot (testMain)
 import Glean.Regression.Snapshot.Driver
 import qualified Glean.Clang.Test as Clang
 import qualified Glean.Clang.Test.DerivePass as DerivePass
-import qualified Glean.Clang.Test.DocBlock as DocBlock
 import qualified Glean.Regression.Driver.DeriveForCodemarkup as Code
 
 main :: IO ()
@@ -32,8 +30,7 @@ main = testMain incrementalClangDriver
 incrementalClangDriver :: Driver Clang.Options
 incrementalClangDriver = clangDriver {
     driverCreateDatabase = createDB,
-    driverIndexer =
-      driverIndexer clangDriver `indexerThen` \_ -> DocBlock.indexer
+    driverIndexer = driverIndexer clangDriver
   }
   where
   clangDriver = DerivePass.driver Code.codemarkupDerivePasses

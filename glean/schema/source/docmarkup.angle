@@ -7,7 +7,6 @@ schema docmarkup.14 {
 import code.24
 import cxx1.5
 import hack.6
-import java.alpha.1
 import src.1
 
 
@@ -37,19 +36,6 @@ type DocAttrs = [DocAttr]
 
 # This EntityDocAttr looks up the special documentation comment attributes
 predicate EntityDocAttr : code.Entity -> DocAttrs
-
-##############################################################################
-# Additional derived predicates about DocAttr
-
-# Lookup all entities that contain a given DocAttrKey (and any DocAttrValue)
-predicate EntityByDocAttrKey :
-  {
-    key : DocAttrKey,
-    entity: code.Entity
-  }
-  stored { Key, IC } where
-    EntityDocAttr IC -> DAS;
-    {key = Key} = DAS[..];
 
 ##############################################################################
 # Comment indexing support
