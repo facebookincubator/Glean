@@ -719,12 +719,11 @@ predicate ModuleChild:
     decl : hack.Declaration
   } stored { Module, Decl } where hack.ModuleParent { Decl, Module }
 
-# Derived overrides base; only includes methods annotated with
-# the <<__Override>> attribute
 predicate MethodOverrides :
   {
     derived : MethodDeclaration,
     base : MethodDeclaration,
+    annotation : maybe bool,
   }
 
 # hack.MethodsOverrides can look up from derived to base; reverse this
@@ -733,11 +732,16 @@ predicate MethodOverridden :
   {
     base : MethodDeclaration,
     derived : MethodDeclaration,
+    annotation : maybe bool,
   }
   stored
-  {Base, Derived}
+  {Base, Derived, Annotation}
   where
-    hack.MethodOverrides{derived = Derived, base = Base}
+    hack.MethodOverrides{
+      derived = Derived,
+      base = Base,
+      annotation = Annotation
+    }
 
 # Maps an attribute to its defining class, and file where the class is defined
 predicate AttributeToDeclaration :

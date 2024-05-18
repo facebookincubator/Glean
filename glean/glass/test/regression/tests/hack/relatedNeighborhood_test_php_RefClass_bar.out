@@ -9,12 +9,30 @@
                 "parent": "test/php/RefClass"
             }
         ],
-        "inheritedSymbols": [],
-        "parentsExtended": [],
+        "inheritedSymbols": [
+            {
+                "base": "test/php/SourceClass/bar",
+                "provides": []
+            }
+        ],
+        "parentsExtended": [
+            "test/php/SourceClass/bar"
+        ],
         "requireClass": [],
         "requireExtends": [],
         "requireImplements": [],
-        "symbolBasicDetails": {},
+        "symbolBasicDetails": {
+            "test/php/SourceClass/bar": {
+                "kind": 8,
+                "language": 3,
+                "name": {
+                    "container": "SourceClass",
+                    "localName": "bar"
+                },
+                "signature": "public function bar(int $param): int",
+                "sym": "test/php/SourceClass/bar"
+            }
+        },
         "symbolDetails": {
             "test/php/RefClass": {
                 "annotations": [],

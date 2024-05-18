@@ -237,6 +237,78 @@
         "decl": {
           "method": {
             "key": {
+              "name": { "key": "bar" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "RefClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "bar" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "overrideMe" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "overrideMe" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SuperClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "decl": {
+          "method": {
+            "key": {
               "name": { "key": "pleaseOverride" },
               "container": {
                 "class_": {
@@ -259,6 +331,38 @@
                   "key": {
                     "name": { "key": { "name": { "key": "SourceClass" } } }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "takeOff" },
+              "container": {
+                "trait": {
+                  "key": { "name": { "key": { "name": { "key": "Plane" } } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "takeOff" },
+              "container": {
+                "trait": {
+                  "key": { "name": { "key": { "name": { "key": "Plane" } } } }
                 }
               }
             }
