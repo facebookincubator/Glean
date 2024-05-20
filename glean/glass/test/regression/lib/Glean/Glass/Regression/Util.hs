@@ -8,6 +8,7 @@
 
 module Glean.Glass.Regression.Util (withTestEnv, withTestEnvScm) where
 
+import qualified Haxl.Core as Haxl
 import Util.EventBase
 import Glean.Util.ConfigProvider
 import Glean.Impl.TestConfigProvider () -- don't use the real ConfigProvider in tests
@@ -48,5 +49,6 @@ withTestEnvScm backend scm f =
         , repoMapping = fixedRepoMapping
         , sourceControl = scm
         , tracer = mempty
+        , haxlState = Haxl.stateEmpty
         , ..
         }

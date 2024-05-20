@@ -13,6 +13,7 @@ module Glean.Glass.Env
     Config(..),
     setSnapshotBackend,
     setSourceControl,
+    setHaxlState,
     setTracer,
     updateWelcomeMessage,
 
@@ -25,6 +26,7 @@ module Glean.Glass.Env
 import Data.Text (Text)
 
 import Facebook.Fb303 (Fb303State)
+import qualified Haxl.Core as Haxl
 import Logger.IO (Logger)
 import Util.EventBase (EventBaseDataplane)
 import Util.STM ( TVar )
@@ -55,6 +57,8 @@ data Config trace = Config
   , numWorkerThreads :: Maybe Int
   , snapshotBackend :: EventBaseDataplane -> IO (Some SnapshotBackend)
   , sourceControl :: EventBaseDataplane -> IO (Some SourceControl)
+  , haxlState :: EventBaseDataplane -> IO Haxl.StateStore
+      -- ^ Haxl datasource state to use with runHaxl, e.g. for sourceControl
   , tracer :: Tracer trace
   , welcomeMessage :: forall a. EventBaseDataplane -> Config a -> IO Text
   }
@@ -69,6 +73,11 @@ setSourceControl
   -> Config a -> Config a
 setSourceControl sourceControl config =
   config { sourceControl = sourceControl }
+
+setHaxlState
+  :: (EventBaseDataplane -> IO Haxl.StateStore)
+  -> Config a -> Config a
+setHaxlState st config = config { haxlState = st }
 
 setTracer :: Tracer trace -> Config a -> Config trace
 setTracer tracer' Config{..}= Config{ tracer = tracer', .. }
@@ -96,6 +105,7 @@ data Env' trace = Env
   , gleanDB :: Maybe Glean.Repo -- if provided, use as target Glean DB
   , repoMapping :: RepoMapping
   , sourceControl :: Some SourceControl
+  , haxlState :: Haxl.StateStore
   , tracer :: Tracer trace
   }
 

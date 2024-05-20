@@ -97,6 +97,7 @@ withEnv Glass.Config{..} gleanDB f =
     $ \backend -> do
   scm <- sourceControl evp
   snapshotBackend <- snapshotBackend evp
+  hst <- haxlState evp
   withLatestRepos backend scm (Just logger)
     (if isRemote gleanService then listDatabasesRetry else Nothing) refreshFreq
     $ \latestGleanRepos -> do
@@ -107,6 +108,7 @@ withEnv Glass.Config{..} gleanDB f =
         , gleanDB = gleanDB
         , snapshotBackend = snapshotBackend
         , sourceControl = scm
+        , haxlState = hst
         , ..
         }
 

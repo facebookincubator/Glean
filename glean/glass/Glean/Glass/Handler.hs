@@ -139,14 +139,13 @@ import Glean.Glass.SymbolKind (findSymbolKind)
 import Glean.Glass.Env (Env' (tracer, sourceControl))
 import Glean.Glass.SourceControl
   (SourceControl (checkMatchingRevisions, getGeneration))
-import Glean.Glass.Tracing (GlassTracer, traceSpan)
+import Glean.Glass.Tracing (traceSpan)
 
 -- | Runner for methods that are keyed by a file path
 runRepoFile
   :: (LogResult t)
   => Text
-  -> (RepoMapping
-    -> GleanDBInfo
+  -> (GleanDBInfo
     -> DocumentSymbolsRequest
     -> RequestOptions
     -> GleanBackend (Glean.Some Glean.Backend)
@@ -159,7 +158,7 @@ runRepoFile
   -> IO t
 runRepoFile sym fn env@Glass.Env{..} req opts =
   withRepoFile sym env opts req repo file $ \gleanDBs dbInfo mlang ->
-      fn (Glass.repoMapping env) dbInfo req opts
+      fn dbInfo req opts
          GleanBackend{..}
          snapshotBackend
          mlang
@@ -174,11 +173,11 @@ documentSymbolListX
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> IO DocumentSymbolListXResult
-documentSymbolListX env@Glass.Env{tracer} r opts =
+documentSymbolListX env r opts =
   fst3 <$>
     runRepoFile
       "documentSymbolListX"
-      (fetchSymbolsAndAttributes tracer (sourceControl env))
+      (fetchSymbolsAndAttributes env)
       env r opts
 
 -- | Same as documentSymbolList() but construct a line-indexed map for easy
@@ -188,11 +187,11 @@ documentSymbolIndex
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> IO DocumentSymbolIndex
-documentSymbolIndex env@Glass.Env{sourceControl, tracer} r opts =
+documentSymbolIndex env r opts =
   fst3 <$>
     runRepoFile
       "documentSymbolIndex"
-      (fetchDocumentSymbolIndex tracer sourceControl)
+      (fetchDocumentSymbolIndex env)
       env r opts
 
 -- | Symbol-based find-refernces.
@@ -204,7 +203,7 @@ findReferences
 findReferences env@Glass.Env{..} sym opts@RequestOptions{..} =
   withSymbol "findReferences" env opts sym $
     \gleanDBs _dbInfo (repo, lang, toks) ->
-      fetchSymbolReferences repo lang toks limit
+      fetchSymbolReferences env repo lang toks limit
         GleanBackend{..}
   where
     limit = fmap fromIntegral requestOptions_limit
@@ -218,7 +217,7 @@ findReferenceRanges
 findReferenceRanges env@Glass.Env{..} sym opts@RequestOptions{..} =
   withSymbol "findReferenceRanges" env opts sym
     $ \gleanDBs _dbInfo (repo, lang, toks) ->
-      fetchSymbolReferenceRanges repo lang toks limit
+      fetchSymbolReferenceRanges env repo lang toks limit
         GleanBackend{..}
   where
     limit = fmap fromIntegral requestOptions_limit
@@ -233,7 +232,7 @@ resolveSymbolRange
 resolveSymbolRange env@Glass.Env{..} sym opts = do
   withSymbol "resolveSymbolRange" env opts sym
     $ \gleanDBs _dbInfo (repo, lang, toks) ->
-      findSymbolLocationRange GleanBackend{..} repo lang toks
+      findSymbolLocationRange env GleanBackend{..} repo lang toks
 
 -- | Describe characteristics of a symbol
 describeSymbol
@@ -244,7 +243,7 @@ describeSymbol
 describeSymbol env@Glass.Env{..} symId opts =
   withSymbol "describeSymbol" env opts symId $
     \gleanDBs dbInfo (scmRepo, lang, toks) ->
-      backendRunHaxl GleanBackend{..} $ do
+      backendRunHaxl GleanBackend{..} env $ do
         r <- Search.searchEntity lang toks
         (first :| rest, err) <- case r of
           None t -> throwM (ServerException t)
@@ -297,7 +296,7 @@ fileIncludeLocations env@Glass.Env{..} req opts = do
   fmap fst $ do
   withRepoFile "fileIncludeLocations" env opts
     req repo rootfile $ \gleanDBs _ _ ->
-      backendRunHaxl GleanBackend{..} $ do
+      backendRunHaxl GleanBackend{..} env $ do
         result <- firstOrErrors $ do
           rev <- getRepoHash <$> Glean.haxlRepo
           efile <- getFile (toGleanPath (SymbolRepoPath repo rootfile))
@@ -328,7 +327,7 @@ clangUSRToDefinition
 clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) opts = do
   withRepoLanguage "clangUSRToDefinition" env usr repo mlang opts $
     \gleanDBs _ _ -> do
-      backendRunHaxl GleanBackend{..} $ do
+      backendRunHaxl GleanBackend{..} env $ do
         result <- firstOrErrors $ do
           rev <- getRepoHash <$> Glean.haxlRepo
           mdefn <- Cxx.usrHashToDeclaration hash
@@ -433,12 +432,13 @@ searchSymbol
       Just names ->
         withGleanDBs "searchSymbol" env opts req repo names $
           \gleanDBs dbInfo -> do
-            res <- backendRunHaxl GleanBackend{..} $ Glean.queryAllRepos $ do
-              let scmRevs = scmRevisions dbInfo
-              res <- mapM (runSearch querySpec
-                            repo scmRevs mlimitInner terse sString) searchQs
-              return (nubOrd (concat res))
-              -- remove latter duplicates in n*log n
+            res <- backendRunHaxl GleanBackend{..} env $
+              Glean.queryAllRepos $ do
+                let scmRevs = scmRevisions dbInfo
+                res <- mapM (runSearch querySpec
+                              repo scmRevs mlimitInner terse sString) searchQs
+                return (nubOrd (concat res))
+                -- remove latter duplicates in n*log n
             pure (res, Nothing)
 
     -- In lucky mode, we avoid flattening, instead selecting from the first
@@ -450,12 +450,13 @@ searchSymbol
       Just names ->
         withGleanDBs "feelingLucky" env opts req repo names $
           \gleanDBs dbInfo -> do
-            res <- backendRunHaxl GleanBackend{..} $ Glean.queryEachRepo $ do
-              -- we can conveniently limit to 2 matches per inner search
-              let scmRevs = scmRevisions dbInfo
-              rs <- forM searchQs $
-                runSearch querySpec repo scmRevs (Just 2) terse sString
-              return (map (nubOrdOn symbolIdOrder) rs)
+            res <- backendRunHaxl GleanBackend{..} env $
+              Glean.queryEachRepo $ do
+                -- we can conveniently limit to 2 matches per inner search
+                let scmRevs = scmRevisions dbInfo
+                rs <- forM searchQs $
+                  runSearch querySpec repo scmRevs (Just 2) terse sString
+                return (map (nubOrdOn symbolIdOrder) rs)
             pure (FeelingLuckyResult res, Nothing)
 
 -- cheap way to fix up entities with non-unique locations: uniq on symbol id
@@ -764,7 +765,7 @@ searchBySymbolId env@Glass.Env{..} symbolPrefix opts = do
     findSymbols repo lang tokens =
       withRepoLanguage "searchBySymbolId" env symbolPrefix repo (Just lang) opts
         $ \gleanDBs _ _ -> do
-          backendRunHaxl GleanBackend{..} $ do
+          backendRunHaxl GleanBackend{..} env $ do
             symids <- queryAllRepos $ do
               entities <- prefixSearchEntity lang limit tokens
               forM (take limit entities) $ \(entity, file, _, _) -> do
@@ -787,24 +788,26 @@ toFileReference repo path =
 -- | Symbol search: try to resolve the line/col range of an entity
 findSymbolLocationRange
   :: Glean.Backend b
-  => GleanBackend b
+  => Glass.Env
+  -> GleanBackend b
   -> RepoName
   -> Language
   -> [Text]
   -> IO (LocationRange, Maybe ErrorLogger)
-findSymbolLocationRange b repo lang toks = backendRunHaxl b $
+findSymbolLocationRange env b repo lang toks = backendRunHaxl b env $
   withEntity rangeSpanToLocationRange repo lang toks
 
 -- | Symbol search for references
 fetchSymbolReferences
   :: Glean.Backend b
-  => RepoName
+  => Glass.Env
+  -> RepoName
   -> Language
   -> [Text]
   -> Maybe Int
   -> GleanBackend b
   -> IO ([Location], Maybe ErrorLogger)
-fetchSymbolReferences scsrepo lang toks limit b = backendRunHaxl b $ do
+fetchSymbolReferences env scsrepo lang toks limit b = backendRunHaxl b env $ do
   er <- symbolToAngleEntities lang toks
   case er of
     Left err -> return ([], Just (err <> logError (gleanDBs b)))
@@ -820,25 +823,27 @@ fetchSymbolReferences scsrepo lang toks limit b = backendRunHaxl b $ do
 -- | Symbol search for references as ranges.
 fetchSymbolReferenceRanges
   :: Glean.Backend b
-  => RepoName
+  => Glass.Env
+  -> RepoName
   -> Language
   -> [Text]
   -> Maybe Int
   -> GleanBackend b
   -> IO ([LocationRange], Maybe ErrorLogger)
-fetchSymbolReferenceRanges scsrepo lang toks limit b = backendRunHaxl b $ do
-  er <- symbolToAngleEntities lang toks
-  let logDBs x = logError (gleanDBs b) <> x
-  case er of
-    Left err -> return ([], Just $ logDBs err)
-    Right (entities, searchErr) -> do
-      ranges <- forM entities $ \(entityRepo, query) ->
-        withRepo entityRepo $ do
-          let convert (targetFile, rspan) =
-                rangeSpanToLocationRange scsrepo targetFile rspan
-          uses <- searchWithLimit limit $ Query.findReferenceRangeSpan query
-          mapM convert uses
-      return (nubOrd $ concat ranges, fmap (logDBs . logError) searchErr)
+fetchSymbolReferenceRanges env scsrepo lang toks limit b =
+  backendRunHaxl b env $ do
+    er <- symbolToAngleEntities lang toks
+    let logDBs x = logError (gleanDBs b) <> x
+    case er of
+      Left err -> return ([], Just $ logDBs err)
+      Right (entities, searchErr) -> do
+        ranges <- forM entities $ \(entityRepo, query) ->
+          withRepo entityRepo $ do
+            let convert (targetFile, rspan) =
+                  rangeSpanToLocationRange scsrepo targetFile rspan
+            uses <- searchWithLimit limit $ Query.findReferenceRangeSpan query
+            mapM convert uses
+        return (nubOrd $ concat ranges, fmap (logDBs . logError) searchErr)
 
 -- | Search for a symbol and return an Angle query that identifies the entities
 -- Return the angle query and the Glean.repo to which it applies.
@@ -889,18 +894,17 @@ withEntity f scsrepo lang toks = do
 
 fetchSymbolsAndAttributesGlean
   :: Glean.Backend b
-  => GlassTracer
-  -> RepoMapping
+  => Glass.Env
   -> GleanDBInfo
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> GleanBackend b
   -> Maybe Language
   -> IO ((DocumentSymbolListXResult, QueryEachRepoLog), Maybe ErrorLogger)
-fetchSymbolsAndAttributesGlean tracer repoMapping dbInfo req opts be mlang = do
+fetchSymbolsAndAttributesGlean env@Glass.Env{..} dbInfo req opts be mlang = do
   (res1, gLogs, elogs) <- traceSpan tracer "fetchDocumentSymbols" $
-    fetchDocumentSymbols file mlimit
-      specificRev includeRefs includeXlangRefs be mlang repoMapping dbInfo
+    fetchDocumentSymbols env file mlimit
+      specificRev includeRefs includeXlangRefs be mlang dbInfo
   let res2 = toDocumentSymbolResult res1
   return ((res2, gLogs), elogs)
   where
@@ -922,9 +926,7 @@ fetchSymbolsAndAttributesGlean tracer repoMapping dbInfo req opts be mlang = do
 -- Find all symbols and refs in file and add all attributes
 fetchSymbolsAndAttributes
   :: (Glean.Backend b, SnapshotBackend snapshotBackend)
-  => GlassTracer
-  -> Some SourceControl
-  -> RepoMapping
+  => Glass.Env
   -> GleanDBInfo
   -> DocumentSymbolsRequest
   -> RequestOptions
@@ -933,7 +935,7 @@ fetchSymbolsAndAttributes
   -> Maybe Language
   -> IO ((DocumentSymbolListXResult, SnapshotStatus, QueryEachRepoLog)
         , Maybe ErrorLogger)
-fetchSymbolsAndAttributes tracer scs repoMapping dbInfo req
+fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
   opts@RequestOptions{..} be snapshotbe mlang = do
   res <- case mrevision of
     Nothing ->
@@ -970,7 +972,7 @@ fetchSymbolsAndAttributes tracer scs repoMapping dbInfo req
                 getGleanResultRevision glean : maybeToList snapshotRevision
           matchingResults <- traceSpan tracer "checkMatchingRevisions" $
               checkMatchingRevisions
-                scs
+                sourceControl
                 (documentSymbolsRequest_repository req)
                 (documentSymbolsRequest_filepath req)
                 revision
@@ -1011,7 +1013,7 @@ fetchSymbolsAndAttributes tracer scs repoMapping dbInfo req
       | all isNoSrcFileFact errorTy
       && not requestOptions_exact_revision
       -> do
-        gen <- getGeneration scs repo revision
+        gen <- getGeneration sourceControl repo revision
         bestSnapshot <-
           getSnapshot tracer snapshotbe repo file Nothing gen
         case bestSnapshot of
@@ -1027,12 +1029,12 @@ fetchSymbolsAndAttributes tracer scs repoMapping dbInfo req
     getFromSnapshot revision
       | requestOptions_matching_revision && not requestOptions_exact_revision
       = do
-        gen <- getGeneration scs repo revision
+        gen <- getGeneration sourceControl repo revision
         getSnapshot tracer snapshotbe repo file (Just revision) gen
       | otherwise =
         getSnapshot tracer snapshotbe repo file (Just revision) Nothing
     getFromGlean =
-      fetchSymbolsAndAttributesGlean tracer repoMapping dbInfo req opts be mlang
+      fetchSymbolsAndAttributesGlean env dbInfo req opts be mlang
     file = documentSymbolsRequest_filepath req
     repo = documentSymbolsRequest_repository req
     mrevision = requestOptions_revision
@@ -1054,19 +1056,20 @@ fetchSymbolsAndAttributes tracer scs repoMapping dbInfo req
 -- Find all references and definitions in a file that might be in a set of repos
 fetchDocumentSymbols
   :: Glean.Backend b
-  => FileReference
+  => Glass.Env
+  -> FileReference
   -> Maybe Int
   -> RevisionSpecifier
   -> Bool  -- ^ include references?
   -> Bool  -- ^ include xlang references?
   -> GleanBackend b
   -> Maybe Language
-  -> RepoMapping
   -> GleanDBInfo
   -> IO (DocumentSymbols, QueryEachRepoLog, Maybe ErrorLogger)
-fetchDocumentSymbols (FileReference scsrepo path) mlimit
-    revSpec includeRefs includeXlangRefs b mlang repoMapping dbInfo =
-  backendRunHaxl b $ do
+fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path) mlimit
+    revSpec includeRefs includeXlangRefs
+    b mlang dbInfo =
+  backendRunHaxl b env $ do
   --
   -- we pick the first db in the list that has the full FileInfo{..}
   -- and in exact_revision mode the rev also has to match precisely
@@ -1222,9 +1225,7 @@ documentSymbolsForLanguage mlimit _ includeRefs _ fileId = do
 -- With extra attributes loaded from any associated attr db
 fetchDocumentSymbolIndex
   :: (Glean.Backend b, SnapshotBackend snapshotBackend)
-  => GlassTracer
-  -> Some SourceControl
-  -> RepoMapping
+  => Glass.Env
   -> GleanDBInfo
   -> DocumentSymbolsRequest
   -> RequestOptions
@@ -1233,11 +1234,10 @@ fetchDocumentSymbolIndex
   -> Maybe Language
   -> IO ((DocumentSymbolIndex, SnapshotStatus, QueryEachRepoLog),
        Maybe ErrorLogger)
-fetchDocumentSymbolIndex tracer scs repoMapping latest req opts be
+fetchDocumentSymbolIndex env latest req opts be
     snapshotbe mlang = do
   ((DocumentSymbolListXResult{..}, status, gleanDataLog), merr1) <-
-    fetchSymbolsAndAttributes
-      tracer scs repoMapping latest req opts be snapshotbe mlang
+    fetchSymbolsAndAttributes env latest req opts be snapshotbe mlang
 
   --  refs defs revision truncated digest = result
   let lineIndex = toSymbolIndex documentSymbolListXResult_references
@@ -1485,7 +1485,7 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
   withSymbol "searchRelated" env opts sym $
     \gleanDBs_ dbInfo (repo, lang, toks) ->
       let gleanDBs = filterDBs lang gleanDBs_ in
-      backendRunHaxl GleanBackend{..} $ do
+      backendRunHaxl GleanBackend{..} env $ do
         entity <- searchFirstEntity lang toks
         withRepo (entityRepo entity) $ do
           (entityPairs, merr) <- case searchRelatedRequest_relatedBy of
@@ -1668,7 +1668,7 @@ searchRelatedNeighborhood
 searchRelatedNeighborhood env@Glass.Env{..} sym opts@RequestOptions{..} req =
   withSymbol "searchRelatedNeighborhood" env opts sym $
     \gleanDBs dbInfo (repo, lang, toks) ->
-      backendRunHaxl GleanBackend{..} $ do
+      backendRunHaxl GleanBackend{..} env $ do
         baseEntity <- searchFirstEntity lang toks
         let lang = entityLanguage (decl baseEntity)
         (,Nothing) <$> searchNeighborhood limit req sym repo

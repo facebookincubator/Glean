@@ -37,6 +37,7 @@ import Data.List.NonEmpty ( NonEmpty(..), nonEmpty, toList )
 import Data.Text ( Text )
 import qualified Data.Text as Text
 
+import Haxl.Core as Haxl
 import Haxl.DataSource.Glean (HasRepo)
 import Util.Logger ( loggingAction )
 import Util.STM
@@ -98,12 +99,6 @@ data GleanBackend b =
     tracer :: GlassTracer
   }
 
-backendRunHaxl
-  :: Glean.Backend b => GleanBackend b -> (forall u. ReposHaxl u w a) -> IO a
-backendRunHaxl GleanBackend{..} haxl =
-  traceSpan tracer "glean" $
-    runHaxlAllRepos gleanBackend (fmap snd gleanDBs) haxl
-
 -- | Whether the user requires the exact revision specified
 data RevisionSpecifier = ExactOnly Revision | AnyRevision
   deriving Show
@@ -111,6 +106,19 @@ data RevisionSpecifier = ExactOnly Revision | AnyRevision
 revisionSpecifierError :: RevisionSpecifier -> Text
 revisionSpecifierError AnyRevision = "AnyRevision"
 revisionSpecifierError (ExactOnly (Revision rev))= "Requested exactly " <> rev
+
+backendRunHaxl
+  :: Glean.Backend b
+  => GleanBackend b
+  -> Glass.Env
+  -> (forall u. ReposHaxl u w a)
+  -> IO a
+backendRunHaxl GleanBackend{..} Glass.Env{haxlState} haxl =
+  traceSpan tracer "glean" $ do
+    (state1,state2) <- Glean.initGlobalState gleanBackend
+    let st = Haxl.stateSet state1 $ Haxl.stateSet state2 haxlState
+    haxlEnv <- Haxl.initEnv st (Glean.Repos (fmap snd gleanDBs))
+    runHaxl haxlEnv haxl
 
 dbChooser :: RepoName -> RequestOptions -> ChooseGleanDBs
 dbChooser repo opts =

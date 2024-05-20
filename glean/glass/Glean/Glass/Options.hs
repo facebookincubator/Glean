@@ -16,6 +16,8 @@ module Glean.Glass.Options
 import Options.Applicative
 import Data.Text (Text)
 
+import qualified Haxl.Core as Haxl
+
 import qualified Glean.LocalOrRemote as Glean
 import Glean.Util.Some (Some(..))
 import Glean.Util.Time
@@ -40,6 +42,7 @@ configParser = do
   numWorkerThreads <- workerThreadsParser
   snapshotBackend <- pure $ pure $ pure $ Some NilSnapshotBackend
   sourceControl <- pure (const (return (Some NilSourceControl)))
+  haxlState <- pure (const (return Haxl.stateEmpty))
   tracer <- pure mempty
   return $ Glass.Config{
         configKey = Glass.defaultConfigKey,

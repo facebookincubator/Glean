@@ -18,6 +18,7 @@ module Glean.Haxl.Repos
   , withRepo
   , queryEachRepo
   , runHaxlAllRepos
+  , Repos(..)
   ) where
 
 import Control.Monad.Trans.Maybe (MaybeT (..))
