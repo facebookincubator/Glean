@@ -155,8 +155,8 @@ freshWildGen gen = case gen of
     ArrayElementGenerator ty <$> freshWild expr
   All ty expr ->
     All ty <$> freshWild expr
-  PrimCall op args ->
-    PrimCall op <$> mapM freshWild args
+  PrimCall op args ty ->
+    PrimCall op <$> mapM freshWild args <*> pure ty
 
 -- | Like 'varsOf', but only including variables that can be bound by
 -- this statement.

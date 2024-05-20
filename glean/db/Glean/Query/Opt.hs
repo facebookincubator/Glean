@@ -191,8 +191,8 @@ instance Apply Generator where
     ArrayElementGenerator ty <$> apply arr
   apply (All ty arr) =
     All ty <$> apply arr
-  apply (PrimCall op args) =
-    PrimCall op <$> mapM apply args
+  apply (PrimCall op args ty) =
+    PrimCall op <$> mapM apply args <*> pure ty
 
 {- Note [unification failure]
 
@@ -550,7 +550,7 @@ genScope (TermGenerator pat) r = termScope pat r
 genScope (DerivedFactGenerator _ key val) r = termScope key $! termScope val r
 genScope (ArrayElementGenerator _ exp) r = termScope exp r
 genScope (All _ exp) r = termScope exp r
-genScope (PrimCall _ args) r = foldr termScope r args
+genScope (PrimCall _ args _) r = foldr termScope r args
 
 addToCurrentScope :: Var -> VarSet -> VarSet
 addToCurrentScope (Var _ v _) r = IntSet.insert v r

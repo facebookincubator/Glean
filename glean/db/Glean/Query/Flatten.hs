@@ -192,7 +192,7 @@ flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
     let neg = FlatNegation stmts'
     return [(mempty `thenStmt` neg, TermGenerator $ Tuple [])]
   TcPrimCall op args -> do
-    manyTerms (PrimCall op) <$> mapM flattenPattern args
+    manyTerms (\args -> PrimCall op args ty) <$> mapM flattenPattern args
   TcIf (Typed condTy cond) then_ else_ -> do
     condStmts <- bindWild condTy =<< flattenSeqGenerators cond
     var <- fresh ty

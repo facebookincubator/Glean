@@ -173,6 +173,7 @@ data Generator_ var
   | PrimCall
     { primOp :: PrimOp
     , primOpArgs :: [Expr_ var]
+    , primOpRetType :: Type
     }
   deriving (Eq, Show, Functor, Foldable, Traversable)
 
@@ -341,7 +342,7 @@ instance Display Generator where
       displayAtom opts k <> " -> " <> displayAtom opts v <> ")"
   display opts (ArrayElementGenerator _ arr) = display opts arr <> "[..]"
   display opts (All _ set) = "all" <+> display opts set
-  display opts (PrimCall op args) =
+  display opts (PrimCall op args _) =
     hsep (display opts op : map (displayAtom opts) args)
 
 instance Display ext => Display (Match ext Var) where

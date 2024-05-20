@@ -105,8 +105,8 @@ instance FixBindOrder Generator where
       fixBindOrder IsPat kpat <*>
       fixBindOrder IsPat vpat <*>
       pure range
-  fixBindOrder _ (PrimCall op pats) =
-    PrimCall op <$> mapM (fixBindOrder IsExpr) pats
+  fixBindOrder _ (PrimCall op pats ty) =
+    PrimCall op <$> mapM (fixBindOrder IsExpr) pats <*> pure ty
 
 instance FixBindOrder a => FixBindOrder (Term a) where
   fixBindOrder isPat term = mapM (fixBindOrder isPat) term

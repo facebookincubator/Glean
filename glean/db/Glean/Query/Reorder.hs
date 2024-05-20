@@ -519,7 +519,7 @@ isReadyFilter scope stmt notFilter = case stmt of
     -- all resolved, because that might duplicate work.
   FlatStatement _ lhs (TermGenerator rhs) ->
     patIsBound scope lhs || patIsBound scope rhs
-  FlatStatement _ _ (PrimCall _ args) ->
+  FlatStatement _ _ (PrimCall _ args _) ->
     all (patIsBound scope) args
   FlatStatement _ _ (DerivedFactGenerator _ key val) ->
     patIsBound scope key && patIsBound scope val

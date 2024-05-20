@@ -59,7 +59,7 @@ instance VarsOf Generator where
   varsOf w (DerivedFactGenerator _ key val) r = varsOf w key $! varsOf w val r
   varsOf w (ArrayElementGenerator _ arr) r = varsOf w arr r
   varsOf w (All _ set) r = varsOf w set r
-  varsOf w (PrimCall _ args) r = varsOf w args r
+  varsOf w (PrimCall _ args _) r = varsOf w args r
 
 instance (VarsOf a) => VarsOf [a] where
   varsOf w container r = foldr (varsOf w) r container
@@ -177,8 +177,8 @@ reWildGenerator used gen = case gen of
     ArrayElementGenerator ty (reWild used exp)
   All ty exp ->
     All ty (reWild used exp)
-  PrimCall op args ->
-    PrimCall op (map (reWild used) args)
+  PrimCall op args ty ->
+    PrimCall op (map (reWild used) args) ty
 
 reWildStatement :: VarMap -> CgStatement -> CgStatement
 reWildStatement used (CgStatement lhs rhs) =

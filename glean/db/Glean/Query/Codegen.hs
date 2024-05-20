@@ -147,7 +147,7 @@ findOutputs q = findOutputsQuery q IntSet.empty
     findOutputsPat k (findOutputsPat v r)
   findOutputsGen (ArrayElementGenerator _ _) r = r
   findOutputsGen (All _ _) r = r
-  findOutputsGen (PrimCall _ args) r = foldr findOutputsPat r args
+  findOutputsGen (PrimCall _ args _) r = foldr findOutputsPat r args
 
   findOutputsPat pat r = foldr findOutputsMatch r pat
 
@@ -652,23 +652,23 @@ compileStatements
       compileGen (TermGenerator term) maybeReg inner = do
         compileTermGen term vars (coerce maybeReg) inner
 
-      compileGen (PrimCall PrimOpNeNat [p, q]) maybeReg inner =
+      compileGen (PrimCall PrimOpNeNat [p, q] _) maybeReg inner =
         compileGenNumericPrim p q maybeReg inner $ \a b fail ->
           jumpIfEq a b fail
-      compileGen (PrimCall PrimOpGtNat [p, q]) maybeReg inner =
+      compileGen (PrimCall PrimOpGtNat [p, q] _) maybeReg inner =
         compileGenNumericPrim p q maybeReg inner $ \a b fail ->
           jumpIfLe a b fail
-      compileGen (PrimCall PrimOpGeNat [p, q]) maybeReg inner =
+      compileGen (PrimCall PrimOpGeNat [p, q] _) maybeReg inner =
         compileGenNumericPrim p q maybeReg inner $ \a b fail ->
           jumpIfLt a b fail
-      compileGen (PrimCall PrimOpLtNat [p, q]) maybeReg inner =
+      compileGen (PrimCall PrimOpLtNat [p, q] _) maybeReg inner =
         compileGenNumericPrim p q maybeReg inner $ \a b fail ->
           jumpIfGe a b fail
-      compileGen (PrimCall PrimOpLeNat [p, q]) maybeReg inner =
+      compileGen (PrimCall PrimOpLeNat [p, q] _) maybeReg inner =
         compileGenNumericPrim p q maybeReg inner $ \a b fail ->
           jumpIfGt a b fail
 
-      compileGen (PrimCall PrimOpNeExpr [p, q]) maybeReg inner = mdo
+      compileGen (PrimCall PrimOpNeExpr [p, q] _) maybeReg inner = mdo
         case cmpWordPat vars p of
           Just cmp ->
             local $ \q' ->
@@ -684,34 +684,34 @@ compileStatements
         fail <- label
         return r
 
-      compileGen (PrimCall _prim _args) Nothing inner = inner
-      compileGen (PrimCall PrimOpAddNat [p, q]) (Just reg) inner =
+      compileGen (PrimCall _prim _args _) Nothing inner = inner
+      compileGen (PrimCall PrimOpAddNat [p, q] _) (Just reg) inner =
         withNatTerm vars p $ \a ->
           withNatTerm vars q $ \b -> do
             move a reg
             add b reg
             inner
-      compileGen (PrimCall PrimOpToLower [arg]) (Just reg) inner =
+      compileGen (PrimCall PrimOpToLower [arg] _) (Just reg) inner =
         withTerm vars arg $ \str -> do
           local $ \ptr end -> do
             getOutput str ptr end
             resetOutput (castRegister reg)
             outputStringToLower ptr end (castRegister reg)
           inner
-      compileGen (PrimCall PrimOpLength [arg]) (Just reg) inner =
+      compileGen (PrimCall PrimOpLength [arg] _) (Just reg) inner =
         withTerm vars arg $ \array -> do
           local $ \ptr end -> do
             getOutput array ptr end
             inputNat ptr end reg
           inner
-      compileGen (PrimCall PrimOpRelToAbsByteSpans [arg]) (Just reg) inner =
+      compileGen (PrimCall PrimOpRelToAbsByteSpans [arg] _) (Just reg) inner =
         withTerm vars arg $ \array -> do
           local $ \ptr end -> do
             getOutput array ptr end
             resetOutput (castRegister reg)
             outputRelToAbsByteSpans ptr end (castRegister reg)
           inner
-      compileGen (PrimCall PrimOpUnpackByteSpans [arg]) (Just reg) inner =
+      compileGen (PrimCall PrimOpUnpackByteSpans [arg] _) (Just reg) inner =
         withTerm vars arg $ \array -> do
           local $ \ptr end -> do
             getOutput array ptr end
