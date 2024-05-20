@@ -10,32 +10,48 @@ module Glean.Glass.SourceControl (
     SourceControl(..),
     ScmGeneration(..),
     NilSourceControl(..),
+    ContentHash(..),
   ) where
 
+import Data.ByteString (ByteString)
 import Data.Hashable
 import Data.Int
 
 import Glean.Glass.Types
 import Glean.Util.Some
+import Glean.Haxl.Repos
 
 -- | Source control generation, used for ordering revisions
 newtype ScmGeneration = ScmGeneration Int64
   deriving (Eq, Hashable, Ord, Show)
 
+newtype ContentHash = ContentHash ByteString
+  deriving (Eq, Hashable, Ord, Show)
+
 -- | Interface to source control operations
 class SourceControl scm where
+  -- | Retrieve the generation number for a revision, i.e. the number
+  -- of commits between the given revision and the root of the repository.
   getGeneration :: scm -> RepoName -> Revision -> IO (Maybe ScmGeneration)
+
   -- | @checkMatchingRevisions repo file rev0 revs@ answers the question
   --   "Which of revs satisfy that the contents of filepath match rev0?"
   checkMatchingRevisions
     :: scm -> RepoName -> Path -> Revision -> [Revision] -> IO [Bool]
+
+  -- | Retrieve a content hash for the given file, if the file exists
+  -- in the repository at the given revision.
+  getFileContentHash
+    :: scm -> RepoName -> Path -> Revision -> RepoHaxl u w (Maybe ContentHash)
 
 data NilSourceControl = NilSourceControl
 
 instance SourceControl NilSourceControl where
   getGeneration _ _ _ = return Nothing
   checkMatchingRevisions _ _ _ _ revs = return $ map (const False) revs
+  getFileContentHash _ _ _ _ = return Nothing
 
 instance SourceControl (Some SourceControl) where
   getGeneration (Some scm) = getGeneration scm
   checkMatchingRevisions (Some scm) = checkMatchingRevisions scm
+  getFileContentHash (Some scm) = getFileContentHash scm
