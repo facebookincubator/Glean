@@ -144,6 +144,12 @@ predicate Operation :
     loc: src.FileLocation,
   }
 
+predicate BelongToConfig:
+{
+  file: src.File,
+  buildConfig: Value,
+}
+
 predicate ScalarTypeDef :
   {
     name: Value,
