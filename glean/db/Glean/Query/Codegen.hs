@@ -25,7 +25,7 @@ import Data.ByteString (ByteString)
 import Data.Coerce
 import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
-import Data.List (genericLength)
+import Data.List (find,genericLength)
 import Data.Maybe
 import qualified Data.Text as Text
 import qualified Data.Vector as Vector
@@ -703,6 +703,46 @@ compileStatements
           local $ \ptr end -> do
             getOutput array ptr end
             inputNat ptr end reg
+          inner
+      compileGen (PrimCall PrimOpZip [arg1,arg2]
+                    (Angle.ArrayTy (Angle.RecordTy fields)))
+                  (Just reg) inner
+          | Just (Angle.FieldDef _ ty1)
+            <- find (("tuplefield0" ==) . Angle.fieldDefName) fields
+          , Just (Angle.FieldDef _ ty2)
+            <- find (("tuplefield1" ==) . Angle.fieldDefName) fields =
+        withTerm vars arg1 $ \array1 ->
+        withTerm vars arg2 $ \array2 -> do
+          local $ \ptr1 ptr2 end1 end2 len1 len2 len -> mdo
+            getOutput array1 ptr1 end1
+            getOutput array2 ptr2 end2
+            inputNat ptr1 end1 len1
+            inputNat ptr2 end2 len2
+            -- Take the mininum of the two lengths
+            jumpIfGe len1 len2 minLabel
+            move len1 len
+            jump cont
+            minLabel <- label
+            move len2 len
+            cont <- label
+            resetOutput (castRegister reg)
+            outputNat len (castRegister reg)
+            jumpIf0 len done
+
+            loop <- label
+
+            local $ \start1 start2 -> do
+              move ptr1 start1
+              skipTrusted ptr1 end1 ty1
+              outputBytes start1 ptr1 (castRegister reg)
+              move ptr2 start2
+              skipTrusted ptr2 end2 ty2
+              outputBytes start2 ptr2 (castRegister reg)
+            jumpIfEq ptr1 end1 done
+            jumpIfEq ptr2 end2 done
+            jump loop
+            done <- label
+            return ()
           inner
       compileGen (PrimCall PrimOpRelToAbsByteSpans [arg] _) (Just reg) inner =
         withTerm vars arg $ \array -> do

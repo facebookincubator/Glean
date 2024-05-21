@@ -872,12 +872,12 @@ primOpType :: PrimOp -> ([PrimArgType], [Type] -> Type)
 primOpType op = case op of
   PrimOpToLower -> ([Check StringTy], const StringTy)
   PrimOpLength ->
-    let
-      polyArray (ArrayTy _) = True
-      polyArray _ = False
-    in
     ( [InferAndCheck polyArray "prim.length takes an array as input"]
     , const NatTy)
+  PrimOpZip ->
+    ( [InferAndCheck polyArray "prim.array takes arrays as input"
+      ,InferAndCheck polyArray "prim.array takes arrays as input"]
+    , \[ArrayTy ty1, ArrayTy ty2] -> ArrayTy (tupleSchema [ty1, ty2]))
   PrimOpRelToAbsByteSpans ->
     -- prim.relToAbsByteSpans takes an array of pairs as input and
     -- returns an array of pairs as output
@@ -897,6 +897,8 @@ primOpType op = case op of
   PrimOpNeExpr -> ([CheckAllEqual, CheckAllEqual], const unit)
   where
     binaryNatOp = ([Check NatTy, Check NatTy], const unit)
+    polyArray (ArrayTy _) = True
+    polyArray _ = False
 
 type VarSet = HashSet Name
 
