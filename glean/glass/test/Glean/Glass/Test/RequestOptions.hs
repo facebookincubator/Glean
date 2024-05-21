@@ -317,14 +317,16 @@ instance SourceControl MockSourceControl where
       f (Glass.Revision "15") (Glass.Revision "16") = True
       f _ _ = False
 
+  getFileContentHash _ _repo _path _rev0 = return Nothing
+
 -- Used to check scenarios where we don't expect to call
 -- getGeneration, such as when exact_revision = True
 data FailSourceControl = FailSourceControl
 
 instance SourceControl FailSourceControl where
   getGeneration _ _ _ = throwIO $ ErrorCall "FailSourceControl.getGeneration"
-  checkMatchingRevisions _ _ _ _ revs =
-    return $ map (const True) revs
+  checkMatchingRevisions _ _ _ _ revs = return $ map (const True) revs
+  getFileContentHash _ _repo _path _rev0 = return Nothing
 
 failSourceControl :: Glass.Env -> Glass.Env
 failSourceControl env = env { Glass.sourceControl = Some FailSourceControl }
