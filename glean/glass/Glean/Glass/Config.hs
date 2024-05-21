@@ -17,7 +17,7 @@ module Glean.Glass.Config
   ) where
 
 import Data.Text (Text)
-import Glean.Util.Time
+import Util.Time
 import Glean.Glass.Env
 import Util.Text (textShow)
 

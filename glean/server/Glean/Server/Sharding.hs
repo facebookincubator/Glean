@@ -48,7 +48,7 @@ import qualified Glean.Util.Observed as Observed
 import Glean.Util.Periodic ( doPeriodically )
 import Glean.Util.ShardManager
 import Glean.Util.ThriftService (DbShard)
-import Glean.Util.Time ( seconds )
+import Util.Time ( seconds )
 import System.Exit (die)
 import System.Posix.Signals (installHandler, sigTERM, Handler (Catch), sigINT)
 import System.Time.Extra ( showDuration, sleep, Seconds )

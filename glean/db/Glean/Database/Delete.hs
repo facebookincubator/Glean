@@ -27,6 +27,7 @@ import qualified Util.Control.Exception.CallStack as CallStack
 import Util.Defer
 import Util.Log
 import Util.STM
+import Util.TimeSec
 
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter
@@ -36,7 +37,6 @@ import Glean.Database.Repo
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Types
 import Glean.Types hiding (Database)
-import Glean.Util.Time
 import qualified Glean.Util.Warden as Warden
 
 

@@ -20,7 +20,7 @@ import qualified Haxl.Core as Haxl
 
 import qualified Glean.LocalOrRemote as Glean
 import Glean.Util.Some (Some(..))
-import Glean.Util.Time
+import Util.Time
 
 import qualified Glean.Glass.Env as Glass
 import qualified Glean.Glass.Config as Glass

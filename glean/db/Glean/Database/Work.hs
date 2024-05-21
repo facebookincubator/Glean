@@ -57,7 +57,7 @@ import Glean.Database.Work.Queue
 import Glean.Internal.Types as Thrift
 import Glean.Recipes.Types (Executor(..), Recipe(..), TaskName)
 import Glean.Types as Thrift
-import Glean.Util.Time
+import Util.Time
 
 import qualified Data.HashSet as HashSet
 import qualified Glean.ServerConfig.Types as ServerConfig

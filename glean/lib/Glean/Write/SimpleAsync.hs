@@ -23,7 +23,7 @@ import Data.Default
 import Util.Log (logError, logInfo)
 
 import Glean
-import Glean.Util.Time ( toDiffMillis )
+import Util.Time ( toDiffMillis )
 import Glean.Write.Async
 import Glean.Types
 

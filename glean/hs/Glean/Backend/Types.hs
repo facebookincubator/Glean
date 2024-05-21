@@ -62,13 +62,13 @@ import System.IO.Unsafe
 import TextShow
 
 import Util.Control.Exception
+import Util.Time (DiffTimePoints)
 
 import Glean.Query.Thrift.Internal
 import Glean.Typed
 import qualified Glean.Types as Thrift
 import Glean.Util.Some
 import Glean.Util.ThriftService (DbShard)
-import Glean.Util.Time (DiffTimePoints)
 import Glean.Types
 
 data StackedDbOpts

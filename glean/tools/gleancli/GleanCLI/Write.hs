@@ -34,7 +34,7 @@ import qualified Glean.LocalOrRemote as LocalOrRemote
 import Glean.Database.Schema
 import Glean.Database.Write.Batch (syncWriteDatabase)
 import Glean.Types as Thrift
-import Glean.Util.Time
+import Util.Time
 import Glean.Write
 import Glean.Write.JSON ( buildJsonBatch, syncWriteJsonBatch )
 

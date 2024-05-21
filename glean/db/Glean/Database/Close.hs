@@ -31,7 +31,7 @@ import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import Glean.Types hiding (Database)
 import qualified Glean.Types as Thrift
 import Glean.Util.Mutex
-import Glean.Util.Time
+import Util.Time
 
 
 closeDatabases :: Env -> IO ()

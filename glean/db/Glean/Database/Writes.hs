@@ -76,7 +76,7 @@ import Glean.Types as Thrift hiding (Database, Exception)
 import Glean.Write.JSON
 import Glean.Util.Metric
 import Glean.Util.Observed as Observed
-import Glean.Util.Time
+import Util.Time
 
 {-
 Write Queue Monitoring

@@ -16,8 +16,7 @@ import Control.Monad
 
 import Util.Control.Exception
 import Util.Log
-
-import Glean.Util.Time
+import Util.Time
 
 -- | Run an action every t seconds.  If the action throws an
 -- exception, log and swallow it, and then wait t seconds before

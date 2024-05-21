@@ -60,7 +60,7 @@ import Glean.Util.Mutex
 import Glean.Util.Observed
 import Glean.Util.ShardManager
 import Glean.Util.Some
-import Glean.Util.Time
+import Util.Time
 import Glean.Util.Trace (Listener)
 import Glean.Util.Warden
 import Glean.Write.Stats (Stats)

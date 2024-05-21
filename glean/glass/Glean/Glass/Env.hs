@@ -36,7 +36,7 @@ import Glean.Impl.ConfigProvider (ConfigAPI)
 import qualified Glean.LocalOrRemote as Glean
 import Glean.Remote (ThriftBackend)
 import Glean.Util.Some ( Some )
-import Glean.Util.Time ( DiffTimePoints )
+import Util.Time ( DiffTimePoints )
 
 import Glean.Glass.Base (RepoMapping)
 import Glean.Glass.Repos (GleanDBInfo)

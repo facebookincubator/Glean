@@ -50,7 +50,8 @@ import Util.List
 import Util.Log
 import Util.Logger
 import Util.STM
-import Util.TimeSec (timeDiff)
+import Util.Time
+import Util.TimeSec
 
 import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter
@@ -73,7 +74,6 @@ import Glean.Util.ShardManager
     ( ShardManager(getAssignedShards, computeShardMapping),
       SomeShardManager(SomeShardManager), BaseOfStack (BaseOfStack),
       countersForShardSizes, noSharding )
-import Glean.Util.Time
 {- |
 The database janitor has the following functions:
   - ensure the newest db for each repo is open to speed-up queries to it.

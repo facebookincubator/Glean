@@ -24,6 +24,7 @@ import Data.Default
 import Data.Maybe
 
 import Util.STM
+import Util.Time
 
 import Glean.Backend.Types (Backend)
 import qualified Glean.Backend.Types as Backend
@@ -33,7 +34,6 @@ import Glean.Typed.Predicate
 import qualified Glean.Types as Thrift
 import Glean.Write.SendQueue
 import Glean.Util.Some
-import Glean.Util.Time
 
 
 -- | An asynchronous batch sender. Can be interacted with via a 'Writer'.

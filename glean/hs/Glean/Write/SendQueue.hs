@@ -27,13 +27,13 @@ import Text.Printf (printf)
 import Util.Control.Exception (tryBracket)
 import Util.Log.String
 import Util.STM
+import Util.Time
 
 import Glean.Backend.Types (Backend)
 import Glean.Backend.Retry
 import qualified Glean.Backend.Types as Backend
 import qualified Glean.Types as Thrift
 import Glean.Write.SendBatch
-import Glean.Util.Time
 import Glean.Util.RetryChannelException
 
 

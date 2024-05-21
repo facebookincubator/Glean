@@ -70,7 +70,7 @@ import qualified Glean.Types as Thrift
 import Glean.Types (PredicateStats(..))
 import Glean.Util.Mutex
 import qualified Glean.Util.Observed as Observed
-import Glean.Util.Time
+import Util.Time
 import qualified Glean.Util.Warden as Warden
 import qualified Glean.Write.Stats as Stats
 

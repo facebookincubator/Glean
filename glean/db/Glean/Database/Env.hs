@@ -44,7 +44,7 @@ import Glean.Util.Observed as Observed
 import Glean.Util.Periodic
 import Glean.Util.ShardManager (SomeShardManager)
 import Glean.Util.ThriftSource as ThriftSource
-import Glean.Util.Time
+import Util.Time
 import qualified Glean.Util.Warden as Warden
 import qualified Glean.Write.Stats as Stats
 

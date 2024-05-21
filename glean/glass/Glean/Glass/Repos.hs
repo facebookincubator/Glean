@@ -64,7 +64,7 @@ import qualified Util.Log as LocalLog
 import Glean.Util.Some
 import Glean.Util.Periodic ( doPeriodicallySynchronised )
 import Util.Text ( textShow )
-import Glean.Util.Time
+import Util.Time
 import Util.Timing
 import qualified Glean
 import Util.STM

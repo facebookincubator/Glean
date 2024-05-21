@@ -31,7 +31,7 @@ import qualified Glean.Database.List as Database
 import qualified Glean.Database.Types as Database
 import Glean.Logger
 import qualified Glean.Types as Thrift
-import Glean.Util.Time
+import Util.Time
 
 import Glean.Backend.Types
 

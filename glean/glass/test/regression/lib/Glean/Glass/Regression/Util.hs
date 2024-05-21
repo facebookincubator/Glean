@@ -17,7 +17,7 @@ import Logger.IO (withLogger)
 
 import Glean
 import Glean.Util.Some
-import Glean.Util.Time
+import Util.Time
 
 import Glean.Glass.Env as Glass
 import Glean.Glass.Repos

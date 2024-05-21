@@ -71,7 +71,7 @@ import Glean.Types as Thrift
 import Glean.Util.ConfigProvider
 import Glean.Util.ShardManager
 import Glean.Util.ThriftSource as ThriftSource
-import Glean.Util.Time (seconds)
+import Util.Time (seconds)
 import Glean.Database.Backup.Backend
 import Glean.Database.Backup.Mock
 

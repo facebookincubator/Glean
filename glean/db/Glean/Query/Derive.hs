@@ -57,7 +57,7 @@ import Glean.Types as Thrift hiding (Byte, Nat, Exception)
 import qualified Glean.Types as Thrift
 import Glean.Util.Observed as Observed
 import Glean.Util.Mutex
-import Glean.Util.Time
+import Util.Time
 import Glean.Util.Warden
 
 type LogResult =

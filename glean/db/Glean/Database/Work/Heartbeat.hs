@@ -21,7 +21,7 @@ import qualified Data.HashMap.Strict as HashMap
 import Util.STM
 
 import qualified Glean.Types as Thrift
-import Glean.Util.Time
+import Util.Time
 
 newtype Heartbeats = Heartbeats
   (TVar (HashMap Thrift.WorkHandle (Thrift.Work, TVar TimePoint)))

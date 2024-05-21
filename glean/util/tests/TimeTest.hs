@@ -18,7 +18,7 @@ import Test.HUnit
 import TestRunner
 
 import Glean.Init
-import Glean.Util.Time
+import Util.Time
 
 tests :: Test
 tests =
