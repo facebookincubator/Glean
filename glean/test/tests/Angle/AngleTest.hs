@@ -824,3 +824,9 @@ angleTest modify = dbTestCase $ \env repo -> do
   r <- runQuery_ env repo $ modify $ angleData @(Nat, Nat)
       "(X = (Y:nat|2); Y = (7|8); {X,Y}) | {1,2}"
   assertEqual "reordering disjunctions" 5 (length r)
+
+  r <- runQuery_ env repo $ modify $ angleData @[(Nat, Nat)]
+      "prim.zip X X where glean.test.Predicate.1 { array_of_nat = X }"
+  print r
+  assertEqual "zipping - zipping an array with itself"
+    [[], [(Nat 99, Nat 99), (Nat 98, Nat 98)]] r
