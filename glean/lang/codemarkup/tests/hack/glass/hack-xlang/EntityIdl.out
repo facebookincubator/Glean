@@ -17,7 +17,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -25,7 +25,7 @@
                 "key": {
                   "name": {
                     "key": {
-                      "file": { "key": { "key": "test.thrift" } },
+                      "file": { "key": { "key": "www/test.thrift" } },
                       "name": { "key": "GetCardException" }
                     }
                   }
@@ -54,7 +54,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -63,7 +63,7 @@
                   "name": {
                     "name": {
                       "key": {
-                        "file": { "key": { "key": "test.thrift" } },
+                        "file": { "key": { "key": "www/test.thrift" } },
                         "name": { "key": "GetCardRequest" }
                       }
                     },
@@ -94,7 +94,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -103,7 +103,7 @@
                   "name": {
                     "name": {
                       "key": {
-                        "file": { "key": { "key": "test.thrift" } },
+                        "file": { "key": { "key": "www/test.thrift" } },
                         "name": { "key": "GetCardResponse" }
                       }
                     },
@@ -136,7 +136,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -144,7 +144,7 @@
                 "key": {
                   "name": {
                     "key": {
-                      "file": { "key": { "key": "test.thrift" } },
+                      "file": { "key": { "key": "www/test.thrift" } },
                       "name": { "key": "GetNavigationException" }
                     }
                   }
@@ -175,7 +175,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -184,7 +184,7 @@
                   "name": {
                     "name": {
                       "key": {
-                        "file": { "key": { "key": "test.thrift" } },
+                        "file": { "key": { "key": "www/test.thrift" } },
                         "name": { "key": "GetNavigationRequest" }
                       }
                     },
@@ -217,7 +217,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -226,7 +226,7 @@
                   "name": {
                     "name": {
                       "key": {
-                        "file": { "key": { "key": "test.thrift" } },
+                        "file": { "key": { "key": "www/test.thrift" } },
                         "name": { "key": "GetNavigationResponse" }
                       }
                     },
@@ -299,7 +299,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -308,7 +308,7 @@
                   "name": {
                     "name": {
                       "key": {
-                        "file": { "key": { "key": "test.thrift" } },
+                        "file": { "key": { "key": "www/test.thrift" } },
                         "name": { "key": "ResponseCard" }
                       }
                     },
@@ -341,7 +341,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -349,7 +349,7 @@
                 "key": {
                   "name": {
                     "key": {
-                      "file": { "key": { "key": "test.thrift" } },
+                      "file": { "key": { "key": "www/test.thrift" } },
                       "name": { "key": "TestService" }
                     }
                   }
@@ -378,7 +378,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -386,7 +386,7 @@
                 "key": {
                   "name": {
                     "key": {
-                      "file": { "key": { "key": "test.thrift" } },
+                      "file": { "key": { "key": "www/test.thrift" } },
                       "name": { "key": "TestService" }
                     }
                   }
@@ -417,7 +417,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -425,7 +425,7 @@
                 "key": {
                   "name": {
                     "key": {
-                      "file": { "key": { "key": "test.thrift" } },
+                      "file": { "key": { "key": "www/test.thrift" } },
                       "name": { "key": "TestService" }
                     }
                   }
@@ -454,7 +454,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -462,7 +462,7 @@
                 "key": {
                   "name": {
                     "key": {
-                      "file": { "key": { "key": "test.thrift" } },
+                      "file": { "key": { "key": "www/test.thrift" } },
                       "name": { "key": "TestService" }
                     }
                   }
@@ -493,7 +493,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -501,7 +501,7 @@
                 "key": {
                   "name": {
                     "key": {
-                      "file": { "key": { "key": "test.thrift" } },
+                      "file": { "key": { "key": "www/test.thrift" } },
                       "name": { "key": "TestService" }
                     }
                   }
@@ -537,7 +537,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -547,7 +547,7 @@
                     "key": {
                       "name": {
                         "key": {
-                          "file": { "key": { "key": "test.thrift" } },
+                          "file": { "key": { "key": "www/test.thrift" } },
                           "name": { "key": "TestService" }
                         }
                       }
@@ -586,7 +586,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -596,7 +596,7 @@
                     "key": {
                       "name": {
                         "key": {
-                          "file": { "key": { "key": "test.thrift" } },
+                          "file": { "key": { "key": "www/test.thrift" } },
                           "name": { "key": "TestService" }
                         }
                       }
@@ -635,7 +635,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -645,7 +645,7 @@
                     "key": {
                       "name": {
                         "key": {
-                          "file": { "key": { "key": "test.thrift" } },
+                          "file": { "key": { "key": "www/test.thrift" } },
                           "name": { "key": "TestService" }
                         }
                       }
@@ -684,7 +684,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -694,7 +694,7 @@
                     "key": {
                       "name": {
                         "key": {
-                          "file": { "key": { "key": "test.thrift" } },
+                          "file": { "key": { "key": "www/test.thrift" } },
                           "name": { "key": "TestService" }
                         }
                       }
@@ -731,7 +731,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -741,7 +741,7 @@
                     "key": {
                       "name": {
                         "key": {
-                          "file": { "key": { "key": "test.thrift" } },
+                          "file": { "key": { "key": "www/test.thrift" } },
                           "name": { "key": "TestService" }
                         }
                       }
@@ -780,7 +780,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -790,7 +790,7 @@
                     "key": {
                       "name": {
                         "key": {
-                          "file": { "key": { "key": "test.thrift" } },
+                          "file": { "key": { "key": "www/test.thrift" } },
                           "name": { "key": "TestService" }
                         }
                       }
@@ -829,7 +829,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -839,7 +839,7 @@
                     "key": {
                       "name": {
                         "key": {
-                          "file": { "key": { "key": "test.thrift" } },
+                          "file": { "key": { "key": "www/test.thrift" } },
                           "name": { "key": "TestService" }
                         }
                       }
@@ -878,7 +878,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -888,7 +888,7 @@
                     "key": {
                       "name": {
                         "key": {
-                          "file": { "key": { "key": "test.thrift" } },
+                          "file": { "key": { "key": "www/test.thrift" } },
                           "name": { "key": "TestService" }
                         }
                       }
@@ -927,7 +927,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -937,7 +937,7 @@
                     "key": {
                       "name": {
                         "key": {
-                          "file": { "key": { "key": "test.thrift" } },
+                          "file": { "key": { "key": "www/test.thrift" } },
                           "name": { "key": "TestService" }
                         }
                       }
@@ -974,7 +974,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -984,7 +984,7 @@
                     "key": {
                       "name": {
                         "key": {
-                          "file": { "key": { "key": "test.thrift" } },
+                          "file": { "key": { "key": "www/test.thrift" } },
                           "name": { "key": "TestService" }
                         }
                       }
@@ -1070,7 +1070,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -1079,7 +1079,7 @@
                   "name": {
                     "name": {
                       "key": {
-                        "file": { "key": { "key": "test.thrift" } },
+                        "file": { "key": { "key": "www/test.thrift" } },
                         "name": { "key": "GetCardResponse" }
                       }
                     },
@@ -1115,7 +1115,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -1124,7 +1124,7 @@
                   "name": {
                     "name": {
                       "key": {
-                        "file": { "key": { "key": "test.thrift" } },
+                        "file": { "key": { "key": "www/test.thrift" } },
                         "name": { "key": "GetCardRequest" }
                       }
                     },
@@ -1160,7 +1160,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -1169,7 +1169,7 @@
                   "name": {
                     "name": {
                       "key": {
-                        "file": { "key": { "key": "test.thrift" } },
+                        "file": { "key": { "key": "www/test.thrift" } },
                         "name": { "key": "GetCardRequest" }
                       }
                     },
@@ -1207,7 +1207,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -1216,7 +1216,7 @@
                   "name": {
                     "name": {
                       "key": {
-                        "file": { "key": { "key": "test.thrift" } },
+                        "file": { "key": { "key": "www/test.thrift" } },
                         "name": { "key": "GetNavigationRequest" }
                       }
                     },
@@ -1254,7 +1254,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -1262,7 +1262,7 @@
                 "key": {
                   "name": {
                     "key": {
-                      "file": { "key": { "key": "test.thrift" } },
+                      "file": { "key": { "key": "www/test.thrift" } },
                       "name": { "key": "GetCardException" }
                     }
                   }
@@ -1298,7 +1298,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -1306,7 +1306,7 @@
                 "key": {
                   "name": {
                     "key": {
-                      "file": { "key": { "key": "test.thrift" } },
+                      "file": { "key": { "key": "www/test.thrift" } },
                       "name": { "key": "GetNavigationException" }
                     }
                   }
@@ -1387,7 +1387,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -1396,7 +1396,7 @@
                   "name": {
                     "name": {
                       "key": {
-                        "file": { "key": { "key": "test.thrift" } },
+                        "file": { "key": { "key": "www/test.thrift" } },
                         "name": { "key": "ResponseCard" }
                       }
                     },
@@ -1434,7 +1434,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -1443,7 +1443,7 @@
                   "name": {
                     "name": {
                       "key": {
-                        "file": { "key": { "key": "test.thrift" } },
+                        "file": { "key": { "key": "www/test.thrift" } },
                         "name": { "key": "GetNavigationResponse" }
                       }
                     },
