@@ -20,6 +20,10 @@ import qualified Glean.Types as Thrift
 data GleanTrace
   = GleanTraceWrite !Thrift.Repo !WriteTraceEvent !Word64
   | GleanTraceEnqueue !Thrift.Repo EnqueueTraceEvent !Int
+  | GleanTraceDownload !Thrift.Repo
+  | GleanTraceStorageRestore
+  | GleanTraceSiteRestore
+  | GleanTraceFinishRestore
 
 data WriteTraceEvent
   = WriteTraceInput

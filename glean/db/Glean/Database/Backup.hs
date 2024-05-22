@@ -21,6 +21,7 @@ import Control.Applicative
 import Control.Concurrent.Async
 import Control.Exception
 import Control.Monad
+import Control.Trace (traceMsg)
 import qualified Data.HashMap.Strict as HashMap
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HashSet
@@ -57,6 +58,7 @@ import Glean.Database.Meta
 import Glean.Database.Repo
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Open
+import Glean.Database.Trace
 import Glean.Database.Types
 import Glean.Database.Schema
 import Glean.Logger
@@ -301,7 +303,7 @@ doRestore env@Env{..} repo meta
   say log s = log $ inRepo repo $ "restore: " ++ s
 
   restore :: Site s => s -> Maybe Int64 -> IO ()
-  restore site bytes = do
+  restore site bytes = traceMsg envTracer (GleanTraceDownload repo) $ do
     atomically $ notify envListener $ RestoreStarted repo
     mbFreeBytes <- (Just <$> Storage.getFreeCapacity envStorage)
                   `catch` \(_ :: IOException) -> return Nothing
@@ -321,12 +323,15 @@ doRestore env@Env{..} repo meta
     let scratch_restore = scratch </> "restore"
         scratch_file = scratch </> "file"
     -- TODO: implement buffered downloads in Manifold client
-    void $ Backend.restore site repo scratch_file
+    void $ traceMsg envTracer GleanTraceSiteRestore $
+      Backend.restore site repo scratch_file
     say logInfo "restoring"
     createDirectoryIfMissing True scratch_restore
-    Storage.restore envStorage repo scratch_restore scratch_file
+    traceMsg envTracer GleanTraceStorageRestore $
+      Storage.restore envStorage repo scratch_restore scratch_file
     say logInfo "adding"
-    Catalog.finishRestoring envCatalog repo
+    traceMsg envTracer GleanTraceFinishRestore $
+      Catalog.finishRestoring envCatalog repo
     atomically $ notify envListener $ RestoreFinished repo
     say logInfo "finished"
 
