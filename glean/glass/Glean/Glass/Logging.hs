@@ -66,6 +66,7 @@ instance LogRequest RequestOptions where
     maybe mempty (Logger.setLimit . fromIntegral) requestOptions_limit <>
     Logger.setExactRevision requestOptions_exact_revision <>
     Logger.setMatchingRevision requestOptions_matching_revision <>
+    Logger.setContentCheck requestOptions_content_check <>
     logRequest requestOptions_feature_flags
 
 instance LogRequest FeatureFlags where
@@ -112,7 +113,8 @@ instance LogResult DocumentSymbolListXResult  where
     Logger.setTruncated documentSymbolListXResult_truncated <>
     Logger.setItemCount (length documentSymbolListXResult_references +
       length documentSymbolListXResult_definitions) <>
-    Logger.setRevisionUsed (coerce documentSymbolListXResult_revision)
+    Logger.setRevisionUsed (coerce documentSymbolListXResult_revision) <>
+    maybe mempty Logger.setContentMatch documentSymbolListXResult_content_match
 
 instance LogResult FileIncludeLocationResults where
   logResult FileIncludeLocationResults{..} =
@@ -144,6 +146,7 @@ instance LogResult DocumentSymbolIndex where
     Logger.setItemCount (fromIntegral documentSymbolIndex_size)
         <> Logger.setTruncated documentSymbolIndex_truncated
         <> Logger.setRevisionUsed (coerce documentSymbolIndex_revision)
+        <> maybe mempty Logger.setContentMatch documentSymbolIndex_content_match
 
 instance LogResult Range where
   logResult _ = mempty
