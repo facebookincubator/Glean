@@ -1639,27 +1639,6 @@ test-suite clang-test-deriveobjcinherit
     if !flag(clang-tests)
         buildable: False
 
-
--- left on the side for now, we need a Glean.DocBlock.Test module
--- test-suite clang-test-docblock
---     import: fb-haskell, fb-cpp, deps
---     hs-source-dirs:
---        glean/lang/clang/tests,
---        glean/lang/clang/tests/github
---     type: exitcode-stdio-1.0
---     main-is: Glean/Clang/DocBlock.hs
---     other-modules: Glean.Clang.Test.DerivePass
---                    Glean.Clang.Test
---                    Glean.Regression.Driver.DocBlock
---     ghc-options: -main-is Glean.Clang.DocBlock
---     build-depends:
---        glean:regression-test-lib,
---        glean:clang-derive-lib,
---        glean:indexers,
---        glean:lib
---     if !flag(clang-tests)
---         buildable: False
-
 test-suite clang-test-codemarkup
     import: fb-haskell, fb-cpp, deps
     hs-source-dirs:
