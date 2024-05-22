@@ -714,14 +714,14 @@ codeSearchByName :: SearchQ Direct -> Angle CodeSearch.SearchByName
 codeSearchByName SearchQ{..} =
   vars $ \p (k :: Angle (Maybe Code.SymbolKind)) ->
     p `where_` [
-      k .= sig kindPat,
       p .= predicate @CodeSearch.SearchByName (
         rec $
           field @"name" nameQ $ -- may be prefix
           field @"searchcase" caseQ $
           field @"kind" k $ -- specific kinds only
           field @"language" languagePat -- optional language filters
-        end)
+        end),
+      k .= sig kindPat
     ]
   where
     kindPat = maybe wild just mKindQ
