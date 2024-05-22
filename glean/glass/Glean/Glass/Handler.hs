@@ -55,7 +55,7 @@ import Data.List as List ( sortOn )
 import Data.List.Extra ( nubOrd, nubOrdOn, groupOn, groupSortOn )
 import Data.List.NonEmpty (NonEmpty(..), nonEmpty)
 import qualified Data.List.NonEmpty as NonEmpty
-import Data.Maybe ( mapMaybe, catMaybes, fromMaybe, listToMaybe, maybeToList )
+import Data.Maybe
 import Data.Ord ( comparing )
 import Data.Text ( Text )
 import Data.Tuple.Extra ( fst3 )
@@ -138,7 +138,6 @@ import qualified Glean.Glass.SnapshotBackend as Snapshot
 import Glean.Glass.SymbolKind (findSymbolKind)
 import Glean.Glass.Env (Env' (tracer, sourceControl))
 import Glean.Glass.SourceControl
-  (SourceControl (checkMatchingRevisions, getGeneration))
 import Glean.Glass.Tracing (traceSpan)
 
 -- | Runner for methods that are keyed by a file path
@@ -903,13 +902,17 @@ fetchSymbolsAndAttributesGlean
   -> IO ((DocumentSymbolListXResult, QueryEachRepoLog), Maybe ErrorLogger)
 fetchSymbolsAndAttributesGlean env@Glass.Env{..} dbInfo req opts be mlang = do
   (res1, gLogs, elogs) <- traceSpan tracer "fetchDocumentSymbols" $
-    fetchDocumentSymbols env file mlimit
-      specificRev includeRefs includeXlangRefs be mlang dbInfo
+    fetchDocumentSymbols env file path mlimit
+      (requestOptions_revision opts)
+      (requestOptions_exact_revision opts)
+      includeRefs includeXlangRefs
+      (shouldFetchContentHash opts) be mlang dbInfo
   let res2 = toDocumentSymbolResult res1
   return ((res2, gLogs), elogs)
   where
     repo = documentSymbolsRequest_repository req
-    file = toFileReference repo (documentSymbolsRequest_filepath req)
+    path = documentSymbolsRequest_filepath req
+    file = toFileReference repo path
     includeRefs = documentSymbolsRequest_include_refs req
     includeXlangRefs = case opts of
       RequestOptions { requestOptions_feature_flags = Just
@@ -919,9 +922,11 @@ fetchSymbolsAndAttributesGlean env@Glass.Env{..} dbInfo req opts be mlang = do
     mlimit = Just (fromIntegral (fromMaybe mAXIMUM_SYMBOLS_QUERY_LIMIT
       (requestOptions_limit opts)))
 
-    specificRev = case requestOptions_revision opts of
-      Just rev | requestOptions_exact_revision opts -> ExactOnly rev
-      _ -> AnyRevision
+shouldFetchContentHash :: RequestOptions -> Bool
+shouldFetchContentHash opts =
+  not (requestOptions_exact_revision opts) &&
+  (requestOptions_content_check opts ||
+    requestOptions_matching_revision opts)
 
 -- Find all symbols and refs in file and add all attributes
 fetchSymbolsAndAttributes
@@ -969,7 +974,7 @@ fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
 
         doMatching = do
           let candidates =
-                getGleanResultRevision glean : maybeToList snapshotRevision
+                getResultRevision glean : maybeToList snapshotRevision
           matchingResults <- traceSpan tracer "checkMatchingRevisions" $
               checkMatchingRevisions
                 sourceControl
@@ -1043,8 +1048,8 @@ fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
     isNoSrcFileFact GlassExceptionReason_noSrcFileFact{} = True
     isNoSrcFileFact _ = False
 
-    getGleanResultRevision ((x, _), _) = documentSymbolListXResult_revision x
-    isRevisionHit rev = (== rev) . getGleanResultRevision
+    getResultRevision ((x, _), _) = documentSymbolListXResult_revision x
+    isRevisionHit rev = (== rev) . getResultRevision
 
     returnSnapshotOr tryFetch fallback match = do
       result <- tryFetch
@@ -1058,16 +1063,20 @@ fetchDocumentSymbols
   :: Glean.Backend b
   => Glass.Env
   -> FileReference
+  -> Path  -- ^ original path in the repo
   -> Maybe Int
-  -> RevisionSpecifier
+  -> Maybe Revision
+  -> Bool  -- ^ exact revision only?
   -> Bool  -- ^ include references?
   -> Bool  -- ^ include xlang references?
+  -> Bool  -- ^ fetch file content hash?
   -> GleanBackend b
   -> Maybe Language
   -> GleanDBInfo
   -> IO (DocumentSymbols, QueryEachRepoLog, Maybe ErrorLogger)
-fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path) mlimit
-    revSpec includeRefs includeXlangRefs
+fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
+    repoPath mlimit wantedRevision
+    exactRevision includeRefs includeXlangRefs fetchContentHash
     b mlang dbInfo =
   backendRunHaxl b env $ do
   --
@@ -1078,7 +1087,7 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path) mlimit
     repo <- Glean.haxlRepo
     if not (revisionAcceptable repo)
       then return $ Left $ GlassExceptionReason_exactRevisionNotAvailable $
-        revisionSpecifierError revSpec
+        revisionSpecifierError wantedRevision
       else do
         res <- getFileInfo repo path
         return $ case res of
@@ -1112,6 +1121,21 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path) mlimit
       (kindMap, merr) <- withRepo fileRepo $
         documentSymbolKinds mlimit mlang fileId
 
+      let revision = getDBRevision (scmRevisions dbInfo) fileRepo scsrepo
+      (contentMatch, wantedHash) <- case wantedRevision of
+        Nothing -> return (Nothing, Nothing)
+        Just wanted
+          | wanted == revision -> return (Just True, Nothing)
+          | fetchContentHash -> withRepo fileRepo $ do
+            let getHash = getFileContentHash sourceControl scsrepo repoPath
+            contentHash <- getHash revision
+            wantedHash <- getHash wanted
+            let match = isJust contentHash && isJust wantedHash &&
+                  contentHash == wantedHash
+            return (Just match, wantedHash)
+          | otherwise ->
+            return (Nothing, Nothing)
+
       let xrefsPlain = [ (refloc, ent) | PlainXRef (refloc, ent) <- xrefs ]
       -- TODO handle IdlEntities without entity or with range annotations
       let xrefsIdl = [ (ent, rangeSpan) |
@@ -1129,7 +1153,7 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path) mlimit
         (ent, _) : _ ->
           -- TODO we assume all idl xrefs belong to the same db
           let lang = entityLanguage ent in
-          case getLatestRepo repoMapping dbInfo scsrepo lang of
+          case getLatestRepo (Glass.repoMapping env) dbInfo scsrepo lang of
             Nothing -> return []
             Just idlRepo -> do
               xrefs <- withRepo idlRepo $
@@ -1151,15 +1175,16 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path) mlimit
             (Attributes.fromSymbolId Attributes.SymbolKindAttr)
               kindMap (map (\XRefData{..} -> (xrefEntity, xrefSymbol)) refs1)
                 defs1
-      let revision = getDBRevision (scmRevisions dbInfo) fileRepo scsrepo
-          digest = toDigest <$> fileDigest
+      let digest = toDigest <$> fileDigest
+
       return (DocumentSymbols {..}, gleanDataLog, merr)
 
   where
     revisionAcceptable :: Glean.Repo -> Bool
-    revisionAcceptable = case revSpec of
-      AnyRevision -> const True
-      ExactOnly (Revision required) -> \repo -> Glean.repo_hash repo == required
+    revisionAcceptable = case wantedRevision of
+      Just rev | exactRevision -> \repo ->
+        getDBRevision (scmRevisions dbInfo) repo scsrepo == rev
+      _otherwise -> const True
 
     -- We will lookup digests by file id, but return to the user a map by
     -- glass path and scm repo
@@ -1175,6 +1200,8 @@ data DocumentSymbols = DocumentSymbols
   { refs :: [(Code.Entity, ReferenceRangeSymbolX)]
   , defs :: [(Code.Entity, DefinitionSymbolX)]
   , revision :: !Revision
+  , wantedHash :: Maybe ContentHash
+  , contentMatch :: Maybe Bool
   , truncated :: !Bool
   , digest :: Maybe FileDigest
   , xref_digests :: Map.Map Text FileDigestMap
@@ -1182,7 +1209,7 @@ data DocumentSymbols = DocumentSymbols
 
 emptyDocumentSymbols :: Revision -> DocumentSymbols
 emptyDocumentSymbols revision =
-  DocumentSymbols [] [] revision False Nothing mempty
+  DocumentSymbols [] [] revision Nothing Nothing False Nothing mempty
 
 -- | Drop any remnant entities after we are done with them
 toDocumentSymbolResult :: DocumentSymbols -> DocumentSymbolListXResult
@@ -1194,6 +1221,7 @@ toDocumentSymbolResult DocumentSymbols{..} = DocumentSymbolListXResult{..}
     documentSymbolListXResult_truncated = truncated
     documentSymbolListXResult_digest = digest
     documentSymbolListXResult_referenced_file_digests = xref_digests
+    documentSymbolListXResult_content_match = contentMatch
 
 type Defns = [(Code.Location,Code.Entity)]
 
@@ -1252,7 +1280,9 @@ fetchDocumentSymbolIndex env latest req opts be
         documentSymbolIndex_truncated = documentSymbolListXResult_truncated,
         documentSymbolIndex_digest = documentSymbolListXResult_digest,
         documentSymbolIndex_referenced_file_digests =
-          documentSymbolListXResult_referenced_file_digests
+          documentSymbolListXResult_referenced_file_digests,
+        documentSymbolIndex_content_match =
+          documentSymbolListXResult_content_match
       }
   return ((idxResult, status, gleanDataLog), merr1)
 

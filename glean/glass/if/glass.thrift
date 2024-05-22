@@ -112,7 +112,20 @@ struct RequestOptions {
   // else
   //   use latest revision
   5: bool exact_revision = false;
-  // succeed only if the source code in the request and index revisions match,
+
+  // Enable checking that the content of the indexed file matches the
+  // content of the requested file. The result of the check is
+  // returned in the content_match field. Note that this may add some
+  // latency to the request.
+  7: bool content_check = false;
+
+  // Attempt to return data from a file with matching content for the
+  // requested revision, failing if one can't be found. Like
+  // content_check except that (a) a snapshot may be chosen over the
+  // Glean result if it has matching content, and (b) the Thrift cache
+  // is not populated if there's a failure, which might be useful if
+  // we expect the result to change soon, e.g. if a snapshot becomes
+  // available.
   6: bool matching_revision = false;
 }
 
@@ -251,6 +264,12 @@ struct DocumentSymbolListXResult {
 
   // map of repo to filepath mappings. Key is repo name
   6: RepoFileDigestMap referenced_file_digests;
+
+  // True if the index data was produced from a file with the same
+  // content as the requested revision, indicating that the ranges of
+  // definitions and references will match the source file.
+  // Only populated when content_check = True.
+  7: optional bool content_match;
 }
 
 // For cursor navigation in a file, it is useful to have a line indexed
@@ -273,6 +292,12 @@ struct DocumentSymbolIndex {
 
   // map of repo + filepath to digest for referenced files
   6: RepoFileDigestMap referenced_file_digests;
+
+  // True if the index data was produced from a file with the same
+  // content as the requested revision, indicating that the ranges of
+  // definitions and references will match the source file.
+  // Only populated when content_check = True.
+  7: optional bool content_match;
 }
 
 // Generic server exception

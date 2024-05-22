@@ -21,7 +21,6 @@ module Glean.Glass.Handler.Utils (
     GleanBackend(..),
     backendRunHaxl,
 
-    RevisionSpecifier(..),
     revisionSpecifierError,
 
     firstOrErrors,
@@ -99,14 +98,6 @@ data GleanBackend b =
     tracer :: GlassTracer
   }
 
--- | Whether the user requires the exact revision specified
-data RevisionSpecifier = ExactOnly Revision | AnyRevision
-  deriving Show
-
-revisionSpecifierError :: RevisionSpecifier -> Text
-revisionSpecifierError AnyRevision = "AnyRevision"
-revisionSpecifierError (ExactOnly (Revision rev))= "Requested exactly " <> rev
-
 backendRunHaxl
   :: Glean.Backend b
   => GleanBackend b
@@ -119,6 +110,10 @@ backendRunHaxl GleanBackend{..} Glass.Env{haxlState} haxl =
     let st = Haxl.stateSet state1 $ Haxl.stateSet state2 haxlState
     haxlEnv <- Haxl.initEnv st (Glean.Repos (fmap snd gleanDBs))
     runHaxl haxlEnv haxl
+
+revisionSpecifierError :: Maybe Revision -> Text
+revisionSpecifierError Nothing = "AnyRevision"
+revisionSpecifierError (Just (Revision rev))= "Requested exactly " <> rev
 
 dbChooser :: RepoName -> RequestOptions -> ChooseGleanDBs
 dbChooser repo opts =
