@@ -744,6 +744,38 @@ compileStatements
             done <- label
             return ()
           inner
+      compileGen (PrimCall PrimOpConcat [arg1,arg2] (Angle.ArrayTy ty))
+                  (Just reg) inner =
+        withTerm vars arg1 $ \array1 ->
+        withTerm vars arg2 $ \array2 -> do
+          local $ \ptr1 ptr2 end1 end2 -> mdo
+            getOutput array1 ptr1 end1
+            getOutput array2 ptr2 end2
+            local $ \len1 len2 len -> do
+              inputNat ptr1 end1 len1
+              inputNat ptr2 end2 len2
+              move len1 len
+              add len2 len
+              resetOutput (castRegister reg)
+              outputNat len (castRegister reg)
+
+            loop1 <- label
+            concatLoop ptr1 end1 loop1 loop2 (castRegister reg) ty
+
+            loop2 <- label
+            concatLoop ptr2 end2 loop2 done (castRegister reg) ty
+
+            done <- label
+            return ()
+          inner
+        where
+          concatLoop arrPtr arrEnd loopLabel doneLabel out ty = do
+            jumpIfEq arrPtr arrEnd doneLabel
+            local $ \localPtr -> do
+              move arrPtr localPtr
+              skipTrusted arrPtr arrEnd ty
+              outputBytes localPtr arrPtr out
+            jump loopLabel
       compileGen (PrimCall PrimOpRelToAbsByteSpans [arg] _) (Just reg) inner =
         withTerm vars arg $ \array -> do
           local $ \ptr end -> do

@@ -830,3 +830,8 @@ angleTest modify = dbTestCase $ \env repo -> do
   print r
   assertEqual "zipping - zipping an array with itself"
     [[], [(Nat 99, Nat 99), (Nat 98, Nat 98)]] r
+
+  r <- runQuery_ env repo $ modify $ angleData @[Nat]
+      "prim.concat X X where glean.test.Predicate.1 { array_of_nat = X }"
+  assertEqual "concat - concatenating an array with itself"
+    [[], [Nat 99, Nat 98, Nat 99, Nat 98]] r

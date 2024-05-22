@@ -730,6 +730,7 @@ primitives = HashMap.fromList
   , ("prim.relToAbsByteSpans", PrimOpRelToAbsByteSpans)
   , ("prim.unpackByteSpans", PrimOpUnpackByteSpans)
   , ("prim.zip", PrimOpZip)
+  , ("prim.concat", PrimOpConcat)
   , ("prim.gtNat", PrimOpGtNat)
   , ("prim.geNat", PrimOpGeNat)
   , ("prim.ltNat", PrimOpLtNat)

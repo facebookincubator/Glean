@@ -276,9 +276,9 @@ inferExpr ctx pat = case pat of
       -- "nothing" by itself can't be inferred, we want to fall
       -- through to the type error message.
   Prim span primOp args -> do
-    let (primArgTys, mkRetTy) = primOpType primOp
+    let (primArgTys, mkRetTy) = primOpType pat primOp
     (args', argTys) <- primInferAndCheck span args primOp primArgTys
-    let retTy = mkRetTy argTys
+    retTy <- mkRetTy argTys
     return
       ( RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args')))
       , retTy )
@@ -419,9 +419,9 @@ typecheckPattern ctx typ pat = case (typ, pat) of
   (NamedTy (ExpandedType _ ty), term) -> typecheckPattern ctx ty term
   (ty, Prim span primOp args) -> do
     ver <- gets tcAngleVersion
-    let (primArgTys, mkRetTy) = primOpType primOp
+    let (primArgTys, mkRetTy) = primOpType pat primOp
     (args', argTys) <- primInferAndCheck span args primOp primArgTys
-    let retTy = mkRetTy argTys
+    retTy <- mkRetTy argTys
     unless (eqType ver ty retTy) $
       patTypeError pat ty
     return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))))
@@ -868,37 +868,51 @@ primInferAndCheckError span primOp debugString = do
     , pretty debugString
     ]
 
-primOpType :: PrimOp -> ([PrimArgType], [Type] -> Type)
-primOpType op = case op of
-  PrimOpToLower -> ([Check StringTy], const StringTy)
+primOpType :: IsSrcSpan s =>
+  Pat' s -> PrimOp -> ([PrimArgType], [Type] -> T Type)
+primOpType pat op = case op of
+  PrimOpToLower -> ([Check StringTy], pureTy StringTy)
   PrimOpLength ->
     ( [InferAndCheck polyArray "prim.length takes an array as input"]
-    , const NatTy)
+    , pureTy NatTy)
   PrimOpZip ->
     ( [InferAndCheck polyArray "prim.array takes arrays as input"
       ,InferAndCheck polyArray "prim.array takes arrays as input"]
-    , \[ArrayTy ty1, ArrayTy ty2] -> ArrayTy (tupleSchema [ty1, ty2]))
+    , \[ArrayTy ty1, ArrayTy ty2] -> pure $ ArrayTy (tupleSchema [ty1, ty2]))
+  PrimOpConcat ->
+    ( [InferAndCheck polyArray "prim.concat takes arrays as input"
+      ,InferAndCheck polyArray "prim.concat takes arrays as input"]
+    , \[ArrayTy ty, ArrayTy ty2] -> do
+        when (ty /= ty2) $ do
+          opts <- gets tcDisplayOpts
+          prettyErrorIn pat $ nest 4 $ vcat
+            [ "the elements of the array arguments to prim.concat"
+            <> " must have the same type."
+            , display opts ty <> " /= " <> display opts ty2
+            ]
+        pure $ ArrayTy ty)
   PrimOpRelToAbsByteSpans ->
     -- prim.relToAbsByteSpans takes an array of pairs as input and
     -- returns an array of pairs as output
     ( [Check (ArrayTy (tupleSchema [NatTy, NatTy]))]
-    , const $ ArrayTy (tupleSchema [NatTy, NatTy]) )
+    , pureTy $ ArrayTy (tupleSchema [NatTy, NatTy]) )
   PrimOpUnpackByteSpans ->
     -- prim.unpackByteSpans takes an array of (nat, [nat]) as input and
     -- returns an array of pairs as output
     ( [Check (ArrayTy (tupleSchema [NatTy, ArrayTy NatTy]))]
-    , const $ ArrayTy (tupleSchema [NatTy, NatTy]) )
+    , pureTy $ ArrayTy (tupleSchema [NatTy, NatTy]) )
   PrimOpGtNat -> binaryNatOp
   PrimOpGeNat -> binaryNatOp
   PrimOpLtNat -> binaryNatOp
   PrimOpLeNat -> binaryNatOp
   PrimOpNeNat -> binaryNatOp
-  PrimOpAddNat -> ([Check NatTy, Check NatTy], const NatTy)
-  PrimOpNeExpr -> ([CheckAllEqual, CheckAllEqual], const unit)
+  PrimOpAddNat -> ([Check NatTy, Check NatTy], pureTy NatTy)
+  PrimOpNeExpr -> ([CheckAllEqual, CheckAllEqual], pureTy unit)
   where
-    binaryNatOp = ([Check NatTy, Check NatTy], const unit)
+    binaryNatOp = ([Check NatTy, Check NatTy], pureTy unit)
     polyArray (ArrayTy _) = True
     polyArray _ = False
+    pureTy ty _args = pure ty
 
 type VarSet = HashSet Name
 
