@@ -64,7 +64,7 @@ import Util.TimeSec
 
 import qualified Glean
 import qualified Glean.BuildInfo as BuildInfo
-import Glean.Angle.Types as SchemaTypes
+import Glean.Angle.Types as SchemaTypes hiding (describe)
 import Glean.Display
 import Glean.Remote (clientInfo, thriftBackendClientConfig)
 import Glean.Database.Ownership

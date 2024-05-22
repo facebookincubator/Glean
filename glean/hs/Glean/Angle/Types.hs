@@ -93,6 +93,9 @@ module Glean.Angle.Types
 
   -- * Pretty printing
   , displayStatement
+
+  -- * Description
+  , Describe(..)
   ) where
 
 import qualified Data.Aeson as Aeson
@@ -948,3 +951,42 @@ rmLocPat = \case
 rmLocField :: Field s p t -> Field () p t
 rmLocField (Field name pat) =
   Field name (rmLocPat pat)
+
+-- -----------------------------------------------------------------------------
+-- Describing the kind of pattern
+
+class Describe a where
+  describe :: a -> Doc ann
+
+instance Describe (SourcePat_ s p t) where
+  describe = \case
+    Nat {} -> "a nat"
+    String {} -> "a string"
+    StringPrefix {} -> "a string prefix"
+    ByteArray {} -> "a byte array"
+    Array {} -> "an array"
+    ArrayPrefix {} -> "an array prefix"
+    Tuple {} -> "a tuple"
+    Struct {} -> "a struct"
+    App {} -> "an application"
+    KeyValue {} -> "a key value pattern"
+    Set {} -> "a set"
+    All {} -> "an element of a set"
+    Wildcard {} -> "a wildcard pattern"
+    Never {} -> "a never pattern"
+    Variable {} -> "a variable"
+    ElementsOfArray {} -> "an element of an array"
+    OrPattern {} -> "an or pattern"
+    IfPattern {} -> "an if pattern"
+    Negation {} -> "a negation"
+    NestedQuery {} -> "a nested query"
+    FactId {} -> "a fact id"
+    TypeSignature {} -> "a type signature"
+    Clause {} -> "a clause"
+    Prim {} -> "a primitive function"
+
+instance Describe SrcSpan where
+  describe _ = "a source span"
+
+instance Describe SrcLoc where
+  describe _ = "a source location"

@@ -685,7 +685,9 @@ resolvePat pat = case pat of
   App s (StringPrefix a b) [pat] -> do
     pat' <- resolvePat pat
     return (App s (StringPrefix a b) [pat'])
-  App{} -> prettyErrorIn pat "invalid pattern"
+  App _ f _ ->
+    prettyErrorIn pat $ "invalid pattern: cannot apply " <>
+    describe f <> " to arguments"
   Clause{} -> internal
   Prim{} -> internal
   where

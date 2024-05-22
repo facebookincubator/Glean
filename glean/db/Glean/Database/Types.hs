@@ -34,7 +34,7 @@ import Data.RateLimiterMap
 import Util.EventBase (EventBaseDataplane)
 import Util.STM
 
-import Glean.Angle.Types
+import Glean.Angle.Types hiding (describe)
 import qualified Glean.Database.Backup.Backend as Backup
 import Glean.Database.Catalog (Catalog)
 import Glean.Database.Config
