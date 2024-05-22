@@ -83,7 +83,7 @@ tokens :-
   "then"        { basicToken T_Then }
   "else"        { basicToken T_Else }
   "++"          { basicToken T_Append }
-  ".."          { basicToken T_DotDot }
+  ("."){2,}     { basicTokenDotDot }
   "->"          { basicToken T_RightArrow }
   ","           { basicToken T_Comma }
   "|"           { basicToken T_Bar }
@@ -209,6 +209,15 @@ versionDependentToken firstSupportedVersion newToken oldToken =
     if currentVersion >= firstSupportedVersion
       then return newToken
       else return $ oldToken bs
+
+basicTokenDotDot :: AlexAction (SrcLoc, Token)
+basicTokenDotDot i@(AlexPn _ line col,_,_,_) len =
+  if len > 2 then
+    alexError $ "Too many dots at line " ++ show line ++
+      ", column " ++ show col ++
+      ". Try using '..' instead of '" ++ (replicate (fromIntegral len) '.') ++ "'"
+  else
+    basicToken T_DotDot i len
 
 tokenContent :: (ByteString -> TokenType) -> AlexAction (SrcLoc, Token)
 tokenContent f = tokenContentP (return . f)
