@@ -44,3 +44,8 @@ service TestService {
     1: GetCardException get_card_exception,
   );
 }
+
+struct ReservationHotfixConfig {
+  map<string, set<string>> capabilities_to_remove = {};
+  map<string, map<string, i64>> preferences_to_add = {};
+}

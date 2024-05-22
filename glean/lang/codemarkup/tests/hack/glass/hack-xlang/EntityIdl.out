@@ -248,6 +248,48 @@
             "container": {
               "class_": {
                 "key": {
+                  "name": {
+                    "key": { "name": { "key": "ReservationHotfixConfig" } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "ReservationHotfixConfig" }
+                      }
+                    },
+                    "kind": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
                   "name": { "key": { "name": { "key": "ResponseCard" } } }
                 }
               }
@@ -964,6 +1006,53 @@
           "decl": {
             "property_": {
               "key": {
+                "name": { "key": "capabilities_to_remove" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "ReservationHotfixConfig" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "ReservationHotfixConfig" }
+                      }
+                    },
+                    "kind": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
                 "name": { "key": "card" },
                 "container": {
                   "class_": {
@@ -1220,6 +1309,53 @@
                       "file": { "key": { "key": "test.thrift" } },
                       "name": { "key": "GetNavigationException" }
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "preferences_to_add" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "ReservationHotfixConfig" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "ReservationHotfixConfig" }
+                      }
+                    },
+                    "kind": 2
                   }
                 }
               }
