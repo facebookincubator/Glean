@@ -183,7 +183,6 @@ SCHEMAS= \
 	csharp \
 	cxx1 \
 	digest \
-	docmarkup \
 	dyn \
 	erlang \
 	flow \
