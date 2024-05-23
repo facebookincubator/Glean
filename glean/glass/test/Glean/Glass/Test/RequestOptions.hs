@@ -16,6 +16,7 @@ import Data.Default
 import qualified Data.HashMap.Strict as HashMap
 import Data.List (find)
 import Data.Text (Text)
+import qualified Data.Text.Encoding as Text
 import qualified Data.Map.Strict as Map
 import Test.HUnit
 
@@ -311,13 +312,12 @@ instance SourceControl MockSourceControl where
   getGeneration _ _repo (Glass.Revision "3") = return (Just (ScmGeneration 30))
   getGeneration _ _repo _ = return Nothing
 
-  checkMatchingRevisions _ _repo _path rev0 revs = return (map (f rev0) revs)
-    where
-      f (Glass.Revision "15") (Glass.Revision "14") = True
-      f (Glass.Revision "15") (Glass.Revision "16") = True
-      f _ _ = False
-
-  getFileContentHash _ _repo _path _rev0 = return Nothing
+  getFileContentHash _ _repo _path rev = case rev of
+    Glass.Revision "14" -> return (Just (ContentHash "c"))
+    Glass.Revision "15" -> return (Just (ContentHash "c"))
+    Glass.Revision "16" -> return (Just (ContentHash "c"))
+    Glass.Revision x ->
+      return (Just (ContentHash (Text.encodeUtf8 x))) -- nothing else will match
 
 -- Used to check scenarios where we don't expect to call
 -- getGeneration, such as when exact_revision = True
@@ -325,7 +325,6 @@ data FailSourceControl = FailSourceControl
 
 instance SourceControl FailSourceControl where
   getGeneration _ _ _ = throwIO $ ErrorCall "FailSourceControl.getGeneration"
-  checkMatchingRevisions _ _ _ _ revs = return $ map (const True) revs
   getFileContentHash _ _repo _path _rev0 = return Nothing
 
 failSourceControl :: Glass.Env -> Glass.Env

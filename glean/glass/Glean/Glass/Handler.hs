@@ -899,7 +899,7 @@ fetchSymbolsAndAttributesGlean
   -> RequestOptions
   -> GleanBackend b
   -> Maybe Language
-  -> IO ((DocumentSymbolListXResult, QueryEachRepoLog), Maybe ErrorLogger)
+  -> IO ((DocumentSymbolListXResult, Maybe ContentHash, QueryEachRepoLog), Maybe ErrorLogger)
 fetchSymbolsAndAttributesGlean env@Glass.Env{..} dbInfo req opts be mlang = do
   (res1, gLogs, elogs) <- traceSpan tracer "fetchDocumentSymbols" $
     fetchDocumentSymbols env file path mlimit
@@ -908,7 +908,7 @@ fetchSymbolsAndAttributesGlean env@Glass.Env{..} dbInfo req opts be mlang = do
       includeRefs includeXlangRefs
       (shouldFetchContentHash opts) be mlang dbInfo
   let res2 = toDocumentSymbolResult res1
-  return ((res2, gLogs), elogs)
+  return ((res2, wantedHash res1, gLogs), elogs)
   where
     repo = documentSymbolsRequest_repository req
     path = documentSymbolsRequest_filepath req
@@ -959,8 +959,6 @@ fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
         Left e -> return $ pure (Left e)
 
       let
-        snapshotRevision = either (const Nothing) (Just . fst) esnapshot
-
         returnGlean = return $
           addStatus (either id (const Snapshot.Ignored) esnapshot) glean
 
@@ -973,37 +971,28 @@ fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
           , return $ logError error)
 
         doMatching = do
-          let candidates =
-                getResultRevision glean : maybeToList snapshotRevision
-          matchingResults <- traceSpan tracer "checkMatchingRevisions" $
-              checkMatchingRevisions
-                sourceControl
-                (documentSymbolsRequest_repository req)
-                (documentSymbolsRequest_filepath req)
-                revision
-                candidates
-          case matchingResults of
-            gleanMatch : snapshotMatch
-              | gleanMatch
-              -> return $ addStatus Snapshot.Ignored glean
-              | [True] <- snapshotMatch
-              -> snapshotOrFailWith
-                    (GlassExceptionReason_matchingRevisionNotAvailable $
-                      unRevision revision)
-                    Snapshot.CompatibleMatch
-            _ ->
-              return
-                ((toDocumentSymbolResult(emptyDocumentSymbols revision)
-                  , Snapshot.NotFound
-                  , FoundNone)
-                , Just $ logError $
-                    GlassExceptionReason_matchingRevisionNotAvailable $
-                        unRevision revision
-                )
+          if
+            | Just True <- resultContentMatch glean -> returnGlean
+            | Right (myrev, _) <- esnapshot -> do
+              match <- contentMatch glean myrev revision
+              if match
+                then snapshotOrFailWith notAvailable Snapshot.CompatibleMatch
+                else giveUp Snapshot.Ignored
+            | Left s <- esnapshot -> giveUp s
+            where
+            notAvailable =
+              GlassExceptionReason_matchingRevisionNotAvailable $
+                unRevision revision
+            giveUp s = return
+              ((toDocumentSymbolResult(emptyDocumentSymbols revision)
+                , s
+                , FoundNone)
+              , Just $ logError notAvailable
+              )
 
       if  | isRevisionHit revision glean
           -> returnGlean
-          | snapshotRevision == Just revision
+          | Right (rev,_) <- esnapshot, rev == revision
           -> snapshotOrGlean Snapshot.ExactMatch
           | requestOptions_matching_revision &&
             not requestOptions_exact_revision
@@ -1012,12 +1001,11 @@ fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
           -> returnGlean
 
   -- Fall back to the best snapshot available for new files (not yet in repo)
-  case (res, mrevision) of
-    (((_,_,_), Just ErrorLogger {errorTy}), Just revision)
+  fallbackForNewFiles <- if
+    | ((_,_,_), Just ErrorLogger {errorTy}) <- res, all isNoSrcFileFact errorTy,
       -- assume it's a new file if no src.File fact
-      | all isNoSrcFileFact errorTy
-      && not requestOptions_exact_revision
-      -> do
+      Just revision <- mrevision,
+      not requestOptions_exact_revision -> do
         gen <- getGeneration sourceControl repo revision
         bestSnapshot <-
           getSnapshot tracer snapshotbe repo file Nothing gen
@@ -1027,10 +1015,32 @@ fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
               (const res) Snapshot.Latest
           Left _ ->
             return res
-    _ ->
+    | otherwise ->
       return res
+
+  return $ setContentMatch fallbackForNewFiles
   where
-    addStatus st ((res, gleanLog), mlogger) = ((res, st, gleanLog), mlogger)
+    -- set the content_match field appropriately if we used a snapshot
+    setContentMatch ((res, st, gleanLog), mlogger) = case st of
+      Snapshot.ExactMatch -> ((matchYes, st, gleanLog), mlogger)
+      Snapshot.CompatibleMatch -> ((matchYes, st, gleanLog), mlogger)
+      _ -> ((res, st, gleanLog), mlogger)
+      where
+      matchYes = res { documentSymbolListXResult_content_match = Just True }
+
+    contentMatch ((_,gleanWantedHash,_),_) myrev wantedrev
+      | myrev == wantedrev = return True
+      | otherwise = backendRunHaxl be env $
+        withRepo (snd (NonEmpty.head (gleanDBs be))) $ do
+          -- use the hash we fetched in the Glean phase if available
+          wanted <- case gleanWantedHash of
+            Just hash -> return (Just hash)
+            Nothing -> getFileContentHash sourceControl repo file wantedrev
+          mine <- getFileContentHash sourceControl repo file myrev
+          return (isJust wanted && isJust mine && wanted == mine)
+
+    addStatus st ((res, _hash, gleanLog), mlogger) = ((res, st, gleanLog), mlogger)
+
     getFromSnapshot revision
       | requestOptions_matching_revision && not requestOptions_exact_revision
       = do
@@ -1048,8 +1058,10 @@ fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
     isNoSrcFileFact GlassExceptionReason_noSrcFileFact{} = True
     isNoSrcFileFact _ = False
 
-    getResultRevision ((x, _), _) = documentSymbolListXResult_revision x
+    getResultRevision ((x, _, _), _) = documentSymbolListXResult_revision x
     isRevisionHit rev = (== rev) . getResultRevision
+
+    resultContentMatch ((r, _, _), _) = documentSymbolListXResult_content_match r
 
     returnSnapshotOr tryFetch fallback match = do
       result <- tryFetch
@@ -1106,7 +1118,6 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
     Left err -> do
       let logs = logError err <> logError (gleanDBs b)
       return (emptyDocumentSymbols (revision b), FoundNone, Just logs)
-
       where
         -- Use first db's revision
         revision GleanBackend {gleanDBs = ((_, repo) :| _)} =
