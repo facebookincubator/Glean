@@ -143,7 +143,7 @@ Maximum number of bytes per page
 * `--page-facts FACTS`<br />
 Maximum number of facts per page
 
-* `--recursive`<br />
+* `--expand`<br />
 Fetch nested facts (slower)
 
 * `--limit FACTS`<br />
