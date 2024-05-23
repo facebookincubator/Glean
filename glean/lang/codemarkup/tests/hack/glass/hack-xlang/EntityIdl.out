@@ -259,7 +259,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -268,7 +268,7 @@
                   "name": {
                     "name": {
                       "key": {
-                        "file": { "key": { "key": "test.thrift" } },
+                        "file": { "key": { "key": "www/test.thrift" } },
                         "name": { "key": "ReservationHotfixConfig" }
                       }
                     },
@@ -1023,7 +1023,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -1032,7 +1032,7 @@
                   "name": {
                     "name": {
                       "key": {
-                        "file": { "key": { "key": "test.thrift" } },
+                        "file": { "key": { "key": "www/test.thrift" } },
                         "name": { "key": "ReservationHotfixConfig" }
                       }
                     },
@@ -1342,7 +1342,7 @@
       },
       "idlEntity": {
         "lang": 8,
-        "file": { "key": "test.thrift" },
+        "file": { "key": "www/test.thrift" },
         "entity": {
           "fbthrift": {
             "decl": {
@@ -1351,7 +1351,7 @@
                   "name": {
                     "name": {
                       "key": {
-                        "file": { "key": { "key": "test.thrift" } },
+                        "file": { "key": { "key": "www/test.thrift" } },
                         "name": { "key": "ReservationHotfixConfig" }
                       }
                     },
