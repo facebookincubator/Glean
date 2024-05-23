@@ -19,7 +19,7 @@
 
 #if __x86_64__ // AVX required
 #include <immintrin.h>
-#include <folly/experimental/EliasFanoCoding.h>
+#include <folly/compression/elias_fano/EliasFanoCoding.h>
 #else
 #include "glean/rts/ownership/fallbackavx.h"
 #endif
