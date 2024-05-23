@@ -51,8 +51,10 @@ instance Plugin QueryCommand where
     commandParser "query" (progDesc "Execute an Angle query") $ do
       repoSpec <- Left <$> dbNameOpt <|> Right <$> dbSlash
       queryPageOptions <- pageOpts
-      recurse <- switch $ long "recursive"
+      recursive <- switch $ long "recursive" <> hidden
         <> help "fetch nested facts (slower)"
+      expand <- switch $ long "expand"
+        <> help "recursively expand nested facts (slower)"
       limitFacts <- optional $ option auto
         ( long "limit"
         <> metavar "FACTS"
@@ -91,7 +93,9 @@ instance Plugin QueryCommand where
         ( metavar "QUERY"
         <> help "query to execute ('@file' to read from file, '-' for stdin)"
         )
-      return Query{..}
+      return $
+        let recurse = recursive || expand in
+        Query{..}
 
   runCommand _ _ backend Query{..} = do
     query_bytes <- case query of

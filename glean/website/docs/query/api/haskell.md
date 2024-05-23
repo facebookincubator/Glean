@@ -37,7 +37,7 @@ Glean comes with a [Haxl](https://github.com/facebook/Haxl/) API for performing 
   concurrency within a sequence of statements in a `do` expression.
 
 * When traversing the results of a query, instead of using the
-  `recursive` query modifier to recursively fetch the entire result,
+  `expand` query modifier to recursively fetch the entire result,
   Haxl provides a family of `get` operations to iteratively fetch
   nested facts in the result.  When performed concurrently in the
   `Haxl` monad, multiple calls to `get` are batched into a single
