@@ -6,6 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+include "thrift/annotation/thrift.thrift"
+
 enum fb303_status {
   DEAD = 0,
   STARTING = 1,
@@ -16,7 +18,9 @@ enum fb303_status {
 }
 
 service BaseService {
-  fb303_status getStatus() (priority = 'IMPORTANT');
+  @thrift.Priority{level = thrift.RpcPriority.IMPORTANT}
+  fb303_status getStatus();
   string getName();
-  i64 aliveSince() (priority = 'IMPORTANT');
+  @thrift.Priority{level = thrift.RpcPriority.IMPORTANT}
+  i64 aliveSince();
 }

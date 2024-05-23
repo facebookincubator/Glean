@@ -10,6 +10,7 @@ include "glean/github/if/fb303.thrift"
 include "glean/config/recipes/recipes.thrift"
 include "glean/config/server/server_config.thrift"
 include "thrift/annotation/cpp.thrift"
+include "thrift/annotation/thrift.thrift"
 
 cpp_include "folly/FBString.h"
 
@@ -1241,10 +1242,11 @@ service GleanService extends fb303.FacebookService {
     1: Exception e,
     2: UnknownDatabase u,
   );
+  @thrift.Priority{level = thrift.RpcPriority.HIGH}
   DeleteDatabaseResult deleteDatabase(1: Repo repo) throws (
     1: Exception e,
     2: UnknownDatabase u,
-  ) (priority = 'HIGH');
+  );
 
   void restore(1: string locator) throws (1: InvalidLocator e);
 

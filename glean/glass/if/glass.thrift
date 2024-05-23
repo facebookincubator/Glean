@@ -8,6 +8,8 @@
 
 include "glean/github/if/fb303.thrift"
 include "glean/if/index.thrift"
+include "thrift/annotation/cpp.thrift"
+include "thrift/annotation/hack.thrift"
 
 namespace hs Glean
 namespace hack GleanGlass
@@ -344,31 +346,42 @@ struct Annotation {
 }
 
 // Visibility attributes
+@hack.Attributes{
+  attributes = [
+    "\GraphQLEnum('GlassVisibility')",
+    "\SelfDescriptive",
+    "\Oncalls('code_indexing')",
+  ],
+}
 enum Visibility {
   Public = 20,
   Protected = 30,
   Private = 40,
   Internal = 50,
-} (
-  hack.attributes = "\GraphQLEnum('GlassVisibility'), \SelfDescriptive, \Oncalls('code_indexing')",
-)
+}
 
 // Symbol modifiers (see codmearkup.types.Modifiers for those in Glean)
 // nb. upper case for thrift to graphql happiness
+@hack.Attributes{
+  attributes = [
+    "\GraphQLEnum('GlassModifiers')",
+    "\SelfDescriptive",
+    "\Oncalls('code_indexing')",
+  ],
+}
 enum Modifier {
   ABSTRACT = 1,
   FINAL = 2,
   ASYNC = 3,
   STATIC = 4,
   READONLY = 5,
-  CONST = 6 (cpp.name = "Modifier_CONST"),
+  @cpp.Name{value = "Modifier_CONST"}
+  CONST = 6,
   MUTABLE = 7,
   VOLATILE = 8,
   VIRTUAL = 9,
   INLINE = 10,
-} (
-  hack.attributes = "\GraphQLEnum('GlassModifiers'), \SelfDescriptive, \Oncalls('code_indexing')",
-)
+}
 
 // A symbol occuring in a type, together with its
 // span relative to the signature field
@@ -431,6 +444,14 @@ struct SearchContext {
 }
 
 // tags for symbol kinds, so clients can distinguish them
+@hack.Attributes{
+  attributes = [
+    "\GraphQLEnum('GlassSymbolKind')",
+    "\RelayFlowEnum",
+    "\SelfDescriptive",
+    "\Oncalls('code_indexing')",
+  ],
+}
 enum SymbolKind {
   Package = 1,
   Type = 2,
@@ -463,10 +484,16 @@ enum SymbolKind {
   Union = 29,
   Macro = 30,
   Trait = 31,
-} (
-  hack.attributes = "\GraphQLEnum('GlassSymbolKind'), \RelayFlowEnum, \SelfDescriptive, \Oncalls('code_indexing')",
-)
+}
 
+@hack.Attributes{
+  attributes = [
+    "\GraphQLEnum('GlassLanguage')",
+    "\RelayFlowEnum",
+    "\SelfDescriptive",
+    "\Oncalls('code_indexing')",
+  ],
+}
 enum Language {
   Cpp = 1,
   JavaScript = 2,
@@ -484,17 +511,20 @@ enum Language {
   Go = 14,
   Kotlin = 15,
   CSharp = 16,
-} (
-  hack.attributes = "\GraphQLEnum('GlassLanguage'), \RelayFlowEnum, \SelfDescriptive, \Oncalls('code_indexing')",
-)
+}
 
 // Kinds of definitions. E.g. for jump-to-declaration or jump-to-definition
+@hack.Attributes{
+  attributes = [
+    "\GraphQLEnum('GlassDefinitionKind')",
+    "\SelfDescriptive",
+    "\Oncalls('code_indexing')",
+  ],
+}
 enum DefinitionKind {
   Definition = 1,
   Declaration = 2,
-} (
-  hack.attributes = "\GraphQLEnum('GlassDefinitionKind'), \SelfDescriptive, \Oncalls('code_indexing')",
-)
+}
 
 // What kind of search to conduct
 struct SymbolSearchOptions {
