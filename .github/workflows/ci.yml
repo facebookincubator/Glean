@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 env:
   LANG: en_US.UTF-8
+  EXTRA_GHC_OPTS: -j32 +RTS -A1G -n16m -RTS
 
 jobs:
   ci:
@@ -11,10 +12,10 @@ jobs:
       fail-fast: false
       matrix:
         ghc: [8.6.5, 8.8.4, 8.10.7]
-    runs-on: ubuntu-latest
+    runs-on: 32-core-ubuntu
     container:
       image: ghcr.io/facebookincubator/hsthrift/ci-base:ghcup
-      options: --cpus 2 --security-opt=seccomp=unconfined
+      options: --cpus 32 --security-opt=seccomp=unconfined
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -104,7 +105,7 @@ jobs:
           mkdir -p "$HOME"/.hsthrift/bin && cp lsif-java "$HOME"/.hsthrift/bin
 
       - name: Fetch hsthrift and build folly, rocksdb
-        run: ./install_deps.sh
+        run: ./install_deps.sh --threads 32
       - name: Nuke build artifacts
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
       - name: Add thrift compiler and indexers to path
