@@ -235,6 +235,16 @@ library defaultconfigs
         glean:config,
         glean:util
 
+library thrift-annotation-cpp
+    import: fb-haskell, fb-cpp, deps
+    visibility: private
+    hs-source-dirs:
+        thrift/annotation/gen-hs2
+    exposed-modules:
+        Cpp.Types
+        Scope.Types
+        Thrift.Types
+
 library if-fb303-hs
     import: fb-haskell, fb-cpp, deps
     visibility: public
@@ -247,16 +257,8 @@ library if-fb303-hs
         Fb303.Types
         Fb303.FacebookService.Client
         Fb303.FacebookService.Service
-
-library thrift-annotation-cpp
-    import: fb-haskell, fb-cpp, deps
-    visibility: private
-    hs-source-dirs:
-        thrift/annotation/gen-hs2
-    exposed-modules:
-        Cpp.Types
-        Scope.Types
-        Thrift.Types
+    build-depends:
+        glean:thrift-annotation-cpp,
 
 library if-glean-hs
     import: fb-haskell, fb-cpp, deps
@@ -361,7 +363,6 @@ library util
         Glean.Util.ThriftService
         Glean.Util.ThriftSource
         Glean.Util.Throttle
-        Glean.Util.Time
         Glean.Util.Trace
         Glean.Util.ValueBuffer
         Glean.Util.Warden
