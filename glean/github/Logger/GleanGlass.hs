@@ -68,6 +68,9 @@ setExactRevision _ = GleanGlassLogger
 setNearestRevision :: Bool -> GleanGlassLogger
 setNearestRevision _ = GleanGlassLogger
 
+setMatchingRevision :: Bool -> GleanGlassLogger
+setMatchingRevision _ = GleanGlassLogger
+
 setRevisionUsed :: Text -> GleanGlassLogger
 setRevisionUsed _ = GleanGlassLogger
 
@@ -88,3 +91,15 @@ setLimit _ = GleanGlassLogger
 
 setIncludeXlangXrefs :: Bool -> GleanGlassLogger
 setIncludeXlangXrefs _ = GleanGlassLogger
+
+setContentCheck :: Bool -> GleanGlassLogger
+setContentCheck _ = GleanGlassLogger
+
+setContentMatch :: Bool -> GleanGlassLogger
+setContentMatch _ = GleanGlassLogger
+
+setInternalError :: Text -> GleanGlassLogger
+setInternalError _ = GleanGlassLogger
+
+setInternalErrorType :: Text -> GleanGlassLogger
+setInternalErrorType _ = GleanGlassLogger
