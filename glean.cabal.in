@@ -1508,7 +1508,6 @@ library clang-derive-lib
     exposed-modules:
         Derive.Common
         Derive.CxxDeclarationSources
-        Derive.CxxDeclarationTargets
         Derive.CxxSame
         Derive.CxxTargetUses
         Derive.Env
