@@ -183,16 +183,14 @@ instance Backend Database.Env where
       then return
         ( GleanGetState $ Haxl.SyncFetch $
             mapM_ (syncGetOne backend) . HashMap.toList . requestByRepo
-        , GleanQueryState
-            (Haxl.SyncFetch $ mapM_ (syncQueryOne backend))
-            False -- batching
+        , GleanQueryState $ Haxl.SyncFetch $
+            mapM_ (syncQueryOne backend)
         )
       else return
         ( GleanGetState $ Haxl.BackgroundFetch $
             streamMapM_ (syncGetOne backend) . HashMap.toList . requestByRepo
-        , GleanQueryState
-            (Haxl.BackgroundFetch $ streamMapM_ (syncQueryOne backend))
-            False -- batching
+        , GleanQueryState $ Haxl.BackgroundFetch $
+            streamMapM_ (syncQueryOne backend)
         )
 
 
