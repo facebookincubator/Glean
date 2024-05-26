@@ -37,8 +37,8 @@ jobs:
 
       - name: Install GHC ${{ matrix.ghc }}
         run: ghcup install ghc ${{ matrix.ghc }} --set
-      - name: Install cabal-install 3.8
-        run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.8.1.0/cabal-install-3.8.1.0-x86_64-linux-deb10.tar.xz 3.8.1.0 --set
+      - name: Install Cabal 3.8
+        run: ghcup install cabal 3.8.1.0 --set
       - name: Add GHC and cabal to PATH
         run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
 
