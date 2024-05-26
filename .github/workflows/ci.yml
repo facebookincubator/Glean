@@ -14,7 +14,7 @@ jobs:
         ghc: [8.6.5, 8.8.4, 8.10.7]
     runs-on: 32-core-ubuntu
     container:
-      image: ghcr.io/facebookincubator/hsthrift/ci-base:ghcup
+      image: ghcr.io/facebookincubator/hsthrift/ci-base:24.04
       options: --cpus 32 --security-opt=seccomp=unconfined
     steps:
       - name: Checkout code
@@ -27,7 +27,7 @@ jobs:
       - name: Install additional tools
         run: |
           apt-get update
-          apt install -y ninja-build libxxhash-dev m4 rsync wget unzip clang-12 libclang-12-dev llvm-12-dev libgmock-dev libre2-dev
+          apt install -y ninja-build libxxhash-dev m4 rsync wget unzip clang-15 libclang-15-dev libclang-cpp15-dev llvm-15-dev libgmock-dev libre2-dev
           apt-get remove -y libfmt-dev
 
       - name: Make utf8 default locale
