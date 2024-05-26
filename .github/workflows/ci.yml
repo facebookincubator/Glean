@@ -47,12 +47,12 @@ jobs:
 
       - name: Install indexer (hack)
         run: |
+          # From https://hhvm.com/blog/2022/08/30/experimenting-with-universal-deb-packages.html
           apt-get install -y software-properties-common apt-transport-https
           apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94
-          # NB. https stopped working at some point, certificate failure
-          add-apt-repository http://dl.hhvm.com/ubuntu
+          add-apt-repository 'deb https://dl.hhvm.com/universal nightly main'
           apt-get update
-          apt-get install -y hhvm-nightly
+          apt-get install -y hhvm
 
       - name: Install indexer (typescript)
         run: npm install -g @sourcegraph/scip-typescript
@@ -121,9 +121,6 @@ jobs:
         name: Build hiedb-indexer
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glean-hiedb
       - name: Run tests
-        # External hh_server hasn't caught up with the internal
-        # version yet so the test output differs. Disable the Hack
-        # tests temporarily.
         run: env DOTNET_ROOT="$HOME/.dotnet" LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests -f-rust-tests -f-python-tests
 
   # check the vscode extension builds
