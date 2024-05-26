@@ -43,11 +43,7 @@ jobs:
         run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
 
       - name: Install indexer (flow)
-        run: |
-          export FLOW=0.209.1
-          wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux64-v${FLOW}.zip"
-          unzip "flow-linux64-v${FLOW}.zip"
-          mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
+        run: npm install -g flow-bin
 
       - name: Install indexer (hack)
         run: |
@@ -82,11 +78,12 @@ jobs:
           export GOLANG=1.17.8
           export SCIPGO=0.1.4
           mkdir go-install; cd go-install
+          mkdir -p "$HOME"/.hsthrift/bin
           wget "https://go.dev/dl/go${GOLANG}.linux-amd64.tar.gz"
           tar -C "$HOME/.hsthrift" -xzf  "go${GOLANG}.linux-amd64.tar.gz"
           wget "https://github.com/sourcegraph/scip-go/releases/download/v${SCIPGO}/scip-go_${SCIPGO}_linux_amd64.tar.gz"
           tar xzf "scip-go_${SCIPGO}_linux_amd64.tar.gz"
-          mkdir -p "$HOME"/.hsthrift/bin && mv scip-go "$HOME"/.hsthrift/bin
+          mv scip-go "$HOME"/.hsthrift/bin
           echo "$HOME/.hsthrift/go/bin" >> "$GITHUB_PATH"
 
       - name: Install indexer (rust)
