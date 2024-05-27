@@ -273,6 +273,38 @@
         "decl": {
           "method": {
             "key": {
+              "name": { "key": "fly" },
+              "container": {
+                "class_": {
+                  "key": { "name": { "key": { "name": { "key": "AirBus" } } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "fly" },
+              "container": {
+                "interface_": {
+                  "key": { "name": { "key": { "name": { "key": "Fliers" } } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "decl": {
+          "method": {
+            "key": {
               "name": { "key": "overrideMe" },
               "container": {
                 "class_": {

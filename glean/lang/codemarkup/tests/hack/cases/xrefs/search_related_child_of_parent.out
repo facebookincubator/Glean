@@ -513,6 +513,62 @@
             "decl": {
               "method": {
                 "key": {
+                  "name": { "key": "fly" },
+                  "container": {
+                    "interface_": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "Fliers" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "fly",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 487, "length": 28 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "method": {
+                "key": {
+                  "name": { "key": "fly" },
+                  "container": {
+                    "class_": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "AirBus" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "fly",
+          "file": { "key": "www/Require.php" },
+          "location": { "span": { "start": 839, "length": 50 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 1,
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "method": {
+                "key": {
                   "name": { "key": "overrideMe" },
                   "container": {
                     "class_": {
