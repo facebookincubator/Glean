@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 env:
   LANG: en_US.UTF-8
-  EXTRA_GHC_OPTS: -j32 +RTS -A1G -n16m -RTS
+  EXTRA_GHC_OPTS: -j32 +RTS -A128m -n2m -RTS
 
 jobs:
   ci:
