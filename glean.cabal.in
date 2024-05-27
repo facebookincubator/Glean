@@ -235,13 +235,14 @@ library defaultconfigs
         glean:config,
         glean:util
 
-library thrift-annotation-cpp
+library thrift-annotation
     import: fb-haskell, fb-cpp, deps
     visibility: private
     hs-source-dirs:
         thrift/annotation/gen-hs2
     exposed-modules:
         Cpp.Types
+        Hack.Types
         Scope.Types
         Thrift.Types
 
@@ -258,7 +259,7 @@ library if-fb303-hs
         Fb303.FacebookService.Client
         Fb303.FacebookService.Service
     build-depends:
-        glean:thrift-annotation-cpp,
+        glean:thrift-annotation,
 
 library if-glean-hs
     import: fb-haskell, fb-cpp, deps
@@ -270,7 +271,7 @@ library if-glean-hs
         Glean.GleanService.Client
         Glean.GleanService.Service
     build-depends:
-        glean:thrift-annotation-cpp,
+        glean:thrift-annotation,
         glean:config,
         glean:if-fb303-hs
 
@@ -655,7 +656,6 @@ library schema
         Glean.Schema.Cxx1
         Glean.Schema.Digest
         Glean.Schema.Glass
-        Glean.Schema.Docmarkup
         Glean.Schema.Erlang
         Glean.Schema.Flow
         Glean.Schema.GleanTest
@@ -711,7 +711,6 @@ library schema
         Glean.Schema.Csharp.Types
         Glean.Schema.Cxx1.Types
         Glean.Schema.Digest.Types
-        Glean.Schema.Docmarkup.Types
         Glean.Schema.Erlang.Types
         Glean.Schema.Flow.Types
         Glean.Schema.Glass.Types
@@ -1194,7 +1193,8 @@ library if-glass-hs
     build-depends:
         glean:config,
         glean:if-fb303-hs,
-        glean:if-index-hs
+        glean:if-index-hs,
+        glean:thrift-annotation,
 
 -- Glass core library
 library glass-lib
@@ -1510,7 +1510,6 @@ library clang-derive-lib
     exposed-modules:
         Derive.Common
         Derive.CxxDeclarationSources
-        Derive.CxxDeclarationTargets
         Derive.CxxSame
         Derive.CxxTargetUses
         Derive.Env

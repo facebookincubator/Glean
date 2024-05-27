@@ -253,6 +253,7 @@ THRIFT_GLEAN= \
 	glean/config/service.thrift \
 	glean/config/client/client_config.thrift \
 	thrift/annotation/cpp.thrift \
+	thrift/annotation/hack.thrift \
 	thrift/annotation/scope.thrift \
 	thrift/annotation/thrift.thrift
 

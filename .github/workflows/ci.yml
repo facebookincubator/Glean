@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 env:
   LANG: en_US.UTF-8
+  EXTRA_GHC_OPTS: -j32 +RTS -A1G -n16m -RTS
 
 jobs:
   ci:
@@ -11,18 +12,22 @@ jobs:
       fail-fast: false
       matrix:
         ghc: [8.6.5, 8.8.4, 8.10.7]
-    runs-on: ubuntu-latest
+    runs-on: 32-core-ubuntu
     container:
-      image: ghcr.io/facebookincubator/hsthrift/ci-base:ghcup
-      options: --cpus 2 --security-opt=seccomp=unconfined
+      image: ghcr.io/facebookincubator/hsthrift/ci-base:24.04
+      options: --cpus 32 --security-opt=seccomp=unconfined
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
       - name: Install additional tools
         run: |
           apt-get update
-          apt install -y ninja-build libxxhash-dev m4 rsync wget unzip clang-12 libclang-12-dev llvm-12-dev libgmock-dev libre2-dev
+          apt install -y ninja-build libxxhash-dev m4 rsync wget unzip clang-15 libclang-15-dev libclang-cpp15-dev llvm-15-dev libgmock-dev libre2-dev
           apt-get remove -y libfmt-dev
 
       - name: Make utf8 default locale
@@ -33,39 +38,28 @@ jobs:
 
       - name: Install GHC ${{ matrix.ghc }}
         run: ghcup install ghc ${{ matrix.ghc }} --set
-      - name: Install cabal-install 3.8
-        run: ghcup install cabal -u https://downloads.haskell.org/~cabal/cabal-install-3.8.1.0/cabal-install-3.8.1.0-x86_64-linux-deb10.tar.xz 3.8.1.0 --set
+      - name: Install Cabal 3.8
+        run: ghcup install cabal 3.8.1.0 --set
       - name: Add GHC and cabal to PATH
         run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
 
       - name: Install indexer (flow)
-        run: |
-          export FLOW=0.209.1
-          wget "https://github.com/facebook/flow/releases/download/v${FLOW}/flow-linux64-v${FLOW}.zip"
-          unzip "flow-linux64-v${FLOW}.zip"
-          mkdir -p "$HOME"/.hsthrift/bin && mv flow/flow "$HOME"/.hsthrift/bin
+        run: npm install -g flow-bin
 
       - name: Install indexer (hack)
         run: |
+          # From https://hhvm.com/blog/2022/08/30/experimenting-with-universal-deb-packages.html
           apt-get install -y software-properties-common apt-transport-https
           apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94
-          # NB. https stopped working at some point, certificate failure
-          add-apt-repository http://dl.hhvm.com/ubuntu
+          add-apt-repository 'deb https://dl.hhvm.com/universal nightly main'
           apt-get update
-          apt-get install -y hhvm-nightly
+          apt-get install -y hhvm
 
       - name: Install indexer (typescript)
-        run: |
-          curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
-          apt-get install -y nodejs
-          npm install -g @sourcegraph/scip-typescript
+        run: npm install -g @sourcegraph/scip-typescript
 
       - name: Install indexer (python)
         run: |
-          export NODEARCH=node-v18.0.0-linux-x64
-          curl -LO "https://nodejs.org/dist/v18.0.0/${NODEARCH}.tar.xz"
-          tar -xvf "${NODEARCH}.tar.xz"
-          cp -r "${NODEARCH}"/* "$HOME"/.hsthrift/
           npm install -g @sourcegraph/scip-python
           apt install -y python3-pip
 
@@ -85,11 +79,12 @@ jobs:
           export GOLANG=1.17.8
           export SCIPGO=0.1.4
           mkdir go-install; cd go-install
+          mkdir -p "$HOME"/.hsthrift/bin
           wget "https://go.dev/dl/go${GOLANG}.linux-amd64.tar.gz"
           tar -C "$HOME/.hsthrift" -xzf  "go${GOLANG}.linux-amd64.tar.gz"
           wget "https://github.com/sourcegraph/scip-go/releases/download/v${SCIPGO}/scip-go_${SCIPGO}_linux_amd64.tar.gz"
           tar xzf "scip-go_${SCIPGO}_linux_amd64.tar.gz"
-          mkdir -p "$HOME"/.hsthrift/bin && mv scip-go "$HOME"/.hsthrift/bin
+          mv scip-go "$HOME"/.hsthrift/bin
           echo "$HOME/.hsthrift/go/bin" >> "$GITHUB_PATH"
 
       - name: Install indexer (rust)
@@ -110,7 +105,7 @@ jobs:
           mkdir -p "$HOME"/.hsthrift/bin && cp lsif-java "$HOME"/.hsthrift/bin
 
       - name: Fetch hsthrift and build folly, rocksdb
-        run: ./install_deps.sh
+        run: ./install_deps.sh --threads 32
       - name: Nuke build artifacts
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
       - name: Add thrift compiler and indexers to path
@@ -127,9 +122,6 @@ jobs:
         name: Build hiedb-indexer
         run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glean-hiedb
       - name: Run tests
-        # External hh_server hasn't caught up with the internal
-        # version yet so the test output differs. Disable the Hack
-        # tests temporarily.
         run: env DOTNET_ROOT="$HOME/.dotnet" LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests -f-rust-tests -f-python-tests
 
   # check the vscode extension builds

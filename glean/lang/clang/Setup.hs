@@ -41,9 +41,9 @@ llvmVersions = map mkVersion $ concat
   | a <- versions_a
   ]
 
-  where versions_a = [11, 12]
-        versions_b = [0, 1]
-        versions_c = [0, 1]
+  where versions_a = [15]
+        versions_b = [0]
+        versions_c = [7]
 
 -- Ordered by decreasing specificty so we will prefer llvm-config-9.0
 -- over llvm-config-9 over llvm-config.

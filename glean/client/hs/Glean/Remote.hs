@@ -374,9 +374,7 @@ initRemoteGlobalStateWithSemaphore
   -> IO (Haxl.State GleanGet, Haxl.State GleanQuery)
 initRemoteGlobalStateWithSemaphore semaphore backend = return
     ( GleanGetState (remoteFetch backend semaphore)
-    , GleanQueryState
-        (remoteQuery backend semaphore)
-        (clientConfig_max_batch_size (thriftBackendClientConfig backend) > 1)
+    , GleanQueryState (remoteQuery backend semaphore)
     )
 
 remoteFetch :: ThriftBackend -> Semaphore -> Haxl.PerformFetch GleanGet
