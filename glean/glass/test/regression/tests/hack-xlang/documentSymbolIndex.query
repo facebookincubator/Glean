@@ -1,0 +1,2 @@
+action: documentSymbolIndex
+args: {"include_refs":true,"filepath":"www/test.php","repository":"test-xlang"}

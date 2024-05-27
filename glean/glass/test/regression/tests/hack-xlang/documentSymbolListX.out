@@ -1,0 +1,1431 @@
+[
+    "@generated",
+    {
+        "definitions": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SourceA"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class SourceA"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 7,
+                    "columnEnd": 14,
+                    "lineBegin": 10,
+                    "lineEnd": 10
+                },
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 10,
+                    "lineEnd": 31
+                },
+                "sym": "test-xlang/php/SourceA"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "f"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SourceA"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public async function f(): Awaitable<void>"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 25,
+                    "columnEnd": 26,
+                    "lineBegin": 14,
+                    "lineEnd": 14
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 4,
+                    "lineBegin": 14,
+                    "lineEnd": 22
+                },
+                "sym": "test-xlang/php/SourceA/f"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "g"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "SourceA"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public async function g(): Awaitable<void>"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 25,
+                    "columnEnd": 26,
+                    "lineBegin": 24,
+                    "lineEnd": 24
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 4,
+                    "lineBegin": 24,
+                    "lineEnd": 30
+                },
+                "sym": "test-xlang/php/SourceA/g"
+            }
+        ],
+        "referenced_file_digests": {},
+        "references": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "GetCardRequest"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class GetCardRequest"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 34,
+                    "lineBegin": 26,
+                    "lineEnd": 26
+                },
+                "sym": "test-xlang/php/GetCardRequest",
+                "target": {
+                    "filepath": "www/test_types.php",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 21,
+                        "lineBegin": 392,
+                        "lineEnd": 392
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "__construct"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "GetCardRequest"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public function __construct(?string $identifier = null, ?string $card_name = null)[]: void"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 34,
+                    "lineBegin": 26,
+                    "lineEnd": 26
+                },
+                "sym": "test-xlang/php/GetCardRequest/__construct",
+                "target": {
+                    "filepath": "www/test_types.php",
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 30,
+                        "lineBegin": 427,
+                        "lineEnd": 427
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "card"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "GetCardResponse"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public ?ResponseCard card"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 24,
+                    "columnEnd": 28,
+                    "lineBegin": 28,
+                    "lineEnd": 28
+                },
+                "sym": "test-xlang/php/GetCardResponse/:prop/card",
+                "target": {
+                    "filepath": "www/test_types.php",
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 29,
+                        "lineBegin": 526,
+                        "lineEnd": 526
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationException"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class GetNavigationException"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 22,
+                    "columnEnd": 44,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test-xlang/php/GetNavigationException",
+                "target": {
+                    "filepath": "www/test_types.php",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 29,
+                        "lineBegin": 309,
+                        "lineEnd": 309
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "message_detail"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationException"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public string message_detail"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 17,
+                    "columnEnd": 31,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                },
+                "sym": "test-xlang/php/GetNavigationException/:prop/message_detail",
+                "target": {
+                    "filepath": "www/test_types.php",
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 32,
+                        "lineBegin": 333,
+                        "lineEnd": 333
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "__construct"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationException"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public function __construct(?string $message_detail = null)[]: void"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 22,
+                    "columnEnd": 44,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test-xlang/php/GetNavigationException/__construct",
+                "target": {
+                    "filepath": "www/test_types.php",
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 30,
+                        "lineBegin": 335,
+                        "lineEnd": 335
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationRequest"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class GetNavigationRequest"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 40,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "sym": "test-xlang/php/GetNavigationRequest",
+                "target": {
+                    "filepath": "www/test_types.php",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 27,
+                        "lineBegin": 145,
+                        "lineEnd": 145
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "identifier"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationRequest"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public string identifier"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 25,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test-xlang/php/GetNavigationRequest/:prop/identifier",
+                "target": {
+                    "filepath": "www/test_types.php",
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 28,
+                        "lineBegin": 168,
+                        "lineEnd": 168
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "__construct"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationRequest"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public function __construct(?string $identifier = null)[]: void"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 40,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "sym": "test-xlang/php/GetNavigationRequest/__construct",
+                "target": {
+                    "filepath": "www/test_types.php",
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 30,
+                        "lineBegin": 170,
+                        "lineEnd": 170
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "tab_group"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationResponse"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public string tab_group"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 29,
+                    "columnEnd": 38,
+                    "lineBegin": 21,
+                    "lineEnd": 21
+                },
+                "sym": "test-xlang/php/GetNavigationResponse/:prop/tab_group",
+                "target": {
+                    "filepath": "www/test_types.php",
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 27,
+                        "lineBegin": 250,
+                        "lineEnd": 250
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "static_card"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "ResponseCard"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public ?string static_card"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 29,
+                    "lineBegin": 29,
+                    "lineEnd": 29
+                },
+                "sym": "test-xlang/php/ResponseCard/:prop/static_card",
+                "target": {
+                    "filepath": "www/test_types.php",
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 30,
+                        "lineBegin": 46,
+                        "lineEnd": 46
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "TestServiceAsyncClient"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class TestServiceAsyncClient"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 41,
+                    "lineBegin": 15,
+                    "lineEnd": 15
+                },
+                "sym": "test-xlang/php/TestServiceAsyncClient",
+                "target": {
+                    "filepath": "www/TestService.php",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 29,
+                        "lineBegin": 92,
+                        "lineEnd": 92
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "TestServiceAsyncClient"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class TestServiceAsyncClient"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 19,
+                    "columnEnd": 41,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "sym": "test-xlang/php/TestServiceAsyncClient",
+                "target": {
+                    "filepath": "www/TestService.php",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 29,
+                        "lineBegin": 92,
+                        "lineEnd": 92
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift1"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "TestServiceAsyncClient"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public async function thrift1(?GetNavigationRequest $request): Awaitable<GetNavigationResponse>"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 32,
+                    "columnEnd": 39,
+                    "lineBegin": 20,
+                    "lineEnd": 20
+                },
+                "sym": "test-xlang/php/TestServiceAsyncClient/thrift1",
+                "target": {
+                    "filepath": "www/TestService.php",
+                    "range": {
+                        "columnBegin": 25,
+                        "columnEnd": 32,
+                        "lineBegin": 101,
+                        "lineEnd": 101
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift2"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "TestServiceAsyncClient"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public async function thrift2(?GetCardRequest $request): Awaitable<GetCardResponse>"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 32,
+                    "columnEnd": 39,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test-xlang/php/TestServiceAsyncClient/thrift2",
+                "target": {
+                    "filepath": "www/TestService.php",
+                    "range": {
+                        "columnBegin": 25,
+                        "columnEnd": 32,
+                        "lineBegin": 121,
+                        "lineEnd": 121
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "GetCardRequest"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct www/test::GetCardRequest"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "symbolIdl"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 34,
+                    "lineBegin": 26,
+                    "lineEnd": 26
+                },
+                "sym": "test-xlang/thrift/www/test.thrift/GetCardRequest",
+                "target": {
+                    "filepath": "www/test.thrift",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 25,
+                        "lineEnd": 28
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "GetCardResponse"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct www/test::GetCardResponse"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "symbolIdl"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 24,
+                    "columnEnd": 28,
+                    "lineBegin": 28,
+                    "lineEnd": 28
+                },
+                "sym": "test-xlang/thrift/www/test.thrift/GetCardResponse",
+                "target": {
+                    "filepath": "www/test.thrift",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 30,
+                        "lineEnd": 32
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationException"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "exception www/test::GetNavigationException"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "symbolIdl"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 22,
+                    "columnEnd": 44,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test-xlang/thrift/www/test.thrift/GetNavigationException",
+                "target": {
+                    "filepath": "www/test.thrift",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 21,
+                        "lineEnd": 23
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationException"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "exception www/test::GetNavigationException"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "symbolIdl"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 17,
+                    "columnEnd": 31,
+                    "lineBegin": 19,
+                    "lineEnd": 19
+                },
+                "sym": "test-xlang/thrift/www/test.thrift/GetNavigationException",
+                "target": {
+                    "filepath": "www/test.thrift",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 21,
+                        "lineEnd": 23
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationRequest"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct www/test::GetNavigationRequest"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "symbolIdl"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 40,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "sym": "test-xlang/thrift/www/test.thrift/GetNavigationRequest",
+                "target": {
+                    "filepath": "www/test.thrift",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 15
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationRequest"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct www/test::GetNavigationRequest"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "symbolIdl"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 15,
+                    "columnEnd": 25,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test-xlang/thrift/www/test.thrift/GetNavigationRequest",
+                "target": {
+                    "filepath": "www/test.thrift",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 15
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationResponse"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct www/test::GetNavigationResponse"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "symbolIdl"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 29,
+                    "columnEnd": 38,
+                    "lineBegin": 21,
+                    "lineEnd": 21
+                },
+                "sym": "test-xlang/thrift/www/test.thrift/GetNavigationResponse",
+                "target": {
+                    "filepath": "www/test.thrift",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 17,
+                        "lineEnd": 19
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "thrift1"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "TestService"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "function www/test::TestService::thrift1"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "symbolIdl"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 32,
+                    "columnEnd": 39,
+                    "lineBegin": 20,
+                    "lineEnd": 20
+                },
+                "sym": "test-xlang/thrift/www/test.thrift/TestService/thrift1",
+                "target": {
+                    "filepath": "www/test.thrift",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 5,
+                        "lineBegin": 39,
+                        "lineEnd": 41
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "thrift2"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "TestService"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "function www/test::TestService::thrift2"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "symbolIdl"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 32,
+                    "columnEnd": 39,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test-xlang/thrift/www/test.thrift/TestService/thrift2",
+                "target": {
+                    "filepath": "www/test.thrift",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 5,
+                        "lineBegin": 43,
+                        "lineEnd": 45
+                    },
+                    "repository": "test-xlang"
+                }
+            }
+        ],
+        "revision": "testhash",
+        "truncated": false
+    }
+]

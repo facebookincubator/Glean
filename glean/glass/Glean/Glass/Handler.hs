@@ -112,7 +112,8 @@ import Glean.Glass.Query (
     QueryExpr(..)
   )
 import qualified Glean.Glass.Query.Cxx as Cxx
-import Glean.Glass.XRefs ( GenXRef(..), XRef, resolveEntitiesRange)
+import Glean.Glass.XRefs
+  ( GenXRef(..), XRef, resolveEntitiesRange, splitXRefs )
 
 import Glean.Glass.SymbolMap ( toSymbolIndex )
 import Glean.Glass.Search as Search
@@ -1279,14 +1280,14 @@ documentSymbolsForLanguage
   Cxx.documentSymbolsForCxx mlimit includeRefs includeXlangRefs fileId
 
 -- For everyone else, we just query the generic codemarkup predicates
-documentSymbolsForLanguage mlimit _ includeRefs _ fileId = do
+documentSymbolsForLanguage mlimit _ includeRefs includeXlangRefs fileId = do
   (xrefs, trunc1) <- if includeRefs
-    then searchRecursiveWithLimit mlimit $ Query.fileEntityXRefLocations fileId
+    then searchRecursiveWithLimit mlimit $
+      Query.fileEntityXRefLocations fileId includeXlangRefs
     else return ([], False)
   (defns, trunc2) <- searchRecursiveWithLimit mlimit $
     Query.fileEntityLocations fileId
-  -- No IDL for languages other than C++ yet
-  return (PlainXRef <$> xrefs, defns, trunc1 || trunc2)
+  return (splitXRefs xrefs, defns, trunc1 || trunc2)
 
 -- And build a line-indexed map of symbols, resolved to spans
 -- With extra attributes loaded from any associated attr db

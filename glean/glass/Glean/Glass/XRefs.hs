@@ -13,7 +13,8 @@ module Glean.Glass.XRefs
     GenXRef(..),
     XRef,
     resolveEntitiesRange,
-   fetchCxxIdlXRefs
+    splitXRefs,
+    fetchCxxIdlXRefs
   ) where
 
 import Data.Map.Strict ( Map )
@@ -42,6 +43,15 @@ type IdlXRef = (Code.RangeSpan, Code.IdlEntity)
 data GenXRef = PlainXRef XRef | IdlXRef IdlXRef
 
 type EntityIdlMap = Map Code.Entity Code.IdlEntity
+
+-- | Split xrefs (target ent + optional idl ent) into plain and idl entities
+splitXRefs
+  :: [(Code.XRefLocation, Code.Entity, Maybe Code.IdlEntity)] -> [GenXRef]
+splitXRefs xrefs =
+  let idlEnts = [ (ent, idl) | (_, ent, Just idl) <- xrefs]
+      idlMap = Map.fromList idlEnts
+      xrefs' = (\(loc, ent, _) -> (loc, ent)) <$> xrefs in
+  extractIdlXRefs idlMap xrefs'
 
 -- | extract idl xrefs from the regular ones
 extractIdlXRefs

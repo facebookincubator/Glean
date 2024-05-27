@@ -1,0 +1,1010 @@
+[
+    "@generated",
+    {
+        "referenced_file_digests": {},
+        "revision": "testhash",
+        "size": 27,
+        "symbols": {
+            "10": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "SourceA"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "class SourceA"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 14,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "sym": "test-xlang/php/SourceA"
+                }
+            ],
+            "14": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "f"
+                        },
+                        "symbolParent": {
+                            "aString": "SourceA"
+                        },
+                        "symbolSignature": {
+                            "aString": "public async function f(): Awaitable<void>"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 25,
+                        "columnEnd": 26,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "sym": "test-xlang/php/SourceA/f"
+                }
+            ],
+            "15": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "TestServiceAsyncClient"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "class TestServiceAsyncClient"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 41,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "sym": "test-xlang/php/TestServiceAsyncClient",
+                    "target": {
+                        "filepath": "www/TestService.php",
+                        "range": {
+                            "columnBegin": 7,
+                            "columnEnd": 29,
+                            "lineBegin": 92,
+                            "lineEnd": 92
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "16": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "GetNavigationRequest"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "class GetNavigationRequest"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 40,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "sym": "test-xlang/php/GetNavigationRequest",
+                    "target": {
+                        "filepath": "www/test_types.php",
+                        "range": {
+                            "columnBegin": 7,
+                            "columnEnd": 27,
+                            "lineBegin": 145,
+                            "lineEnd": 145
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "__construct"
+                        },
+                        "symbolParent": {
+                            "aString": "GetNavigationRequest"
+                        },
+                        "symbolSignature": {
+                            "aString": "public function __construct(?string $identifier = null)[]: void"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 40,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "sym": "test-xlang/php/GetNavigationRequest/__construct",
+                    "target": {
+                        "filepath": "www/test_types.php",
+                        "range": {
+                            "columnBegin": 19,
+                            "columnEnd": 30,
+                            "lineBegin": 170,
+                            "lineEnd": 170
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolIdl": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "GetNavigationRequest"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct www/test::GetNavigationRequest"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 40,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "sym": "test-xlang/thrift/www/test.thrift/GetNavigationRequest",
+                    "target": {
+                        "filepath": "www/test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 13,
+                            "lineEnd": 15
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "17": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 9
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "identifier"
+                        },
+                        "symbolParent": {
+                            "aString": "GetNavigationRequest"
+                        },
+                        "symbolSignature": {
+                            "aString": "public string identifier"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 25,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "sym": "test-xlang/php/GetNavigationRequest/:prop/identifier",
+                    "target": {
+                        "filepath": "www/test_types.php",
+                        "range": {
+                            "columnBegin": 17,
+                            "columnEnd": 28,
+                            "lineBegin": 168,
+                            "lineEnd": 168
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolIdl": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "GetNavigationRequest"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct www/test::GetNavigationRequest"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 25,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "sym": "test-xlang/thrift/www/test.thrift/GetNavigationRequest",
+                    "target": {
+                        "filepath": "www/test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 13,
+                            "lineEnd": 15
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "18": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "GetNavigationException"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "class GetNavigationException"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 44,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "sym": "test-xlang/php/GetNavigationException",
+                    "target": {
+                        "filepath": "www/test_types.php",
+                        "range": {
+                            "columnBegin": 7,
+                            "columnEnd": 29,
+                            "lineBegin": 309,
+                            "lineEnd": 309
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "__construct"
+                        },
+                        "symbolParent": {
+                            "aString": "GetNavigationException"
+                        },
+                        "symbolSignature": {
+                            "aString": "public function __construct(?string $message_detail = null)[]: void"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 44,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "sym": "test-xlang/php/GetNavigationException/__construct",
+                    "target": {
+                        "filepath": "www/test_types.php",
+                        "range": {
+                            "columnBegin": 19,
+                            "columnEnd": 30,
+                            "lineBegin": 335,
+                            "lineEnd": 335
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolIdl": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "GetNavigationException"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception www/test::GetNavigationException"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 44,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "sym": "test-xlang/thrift/www/test.thrift/GetNavigationException",
+                    "target": {
+                        "filepath": "www/test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 21,
+                            "lineEnd": 23
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "19": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 9
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "message_detail"
+                        },
+                        "symbolParent": {
+                            "aString": "GetNavigationException"
+                        },
+                        "symbolSignature": {
+                            "aString": "public string message_detail"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 31,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "sym": "test-xlang/php/GetNavigationException/:prop/message_detail",
+                    "target": {
+                        "filepath": "www/test_types.php",
+                        "range": {
+                            "columnBegin": 17,
+                            "columnEnd": 32,
+                            "lineBegin": 333,
+                            "lineEnd": 333
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolIdl": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "GetNavigationException"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception www/test::GetNavigationException"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 31,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "sym": "test-xlang/thrift/www/test.thrift/GetNavigationException",
+                    "target": {
+                        "filepath": "www/test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 21,
+                            "lineEnd": 23
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "20": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "thrift1"
+                        },
+                        "symbolParent": {
+                            "aString": "TestServiceAsyncClient"
+                        },
+                        "symbolSignature": {
+                            "aString": "public async function thrift1(?GetNavigationRequest $request): Awaitable<GetNavigationResponse>"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 32,
+                        "columnEnd": 39,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "sym": "test-xlang/php/TestServiceAsyncClient/thrift1",
+                    "target": {
+                        "filepath": "www/TestService.php",
+                        "range": {
+                            "columnBegin": 25,
+                            "columnEnd": 32,
+                            "lineBegin": 101,
+                            "lineEnd": 101
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolIdl": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "thrift1"
+                        },
+                        "symbolParent": {
+                            "aString": "TestService"
+                        },
+                        "symbolSignature": {
+                            "aString": "function www/test::TestService::thrift1"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 32,
+                        "columnEnd": 39,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "sym": "test-xlang/thrift/www/test.thrift/TestService/thrift1",
+                    "target": {
+                        "filepath": "www/test.thrift",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 5,
+                            "lineBegin": 39,
+                            "lineEnd": 41
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "21": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 9
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "tab_group"
+                        },
+                        "symbolParent": {
+                            "aString": "GetNavigationResponse"
+                        },
+                        "symbolSignature": {
+                            "aString": "public string tab_group"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 29,
+                        "columnEnd": 38,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "sym": "test-xlang/php/GetNavigationResponse/:prop/tab_group",
+                    "target": {
+                        "filepath": "www/test_types.php",
+                        "range": {
+                            "columnBegin": 17,
+                            "columnEnd": 27,
+                            "lineBegin": 250,
+                            "lineEnd": 250
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolIdl": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "GetNavigationResponse"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct www/test::GetNavigationResponse"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 29,
+                        "columnEnd": 38,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "sym": "test-xlang/thrift/www/test.thrift/GetNavigationResponse",
+                    "target": {
+                        "filepath": "www/test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 17,
+                            "lineEnd": 19
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "24": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "g"
+                        },
+                        "symbolParent": {
+                            "aString": "SourceA"
+                        },
+                        "symbolSignature": {
+                            "aString": "public async function g(): Awaitable<void>"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 25,
+                        "columnEnd": 26,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "sym": "test-xlang/php/SourceA/g"
+                }
+            ],
+            "25": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "TestServiceAsyncClient"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "class TestServiceAsyncClient"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 41,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "sym": "test-xlang/php/TestServiceAsyncClient",
+                    "target": {
+                        "filepath": "www/TestService.php",
+                        "range": {
+                            "columnBegin": 7,
+                            "columnEnd": 29,
+                            "lineBegin": 92,
+                            "lineEnd": 92
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "26": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "GetCardRequest"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "class GetCardRequest"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 34,
+                        "lineBegin": 26,
+                        "lineEnd": 26
+                    },
+                    "sym": "test-xlang/php/GetCardRequest",
+                    "target": {
+                        "filepath": "www/test_types.php",
+                        "range": {
+                            "columnBegin": 7,
+                            "columnEnd": 21,
+                            "lineBegin": 392,
+                            "lineEnd": 392
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "__construct"
+                        },
+                        "symbolParent": {
+                            "aString": "GetCardRequest"
+                        },
+                        "symbolSignature": {
+                            "aString": "public function __construct(?string $identifier = null, ?string $card_name = null)[]: void"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 34,
+                        "lineBegin": 26,
+                        "lineEnd": 26
+                    },
+                    "sym": "test-xlang/php/GetCardRequest/__construct",
+                    "target": {
+                        "filepath": "www/test_types.php",
+                        "range": {
+                            "columnBegin": 19,
+                            "columnEnd": 30,
+                            "lineBegin": 427,
+                            "lineEnd": 427
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolIdl": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "GetCardRequest"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct www/test::GetCardRequest"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 34,
+                        "lineBegin": 26,
+                        "lineEnd": 26
+                    },
+                    "sym": "test-xlang/thrift/www/test.thrift/GetCardRequest",
+                    "target": {
+                        "filepath": "www/test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 25,
+                            "lineEnd": 28
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "27": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 8
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "thrift2"
+                        },
+                        "symbolParent": {
+                            "aString": "TestServiceAsyncClient"
+                        },
+                        "symbolSignature": {
+                            "aString": "public async function thrift2(?GetCardRequest $request): Awaitable<GetCardResponse>"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 32,
+                        "columnEnd": 39,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "sym": "test-xlang/php/TestServiceAsyncClient/thrift2",
+                    "target": {
+                        "filepath": "www/TestService.php",
+                        "range": {
+                            "columnBegin": 25,
+                            "columnEnd": 32,
+                            "lineBegin": 121,
+                            "lineEnd": 121
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolIdl": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "thrift2"
+                        },
+                        "symbolParent": {
+                            "aString": "TestService"
+                        },
+                        "symbolSignature": {
+                            "aString": "function www/test::TestService::thrift2"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 32,
+                        "columnEnd": 39,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "sym": "test-xlang/thrift/www/test.thrift/TestService/thrift2",
+                    "target": {
+                        "filepath": "www/test.thrift",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 5,
+                            "lineBegin": 43,
+                            "lineEnd": 45
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "28": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 9
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "card"
+                        },
+                        "symbolParent": {
+                            "aString": "GetCardResponse"
+                        },
+                        "symbolSignature": {
+                            "aString": "public ?ResponseCard card"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 28,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "sym": "test-xlang/php/GetCardResponse/:prop/card",
+                    "target": {
+                        "filepath": "www/test_types.php",
+                        "range": {
+                            "columnBegin": 24,
+                            "columnEnd": 29,
+                            "lineBegin": 526,
+                            "lineEnd": 526
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolIdl": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "GetCardResponse"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct www/test::GetCardResponse"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 28,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "sym": "test-xlang/thrift/www/test.thrift/GetCardResponse",
+                    "target": {
+                        "filepath": "www/test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 30,
+                            "lineEnd": 32
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "29": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 9
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "static_card"
+                        },
+                        "symbolParent": {
+                            "aString": "ResponseCard"
+                        },
+                        "symbolSignature": {
+                            "aString": "public ?string static_card"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 29,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "sym": "test-xlang/php/ResponseCard/:prop/static_card",
+                    "target": {
+                        "filepath": "www/test_types.php",
+                        "range": {
+                            "columnBegin": 18,
+                            "columnEnd": 30,
+                            "lineBegin": 46,
+                            "lineEnd": 46
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ]
+        },
+        "truncated": false
+    }
+]
