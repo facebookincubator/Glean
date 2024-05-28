@@ -15,8 +15,8 @@ jobs:
         ghc: [8.6.5, 8.8.4, 8.10.7]
     runs-on: 32-core-ubuntu
     container:
-      image: ghcr.io/facebookincubator/hsthrift/ci-base:24.04
-      options: --cpus 32 --security-opt=seccomp=unconfined
+      image: ubuntu:24.04
+      options: --security-opt=seccomp=unconfined
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,11 +25,10 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install additional tools
+      - name: Initialize APT
         run: |
           apt-get update
-          apt install -y ninja-build libxxhash-dev m4 rsync wget unzip clang-15 libclang-15-dev libclang-cpp15-dev llvm-15-dev libgmock-dev libre2-dev
-          apt-get remove -y libfmt-dev
+          apt-get install -y curl
 
       - name: Make utf8 default locale
         run: |
@@ -41,13 +40,6 @@ jobs:
         run: |
           mkdir -p "$LOCAL_BIN"
           echo "$LOCAL_BIN" >> "$GITHUB_PATH"
-
-      - name: Install GHC ${{ matrix.ghc }}
-        run: ghcup install ghc ${{ matrix.ghc }} --set
-      - name: Install Cabal 3.8
-        run: ghcup install cabal 3.8.1.0 --set
-      - name: Add GHC and cabal to PATH
-        run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
 
       - name: Install indexer (flow)
         run: npm install -g flow-bin
@@ -101,8 +93,24 @@ jobs:
           export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
           ./coursier bootstrap --standalone -o "$LOCAL_BIN"/lsif-java com.sourcegraph:lsif-java_2.13:0.8.0-RC1 --main-class com.sourcegraph.lsif_java.LsifJava
 
+      - name: Setup Haskell
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf "https://downloads.haskell.org/~ghcup/x86_64-linux-ghcup" -o "$LOCAL_BIN"/ghcup
+          chmod +x "$LOCAL_BIN"/ghcup
+          ghcup install cabal --set
+          apt-get install -y build-essential libgmp-dev libnuma-dev
+          ghcup install ghc ${{ matrix.ghc }} --set
+          echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
+
+      - name: Install folly and rocksdb dependencies
+        run: |
+          apt-get install -y git ninja-build \
+            libaio-dev libbz2-dev libdouble-conversion-dev libdwarf-dev libgoogle-glog-dev libiberty-dev libjemalloc-dev \
+            liblzma-dev liblz4-dev libsnappy-dev libsodium-dev libssl-dev libunwind-dev libzstd-dev
+
       - name: Fetch hsthrift and build folly, rocksdb
         run: ./install_deps.sh --threads 32
+
       - name: Nuke build artifacts
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
       - name: Setup hsthrift environment
@@ -113,10 +121,14 @@ jobs:
 
       - name: Populate hackage index
         run: cabal update
+      - name: Install hsthrift and Glean dependencies
+        run: apt-get install -y pkg-config rsync libgmock-dev libpcre3-dev libtinfo-dev libxxhash-dev
       - name: Build hsthrift and Glean
         run: make
       - name: Build glass
         run: make glass
+      - name: Install glean-clang dependencies
+        run: apt-get install -y clang-15 libclang-15-dev libclang-cpp15-dev libre2-dev
       - name: Build glean-clang
         run: make glean-clang
       - if: matrix.ghc != '8.4.4' && matrix.ghc != '8.6.5'
