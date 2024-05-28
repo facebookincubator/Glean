@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 env:
   LANG: en_US.UTF-8
+  LOCAL_BIN: ${{ github.workspace }}/.local/bin
   EXTRA_GHC_OPTS: -j32 +RTS -A1G -n16m -RTS
 
 jobs:
@@ -35,6 +36,11 @@ jobs:
           apt-get install -y locales
           locale-gen en_US.UTF-8
           update-locale LANG=en_US.UTF-8
+
+      - name: Setup LOCAL_BIN environment
+        run: |
+          mkdir -p "$LOCAL_BIN"
+          echo "$LOCAL_BIN" >> "$GITHUB_PATH"
 
       - name: Install GHC ${{ matrix.ghc }}
         run: ghcup install ghc ${{ matrix.ghc }} --set
@@ -88,17 +94,15 @@ jobs:
           export RUST_ANALYZER=2023-11-06
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
-          mkdir -p "$HOME"/.hsthrift/bin
-          curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > "$HOME"/.hsthrift/bin/rust-analyzer
-          chmod +x "$HOME"/.hsthrift/bin/rust-analyzer
+          curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > "$LOCAL_BIN"/rust-analyzer
+          chmod +x "$LOCAL_BIN"/rust-analyzer
 
       - name: Install indexer (java)
         run: |
           apt-get install -y default-jdk maven
           curl -fLo coursier https://git.io/coursier-cli && chmod +x coursier
           export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
-          ./coursier bootstrap --standalone -o lsif-java com.sourcegraph:lsif-java_2.13:0.8.0-RC1 --main-class com.sourcegraph.lsif_java.LsifJava
-          mkdir -p "$HOME"/.hsthrift/bin && cp lsif-java "$HOME"/.hsthrift/bin
+          ./coursier bootstrap --standalone -o "$LOCAL_BIN"/lsif-java com.sourcegraph:lsif-java_2.13:0.8.0-RC1 --main-class com.sourcegraph.lsif_java.LsifJava
 
       - name: Fetch hsthrift and build folly, rocksdb
         run: ./install_deps.sh --threads 32
