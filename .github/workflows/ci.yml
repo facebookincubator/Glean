@@ -74,18 +74,14 @@ jobs:
           echo "$HOME/.dotnet" >> "$GITHUB_PATH"
           echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
 
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+          cache: false
+
       - name: Install indexer (go)
-        run: |
-          export GOLANG=1.17.8
-          export SCIPGO=0.1.4
-          mkdir go-install; cd go-install
-          mkdir -p "$HOME"/.hsthrift/bin
-          wget "https://go.dev/dl/go${GOLANG}.linux-amd64.tar.gz"
-          tar -C "$HOME/.hsthrift" -xzf  "go${GOLANG}.linux-amd64.tar.gz"
-          wget "https://github.com/sourcegraph/scip-go/releases/download/v${SCIPGO}/scip-go_${SCIPGO}_linux_amd64.tar.gz"
-          tar xzf "scip-go_${SCIPGO}_linux_amd64.tar.gz"
-          mv scip-go "$HOME"/.hsthrift/bin
-          echo "$HOME/.hsthrift/go/bin" >> "$GITHUB_PATH"
+        run: go install github.com/sourcegraph/scip-go/cmd/scip-go@latest
 
       - name: Install indexer (rust)
         run: |

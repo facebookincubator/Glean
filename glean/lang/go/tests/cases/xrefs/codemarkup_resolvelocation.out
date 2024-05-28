@@ -3,7 +3,7 @@
   {
     "key": {
       "location": {
-        "name": "github.com/facebook/time",
+        "name": "`github.com/facebook/time`",
         "file": { "key": "leaphash.go" },
         "location": {
           "range": {
@@ -20,7 +20,7 @@
           "defn": {
             "key": {
               "symbol": {
-                "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/"
+                "key": "scip-go gomod github.com/facebook/time glean `github.com/facebook/time`/"
               },
               "location": {
                 "key": {
@@ -42,7 +42,7 @@
   {
     "key": {
       "location": {
-        "name": "github.com/facebook/time/Compute()",
+        "name": "`github.com/facebook/time`/Compute()",
         "file": { "key": "leaphash.go" },
         "location": {
           "range": {
@@ -59,7 +59,7 @@
           "defn": {
             "key": {
               "symbol": {
-                "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/Compute()."
+                "key": "scip-go gomod github.com/facebook/time glean `github.com/facebook/time`/Compute()."
               },
               "location": {
                 "key": {

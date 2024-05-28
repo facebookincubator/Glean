@@ -12,7 +12,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "github.com/facebook/time/"
+                            "aString": "`github.com/facebook/time`/"
                         },
                         "key": "symbolName"
                     },
@@ -21,6 +21,12 @@
                             "aString": ""
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Package leaphash is a utility package for computing the hash value of the\nofficial leap-second.list document"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -35,7 +41,7 @@
                     "lineBegin": 11,
                     "lineEnd": 11
                 },
-                "sym": "test/go/scip-go/gomod/github.com%2Ffacebook%2Ftime/glean/github.com%2Ffacebook%2Ftime%2F"
+                "sym": "test/go/scip-go/gomod/github.com%2Ffacebook%2Ftime/glean/%60github.com%2Ffacebook%2Ftime%60%2F"
             },
             {
                 "attributes": [
@@ -47,7 +53,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "github.com/facebook/time/Compute()."
+                            "aString": "`github.com/facebook/time`/Compute()."
                         },
                         "key": "symbolName"
                     },
@@ -76,7 +82,7 @@
                     "lineBegin": 24,
                     "lineEnd": 24
                 },
-                "sym": "test/go/scip-go/gomod/github.com%2Ffacebook%2Ftime/glean/github.com%2Ffacebook%2Ftime%2FCompute%28%29."
+                "sym": "test/go/scip-go/gomod/github.com%2Ffacebook%2Ftime/glean/%60github.com%2Ffacebook%2Ftime%60%2FCompute%28%29."
             }
         ],
         "referenced_file_digests": {},

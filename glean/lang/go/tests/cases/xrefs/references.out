@@ -3,7 +3,7 @@
   {
     "key": {
       "symbol": {
-        "key": "scip-go gomod github.com/golang/go/src go1.16 crypto/sha1/"
+        "key": "scip-go gomod github.com/golang/go/src go1.16 `crypto/sha1`/"
       },
       "location": {
         "key": {
@@ -21,7 +21,7 @@
   {
     "key": {
       "symbol": {
-        "key": "scip-go gomod github.com/golang/go/src go1.16 crypto/sha1/"
+        "key": "scip-go gomod github.com/golang/go/src go1.16 `crypto/sha1`/"
       },
       "location": {
         "key": {
@@ -39,7 +39,7 @@
   {
     "key": {
       "symbol": {
-        "key": "scip-go gomod github.com/golang/go/src go1.16 crypto/sha1/Sum()."
+        "key": "scip-go gomod github.com/golang/go/src go1.16 `crypto/sha1`/Sum()."
       },
       "location": {
         "key": {
