@@ -12,7 +12,7 @@
 #include <string>
 #include <filesystem>
 
-#include "clang/Basic/DiagnosticOptions.h"
+#include <clang/Basic/DiagnosticOptions.h>
 #include <clang/Frontend/CompilerInstance.h>
 #include <clang/Frontend/TextDiagnosticPrinter.h>
 #include <clang/Tooling/CommonOptionsParser.h>

@@ -13,6 +13,10 @@ jobs:
       fail-fast: false
       matrix:
         ghc: [8.6.5, 8.8.4, 8.10.7]
+        compiler: [gcc]
+        include:
+          - ghc: 8.10.7
+            compiler: clang
     runs-on: 32-core-ubuntu
     container:
       image: ubuntu:24.04
@@ -107,6 +111,24 @@ jobs:
           apt-get install -y build-essential libgmp-dev libnuma-dev
           ghcup install ghc ${{ matrix.ghc }} --set
           echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
+
+      # This needs to be before the Clang step since they install GCC. We want to remove GCC if Clang is enabled.
+      - name: Install CMake and Boost
+        run : apt-get install -y cmake libboost-all-dev
+
+      - if: matrix.compiler == 'clang'
+        name: Setup Clang
+        run: |
+          export VER=15
+          apt-get install -y clang-$VER
+          apt-get remove -y gcc g++
+          apt-get autoremove -y
+          update-alternatives --install /usr/bin/cc cc /usr/bin/clang-$VER 10
+          update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-$VER 10
+          # needed for `ghc`, it actually invokes `gcc` explicitly.
+          update-alternatives --install /usr/bin/gcc gcc /usr/bin/clang-$VER 10
+          # needed for `hsc2hs`, `g++` is hardcoded into `hsc2hs-options`.
+          update-alternatives --install /usr/bin/g++ g++ /usr/bin/clang++-$VER 10
 
       - name: Install folly and rocksdb dependencies
         run: |
