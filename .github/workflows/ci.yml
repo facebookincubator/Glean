@@ -18,19 +18,15 @@ jobs:
       image: ubuntu:24.04
       options: --security-opt=seccomp=unconfined
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Install Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
 
       - name: Initialize APT
         run: |
           apt-get update
           apt-get install -y curl
 
-      - name: Make utf8 default locale
+      - name: Setup en_US.UTF-8 locale
         run: |
           apt-get install -y locales
           locale-gen en_US.UTF-8
@@ -41,17 +37,18 @@ jobs:
           mkdir -p "$LOCAL_BIN"
           echo "$LOCAL_BIN" >> "$GITHUB_PATH"
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install indexer (python)
+        run: |
+          apt-get install -y python3-pip
+          npm install -g @sourcegraph/scip-python
+
       - name: Install indexer (flow)
         run: npm install -g flow-bin
-
-      - name: Install indexer (hack)
-        run: |
-          # From https://hhvm.com/blog/2022/08/30/experimenting-with-universal-deb-packages.html
-          apt-get install -y software-properties-common apt-transport-https
-          apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94
-          add-apt-repository 'deb https://dl.hhvm.com/universal nightly main'
-          apt-get update
-          apt-get install -y hhvm
 
       - name: Install indexer (typescript)
         run: npm install -g @sourcegraph/scip-typescript
@@ -78,13 +75,14 @@ jobs:
       - name: Install indexer (go)
         run: go install github.com/sourcegraph/scip-go/cmd/scip-go@latest
 
-      - name: Install indexer (rust)
+      - name: Install indexer (hack)
         run: |
-          export RUST_ANALYZER=2023-11-06
-          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
-          curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > "$LOCAL_BIN"/rust-analyzer
-          chmod +x "$LOCAL_BIN"/rust-analyzer
+          # From https://hhvm.com/blog/2022/08/30/experimenting-with-universal-deb-packages.html
+          apt-get install -y software-properties-common apt-transport-https
+          apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94
+          add-apt-repository 'deb https://dl.hhvm.com/universal nightly main'
+          apt-get update
+          apt-get install -y hhvm
 
       - name: Install indexer (java)
         run: |
@@ -92,6 +90,14 @@ jobs:
           curl -fLo coursier https://git.io/coursier-cli && chmod +x coursier
           export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
           ./coursier bootstrap --standalone -o "$LOCAL_BIN"/lsif-java com.sourcegraph:lsif-java_2.13:0.8.0-RC1 --main-class com.sourcegraph.lsif_java.LsifJava
+
+      - name: Install indexer (rust)
+        run: |
+          export RUST_ANALYZER=2023-11-06
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > "$LOCAL_BIN"/rust-analyzer
+          chmod +x "$LOCAL_BIN"/rust-analyzer
 
       - name: Setup Haskell
         run: |
@@ -113,6 +119,7 @@ jobs:
 
       - name: Nuke build artifacts
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
+
       - name: Setup hsthrift environment
         run: |
           echo "LD_LIBRARY_PATH=$HOME/.hsthrift/lib:$LD_LIBRARY_PATH" >> "$GITHUB_ENV"
@@ -121,19 +128,26 @@ jobs:
 
       - name: Populate hackage index
         run: cabal update
+
       - name: Install hsthrift and Glean dependencies
         run: apt-get install -y pkg-config rsync libgmock-dev libpcre3-dev libtinfo-dev libxxhash-dev
+
       - name: Build hsthrift and Glean
         run: make
+
       - name: Build glass
         run: make glass
+
       - name: Install glean-clang dependencies
         run: apt-get install -y clang-15 libclang-15-dev libclang-cpp15-dev libre2-dev
+
       - name: Build glean-clang
         run: make glean-clang
-      - if: matrix.ghc != '8.4.4' && matrix.ghc != '8.6.5'
+
+      - if: matrix.ghc != '8.6.5'
         name: Build hiedb-indexer
         run: make glean-hiedb
+
       - name: Run tests
         run: cabal test glean:tests -f-hack-tests -f-rust-tests -f-python-tests
 
@@ -142,14 +156,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Install Node
-        uses: actions/setup-node@v2
-      - name: Build VS Code extension
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+      - name: Build VS Code Extension
         run: npx vsce package
         working-directory: glean/vscode
       - name: Archive .vsix extension file
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: glean-vsix
           path: |
