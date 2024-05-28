@@ -108,21 +108,25 @@ jobs:
         run: ./install_deps.sh --threads 32
       - name: Nuke build artifacts
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
-      - name: Add thrift compiler and indexers to path
-        run: echo "$HOME/.hsthrift/bin" >> "$GITHUB_PATH"
+      - name: Setup hsthrift environment
+        run: |
+          echo "LD_LIBRARY_PATH=$HOME/.hsthrift/lib:$LD_LIBRARY_PATH" >> "$GITHUB_ENV"
+          echo "PKG_CONFIG_PATH=$HOME/.hsthrift/lib/pkgconfig:$PKG_CONFIG_PATH" >> "$GITHUB_ENV"
+          echo "$HOME/.hsthrift/bin" >> "$GITHUB_PATH"
+
       - name: Populate hackage index
         run: cabal update
       - name: Build hsthrift and Glean
-        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make
+        run: make
       - name: Build glass
-        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glass
+        run: make glass
       - name: Build glean-clang
-        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glean-clang
+        run: make glean-clang
       - if: matrix.ghc != '8.4.4' && matrix.ghc != '8.6.5'
         name: Build hiedb-indexer
-        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glean-hiedb
+        run: make glean-hiedb
       - name: Run tests
-        run: env DOTNET_ROOT="$HOME/.dotnet" LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests -f-rust-tests -f-python-tests
+        run: env DOTNET_ROOT="$HOME/.dotnet" cabal test glean:tests -f-hack-tests -f-rust-tests -f-python-tests
 
   # check the vscode extension builds
   vscode:
