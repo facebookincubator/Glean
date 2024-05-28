@@ -64,21 +64,18 @@ jobs:
       - name: Install indexer (typescript)
         run: npm install -g @sourcegraph/scip-typescript
 
-      - name: Install indexer (python)
-        run: |
-          npm install -g @sourcegraph/scip-python
-          apt install -y python3-pip
+      - name: Install .NET Framework dependencies
+        run: apt-get install -y libicu74
+
+      - name: Setup .NET Framework
+        uses: actions/setup-dotnet@v4
+        env:
+          DOTNET_INSTALL_DIR: ${{ env.LOCAL_BIN }}
+        with:
+          dotnet-version: 7.0.x # Required by `scip-dotnet`.
 
       - name: Install indexer (dotnet)
-        run: |
-          export DOTNET=7.0
-          wget https://dot.net/v1/dotnet-install.sh
-          chmod +x dotnet-install.sh
-          ./dotnet-install.sh --channel ${DOTNET}
-          export DOTNET_ROOT=$HOME/.dotnet
-          $DOTNET_ROOT/dotnet tool install --global scip-dotnet
-          echo "$HOME/.dotnet" >> "$GITHUB_PATH"
-          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
+        run: dotnet tool install --tool-path $LOCAL_BIN scip-dotnet
 
       - name: Setup Go
         uses: actions/setup-go@v5
@@ -126,7 +123,7 @@ jobs:
         name: Build hiedb-indexer
         run: make glean-hiedb
       - name: Run tests
-        run: env DOTNET_ROOT="$HOME/.dotnet" cabal test glean:tests -f-hack-tests -f-rust-tests -f-python-tests
+        run: cabal test glean:tests -f-hack-tests -f-rust-tests -f-python-tests
 
   # check the vscode extension builds
   vscode:
