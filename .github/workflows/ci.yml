@@ -11,12 +11,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        runner: [32-core-ubuntu]
         ghc: [8.6.5, 8.8.4, 8.10.7]
         compiler: [gcc]
         include:
-          - ghc: 8.10.7
+          - runner: 32-core-ubuntu
+            ghc: 8.10.7
             compiler: clang
-    runs-on: 32-core-ubuntu
+          - runner: 4-core-ubuntu-arm
+            ghc: 8.10.7
+            compiler: clang
+    runs-on: ${{ matrix.runner }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -37,6 +42,10 @@ jobs:
           mkdir -p "$LOCAL_BIN"
           echo "$LOCAL_BIN" >> "$GITHUB_PATH"
 
+      - name: Setup ARCH environment
+        run: echo "ARCH=$(uname -m)" >> "$GITHUB_ENV"
+
+      - if: ${{ env.ARCH != 'aarch64' }}
       - name: Setup build time flags
         run: |
           echo "MAKEFLAGS=-j$(nproc)" >> "$GITHUB_ENV"
@@ -80,7 +89,8 @@ jobs:
       - name: Install indexer (go)
         run: go install github.com/sourcegraph/scip-go/cmd/scip-go@latest
 
-      - name: Install indexer (hack)
+      - if: ${{ env.ARCH != 'aarch64' }}
+        name: Install indexer (hack)
         run: |
           # From https://hhvm.com/blog/2022/08/30/experimenting-with-universal-deb-packages.html
           sudo apt-get install -y software-properties-common apt-transport-https
@@ -106,7 +116,7 @@ jobs:
 
       - name: Setup Haskell
         run: |
-          curl --proto '=https' --tlsv1.2 -sSf "https://downloads.haskell.org/~ghcup/x86_64-linux-ghcup" -o "$LOCAL_BIN"/ghcup
+          curl --proto '=https' --tlsv1.2 -sSf "https://downloads.haskell.org/~ghcup/$ARCH-linux-ghcup" -o "$LOCAL_BIN"/ghcup
           chmod +x "$LOCAL_BIN"/ghcup
           ghcup install cabal --set
           apt-get install -y build-essential libgmp-dev libnuma-dev
@@ -157,6 +167,11 @@ jobs:
 
       - name: Install hsthrift and Glean dependencies
         run: sudo apt-get install -y pkg-config rsync libgmock-dev libpcre3-dev libtinfo-dev libxxhash-dev
+
+      # The ARM64 builds for some reason spikes upto 14GB of RAM usage with a single-threaded build.
+      - if: ${{ env.ARCH == 'aarch64' }}
+        name: Install `llvm`, required by GHC 8 on ARM64
+        run: sudo apt-get install -y llvm
 
       - name: Build hsthrift and Glean
         run: make
