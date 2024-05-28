@@ -17,23 +17,20 @@ jobs:
           - ghc: 8.10.7
             compiler: clang
     runs-on: 32-core-ubuntu
-    container:
-      image: ubuntu:24.04
-      options: --security-opt=seccomp=unconfined
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Initialize APT
         run: |
-          apt-get update
-          apt-get install -y curl
+          sudo apt-get update
+          sudo apt-get install -y curl
 
       - name: Setup en_US.UTF-8 locale
         run: |
-          apt-get install -y locales
-          locale-gen en_US.UTF-8
-          update-locale LANG=en_US.UTF-8
+          sudo apt-get install -y locales
+          sudo locale-gen en_US.UTF-8
+          sudo update-locale LANG=en_US.UTF-8
 
       - name: Setup LOCAL_BIN environment
         run: |
@@ -52,7 +49,7 @@ jobs:
 
       - name: Install indexer (python)
         run: |
-          apt-get install -y python3-pip
+          sudo apt-get install -y python3-pip
           npm install -g @sourcegraph/scip-python
 
       - name: Install indexer (flow)
@@ -86,15 +83,15 @@ jobs:
       - name: Install indexer (hack)
         run: |
           # From https://hhvm.com/blog/2022/08/30/experimenting-with-universal-deb-packages.html
-          apt-get install -y software-properties-common apt-transport-https
-          apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94
-          add-apt-repository 'deb https://dl.hhvm.com/universal nightly main'
-          apt-get update
-          apt-get install -y hhvm
+          sudo apt-get install -y software-properties-common apt-transport-https
+          sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94
+          sudo add-apt-repository 'deb https://dl.hhvm.com/universal nightly main'
+          sudo apt-get update
+          sudo apt-get install -y hhvm
 
       - name: Install indexer (java)
         run: |
-          apt-get install -y default-jdk maven
+          sudo apt-get install -y default-jdk maven
           curl -fLo coursier https://git.io/coursier-cli && chmod +x coursier
           export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
           ./coursier bootstrap --standalone -o "$LOCAL_BIN"/lsif-java com.sourcegraph:lsif-java_2.13:0.8.0-RC1 --main-class com.sourcegraph.lsif_java.LsifJava
@@ -136,7 +133,7 @@ jobs:
 
       - name: Install folly and rocksdb dependencies
         run: |
-          apt-get install -y git ninja-build \
+          sudo apt-get install -y git ninja-build \
             libaio-dev libbz2-dev libdouble-conversion-dev libdwarf-dev libgoogle-glog-dev libiberty-dev libjemalloc-dev \
             liblzma-dev liblz4-dev libsnappy-dev libsodium-dev libssl-dev libunwind-dev libzstd-dev
 
@@ -159,7 +156,7 @@ jobs:
         run: echo CABAL_CONFIG_FLAGS="-f-hack-tests -f-rust-tests -f-python-tests" >> "$GITHUB_ENV"
 
       - name: Install hsthrift and Glean dependencies
-        run: apt-get install -y pkg-config rsync libgmock-dev libpcre3-dev libtinfo-dev libxxhash-dev
+        run: sudo apt-get install -y pkg-config rsync libgmock-dev libpcre3-dev libtinfo-dev libxxhash-dev
 
       - name: Build hsthrift and Glean
         run: make
@@ -168,7 +165,7 @@ jobs:
         run: make glass
 
       - name: Install glean-clang dependencies
-        run: apt-get install -y clang-15 libclang-15-dev libclang-cpp15-dev libre2-dev
+        run: sudo apt-get install -y clang-15 libclang-15-dev libclang-cpp15-dev libre2-dev
 
       - name: Build glean-clang
         run: make glean-clang
