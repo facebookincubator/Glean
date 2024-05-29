@@ -324,7 +324,7 @@ library rocksdb
     import: fb-haskell, fb-cpp, deps
     visibility: private
     CXX_LIB_glean_cpp_rocksdb
-    extra-libraries: rocksdb
+    pkgconfig-depends: rocksdb
     build-depends:
         glean:rocksdb-stats,
         glean:rts,
