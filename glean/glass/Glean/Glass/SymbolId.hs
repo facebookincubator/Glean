@@ -334,6 +334,8 @@ entityToAngle e = case e of
     alt @"hs" (toAngle x)
   Code.Entity_erlang (Erlang.Entity_decl x) -> Right $
     alt @"erlang" (alt @"decl" (toAngle x))
+  Code.Entity_graphql x -> Right $
+    alt @"graphql" (toAngle x)
   Code.Entity_buck x -> Right $
     alt @"buck" (toAngle x)
   Code.Entity_java (Java.Entity_decl x) -> Right $

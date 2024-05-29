@@ -17,20 +17,22 @@ import Glean
 import Glean.Angle
 
 import qualified Glean.Schema.Src.Types as Src
+import qualified Glean.Schema.Csharp.Types as CSharp
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Erlang.Types as Erlang
-import qualified Glean.Schema.Flow.Types as Flow
-import qualified Glean.Schema.Hack.Types as Hack
-import qualified Glean.Schema.Lsif.Types as Lsif
-import qualified Glean.Schema.Scip.Types as Scip
-import qualified Glean.Schema.Python.Types as Py
 import qualified Glean.Schema.Fbthrift.Types as Fbthrift
+import qualified Glean.Schema.Flow.Types as Flow
+import qualified Glean.Schema.Graphql.Types as GraphQL
+import qualified Glean.Schema.Hack.Types as Hack
 import qualified Glean.Schema.JavaAlpha.Types as Java
 import qualified Glean.Schema.KotlinAlpha.Types as Kotlin
-import qualified Glean.Schema.Csharp.Types as CSharp
+import qualified Glean.Schema.Lsif.Types as Lsif
+import qualified Glean.Schema.Python.Types as Py
+import qualified Glean.Schema.Scip.Types as Scip
 
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodeCxx.Types as Cxx
+import qualified Glean.Schema.CodeGraphql.Types as GraphQL
 import qualified Glean.Schema.CodePp.Types as Pp
 import qualified Glean.Schema.CodeBuck.Types as Buck
 import qualified Glean.Schema.CodeFlow.Types as Flow
@@ -155,6 +157,22 @@ instance ToAngle Flow.SomeDeclaration where
     Flow.SomeDeclaration_memberDecl x -> alt @"memberDecl" (mkKey x)
     Flow.SomeDeclaration_typeDecl x -> alt @"typeDecl" (mkKey x)
     Flow.SomeDeclaration_EMPTY -> error "unknown SomeDeclaration"
+
+-- GraphQL
+
+instance ToAngle GraphQL.Entity where
+  toAngle e = case e of
+    GraphQL.Entity_decl x -> alt @"decl" (toAngle x)
+    GraphQL.Entity_EMPTY -> error "unknown Entity"
+
+instance ToAngle GraphQL.Declaration where
+  toAngle e = case e of
+    GraphQL.Declaration_operation_ x -> alt @"operation_" (mkKey x)
+    GraphQL.Declaration_fragment_ x -> alt @"fragment_" (mkKey x)
+    GraphQL.Declaration_field_ x -> alt @"field_" (mkKey x)
+    GraphQL.Declaration_enum_ x -> alt @"enum_" (mkKey x)
+    GraphQL.Declaration_directive_ x -> alt @"directive_" (mkKey x)
+    GraphQL.Declaration_EMPTY -> error "unknown GraphQL.Declaration"
 
 -- Hack
 
