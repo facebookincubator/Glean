@@ -362,7 +362,9 @@ predicate EntityReferences:
     (codemarkup.kotlin.KotlinEntityUses { E, File, Span };
      { kotlin = E } = Entity) |
     (codemarkup.pp.PpEntityUses { E, File, Span };
-     { pp = E } = Entity);
+     { pp = E } = Entity) |
+    (codemarkup.graphql.GraphQLEntityUses { E, File, Span };
+    { graphql = E } = Entity);
     { span = Span } = RangeSpan;
   ) | (
     codemarkup.lsif.LsifEntityUses { E, File, Range };

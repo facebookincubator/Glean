@@ -237,7 +237,7 @@ type XRef =
   }
 
 # Like FileDeclarations but stored for cross-references keyed by file
-predicate FileXRefs :
+predicate FileXRefs:
   {
     file : src.File,
     xref : XRef,
@@ -251,5 +251,15 @@ predicate FileXRefs :
     BelongToConfig { file = DstFile, buildConfig = DstConfig };
     SrcConfig = DstConfig;
     { fragment_ = FDecl } = Decl : Declaration
+
+# Inverse of FileXRefs, goes from entity to its use
+# Derived by inverting FileXRefs.
+predicate DeclarationUses:
+  {
+    target: Declaration,
+    file: src.File,
+    span: src.ByteSpan,
+  } stored
+  { Decl, File, Span } where FileXRefs { File, { Decl, Span } }
 
 }

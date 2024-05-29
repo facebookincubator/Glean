@@ -50,4 +50,17 @@ predicate GraphQLFileEntityXRefLocations:
     graphql.DeclarationName Decl -> Value; graphql.Value Name = Value;
     { Name, DstFile, { span = DstSpan }, nothing } = Location;
 
+#
+# Language entity uses
+#
+
+predicate GraphQLEntityUses:
+  {
+    target: code.graphql.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  { { decl = Decl }, File, Span } where
+    graphql.DeclarationUses { Decl, File, Span }
+
 }
