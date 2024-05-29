@@ -251,6 +251,7 @@ filetype (Path file)
   | is ".bzl"  = Just Language_Buck
 
   | is ".cs"  = Just Language_CSharp
+  | is ".graphql"  = Just Language_GraphQL
 
   | otherwise = Nothing
 

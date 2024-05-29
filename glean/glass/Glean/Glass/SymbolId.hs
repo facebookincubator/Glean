@@ -176,21 +176,22 @@ symbolTokens (SymbolId symid)
 -- | SymbolID-encoded language, used for db name lookups
 shortCodeTable :: [(Language,Text)]
 shortCodeTable =
-  [ (Language_Haskell, "hs")
-  , (Language_JavaScript, "js")
-  , (Language_Hack, "php")
-  , (Language_Python, "py")
+  [ (Language_Buck , "buck")
+  , (Language_CSharp, "cs")
   , (Language_Cpp, "cpp")
-  , (Language_PreProcessor , "pp")
-  , (Language_Thrift , "thrift")
-  , (Language_Rust , "rs")
-  , (Language_Buck , "buck")
   , (Language_Erlang , "erl")
   , (Language_Go , "go")
-  , (Language_TypeScript , "ts")
+  , (Language_GraphQL, "graphql")
+  , (Language_Hack, "php")
+  , (Language_Haskell, "hs")
   , (Language_Java , "java")
+  , (Language_JavaScript, "js")
   , (Language_Kotlin , "kotlin")
-  , (Language_CSharp, "cs")
+  , (Language_PreProcessor , "pp")
+  , (Language_Python, "py")
+  , (Language_Rust , "rs")
+  , (Language_Thrift , "thrift")
+  , (Language_TypeScript , "ts")
   ]
 
 languageToCode :: Map.Map Language Text
