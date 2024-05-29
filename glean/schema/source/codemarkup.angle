@@ -3,13 +3,13 @@
 schema codemarkup.30 {
 import src.1
 import code.24
-import code.python.1
 import codemarkup.buck.2
 import codemarkup.csharp.1
 import codemarkup.cxx.4
 import codemarkup.erlang.2
 import codemarkup.fbthrift.1
 import codemarkup.flow.2
+import codemarkup.graphql.1
 import codemarkup.hack.2
 import codemarkup.haskell.2
 import codemarkup.java.1
@@ -19,10 +19,10 @@ import codemarkup.pp.3
 import codemarkup.python.2
 import codemarkup.scip.1
 import codemarkup.types.1
-import cxx1.5
-import flow.3
-import hack.6
+
+# one direct use of python.Declaration, flow.Declaration
 import python.4
+import flow.3
 
 #
 # Public API
@@ -156,7 +156,9 @@ predicate ResolveLocation:
     (codemarkup.kotlin.KotlinResolveLocation { Location, E };
      { kotlin = E } = Entity) |
     (codemarkup.csharp.CSharpResolveLocation { Location, E };
-     { csharp = E } = Entity);
+     { csharp = E } = Entity) |
+    (codemarkup.graphql.GraphQLResolveLocation { Location, E };
+     { graphql = E } = Entity);
 
 predicate EntityLocation:
   {

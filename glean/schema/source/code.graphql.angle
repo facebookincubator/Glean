@@ -1,0 +1,12 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema code.graphql.1 {
+
+import graphql.3
+
+type Entity =
+  {
+    decl : graphql.Declaration |
+  }
+
+}

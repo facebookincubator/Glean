@@ -181,7 +181,7 @@ predicate VariableDef :
 
 predicate Value : string
 
-# Derived predicates/helpers used to power glass, codesearch, etc.
+# Glean-level entities (those with names and locations)
 type Declaration =
   {
     operation_ : Operation |

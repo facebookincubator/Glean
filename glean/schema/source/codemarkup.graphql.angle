@@ -1,0 +1,24 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+schema codemarkup.graphql.1 {
+
+import src.1
+import code.graphql.1
+import codemarkup.types.1
+import graphql.3
+
+#
+# Resolving locations to entities
+#
+
+predicate GraphQLResolveLocation:
+  {
+    location: codemarkup.types.Location,
+    entity: code.graphql.Entity,
+  }
+  { { Name, File, { span = Span }, nothing }, { decl = Decl } } where
+    graphql.FileDeclarations { File, Span, Decl };
+    graphql.DeclarationName Decl -> Value;
+    graphql.Value Name = Value;
+
+}

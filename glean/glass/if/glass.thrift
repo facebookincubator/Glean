@@ -511,6 +511,7 @@ enum Language {
   Go = 14,
   Kotlin = 15,
   CSharp = 16,
+  GraphQL = 17,
 }
 
 // Kinds of definitions. E.g. for jump-to-declaration or jump-to-definition

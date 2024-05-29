@@ -214,18 +214,19 @@ fromShortCode code = Map.lookup code codeToLanguage
 -- | The language is the outermost tag of the code.Entity constructor
 entityLanguage :: Code.Entity -> Language
 entityLanguage e = case e of
+  Code.Entity_buck{} -> Language_Buck
   Code.Entity_csharp{} -> Language_CSharp
   Code.Entity_cxx{} -> Language_Cpp
+  Code.Entity_erlang{} -> Language_Erlang
+  Code.Entity_fbthrift{} -> Language_Thrift
   Code.Entity_flow{} -> Language_JavaScript
+  Code.Entity_graphql{} -> Language_GraphQL
   Code.Entity_hack{} -> Language_Hack
   Code.Entity_hs{} -> Language_Haskell
   Code.Entity_java{} -> Language_Java
   Code.Entity_kotlin{} -> Language_Kotlin
   Code.Entity_pp{} -> Language_PreProcessor
   Code.Entity_python{} -> Language_Python
-  Code.Entity_fbthrift{} -> Language_Thrift
-  Code.Entity_buck{} -> Language_Buck
-  Code.Entity_erlang{} -> Language_Erlang
   -- lsif languages
   Code.Entity_lsif Lsif.Entity_go{} -> Language_Go
   Code.Entity_lsif Lsif.Entity_typescript{} -> Language_TypeScript
@@ -242,22 +243,23 @@ entityLanguage e = case e of
 -- language id. This can be used for optional filtering in search.
 languageToCodeLang :: Language -> Maybe Code.Language
 languageToCodeLang l = case l of
+  Language_Buck -> Just Code.Language_Buck
+  Language_CSharp -> Just Code.Language_CSharp
   Language_Cpp -> Just Code.Language_Cpp
-  Language_JavaScript -> Just Code.Language_JavaScript
+  Language_Erlang -> Just Code.Language_Erlang
+  Language_Go -> Just Code.Language_Go
+  Language_GraphQL -> Just Code.Language_GraphQL
   Language_Hack -> Just Code.Language_Hack
   Language_Haskell -> Just Code.Language_Haskell
   Language_Java -> Just Code.Language_Java
+  Language_JavaScript -> Just Code.Language_JavaScript
   Language_Kotlin -> Just Code.Language_Kotlin
   Language_ObjectiveC -> Just Code.Language_Cpp -- we don't distinguish these
-  Language_Python -> Just Code.Language_Python
   Language_PreProcessor -> Just Code.Language_PreProcessor
-  Language_Thrift -> Just Code.Language_Thrift
+  Language_Python -> Just Code.Language_Python
   Language_Rust -> Just Code.Language_Rust
-  Language_Buck -> Just Code.Language_Buck
-  Language_Erlang -> Just Code.Language_Erlang
+  Language_Thrift -> Just Code.Language_Thrift
   Language_TypeScript -> Just Code.Language_TypeScript
-  Language_Go -> Just Code.Language_Go
-  Language_CSharp -> Just Code.Language_CSharp
   Language__UNKNOWN{} -> Nothing
 
 -- | Search queries for C++ should always imply the PreProcessor too
