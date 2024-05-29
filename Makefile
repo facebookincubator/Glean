@@ -154,7 +154,9 @@ SCHEMAS= \
 	code_csharp \
 	code_cxx \
 	code_erlang \
+	code_fbthrift \
 	code_flow \
+	code_graphql \
 	code_hack \
 	code_hs \
 	code_java \
@@ -167,6 +169,7 @@ SCHEMAS= \
 	codemarkup_erlang \
 	codemarkup_fbthrift \
 	codemarkup_flow \
+	codemarkup_graphql \
 	codemarkup_hack \
 	codemarkup_haskell \
 	codemarkup_java \
@@ -176,7 +179,6 @@ SCHEMAS= \
 	codemarkup_scip \
 	codemarkup_search \
 	codemarkup_types \
-	code_fbthrift \
 	code_pp \
 	code_python \
 	code_scip \
