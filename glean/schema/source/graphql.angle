@@ -181,7 +181,11 @@ predicate VariableDef :
 
 predicate Value : string
 
-# Glean-level entities (those with names and locations)
+#
+# codemarkup-layer abstractions for navigation and search
+# see use in codemarkup.graphql.angle, code.graphql.angle
+#
+
 type Declaration =
   {
     operation_ : Operation |
@@ -198,10 +202,15 @@ predicate DeclarationLocation :
     span: src.ByteSpan,
   }
   { Decl, File, Span} where
-    ({ operation_ = Q } = Decl; Q = Operation { loc = { file = File, span = Span} }) |
-    ({ fragment_ = F } = Decl; F = Fragment { loc = { file = File, span = Span} });
+    ({ operation_ = Q } = Decl;
+     Q = Operation { loc = { file = File, span = Span} }
+    ) | (
+    { fragment_ = F } = Decl;
+      F = Fragment { loc = { file = File, span = Span} }
+    );
     # TODO (calebtho): add support for declarations located in the schema
 
+# All declarations by file
 predicate FileDeclarations :
   {
     file : src.File,
@@ -209,12 +218,38 @@ predicate FileDeclarations :
     declaration : Declaration,
   }
   stored {File, Span, Decl} where
-  DeclarationLocation { Decl, File, Span};
+    DeclarationLocation { Decl, File, Span};
 
 predicate DeclarationName: Declaration -> Value
   D -> Value where
     Value =
       (N where { operation_ = X} = D; { name = N } = X) |
       (N where { fragment_ = X } = D; { name = N } = X);
+
+# Cross-references.
+# Fragment spreads -> fragments
+
+# Type of xref occurences
+type XRef =
+  {
+    decl  : Declaration,
+    span : src.ByteSpan,
+  }
+
+# Like FileDeclarations but stored for cross-references keyed by file
+predicate FileXRefs :
+  {
+    file : src.File,
+    xref : XRef,
+  } stored
+  { SrcFile, { Decl, Span }} where
+    # case one: FragmentSpread -> Fragment
+    FragmentSpread { name = FName, loc = { file = SrcFile, span = Span } };
+    FDecl = Fragment { name = FName, loc = { file = DstFile } };
+    # Confirm the two files are in the same config
+    BelongToConfig { file = SrcFile, buildConfig = SrcConfig };
+    BelongToConfig { file = DstFile, buildConfig = DstConfig };
+    SrcConfig = DstConfig;
+    { fragment_ = FDecl } = Decl : Declaration
 
 }

@@ -193,7 +193,9 @@ predicate EntityLocation:
     (codemarkup.kotlin.KotlinEntityLocation { E, Location };
      { kotlin = E } = Entity) |
     (codemarkup.csharp.CSharpEntityLocation { E, Location };
-     { csharp = E } = Entity);
+     { csharp = E } = Entity) |
+    (codemarkup.graphql.GraphQLEntityLocation { E, Location };
+     { graphql = E } = Entity);
 
 # Maps a (generated) entity to its defining IDL.
 # By joining with FileEntityXRefLocations, we can get
@@ -244,7 +246,9 @@ predicate FileEntityXRefLocations:
     (codemarkup.kotlin.KotlinFileEntityXRefLocations { File, XRef, E };
      { kotlin = E } = Entity) |
     (codemarkup.csharp.CSharpFileEntityXRefLocations { File, XRef, E };
-     { csharp = E } = Entity);
+     { csharp = E } = Entity) |
+    (codemarkup.graphql.GraphQLFileEntityXRefLocations { File, XRef, E };
+     { graphql = E } = Entity);
 
 # Xrefs without the target location. This can be useful in cases
 # where we don't have a target location, but we don't need it. This

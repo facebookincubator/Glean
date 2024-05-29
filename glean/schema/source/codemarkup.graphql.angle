@@ -18,7 +18,36 @@ predicate GraphQLResolveLocation:
   }
   { { Name, File, { span = Span }, nothing }, { decl = Decl } } where
     graphql.FileDeclarations { File, Span, Decl };
-    graphql.DeclarationName Decl -> Value;
-    graphql.Value Name = Value;
+    graphql.DeclarationName Decl -> Value; graphql.Value Name = Value;
+
+#
+# Finding entities' locations
+#
+
+predicate GraphQLEntityLocation:
+  {
+    entity: code.graphql.Entity,
+    location: codemarkup.types.Location,
+  }
+  { Entity, { Name, File, { span = Span }, nothing } } where
+    { decl = Decl } = Entity;
+    graphql.DeclarationLocation { Decl, File, Span };
+    graphql.DeclarationName Decl -> Value; graphql.Value Name = Value;
+
+#
+# Finding references in a file
+#
+
+predicate GraphQLFileEntityXRefLocations:
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.graphql.Entity,
+  }
+  { File, { Location, { span = SrcSpan } }, { decl = Decl } } where
+    graphql.FileXRefs { File, { Decl, SrcSpan } };
+    graphql.DeclarationLocation { Decl, DstFile, DstSpan };
+    graphql.DeclarationName Decl -> Value; graphql.Value Name = Value;
+    { Name, DstFile, { span = DstSpan }, nothing } = Location;
 
 }
