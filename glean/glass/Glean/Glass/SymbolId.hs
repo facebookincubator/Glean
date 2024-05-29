@@ -77,6 +77,7 @@ import Glean.Glass.SymbolId.Cxx ({- instances -})
 import Glean.Glass.SymbolId.Erlang ({- instances -})
 import Glean.Glass.SymbolId.Fbthrift ({- instances -})
 import Glean.Glass.SymbolId.Flow ({- instances -})
+import Glean.Glass.SymbolId.GraphQL ({- instances -})
 import Glean.Glass.SymbolId.Hack ({- instances -})
 import Glean.Glass.SymbolId.Hs ({- instances -})
 import Glean.Glass.SymbolId.Java ({- instances -})
@@ -286,6 +287,7 @@ instance Symbol Code.Entity where
     Code.Entity_cxx x -> toSymbolWithPath x p
     Code.Entity_buck x -> toSymbolWithPath x p
     Code.Entity_erlang x -> toSymbolWithPath x p
+    Code.Entity_graphql x -> toSymbolWithPath x p
     Code.Entity_hs x -> toSymbolWithPath x p
     Code.Entity_java x -> toSymbolWithPath x p
     Code.Entity_kotlin x -> toSymbolWithPath x p

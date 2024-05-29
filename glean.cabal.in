@@ -1264,6 +1264,7 @@ library glass-lib
         Glean.Glass.SymbolId.Cxx.Parse
         Glean.Glass.SymbolId.Erlang
         Glean.Glass.SymbolId.Flow
+        Glean.Glass.SymbolId.GraphQL
         Glean.Glass.SymbolId.Hack
         Glean.Glass.SymbolId.SCIP
         Glean.Glass.SymbolId.Java
