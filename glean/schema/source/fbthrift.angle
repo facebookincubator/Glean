@@ -141,6 +141,19 @@ predicate FileXRefs :
     xrefs : [XRef],
   }
 
+predicate DeclarationUses:
+  {
+    target: Declaration,
+    file: src.File,
+    range: Loc,
+  } stored
+  { Decl, File, Range }
+  where
+    FileXRefs { ThriftFile, XRefs };
+    ThriftFile = fbthrift.File File;
+    XRef = XRefs[..];
+    { Range, Decl } = XRef
+
 # ##############################################################################
 # Thrift types, recusive definition through predicate TypeSpecification
 # https://www.internalfb.com/intern/wiki/Thrift/IDL-Reference/
