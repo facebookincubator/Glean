@@ -60,6 +60,7 @@ indexer = Indexer {
             , "hack.MethodOverridden"
             , "hack.TargetUses"
             , "hack.AttributeToDeclaration"
+            , "hack.ThriftToHack"
             ]
         }
 

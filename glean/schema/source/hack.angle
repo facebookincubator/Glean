@@ -787,4 +787,12 @@ predicate HackToThrift:
     to: fbthrift.Declaration
   }
 
+predicate ThriftToHack:
+  {
+    to: fbthrift.Declaration,
+    from: hack.Declaration
+  }
+  stored { To, From }
+    where hack.HackToThrift { From, To }
+
 }
