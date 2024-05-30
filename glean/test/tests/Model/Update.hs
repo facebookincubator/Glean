@@ -12,13 +12,13 @@ module Model.Update (
 ) where
 
 import Control.Applicative ((<|>))
-import Control.Monad.State.Strict (evalState)
 import Data.Default
 import Data.Functor.Identity (Identity (..))
 import qualified Data.HashMap.Strict as HM
-import qualified Data.HashSet as Set
+import qualified Data.HashSet as HashSet
 import Data.List (foldl')
 import Data.Maybe (listToMaybe)
+import qualified Data.Set as Set
 import Data.Text (pack, unpack)
 import Glean.Database.Backup (bestRestore, newestByRepo)
 import Glean.Database.Catalog (
@@ -30,12 +30,13 @@ import qualified Glean.Database.Catalog as Catalog
 import Glean.Database.Catalog.Filter (
   Item (..),
   ItemStatus (ItemComplete),
-  Locality (Cloud, Local, Restoring),
+  Locality (Local, Restoring),
   everythingF,
   statusV,
   (.==.),
  )
 import Glean.Database.Janitor
+import Glean.Database.Retention
 import Glean.Database.Meta (posixEpochTimeToUTCTime)
 import Glean.Internal.Types (Meta (..))
 import Glean.Types (
@@ -80,12 +81,14 @@ stepModel model (TimeElapsed s) =
 stepModel model (ShardingAssignmentChange (ShardAdded x)) =
   recomputeEntries
     model
-      { modelShardAssignment = Set.insert x $ modelShardAssignment model
+      { modelShardAssignment =
+          HashSet.insert x $ modelShardAssignment model
       }
 stepModel model (ShardingAssignmentChange (ShardRemoved x)) =
   recomputeEntries
     model
-      { modelShardAssignment = Set.delete x $ modelShardAssignment model
+      { modelShardAssignment =
+          HashSet.delete x $ modelShardAssignment model
       }
 stepModel m DBDownloaded =
   case modelDownloadingDB m of
@@ -151,35 +154,19 @@ recomputeEntries model@Model {..} =
       (HM.toList modelRestorableDBs)
       localAndRestoring
     index = dbIndex allDBs
-    retentionSet =
-      computeRetentionSet modelRetentionPolicy def time
-        (const $ pure True) index `evalState` mempty
-    keepHereSet = [(itemRepo, itemMeta) | Item {..} <- retentionSet]
+    RetentionChanges{..} =
+      runIdentity $ retentionChanges modelRetentionPolicy def time
+        index (const $ pure True) itemShard
+        (Set.fromList $ HashSet.toList modelShardAssignment)
     entriesLiveHere' =
       foldl'
-        (flip HM.delete)
+        (\m i -> HM.delete (itemRepo i) m)
         (entriesLiveHere modelEntries)
-        [ itemRepo
-        | item@Item {..} <- allDBs
-        , itemLocality == Local
-        , not $
-            (itemRepo, itemMeta) `elem` keepHereSet && itemInShardAssignment item
-        , Just itemRepo /= modelDownloadingDB
-        ]
+        retentionDelete
     entriesLiveElsewhere' =
       HM.fromList
-        [ (itemRepo item, mkEntry item)
-        | item <- retentionSet
-        , not $ itemInShardAssignment item
-        ]
+        [ (itemRepo item, mkEntry item) | item <- retentionElsewhere ]
     entriesRestoring' =
-      entriesRestoring modelEntries
-        <> HM.fromList
-          [ (itemRepo item, itemMeta item)
-          | item <- retentionSet
-          , itemInShardAssignment item
-          , itemLocality item == Cloud
-          ]
-    itemShard Item {itemRepo} = repoShard itemRepo
-    repoShard = repo_hash
-    itemInShardAssignment i = itemShard i `Set.member` modelShardAssignment
+      entriesRestoring modelEntries <> HM.fromList
+        [ (itemRepo item, itemMeta item) | item <- retentionRestore ]
+    itemShard _ repo = repo_hash repo

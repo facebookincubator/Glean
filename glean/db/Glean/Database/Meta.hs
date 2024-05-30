@@ -15,6 +15,7 @@ module Glean.Database.Meta
   , completenessStatus
   , completenessTasks
   , dbAge
+  , dbTime
   , metaToThriftDatabase
   , metaToProps
   , metaFromProps
@@ -28,6 +29,7 @@ import Data.Functor
 import Data.HashMap.Strict (HashMap)
 import Data.Map (Map)
 import qualified Data.Map as Map
+import Data.Maybe
 import Data.Text (Text)
 import Data.Time (UTCTime, NominalDiffTime, diffUTCTime)
 import Data.Time.Clock.POSIX
@@ -84,6 +86,10 @@ completenessTasks meta = case metaCompleteness meta of
 
 dbAge :: UTCTime -> Meta -> NominalDiffTime
 dbAge now meta = now `diffUTCTime` posixEpochTimeToUTCTime (metaCreated meta)
+
+-- | We sort DBs by metaRepoHashTime if available, or otherwise metaCreated
+dbTime :: Meta -> PosixEpochTime
+dbTime meta = fromMaybe (metaCreated meta) (metaRepoHashTime meta)
 
 metaToThriftDatabase
   :: DatabaseStatus
