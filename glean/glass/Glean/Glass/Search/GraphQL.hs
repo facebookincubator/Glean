@@ -8,7 +8,6 @@
 
 {-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
-{-# OPTIONS_GHC -Wno-overlapping-patterns #-}
 
 module Glean.Glass.Search.GraphQL
   ( {- instances -}
@@ -46,7 +45,7 @@ searchFragment fname =
 
     fragment .= predicate @GraphQL.Fragment (
       rec $
-        field @"name" (string fname) $
+        field @"name" (string fname)
       end),
     alt @"fragment_" (asPredicate fragment) .= sig decl,
     alt @"decl" decl .= sig ent,

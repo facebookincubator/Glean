@@ -373,17 +373,18 @@ entityToAngle e = case e of
 
 instance ToQName Code.Entity where
   toQName e = case e of
-    Code.Entity_python (Python.Entity_decl x) -> toQName x
-    Code.Entity_hack (Hack.Entity_decl x) -> toQName x
-    Code.Entity_flow x -> toQName x
-    Code.Entity_cxx x -> toQName x
-    Code.Entity_pp x -> toQName x
     Code.Entity_buck x -> toQName x
+    Code.Entity_csharp x -> toQName x
+    Code.Entity_cxx x -> toQName x
     Code.Entity_erlang x -> toQName x
+    Code.Entity_fbthrift (Fbthrift.Entity_decl x) -> toQName x
+    Code.Entity_flow x -> toQName x
+    Code.Entity_graphql x -> toQName x
+    Code.Entity_hack (Hack.Entity_decl x) -> toQName x
     Code.Entity_java x -> toQName x
     Code.Entity_kotlin x -> toQName x
-    Code.Entity_fbthrift (Fbthrift.Entity_decl x) -> toQName x
-    Code.Entity_csharp x -> toQName x
+    Code.Entity_pp x -> toQName x
+    Code.Entity_python (Python.Entity_decl x) -> toQName x
     Code.Entity_lsif se -> case se of -- enumerate all cases for lsif
       Lsif.Entity_erlang x -> toQName x
       Lsif.Entity_fsharp x -> toQName x
