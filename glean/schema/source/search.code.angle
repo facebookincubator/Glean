@@ -6,14 +6,15 @@ import code.cxx.4
 import code.hack.4
 import code.java.5
 import code.python.1
+import buck.4
 import csharp.1
 import cxx1.5
-import flow.3
-import hack.6
-import buck.4
-import javakotlin.alpha.1
 import erlang.1
+import flow.3
+import graphql.3
+import hack.6
 import hs.2
+import javakotlin.alpha.1
 import lsif.2
 import pp1.1
 import python.4
@@ -51,7 +52,8 @@ predicate SearchByNameAndLanguage:
     ( Erlang = Language; ErlangSearchByName { Name, Entity } ) |
     ( Thrift = Language; ThriftSearchByName { Name, Entity } ) |
     ( Buck = Language; BuckSearchByName { Name, Entity } ) |
-    ( CSharp = Language; CSharpSearchByName { Name, Entity } );
+    ( CSharp = Language; CSharpSearchByName { Name, Entity } ) |
+    ( GraphQL = Language; GraphQLSearchByName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
 # global symbol search normalized to lower case
@@ -73,7 +75,8 @@ predicate SearchByLowerCaseNameAndLanguage:
     ( Erlang = Language; ErlangSearchByLowerCaseName { Name, Entity } ) |
     ( Thrift = Language; ThriftSearchByLowerCaseName { Name, Entity } ) |
     ( Buck = Language; BuckSearchByLowerCaseName { Name, Entity } ) |
-    ( CSharp = Language; CSharpSearchByLowerCaseName { Name, Entity } );
+    ( CSharp = Language; CSharpSearchByLowerCaseName { Name, Entity } ) |
+    ( GraphQL = Language; GraphQLSearchByLowerCaseName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
 # scoped search (experimental!)
@@ -686,5 +689,25 @@ predicate LsifSearchByLowerCaseName:
   { Name, { lsif = Entity } } where
   lsif.NameLowerCase { Name, NameCase };
   lsif.SearchByName { NameCase, Entity }
+
+predicate GraphQLSearchByName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { NameStr, Entity } where
+    Name = graphql.Value NameStr;
+    graphql.SearchByName { Name, Decl };
+    { graphql = { decl = Decl } } = Entity
+
+predicate GraphQLSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { NameStr, Entity } where
+    graphql.NameLowerCase { NameStr, Name };
+    graphql.SearchByName { Name, Decl };
+    { graphql = { decl = Decl } } = Entity
 
 }

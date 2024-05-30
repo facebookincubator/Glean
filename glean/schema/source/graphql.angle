@@ -179,6 +179,7 @@ predicate VariableDef :
     defaultValue: maybe Value,
   }
 
+# All names found in any identifiers
 predicate Value : string
 
 #
@@ -220,11 +221,22 @@ predicate FileDeclarations :
   stored {File, Span, Decl} where
     DeclarationLocation { Decl, File, Span};
 
+# (deprecated) As it isn't sound (it isn't a functional relationship)
 predicate DeclarationName: Declaration -> Value
   D -> Value where
     Value =
       (N where { operation_ = X} = D; { name = N } = X) |
       (N where { fragment_ = X } = D; { name = N } = X);
+
+# Declarations in GraphQL are name:Value-indexed, so lookup is simple
+predicate DeclHasName:
+  {
+    decl: Declaration,
+    name: Value,
+  }
+  { Decl, Name } where
+    ({ operation_ = { name = Name }} = Decl) |
+    ({ fragment_ = { name = Name }} = Decl);
 
 # Cross-references.
 # Fragment spreads -> fragments
@@ -261,5 +273,29 @@ predicate DeclarationUses:
     span: src.ByteSpan,
   } stored
   { Decl, File, Span } where FileXRefs { File, { Decl, Span } }
+
+# Search
+
+# Rather than use "Value" which covers all strings in the index
+# Derive an actual name table
+
+type Name = Value
+
+predicate NameLowerCase:
+  {
+    lowercase: string,
+    name: Name
+  }
+  stored { prim.toLower NameStr, Name } where Name = Value NameStr
+
+# Inverted form of DeclarationName to key by the name for search
+predicate SearchByName:
+  {
+    name: Name,
+    decl: Declaration,
+  }
+  { Name, Decl } where
+    ( O = Operation { name = Name }; { operation_ = O }) |
+    ( F = Fragment { name = Name }; { fragment_ = F }) = Decl;
 
 }
