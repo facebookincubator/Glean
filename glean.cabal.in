@@ -364,6 +364,7 @@ library util
         Glean.Util.ThriftService
         Glean.Util.ThriftSource
         Glean.Util.Throttle
+        Glean.Util.TransitiveClosure
         Glean.Util.Trace
         Glean.Util.ValueBuffer
         Glean.Util.Warden
@@ -498,6 +499,7 @@ library db
         Glean.Database.Ownership
         Glean.Database.PredicateStats
         Glean.Database.Repo
+        Glean.Database.Retention
         Glean.Database.Schema
         Glean.Database.Schema.ComputeIds
         Glean.Database.Schema.Types
