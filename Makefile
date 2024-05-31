@@ -318,3 +318,8 @@ endef
 $(BUILD_DIR)/current.sh: force
 	$(file >$@,$(bash_macros))
 	@:
+
+# Dummy install rule to keep getdeps happy. TODO: actually install things
+.PHONY: install
+install::
+	mkdir -p $(PREFIX)
