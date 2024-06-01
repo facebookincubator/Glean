@@ -101,7 +101,7 @@ BYTECODE_SRCS= \
 	$(wildcard glean/bytecode/*/Glean/Bytecode/*/*.hs) \
 	$(wildcard glean/bytecode/Glean/Bytecode/*.hs)
 
-all:: thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs glean
+all:: glean.cabal thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs glean
 
 # Targets in this file invoke Cabal and hence can't be built in parallel
 .NOTPARALLEL:
