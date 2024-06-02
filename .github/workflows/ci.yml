@@ -5,7 +5,6 @@ on: [push, pull_request]
 env:
   LANG: en_US.UTF-8
   LOCAL_BIN: ${{ github.workspace }}/.local/bin
-  EXTRA_GHC_OPTS: -j32 +RTS -A1G -n16m -RTS
 
 jobs:
   ci:
@@ -40,6 +39,11 @@ jobs:
         run: |
           mkdir -p "$LOCAL_BIN"
           echo "$LOCAL_BIN" >> "$GITHUB_PATH"
+
+      - name: Setup build time flags
+        run: |
+          echo "MAKEFLAGS=-j$(nproc)" >> "$GITHUB_ENV"
+          echo "EXTRA_GHC_OPTS=-j$(nproc) +RTS -A128m -n2m -RTS" >> "$GITHUB_ENV"
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -137,7 +141,7 @@ jobs:
             liblzma-dev liblz4-dev libsnappy-dev libsodium-dev libssl-dev libunwind-dev libzstd-dev
 
       - name: Fetch hsthrift and build folly, rocksdb
-        run: ./install_deps.sh --threads 32
+        run: ./install_deps.sh --threads $(nproc)
 
       - name: Nuke build artifacts
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
