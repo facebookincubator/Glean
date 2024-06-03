@@ -155,6 +155,9 @@ jobs:
       - name: Populate hackage index
         run: cabal update
 
+      - name: Disable some tests
+        run: echo CABAL_CONFIG_FLAGS="-f-hack-tests -f-rust-tests -f-python-tests" >> "$GITHUB_ENV"
+
       - name: Install hsthrift and Glean dependencies
         run: apt-get install -y pkg-config rsync libgmock-dev libpcre3-dev libtinfo-dev libxxhash-dev
 
@@ -175,7 +178,7 @@ jobs:
         run: make glean-hiedb
 
       - name: Run tests
-        run: cabal test glean:tests -f-hack-tests -f-rust-tests -f-python-tests
+        run: make test
 
   # check the vscode extension builds
   vscode:
