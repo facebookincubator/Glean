@@ -57,7 +57,10 @@ readLanguage = do
     "typescript" -> return TypeScript
     "rust" -> return Rust
     "go" -> return Go
-    _ -> readerError "Unrecognized SCIP language (see codemarkup.types.angle)"
+    "java" -> return Java
+    "kotlin" -> return Kotlin
+    "csharp" -> return CSharp
+    _ -> readerError "Unrecognized SCIP language"
 
 main :: IO ()
 main = withOptions (info (helper <*> options) fullDesc) $ \SCIP{..} -> do
