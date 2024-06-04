@@ -8,6 +8,8 @@ type Entity =
     rust : scip.SomeEntity |
     go : scip.SomeEntity |
     typescript : scip.SomeEntity |
+    java : scip.SomeEntity |
+    kotlin : scip.SomeEntity |
   }
 
 }

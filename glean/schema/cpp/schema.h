@@ -8596,7 +8596,7 @@ struct LocalName : Predicate<std::string> {
 } // namespace schema
 
 template<> struct Repr_<facebook::glean::cpp::schema::Scip::Entity> {
-  using Type = Sum<Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>>;
+  using Type = Sum<Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>>;
 };
 
 
@@ -8605,7 +8605,7 @@ namespace schema {
 namespace Scip {
 
 struct Entity {
-  boost::variant<Alt<0, SomeEntity>, Alt<1, SomeEntity>, Alt<2, SomeEntity>> GLEAN_value;
+  boost::variant<Alt<0, SomeEntity>, Alt<1, SomeEntity>, Alt<2, SomeEntity>, Alt<3, SomeEntity>, Alt<4, SomeEntity>> GLEAN_value;
 
   static Entity rust(const SomeEntity& a) {
     return Entity{Alt<0, SomeEntity>(a)};
@@ -8615,6 +8615,12 @@ struct Entity {
   }
   static Entity typescript(const SomeEntity& a) {
     return Entity{Alt<2, SomeEntity>(a)};
+  }
+  static Entity java(const SomeEntity& a) {
+    return Entity{Alt<3, SomeEntity>(a)};
+  }
+  static Entity kotlin(const SomeEntity& a) {
+    return Entity{Alt<4, SomeEntity>(a)};
   }
 
   bool operator==(const Entity& other) const {
@@ -23616,7 +23622,7 @@ struct EntityDataAvailable : Predicate<Fact<facebook::glean::cpp::schema::Src::F
 } // namespace schema
 
 template<> struct Repr_<facebook::glean::cpp::schema::Code::Scip::Entity> {
-  using Type = Sum<Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>>;
+  using Type = Sum<Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>>;
 };
 
 
@@ -23627,7 +23633,7 @@ namespace Code {
 namespace Scip {
 
 struct Entity {
-  boost::variant<Alt<0, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<1, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<2, facebook::glean::cpp::schema::Scip::SomeEntity>> GLEAN_value;
+  boost::variant<Alt<0, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<1, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<2, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<3, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<4, facebook::glean::cpp::schema::Scip::SomeEntity>> GLEAN_value;
 
   static Entity rust(const facebook::glean::cpp::schema::Scip::SomeEntity& a) {
     return Entity{Alt<0, facebook::glean::cpp::schema::Scip::SomeEntity>(a)};
@@ -23637,6 +23643,12 @@ struct Entity {
   }
   static Entity typescript(const facebook::glean::cpp::schema::Scip::SomeEntity& a) {
     return Entity{Alt<2, facebook::glean::cpp::schema::Scip::SomeEntity>(a)};
+  }
+  static Entity java(const facebook::glean::cpp::schema::Scip::SomeEntity& a) {
+    return Entity{Alt<3, facebook::glean::cpp::schema::Scip::SomeEntity>(a)};
+  }
+  static Entity kotlin(const facebook::glean::cpp::schema::Scip::SomeEntity& a) {
+    return Entity{Alt<4, facebook::glean::cpp::schema::Scip::SomeEntity>(a)};
   }
 
   bool operator==(const Entity& other) const {

@@ -147,6 +147,8 @@ type Entity =
     rust: SomeEntity |
     go: SomeEntity |
     typescript: SomeEntity |
+    java: SomeEntity |
+    kotlin: SomeEntity |
   }
 
 # entities are scip.Definitions
@@ -166,7 +168,9 @@ predicate TagDefinition:
     SomeEntity = scip.SomeEntity { defn = Defn };
     ( Rust = Language; { rust = SomeEntity }) |
     ( Go = Language; { go = SomeEntity }) |
-    ( TypeScript = Language; { typescript = SomeEntity }) = Entity;
+    ( TypeScript = Language; { typescript = SomeEntity }) |
+    ( Java = Language; { java = SomeEntity }) |
+    ( Kotlin = Language; { kotlin = SomeEntity }) = Entity;
 
 # eliminate entity language tags. inverse of TagDefinition
 predicate EntityDefinition:
@@ -177,7 +181,9 @@ predicate EntityDefinition:
   { Entity, Defn } where
     ({ rust = SomeEntity }) |
     ({ go = SomeEntity }) |
-    ({ typescript = SomeEntity }) = Entity;
+    ({ typescript = SomeEntity }) |
+    ({ java = SomeEntity }) |
+    ({ kotlin = SomeEntity }) = Entity;
     { defn = Defn } = SomeEntity
 
 # Symbol locations type. Analog of codemarkup:Location
