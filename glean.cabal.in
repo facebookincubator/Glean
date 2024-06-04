@@ -100,6 +100,10 @@ flag rust-tests
 flag java-lsif-tests
      default: False
 
+-- run tests that require flow
+flag flow-tests
+     default: True
+
 -- use fbthrift as the the server/client transport, or HTTP?
 flag fbthrift
      default: False
@@ -2170,6 +2174,8 @@ test-suite glean-snapshot-flow
     build-depends:
         glean:regression-test-lib,
         glean:indexers
+    if !flag(flow-tests)
+        buildable: False
 
 test-suite glean-snapshot-hack
     import: fb-haskell, deps
@@ -2344,6 +2350,8 @@ test-suite glass-regression-cpp
                   glean:schema,
                   glean:stubs,
                   glean:util
+   if !flag(clang-tests)
+        buildable: False
 
 test-suite glass-regression-flow
     import: glass-regression-deps, fb-haskell, deps
@@ -2355,6 +2363,8 @@ test-suite glass-regression-flow
         glean:client-hs,
         glean:indexers,
         glean:util
+    if !flag(flow-tests)
+        buildable: False
 
 test-suite glass-regression-hack
     import: glass-regression-deps, fb-haskell, deps
