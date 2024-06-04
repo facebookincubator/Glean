@@ -404,10 +404,12 @@ instance Haxl.DataSourceName GleanQuery where
 type GleanQueryer = Haxl.PerformFetch GleanQuery
 
 instance Haxl.StateKey GleanQuery where
-  data State GleanQuery = GleanQueryState GleanQueryer
+  data State GleanQuery = GleanQueryState GleanQueryer !Bool
 
 instance Haxl.DataSource u GleanQuery where
-  fetch (GleanQueryState queryer) _ _ = queryer
+  schedulerHintState (Just (GleanQueryState _ True)) _ = Haxl.SubmitImmediately
+  schedulerHintState _ _ = Haxl.TryToBatch
+  fetch (GleanQueryState queryer _batch) _ _ = queryer
 
 -- -----------------------------------------------------------------------------
 -- Shards
