@@ -13,8 +13,7 @@ module Glean.Database.List (
 
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
-import Data.Maybe
-import Data.Text (Text)
+import Data.Text ( Text )
 
 import Util.STM
 
@@ -63,10 +62,9 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
 
 listRestorable :: Backup.Site site => Text -> site -> IO (HashMap Repo Meta)
 listRestorable prefix site =
-  HashMap.fromList . mapMaybe restorable <$> Backup.enumerate site
+  HashMap.fromList <$> map adjustMeta <$> Backup.enumerate site
   where
-    restorable (repo, props)
-      | Right meta <-
-          metaFromProps (Backup.toRepoLocator prefix site repo) props =
-            Just (repo, meta)
-      | otherwise = Nothing
+    adjustMeta (repo, meta) =
+      (repo, meta {
+          metaBackup = Just $ Backup.toRepoLocator prefix site repo
+            })

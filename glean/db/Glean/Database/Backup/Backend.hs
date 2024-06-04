@@ -14,9 +14,9 @@ module Glean.Database.Backup.Backend
   ) where
 
 import Data.HashMap.Strict (HashMap)
-import Data.Map (Map)
 import Data.Text (Text)
 
+import Glean.Database.Meta
 import Glean.Types (Repo)
 import Glean.Util.Some
 
@@ -35,14 +35,14 @@ class Site a where
   backup
     :: a -- ^ site to back up to
     -> Repo -- ^ repo to back up
-    -> Map String String -- ^ DB properties
+    -> Meta -- ^ DB properties
     -> Maybe Int -- ^ Backup TTL in seconds (if supported by Site)
     -> FilePath  -- ^ serialized DB
     -> IO Data
-  inspect :: a -> Repo -> IO (Map String String)
-  restore :: a -> Repo -> FilePath -> IO (Map String String)
+  inspect :: a -> Repo -> IO Meta
+  restore :: a -> Repo -> FilePath -> IO Meta
   delete :: a -> Repo -> IO ()
-  enumerate :: a -> IO [(Repo, Map String String)]
+  enumerate :: a -> IO [(Repo, Meta)]
   toPath :: a -> Text
 
 instance Site (Some Site) where

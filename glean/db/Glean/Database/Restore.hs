@@ -15,15 +15,12 @@ module Glean.Database.Restore (
 import Control.Exception hiding(handle)
 import qualified Data.Set as Set
 import Data.Text (Text)
-import qualified Data.Text as Text
 
 import Util.STM
 
 import qualified Glean.Database.Backup.Backend as Backup
 import qualified Glean.Database.Backup.Locator as Backup
 import qualified Glean.Database.Catalog as Catalog
-import Glean.Database.Exception
-import Glean.Database.Meta
 import Glean.Database.Types
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Types hiding (Database)
@@ -67,24 +64,18 @@ restorable ServerConfig.DatabaseRestorePolicy{..} repo =
 
 restoreDatabase :: Env -> Text -> IO ()
 restoreDatabase env loc
-  | Just (prefix, site, repo) <-
+  | Just (_, site, repo) <-
       Backup.fromRepoLocator (envBackupBackends env) loc =
-        atomically =<< restoreDatabaseFromSite env prefix site repo
+        atomically =<< restoreDatabaseFromSite env site repo
   | otherwise = throwIO $
       Thrift.InvalidLocator $ "invalid locator '" <> loc <>  "'"
 
 restoreDatabaseFromSite
   :: Backup.Site site
   => Env
-  -> Text
   -> site
   -> Repo
   -> IO (STM ())
-restoreDatabaseFromSite Env{..} prefix site repo = do
+restoreDatabaseFromSite Env{..} site repo = do
   props <- Backup.inspect site repo
-  case metaFromProps loc props of
-    Right meta -> return $ Catalog.startRestoring envCatalog repo meta
-    Left err -> dbError repo $ concat
-      ["invalid metadata in backup '", Text.unpack loc, "': ", err]
-  where
-    loc = Backup.toRepoLocator prefix site repo
+  return $ Catalog.startRestoring envCatalog repo props

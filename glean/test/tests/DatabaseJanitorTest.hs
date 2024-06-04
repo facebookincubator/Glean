@@ -21,7 +21,6 @@ import Control.Monad
 import Data.Aeson
 import qualified Data.ByteString.Char8 as BS
 import qualified Data.ByteString.Lazy as LB
-import qualified Data.ByteString.Lazy.Char8 as LBS
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.HashSet as HashSet
@@ -226,9 +225,7 @@ makeFakeCloudDB schema backupDir repo dbtime completeness opts = do
           void $ backup (mockSite backupDir) repo props Nothing file
     )
   where
-    props = Map.fromList [
-      ("meta"::String, LBS.unpack $ encode meta) ]
-    meta = opts $ Meta
+    props = opts $ Meta
         { metaVersion = Storage.currentVersion
         , metaCreated = utcTimeToPosixEpochTime dbtime
         , metaRepoHashTime = Nothing

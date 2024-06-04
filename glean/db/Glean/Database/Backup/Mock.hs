@@ -17,17 +17,19 @@ module Glean.Database.Backup.Mock
 
 import Control.Exception
 import Control.Monad
+import qualified Data.ByteString as BS
 import Data.Maybe
 import qualified Data.Text as Text
 import System.Directory
 import System.FilePath
 import qualified System.Posix.Files as Posix
-import Text.Read
 
 import Glean.Database.Backup.Backend
 import Glean.Repo.Text
 import Glean.Types
 import Glean.Util.Some
+import Thrift.Protocol.JSON
+
 
 data MockBackend = MockBackend
 
@@ -48,12 +50,12 @@ instance Site MockSite where
     createDirectoryIfMissing True (takeDirectory repo_path)
     copyFile file repo_path
     size <- Posix.fileSize <$> Posix.getFileStatus repo_path
-    writeFile (repo_path <.> "props") (show props)
+    BS.writeFile (repo_path <.> "props") (serializeJSON props)
     return Data { dataSize = fromIntegral size }
 
   inspect (MockSite path) repo = do
-    s <- readFile (repoPath path repo <.> "props")
-    case readEither s of
+    s <- BS.readFile (repoPath path repo <.> "props")
+    case deserializeJSON s of
       Left err -> throwIO $ ErrorCall $ "can't parse props: " <> err
       Right r -> return r
 

@@ -52,15 +52,12 @@ import Util.STM (
 import Control.Exception (SomeException, throwIO, try)
 import Control.Monad (guard, unless, void, when)
 import Control.Monad.IO.Class (MonadIO (liftIO))
-import Data.Aeson (encode)
-import qualified Data.ByteString.Lazy.Char8 as LBS
 import Data.Default (def)
 import Data.Either.Combinators (whenLeft)
 import qualified Data.HashMap.Strict as HM
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as Set
 import Data.IORef (IORef, modifyIORef, newIORef, readIORef, writeIORef)
-import qualified Data.Map.Strict as Map
 import Data.Text (Text, pack)
 import qualified Data.Text.Lazy.IO as Text
 import GHC.Stack (HasCallStack)
@@ -425,12 +422,10 @@ noWait = Wait []
 mutateSystem :: HasCallStack => MockedEnv -> Command -> IO Wait
 mutateSystem env (NewRemoteDB repo meta) =
   withTempFileContents ("" :: String) $ \path -> do
-  void $ Site.backup (mockSite $ backupDir env) repo props Nothing path
+  void $ Site.backup (mockSite $ backupDir env) repo meta Nothing path
   -- Force fetch backups to run again next time
   atomically $ writeTVar (envCachedRestorableDBs $ mockedEnv env) Nothing
   return $ waitOne $ waitForDeletions (mockedEnv env)
-  where
-    props = Map.fromList [("meta" :: String, LBS.unpack $ encode meta)]
 mutateSystem MockedEnv {..} (TimeElapsed x) = do
   augment mockedTime (addTime (x * 1000000) <$>)
   return $ waitOne $ waitForDeletions mockedEnv

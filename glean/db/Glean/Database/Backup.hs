@@ -248,7 +248,7 @@ doBackup env@Env{..} repo prefix site =
                     ,..}
                 _ -> metaCompleteness meta
         }
-        Backend.backup site repo (metaToProps metaWithBytes) ttl path
+        Backend.backup site repo metaWithBytes ttl path
     let locator = toRepoLocator prefix site repo
     Logger.logDBStatistics env repo stats ownershipStats dataSize locator
     say logInfo "finished"

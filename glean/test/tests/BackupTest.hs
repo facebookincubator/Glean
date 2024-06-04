@@ -44,10 +44,7 @@ import Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.Trace
 import Glean.Util.IO (withTempFileContents)
 import Glean.Internal.Types (Completeness(Complete))
-import qualified Data.Map.Strict as Map
-import qualified Data.ByteString.Lazy.Char8 as LBS
 import qualified Glean.Database.Storage as Storage
-import Data.Aeson (encode)
 
 withTest
   :: (EventBaseDataplane -> NullConfigProvider -> FilePath -> IO ())
@@ -178,8 +175,7 @@ makeDB TestEnv{testBackup} now CloudTestDbSpec{..} =
   void $ Backup.backup testBackup testDbRepo props Nothing path
   where
     dbtime = utcTimeToPosixEpochTime (created testDbAge now)
-    props = Map.fromList [
-      ("meta"::String, LBS.unpack $ encode $ Meta
+    props = Meta
         { metaVersion = Storage.currentVersion
         , metaCreated = dbtime
         , metaRepoHashTime = Nothing
@@ -191,8 +187,6 @@ makeDB TestEnv{testBackup} now CloudTestDbSpec{..} =
         , metaCompletePredicates = mempty
         , metaAxiomComplete = False
         }
-      )
-      ]
 
 basicBackupTest :: Test
 basicBackupTest = TestCase $ withTest $ withTestEnv

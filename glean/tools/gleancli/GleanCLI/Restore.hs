@@ -35,7 +35,7 @@ import qualified Glean
 import qualified Glean.Database.Backup.Locator as Backup
 import Glean.LocalOrRemote (BackendKind(BackendEnv), backendKind)
 import Glean.Database.Backup.Backend (Site(inspect))
-import Glean.Database.Meta (metaFromProps, metaToThriftDatabase)
+import Glean.Database.Meta (metaToThriftDatabase)
 
 import GleanCLI.Common
 import GleanCLI.Types
@@ -141,16 +141,13 @@ instance Plugin RestoreCommand where
             (db:) <$> getDependenciesOneByOne sites dep_db
 
       getDatabaseFromSite sites repo = do
-        result <- flip firstJustM sites $ \(prefix, site) ->
-                    restorable prefix site repo <$> inspect site repo
+        result <- flip firstJustM sites $ \(_prefix, site) ->
+                    restorable repo <$> inspect site repo
         maybe (dieHere repo) return result
 
-      restorable prefix site repo props
-        | Right meta <-
-            metaFromProps (Backup.toRepoLocator prefix site repo) props
+      restorable repo meta
         = Just $
           metaToThriftDatabase Glean.DatabaseStatus_Restorable Nothing repo meta
-        | otherwise = Nothing
 
       dieHere repo = die 1 $ "Cannot find " <> show repo
 
