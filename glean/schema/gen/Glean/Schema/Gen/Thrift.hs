@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE NamedFieldPuns, OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings #-}
 -- | Glean's first auto-generation attempt
 --
 -- Run with
@@ -42,7 +42,7 @@ genSchemaThrift
   -> [(FilePath, Text)]
 genSchemaThrift versionDir hash version preddefs typedefs =
   (dir </> "TARGETS",
-    genTargets slashVn version declsPerNamespace) :
+    genTargets slashVn declsPerNamespace) :
   [ ( dir </> Text.unpack (underscored namespaces) ++ ".thrift"
     , genNamespace slashVn namespaces version
         hash namePolicy deps preds types)
@@ -60,18 +60,16 @@ genSchemaThrift versionDir hash version preddefs typedefs =
 
 genTargets
   :: Text   -- "/v1" or ""
-  -> Version
   -> HashMap NameSpaces ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
   -> Text
-genTargets slashVn version info =
+genTargets slashVn info =
   Text.unlines
      ([ "# \x40generated"
      , "# to regenerate: ./glean/schema/sync"
      , "load(\"@fbcode_macros//build_defs:custom_rule.bzl\", \"custom_rule\")"
      , "load(\"@fbcode_macros//build_defs:thrift_library.bzl\", \"thrift_library\")"
      , "" ] ++
-     concatMap genTarget (HashMap.toList info)) <>
-  genSchemaRules version
+     concatMap genTarget (HashMap.toList info))
   where
   genTarget (ns, (deps, nsPredicates, _)) =
     let
@@ -123,23 +121,6 @@ genTargets slashVn version info =
         "rust",
         "cpp2"
         ]
-
-
--- TODO: this shouldn't really go under schema/thrift
-genSchemaRules :: Version -> Text
-genSchemaRules version = rule_schema_gen
-  where
-    rule_schema_gen = Text.unlines
-      [ "custom_rule("
-      , "    name = \"cpp_schema\","
-      , "    build_args ="
-      , "        \"--cpp schema.h \" +"
-      , "        \"--version " <> showt version <> " \" +"
-      , "        \"--dir $(location //glean/schema/source:sources)\","
-      , "    build_script_dep = \"//glean/schema/gen:gen-schema\","
-      , "    output_gen_files = [\"schema.h\"],"
-      , ")"
-      ]
 
 thriftDir :: Text -> Text
 thriftDir slashVn = "glean/schema" <> slashVn <> "/thrift"
