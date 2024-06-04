@@ -3,7 +3,17 @@
   {
     "key": {
       "symbol": {
-        "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/Compute()."
+        "key": "scip-go gomod github.com/facebook/time glean `github.com/facebook/time`/"
+      },
+      "docs": {
+        "key": "Package leaphash is a utility package for computing the hash value of the\u000aofficial leap-second.list document"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "scip-go gomod github.com/facebook/time glean `github.com/facebook/time`/Compute()."
       },
       "docs": {
         "key": "Compute returns the sha1 sum of all non whitespace characters in data\u000aexcluding comments. Since it includes logic for special lines specific\u000ato the leap-second.list format its not a general purpose function and\u000ashould be only used to verify the integrity of an official leap-second.list\u000adocument."
@@ -13,7 +23,7 @@
   {
     "key": {
       "symbol": {
-        "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/Compute()."
+        "key": "scip-go gomod github.com/facebook/time glean `github.com/facebook/time`/Compute()."
       },
       "docs": { "key": "```go\u000afunc Compute(data string) string\u000a```" }
     }

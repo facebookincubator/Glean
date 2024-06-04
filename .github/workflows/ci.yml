@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 env:
   LANG: en_US.UTF-8
-  EXTRA_GHC_OPTS: -j32 +RTS -A1G -n16m -RTS
+  LOCAL_BIN: ${{ github.workspace }}/.local/bin
 
 jobs:
   ci:
@@ -12,39 +12,76 @@ jobs:
       fail-fast: false
       matrix:
         ghc: [8.6.5, 8.8.4, 8.10.7]
+        compiler: [gcc]
+        include:
+          - ghc: 8.10.7
+            compiler: clang
     runs-on: 32-core-ubuntu
     container:
-      image: ghcr.io/facebookincubator/hsthrift/ci-base:24.04
-      options: --cpus 32 --security-opt=seccomp=unconfined
+      image: ubuntu:24.04
+      options: --security-opt=seccomp=unconfined
     steps:
-      - name: Checkout code
+      - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: Install Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
 
-      - name: Install additional tools
+      - name: Initialize APT
         run: |
           apt-get update
-          apt install -y ninja-build libxxhash-dev m4 rsync wget unzip clang-15 libclang-15-dev libclang-cpp15-dev llvm-15-dev libgmock-dev libre2-dev
-          apt-get remove -y libfmt-dev
+          apt-get install -y curl
 
-      - name: Make utf8 default locale
+      - name: Setup en_US.UTF-8 locale
         run: |
           apt-get install -y locales
           locale-gen en_US.UTF-8
           update-locale LANG=en_US.UTF-8
 
-      - name: Install GHC ${{ matrix.ghc }}
-        run: ghcup install ghc ${{ matrix.ghc }} --set
-      - name: Install Cabal 3.8
-        run: ghcup install cabal 3.8.1.0 --set
-      - name: Add GHC and cabal to PATH
-        run: echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
+      - name: Setup LOCAL_BIN environment
+        run: |
+          mkdir -p "$LOCAL_BIN"
+          echo "$LOCAL_BIN" >> "$GITHUB_PATH"
+
+      - name: Setup build time flags
+        run: |
+          echo "MAKEFLAGS=-j$(nproc)" >> "$GITHUB_ENV"
+          echo "EXTRA_GHC_OPTS=-j$(nproc) +RTS -A128m -n2m -RTS" >> "$GITHUB_ENV"
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install indexer (python)
+        run: |
+          apt-get install -y python3-pip
+          npm install -g @sourcegraph/scip-python
 
       - name: Install indexer (flow)
         run: npm install -g flow-bin
+
+      - name: Install indexer (typescript)
+        run: npm install -g @sourcegraph/scip-typescript
+
+      - name: Install .NET Framework dependencies
+        run: apt-get install -y libicu74
+
+      - name: Setup .NET Framework
+        uses: actions/setup-dotnet@v4
+        env:
+          DOTNET_INSTALL_DIR: ${{ env.LOCAL_BIN }}
+        with:
+          dotnet-version: 7.0.x # Required by `scip-dotnet`.
+
+      - name: Install indexer (dotnet)
+        run: dotnet tool install --tool-path $LOCAL_BIN scip-dotnet
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: stable
+          cache: false
+
+      - name: Install indexer (go)
+        run: go install github.com/sourcegraph/scip-go/cmd/scip-go@latest
 
       - name: Install indexer (hack)
         run: |
@@ -55,88 +92,107 @@ jobs:
           apt-get update
           apt-get install -y hhvm
 
-      - name: Install indexer (typescript)
-        run: npm install -g @sourcegraph/scip-typescript
-
-      - name: Install indexer (python)
+      - name: Install indexer (java)
         run: |
-          npm install -g @sourcegraph/scip-python
-          apt install -y python3-pip
-
-      - name: Install indexer (dotnet)
-        run: |
-          export DOTNET=7.0
-          wget https://dot.net/v1/dotnet-install.sh
-          chmod +x dotnet-install.sh
-          ./dotnet-install.sh --channel ${DOTNET}
-          export DOTNET_ROOT=$HOME/.dotnet
-          $DOTNET_ROOT/dotnet tool install --global scip-dotnet
-          echo "$HOME/.dotnet" >> "$GITHUB_PATH"
-          echo "$HOME/.dotnet/tools" >> "$GITHUB_PATH"
-
-      - name: Install indexer (go)
-        run: |
-          export GOLANG=1.17.8
-          export SCIPGO=0.1.4
-          mkdir go-install; cd go-install
-          mkdir -p "$HOME"/.hsthrift/bin
-          wget "https://go.dev/dl/go${GOLANG}.linux-amd64.tar.gz"
-          tar -C "$HOME/.hsthrift" -xzf  "go${GOLANG}.linux-amd64.tar.gz"
-          wget "https://github.com/sourcegraph/scip-go/releases/download/v${SCIPGO}/scip-go_${SCIPGO}_linux_amd64.tar.gz"
-          tar xzf "scip-go_${SCIPGO}_linux_amd64.tar.gz"
-          mv scip-go "$HOME"/.hsthrift/bin
-          echo "$HOME/.hsthrift/go/bin" >> "$GITHUB_PATH"
+          apt-get install -y default-jdk maven
+          curl -fLo coursier https://git.io/coursier-cli && chmod +x coursier
+          export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+          ./coursier bootstrap --standalone -o "$LOCAL_BIN"/lsif-java com.sourcegraph:lsif-java_2.13:0.8.0-RC1 --main-class com.sourcegraph.lsif_java.LsifJava
 
       - name: Install indexer (rust)
         run: |
           export RUST_ANALYZER=2023-11-06
           curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
           echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
-          mkdir -p "$HOME"/.hsthrift/bin
-          curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > "$HOME"/.hsthrift/bin/rust-analyzer
-          chmod +x "$HOME"/.hsthrift/bin/rust-analyzer
+          curl -L https://github.com/rust-analyzer/rust-analyzer/releases/download/${RUST_ANALYZER}/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > "$LOCAL_BIN"/rust-analyzer
+          chmod +x "$LOCAL_BIN"/rust-analyzer
 
-      - name: Install indexer (java)
+      - name: Setup Haskell
         run: |
-          apt-get install -y default-jdk maven
-          curl -fLo coursier https://git.io/coursier-cli && chmod +x coursier
-          export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
-          ./coursier bootstrap --standalone -o lsif-java com.sourcegraph:lsif-java_2.13:0.8.0-RC1 --main-class com.sourcegraph.lsif_java.LsifJava
-          mkdir -p "$HOME"/.hsthrift/bin && cp lsif-java "$HOME"/.hsthrift/bin
+          curl --proto '=https' --tlsv1.2 -sSf "https://downloads.haskell.org/~ghcup/x86_64-linux-ghcup" -o "$LOCAL_BIN"/ghcup
+          chmod +x "$LOCAL_BIN"/ghcup
+          ghcup install cabal --set
+          apt-get install -y build-essential libgmp-dev libnuma-dev
+          ghcup install ghc ${{ matrix.ghc }} --set
+          echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
+
+      # This needs to be before the Clang step since they install GCC. We want to remove GCC if Clang is enabled.
+      - name: Install CMake and Boost
+        run : apt-get install -y cmake libboost-all-dev
+
+      - if: matrix.compiler == 'clang'
+        name: Setup Clang
+        run: |
+          export VER=15
+          apt-get install -y clang-$VER
+          apt-get remove -y gcc g++
+          apt-get autoremove -y
+          update-alternatives --install /usr/bin/cc cc /usr/bin/clang-$VER 10
+          update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-$VER 10
+          # needed for `ghc`, it actually invokes `gcc` explicitly.
+          update-alternatives --install /usr/bin/gcc gcc /usr/bin/clang-$VER 10
+          # needed for `hsc2hs`, `g++` is hardcoded into `hsc2hs-options`.
+          update-alternatives --install /usr/bin/g++ g++ /usr/bin/clang++-$VER 10
+
+      - name: Install folly and rocksdb dependencies
+        run: |
+          apt-get install -y git ninja-build \
+            libaio-dev libbz2-dev libdouble-conversion-dev libdwarf-dev libgoogle-glog-dev libiberty-dev libjemalloc-dev \
+            liblzma-dev liblz4-dev libsnappy-dev libsodium-dev libssl-dev libunwind-dev libzstd-dev
 
       - name: Fetch hsthrift and build folly, rocksdb
-        run: ./install_deps.sh --threads 32
+        run: ./install_deps.sh --threads $(nproc)
+
       - name: Nuke build artifacts
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
-      - name: Add thrift compiler and indexers to path
-        run: echo "$HOME/.hsthrift/bin" >> "$GITHUB_PATH"
+
+      - name: Setup hsthrift environment
+        run: |
+          echo "LD_LIBRARY_PATH=$HOME/.hsthrift/lib:$LD_LIBRARY_PATH" >> "$GITHUB_ENV"
+          echo "PKG_CONFIG_PATH=$HOME/.hsthrift/lib/pkgconfig:$PKG_CONFIG_PATH" >> "$GITHUB_ENV"
+          echo "$HOME/.hsthrift/bin" >> "$GITHUB_PATH"
+
       - name: Populate hackage index
         run: cabal update
+
+      - name: Disable some tests
+        run: echo CABAL_CONFIG_FLAGS="-f-hack-tests -f-rust-tests -f-python-tests" >> "$GITHUB_ENV"
+
+      - name: Install hsthrift and Glean dependencies
+        run: apt-get install -y pkg-config rsync libgmock-dev libpcre3-dev libtinfo-dev libxxhash-dev
+
       - name: Build hsthrift and Glean
-        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make
+        run: make
+
       - name: Build glass
-        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glass
+        run: make glass
+
+      - name: Install glean-clang dependencies
+        run: apt-get install -y clang-15 libclang-15-dev libclang-cpp15-dev libre2-dev
+
       - name: Build glean-clang
-        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glean-clang
-      - if: matrix.ghc != '8.4.4' && matrix.ghc != '8.6.5'
+        run: make glean-clang
+
+      - if: matrix.ghc != '8.6.5'
         name: Build hiedb-indexer
-        run: env LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" make glean-hiedb
+        run: make glean-hiedb
+
       - name: Run tests
-        run: env DOTNET_ROOT="$HOME/.dotnet" LD_LIBRARY_PATH="$HOME/.hsthrift/lib" PKG_CONFIG_PATH="$HOME/.hsthrift/lib/pkgconfig" cabal test glean:tests -f-hack-tests -f-rust-tests -f-python-tests
+        run: make test
 
   # check the vscode extension builds
   vscode:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Install Node
-        uses: actions/setup-node@v2
-      - name: Build VS Code extension
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+      - name: Build VS Code Extension
         run: npx vsce package
         working-directory: glean/vscode
       - name: Archive .vsix extension file
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: glean-vsix
           path: |

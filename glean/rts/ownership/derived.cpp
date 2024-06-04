@@ -159,7 +159,7 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
   // fact will be visibile (derivable) if either A or B are visible.
 
   std::map<uint64_t,UsetId> factOwners;
-  folly::F14FastMap<int64_t,std::set<UsetId>> factOwnerSets;
+  folly::F14FastMap<uint64_t,std::set<UsetId>> factOwnerSets;
 
   auto min_id = base ? base->firstFreeId() : Id::lowest();
 

@@ -5,7 +5,32 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/Compute()."
+            "key": "scip-go gomod github.com/facebook/time glean `github.com/facebook/time`/"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "leaphash.go" },
+              "range": {
+                "lineBegin": 11,
+                "columnBegin": 9,
+                "lineEnd": 11,
+                "columnEnd": 16
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Package leaphash is a utility package for computing the hash value of the\u000aofficial leap-second.list document"
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-go gomod github.com/facebook/time glean `github.com/facebook/time`/Compute()."
           },
           "location": {
             "key": {
@@ -30,7 +55,7 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "scip-go gomod github.com/facebook/time glean github.com/facebook/time/Compute()."
+            "key": "scip-go gomod github.com/facebook/time glean `github.com/facebook/time`/Compute()."
           },
           "location": {
             "key": {

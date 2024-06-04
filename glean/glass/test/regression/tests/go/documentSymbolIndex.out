@@ -15,10 +15,13 @@
                             "aInteger": 14
                         },
                         "symbolName": {
-                            "aString": "github.com/facebook/time/"
+                            "aString": "`github.com/facebook/time`/"
                         },
                         "symbolParent": {
                             "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "Package leaphash is a utility package for computing the hash value of the\nofficial leap-second.list document"
                         }
                     },
                     "range": {
@@ -27,7 +30,7 @@
                         "lineBegin": 11,
                         "lineEnd": 11
                     },
-                    "sym": "test/go/scip-go/gomod/github.com%2Ffacebook%2Ftime/glean/github.com%2Ffacebook%2Ftime%2F"
+                    "sym": "test/go/scip-go/gomod/github.com%2Ffacebook%2Ftime/glean/%60github.com%2Ffacebook%2Ftime%60%2F"
                 }
             ],
             "24": [
@@ -40,7 +43,7 @@
                             "aInteger": 14
                         },
                         "symbolName": {
-                            "aString": "github.com/facebook/time/Compute()."
+                            "aString": "`github.com/facebook/time`/Compute()."
                         },
                         "symbolParent": {
                             "aString": ""
@@ -55,7 +58,7 @@
                         "lineBegin": 24,
                         "lineEnd": 24
                     },
-                    "sym": "test/go/scip-go/gomod/github.com%2Ffacebook%2Ftime/glean/github.com%2Ffacebook%2Ftime%2FCompute%28%29."
+                    "sym": "test/go/scip-go/gomod/github.com%2Ffacebook%2Ftime/glean/%60github.com%2Ffacebook%2Ftime%60%2FCompute%28%29."
                 }
             ]
         },
