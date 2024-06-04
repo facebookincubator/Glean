@@ -11,9 +11,9 @@
 #include <string>
 #include <vector>
 
+#include "glean/bytecode/instruction.h"
 #include "glean/rts/binary.h"
 #include "glean/rts/serialize.h"
-#include "glean/rts/bytecode/gen/instruction.h"
 
 namespace facebook {
 namespace glean {
