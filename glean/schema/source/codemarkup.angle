@@ -51,7 +51,8 @@ predicate EntityKind:
     (codemarkup.kotlin.KotlinEntityKind { E, Kind }; { kotlin = E } = Entity) |
     (codemarkup.fbthrift.ThriftEntityKind { E, Kind }; { fbthrift = E } = Entity) |
     (codemarkup.buck.BuckEntityKind { E, Kind }; { buck = E } = Entity) |
-    (codemarkup.csharp.CSharpEntityKind { E, Kind }; { csharp = E } = Entity);
+    (codemarkup.csharp.CSharpEntityKind { E, Kind }; { csharp = E } = Entity) |
+    (codemarkup.graphql.GraphQLEntityKind { E, Kind }; { graphql = E } = Entity) ;
 
 # Retrieve information about an entity
 predicate EntityInfo:
@@ -76,7 +77,9 @@ predicate EntityInfo:
        (codemarkup.buck.BuckEntityKind { E, Kind };
         { buck = E } = Entity) |
        (codemarkup.csharp.CSharpEntityKind { E, Kind };
-        { csharp = E } = Entity);
+        { csharp = E } = Entity) |
+       (codemarkup.graphql.GraphQLEntityKind { E, Kind };
+        { graphql = E } = Entity);
       )
     ) |
     (codemarkup.cxx.CxxEntityInfo { E, Info }; { cxx = E } = Entity) |

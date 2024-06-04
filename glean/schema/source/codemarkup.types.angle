@@ -40,7 +40,7 @@ type SymbolKind =
     Package | Type | Value | File | Module | Namespace | Class_ | Method | Property |
     Field | Constructor | Enum_ | Interface | Function | Variable | Constant | String |
     Number | Boolean | Array | Object_ | Key | Null | Enumerator | Struct | Event |
-    Operator | TypeParameter | Union | Macro | Trait
+    Operator | TypeParameter | Union | Macro | Trait | Fragment | Operation | Directive |
   }
 
 type SymbolInfo =

@@ -4,6 +4,8 @@ schema graphql.3 {
 import src.1
 
 # Core graphql predicates built from the graphql IR
+
+# https://spec.graphql.org/October2021/#sec-Language.Arguments
 predicate Argument :
   {
     name: Value,
@@ -70,6 +72,7 @@ predicate FragmentSpread :
     directives: [Directive],
   }
 
+# https://spec.graphql.org/October2021/#sec-Language.Fields
 predicate Field :
   {
     type: Value,
@@ -134,6 +137,7 @@ type OperationKind =
     SUBSCRIPTION
   }
 
+# https://spec.graphql.org/October2021/#sec-Language.Operations
 predicate Operation :
   {
     name: Value,

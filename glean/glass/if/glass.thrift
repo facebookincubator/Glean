@@ -484,6 +484,9 @@ enum SymbolKind {
   Union = 29,
   Macro = 30,
   Trait = 31,
+  Fragment = 32,
+  Operation = 33,
+  Directive = 34,
 }
 
 @hack.Attributes{

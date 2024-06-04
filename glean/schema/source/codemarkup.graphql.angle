@@ -63,4 +63,15 @@ predicate GraphQLEntityUses:
   { { decl = Decl }, File, Span } where
     graphql.DeclarationUses { Decl, File, Span }
 
+# kinds and symbol info
+predicate GraphQLEntityKind:
+  {
+    entity: code.graphql.Entity,
+    kind: codemarkup.types.SymbolKind
+  }
+  { Entity, Kind } where
+    { decl = Decl } = Entity;
+    ({ fragment_ = _ } = Decl; Fragment = Kind ) |
+    ({ operation_ = _ } = Decl; Operation = Kind );
+
 }

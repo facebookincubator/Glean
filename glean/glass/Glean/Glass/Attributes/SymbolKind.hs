@@ -128,6 +128,9 @@ symbolKindToSymbolKind k = case k of
   Code.SymbolKind_Union -> Glass.SymbolKind_Union
   Code.SymbolKind_Macro -> Glass.SymbolKind_Macro
   Code.SymbolKind_Trait -> Glass.SymbolKind_Trait
+  Code.SymbolKind_Fragment -> Glass.SymbolKind_Fragment
+  Code.SymbolKind_Operation -> Glass.SymbolKind_Operation
+  Code.SymbolKind_Directive -> Glass.SymbolKind_Directive
   Code.SymbolKind__UNKNOWN n -> Glass.SymbolKind__UNKNOWN n
 
 -- | Type safe mapping from the client-exposed SymbolKind type to the SymbolKind
@@ -168,4 +171,7 @@ symbolKindFromSymbolKind k = case k of
   Glass.SymbolKind_Union -> Code.SymbolKind_Union
   Glass.SymbolKind_Macro -> Code.SymbolKind_Macro
   Glass.SymbolKind_Trait -> Code.SymbolKind_Trait
+  Glass.SymbolKind_Fragment -> Code.SymbolKind_Fragment
+  Glass.SymbolKind_Operation -> Code.SymbolKind_Operation
+  Glass.SymbolKind_Directive -> Code.SymbolKind_Directive
   Glass.SymbolKind__UNKNOWN x -> toThriftEnum x -- this might throw
