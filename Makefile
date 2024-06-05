@@ -101,10 +101,9 @@ BYTECODE_SRCS= \
 
 all:: glean.cabal thrift $(BYTECODE_GEN) gen-schema thrift-schema-hs glean
 
-.PHONY: update-all
-update-all:: glean.cabal
+.PHONY: cabal-update
+cabal-update:: glean.cabal
 	$(CABAL) update
-	$(MAKE) $(MAKEFLAGS)
 
 # Targets in this file invoke Cabal and hence can't be built in parallel
 .NOTPARALLEL:
