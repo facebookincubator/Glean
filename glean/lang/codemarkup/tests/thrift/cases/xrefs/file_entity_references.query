@@ -1,5 +1,5 @@
 query: |
   codemarkup.FileEntityLocations { entity = E };
-  codemarkup.EntityUses { target = E }
+  codemarkup.EntityReferences { target = E }
 perf: true
 transform: [normord, []]

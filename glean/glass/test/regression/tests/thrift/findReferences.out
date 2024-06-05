@@ -1,4 +1,13 @@
 [
     "@generated",
-    []
+    [
+        {
+            "filepath": "lib.thrift",
+            "repository": "test",
+            "span": {
+                "length": 10,
+                "start": 1861
+            }
+        }
+    ]
 ]

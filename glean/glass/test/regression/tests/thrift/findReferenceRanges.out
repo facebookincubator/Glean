@@ -1,4 +1,15 @@
 [
     "@generated",
-    []
+    [
+        {
+            "filepath": "lib.thrift",
+            "range": {
+                "columnBegin": 11,
+                "columnEnd": 32,
+                "lineBegin": 124,
+                "lineEnd": 124
+            },
+            "repository": "test"
+        }
+    ]
 ]

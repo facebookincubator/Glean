@@ -160,4 +160,20 @@ predicate FbthriftEntityDocumentation :
     { decl = Decl } = Entity;
     fbthrift.DeclarationComment { Decl, File, Span }
 
+predicate FbthriftEntityUses:
+  {
+    target: code.fbthrift.Entity,
+    file: src.File,
+    range: src.Range,
+  }
+  { { decl = Decl }, File, Range } where
+    fbthrift.DeclarationUses { Decl, File, Loc };
+    { LB, CB, LE, CE } = Loc;
+    { file = File,
+      lineBegin = LB,
+      columnBegin = CB,
+      lineEnd = LE,
+      columnEnd = CE
+    } = Range;
+
 }

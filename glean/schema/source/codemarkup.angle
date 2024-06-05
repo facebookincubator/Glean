@@ -377,6 +377,10 @@ predicate EntityReferences:
     codemarkup.scip.ScipEntityUses { E, File, Range };
     { scip = E } = Entity;
     { range = Range } = RangeSpan;
+  ) | (
+    codemarkup.fbthrift.FbthriftEntityUses { E, File, Range };
+    { fbthrift = E } = Entity;
+    { range = Range } = RangeSpan;
   );
 
 # Information for all calls, organized by file and callee_span
