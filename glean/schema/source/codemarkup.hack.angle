@@ -64,6 +64,17 @@ predicate HackFileEntityXRefSpans:
 # Language entity uses
 #
 
+predicate HackIdlEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+{ Target, File, Span} where
+  { fbthrift = { decl = Thrift } } = Target;
+  hack.ThriftToHack { Thrift, Hack };
+  HackEntityUses { { decl = Hack }, File, Span }
+
 predicate HackEntityUses:
   {
     target: code.hack.Entity,

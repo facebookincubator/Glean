@@ -1,0 +1,3 @@
+query: codemarkup.EntityReferences { target = { fbthrift = _ } }
+perf: True
+transform: [gensort, []]

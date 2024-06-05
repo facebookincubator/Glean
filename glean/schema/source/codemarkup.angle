@@ -381,6 +381,9 @@ predicate EntityReferences:
     codemarkup.fbthrift.FbthriftEntityUses { E, File, Range };
     { fbthrift = E } = Entity;
     { range = Range } = RangeSpan;
+  ) | (
+    codemarkup.hack.HackIdlEntityUses { Entity, File, Span };
+    { span = Span } = RangeSpan;
   );
 
 # Information for all calls, organized by file and callee_span

@@ -1,0 +1,2632 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetCardException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 14617, "length": 16 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetCardException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 14858, "length": 16 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetCardException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 14975, "length": 16 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetCardException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 15077, "length": 16 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetCardException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 22019, "length": 16 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetCardException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 14099, "length": 16 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetCardException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 14787, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetCardException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 14902, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetCardException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 15009, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetNavigationException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 9521, "length": 22 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetNavigationException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 9780, "length": 22 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetNavigationException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 9902, "length": 22 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetNavigationException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 10016, "length": 22 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetNavigationException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 21930, "length": 22 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetNavigationException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test.php" },
+      "range": { "span": { "start": 494, "length": 22 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetNavigationException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test.php" },
+      "range": { "span": { "start": 556, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetNavigationException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 7440, "length": 22 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetNavigationException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 8134, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetNavigationException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 8249, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetNavigationException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 8356, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "function_": {
+              "key": {
+                "service_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "www/test.thrift" } },
+                        "name": { "key": "TestService" }
+                      }
+                    }
+                  }
+                },
+                "name": { "key": "thrift1" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test.php" },
+      "range": { "span": { "start": 637, "length": 7 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "function_": {
+              "key": {
+                "service_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "www/test.thrift" } },
+                        "name": { "key": "TestService" }
+                      }
+                    }
+                  }
+                },
+                "name": { "key": "thrift2" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test.php" },
+      "range": { "span": { "start": 924, "length": 7 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 890, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 1512, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 2259, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 3650, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 5510, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 6656, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 12481, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 12644, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 12724, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 12781, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 21797, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test.php" },
+      "range": { "span": { "start": 857, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 9450, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 10326, "length": 10 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 10369, "length": 9 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 10474, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 10581, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 926, "length": 15 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 1538, "length": 15 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 2295, "length": 15 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 3686, "length": 15 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 5546, "length": 15 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 6908, "length": 15 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 14328, "length": 15 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 14484, "length": 15 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 21560, "length": 15 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test.php" },
+      "range": { "span": { "start": 995, "length": 4 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 12088, "length": 15 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 12729, "length": 4 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 12818, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 12925, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 631, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 1264, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 2000, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 2784, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 4644, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 6230, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 7336, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 7505, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 7592, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 7655, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 21643, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test.php" },
+      "range": { "span": { "start": 380, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test.php" },
+      "range": { "span": { "start": 436, "length": 10 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 3565, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 4181, "length": 10 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 4288, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 4395, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 673, "length": 21 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 1296, "length": 21 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 2042, "length": 21 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 2826, "length": 21 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 4686, "length": 21 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 6488, "length": 21 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 9214, "length": 21 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 9376, "length": 21 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 21476, "length": 21 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test.php" },
+      "range": { "span": { "start": 714, "length": 9 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 5504, "length": 21 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 6115, "length": 9 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 6220, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetNavigationResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 6327, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ReservationHotfixConfig" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 16100, "length": 23 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ReservationHotfixConfig" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 18102, "length": 22 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ReservationHotfixConfig" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 18173, "length": 18 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ReservationHotfixConfig" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 18300, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ReservationHotfixConfig" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 18407, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 21723, "length": 12 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test.php" },
+      "range": { "span": { "start": 1041, "length": 11 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 432, "length": 12 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 1266, "length": 11 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 1427, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 1534, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 1867, "length": 11 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 2169, "length": 11 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 2287, "length": 11 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 2564, "length": 11 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 12329, "length": 12 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 12484, "length": 12 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 12635, "length": 12 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 12687, "length": 12 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "TestService" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 1653, "length": 18 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "TestService" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 2505, "length": 24 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "TestService" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 2538, "length": 21 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "TestService" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 4370, "length": 19 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "TestService" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/TestService.php" },
+      "range": { "span": { "start": 4398, "length": 21 } }
+    }
+  }
+]
