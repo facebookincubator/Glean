@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Get absolute filepath to this script, and then its directory
+this_file=$(readlink -f "${0}")
+this_dir=$(dirname "${this_file}")
+
+buck2 run //glean/bytecode/gen:gen-cpp -- --install_dir="${this_dir}"

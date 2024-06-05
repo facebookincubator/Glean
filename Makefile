@@ -91,8 +91,6 @@ CODEGEN_DIR = $(MODE_DIR)/codegen
 CXX_DIR = $(MODE_DIR)/cxx
 
 BYTECODE_GEN= \
-	glean/rts/bytecode/gen/evaluate.h \
-	glean/rts/bytecode/gen/instruction.h \
 	glean/hs/Glean/RTS/Bytecode/Gen/Instruction.hs \
 	glean/hs/Glean/RTS/Bytecode/Gen/Issue.hs \
 	glean/hs/Glean/RTS/Bytecode/Gen/Version.hs
@@ -129,7 +127,7 @@ $(CXX_DIR)/defs.m4: force
 	@$(MAKE) -f mk/cxx.mk --no-print-directory CXX_MODE=$(CXX_MODE) CXX_DIR=$(CXX_DIR) $@
 
 .PHONY: cxx-libraries
-cxx-libraries: gen-bytecode
+cxx-libraries:
 	@$(MAKE) -f mk/cxx.mk --no-print-directory CXX_MODE=$(CXX_MODE) CXX_DIR=$(CXX_DIR) $@
 
 cxx-test-%: force
@@ -144,7 +142,6 @@ gen-bytecode: $(BYTECODE_GEN)
 
 # Note we don't rsync here because we have actual dependencies
 $(BYTECODE_GEN) &: $(BYTECODE_SRCS) glean.cabal
-	$(CABAL) run gen-bytecode-cpp -- --install_dir=glean/rts
 	$(CABAL) run gen-bytecode-hs -- --install_dir=glean/hs
 
 .PHONY: test

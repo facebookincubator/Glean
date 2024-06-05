@@ -29,7 +29,7 @@ struct Eval {
   void *context;
   uint64_t *frame;
 
-#include "glean/rts/bytecode/gen/evaluate.h"
+#include "glean/bytecode/evaluate.h"
 
   FOLLY_ALWAYS_INLINE void execute(InputNat a) {
     binary::Input input { *a.begin, a.end };

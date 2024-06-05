@@ -37,8 +37,7 @@ main :: IO ()
 main = do
   args <- getArgs
   dir <- case args of
-    [arg] | Just dir <- stripPrefix "--install_dir=" arg ->
-      return $ dir </> "bytecode/gen"
+    [arg] | Just dir <- stripPrefix "--install_dir=" arg -> return dir
     _ -> die "invalid arguments"
   createDirectoryIfMissing True dir
   genHeader (dir </> "instruction.h")
