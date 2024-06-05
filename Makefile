@@ -144,7 +144,7 @@ $(BYTECODE_GEN) &: $(BYTECODE_SRCS) glean.cabal
 	$(CABAL) run gen-bytecode-hs -- --install_dir=glean/hs
 
 .PHONY: test
-test:: glean.cabal cxx-libraries glean-clang
+test:: glean.cabal
 	$(CABAL) test glean:tests
 
 SCHEMAS= \
