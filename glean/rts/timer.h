@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include <folly/experimental/AutoTimer.h>
+#include <folly/logging/AutoTimer.h>
 
 namespace facebook {
 namespace glean {
