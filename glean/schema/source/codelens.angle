@@ -1,0 +1,44 @@
+schema codelens.1 {
+
+import src.1
+
+# This schema powers the Meta-internal "codelens" implementation shared across clients like VSCode
+# and CodeHub. It closely follows the LSP specification from Microsoft, with slight deviations to
+# help power a single source-of-truth for cross-client CodeLens
+
+# ==== COMMANDS ====
+# Represent "actions" that can be taken.
+#
+# Official specification:
+# https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#command
+#
+# The implementation herein deviates slightly from the LSP specification from Microsoft in that we
+# have a fixed set of explicitly typed commands, that are explicitly supported by the CodeLens clients.
+
+type CodeLensOpenFileCommand =
+{
+    title: string,
+    file_path: src.File,
+}
+
+type CodeLensOpenURLCommand =
+  {
+    title: string,
+    url: string,
+  }
+
+type CodeLensCommand =
+  {
+    open_file: CodeLensOpenFileCommand | open_url: CodeLensOpenURLCommand
+  }
+
+
+# A code lens represents a command that should be shown along with source text, like the number of references, a way to run tests, etc.
+# Official specification: https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/#textDocument_codeLens
+predicate CodeLens :
+  {
+    command: CodeLensCommand,
+    range: src.Range,
+    file: src.File,
+  }
+}
