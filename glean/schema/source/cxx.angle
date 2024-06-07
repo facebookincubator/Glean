@@ -1439,13 +1439,21 @@ predicate FilePPTraceXRefs:
       { TargetFile, SrcRange, SrcSpan } = Include;
       { include_ = TargetFile } = Entity; )
 
-  # Experimental: do not rely on this!
-  # This maps generated Cxx code (declaration, enum)
-  # to their defining Thrift declaration
-  predicate CxxToThrift:
-    {
-      from: cxx1.XRefTarget,
-      to: fbthrift.Declaration
-    }
+# This maps generated Cxx entities
+# to their defining Thrift declaration
+# currently limited to functions
+predicate CxxToThrift:
+  {
+    from: cxx1.XRefTarget,
+    to: fbthrift.Declaration
+  }
+
+predicate ThriftToCxx:
+  {
+    to: fbthrift.Declaration,
+    from: cxx1.XRefTarget
+  }
+  stored { To, From }
+    where cxx1.CxxToThrift { From, To }
 
 }
