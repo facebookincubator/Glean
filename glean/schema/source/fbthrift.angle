@@ -318,9 +318,11 @@ predicate DeclarationName:
     qname: QualName,
     decl: Declaration
   }
-  stored
   { { File, Name }, Decl } where
-  DeclarationNameSpan { decl = Decl, name = Name, file = File }
+     ( { named = NamedDecl { name = { name = { File, Name } } } } = Decl )
+   | ( { exception_ = ExceptionName { name = { File, Name } } } = Decl )
+   | ( { constant = Constant { name = { File, Name } } } = Decl )
+   | ( { service_ = ServiceName { name = { File, Name } } } = Decl )
 
 predicate StructType : {
   name : QualName,
