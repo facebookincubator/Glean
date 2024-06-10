@@ -122,7 +122,7 @@ instance Plugin MergeCommand where
                 DefineFlags {
                   trustRefs = True,
                   ignoreRedef = True }
-              return $ substOwnership subst $
+              return $! substOwnership subst $
                 FactOwnership (batch_owned batch)
 
         loop !_ _ Nothing [] = return ()
