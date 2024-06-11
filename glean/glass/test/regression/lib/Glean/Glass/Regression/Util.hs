@@ -50,5 +50,6 @@ withTestEnvScm backend scm f =
         , sourceControl = scm
         , tracer = mempty
         , haxlState = Haxl.stateEmpty
+        , useSnapshotsForSymbolsList = pure True
         , ..
         }

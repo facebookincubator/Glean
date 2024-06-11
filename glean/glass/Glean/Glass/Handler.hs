@@ -8,6 +8,7 @@
 
 {-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE NamedFieldPuns #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
@@ -136,7 +137,7 @@ import Glean.Glass.SnapshotBackend
     SnapshotStatus() )
 import qualified Glean.Glass.SnapshotBackend as Snapshot
 import Glean.Glass.SymbolKind (findSymbolKind)
-import Glean.Glass.Env (Env' (tracer, sourceControl))
+import Glean.Glass.Env (Env' (tracer, sourceControl, useSnapshotsForSymbolsList))
 import Glean.Glass.SourceControl
 import Glean.Glass.Tracing (traceSpan)
 
@@ -172,11 +173,19 @@ documentSymbolListX
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> IO DocumentSymbolListXResult
-documentSymbolListX env r opts =
+documentSymbolListX env r opts = do
+  useSnapshots <- useSnapshotsForSymbolsList env
   fst3 <$>
     runRepoFile
       "documentSymbolListX"
-      (fetchSymbolsAndAttributes env)
+      (if useSnapshots
+        then fetchSymbolsAndAttributes env
+        else (\dbInfo req opts be _ mlang -> do
+                ((res, log), err) <-
+                  fetchSymbolsAndAttributesGlean env dbInfo req opts be mlang
+                return ((res, Snapshot.Unrequested, log), err)
+              )
+      )
       env r opts
 
 -- | Same as documentSymbolList() but construct a line-indexed map for easy

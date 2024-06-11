@@ -21,6 +21,7 @@ module Glean.Glass.Env
     Env,
     Env'(..),
     IndexBackend(..),
+    setUseSnapshotsForSymbolsList
   ) where
 
 import Data.Text (Text)
@@ -61,6 +62,7 @@ data Config trace = Config
       -- ^ Haxl datasource state to use with runHaxl, e.g. for sourceControl
   , tracer :: Tracer trace
   , welcomeMessage :: forall a. EventBaseDataplane -> Config a -> IO Text
+  , useSnapshotsForSymbolsList :: IO Bool
   }
 
 setSnapshotBackend
@@ -81,6 +83,10 @@ setHaxlState st config = config { haxlState = st }
 
 setTracer :: Tracer trace -> Config a -> Config trace
 setTracer tracer' Config{..}= Config{ tracer = tracer', .. }
+
+setUseSnapshotsForSymbolsList :: IO Bool -> Config trace -> Config trace
+setUseSnapshotsForSymbolsList check Config{..} =
+  Config { useSnapshotsForSymbolsList = check, .. }
 
 updateWelcomeMessage
   :: ( forall a. (EventBaseDataplane -> Config a -> IO Text)
@@ -107,6 +113,7 @@ data Env' trace = Env
   , sourceControl :: Some SourceControl
   , haxlState :: Haxl.StateStore
   , tracer :: Tracer trace
+  , useSnapshotsForSymbolsList :: IO Bool
   }
 
 -- | A backend to create incremental databases

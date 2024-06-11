@@ -47,6 +47,7 @@ configParser = do
   return $ Glass.Config{
         configKey = Glass.defaultConfigKey,
         welcomeMessage = pure (pure . defaultWelcomeMessage),
+        useSnapshotsForSymbolsList = pure True,
          ..}
 
 portParser :: Parser Int
