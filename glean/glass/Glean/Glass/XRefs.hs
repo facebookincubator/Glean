@@ -47,11 +47,10 @@ type EntityIdlMap = Map Code.Entity Code.IdlEntity
 -- | Split xrefs (target ent + optional idl ent) into plain and idl entities
 splitXRefs
   :: [(Code.XRefLocation, Code.Entity, Maybe Code.IdlEntity)] -> [GenXRef]
-splitXRefs xrefs =
-  let idlEnts = [ (ent, idl) | (_, ent, Just idl) <- xrefs]
-      idlMap = Map.fromList idlEnts
-      xrefs' = (\(loc, ent, _) -> (loc, ent)) <$> xrefs in
-  extractIdlXRefs idlMap xrefs'
+splitXRefs xrefs = concat
+  [ PlainXRef (loc, ent) :
+    [IdlXRef (Code.xRefLocation_source loc, idl) | Just idl <- [mb_idl]]
+  | (loc, ent, mb_idl) <- xrefs]
 
 -- | extract idl xrefs from the regular ones
 extractIdlXRefs
