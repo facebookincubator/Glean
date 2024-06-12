@@ -54,6 +54,9 @@ module Glean.Query.Angle
   , bool
   , just
   , nothing
+  , (.+)
+  , zipp
+  , conc
   , display
   , RecordFields
   , SumFields
@@ -487,6 +490,23 @@ nothing = Angle $ pure (Variable DSL "nothing")
   | KeyValue (SourcePat_ v t) (SourcePat_ v t)
 -}
 
+-- Primitives
+
+(.+) :: (ToExpr a, ToExpr b, Result a ~ Nat, Result b ~ Nat)
+     => a -> b -> Angle Nat
+a .+ b =
+  Angle $ App DSL (Variable DSL "prim.addNat") <$>
+  sequence [gen $ toExpr a, gen $ toExpr b]
+
+zipp :: Angle [a] -> Angle [b] -> Angle [(a,b)]
+zipp a b =
+  Angle $ App DSL (Variable DSL "prim.zip") <$>
+  sequence [gen a, gen b]
+
+conc :: Angle [a] -> Angle [a] -> Angle [a]
+conc a b =
+  Angle $ App DSL (Variable DSL "prim.concat") <$>
+  sequence [gen a, gen b]
 
 -- -----------------------------------------------------------------------------
 -- Special queries
