@@ -129,6 +129,13 @@ angleDSL = dbTestCase $ \env repo -> do
     Left BadQuery{} -> True
     _ -> False
 
+  -- Test signatures around `elementsOf`. T192115813
+  r <- runQuery_ env repo $
+    query @Nat $
+      sig (elementsOf (array [nat 1, nat 2]))
+  print r
+  assertEqual "angle - sig elementsOf" r [Nat 1, Nat 2]
+
   -- Test "expanding"
   r <- runQuery_ env repo $
     keys $

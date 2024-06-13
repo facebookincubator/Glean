@@ -842,7 +842,7 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
     ArrayPrefix{} -> display opts pat
     Tuple{} -> display opts pat
     Struct{} -> display opts pat
-    ElementsOfArray{} -> display opts pat
+    ElementsOfArray{} -> parens $ display opts pat
     Set{} -> display opts pat
     All{} -> display opts pat
     Wildcard{} -> display opts pat
