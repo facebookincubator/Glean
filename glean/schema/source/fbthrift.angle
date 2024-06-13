@@ -348,6 +348,12 @@ predicate EnumerationType : {
   structuredAnnotations : [StructuredAnnotation],
 }
 
+predicate TypeDefType : {
+  alias : QualName,
+  type_ : TypeSpecification,
+  structuredAnnotations : [StructuredAnnotation],
+}
+
 predicate EnumValueDef : {
   name : EnumValue,
   value : IntegerLiteral,
