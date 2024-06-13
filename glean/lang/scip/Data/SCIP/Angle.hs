@@ -113,27 +113,31 @@ getOrSetFact sym = do
 scipToAngle
   :: Maybe SCIP.LanguageId
   -> Maybe FilePath
+  -> Maybe FilePath
   -> B.ByteString
   -> Aeson.Value
-scipToAngle mlang mPathPrefix scip = Aeson.Array $ V.fromList $
+scipToAngle mlang mPathPrefix mStripPrefix scip = Aeson.Array $ V.fromList $
     SCIP.generateSCIPJSON (SCIP.insertPredicateMap HashMap.empty result)
   where
     (result,_) = runState
-      (runTranslate mlang mPathPrefix scip) emptyState
+      (runTranslate mlang mPathPrefix mStripPrefix scip) emptyState
 
 -- | First pass, grab all the occurences with _role := Definition
 -- build up symbol string -> fact id for all defs
 runTranslate
   :: Maybe SCIP.LanguageId
   -> Maybe FilePath
+  -> Maybe FilePath
   -> B.ByteString
   -> Parse [SCIP.Predicate]
-runTranslate mlang mPathPrefix scip = case Proto.decodeMessage scip of
-  Left err -> error err
-  Right (v :: Scip.Index) -> do
-    a <- decodeScipMetadata (v ^. Scip.metadata)
-    bs <- mapM (decodeScipDoc mlang mPathPrefix) (v ^. Scip.documents)
-    return (a <> concat bs)
+runTranslate mlang mPathPrefix mStripPrefix scip =
+  case Proto.decodeMessage scip of
+    Left err -> error err
+    Right (v :: Scip.Index) -> do
+      a <- decodeScipMetadata (v ^. Scip.metadata)
+      bs <- mapM
+        (decodeScipDoc mlang mPathPrefix mStripPrefix) (v ^. Scip.documents)
+      return (a <> concat bs)
 
 --
 -- Each document has a repo-relative filepath, defs and refs (symbols and
@@ -143,14 +147,22 @@ runTranslate mlang mPathPrefix scip = case Proto.decodeMessage scip of
 decodeScipDoc
   :: Maybe SCIP.LanguageId
   -> Maybe FilePath
+  -> Maybe FilePath
   -> Scip.Document
   -> Parse [SCIP.Predicate]
-decodeScipDoc mlang mPathPrefix doc = do
+decodeScipDoc mlang mPathPrefix mStripPrefix doc = do
   srcFileId <- nextId
-  let filepath' = doc ^. Scip.relativePath
+  let filepath0 = doc ^. Scip.relativePath
+      -- first, strip any matching prefix
+      filepath1 = case Text.pack <$> mStripPrefix of
+        Nothing -> filepath0
+        Just prefix -> case Text.stripPrefix prefix filepath0 of
+          Nothing -> filepath0
+          Just suffix -> suffix
+      -- and maybe prepend a new prefix
       filepath = case Text.pack <$> mPathPrefix of
-        Nothing -> filepath'
-        Just prefix -> prefix <> filepath'
+        Nothing -> filepath1
+        Just prefix -> prefix <> filepath1
   setDefFact filepath srcFileId
   let srcFile = SCIP.srcFile srcFileId filepath
   langFileId <- nextId

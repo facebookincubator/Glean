@@ -55,7 +55,7 @@ indexer = Indexer {
         if mFile
           then pure indexerRoot
           else error "Neither --input nor --root are scip files"
-    val <- SCIP.processSCIP Nothing Nothing scipFile
+    val <- SCIP.processSCIP Nothing Nothing Nothing scipFile
     sendJsonBatches backend repo "scip" val
     derive backend repo
   }

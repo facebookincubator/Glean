@@ -56,7 +56,7 @@ runIndexer params@ScipIndexerParams{..} = do
     when scipWritesLocal $ do
         copyFile (repoDir </> "index.scip") scipFile
         removeFile (repoDir </> "index.scip")
-    processSCIP scipLanguage Nothing scipFile
+    processSCIP scipLanguage Nothing Nothing scipFile
 
 -- | Run a SCIP indexer on a repository, put scip dump output into outputFile
 runSCIPIndexer :: ScipIndexerParams -> FilePath -> IO ()
@@ -67,7 +67,12 @@ runSCIPIndexer ScipIndexerParams{..} outputFile =
     callProcess scipBinary args
 
 -- | Convert an scip protobufs encoded file into Glean lsif.angle JSON object
-processSCIP :: Maybe LanguageId -> Maybe FilePath -> FilePath -> IO Aeson.Value
-processSCIP mlang mPathPrefix scipFile = do
+processSCIP
+  :: Maybe LanguageId
+  -> Maybe FilePath
+  -> Maybe FilePath
+  -> FilePath
+  -> IO Aeson.Value
+processSCIP mlang mPathPrefix mStripPrefix scipFile = do
   logInfo $ "Using SCIP from " <> scipFile
-  scipToAngle mlang mPathPrefix <$> B.readFile scipFile
+  scipToAngle mlang mPathPrefix mStripPrefix <$> B.readFile scipFile

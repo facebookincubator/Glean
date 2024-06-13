@@ -25,7 +25,8 @@ data SCIP = SCIP
   { scipFile :: FilePath -- ^ input file
   , outputFile :: FilePath -- ^ output file
   , scipLanguage :: Maybe LanguageId -- ^ a default language if known
-  , scipPathPrefix :: Maybe FilePath -- ^ optional path to prefix file paths with
+  , scipPathPrefix :: Maybe FilePath -- ^ optional path to prefix file paths
+  , stripPathPrefix :: Maybe FilePath -- ^ optional prefix to drop from paths
   }
 
 options :: Parser SCIP
@@ -44,6 +45,10 @@ options = do
     metavar "PATH" <>
     value Nothing <>
     help "Path to prepend to file path data"
+  stripPathPrefix <- option (Just <$> str) $ long "strip-prefix" <>
+    metavar "PATH" <>
+    value Nothing <>
+    help "Path prefix to strip from path data"
 
   return SCIP{..}
 
@@ -66,5 +71,5 @@ main :: IO ()
 main = withOptions (info (helper <*> options) fullDesc) $ \SCIP{..} -> do
   scipExists <- doesFileExist scipFile
   when (not scipExists) $ error ("Could not find SCIP file at: " <> scipFile)
-  json <- SCIP.processSCIP scipLanguage scipPathPrefix scipFile
+  json <- SCIP.processSCIP scipLanguage scipPathPrefix stripPathPrefix scipFile
   Util.writeJSON outputFile json
