@@ -11,6 +11,7 @@ module Glean.Util.ToAngle
   ( ToAngle(..)
   , ToAngleFull(..)
   , Normalize(..)
+  , Prune(..)
   ) where
 
 import Glean
@@ -63,6 +64,10 @@ class ToAngleFull a where
 
 class Normalize a where
   normalize :: a -> a
+
+-- | Prune keys, leaving only fact IDs. Useful for hashing values cheaply.
+class Prune a where
+  prune :: a -> a
 
 -- | Generically get an Angle key query
 mkKey :: Glean.Predicate p => p -> Angle (Glean.KeyType p)
@@ -191,12 +196,50 @@ instance ToAngle Hack.Declaration where
     Hack.Declaration_typedef_ x -> alt @"typedef_" (mkKey x)
     Hack.Declaration_EMPTY -> error "unknown Declaration"
 
+instance Prune Hack.Declaration where
+  prune d = case d of
+    Hack.Declaration_classConst x ->
+      Hack.Declaration_classConst (mkFact (getId x) Nothing Nothing)
+    Hack.Declaration_container x ->
+      Hack.Declaration_container (prune x)
+    Hack.Declaration_enumerator x ->
+      Hack.Declaration_enumerator (mkFact (getId x) Nothing Nothing)
+    Hack.Declaration_function_ x ->
+      Hack.Declaration_function_ (mkFact (getId x) Nothing Nothing)
+    Hack.Declaration_globalConst x ->
+      Hack.Declaration_globalConst (mkFact (getId x) Nothing Nothing)
+    Hack.Declaration_method x ->
+      Hack.Declaration_method (mkFact (getId x) Nothing Nothing)
+    Hack.Declaration_module x ->
+      Hack.Declaration_module (mkFact (getId x) Nothing Nothing)
+    Hack.Declaration_namespace_ x ->
+      Hack.Declaration_namespace_ (mkFact (getId x) Nothing Nothing)
+    Hack.Declaration_property_ x ->
+      Hack.Declaration_property_ (mkFact (getId x) Nothing Nothing)
+    Hack.Declaration_typeConst x ->
+      Hack.Declaration_typeConst (mkFact (getId x) Nothing Nothing)
+    Hack.Declaration_typedef_ x ->
+      Hack.Declaration_typedef_ (mkFact (getId x) Nothing Nothing)
+    Hack.Declaration_EMPTY -> error "unknown Declaration"
+
 instance ToAngle Hack.ContainerDeclaration where
   toAngle e = case e of
     Hack.ContainerDeclaration_class_ x -> alt @"class_" (mkKey x)
     Hack.ContainerDeclaration_enum_ x -> alt @"enum_" (mkKey x)
     Hack.ContainerDeclaration_interface_ x -> alt @"interface_" (mkKey x)
     Hack.ContainerDeclaration_trait x -> alt @"trait" (mkKey x)
+    Hack.ContainerDeclaration_EMPTY -> error "unknown ContainerDeclaration"
+
+instance Prune Hack.ContainerDeclaration where
+  prune e = case e of
+    Hack.ContainerDeclaration_class_ x ->
+      Hack.ContainerDeclaration_class_ (mkFact (getId x) Nothing Nothing)
+    Hack.ContainerDeclaration_enum_ x ->
+      Hack.ContainerDeclaration_enum_ (mkFact (getId x) Nothing Nothing)
+    Hack.ContainerDeclaration_interface_ x ->
+      Hack.ContainerDeclaration_interface_ (mkFact (getId x) Nothing Nothing)
+    Hack.ContainerDeclaration_trait x ->
+      Hack.ContainerDeclaration_trait (mkFact (getId x) Nothing Nothing)
     Hack.ContainerDeclaration_EMPTY -> error "unknown ContainerDeclaration"
 
 -- Haskell
