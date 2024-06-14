@@ -286,25 +286,13 @@ predicate FileEntityXRefRangeSpans:
       (codemarkup.scip.ScipFileEntityXRefLocations { File, XRef, E };
        { scip = E } = Entity) |
       (codemarkup.java.JavalFileEntityXRefLocations { File, XRef, E };
-      { java = E } = Entity) |
+       { java = E } = Entity) |
       (codemarkup.kotlin.KotlinFileEntityXRefLocations { File, XRef, E };
-      { kotlin = E } = Entity) |
+       { kotlin = E } = Entity) |
       (codemarkup.csharp.CSharpFileEntityXRefLocations { File, XRef, E };
-      { csharp = E } = Entity);
+       { csharp = E } = Entity);
       { source = RangeSpan} = XRef
     )
-
-# Like FileEntityXRefRangeSpans, but only returns spans and not ranges.
-# Deprecated, use FileEntityXRefRangeSpans or language-specific
-# predicates instead.
-predicate FileEntityXRefSpans:
-  {
-    file: src.File,
-    span: src.ByteSpan,
-    entity: code.Entity,
-  }
-  { File, Span, Entity } where
-    FileEntityXRefRangeSpans { File, { span = Span }, Entity }
 
 # Finding xrefs. All references in a file, and their kinds
 predicate FileEntityXRefKinds:
@@ -843,7 +831,7 @@ predicate EntityDataAvailable:  src.File
       # double negation is used to check for existence
       # (even if the Angle compiler could notice and optimize)
       !(!(codemarkup.FileEntityLocations { file = File } |
-          codemarkup.FileEntityXRefSpans {file = File }
+          codemarkup.FileEntityXRefRangeSpans {file = File }
         ))
 
 # end
