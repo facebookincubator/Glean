@@ -34,8 +34,6 @@ import qualified Glean.Glass.Search.Flow ({- instances -})
 import qualified Glean.Glass.Search.GraphQL ({- instances -})
 import qualified Glean.Glass.Search.Hack ({- instances -})
 import qualified Glean.Glass.Search.Haskell ({- instances -})
-import qualified Glean.Glass.Search.Java ({- instances -})
-import qualified Glean.Glass.Search.Kotlin ({- instances -})
 import qualified Glean.Glass.Search.LSIF ({- instances -})
 import qualified Glean.Glass.Search.Pp ({- instances -})
 import qualified Glean.Glass.Search.Python ({- instances -})
@@ -72,9 +70,7 @@ searchEntity lang toks = case lang of
   Language_GraphQL -> fmap Code.Entity_graphql <$> Search.symbolSearch toks
   Language_Hack -> fmap Code.Entity_hack <$> Search.symbolSearch toks
   Language_Haskell -> fmap Code.Entity_hs <$> Search.symbolSearch toks
-  Language_Java -> fmap Code.Entity_java <$> Search.symbolSearch toks
   Language_JavaScript -> fmap Code.Entity_flow <$> Search.symbolSearch toks
-  Language_Kotlin -> fmap Code.Entity_kotlin <$> Search.symbolSearch toks
   Language_PreProcessor -> fmap Code.Entity_pp <$> Search.symbolSearch toks
   Language_Python -> fmap Code.Entity_python <$> Search.symbolSearch toks
   Language_Thrift -> fmap Code.Entity_fbthrift <$> Search.symbolSearch toks
@@ -82,6 +78,8 @@ searchEntity lang toks = case lang of
   Language_Rust -> fmap Code.Entity_scip <$> Search.symbolSearch toks
   Language_Go -> fmap Code.Entity_scip <$> Search.symbolSearch toks
   Language_TypeScript -> fmap Code.Entity_scip <$> Search.symbolSearch toks
+  Language_Java -> fmap Code.Entity_scip <$> Search.symbolSearch toks
+  Language_Kotlin -> fmap Code.Entity_scip <$> Search.symbolSearch toks
   lang ->
     return $ None $ "searchEntity: language not supported: " <> toShortCode lang
 
