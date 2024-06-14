@@ -22,7 +22,9 @@ import Data.Hashable (hash)
 import Data.List (stripPrefix)
 import Facebook.Service ( runFacebookService' )
 import Facebook.Fb303 ( fb303Handler, withFb303 )
+import System.Timeout
 import Thrift.Channel (Header)
+import Thrift.Protocol.ApplicationException.Types as Thrift
 #ifdef FBTHRIFT
 import qualified Thrift.Server.CppServer as Thrift
 #else
@@ -32,7 +34,7 @@ import Util.EventBase ( withEventBaseDataplane )
 import Util.Log.Text ( logInfo )
 import Logger.IO (withLogger)
 
-import Control.Exception (SomeException, fromException)
+import Control.Exception (SomeException, fromException, throwIO)
 import Data.Text (Text)
 import Data.Text.Encoding (encodeUtf8)
 import Options.Applicative (Parser)
@@ -179,7 +181,8 @@ glassHandler :: Glass.Env' GlassTraceWithId -> GlassServiceCommand r -> IO r
 glassHandler env0 cmd =
   withRequestTracing env0 $ \env1 ->
   withCurrentRepoMapping env1 $ \env ->
-  tracing env $ case cmd of
+  tracing env $
+  withTimeout $ case cmd of
   SuperFacebookService r -> fb303Handler (Glass.fb303 env) r
 
   -- Listing symbols in files
@@ -220,3 +223,18 @@ glassHandler env0 cmd =
     tracing env
       | SuperFacebookService{} <- cmd = id
       | otherwise = traceMsg (tracer env) (TraceCommand cmd)
+
+    withTimeout act = do
+      -- workaround for lack of request cancellation on client-side timeout
+      result <- timeout clientTimeoutMs act
+      case result of
+        Nothing ->
+          throwIO $
+            Thrift.ApplicationException
+              "glass server timeout"
+                Thrift.ApplicationExceptionType_Timeout
+        Just r -> return r
+
+    clientTimeoutMs =
+      -- TODO get the client timeout from the Thrift request
+      30 * 1000000
