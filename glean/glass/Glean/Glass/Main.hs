@@ -179,8 +179,7 @@ glassHandler :: Glass.Env' GlassTraceWithId -> GlassServiceCommand r -> IO r
 glassHandler env0 cmd =
   withRequestTracing env0 $ \env1 ->
   withCurrentRepoMapping env1 $ \env ->
-
-  traceMsg (tracer env) (TraceCommand cmd) $ case cmd of
+  tracing env $ case cmd of
   SuperFacebookService r -> fb303Handler (Glass.fb303 env) r
 
   -- Listing symbols in files
@@ -216,3 +215,8 @@ glassHandler env0 cmd =
   -- C++/LSP specific
   FileIncludeLocations r opts -> Handler.fileIncludeLocations env r opts
   ClangUSRToDefinition r opts -> fst <$> Handler.clangUSRToDefinition env r opts
+
+  where
+    tracing env
+      | SuperFacebookService{} <- cmd = id
+      | otherwise = traceMsg (tracer env) (TraceCommand cmd)
