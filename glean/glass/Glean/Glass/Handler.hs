@@ -123,6 +123,7 @@ import Glean.Glass.Search as Search
       SearchEntity(..),
       SearchResult(Many, None, One, rest, message, initial),
       searchEntity,
+      searchEntityLocation,
       prefixSearchEntity )
 import Glean.Glass.Utils
 import Glean.Glass.Attributes.SymbolKind
@@ -253,7 +254,7 @@ describeSymbol env@Glass.Env{..} symId opts =
   withSymbol "describeSymbol" env opts symId $
     \gleanDBs dbInfo (scmRepo, lang, toks) ->
       backendRunHaxl GleanBackend{..} env $ do
-        r <- Search.searchEntity lang toks
+        r <- Search.searchEntityLocation lang toks
         (first :| rest, err) <- case r of
           None t -> throwM (ServerException t)
           One e -> return (e :| [], Nothing)
@@ -879,8 +880,7 @@ symbolToAngleEntities lang toks = do
   let
     eithers =
       NonEmpty.map
-        (\SearchEntity{entityRepo, decl} ->
-          (entityRepo,) <$> entityToAngle (fst4 decl))
+        (\SearchEntity{entityRepo, decl} ->(entityRepo,) <$> entityToAngle decl)
         entities
 
   return $ case allOrError eithers of
@@ -896,7 +896,7 @@ withEntity
   -> [Text]
   -> Glean.ReposHaxl u w (a, Maybe ErrorLogger)
 withEntity f scsrepo lang toks = do
-  r <- Search.searchEntity lang toks
+  r <- Search.searchEntityLocation lang toks
   (SearchEntity{entityRepo, decl=(_,file,rangespan,_)}, err) <- case r of
     None t -> throwM (ServerException t)
     One e -> return (e, Nothing)
@@ -1766,7 +1766,7 @@ searchFirstEntity
   -> [Text]
   -> Glean.ReposHaxl u w (SearchEntity (ResultLocation Code.Entity))
 searchFirstEntity lang toks = do
-  r <- Search.searchEntity lang toks
+  r <- Search.searchEntityLocation lang toks
   case r of
     None t -> throwM (ServerException t)
     One e -> return e

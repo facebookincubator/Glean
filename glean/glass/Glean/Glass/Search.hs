@@ -8,6 +8,7 @@
 
 module Glean.Glass.Search
   ( searchEntity
+  , searchEntityLocation
   , SearchResult(..)
   , SearchEntity(..)
   , CodeEntityLocation(..)
@@ -43,6 +44,7 @@ import qualified Glean.Glass.Search.Thrift ({- instances -})
 import Glean.Glass.Types (ServerException(ServerException))
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Haxl.Repos as Glean
+import Glean.Glass.Utils ( fst4 )
 
 --
 -- | Entity search: decodes a symbol id to a code.Entity fact
@@ -60,11 +62,11 @@ import qualified Glean.Haxl.Repos as Glean
 --
 -- We log the duplicates to glass_errors
 --
-searchEntity
+searchEntityLocation
   :: Language
   -> [Text]
   -> Glean.ReposHaxl u w (SearchResult (ResultLocation Code.Entity))
-searchEntity lang toks = case lang of
+searchEntityLocation lang toks = case lang of
   Language_Buck ->
     fmap (mapResultLocation Code.Entity_buck) <$> Search.symbolSearch toks
   Language_Cpp ->
@@ -98,6 +100,15 @@ searchEntity lang toks = case lang of
     fmap (mapResultLocation Code.Entity_scip) <$> Search.symbolSearch toks
   lang ->
     return $ None $ "searchEntity: language not supported: " <> toShortCode lang
+
+searchEntity
+  :: Language
+  -> [Text]
+  -> Glean.ReposHaxl u w (SearchResult Code.Entity)
+searchEntity lang toks = case lang of
+  Language_Thrift -> fmap Code.Entity_fbthrift <$> Search.symbolSearch toks
+  _ -> fmap fst4 <$> searchEntityLocation lang toks
+
 
 prefixSearchEntity
   :: Language
