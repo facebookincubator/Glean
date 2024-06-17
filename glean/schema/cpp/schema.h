@@ -433,9 +433,9 @@ struct MethodDecl;
 
 struct PropertyDecl;
 
-struct ClassProperties;
+struct ClassPropertyMembers;
 
-struct ClassMethods;
+struct ClassMethodMembers;
 
 struct ClassDef;
 
@@ -8022,25 +8022,25 @@ struct PropertyDecl : Predicate<std::tuple<Fact<SymbolName>, Container>> {
   }
 }; // struct PropertyDecl
 
-struct ClassProperties : Predicate<std::tuple<Fact<ClassDecl>, std::vector<Fact<ClassDecl>>>> {
+struct ClassPropertyMembers : Predicate<std::tuple<Fact<SparkSymbol>, std::vector<Fact<SparkSymbol>>>> {
   static const char* GLEAN_name() {
-    return "spark.ts.ClassProperties";
+    return "spark.ts.ClassPropertyMembers";
   }
 
   static constexpr size_t GLEAN_version() {
      return 5;
   }
-}; // struct ClassProperties
+}; // struct ClassPropertyMembers
 
-struct ClassMethods : Predicate<std::tuple<Fact<ClassDecl>, std::vector<Fact<ClassDecl>>>> {
+struct ClassMethodMembers : Predicate<std::tuple<Fact<SparkSymbol>, std::vector<Fact<SparkSymbol>>>> {
   static const char* GLEAN_name() {
-    return "spark.ts.ClassMethods";
+    return "spark.ts.ClassMethodMembers";
   }
 
   static constexpr size_t GLEAN_version() {
      return 5;
   }
-}; // struct ClassMethods
+}; // struct ClassMethodMembers
 
 struct ClassDef : Predicate<std::tuple<Fact<ClassDecl>, bool, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Name>>>, facebook::glean::cpp::schema::Src::FileLocation, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Doc>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Type>>>, std::vector<Fact<ExampleCode>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<ClassDecl>>>>> {
   static const char* GLEAN_name() {
@@ -30749,8 +30749,8 @@ template<> struct SCHEMA::index<facebook::glean::cpp::schema::Spark::Ts::Doc> { 
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Spark::Ts::Contains> { static constexpr size_t value = 139; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Spark::Ts::MethodDecl> { static constexpr size_t value = 140; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Spark::Ts::PropertyDecl> { static constexpr size_t value = 141; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Spark::Ts::ClassProperties> { static constexpr size_t value = 142; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Spark::Ts::ClassMethods> { static constexpr size_t value = 143; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Spark::Ts::ClassPropertyMembers> { static constexpr size_t value = 142; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Spark::Ts::ClassMethodMembers> { static constexpr size_t value = 143; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Spark::Ts::ClassDef> { static constexpr size_t value = 144; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Spark::Ts::ClassDecl> { static constexpr size_t value = 145; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Spark::Ts::ChangeKeyVersion> { static constexpr size_t value = 146; };
@@ -32045,8 +32045,8 @@ template<> struct SCHEMA::predicate<138> { using type = facebook::glean::cpp::sc
 template<> struct SCHEMA::predicate<139> { using type = facebook::glean::cpp::schema::Spark::Ts::Contains; };
 template<> struct SCHEMA::predicate<140> { using type = facebook::glean::cpp::schema::Spark::Ts::MethodDecl; };
 template<> struct SCHEMA::predicate<141> { using type = facebook::glean::cpp::schema::Spark::Ts::PropertyDecl; };
-template<> struct SCHEMA::predicate<142> { using type = facebook::glean::cpp::schema::Spark::Ts::ClassProperties; };
-template<> struct SCHEMA::predicate<143> { using type = facebook::glean::cpp::schema::Spark::Ts::ClassMethods; };
+template<> struct SCHEMA::predicate<142> { using type = facebook::glean::cpp::schema::Spark::Ts::ClassPropertyMembers; };
+template<> struct SCHEMA::predicate<143> { using type = facebook::glean::cpp::schema::Spark::Ts::ClassMethodMembers; };
 template<> struct SCHEMA::predicate<144> { using type = facebook::glean::cpp::schema::Spark::Ts::ClassDef; };
 template<> struct SCHEMA::predicate<145> { using type = facebook::glean::cpp::schema::Spark::Ts::ClassDecl; };
 template<> struct SCHEMA::predicate<146> { using type = facebook::glean::cpp::schema::Spark::Ts::ChangeKeyVersion; };
