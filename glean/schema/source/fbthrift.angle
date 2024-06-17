@@ -110,6 +110,10 @@ predicate Constant : { name : QualName }
 # could become a full definition
 predicate EnumValue : { enum_ : NamedType, name : Identifier }
 
+type FieldKind = enum { struct_ | union_ | exception_ }
+
+predicate FieldDecl : { qname : QualName, kind: FieldKind, name : Identifier }
+
 ################################################################################
 # Cross-references
 
@@ -124,6 +128,7 @@ type XRefTarget =
     constant : Constant |
     enumValue : EnumValue |
     function_ : FunctionName |
+    field : FieldDecl |
   }
 
 # Thrift internal cross-reference target in a file

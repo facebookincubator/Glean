@@ -404,6 +404,7 @@ instance ToAngle Fbthrift.XRefTarget where
   toAngle (Fbthrift.XRefTarget_constant x) = alt @"constant" (mkKey x)
   toAngle (Fbthrift.XRefTarget_enumValue x) = alt @"enumValue" (mkKey x)
   toAngle (Fbthrift.XRefTarget_function_ x) = alt @"function_" (mkKey x)
+  toAngle (Fbthrift.XRefTarget_field x) = alt @"field" (mkKey x)
   toAngle Fbthrift.XRefTarget_EMPTY = error "unknown Entity"
 
 -- Java

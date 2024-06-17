@@ -34,6 +34,7 @@ instance Symbol Thrift.XRefTarget where
     Thrift.XRefTarget_constant constant -> toSymbolPredicate constant
     Thrift.XRefTarget_enumValue enumvalue -> toSymbolPredicate enumvalue
     Thrift.XRefTarget_function_ fn -> toSymbolPredicate fn
+    Thrift.XRefTarget_field fn -> toSymbolPredicate fn
     Thrift.XRefTarget_EMPTY -> return []
 
 instance Symbol Src.File where
@@ -48,6 +49,10 @@ instance Symbol Thrift.NamedDecl_key where
 
 instance Symbol Thrift.EnumValue_key where
   toSymbol (Thrift.EnumValue_key (Thrift.NamedType qualname _kind) name) =
+    qualname <:> name
+
+instance Symbol Thrift.FieldDecl_key where
+  toSymbol (Thrift.FieldDecl_key qualname _kind name) =
     qualname <:> name
 
 instance Symbol Thrift.Constant_key where
@@ -93,6 +98,7 @@ instance ToQName Thrift.XRefTarget where
     Thrift.XRefTarget_constant x -> Glean.keyOf x >>= toQName
     Thrift.XRefTarget_enumValue x -> Glean.keyOf x >>= toQName
     Thrift.XRefTarget_function_ x -> Glean.keyOf x >>= toQName
+    Thrift.XRefTarget_field x -> Glean.keyOf x >>= toQName
     Thrift.XRefTarget_EMPTY -> return $ Left "unknown thrift.Declaration"
 
 instance ToQName Thrift.NamedDecl_key where
@@ -122,6 +128,13 @@ instance ToQName Thrift.Constant_key where
 
 instance ToQName Thrift.EnumValue_key where
   toQName (Thrift.EnumValue_key (Thrift.NamedType qname _kind) ident) = do
+    Thrift.QualName_key _file parent <- Glean.keyOf qname
+    name <- Glean.keyOf ident
+    parentName <- Glean.keyOf parent
+    return $ Right (Name name, Name parentName)
+
+instance ToQName Thrift.FieldDecl_key where
+  toQName (Thrift.FieldDecl_key qname _kind ident) = do
     Thrift.QualName_key _file parent <- Glean.keyOf qname
     name <- Glean.keyOf ident
     parentName <- Glean.keyOf parent

@@ -33,6 +33,8 @@ newtype Identifier = Identifier Text
 
 data NamedKind = Typedef | Enum | Struct | Union
 
+data FieldKind = FUnion | FStruct | FException
+
 data QualName = QualName File Identifier
 
 data Declaration
@@ -43,6 +45,7 @@ data Declaration
   | Constant QualName
   | Function QualName Identifier
   | EnumValue QualName NamedKind Identifier
+  | FieldDecl QualName FieldKind Identifier
 
 -- The returned DocStream is annotated with SymbolId (links from sig
 -- tokens to their definition). This isn't supported yet for thrift.
@@ -71,6 +74,12 @@ ppKind kind = case kind of
   Struct -> "struct"
   Union -> "union"
 
+ppFieldKind :: FieldKind -> Doc ()
+ppFieldKind kind = case kind of
+  FUnion -> "union"
+  FStruct -> "struct"
+  FException -> "exception"
+
 ppFile :: File -> Doc ()
 ppFile (File f) = pretty f
 
@@ -91,6 +100,8 @@ prettyDecl _ _sym (IncludeFile file) = "include" <+> ppFile file
 prettyDecl _ _sym (Named qName kind) = ppKind kind <+> ppQualName qName
 prettyDecl _ _sym (Function qName id) = "function" <+> ppScopedId qName id
 prettyDecl _ _sym (EnumValue qName _kd id) = "enum value" <+> ppScopedId qName id
+prettyDecl _ _sym (FieldDecl qName kind id) =
+  ppFieldKind kind <+> "field" <+> ppScopedId qName id
 
 fromFile :: Src.File -> Glean.RepoHaxl u w File
 fromFile file = File <$> Glean.keyOf file
@@ -102,6 +113,13 @@ fromKind kind = case kind of
   Fbthrift.NamedKind_struct_ -> Struct
   Fbthrift.NamedKind_union_ -> Union
   Fbthrift.NamedKind__UNKNOWN _ -> error "unexpected NamedKind"
+
+fromFieldKind :: Fbthrift.FieldKind -> FieldKind
+fromFieldKind kind = case kind of
+  Fbthrift.FieldKind_exception_ -> FException
+  Fbthrift.FieldKind_struct_ -> FStruct
+  Fbthrift.FieldKind_union_ -> FUnion
+  Fbthrift.FieldKind__UNKNOWN _ -> error "unexpected FieldKind"
 
 fromQualName :: Fbthrift.QualName_key -> Glean.RepoHaxl u w QualName
 fromQualName (Fbthrift.QualName_key file id) = do
@@ -138,6 +156,12 @@ fromEnumValue (Fbthrift.EnumValue_key enum name) = do
   id <- Identifier <$> Glean.keyOf name
   return $ EnumValue qualName (fromKind kind) id
 
+fromFieldDecl :: Fbthrift.FieldDecl_key -> Glean.RepoHaxl u w Declaration
+fromFieldDecl (Fbthrift.FieldDecl_key qname kind name) = do
+  qualName <- fromQualName =<< Glean.keyOf qname
+  id <- Identifier <$> Glean.keyOf name
+  return $ FieldDecl qualName (fromFieldKind kind) id
+
 fromFunctionName :: Fbthrift.FunctionName_key -> Glean.RepoHaxl u w Declaration
 fromFunctionName (Fbthrift.FunctionName_key service name) = do
   Fbthrift.ServiceName_key serviceName <- Glean.keyOf service
@@ -167,4 +191,6 @@ fromAngleDeclaration d = case d of
     Just <$> (fromEnumValue =<< Glean.keyOf enumValue)
   Fbthrift.XRefTarget_function_ functionName  ->
     Just <$> (fromFunctionName =<< Glean.keyOf functionName)
+  Fbthrift.XRefTarget_field fieldDecl  ->
+    Just <$> (fromFieldDecl =<< Glean.keyOf fieldDecl)
   Fbthrift.XRefTarget_EMPTY -> return Nothing
