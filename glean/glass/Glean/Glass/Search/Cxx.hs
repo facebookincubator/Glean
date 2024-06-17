@@ -574,39 +574,51 @@ namespaceQName ns n =
     field @"parent" (namespaceParentQName ns)
   end
 
-functionQName :: [Text] -> Text -> Angle Cxx.FunctionQName_key
-functionQName ns ".ctor" = -- hard coded tokens. fix.
+functionQName :: Angle Cxx.Scope -> Text -> Angle Cxx.FunctionQName_key
+functionQName scope_ns ".ctor" = -- hard coded tokens. fix.
   rec $
     field @"name" (alt @"constructor" wild) $
-    field @"scope" (scopeQ ns)
+    field @"scope" scope_ns
   end
-functionQName ns ".dtor" = -- hard coded tokens
+functionQName scope_ns ".dtor" = -- hard coded tokens
   rec $
     field @"name" (alt @"destructor" wild) $
-    field @"scope" (scopeQ ns)
+    field @"scope" scope_ns
   end
-functionQName ns n =
+functionQName scope_ns n =
   rec $
     field @"name" (functionName n) $ -- i suspect we have params to constrs here
-    field @"scope" (scopeQ ns)
+    field @"scope" scope_ns
   end
 
 --
 -- Scope queries. There are lots of alternatives, recursively, unfortunately
 --
 scopeQ :: [Text] -> Angle Cxx.Scope
-scopeQ [] = alt @"global_" wild {- builtin.Unit -}
-scopeQ _ss@(n:ns) =
+scopeQ [] = alt @"global_" wild
+scopeQ (n:ns) =
   alt @"namespace_" (namespaceQName ns n)
-  .|
-  alt @"recordWithAccess" (rec $
-      field @"record" (rec $ -- anonymous QName
-        field @"name" (string n) $
-        field @"scope" (scopeQ ns) -- I suspect this is too generic
-      end)
-    end)
-  .|
-  alt @"local" (functionQName ns n) -- too broad, will yield local (global ..)
+  .| (
+    var $ \scope_ns ->
+      let
+        result =
+          alt @"recordWithAccess" (rec $
+            field @"record" (rec $ -- anonymous QName
+              field @"name" (string n) $
+              field @"scope" scope_ns -- I suspect this is too generic
+            end) $
+            field @"access" (
+              enum Cxx.Access_Public .|
+              enum Cxx.Access_Protected .|
+              enum Cxx.Access_Private
+            )
+          end)
+          .|
+          alt @"local" (functionQName scope_ns n)
+            -- too broad, will yield local (global ..)
+      in
+      result `where_` [scopeQ ns .= scope_ns]
+  )
 
 --
 -- cxx1.Signature type only of param queries
