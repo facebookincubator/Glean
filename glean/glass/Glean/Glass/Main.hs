@@ -179,6 +179,7 @@ withRequestTracing env k = do
 --
 glassHandler :: Glass.Env' GlassTraceWithId -> GlassServiceCommand r -> IO r
 glassHandler env0 cmd =
+  Glass.withAllocationLimit env0 $
   withRequestTracing env0 $ \env1 ->
   withCurrentRepoMapping env1 $ \env ->
   tracing env $

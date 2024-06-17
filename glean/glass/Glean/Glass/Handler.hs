@@ -439,19 +439,20 @@ searchSymbol
       :: RepoName
       -> Set GleanDBName
       -> IO (Query.RepoSearchResult, Maybe ErrorLogger)
-    searchSymbolsIn repo dbs = case nonEmpty (Set.toList dbs) of
-      Nothing -> pure ([], Nothing)
-      Just names ->
-        withGleanDBs "searchSymbol" env opts req repo names $
-          \gleanDBs dbInfo -> do
-            res <- backendRunHaxl GleanBackend{..} env $
-              Glean.queryAllRepos $ do
-                let scmRevs = scmRevisions dbInfo
-                res <- mapM (runSearch querySpec
-                              repo scmRevs mlimitInner terse sString) searchQs
-                return (nubOrd (concat res))
-                -- remove latter duplicates in n*log n
-            pure (res, Nothing)
+    searchSymbolsIn repo dbs = Glass.withAllocationLimit env $
+      case nonEmpty (Set.toList dbs) of
+        Nothing -> pure ([], Nothing)
+        Just names ->
+          withGleanDBs "searchSymbol" env opts req repo names $
+            \gleanDBs dbInfo -> do
+              res <- backendRunHaxl GleanBackend{..} env $
+                Glean.queryAllRepos $ do
+                  let scmRevs = scmRevisions dbInfo
+                  res <- mapM (runSearch querySpec
+                                repo scmRevs mlimitInner terse sString) searchQs
+                  return (nubOrd (concat res))
+                  -- remove latter duplicates in n*log n
+              pure (res, Nothing)
 
     -- In lucky mode, we avoid flattening, instead selecting from the first
     -- unique result found in priority order. We don't de-dup as we go.
@@ -1111,7 +1112,8 @@ fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
             return (Just (isJust wanted && isJust mine && wanted == mine))
 
     getFromGlean =
-      fetchSymbolsAndAttributesGlean env dbInfo req opts be mlang
+      Glass.withAllocationLimit env $
+        fetchSymbolsAndAttributesGlean env dbInfo req opts be mlang
 
 -- Find all references and definitions in a file that might be in a set of repos
 fetchDocumentSymbols

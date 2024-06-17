@@ -44,6 +44,7 @@ configParser = do
   sourceControl <- pure (const (return (Some NilSourceControl)))
   haxlState <- pure (const (return Haxl.stateEmpty))
   tracer <- pure mempty
+  allocationLimit <- pure (return Nothing)
   return $ Glass.Config{
         configKey = Glass.defaultConfigKey,
         welcomeMessage = pure (pure . defaultWelcomeMessage),

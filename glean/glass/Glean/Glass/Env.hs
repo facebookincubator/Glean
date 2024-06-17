@@ -15,20 +15,24 @@ module Glean.Glass.Env
     setSourceControl,
     setHaxlState,
     setTracer,
+    setAllocationLimit,
     updateWelcomeMessage,
 
     -- * Session resources
     Env,
     Env'(..),
     IndexBackend(..),
-    setUseSnapshotsForSymbolsList
+    setUseSnapshotsForSymbolsList,
+    withAllocationLimit,
   ) where
 
+import Data.Int
 import Data.Text (Text)
 
 import Facebook.Fb303 (Fb303State)
 import qualified Haxl.Core as Haxl
 import Logger.IO (Logger)
+import Util.AllocLimit
 import Util.EventBase (EventBaseDataplane)
 import Util.STM ( TVar )
 
@@ -63,6 +67,7 @@ data Config trace = Config
   , tracer :: Tracer trace
   , welcomeMessage :: forall a. EventBaseDataplane -> Config a -> IO Text
   , useSnapshotsForSymbolsList :: IO Bool
+  , allocationLimit :: IO (Maybe Int64)
   }
 
 setSnapshotBackend
@@ -87,6 +92,9 @@ setTracer tracer' Config{..}= Config{ tracer = tracer', .. }
 setUseSnapshotsForSymbolsList :: IO Bool -> Config trace -> Config trace
 setUseSnapshotsForSymbolsList check Config{..} =
   Config { useSnapshotsForSymbolsList = check, .. }
+
+setAllocationLimit :: IO (Maybe Int64) -> Config a -> Config a
+setAllocationLimit l config = config { allocationLimit = l }
 
 updateWelcomeMessage
   :: ( forall a. (EventBaseDataplane -> Config a -> IO Text)
@@ -114,7 +122,13 @@ data Env' trace = Env
   , haxlState :: Haxl.StateStore
   , tracer :: Tracer trace
   , useSnapshotsForSymbolsList :: IO Bool
+  , allocationLimit :: IO (Maybe Int64)
   }
 
 -- | A backend to create incremental databases
 newtype IndexBackend = IndexBackend (Maybe ThriftBackend)
+
+withAllocationLimit :: Env' t -> IO a -> IO a
+withAllocationLimit Env{..} act = do
+  l <- allocationLimit
+  maybe id limitAllocsThrow l act
