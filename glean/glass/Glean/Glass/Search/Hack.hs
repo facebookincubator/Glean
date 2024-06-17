@@ -28,10 +28,11 @@ import qualified Glean.Schema.Src.Types as Src
 
 import Glean.Glass.Utils (searchWithLimit)
 
-instance Search Hack.Entity where
-  symbolSearch toks = fmap Hack.Entity_decl <$> symbolSearch toks
+instance Search (ResultLocation Hack.Entity) where
+  symbolSearch toks =
+    fmap (mapResultLocation Hack.Entity_decl) <$> symbolSearch toks
 
-instance Search Hack.Declaration where
+instance Search (ResultLocation Hack.Declaration) where
   symbolSearch t@("ns":[name]) = searchSymbolId t $ searchNamespace [] name
   symbolSearch ("ns":t@(_:_:_)) = do -- 2 or more path elements
     let name:rest = reverse t

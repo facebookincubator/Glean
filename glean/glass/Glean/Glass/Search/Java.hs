@@ -33,13 +33,17 @@ import qualified Glean.Schema.JavakotlinAlpha.Types as JavaKotlin
 import qualified Glean.Schema.SymbolidJava.Types as Java
 import qualified Glean.Schema.Src.Types as Src
 
-instance Search Java.Entity where
+instance Search (ResultLocation Java.Entity) where
   symbolSearch toks = case toks of
     [] -> return $ None "Java.symbolSearch: empty"
     [_] -> return $ None "Java.symbolSearch: singleton: not a symbolid"
     (x:y:rest) -> runQuery x y rest
 
-runQuery :: Text -> Text -> [Text] -> ReposHaxl u w (SearchResult Java.Entity)
+runQuery ::
+  Text
+  -> Text
+  -> [Text]
+  -> ReposHaxl u w (SearchResult (ResultLocation Java.Entity))
 runQuery x y toks =
   let q = parse x y (map tokenize toks) in
   case q of

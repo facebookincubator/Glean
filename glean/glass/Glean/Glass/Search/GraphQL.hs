@@ -29,7 +29,7 @@ import qualified Glean.Schema.Src.Types as Src
 -- Recover GraphQL entities from their Symbol ID encoding
 --
 
-instance Search GraphQL.Entity where
+instance Search (ResultLocation GraphQL.Entity) where
   symbolSearch toks
     | [name] <- toks -- fragment
     = searchSymbolId toks $ searchFragment name

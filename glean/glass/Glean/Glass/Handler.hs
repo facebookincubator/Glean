@@ -102,6 +102,7 @@ import qualified Glean.Index.GleanIndexingService.Client as IndexingService
 import Glean.Index.GleanIndexingService.Client ( GleanIndexingService )
 import Glean.Impl.ThriftService ( ThriftService )
 import Glean.Glass.RepoMapping ( supportsCxxDeclarationSources )
+import Glean.Glass.Search.Class ( ResultLocation )
 
 import qualified Glean.Glass.Env as Glass
 
@@ -269,8 +270,10 @@ describeSymbol env@Glass.Env{..} symId opts =
         let !desc = foldr combineDescriptions desc0 descN
         pure (desc, err)
 
-toCodeEntityLoc :: SearchEntity Code.Entity -> CodeEntityLocation
-toCodeEntityLoc SearchEntity{..} = CodeEntityLocation decl file rangespan name
+toCodeEntityLoc ::
+  SearchEntity (ResultLocation Code.Entity) -> CodeEntityLocation
+toCodeEntityLoc SearchEntity{decl = (decl, file, rangespan, name)} =
+  CodeEntityLocation decl file rangespan name
 
 -- | Given a description for a symbol, fold in extra comments, annotations
 -- and locations from zero or more additional occurences of the same symbol
@@ -876,7 +879,8 @@ symbolToAngleEntities lang toks = do
   let
     eithers =
       NonEmpty.map
-        (\SearchEntity{..} -> (entityRepo,) <$> entityToAngle decl)
+        (\SearchEntity{entityRepo, decl} ->
+          (entityRepo,) <$> entityToAngle (fst4 decl))
         entities
 
   return $ case allOrError eithers of
@@ -893,7 +897,7 @@ withEntity
   -> Glean.ReposHaxl u w (a, Maybe ErrorLogger)
 withEntity f scsrepo lang toks = do
   r <- Search.searchEntity lang toks
-  (SearchEntity{..}, err) <- case r of
+  (SearchEntity{entityRepo, decl=(_,file,rangespan,_)}, err) <- case r of
     None t -> throwM (ServerException t)
     One e -> return (e, Nothing)
     Many { initial = e, message = t } ->
@@ -1577,7 +1581,7 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
                         searchRecursively
                         searchRelatedRequest_relation
                         searchRelatedRequest_relatedBy
-                        (decl entity)
+                        (fst4 (decl entity))
                         repo
               return ((,Nothing) <$> relatedLocatedEntities, Nothing)
 
@@ -1633,7 +1637,7 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
     searchRelatedCalls
       :: RepoName
       -> RelationDirection
-      -> SearchEntity Code.Entity
+      -> SearchEntity (ResultLocation Code.Entity)
       -> Language
       -> RepoHaxl u w
           ([(RelatedLocatedEntities, Maybe [LocationRange])], Maybe ErrorLogger)
@@ -1641,7 +1645,7 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
     -- Incoming calls, mapping a symbol to all its callers symbols.
     searchRelatedCalls repoName RelationDirection_Parent child Language_Cpp = do
       -- For C++ we use a more efficient predicate, albeit without call sites
-      let SearchEntity{decl, file, name, rangespan} = child
+      let SearchEntity{decl = (decl, file, rangespan, name)} = child
       case entityToAngle decl of
         Left err -> do
           repo <- Glean.haxlRepo
@@ -1664,7 +1668,7 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
           return ((,Nothing) <$> callers, Nothing)
 
     searchRelatedCalls repoName RelationDirection_Parent child _ = do
-        let SearchEntity{decl, file, name, rangespan} = child
+        let SearchEntity{decl = (decl, file, rangespan, name)} = child
         case entityToAngle decl of
           Left err -> do
             repo <- Glean.haxlRepo
@@ -1692,7 +1696,7 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
 
     -- | Outgoing calls, maps a symbol to all the symbols it references.
     searchRelatedCalls repoName RelationDirection_Child parent lang = do
-      let SearchEntity{decl, file, name, rangespan} = parent
+      let SearchEntity{decl = (decl, file, rangespan, name)} = parent
           parentRL = ((decl, file, rangespan, name), sym)
       parentRange <-
         locationRange_range <$> rangeSpanToLocationRange repoName file rangespan
@@ -1749,7 +1753,7 @@ searchRelatedNeighborhood env@Glass.Env{..} sym opts@RequestOptions{..} req =
     \gleanDBs dbInfo (repo, lang, toks) ->
       backendRunHaxl GleanBackend{..} env $ do
         baseEntity <- searchFirstEntity lang toks
-        let lang = entityLanguage (decl baseEntity)
+        let lang = entityLanguage (fst4 (decl baseEntity))
         (,Nothing) <$> searchNeighborhood limit req sym repo
           (scmRevisions dbInfo) lang baseEntity
   where
@@ -1758,7 +1762,9 @@ searchRelatedNeighborhood env@Glass.Env{..} sym opts@RequestOptions{..} req =
       _ -> rELATED_SYMBOLS_MAX_LIMIT
 
 searchFirstEntity
-  :: Language -> [Text] -> Glean.ReposHaxl u w (SearchEntity Code.Entity)
+  :: Language
+  -> [Text]
+  -> Glean.ReposHaxl u w (SearchEntity (ResultLocation Code.Entity))
 searchFirstEntity lang toks = do
   r <- Search.searchEntity lang toks
   case r of

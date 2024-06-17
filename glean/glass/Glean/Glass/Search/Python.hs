@@ -15,6 +15,20 @@ module Glean.Glass.Search.Python
 
 import Control.Monad.Catch (throwM)
 import Glean.Angle as Angle
+    ( AngleVars(vars),
+      AngleStatement,
+      Angle,
+      predicate,
+      where_,
+      (.=),
+      string,
+      stringPrefix,
+      tuple,
+      rec,
+      alt,
+      field,
+      end,
+      wild )
 
 import Glean.Glass.Search.Class
 import Glean.Glass.Query ( entityLocation )
@@ -27,10 +41,11 @@ import qualified Glean.Schema.Python.Types as Py
 import qualified Glean.Schema.Src.Types as Src
 import Data.Text (Text)
 
-instance Search Py.Entity where
-  symbolSearch params = fmap Py.Entity_decl <$> symbolSearch params
+instance Search (ResultLocation Py.Entity) where
+  symbolSearch params =
+    fmap (mapResultLocation Py.Entity_decl) <$> symbolSearch params
 
-instance Search Py.Declaration where
+instance Search (ResultLocation Py.Declaration) where
   symbolSearch t@[fqname] = searchSymbolId t $
     findByFQName fqname Nothing
   symbolSearch t@[loc, fqname] = searchSymbolId t $

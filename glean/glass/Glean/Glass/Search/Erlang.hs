@@ -28,7 +28,7 @@ import qualified Glean.Schema.Src.Types as Src
 import Text.Read ( readMaybe )
 import Data.Word ( Word64 )
 
-instance Search Erlang.Entity where
+instance Search (ResultLocation Erlang.Entity) where
   symbolSearch toks
     | [module_, name, arity] <- toks
     , Just arityNum <- readMaybe $ unpack arity = do

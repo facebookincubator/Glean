@@ -42,7 +42,7 @@ data Query
 newtype Path = Path Text
 newtype Name = Name Text
 
-instance Search Pp.Entity where
+instance Search (ResultLocation Pp.Entity) where
   symbolSearch toks = case toks of
     [] -> return $ None "PP.symbolSearch: empty"
     [_] -> return $ None "PP.symbolSearch: singleton: not a symbolid"

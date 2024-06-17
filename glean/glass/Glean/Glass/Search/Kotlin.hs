@@ -30,7 +30,7 @@ import qualified Glean.Schema.JavakotlinAlpha.Types as JavaKotlin
 import qualified Glean.Schema.SymbolidKotlin.Types as Kotlin
 import qualified Glean.Schema.Src.Types as Src
 
-instance Search Kotlin.Entity where
+instance Search (ResultLocation Kotlin.Entity) where
   symbolSearch skot = case toks of
       [] -> return $ None "Kotlin.symbolSearch: empty"
       [_] -> return $ None "Kotlin.symbolSearch: singleton: not a symbolid"

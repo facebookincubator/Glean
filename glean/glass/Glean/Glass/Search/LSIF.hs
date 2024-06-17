@@ -28,7 +28,7 @@ import qualified Glean.Schema.Lsif.Types as LSIF
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 
-instance Search Lsif.Entity where
+instance Search (ResultLocation Lsif.Entity) where
   symbolSearch [] = return $ None "LSIF.symbolSearch: empty"
 
   -- case 2: purely a moniker

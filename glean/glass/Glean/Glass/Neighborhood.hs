@@ -21,7 +21,7 @@ import Glean.Haxl.Repos as Glean ( withRepo, RepoHaxl, ReposHaxl )
 
 import qualified Glean.Schema.Code.Types as Code
 
-import Glean.Glass.Utils ( eThrow )
+import Glean.Glass.Utils ( eThrow, fst4 )
 import Glean.Glass.Describe
     ( mkSymbolDescription, mkBriefSymbolDescription )
 import Glean.Glass.Repos ( Language(Language_Hack), ScmRevisions )
@@ -50,6 +50,7 @@ import Glean.Glass.Search as Search
       SearchEntity(..) )
 import Glean.Glass.SearchRelated (InheritedContainer)
 import qualified Glean.Glass.SearchRelated as Search
+import Glean.Glass.Search.Class ( ResultLocation )
 
 type SearchRelatedQuery u w = Code.Entity -> RepoName
       -> RepoHaxl u w [Search.RelatedLocatedEntities]
@@ -61,12 +62,13 @@ searchNeighborhood
   :: Int
   -> RelatedNeighborhoodRequest
   -> SymbolId
-  -> RepoName -> ScmRevisions -> Language -> SearchEntity Code.Entity
+  -> RepoName
+  -> ScmRevisions -> Language -> SearchEntity (ResultLocation Code.Entity)
   -> ReposHaxl u w RelatedNeighborhoodResult
 searchNeighborhood limit
     RelatedNeighborhoodRequest{..} sym repo scmRevs lang baseEntity =
   withRepo (entityRepo baseEntity) $ do
-    let entity = decl baseEntity
+    let entity = fst4 $ decl baseEntity
     a <- childrenContains1Level
           (fromIntegral relatedNeighborhoodRequest_children_limit) entity repo
     b <- childrenExtends1Level
@@ -272,10 +274,9 @@ inheritedSymbolIdSets (parent, children) = InheritedSymbols {
 
 fromSearchEntity
   :: SymbolId
-  -> SearchEntity Code.Entity
+  -> SearchEntity (ResultLocation Code.Entity)
   -> Search.LocatedEntity
-fromSearchEntity symId SearchEntity{..} =
-  ((decl, file, rangespan, name), symId)
+fromSearchEntity symId SearchEntity{..} = (decl, symId)
 
 flattenEdges :: [Search.RelatedLocatedEntities] -> [Search.LocatedEntity]
 flattenEdges pairs = concat

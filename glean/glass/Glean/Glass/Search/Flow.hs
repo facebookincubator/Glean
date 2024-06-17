@@ -26,13 +26,13 @@ import qualified Glean.Schema.Flow.Types as Flow
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 
-instance Search Flow.Entity where
+instance Search (ResultLocation Flow.Entity) where
   symbolSearch [] = return $ None "Flow.symbolSearch: empty"
 
   -- if its a single token it is likely a module (tbd: or a global sym)
   symbolSearch toks@[module_] = do
     m <- searchSymbolId toks (searchByModuleName module_)
-    return $ Flow.Entity_module_ <$> m
+    return $ mapResultLocation Flow.Entity_module_ <$> m
 
   -- module , method
   symbolSearch toks@[module_, name] = do
@@ -40,14 +40,14 @@ instance Search Flow.Entity where
     decl <- case a of
       None{} -> searchSymbolId toks $ searchTypeByModuleExport module_ name
       _ -> return a
-    return $ Flow.Entity_decl <$> decl
+    return $ mapResultLocation Flow.Entity_decl <$> decl
 
   -- inverse of T90301808 , if we don't have a short name use filepath
   symbolSearch toks = do
     let name = last toks
         path = joinFragments (init toks)
     a <- searchSymbolId toks $ searchByFileModule path name
-    return $ Flow.Entity_decl <$> a
+    return $ mapResultLocation Flow.Entity_decl <$> a
 
 -- With the Haste short module name and an identifier, find the decl
 searchByModule :: Text -> Text -> Angle (ResultLocation Flow.SomeDeclaration)

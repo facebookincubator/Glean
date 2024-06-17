@@ -27,7 +27,7 @@ import qualified Glean.Schema.Scip.Types as Scip
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 
-instance Search SCIP.Entity where
+instance Search (ResultLocation SCIP.Entity) where
   symbolSearch [] = return $ None "SCIP.symbolSearch: empty"
   -- global symbols
   symbolSearch toks = searchSymbolId toks $

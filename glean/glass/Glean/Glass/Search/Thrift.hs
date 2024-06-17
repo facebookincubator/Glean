@@ -17,6 +17,20 @@ module Glean.Glass.Search.Thrift
 import Data.Text ( Text )
 
 import Glean.Angle as Angle
+    ( AngleVars(vars),
+      Angle,
+      predicate,
+      where_,
+      (.=),
+      string,
+      tuple,
+      rec,
+      alt,
+      field,
+      end,
+      wild,
+      asPredicate,
+      sig )
 
 import Glean.Glass.Search.Class
 import Glean.Glass.Query ( entityLocation )
@@ -27,10 +41,11 @@ import qualified Glean.Schema.Fbthrift.Types as Thrift
 import qualified Glean.Schema.CodeFbthrift.Types as Thrift
 import qualified Glean.Schema.Src.Types as Src
 
-instance Search Thrift.Entity where
-  symbolSearch toks = fmap Thrift.Entity_decl <$> symbolSearch toks
+instance Search (ResultLocation Thrift.Entity) where
+  symbolSearch toks =
+    fmap (mapResultLocation Thrift.Entity_decl) <$> symbolSearch toks
 
-instance Search Thrift.Declaration where
+instance Search (ResultLocation Thrift.Declaration) where
   symbolSearch toks = case toks of
     [] -> return $ None "Thrift.symbolSearch: empty query"
     _ -> case (init toks, last toks) of

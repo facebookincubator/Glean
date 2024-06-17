@@ -26,7 +26,8 @@ import Glean.Glass.Search.Class as Search
       SearchEntity(..),
       PrefixSearch(..),
       CodeEntityLocation(..),
-      ResultLocation)
+      ResultLocation,
+      mapResultLocation)
 import qualified Glean.Glass.Search.Buck ({- instances -})
 import qualified Glean.Glass.Search.Cxx ({- instances -})
 import qualified Glean.Glass.Search.Erlang ({- instances -})
@@ -62,24 +63,39 @@ import qualified Glean.Haxl.Repos as Glean
 searchEntity
   :: Language
   -> [Text]
-  -> Glean.ReposHaxl u w (SearchResult Code.Entity)
+  -> Glean.ReposHaxl u w (SearchResult (ResultLocation Code.Entity))
 searchEntity lang toks = case lang of
-  Language_Buck -> fmap Code.Entity_buck <$> Search.symbolSearch toks
-  Language_Cpp -> fmap Code.Entity_cxx <$> Search.symbolSearch toks
-  Language_Erlang -> fmap Code.Entity_erlang <$> Search.symbolSearch toks
-  Language_GraphQL -> fmap Code.Entity_graphql <$> Search.symbolSearch toks
-  Language_Hack -> fmap Code.Entity_hack <$> Search.symbolSearch toks
-  Language_Haskell -> fmap Code.Entity_hs <$> Search.symbolSearch toks
-  Language_JavaScript -> fmap Code.Entity_flow <$> Search.symbolSearch toks
-  Language_PreProcessor -> fmap Code.Entity_pp <$> Search.symbolSearch toks
-  Language_Python -> fmap Code.Entity_python <$> Search.symbolSearch toks
-  Language_Thrift -> fmap Code.Entity_fbthrift <$> Search.symbolSearch toks
+  Language_Buck ->
+    fmap (mapResultLocation Code.Entity_buck) <$> Search.symbolSearch toks
+  Language_Cpp ->
+    fmap (mapResultLocation Code.Entity_cxx) <$> Search.symbolSearch toks
+  Language_Erlang ->
+    fmap (mapResultLocation Code.Entity_erlang) <$> Search.symbolSearch toks
+  Language_GraphQL ->
+    fmap (mapResultLocation Code.Entity_graphql) <$> Search.symbolSearch toks
+  Language_Hack ->
+    fmap (mapResultLocation Code.Entity_hack) <$> Search.symbolSearch toks
+  Language_Haskell ->
+    fmap (mapResultLocation Code.Entity_hs) <$> Search.symbolSearch toks
+  Language_JavaScript ->
+    fmap (mapResultLocation Code.Entity_flow) <$> Search.symbolSearch toks
+  Language_PreProcessor ->
+    fmap (mapResultLocation Code.Entity_pp) <$> Search.symbolSearch toks
+  Language_Python ->
+    fmap (mapResultLocation Code.Entity_python) <$> Search.symbolSearch toks
+  Language_Thrift ->
+    fmap (mapResultLocation Code.Entity_fbthrift) <$> Search.symbolSearch toks
   -- scip-based indexers
-  Language_Rust -> fmap Code.Entity_scip <$> Search.symbolSearch toks
-  Language_Go -> fmap Code.Entity_scip <$> Search.symbolSearch toks
-  Language_TypeScript -> fmap Code.Entity_scip <$> Search.symbolSearch toks
-  Language_Java -> fmap Code.Entity_scip <$> Search.symbolSearch toks
-  Language_Kotlin -> fmap Code.Entity_scip <$> Search.symbolSearch toks
+  Language_Rust ->
+    fmap (mapResultLocation Code.Entity_scip) <$> Search.symbolSearch toks
+  Language_Go ->
+    fmap (mapResultLocation Code.Entity_scip) <$> Search.symbolSearch toks
+  Language_TypeScript ->
+    fmap (mapResultLocation Code.Entity_scip) <$> Search.symbolSearch toks
+  Language_Java ->
+    fmap (mapResultLocation Code.Entity_scip) <$> Search.symbolSearch toks
+  Language_Kotlin ->
+    fmap (mapResultLocation Code.Entity_scip) <$> Search.symbolSearch toks
   lang ->
     return $ None $ "searchEntity: language not supported: " <> toShortCode lang
 

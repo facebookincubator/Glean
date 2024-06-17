@@ -40,7 +40,7 @@ parse locator = do
   return (mSubdir, Utils.joinFragments path, name)
 
 
-instance Search Buck.Entity where
+instance Search (ResultLocation Buck.Entity) where
   symbolSearch toks = case toks of
     ("t" : locator) -> do
       case parse locator of

@@ -16,6 +16,7 @@ module Glean.Glass.Search.Class
   , searchSymbolId
   , resultToDecl
   , CodeEntityLocation(..)
+  , mapResultLocation
   ) where
 
 import Data.Text (Text, intercalate)
@@ -64,10 +65,7 @@ data SearchResult t
 data SearchEntity t =
   SearchEntity {
     entityRepo :: !Glean.Repo, -- vital to know which repo this came from
-    decl :: !t,
-    file :: !Src.File,
-    rangespan :: !Code.RangeSpan,
-    name :: !Text
+    decl :: !t
   }
 
 -- | Summary form used for describe()
@@ -81,6 +79,9 @@ data CodeEntityLocation =
 
 -- Similar to SearchEntity , used in Angle data queries. Searches return this
 type ResultLocation t = (t, Src.File, Code.RangeSpan, Text)
+
+mapResultLocation :: (t -> t') -> ResultLocation t -> ResultLocation t'
+mapResultLocation f (res, file, range, name) = (f res, file, range, name)
 
 resultToDecl :: [(d, a, b)] -> [d]
 resultToDecl = map (\(x, _, _) -> x)
@@ -104,7 +105,7 @@ instance Functor SearchResult where
 --
 searchSymbolId :: (Typeable t, Show t, Glean.Typed.Binary.Type t)
   => [Text]
-  -> Angle (ResultLocation t)
+  -> Angle t
   -> ReposHaxl u w (SearchResult t)
 searchSymbolId toks query = do
   results <- Glean.queryAllRepos $ do
@@ -115,7 +116,7 @@ searchSymbolId toks query = do
   let toksText = intercalate "/" toks
   return $ case results of
     [] -> None $ "runSearch: No results found for " <> toksText
-    [(entityRepo, (decl, file, rangespan, name))] -> One SearchEntity{..}
+    [(entityRepo, decl)] -> One SearchEntity{..}
     (firstResult:moreResults) ->
       Many { initial = uncurry mkSearchEntity firstResult
            , rest = map (uncurry mkSearchEntity) moreResults
@@ -123,7 +124,7 @@ searchSymbolId toks query = do
             " results found for " <> toksText
       }
   where
-    mkSearchEntity entityRepo (decl, file, rangespan, name) = SearchEntity{..}
+    mkSearchEntity entityRepo decl = SearchEntity{..}
 
     -- symbol ids do have collisions, but they should be rare. If they are
     -- expensive it means we have a bad query from symbold id to entity

@@ -26,7 +26,7 @@ import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.SearchHs.Types as Haskell
 import qualified Glean.Schema.Src.Types as Src
 
-instance Search Haskell.Entity where
+instance Search (ResultLocation Haskell.Entity) where
   symbolSearch [] = return $ None "Haskell.symbolSearch: empty"
   symbolSearch toks = do
     searchSymbolId toks $ searchByName $ Text.intercalate "." toks

@@ -34,10 +34,11 @@ import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.SymbolidCxx.Types as SymbolId
 
-instance Search Cxx.Entity where
+instance Search (ResultLocation Cxx.Entity) where
   symbolSearch = cxxSymbolSearch
 
-cxxSymbolSearch :: [Text] -> ReposHaxl u w (SearchResult Cxx.Entity)
+cxxSymbolSearch ::
+  [Text] -> ReposHaxl u w (SearchResult (ResultLocation Cxx.Entity))
 cxxSymbolSearch t = case P.validateSymbolId t of
   Left errs -> return $ None (Text.unlines errs)
   Right env -> case P.compileSymbolEnv env of
@@ -47,7 +48,9 @@ cxxSymbolSearch t = case P.validateSymbolId t of
       P.CxxDefn e -> cxxSymbolExprEvalDefn t e
 
 cxxSymbolExprEvalDecl
-  :: [Text] -> P.CxxSymbolExpr -> ReposHaxl u w (SearchResult Cxx.Entity)
+  :: [Text]
+  -> P.CxxSymbolExpr
+  -> ReposHaxl u w (SearchResult (ResultLocation Cxx.Entity))
 cxxSymbolExprEvalDecl t exp = case exp of
   P.CxxConstructor{..} -> searchSymbolId t $
     lookupCTorSignatureDeclaration cPath cScope cParams
@@ -66,7 +69,7 @@ cxxSymbolExprEvalDecl t exp = case exp of
   P.CxxAny{..} -> searchDeclarations t cPath cScope cName
 
 cxxSymbolExprEvalDefn
-  :: [Text] -> P.CxxSymbolExpr -> ReposHaxl u w (SearchResult Cxx.Entity)
+  :: [Text] -> P.CxxSymbolExpr -> ReposHaxl u w (SearchResult (ResultLocation Cxx.Entity))
 cxxSymbolExprEvalDefn t exp = case exp of
   P.CxxConstructor{..} -> searchSymbolId t $
     lookupCTorSignatureDefinition cPath cScope cParams
@@ -95,7 +98,7 @@ cxxSymbolExprEvalDefn t exp = case exp of
 --
 searchDefinitions
   :: [Text] -> Text -> [P.Name] -> P.Name
-  -> ReposHaxl u w (SearchResult Cxx.Entity)
+  -> ReposHaxl u w (SearchResult (ResultLocation Cxx.Entity))
 searchDefinitions t path ns name =
   searchSymbolId t (lookupDefinition path ns name)
     .|?
@@ -112,7 +115,7 @@ searchDefinitions t path ns name =
 --
 searchDeclarations
   :: [Text] -> Text -> [P.Name] -> P.Name
-  -> ReposHaxl u w (SearchResult Cxx.Entity)
+  -> ReposHaxl u w (SearchResult (ResultLocation Cxx.Entity))
 searchDeclarations t path ns name = -- `ns` might be [] for global scope
   searchSymbolId t (lookupDeclaration path ns name)
     .|?
