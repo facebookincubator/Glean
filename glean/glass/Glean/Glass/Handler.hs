@@ -51,6 +51,7 @@ import Control.Monad.Catch ( throwM, try )
 import Data.Bifunctor (second)
 import Data.Either.Extra (eitherToMaybe)
 import Data.Default (def)
+import Data.Hashable
 import Data.List as List ( sortOn )
 import Data.List.Extra ( nubOrd, nubOrdOn, groupOn, groupSortOn )
 import Data.List.NonEmpty (NonEmpty(..), nonEmpty)
@@ -65,6 +66,8 @@ import qualified Control.Concurrent.Async as Async
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as Text
 
+import qualified Haxl.Core as Haxl
+import Glean.Util.ToAngle
 import Util.Text ( textShow )
 import Util.List ( uniq, uniqBy )
 import Util.Control.Exception (catchAll)
@@ -75,6 +78,7 @@ import Thrift.Api (Thrift)
 import Glean.Angle as Angle ( Angle )
 import Glean.Remote ( ThriftBackend(..), thriftServiceWithTimeout )
 import qualified Glean
+import Glean.Haxl as Glean
 import Glean.Haxl.Repos as Glean
 import Glean.Util.Some as Glean
 import qualified Glean.Util.Range as Range
@@ -1486,7 +1490,7 @@ getStaticAttributes
   -> SymbolId
   -> Maybe Language  -- Idl language
   -> Glean.RepoHaxl u w AttributeList
-getStaticAttributes e repo sym mLang = do
+getStaticAttributes e repo sym mLang = memo $ do
   mLocalName <- toSymbolLocalName e
   mParent <- toSymbolQualifiedContainer e -- the "parent" of the symbol
   (mSignature, _xrefs) <- toSymbolSignatureText e repo sym Cxx.Unqualified
@@ -1517,6 +1521,24 @@ getStaticAttributes e repo sym mLang = do
     asLang Language_Thrift = Just ("crossLanguage",
       Attribute_aString "thrift")
     asLang _ = Nothing
+
+    -- memoizing getStaticAttributes can save a lot of work because a
+    -- symbol reference often occurs multiple times in a file.
+    memo act
+      | memoizable e = do
+        gleanRepo <- Glean.haxlRepo
+        Haxl.memo (GetStaticAttributes (gleanRepo, prune e, mLang)) act
+      | otherwise = act
+
+    -- languages that support Prune
+    memoizable Code.Entity_cxx{} = True
+    memoizable Code.Entity_hack{} = True
+    memoizable Code.Entity_python{} = True
+    memoizable _ = False
+
+newtype GetStaticAttributes =
+  GetStaticAttributes (Glean.Repo, Code.Entity, Maybe Language)
+  deriving (Eq, Hashable)
 
 parentContainer
   :: RepoName -> Code.Entity -> Glean.RepoHaxl u w (Maybe SymbolContext)

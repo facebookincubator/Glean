@@ -63,11 +63,10 @@ import Glean.Glass.SymbolId ( toSymbolId )
 import Glean.Glass.Types ( SymbolId(..), RepoName(..) )
 import Glean.Glass.Base ( GleanPath(..) )
 import Glean.Glass.Path ( fromGleanPath )
-import Glean.Util.ToAngle ( ToAngle(toAngle), Prune(prune) )
+import Glean.Util.ToAngle ( ToAngle(toAngle) )
 import Glean.Glass.Utils
 import qualified Glean.Glass.SymbolId.Hack as Hack
 
-import Haxl.Core as Haxl
 import qualified Glean
 import Glean.Angle as Angle
 import qualified Glean.Haxl.Repos as Glean
@@ -92,7 +91,7 @@ prettyHackSignature
   -> Hack.Entity
   -> Glean.RepoHaxl u w (Maybe (SimpleDocStream (Maybe SymbolId)))
 prettyHackSignature opts repo sym (Hack.Entity_decl d) =
-  Haxl.memo (repo, prune d) $ runMaybeT $ do
+  runMaybeT $ do
     docStream <- layoutSmart opts . prettyDecl opts sym <$> decl d
     let docStreamSymbol = sequence $ reAnnotateS (declToSymbolId repo) docStream
     maybeT $ Just <$> docStreamSymbol

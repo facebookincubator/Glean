@@ -32,6 +32,8 @@ import qualified Glean.Schema.Python.Types as Py
 import qualified Glean.Schema.Scip.Types as Scip
 
 import qualified Glean.Schema.Code.Types as Code
+import qualified Glean.Schema.CodeHack.Types as Hack
+import qualified Glean.Schema.CodePython.Types as Py
 import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.CodeGraphql.Types as GraphQL
 import qualified Glean.Schema.CodePp.Types as Pp
@@ -69,6 +71,16 @@ class Normalize a where
 class Prune a where
   prune :: a -> a
 
+instance Prune Code.Entity where
+  prune e = case e of
+    Code.Entity_hack (Hack.Entity_decl x) ->
+      Code.Entity_hack (Hack.Entity_decl (prune x))
+    Code.Entity_python (Py.Entity_decl x) ->
+      Code.Entity_python (Py.Entity_decl (prune x))
+    Code.Entity_cxx x ->
+      Code.Entity_cxx (prune x)
+    x -> x
+
 -- | Generically get an Angle key query
 mkKey :: Glean.Predicate p => p -> Angle (Glean.KeyType p)
 mkKey x = asPredicate (factId (Glean.getId x))
@@ -92,6 +104,18 @@ instance ToAngle Cxx.Entity where
     Cxx.Entity_objcSelectorSlot x -> alt @"objcSelectorSlot" (toAngle x)
     Cxx.Entity_EMPTY -> error "unknown Entity"
 
+instance Prune Cxx.Entity where
+  prune e = case e of
+    Cxx.Entity_decl x ->
+      Cxx.Entity_decl (prune x)
+    Cxx.Entity_defn x ->
+      Cxx.Entity_defn (prune x)
+    Cxx.Entity_enumerator x ->
+      Cxx.Entity_enumerator (mkFact (getId x) Nothing Nothing)
+    Cxx.Entity_objcSelectorSlot x ->
+      Cxx.Entity_objcSelectorSlot x
+    Cxx.Entity_EMPTY -> error "unknown Entity"
+
 instance ToAngle Cxx.Declaration where
   toAngle e = case e of
     Cxx.Declaration_namespace_ x -> alt @"namespace_" (mkKey x)
@@ -108,6 +132,34 @@ instance ToAngle Cxx.Declaration where
     Cxx.Declaration_namespaceAlias x -> alt @"namespaceAlias" (mkKey x)
     Cxx.Declaration_EMPTY -> error "unknown Declaration"
 
+instance Prune Cxx.Declaration where
+  prune e = case e of
+    Cxx.Declaration_namespace_ x ->
+      Cxx.Declaration_namespace_ (mkFact (getId x) Nothing Nothing)
+    Cxx.Declaration_usingDeclaration x ->
+      Cxx.Declaration_usingDeclaration (mkFact (getId x) Nothing Nothing)
+    Cxx.Declaration_usingDirective x ->
+      Cxx.Declaration_usingDirective (mkFact (getId x) Nothing Nothing)
+    Cxx.Declaration_record_ x ->
+      Cxx.Declaration_record_ (mkFact (getId x) Nothing Nothing)
+    Cxx.Declaration_enum_ x ->
+      Cxx.Declaration_enum_ (mkFact (getId x) Nothing Nothing)
+    Cxx.Declaration_function_ x ->
+      Cxx.Declaration_function_ (mkFact (getId x) Nothing Nothing)
+    Cxx.Declaration_variable x ->
+      Cxx.Declaration_variable (mkFact (getId x) Nothing Nothing)
+    Cxx.Declaration_objcContainer x ->
+      Cxx.Declaration_objcContainer (mkFact (getId x) Nothing Nothing)
+    Cxx.Declaration_objcMethod x ->
+      Cxx.Declaration_objcMethod (mkFact (getId x) Nothing Nothing)
+    Cxx.Declaration_objcProperty x ->
+      Cxx.Declaration_objcProperty (mkFact (getId x) Nothing Nothing)
+    Cxx.Declaration_typeAlias x ->
+      Cxx.Declaration_typeAlias (mkFact (getId x) Nothing Nothing)
+    Cxx.Declaration_namespaceAlias x ->
+      Cxx.Declaration_namespaceAlias (mkFact (getId x) Nothing Nothing)
+    Cxx.Declaration_EMPTY -> error "unknown Declaration"
+
 instance ToAngle Cxx.Definition where
   toAngle e = case e of
     Cxx.Definition_record_ x -> alt @"record_" (mkKey x)
@@ -117,6 +169,24 @@ instance ToAngle Cxx.Definition where
     Cxx.Definition_objcContainer x -> alt @"objcContainer" (mkKey x)
     Cxx.Definition_variable x -> alt @"variable" (mkKey x)
     Cxx.Definition_namespace_ x -> alt @"namespace_" (mkKey x)
+    Cxx.Definition_EMPTY -> error "unknown Definition"
+
+instance Prune Cxx.Definition where
+  prune e = case e of
+    Cxx.Definition_record_ x ->
+      Cxx.Definition_record_ (mkFact (getId x) Nothing Nothing)
+    Cxx.Definition_function_ x ->
+      Cxx.Definition_function_ (mkFact (getId x) Nothing Nothing)
+    Cxx.Definition_enum_ x ->
+      Cxx.Definition_enum_ (mkFact (getId x) Nothing Nothing)
+    Cxx.Definition_objcMethod x ->
+      Cxx.Definition_objcMethod (mkFact (getId x) Nothing Nothing)
+    Cxx.Definition_objcContainer x ->
+      Cxx.Definition_objcContainer (mkFact (getId x) Nothing Nothing)
+    Cxx.Definition_variable x ->
+      Cxx.Definition_variable (mkFact (getId x) Nothing Nothing)
+    Cxx.Definition_namespace_ x ->
+      Cxx.Definition_namespace_ (mkFact (getId x) Nothing Nothing)
     Cxx.Definition_EMPTY -> error "unknown Definition"
 
 instance ToAngle Cxx.ObjcMethodEntity where
@@ -260,6 +330,19 @@ instance ToAngle Py.Declaration where
   toAngle (Py.Declaration_variable x) = alt @"variable" (mkKey x)
   toAngle (Py.Declaration_imp x) = alt @"imp" (mkKey x)
   toAngle Py.Declaration_EMPTY = error "unknown Declaration"
+
+instance Prune Py.Declaration where
+  prune (Py.Declaration_cls x) =
+    Py.Declaration_cls (mkFact (getId x) Nothing Nothing)
+  prune (Py.Declaration_func x) =
+    Py.Declaration_func (mkFact (getId x) Nothing Nothing)
+  prune (Py.Declaration_module x) =
+    Py.Declaration_module (mkFact (getId x) Nothing Nothing)
+  prune (Py.Declaration_variable x) =
+    Py.Declaration_variable (mkFact (getId x) Nothing Nothing)
+  prune (Py.Declaration_imp x) =
+    Py.Declaration_imp (mkFact (getId x) Nothing Nothing)
+  prune Py.Declaration_EMPTY = error "unknown Declaration"
 
 -- Src
 
