@@ -191,9 +191,7 @@ enum SymbolKind {
   TypeParameter = 28,
   Union = 29,
   Macro = 30,
-} (
-  hack.attributes = "\GraphQLEnum('GlassSymbolKind'), \RelayFlowEnum, \SelfDescriptive, \Oncalls('code_indexing')",
-)
+}
 
 enum Language {
   Cpp = 1,
@@ -207,16 +205,12 @@ enum Language {
   Thrift = 9,
   Rust = 10,
   Buck = 11,
-} (
-  hack.attributes = "\GraphQLEnum('GlassLanguage'), \RelayFlowEnum, \SelfDescriptive, \Oncalls('code_indexing')",
-)
+}
 
 enum DefinitionKind {
   Definition = 1,
   Declaration = 2,
-} (
-  hack.attributes = "\GraphQLEnum('GlassDefinitionKind'), \SelfDescriptive, \Oncalls('code_indexing')",
-)
+}
 
 struct SearchByNameRequest {
   1: SearchContext context;

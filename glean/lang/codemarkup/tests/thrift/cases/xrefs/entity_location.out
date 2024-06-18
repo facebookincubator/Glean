@@ -29,8 +29,8 @@
             "columnBegin": 3,
             "columnEnd": 18,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 216,
-            "lineEnd": 216
+            "lineBegin": 212,
+            "lineEnd": 212
           }
         },
         "name": "Declaration"
@@ -66,8 +66,8 @@
             "columnBegin": 3,
             "columnEnd": 17,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 215,
-            "lineEnd": 215
+            "lineBegin": 211,
+            "lineEnd": 211
           }
         },
         "name": "Definition"
@@ -103,8 +103,8 @@
             "columnBegin": 3,
             "columnEnd": 12,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 209,
-            "lineEnd": 209
+            "lineBegin": 207,
+            "lineEnd": 207
           }
         },
         "name": "Buck"
@@ -140,8 +140,8 @@
             "columnBegin": 3,
             "columnEnd": 10,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 199,
-            "lineEnd": 199
+            "lineBegin": 197,
+            "lineEnd": 197
           }
         },
         "name": "Cpp"
@@ -177,8 +177,8 @@
             "columnBegin": 3,
             "columnEnd": 11,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 201,
-            "lineEnd": 201
+            "lineBegin": 199,
+            "lineEnd": 199
           }
         },
         "name": "Hack"
@@ -214,8 +214,8 @@
             "columnBegin": 3,
             "columnEnd": 14,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 202,
-            "lineEnd": 202
+            "lineBegin": 200,
+            "lineEnd": 200
           }
         },
         "name": "Haskell"
@@ -251,8 +251,8 @@
             "columnBegin": 3,
             "columnEnd": 11,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 203,
-            "lineEnd": 203
+            "lineBegin": 201,
+            "lineEnd": 201
           }
         },
         "name": "Java"
@@ -288,8 +288,8 @@
             "columnBegin": 3,
             "columnEnd": 17,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 200,
-            "lineEnd": 200
+            "lineBegin": 198,
+            "lineEnd": 198
           }
         },
         "name": "JavaScript"
@@ -325,8 +325,8 @@
             "columnBegin": 3,
             "columnEnd": 17,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 204,
-            "lineEnd": 204
+            "lineBegin": 202,
+            "lineEnd": 202
           }
         },
         "name": "ObjectiveC"
@@ -362,8 +362,8 @@
             "columnBegin": 3,
             "columnEnd": 19,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 206,
-            "lineEnd": 206
+            "lineBegin": 204,
+            "lineEnd": 204
           }
         },
         "name": "PreProcessor"
@@ -399,8 +399,8 @@
             "columnBegin": 3,
             "columnEnd": 13,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 205,
-            "lineEnd": 205
+            "lineBegin": 203,
+            "lineEnd": 203
           }
         },
         "name": "Python"
@@ -436,8 +436,8 @@
             "columnBegin": 3,
             "columnEnd": 12,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 208,
-            "lineEnd": 208
+            "lineBegin": 206,
+            "lineEnd": 206
           }
         },
         "name": "Rust"
@@ -473,8 +473,8 @@
             "columnBegin": 3,
             "columnEnd": 13,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 207,
-            "lineEnd": 207
+            "lineBegin": 205,
+            "lineEnd": 205
           }
         },
         "name": "Thrift"
@@ -1654,8 +1654,8 @@
             "columnBegin": 3,
             "columnEnd": 34,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 270,
-            "lineEnd": 273
+            "lineBegin": 264,
+            "lineEnd": 267
           }
         },
         "name": "describeSymbol"
@@ -1692,8 +1692,8 @@
             "columnBegin": 3,
             "columnEnd": 34,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 247,
-            "lineEnd": 250
+            "lineBegin": 241,
+            "lineEnd": 244
           }
         },
         "name": "documentSymbolIndex"
@@ -1730,8 +1730,8 @@
             "columnBegin": 3,
             "columnEnd": 34,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 242,
-            "lineEnd": 245
+            "lineBegin": 236,
+            "lineEnd": 239
           }
         },
         "name": "documentSymbolListX"
@@ -1768,8 +1768,8 @@
             "columnBegin": 3,
             "columnEnd": 34,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 261,
-            "lineEnd": 264
+            "lineBegin": 255,
+            "lineEnd": 258
           }
         },
         "name": "findReferenceRanges"
@@ -1806,8 +1806,8 @@
             "columnBegin": 3,
             "columnEnd": 34,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 256,
-            "lineEnd": 259
+            "lineBegin": 250,
+            "lineEnd": 253
           }
         },
         "name": "findReferences"
@@ -1844,8 +1844,8 @@
             "columnBegin": 3,
             "columnEnd": 4,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 252,
-            "lineEnd": 254
+            "lineBegin": 246,
+            "lineEnd": 248
           }
         },
         "name": "jumpTo"
@@ -1882,8 +1882,8 @@
             "columnBegin": 3,
             "columnEnd": 4,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 266,
-            "lineEnd": 268
+            "lineBegin": 260,
+            "lineEnd": 262
           }
         },
         "name": "resolveSymbol"
@@ -1920,8 +1920,8 @@
             "columnBegin": 3,
             "columnEnd": 34,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 275,
-            "lineEnd": 278
+            "lineBegin": 269,
+            "lineEnd": 272
           }
         },
         "name": "searchByName"
@@ -1958,8 +1958,8 @@
             "columnBegin": 3,
             "columnEnd": 34,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 280,
-            "lineEnd": 283
+            "lineBegin": 274,
+            "lineEnd": 277
           }
         },
         "name": "searchByNamePrefix"
@@ -1996,8 +1996,8 @@
             "columnBegin": 3,
             "columnEnd": 34,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 285,
-            "lineEnd": 288
+            "lineBegin": 279,
+            "lineEnd": 282
           }
         },
         "name": "searchBySymbolId"
@@ -2312,8 +2312,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 214,
-            "lineEnd": 219
+            "lineBegin": 210,
+            "lineEnd": 213
           }
         },
         "name": "DefinitionKind"
@@ -2348,8 +2348,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 198,
-            "lineEnd": 212
+            "lineBegin": 196,
+            "lineEnd": 208
           }
         },
         "name": "Language"
@@ -2385,7 +2385,7 @@
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
             "lineBegin": 163,
-            "lineEnd": 196
+            "lineEnd": 194
           }
         },
         "name": "SymbolKind"
@@ -2888,8 +2888,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 221,
-            "lineEnd": 224
+            "lineBegin": 215,
+            "lineEnd": 218
           }
         },
         "name": "SearchByNameRequest"
@@ -2924,8 +2924,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 226,
-            "lineEnd": 229
+            "lineBegin": 220,
+            "lineEnd": 223
           }
         },
         "name": "SearchByNameResult"
@@ -2960,8 +2960,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 231,
-            "lineEnd": 233
+            "lineBegin": 225,
+            "lineEnd": 227
           }
         },
         "name": "SearchBySymbolIdResult"
@@ -3209,8 +3209,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 238,
-            "lineEnd": 239
+            "lineBegin": 232,
+            "lineEnd": 233
           }
         },
         "name": "BaseService"
@@ -3242,8 +3242,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 241,
-            "lineEnd": 289
+            "lineBegin": 235,
+            "lineEnd": 283
           }
         },
         "name": "GlassService"
@@ -3275,8 +3275,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 235,
-            "lineEnd": 236
+            "lineBegin": 229,
+            "lineEnd": 230
           }
         },
         "name": "ZeroService"

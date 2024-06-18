@@ -347,8 +347,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 214,
-            "lineEnd": 219
+            "lineBegin": 210,
+            "lineEnd": 213
           }
         },
         "name": "DefinitionKind"
@@ -387,8 +387,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 198,
-            "lineEnd": 212
+            "lineBegin": 196,
+            "lineEnd": 208
           }
         },
         "name": "Language"
@@ -428,7 +428,7 @@
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
             "lineBegin": 163,
-            "lineEnd": 196
+            "lineEnd": 194
           }
         },
         "name": "SymbolKind"
@@ -987,8 +987,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 221,
-            "lineEnd": 224
+            "lineBegin": 215,
+            "lineEnd": 218
           }
         },
         "name": "SearchByNameRequest"
@@ -1027,8 +1027,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 226,
-            "lineEnd": 229
+            "lineBegin": 220,
+            "lineEnd": 223
           }
         },
         "name": "SearchByNameResult"
@@ -1067,8 +1067,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 231,
-            "lineEnd": 233
+            "lineBegin": 225,
+            "lineEnd": 227
           }
         },
         "name": "SearchBySymbolIdResult"
@@ -1344,8 +1344,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 238,
-            "lineEnd": 239
+            "lineBegin": 232,
+            "lineEnd": 233
           }
         },
         "name": "BaseService"
@@ -1381,8 +1381,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 241,
-            "lineEnd": 289
+            "lineBegin": 235,
+            "lineEnd": 283
           }
         },
         "name": "GlassService"
@@ -1418,8 +1418,8 @@
             "columnBegin": 1,
             "columnEnd": 1,
             "file": { "key": "lib.thrift" },
-            "lineBegin": 235,
-            "lineEnd": 236
+            "lineBegin": 229,
+            "lineEnd": 230
           }
         },
         "name": "ZeroService"
