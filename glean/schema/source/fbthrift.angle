@@ -323,11 +323,11 @@ predicate DeclarationName:
     qname: QualName,
     decl: Declaration
   }
-  { { File, Name }, Decl } where
-     ( { named = NamedDecl { name = { name = { File, Name } } } } = Decl )
-   | ( { exception_ = ExceptionName { name = { File, Name } } } = Decl )
-   | ( { constant = Constant { name = { File, Name } } } = Decl )
-   | ( { service_ = ServiceName { name = { File, Name } } } = Decl )
+  { QName, Decl } where
+     ( N = NamedDecl { name = { name = QName } }; { named = N } = Decl )
+   | ( E = ExceptionName { name = QName }; { exception_ = E } = Decl )
+   | ( C = Constant { name = QName }; { constant = C } = Decl )
+   | ( S = ServiceName { name = QName }; { service_ = S } = Decl )
 
 predicate StructType : {
   name : QualName,
