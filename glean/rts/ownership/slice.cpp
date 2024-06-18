@@ -206,7 +206,7 @@ std::unique_ptr<Slice> slice(
           visible = andVisibleBase(reader) && emptyIntersection(reader) && andVisible(reader);
         } else {
           // visible if all entries are included
-          visible = andVisibleBase(reader) && isSubset(reader) && andVisible(reader);;
+          visible = andVisibleBase(reader) && isSubset(reader) && andVisible(reader);
         }
         break;
     }
