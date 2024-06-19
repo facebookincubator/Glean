@@ -67,10 +67,11 @@ struct PPCallbacks final : public clang::PPCallbacks {
 #endif
       clang::StringRef,
       clang::StringRef,
-      const clang::Module *
-#if LLVM_VERSION_MAJOR >= 8
-      ,clang::SrcMgr::CharacteristicKind
+      const clang::Module *,
+#if defined(CAST_COMPILER_TOOLCHAIN_FBOBJC_16)
+      bool,
 #endif
+      clang::SrcMgr::CharacteristicKind
       ) override {
 #if LLVM_VERSION_MAJOR >= 15
     // file may be empty if it was not found (a preprocessor error)
