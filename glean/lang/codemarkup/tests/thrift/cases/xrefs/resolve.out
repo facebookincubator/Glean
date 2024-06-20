@@ -968,6 +968,1226 @@
     "key": {
       "fbthrift": {
         "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "attribute" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "KeyedAttribute" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "attributes" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "DefinitionSymbolX" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "attributes" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "ReferenceRangeSymbolX" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "attributes" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SymbolX" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "columnBegin" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "Range" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "columnEnd" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "Range" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "container" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "QualifiedName" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "context" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SearchByNameRequest" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "definitions" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "DocumentSymbolListXResult" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "filepath" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "DocumentSymbolsRequest" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "filepath" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "Location" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "filepath" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "LocationRange" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "filepath" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SymbolPath" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "key" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "KeyedAttribute" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "kind" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SymbolDescription" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "kinds" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SearchContext" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "language" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SearchContext" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "length" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "ByteSpan" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "limit" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "RequestOptions" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "lineBegin" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "LineRange" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "lineBegin" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "Range" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "lineEnd" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "LineRange" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "lineEnd" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "Range" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "localName" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "QualifiedName" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "location" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SymbolDescription" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "name" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SearchByNameRequest" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "name" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SymbolDescription" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "range" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "DefinitionSymbolX" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "range" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "DocumentSymbolsRequest" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "range" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "LocationRange" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "range" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "ReferenceRangeSymbolX" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "range" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SymbolPath" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "range" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SymbolX" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "references" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "DocumentSymbolListXResult" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "repo_name" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SearchContext" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "repository" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "DocumentSymbolsRequest" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "repository" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "Location" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "repository" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "LocationRange" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "repository" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SymbolPath" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "revision" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "DocumentSymbolIndex" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "revision" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "DocumentSymbolListXResult" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "revision" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "RequestOptions" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "size" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "DocumentSymbolIndex" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "span" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "Location" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "start" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "ByteSpan" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "sym" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "DefinitionSymbolX" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "sym" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "ReferenceRangeSymbolX" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "sym" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SymbolDescription" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "sym" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SymbolX" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "symbolDetails" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SearchByNameResult" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "symbols" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "DocumentSymbolIndex" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "symbols" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SearchByNameResult" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "symbols" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SearchBySymbolIdResult" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "target" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "ReferenceRangeSymbolX" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 0,
+              "name": { "key": "target" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "SymbolX" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 1,
+              "name": { "key": "aBool" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "Attribute" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 1,
+              "name": { "key": "aDouble" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "Attribute" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 1,
+              "name": { "key": "aInteger" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "Attribute" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 1,
+              "name": { "key": "aList" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "Attribute" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 1,
+              "name": { "key": "aString" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "Attribute" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
+          "field": {
+            "key": {
+              "kind": 2,
+              "name": { "key": "message" },
+              "qname": {
+                "key": {
+                  "file": { "key": { "key": "lib.thrift" } },
+                  "name": { "key": "ServerException" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "fbthrift": {
+        "decl": {
           "function_": {
             "key": {
               "name": { "key": "describeSymbol" },

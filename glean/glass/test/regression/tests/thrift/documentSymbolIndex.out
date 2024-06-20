@@ -3,9 +3,32 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 176,
+        "size": 237,
         "symbols": {
             "100": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "range"
+                        },
+                        "symbolParent": {
+                            "aString": "DefinitionSymbolX"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::DefinitionSymbolX::range"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 30,
+                        "lineBegin": 100,
+                        "lineEnd": 100
+                    },
+                    "sym": "test/thrift/lib.thrift/DefinitionSymbolX/range"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -79,6 +102,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "attributes"
+                        },
+                        "symbolParent": {
+                            "aString": "DefinitionSymbolX"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::DefinitionSymbolX::attributes"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 31,
+                        "lineBegin": 102,
+                        "lineEnd": 102
+                    },
+                    "sym": "test/thrift/lib.thrift/DefinitionSymbolX/attributes"
                 }
             ],
             "105": [
@@ -145,6 +191,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "sym"
+                        },
+                        "symbolParent": {
+                            "aString": "SymbolX"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SymbolX::sym"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 19,
+                        "lineBegin": 106,
+                        "lineEnd": 106
+                    },
+                    "sym": "test/thrift/lib.thrift/SymbolX/sym"
                 }
             ],
             "108": [
@@ -183,6 +252,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "range"
+                        },
+                        "symbolParent": {
+                            "aString": "SymbolX"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SymbolX::range"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 30,
+                        "lineBegin": 108,
+                        "lineEnd": 108
+                    },
+                    "sym": "test/thrift/lib.thrift/SymbolX/range"
                 }
             ],
             "110": [
@@ -221,6 +313,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "target"
+                        },
+                        "symbolParent": {
+                            "aString": "SymbolX"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SymbolX::target"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 36,
+                        "lineBegin": 110,
+                        "lineEnd": 110
+                    },
+                    "sym": "test/thrift/lib.thrift/SymbolX/target"
                 }
             ],
             "112": [
@@ -259,6 +374,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "attributes"
+                        },
+                        "symbolParent": {
+                            "aString": "SymbolX"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SymbolX::attributes"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 28,
+                        "lineBegin": 112,
+                        "lineEnd": 112
+                    },
+                    "sym": "test/thrift/lib.thrift/SymbolX/attributes"
                 }
             ],
             "115": [
@@ -325,6 +463,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "repository"
+                        },
+                        "symbolParent": {
+                            "aString": "SymbolPath"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SymbolPath::repository"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 116,
+                        "lineEnd": 116
+                    },
+                    "sym": "test/thrift/lib.thrift/SymbolPath/repository"
                 }
             ],
             "118": [
@@ -363,6 +524,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "filepath"
+                        },
+                        "symbolParent": {
+                            "aString": "SymbolPath"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SymbolPath::filepath"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 20,
+                        "lineBegin": 118,
+                        "lineEnd": 118
+                    },
+                    "sym": "test/thrift/lib.thrift/SymbolPath/filepath"
                 }
             ],
             "120": [
@@ -401,6 +585,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "range"
+                        },
+                        "symbolParent": {
+                            "aString": "SymbolPath"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SymbolPath::range"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 30,
+                        "lineBegin": 120,
+                        "lineEnd": 120
+                    },
+                    "sym": "test/thrift/lib.thrift/SymbolPath/range"
                 }
             ],
             "123": [
@@ -432,6 +639,29 @@
                 }
             ],
             "124": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "references"
+                        },
+                        "symbolParent": {
+                            "aString": "DocumentSymbolListXResult"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::DocumentSymbolListXResult::references"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 45,
+                        "lineBegin": 124,
+                        "lineEnd": 124
+                    },
+                    "sym": "test/thrift/lib.thrift/DocumentSymbolListXResult/references"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -505,9 +735,55 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "definitions"
+                        },
+                        "symbolParent": {
+                            "aString": "DocumentSymbolListXResult"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::DocumentSymbolListXResult::definitions"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 42,
+                        "lineBegin": 126,
+                        "lineEnd": 126
+                    },
+                    "sym": "test/thrift/lib.thrift/DocumentSymbolListXResult/definitions"
                 }
             ],
             "128": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "revision"
+                        },
+                        "symbolParent": {
+                            "aString": "DocumentSymbolListXResult"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::DocumentSymbolListXResult::revision"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 24,
+                        "lineBegin": 128,
+                        "lineEnd": 128
+                    },
+                    "sym": "test/thrift/lib.thrift/DocumentSymbolListXResult/revision"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -576,6 +852,29 @@
             "132": [
                 {
                     "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "symbols"
+                        },
+                        "symbolParent": {
+                            "aString": "DocumentSymbolIndex"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::DocumentSymbolIndex::symbols"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 38,
+                        "lineBegin": 132,
+                        "lineEnd": 132
+                    },
+                    "sym": "test/thrift/lib.thrift/DocumentSymbolIndex/symbols"
+                },
+                {
+                    "attributes": {
                         "symbolKind": {
                             "aInteger": 25
                         },
@@ -614,6 +913,29 @@
             "134": [
                 {
                     "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "revision"
+                        },
+                        "symbolParent": {
+                            "aString": "DocumentSymbolIndex"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::DocumentSymbolIndex::revision"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 24,
+                        "lineBegin": 134,
+                        "lineEnd": 134
+                    },
+                    "sym": "test/thrift/lib.thrift/DocumentSymbolIndex/revision"
+                },
+                {
+                    "attributes": {
                         "symbolKind": {
                             "aInteger": 2
                         },
@@ -647,6 +969,31 @@
                         },
                         "repository": "test"
                     }
+                }
+            ],
+            "136": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "size"
+                        },
+                        "symbolParent": {
+                            "aString": "DocumentSymbolIndex"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::DocumentSymbolIndex::size"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 136,
+                        "lineEnd": 136
+                    },
+                    "sym": "test/thrift/lib.thrift/DocumentSymbolIndex/size"
                 }
             ],
             "139": [
@@ -729,6 +1076,31 @@
                         "lineEnd": 14
                     },
                     "sym": "test/thrift/lib.thrift/RepoName"
+                }
+            ],
+            "140": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "message"
+                        },
+                        "symbolParent": {
+                            "aString": "ServerException"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception field lib::ServerException::message"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 21,
+                        "lineBegin": 140,
+                        "lineEnd": 140
+                    },
+                    "sym": "test/thrift/lib.thrift/ServerException/message"
                 }
             ],
             "143": [
@@ -823,6 +1195,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "localName"
+                        },
+                        "symbolParent": {
+                            "aString": "QualifiedName"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::QualifiedName::localName"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 21,
+                        "lineBegin": 146,
+                        "lineEnd": 146
+                    },
+                    "sym": "test/thrift/lib.thrift/QualifiedName/localName"
                 }
             ],
             "147": [
@@ -861,6 +1256,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "container"
+                        },
+                        "symbolParent": {
+                            "aString": "QualifiedName"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::QualifiedName::container"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 21,
+                        "lineBegin": 147,
+                        "lineEnd": 147
+                    },
+                    "sym": "test/thrift/lib.thrift/QualifiedName/container"
                 }
             ],
             "150": [
@@ -892,6 +1310,29 @@
                 }
             ],
             "151": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "sym"
+                        },
+                        "symbolParent": {
+                            "aString": "SymbolDescription"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SymbolDescription::sym"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 19,
+                        "lineBegin": 151,
+                        "lineEnd": 151
+                    },
+                    "sym": "test/thrift/lib.thrift/SymbolDescription/sym"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -930,6 +1371,29 @@
                 }
             ],
             "152": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "location"
+                        },
+                        "symbolParent": {
+                            "aString": "SymbolDescription"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SymbolDescription::location"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 152,
+                        "lineEnd": 152
+                    },
+                    "sym": "test/thrift/lib.thrift/SymbolDescription/location"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -1003,9 +1467,55 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "name"
+                        },
+                        "symbolParent": {
+                            "aString": "SymbolDescription"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SymbolDescription::name"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 25,
+                        "lineBegin": 153,
+                        "lineEnd": 153
+                    },
+                    "sym": "test/thrift/lib.thrift/SymbolDescription/name"
                 }
             ],
             "154": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "kind"
+                        },
+                        "symbolParent": {
+                            "aString": "SymbolDescription"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SymbolDescription::kind"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 31,
+                        "lineBegin": 154,
+                        "lineEnd": 154
+                    },
+                    "sym": "test/thrift/lib.thrift/SymbolDescription/kind"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -1107,6 +1617,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "repo_name"
+                        },
+                        "symbolParent": {
+                            "aString": "SearchContext"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SearchContext::repo_name"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 25,
+                        "lineBegin": 158,
+                        "lineEnd": 158
+                    },
+                    "sym": "test/thrift/lib.thrift/SearchContext/repo_name"
                 }
             ],
             "159": [
@@ -1145,6 +1678,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "language"
+                        },
+                        "symbolParent": {
+                            "aString": "SearchContext"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SearchContext::language"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 24,
+                        "lineBegin": 159,
+                        "lineEnd": 159
+                    },
+                    "sym": "test/thrift/lib.thrift/SearchContext/language"
                 }
             ],
             "16": [
@@ -1176,6 +1732,29 @@
                 }
             ],
             "160": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "kinds"
+                        },
+                        "symbolParent": {
+                            "aString": "SearchContext"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SearchContext::kinds"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 28,
+                        "lineBegin": 160,
+                        "lineEnd": 160
+                    },
+                    "sym": "test/thrift/lib.thrift/SearchContext/kinds"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -2473,6 +3052,31 @@
                     "sym": "test/thrift/lib.thrift/Language/Buck"
                 }
             ],
+            "21": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "lineBegin"
+                        },
+                        "symbolParent": {
+                            "aString": "LineRange"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::LineRange::lineBegin"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 32,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "sym": "test/thrift/lib.thrift/LineRange/lineBegin"
+                }
+            ],
             "210": [
                 {
                     "attributes": {
@@ -2588,6 +3192,29 @@
             "216": [
                 {
                     "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "context"
+                        },
+                        "symbolParent": {
+                            "aString": "SearchByNameRequest"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SearchByNameRequest::context"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 28,
+                        "lineBegin": 216,
+                        "lineEnd": 216
+                    },
+                    "sym": "test/thrift/lib.thrift/SearchByNameRequest/context"
+                },
+                {
+                    "attributes": {
                         "symbolKind": {
                             "aInteger": 25
                         },
@@ -2623,6 +3250,31 @@
                     }
                 }
             ],
+            "217": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "name"
+                        },
+                        "symbolParent": {
+                            "aString": "SearchByNameRequest"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SearchByNameRequest::name"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 18,
+                        "lineBegin": 217,
+                        "lineEnd": 217
+                    },
+                    "sym": "test/thrift/lib.thrift/SearchByNameRequest/name"
+                }
+            ],
             "220": [
                 {
                     "attributes": {
@@ -2652,6 +3304,29 @@
                 }
             ],
             "221": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "symbols"
+                        },
+                        "symbolParent": {
+                            "aString": "SearchByNameResult"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SearchByNameResult::symbols"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 29,
+                        "lineBegin": 221,
+                        "lineEnd": 221
+                    },
+                    "sym": "test/thrift/lib.thrift/SearchByNameResult/symbols"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -2690,6 +3365,29 @@
                 }
             ],
             "222": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "symbolDetails"
+                        },
+                        "symbolParent": {
+                            "aString": "SearchByNameResult"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SearchByNameResult::symbolDetails"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 44,
+                        "lineBegin": 222,
+                        "lineEnd": 222
+                    },
+                    "sym": "test/thrift/lib.thrift/SearchByNameResult/symbolDetails"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -2758,6 +3456,29 @@
             "226": [
                 {
                     "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "symbols"
+                        },
+                        "symbolParent": {
+                            "aString": "SearchBySymbolIdResult"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::SearchBySymbolIdResult::symbols"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 29,
+                        "lineBegin": 226,
+                        "lineEnd": 226
+                    },
+                    "sym": "test/thrift/lib.thrift/SearchBySymbolIdResult/symbols"
+                },
+                {
+                    "attributes": {
                         "symbolKind": {
                             "aInteger": 2
                         },
@@ -2819,6 +3540,31 @@
                         "lineEnd": 230
                     },
                     "sym": "test/thrift/lib.thrift/ZeroService"
+                }
+            ],
+            "23": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "lineEnd"
+                        },
+                        "symbolParent": {
+                            "aString": "LineRange"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::LineRange::lineEnd"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 30,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "sym": "test/thrift/lib.thrift/LineRange/lineEnd"
                 }
             ],
             "232": [
@@ -4279,6 +5025,31 @@
                     }
                 }
             ],
+            "27": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "lineBegin"
+                        },
+                        "symbolParent": {
+                            "aString": "Range"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::Range::lineBegin"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 32,
+                        "lineBegin": 27,
+                        "lineEnd": 27
+                    },
+                    "sym": "test/thrift/lib.thrift/Range/lineBegin"
+                }
+            ],
             "270": [
                 {
                     "attributes": {
@@ -4635,6 +5406,31 @@
                     }
                 }
             ],
+            "28": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "columnBegin"
+                        },
+                        "symbolParent": {
+                            "aString": "Range"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::Range::columnBegin"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 34,
+                        "lineBegin": 28,
+                        "lineEnd": 28
+                    },
+                    "sym": "test/thrift/lib.thrift/Range/columnBegin"
+                }
+            ],
             "280": [
                 {
                     "attributes": {
@@ -4749,6 +5545,56 @@
                     }
                 }
             ],
+            "29": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "lineEnd"
+                        },
+                        "symbolParent": {
+                            "aString": "Range"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::Range::lineEnd"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 30,
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "sym": "test/thrift/lib.thrift/Range/lineEnd"
+                }
+            ],
+            "30": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "columnEnd"
+                        },
+                        "symbolParent": {
+                            "aString": "Range"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::Range::columnEnd"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 32,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test/thrift/lib.thrift/Range/columnEnd"
+                }
+            ],
             "33": [
                 {
                     "attributes": {
@@ -4775,6 +5621,56 @@
                         "lineEnd": 36
                     },
                     "sym": "test/thrift/lib.thrift/ByteSpan"
+                }
+            ],
+            "34": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "start"
+                        },
+                        "symbolParent": {
+                            "aString": "ByteSpan"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::ByteSpan::start"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 28,
+                        "lineBegin": 34,
+                        "lineEnd": 34
+                    },
+                    "sym": "test/thrift/lib.thrift/ByteSpan/start"
+                }
+            ],
+            "35": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "length"
+                        },
+                        "symbolParent": {
+                            "aString": "ByteSpan"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::ByteSpan::length"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 29,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "sym": "test/thrift/lib.thrift/ByteSpan/length"
                 }
             ],
             "38": [
@@ -4806,6 +5702,29 @@
                 }
             ],
             "39": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "repository"
+                        },
+                        "symbolParent": {
+                            "aString": "Location"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::Location::repository"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 39,
+                        "lineEnd": 39
+                    },
+                    "sym": "test/thrift/lib.thrift/Location/repository"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -4844,6 +5763,29 @@
                 }
             ],
             "41": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "filepath"
+                        },
+                        "symbolParent": {
+                            "aString": "Location"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::Location::filepath"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 20,
+                        "lineBegin": 41,
+                        "lineEnd": 41
+                    },
+                    "sym": "test/thrift/lib.thrift/Location/filepath"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -4917,6 +5859,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "span"
+                        },
+                        "symbolParent": {
+                            "aString": "Location"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::Location::span"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 32,
+                        "lineBegin": 43,
+                        "lineEnd": 43
+                    },
+                    "sym": "test/thrift/lib.thrift/Location/span"
                 }
             ],
             "46": [
@@ -4948,6 +5913,29 @@
                 }
             ],
             "47": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "repository"
+                        },
+                        "symbolParent": {
+                            "aString": "LocationRange"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::LocationRange::repository"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 47,
+                        "lineEnd": 47
+                    },
+                    "sym": "test/thrift/lib.thrift/LocationRange/repository"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -4988,6 +5976,29 @@
             "49": [
                 {
                     "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "filepath"
+                        },
+                        "symbolParent": {
+                            "aString": "LocationRange"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::LocationRange::filepath"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 20,
+                        "lineBegin": 49,
+                        "lineEnd": 49
+                    },
+                    "sym": "test/thrift/lib.thrift/LocationRange/filepath"
+                },
+                {
+                    "attributes": {
                         "symbolKind": {
                             "aInteger": 2
                         },
@@ -5024,6 +6035,29 @@
                 }
             ],
             "51": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "range"
+                        },
+                        "symbolParent": {
+                            "aString": "LocationRange"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::LocationRange::range"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 30,
+                        "lineBegin": 51,
+                        "lineEnd": 51
+                    },
+                    "sym": "test/thrift/lib.thrift/LocationRange/range"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -5092,6 +6126,29 @@
             "55": [
                 {
                     "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "revision"
+                        },
+                        "symbolParent": {
+                            "aString": "RequestOptions"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::RequestOptions::revision"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 33,
+                        "lineBegin": 55,
+                        "lineEnd": 55
+                    },
+                    "sym": "test/thrift/lib.thrift/RequestOptions/revision"
+                },
+                {
+                    "attributes": {
                         "symbolKind": {
                             "aInteger": 2
                         },
@@ -5127,6 +6184,31 @@
                     }
                 }
             ],
+            "57": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "limit"
+                        },
+                        "symbolParent": {
+                            "aString": "RequestOptions"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::RequestOptions::limit"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 25,
+                        "lineBegin": 57,
+                        "lineEnd": 57
+                    },
+                    "sym": "test/thrift/lib.thrift/RequestOptions/limit"
+                }
+            ],
             "60": [
                 {
                     "attributes": {
@@ -5156,6 +6238,29 @@
                 }
             ],
             "61": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "repository"
+                        },
+                        "symbolParent": {
+                            "aString": "DocumentSymbolsRequest"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::DocumentSymbolsRequest::repository"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 61,
+                        "lineEnd": 61
+                    },
+                    "sym": "test/thrift/lib.thrift/DocumentSymbolsRequest/repository"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -5196,6 +6301,29 @@
             "63": [
                 {
                     "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "filepath"
+                        },
+                        "symbolParent": {
+                            "aString": "DocumentSymbolsRequest"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::DocumentSymbolsRequest::filepath"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 20,
+                        "lineBegin": 63,
+                        "lineEnd": 63
+                    },
+                    "sym": "test/thrift/lib.thrift/DocumentSymbolsRequest/filepath"
+                },
+                {
+                    "attributes": {
                         "symbolKind": {
                             "aInteger": 2
                         },
@@ -5232,6 +6360,29 @@
                 }
             ],
             "65": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "range"
+                        },
+                        "symbolParent": {
+                            "aString": "DocumentSymbolsRequest"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::DocumentSymbolsRequest::range"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 37,
+                        "lineBegin": 65,
+                        "lineEnd": 65
+                    },
+                    "sym": "test/thrift/lib.thrift/DocumentSymbolsRequest/range"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
@@ -5323,6 +6474,131 @@
                         "lineEnd": 76
                     },
                     "sym": "test/thrift/lib.thrift/Attribute"
+                }
+            ],
+            "71": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "aBool"
+                        },
+                        "symbolParent": {
+                            "aString": "Attribute"
+                        },
+                        "symbolSignature": {
+                            "aString": "union field lib::Attribute::aBool"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 17,
+                        "lineBegin": 71,
+                        "lineEnd": 71
+                    },
+                    "sym": "test/thrift/lib.thrift/Attribute/aBool"
+                }
+            ],
+            "72": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "aInteger"
+                        },
+                        "symbolParent": {
+                            "aString": "Attribute"
+                        },
+                        "symbolSignature": {
+                            "aString": "union field lib::Attribute::aInteger"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 19,
+                        "lineBegin": 72,
+                        "lineEnd": 72
+                    },
+                    "sym": "test/thrift/lib.thrift/Attribute/aInteger"
+                }
+            ],
+            "73": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "aDouble"
+                        },
+                        "symbolParent": {
+                            "aString": "Attribute"
+                        },
+                        "symbolSignature": {
+                            "aString": "union field lib::Attribute::aDouble"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 21,
+                        "lineBegin": 73,
+                        "lineEnd": 73
+                    },
+                    "sym": "test/thrift/lib.thrift/Attribute/aDouble"
+                }
+            ],
+            "74": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "aString"
+                        },
+                        "symbolParent": {
+                            "aString": "Attribute"
+                        },
+                        "symbolSignature": {
+                            "aString": "union field lib::Attribute::aString"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 21,
+                        "lineBegin": 74,
+                        "lineEnd": 74
+                    },
+                    "sym": "test/thrift/lib.thrift/Attribute/aString"
+                }
+            ],
+            "75": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "aList"
+                        },
+                        "symbolParent": {
+                            "aString": "Attribute"
+                        },
+                        "symbolSignature": {
+                            "aString": "union field lib::Attribute::aList"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 25,
+                        "lineBegin": 75,
+                        "lineEnd": 75
+                    },
+                    "sym": "test/thrift/lib.thrift/Attribute/aList"
                 }
             ],
             "78": [
@@ -5417,6 +6693,31 @@
                     "sym": "test/thrift/lib.thrift/KeyedAttribute"
                 }
             ],
+            "81": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "key"
+                        },
+                        "symbolParent": {
+                            "aString": "KeyedAttribute"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::KeyedAttribute::key"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 17,
+                        "lineBegin": 81,
+                        "lineEnd": 81
+                    },
+                    "sym": "test/thrift/lib.thrift/KeyedAttribute/key"
+                }
+            ],
             "82": [
                 {
                     "attributes": {
@@ -5453,6 +6754,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "attribute"
+                        },
+                        "symbolParent": {
+                            "aString": "KeyedAttribute"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::KeyedAttribute::attribute"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 26,
+                        "lineBegin": 82,
+                        "lineEnd": 82
+                    },
+                    "sym": "test/thrift/lib.thrift/KeyedAttribute/attribute"
                 }
             ],
             "85": [
@@ -5550,6 +6874,29 @@
             "88": [
                 {
                     "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "sym"
+                        },
+                        "symbolParent": {
+                            "aString": "ReferenceRangeSymbolX"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::ReferenceRangeSymbolX::sym"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 19,
+                        "lineBegin": 88,
+                        "lineEnd": 88
+                    },
+                    "sym": "test/thrift/lib.thrift/ReferenceRangeSymbolX/sym"
+                },
+                {
+                    "attributes": {
                         "symbolKind": {
                             "aInteger": 2
                         },
@@ -5621,6 +6968,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "range"
+                        },
+                        "symbolParent": {
+                            "aString": "ReferenceRangeSymbolX"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::ReferenceRangeSymbolX::range"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 30,
+                        "lineBegin": 90,
+                        "lineEnd": 90
+                    },
+                    "sym": "test/thrift/lib.thrift/ReferenceRangeSymbolX/range"
                 }
             ],
             "92": [
@@ -5659,6 +7029,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "target"
+                        },
+                        "symbolParent": {
+                            "aString": "ReferenceRangeSymbolX"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::ReferenceRangeSymbolX::target"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 92,
+                        "lineEnd": 92
+                    },
+                    "sym": "test/thrift/lib.thrift/ReferenceRangeSymbolX/target"
                 }
             ],
             "94": [
@@ -5697,6 +7090,29 @@
                         },
                         "repository": "test"
                     }
+                },
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "attributes"
+                        },
+                        "symbolParent": {
+                            "aString": "ReferenceRangeSymbolX"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::ReferenceRangeSymbolX::attributes"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 31,
+                        "lineBegin": 94,
+                        "lineEnd": 94
+                    },
+                    "sym": "test/thrift/lib.thrift/ReferenceRangeSymbolX/attributes"
                 }
             ],
             "97": [
@@ -5728,6 +7144,29 @@
                 }
             ],
             "98": [
+                {
+                    "attributes": {
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "sym"
+                        },
+                        "symbolParent": {
+                            "aString": "DefinitionSymbolX"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct field lib::DefinitionSymbolX::sym"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 19,
+                        "lineBegin": 98,
+                        "lineEnd": 98
+                    },
+                    "sym": "test/thrift/lib.thrift/DefinitionSymbolX/sym"
+                },
                 {
                     "attributes": {
                         "symbolKind": {
