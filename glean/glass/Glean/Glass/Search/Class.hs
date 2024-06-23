@@ -11,7 +11,6 @@ module Glean.Glass.Search.Class
   ( Search(..)
   , SearchResult(..)
   , SearchEntity(..)
-  , PrefixSearch(..)
   , ResultLocation
   , searchSymbolId
   , resultToDecl
@@ -129,7 +128,3 @@ searchSymbolId toks query = do
     -- symbol ids do have collisions, but they should be rare. If they are
     -- expensive it means we have a bad query from symbold id to entity
     max_symbolid_matches = 10
-
--- | Search for entities based on the prefix of their symbol ids
-class PrefixSearch t where
-  prefixSearch :: Int -> [Text] -> RepoHaxl u w [ResultLocation t]

@@ -33,9 +33,6 @@ module Glean.Glass.Handler
   , searchRelated
   , searchRelatedNeighborhood
 
-  -- * deprecated
-  , searchBySymbolId
-
   -- * indexing requests
   , index
 
@@ -127,8 +124,7 @@ import Glean.Glass.Search as Search
       SearchEntity(..),
       SearchResult(Many, None, One, rest, message, initial),
       searchEntity,
-      searchEntityLocation,
-      prefixSearchEntity )
+      searchEntityLocation )
 import Glean.Glass.Utils
 import Glean.Glass.Attributes.SymbolKind
     ( symbolKindToSymbolKind, symbolKindFromSymbolKind )
@@ -749,47 +745,6 @@ data MatchType
   | ExactInsensitiveMatch  -- "fbid" ~ "FBID"
   | Otherwise
   deriving (Eq, Ord, Bounded, Enum)
-
--- | Search for entities by symbol id prefix
--- (deprecated)
-searchBySymbolId
-  :: Glass.Env
-  -> SymbolId
-  -> RequestOptions
-  -> IO SearchBySymbolIdResult
-searchBySymbolId env@Glass.Env{..} symbolPrefix opts = do
-  let parsed = partialSymbolTokens repoMapping symbolPrefix
-  case parsed of
-    (Right repo, Right lang, tokens) -> findSymbols repo lang tokens
-    _ ->
-      withRequest "searchBySymbolId" env symbolPrefix opts $ \_ -> do
-        case parsed of
-          (Left pRepo, Left _, []) ->
-            pure (SearchBySymbolIdResult (findRepos repoMapping pRepo),
-              Nothing)
-          (Left pRepo, _, _) -> throwM $
-            ServerException $ pRepo <> " is not a known repo"
-          (Right repo, Left pLang, []) -> pure
-            (SearchBySymbolIdResult $ findLanguages repoMapping repo $
-              fromMaybe (Text.pack "") pLang, Nothing)
-          (Right (RepoName repo), Left (Just pLang), _) -> throwM $
-            ServerException $ pLang <> " is not a supported language in "<> repo
-          (Right (RepoName repo), Left Nothing, _) -> throwM $
-            ServerException $ "Missing language for " <> repo
-          _ -> throwM $ ServerException "searchBySymbolId"
-  where
-    findSymbols :: RepoName -> Language -> [Text] -> IO SearchBySymbolIdResult
-    findSymbols repo lang tokens =
-      withRepoLanguage "searchBySymbolId" env symbolPrefix repo (Just lang) opts
-        $ \gleanDBs _ _ -> do
-          backendRunHaxl GleanBackend{..} env $ do
-            symids <- queryAllRepos $ do
-              entities <- prefixSearchEntity lang limit tokens
-              forM (take limit entities) $ \(entity, file, _, _) -> do
-                path <- GleanPath <$> Glean.keyOf file
-                toSymbolId (fromGleanPath repo path) entity
-            return (SearchBySymbolIdResult (take limit symids), Nothing)
-    limit = maybe 50 fromIntegral $ requestOptions_limit opts
 
 -- | Normalized (to Glean) paths
 data FileReference =
@@ -1554,28 +1509,6 @@ parentContainer repo ent = do
         symbolContext_qname <- mQName
         let symbolContext_kind = Nothing
         pure SymbolContext{..}
-
-partialSymbolTokens
-  :: RepoMapping
-  -> SymbolId
-  -> (Either Text RepoName, Either (Maybe Text) Language, [Text])
-partialSymbolTokens repoMapping (SymbolId symid) =
-  (repoName, language, fromMaybe [] partialSym)
-  where
-    tokens = Text.split (=='/') symid
-    (partialRepoName, partialLang, partialSym) = case tokens of
-      [] -> error "partialSymbolTokens: the impossible has happened"
-      [f] -> (f, Nothing, Nothing)
-      [f, s] -> (f, Just s, Nothing)
-      (f:s:rest) -> (f, Just s, Just rest)
-
-    repoName = case toRepoName repoMapping partialRepoName of
-                Just repoName -> Right repoName
-                Nothing -> Left partialRepoName
-    language = case (partialSym, fromShortCode =<< partialLang) of
-                  (Just _, Just lang) -> Right lang
-                  (Just _, Nothing) -> Left partialLang
-                  _ -> Left partialLang
 
 --
 -- | Relational search. Given a symbol id find symbols related to it.

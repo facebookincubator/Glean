@@ -209,10 +209,6 @@ glassHandler env0 cmd =
   SearchRelatedNeighborhood r opts req ->
     Handler.searchRelatedNeighborhood env r opts req
 
-
-  -- deprecated
-  SearchBySymbolId r opts -> Handler.searchBySymbolId env r opts
-
   -- Create an incremental database
   Index r -> Handler.index env r
 

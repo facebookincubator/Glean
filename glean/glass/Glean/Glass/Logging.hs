@@ -197,9 +197,6 @@ instance LogResult FeelingLuckyResult where
     Logger.setItemCount
       (sum (map (sum . map length) rs))
 
-instance LogResult SearchBySymbolIdResult where
-  logResult (SearchBySymbolIdResult symids) = logResult symids
-
 instance LogResult SearchRelatedResult where
   logResult SearchRelatedResult{..} =
     logResult searchRelatedResult_edges

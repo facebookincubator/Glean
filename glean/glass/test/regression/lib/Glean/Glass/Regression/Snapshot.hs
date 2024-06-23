@@ -198,8 +198,6 @@ evalQuery glassEnv qFile Query{..} oFile = case action of
     (Glass.describeSymbol glassEnv)
   "searchSymbol" ->  withObjectArgs qFile oFile args
     (Glass.searchSymbol glassEnv)
-  "searchBySymbolId" -> withSymbolId oFile args
-    (Glass.searchBySymbolId glassEnv)
   "searchRelated" -> withObjectAndSymbolId qFile oFile args
     (Glass.searchRelated glassEnv)
   "searchRelatedNeighborhood" -> withSymbolId oFile args
@@ -327,10 +325,6 @@ instance DeterministicResponse DocumentSymbolIndex where
 instance DeterministicResponse SymbolSearchResult where
   det (SymbolSearchResult syms deets) =
     SymbolSearchResult (det syms) (det deets)
-
-instance DeterministicResponse SearchBySymbolIdResult where
-  det (SearchBySymbolIdResult syms) =
-    SearchBySymbolIdResult (det syms)
 
 instance (DeterministicResponse a, Ord a) => DeterministicResponse [a] where
   det = sort . map det

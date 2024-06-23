@@ -12,11 +12,9 @@ module Glean.Glass.Search
   , SearchResult(..)
   , SearchEntity(..)
   , CodeEntityLocation(..)
-  , prefixSearchEntity
   ) where
 
 import Data.Text ( Text )
-import Control.Monad.Catch (throwM)
 
 import Glean.Glass.Repos (Language(..) )
 import Glean.Glass.SymbolId ( toShortCode )
@@ -25,7 +23,6 @@ import Glean.Glass.Search.Class as Search
     ( Search(symbolSearch),
       SearchResult(..),
       SearchEntity(..),
-      PrefixSearch(..),
       CodeEntityLocation(..),
       ResultLocation,
       mapResultLocation)
@@ -41,7 +38,6 @@ import qualified Glean.Glass.Search.Pp ({- instances -})
 import qualified Glean.Glass.Search.Python ({- instances -})
 import qualified Glean.Glass.Search.SCIP ({- instances -})
 import qualified Glean.Glass.Search.Thrift ({- instances -})
-import Glean.Glass.Types (ServerException(ServerException))
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Haxl.Repos as Glean
 import Glean.Glass.Utils ( fst4 )
@@ -108,18 +104,3 @@ searchEntity
 searchEntity lang toks = case lang of
   Language_Thrift -> fmap Code.Entity_fbthrift <$> Search.symbolSearch toks
   _ -> fmap fst4 <$> searchEntityLocation lang toks
-
-
-prefixSearchEntity
-  :: Language
-  -> Int
-  -> [Text]
-  -> Glean.RepoHaxl u w [ResultLocation Code.Entity]
-prefixSearchEntity lang lim toks = case lang of
-  Language_Hack ->
-    fmap (mapFst Code.Entity_hack) <$> Search.prefixSearch lim toks
-  Language_Python ->
-    fmap (mapFst Code.Entity_python) <$> Search.prefixSearch lim toks
-  lang -> throwM $ ServerException $
-    "prefixSearchEntity: language not supported: " <> toShortCode lang
-  where mapFst f (x, y, z, a) = (f x, y, z, a)

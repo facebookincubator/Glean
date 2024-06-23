@@ -26,8 +26,6 @@ import qualified Glean.Schema.Hack.Types as Hack
 import qualified Glean.Schema.SearchHack.Types as Hack
 import qualified Glean.Schema.Src.Types as Src
 
-import Glean.Glass.Utils (searchWithLimit)
-
 instance Search (ResultLocation Hack.Entity) where
   symbolSearch toks =
     fmap (mapResultLocation Hack.Entity_decl) <$> symbolSearch toks
@@ -69,42 +67,6 @@ instance Search (ResultLocation Hack.Declaration) where
 
   symbolSearch [] = return $ None "Hack.symbolSearch: empty path"
 
-instance PrefixSearch Hack.Entity where
-  prefixSearch lim toks =
-    fmap (mapFst Hack.Entity_decl) <$> prefixSearch lim toks
-    where mapFst f (x, y, z, a) = (f x, y, z, a)
-
-instance PrefixSearch Hack.Declaration where
-  prefixSearch lim [] = prefixSearch lim [""]
-  prefixSearch lim ["ns", pName] = searchWithLimit (Just lim) $
-    prefixSearchNamespace [] pName
-  prefixSearch lim ("ns":toks) = do
-    let (name:rest) = reverse toks
-    searchWithLimit (Just lim) $ prefixSearchNamespace rest name
-  prefixSearch lim ("fun":toks) = do
-    let (name:rest) = reverse toks
-    searchWithLimit (Just lim) $ prefixSearchFunctionInNamespace rest name
-  prefixSearch lim ["mod", pName] = searchWithLimit (Just lim) $
-    prefixSearchModule pName
-  prefixSearch lim ("const":toks) = do
-    let (name:rest) = reverse toks
-    searchWithLimit (Just lim) $ prefixSearchGlobalConstInNamespace rest name
-  prefixSearch lim [pName] = searchWithLimit (Just lim) $
-    prefixSearchTypeInNamespace [] pName
-  prefixSearch lim toks =
-   let (name:rest) = reverse toks in
-   case rest of
-      ":prop":context:ns ->
-        searchWithLimit (Just lim) $
-            prefixSearchPropertyInContainer ns context name
-      context:ns -> do
-        a <- searchWithLimit (Just lim) $
-            prefixSearchTypeInNamespace rest name
-        b <- searchWithLimit (Just lim) $
-            prefixSearchInContainerOrEnumNoProperty ns context name
-        return $ a ++ b
-      [] -> fail "rest has at least one element"
-
 searchTypeInNamespace
   :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
 searchTypeInNamespace = searchTypeInNamespace_ False
@@ -120,22 +82,6 @@ searchGlobalConstInNamespace
   :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
 searchGlobalConstInNamespace = searchGlobalConstInNamespace_ False
 
-prefixSearchTypeInNamespace
-  :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
-prefixSearchTypeInNamespace = searchTypeInNamespace_ True
-
-prefixSearchFunctionInNamespace
-  :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
-prefixSearchFunctionInNamespace = searchFunctionInNamespace_ True
-
-prefixSearchModule
-  :: Text -> Angle (ResultLocation Hack.Declaration)
-prefixSearchModule = searchModule_ True
-
-prefixSearchGlobalConstInNamespace
-  :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
-prefixSearchGlobalConstInNamespace = searchGlobalConstInNamespace_ True
-
 searchPropertyInContainer
   :: [Text] -> Text -> Text -> Angle (ResultLocation Hack.Declaration)
 searchPropertyInContainer = searchPropertyInContainer_ False
@@ -143,11 +89,6 @@ searchPropertyInContainer = searchPropertyInContainer_ False
 searchInContainerOrEnumNoProperty
   :: [Text] -> Text -> Text -> Angle (ResultLocation Hack.Declaration)
 searchInContainerOrEnumNoProperty = searchInContainerOrEnumNoProperty_ False
-
-prefixSearchInContainerOrEnumNoProperty
-  :: [Text] -> Text -> Text -> Angle (ResultLocation Hack.Declaration)
-prefixSearchInContainerOrEnumNoProperty =
-  searchInContainerOrEnumNoProperty_ True
 
 searchFunctionInNamespace_
   :: Bool -> [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
@@ -207,14 +148,6 @@ searchTypeInNamespace_ isPrefix ns name =
         end),
       entityLocation (alt @"hack" (alt @"decl" decl)) file rangespan lname
     ]
-
-prefixSearchPropertyInContainer
-  :: [Text] -> Text -> Text -> Angle (ResultLocation Hack.Declaration)
-prefixSearchPropertyInContainer = searchPropertyInContainer_ True
-
-prefixSearchNamespace
-  :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
-prefixSearchNamespace = searchNamespace_ True
 
 searchNamespace :: [Text] -> Text -> Angle (ResultLocation Hack.Declaration)
 searchNamespace = searchNamespace_ False

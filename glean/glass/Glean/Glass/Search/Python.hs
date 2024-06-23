@@ -13,7 +13,6 @@ module Glean.Glass.Search.Python
   ( {- instances -}
   ) where
 
-import Control.Monad.Catch (throwM)
 import Glean.Angle as Angle
     ( AngleVars(vars),
       AngleStatement,
@@ -32,8 +31,6 @@ import Glean.Angle as Angle
 
 import Glean.Glass.Search.Class
 import Glean.Glass.Query ( entityLocation )
-import Glean.Glass.Types (ServerException(ServerException))
-import Glean.Glass.Utils (searchWithLimit)
 
 import qualified Glean.Schema.CodePython.Types as Py
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
@@ -53,27 +50,10 @@ instance Search (ResultLocation Py.Declaration) where
   symbolSearch _ = return $
     None "Python.symbolSearch: invalid query"
 
-instance PrefixSearch Py.Entity where
-  prefixSearch lim params =
-    fmap (mapFst Py.Entity_decl) <$> prefixSearch lim params
-    where mapFst f (x, y, z, a) = (f x, y, z, a)
-
-instance PrefixSearch Py.Declaration where
-  prefixSearch lim [loc] = searchWithLimit (Just lim) $
-    prefixSearchByFQName "" (Just loc)
-  prefixSearch lim [loc, pfqname] = searchWithLimit (Just lim) $
-    prefixSearchByFQName pfqname (Just loc)
-  prefixSearch _ _ = throwM $ ServerException "Python.prefixSearch: too many /"
-
 findByFQName
   :: Text -> Maybe Text
   -> Angle (ResultLocation Py.Declaration)
 findByFQName = searchByFQName False
-
-prefixSearchByFQName
-  :: Text -> Maybe Text
-  -> Angle (ResultLocation Py.Declaration)
-prefixSearchByFQName = searchByFQName True
 
 searchByFQName
   :: Bool -> Text -> Maybe Text

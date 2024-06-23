@@ -590,10 +590,6 @@ struct SearchByNameResult {
   2: list<SymbolDescription> symbolDetails;
 }
 
-struct SearchBySymbolIdResult {
-  1: list<SymbolId> symbols;
-}
-
 enum RelationType {
   Extends = 1, // OOP inheritance
   Contains = 2, // Syntactically nested (usually)
@@ -773,14 +769,6 @@ service GlassService extends fb303.FacebookService {
   SymbolSearchResult searchSymbol(
     1: SymbolSearchRequest request,
     3: RequestOptions options,
-  ) throws (1: ServerException e);
-
-  // Find symbol ids based on the prefix of a full symbol id
-  // (e.g. www/php/Gl).
-  // (deprecated)
-  SearchBySymbolIdResult searchBySymbolId(
-    1: SymbolId symbol_prefix,
-    2: RequestOptions options,
   ) throws (1: ServerException e);
 
   // Search for symbols by a specific relationship (child/parent, inheritance)
