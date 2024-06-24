@@ -376,6 +376,17 @@ predicate CxxFileEntityXMapVariableXRefDeclToDefs:
 # Language entity uses
 #
 
+predicate CxxIdlEntityUses:
+  {
+    target: code.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+{ Target, File, Span} where
+  { fbthrift = { decl = Thrift } } = Target;
+  cxx1.ThriftToCxx { Thrift, { declaration = CxxDecl } };
+  CxxEntityUses { { decl = CxxDecl }, File, Span }
+
 predicate CxxEntityUses:
   {
     target: code.cxx.Entity,

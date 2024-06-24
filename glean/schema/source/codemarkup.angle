@@ -341,7 +341,8 @@ predicate EntityReferences:
      { flow = E } = Entity) |
     (codemarkup.python.PythonEntityUses { E, File, Span };
      { python = E } = Entity) |
-    (codemarkup.cxx.CxxEntityUses { E, File, Span }; { cxx = E } = Entity) |
+    (codemarkup.cxx.CxxEntityUses { E, File, Span };
+     { cxx = E } = Entity) |
     (codemarkup.haskell.HaskellEntityUses { E, File, Span };
      { hs = E } = Entity) |
     (codemarkup.buck.BuckEntityUses { E, File, Span };
@@ -371,6 +372,9 @@ predicate EntityReferences:
     { range = Range } = RangeSpan;
   ) | (
     codemarkup.hack.HackIdlEntityUses { Entity, File, Span };
+    { span = Span } = RangeSpan;
+  ) | (
+    codemarkup.cxx.CxxIdlEntityUses { Entity, File, Span };
     { span = Span } = RangeSpan;
   );
 

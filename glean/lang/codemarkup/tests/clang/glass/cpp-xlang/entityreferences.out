@@ -1,0 +1,57 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "function_": {
+              "key": {
+                "service_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "TestService" }
+                      }
+                    }
+                  }
+                },
+                "name": { "key": "thrift1" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 394, "length": 7 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "function_": {
+              "key": {
+                "service_": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "TestService" }
+                      }
+                    }
+                  }
+                },
+                "name": { "key": "thrift2" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 407, "length": 7 } }
+    }
+  }
+]
