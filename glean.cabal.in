@@ -832,7 +832,6 @@ library lib
         Glean.Util.ToAngle
         Glean.Util.XRefs
         Glean.Util.Same
-        Glean.Util.SchemaRepos
         Glean.Util.ShowSchemaId
         Glean.Write.SimpleAsync
     build-depends:
