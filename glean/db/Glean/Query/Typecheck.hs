@@ -876,8 +876,8 @@ primOpType pat op = case op of
     ( [InferAndCheck polyArray "prim.length takes an array as input"]
     , pureTy NatTy)
   PrimOpZip ->
-    ( [InferAndCheck polyArray "prim.array takes arrays as input"
-      ,InferAndCheck polyArray "prim.array takes arrays as input"]
+    ( [InferAndCheck polyArray "prim.zip takes arrays as input"
+      ,InferAndCheck polyArray "prim.zip takes arrays as input"]
     , \[ArrayTy ty1, ArrayTy ty2] -> pure $ ArrayTy (tupleSchema [ty1, ty2]))
   PrimOpConcat ->
     ( [InferAndCheck polyArray "prim.concat takes arrays as input"
