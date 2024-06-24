@@ -9,7 +9,7 @@
 #include "glean/lang/clang/path.h"
 
 #include <gtest/gtest.h>
-#include <folly/experimental/TestUtil.h>
+#include <folly/testing/TestUtil.h>
 #include <filesystem>
 
 namespace facebook::glean::clangx {

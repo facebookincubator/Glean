@@ -13,7 +13,7 @@
 #include <boost/thread/barrier.hpp>
 #include <glog/logging.h>
 
-#include <folly/experimental/TestUtil.h>
+#include <folly/testing/TestUtil.h>
 #include <gtest/gtest.h>
 
 namespace std {
