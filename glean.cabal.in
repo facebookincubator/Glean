@@ -302,19 +302,6 @@ library if-internal-hs
         glean:config,
         glean:if-glean-hs
 
-library if-search-hs
-    import: fb-haskell, fb-cpp, deps
-    visibility: public
-    hs-source-dirs:
-        glean/if/search/gen-hs2
-    exposed-modules:
-        Glean.Search.Types
-    build-depends:
-        glean:config,
-        glean:if-glean-hs,
-        glean:schema
---        fb303
-
 library rts
     import: fb-haskell, fb-cpp, deps
     visibility: public
@@ -844,11 +831,9 @@ library lib
         Glean.Pretty.HackAnn
         Glean.Pretty.Hs
         Glean.Pretty.Src
-        Glean.Pretty.Search
         Glean.Pretty.Shared
         Glean.Pretty.Style
         Glean.Pretty.Styles
-        Glean.Search.Search
         Glean.Derive
         Glean.Util.AnnMaker
         Glean.Util.CxxXRef
@@ -866,7 +851,6 @@ library lib
         glean:core,
         glean:db,
         glean:if-glean-hs,
-        glean:if-search-hs,
         glean:schema,
         glean:util,
         split
@@ -1050,21 +1034,6 @@ executable glean
         json,
         split,
         Glob,
-
-executable glean-search
-    import: fb-haskell, fb-cpp, deps, exe
-    hs-source-dirs: glean/tools/search
-    main-is: Search.hs
-    ghc-options: -main-is Search
-    extra-libraries: stdc++
-    build-depends:
-        glean:client-hs,
-        glean:lib,
-        glean:schema,
-        glean:stubs,
-        glean:util,
-        glean:if-search-hs,
-        aeson-pretty,
 
 executable glean-hyperlink
     import: fb-haskell, fb-cpp, deps, exe

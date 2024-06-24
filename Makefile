@@ -287,9 +287,6 @@ thrift-schema-hs: thrift-compiler
 			glean/schema/thrift/$$s.thrift \
 			-o $(CODEGEN_DIR)/$@/glean/schema/thrift; \
 	done
-	# This depends on the schema .thrift files:
-	$(THRIFT_COMPILE) --hs glean/if/search.thrift \
-		-o $(CODEGEN_DIR)/$@/glean/if/search
 	rsync -r --checksum $(CODEGEN_DIR)/$@/ .
 
 # full build up to glass lib
