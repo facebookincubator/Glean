@@ -824,18 +824,7 @@ library lib
     visibility: public
     hs-source-dirs: glean/lib
     exposed-modules:
-        Glean.Pretty.Code
-        Glean.Pretty.Cxx
-        Glean.Pretty.CxxAnn
-        Glean.Pretty.Hack
-        Glean.Pretty.HackAnn
-        Glean.Pretty.Hs
-        Glean.Pretty.Src
-        Glean.Pretty.Shared
-        Glean.Pretty.Style
-        Glean.Pretty.Styles
         Glean.Derive
-        Glean.Util.AnnMaker
         Glean.Util.CxxXRef
         Glean.Util.Declarations
         Glean.Util.URI
