@@ -33,9 +33,6 @@ module Glean.Glass.Handler
   , searchRelated
   , searchRelatedNeighborhood
 
-  -- * indexing requests
-  , index
-
   -- * C++ specific methods
   , fileIncludeLocations
   , clangUSRToDefinition
@@ -47,7 +44,6 @@ import Control.Exception ( throwIO, SomeException )
 import Control.Monad.Catch ( throwM, try )
 import Data.Bifunctor (second)
 import Data.Either.Extra (eitherToMaybe)
-import Data.Default (def)
 import Data.Hashable
 import Data.List as List ( sortOn )
 import Data.List.Extra ( nubOrd, nubOrdOn, groupOn, groupSortOn )
@@ -67,19 +63,15 @@ import qualified Haxl.Core as Haxl
 import Glean.Util.ToAngle
 import Util.Text ( textShow )
 import Util.List ( uniq, uniqBy )
-import Util.Control.Exception (catchAll)
 
 import Thrift.Protocol ( fromThriftEnum )
-import Thrift.Api (Thrift)
 
 import Glean.Angle as Angle ( Angle )
-import Glean.Remote ( ThriftBackend(..), thriftServiceWithTimeout )
 import qualified Glean
 import Glean.Haxl as Glean
 import Glean.Haxl.Repos as Glean
 import Glean.Util.Some as Glean
 import qualified Glean.Util.Range as Range
-import Glean.Util.ThriftService ( ThriftServiceOptions(..), runThrift )
 
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Code.Types as Code
@@ -98,10 +90,6 @@ import Glean.Glass.SymbolId
 import Glean.Glass.SymbolSig ( toSymbolSignatureText )
 import Glean.Glass.Pretty.Cxx as Cxx (Qualified(..))
 import Glean.Glass.Types
-import Glean.Index.Types ( IndexRequest, IndexResponse )
-import qualified Glean.Index.GleanIndexingService.Client as IndexingService
-import Glean.Index.GleanIndexingService.Client ( GleanIndexingService )
-import Glean.Impl.ThriftService ( ThriftService )
 import Glean.Glass.RepoMapping ( supportsCxxDeclarationSources )
 import Glean.Glass.Search.Class ( ResultLocation )
 
@@ -1728,25 +1716,3 @@ searchFirstEntity lang toks = do
     None t -> throwM (ServerException t)
     One e -> return e
     Many { initial = e } -> return e
-
--- Processing indexing requests
-index :: Glass.Env -> IndexRequest -> IO IndexResponse
-index env r = withIndexingService env $ IndexingService.index r
-
-withIndexingService
-  :: Glass.Env
-  -> Thrift GleanIndexingService a
-  -> IO a
-withIndexingService env act =
-  case mThriftBackend of
-    Nothing -> err "no remote service connection available"
-    Just (ThriftBackend config evb _ _ _) -> do
-      let service :: ThriftService GleanIndexingService
-          service = thriftServiceWithTimeout config opts
-          onErr e = err $ "glean error: " <> Text.pack (show e)
-      runThrift evb service act `catchAll` onErr
-  where
-    Glass.IndexBackend mThriftBackend = Glass.gleanIndexBackend env
-    opts = def { processingTimeout = Just timeout }
-    err e = throwIO $ ServerException e
-    timeout = 60 -- seconds

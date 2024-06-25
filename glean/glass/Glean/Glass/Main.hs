@@ -15,7 +15,6 @@ module Glean.Glass.Main
   , withEnv
   ) where
 
-
 import Control.Concurrent (myThreadId)
 import Control.Trace (traceMsg, (>$<))
 import Data.Hashable (hash)
@@ -42,10 +41,7 @@ import Options.Applicative (Parser)
 import qualified Glean
 import Glean.Init ( withOptions )
 import Glean.LocalOrRemote as Glean
-  ( Service(..),
-    LocalOrRemote(..),
-    BackendKind(..),
-    withBackendWithDefaultOptions )
+    ( Service(Remote), withBackendWithDefaultOptions )
 import Glean.Schema.Builtin.Types (schema_id)
 import Glean.Util.ConfigProvider
     ( ConfigProvider(defaultConfigOptions, withConfigProvider) )
@@ -106,7 +102,6 @@ withEnv Glass.Config{..} gleanDB f =
       repoMapping <- getRepoMapping
       f Glass.Env
         { gleanBackend = Some backend
-        , gleanIndexBackend = indexBackend backend
         , gleanDB = gleanDB
         , snapshotBackend = snapshotBackend
         , sourceControl = scm
@@ -119,12 +114,6 @@ isRemote :: Service -> Bool
 isRemote service = case service of
   Remote{} -> True
   _ -> False
-
--- | Construct a backend to call the indexing endpoint
-indexBackend :: LocalOrRemote b => b -> Glass.IndexBackend
-indexBackend b = Glass.IndexBackend $ case backendKind b of
-  BackendEnv _ -> Nothing
-  BackendThrift b -> Just b
 
 -- | Kick off the server
 runGlass :: Server GlassTraceWithId
@@ -208,9 +197,6 @@ glassHandler env0 cmd =
   SearchRelated r opts req -> Handler.searchRelated env r opts req
   SearchRelatedNeighborhood r opts req ->
     Handler.searchRelatedNeighborhood env r opts req
-
-  -- Create an incremental database
-  Index r -> Handler.index env r
 
   -- C++/LSP specific
   FileIncludeLocations r opts -> Handler.fileIncludeLocations env r opts

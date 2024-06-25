@@ -84,8 +84,6 @@ glassTraceEvent (GlassTraceWithId tid (TraceCommand cmd)) = case cmd of
     ("SearchRelated", tid, json $ toEncoding r)
   Glass.SearchRelatedNeighborhood r opts req ->
     ("SearchRelatedNeighborhood", tid, json $ toEncoding r)
-  Glass.Index r ->
-    ("Index", tid, json $ toEncoding r)
   Glass.FileIncludeLocations r opts ->
     ("FileIncludeLocations", tid, json $ toEncoding r)
   Glass.ClangUSRToDefinition r opts ->

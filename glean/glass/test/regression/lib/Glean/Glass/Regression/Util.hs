@@ -43,7 +43,6 @@ withTestEnvScm backend scm f =
     \latestGleanRepos ->
       f Glass.Env
         { gleanBackend = Some backend
-        , gleanIndexBackend = IndexBackend Nothing
         , snapshotBackend = Some SB.NilSnapshotBackend
         , gleanDB = Nothing
         , repoMapping = fixedRepoMapping

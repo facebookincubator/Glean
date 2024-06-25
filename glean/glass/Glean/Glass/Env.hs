@@ -21,7 +21,6 @@ module Glean.Glass.Env
     -- * Session resources
     Env,
     Env'(..),
-    IndexBackend(..),
     setUseSnapshotsForSymbolsList,
     withAllocationLimit,
   ) where
@@ -39,7 +38,6 @@ import Util.STM ( TVar )
 import qualified Glean
 import Glean.Impl.ConfigProvider (ConfigAPI)
 import qualified Glean.LocalOrRemote as Glean
-import Glean.Remote (ThriftBackend)
 import Glean.Util.Some ( Some )
 import Util.Time ( DiffTimePoints )
 
@@ -114,7 +112,6 @@ data Env' trace = Env
   , gleanBackend :: Some Glean.Backend
   , fb303 :: Fb303State
   , latestGleanRepos :: TVar GleanDBInfo
-  , gleanIndexBackend :: IndexBackend
   , snapshotBackend :: Some SnapshotBackend
   , gleanDB :: Maybe Glean.Repo -- if provided, use as target Glean DB
   , repoMapping :: RepoMapping
@@ -124,9 +121,6 @@ data Env' trace = Env
   , useSnapshotsForSymbolsList :: IO Bool
   , allocationLimit :: IO (Maybe Int64)
   }
-
--- | A backend to create incremental databases
-newtype IndexBackend = IndexBackend (Maybe ThriftBackend)
 
 withAllocationLimit :: Env' t -> IO a -> IO a
 withAllocationLimit Env{..} act = do

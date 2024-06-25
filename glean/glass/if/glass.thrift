@@ -7,7 +7,6 @@
  */
 
 include "glean/github/if/fb303.thrift"
-include "glean/if/index.thrift"
 include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/hack.thrift"
 
@@ -786,12 +785,6 @@ service GlassService extends fb303.FacebookService {
   ) throws (1: ServerException e);
 
   // Special purpose queries
-
-  // Trigger the creation of an incremental database based on file changes
-  // relative to an indexed revision
-  index.IndexResponse index(1: index.IndexRequest request) throws (
-    1: ServerException e,
-  );
 
   // Resolve #include file paths to depth N
   FileIncludeLocationResults fileIncludeLocations(
