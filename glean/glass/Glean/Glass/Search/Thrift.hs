@@ -60,11 +60,12 @@ instance Search Thrift.Entity where
 
 instance Search (ResultLocation Thrift.Declaration) where
   symbolSearch = symbolSearchGen searchQNameWithLoc searchFunctionNameWithLoc
-    searchThriftFileWithLoc
+    searchThriftFileWithLoc searchFieldDeclWithLoc
 
 instance Search Thrift.Declaration where
   symbolSearch =
     symbolSearchGen searchQName searchFunctionName searchThriftFile
+      searchFieldDecl
 
 -- Resolve symbol id tokens into an entity, with or without location.
 -- Thrift symbol ids are ambiguous and it may take more than one query
@@ -74,9 +75,11 @@ symbolSearchGen ::
   => (Text -> Text -> Angle t)
   -> (Text -> Text -> Text -> Angle t)
   -> (Text -> Angle t)
+  -> (Text -> Text -> Text -> Angle t)
   -> [Text]
   -> ReposHaxl u v (SearchResult t)
-symbolSearchGen searchQName searchFunctionName searchThriftFile toks =
+symbolSearchGen
+  searchQName searchFunctionName searchThriftFile searchFieldDecl toks =
   case toks of
   [] -> return $ None "Thrift.symbolSearch: empty query"
   _ -> case (init toks, last toks) of
@@ -90,8 +93,13 @@ symbolSearchGen searchQName searchFunctionName searchThriftFile toks =
             moreResult <- searchSymbolId toks $ searchFunctionName
                 path serviceName name
             case moreResult of
-              None{} ->
-                searchSymbolId toks $ searchThriftFile (joinFragments toks)
+              None{} -> do
+                moreResult <- searchSymbolId toks $ searchFieldDecl
+                  path serviceName name
+                case moreResult of
+                  None{} ->
+                    searchSymbolId toks $ searchThriftFile (joinFragments toks)
+                  r -> return r
               r -> return r
         r -> return r
 
@@ -161,6 +169,53 @@ searchThriftFile :: Text -> Angle Thrift.Declaration
 searchThriftFile path = vars $ \(file :: Angle Src.File)
   (thriftFile :: Angle Thrift.File) (decl :: Angle Thrift.Declaration) ->
     decl `where_` thriftFileDecl path file thriftFile decl
+
+thriftFieldDecl
+  :: Text -> Text -> Text -> Angle Src.File -> Angle Thrift.File
+  -> Angle Thrift.QualName -> Angle Thrift.FieldDecl -> Angle Thrift.XRefTarget
+  -> [AngleStatement]
+thriftFieldDecl path typename name file thriftFile qname fieldDecl decl =
+    [ file .= predicate @Src.File (string path),
+    thriftFile .= predicate @Thrift.File file,
+    qname .= predicate @Thrift.QualName (
+      rec $
+        field @"file" (asPredicate thriftFile) $
+        field @"name" (string typename)
+      end
+    ),
+    fieldDecl .= predicate @Thrift.FieldDecl (
+      rec $
+        field @"qname" (asPredicate qname) $
+        field @"name" (string name)
+      end),
+    decl .= sig (alt @"field"
+            (asPredicate fieldDecl) :: Angle Thrift.Declaration)
+  ]
+
+searchFieldDecl
+  :: Text -> Text -> Text -> Angle Thrift.Declaration
+searchFieldDecl path typename name =
+  vars $ \(file :: Angle Src.File) (qname :: Angle Thrift.QualName)
+     (thriftFile :: Angle Thrift.File) (fieldDecl' :: Angle Thrift.FieldDecl)
+     (decl :: Angle Thrift.Declaration) ->
+  decl `where_`
+    thriftFieldDecl path typename name file thriftFile qname fieldDecl' decl
+
+searchFieldDeclWithLoc
+  :: Text -> Text -> Text -> Angle (ResultLocation Thrift.Declaration)
+searchFieldDeclWithLoc path typename name =
+  vars $ \(file :: Angle Src.File)
+     (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text)
+     (qname :: Angle Thrift.QualName)
+     (thriftFile :: Angle Thrift.File) (fieldDecl' :: Angle Thrift.FieldDecl)
+     (decl :: Angle Thrift.Declaration) ->
+
+  tuple (decl, file, rangespan, lname) `where_`
+  (thriftFieldDecl path typename name file thriftFile qname fieldDecl' decl
+  ++ [
+    entityLocation (alt @"fbthrift" (alt @"decl" decl)) file rangespan lname
+  ])
+
 
 qNameDecl
   :: Text -> Text -> Angle Thrift.File -> Angle Thrift.QualName
