@@ -89,9 +89,11 @@ predicate ThriftEntityKind:
     ({ named = { name = { kind = enum_ } } } = Decl; Enum_ = Kind) |
     ({ named = { name = { kind = struct_ } } } = Decl; Struct = Kind) |
     ({ named = { name = { kind = union_ } } } = Decl; Union = Kind) |
+    ({ field = _ } = Decl; Field = Kind ) |
     # we don't have a great symbol kinds for thesse
     ({ exception_ = _ } = Decl; Value = Kind) |
-    ({ service_ = _ } = Decl ; Class_ = Kind);
+    ({ service_ = _ } = Decl; Class_ = Kind)
+
 
 #
 # Extends relationships
@@ -110,6 +112,15 @@ predicate ThriftContainsChildEntity :
       { include_ = F } = Parent;
       QN = fbthrift.QualName { file = F };
       fbthrift.DeclarationName { qname = QN, decl = Child }
+    ) | (
+      { exception_ = { name = QN } } = Parent;
+      { field = { qname = QN, kind = exception_ } } = Child
+    ) | (
+      { named = { name = { name = QN, kind = struct_ } } } = Parent;
+      { field = { qname = QN, kind = struct_ } } = Child
+    ) | (
+      { named = { name = { name = QN, kind = union_ } } } = Parent;
+      { field = { qname = QN, kind = union_ } } = Child
     )
 
 predicate ThriftContainsParentEntity :
@@ -128,6 +139,15 @@ predicate ThriftContainsParentEntity :
       ( { named = { name = { name = QName } } } ) = Child;
       { file = File } = QName;
       { include_ = File } = Parent
+    ) | (
+      { field = { qname = QN, kind = exception_ } } = Child;
+      { exception_ = { name = QN } } = Parent
+    ) | (
+      { field = { qname = QN, kind = struct_ } } = Child;
+      { named = { name = { name = QN, kind = struct_ } } } = Parent
+    ) | (
+      { field = { qname = QN, kind = union_ } } = Child;
+      { named = { name = { name = QN, kind = union_ } } } = Parent
     )
 
 predicate ThriftExtendsChildEntity :
