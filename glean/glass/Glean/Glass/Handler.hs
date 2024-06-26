@@ -1158,6 +1158,8 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
           let lang = entityLanguage ent in
           case getLatestRepo (Glass.repoMapping env) dbInfo scsrepo lang of
             Nothing -> return []
+            -- TODO we look only in the first repo available, this assumes
+            --  the Idl repo comes first in the repomapping
             Just idlRepo -> do
               xrefs <- withRepo idlRepo $
                 resolveEntitiesRange scsrepo fst xrefsIdl
