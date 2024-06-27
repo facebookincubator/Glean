@@ -297,7 +297,8 @@ predicate DeclarationFile :
     ({ service_ = { name = { file = F } } } = D) |
     ({ constant = { name = { file = F } } } = D) |
     ({ enumValue = { enum_ = { name = { file = F } } } } = D) |
-    ({ function_ = { service_ = { name = { file = F } } } } = D)
+    ({ function_ = { service_ = { name = { file = F } } } } = D) |
+    ({ field = { qname = { file = F } } } = D)
 
 # All declarations in a thrift file
 predicate FileDeclaration :
