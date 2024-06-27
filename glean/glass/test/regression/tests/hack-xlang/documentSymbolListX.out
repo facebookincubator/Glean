@@ -972,19 +972,19 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "GetCardResponse"
+                            "aString": "card"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "test"
+                            "aString": "GetCardResponse"
                         },
                         "key": "symbolParent"
                     },
                     {
                         "attribute": {
-                            "aString": "struct www/test::GetCardResponse"
+                            "aString": "struct field www/test::GetCardResponse::card"
                         },
                         "key": "symbolSignature"
                     },
@@ -1013,14 +1013,14 @@
                     "lineBegin": 28,
                     "lineEnd": 28
                 },
-                "sym": "test-xlang/thrift/www/test.thrift/GetCardResponse",
+                "sym": "test-xlang/thrift/www/test.thrift/GetCardResponse/card",
                 "target": {
                     "filepath": "www/test.thrift",
                     "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 30,
-                        "lineEnd": 32
+                        "columnBegin": 3,
+                        "columnEnd": 24,
+                        "lineBegin": 31,
+                        "lineEnd": 31
                     },
                     "repository": "test-xlang"
                 }
@@ -1086,19 +1086,19 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "GetNavigationException"
+                            "aString": "message_detail"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "test"
+                            "aString": "GetNavigationException"
                         },
                         "key": "symbolParent"
                     },
                     {
                         "attribute": {
-                            "aString": "exception www/test::GetNavigationException"
+                            "aString": "exception field www/test::GetNavigationException::message_detail"
                         },
                         "key": "symbolSignature"
                     },
@@ -1127,14 +1127,14 @@
                     "lineBegin": 19,
                     "lineEnd": 19
                 },
-                "sym": "test-xlang/thrift/www/test.thrift/GetNavigationException",
+                "sym": "test-xlang/thrift/www/test.thrift/GetNavigationException/message_detail",
                 "target": {
                     "filepath": "www/test.thrift",
                     "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 21,
-                        "lineEnd": 23
+                        "columnBegin": 3,
+                        "columnEnd": 28,
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "repository": "test-xlang"
                 }
@@ -1200,19 +1200,19 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "GetNavigationRequest"
+                            "aString": "identifier"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "test"
+                            "aString": "GetNavigationRequest"
                         },
                         "key": "symbolParent"
                     },
                     {
                         "attribute": {
-                            "aString": "struct www/test::GetNavigationRequest"
+                            "aString": "struct field www/test::GetNavigationRequest::identifier"
                         },
                         "key": "symbolSignature"
                     },
@@ -1241,14 +1241,14 @@
                     "lineBegin": 17,
                     "lineEnd": 17
                 },
-                "sym": "test-xlang/thrift/www/test.thrift/GetNavigationRequest",
+                "sym": "test-xlang/thrift/www/test.thrift/GetNavigationRequest/identifier",
                 "target": {
                     "filepath": "www/test.thrift",
                     "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 13,
-                        "lineEnd": 15
+                        "columnBegin": 3,
+                        "columnEnd": 24,
+                        "lineBegin": 14,
+                        "lineEnd": 14
                     },
                     "repository": "test-xlang"
                 }
@@ -1257,19 +1257,19 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "GetNavigationResponse"
+                            "aString": "tab_group"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "test"
+                            "aString": "GetNavigationResponse"
                         },
                         "key": "symbolParent"
                     },
                     {
                         "attribute": {
-                            "aString": "struct www/test::GetNavigationResponse"
+                            "aString": "struct field www/test::GetNavigationResponse::tab_group"
                         },
                         "key": "symbolSignature"
                     },
@@ -1298,14 +1298,14 @@
                     "lineBegin": 21,
                     "lineEnd": 21
                 },
-                "sym": "test-xlang/thrift/www/test.thrift/GetNavigationResponse",
+                "sym": "test-xlang/thrift/www/test.thrift/GetNavigationResponse/tab_group",
                 "target": {
                     "filepath": "www/test.thrift",
                     "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 17,
-                        "lineEnd": 19
+                        "columnBegin": 3,
+                        "columnEnd": 23,
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test-xlang"
                 }

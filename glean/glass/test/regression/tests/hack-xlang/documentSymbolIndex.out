@@ -261,13 +261,13 @@
                             "aInteger": 9
                         },
                         "symbolName": {
-                            "aString": "GetNavigationRequest"
+                            "aString": "identifier"
                         },
                         "symbolParent": {
-                            "aString": "test"
+                            "aString": "GetNavigationRequest"
                         },
                         "symbolSignature": {
-                            "aString": "struct www/test::GetNavigationRequest"
+                            "aString": "struct field www/test::GetNavigationRequest::identifier"
                         }
                     },
                     "range": {
@@ -276,14 +276,14 @@
                         "lineBegin": 17,
                         "lineEnd": 17
                     },
-                    "sym": "test-xlang/thrift/www/test.thrift/GetNavigationRequest",
+                    "sym": "test-xlang/thrift/www/test.thrift/GetNavigationRequest/identifier",
                     "target": {
                         "filepath": "www/test.thrift",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
-                            "lineBegin": 13,
-                            "lineEnd": 15
+                            "columnBegin": 3,
+                            "columnEnd": 24,
+                            "lineBegin": 14,
+                            "lineEnd": 14
                         },
                         "repository": "test-xlang"
                     }
@@ -451,13 +451,13 @@
                             "aInteger": 9
                         },
                         "symbolName": {
-                            "aString": "GetNavigationException"
+                            "aString": "message_detail"
                         },
                         "symbolParent": {
-                            "aString": "test"
+                            "aString": "GetNavigationException"
                         },
                         "symbolSignature": {
-                            "aString": "exception www/test::GetNavigationException"
+                            "aString": "exception field www/test::GetNavigationException::message_detail"
                         }
                     },
                     "range": {
@@ -466,14 +466,14 @@
                         "lineBegin": 19,
                         "lineEnd": 19
                     },
-                    "sym": "test-xlang/thrift/www/test.thrift/GetNavigationException",
+                    "sym": "test-xlang/thrift/www/test.thrift/GetNavigationException/message_detail",
                     "target": {
                         "filepath": "www/test.thrift",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
-                            "lineBegin": 21,
-                            "lineEnd": 23
+                            "columnBegin": 3,
+                            "columnEnd": 28,
+                            "lineBegin": 22,
+                            "lineEnd": 22
                         },
                         "repository": "test-xlang"
                     }
@@ -605,13 +605,13 @@
                             "aInteger": 9
                         },
                         "symbolName": {
-                            "aString": "GetNavigationResponse"
+                            "aString": "tab_group"
                         },
                         "symbolParent": {
-                            "aString": "test"
+                            "aString": "GetNavigationResponse"
                         },
                         "symbolSignature": {
-                            "aString": "struct www/test::GetNavigationResponse"
+                            "aString": "struct field www/test::GetNavigationResponse::tab_group"
                         }
                     },
                     "range": {
@@ -620,14 +620,14 @@
                         "lineBegin": 21,
                         "lineEnd": 21
                     },
-                    "sym": "test-xlang/thrift/www/test.thrift/GetNavigationResponse",
+                    "sym": "test-xlang/thrift/www/test.thrift/GetNavigationResponse/tab_group",
                     "target": {
                         "filepath": "www/test.thrift",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
-                            "lineBegin": 17,
-                            "lineEnd": 19
+                            "columnBegin": 3,
+                            "columnEnd": 23,
+                            "lineBegin": 18,
+                            "lineEnd": 18
                         },
                         "repository": "test-xlang"
                     }
@@ -938,13 +938,13 @@
                             "aInteger": 9
                         },
                         "symbolName": {
-                            "aString": "GetCardResponse"
+                            "aString": "card"
                         },
                         "symbolParent": {
-                            "aString": "test"
+                            "aString": "GetCardResponse"
                         },
                         "symbolSignature": {
-                            "aString": "struct www/test::GetCardResponse"
+                            "aString": "struct field www/test::GetCardResponse::card"
                         }
                     },
                     "range": {
@@ -953,14 +953,14 @@
                         "lineBegin": 28,
                         "lineEnd": 28
                     },
-                    "sym": "test-xlang/thrift/www/test.thrift/GetCardResponse",
+                    "sym": "test-xlang/thrift/www/test.thrift/GetCardResponse/card",
                     "target": {
                         "filepath": "www/test.thrift",
                         "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 2,
-                            "lineBegin": 30,
-                            "lineEnd": 32
+                            "columnBegin": 3,
+                            "columnEnd": 24,
+                            "lineBegin": 31,
+                            "lineEnd": 31
                         },
                         "repository": "test-xlang"
                     }

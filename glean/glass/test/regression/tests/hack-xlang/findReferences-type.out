@@ -98,14 +98,6 @@
             }
         },
         {
-            "filepath": "www/test.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 10,
-                "start": 436
-            }
-        },
-        {
             "filepath": "www/test.thrift",
             "repository": "test-xlang",
             "span": {
@@ -119,14 +111,6 @@
             "span": {
                 "length": 20,
                 "start": 3565
-            }
-        },
-        {
-            "filepath": "www/test_types.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 10,
-                "start": 4181
             }
         },
         {
