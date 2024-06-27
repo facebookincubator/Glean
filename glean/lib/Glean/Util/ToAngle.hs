@@ -397,6 +397,18 @@ instance Normalize Fbthrift.FunctionName_key where
       (Just (normalize service_))) (Fbthrift.Identifier 0 (Just identifier))
   normalize  _ = error "Not fully resolved"
 
+instance Normalize Fbthrift.FieldDecl_key where
+  normalize
+    (Fbthrift.FieldDecl_key
+      (Fbthrift.QualName _ (Just qualname))
+       kind
+      (Fbthrift.Identifier _ (Just identifier))) =
+    Fbthrift.FieldDecl_key
+      (Fbthrift.QualName 0 (Just (normalize qualname)))
+      kind
+      (Fbthrift.Identifier 0 (Just identifier))
+  normalize  _ = error "Not fully resolved"
+
 instance Normalize Fbthrift.XRefTarget where
   normalize
     (Fbthrift.XRefTarget_function_
@@ -412,6 +424,10 @@ instance Normalize Fbthrift.XRefTarget where
   normalize (Fbthrift.XRefTarget_named
       (Fbthrift.NamedDecl _ (Just x))) =
     Fbthrift.XRefTarget_named (Fbthrift.NamedDecl 0 (Just (normalize x)))
+  normalize
+    (Fbthrift.XRefTarget_field
+      (Fbthrift.FieldDecl _ (Just x))) =
+    Fbthrift.XRefTarget_field (Fbthrift.FieldDecl 0 (Just (normalize x)))
   normalize _ = error "unknown Entity"
 
 instance ToAngleFull Fbthrift.File where
@@ -464,6 +480,19 @@ instance ToAngleFull Fbthrift.FunctionName_key where
     end
   toAngleFull  _ = error "Not Fully resolved"
 
+instance ToAngleFull Fbthrift.FieldDecl_key where
+  toAngleFull
+    (Fbthrift.FieldDecl_key
+      (Fbthrift.QualName _ (Just qualname))
+      kind
+      (Fbthrift.Identifier _ (Just identifier))) =
+      rec $
+        field @"qname" (toAngleFull qualname) $
+        field @"kind" (enum kind) $
+        field @"name" (string identifier)
+      end
+  toAngleFull  _ = error "Not Fully resolved"
+
 instance ToAngleFull Fbthrift.XRefTarget where
   toAngleFull
     (Fbthrift.XRefTarget_function_ (Fbthrift.FunctionName _ (Just x))) =
@@ -477,6 +506,9 @@ instance ToAngleFull Fbthrift.XRefTarget where
   toAngleFull
     (Fbthrift.XRefTarget_named (Fbthrift.NamedDecl _ (Just x))) =
     alt @"named" (toAngleFull x)
+  toAngleFull
+    (Fbthrift.XRefTarget_field (Fbthrift.FieldDecl _ (Just x))) =
+    alt @"field" (toAngleFull x)
   toAngleFull _ = error "unknown Entity"
 
 instance ToAngle Fbthrift.XRefTarget where
