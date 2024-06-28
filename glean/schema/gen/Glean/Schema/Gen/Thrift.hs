@@ -96,7 +96,8 @@ genTargets slashVn info =
     , "  languages = [" <> Text.intercalate ", " langs <> "],"
     , "  thrift_srcs = { \"" <> namespace <> ".thrift\" : [] },"
     , "  deps = [" <> Text.intercalate ","
-      ( "\"//glean/if:glean\"" : depTargets ) <> "],"
+      ( "\"//glean/if:glean\"" : depTargets ) <>
+      ", \"//thrift/annotation:thrift\"],"
     , "  hs2_deps = ["
     , "    \"//glean/hs:angle\","
     , "    \"//glean/hs:typed\","
@@ -228,8 +229,10 @@ genNamespace slashVn namespaces version
     [ "include \"" <> thriftDir slashVn <> "/" <> underscored dep
         <> ".thrift\""
     | dep <- deps ] ++
-    [ ""
-    , "package \"" <> package <> "/" <> underscored namespaces <> "\""
+    [ "include \"thrift/annotation/thrift.thrift\""
+    , ""
+    , allowReservedIdentifierNameAnnotation (underscored namespaces)
+    <> "package \"" <> package <> "/" <> underscored namespaces <> "\""
     ] ++
     [ ""
     , "namespace cpp2 " <> cpp2Namespace <> "." <> dotted namespaces
@@ -257,6 +260,13 @@ genNamespace slashVn namespaces version
 
 
 -- -----------------------------------------------------------------------------
+
+allowReservedIdentifierNameAnnotation :: Text -> Text
+allowReservedIdentifierNameAnnotation identifier
+    | "fbthrift"
+      == Text.toLower (Text.take (Text.length "fbthrift") (Text.dropWhile (=='_') identifier))
+        = "@thrift.AllowReservedIdentifierName "
+    | otherwise = ""
 
 addExtraDecls :: M [Text] -> M [Text]
 addExtraDecls act = do
@@ -315,7 +325,8 @@ thriftTy here t = case t of
 
 mkField :: [Text] -> Text -> Int -> Name -> Text -> Text
 mkField annots structOrUnion i p t =
-  showt i <> ": " <> t <> " " <> p <> annotText <> ";"
+  allowReservedIdentifierNameAnnotation p
+    <> showt i <> ": " <> t <> " " <> p <> annotText <> ";"
   where
   -- The java.swift codegen likes to strip underscores from the end of
   -- names for some reason.
@@ -380,8 +391,10 @@ genPred here PredicateDef{..} = do
   (type_id, define_id) <- do
     let target_type = NamedTy (TypeRef "glean.Id" 0)
     type_id <- thriftTy here target_type
-    let d = "typedef " <> type_id <> " " <> thriftName here name_id
     new_alias <- thriftTy here (NamedTy (TypeRef (joinDot name_id) 0))
+    let name = thriftName here name_id
+        d = allowReservedIdentifierNameAnnotation name <> "typedef "
+          <> type_id <> " " <> name
     return (new_alias, d)
 
   (type_key, define_key) <-
@@ -412,7 +425,8 @@ genPred here PredicateDef{..} = do
       | otherwise = Nothing
     define = (:[]) $ myUnlines . concat $
       [ [ annotation ]
-      , [ structOrUnion <> " " <> name <> " {" ]
+      , [ allowReservedIdentifierNameAnnotation name
+        <> structOrUnion <> " " <> name <> " {" ]
       , indentLines . catMaybes . zipWith (flip ($)) [1..] $
         [ \i -> Just $ mkField ["hs.strict"] structOrUnion i "id" type_id
         , key, val ]
@@ -451,10 +465,13 @@ makeEnumerated :: Text -> [Name] -> M [Text]
 makeEnumerated name vals = do
   let
     pieces = Text.intercalate "," (zipWith mkEnumerator [0..] vals)
-    declare = "enum " <> name <> " {" <> pieces <> "\n}"
+    declare = allowReservedIdentifierNameAnnotation name
+      <> "enum " <> name <> " {" <> pieces <> "\n}"
   return [declare]
   where
-    mkEnumerator (i :: Int) val = "\n  " <> val <> " = " <> showt i <> annotText
+    mkEnumerator (i :: Int) val = "\n  "
+      <> allowReservedIdentifierNameAnnotation val
+      <> val <> " = " <> showt i <> annotText
       where
         -- I do not think we need py3.name for type to type_ here
         py3Annot
@@ -478,9 +495,11 @@ genType here TypeDef{..} = addExtraDecls $ do
          tyName <- withFieldHint nm (thriftTy here ty)
          return $ makeField structOrUnion ix nm tyName
       let
-        define | null fields = "struct " <> name <> " {}"
+        define | null fields = allowReservedIdentifierNameAnnotation name
+          <> "struct " <> name <> " {}"
                | otherwise = myUnlines $ concat
-          [ [ structOrUnion <> " " <> name <> " {" ]
+          [ [ allowReservedIdentifierNameAnnotation name
+            <> structOrUnion <> " " <> name <> " {" ]
           , indentLines (fieldTexts ++ extraFields)
           , [ "}" ]
           ]
@@ -497,4 +516,5 @@ genType here TypeDef{..} = addExtraDecls $ do
 
     _other_ty -> do
       t <- thriftTy here typeDefType
-      return ["typedef " <> t <> " " <> name]
+      return [allowReservedIdentifierNameAnnotation name
+        <> "typedef " <> t <> " " <> name]

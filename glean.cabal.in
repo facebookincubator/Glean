@@ -741,6 +741,7 @@ library schema
         glean:if-glean-hs,
         glean:config,
         glean:core,
+        glean:thrift-annotation
 
 -- library clang-test-xref
 --     import: fb-haskell, fb-cpp, deps
