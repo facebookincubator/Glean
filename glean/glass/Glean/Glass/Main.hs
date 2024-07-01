@@ -21,6 +21,7 @@ import Data.List (stripPrefix)
 import Facebook.Service ( runFacebookService' )
 import Facebook.Fb303 ( fb303Handler, withFb303 )
 import System.Timeout
+import TextShow
 import Thrift.Channel (Header)
 import Thrift.Protocol.ApplicationException.Types as Thrift
 #ifdef FBTHRIFT
@@ -74,14 +75,16 @@ type Server trace = Glass.Env' trace -> Glass.Config trace -> IO ()
 
 -- | Set up the resources we'll need
 withGlass
-  :: Server trace -> Parser (Glass.Config trace -> Glass.Config trace) -> IO ()
+  :: TextShow trace
+  => Server trace -> Parser (Glass.Config trace -> Glass.Config trace) -> IO ()
 withGlass f backendsP =
   withOptions (Glass.options backendsP) $ \config@Glass.Config{..} ->
   withEnv config Nothing $ \env -> f env config
 
 -- | Construct a server environment
 withEnv
-  :: Glass.Config trace
+  :: TextShow trace
+  => Glass.Config trace
   -> Maybe Glean.Repo
   -> (Glass.Env' trace -> IO a)
   -> IO a

@@ -84,8 +84,8 @@ setHaxlState
   -> Config a -> Config a
 setHaxlState st config = config { haxlState = st }
 
-setTracer :: Tracer trace -> Config a -> Config trace
-setTracer tracer' Config{..}= Config{ tracer = tracer', .. }
+setTracer :: Tracer trace -> Config trace -> Config trace
+setTracer tracer' Config{..}= Config{ tracer = tracer <> tracer', .. }
 
 setUseSnapshotsForSymbolsList :: IO Bool -> Config trace -> Config trace
 setUseSnapshotsForSymbolsList check Config{..} =

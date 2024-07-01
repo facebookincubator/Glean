@@ -15,7 +15,9 @@ module Glean.Glass.Options
 
 import Options.Applicative
 import Data.Text (Text)
+import TextShow
 
+import Control.Trace
 import qualified Haxl.Core as Haxl
 
 import qualified Glean.LocalOrRemote as Glean
@@ -29,10 +31,11 @@ import Glean.Glass.SourceControl
 import Glean.Glass.Config (defaultWelcomeMessage)
 
 options
-  :: Parser (Glass.Config a -> Glass.Config a) -> ParserInfo (Glass.Config a)
+  :: TextShow a
+  => Parser (Glass.Config a -> Glass.Config a) -> ParserInfo (Glass.Config a)
 options mod = info (helper <*> mod <*> configParser) fullDesc
 
-configParser :: Parser (Glass.Config a)
+configParser :: TextShow a => Parser (Glass.Config a)
 configParser = do
   gleanService <- Glean.options
   listenPort <- portParser
@@ -43,8 +46,8 @@ configParser = do
   snapshotBackend <- pure $ pure $ pure $ Some NilSnapshotBackend
   sourceControl <- pure (const (return (Some NilSourceControl)))
   haxlState <- pure (const (return Haxl.stateEmpty))
-  tracer <- pure mempty
   allocationLimit <- pure (return Nothing)
+  tracer <- tracerParser
   return $ Glass.Config{
         configKey = Glass.defaultConfigKey,
         welcomeMessage = pure (pure . defaultWelcomeMessage),
@@ -84,4 +87,10 @@ workerThreadsParser :: Parser (Maybe Int)
 workerThreadsParser = optional $ option auto $ mconcat
   [ long "worker-threads"
   , help "Number of worker threads (defaults to the number of cores)"
+  ]
+
+tracerParser :: TextShow a => Parser (Tracer a)
+tracerParser = flag mempty (vlogShowTracer $ const 0) $ mconcat
+  [ long "trace-to-vlog"
+  , help "Sends telemetry traces to vlog"
   ]

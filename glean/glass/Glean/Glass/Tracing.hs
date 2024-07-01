@@ -18,6 +18,7 @@ module Glean.Glass.Tracing
   ) where
 
 import Data.Text (Text)
+import TextShow
 
 import Control.Trace (traceMsg, Tracer)
 
@@ -37,9 +38,17 @@ data GlassTraceWithId = GlassTraceWithId
   , traceEvent :: !GlassTrace
   }
 
+instance TextShow GlassTraceWithId where
+  showb t = case glassTraceEvent t of
+    (id, _, _) -> showb id
+
 data GlassTrace where
   TraceCommand :: forall r . GlassServiceCommand r -> GlassTrace
   TraceSpan :: !Text -> Maybe Text -> GlassTrace
+
+instance TextShow GlassTrace where
+  showb t = case glassTraceEvent (GlassTraceWithId 0 t) of
+    (id, _, _) -> showb id
 
 traceSpan :: GlassTracer -> Text -> IO a -> IO a
 traceSpan tracer span = traceMsg tracer (TraceSpan span Nothing)
