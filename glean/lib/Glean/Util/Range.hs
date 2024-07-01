@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE NamedFieldPuns #-}
 -- | There are several concepts of ranges to convert between.
 module Glean.Util.Range
   ( -- * source range get/set

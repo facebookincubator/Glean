@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE NamedFieldPuns #-}
 module Glean.Database.Janitor
   ( runDatabaseJanitor
   , runDatabaseJanitorPureish

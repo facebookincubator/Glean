@@ -7,7 +7,6 @@
 -}
 
 {-# LANGUAGE CPP #-}
-{-# LANGUAGE NamedFieldPuns #-}
 module Glean.Database.Create (
   kickOffDatabase,
   updateProperties,

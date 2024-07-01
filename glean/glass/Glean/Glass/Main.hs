@@ -7,7 +7,6 @@
 -}
 
 {-# LANGUAGE CPP #-}
-{-# LANGUAGE NamedFieldPuns #-}
 module Glean.Glass.Main
   ( mainWith
 

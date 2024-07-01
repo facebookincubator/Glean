@@ -8,7 +8,7 @@
 
 -- | Generate C++ client types from the Glean schema
 
-{-# LANGUAGE NamedFieldPuns, OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings #-}
 module Glean.Schema.Gen.Cpp
   ( genSchemaCpp
   ) where

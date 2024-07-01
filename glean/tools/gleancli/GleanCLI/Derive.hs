@@ -8,7 +8,6 @@
 
 {-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE RecursiveDo #-}
-{-# LANGUAGE NamedFieldPuns #-}
 module GleanCLI.Derive (DeriveCommand) where
 
 import Control.Concurrent

@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE NamedFieldPuns, OverloadedStrings #-}
+{-# LANGUAGE OverloadedStrings #-}
 -- | Generate "Glean.Schema"
 module Glean.Schema.Gen.Haskell
   ( genSchemaHS

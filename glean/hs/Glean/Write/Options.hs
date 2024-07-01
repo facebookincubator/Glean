@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE ApplicativeDo, NamedFieldPuns #-}
+{-# LANGUAGE ApplicativeDo #-}
 
 module Glean.Write.Options
   ( sendQueueOptions

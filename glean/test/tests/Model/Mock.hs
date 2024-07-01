@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE NamedFieldPuns #-}
 module Model.Mock where
 
 import qualified Glean.Database.Catalog.Local.Memory as Catalog

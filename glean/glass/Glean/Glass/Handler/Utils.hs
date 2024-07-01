@@ -6,7 +6,6 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE NamedFieldPuns #-}
 module Glean.Glass.Handler.Utils (
     -- * Handler wrappers: handlers should call one of these
     withRepoFile,

@@ -7,7 +7,6 @@
 -}
 
 {-# LANGUAGE DeriveGeneric #-}
-{-# LANGUAGE NamedFieldPuns #-}
 module Glean.Database.Backup
   ( backuper
   , Event(..)
