@@ -255,9 +255,19 @@ encodeTextForAngle :: Text -> Text
 encodeTextForAngle =
   Text.decodeUtf8 . Lazy.toStrict . Aeson.encode . Aeson.String
 
+getToken :: Alex (SrcLoc, Token)
+getToken = Alex $ \state ->
+  case unAlex alexMonadScan state of
+    Left err ->
+      let file = currentFile (alex_ust state) in
+      if null file
+        then Left err
+        else Left (file <> ": " <> err)
+    Right a -> Right a
+
 lexer :: (Located Token -> Alex a) -> Alex a
 lexer f = do
-  (start, tok) <- alexMonadScan
+  (start, tok) <- getToken
   (AlexPn _ eline ecol,_,_,_) <- alexGetInput
   let end = SrcLoc eline ecol
   f $ L (SrcSpan start end) tok
