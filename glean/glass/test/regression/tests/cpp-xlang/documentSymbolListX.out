@@ -321,12 +321,6 @@
                         "attribute": {
                             "aString": "thrift"
                         },
-                        "key": "symbolIdl"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "thrift"
-                        },
                         "key": "crossLanguage"
                     }
                 ],
@@ -373,12 +367,6 @@
                             "aInteger": 9
                         },
                         "key": "symbolLanguage"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "thrift"
-                        },
-                        "key": "symbolIdl"
                     },
                     {
                         "attribute": {
