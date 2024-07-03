@@ -68,7 +68,7 @@ import qualified Glean.RTS.Foreign.Lookup as Lookup
 import Glean.RTS.Foreign.Query
 import Glean.RTS.Traverse
 import Glean.RTS.Types
-import Glean.RTS.Term hiding (Match)
+import Glean.RTS.Term
 import Glean.Typed.Binary (buildRtsValue)
 import Glean.Types hiding (Nat, Byte)
 

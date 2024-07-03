@@ -46,7 +46,7 @@ import Glean.Query.Codegen.Types
 import Glean.Query.Typecheck.Types
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term hiding
-  (Tuple, ByteArray, String, Array, Nat, Set, Wildcard, Variable, Match(..))
+  (Tuple, ByteArray, String, Array, Nat, Set)
 import qualified Glean.RTS.Term as RTS
 import Glean.Database.Schema.Types
 import Glean.Schema.Util

@@ -28,7 +28,7 @@ import qualified Data.IntSet as IntSet
 
 import Glean.Query.Codegen.Types (Match(..), Var(..), Generator_(..), Generator)
 import Glean.Query.Vars (VarSet)
-import Glean.RTS.Term as RTS hiding (Match(..))
+import Glean.RTS.Term as RTS
 
 -- -----------------------------------------------------------------------------
 -- Fixing up MatchBind vs. MatchVar

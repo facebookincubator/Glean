@@ -31,7 +31,7 @@ import Data.List.NonEmpty (NonEmpty)
 
 import Glean.Display
 import Glean.Query.Codegen.Types
-import Glean.RTS.Term hiding (Match(..))
+import Glean.RTS.Term
 import Glean.RTS.Types as RTS
 
 type VarId = Int

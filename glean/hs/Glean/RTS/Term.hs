@@ -9,9 +9,7 @@
 {-# LANGUAGE DeriveGeneric, DeriveTraversable #-}
 module Glean.RTS.Term
   ( Term(..)
-  , Match(..)
   , Value
-  , Pattern
   ) where
 
 import Data.ByteString (ByteString)
@@ -70,27 +68,4 @@ instance Display ref => Display (Term ref) where
   displayAtom opts (Ref ref) = displayAtom opts ref
   displayAtom opts other = display opts other
 
--- | Typically 'ref' is 'Fid', 'Nested', 'Deep'
-data Match ref
-  = Variable
-  | Wildcard
-  | MatchTerm ref
-  | PrefixVariable ByteString
-  | PrefixWildcard ByteString
-  deriving(Foldable,Functor,Traversable,Show)
-
-instance Display ref => Display (Match ref) where
-  display _ Variable = "?"
-  display _ Wildcard = "_"
-  display opts (MatchTerm ref) = display opts ref
-  display _ (PrefixVariable s) =
-    "\"" <> pretty (Text.decodeUtf8 s) <> "\"?.."
-  display _ (PrefixWildcard s) =
-    "\"" <> pretty (Text.decodeUtf8 s) <> "\"..."
-
-  displayAtom opts (MatchTerm ref) = displayAtom opts ref
-  displayAtom opts other = display opts other
-
 type Value = Term Fid
-
-type Pattern ref = Term (Match ref)

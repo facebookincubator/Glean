@@ -38,7 +38,7 @@ import Data.Text.Prettyprint.Doc
 import Glean.Angle.Types (IsWild(..), PrimOp(..), SeekSection(..))
 import Glean.Bytecode.Types (Register, Ty(..))
 import Glean.Display
-import Glean.RTS.Term hiding (Match)
+import Glean.RTS.Term
 import Glean.RTS.Types (Type, Fid, PidRef)
 
 -- | A Query with flat generators, ready for compilation

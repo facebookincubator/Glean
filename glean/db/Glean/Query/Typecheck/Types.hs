@@ -21,7 +21,7 @@ import Glean.Query.Codegen.Types
 import Glean.Angle.Types hiding (Type)
 import Glean.Display
 import Glean.RTS.Types as RTS
-import Glean.RTS.Term as RTS hiding (Match(..))
+import Glean.RTS.Term as RTS
 
 -- | The typechecking phase turns 'ParsedPat' (source-level terms) into
 -- 'TcPat' (representational terms), but it doesn't flatten nested

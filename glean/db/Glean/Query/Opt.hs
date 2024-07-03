@@ -34,7 +34,7 @@ import Glean.Query.Codegen.Types
   , Generator
   , QueryWithInfo(..))
 import Glean.Query.Vars
-import Glean.RTS.Term hiding (Match(..))
+import Glean.RTS.Term
 import Glean.RTS.Types
 
 {-

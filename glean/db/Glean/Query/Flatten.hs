@@ -36,7 +36,7 @@ import Glean.Query.Flatten.Types
 import Glean.Query.Typecheck.Types
 import Glean.Query.Vars
 import Glean.RTS.Types as RTS
-import Glean.RTS.Term as RTS hiding (Match(..))
+import Glean.RTS.Term as RTS
 import Glean.Database.Schema.Types
 import Glean.Database.Types (EnableRecursion(..))
 import qualified Glean.Angle.Types as Schema

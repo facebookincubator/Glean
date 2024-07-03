@@ -17,7 +17,7 @@ import Data.Maybe (mapMaybe, catMaybes)
 
 import Glean.Query.Codegen.Types
 import Glean.RTS.Types (Pid, PidRef(..))
-import Glean.RTS.Term hiding (Match)
+import Glean.RTS.Term
 
 -- | Make a predicate derivation query efficiently derive new facts on an
 -- incremental database.
