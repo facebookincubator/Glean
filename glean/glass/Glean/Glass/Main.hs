@@ -59,6 +59,7 @@ import Glean.Glass.Types
     GlassExceptionReason (..))
 import Glean.Glass.Env (Env'(tracer), Env)
 import Glean.Glass.Tracer ( isTracingEnabled )
+import Glean.Glass.Handler.Cxx as Cxx
 import Glean.Glass.Tracing
   (GlassTrace(TraceCommand), GlassTraceWithId (GlassTraceWithId))
 
@@ -201,8 +202,8 @@ glassHandler env0 cmd =
     Handler.searchRelatedNeighborhood env r opts req
 
   -- C++/LSP specific
-  FileIncludeLocations r opts -> Handler.fileIncludeLocations env r opts
-  ClangUSRToDefinition r opts -> fst <$> Handler.clangUSRToDefinition env r opts
+  FileIncludeLocations r opts -> Cxx.fileIncludeLocations env r opts
+  ClangUSRToDefinition r opts -> fst <$> Cxx.clangUSRToDefinition env r opts
 
   where
     tracing env

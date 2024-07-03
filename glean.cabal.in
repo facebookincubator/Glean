@@ -1183,6 +1183,7 @@ library glass-lib
         Glean.Glass.Digest
         Glean.Glass.Env
         Glean.Glass.Handler
+        Glean.Glass.Handler.Cxx
         Glean.Glass.Handler.Utils
         Glean.Glass.Logging
         Glean.Glass.Main

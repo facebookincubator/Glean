@@ -54,6 +54,7 @@ import Glean.Regression.Test
 import qualified Glean.Indexer as Glean
 
 import qualified Glean.Glass.Handler as Glass
+import qualified Glean.Glass.Handler.Cxx as Glass
 import Glean.Glass.Types as Glass
 import Glean.Glass.Env as Glass ( Env )
 import Glean.Glass.Regression.Util as Glass ( withTestEnv )
