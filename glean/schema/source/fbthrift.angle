@@ -319,6 +319,7 @@ predicate DeclarationNameSpan :
     span: Loc,
   }
 
+# Maps a qualified name to a declaration
 predicate DeclarationName:
   {
     qname: QualName,
@@ -329,6 +330,21 @@ predicate DeclarationName:
    | ( E = ExceptionName { name = QName }; { exception_ = E } = Decl )
    | ( C = Constant { name = QName }; { constant = C } = Decl )
    | ( S = ServiceName { name = QName }; { service_ = S } = Decl )
+
+# Maps a member name to a declaration
+predicate DeclarationMember:
+  {
+    qname: QualName,
+    member: Identifier,
+    decl: Declaration
+  }
+  { QName, Name, Decl } where
+     ( F = FieldDecl { qname = QName, name = Name };
+       { field = F } = Decl )
+   | ( Fun = FunctionName { service_ = { name = QName }, name = Name };
+       { function_ = Fun } = Decl )
+   | ( E = EnumValue { enum_ = { name = QName }, name = Name };
+       { enumValue = E } = Decl )
 
 predicate StructType : {
   name : QualName,
