@@ -1,0 +1,51 @@
+[
+    "@generated",
+    {
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 10,
+        "language": 9,
+        "location": {
+            "filepath": "lib.thrift",
+            "range": {
+                "columnBegin": 3,
+                "columnEnd": 21,
+                "lineBegin": 140,
+                "lineEnd": 140
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "ServerException",
+            "localName": "message"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "exception field lib::ServerException::message",
+        "sym": "test/thrift/lib.thrift/ServerException/message",
+        "sym_location": {
+            "filepath": "lib.thrift",
+            "range": {
+                "columnBegin": 3,
+                "columnEnd": 21,
+                "lineBegin": 140,
+                "lineEnd": 140
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]

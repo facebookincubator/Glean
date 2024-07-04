@@ -119,10 +119,12 @@ predicate FieldDecl : { qname : QualName, kind: FieldKind, name : Identifier }
 
 # Thrift internal cross-reference target predicates, organized by kind
 # This is the type of thrift "Declarations"
+# The top level declarations in a file are struct, union, enum, typedef, const
+# members are fields, enum values and functions
 type XRefTarget =
   {
     include_ : File |
-    named : NamedDecl |
+    named : NamedDecl |  # struct, enum, union, typedef
     exception_ : ExceptionName |
     service_ : ServiceName |
     constant : Constant |

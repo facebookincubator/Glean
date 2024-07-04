@@ -1,0 +1,51 @@
+[
+    "@generated",
+    {
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 2,
+        "language": 9,
+        "location": {
+            "filepath": "lib.thrift",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 37,
+                "lineBegin": 14,
+                "lineEnd": 14
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "lib",
+            "localName": "RepoName"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "typedef lib::RepoName",
+        "sym": "test/thrift/lib.thrift/RepoName",
+        "sym_location": {
+            "filepath": "lib.thrift",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 37,
+                "lineBegin": 14,
+                "lineEnd": 14
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]

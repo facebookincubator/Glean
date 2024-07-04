@@ -1,0 +1,51 @@
+[
+    "@generated",
+    {
+        "comments": [],
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 24,
+        "language": 9,
+        "location": {
+            "filepath": "lib.thrift",
+            "range": {
+                "columnBegin": 3,
+                "columnEnd": 12,
+                "lineBegin": 165,
+                "lineEnd": 165
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "SymbolKind",
+            "localName": "Type"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "enum value lib::SymbolKind::Type",
+        "sym": "test/thrift/lib.thrift/SymbolKind/Type",
+        "sym_location": {
+            "filepath": "lib.thrift",
+            "range": {
+                "columnBegin": 3,
+                "columnEnd": 12,
+                "lineBegin": 165,
+                "lineEnd": 165
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]

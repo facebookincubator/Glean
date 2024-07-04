@@ -8,6 +8,20 @@
 
 {-# OPTIONS_GHC -Wno-orphans #-}
 
+-- Thrift symbol ids can be of three forms
+-- repo/thrift/FILE
+-- repo/thrift/FILE/NAME
+--    NAME can refer to a union, struct, exception, service, constant, typedef
+--    there's no possible ambiguity as these names are guaranteed to be unique
+--    in a file
+-- repo/thrift/FILE/NAME/MEMBER
+--    MEMBER can be a struct/union/exception field, an enum value,
+--    or a service function
+--
+-- The symbol id is ambiguous, repo/thrift/a.thrift/b.thrift/c can refer to
+-- field c in struct b.thrift, or struct c in file b.thrift.
+-- TODO add more structure to disambiguate
+--
 module Glean.Glass.SymbolId.Fbthrift
   ({- instances -})
   where
