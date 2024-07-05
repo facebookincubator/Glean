@@ -121,6 +121,9 @@ predicate ThriftContainsChildEntity :
     ) | (
       { named = { name = { name = QN, kind = union_ } } } = Parent;
       { field = { qname = QN, kind = union_ } } = Child
+    ) | (
+      { named = { name = { name = QN, kind = enum_ } } } = Parent;
+      { enumValue = { enum_ = { name = QN, kind = enum_ } } } = Child
     )
 
 predicate ThriftContainsParentEntity :
@@ -148,6 +151,9 @@ predicate ThriftContainsParentEntity :
     ) | (
       { field = { qname = QN, kind = union_ } } = Child;
       { named = { name = { name = QN, kind = union_ } } } = Parent
+    ) | (
+      { enumValue = { enum_ = { name = QN, kind = enum_ } } } = Child;
+      { named = { name = { name = QN, kind = enum_ } } } = Parent
     )
 
 predicate ThriftExtendsChildEntity :

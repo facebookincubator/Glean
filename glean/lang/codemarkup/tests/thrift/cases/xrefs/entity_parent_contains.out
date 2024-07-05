@@ -5,6 +5,1855 @@
       "child": {
         "fbthrift": {
           "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "DefinitionKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Declaration" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "DefinitionKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "DefinitionKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Definition" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "DefinitionKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                },
+                "name": { "key": "Buck" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                },
+                "name": { "key": "Cpp" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                },
+                "name": { "key": "Hack" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                },
+                "name": { "key": "Haskell" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                },
+                "name": { "key": "Java" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                },
+                "name": { "key": "JavaScript" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                },
+                "name": { "key": "ObjectiveC" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                },
+                "name": { "key": "PreProcessor" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                },
+                "name": { "key": "Python" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                },
+                "name": { "key": "Rust" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                },
+                "name": { "key": "Thrift" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Language" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Array" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Boolean" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Class_" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Constant" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Constructor" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Enum" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Enumerator" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Event" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Field" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "File" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Function" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Interface" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Key" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Macro" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Method" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Module" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Namespace" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Null" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Number" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Object" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Operator" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Package" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Property" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "String" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Struct" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Type" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "TypeParameter" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Union" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Value" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                },
+                "name": { "key": "Variable" }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 1,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "SymbolKind" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "child": {
+        "fbthrift": {
+          "decl": {
             "exception_": {
               "key": {
                 "name": {
