@@ -114,6 +114,11 @@ pattern
 
 gen :: { SourcePat }
 gen
+  : op { $1 }
+  | op ':' type    { TypeSignature (s $1 $3) $1 (lval $3) }
+
+op :: { SourcePat }
+op
   : plus  { $1 }
   | plus '!=' plus   { App (s $1 $3) (Variable (sspan $2) "prim.neExpr") [$1, $3] }
   | plus '!==' plus  { App (s $1 $3) (Variable (sspan $2) "prim.neNat") [$1, $3] }
@@ -121,9 +126,8 @@ gen
   | plus '>=' plus   { App (s $1 $3) (Variable (sspan $2) "prim.geNat") [$1, $3] }
   | plus '<' plus    { App (s $1 $3) (Variable (sspan $2) "prim.ltNat") [$1, $3] }
   | plus '<=' plus   { App (s $1 $3) (Variable (sspan $2) "prim.leNat") [$1, $3] }
-  | kv '[' '..' ']'     { ElementsOfArray (s $1 $4) $1 }
+  | kv '[' '..' ']'  { ElementsOfArray (s $1 $4) $1 }
     -- NB. kv to resolve shift-reduce conflict
-  | plus ':' type  { TypeSignature (s $1 $3) $1 (lval $3) }
 
 plus :: { SourcePat }
 plus
