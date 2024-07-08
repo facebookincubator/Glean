@@ -72,6 +72,7 @@ tokens :-
   "predicate"   { basicToken T_Predicate }
   "schema"      { basicToken T_Schema }
   "set"         { versionDependentToken (AngleVersion 8) T_Set (T_Ident . ByteString.toStrict) }
+  "elements"    { versionDependentToken (AngleVersion 8) T_Elements (T_Ident . ByteString.toStrict) }
   "all"         { versionDependentToken (AngleVersion 8) T_All (T_Ident . ByteString.toStrict) }
   "string"      { basicToken T_String }
   "type"        { basicToken T_Type }
@@ -138,6 +139,7 @@ data TokenType
   | T_Predicate
   | T_Schema
   | T_Set
+  | T_Elements
   | T_All
   | T_String
   | T_Type

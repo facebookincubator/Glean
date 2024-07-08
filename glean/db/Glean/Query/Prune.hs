@@ -12,7 +12,7 @@ import Control.Monad.State (State, runState)
 import qualified Control.Monad.State as State
 import Data.Bitraversable (bitraverse)
 import Data.Foldable (asum)
-import Data.Maybe (fromMaybe)
+import Data.Maybe (fromMaybe, mapMaybe)
 import qualified Data.Set as Set
 import qualified Data.Graph as Graph
 import Data.HashMap.Strict (HashMap)
@@ -130,7 +130,7 @@ prune hasFacts (QueryWithInfo q _ t) = do
     String{} -> Just pat
     Array xs -> Array <$> traverse prunePat xs
     Tuple xs -> Tuple <$> traverse prunePat xs
-    Set xs -> Set <$> traverse prunePat xs
+    All xs -> Just $ All $ mapMaybe prunePat xs
     Alt i x -> Alt i <$> prunePat x
     Ref m -> case m of
       MatchWild{} -> Just pat
@@ -149,7 +149,7 @@ prune hasFacts (QueryWithInfo q _ t) = do
           <$> (TcFactGen pidref <$> prunePat k <*> prunePat v <*> pure range)
         TcElementsOfArray x -> Ref . MatchExt . Typed ty . TcElementsOfArray
           <$> prunePat x
-        TcAll x -> Ref . MatchExt . Typed ty . TcAll <$> prunePat x
+        TcElements x -> Ref . MatchExt . Typed ty . TcElements <$> prunePat x
         TcQueryGen q ->
           Ref . MatchExt . Typed ty . TcQueryGen <$> pruneTcQuery q
         -- we dont' want to handle negation here because if it tries to match
@@ -216,7 +216,7 @@ renumberVars ty q =
     TcFactGen ref k v range ->
       TcFactGen ref <$> renamePat k <*> renamePat v <*> pure range
     TcElementsOfArray x -> TcElementsOfArray <$> renamePat x
-    TcAll x -> TcAll <$> renamePat x
+    TcElements x -> TcElements <$> renamePat x
     TcQueryGen q -> TcQueryGen <$> renameQuery q
     TcNegation xs -> TcNegation <$> traverse renameStmt xs
     TcPrimCall op xs -> TcPrimCall op <$> traverse renamePat xs

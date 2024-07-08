@@ -153,8 +153,8 @@ freshWildGen gen = case gen of
       <*> freshWild val
   ArrayElementGenerator ty expr ->
     ArrayElementGenerator ty <$> freshWild expr
-  All ty expr ->
-    All ty <$> freshWild expr
+  SetElementGenerator ty expr ->
+    SetElementGenerator ty <$> freshWild expr
   PrimCall op args ty ->
     PrimCall op <$> mapM freshWild args <*> pure ty
 

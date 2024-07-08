@@ -44,7 +44,7 @@ setTest = TestList
         case parseSchemaWithVersion v
             [s|
             schema foo {
-            type Foo = set maybe nat
+            type Foo = set (maybe nat)
             }
             |]
         of
@@ -53,7 +53,7 @@ setTest = TestList
             Right _ -> return ()
     , TestLabel "query parses" $ TestCase $
         case parseQueryWithVersion  v
-            [s| set(1,set(X,all(Y)))
+            [s| all 1 (all X (all Y))
             |]
         of
             Left err ->
@@ -61,7 +61,7 @@ setTest = TestList
             Right _ -> return ()
     , TestLabel "query type checks" $ TestCase $
         case parseQueryWithVersion v
-            [s| 1 = all(set(1)) ; 1
+            [s| 1 = elements(all(1)) ; 1
             |]
         of
             Left err ->
@@ -79,7 +79,7 @@ setTest = TestList
                 Right _ -> return ()
     , TestLabel "query flattens" $ TestCase $
         case parseQueryWithVersion v
-            [s| 1 = all(set(1)) ; 1
+            [s| 1 = elements(all(1)) ; 1
             |]
         of
             Left err ->

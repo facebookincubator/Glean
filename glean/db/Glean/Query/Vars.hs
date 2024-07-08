@@ -31,7 +31,8 @@ import Data.List.NonEmpty (NonEmpty)
 
 import Glean.Display
 import Glean.Query.Codegen.Types
-import Glean.RTS.Term
+import Glean.RTS.Term hiding (All)
+import qualified Glean.RTS.Term as RTS
 import Glean.RTS.Types as RTS
 
 type VarId = Int
@@ -58,7 +59,7 @@ instance VarsOf Generator where
   varsOf w (TermGenerator exp) r = varsOf w exp r
   varsOf w (DerivedFactGenerator _ key val) r = varsOf w key $! varsOf w val r
   varsOf w (ArrayElementGenerator _ arr) r = varsOf w arr r
-  varsOf w (All _ set) r = varsOf w set r
+  varsOf w (SetElementGenerator _ set) r = varsOf w set r
   varsOf w (PrimCall _ args _) r = varsOf w args r
 
 instance (VarsOf a) => VarsOf [a] where
@@ -77,7 +78,7 @@ instance VarsOf m => VarsOf (Term m) where
     Tuple xs -> varsOf w xs r
     Array xs -> varsOf w xs r
     Alt _ x -> varsOf w x r
-    Set xs -> varsOf w xs r
+    RTS.All xs -> varsOf w xs r
 
 instance VarsOf (Match () Var) where
   varsOf w m r = case m of
@@ -175,8 +176,8 @@ reWildGenerator used gen = case gen of
     DerivedFactGenerator pid (reWild used key) (reWild used val)
   ArrayElementGenerator ty exp ->
     ArrayElementGenerator ty (reWild used exp)
-  All ty exp ->
-    All ty (reWild used exp)
+  SetElementGenerator ty exp ->
+    SetElementGenerator ty (reWild used exp)
   PrimCall op args ty ->
     PrimCall op (map (reWild used) args) ty
 

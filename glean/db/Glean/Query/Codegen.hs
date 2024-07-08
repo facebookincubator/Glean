@@ -146,7 +146,7 @@ findOutputs q = findOutputsQuery q IntSet.empty
   findOutputsGen (DerivedFactGenerator _ k v) r =
     findOutputsPat k (findOutputsPat v r)
   findOutputsGen (ArrayElementGenerator _ _) r = r
-  findOutputsGen (All _ _) r = r
+  findOutputsGen (SetElementGenerator _ _) r = r
   findOutputsGen (PrimCall _ args _) r = foldr findOutputsPat r args
 
   findOutputsPat pat r = foldr findOutputsMatch r pat
@@ -834,9 +834,9 @@ compileStatements
             done <- label
             return a
 
-      compileGen (All _ _) Nothing inner = inner
-      compileGen (All _ _) (Just _reg) _inner =
-        error "TODO: All"
+      compileGen (SetElementGenerator _ _) Nothing inner = inner
+      compileGen (SetElementGenerator _ _) (Just _reg) _inner =
+        error "TODO: set element generator"
 
       -- derived fact where we don't bind the Fid: no need to store it
       compileGen DerivedFactGenerator{} Nothing inner = inner
@@ -1258,7 +1258,7 @@ preProcessPat pat = unsafePerformIO $
       ByteArray bs -> do
         b <- builder
         lift $ encodeByteArray b bs
-      Set _xs -> error "Set"
+      All _xs -> error "Set"
 
 -- | True if the prefix of this query is empty
 emptyPrefix :: [QueryChunk var] -> Bool

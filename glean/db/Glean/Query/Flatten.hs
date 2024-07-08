@@ -181,9 +181,9 @@ flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
   TcElementsOfArray pat -> do
     r <- flattenPattern pat
     return [(stmts, ArrayElementGenerator ty pat') | (stmts,pat') <- r ]
-  TcAll pat -> do
+  TcElements pat -> do
     r <- flattenPattern pat
-    return [(stmts, All ty pat') | (stmts, pat') <- r]
+    return [(stmts, SetElementGenerator ty pat') | (stmts,pat') <- r ]
   TcQueryGen query -> do
     (stmts, term, _) <- flattenQuery' query
     return [(floatGroups (flattenStmtGroups stmts), TermGenerator term)]
@@ -277,7 +277,7 @@ flattenPattern pat = case pat of
   ByteArray s -> singleTerm (ByteArray s)
   Array terms -> manyTerms Array <$> mapM flattenPattern terms
   Tuple terms -> manyTerms Tuple <$> mapM flattenPattern terms
-  Set terms -> manyTerms Set <$> mapM flattenPattern terms
+  All terms -> manyTerms All <$> mapM flattenPattern terms
   Alt s x -> fmap (fmap (Alt s)) <$> flattenPattern x
   Ref (MatchWild ty) -> singleTerm (Ref (MatchWild ty))
   Ref (MatchNever ty) -> singleTerm (Ref (MatchNever ty))

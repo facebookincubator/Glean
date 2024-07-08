@@ -46,7 +46,7 @@ import Glean.Query.Codegen.Types
 import Glean.Query.Typecheck.Types
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term hiding
-  (Tuple, ByteArray, String, Array, Nat, Set)
+  (Tuple, ByteArray, String, Array, Nat, All)
 import qualified Glean.RTS.Term as RTS
 import Glean.Database.Schema.Types
 import Glean.Schema.Util
@@ -321,25 +321,25 @@ inferExpr ctx pat = case pat of
             , "expression: " <> display opts e
             , "does not have an array type"
             ]
-  All _ e -> do
+  Elements _ e -> do
     (e', ty) <- inferExpr ContextExpr e
     case ty of
       SetTy elemTy ->
-        return (Ref (MatchExt (Typed ty (TcAll e'))), elemTy)
+        return (Ref (MatchExt (Typed ty (TcElements e'))), elemTy)
       _other -> do
         opts <- gets tcDisplayOpts
         prettyErrorIn pat $
           nest 4 $ vcat
-            [ "type error in all:"
+            [ "type error in set element generator:"
             , "expression: " <> display opts e
             , "does not have a set type"
             ]
-  Set _ [] ->
-      return (RTS.Set [], SetTy (RecordTy []))
-  Set _ (t:ts) -> do
-    (_t',ty) <- inferExpr ctx t
-    ts' <- mapM (typecheckPattern ctx ty) ts
-    return (RTS.Set ts', SetTy ty)
+  All _ [] ->
+      return (RTS.All [], SetTy (RecordTy []))
+  All _ (e:es) -> do
+    (e',elementTy) <- inferExpr ctx e
+    es' <- mapM (typecheckPattern ctx elementTy) es
+    return (RTS.All (e':es'), SetTy elementTy)
   -- we can infer { just = E } as a maybe:
   Struct _ [ Field "just" e ] -> do
     (e', ty) <- inferExpr ctx e
@@ -524,9 +524,9 @@ typecheckPattern ctx typ pat = case (typ, pat) of
   -- or a variable does a nested match on the key of the predicate:
   (PredicateTy (PidRef _ ref), pat) | not (isVar pat) ->
     fst <$> tcFactGenerator ref pat SeekOnAllFacts
-  (SetTy elemTy, Set _ pats) -> do
-    error "Set" <$> mapM (typecheckPattern ctx elemTy) pats
-  (ty, All _ pat) ->
+  (SetTy elemTy, All _ qs) -> do
+    error "Set" <$> mapM (typecheckPattern ctx elemTy) qs
+  (ty, Elements _ pat) ->
     error "Set" <$> typecheckPattern ctx (SetTy ty) pat
   (ty, Wildcard{}) -> return (mkWild ty)
   (ty, Never{}) -> return $ Ref (MatchNever ty)
@@ -932,8 +932,8 @@ varsPat pat r = case pat of
   App _ f ps -> varsPat f $! foldr varsPat r ps
   KeyValue _ k v -> varsPat k (varsPat v r)
   ElementsOfArray _ p -> varsPat p r
-  Set _ pats -> foldr varsPat r pats
-  All _ pat -> varsPat pat r
+  All _ qs -> foldr varsPat r qs
+  Elements _ pat -> varsPat pat r
   OrPattern{} -> r -- ignore nested or-patterns. Note (1) above
   IfPattern{} -> r -- ignore nested if-patterns
   NestedQuery _ q -> varsQuery q r
@@ -986,7 +986,7 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
       TcOr x y -> overPat x <> overPat y
       TcFactGen pref x y _ -> pref : overPat x <> overPat y
       TcElementsOfArray x -> overPat x
-      TcAll x -> overPat x
+      TcElements x -> overPat x
       TcQueryGen q -> overQuery q
       TcNegation stmts -> foldMap overStatement stmts
       TcPrimCall _ xs -> foldMap overPat xs
@@ -1013,7 +1013,7 @@ tcPatUsesNegation = \case
   RTS.Array xs -> firstJust tcPatUsesNegation xs
   RTS.ByteArray _ -> Nothing
   RTS.Tuple xs -> firstJust tcPatUsesNegation xs
-  RTS.Set xs -> firstJust tcPatUsesNegation xs
+  RTS.All xs -> firstJust tcPatUsesNegation xs
   RTS.Alt _ t -> tcPatUsesNegation t
   RTS.String _ -> Nothing
   RTS.Ref match -> matchUsesNegation match
@@ -1035,7 +1035,7 @@ tcTermUsesNegation = \case
   TcOr x y -> tcPatUsesNegation x <|> tcPatUsesNegation y
   TcFactGen _ x y _ -> tcPatUsesNegation x <|> tcPatUsesNegation y
   TcElementsOfArray x -> tcPatUsesNegation x
-  TcAll x -> tcPatUsesNegation x
+  TcElements x -> tcPatUsesNegation x
   TcQueryGen q -> tcQueryUsesNegation q
   TcNegation _ -> Just PatternNegation
   TcPrimCall _ xs -> firstJust tcPatUsesNegation xs

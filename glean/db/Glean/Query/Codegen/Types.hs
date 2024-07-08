@@ -165,7 +165,7 @@ data Generator_ var
     }
 
     -- | Produce all elements of a set
-  | All
+  | SetElementGenerator
     { generatorEltTy :: Type
     , generatorSet :: Expr_ var
     }
@@ -341,7 +341,7 @@ instance Display Generator where
     display opts pid <> "<- (" <>
       displayAtom opts k <> " -> " <> displayAtom opts v <> ")"
   display opts (ArrayElementGenerator _ arr) = display opts arr <> "[..]"
-  display opts (All _ set) = "all" <+> display opts set
+  display opts (SetElementGenerator _ set) = "elements" <+> display opts set
   display opts (PrimCall op args _) =
     hsep (display opts op : map (displayAtom opts) args)
 

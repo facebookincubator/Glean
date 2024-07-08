@@ -42,6 +42,7 @@ import Glean.Angle.Types as Schema
   'predicate'   { L _ (Token _ T_Predicate) }
   'schema'      { L _ (Token _ T_Schema) }
   'set'         { L _ (Token _ T_Set) }
+  'elements'    { L _ (Token _ T_Elements) }
   'all'         { L _ (Token _ T_All) }
   'string'      { L _ (Token _ T_String) }
   'stored'      { L _ (Token _ T_Stored) }
@@ -137,6 +138,8 @@ plus
 app :: { SourcePat }
 app
   : list1(kv)  { case $1 of [f] -> f; f:args -> App (s f $ last args) f args }
+  | 'elements' kv { Elements (s $1 $2) $2 }
+  | 'all' list1(kv) { All (s $1 (last $2)) $2 }
 
 -- K -> V binds tighter than application, so that e.g.
 --   p K -> V
@@ -157,15 +160,10 @@ apat
   | '[' seplist__(pattern,',') '..' ']'  { ArrayPrefix (s $1 $4) (let (h:t) = $2 in h:|t) }
   | '{' seplist2(pattern,',') '}'   { Tuple (s $1 $3) $2 }
   | '{' seplist0_(field,',') '}'    { Struct (s $1 $3) $2 }
-  | 'set' '(' seplist0(pattern,',') ')' { Set (s $1 $4) $3 }
-  | 'all' '(' pattern ')'           { All (s $1 $4) $3 }
   | '_'                             { Wildcard (sspan $1) }
   | var                             { Variable (sspan $1) (lval $1) }
   | 'never'                         { Never (sspan $1) }
-  | '(' query ')'
-    { case $2 of
-        SourceQuery Nothing [SourceStatement (Wildcard _) pat] -> pat
-        _other -> NestedQuery (s $1 $3) $2 }
+  | '(' query ')'                   { nestedQuery (s $1 $3) $2 }
   -- OLD version 1 constructs:
   | '(' ')'                         {% ifVersionOrOlder (AngleVersion 1) $2 (Tuple (s $1 $2) []) }
   | '(' seplist2(pattern,',') ')'   {% ifVersionOrOlder (AngleVersion 1) $3 (Tuple (s $1 $3) $2) }
@@ -348,6 +346,17 @@ seplist__(p,sep)
   : p sep seplist__(p,sep) { $1 : $3 }
   | p sep { [$1] }
 
+-- List with a separator, >= 1 elements.
+-- The span of the elements is also returned.
+seplistSpan(p,sep)
+  : p sep seplistSpan(p,sep) { (sspan $1, $1) : $3 }
+  | p { [(sspan $1, $1)] }
+
+-- List with a separator, >=0 elements.
+-- The span of the elements is also returned.
+seplistSpan0(p,sep)
+  : {- empty -} { [] }
+  | seplistSpan(p,sep) { $1 }
 
 {
 parseQuery :: ByteString -> Either String SourceQuery
@@ -396,6 +405,11 @@ instance HasSpan (Located a) where
   sspan (L span _) = span
 instance HasSpan (SourcePat_ SrcSpan a b) where
   sspan = sourcePatSpan
+instance HasSpan (SourceStatement_ SrcSpan p t) where
+  sspan (SourceStatement p1 p2) = s p1 p2
+instance HasSpan (SourceQuery_ SrcSpan p t) where
+  sspan (SourceQuery Nothing stmts) = s (head stmts) (last stmts)
+  sspan (SourceQuery (Just pat) stmts) = s pat (last stmts)
 
 s :: (HasSpan a, HasSpan b) => a -> b -> SrcSpan
 s from to = spanBetween (sspan from) (sspan to)
@@ -421,6 +435,10 @@ parseError (L (SrcSpan loc _) (Token b t)) = do
       T_EOF -> "end of string"
       _ -> LB.unpack b
 
+-- | Smart constructor for NestedQuery
+nestedQuery :: SrcSpan -> SourceQuery -> SourcePat
+nestedQuery _s (SourceQuery Nothing [SourceStatement (Wildcard _) pat]) = pat
+nestedQuery s q = NestedQuery s q
 
 -- Accept older constructs for backwards-compability only when we're
 -- parsing the appropriate version(s) of the syntax.

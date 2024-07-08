@@ -198,8 +198,8 @@ data SourcePat_ s p t
   | Struct s [Field s p t]
   | App s (SourcePat_ s p t) [SourcePat_ s p t]
   | KeyValue s (SourcePat_ s p t) (SourcePat_ s p t)
-  | Set s [SourcePat_ s p t]
-  | All s (SourcePat_ s p t)
+  | Elements s (SourcePat_ s p t)
+  | All s [SourcePat_ s p t]
   | Wildcard s
   | Variable s Name
   | ElementsOfArray s (SourcePat_ s p t)
@@ -255,8 +255,8 @@ instance Bifunctor (SourcePat_ s) where
     Struct s fields -> Struct s (map (bimap f g) fields)
     App s l r -> App s (bimap f g l) (map (bimap f g) r)
     KeyValue s k v -> KeyValue s (bimap f g k) (bimap f g v)
-    Set s pats -> Set s (fmap (bimap f g) pats)
-    All s pat -> All s (bimap f g pat)
+    Elements s pat -> Elements s (bimap f g pat)
+    All s qs -> All s (fmap (bimap f g) qs)
     Wildcard s -> Wildcard s
     Variable s n -> Variable s n
     ElementsOfArray s pat -> ElementsOfArray s (bimap f g pat)
@@ -284,8 +284,8 @@ instance Bifoldable (SourcePat_ s) where
     Struct _ fields -> foldMap (bifoldMap f g) fields
     App _ l r -> foldMap (bifoldMap f g) (l:r)
     KeyValue _ k v -> bifoldMap f g k <> bifoldMap f g v
-    Set _ pats -> foldMap (bifoldMap f g) pats
-    All _ pat -> bifoldMap f g pat
+    Elements _ pat -> bifoldMap f g pat
+    All _ qs -> foldMap (bifoldMap f g) qs
     Wildcard{} -> mempty
     Variable{} -> mempty
     ElementsOfArray _ pat -> bifoldMap f g pat
@@ -342,7 +342,7 @@ sourcePatSpan = \case
   Struct s _ -> s
   App s _ _ -> s
   KeyValue s _ _ -> s
-  Set s _ -> s
+  Elements s _ -> s
   All s _ -> s
   Wildcard s -> s
   Variable s _ -> s
@@ -622,7 +622,7 @@ latestSupportedAngleVersion :: AngleVersion
 latestSupportedAngleVersion = AngleVersion 5
 
 latestAngleVersion :: AngleVersion
-latestAngleVersion = AngleVersion 7
+latestAngleVersion = AngleVersion 8
 
 -- -----------------------------------------------------------------------------
 -- Pretty-printing
@@ -798,10 +798,10 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
     display opts l <+> hsep (punctuate " " (map (displayAtom opts) pats))
   display opts (KeyValue _ k v) =
     displayAtom opts k <+> "->" <+> displayAtom opts v
-  display opts (Set _ pats) =
-    "set" <> parens (hsep (punctuate "," (map (display opts) pats)))
-  display opts (All _ pat) =
-    "all" <> parens (display opts pat)
+  display opts (Elements _ pat) =
+    "elements" <> parens (display opts pat)
+  display opts (All _ qs) =
+    "all" <> parens (hsep $ punctuate "," (map (display opts) qs))
   display _ (Wildcard _) = "_"
   display _ (Variable _ name) = pretty name
   display opts (ElementsOfArray _ pat) = displayAtom opts pat <> "[..]"
@@ -843,7 +843,7 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
     Tuple{} -> display opts pat
     Struct{} -> display opts pat
     ElementsOfArray{} -> parens $ display opts pat
-    Set{} -> display opts pat
+    Elements{} -> display opts pat
     All{} -> display opts pat
     Wildcard{} -> display opts pat
     Variable{} -> display opts pat
@@ -933,8 +933,8 @@ rmLocPat = \case
   Struct _ xs -> Struct () (rmLocField <$> xs)
   App _ x xs -> App () (rmLocPat x) (rmLocPat <$> xs)
   KeyValue _ x y -> KeyValue () (rmLocPat x) (rmLocPat y)
-  Set _ pats -> Set () (rmLocPat <$> pats)
-  All _ pat -> All () (rmLocPat pat)
+  Elements _ pat -> Elements () (rmLocPat pat)
+  All _ qs -> All () (rmLocPat <$> qs)
   Wildcard _ -> Wildcard ()
   Never _ -> Never ()
   Variable _ v -> Variable () v
@@ -970,12 +970,12 @@ instance Describe (SourcePat_ s p t) where
     Struct {} -> "a struct"
     App {} -> "an application"
     KeyValue {} -> "a key value pattern"
-    Set {} -> "a set"
-    All {} -> "an element of a set"
+    All {} -> "a set with all the results of its argument"
     Wildcard {} -> "a wildcard pattern"
     Never {} -> "a never pattern"
     Variable {} -> "a variable"
     ElementsOfArray {} -> "an element of an array"
+    Elements {} -> "an element of a set"
     OrPattern {} -> "an or pattern"
     IfPattern {} -> "an if pattern"
     Negation {} -> "a negation"

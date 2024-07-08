@@ -189,8 +189,8 @@ instance Apply Generator where
     DerivedFactGenerator pid <$> apply key <*> apply val
   apply (ArrayElementGenerator ty arr) =
     ArrayElementGenerator ty <$> apply arr
-  apply (All ty arr) =
-    All ty <$> apply arr
+  apply (SetElementGenerator ty arr) =
+    SetElementGenerator ty <$> apply arr
   apply (PrimCall op args ty) =
     PrimCall op <$> mapM apply args <*> pure ty
 
@@ -291,7 +291,7 @@ instance Apply Pat where
   apply (Tuple xs) = Tuple <$> mapM apply xs
   apply (Array xs) = Array <$> mapM apply xs
   apply (Alt n x) = Alt n <$> apply x
-  apply (Set xs) = Set <$> mapM apply xs
+  apply (All xs) = All <$> mapM apply xs
   apply (Ref (MatchVar v)) = applyVar v
   apply (Ref (MatchBind v)) = applyVar v
   apply (Ref (MatchAnd x y)) = do
@@ -374,7 +374,7 @@ neverMatches = \case
   ByteArray _ -> False
   String _ -> False
   Tuple terms -> any neverMatches terms
-  Set terms -> any neverMatches terms
+  All _ -> False
   Alt _ term -> neverMatches term
   Ref match -> case match of
     MatchWild _ -> False
@@ -549,7 +549,7 @@ genScope (FactGenerator _ key val _) r = termScope key $! termScope val r
 genScope (TermGenerator pat) r = termScope pat r
 genScope (DerivedFactGenerator _ key val) r = termScope key $! termScope val r
 genScope (ArrayElementGenerator _ exp) r = termScope exp r
-genScope (All _ exp) r = termScope exp r
+genScope (SetElementGenerator _ exp) r = termScope exp r
 genScope (PrimCall _ args _) r = foldr termScope r args
 
 addToCurrentScope :: Var -> VarSet -> VarSet

@@ -631,8 +631,8 @@ resolvePat pat = case pat of
   Array s pats -> Array s <$> mapM resolvePat pats
   ArrayPrefix s pats -> ArrayPrefix s <$> mapM resolvePat pats
   Tuple s pats -> Tuple s <$> mapM resolvePat pats
-  Set s pats -> Set s <$> mapM resolvePat pats
-  All s pat -> All s <$> resolvePat pat
+  All s qs -> All s <$> mapM resolvePat qs
+  Elements s pat -> Elements s <$> resolvePat pat
   Wildcard s -> return (Wildcard s)
   TypeSignature s pat ty ->
     TypeSignature s
