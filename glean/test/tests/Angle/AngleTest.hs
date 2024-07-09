@@ -856,6 +856,11 @@ angleDotTest = dbTestCase $ \env repo -> do
     "X.sum_.c?.string_ where glean.test.Predicate X"
   assertEqual "dot record.sum.record" ["abba", "acca"] r
 
+  -- maybe
+  r <- runQuery_ env repo $ angleData @Text
+    "X.string_ where (X : glean.test.Predicate).maybe_.just?"
+  assertEqual "dot maybe" ["abba", "acca"] r
+
   -- error: field not found
   r <- try $ runQuery env repo $ angleData @Text
     "X.notfound where glean.test.Predicate X"

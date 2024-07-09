@@ -99,7 +99,7 @@ mkTestFacts first second = do
       , Glean.Test.kitchenSink_array_of_string = ["abba", "baba"]
       , Glean.Test.kitchenSink_named_sum_ = Glean.Test.Sum_wed True
       , Glean.Test.kitchenSink_named_record_ = rec
-      , Glean.Test.kitchenSink_maybe_ = Nothing
+      , Glean.Test.kitchenSink_maybe_ = Just def
       }
 
     -- also make a small variant of kitchenSink2Term0

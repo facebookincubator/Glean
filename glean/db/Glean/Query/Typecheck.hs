@@ -409,6 +409,8 @@ fieldSelect src ty pat fieldName sum = do
       | otherwise -> err $
         "expression is a union type, use '." <> pretty fieldName <>
           "?' not '." <> pretty fieldName <> "'"
+    MaybeTy elemTy ->
+      fieldSelect src (lowerMaybe elemTy) pat fieldName sum
     _ -> err $ "expression is not a " <> if sum then "union type" else "record"
 
 convertType
