@@ -622,11 +622,16 @@ newtype AngleVersion = AngleVersion Int
   deriving (Eq, Ord)
   deriving newtype (Pretty)
 
+-- version 8:
+--   - added set constructs
+-- version 9:
+--   - added dot syntax
+
 latestSupportedAngleVersion :: AngleVersion
 latestSupportedAngleVersion = AngleVersion 5
 
 latestAngleVersion :: AngleVersion
-latestAngleVersion = AngleVersion 8
+latestAngleVersion = AngleVersion 9
 
 -- -----------------------------------------------------------------------------
 -- Pretty-printing

@@ -76,9 +76,9 @@ tokens :-
   "nat"         { basicToken T_Nat }
   "predicate"   { basicToken T_Predicate }
   "schema"      { basicToken T_Schema }
-  "set"         { versionDependentToken (AngleVersion 9) T_Set (T_Ident . ByteString.toStrict) }
+  "set"         { versionDependentToken (AngleVersion 8) T_Set (T_Ident . ByteString.toStrict) }
   "elements"    { versionDependentToken (AngleVersion 8) T_Elements (T_Ident . ByteString.toStrict) }
-  "all"         { versionDependentToken (AngleVersion 9) T_All (T_Ident . ByteString.toStrict) }
+  "all"         { versionDependentToken (AngleVersion 8) T_All (T_Ident . ByteString.toStrict) }
   "string"      { basicToken T_String }
   "type"        { basicToken T_Type }
   "stored"      { basicToken T_Stored }
@@ -113,10 +113,10 @@ tokens :-
   "_"           { basicToken T_Underscore }
   "$"           { basicToken T_Dollar }
 
-  -- dot-syntax was introduced in version 8
-  "." @lident / { ifVersion 8 }
+  -- dot-syntax was introduced in version 9
+  "." @lident / { ifVersion 9 }
                 { tokenContent $ T_Select . ByteString.toStrict . ByteString.tail }
-  "." @lident "?" / { ifVersion 8 }
+  "." @lident "?" / { ifVersion 9 }
                 { tokenContent $ T_SelectAlt . ByteString.toStrict .
                     ByteString.tail . ByteString.init }
 
