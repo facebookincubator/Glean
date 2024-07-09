@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE RecursiveDo, DeriveTraversable #-}
+{-# LANGUAGE RecursiveDo #-}
 module Glean.Query.Codegen
   ( compileQuery
   , compileQueryFacts
@@ -409,10 +409,10 @@ compileTermGen term vars maybeReg andThen = do
     andThen
 
 compileStatements
-  :: forall a s
+  :: forall a
   .  QueryTransformations
   -> Boundaries
-  -> QueryRegs s
+  -> QueryRegs
   -> [CgStatement]
   -> Vector (Register 'Word)    -- ^ registers for variables
   -> Code a                     -- ^ @andThen@: code to insert after
@@ -421,7 +421,7 @@ compileStatements
 compileStatements
   qtrans
   bounds
-  regs@(QueryRegs{..} :: QueryRegs s)
+  regs@QueryRegs{..}
   stmts
   vars
   andThen =
@@ -909,10 +909,10 @@ matchDef fail ty pat =
   matchPat (Bytes start end) fail (preProcessPat pat)
 
 compileFactGenerator
-  :: forall a s
+  :: forall a
   .  Maybe PredicateTransformation
   -> Boundaries
-  -> QueryRegs s
+  -> QueryRegs
   -> Vector (Register 'Word)    -- ^ registers for variables
   -> Pid
   -> Pat
@@ -921,7 +921,7 @@ compileFactGenerator
   -> Maybe (Register 'Word)
   -> Code a
   -> Code a
-compileFactGenerator mtrans bounds (QueryRegs{..} :: QueryRegs s)
+compileFactGenerator mtrans bounds QueryRegs{..}
     vars pid kpat vpat section maybeReg inner = mdo
   let etrans = maybe (Left pid) Right mtrans
   withPatterns etrans vars kpat vpat $
@@ -1343,7 +1343,7 @@ withTerm vars term action = do
 -- for as long as it keeps adding facts to the Define.
 --
 recursive
-  :: QueryRegs s
+  :: QueryRegs
   -> (forall a. Code a -> Code a)  -- ^ code for first run
   -> (forall a. Code a -> Code a)  -- ^ code to evaluate repeatedly
   -> Code b                        -- ^ code to insert after
@@ -1544,7 +1544,7 @@ compileQueryFacts facts = do
 -- IF YOU ALSO BREAK FORWARD COMPATIBILITY, BUMP latestSupportedVersion AS WELL
 --
 
-data QueryRegs s = QueryRegs
+data QueryRegs = QueryRegs
   {
     -- | Start a new traversal of facts beginning with a given prefix
     seek
@@ -1632,7 +1632,7 @@ data QueryRegs s = QueryRegs
   }
 
 generateQueryCode
-  :: (forall s . QueryRegs s -> Code ())
+  :: (QueryRegs -> Code ())
   -> IO (Meta, Subroutine CompiledQuery)
 generateQueryCode f = generate Optimised $
   \ seek_ seekWithinSection_ currentSeek_ endSeek_ next_
