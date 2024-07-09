@@ -36,7 +36,7 @@ main = withUnitTest $ testRunner $ TestList
 
 -- First version to support sets
 v :: AngleVersion
-v = AngleVersion 8
+v = AngleVersion 9
 
 setTest :: Test
 setTest = TestList

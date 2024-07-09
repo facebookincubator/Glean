@@ -78,6 +78,8 @@ import Glean.Angle.Types as Schema
   '_'           { L _ (Token _ T_Underscore) }
   '$'           { L _ (Token _ T_Dollar) }
 
+  SELECT_       { L _ (Token _ (T_Select _)) }
+  SELECTALT_    { L _ (Token _ (T_SelectAlt _)) }
   IDENT_        { L _ (Token _ (T_Ident _)) }
   STRING_       { L _ (Token _ (T_StringLit _)) }
   NAT_          { L _ (Token _ (T_NatLit _)) }
@@ -146,7 +148,13 @@ app
 -- can be used to match facts of the functional predicate p.
 kv :: { SourcePat }
 kv
-  : apat '->' apat  { KeyValue (s $1 $3) $1 $3 }
+  : select '->' select  { KeyValue (s $1 $3) $1 $3 }
+  | select  { $1 }
+
+select :: { SourcePat }
+select
+  : select SELECT { FieldSelect (s $1 $2) $1 (lval $2) False }
+  | select SELECTALT { FieldSelect (s $1 $2) $1 (lval $2) True }
   | apat  { $1 }
 
 apat :: { SourcePat }
@@ -180,6 +188,16 @@ IDENT : IDENT_ { let L span (Token _ (T_Ident val)) = $1 in L span val }
 
 STRING :: { Located Text }
 STRING : STRING_ { let L span (Token _ (T_StringLit val)) = $1 in L span val }
+
+SELECT :: { Located Text }
+SELECT : SELECT_ {
+  let L span (Token _ (T_Select val)) = $1 in
+  L span (Text.decodeUtf8 val) }
+
+SELECTALT :: { Located Text }
+SELECTLAT : SELECTALT_ {
+  let L span (Token _ (T_SelectAlt val)) = $1 in
+  L span (Text.decodeUtf8 val) }
 
 NAT :: { Located Word64 }
 NAT : NAT_ { let L span (Token _ (T_NatLit val)) = $1 in L span val }

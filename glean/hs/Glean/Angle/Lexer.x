@@ -2,7 +2,7 @@
 
 {
 {-# OPTIONS_GHC -funbox-strict-fields #-}
-{-# LANGUAGE DeriveFunctor #-}
+{-# LANGUAGE DeriveFunctor, NamedFieldPuns #-}
 module Glean.Angle.Lexer
   ( Token(..)
   , TokenType(..)
@@ -45,13 +45,18 @@ $digit = [0-9]
 -- restricting queries to the stacked and base DB respectively, when
 -- writing incremental derivers.
 @ident = [a-zA-Z_] [a-zA-Z0-9_]*
+@lident = [a-z] [a-zA-Z0-9_]*
+@uident = [A-Z_] [a-zA-Z0-9_]*
 
 @string = \" (\\ $all | $all # [\"\\] )* \"
 
 -- A qualified name with an optional version:
 --    VALID: "a" "a.b" "a.b.3" "a.b#new" "a.b.3#old"
 --    INVALID: "a." "a..b" "a.3.b" "a.3b"
-@qident = @ident (\. @ident)* (\. $digit+)? (\# @ident)?
+@lqident = @lident (\. @ident)* (\. $digit+)? (\# @ident)?
+
+-- versioned: Predicate.1
+@uqident = @uident (\. @ident)* \. $digit+ (\# @ident)?
 
 tokens :-
   $white+       ;
@@ -71,9 +76,9 @@ tokens :-
   "nat"         { basicToken T_Nat }
   "predicate"   { basicToken T_Predicate }
   "schema"      { basicToken T_Schema }
-  "set"         { versionDependentToken (AngleVersion 8) T_Set (T_Ident . ByteString.toStrict) }
+  "set"         { versionDependentToken (AngleVersion 9) T_Set (T_Ident . ByteString.toStrict) }
   "elements"    { versionDependentToken (AngleVersion 8) T_Elements (T_Ident . ByteString.toStrict) }
-  "all"         { versionDependentToken (AngleVersion 8) T_All (T_Ident . ByteString.toStrict) }
+  "all"         { versionDependentToken (AngleVersion 9) T_All (T_Ident . ByteString.toStrict) }
   "string"      { basicToken T_String }
   "type"        { basicToken T_Type }
   "stored"      { basicToken T_Stored }
@@ -108,7 +113,16 @@ tokens :-
   "_"           { basicToken T_Underscore }
   "$"           { basicToken T_Dollar }
 
-  @qident        { tokenContent $ T_Ident . ByteString.toStrict }
+  -- dot-syntax was introduced in version 8
+  "." @lident / { ifVersion 8 }
+                { tokenContent $ T_Select . ByteString.toStrict . ByteString.tail }
+  "." @lident "?" / { ifVersion 8 }
+                { tokenContent $ T_SelectAlt . ByteString.toStrict .
+                    ByteString.tail . ByteString.init }
+
+  @lqident      { tokenContent $ T_Ident . ByteString.toStrict }
+  @uqident      { tokenContent $ T_Ident . ByteString.toStrict }
+  @uident       { tokenContent $ T_Ident . ByteString.toStrict }
 {
 data AlexUserState = AlexUserState
   { angleVersion :: AngleVersion
@@ -117,6 +131,8 @@ data AlexUserState = AlexUserState
 
 alexInitUserState :: AlexUserState
 alexInitUserState = AlexUserState latestAngleVersion ""
+
+ifVersion n AlexUserState{angleVersion=AngleVersion v} _ _ _ = v >= n
 
 -- | A value with its source location.
 data Located a = L
@@ -178,6 +194,8 @@ data TokenType
   | T_Semi
   | T_Underscore
   | T_Dollar
+  | T_Select Strict.ByteString
+  | T_SelectAlt Strict.ByteString
   | T_EOF
   deriving Show
 
@@ -257,15 +275,33 @@ encodeTextForAngle :: Text -> Text
 encodeTextForAngle =
   Text.decodeUtf8 . Lazy.toStrict . Aeson.encode . Aeson.String
 
+alexGetUserState :: Alex AlexUserState
+alexGetUserState = Alex $ \s@AlexState{alex_ust} -> Right (s, alex_ust)
+
 getToken :: Alex (SrcLoc, Token)
-getToken = Alex $ \state ->
-  case unAlex alexMonadScan state of
-    Left err ->
-      let file = currentFile (alex_ust state) in
+getToken = do
+  inp__@(_,_,_,n) <- alexGetInput
+  sc <- alexGetStartCode
+  ust <- alexGetUserState
+  case alexScanUser ust inp__ sc of
+    AlexEOF -> alexEOF
+    AlexError ((AlexPn _ line column),_,_,_) ->
+      let
+          file = currentFile ust
+          err = "lexical error at line " ++ show line ++
+            ", column " ++ show column
+      in
       if null file
-        then Left err
-        else Left (file <> ": " <> err)
-    Right a -> Right a
+        then alexError err
+        else alexError $ file <> ": " <> err
+
+    AlexSkip  inp__ _len -> do
+      alexSetInput inp__
+      getToken
+
+    AlexToken inp2__@(_,_,_,m) _ action -> let len = m-n in do
+      alexSetInput inp2__
+      action (ignorePendingBytes inp__) len
 
 lexer :: (Located Token -> Alex a) -> Alex a
 lexer f = do

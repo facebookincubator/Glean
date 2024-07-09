@@ -688,6 +688,9 @@ resolvePat pat = case pat of
   App _ f _ ->
     prettyErrorIn pat $ "invalid pattern: cannot apply " <>
     describe f <> " to arguments"
+  FieldSelect s pat field q ->
+    (\p -> FieldSelect s p field q)
+      <$> resolvePat pat
   Clause{} -> internal
   Prim{} -> internal
   where

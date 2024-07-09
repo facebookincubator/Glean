@@ -37,6 +37,7 @@ import Data.Set (Set)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
+import Data.Word
 
 import Glean.Angle.Types hiding (Type)
 import qualified Glean.Angle.Types as Schema
@@ -351,6 +352,10 @@ inferExpr ctx pat = case pat of
 
   v@KeyValue{} -> unexpectedValue v
 
+  FieldSelect _ p field sum -> do
+    (p', ty) <- inferExpr ctx p
+    fieldSelect pat ty p' field sum
+
   _ -> do
     opts <- gets tcDisplayOpts
     prettyErrorIn pat $ nest 4 $ vcat
@@ -358,6 +363,53 @@ inferExpr ctx pat = case pat of
       , "try adding a type annotation like (" <> display opts pat <> " : T)"
       , "or reverse the statement (Q = P instead of P = Q)"
       ]
+
+fieldSelect
+  :: IsSrcSpan s
+  => Pat' s
+  -> Type
+  -> TcPat
+  -> FieldName
+  -> Bool
+  -> T (TcPat, Type)
+fieldSelect src ty pat fieldName sum = do
+  opts <- gets tcDisplayOpts
+  let err x = do
+        prettyErrorIn src $ nest 4 $ vcat
+          [ x, "type of expression: " <> display opts ty ]
+  case derefType ty of
+    PredicateTy (PidRef _ ref) -> do
+      TcEnv{..} <- gets tcEnv
+      PredicateDetails{..} <- case HashMap.lookup ref tcEnvPredicates of
+        Nothing -> prettyErrorIn src $ "fieldSelect: " <> displayDefault ref
+        Just details -> return details
+      let deref = TcDeref ty predicateValueType pat
+      fieldSelect src predicateKeyType
+        (Ref (MatchExt (Typed predicateKeyType deref)))
+        fieldName sum
+    RecordTy fields
+      | not sum -> case lookupField fieldName fields of
+          (fieldTy, n):_ -> do
+            let sel = TcFieldSelect n (Typed ty pat) fieldName
+            return (Ref (MatchExt (Typed fieldTy sel)), fieldTy)
+          _ ->
+            err $ "record does not contain the field '" <>
+              display opts fieldName <> "'"
+      | otherwise -> err $
+        "expression is a record, use '." <> pretty fieldName <>
+          "' not '." <> pretty fieldName <> "?'"
+    SumTy fields
+      | sum -> case lookupField fieldName fields of
+          (fieldTy, n):_ -> do
+            let sel = TcAltSelect n (Typed ty pat) fieldName
+            return (Ref (MatchExt (Typed fieldTy sel)), fieldTy)
+          _ ->
+            err $ "union type does not contain the alternative '" <>
+              display opts fieldName <> "'"
+      | otherwise -> err $
+        "expression is a union type, use '." <> pretty fieldName <>
+          "?' not '." <> pretty fieldName <> "'"
+    _ -> err $ "expression is not a " <> if sum then "union type" else "record"
 
 convertType
   :: IsSrcSpan s => s -> ToRtsType -> Schema.Type -> T Type
@@ -414,7 +466,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
       return (RTS.Alt n (mkWild ty))
   (SumTy _, Struct _ _) ->
     patTypeErrorDesc
-      "matching on a sum type should have the form { field = pattern }"
+      "matching on a union type should have the form { field = pattern }"
       pat typ
   (NamedTy (ExpandedType _ ty), term) -> typecheckPattern ctx ty term
   (ty, Prim span primOp args) -> do
@@ -520,6 +572,16 @@ typecheckPattern ctx typ pat = case (typ, pat) of
             fst <$> tcFactGenerator ref pat SeekOnAllFacts
           _ -> patTypeError pat ty
 
+  (ty, FieldSelect _ p field sum) -> do
+    (p', recTy) <- inferExpr ctx p
+    (pat', fieldTy) <- fieldSelect pat recTy p' field sum
+    ver <- gets tcAngleVersion
+    if
+      | eqType ver ty fieldTy -> return pat'
+      | PredicateTy (PidRef _ ref) <- ty ->
+         fst <$> tcFactGenerator ref pat SeekOnAllFacts
+      | otherwise -> patTypeError pat ty
+
   -- A match on a predicate type with a pattern that is not a wildcard
   -- or a variable does a nested match on the key of the predicate:
   (PredicateTy (PidRef _ ref), pat) | not (isVar pat) ->
@@ -536,11 +598,12 @@ typecheckPattern ctx typ pat = case (typ, pat) of
 
   -- type annotations are unnecessary, but we allow and check them
   (ty, q) -> patTypeError q ty
-  where
 
-  lookupField fieldName fields =
-    [ (ty, n) | (FieldDef name ty, n) <- zip fields [0..]
-    , name == fieldName ]
+
+lookupField :: FieldName -> [RTS.FieldDef] -> [(Type, Word64)]
+lookupField fieldName fields =
+  [ (ty, n) | (FieldDef name ty, n) <- zip fields [0..]
+  , name == fieldName ]
 
 tcFactGenerator
   :: IsSrcSpan s
@@ -948,6 +1011,7 @@ varsPat pat r = case pat of
   Never{} -> r
   Clause _ _ p _ -> varsPat p r
   Prim _ _ ps -> foldr varsPat r ps
+  FieldSelect _ p _ _ -> varsPat p r
 
 varsQuery :: IsSrcSpan s => Query' s -> VarSet -> VarSet
 varsQuery (SourceQuery head stmts) r =
@@ -991,6 +1055,9 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
       TcNegation stmts -> foldMap overStatement stmts
       TcPrimCall _ xs -> foldMap overPat xs
       TcIf (Typed _ x) y z -> foldMap overPat [x, y, z]
+      TcDeref _ _ p -> overPat p
+      TcFieldSelect _ (Typed _ p) _ -> overPat p
+      TcAltSelect _ (Typed _ p) _ -> overPat p
 
 data UseOfNegation
   = PatternNegation
@@ -1041,3 +1108,6 @@ tcTermUsesNegation = \case
   TcPrimCall _ xs -> firstJust tcPatUsesNegation xs
   -- one can replicate negation using if statements
   TcIf{} -> Just IfStatement
+  TcDeref _ _ p -> tcPatUsesNegation p
+  TcFieldSelect _ (Typed _ p) _ -> tcPatUsesNegation p
+  TcAltSelect _ (Typed _ p) _ -> tcPatUsesNegation p

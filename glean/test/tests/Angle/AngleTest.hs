@@ -36,6 +36,7 @@ main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "angle" $ angleTest id
   , TestLabel "angle/page" $ angleTest (limit 1)
+  , TestLabel "angleDot" angleDotTest
   ]
 
 ignorePredK :: Glean.Test.KitchenSink_1 -> Glean.Test.KitchenSink_1
@@ -835,3 +836,58 @@ angleTest modify = dbTestCase $ \env repo -> do
       "prim.concat X X where glean.test.Predicate.1 { array_of_nat = X }"
   assertEqual "concat - concatenating an array with itself"
     [[], [Nat 99, Nat 98, Nat 99, Nat 98]] r
+
+
+angleDotTest :: Test
+angleDotTest = dbTestCase $ \env repo -> do
+
+  -- record selection
+  r <- runQuery_ env repo $ angleData @Text
+    "X.string_ where glean.test.Predicate X; X.nat = 42"
+  assertEqual "dot record" ["acca"] r
+
+  -- select from a predicate type
+  r <- runQuery_ env repo $ angleData @Text
+    "(glean.test.Predicate _).string_"
+  assertEqual "deref predicate" (length r) 4
+
+  -- chain of selections: record, predicate, sum type, record
+  r <- runQuery_ env repo $ angleData @Text
+    "X.sum_.c?.string_ where glean.test.Predicate X"
+  assertEqual "dot record.sum.record" ["abba", "acca"] r
+
+  -- error: field not found
+  r <- try $ runQuery env repo $ angleData @Text
+    "X.notfound where glean.test.Predicate X"
+  assertBool "field not found" $
+    case r of
+      Left (BadQuery x) -> "does not contain the field" `Text.isInfixOf` x
+      _ -> False
+
+  -- error: using .nat? to select from a record
+  r <- try $ runQuery env repo $ angleData @Text
+    "X.nat? where glean.test.Predicate X"
+  assertBool "not a union" $
+    case r of
+      Left (BadQuery x) ->
+        "expression is a record, use '.nat' not '.nat?'" `Text.isInfixOf` x
+      _ -> False
+
+  -- error: using . to select from a union
+  r <- try $ runQuery env repo $ angleData @Text
+    "X.sum_.c where glean.test.Predicate X"
+  assertBool "not a record" $
+    case r of
+      Left (BadQuery x) ->
+        "expression is a union type, use '.c?' not '.c'"
+          `Text.isInfixOf` x
+      _ -> False
+
+  -- error: type error
+  r <- try $ runQuery env repo $ angleData @Text
+    "X.string_ where glean.test.Predicate X; X.nat = \"x\""
+  print r
+  assertBool "not a record" $
+    case r of
+      Left (BadQuery x) -> "type error" `Text.isInfixOf` x
+      _ -> False

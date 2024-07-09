@@ -15,6 +15,7 @@ module Glean.Query.Typecheck.Types
   ) where
 
 import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
+import Data.Word
 
 import Glean.Query.Codegen.Types
   (Match(..), Var(..), QueryWithInfo(..), Typed(..))
@@ -56,10 +57,22 @@ data TcTerm
   | TcNegation [TcStatement]
   | TcPrimCall PrimOp [TcPat]
   | TcIf { cond :: Typed TcPat, then_ :: TcPat, else_ :: TcPat }
+  | TcDeref Type Type TcPat
+    -- pat* : if pat has predicate type, evaluates to the key(s). We
+    -- don't expose this at the source level except via
+    -- field-selection, e.g. X.a will dereference X before
+    -- selecting the field 'a' if X has predicate type.
+  | TcFieldSelect {-# UNPACK #-} !Word64 (Typed TcPat) FieldName
+  | TcAltSelect {-# UNPACK #-} !Word64 (Typed TcPat) FieldName
   deriving Show
 
 instance Display TcTerm where
   display opts (TcOr a b) = display opts a <+> "++" <+> display opts b
+  display opts (TcDeref _ _ pat) = displayAtom opts pat <> "*"
+  display opts (TcFieldSelect _ (Typed _ pat) field) =
+    displayAtom opts pat <> "." <> pretty field
+  display opts (TcAltSelect _ pat field) =
+    displayAtom opts pat <> ".?" <> pretty field
   display opts (TcIf (Typed _ cond) then_ else_) = sep
     [ nest 2 $ sep ["if", displayAtom opts cond ]
     , nest 2 $ sep ["then", displayAtom opts then_]

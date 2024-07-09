@@ -177,6 +177,14 @@ prune hasFacts (QueryWithInfo q _ t) = do
             , pa
             , pb
             ]
+        TcDeref ty' valTy p ->
+          Ref . MatchExt . Typed ty . TcDeref ty' valTy <$> prunePat p
+        TcFieldSelect n (Typed ty' p) f -> do
+          p' <- prunePat p
+          return $ Ref $ MatchExt $ Typed ty $ TcFieldSelect n (Typed ty' p') f
+        TcAltSelect n (Typed ty' p) f -> do
+          p' <- prunePat p
+          return $ Ref $ MatchExt $ Typed ty $ TcAltSelect n (Typed ty' p') f
 
 type R a = State S a
 
@@ -222,6 +230,13 @@ renumberVars ty q =
     TcPrimCall op xs -> TcPrimCall op <$> traverse renamePat xs
     TcIf cond then_ else_ ->
       TcIf <$> traverse renamePat cond <*> renamePat then_ <*> renamePat else_
+    TcDeref ty valTy p -> TcDeref ty valTy <$> renamePat p
+    TcFieldSelect n (Typed ty p) f -> do
+      p' <- renamePat p
+      return $ TcFieldSelect n (Typed ty p') f
+    TcAltSelect n (Typed ty p) f -> do
+      p' <- renamePat p
+      return $ TcAltSelect n (Typed ty p') f
 
   renameVar :: Var -> R Var
   renameVar (Var ty old n) = State.state $ \s ->

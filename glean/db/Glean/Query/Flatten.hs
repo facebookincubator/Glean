@@ -203,6 +203,9 @@ flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
           (flattenStmtGroups [thenStmts])
           (flattenStmtGroups [elseStmts])
     return [(mempty `thenStmt` stmt, TermGenerator $ Ref $ MatchVar var)]
+  _other -> do
+    r <- flattenPattern (Ref (MatchExt (Typed ty match)))
+    return $ [(stmts, TermGenerator pat) | (stmts, pat) <- r]
 flattenSeqGenerators pat = do
   r <- flattenPattern pat
   return $ [(stmts, TermGenerator pat) | (stmts, pat) <- r]
@@ -296,6 +299,39 @@ flattenPattern pat = case pat of
     as <- flattenPattern a
     bs <- flattenPattern b
     return (as ++ bs)
+
+  --  *(pat : P) ==> X where pat = P X
+  Ref (MatchExt (Typed keyTy (TcDeref ty valTy pat))) -> do
+    r <- flattenPattern pat
+    ref <- case ty of
+      Angle.PredicateTy ref -> return ref
+      _other -> throwError "TcDeref: not a predicate"
+    forM r $ \(stmts, p) -> do
+      v <- Ref . MatchVar <$> fresh keyTy
+      let gen = FactGenerator ref v (Ref (MatchWild valTy)) SeekOnAllFacts
+      return (stmts `thenStmt` FlatStatement ty p gen, v)
+
+  -- pat.field ==> X where { field = X } = pat
+  Ref (MatchExt (Typed ty (TcFieldSelect n (Typed recTy pat) _))) -> do
+    r <- flattenPattern pat
+    let sel v =
+          [ if n == m then v else Ref (MatchWild ty)
+          | Angle.RecordTy fields <- [derefType recTy]
+          , (m, Angle.FieldDef _ ty) <- zip [0..] fields
+          ]
+    forM r $ \(stmts, p) -> do
+      v <- Ref . MatchVar <$> fresh ty
+      let stmt = FlatStatement recTy (Tuple (sel v)) (TermGenerator p)
+      return (stmts `thenStmt` stmt, v)
+
+  -- pat.field? ==> X where { field = X } = pat
+  Ref (MatchExt (Typed ty (TcAltSelect n (Typed sumTy pat) _))) -> do
+    r <- flattenPattern pat
+    forM r $ \(stmts, p) -> do
+      v <- Ref . MatchVar <$> fresh ty
+      let stmt = FlatStatement sumTy (Alt n v) (TermGenerator p)
+      return (stmts `thenStmt` stmt, v)
+
   Ref (MatchExt (Typed ty _)) -> do
     gens <- flattenSeqGenerators pat
     v <- fresh ty

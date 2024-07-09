@@ -188,7 +188,7 @@
 
   $ query "{} : { n : nat | s : nat }"
   [>] {} : { n : nat | s : nat } (re)
-  matching on a sum type should have the form { field = pattern }
+  matching on a union type should have the form { field = pattern }
       pattern: {}
       expected type: { n : nat | s : nat | }
        

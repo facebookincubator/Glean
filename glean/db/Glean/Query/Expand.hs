@@ -108,6 +108,12 @@ instantiateWithFreshVariables query numVars = do
       (Typed ty $ instantiatePat base cond)
       (instantiatePat base then_)
       (instantiatePat base else_)
+  instantiateTcTerm base (TcDeref ty valTy pat) =
+    TcDeref ty valTy (instantiatePat base pat)
+  instantiateTcTerm base (TcFieldSelect n (Typed ty pat) field) =
+    TcFieldSelect n (Typed ty (instantiatePat base pat)) field
+  instantiateTcTerm base (TcAltSelect n (Typed ty pat) field) =
+    TcAltSelect n (Typed ty (instantiatePat base pat)) field
 
   instantiatePat :: Int -> TcPat -> TcPat
   instantiatePat base = fmap (instantiateMatch base)

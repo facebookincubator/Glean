@@ -41,7 +41,7 @@ angleErrorTests = dbTestCase $ \env repo -> do
   print results
   assertBool "angle - sum - too many alts" $
     case results of
-      Left (BadQuery s) -> "sum type" `Text.isInfixOf` s
+      Left (BadQuery s) -> "union type" `Text.isInfixOf` s
       _ -> False
 
   -- check that we get an error if there's a version mismatch between
