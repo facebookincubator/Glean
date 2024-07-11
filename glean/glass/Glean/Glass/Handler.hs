@@ -954,7 +954,8 @@ fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
           withRepo (snd (NonEmpty.head (gleanDBs be))) $ do
             wanted <- getFileContentHash sourceControl repo file wantedrev
             mine <- getFileContentHash sourceControl repo file myrev
-            return (Just (isJust wanted && isJust mine && wanted == mine))
+            return $ (==) <$> wanted <*> mine
+              -- Nothing if either getContentHash failed
 
     getFromGlean =
       Glass.withAllocationLimit env $
@@ -1031,9 +1032,8 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
             let getHash = getFileContentHash sourceControl scsrepo repoPath
             contentHash <- getHash revision
             wantedHash <- getHash wanted
-            let match = isJust contentHash && isJust wantedHash &&
-                  contentHash == wantedHash
-            return (Just match)
+            return $ (==) <$> contentHash <*> wantedHash
+              -- Nothing if either getContentHash failed
           | otherwise ->
             return Nothing
 
