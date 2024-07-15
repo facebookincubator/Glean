@@ -810,7 +810,7 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
   display opts (Elements _ pat) =
     "elements" <> parens (display opts pat)
   display opts (All _ qs) =
-    "all" <> parens (hsep $ punctuate "," (map (display opts) qs))
+    "all" <> hsep (map (parens . display opts) qs)
   display _ (Wildcard _) = "_"
   display _ (Variable _ name) = pretty name
   display opts (ElementsOfArray _ pat) = displayAtom opts pat <> "[..]"
@@ -855,7 +855,7 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
     Struct{} -> display opts pat
     ElementsOfArray{} -> parens $ display opts pat
     Elements{} -> display opts pat
-    All{} -> display opts pat
+    All{} -> parens $ display opts pat
     Wildcard{} -> display opts pat
     Variable{} -> display opts pat
     NestedQuery{} -> display opts pat
