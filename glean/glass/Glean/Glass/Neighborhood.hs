@@ -21,11 +21,10 @@ import Glean.Haxl.Repos as Glean ( withRepo, RepoHaxl, ReposHaxl )
 
 import qualified Glean.Schema.Code.Types as Code
 
-import Glean.Glass.Utils ( eThrow, fst4 )
+import Glean.Glass.Utils ( fst4 )
 import Glean.Glass.Describe
     ( mkSymbolDescription, mkBriefSymbolDescription )
 import Glean.Glass.Repos ( Language(Language_Hack), ScmRevisions )
-import Glean.Glass.SymbolId ( toQualifiedName )
 import qualified Glean.Glass.Relations.Hack as Hack
 import Glean.Glass.SymbolKind ( findSymbolKind )
 import Glean.Glass.Types
@@ -34,7 +33,6 @@ import Glean.Glass.Types
       SymbolDescription,
       RelatedNeighborhoodResult(..),
       InheritedSymbols(..),
-      QualifiedName,
       RelatedSymbols(RelatedSymbols),
       RelationDirection(RelationDirection_Parent,
                         RelationDirection_Child),
@@ -88,15 +86,13 @@ searchNeighborhood limit
           else Search.ShowAll)
         entity repo
     -- now filter out any names that are shadowed
-    let (!eFinal,!overrides) = partitionInheritedScopes lang sym edges
+    let (!eFinal, _) = partitionInheritedScopes lang sym edges
           kinds a eFull
     -- syms visible to the client, we need their full details
     let !syms = uniqBy (comparing snd) $ fromSearchEntity sym baseEntity :
             a ++ flattenEdges c ++ concatMap snd eFinal
               -- full descriptions of final methods
-    descs0 <- Map.fromAscList <$> mapM (mkDescribe repo scmRevs) syms
-    overrides' <- mapM addQName overrides
-    let !descriptions = patchDescriptions lang descs0 overrides'
+    descriptions <- Map.fromAscList <$> mapM (mkDescribe repo scmRevs) syms
     -- brief descriptions for inherited things
     basics <- Map.fromAscList <$> mapM (mkBriefDescribe repo scmRevs)
       (uniqBy (comparing snd) $ (b ++ d ++ e ++ f ++ g) ++ map fst eFinal)
@@ -153,13 +149,6 @@ briefDescribe repo scmRevs
     ((entity, entityFile, entityRange, entityName), symId)
   = mkBriefSymbolDescription symId scmRevs repo CodeEntityLocation{..}
     Nothing
-
--- for overrides, we just need to know the parent qname of the entity
--- no need to compute the full details()
-addQName :: Search.LocatedEntity -> Glean.RepoHaxl u w (SymbolId, QualifiedName)
-addQName ((entity, _file, _span, _name), symId)  = do
-  qName <- eThrow =<< toQualifiedName entity
-  return (symId, qName)
 
 childrenContains1Level :: Int -> SearchRelatedList u w
 childrenContains1Level limit baseEntity repo = map Search.childRL <$>
@@ -298,14 +287,3 @@ partitionInheritedScopes
 partitionInheritedScopes lang symId edges kinds locals inherited = case lang of
   Language_Hack -> Hack.difference edges kinds symId locals inherited
   _ -> (inherited, mempty)
-
--- | And once we filter out hidden inherited things, infer any missing
--- synthetic extends relationships
-patchDescriptions
-  :: Language
-  -> Map.Map Text SymbolDescription
-  -> HashMap SymbolId (SymbolId, QualifiedName)
-  -> Map.Map Text SymbolDescription
-patchDescriptions lang descs overrides = case lang of
-  Language_Hack -> Hack.patchDescriptions descs overrides
-  _ -> descs
