@@ -213,7 +213,7 @@
 
   $ query "a = 2"
   [>] a = 2 (re)
-  variable does not begin with an upper-case letter: a
+  the last statement should be an expression: a = 2
        
   1 |  a = 2
        ^

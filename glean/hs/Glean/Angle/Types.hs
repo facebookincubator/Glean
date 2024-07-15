@@ -215,12 +215,13 @@ data SourcePat_ s p t
       , then_ :: SourcePat_ s p t
       , else_ :: SourcePat_ s p t
       }
+  | FieldSelect s (SourcePat_ s p t) FieldName Bool
+  | Enum s Text
 
   -- The following forms are introduced by the resolver, and replace
   -- the Variable and App forms produced by the parser.
   | Clause s p (SourcePat_ s p t) SeekSection
   | Prim s PrimOp [SourcePat_ s p t]
-  | FieldSelect s (SourcePat_ s p t) FieldName Bool
  deriving (Eq, Show, Generic)
 
 -- | Should a `seek` call be restricted to a section of the database?
@@ -270,9 +271,10 @@ instance Bifunctor (SourcePat_ s) where
     TypeSignature s pat ty -> TypeSignature s (bimap f g pat) (bimap f g ty)
     Never s -> Never s
     IfPattern s a b c -> IfPattern s (bimap f g a) (bimap f g b) (bimap f g c)
+    FieldSelect s pat field q -> FieldSelect s (bimap f g pat) field q
+    Enum s f -> Enum s f
     Clause s p pat rng -> Clause s (f p) (bimap f g pat) rng
     Prim s p pats -> Prim s p (fmap (bimap f g) pats)
-    FieldSelect s pat field q -> FieldSelect s (bimap f g pat) field q
 
 instance Bifoldable (SourcePat_ s) where
   bifoldMap f g = \case
@@ -299,9 +301,10 @@ instance Bifoldable (SourcePat_ s) where
     TypeSignature _ pat ty -> bifoldMap f g pat <> bifoldMap f g ty
     Never{} -> mempty
     IfPattern _ a b c -> bifoldMap f g a <> bifoldMap f g b <> bifoldMap f g c
+    FieldSelect _ pat _ _ -> bifoldMap f g pat
+    Enum _ _ -> mempty
     Clause _ p pat _ -> f p <> bifoldMap f g pat
     Prim _ _ pats -> foldMap (bifoldMap f g) pats
-    FieldSelect _ pat _ _ -> bifoldMap f g pat
 
 data Field s p t = Field FieldName (SourcePat_ s p t)
   deriving (Eq, Show, Generic)
@@ -357,9 +360,10 @@ sourcePatSpan = \case
   FactId s _ _ -> s
   TypeSignature s _ _ -> s
   Never s -> s
+  FieldSelect s _ _ _ -> s
+  Enum s _ -> s
   Clause s _ _ _ -> s
   Prim s _ _ -> s
-  FieldSelect s _ _ _ -> s
 
 -- -----------------------------------------------------------------------------
 -- Types
@@ -838,6 +842,7 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
     display opts p <+> hsep (punctuate " " (map (displayAtom opts) pats))
   display opts (FieldSelect _ pat field q) =
     displayAtom opts pat <> "." <> pretty field <> if q then "?" else mempty
+  display _ (Enum _ f) = pretty f
 
   displayAtom opts pat = case pat of
     App{} -> parens $ display opts pat
@@ -865,6 +870,7 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
     Clause{} -> parens $ display opts pat
     Prim{} -> parens $ display opts pat
     FieldSelect{} -> display opts pat
+    Enum _ _ -> display opts pat
 
 instance (Display p, Display t) => Display (SourceQuery_ s p t) where
   display opts (SourceQuery maybeHead stmts) = case stmts of
@@ -960,6 +966,7 @@ rmLocPat = \case
   Clause _ x y rng -> Clause () x (rmLocPat y) rng
   Prim _ p ps -> Prim () p (rmLocPat <$> ps)
   FieldSelect _ pat field q -> FieldSelect () (rmLocPat pat) field q
+  Enum _ f -> Enum () f
 
 rmLocField :: Field s p t -> Field () p t
 rmLocField (Field name pat) =
@@ -998,6 +1005,7 @@ instance Describe (SourcePat_ s p t) where
     Clause {} -> "a clause"
     Prim {} -> "a primitive function"
     FieldSelect{} -> "a record field"
+    Enum{} -> "an enum value"
 
 instance Describe SrcSpan where
   describe _ = "a source span"

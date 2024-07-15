@@ -80,7 +80,9 @@ import Glean.Angle.Types as Schema
 
   SELECT_       { L _ (Token _ (T_Select _)) }
   SELECTALT_    { L _ (Token _ (T_SelectAlt _)) }
-  IDENT_        { L _ (Token _ (T_Ident _)) }
+  UIDENT_       { L _ (Token _ (T_UIdent _)) }
+  LIDENT_       { L _ (Token _ (T_LIdent _)) }
+  QIDENT_       { L _ (Token _ (T_QIdent _)) }
   STRING_       { L _ (Token _ (T_StringLit _)) }
   NAT_          { L _ (Token _ (T_NatLit _)) }
 
@@ -170,6 +172,7 @@ apat
   | '{' seplist0_(field,',') '}'    { Struct (s $1 $3) $2 }
   | '_'                             { Wildcard (sspan $1) }
   | var                             { Variable (sspan $1) (lval $1) }
+  | lident                          { Enum (sspan $1) (lval $1) }
   | 'never'                         { Never (sspan $1) }
   | '(' query ')'                   { nestedQuery (s $1 $3) $2 }
   -- OLD version 1 constructs:
@@ -181,10 +184,27 @@ field
   : fieldname '=' pattern  { Field $1 $3 }
 
 var :: { Located Text }
-var : IDENT  { fmap Text.decodeUtf8 $1 }
+var
+  : qident { $1 }
+  | uident { $1 }
 
-IDENT :: { Located ByteString }
-IDENT : IDENT_ { let L span (Token _ (T_Ident val)) = $1 in L span val }
+lident :: { Located Text }
+lident : LIDENT  { fmap Text.decodeUtf8 $1 }
+
+uident :: { Located Text }
+uident : UIDENT  { fmap Text.decodeUtf8 $1 }
+
+qident :: { Located Text }
+qident : QIDENT  { fmap Text.decodeUtf8 $1 }
+
+UIDENT :: { Located ByteString }
+UIDENT : UIDENT_ { let L span (Token _ (T_UIdent val)) = $1 in L span val }
+
+LIDENT :: { Located ByteString }
+LIDENT : LIDENT_ { let L span (Token _ (T_LIdent val)) = $1 in L span val }
+
+QIDENT :: { Located ByteString }
+QIDENT : QIDENT_ { let L span (Token _ (T_QIdent val)) = $1 in L span val }
 
 STRING :: { Located Text }
 STRING : STRING_ { let L span (Token _ (T_StringLit val)) = $1 in L span val }
@@ -213,29 +233,29 @@ schemas
 
 evolves :: { Schema.SourceEvolves }
 evolves
-  : 'schema' name 'evolves' name
+  : 'schema' qname 'evolves' qname
     { Schema.SourceEvolves (s $1 $4) (lval $2) (lval $4) }
 
 schemadef :: { Schema.SourceSchema }
 schemadef
-  : 'schema' name inherit '{' list(schemadecl) '}'
+  : 'schema' qname inherit '{' list(schemadecl) '}'
     { Schema.SourceSchema (lval $2) $3 (concat $5) }
 
 inherit :: { [Name] }
 inherit
-  : ':' seplist_(name, ',')  { map lval $2 }
+  : ':' seplist_(qname, ',')  { map lval $2 }
   | {- empty -}  { [] }
 
 schemadecl :: { [Schema.SourceDecl] }
 schemadecl
-  : 'import' name  { [Schema.SourceImport (lval $2)] }
+  : 'import' qname  { [Schema.SourceImport (lval $2)] }
   | typedef  { [$1] }
   | predicate  { $1 }
   | derivedecl  { [$1] }
 
 predicate :: { [Schema.SourceDecl] }
 predicate
-  : 'predicate' fieldname ':' type optval maybe(deriving)
+  : 'predicate' predicatename ':' type optval maybe(deriving)
     { let ref = parseRef $2 in
       Schema.SourcePredicate Schema.PredicateDef
         { predicateDefRef = ref
@@ -257,7 +277,7 @@ derivewhen
 
 derivedecl :: { Schema.SourceDecl }
 derivedecl
-  : 'derive' fieldname deriving  { Schema.SourceDeriving (parseRef $2) $3 }
+  : 'derive' qname deriving  { Schema.SourceDeriving (parseRef (lval $2)) $3 }
 
 optval :: { Schema.SourceType }
 optval
@@ -275,7 +295,7 @@ type
   | '{' seplist2_(fielddef, '|')  '}'       { L (s $1 $3)  $ Schema.SumTy $2 }
   | 'set' type                              { L (s $1 $2)  $ Schema.SetTy (lval $2) }
   | 'enum' '{' seplist_(fieldname, '|') '}' { L (s $1 $4)  $ Schema.EnumeratedTy $3 }
-  | name                                    { L (sspan $1) $ Schema.PredicateTy (parseRef $ lval $1) }
+  | qname                                    { L (sspan $1) $ Schema.PredicateTy (parseRef $ lval $1) }
      -- resolved to typedef/predicate later
   | 'maybe' type                            { L (s $1 $2)  $ Schema.MaybeTy (lval $2) }
   | 'bool'                                  { L (sspan $1) $ Schema.BooleanTy }
@@ -286,10 +306,16 @@ fielddef
   : fieldname ':' type { Schema.FieldDef $1 (lval $3) }
   | fieldname  { Schema.FieldDef $1 unit }
 
+predicatename :: { Name }
+predicatename
+  : fieldname { $1 }
+  | qident { lval $1 }
+
 -- Allow keywords to be used as fieldnames
 fieldname :: { Name }
 fieldname
-  : name  { lval $1 }
+  : lident  { lval $1 }
+  | uident  { lval $1 } -- we want to deprecate this
   | 'bool'  { "bool" }
   | 'byte'  { "byte" }
   | 'enum'  { "enum" }
@@ -304,14 +330,17 @@ fieldname
 
 typedef :: { Schema.SourceDecl }
 typedef
-  : 'type' name '=' type
+  : 'type' predicatename '=' type
     { Schema.SourceType Schema.TypeDef
-        { typeDefRef = parseRef (lval $2)
+        { typeDefRef = parseRef $2
         , typeDefType = lval $4 }
     }
 
-name :: { Located Schema.Name }
-name : IDENT { fmap Text.decodeUtf8 $1 }
+qname :: { Located Schema.Name }
+qname
+  : uident { $1 }
+  | qident { $1 }
+  | lident { $1 } -- probably shouldn't be allowed
 
 -- -----------------------------------------------------------------------------
 -- Utils

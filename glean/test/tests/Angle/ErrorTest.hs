@@ -151,7 +151,7 @@ angleErrorTests = dbTestCase $ \env repo -> do
   print r
   assertBool "angle - lowercase variable" $
     case r of
-      Left (BadQuery x) -> "variable does not begin with an upper-case"
+      Left (BadQuery x) -> "type error in pattern"
         `Text.isInfixOf` x
       _ -> False
 

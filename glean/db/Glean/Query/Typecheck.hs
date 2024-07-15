@@ -270,12 +270,7 @@ inferExpr ctx pat = case pat of
     ts' <- mapM (typecheckPattern ctx ty) ts
     let tcPat = RTS.Ref (MatchArrayPrefix ty (t':ts'))
     return (tcPat, ArrayTy ty)
-  Variable span name
-    | name == "false" -> return (falseVal, BooleanTy)
-    | name == "true" -> return (trueVal, BooleanTy)
-    | name /= "nothing" -> inferVar ctx span name
-      -- "nothing" by itself can't be inferred, we want to fall
-      -- through to the type error message.
+  Variable span name -> inferVar ctx span name
   Prim span primOp args -> do
     let (primArgTys, mkRetTy) = primOpType pat primOp
     (args', argTys) <- primInferAndCheck span args primOp primArgTys
@@ -355,6 +350,9 @@ inferExpr ctx pat = case pat of
   FieldSelect _ p field sum -> do
     (p', ty) <- inferExpr ctx p
     fieldSelect pat ty p' field sum
+
+  Enum _ "true" -> return (trueVal, BooleanTy)
+  Enum _ "false" -> return (falseVal, BooleanTy)
 
   _ -> do
     opts <- gets tcDisplayOpts
@@ -462,10 +460,12 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     case lookupField fieldName fields of
       (ty, n) :_ -> RTS.Alt n <$> typecheckPattern ctx ty pat
       _ -> patTypeErrorDesc ("unknown alt: " <> fieldName) pat typ
+
   -- 'field' is shorthand for '{ field = _ }' when matching a sum type
-  (SumTy fields, Variable _ fieldName)
+  (SumTy fields, Enum _ fieldName)
     | ((ty, n):_)  <- lookupField fieldName fields ->
       return (RTS.Alt n (mkWild ty))
+
   (SumTy _, Struct _ _) ->
     patTypeErrorDesc
       "matching on a union type should have the form { field = pattern }"
@@ -491,12 +491,19 @@ typecheckPattern ctx typ pat = case (typ, pat) of
       -- instead of the original type from the context.
   (MaybeTy elemTy, pat) ->
     typecheckPattern ctx (lowerMaybe elemTy) pat
+
+  (EnumeratedTy names, Enum _ name)
+    | Just n <- elemIndex name names ->
+    return (RTS.Alt (fromIntegral n) (RTS.Tuple []))
+
+  (BooleanTy, Enum _ name)
+    | name == "false" -> return falseVal
+    | name == "true" -> return trueVal
+
+  -- TODO: remove this
   (EnumeratedTy names, Variable _ name)
     | Just n <- elemIndex name names ->
     return (RTS.Alt (fromIntegral n) (RTS.Tuple []))
-  (BooleanTy, Variable _ name)
-    | name == "false" -> return falseVal
-    | name == "true" -> return trueVal
 
   (ty, ElementsOfArray _ pat) -> do
     pat' <- typecheckPattern ContextExpr (ArrayTy ty) pat
@@ -1014,6 +1021,7 @@ varsPat pat r = case pat of
   Clause _ _ p _ -> varsPat p r
   Prim _ _ ps -> foldr varsPat r ps
   FieldSelect _ p _ _ -> varsPat p r
+  Enum{} -> r
 
 varsQuery :: IsSrcSpan s => Query' s -> VarSet -> VarSet
 varsQuery (SourceQuery head stmts) r =

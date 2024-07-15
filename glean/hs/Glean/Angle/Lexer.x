@@ -53,7 +53,7 @@ $digit = [0-9]
 -- A qualified name with an optional version:
 --    VALID: "a" "a.b" "a.b.3" "a.b#new" "a.b.3#old"
 --    INVALID: "a." "a..b" "a.3.b" "a.3b"
-@lqident = @lident (\. @ident)* (\. $digit+)? (\# @ident)?
+@lqident = @lident (\. @ident)* (\. ($digit+ | @ident)) (\# @ident)?
 
 -- versioned: Predicate.1
 @uqident = @uident (\. @ident)* \. $digit+ (\# @ident)?
@@ -76,9 +76,9 @@ tokens :-
   "nat"         { basicToken T_Nat }
   "predicate"   { basicToken T_Predicate }
   "schema"      { basicToken T_Schema }
-  "set"         { versionDependentToken (AngleVersion 8) T_Set (T_Ident . ByteString.toStrict) }
-  "elements"    { versionDependentToken (AngleVersion 8) T_Elements (T_Ident . ByteString.toStrict) }
-  "all"         { versionDependentToken (AngleVersion 8) T_All (T_Ident . ByteString.toStrict) }
+  "set"         { versionDependentToken (AngleVersion 8) T_Set (T_LIdent . ByteString.toStrict) }
+  "elements"    { versionDependentToken (AngleVersion 8) T_Elements (T_LIdent . ByteString.toStrict) }
+  "all"         { versionDependentToken (AngleVersion 8) T_All (T_LIdent . ByteString.toStrict) }
   "string"      { basicToken T_String }
   "type"        { basicToken T_Type }
   "stored"      { basicToken T_Stored }
@@ -120,9 +120,10 @@ tokens :-
                 { tokenContent $ T_SelectAlt . ByteString.toStrict .
                     ByteString.tail . ByteString.init }
 
-  @lqident      { tokenContent $ T_Ident . ByteString.toStrict }
-  @uqident      { tokenContent $ T_Ident . ByteString.toStrict }
-  @uident       { tokenContent $ T_Ident . ByteString.toStrict }
+  @lqident      { tokenContent $ T_QIdent . ByteString.toStrict }
+  @uqident      { tokenContent $ T_QIdent . ByteString.toStrict }
+  @uident       { tokenContent $ T_UIdent . ByteString.toStrict }
+  @lident       { tokenContent $ T_LIdent . ByteString.toStrict }
 {
 data AlexUserState = AlexUserState
   { angleVersion :: AngleVersion
@@ -161,7 +162,9 @@ data TokenType
   | T_Type
   | T_Stored
   | T_Where
-  | T_Ident Strict.ByteString
+  | T_UIdent Strict.ByteString
+  | T_LIdent Strict.ByteString
+  | T_QIdent Strict.ByteString
   | T_StringLit Text
   | T_NatLit Word64
   | T_QueryDef

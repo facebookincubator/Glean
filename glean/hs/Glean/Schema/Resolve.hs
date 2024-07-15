@@ -691,6 +691,7 @@ resolvePat pat = case pat of
   FieldSelect s pat field q ->
     (\p -> FieldSelect s p field q)
       <$> resolvePat pat
+  Enum s n -> return (Enum s n)
   Clause{} -> internal
   Prim{} -> internal
   where
