@@ -271,7 +271,7 @@ class AngleEnum a where
   enumName :: a -> Text
 
 enum :: AngleEnum a => a -> Angle (AngleEnumTy a)
-enum e = Angle (pure (Variable DSL (enumName e)))
+enum e = Angle (pure (Enum DSL (enumName e)))
 
 stringPrefix :: Text -> Angle Text
 stringPrefix t = Angle (pure (StringPrefix DSL t))
