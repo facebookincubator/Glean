@@ -4,7 +4,15 @@
         "childrenContained": [],
         "childrenExtended": [],
         "containsParents": [],
-        "inheritedSymbols": [],
+        "inheritedSymbols": [
+            {
+                "base": "test/php/Machine",
+                "provides": [
+                    "test/php/Machine/closeDoors",
+                    "test/php/Machine/openDoors"
+                ]
+            }
+        ],
         "parentsExtended": [],
         "requireClass": [],
         "requireExtends": [
@@ -91,6 +99,122 @@
                         "type": "test/php/Jet"
                     }
                 ]
+            },
+            "test/php/Machine/closeDoors": {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 18,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "Machine",
+                    "localName": "closeDoors"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "public function closeDoors(): void",
+                "sym": "test/php/Machine/closeDoors",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 18,
+                        "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 10,
+                            "start": 16
+                        },
+                        "type": "test/php/Machine/closeDoors"
+                    }
+                ],
+                "visibility": 20
+            },
+            "test/php/Machine/openDoors": {
+                "annotations": [],
+                "comments": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 8,
+                "language": 3,
+                "location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "Machine",
+                    "localName": "openDoors"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "public function openDoors(): void",
+                "sym": "test/php/Machine/openDoors",
+                "sym_location": {
+                    "filepath": "www/Require.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 4,
+                        "lineBegin": 15,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 9,
+                            "start": 16
+                        },
+                        "type": "test/php/Machine/openDoors"
+                    }
+                ],
+                "visibility": 20
             }
         }
     }

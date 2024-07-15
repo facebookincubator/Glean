@@ -11,9 +11,7 @@ module Glean.Glass.Neighborhood ( searchNeighborhood) where
 import Data.Ord ( comparing )
 import Data.Text ( Text )
 import qualified Data.Map.Strict as Map
-import Data.HashMap.Strict ( HashMap )
-import Data.HashSet ( HashSet )
-import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Set as Set
 
 import Util.List ( uniq, uniqBy )
 
@@ -25,8 +23,6 @@ import Glean.Glass.Utils ( fst4 )
 import Glean.Glass.Describe
     ( mkSymbolDescription, mkBriefSymbolDescription )
 import Glean.Glass.Repos ( Language(Language_Hack), ScmRevisions )
-import qualified Glean.Glass.Relations.Hack as Hack
-import Glean.Glass.SymbolKind ( findSymbolKind )
 import Glean.Glass.Types
     ( SymbolId(SymbolId),
       RelatedNeighborhoodRequest(..),
@@ -41,12 +37,12 @@ import Glean.Glass.Types
                    RelationType_RequireClass),
       RepoName,
       SymbolBasicDescription,
-      SymbolKind )
+      SymbolDescription(..) )
 import Glean.Glass.Search as Search
     ( CodeEntityLocation(CodeEntityLocation, entityName, entityRange,
                          entityFile, entity),
       SearchEntity(..) )
-import Glean.Glass.SearchRelated (InheritedContainer)
+import Glean.Glass.SearchRelated (InheritedContainer, LocatedEntity)
 import qualified Glean.Glass.SearchRelated as Search
 import Glean.Glass.Search.Class ( ResultLocation )
 
@@ -77,33 +73,28 @@ searchNeighborhood limit
     e <- parentRequire RelationType_RequireExtends limit entity repo
     f <- parentRequire RelationType_RequireImplements limit entity repo
     g <- parentRequire RelationType_RequireClass limit entity repo
-    -- all contained symbols of inherited parents
-    -- n.b. not all are actually in scope after we resolve names
-    (eFull, edges, kinds) <- inheritedNLevel limit
-        (fromIntegral relatedNeighborhoodRequest_inherited_limit)
-        (if relatedNeighborhoodRequest_hide_uninteresting
-          then Search.HideUninteresting
-          else Search.ShowAll)
-        entity repo
-    -- now filter out any names that are shadowed
-    let (!eFinal, _) = partitionInheritedScopes lang sym edges
-          kinds a eFull
+
+    (parents, members, inheritedSyms) <- inheritedSymbols lang limit
+      (fromIntegral relatedNeighborhoodRequest_inherited_limit)
+      (if relatedNeighborhoodRequest_hide_uninteresting
+        then Search.HideUninteresting
+        else Search.ShowAll)
+      entity repo
     -- syms visible to the client, we need their full details
     let !syms = uniqBy (comparing snd) $ fromSearchEntity sym baseEntity :
-            a ++ flattenEdges c ++ concatMap snd eFinal
+            a ++ flattenEdges c ++ members
               -- full descriptions of final methods
     descriptions <- Map.fromAscList <$> mapM (mkDescribe repo scmRevs) syms
     -- brief descriptions for inherited things
     basics <- Map.fromAscList <$> mapM (mkBriefDescribe repo scmRevs)
-      (uniqBy (comparing snd) $ (b ++ d ++ e ++ f ++ g) ++ map fst eFinal)
+      (uniqBy (comparing snd) $ (b ++ d ++ e ++ f ++ g) ++ parents)
 
     return $ RelatedNeighborhoodResult {
         relatedNeighborhoodResult_childrenContained = map snd a,
         relatedNeighborhoodResult_childrenExtended = map snd b,
         relatedNeighborhoodResult_containsParents = symbolIdPairs c,
         relatedNeighborhoodResult_parentsExtended = map snd d,
-        relatedNeighborhoodResult_inheritedSymbols =
-          map inheritedSymbolIdSets eFinal,
+        relatedNeighborhoodResult_inheritedSymbols = inheritedSyms,
         relatedNeighborhoodResult_symbolDetails = descriptions,
         relatedNeighborhoodResult_symbolBasicDetails = basics,
         relatedNeighborhoodResult_requireExtends = map snd e,
@@ -198,31 +189,52 @@ parentContainsNLevel limit baseEntity repo = Search.searchRelatedEntities
   baseEntity
   repo
 
--- Inherited symbols: the contained children of N levels of extended parents
-inheritedNLevel :: Int -> Int -> Search.SearchStyle -> Code.Entity -> RepoName
-    -> RepoHaxl u w
-        ([InheritedContainer]
-          ,HashMap SymbolId (HashSet SymbolId)
-          ,HashMap SymbolId SymbolKind
-          )
-inheritedNLevel memberLimit inheritedLimit concise baseEntity repo = do
-  topoEdges <- Search.searchRelatedEntities
-    inheritedLimit
-    concise
-    Search.Recursive
-    RelationDirection_Parent
-    RelationType_Extends
-    baseEntity
-    repo
-  -- keep topological ordering handy
-  let symTable = Search.edgesToTopoMap topoEdges
-  -- reduce to just the unique parent symbols
-  let parents = uniq (map Search.parentRL topoEdges)
-  -- fetch the parent kinds (class, trait etc)
-  kinds <- mapM (\e -> (snd e,) <$> findSymbolKind (toEntity e)) parents
-  -- and fetch their children concurrently
-  inherited <- mapM (childrenOf memberLimit repo) parents
-  return (inherited,symTable,toKindTable kinds)
+--  Returns (recursively) parent entities, inherited members
+--  and inherited symbols of a container entity
+--
+--  If not directly available in DB computes an over approximation
+--  of inherited methods computed by unioning the contained children
+--  of inheritedLimit levels of extended parents
+inheritedSymbols
+  :: Language -> Int -> Int -> Search.SearchStyle -> Code.Entity -> RepoName
+  -> RepoHaxl u w ([LocatedEntity], [LocatedEntity], [InheritedSymbols])
+inheritedSymbols
+  lang memberLimit inheritedLimit style entity repo = do
+    topoEdges <- Search.searchRelatedEntities  -- "extend relationship"
+      inheritedLimit
+      style
+      Search.Recursive
+      RelationDirection_Parent
+      RelationType_Extends
+      entity
+      repo
+
+    let parents = uniq (map Search.parentRL topoEdges)
+
+    (eFull, parents) <- case lang of
+      Language_Hack -> do
+        inherited <-
+          Search.searchInheritedEntities style memberLimit entity repo
+        -- TODO codemarkup.SearchInheritedEntity doesn't give us
+        --  the parents which don't provide any member
+        --  we get them from the extend relationship for now
+        let nonEmptyProviderParents = map fst inherited
+        let parents' = uniq $ nonEmptyProviderParents ++ parents
+        let emptyProviders = difference parents nonEmptyProviderParents
+        let inherited' = inherited ++ ((, []) <$> emptyProviders)
+        return (inherited', parents')
+      _ -> do
+        inherited <- mapM (childrenOf memberLimit repo) parents
+        return (inherited, parents)
+
+    let inheritedSyms = map inheritedSymbolIdSets eFull
+    let members = concatMap snd eFull
+    return (parents, members, inheritedSyms)
+  where
+  difference :: (Ord a) => [a] -> [a] -> [a]
+  difference a b =
+    let bSet = Set.fromList b in
+    filter (`Set.notMember` bSet) a
 
 -- Fetch the "required" parent entities
 -- This only exists for Hack entity so we can avoid
@@ -270,20 +282,3 @@ fromSearchEntity symId SearchEntity{..} = (decl, symId)
 flattenEdges :: [Search.RelatedLocatedEntities] -> [Search.LocatedEntity]
 flattenEdges pairs = concat
   [ [ e1, e2 ] | Search.RelatedLocatedEntities e1 e2 <- pairs ]
-
-toKindTable :: [(SymbolId,Either Text SymbolKind)] ->HashMap SymbolId SymbolKind
-toKindTable xs = HashMap.fromList [ (symId, kind) | (symId, Right kind) <- xs ]
-
--- | Apply any additional client-side filtering of what is in scope,
--- according to language rules
-partitionInheritedScopes
-  :: Language
-  -> SymbolId
-  -> HashMap SymbolId (HashSet SymbolId)
-  -> HashMap SymbolId SymbolKind
-  -> [Search.LocatedEntity]
-  -> [InheritedContainer]
-  -> ([InheritedContainer], HashMap SymbolId Search.LocatedEntity)
-partitionInheritedScopes lang symId edges kinds locals inherited = case lang of
-  Language_Hack -> Hack.difference edges kinds symId locals inherited
-  _ -> (inherited, mempty)

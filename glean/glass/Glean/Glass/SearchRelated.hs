@@ -13,6 +13,7 @@
 
 module Glean.Glass.SearchRelated
   ( searchRelatedEntities
+  , searchInheritedEntities
   , searchRecursiveEntities
   , Recursive(..)
   , SearchStyle(..)
@@ -27,6 +28,8 @@ import Control.Monad (forM)
 import Control.Monad.Catch (MonadThrow(throwM))
 import Data.Hashable ( Hashable(..) )
 import Data.HashSet ( HashSet )
+import Data.List (groupBy, sortOn)
+import Data.Function (on)
 import Data.HashMap.Strict ( HashMap )
 import qualified Data.HashMap.Strict as HM
 import GHC.Generics (Generic)
@@ -76,12 +79,77 @@ type LocatedEntity = (ResultLocation Code.Entity, SymbolId)
 -- Convenience type for a parent with a set of contained children
 type InheritedContainer = (LocatedEntity, [LocatedEntity])
 
+styleToCode :: SearchStyle -> Code.SearchStyle
+styleToCode ShowAll = Code.SearchStyle_ShowAll
+styleToCode HideUninteresting = Code.SearchStyle_HideUninteresting
+
 -- | Flatten results into the container-level topological ordering
 -- from child to set of parents it inherits from.
 edgesToTopoMap
   :: [RelatedLocatedEntities] -> HashMap SymbolId (HashSet SymbolId)
 edgesToTopoMap edges = HM.fromListWith HashSet.union
   [ (snd (childRL e), HashSet.singleton (snd (parentRL e))) | e <- edges ]
+
+-- returns all inherited members in container entity as "RelatedEntity"
+-- parentEntity is the entity defining the member
+-- childEntity is the member itself
+runSearchInherited
+  :: SearchStyle
+  -> Int
+  -> Angle Code.Entity
+  -> RepoHaxl u w [RelatedEntities]
+runSearchInherited style limit angle = do
+  (entities, _truncated) <- searchRecursiveWithLimit (Just limit) $
+    query angle
+  pure $
+    [ RelatedEntities
+      { parentEntity = parentEntity_parent
+      , childEntity = childEntity_child
+      , parentLocation = parentEntity_location
+      , childLocation = childEntity_location
+      }
+    | (Code.ParentEntity{..}, Code.ChildEntity{..}) <- entities ]
+  where
+    styleTy = styleToCode style
+    query
+      :: Angle Code.Entity
+      -> Angle (Code.ParentEntity, Code.ChildEntity)
+    query entity =
+      vars $ \(parent :: Angle Code.ParentEntity)
+          (child :: Angle Code.ChildEntity) ->
+        tuple (parent, child) `where_` [
+          wild .= predicate @Code.SearchInheritedEntities (
+            rec $
+              field @"base" entity $
+              field @"parent" parent $
+              field @"child" child $
+              field @"style" (enum styleTy)
+            end)
+          ]
+
+-- returns all inherited members in container entity
+-- grouped by parentEntity
+searchInheritedEntities
+  :: SearchStyle
+  -> Int
+  -> Code.Entity
+  -> RepoName
+  -> RepoHaxl u w [InheritedContainer]
+searchInheritedEntities style limit entity repo = do
+  angle <- case entityToAngle entity of
+        Right angle -> return angle
+        Left t -> throwM (ServerException t)
+  relatedEntities <-
+    runSearchInherited style limit angle >>= toSymbolIds repo
+  return $ groupChildEntities relatedEntities
+  where
+    groupChildEntities :: [RelatedLocatedEntities] -> [InheritedContainer]
+    groupChildEntities xs =
+      map (\g -> (parentRL (head g), map childRL g)) grouped
+      where
+        sorted = sortOn parentRL xs
+        grouped = groupBy ((==) `on` parentRL) sorted
+
 
 --
 -- Given some search parameters, find entities by relation
@@ -225,9 +293,7 @@ runSearchRelated limit style angle searchType = do
     ]
   where
     entities = elementsOf (array angle)
-    styleType = case style of
-      ShowAll -> Code.SearchStyle_ShowAll
-      HideUninteresting -> Code.SearchStyle_HideUninteresting
+    styleType = styleToCode style
 
 --
 -- unified search by relation
