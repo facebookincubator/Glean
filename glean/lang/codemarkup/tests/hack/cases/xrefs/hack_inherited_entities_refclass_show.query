@@ -1,0 +1,3 @@
+query: codemarkup.SearchInheritedEntities { style = ShowAll, base = { hack = { decl = { container = { class_ = { name = { name = "RefClass" } } } } } } }
+perf: true
+transform: [gensort, []]

@@ -1,0 +1,430 @@
+[
+  "@generated",
+  {
+    "key": {
+      "base": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceClass",
+          "file": { "key": "www/SourceClass.php" },
+          "location": { "span": { "start": 253, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "classConst": {
+                "key": {
+                  "name": { "key": "BAZ" },
+                  "container": {
+                    "class_": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "SourceClass" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "BAZ",
+          "file": { "key": "www/SourceClass.php" },
+          "location": { "span": { "start": 322, "length": 18 } }
+        }
+      },
+      "style": 1
+    }
+  },
+  {
+    "key": {
+      "base": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceClass",
+          "file": { "key": "www/SourceClass.php" },
+          "location": { "span": { "start": 253, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "method": {
+                "key": {
+                  "name": { "key": "overrideMe" },
+                  "container": {
+                    "class_": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "SourceClass" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "overrideMe",
+          "file": { "key": "www/SourceClass.php" },
+          "location": { "span": { "start": 531, "length": 62 } }
+        }
+      },
+      "style": 1
+    }
+  },
+  {
+    "key": {
+      "base": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceClass",
+          "file": { "key": "www/SourceClass.php" },
+          "location": { "span": { "start": 253, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "method": {
+                "key": {
+                  "name": { "key": "pleaseOverride" },
+                  "container": {
+                    "class_": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "SourceClass" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "pleaseOverride",
+          "file": { "key": "www/SourceClass.php" },
+          "location": { "span": { "start": 645, "length": 57 } }
+        }
+      },
+      "style": 1
+    }
+  },
+  {
+    "key": {
+      "base": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceClass",
+          "file": { "key": "www/SourceClass.php" },
+          "location": { "span": { "start": 253, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "property_": {
+                "key": {
+                  "name": { "key": "daz" },
+                  "container": {
+                    "class_": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "SourceClass" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "daz",
+          "file": { "key": "www/SourceClass.php" },
+          "location": { "span": { "start": 378, "length": 9 } }
+        }
+      },
+      "style": 1
+    }
+  },
+  {
+    "key": {
+      "base": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceClass",
+          "file": { "key": "www/SourceClass.php" },
+          "location": { "span": { "start": 253, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "typeConst": {
+                "key": {
+                  "name": { "key": "T" },
+                  "container": {
+                    "class_": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "SourceClass" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "T",
+          "file": { "key": "www/SourceClass.php" },
+          "location": { "span": { "start": 344, "length": 19 } }
+        }
+      },
+      "style": 1
+    }
+  },
+  {
+    "key": {
+      "base": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "trait": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceTrait" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceTrait",
+          "file": { "key": "www/SourceTrait.php" },
+          "location": { "span": { "start": 226, "length": 232 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "method": {
+                "key": {
+                  "name": { "key": "quux" },
+                  "container": {
+                    "trait": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "SourceTrait" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "quux",
+          "file": { "key": "www/SourceTrait.php" },
+          "location": { "span": { "start": 248, "length": 58 } }
+        }
+      },
+      "style": 1
+    }
+  },
+  {
+    "key": {
+      "base": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            }
+          }
+        }
+      },
+      "parent": {
+        "parent": {
+          "hack": {
+            "decl": {
+              "container": {
+                "trait": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceTrait" } } }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "SourceTrait",
+          "file": { "key": "www/SourceTrait.php" },
+          "location": { "span": { "start": 226, "length": 232 } }
+        }
+      },
+      "child": {
+        "child": {
+          "hack": {
+            "decl": {
+              "method": {
+                "key": {
+                  "name": { "key": "superAdd" },
+                  "container": {
+                    "trait": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "SourceTrait" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "superAdd",
+          "file": { "key": "www/SourceTrait.php" },
+          "location": { "span": { "start": 381, "length": 75 } }
+        }
+      },
+      "style": 1
+    }
+  }
+]

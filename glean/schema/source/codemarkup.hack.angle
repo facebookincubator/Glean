@@ -776,4 +776,15 @@ predicate HackEntityIdl:
     range = nothing } = I;
   { decl = Hack } = E
 
+  predicate HackInheritedEntities : {
+    container : hack.ContainerDeclaration,
+    member : hack.Declaration,
+  } { Container, Member } where
+    hack.InheritedMembers {
+        container = Container,
+        inheritedMembers = InheritedMembers
+    };
+    { members = Cluster } = InheritedMembers[..];
+    Member = Cluster[..]
+
 }

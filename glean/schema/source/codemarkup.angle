@@ -721,6 +721,29 @@ type SearchStyle = enum {
   HideUninteresting | # perhaps us to drop language specific uninteresting cases
 }
 
+
+# given a container entity, get all its (located) inherited member, including origin location,
+predicate SearchInheritedEntities:
+  {
+      base: code.Entity,
+      parent: ParentEntity,
+      child: ChildEntity,
+      style: SearchStyle, # all results or hide uninteresting
+  }
+   { CE, { parent = PE, location = PELoc } , { child = ME, location = MELoc }, Style } where
+    codemarkup.hack.HackInheritedEntities { container = HCD, member = HD };
+    { hack = { decl = { container = HCD } } } = CE : code.Entity;
+    { hack = { decl = HD } } = ME : code.Entity;
+    codemarkup.hack.HackContainsParentEntity { child = { decl = HD }, parent = Parent };
+    { hack = Parent } = PE : code.Entity;
+    codemarkup.EntityLocation {PE, PELoc};
+    codemarkup.EntityLocation {ME, MELoc};
+    ( ( HideUninteresting = Style;
+      !(codemarkup.hack.EntityHasHideFromDocsAttr Parent)
+      ) | (
+        ShowAll = Style
+      ) )
+
 # find parent/child semantic relationships
 predicate SearchRelatedEntities:
   {
