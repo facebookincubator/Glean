@@ -10,6 +10,7 @@
 module Disassemble(main) where
 
 import Control.Monad
+import Data.Default
 import Data.List (sortOn)
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -63,7 +64,7 @@ main =
   withConfigProvider cfg $ \(cfgAPI :: ConfigAPI) -> do
 
   schemas <- ThriftSource.load cfgAPI cfgSchemaSource
-  db_schema <- newDbSchema Nothing schemas LatestSchemaAll readWriteContent
+  db_schema <- newDbSchema Nothing schemas LatestSchemaAll readWriteContent def
 
   case cfgCommand of
     PTC args -> predicateTypecheckers db_schema args

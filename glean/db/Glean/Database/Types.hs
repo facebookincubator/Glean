@@ -14,6 +14,7 @@ module Glean.Database.Types (
   Derivation(..),
   EnableRecursion(..),
   JanitorRunResult(..), JanitorException(..),
+  DebugFlags(..),
 ) where
 
 import Control.DeepSeq
@@ -267,6 +268,7 @@ data Env = forall storage. Storage storage => Env
   , envFilterAvailableDBs :: [Thrift.Repo] -> IO [Thrift.Repo]
     -- ^ Filter out DBs not currently available in the server tier
   , envTracer :: Tracer GleanTrace
+  , envDebug :: DebugFlags
   }
 
 instance Show Env where

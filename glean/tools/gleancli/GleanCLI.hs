@@ -657,7 +657,7 @@ instance Plugin WriteSerializedInventoryCommand where
             index <- ThriftSource.load cfgAPI (cfgSchemaSource cfg)
             let selector =
                   maybe LatestSchemaAll SpecificSchemaId $ cfgSchemaId cfg
-            newDbSchema Nothing index selector readWriteContent
+            newDbSchema Nothing index selector readWriteContent def
           Glean.Remote{} ->
             throwIO $ userError "Please specify either a schema id or a db"
         return $ Inventory.serialize $ schemaInventory dbSchema

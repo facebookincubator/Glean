@@ -10,6 +10,7 @@ module PublishShardsTest (main) where
 
 import Control.Concurrent.Async
 import Util.STM
+import Data.Default
 import Data.Foldable (toList)
 import Data.Time
 import DatabaseJanitorTest (
@@ -70,7 +71,7 @@ setupFakeDBs :: FilePath -> IO ()
 setupFakeDBs dbdir = do
   now <- getCurrentTime
   schema <- parseSchemaDir schemaSourceDir
-  schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent
+  schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent def
   -- populate a dir with various DBs
   makeFakeDB schema dbdir incompleteRepo now incomplete id
   makeFakeDB schema dbdir completeRepo now complete id

@@ -11,6 +11,7 @@ module InventoryTest
   ) where
 
 import Control.Monad (forM)
+import Data.Default
 import qualified Data.HashMap.Strict as HM
 import Data.HashMap.Strict (HashMap)
 import qualified Data.Map as Map
@@ -36,7 +37,8 @@ mkSchema
   -> SchemaIndex
   -> IO DbSchema
 mkSchema toList schemaIndex =
-  newDbSchemaForTesting toList Nothing schemaIndex LatestSchemaAll readWriteContent
+  newDbSchemaForTesting toList Nothing schemaIndex LatestSchemaAll
+    readWriteContent def
 
 main :: IO ()
 main = withUnitTest $ do
@@ -55,7 +57,7 @@ main = withUnitTest $ do
             newStored = stored {
               storedSchema_predicateIds = Map.mapKeys (*2) pids
               }
-        newDbSchema <- fromStoredSchema Nothing newStored readWriteContent
+        newDbSchema <- fromStoredSchema Nothing newStored readWriteContent def
         serializeTest (schemaInventory newDbSchema)
     , TestLabel "determinism" $ TestList
       [ TestLabel "permuted schema files" $

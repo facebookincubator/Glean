@@ -1318,7 +1318,7 @@ parseAndTypecheckSchema env dir = do
   -- typecheck the schema now, so that we find out about
   -- errors before we try updating the schema for DBs.
   void $ liftIO $ newDbSchema (fmap envDbSchemaCache env) parsed
-    LatestSchemaAll readWriteContent
+    LatestSchemaAll readWriteContent (maybe def envDebug env)
   return parsed
 
 setupLocalSchema

@@ -11,7 +11,8 @@
 module Angle.SetTest (main) where
 
 import Control.Monad.Trans.Except
-import Data.Function
+import Control.Monad.Except
+import Data.Default
 import Data.Text
 
 import Glean.Angle.Parser
@@ -67,11 +68,12 @@ setTest = TestList
             Left err ->
                 assertFailure $ "Parsing query failed with error:\n" <> err
             Right parsed -> do
+              r <- runExceptT $ do
                 let scope = addTmpPredicate HashMap.empty
-                resolved <- runExcept $
+                resolved <- liftEither $ runExcept $
                   runResolve v scope (resolveQuery parsed)
-                runExcept $ typecheck undefined v undefined resolved
-              & \case
+                typecheck undefined (defaultTcOpts def v) undefined resolved
+              case r of
                 Left err ->
                     assertFailure $
                       "Resolving and typechecking query failed with error:\n"
@@ -85,14 +87,15 @@ setTest = TestList
             Left err ->
                 assertFailure $ "Parsing query failed with error:\n" <> err
             Right parsed -> do
+              r <- runExceptT $ do
                 let scope = addTmpPredicate HashMap.empty
-                resolved <- runExcept $
+                resolved <- liftEither $ runExcept $
                   runResolve v scope (resolveQuery parsed)
-                typechecked <- runExcept $
-                  typecheck undefined v undefined resolved
-                runExcept $
+                typechecked <-
+                  typecheck undefined (defaultTcOpts def v) undefined resolved
+                liftEither $ runExcept $
                   flatten DisableRecursion undefined v  False typechecked
-              & \case
+              case r of
                 Left err ->
                     assertFailure $
                       "Resolving, typechecking and "

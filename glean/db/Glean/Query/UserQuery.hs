@@ -658,6 +658,7 @@ userQueryImpl
               mode
               userQuery_query
               stored
+              (envDebug env)
           let
             irDiag =
               [ "ir:\n" <> Text.pack (show (displayDefault qiQuery))
@@ -885,8 +886,9 @@ compileAngleQuery
     -- ^ only used in predicate derivations on incremental dbs
   -> ByteString
   -> Bool
+  -> DebugFlags
   -> IO (CodegenQuery, Type)
-compileAngleQuery rec ver dbSchema mode source stored = do
+compileAngleQuery rec ver dbSchema mode source stored debug = do
   parsed <- checkBadQuery Text.pack $ Angle.parseQuery source
   vlog 2 $ "parsed query: " <> show (displayDefault parsed)
 
@@ -897,8 +899,9 @@ compileAngleQuery rec ver dbSchema mode source stored = do
     runResolve latestAngleVersion scope $ resolveQuery parsed
   vlog 2 $ "resolved query: " <> show (displayDefault resolved)
 
-  typechecked <- checkBadQuery id $ runExcept $
-    typecheck dbSchema latestAngleVersion (dbSchemaRtsType dbSchema) resolved
+  typechecked <- (checkBadQuery id =<<) $ runExceptT $
+    typecheck dbSchema (defaultTcOpts debug latestAngleVersion)
+      (dbSchemaRtsType dbSchema) resolved
   vlog 2 $ "typechecked query: " <> show (displayDefault (qiQuery typechecked))
 
   flattened <- checkBadQuery id $ runExcept $

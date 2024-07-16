@@ -229,7 +229,7 @@ main = do
 
     -- for typechecking
     dbschema <- newDbSchema Nothing (SchemaIndex schema [])
-      LatestSchemaAll readWriteContent
+      LatestSchemaAll readWriteContent def
     return (str, schema, dbschema)
 
   let ProcessedSchema sourceSchemas resolved _ = schema

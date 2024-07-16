@@ -312,12 +312,12 @@ setupSchema Env{..} _ handle (Create _ _ initial) = do
   dbSchema <- case initial of
     UseDefaultSchema ->
       newDbSchema (Just envDbSchemaCache) schema
-        LatestSchemaAll readWriteContent
+        LatestSchemaAll readWriteContent envDebug
     UseSpecificSchema schemaId ->
       newDbSchema (Just envDbSchemaCache) schema
-        (SpecificSchemaId schemaId) readWriteContent
+        (SpecificSchemaId schemaId) readWriteContent envDebug
     UseThisSchema info ->
-      fromStoredSchema (Just envDbSchemaCache) info readWriteContent
+      fromStoredSchema (Just envDbSchemaCache) info readWriteContent envDebug
   storeSchema handle $ toStoredSchema dbSchema
   return dbSchema
 setupSchema env@Env{..} repo handle mode = do
@@ -326,7 +326,7 @@ setupSchema env@Env{..} repo handle mode = do
     Just info
       | ReadOnly <- mode -> mergeSchema
       | otherwise ->
-        fromStoredSchema (Just envDbSchemaCache) info readWriteContent
+        fromStoredSchema (Just envDbSchemaCache) info readWriteContent envDebug
           -- while writing, we don't allow new predicates to be added to
           -- the schema. This is the easiest way to prevent facts being
           -- added to the DB that aren't in the original stored schema.
@@ -349,7 +349,7 @@ setupSchema env@Env{..} repo handle mode = do
         schema <- Observed.get envSchemaSource
         stats <- stackStats
         newMergedDbSchema (Just envDbSchemaCache) info schema
-          (readOnlyContent stats)
+          (readOnlyContent stats) envDebug
     Nothing -> do
       meta <- atomically $ Catalog.readMeta envCatalog repo
       let failure = case metaCompleteness meta of

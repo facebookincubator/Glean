@@ -13,6 +13,7 @@ module Glean.Database.Config (
   tmpDataStore,
   memoryDataStore,
   Config(..),
+  DebugFlags(..),
   options,
   processSchema,
   processSchemaCached,
@@ -159,7 +160,15 @@ data Config = Config
   , cfgFilterAvailableDBs :: [Repo] -> IO [Repo]
     -- ^ Filter out DBs not currently available in the server tier
   , cfgTracer :: Tracer GleanTrace
+  , cfgDebug :: DebugFlags
   }
+
+data DebugFlags = DebugFlags
+  { tcDebug :: !Bool
+  }
+
+instance Default DebugFlags where
+  def = DebugFlags { tcDebug = False }
 
 instance Show Config where
   show c = unwords [ "Config {"
@@ -186,6 +195,7 @@ instance Default Config where
     , cfgEnableRecursion = False
     , cfgFilterAvailableDBs = return
     , cfgTracer = mempty
+    , cfgDebug = def
     }
 
 data SchemaIndex = SchemaIndex
@@ -426,6 +436,7 @@ options = do
     <> help "Experimental support for recursive predicates. For testing only"
     <> internal
     )
+  cfgDebug <- debugParser
   return Config
     { cfgListener = mempty
     , cfgUpdateSchema = True
@@ -437,6 +448,11 @@ options = do
     , cfgTracer = mempty
     , .. }
   where
+    debugParser :: Parser DebugFlags
+    debugParser = do
+      tcDebug <- switch (long "debug-tc")
+      return DebugFlags{..}
+
     recipesConfigThriftSource = option (eitherReader ThriftSource.parse)
       (  long "recipe-config"
       <> metavar "(file:PATH | config:PATH)"

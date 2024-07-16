@@ -132,12 +132,14 @@ fromStoredSchema
   :: Maybe (MVar DbSchemaCache)
   -> StoredSchema
   -> DbContent
+  -> DebugFlags
   -> IO DbSchema
-fromStoredSchema schemaCache info@StoredSchema{..} dbContent =
+fromStoredSchema schemaCache info@StoredSchema{..} dbContent debug =
   mkDbSchemaFromSource
     schemaCache
     (Just (storedSchemaPids info))
     dbContent
+    debug
     storedSchema_schema
 
 storedSchemaPids :: StoredSchema -> HashMap PredicateRef Pid
@@ -164,9 +166,10 @@ newMergedDbSchema
   -> StoredSchema  -- ^ schema from a DB
   -> SchemaIndex  -- ^ current schema index
   -> DbContent
+  -> DebugFlags
   -> IO DbSchema
 newMergedDbSchema schemaCache storedSchema@StoredSchema{..}
-    index dbContent = do
+    index dbContent debug = do
   let
     -- If we have an identical schema in the index, then we can use
     -- the cached ProcessedSchema. This saves a lot of time
@@ -199,7 +202,7 @@ newMergedDbSchema schemaCache storedSchema@StoredSchema{..}
   -- For the "source", we'll use the current schema source. It doesn't
   -- reflect what's in the DB, but it reflects what you can query for.
   mkDbSchema HashMap.toList schemaCache (Just (storedSchemaPids storedSchema))
-    dbContent fromDB (Just index)
+    dbContent fromDB (Just index) debug
 
 -- | Build a DbSchema from parsed/resolved Schemas. Note that we still need
 -- the original source for the schema for 'toStoredSchema' (otherwise we would
@@ -209,6 +212,7 @@ newDbSchema
   -> SchemaIndex
   -> SchemaSelector
   -> DbContent
+  -> DebugFlags
   -> IO DbSchema
 newDbSchema = newDbSchemaForTesting HashMap.toList
 
@@ -220,15 +224,16 @@ newDbSchemaForTesting
   -> SchemaIndex
   -> SchemaSelector
   -> DbContent
+  -> DebugFlags
   -> IO DbSchema
-newDbSchemaForTesting toList schemaCache index selector dbContent = do
+newDbSchemaForTesting toList schemaCache index selector dbContent debug = do
   schema <- case selector of
     SpecificSchemaId id -> case schemaForSchemaId index id of
       Nothing -> throwIO $ ErrorCall $ "schema " <> show id <> " not found"
       Just schema -> return schema
     _otherwise ->
       return (schemaIndexCurrent index)
-  mkDbSchema toList schemaCache Nothing dbContent schema Nothing
+  mkDbSchema toList schemaCache Nothing dbContent schema Nothing debug
 
 inventory :: [PredicateDetails] -> Inventory
 inventory ps = Inventory.new
@@ -248,15 +253,16 @@ mkDbSchemaFromSource
   :: Maybe (MVar DbSchemaCache)
   -> Maybe (HashMap PredicateRef Pid)
   -> DbContent
+  -> DebugFlags
   -> ByteString
   -> IO DbSchema
-mkDbSchemaFromSource schemaCache knownPids dbContent source = do
+mkDbSchemaFromSource schemaCache knownPids dbContent debug source = do
   case processSchema Map.empty source of
     Left str -> throwIO $ ErrorCall str
     Right (ProcessedSchema source resolved hashed) ->
       mkDbSchema HashMap.toList schemaCache knownPids dbContent
         (ProcessedSchema source resolved hashed)
-        Nothing
+        Nothing debug
 
 dbSchemaKey
    :: HashMap PredicateRef Pid
@@ -337,9 +343,10 @@ mkDbSchema
   -> DbContent
   -> ProcessedSchema
   -> Maybe SchemaIndex
+  -> DebugFlags
   -> IO DbSchema
 mkDbSchema toList cacheVar knownPids dbContent
-    procStored@(ProcessedSchema source _ stored) index = do
+    procStored@(ProcessedSchema source _ stored) index debug = do
 
   -- either fetch a cached DbSchema or build a new one
   schema <-
@@ -416,8 +423,9 @@ mkDbSchema toList cacheVar knownPids dbContent
 
     let
       typecheck env (stored, ProcessedSchema _ resolved hashed) =
-        typecheckSchema idToPid stored angleVersion hashed env
+        typecheckSchema idToPid stored tcOpts hashed env
         where
+        tcOpts = defaultTcOpts debug angleVersion
         angleVersion =  maybe latestAngleVersion resolvedSchemaAngleVersion
           (listToMaybe (schemasResolved resolved))
 
@@ -804,13 +812,12 @@ derived predicates are not allowed to use negation.
 typecheckSchema
   :: HashMap PredicateId Pid
   -> Bool -- ^ stored?
-  -> AngleVersion
+  -> TcOpts
   -> HashedSchema
   -> TcEnv
   -> IO TcEnv
 
-typecheckSchema idToPid stored angleVersion
-    HashedSchema{..} tcEnv = do
+typecheckSchema idToPid stored tcOpts HashedSchema{..} tcEnv = do
   let
     -- NOTE: We store Maybe Type rather than filtering out those typedefs
     -- for which rtsType returns Nothing here because we need to be sufficiently
@@ -878,9 +885,11 @@ typecheckSchema idToPid stored angleVersion
 
     -- Typecheck the derivation for a predicate
     tcDeriving details = do
-      drv <- either (throwIO . ErrorCall . Text.unpack) return $ runExcept $
-        typecheckDeriving env angleVersion rtsType details
-          (predicateDefDeriving (predicateSchema details))
+      drv <- do
+        r <- runExceptT $
+          typecheckDeriving env tcOpts rtsType details
+            (predicateDefDeriving (predicateSchema details))
+        either (throwIO . ErrorCall . Text.unpack) return r
       return details { predicateDeriving = drv }
 
   -- typecheck the derivations for newly added predicates
@@ -998,19 +1007,26 @@ checkStoredType preds types def ty = go ty
 -- | Check that a new schema can be processed and merged with the
 -- current schema index. This is used to ensure that a running server
 -- will not choke on a new schema before we deploy it.
-validateNewSchema :: ServerConfig.Config -> ByteString -> SchemaIndex -> IO ()
-validateNewSchema ServerConfig.Config{..} newSrc current = do
+validateNewSchema
+  :: ServerConfig.Config
+  -> ByteString
+  -> SchemaIndex
+  -> DebugFlags
+  -> IO ()
+validateNewSchema ServerConfig.Config{..} newSrc current debug = do
   schema <- case processSchema Map.empty newSrc of
     Left msg -> throwIO $ Thrift.Exception $ Text.pack msg
     Right resolved -> return resolved
   let
   curDbSchema <-
     mkDbSchema HashMap.toList Nothing Nothing readWriteContent schema Nothing
+      debug
   void $ newMergedDbSchema
     Nothing
     (toStoredSchema curDbSchema)
     current
     readWriteContent
+    debug
 
 failOnLeft :: Either Text a -> IO a
 failOnLeft = \case
@@ -1176,12 +1192,13 @@ getSchemaInfo dbSchema index@SchemaIndex{..} GetSchemaInfo{..} = do
     , schemaInfo_derivationDependencies = derivationDependencies
     }
 
-getSchemaInfoForSchema :: SchemaIndex -> SchemaId -> IO SchemaInfo
-getSchemaInfoForSchema index sid = do
+getSchemaInfoForSchema :: SchemaIndex -> SchemaId -> DebugFlags -> IO SchemaInfo
+getSchemaInfoForSchema index sid debug = do
   processed <- maybe (throwIO $ userError "schema id not found") return $
     findSchemaInIndex index sid
   dbSchema <-
     mkDbSchema HashMap.toList Nothing Nothing readWriteContent processed Nothing
+      debug
   let schemaSource = renderSchemaSource (procSchemaSource processed)
 
   res <- getSchemaInfo

@@ -105,7 +105,7 @@ setupBasicDBs dbdir = do
   now <- getCurrentTime
   let age t = addUTCTime (negate (fromIntegral (timeSpanInSeconds t))) now
   schema <- parseSchemaDir schemaSourceDir
-  schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent
+  schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent def
   -- populate a dir with various DBs
   makeFakeDB schema dbdir repo0001 (age (days 0)) (complete 1)
     (props [("bool","yes")])
@@ -125,7 +125,7 @@ setupBasicCloudDBs backupDir = do
   now <- getCurrentTime
   let age t = addUTCTime (negate (fromIntegral (timeSpanInSeconds t))) now
   schema <- parseSchemaDir schemaSourceDir
-  schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent
+  schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent def
   makeFakeCloudDB schema backupDir (Repo "test" "0008")
     (age(days 8)) (complete 8) id
   makeFakeCloudDB schema backupDir (Repo "test2" "0009")

@@ -11,6 +11,8 @@ module Glean.Query.Typecheck
   , typecheckDeriving
   , ToRtsType
   , TcEnv(..)
+  , TcOpts(..)
+  , defaultTcOpts
   , emptyTcEnv
   , tcQueryDeps
   , tcQueryUsesNegation
@@ -49,6 +51,7 @@ import Glean.RTS.Types as RTS
 import Glean.RTS.Term hiding
   (Tuple, ByteArray, String, Array, Nat, All)
 import qualified Glean.RTS.Term as RTS
+import qualified Glean.Database.Config as Config
 import Glean.Database.Schema.Types
 import Glean.Schema.Util
 
@@ -59,6 +62,17 @@ data TcEnv = TcEnv
 
 emptyTcEnv :: TcEnv
 emptyTcEnv = TcEnv HashMap.empty HashMap.empty
+
+data TcOpts = TcOpts
+  { tcOptDebug :: !Config.DebugFlags
+  , tcOptAngleVersion :: !AngleVersion
+  }
+
+defaultTcOpts :: Config.DebugFlags -> AngleVersion -> TcOpts
+defaultTcOpts debug v = TcOpts
+  { tcOptDebug = debug
+  , tcOptAngleVersion = v
+  }
 
 type ToRtsType = Schema.Type -> Maybe Type
 
@@ -73,18 +87,18 @@ type DerivingInfo' s = DerivingInfo (Query' s)
 typecheck
   :: IsSrcSpan s
   => DbSchema
-  -> AngleVersion
+  -> TcOpts
   -> ToRtsType
   -> Query' s
-  -> Except Text TypecheckedQuery
-typecheck dbSchema ver rtsType query = do
+  -> ExceptT Text IO TypecheckedQuery
+typecheck dbSchema opts rtsType query = do
   let
     tcEnv = TcEnv
       { tcEnvPredicates = predicatesById dbSchema
       , tcEnvTypes = typesById dbSchema
       }
   (q@(TcQuery ty _ _ _), TypecheckState{..}) <-
-    let state = initialTypecheckState tcEnv ver rtsType TcModeQuery in
+    let state = initialTypecheckState tcEnv opts rtsType TcModeQuery in
     flip runStateT state $ do
       modify $ \s -> s { tcVisible = varsQuery query mempty }
       inferQuery ContextExpr query
@@ -95,14 +109,14 @@ typecheck dbSchema ver rtsType query = do
 typecheckDeriving
   :: IsSrcSpan s
   => TcEnv
-  -> AngleVersion
+  -> TcOpts
   -> ToRtsType
   -> PredicateDetails
   -> DerivingInfo' s
-  -> Except Text (DerivingInfo TypecheckedQuery)
-typecheckDeriving tcEnv ver rtsType PredicateDetails{..} derivingInfo = do
+  -> ExceptT Text IO (DerivingInfo TypecheckedQuery)
+typecheckDeriving tcEnv opts rtsType PredicateDetails{..} derivingInfo = do
   (d, _) <-
-    let state = initialTypecheckState tcEnv ver rtsType TcModePredicate
+    let state = initialTypecheckState tcEnv opts rtsType TcModePredicate
     in
     flip runStateT state $ do
     flip catchError
@@ -132,7 +146,8 @@ typecheckDeriving tcEnv ver rtsType PredicateDetails{..} derivingInfo = do
           key' <- typecheckPattern ContextExpr predicateKeyType key
           maybeVal' <- case maybeVal of
             Nothing
-              | eqType ver unit predicateValueType -> return Nothing
+              | eqType (tcOptAngleVersion opts) unit predicateValueType ->
+                return Nothing
               | otherwise -> prettyErrorIn head $ nest 4 $ vcat
                 [ "a functional predicate must return a value,"
                 , "i.e. the query should have the form 'X -> Y where .." ]
@@ -689,6 +704,7 @@ data TcMode = TcModeQuery | TcModePredicate
 data TypecheckState = TypecheckState
   { tcEnv :: TcEnv
   , tcAngleVersion :: AngleVersion
+  , tcDebug :: !Bool
   , tcRtsType :: ToRtsType
   , tcNextVar :: Int
   , tcScope :: HashMap Name Var
@@ -708,13 +724,14 @@ data TypecheckState = TypecheckState
 
 initialTypecheckState
   :: TcEnv
-  -> AngleVersion
+  -> TcOpts
   -> ToRtsType
   -> TcMode
   -> TypecheckState
-initialTypecheckState tcEnv version rtsType mode = TypecheckState
+initialTypecheckState tcEnv TcOpts{..} rtsType mode = TypecheckState
   { tcEnv = tcEnv
-  , tcAngleVersion = version
+  , tcAngleVersion = tcOptAngleVersion
+  , tcDebug = Config.tcDebug tcOptDebug
   , tcRtsType = rtsType
   , tcNextVar = 0
   , tcScope = HashMap.empty
@@ -727,7 +744,7 @@ initialTypecheckState tcEnv version rtsType mode = TypecheckState
       -- might make this configurable with flags later
   }
 
-type T a = StateT TypecheckState (Except Text) a
+type T a = StateT TypecheckState (ExceptT Text IO) a
 
 bindOrUse :: Context -> Name -> TypecheckState -> TypecheckState
 bindOrUse ContextExpr name state =

@@ -89,12 +89,12 @@ instance Backend Database.Env where
       sid <- case getSchemaInfo_select of
           Thrift.SelectSchema_schema_id sid -> return sid
           other -> throwIO $ userError $ "unsupported: " <> show other
-      Database.getSchemaInfoForSchema index sid
+      Database.getSchemaInfoForSchema index sid (envDebug env)
 
   validateSchema env (Thrift.ValidateSchema str) = do
     schema <- Observed.get (Database.envSchemaSource env)
     conf <- Observed.get (Database.envServerConfig env)
-    validateNewSchema conf str schema
+    validateNewSchema conf str schema (envDebug env)
 
   predicateStats env repo opts = Database.predicateStats env repo opts
 
@@ -235,7 +235,7 @@ loadDbSchema backend repo = do
     getSchemaInfo backend (Just repo) def
       { Thrift.getSchemaInfo_select = Thrift.SelectSchema_stored def }
   fromStoredSchema Nothing (StoredSchema schema pids dbSchemaIds)
-    readWriteContent
+    readWriteContent def
 
 serializeInventory
   :: Backend backend

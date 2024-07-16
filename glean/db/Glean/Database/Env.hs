@@ -146,6 +146,7 @@ initEnv evb envStorage envCatalog shardManager cfg
           else DisableRecursion
       , envFilterAvailableDBs = cfgFilterAvailableDBs cfg
       , envTracer = cfgTracer cfg
+      , envDebug = cfgDebug cfg
       , .. }
 
 spawnThreads :: Env -> IO ()
