@@ -139,8 +139,7 @@ searchInheritedEntities style limit entity repo = do
   angle <- case entityToAngle entity of
         Right angle -> return angle
         Left t -> throwM (ServerException t)
-  relatedEntities <-
-    runSearchInherited style limit angle >>= toSymbolIds repo
+  relatedEntities <- runSearchInherited style limit angle >>= toSymbolIds repo
   return $ groupChildEntities relatedEntities
   where
     groupChildEntities :: [RelatedLocatedEntities] -> [InheritedContainer]
@@ -149,7 +148,6 @@ searchInheritedEntities style limit entity repo = do
       where
         sorted = sortOn parentRL xs
         grouped = groupBy ((==) `on` parentRL) sorted
-
 
 --
 -- Given some search parameters, find entities by relation

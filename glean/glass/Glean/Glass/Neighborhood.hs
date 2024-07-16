@@ -11,7 +11,6 @@ module Glean.Glass.Neighborhood ( searchNeighborhood) where
 import Data.Ord ( comparing )
 import Data.Text ( Text )
 import qualified Data.Map.Strict as Map
-import qualified Data.Set as Set
 
 import Util.List ( uniq, uniqBy )
 
@@ -101,7 +100,6 @@ searchNeighborhood limit
         relatedNeighborhoodResult_requireImplements = map snd f,
         relatedNeighborhoodResult_requireClass = map snd g
       }
-
 
 -- building map of sym id -> descriptions, by first occurence
 mkDescribe
@@ -198,8 +196,18 @@ parentContainsNLevel limit baseEntity repo = Search.searchRelatedEntities
 inheritedSymbols
   :: Language -> Int -> Int -> Search.SearchStyle -> Code.Entity -> RepoName
   -> RepoHaxl u w ([LocatedEntity], [LocatedEntity], [InheritedSymbols])
-inheritedSymbols
-  lang memberLimit inheritedLimit style entity repo = do
+
+-- Optimized implementation for Hack: all members inherited into scope by parent
+inheritedSymbols Language_Hack
+  memberLimit _inheritedLimit style entity repo = do
+    inherited <- Search.searchInheritedEntities style memberLimit entity repo
+    let parents = map fst inherited
+        members = concatMap snd inherited
+        inheritedSyms = map inheritedSymbolIdSets inherited
+    return (parents, members, inheritedSyms)
+
+-- Fall back implementation: enumerate inherited parents, and find their members
+inheritedSymbols _ memberLimit inheritedLimit style entity repo = do
     topoEdges <- Search.searchRelatedEntities  -- "extend relationship"
       inheritedLimit
       style
@@ -208,33 +216,11 @@ inheritedSymbols
       RelationType_Extends
       entity
       repo
-
     let parents = uniq (map Search.parentRL topoEdges)
-
-    (eFull, parents) <- case lang of
-      Language_Hack -> do
-        inherited <-
-          Search.searchInheritedEntities style memberLimit entity repo
-        -- TODO codemarkup.SearchInheritedEntity doesn't give us
-        --  the parents which don't provide any member
-        --  we get them from the extend relationship for now
-        let nonEmptyProviderParents = map fst inherited
-        let parents' = uniq $ nonEmptyProviderParents ++ parents
-        let emptyProviders = difference parents nonEmptyProviderParents
-        let inherited' = inherited ++ ((, []) <$> emptyProviders)
-        return (inherited', parents')
-      _ -> do
-        inherited <- mapM (childrenOf memberLimit repo) parents
-        return (inherited, parents)
-
-    let inheritedSyms = map inheritedSymbolIdSets eFull
-    let members = concatMap snd eFull
+    inherited <- mapM (childrenOf memberLimit repo) parents
+    let inheritedSyms = map inheritedSymbolIdSets inherited
+    let members = concatMap snd inherited
     return (parents, members, inheritedSyms)
-  where
-  difference :: (Ord a) => [a] -> [a] -> [a]
-  difference a b =
-    let bSet = Set.fromList b in
-    filter (`Set.notMember` bSet) a
 
 -- Fetch the "required" parent entities
 -- This only exists for Hack entity so we can avoid

@@ -23,19 +23,11 @@
                 ]
             },
             {
-                "base": "test/php/SourceInterface",
-                "provides": []
-            },
-            {
                 "base": "test/php/SourceTrait",
                 "provides": [
                     "test/php/SourceTrait/quux",
                     "test/php/SourceTrait/superAdd"
                 ]
-            },
-            {
-                "base": "test/php/SuperClass",
-                "provides": []
             }
         ],
         "parentsExtended": [
@@ -87,16 +79,6 @@
                 },
                 "signature": "trait SourceTrait",
                 "sym": "test/php/SourceTrait"
-            },
-            "test/php/SuperClass": {
-                "kind": 7,
-                "language": 3,
-                "name": {
-                    "container": "",
-                    "localName": "SuperClass"
-                },
-                "signature": "class SuperClass",
-                "sym": "test/php/SuperClass"
             }
         },
         "symbolDetails": {

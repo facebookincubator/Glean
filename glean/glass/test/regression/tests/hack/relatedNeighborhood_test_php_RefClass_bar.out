@@ -9,12 +9,7 @@
                 "parent": "test/php/RefClass"
             }
         ],
-        "inheritedSymbols": [
-            {
-                "base": "test/php/SourceClass/bar",
-                "provides": []
-            }
-        ],
+        "inheritedSymbols": [],
         "parentsExtended": [
             "test/php/SourceClass/bar"
         ],
