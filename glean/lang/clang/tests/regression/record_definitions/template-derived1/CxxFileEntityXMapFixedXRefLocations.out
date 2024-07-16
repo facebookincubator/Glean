@@ -1,0 +1,1311 @@
+[
+  "@generated",
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Base" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 10,
+                            "columnEnd": 14
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 4, "offsets": [ 298, 89 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Middle" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 26
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 6, "offsets": [ 328 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "AliasToBase" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "Base<T>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 18,
+                            "columnBegin": 1,
+                            "lineEnd": 18,
+                            "columnEnd": 27
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 11, "offsets": [ 447 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "MiddleThroughAlias" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 1,
+                            "lineEnd": 21,
+                            "columnEnd": 45
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 18, "offsets": [ 489 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "AliasToMiddle" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "MiddleThroughAlias<int>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 1,
+                            "lineEnd": 23,
+                            "columnEnd": 45
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 13, "offsets": [ 544 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
+              ],
+              "froms": [ ]
+            }
+          },
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "AliasToBase",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 18,
+              "columnBegin": 1,
+              "lineEnd": 18,
+              "columnEnd": 27
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 373, "length": 11 }
+          }
+        },
+        "source": { "span": { "start": 447, "length": 11 } }
+      },
+      "entity": {
+        "decl": {
+          "typeAlias": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "AliasToBase" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "type": { "key": "Base<T>" },
+              "kind": 1,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 18,
+                "columnBegin": 1,
+                "lineEnd": 18,
+                "columnEnd": 27
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Base" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 10,
+                            "columnEnd": 14
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 4, "offsets": [ 298, 89 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Middle" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 26
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 6, "offsets": [ 328 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "AliasToBase" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "Base<T>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 18,
+                            "columnBegin": 1,
+                            "lineEnd": 18,
+                            "columnEnd": 27
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 11, "offsets": [ 447 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "MiddleThroughAlias" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 1,
+                            "lineEnd": 21,
+                            "columnEnd": 45
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 18, "offsets": [ 489 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "AliasToMiddle" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "MiddleThroughAlias<int>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 1,
+                            "lineEnd": 23,
+                            "columnEnd": 45
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 13, "offsets": [ 544 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
+              ],
+              "froms": [ ]
+            }
+          },
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "AliasToMiddle",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 23,
+              "columnBegin": 1,
+              "lineEnd": 23,
+              "columnEnd": 45
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 473, "length": 13 }
+          }
+        },
+        "source": { "span": { "start": 544, "length": 13 } }
+      },
+      "entity": {
+        "decl": {
+          "typeAlias": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "AliasToMiddle" },
+                  "scope": { "global_": { } }
+                }
+              },
+              "type": { "key": "MiddleThroughAlias<int>" },
+              "kind": 1,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 23,
+                "columnBegin": 1,
+                "lineEnd": 23,
+                "columnEnd": 45
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Base" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 10,
+                            "columnEnd": 14
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 4, "offsets": [ 298, 89 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Middle" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 26
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 6, "offsets": [ 328 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "AliasToBase" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "Base<T>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 18,
+                            "columnBegin": 1,
+                            "lineEnd": 18,
+                            "columnEnd": 27
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 11, "offsets": [ 447 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "MiddleThroughAlias" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 1,
+                            "lineEnd": 21,
+                            "columnEnd": 45
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 18, "offsets": [ 489 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "AliasToMiddle" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "MiddleThroughAlias<int>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 1,
+                            "lineEnd": 23,
+                            "columnEnd": 45
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 13, "offsets": [ 544 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
+              ],
+              "froms": [ ]
+            }
+          },
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "Base",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 10,
+              "columnBegin": 1,
+              "lineEnd": 10,
+              "columnEnd": 14
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 250, "length": 4 }
+          }
+        },
+        "source": { "span": { "start": 298, "length": 4 } }
+      },
+      "entity": {
+        "defn": {
+          "record_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "Base" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "kind": { "struct_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 10,
+                    "columnBegin": 1,
+                    "lineEnd": 10,
+                    "columnEnd": 14
+                  }
+                }
+              },
+              "bases": [ ],
+              "members": { "key": [ ] }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Base" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 10,
+                            "columnEnd": 14
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 4, "offsets": [ 298, 89 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Middle" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 26
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 6, "offsets": [ 328 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "AliasToBase" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "Base<T>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 18,
+                            "columnBegin": 1,
+                            "lineEnd": 18,
+                            "columnEnd": 27
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 11, "offsets": [ 447 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "MiddleThroughAlias" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 1,
+                            "lineEnd": 21,
+                            "columnEnd": 45
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 18, "offsets": [ 489 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "AliasToMiddle" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "MiddleThroughAlias<int>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 1,
+                            "lineEnd": 23,
+                            "columnEnd": 45
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 13, "offsets": [ 544 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
+              ],
+              "froms": [ ]
+            }
+          },
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "Base",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 10,
+              "columnBegin": 1,
+              "lineEnd": 10,
+              "columnEnd": 14
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 250, "length": 4 }
+          }
+        },
+        "source": { "span": { "start": 387, "length": 4 } }
+      },
+      "entity": {
+        "defn": {
+          "record_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "Base" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "kind": { "struct_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 10,
+                    "columnBegin": 1,
+                    "lineEnd": 10,
+                    "columnEnd": 14
+                  }
+                }
+              },
+              "bases": [ ],
+              "members": { "key": [ ] }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Base" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 10,
+                            "columnEnd": 14
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 4, "offsets": [ 298, 89 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Middle" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 26
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 6, "offsets": [ 328 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "AliasToBase" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "Base<T>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 18,
+                            "columnBegin": 1,
+                            "lineEnd": 18,
+                            "columnEnd": 27
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 11, "offsets": [ 447 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "MiddleThroughAlias" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 1,
+                            "lineEnd": 21,
+                            "columnEnd": 45
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 18, "offsets": [ 489 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "AliasToMiddle" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "MiddleThroughAlias<int>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 1,
+                            "lineEnd": 23,
+                            "columnEnd": 45
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 13, "offsets": [ 544 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
+              ],
+              "froms": [ ]
+            }
+          },
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "Middle",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 1,
+              "lineEnd": 13,
+              "columnEnd": 26
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 289, "length": 6 }
+          }
+        },
+        "source": { "span": { "start": 328, "length": 6 } }
+      },
+      "entity": {
+        "defn": {
+          "record_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "Middle" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "kind": { "struct_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 13,
+                    "columnBegin": 1,
+                    "lineEnd": 13,
+                    "columnEnd": 26
+                  }
+                }
+              },
+              "bases": [
+                {
+                  "base": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Base" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "kind": { "struct_": { } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 10,
+                        "columnBegin": 1,
+                        "lineEnd": 10,
+                        "columnEnd": 14
+                      }
+                    }
+                  },
+                  "access": 0,
+                  "isVirtual": false
+                }
+              ],
+              "members": { "key": [ ] }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Base" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 10,
+                            "columnEnd": 14
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 4, "offsets": [ 298, 89 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Middle" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 13,
+                            "columnBegin": 1,
+                            "lineEnd": 13,
+                            "columnEnd": 26
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 6, "offsets": [ 328 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "AliasToBase" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "Base<T>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 18,
+                            "columnBegin": 1,
+                            "lineEnd": 18,
+                            "columnEnd": 27
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 11, "offsets": [ 447 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "MiddleThroughAlias" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "kind": { "struct_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 1,
+                            "lineEnd": 21,
+                            "columnEnd": 45
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 18, "offsets": [ 489 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "AliasToMiddle" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "MiddleThroughAlias<int>" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 23,
+                            "columnBegin": 1,
+                            "lineEnd": 23,
+                            "columnEnd": 45
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 13, "offsets": [ 544 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
+              ],
+              "froms": [ ]
+            }
+          },
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "MiddleThroughAlias",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 21,
+              "columnBegin": 1,
+              "lineEnd": 21,
+              "columnEnd": 45
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 426, "length": 18 }
+          }
+        },
+        "source": { "span": { "start": 489, "length": 18 } }
+      },
+      "entity": {
+        "defn": {
+          "record_": {
+            "key": {
+              "declaration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "MiddleThroughAlias" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "kind": { "struct_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 21,
+                    "columnBegin": 1,
+                    "lineEnd": 21,
+                    "columnEnd": 45
+                  }
+                }
+              },
+              "bases": [
+                {
+                  "base": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "Base" },
+                          "scope": { "global_": { } }
+                        }
+                      },
+                      "kind": { "struct_": { } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 10,
+                        "columnBegin": 1,
+                        "lineEnd": 10,
+                        "columnEnd": 14
+                      }
+                    }
+                  },
+                  "access": 0,
+                  "isVirtual": false
+                }
+              ],
+              "members": { "key": [ ] }
+            }
+          }
+        }
+      }
+    }
+  }
+]

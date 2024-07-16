@@ -1351,18 +1351,52 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
     }
 
+    // A helper to get the `CXXRecordDecl` that correspond to the `QualType`
+    // of `CXXBaseSpecifier`. While the `getAsCXXRecordDecl` for a type resolves
+    // through type aliases, we have to do more intricate stuff to look through
+    // type alias templates.
+    static const clang::CXXRecordDecl* getAsCXXRecordDecl(
+        const clang::QualType& type) {
+      if (const auto* ty = type.getTypePtrOrNull()) {
+        // Simple cases such as
+        //
+        //   struct S1 : public Foo {};
+        //   struct S2 : public vector<int> {};
+        if (const auto* rd = ty->getAsCXXRecordDecl()) {
+          return rd;
+        }
+        // Template cases such as:
+        //
+        //   template <typename T>
+        //   struct S3 : public Base<T> {};
+        if (auto tst = ty->getAs<clang::TemplateSpecializationType>()) {
+          if (auto td = tst->getTemplateName().getAsTemplateDecl()) {
+            if (const auto* ctd =
+                    clang::dyn_cast<clang::ClassTemplateDecl>(td)) {
+              return ctd->getTemplatedDecl();
+            } else if (
+                const auto* tatd =
+                    clang::dyn_cast<clang::TypeAliasTemplateDecl>(td)) {
+              if (const auto* tad = tatd->getTemplatedDecl()) {
+                // Recurse through the type alias template's underlying type.
+                return getAsCXXRecordDecl(tad->getUnderlyingType());
+              }
+            }
+          }
+        }
+      }
+      return nullptr;
+    }
+
     void define(ASTVisitor& visitor, const clang::CXXRecordDecl *d) const {
       std::vector<Cxx::RecordBase> bases;
       for (const auto& base : d->bases()) {
-        if (auto ty = base.getType().getTypePtrOrNull()) {
-          if (auto record = ty->getAsCXXRecordDecl()) {
-            if (auto other = visitor.classDecls(record)) {
-              bases.push_back(Cxx::RecordBase{
-                other->decl,  // should this be base.representative?
+        if (const auto* record = getAsCXXRecordDecl(base.getType())) {
+          if (auto other = visitor.classDecls(record)) {
+            bases.push_back(Cxx::RecordBase{
+                other->decl, // should this be base.representative?
                 visitor.access(base.getAccessSpecifier()),
-                base.isVirtual()
-              });
-            }
+                base.isVirtual()});
           }
         }
       }
