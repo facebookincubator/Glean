@@ -171,7 +171,7 @@ predicate Has :
   {
     class_ : Class,
     has : Member,
-    access : enum { Public | Private },
+    access : enum { public_ | private_ },
   }
 
 predicate Member :
@@ -182,11 +182,15 @@ predicate Member :
 }
 ```
 
-The predicate `Has` maps a `Class` to a `Member` (with a `Public` or `Private` annotation), and a `Member` is either `method` or `variable`, with some associated data. Note that a `Class` might have more than one `Member`, which is fine: there can be multiple `Has` facts for a given `Class`.
+The predicate `Has` maps a `Class` to a `Member` (with a `public_` or `private_` annotation), and a `Member` is either `method` or `variable`, with some associated data. Note that a `Class` might have more than one `Member`, which is fine: there can be multiple `Has` facts for a given `Class`.
 
 :::note
 
-The schema uses `class_` rather than `class` as a field name, because `class` is a reserved word in Angle. There are many such reserved words, which are reserved not because Angle uses them, but because they cause problems for code that is automatically generated from the schema. To avoid having too many ad-hoc language-specific naming rules, Glean prevents certain problematic names from being used in the schema. The Angle compiler will tell you if you try to use a reserved word.
+The schema uses `class_` rather than `class` as a field name, because
+`class` is a reserved word in Angle. Similarly, we added trailing
+underscores to `public_` and`private_` for the same reason.
+
+There are many such reserved words, which are reserved not because Angle uses them, but because they cause problems for code that is automatically generated from the schema. To avoid having too many ad-hoc language-specific naming rules, Glean prevents certain problematic names from being used in the schema. The Angle compiler will tell you if you try to use a reserved word.
 
 :::
 
@@ -449,21 +453,21 @@ As a rule of thumb we tend to use tuple syntax in cases where the predicate is "
 
 ## Enums and bool
 
-An `enum` type is a set of named constants. In the `Has` predicate we used an `enum` type to indicate whether a class member is `Public` or `Private`:
+An `enum` type is a set of named constants. In the `Has` predicate we used an `enum` type to indicate whether a class member is `public_` or `private_`:
 
 ```lang=angle
 predicate Has :
   {
     class_ : Class,
     has : Member,
-    access : enum { Public | Private },
+    access : enum { public_ | private_ },
   }
 ```
 
-To match an `enum` we just use the appropriate identifier, in this case `Public` or `Private`:
+To match an `enum` we just use the appropriate identifier, in this case `public_` or `private`:
 
 ```lang=angle
-facts> example.Has { access = Private }
+facts> example.Has { access = private_ }
 { "id": 1036, "key": { "class_": { "id": 1026 }, "has": { "id": 1035 }, "access": 1 } }
 ```
 
@@ -474,6 +478,16 @@ The boolean type `bool` is a special case of an `enum`, defined like this:
 ```lang=angle
 type bool = enum { false | true }
 ```
+
+:::note
+
+Normally the constants of an `enum` should begin with a lower case
+letter. You can use constants beginning with an upper-case letter, but
+to distinguish the constant from a variable name you may sometimes
+need to provide a type signature, e.g. `Constant : Type` rather than
+just `Constant`.
+
+:::
 
 ## Negation
 

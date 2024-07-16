@@ -28,7 +28,7 @@ predicate Has :
   { 
     class_ : Class,
     has : Member,
-    access : enum { Public | Private },
+    access : enum { public_ | private_ },
   }
 
 predicate Member :

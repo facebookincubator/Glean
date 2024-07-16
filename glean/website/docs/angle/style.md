@@ -30,5 +30,5 @@ This uses quite a lot of vertical space, but it's clear and works well with sour
 It's OK to put things on a single line if they fit:
 
 ```lang=angle
-type Access = enum { Public | Protected | Private }
+type Access = enum { public | protected | private }
 ```
