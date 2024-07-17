@@ -50,7 +50,7 @@ size_t untrustedChunks(folly::ByteRange range, Chunk&& chunk) {
 
   int k = 0;
   while (true) {
-    UChar c;
+    UChar32 c;
     // NOTE: U8_NEXT returns c<0 on overlong (invalid) points so this doesn't
     // transcode (and we don't have to worry about, say, overlong \NUL).
     U8_NEXT(p, i, size, c);

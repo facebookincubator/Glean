@@ -61,7 +61,7 @@ kitchenSink = KitchenSink
       [0,0xF6,0x12345,0x65434567,minBound,maxBound]
   , kitchenSink_array_of_bool = [True,False,True]
   , kitchenSink_array_of_string =
-      ["abcd","","lzdkfhlsadhgl","asfdfs\0fasasfda\0faaf"]
+      ["abcd","","lzdkfhlsadhgl","asfdfs\0fasasfda\0faaf", "𐀀" ]
   , kitchenSink_array_of_pred =
       [ Glean.Test.Predicate 5432 Nothing
       , Glean.Test.Predicate 0x1234567 Nothing ]
