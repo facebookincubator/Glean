@@ -4,7 +4,6 @@
         "symbolDetails": [
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -52,7 +51,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -106,7 +104,6 @@
                         "source": "__EnumClass"
                     }
                 ],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -155,7 +152,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -203,7 +199,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -252,7 +247,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -303,18 +297,6 @@
             },
             {
                 "annotations": [],
-                "comments": [
-                    {
-                        "filepath": "www/Require.php",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 10,
-                            "lineEnd": 12
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -377,7 +359,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -426,7 +407,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -475,7 +455,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -523,7 +502,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -572,7 +550,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -620,7 +597,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -669,7 +645,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -717,7 +692,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -766,7 +740,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -814,7 +787,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -862,7 +834,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -911,7 +882,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -960,7 +930,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1009,7 +978,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1060,7 +1028,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1113,7 +1080,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1162,7 +1128,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1218,18 +1183,6 @@
                         "name": "TestAnnotation",
                         "source": "TestAnnotation(\"Text\")",
                         "symbol": "test/php/TestAnnotation"
-                    }
-                ],
-                "comments": [
-                    {
-                        "filepath": "www/SourceClass.php",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 10,
-                            "lineEnd": 12
-                        },
-                        "repository": "test"
                     }
                 ],
                 "contains_relation": {
@@ -1292,7 +1245,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1341,7 +1293,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1390,18 +1341,6 @@
             },
             {
                 "annotations": [],
-                "comments": [
-                    {
-                        "filepath": "www/SourceClass.php",
-                        "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 6,
-                            "lineBegin": 26,
-                            "lineEnd": 29
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1463,18 +1402,6 @@
             },
             {
                 "annotations": [],
-                "comments": [
-                    {
-                        "filepath": "www/SourceClass.php",
-                        "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 6,
-                            "lineBegin": 34,
-                            "lineEnd": 36
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1539,7 +1466,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1587,7 +1513,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1640,7 +1565,6 @@
                         "source": "__EnumClass"
                     }
                 ],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1688,7 +1612,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1740,7 +1663,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1791,7 +1713,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1840,7 +1761,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1889,7 +1809,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1938,7 +1857,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1989,18 +1907,6 @@
                     {
                         "name": "__Override",
                         "source": "__Override"
-                    }
-                ],
-                "comments": [
-                    {
-                        "filepath": "www/SourceClass.php",
-                        "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 6,
-                            "lineBegin": 34,
-                            "lineEnd": 36
-                        },
-                        "repository": "test"
                     }
                 ],
                 "contains_relation": {
@@ -2066,7 +1972,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2114,7 +2019,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2163,7 +2067,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2212,7 +2115,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2260,7 +2162,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2308,7 +2209,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2357,7 +2257,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2411,7 +2310,6 @@
                         "source": "__Deprecated"
                     }
                 ],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2460,7 +2358,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2508,7 +2405,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2556,7 +2452,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2604,7 +2499,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

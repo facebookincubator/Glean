@@ -79,7 +79,6 @@
         "symbolDetails": {
             "test/php/Fliers/fly": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -139,7 +138,6 @@
             },
             "test/php/Machine/closeDoors": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -197,7 +195,6 @@
             },
             "test/php/Machine/openDoors": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -255,7 +252,6 @@
             },
             "test/php/Plane": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -312,7 +308,6 @@
             },
             "test/php/Plane/takeOff": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

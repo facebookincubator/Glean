@@ -29,7 +29,6 @@
         "symbolDetails": {
             "test/php/SourceTrait": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -86,7 +85,6 @@
             },
             "test/php/SourceTrait/quux": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -144,7 +142,6 @@
             },
             "test/php/SourceTrait/superAdd": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

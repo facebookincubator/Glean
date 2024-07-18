@@ -265,9 +265,6 @@ combineDescriptions
 combineDescriptions y x =
   x { symbolDescription_annotations = symbolDescription_annotations x <>
         symbolDescription_annotations y -- <> Maybe [a]
-    , symbolDescription_comments = uniq $
-        symbolDescription_comments x <>
-        symbolDescription_comments y
     , symbolDescription_pretty_comments = uniq $
         symbolDescription_pretty_comments x <>
         symbolDescription_pretty_comments y

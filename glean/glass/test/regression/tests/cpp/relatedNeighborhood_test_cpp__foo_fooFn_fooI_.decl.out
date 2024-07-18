@@ -12,7 +12,6 @@
         "symbolBasicDetails": {},
         "symbolDetails": {
             "test/cpp//foo/fooFn/fooI/.decl": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

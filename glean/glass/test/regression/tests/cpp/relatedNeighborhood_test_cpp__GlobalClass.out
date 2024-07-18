@@ -16,7 +16,6 @@
         "symbolBasicDetails": {},
         "symbolDetails": {
             "test/cpp//GlobalClass": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -67,7 +66,6 @@
                 "type_xrefs": []
             },
             "test/cpp//GlobalClass/GCA": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -115,7 +113,6 @@
                 "type_xrefs": []
             },
             "test/cpp//GlobalClass/GCB": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -163,7 +160,6 @@
                 "type_xrefs": []
             },
             "test/cpp//GlobalClass/GCC": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

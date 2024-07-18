@@ -1,18 +1,6 @@
 [
     "@generated",
     {
-        "comments": [
-            {
-                "filepath": "as.py",
-                "range": {
-                    "columnBegin": 5,
-                    "columnEnd": 8,
-                    "lineBegin": 11,
-                    "lineEnd": 14
-                },
-                "repository": "test"
-            }
-        ],
         "contains_relation": {
             "firstChild": "nondeterministic",
             "firstParent": "nondeterministic",

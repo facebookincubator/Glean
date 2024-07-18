@@ -14,7 +14,6 @@
         "symbolBasicDetails": {},
         "symbolDetails": {
             "test/cpp//baz": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -62,7 +61,6 @@
                 "type_xrefs": []
             },
             "test/cpp//baz/U/.decl": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

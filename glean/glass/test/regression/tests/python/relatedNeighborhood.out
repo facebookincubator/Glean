@@ -20,7 +20,6 @@
         "symbolBasicDetails": {},
         "symbolDetails": {
             "test/py/lib.py/lib": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -77,7 +76,6 @@
                 "visibility": 20
             },
             "test/py/lib.py/lib.HelperClass": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -134,7 +132,6 @@
                 "visibility": 20
             },
             "test/py/lib.py/lib.HelperClass.another_method": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -191,7 +188,6 @@
                 "visibility": 20
             },
             "test/py/lib.py/lib.HelperClass.method": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

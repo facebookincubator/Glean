@@ -18,7 +18,6 @@
         "symbolDetails": {
             "test/php/RefClass": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -74,7 +73,6 @@
                 ]
             },
             "test/php/RefClass/JAZZ": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

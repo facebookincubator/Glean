@@ -405,7 +405,6 @@ struct SymbolDescription {
   3: QualifiedName name;
   4: optional SymbolKind kind;
   5: optional list<Annotation> annotations;
-  6: list<LocationRange> comments; // deprecated, use pretty_comments
   7: optional Visibility visibility;
   8: Revision repo_hash;
   9: Language language;

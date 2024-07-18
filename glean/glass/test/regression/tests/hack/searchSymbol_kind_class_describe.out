@@ -4,7 +4,6 @@
         "symbolDetails": [
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -52,7 +51,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -100,18 +98,6 @@
             },
             {
                 "annotations": [],
-                "comments": [
-                    {
-                        "filepath": "www/Require.php",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 10,
-                            "lineEnd": 12
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -174,7 +160,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -222,7 +207,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -270,7 +254,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -318,7 +301,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -366,7 +348,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -419,18 +400,6 @@
                         "name": "TestAnnotation",
                         "source": "TestAnnotation(\"Text\")",
                         "symbol": "test/php/TestAnnotation"
-                    }
-                ],
-                "comments": [
-                    {
-                        "filepath": "www/SourceClass.php",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 10,
-                            "lineEnd": 12
-                        },
-                        "repository": "test"
                     }
                 ],
                 "contains_relation": {
@@ -493,7 +462,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -541,7 +509,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -589,7 +556,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -637,7 +603,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

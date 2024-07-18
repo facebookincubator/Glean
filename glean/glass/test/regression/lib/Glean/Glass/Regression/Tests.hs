@@ -88,10 +88,10 @@ testDescribeSymbolComments sym@(SymbolId name) (line, col) get =
       assertEqual "describeSymbol Comment start matches"
         [(fromIntegral line, fromIntegral col)] $
         zip
-          (range_lineBegin . locationRange_range
-            <$> symbolDescription_comments)
-          (range_columnBegin . locationRange_range
-            <$> symbolDescription_comments)
+          (range_lineBegin . locationRange_range . symbolComment_location
+            <$> symbolDescription_pretty_comments)
+          (range_columnBegin . locationRange_range . symbolComment_location
+            <$> symbolDescription_pretty_comments)
 
 -- | Test that describeSymbol has specific annotations
 testDescribeSymbolHasAnnotations

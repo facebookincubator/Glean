@@ -10,18 +10,6 @@
         "symbolDetails": {
             "test/php/Machine": {
                 "annotations": [],
-                "comments": [
-                    {
-                        "filepath": "www/Require.php",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 10,
-                            "lineEnd": 12
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -93,7 +81,6 @@
             },
             "test/php/Plane": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

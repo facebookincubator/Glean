@@ -1,18 +1,6 @@
 [
     "@generated",
     {
-        "comments": [
-            {
-                "filepath": "test.cpp",
-                "range": {
-                    "columnBegin": 1,
-                    "columnEnd": 4,
-                    "lineBegin": 56,
-                    "lineEnd": 58
-                },
-                "repository": "test"
-            }
-        ],
         "contains_relation": {
             "firstChild": "nondeterministic",
             "firstParent": "nondeterministic",

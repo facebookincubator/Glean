@@ -17,18 +17,6 @@
         "symbolBasicDetails": {},
         "symbolDetails": {
             "test/cpp//maybe/Nothing": {
-                "comments": [
-                    {
-                        "filepath": "test.cpp",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 71,
-                            "lineEnd": 73
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -92,7 +80,6 @@
                 "type_xrefs": []
             },
             "test/cpp//maybe/Nothing/.c/maybe::Nothing::_secret": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

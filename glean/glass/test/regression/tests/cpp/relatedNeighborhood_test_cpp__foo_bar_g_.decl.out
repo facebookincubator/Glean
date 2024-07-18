@@ -13,7 +13,6 @@
         "symbolDetails": {
             "test/cpp//foo/bar/g/.decl": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

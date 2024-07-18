@@ -3,7 +3,6 @@
     {
         "symbolDetails": [
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -54,7 +53,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -104,7 +102,6 @@
                 "type_xrefs": []
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -155,7 +152,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -203,18 +199,6 @@
             },
             {
                 "annotations": [],
-                "comments": [
-                    {
-                        "filepath": "test.cpp",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 18,
-                            "lineEnd": 20
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -274,7 +258,6 @@
                 "type_xrefs": []
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -325,7 +308,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -375,7 +357,6 @@
                 "type_xrefs": []
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -425,18 +406,6 @@
                 "type_xrefs": []
             },
             {
-                "comments": [
-                    {
-                        "filepath": "test.cpp",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 56,
-                            "lineEnd": 58
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -500,18 +469,6 @@
             },
             {
                 "annotations": [],
-                "comments": [
-                    {
-                        "filepath": "test.cpp",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 51,
-                            "lineEnd": 53
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -575,7 +532,6 @@
             },
             {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

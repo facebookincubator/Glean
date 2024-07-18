@@ -84,7 +84,6 @@
         "symbolDetails": {
             "test/php/RefClass": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -141,7 +140,6 @@
             },
             "test/php/RefClass/:prop/raz": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -190,7 +188,6 @@
                 "visibility": 40
             },
             "test/php/RefClass/JAZZ": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -250,7 +247,6 @@
             },
             "test/php/RefClass/bar": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -322,7 +318,6 @@
             },
             "test/php/RefClass/bazza": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -380,7 +375,6 @@
             },
             "test/php/RefClass/foo": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -440,7 +434,6 @@
             },
             "test/php/RefClass/lotsofkeywords": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -502,7 +495,6 @@
             },
             "test/php/SourceClass/:prop/daz": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -551,7 +543,6 @@
                 "visibility": 20
             },
             "test/php/SourceClass/BAZ": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -611,7 +602,6 @@
             },
             "test/php/SourceClass/T": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -671,18 +661,6 @@
             },
             "test/php/SourceClass/overrideMe": {
                 "annotations": [],
-                "comments": [
-                    {
-                        "filepath": "www/SourceClass.php",
-                        "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 6,
-                            "lineBegin": 26,
-                            "lineEnd": 29
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -753,18 +731,6 @@
             },
             "test/php/SourceClass/pleaseOverride": {
                 "annotations": [],
-                "comments": [
-                    {
-                        "filepath": "www/SourceClass.php",
-                        "range": {
-                            "columnBegin": 3,
-                            "columnEnd": 6,
-                            "lineBegin": 34,
-                            "lineEnd": 36
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -838,7 +804,6 @@
             },
             "test/php/SourceTrait/quux": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -896,7 +861,6 @@
             },
             "test/php/SourceTrait/superAdd": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

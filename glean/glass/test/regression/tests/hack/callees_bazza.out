@@ -22,7 +22,6 @@
         "symbolDetails": {
             "test/php/RefClass/bazza": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -80,7 +79,6 @@
             },
             "test/php/fun/corge": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

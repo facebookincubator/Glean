@@ -19,7 +19,6 @@
         "symbolDetails": {
             "test/php/Position": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -75,7 +74,6 @@
                 ]
             },
             "test/php/Position/Bottom": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -123,7 +121,6 @@
                 "type_xrefs": []
             },
             "test/php/Position/Center": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -171,7 +168,6 @@
                 "type_xrefs": []
             },
             "test/php/Position/Left": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -219,7 +215,6 @@
                 "type_xrefs": []
             },
             "test/php/Position/Right": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -267,7 +262,6 @@
                 "type_xrefs": []
             },
             "test/php/Position/Top": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

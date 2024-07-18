@@ -102,9 +102,6 @@ describeEntity scmRevs ent SymbolResult{..} = do
   let symbolDescription_name = symbolResult_qname
   symbolDescription_annotations <- eThrow =<< getAnnotationsForEntity repo ent
   symbolDescription_pretty_comments <- eThrow =<< getCommentsForEntity repo ent
-  -- backwards compat until deprecated, we just make a copy
-  let symbolDescription_comments = map symbolComment_location
-        symbolDescription_pretty_comments
   (symbolDescription_visibility, symbolDescription_modifiers)
      <- eThrow =<< getInfoForEntity ent
   (symbolDescription_signature, symbolDescription_type_xrefs)

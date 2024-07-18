@@ -102,7 +102,6 @@
         "symbolDetails": {
             "test/cpp//foo/bar/g/.f//.decl": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -151,18 +150,6 @@
             },
             "test/cpp//foo/f/.f//.decl": {
                 "annotations": [],
-                "comments": [
-                    {
-                        "filepath": "test.cpp",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 18,
-                            "lineEnd": 20
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -223,7 +210,6 @@
                 "type_xrefs": []
             },
             "test/cpp//foo/foo/.f/": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -275,7 +261,6 @@
             },
             "test/cpp//foo/foo/.f//.decl": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -326,18 +311,6 @@
                 "type_xrefs": []
             },
             "test/cpp//h": {
-                "comments": [
-                    {
-                        "filepath": "test.cpp",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 56,
-                            "lineEnd": 58
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -401,18 +374,6 @@
                 "type_xrefs": []
             },
             "test/cpp//h/.f/int": {
-                "comments": [
-                    {
-                        "filepath": "test.cpp",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 56,
-                            "lineEnd": 58
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -477,18 +438,6 @@
             },
             "test/cpp//h/.f/int/.decl": {
                 "annotations": [],
-                "comments": [
-                    {
-                        "filepath": "test.cpp",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 51,
-                            "lineEnd": 53
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

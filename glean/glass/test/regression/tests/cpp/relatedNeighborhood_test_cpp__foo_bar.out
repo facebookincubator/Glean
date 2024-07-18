@@ -17,7 +17,6 @@
         "symbolBasicDetails": {},
         "symbolDetails": {
             "test/cpp//foo/bar": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -65,7 +64,6 @@
                 "type_xrefs": []
             },
             "test/cpp//foo/bar/T/.decl": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -116,7 +114,6 @@
                 "type_xrefs": []
             },
             "test/cpp//foo/bar/TypedefDeclShort/.decl": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -164,7 +161,6 @@
                 "type_xrefs": []
             },
             "test/cpp//foo/bar/UsingDeclShort/.decl": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -213,7 +209,6 @@
             },
             "test/cpp//foo/bar/g/.f//.decl": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

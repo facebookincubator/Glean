@@ -26,7 +26,6 @@
         "symbolDetails": {
             "test/php/RefClass": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -87,18 +86,6 @@
                         "name": "TestAnnotation",
                         "source": "TestAnnotation(\"Text\")",
                         "symbol": "test/php/TestAnnotation"
-                    }
-                ],
-                "comments": [
-                    {
-                        "filepath": "www/SourceClass.php",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 10,
-                            "lineEnd": 12
-                        },
-                        "repository": "test"
                     }
                 ],
                 "contains_relation": {
@@ -170,7 +157,6 @@
             },
             "test/php/SourceInterface": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -232,7 +218,6 @@
                         "source": "HideFromDocs"
                     }
                 ],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -289,7 +274,6 @@
             },
             "test/php/SourceTrait": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -346,7 +330,6 @@
             },
             "test/php/SuperClass": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

@@ -30,7 +30,6 @@
         "symbolDetails": {
             "test/php/SourceInterface": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -86,7 +85,6 @@
                 ]
             },
             "test/php/SourceInterface/JAZZ": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -146,7 +144,6 @@
             },
             "test/php/SourceInterface/foo": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -207,7 +204,6 @@
             },
             "test/php/SourceInterface/quux": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

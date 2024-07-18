@@ -15,18 +15,6 @@
         "symbolBasicDetails": {},
         "symbolDetails": {
             "test/js/cjs_exports": {
-                "comments": [
-                    {
-                        "filepath": "test/cjs_exports.js",
-                        "range": {
-                            "columnBegin": 1,
-                            "columnEnd": 4,
-                            "lineBegin": 1,
-                            "lineEnd": 7
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -87,7 +75,6 @@
                 "type_xrefs": []
             },
             "test/js/cjs_exports/plus": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -135,7 +122,6 @@
                 "type_xrefs": []
             },
             "test/js/cjs_exports/x": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

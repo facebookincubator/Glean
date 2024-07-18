@@ -3,7 +3,6 @@
     {
         "symbolDetails": [
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -60,7 +59,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -117,7 +115,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -174,7 +171,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -241,7 +237,6 @@
                         "source": "@lru_cache"
                     }
                 ],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -298,7 +293,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -355,7 +349,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -412,7 +405,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -469,7 +461,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -526,7 +517,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -583,18 +573,6 @@
                 "visibility": 20
             },
             {
-                "comments": [
-                    {
-                        "filepath": "as.py",
-                        "range": {
-                            "columnBegin": 5,
-                            "columnEnd": 8,
-                            "lineBegin": 11,
-                            "lineEnd": 14
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -665,7 +643,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -728,7 +705,6 @@
                         "source": "@staticmethod"
                     }
                 ],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -788,7 +764,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -845,18 +820,6 @@
                 "visibility": 20
             },
             {
-                "comments": [
-                    {
-                        "filepath": "as.py",
-                        "range": {
-                            "columnBegin": 5,
-                            "columnEnd": 8,
-                            "lineBegin": 52,
-                            "lineEnd": 54
-                        },
-                        "repository": "test"
-                    }
-                ],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -927,7 +890,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -984,7 +946,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1041,7 +1002,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1098,7 +1058,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1155,7 +1114,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1212,7 +1170,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1269,7 +1226,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1326,7 +1282,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1383,7 +1338,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1440,7 +1394,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1497,7 +1450,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1545,7 +1497,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1602,7 +1553,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1659,7 +1609,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1716,7 +1665,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1773,7 +1721,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1830,7 +1777,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1894,7 +1840,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -1951,7 +1896,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2008,7 +1952,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2065,7 +2008,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2122,7 +2064,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2179,7 +2120,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2236,7 +2176,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2293,7 +2232,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2350,7 +2288,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2407,7 +2344,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2464,7 +2400,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2521,7 +2456,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -2578,7 +2512,6 @@
                 "visibility": 20
             },
             {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

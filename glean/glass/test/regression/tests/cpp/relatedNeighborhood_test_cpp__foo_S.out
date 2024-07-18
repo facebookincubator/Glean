@@ -15,7 +15,6 @@
         "symbolBasicDetails": {},
         "symbolDetails": {
             "test/cpp//foo/S": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -66,7 +65,6 @@
                 "type_xrefs": []
             },
             "test/cpp//foo/S/TypedefDeclInteger/.decl": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -115,7 +113,6 @@
                 "visibility": 20
             },
             "test/cpp//foo/S/UsingDeclInteger/.decl": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

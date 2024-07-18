@@ -15,7 +15,6 @@
         "symbolDetails": {
             "test/php/FancyTypes": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -72,7 +71,6 @@
             },
             "test/php/FancyTypes/flatten": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

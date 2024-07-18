@@ -31,7 +31,6 @@
         "symbolDetails": {
             "test/php/RefClass": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -88,7 +87,6 @@
             },
             "test/php/RefClass/bar": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",

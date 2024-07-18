@@ -30,7 +30,6 @@
         "symbolDetails": {
             "test/php/RefClass": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -87,7 +86,6 @@
             },
             "test/php/RefClass/:prop/raz": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -136,7 +134,6 @@
                 "visibility": 40
             },
             "test/php/RefClass/JAZZ": {
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -196,7 +193,6 @@
             },
             "test/php/RefClass/bar": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -268,7 +264,6 @@
             },
             "test/php/RefClass/bazza": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -326,7 +321,6 @@
             },
             "test/php/RefClass/foo": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
@@ -386,7 +380,6 @@
             },
             "test/php/RefClass/lotsofkeywords": {
                 "annotations": [],
-                "comments": [],
                 "contains_relation": {
                     "firstChild": "nondeterministic",
                     "firstParent": "nondeterministic",
