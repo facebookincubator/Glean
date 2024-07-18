@@ -387,6 +387,7 @@ instance ToQName Code.Entity where
     Code.Entity_flow x -> toQName x
     Code.Entity_graphql x -> toQName x
     Code.Entity_hack (Hack.Entity_decl x) -> toQName x
+    Code.Entity_hs x -> toQName x
     Code.Entity_java x -> toQName x
     Code.Entity_kotlin x -> toQName x
     Code.Entity_pp x -> toQName x
