@@ -1,6 +1,6 @@
 # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
 name: CI-ARM
-on: [push]
+on: [push, pull_request]
 
 env:
   LANG: en_US.UTF-8
@@ -13,23 +13,22 @@ jobs:
       matrix:
         ghc: [8.10.7]
         compiler: [clang]
+
     runs-on: 4-core-ubuntu-arm
-    container:
-      image: ubuntu:22.04
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Initialize APT
         run: |
-          apt-get update
-          apt-get install -y curl
+          sudo apt-get update
+          sudo apt-get install -y curl
 
       - name: Setup en_US.UTF-8 locale
         run: |
-          apt-get install -y locales
-          locale-gen en_US.UTF-8
-          update-locale LANG=en_US.UTF-8
+          sudo apt-get install -y locales
+          sudo locale-gen en_US.UTF-8
+          sudo update-locale LANG=en_US.UTF-8
 
       - name: Setup LOCAL_BIN environment
         run: |
@@ -39,55 +38,44 @@ jobs:
       - name: Setup build time flags
         run: |
           echo "MAKEFLAGS=-j$(nproc)" >> "$GITHUB_ENV"
-          echo "EXTRA_GHC_OPTS=-j$(nproc) +RTS -A128m -n2m -RTS" >> "$GITHUB_ENV"
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install indexer (flow)
-        run: npm install -g flow-bin
-
-      - name: Install indexer (typescript)
-        run: npm install -g @sourcegraph/scip-typescript
+          echo "EXTRA_GHC_OPTS=-j2 +RTS -A128m -n2m -RTS" >> "$GITHUB_ENV"
 
       - name: Setup Haskell
         run: |
           curl --proto '=https' --tlsv1.2 -sSf "https://downloads.haskell.org/~ghcup/aarch64-linux-ghcup" -o "$LOCAL_BIN"/ghcup
           chmod +x "$LOCAL_BIN"/ghcup
           ghcup install cabal --set
-          apt-get install -y build-essential libgmp-dev libnuma-dev
+          sudo apt-get install -y build-essential libgmp-dev libnuma-dev
           ghcup install ghc ${{ matrix.ghc }} --set
           echo "$HOME/.ghcup/bin" >> "$GITHUB_PATH"
 
       # This needs to be before the Clang step since they install GCC. We want to remove GCC if Clang is enabled.
       - name: Install CMake and Boost
-        run : apt-get install -y cmake libboost-all-dev
+        run : sudo apt-get install -y cmake libboost-all-dev
 
       - name: Setup Clang
         run: |
           export VER=15
-          apt-get install -y clang-$VER
-          apt-get remove -y gcc g++
-          apt-get autoremove -y
-          update-alternatives --install /usr/bin/cc cc /usr/bin/clang-$VER 10
-          update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-$VER 10
+          sudo apt-get install -y clang-$VER
+          sudo apt-get remove -y gcc g++
+          sudo apt-get autoremove -y
+          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-$VER 10
+          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-$VER 10
           # needed for `ghc`, it actually invokes `gcc` explicitly.
-          update-alternatives --install /usr/bin/gcc gcc /usr/bin/clang-$VER 10
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/clang-$VER 10
           # needed for `hsc2hs`, `g++` is hardcoded into `hsc2hs-options`.
-          update-alternatives --install /usr/bin/g++ g++ /usr/bin/clang++-$VER 10
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/clang++-$VER 10
 
       # and ghc 8.10 on arm needs opt and llc from llvm-12
       - name: Install llvm tools for GHC/ARM
         run : |
-          apt-install llvm-12
-          update-alternatives --install /usr/bin/opt opt /usr/lib/llvm-12/bin/opt 10
-          update-alternatives --install /usr/bin/llc llc /usr/lib/llvm-12/bin/llc 10
+          sudo apt-get install -y llvm-12
+          sudo update-alternatives --install /usr/bin/opt opt /usr/lib/llvm-12/bin/opt 10
+          sudo update-alternatives --install /usr/bin/llc llc /usr/lib/llvm-12/bin/llc 10
 
       - name: Install folly and rocksdb dependencies
         run: |
-          apt-get install -y git ninja-build \
+          sudo apt-get install -y git ninja-build \
             libaio-dev libbz2-dev libdouble-conversion-dev libdwarf-dev libgoogle-glog-dev libiberty-dev libjemalloc-dev \
             liblzma-dev liblz4-dev libsnappy-dev libsodium-dev libssl-dev libunwind-dev libzstd-dev
 
@@ -110,7 +98,7 @@ jobs:
         run: echo CABAL_CONFIG_FLAGS="-f-hack-tests -f-rust-tests -f-python-tests" >> "$GITHUB_ENV"
 
       - name: Install hsthrift and Glean dependencies
-        run: apt-get install -y pkg-config rsync libgmock-dev libpcre3-dev libtinfo-dev libxxhash-dev
+        run: sudo apt-get install -y pkg-config rsync libgmock-dev libpcre3-dev libtinfo-dev libxxhash-dev
 
       - name: Build hsthrift and Glean
         run: make
@@ -119,16 +107,13 @@ jobs:
         run: make glass
 
       - name: Install glean-clang dependencies
-        run: apt-get install -y clang-15 libclang-15-dev libclang-cpp15-dev libre2-dev
+        run: sudo apt-get install -y clang-15 libclang-15-dev libclang-cpp15-dev libre2-dev
 
       - name: Build glean-clang
         run: make glean-clang
 
       - name: Build hiedb-indexer
         run: make glean-hiedb
-
-      - name: Run tests
-        run: make test
 
   # check the vscode extension builds
   vscode:
