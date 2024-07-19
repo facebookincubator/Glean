@@ -521,7 +521,9 @@ library db
         Glean.Query.Prune
         Glean.Query.Reorder
         Glean.Query.Typecheck
+        Glean.Query.Typecheck.Monad
         Glean.Query.Typecheck.Types
+        Glean.Query.Typecheck.Unify
         Glean.Query.Vars
 
         Glean.Query.JSON

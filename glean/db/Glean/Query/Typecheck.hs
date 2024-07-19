@@ -34,11 +34,9 @@ import Data.Char
 import Data.Foldable (toList)
 import Data.List.Extra (firstJust)
 import qualified Data.IntMap as IntMap
-import Data.IntMap (IntMap)
 import qualified Data.Map as Map
 import Data.Maybe
 import qualified Data.HashMap.Strict as HashMap
-import Data.HashMap.Strict (HashMap)
 import qualified Data.HashSet as HashSet
 import Data.HashSet (HashSet)
 import Data.List
@@ -57,35 +55,15 @@ import Glean.Display
 import Glean.Query.Codegen.Types
   (Match(..), Var(..), QueryWithInfo(..), Typed(..))
 import Glean.Query.Typecheck.Types
+import Glean.Query.Typecheck.Monad
+import Glean.Query.Typecheck.Unify
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term hiding
   (Tuple, ByteArray, String, Array, Nat, All)
 import qualified Glean.RTS.Term as RTS
-import qualified Glean.Database.Config as Config
 import Glean.Database.Schema.Types
 import Glean.Schema.Util
 import Glean.Util.Some
-
-data TcEnv = TcEnv
-  { tcEnvTypes :: HashMap TypeId TypeDetails
-  , tcEnvPredicates :: HashMap PredicateId PredicateDetails
-  }
-
-emptyTcEnv :: TcEnv
-emptyTcEnv = TcEnv HashMap.empty HashMap.empty
-
-data TcOpts = TcOpts
-  { tcOptDebug :: !Config.DebugFlags
-  , tcOptAngleVersion :: !AngleVersion
-  }
-
-defaultTcOpts :: Config.DebugFlags -> AngleVersion -> TcOpts
-defaultTcOpts debug v = TcOpts
-  { tcOptDebug = debug
-  , tcOptAngleVersion = v
-  }
-
-type ToRtsType = Schema.Type -> Maybe Type
 
 type Pat' s = SourcePat_ s PredicateId TypeId
 type Statement' s = SourceStatement_ s PredicateId TypeId
@@ -721,27 +699,6 @@ falseVal, trueVal :: TcPat
 falseVal = RTS.Alt 0 (RTS.Tuple [])
 trueVal = RTS.Alt 1 (RTS.Tuple [])
 
--- Smart constructor for wildcard patterns; replaces a wildcard that
--- matches the unit type with a concrete pattern.  This is necessary
--- when we have an enum in an expression position: we can't translate
--- @nothing@ into @{ nothing = _ }@ because the wildcard would be
--- illegal in an expression.
-mkWild :: Type -> TcPat
-mkWild ty
-  | RecordTy [] <- derefType ty = RTS.Tuple []
-  | otherwise = RTS.Ref (MatchWild ty)
-
-inPat :: (IsSrcSpan s) => Pat' s -> T a -> T a
-inPat pat = addErrSpan (sourcePatSpan pat)
-
-addErrSpan :: (IsSrcSpan s) => s -> T a -> T a
-addErrSpan span act = do
-  act `catchError` \errDoc -> do
-    prettyError $ vcat
-      [ pretty span
-      , errDoc
-      ]
-
 patTypeError :: (IsSrcSpan s) => Pat' s -> Type -> T a
 patTypeError = patTypeErrorDesc "type error in pattern"
 
@@ -754,76 +711,6 @@ patTypeErrorDesc desc q ty = do
       , "pattern: " <> display opts q
       , "expected type: " <> display opts ty
       ]
-
-data TcMode = TcModeQuery | TcModePredicate
-  deriving Eq
-
-data TypecheckState = TypecheckState
-  { tcEnv :: TcEnv
-  , tcAngleVersion :: AngleVersion
-  , tcDebug :: !Bool
-  , tcRtsType :: ToRtsType
-  , tcNextVar :: {-# UNPACK #-} !Int
-  , tcNextTyVar :: {-# UNPACK #-} !Int
-  , tcScope :: HashMap Name Var
-    -- ^ Variables that we have types for, and have allocated a Var
-  , tcVisible :: HashSet Name
-    -- ^ Variables that are currently visible
-  , tcFree :: HashSet Name
-    -- ^ Variables that are mentioned only once
-  , tcUses :: HashSet Name
-    -- ^ Accumulates variables that appear in an ContextExpr context
-  , tcBindings :: HashSet Name
-    -- ^ Accumulates variables that appear in an ContextPat context
-  , tcMode :: TcMode
-  , tcDisplayOpts :: DisplayOpts
-    -- ^ Options for pretty-printing
-  , tcVars :: IntMap Var
-  , tcSubst :: IntMap Type
-  , tcPromote :: [(Type, Type, Some IsSrcSpan)]
-  }
-
-initialTypecheckState
-  :: TcEnv
-  -> TcOpts
-  -> ToRtsType
-  -> TcMode
-  -> TypecheckState
-initialTypecheckState tcEnv TcOpts{..} rtsType mode = TypecheckState
-  { tcEnv = tcEnv
-  , tcAngleVersion = tcOptAngleVersion
-  , tcDebug = Config.tcDebug tcOptDebug
-  , tcRtsType = rtsType
-  , tcNextVar = 0
-  , tcNextTyVar = 0
-  , tcScope = HashMap.empty
-  , tcVisible = HashSet.empty
-  , tcFree = HashSet.empty
-  , tcUses = HashSet.empty
-  , tcBindings = HashSet.empty
-  , tcMode = mode
-  , tcDisplayOpts = defaultDisplayOpts
-      -- might make this configurable with flags later
-  , tcSubst = IntMap.empty
-  , tcVars = IntMap.empty
-  , tcPromote = []
-  }
-
-type T a = StateT TypecheckState (ExceptT (Doc ()) IO) a
-
-whenDebug :: T () -> T ()
-whenDebug act = do
-  lvl <- gets tcDebug
-  when lvl act
-
-freshTyVarInt :: T Int
-freshTyVarInt = do
-  TypecheckState{tcNextTyVar = n} <- get
-  modify $ \s -> s { tcNextTyVar = n+1 }
-  return n
-
-freshTyVar :: T Type
-freshTyVar = TyVar <$> freshTyVarInt
 
 bindOrUse :: Context -> Name -> TypecheckState -> TypecheckState
 bindOrUse ContextExpr name state =
@@ -906,18 +793,6 @@ checkVarCase span name
       "variable does not begin with an upper-case letter: " <>
         pretty name
   | otherwise = return ()
-
-prettyError :: Doc () -> T a
-prettyError = throwError
-
-prettyErrorIn :: IsSrcSpan s => Pat' s -> Doc () -> T a
-prettyErrorIn pat doc = prettyErrorAt (sourcePatSpan pat) doc
-
-prettyErrorAt :: IsSrcSpan span => span -> Doc () -> T a
-prettyErrorAt span doc = prettyError $ vcat
-  [ pretty span
-  , doc
-  ]
 
 -- | Typechecking A|B
 --
@@ -1328,280 +1203,3 @@ resolvePromote = do
           loop resolved2
 
   loop promotes
-
-unify :: Type -> Type -> T ()
-unify ByteTy ByteTy = return ()
-unify NatTy NatTy = return ()
-unify StringTy StringTy = return ()
-unify (ArrayTy t) (ArrayTy u) = unify t u
-unify a@(RecordTy ts) b@(RecordTy us)
-  | length ts == length us = forM_ (zip ts us) $
-      \(FieldDef f t, FieldDef g u) ->
-        if f == g || compareStructurally
-          then unify t u
-          else unifyError a b
-  where
-  isTuple = all (Text.isInfixOf "tuplefield"  . fieldDefName)
-  compareStructurally = isTuple ts || isTuple us
-     -- structural equality for tuples by ignoring field names.
-unify a@(SumTy ts) b@(SumTy us)
-  | length ts == length us = forM_ (zip ts us) $
-      \(FieldDef f t, FieldDef g u) ->
-        if f /= g then unifyError a b else unify t u
-unify (PredicateTy (PidRef p _)) (PredicateTy (PidRef q _))
-  | p == q = return ()
-unify (NamedTy (ExpandedType n _)) (NamedTy (ExpandedType m _))
-  | n == m = return ()
-unify (NamedTy (ExpandedType _ t)) u = unify t u
-unify t (NamedTy (ExpandedType _ u)) = unify t u
-unify (MaybeTy t) (MaybeTy u) = unify t u
-unify (MaybeTy t) u@SumTy{} = unify (lowerMaybe t) u
-unify t@SumTy{} (MaybeTy u) = unify t (lowerMaybe u)
-unify (EnumeratedTy ns) (EnumeratedTy ms) | ns == ms = return ()
-unify (EnumeratedTy ns) u@SumTy{} = unify (lowerEnum ns) u
-unify t@SumTy{} (EnumeratedTy ns) = unify t (lowerEnum ns)
-unify BooleanTy BooleanTy = return ()
-
-unify (TyVar x) (TyVar y) | x == y = return ()
-unify (TyVar x) t = extend x t
-unify t (TyVar x) = extend x t
-
-unify (HasTy a ra x) (HasTy b rb y) = do
-  mapM_ (uncurry unify) $ Map.intersectionWith (,) a b
-  z <- freshTyVarInt
-  let all = HasTy (Map.union a b) (ra || rb) z
-  extend x all
-  extend y all
-
-unify a@(HasTy m _ x) b@(RecordTy fs) = do
-  forM_ fs $ \(FieldDef f ty) ->
-    case Map.lookup f m of
-      Nothing -> return ()
-      Just ty' -> unify ty ty'
-  forM_ (Map.keys m) $ \n ->
-    when (n `notElem` map fieldDefName fs) $
-      unifyError a b
-  extend x (RecordTy fs)
-
-unify a@(HasTy m False x) b@(SumTy fs) = do
-  forM_ fs $ \(FieldDef f ty) ->
-    case Map.lookup f m of
-      Nothing -> return ()
-      Just ty' -> unify ty ty'
-  forM_ (Map.keys m) $ \n ->
-    when (n `notElem` map fieldDefName fs) $
-      unifyError a b
-  extend x (SumTy fs)
-
-unify a@RecordTy{} b@HasTy{} = unify b a
-unify a@SumTy{} b@HasTy{} = unify b a
-
-unify a b = unifyError a b
-
-unifyError :: Type -> Type -> T a
-unifyError a b = do
-  opts <- gets tcDisplayOpts
-  prettyError $ vcat
-    [ "type error:"
-    , indent 2 (display opts a)
-    , "does not match:"
-    , indent 2 (display opts b)
-    ]
-
-extend :: Int -> Type -> T ()
-extend x t = do
-  t' <- apply t  -- avoid creating a cycle in the substitution
-  if
-    | TyVar y <- t, y == x -> return ()
-    | otherwise -> do
-      subst <- gets tcSubst
-      case IntMap.lookup x subst of
-        Just u -> unify t' u
-        Nothing ->
-          modify $ \s -> s{ tcSubst = IntMap.insert x t' (tcSubst s) }
-
-apply :: Type -> T Type
-apply t = do
-  subst <- gets tcSubst
-  apply_ (\x -> return (IntMap.lookup x subst)) t
-
-zonkType :: Type -> T Type
-zonkType t = do
-  subst <- gets tcSubst
-  opts <- gets tcDisplayOpts
-  let lookup x = case IntMap.lookup x subst of
-        Nothing -> prettyError $ "ambiguous type: " <>
-          display opts (TyVar x :: Type)
-        Just u -> return (Just u)
-  apply_ lookup t
-
-apply_ :: (Int -> T (Maybe Type)) -> Type -> T Type
-apply_ lookup t = go t
-  where
-  go t = case t of
-    ByteTy -> return t
-    NatTy -> return t
-    StringTy -> return t
-    ArrayTy t -> ArrayTy <$> go t
-    RecordTy fs ->
-      fmap RecordTy $ forM fs $ \(FieldDef n t) ->
-        FieldDef n <$> go t
-    SumTy fs ->
-      fmap SumTy $ forM fs $ \(FieldDef n t) ->
-        FieldDef n <$> go t
-    PredicateTy{} -> return t
-    NamedTy{} -> return t
-    MaybeTy t -> MaybeTy <$> go t
-    EnumeratedTy{} -> return t
-    BooleanTy -> return t
-    TyVar x -> do
-      m <- lookup x
-      case m of
-        Nothing -> return t
-        Just u -> go u
-    HasTy _ _ x -> do
-      m <- lookup x
-      case m of
-        Nothing -> return t
-        Just u -> go u
-    SetTy t -> SetTy <$> go t
-
-zonkVars :: T ()
-zonkVars = do
-  vars <- gets tcVars
-  subst <- gets tcSubst
-  zonked <- forM vars $ \Var{..} -> do
-    let
-      lookup x = case IntMap.lookup x subst of
-        Nothing  -> prettyError $ vcat
-          [ "variable " <> pretty var <>
-            " has unknown type"
-          , "    try adding a type signature, like: " <> pretty var <> " : T"
-          ]
-          where var = fromMaybe (Text.pack ('_':show varId)) varOrigName
-        Just u -> return (Just u)
-    t <- apply_ lookup varType
-    return (Var { varType = t, ..})
-  modify $ \s -> s { tcVars = zonked }
-
-zonkTcQuery :: TcQuery -> T TcQuery
-zonkTcQuery (TcQuery ty k mv stmts) =
-  TcQuery
-    <$> zonkType ty
-    <*> zonkTcPat k
-    <*> mapM zonkTcPat mv
-    <*> mapM zonkTcStatement stmts
-
-zonkTcPat :: TcPat -> T TcPat
-zonkTcPat p = case p of
-  RTS.Byte{} -> return p
-  RTS.Nat{} -> return p
-  RTS.Array ts -> RTS.Array <$> mapM zonkTcPat ts
-  RTS.ByteArray{} -> return p
-  RTS.Tuple ts -> RTS.Tuple <$> mapM zonkTcPat ts
-  RTS.Alt n t -> RTS.Alt n <$> zonkTcPat t
-  RTS.String{} -> return p
-  RTS.All ts -> RTS.All <$> mapM zonkTcPat ts
-  Ref (MatchExt (Typed ty (TcPromote inner e))) -> do
-    ty' <- zonkType ty
-    inner' <- zonkType inner
-    e' <- zonkTcPat e
-    case (ty', inner') of
-      (TyVar{}, _) -> error "zonkMatch: tyvar"
-      (_, TyVar{}) -> error "zonkMatch: tyvar"
-      (PredicateTy (PidRef _ ref), PredicateTy (PidRef _ ref'))
-        | ref == ref' -> return e'
-      (PredicateTy pidRef@(PidRef _ ref), _other) -> do
-        PredicateDetails{..} <- getPredicateDetails ref
-        let vpat = Ref (MatchWild predicateValueType)
-        return (Ref (MatchExt (Typed ty'
-          (TcFactGen pidRef e' vpat SeekOnAllFacts))))
-      _ ->
-        return e'
-  Ref (MatchExt (Typed ty (TcStructPat fs))) -> do
-    ty' <- zonkType ty
-    case ty' of
-      RecordTy fields ->
-        fmap RTS.Tuple $ forM fields $ \(FieldDef f ty) ->
-          case [ p | (g,p) <- fs, f == g ] of
-            [] -> return (mkWild ty)
-            (x:_) -> zonkTcPat x
-      SumTy fields ->
-        case fs of
-          [(name,pat)]
-            | (_, n) :_ <- lookupField name fields -> do
-              pat' <- zonkTcPat pat
-              return (RTS.Alt n pat')
-          _other -> error $ "zonkTcPat: " <> show (displayDefault p)
-      _other -> do
-        opts <- gets tcDisplayOpts
-        prettyError $
-          nest 4 $ vcat
-            [ "type error in pattern"
-            , "pattern: " <> display opts p
-            , "expected type: " <> display opts ty
-            ]
-
-  Ref m -> Ref <$> zonkMatch m
-
-zonkMatch :: Match (Typed TcTerm) Var -> T (Match (Typed TcTerm) Var)
-zonkMatch m = case m of
-  MatchWild ty -> MatchWild <$> zonkType ty
-  MatchNever ty -> MatchNever <$> zonkType ty
-  MatchFid{} -> return m
-  MatchBind v -> MatchBind <$> var v
-  MatchVar v -> MatchVar <$> var v
-  MatchAnd a b -> MatchAnd <$> zonkTcPat a <*> zonkTcPat b
-  MatchPrefix s pat -> MatchPrefix s <$> zonkTcPat pat
-  MatchArrayPrefix ty ts ->
-    MatchArrayPrefix <$> zonkType ty <*> mapM zonkTcPat ts
-  MatchExt (Typed ty e) ->
-    MatchExt <$> (Typed <$> zonkType ty <*> zonkTcTerm e)
-  where
-  var (Var _ n _) = do
-    vars <- gets tcVars
-    case IntMap.lookup n vars of
-      Nothing -> error "zonkMatch"
-      Just v -> return v
-
-zonkTcTerm :: TcTerm -> T TcTerm
-zonkTcTerm t = case t of
-  TcOr a b -> TcOr <$> zonkTcPat a <*> zonkTcPat b
-  TcFactGen pid k v sec ->
-    TcFactGen pid <$> zonkTcPat k <*> zonkTcPat v <*> pure sec
-  TcElementsOfArray a -> TcElementsOfArray <$> zonkTcPat a
-  TcQueryGen q -> TcQueryGen <$> zonkTcQuery q
-  TcNegation stmts -> TcNegation <$> mapM zonkTcStatement stmts
-  TcPrimCall op args -> TcPrimCall op <$> mapM zonkTcPat args
-  TcIf (Typed ty cond) th el ->
-    TcIf
-      <$> (Typed <$> zonkType ty <*> zonkTcPat cond)
-      <*> zonkTcPat th
-      <*> zonkTcPat el
-  TcDeref ty valTy p ->
-    TcDeref <$> zonkType ty <*> zonkType valTy <*> zonkTcPat p
-  TcFieldSelect (Typed ty p) f ->
-    TcFieldSelect
-      <$> (Typed <$> zonkType ty <*> zonkTcPat p)
-      <*> pure f
-  TcAltSelect (Typed ty p) f ->
-    TcAltSelect
-      <$> (Typed <$> zonkType ty <*> zonkTcPat p)
-      <*> pure f
-  TcElements p -> TcElements <$> zonkTcPat p
-  TcPromote{} -> error "zonkTcTerm: TcPromote" -- handled in zonkTcPat
-  TcStructPat{} -> error "zonkTcTerm: TcStructPat" -- handled in zonkTcPat
-
-zonkTcStatement :: TcStatement -> T TcStatement
-zonkTcStatement (TcStatement ty l r) =
-  TcStatement
-    <$> zonkType ty
-    <*> zonkTcPat l
-    <*> zonkTcPat r
-
-getPredicateDetails :: PredicateId -> T PredicateDetails
-getPredicateDetails pred = do
-  TcEnv{..} <- gets tcEnv
-  case HashMap.lookup pred tcEnvPredicates of
-    Nothing -> error $ "predicateKeyTYpe: " <> show (displayDefault pred)
-    Just d -> return d
