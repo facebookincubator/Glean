@@ -118,7 +118,7 @@ scopingTest = dbTestCase $ \env repo -> do
     |]
   print r
   assertBool "angle - scoping 5" $ case r of
-    Left e@BadQuery{} -> "type mismatch" `isInfixOf` show e
+    Left e@BadQuery{} -> "type error" `isInfixOf` show e
     _ -> False
 
   r <- runQuery_ env repo $ Angle.query $

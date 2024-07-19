@@ -245,6 +245,8 @@ encode expanded Encoder{..} !d = enc
             encObjectField Nothing 1 "id" NatTy d
               $ encNat $ fromIntegral id
             encObjectEnd
+      TyVar{} -> error "JSON.encode: TyVar"
+      HasTy{} -> error "JSON.encode: HasTy"
 
     {-# INLINE enc_field #-}
     enc_field prev i name ty d = do

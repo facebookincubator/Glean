@@ -104,6 +104,8 @@ import Data.ByteString (ByteString)
 import qualified Data.ByteString.Lazy as BL
 import Data.Hashable
 import Data.List.NonEmpty (NonEmpty, toList)
+import Data.Map (Map)
+import qualified Data.Map as Map
 import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
 import Data.Text.Prettyprint.Doc
@@ -391,6 +393,17 @@ data Type_ pref tref
     -- enum { a | b } => { a : {}, b : {} }
   | BooleanTy
     -- bool => { false : {} | true : {} }
+
+  -- These are used during typechecking only
+  | TyVar {-# UNPACK #-}!Int
+  | HasTy (Map Name (Type_ pref tref)) !Bool {-# UNPACK #-}!Int
+    -- HasTy { field:type .. } R X
+    --   Constrains X to be a record or sum type containing at least
+    --   the given fields/types. X can only be instantiated
+    --   with a type containing a superset of those fields: either
+    --   a bigger HasTy or a RecordTy/SumTy.
+    --   B is True if the type must be a RecordTy, otherwise it
+    --   can be either a RecordTy or a SumTy.
   deriving (Eq, Show, Functor, Foldable, Generic)
 
 instance (Binary pref, Binary tref) => Binary (Type_ pref tref)
@@ -409,6 +422,8 @@ instance Bifunctor Type_ where
     MaybeTy ty -> MaybeTy (bimap f g ty)
     EnumeratedTy xs -> EnumeratedTy xs
     BooleanTy -> BooleanTy
+    TyVar x -> TyVar x
+    HasTy m r x -> HasTy (bimap f g <$> m) r x
 
 instance Bifoldable Type_ where
   bifoldr f g r = \case
@@ -424,6 +439,8 @@ instance Bifoldable Type_ where
     MaybeTy ty -> bifoldr f g r ty
     EnumeratedTy _ -> r
     BooleanTy -> r
+    TyVar _ -> r
+    HasTy m _ _ -> foldr (flip $ bifoldr f g) r m
 
 {- Note [Types]
 
@@ -680,15 +697,29 @@ instance (Display pref, Display tref) => Display (Type_ pref tref) where
     sep
       [ nest 2 $ vsep $ "{" :  map ((<> " |") . display opts) fields
       , "}" ]
-  display opts (SetTy ty) = "set " <> display opts ty
+  display opts (SetTy ty) = "set " <> displayAtom opts ty
   display opts (PredicateTy p) = display opts p
   display opts (NamedTy t) = display opts t
-  display opts (MaybeTy t) = "maybe" <+> display opts t
+  display opts (MaybeTy t) = "maybe" <+> displayAtom opts t
   display _ (EnumeratedTy names) =
     sep
       [ nest 2 $ vsep $ "enum {" :  map (<> " |") (map pretty names)
       , "}" ]
   display _ BooleanTy = "bool"
+  display _ (TyVar n) = "T" <> pretty n
+  display opts (HasTy m rec x) =
+    sep
+      [ nest 2 $ vsep $ "{" :  punctuate sepr (map doField (Map.toList m))
+      , "..." <> pretty x <> "}" ]
+    where
+    sepr = if rec then "," else "|"
+    doField (n, ty) = pretty n <> " : " <> display opts ty
+
+  displayAtom opts t = case t of
+    MaybeTy{} -> parens $ display opts t
+    EnumeratedTy{} -> parens $ display opts t
+    SetTy{} -> parens $ display opts t
+    _other -> display opts t
 
 instance (Display pref, Display tref) => Display (FieldDef_ pref tref) where
   display opts (FieldDef n ty) = pretty n <> " : " <> displayAtom opts ty

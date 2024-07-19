@@ -312,12 +312,12 @@ flattenPattern pat = case pat of
       return (stmts `thenStmt` FlatStatement ty p gen, v)
 
   -- pat.field ==> X where { field = X } = pat
-  Ref (MatchExt (Typed ty (TcFieldSelect n (Typed recTy pat) _))) -> do
+  Ref (MatchExt (Typed ty (TcFieldSelect (Typed recTy pat) name))) -> do
     r <- flattenPattern pat
     let sel v =
-          [ if n == m then v else Ref (MatchWild ty)
+          [ if name == n then v else Ref (MatchWild ty)
           | Angle.RecordTy fields <- [derefType recTy]
-          , (m, Angle.FieldDef _ ty) <- zip [0..] fields
+          , Angle.FieldDef n ty <- fields
           ]
     forM r $ \(stmts, p) -> do
       v <- Ref . MatchVar <$> fresh ty
@@ -325,12 +325,20 @@ flattenPattern pat = case pat of
       return (stmts `thenStmt` stmt, v)
 
   -- pat.field? ==> X where { field = X } = pat
-  Ref (MatchExt (Typed ty (TcAltSelect n (Typed sumTy pat) _))) -> do
+  Ref (MatchExt (Typed ty (TcAltSelect (Typed sumTy pat) name))) -> do
     r <- flattenPattern pat
+    n <- case derefType sumTy of
+      Angle.SumTy fields
+        | (_,n):_ <- lookupField name fields ->
+          return n
+      _ -> error "flatten: SumTy"
     forM r $ \(stmts, p) -> do
       v <- Ref . MatchVar <$> fresh ty
       let stmt = FlatStatement sumTy (Alt n v) (TermGenerator p)
       return (stmts `thenStmt` stmt, v)
+
+  Ref (MatchExt (Typed _ (TcPromote _ pat))) ->
+    flattenPattern pat
 
   Ref (MatchExt (Typed ty _)) -> do
     gens <- flattenSeqGenerators pat

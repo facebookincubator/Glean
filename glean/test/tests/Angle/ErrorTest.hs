@@ -87,7 +87,7 @@ angleErrorTests = dbTestCase $ \env repo -> do
   print r
   assertBool "angle - array generator type error" $
     case r of
-      Left (BadQuery x) -> "array element generator" `Text.isInfixOf` x
+      Left (BadQuery x) -> "type error" `Text.isInfixOf` x
       _ -> False
 
   r <- try $ runQuery_ env repo $ angle @Glean.Test.Predicate
@@ -131,7 +131,7 @@ angleErrorTests = dbTestCase $ \env repo -> do
   print r
   assertBool "angle - mismatched array elements" $
     case r of
-      Left (BadQuery x) -> "type mismatch for variable B" `Text.isInfixOf` x
+      Left (BadQuery x) -> "type error" `Text.isInfixOf` x
       _ -> False
 
   r <- try $ runQuery_ env repo $ angle @Cxx.Name
@@ -151,7 +151,7 @@ angleErrorTests = dbTestCase $ \env repo -> do
   print r
   assertBool "angle - lowercase variable" $
     case r of
-      Left (BadQuery x) -> "type error in pattern"
+      Left (BadQuery x) -> "type error"
         `Text.isInfixOf` x
       _ -> False
 
@@ -196,7 +196,7 @@ angleErrorTests = dbTestCase $ \env repo -> do
   print r
   assertBool "angle - negation type" $
     case r of
-      Left (BadQuery x) -> "type error in pattern" `Text.isInfixOf` x
+      Left (BadQuery x) -> "type error" `Text.isInfixOf` x
       _ -> False
 
   -- unbound variables in a negated statement are errors

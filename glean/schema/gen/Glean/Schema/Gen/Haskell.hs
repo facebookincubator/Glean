@@ -259,6 +259,8 @@ haskellTy_ withId genSub here t = case t of
   NamedTy typeRef ->
     haskellTypeName <$> typeName typeRef
   EnumeratedTy _ -> shareTypeDef genSub here t
+  TyVar{} -> error "haskellTy_: TyVar"
+  HasTy{} -> error "haskellTy_: HasTy"
 
 
 genPredicate :: ResolvedPredicateDef -> M [Text]

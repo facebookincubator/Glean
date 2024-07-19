@@ -322,6 +322,8 @@ thriftTy here t = case t of
   NamedTy typeRef -> do
     thriftName here <$> typeName typeRef
   EnumeratedTy _ -> shareTypeDef here t
+  TyVar{} -> error "thriftTy: TyVar"
+  HasTy{} -> error "thriftTy: HasTy"
 
 mkField :: [Text] -> Text -> Int -> Name -> Text -> Text
 mkField annots structOrUnion i p t =

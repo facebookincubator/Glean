@@ -159,7 +159,7 @@ schemaTypeError = TestCase $ do
     assertBool "schemaTypeError" $
       case r of
         Left e | Just (ErrorCall err) <- fromException e ->
-          "type mismatch for variable A" `isInfixOf` err
+          "type error" `isInfixOf` err
         _ -> False
 
 

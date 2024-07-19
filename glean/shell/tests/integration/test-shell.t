@@ -78,9 +78,10 @@
 
   $ query "{ wrong = what } : string"
   [>] { wrong = what } : string (re)
-  type error in pattern
-      pattern: {wrong = what}
-      expected type: string
+  type error:
+    { wrong : T1 ...2}
+  does not match:
+    string
        
   1 |  { wrong = what } : string
        ^^^^^^^^^^^^^^^^
@@ -90,9 +91,8 @@
 
   $ query "_"
   [>] _ (re)
-  can't infer the type of: _
-      try adding a type annotation like (_ : T)
-      or reverse the statement (Q = P instead of P = Q)
+  query has ambiguous type
+      type: T0
        
   1 |  _
        ^
@@ -152,24 +152,26 @@
 
   $ query "A = 1; B = A[..]"
   [>] A = 1; B = A[[]..[]] (re)
-  type error in array element generator:
-      expression: A
-      does not have an array type
+  type error:
+    nat
+  does not match:
+    [T1]
        
   1 |  A = 1; B = A[..]
-                  ^^^^^
+           ^
   [1]
 
 
 
   $ query "A = \"a\"; B = A : nat"
   [>] A = \"a\"; B = A : nat (re)
-  type mismatch for variable A
-      type of variable: string
-      expected type: nat
+  type error:
+    string
+  does not match:
+    nat
        
   1 |  A = "a"; B = A : nat
-                    ^
+           ^^^
   [1]
 
 
@@ -200,13 +202,8 @@
 
   $ query "A; A"
   [>] A; A (re)
-  variable has unknown type: A
-      Perhaps you mistyped the variable name?
-      If not, try adding a type annotation like: (A : T)
-      or reverse the statement (Q = P instead of P = Q)
-       
-  1 |  A; A
-       ^
+  variable A has unknown type
+      try adding a type signature, like: A : T
   [1]
 
 
@@ -232,15 +229,8 @@
    A = {
    what = what
    }
-  can't infer the type of: {what = what}
-      try adding a type annotation like ({what = what} : T)
-      or reverse the statement (Q = P instead of P = Q)
-        
-   7 |  
-   8 |>  A = {
-   9 |>  what = what
-  10 |>  }
-        
+  variable A has unknown type
+      try adding a type signature, like: A : T
   [1]
 
 

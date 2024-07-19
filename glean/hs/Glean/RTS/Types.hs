@@ -128,6 +128,8 @@ repType (NamedTy (ExpandedType _ ty)) = repType ty
 repType (MaybeTy ty) = repType (lowerMaybe ty)
 repType (EnumeratedTy names) = repType (lowerEnum names)
 repType BooleanTy = repType lowerBool
+repType TyVar{} = error "repType: TyVar"
+repType HasTy{} = error "repType: HasTy"
 
 sumLike :: Type -> Maybe [Glean.RTS.Types.FieldDef]
 sumLike (SumTy fs) = Just fs

@@ -8,6 +8,7 @@
 
 module Glean.Query.Prune (pruneDerivations) where
 
+import Control.Monad
 import Control.Monad.State (State, runState)
 import qualified Control.Monad.State as State
 import Data.Bitraversable (bitraverse)
@@ -179,12 +180,14 @@ prune hasFacts (QueryWithInfo q _ t) = do
             ]
         TcDeref ty' valTy p ->
           Ref . MatchExt . Typed ty . TcDeref ty' valTy <$> prunePat p
-        TcFieldSelect n (Typed ty' p) f -> do
+        TcFieldSelect (Typed ty' p) f -> do
           p' <- prunePat p
-          return $ Ref $ MatchExt $ Typed ty $ TcFieldSelect n (Typed ty' p') f
-        TcAltSelect n (Typed ty' p) f -> do
+          return $ Ref $ MatchExt $ Typed ty $ TcFieldSelect (Typed ty' p') f
+        TcAltSelect (Typed ty' p) f -> do
           p' <- prunePat p
-          return $ Ref $ MatchExt $ Typed ty $ TcAltSelect n (Typed ty' p') f
+          return $ Ref $ MatchExt $ Typed ty $ TcAltSelect (Typed ty' p') f
+        TcPromote _ p -> prunePat p
+        TcStructPat{} -> error "prune: TcStructPat"
 
 type R a = State S a
 
@@ -231,12 +234,15 @@ renumberVars ty q =
     TcIf cond then_ else_ ->
       TcIf <$> traverse renamePat cond <*> renamePat then_ <*> renamePat else_
     TcDeref ty valTy p -> TcDeref ty valTy <$> renamePat p
-    TcFieldSelect n (Typed ty p) f -> do
+    TcFieldSelect (Typed ty p) f -> do
       p' <- renamePat p
-      return $ TcFieldSelect n (Typed ty p') f
-    TcAltSelect n (Typed ty p) f -> do
+      return $ TcFieldSelect (Typed ty p') f
+    TcAltSelect (Typed ty p) f -> do
       p' <- renamePat p
-      return $ TcAltSelect n (Typed ty p') f
+      return $ TcAltSelect (Typed ty p') f
+    TcPromote ty p -> TcPromote ty <$> renamePat p
+    TcStructPat fs -> fmap TcStructPat $ forM fs $ \(n,p) ->
+      (n,) <$> renamePat p
 
   renameVar :: Var -> R Var
   renameVar (Var ty old n) = State.state $ \s ->

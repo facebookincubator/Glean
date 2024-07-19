@@ -288,6 +288,8 @@ reprTy here t = case t of
       then return $ cppNameIn here (builtinName (snd name))
       else return $ "Repr<" <> cppNameIn here name <> ">"
   EnumeratedTy elts -> return $ "Enum<" <> showt (length elts) <> ">"
+  TyVar{} -> error "reprTy: TyVar"
+  HasTy{} -> error "reprTy: HasTy"
 
 shareTypeDef :: NameSpaces -> ResolvedType -> CppGen Text
 shareTypeDef here t = do
@@ -337,6 +339,8 @@ valueTy here t = case t of
     case provided name of
       Just ty -> valueTy here ty
       Nothing -> return (cppNameIn here name)
+  TyVar{} -> error "valueTy: TyVar"
+  HasTy{} -> error "valueTy: HasTy"
 
 
 -- ----------------------------------------------------------------------------

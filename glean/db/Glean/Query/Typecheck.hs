@@ -6,6 +6,13 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{- TODO
+  - implement mutable type variables to speed up type inference
+  - cleanup:
+    - split up into separate files
+    - merge inferExpr and typecheckPattern?
+-}
+
 module Glean.Query.Typecheck
   ( typecheck
   , typecheckDeriving
@@ -26,6 +33,9 @@ import Data.Bifoldable
 import Data.Char
 import Data.Foldable (toList)
 import Data.List.Extra (firstJust)
+import qualified Data.IntMap as IntMap
+import Data.IntMap (IntMap)
+import qualified Data.Map as Map
 import Data.Maybe
 import qualified Data.HashMap.Strict as HashMap
 import Data.HashMap.Strict (HashMap)
@@ -39,7 +49,7 @@ import Data.Set (Set)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
-import Data.Word
+import System.IO
 
 import Glean.Angle.Types hiding (Type)
 import qualified Glean.Angle.Types as Schema
@@ -54,6 +64,7 @@ import qualified Glean.RTS.Term as RTS
 import qualified Glean.Database.Config as Config
 import Glean.Database.Schema.Types
 import Glean.Schema.Util
+import Glean.Util.Some
 
 data TcEnv = TcEnv
   { tcEnvTypes :: HashMap TypeId TypeDetails
@@ -99,10 +110,30 @@ typecheck dbSchema opts rtsType query = do
       }
   (q@(TcQuery ty _ _ _), TypecheckState{..}) <-
     let state = initialTypecheckState tcEnv opts rtsType TcModeQuery in
-    flip runStateT state $ do
+    withExceptT (Text.pack . show) $ flip runStateT state $ do
       modify $ \s -> s { tcVisible = varsQuery query mempty }
-      inferQuery ContextExpr query
+      q@(TcQuery retTy _ _ _) <- inferQuery ContextExpr query
         <* freeVariablesAreErrors <* unboundVariablesAreErrors
+      subst <- gets tcSubst
+      whenDebug $ liftIO $ hPutStrLn stderr $ show $
+        vcat [
+          "subst:", indent 2 (vcat
+            [ pretty n <> " := " <> displayDefault ty
+            | (n,ty) <- IntMap.toList subst
+            ]),
+          "query: " <> displayDefault q
+        ]
+      resolvePromote
+      zonkVars
+      zonkTcQuery q
+        `catchError` \_ -> do
+           (head,_) <- needsResult query
+           opts <- gets tcDisplayOpts
+           retTy' <- apply retTy
+           prettyErrorAt (sourcePatSpan head) $ vcat
+             [ "query has ambiguous type",
+               indent 4 $ "type: " <> display opts retTy'
+             ]
   return (QueryWithInfo q tcNextVar ty)
 
 -- | Typecheck the query for a derived predicate
@@ -118,11 +149,11 @@ typecheckDeriving tcEnv opts rtsType PredicateDetails{..} derivingInfo = do
   (d, _) <-
     let state = initialTypecheckState tcEnv opts rtsType TcModePredicate
     in
-    flip runStateT state $ do
+    withExceptT (Text.pack . show) $ flip runStateT state $ do
     flip catchError
-      (\e -> throwError $ "In " <>
-        Text.pack (show (pretty (predicateIdRef predicateId))) <>
-          ":\n  " <> e) $ do
+      (\e -> throwError $ vcat
+        [ "In " <> pretty (predicateIdRef predicateId) <> ":"
+        , indent 2 e ]) $ do
       case derivingInfo of
         NoDeriving -> return NoDeriving
         Derive deriveWhen q -> do
@@ -156,10 +187,12 @@ typecheckDeriving tcEnv opts rtsType PredicateDetails{..} derivingInfo = do
           stmts' <- mapM typecheckStatement stmts
           freeVariablesAreErrors
           unboundVariablesAreErrors
+          resolvePromote
+          zonkVars
+          q <- zonkTcQuery (TcQuery predicateKeyType key' maybeVal' stmts')
           nextVar <- gets tcNextVar
           return $ Derive deriveWhen $
-            QueryWithInfo (TcQuery predicateKeyType key' maybeVal' stmts')
-              nextVar predicateKeyType
+            QueryWithInfo q nextVar predicateKeyType
   return d
 
 needsResult
@@ -258,41 +291,44 @@ data Context = ContextExpr | ContextPat
 -- disallowed.
 inferExpr :: IsSrcSpan s => Context -> Pat' s -> T (TcPat, Type)
 inferExpr ctx pat = case pat of
-  Nat _ w -> return (RTS.Nat w, NatTy)
+  Nat _ w ->
+    promote (sourcePatSpan pat) (RTS.Nat w) NatTy
     -- how would we do ByteTy?
   String _ s ->
-    return (RTS.String (Text.encodeUtf8 s), StringTy)
+    promote (sourcePatSpan pat)
+      (RTS.String (Text.encodeUtf8 s)) StringTy
   StringPrefix _ s ->
-    return
-      (RTS.Ref (MatchPrefix (Text.encodeUtf8 s) (mkWild StringTy)),
-        StringTy)
+    promote (sourcePatSpan pat)
+      (RTS.Ref (MatchPrefix (Text.encodeUtf8 s) (mkWild StringTy)))
+      StringTy
   ByteArray _ b ->
-    return (RTS.ByteArray b, ArrayTy ByteTy)
+    promote (sourcePatSpan pat) (RTS.ByteArray b) (ArrayTy ByteTy)
   (App _ (StringPrefix _ s) [pat]) -> do
     rest <- typecheckPattern ctx StringTy pat
-    return (RTS.Ref (MatchPrefix (Text.encodeUtf8 s) rest), StringTy)
+    promote (sourcePatSpan pat)
+      (RTS.Ref (MatchPrefix (Text.encodeUtf8 s) rest)) StringTy
   Tuple _ ts -> do
     (ts,tys) <- unzip <$> mapM (inferExpr ctx) ts
-    return (RTS.Tuple ts, tupleSchema tys)
-  Array _ [] ->
-    return (RTS.Array [], ArrayTy (RecordTy []))
+    promote (sourcePatSpan pat) (RTS.Tuple ts) (tupleSchema tys)
+  Array _ [] -> do
+    x <- freshTyVar
+    promote (sourcePatSpan pat) (RTS.Array []) (ArrayTy x)
   Array _ (t:ts) -> do
     (t',ty) <- inferExpr ctx t
     ts' <- mapM (typecheckPattern ctx ty) ts
-    return (RTS.Array (t':ts'), ArrayTy ty)
+    promote (sourcePatSpan pat) (RTS.Array (t':ts')) (ArrayTy ty)
   ArrayPrefix _ (t:|ts) -> do
     (t',ty) <- inferExpr ctx t
     ts' <- mapM (typecheckPattern ctx ty) ts
     let tcPat = RTS.Ref (MatchArrayPrefix ty (t':ts'))
-    return (tcPat, ArrayTy ty)
+    promote (sourcePatSpan pat) tcPat (ArrayTy ty)
   Variable span name -> inferVar ctx span name
   Prim span primOp args -> do
-    let (primArgTys, mkRetTy) = primOpType pat primOp
-    (args', argTys) <- primInferAndCheck span args primOp primArgTys
-    retTy <- mkRetTy argTys
-    return
-      ( RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args')))
-      , retTy )
+    (primArgTys, retTy) <- primOpType primOp
+    checkPrimOpArgs span args primArgTys
+    args' <- zipWithM (typecheckPattern ctx) primArgTys args
+    return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))),
+      retTy)
   Clause _ pred pat range -> tcFactGenerator pred pat range
   OrPattern _ a b -> do
     ((a', ty), b') <-
@@ -321,17 +357,14 @@ inferExpr ctx pat = case pat of
 
   ElementsOfArray _ e -> do
     (e', ty) <- inferExpr ContextExpr e
-    case ty of
-      (ArrayTy elemTy) ->
-        return (Ref (MatchExt (Typed elemTy (TcElementsOfArray e'))), elemTy)
+    elemTy <- case ty of
+      ArrayTy elemTy -> return elemTy
       _other -> do
-        opts <- gets tcDisplayOpts
-        prettyErrorIn pat $
-          nest 4 $ vcat
-            [ "type error in array element generator:"
-            , "expression: " <> display opts e
-            , "does not have an array type"
-            ]
+        elemTy <- freshTyVar
+        inPat pat $ unify ty (ArrayTy elemTy)
+        return elemTy
+    return (Ref (MatchExt (Typed elemTy (TcElementsOfArray e'))), elemTy)
+
   Elements _ e -> do
     (e', ty) <- inferExpr ContextExpr e
     case ty of
@@ -351,10 +384,7 @@ inferExpr ctx pat = case pat of
     (e',elementTy) <- inferExpr ctx e
     es' <- mapM (typecheckPattern ctx elementTy) es
     return (RTS.All (e':es'), SetTy elementTy)
-  -- we can infer { just = E } as a maybe:
-  Struct _ [ Field "just" e ] -> do
-    (e', ty) <- inferExpr ctx e
-    return (RTS.Alt 1 e', MaybeTy ty)
+
   TypeSignature s e ty -> do
     rtsType <- gets tcRtsType
     typ <- convertType s rtsType ty
@@ -366,8 +396,34 @@ inferExpr ctx pat = case pat of
     (p', ty) <- inferExpr ctx p
     fieldSelect pat ty p' field sum
 
-  Enum _ "true" -> return (trueVal, BooleanTy)
-  Enum _ "false" -> return (falseVal, BooleanTy)
+  Enum _ "true" -> promote (sourcePatSpan pat) trueVal BooleanTy
+  Enum _ "false" -> promote (sourcePatSpan pat) falseVal BooleanTy
+
+  -- we can infer { just = E } as a maybe:
+  -- TODO: this is wrong really, but there is schema code that relies on it
+  Struct _ [ Field "just" e ] -> do
+    (e', ty) <- inferExpr ctx e
+    return (RTS.Alt 1 e', MaybeTy ty)
+
+  Struct _ fields -> do
+    pairs <- forM fields $ \(Field name expr) -> do
+      (expr', ty) <- inferExpr ctx expr
+      return ((name, expr'), (name, ty))
+    let (fields', types) = unzip pairs
+    x <- freshTyVarInt
+    let ty = HasTy (Map.fromList types) (length fields > 1) x
+    promote (sourcePatSpan pat)
+      (Ref (MatchExt (Typed ty (TcStructPat fields')))) ty
+
+  Wildcard{} -> do
+    x <- freshTyVar
+    return (mkWild x, x)
+
+  Enum _ name -> do
+    x <- freshTyVarInt
+    let ty = HasTy (Map.singleton name unit) False x
+    promote (sourcePatSpan pat)
+      (Ref (MatchExt (Typed ty (TcStructPat [(name, RTS.Tuple [])])))) ty
 
   _ -> do
     opts <- gets tcDisplayOpts
@@ -390,7 +446,8 @@ fieldSelect src ty pat fieldName sum = do
   let err x = do
         prettyErrorIn src $ nest 4 $ vcat
           [ x, "type of expression: " <> display opts ty ]
-  case derefType ty of
+  ty' <- apply ty
+  case derefType ty' of
     PredicateTy (PidRef _ ref) -> do
       TcEnv{..} <- gets tcEnv
       PredicateDetails{..} <- case HashMap.lookup ref tcEnvPredicates of
@@ -402,8 +459,8 @@ fieldSelect src ty pat fieldName sum = do
         fieldName sum
     RecordTy fields
       | not sum -> case lookupField fieldName fields of
-          (fieldTy, n):_ -> do
-            let sel = TcFieldSelect n (Typed ty pat) fieldName
+          (fieldTy,_):_ -> do
+            let sel = TcFieldSelect (Typed ty pat) fieldName
             return (Ref (MatchExt (Typed fieldTy sel)), fieldTy)
           _ ->
             err $ "record does not contain the field '" <>
@@ -413,8 +470,8 @@ fieldSelect src ty pat fieldName sum = do
           "' not '." <> pretty fieldName <> "?'"
     SumTy fields
       | sum -> case lookupField fieldName fields of
-          (fieldTy, n):_ -> do
-            let sel = TcAltSelect n (Typed ty pat) fieldName
+          (fieldTy,_):_ -> do
+            let sel = TcAltSelect (Typed ty pat) fieldName
             return (Ref (MatchExt (Typed fieldTy sel)), fieldTy)
           _ ->
             err $ "union type does not contain the alternative '" <>
@@ -424,7 +481,13 @@ fieldSelect src ty pat fieldName sum = do
           "?' not '." <> pretty fieldName <> "'"
     MaybeTy elemTy ->
       fieldSelect src (lowerMaybe elemTy) pat fieldName sum
-    _ -> err $ "expression is not a " <> if sum then "union type" else "record"
+    TyVar{} ->
+      prettyErrorIn src $ nest 4 $ vcat [
+        "cannot determine the type of the left-hand-side of '.'",
+        "please add a type signature."
+      ]
+    _other ->
+      err $ "expression is not a " <> if sum then "union type" else "record"
 
 convertType
   :: IsSrcSpan s => s -> ToRtsType -> Schema.Type -> T Type
@@ -487,12 +550,10 @@ typecheckPattern ctx typ pat = case (typ, pat) of
       pat typ
   (NamedTy (ExpandedType _ ty), term) -> typecheckPattern ctx ty term
   (ty, Prim span primOp args) -> do
-    ver <- gets tcAngleVersion
-    let (primArgTys, mkRetTy) = primOpType pat primOp
-    (args', argTys) <- primInferAndCheck span args primOp primArgTys
-    retTy <- mkRetTy argTys
-    unless (eqType ver ty retTy) $
-      patTypeError pat ty
+    (primArgTys, retTy) <- primOpType primOp
+    checkPrimOpArgs span args primArgTys
+    args' <- zipWithM (typecheckPattern ctx) primArgTys args
+    inPat pat $ unify ty retTy
     return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))))
   (PredicateTy (PidRef _ ref), Clause _ ref' arg range) ->
     if ref == ref'
@@ -515,7 +576,9 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     | name == "false" -> return falseVal
     | name == "true" -> return trueVal
 
-  -- TODO: remove this
+  -- TODO: we don't really want to do this, but it's here for legacy
+  -- reasons. Really we should only allow lower-case identifiers as
+  -- enum constants.
   (EnumeratedTy names, Variable _ name)
     | Just n <- elemIndex name names ->
     return (RTS.Alt (fromIntegral n) (RTS.Tuple []))
@@ -582,29 +645,16 @@ typecheckPattern ctx typ pat = case (typ, pat) of
 
   (ty, TypeSignature s e sigty) -> do
     rtsType <- gets tcRtsType
-    ver <- gets tcAngleVersion
     sigty' <- convertType s rtsType sigty
-    if eqType ver ty sigty'
-      then typecheckPattern ctx ty e
-      else
-        -- Try compiling as a fact generator that matches the key type.
-        -- e.g. if the field f has type pred where pred : key, then
-        -- { f = X : key } can be used to force the pattern X to
-        -- match the key type instead of the fact ID.
-        case ty of
-          PredicateTy (PidRef _ ref) -> do
-            fst <$> tcFactGenerator ref pat SeekOnAllFacts
-          _ -> patTypeError pat ty
+    e' <- typecheckPattern ctx sigty' e
+    f <- promoteTo (sourcePatSpan pat) sigty' ty
+    return (f e')
 
   (ty, FieldSelect _ p field sum) -> do
     (p', recTy) <- inferExpr ctx p
     (pat', fieldTy) <- fieldSelect pat recTy p' field sum
-    ver <- gets tcAngleVersion
-    if
-      | eqType ver ty fieldTy -> return pat'
-      | PredicateTy (PidRef _ ref) <- ty ->
-         fst <$> tcFactGenerator ref pat SeekOnAllFacts
-      | otherwise -> patTypeError pat ty
+    inPat pat $ unify ty fieldTy
+    return pat'
 
   -- A match on a predicate type with a pattern that is not a wildcard
   -- or a variable does a nested match on the key of the predicate:
@@ -620,14 +670,10 @@ typecheckPattern ctx typ pat = case (typ, pat) of
 
   (_, KeyValue{}) -> unexpectedValue pat
 
-  -- type annotations are unnecessary, but we allow and check them
-  (ty, q) -> patTypeError q ty
-
-
-lookupField :: FieldName -> [RTS.FieldDef] -> [(Type, Word64)]
-lookupField fieldName fields =
-  [ (ty, n) | (FieldDef name ty, n) <- zip fields [0..]
-  , name == fieldName ]
+  (ty, _) -> do
+    (p', patTy) <- inferExpr ctx pat
+    inPat pat $ unify ty patTy
+    return p'
 
 tcFactGenerator
   :: IsSrcSpan s
@@ -685,6 +731,17 @@ mkWild ty
   | RecordTy [] <- derefType ty = RTS.Tuple []
   | otherwise = RTS.Ref (MatchWild ty)
 
+inPat :: (IsSrcSpan s) => Pat' s -> T a -> T a
+inPat pat = addErrSpan (sourcePatSpan pat)
+
+addErrSpan :: (IsSrcSpan s) => s -> T a -> T a
+addErrSpan span act = do
+  act `catchError` \errDoc -> do
+    prettyError $ vcat
+      [ pretty span
+      , errDoc
+      ]
+
 patTypeError :: (IsSrcSpan s) => Pat' s -> Type -> T a
 patTypeError = patTypeErrorDesc "type error in pattern"
 
@@ -706,7 +763,8 @@ data TypecheckState = TypecheckState
   , tcAngleVersion :: AngleVersion
   , tcDebug :: !Bool
   , tcRtsType :: ToRtsType
-  , tcNextVar :: Int
+  , tcNextVar :: {-# UNPACK #-} !Int
+  , tcNextTyVar :: {-# UNPACK #-} !Int
   , tcScope :: HashMap Name Var
     -- ^ Variables that we have types for, and have allocated a Var
   , tcVisible :: HashSet Name
@@ -720,6 +778,9 @@ data TypecheckState = TypecheckState
   , tcMode :: TcMode
   , tcDisplayOpts :: DisplayOpts
     -- ^ Options for pretty-printing
+  , tcVars :: IntMap Var
+  , tcSubst :: IntMap Type
+  , tcPromote :: [(Type, Type, Some IsSrcSpan)]
   }
 
 initialTypecheckState
@@ -734,6 +795,7 @@ initialTypecheckState tcEnv TcOpts{..} rtsType mode = TypecheckState
   , tcDebug = Config.tcDebug tcOptDebug
   , tcRtsType = rtsType
   , tcNextVar = 0
+  , tcNextTyVar = 0
   , tcScope = HashMap.empty
   , tcVisible = HashSet.empty
   , tcFree = HashSet.empty
@@ -742,9 +804,26 @@ initialTypecheckState tcEnv TcOpts{..} rtsType mode = TypecheckState
   , tcMode = mode
   , tcDisplayOpts = defaultDisplayOpts
       -- might make this configurable with flags later
+  , tcSubst = IntMap.empty
+  , tcVars = IntMap.empty
+  , tcPromote = []
   }
 
-type T a = StateT TypecheckState (ExceptT Text IO) a
+type T a = StateT TypecheckState (ExceptT (Doc ()) IO) a
+
+whenDebug :: T () -> T ()
+whenDebug act = do
+  lvl <- gets tcDebug
+  when lvl act
+
+freshTyVarInt :: T Int
+freshTyVarInt = do
+  TypecheckState{tcNextTyVar = n} <- get
+  modify $ \s -> s { tcNextTyVar = n+1 }
+  return n
+
+freshTyVar :: T Type
+freshTyVar = TyVar <$> freshTyVarInt
 
 bindOrUse :: Context -> Name -> TypecheckState -> TypecheckState
 bindOrUse ContextExpr name state =
@@ -760,12 +839,10 @@ inferVar ctx span name = do
     Just v@(Var ty _ _) -> do
       put $ bindOrUse ctx name $ state { tcFree = HashSet.delete name tcFree }
       return (Ref (MatchVar v), ty)
-    Nothing -> prettyErrorAt span $ nest 4 $ vcat
-      [ "variable has unknown type: " <> pretty name
-      , "Perhaps you mistyped the variable name?"
-      , "If not, try adding a type annotation like: (" <> pretty name <> " : T)"
-      , "or reverse the statement (Q = P instead of P = Q)"
-      ]
+    Nothing -> do
+      x <- freshTyVar
+      p <- varOcc ctx span name x
+      return (p,x)
 
 varOcc :: IsSrcSpan span => Context -> span -> Name -> Type -> T TcPat
 varOcc ctx span name ty = do
@@ -779,20 +856,15 @@ varOcc ctx span name ty = do
       put $ bindOrUse ctx name $ state
         { tcNextVar = next
         , tcScope = HashMap.insert name var tcScope
-        , tcFree = HashSet.insert name tcFree }
+        , tcFree = HashSet.insert name tcFree
+        , tcVars = IntMap.insert tcNextVar var tcVars
+        }
       return (RTS.Ref (MatchBind var))
-    Just v@(Var ty' _ _)
-      | eqType tcAngleVersion ty' ty -> do
-        put $ bindOrUse ctx name $
-          state { tcFree = HashSet.delete name tcFree }
-        return (Ref (MatchVar v))
-      | otherwise -> do
-        prettyErrorAt span $
-          nest 4 $ vcat
-            [ "type mismatch for variable " <> pretty name
-            , "type of variable: " <> display tcDisplayOpts ty'
-            , "expected type: " <> display tcDisplayOpts ty
-            ]
+    Just v@(Var ty' _ _) -> do
+      put $ bindOrUse ctx name $
+        state { tcFree = HashSet.delete name tcFree }
+      addErrSpan span $ unify ty ty'
+      return (Ref (MatchVar v))
 
 freeVariablesAreErrors :: T ()
 freeVariablesAreErrors = do
@@ -835,13 +907,13 @@ checkVarCase span name
         pretty name
   | otherwise = return ()
 
-prettyError :: Doc ann -> T a
-prettyError = throwError . Text.pack . show
+prettyError :: Doc () -> T a
+prettyError = throwError
 
-prettyErrorIn :: IsSrcSpan s => Pat' s -> Doc ann -> T a
+prettyErrorIn :: IsSrcSpan s => Pat' s -> Doc () -> T a
 prettyErrorIn pat doc = prettyErrorAt (sourcePatSpan pat) doc
 
-prettyErrorAt :: IsSrcSpan span => span -> Doc ann -> T a
+prettyErrorAt :: IsSrcSpan span => span -> Doc () -> T a
 prettyErrorAt span doc = prettyError $ vcat
   [ pretty span
   , doc
@@ -903,105 +975,58 @@ oneBranch branchVars ta = do
     extBinds = HashSet.intersection (tcBindings after) visibleBefore
   return (a, extUses, extBinds)
 
-data PrimArgType
-  -- | Check a primitive operation argument matches.
-  = Check Type
-  -- | First infer the type using `inferExpr` and then check. The string is a
-  -- comment on what the function is checking for debugging purposes.
-  | InferAndCheck (Type -> Bool) String
-  -- | Check that all arguments are of the same type.
-  | CheckAllEqual
+checkPrimOpArgs :: IsSrcSpan s => s -> [Pat' s] -> [Type] -> T ()
+checkPrimOpArgs span args tys
+  | length args /= length tys =
+    prettyErrorAt span
+      $ "expected " <> pretty (length tys)
+      <> " arguments, found " <> pretty (length args)
+  | otherwise = return ()
 
-primInferAndCheck
-  :: IsSrcSpan s
-  => s
-  -> [Pat' s]
-  -> PrimOp
-  -> [PrimArgType]
-  -> T ([TcPat], [Type])
-primInferAndCheck span args primOp argTys =
-  unzip . reverse <$> checkArgs [] args argTys
-  where
-    checkArgs :: IsSrcSpan s =>
-      [(TcPat, Type)] -> [Pat' s] -> [PrimArgType] -> T [(TcPat, Type)]
-    checkArgs acc [] [] = return acc
-    checkArgs acc (arg:args) (check:pats) = do
-      let prevArgTy = snd <$> listToMaybe acc
-      (arg', argTy) <- checkArg prevArgTy arg check
-      let acc' = (arg', argTy) : acc
-      checkArgs acc' args pats
-    checkArgs _ _ _ =
-        primInferAndCheckError span primOp
-          $ "expected " ++ show (length argTys)
-          ++ " arguments, found " ++ show (length args)
+-- Several primops have polymorphic types, e.g.
+--
+--   prim.length : forall a . [a] -> nat
+--
+-- There's no first-class support for polymorphic types in the type
+-- checker, but for primops we can just generate a fresh instantiation
+-- of the primop's type for each call.
 
-    checkArg :: IsSrcSpan s =>
-      Maybe Type -> Pat' s -> PrimArgType -> T (TcPat, Type)
-    checkArg _ arg (Check argTy) =
-      (,argTy) <$> typecheckPattern ContextExpr argTy arg
-    checkArg _ arg (InferAndCheck argCheck debugString) = do
-      (arg', argTy) <- inferExpr ContextExpr arg
-      unless (argCheck argTy) $ primInferAndCheckError span primOp debugString
-      return (arg', argTy)
-    checkArg prevTy arg CheckAllEqual = case prevTy of
-      Nothing -> inferExpr ContextExpr arg
-      Just argTy -> (,argTy) <$> typecheckPattern ContextExpr argTy arg
-
-
-primInferAndCheckError :: IsSrcSpan s => s -> PrimOp -> String -> T b
-primInferAndCheckError span primOp debugString = do
-  opts <- gets tcDisplayOpts
-  prettyErrorAt span $ nest 4 $ vcat
-    [ "primitive operation " <> display opts primOp
-      <> " does not pass associated check: "
-    , pretty debugString
-    ]
-
-primOpType :: IsSrcSpan s =>
-  Pat' s -> PrimOp -> ([PrimArgType], [Type] -> T Type)
-primOpType pat op = case op of
-  PrimOpToLower -> ([Check StringTy], pureTy StringTy)
-  PrimOpLength ->
-    ( [InferAndCheck polyArray "prim.length takes an array as input"]
-    , pureTy NatTy)
-  PrimOpZip ->
-    ( [InferAndCheck polyArray "prim.zip takes arrays as input"
-      ,InferAndCheck polyArray "prim.zip takes arrays as input"]
-    , \[ArrayTy ty1, ArrayTy ty2] -> pure $ ArrayTy (tupleSchema [ty1, ty2]))
-  PrimOpConcat ->
-    ( [InferAndCheck polyArray "prim.concat takes arrays as input"
-      ,InferAndCheck polyArray "prim.concat takes arrays as input"]
-    , \[ArrayTy ty, ArrayTy ty2] -> do
-        when (ty /= ty2) $ do
-          opts <- gets tcDisplayOpts
-          prettyErrorIn pat $ nest 4 $ vcat
-            [ "the elements of the array arguments to prim.concat"
-            <> " must have the same type."
-            , display opts ty <> " /= " <> display opts ty2
-            ]
-        pure $ ArrayTy ty)
+primOpType :: PrimOp -> T ([Type], Type)
+primOpType op = case op of
+  PrimOpToLower -> return ([StringTy], StringTy)
+  PrimOpLength -> do
+    x <- freshTyVar
+    return ([ArrayTy x], NatTy)
+  PrimOpZip -> do
+    x <- freshTyVar
+    y <- freshTyVar
+    return ([ArrayTy x, ArrayTy y], ArrayTy (tupleSchema [x,y]))
+  PrimOpConcat -> do
+    x <- freshTyVar
+    return ([ArrayTy x, ArrayTy x], ArrayTy x)
   PrimOpRelToAbsByteSpans ->
     -- prim.relToAbsByteSpans takes an array of pairs as input and
     -- returns an array of pairs as output
-    ( [Check (ArrayTy (tupleSchema [NatTy, NatTy]))]
-    , pureTy $ ArrayTy (tupleSchema [NatTy, NatTy]) )
+    return (
+      [ArrayTy (tupleSchema [NatTy, NatTy])],
+      ArrayTy (tupleSchema [NatTy, NatTy]))
   PrimOpUnpackByteSpans ->
     -- prim.unpackByteSpans takes an array of (nat, [nat]) as input and
     -- returns an array of pairs as output
-    ( [Check (ArrayTy (tupleSchema [NatTy, ArrayTy NatTy]))]
-    , pureTy $ ArrayTy (tupleSchema [NatTy, NatTy]) )
+    return (
+      [ArrayTy (tupleSchema [NatTy, ArrayTy NatTy])],
+      ArrayTy (tupleSchema [NatTy, NatTy]))
   PrimOpGtNat -> binaryNatOp
   PrimOpGeNat -> binaryNatOp
   PrimOpLtNat -> binaryNatOp
   PrimOpLeNat -> binaryNatOp
   PrimOpNeNat -> binaryNatOp
-  PrimOpAddNat -> ([Check NatTy, Check NatTy], pureTy NatTy)
-  PrimOpNeExpr -> ([CheckAllEqual, CheckAllEqual], pureTy unit)
+  PrimOpAddNat -> return ([NatTy, NatTy], NatTy)
+  PrimOpNeExpr -> do
+    x <- freshTyVar
+    return ([x,x], unit)
   where
-    binaryNatOp = ([Check NatTy, Check NatTy], pureTy unit)
-    polyArray (ArrayTy _) = True
-    polyArray _ = False
-    pureTy ty _args = pure ty
+    binaryNatOp = return ([NatTy, NatTy], unit)
 
 type VarSet = HashSet Name
 
@@ -1083,8 +1108,10 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
       TcPrimCall _ xs -> foldMap overPat xs
       TcIf (Typed _ x) y z -> foldMap overPat [x, y, z]
       TcDeref _ _ p -> overPat p
-      TcFieldSelect _ (Typed _ p) _ -> overPat p
-      TcAltSelect _ (Typed _ p) _ -> overPat p
+      TcFieldSelect (Typed _ p) _ -> overPat p
+      TcAltSelect (Typed _ p) _ -> overPat p
+      TcPromote _ p -> overPat p
+      TcStructPat fs -> foldMap overPat (map snd fs)
 
 data UseOfNegation
   = PatternNegation
@@ -1136,5 +1163,445 @@ tcTermUsesNegation = \case
   -- one can replicate negation using if statements
   TcIf{} -> Just IfStatement
   TcDeref _ _ p -> tcPatUsesNegation p
-  TcFieldSelect _ (Typed _ p) _ -> tcPatUsesNegation p
-  TcAltSelect _ (Typed _ p) _ -> tcPatUsesNegation p
+  TcFieldSelect (Typed _ p) _ -> tcPatUsesNegation p
+  TcAltSelect (Typed _ p) _ -> tcPatUsesNegation p
+  TcPromote _ p -> tcPatUsesNegation p
+  TcStructPat fs -> firstJust tcPatUsesNegation (map snd fs)
+
+{-
+Note [Promotion]
+----------------
+
+When we see an expression like 42 or "abc" we want the expression to
+be able to stand for either
+   1. the literal value
+   2. a fact whose key is the literal value
+
+This is very convenient when writing patterns, e.g. we want to be able
+to write
+
+   X = hack.ClassDeclaration { name = { name = "Glean" } }
+
+and not
+
+   X = hack.ClassDeclaration { name = hack.QName { name = hack.Name "Glean" } }
+
+but we don't always know at the time we're typechecking the expression
+whether we need it to be promoted to the predicate type or not, we may
+only know this later. For example:
+
+   X = { name = { name = "Glean" } }
+   X : hack.ClassDeclaration
+
+when checking the first statement we don't know the desired type of
+the pattern.
+
+So we have to defer the choice about whether to promote types to a
+predicate type or not. This is what `promote` and `promoteTo` below
+do.
+
+Promotion can happen any time we have a concrete expression: string,
+nat, record, enum constant, and so on. For example, when we're
+inferring the type of a string, we invent a new type variable, and
+record the potential promotion in the TypecheckState (tcPromote).
+
+   infer "abc" = (^"abc", X)   (X is a fresh type variable)
+     { promote: string -> X }
+
+(the syntax ^expr means "promoted", represented by the TcPromote
+constructor in TcTerm)
+
+At the end of typechecking we hope that X has been instantiated to
+either string or a predicate type, and we can then resolve the
+TcPromote to either nothing (in the case of string) or a TcFactGen (in
+the case of a predicate type).
+
+Resolving promotions
+--------------------
+
+In general we may have many constraints in tcPromote to resolve. There
+will be a set of constraints like
+
+  From -> To
+
+where From is never a type variable. To can be
+ a. a predicate with key = From
+ b. equal to From
+ c. a type variable
+
+We can deal with (a) and (b) immediately. What about (c)?
+
+We might have a chain, e.g.
+  {a : P} -> {a : X}   (1)
+  {b : nat} -> X       (2)
+
+We should resolve (1) first, because that influences (2).  So we have
+to resolve all the cases where the rhs is known, and then try
+again. This is what resolvePromote does.
+
+Strictly speaking this doesn't handle all cases and it could be
+inefficient. We should build a graph of the constraints and evaluate
+them in dependency order. What if there's a loop? Can that happen? I
+haven't seen this go wrong with any examples yet and the worst that
+can happen is you get a type error and have to add a type signature to
+help the type checker.
+-}
+
+promote :: IsSrcSpan s => s -> TcPat -> Type -> T (TcPat, Type)
+promote s pat t = do
+  y <- freshTyVar
+  addPromote s t y
+  return (Ref $ MatchExt $ Typed y $ TcPromote t pat, y)
+
+promoteTo :: IsSrcSpan s => s -> Type -> Type -> T (TcPat -> TcPat)
+promoteTo _ TyVar{} _ = error "promote: TyVar"
+  -- we never promote an unknown type
+promoteTo s t (TyVar x) = do
+  -- x could be Predicate t, or it could be t
+  subst <- gets tcSubst
+  case IntMap.lookup x subst of
+    Just u -> promoteTo s t u
+    Nothing -> do
+      addPromote s t (TyVar x)
+      return (Ref . MatchExt . Typed (TyVar x) . TcPromote t)
+promoteTo _ (PredicateTy (PidRef p _)) (PredicateTy (PidRef q _))
+  | p == q = return id
+    -- if not equal, q must be the key of p, so fall through
+    -- (assume we don't have  predicate P : P)
+promoteTo s t u@(PredicateTy (PidRef _ ref)) = do
+  PredicateDetails{..} <- getPredicateDetails ref
+  addErrSpan s $ unify predicateKeyType t
+  return (Ref . MatchExt . Typed u . TcPromote t)
+promoteTo s t u = do
+  -- the target type (u) is not a predicate or a tyvar, so it must be
+  -- the key type and we can unify directly.
+  addErrSpan s $ unify t u
+  return id
+
+addPromote :: IsSrcSpan s => s -> Type -> Type -> T ()
+addPromote span from to =
+  modify $ \s ->
+    s { tcPromote = (from, to, Some span) : tcPromote s }
+
+resolvePromote :: T ()
+resolvePromote = do
+  promotes <- gets tcPromote
+  whenDebug $ liftIO $ hPutStrLn stderr $ show $ vcat
+    [ "promotes: "
+    , vcat
+      [ displayDefault from <> " -> " <> displayDefault to
+      | (from,to,_) <- promotes
+      ]
+    ]
+  let
+    resolve
+      :: [(Type,Type,Some IsSrcSpan)]
+      -> Bool
+      -> T [(Type,Type,Some IsSrcSpan)]
+    resolve promotes defaultTyVars = fmap catMaybes $
+      forM promotes $ \(from, to, Some span) -> do
+        to' <- apply to
+        -- we know from is not a TyVar
+        case (from,to') of
+          (TyVar{}, _) -> error "resolvePromote: tyvar"
+          (PredicateTy (PidRef _ ref), PredicateTy (PidRef _ ref'))
+            | ref == ref' -> return Nothing
+          (_other, PredicateTy (PidRef _ ref)) -> do
+            PredicateDetails{..} <- getPredicateDetails ref
+            addErrSpan span $ unify predicateKeyType from
+            return Nothing
+          (_other, TyVar{}) | not defaultTyVars ->
+            return (Just (from, to', Some span))
+          _other -> do
+            addErrSpan span $ unify from to'
+            return Nothing
+
+    loop [] = return ()
+    loop promotes = do
+      resolved <- resolve promotes False
+      if length resolved < length promotes
+        then loop resolved
+        else do
+          -- only default unconstrained promotions when there's
+          -- nothing else we can do.
+          resolved2 <- resolve resolved True
+          loop resolved2
+
+  loop promotes
+
+unify :: Type -> Type -> T ()
+unify ByteTy ByteTy = return ()
+unify NatTy NatTy = return ()
+unify StringTy StringTy = return ()
+unify (ArrayTy t) (ArrayTy u) = unify t u
+unify a@(RecordTy ts) b@(RecordTy us)
+  | length ts == length us = forM_ (zip ts us) $
+      \(FieldDef f t, FieldDef g u) ->
+        if f == g || compareStructurally
+          then unify t u
+          else unifyError a b
+  where
+  isTuple = all (Text.isInfixOf "tuplefield"  . fieldDefName)
+  compareStructurally = isTuple ts || isTuple us
+     -- structural equality for tuples by ignoring field names.
+unify a@(SumTy ts) b@(SumTy us)
+  | length ts == length us = forM_ (zip ts us) $
+      \(FieldDef f t, FieldDef g u) ->
+        if f /= g then unifyError a b else unify t u
+unify (PredicateTy (PidRef p _)) (PredicateTy (PidRef q _))
+  | p == q = return ()
+unify (NamedTy (ExpandedType n _)) (NamedTy (ExpandedType m _))
+  | n == m = return ()
+unify (NamedTy (ExpandedType _ t)) u = unify t u
+unify t (NamedTy (ExpandedType _ u)) = unify t u
+unify (MaybeTy t) (MaybeTy u) = unify t u
+unify (MaybeTy t) u@SumTy{} = unify (lowerMaybe t) u
+unify t@SumTy{} (MaybeTy u) = unify t (lowerMaybe u)
+unify (EnumeratedTy ns) (EnumeratedTy ms) | ns == ms = return ()
+unify (EnumeratedTy ns) u@SumTy{} = unify (lowerEnum ns) u
+unify t@SumTy{} (EnumeratedTy ns) = unify t (lowerEnum ns)
+unify BooleanTy BooleanTy = return ()
+
+unify (TyVar x) (TyVar y) | x == y = return ()
+unify (TyVar x) t = extend x t
+unify t (TyVar x) = extend x t
+
+unify (HasTy a ra x) (HasTy b rb y) = do
+  mapM_ (uncurry unify) $ Map.intersectionWith (,) a b
+  z <- freshTyVarInt
+  let all = HasTy (Map.union a b) (ra || rb) z
+  extend x all
+  extend y all
+
+unify a@(HasTy m _ x) b@(RecordTy fs) = do
+  forM_ fs $ \(FieldDef f ty) ->
+    case Map.lookup f m of
+      Nothing -> return ()
+      Just ty' -> unify ty ty'
+  forM_ (Map.keys m) $ \n ->
+    when (n `notElem` map fieldDefName fs) $
+      unifyError a b
+  extend x (RecordTy fs)
+
+unify a@(HasTy m False x) b@(SumTy fs) = do
+  forM_ fs $ \(FieldDef f ty) ->
+    case Map.lookup f m of
+      Nothing -> return ()
+      Just ty' -> unify ty ty'
+  forM_ (Map.keys m) $ \n ->
+    when (n `notElem` map fieldDefName fs) $
+      unifyError a b
+  extend x (SumTy fs)
+
+unify a@RecordTy{} b@HasTy{} = unify b a
+unify a@SumTy{} b@HasTy{} = unify b a
+
+unify a b = unifyError a b
+
+unifyError :: Type -> Type -> T a
+unifyError a b = do
+  opts <- gets tcDisplayOpts
+  prettyError $ vcat
+    [ "type error:"
+    , indent 2 (display opts a)
+    , "does not match:"
+    , indent 2 (display opts b)
+    ]
+
+extend :: Int -> Type -> T ()
+extend x t = do
+  t' <- apply t  -- avoid creating a cycle in the substitution
+  if
+    | TyVar y <- t, y == x -> return ()
+    | otherwise -> do
+      subst <- gets tcSubst
+      case IntMap.lookup x subst of
+        Just u -> unify t' u
+        Nothing ->
+          modify $ \s -> s{ tcSubst = IntMap.insert x t' (tcSubst s) }
+
+apply :: Type -> T Type
+apply t = do
+  subst <- gets tcSubst
+  apply_ (\x -> return (IntMap.lookup x subst)) t
+
+zonkType :: Type -> T Type
+zonkType t = do
+  subst <- gets tcSubst
+  opts <- gets tcDisplayOpts
+  let lookup x = case IntMap.lookup x subst of
+        Nothing -> prettyError $ "ambiguous type: " <>
+          display opts (TyVar x :: Type)
+        Just u -> return (Just u)
+  apply_ lookup t
+
+apply_ :: (Int -> T (Maybe Type)) -> Type -> T Type
+apply_ lookup t = go t
+  where
+  go t = case t of
+    ByteTy -> return t
+    NatTy -> return t
+    StringTy -> return t
+    ArrayTy t -> ArrayTy <$> go t
+    RecordTy fs ->
+      fmap RecordTy $ forM fs $ \(FieldDef n t) ->
+        FieldDef n <$> go t
+    SumTy fs ->
+      fmap SumTy $ forM fs $ \(FieldDef n t) ->
+        FieldDef n <$> go t
+    PredicateTy{} -> return t
+    NamedTy{} -> return t
+    MaybeTy t -> MaybeTy <$> go t
+    EnumeratedTy{} -> return t
+    BooleanTy -> return t
+    TyVar x -> do
+      m <- lookup x
+      case m of
+        Nothing -> return t
+        Just u -> go u
+    HasTy _ _ x -> do
+      m <- lookup x
+      case m of
+        Nothing -> return t
+        Just u -> go u
+    SetTy t -> SetTy <$> go t
+
+zonkVars :: T ()
+zonkVars = do
+  vars <- gets tcVars
+  subst <- gets tcSubst
+  zonked <- forM vars $ \Var{..} -> do
+    let
+      lookup x = case IntMap.lookup x subst of
+        Nothing  -> prettyError $ vcat
+          [ "variable " <> pretty var <>
+            " has unknown type"
+          , "    try adding a type signature, like: " <> pretty var <> " : T"
+          ]
+          where var = fromMaybe (Text.pack ('_':show varId)) varOrigName
+        Just u -> return (Just u)
+    t <- apply_ lookup varType
+    return (Var { varType = t, ..})
+  modify $ \s -> s { tcVars = zonked }
+
+zonkTcQuery :: TcQuery -> T TcQuery
+zonkTcQuery (TcQuery ty k mv stmts) =
+  TcQuery
+    <$> zonkType ty
+    <*> zonkTcPat k
+    <*> mapM zonkTcPat mv
+    <*> mapM zonkTcStatement stmts
+
+zonkTcPat :: TcPat -> T TcPat
+zonkTcPat p = case p of
+  RTS.Byte{} -> return p
+  RTS.Nat{} -> return p
+  RTS.Array ts -> RTS.Array <$> mapM zonkTcPat ts
+  RTS.ByteArray{} -> return p
+  RTS.Tuple ts -> RTS.Tuple <$> mapM zonkTcPat ts
+  RTS.Alt n t -> RTS.Alt n <$> zonkTcPat t
+  RTS.String{} -> return p
+  RTS.All ts -> RTS.All <$> mapM zonkTcPat ts
+  Ref (MatchExt (Typed ty (TcPromote inner e))) -> do
+    ty' <- zonkType ty
+    inner' <- zonkType inner
+    e' <- zonkTcPat e
+    case (ty', inner') of
+      (TyVar{}, _) -> error "zonkMatch: tyvar"
+      (_, TyVar{}) -> error "zonkMatch: tyvar"
+      (PredicateTy (PidRef _ ref), PredicateTy (PidRef _ ref'))
+        | ref == ref' -> return e'
+      (PredicateTy pidRef@(PidRef _ ref), _other) -> do
+        PredicateDetails{..} <- getPredicateDetails ref
+        let vpat = Ref (MatchWild predicateValueType)
+        return (Ref (MatchExt (Typed ty'
+          (TcFactGen pidRef e' vpat SeekOnAllFacts))))
+      _ ->
+        return e'
+  Ref (MatchExt (Typed ty (TcStructPat fs))) -> do
+    ty' <- zonkType ty
+    case ty' of
+      RecordTy fields ->
+        fmap RTS.Tuple $ forM fields $ \(FieldDef f ty) ->
+          case [ p | (g,p) <- fs, f == g ] of
+            [] -> return (mkWild ty)
+            (x:_) -> zonkTcPat x
+      SumTy fields ->
+        case fs of
+          [(name,pat)]
+            | (_, n) :_ <- lookupField name fields -> do
+              pat' <- zonkTcPat pat
+              return (RTS.Alt n pat')
+          _other -> error $ "zonkTcPat: " <> show (displayDefault p)
+      _other -> do
+        opts <- gets tcDisplayOpts
+        prettyError $
+          nest 4 $ vcat
+            [ "type error in pattern"
+            , "pattern: " <> display opts p
+            , "expected type: " <> display opts ty
+            ]
+
+  Ref m -> Ref <$> zonkMatch m
+
+zonkMatch :: Match (Typed TcTerm) Var -> T (Match (Typed TcTerm) Var)
+zonkMatch m = case m of
+  MatchWild ty -> MatchWild <$> zonkType ty
+  MatchNever ty -> MatchNever <$> zonkType ty
+  MatchFid{} -> return m
+  MatchBind v -> MatchBind <$> var v
+  MatchVar v -> MatchVar <$> var v
+  MatchAnd a b -> MatchAnd <$> zonkTcPat a <*> zonkTcPat b
+  MatchPrefix s pat -> MatchPrefix s <$> zonkTcPat pat
+  MatchArrayPrefix ty ts ->
+    MatchArrayPrefix <$> zonkType ty <*> mapM zonkTcPat ts
+  MatchExt (Typed ty e) ->
+    MatchExt <$> (Typed <$> zonkType ty <*> zonkTcTerm e)
+  where
+  var (Var _ n _) = do
+    vars <- gets tcVars
+    case IntMap.lookup n vars of
+      Nothing -> error "zonkMatch"
+      Just v -> return v
+
+zonkTcTerm :: TcTerm -> T TcTerm
+zonkTcTerm t = case t of
+  TcOr a b -> TcOr <$> zonkTcPat a <*> zonkTcPat b
+  TcFactGen pid k v sec ->
+    TcFactGen pid <$> zonkTcPat k <*> zonkTcPat v <*> pure sec
+  TcElementsOfArray a -> TcElementsOfArray <$> zonkTcPat a
+  TcQueryGen q -> TcQueryGen <$> zonkTcQuery q
+  TcNegation stmts -> TcNegation <$> mapM zonkTcStatement stmts
+  TcPrimCall op args -> TcPrimCall op <$> mapM zonkTcPat args
+  TcIf (Typed ty cond) th el ->
+    TcIf
+      <$> (Typed <$> zonkType ty <*> zonkTcPat cond)
+      <*> zonkTcPat th
+      <*> zonkTcPat el
+  TcDeref ty valTy p ->
+    TcDeref <$> zonkType ty <*> zonkType valTy <*> zonkTcPat p
+  TcFieldSelect (Typed ty p) f ->
+    TcFieldSelect
+      <$> (Typed <$> zonkType ty <*> zonkTcPat p)
+      <*> pure f
+  TcAltSelect (Typed ty p) f ->
+    TcAltSelect
+      <$> (Typed <$> zonkType ty <*> zonkTcPat p)
+      <*> pure f
+  TcElements p -> TcElements <$> zonkTcPat p
+  TcPromote{} -> error "zonkTcTerm: TcPromote" -- handled in zonkTcPat
+  TcStructPat{} -> error "zonkTcTerm: TcStructPat" -- handled in zonkTcPat
+
+zonkTcStatement :: TcStatement -> T TcStatement
+zonkTcStatement (TcStatement ty l r) =
+  TcStatement
+    <$> zonkType ty
+    <*> zonkTcPat l
+    <*> zonkTcPat r
+
+getPredicateDetails :: PredicateId -> T PredicateDetails
+getPredicateDetails pred = do
+  TcEnv{..} <- gets tcEnv
+  case HashMap.lookup pred tcEnvPredicates of
+    Nothing -> error $ "predicateKeyTYpe: " <> show (displayDefault pred)
+    Just d -> return d

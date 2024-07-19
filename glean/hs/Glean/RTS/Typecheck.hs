@@ -96,6 +96,7 @@ typecheck rename input inputend output = tc
       return ()
     tc (EnumeratedTy names) = tcEnum $ fromIntegral $ length names
     tc BooleanTy = tcEnum 2
+    tc _ = error "typecheck"
 
     tcEnum arity = mdo
       k <- constant arity

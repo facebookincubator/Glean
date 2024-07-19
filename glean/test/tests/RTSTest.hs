@@ -93,6 +93,8 @@ valueFor (T.EnumeratedTy names) = do
 valueFor T.BooleanTy = do
   i <- choose (0,1)
   return $ Alt i $ Tuple []
+valueFor T.TyVar{} = error "valueFor: TyVar"
+valueFor T.HasTy{} = error "valueFor: HasTy"
 
 prop_roundtripValue :: Type -> Value -> Property
 prop_roundtripValue ty val = val === toValue (repType ty) (fromValue val)

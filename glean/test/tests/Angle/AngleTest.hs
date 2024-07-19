@@ -37,6 +37,11 @@ main = withUnitTest $ testRunner $ TestList
   [ TestLabel "angle" $ angleTest id
   , TestLabel "angle/page" $ angleTest (limit 1)
   , TestLabel "angleDot" angleDotTest
+  , TestLabel "angleNegation" $ angleNegationTest id
+  , TestLabel "angleNegation/page" $ angleNegationTest (limit 1)
+  , TestLabel "angleIfThenElse" $ angleIfThenElse id
+  , TestLabel "angleIfThenElse/page" $ angleIfThenElse (limit 1)
+  , TestLabel "angleTypeTest" angleTypeTest
   ]
 
 ignorePredK :: Glean.Test.KitchenSink_1 -> Glean.Test.KitchenSink_1
@@ -366,100 +371,6 @@ angleTest modify = dbTestCase $ \env repo -> do
   print r
   assertEqual "angle - lookup 5" 2 (length r)
 
-  -- Negation
-
-  -- negating a term fails
-  r <- runQuery_ env repo $ modify $ angleData @() "!1"
-  print r
-  assertEqual "negation - term 1" 0 (length r)
-
-  -- negating the negation of a term succeeds
-  r <- runQuery_ env repo $ modify $ angleData @() "!(!1)"
-  print r
-  assertEqual "negation - term 2" 1 (length r)
-
-  -- negating a false statement succeeds
-  r <- runQuery_ env repo $ modify $ angleData @() "!(1 = 2)"
-  print r
-  assertEqual "negation - term 3" 1 (length r)
-
-  -- a negated subquery has type unit
-  r <- runQuery_ env repo $ modify $ angleData @() "A = !(1 = 2); A"
-  print r
-  assertEqual "negation - term 3" 1 (length r)
-
-  -- negated queries do not bind variables to the parent scope
-  r <- try $ runQuery_ env repo $ modify $ angleData @()
-    [s|
-      !(A = glean.test.IsGlean "not-glean");
-      A;
-    |]
-  print r
-  assertBool "negation - scope" $
-    case r of
-      Left (SomeException x) ->
-        "One or more variables were not bound anywhere" `isInfixOf` show x
-      _ -> False
-
-  -- negated queries do constrain the type of variables in the parent scope
-  r <- try $ runQuery_ env repo $ modify $ angleData @Nat
-    [s|
-       A where
-        !(A = glean.test.IsGlean "not-glean");
-        A = 2;
-    |]
-  print r
-  assertBool "negation - scope 2" $
-    case r of
-      Left (SomeException x) -> "type mismatch for variable" `isInfixOf` show x
-      _ -> False
-
-  -- variables bound before are available
-  r <- runQuery_ env repo $ modify $ angleData @Text
-    [s|
-       A where
-        A = "not-glean";
-        !(glean.test.IsGlean A);
-    |]
-  print r
-  assertEqual "negation - scope 3" 1 (length r)
-
-  -- variables can be local to the negated subquery
-  r <- runQuery_ env repo $ modify $ angleData @Text
-    [s|
-       A where
-        A = "glean";
-        !(!(glean.test.IsGlean B; V = [B]; A = V[..]));
-    |]
-  print r
-  assertEqual "negation - scope 4" 1 (length r)
-
-  -- variables local to earlier non-overlapping scopes with
-  -- the same name as negation variables do not interfere.
-  r <- runQuery_ env repo $ modify $ angleData @Text
-    [s|
-      !(A = 1; A = 2); (A = "A") | "B"
-    |]
-  print r
-  assertEqual "negation - scope 5" 2 (length r)
-
-  r <- runQuery_ env repo $ modify $ angleData @Text
-    [s|
-      !(A = 1; (A > 2 | A < 0));
-      "A"
-    |]
-  print r
-  assertEqual "negation - scope 6" 1 (length r)
-
-  -- a negated query's head is replaced with {}
-  r <- runQuery_ env repo $ modify $ angleData @Nat
-    [s|
-        {} = !(A where A = 1; A = 2;);
-        1
-    |]
-  print r
-  assertEqual "negation -  3" 1 (length r)
-
   -- Test literal fact Ids ($<predicate> <id>,2)
   names <- runQuery_ env repo $ allFacts @Cxx.Name
   let factId x = Text.pack (show (fromFid (idOf (getId x))))
@@ -674,37 +585,6 @@ angleTest modify = dbTestCase $ \env repo -> do
     |]
   assertEqual "angle - traverse bug" 1 (length r)
 
-  -- Test for correct handling of maybe, bool, and enums in the type checker
-  r <- runQuery_ env repo $ modify $ recursive $ angleData @Nat
-    [s|
-      true = true;
-      true : bool = true;
-      true = true : bool;
-      true : bool = true : bool;
-      nothing = nothing : maybe nat;
-      nothing : maybe nat = nothing : maybe nat;
-      { just = 3 } : maybe nat = { just = 3 } : maybe nat;
-      { just = 3 } = { just = 3 } : maybe nat;
-      { just = 3 } = { just = 3 };
-      mon = mon : glean.test.Sum;
-      mon : glean.test.Sum = mon : glean.test.Sum;
-      3
-    |]
-  assertEqual "angle - eqType maybe" 1 (length r)
-
-  -- Test that records are not compared structurally
-  r <- try $ runQuery_ env repo $ angleData @Nat
-    [s| A : { a : nat, b : nat } = { c = 1, d = 1 } : { c : nat, d : nat };
-        { N, _ } = A;
-        N
-    |]
-  print r
-  assertBool
-    "eqType - field versions matter when comparing record types" $
-    case r of
-      Left (BadQuery x) -> "type error in pattern" `Text.isInfixOf` x
-      _ -> False
-
   -- test for bugs in the handling of {} in the code generator
   r <- runQuery_ env repo $ modify $ recursive $ angleData @()
     [s|
@@ -713,7 +593,81 @@ angleTest modify = dbTestCase $ \env repo -> do
   assertBool "angle - empty tuples" $
     let l = length r in l >= 1 && l <= 4
 
-  -- if statements
+  r <- runQuery_ env repo $ modify $ angleData @[(Nat, Nat)]
+      "prim.zip X X where glean.test.Predicate.1 { array_of_nat = X }"
+  print r
+  assertEqual "zipping - zipping an array with itself"
+    [[], [(Nat 99, Nat 99), (Nat 98, Nat 98)]] r
+
+  r <- runQuery_ env repo $ modify $ angleData @[Nat]
+      "prim.concat X X where glean.test.Predicate.1 { array_of_nat = X }"
+  assertEqual "concat - concatenating an array with itself"
+    [[], [Nat 99, Nat 98, Nat 99, Nat 98]] r
+
+
+angleDotTest :: Test
+angleDotTest = dbTestCase $ \env repo -> do
+
+  -- record selection
+  r <- runQuery_ env repo $ angleData @Text
+    "X.string_ where glean.test.Predicate X; X.nat = 42"
+  assertEqual "dot record" ["acca"] r
+
+  -- select from a predicate type
+  r <- runQuery_ env repo $ angleData @Text
+    "(glean.test.Predicate _).string_"
+  assertEqual "deref predicate" (length r) 4
+
+  -- chain of selections: record, predicate, sum type, record
+  r <- runQuery_ env repo $ angleData @Text
+    "X.sum_.c?.string_ where glean.test.Predicate X"
+  assertEqual "dot record.sum.record" ["abba", "acca"] r
+
+  -- maybe
+  r <- runQuery_ env repo $ angleData @Text
+    "X.string_ where (X : glean.test.Predicate).maybe_.just?"
+  assertEqual "dot maybe" ["abba", "acca"] r
+
+  -- error: field not found
+  r <- try $ runQuery env repo $ angleData @Text
+    "X.notfound where glean.test.Predicate X"
+  assertBool "field not found" $
+    case r of
+      Left (BadQuery x) -> "does not contain the field" `Text.isInfixOf` x
+      _ -> False
+
+  -- error: using .nat? to select from a record
+  r <- try $ runQuery env repo $ angleData @Text
+    "X.nat? where glean.test.Predicate X"
+  assertBool "not a union" $
+    case r of
+      Left (BadQuery x) ->
+        "expression is a record, use '.nat' not '.nat?'" `Text.isInfixOf` x
+      _ -> False
+
+  -- error: using . to select from a union
+  r <- try $ runQuery env repo $ angleData @Text
+    "X.sum_.c where glean.test.Predicate X"
+  assertBool "not a record" $
+    case r of
+      Left (BadQuery x) ->
+        "expression is a union type, use '.c?' not '.c'"
+          `Text.isInfixOf` x
+      _ -> False
+
+  -- error: type error
+  r <- try $ runQuery env repo $ angleData @Text
+    "X.string_ where glean.test.Predicate X; X.nat = \"x\""
+  print r
+  assertBool "not a record" $
+    case r of
+      Left (BadQuery x) -> "type error" `Text.isInfixOf` x
+      _ -> False
+
+
+-- if statements
+angleIfThenElse :: (forall a . Query a -> Query a) -> Test
+angleIfThenElse modify = dbTestCase $ \env repo -> do
 
   r <- runQuery_ env repo $ modify $ angleData @Nat
     "if never : {} then 1 else 2"
@@ -826,73 +780,196 @@ angleTest modify = dbTestCase $ \env repo -> do
       "(X = (Y:nat|2); Y = (7|8); {X,Y}) | {1,2}"
   assertEqual "reordering disjunctions" 5 (length r)
 
-  r <- runQuery_ env repo $ modify $ angleData @[(Nat, Nat)]
-      "prim.zip X X where glean.test.Predicate.1 { array_of_nat = X }"
+
+angleNegationTest :: (forall a . Query a -> Query a) -> Test
+angleNegationTest modify = dbTestCase $ \env repo -> do
+  -- Negation
+
+  -- negating a term fails
+  r <- runQuery_ env repo $ modify $ angleData @() "!1"
   print r
-  assertEqual "zipping - zipping an array with itself"
-    [[], [(Nat 99, Nat 99), (Nat 98, Nat 98)]] r
+  assertEqual "negation - term 1" 0 (length r)
 
-  r <- runQuery_ env repo $ modify $ angleData @[Nat]
-      "prim.concat X X where glean.test.Predicate.1 { array_of_nat = X }"
-  assertEqual "concat - concatenating an array with itself"
-    [[], [Nat 99, Nat 98, Nat 99, Nat 98]] r
-
-
-angleDotTest :: Test
-angleDotTest = dbTestCase $ \env repo -> do
-
-  -- record selection
-  r <- runQuery_ env repo $ angleData @Text
-    "X.string_ where glean.test.Predicate X; X.nat = 42"
-  assertEqual "dot record" ["acca"] r
-
-  -- select from a predicate type
-  r <- runQuery_ env repo $ angleData @Text
-    "(glean.test.Predicate _).string_"
-  assertEqual "deref predicate" (length r) 4
-
-  -- chain of selections: record, predicate, sum type, record
-  r <- runQuery_ env repo $ angleData @Text
-    "X.sum_.c?.string_ where glean.test.Predicate X"
-  assertEqual "dot record.sum.record" ["abba", "acca"] r
-
-  -- maybe
-  r <- runQuery_ env repo $ angleData @Text
-    "X.string_ where (X : glean.test.Predicate).maybe_.just?"
-  assertEqual "dot maybe" ["abba", "acca"] r
-
-  -- error: field not found
-  r <- try $ runQuery env repo $ angleData @Text
-    "X.notfound where glean.test.Predicate X"
-  assertBool "field not found" $
-    case r of
-      Left (BadQuery x) -> "does not contain the field" `Text.isInfixOf` x
-      _ -> False
-
-  -- error: using .nat? to select from a record
-  r <- try $ runQuery env repo $ angleData @Text
-    "X.nat? where glean.test.Predicate X"
-  assertBool "not a union" $
-    case r of
-      Left (BadQuery x) ->
-        "expression is a record, use '.nat' not '.nat?'" `Text.isInfixOf` x
-      _ -> False
-
-  -- error: using . to select from a union
-  r <- try $ runQuery env repo $ angleData @Text
-    "X.sum_.c where glean.test.Predicate X"
-  assertBool "not a record" $
-    case r of
-      Left (BadQuery x) ->
-        "expression is a union type, use '.c?' not '.c'"
-          `Text.isInfixOf` x
-      _ -> False
-
-  -- error: type error
-  r <- try $ runQuery env repo $ angleData @Text
-    "X.string_ where glean.test.Predicate X; X.nat = \"x\""
+  -- negating the negation of a term succeeds
+  r <- runQuery_ env repo $ modify $ angleData @() "!(!1)"
   print r
-  assertBool "not a record" $
+  assertEqual "negation - term 2" 1 (length r)
+
+  -- negating a false statement succeeds
+  r <- runQuery_ env repo $ modify $ angleData @() "!(1 = 2)"
+  print r
+  assertEqual "negation - term 3" 1 (length r)
+
+  -- a negated subquery has type unit
+  r <- runQuery_ env repo $ modify $ angleData @() "A = !(1 = 2); A"
+  print r
+  assertEqual "negation - term 3" 1 (length r)
+
+  -- negated queries do not bind variables to the parent scope
+  r <- try $ runQuery_ env repo $ modify $ angleData @()
+    [s|
+      !(A = glean.test.IsGlean "not-glean");
+      A;
+    |]
+  print r
+  assertBool "negation - scope" $
+    case r of
+      Left (SomeException x) ->
+        "One or more variables were not bound anywhere" `isInfixOf` show x
+      _ -> False
+
+  -- negated queries do constrain the type of variables in the parent scope
+  r <- try $ runQuery_ env repo $ modify $ angleData @Nat
+    [s|
+       A where
+        !(A = glean.test.IsGlean "not-glean");
+        A = 2;
+    |]
+  print r
+  assertBool "negation - scope 2" $
+    case r of
+      Left (SomeException x) -> "type error" `isInfixOf` show x
+      _ -> False
+
+  -- variables bound before are available
+  r <- runQuery_ env repo $ modify $ angleData @Text
+    [s|
+       A where
+        A = "not-glean";
+        !(glean.test.IsGlean A);
+    |]
+  print r
+  assertEqual "negation - scope 3" 1 (length r)
+
+  -- variables can be local to the negated subquery
+  r <- runQuery_ env repo $ modify $ angleData @Text
+    [s|
+       A where
+        A = "glean";
+        !(!(glean.test.IsGlean B; V = [B]; A = V[..]));
+    |]
+  print r
+  assertEqual "negation - scope 4" 1 (length r)
+
+  -- variables local to earlier non-overlapping scopes with
+  -- the same name as negation variables do not interfere.
+  r <- runQuery_ env repo $ modify $ angleData @Text
+    [s|
+      !(A = 1; A = 2); (A = "A") | "B"
+    |]
+  print r
+  assertEqual "negation - scope 5" 2 (length r)
+
+  r <- runQuery_ env repo $ modify $ angleData @Text
+    [s|
+      !(A = 1; (A > 2 | A < 0));
+      "A"
+    |]
+  print r
+  assertEqual "negation - scope 6" 1 (length r)
+
+  -- a negated query's head is replaced with {}
+  r <- runQuery_ env repo $ modify $ angleData @Nat
+    [s|
+        {} = !(A where A = 1; A = 2;);
+        1
+    |]
+  print r
+  assertEqual "negation -  3" 1 (length r)
+
+
+-- type checking
+angleTypeTest :: Test
+angleTypeTest = dbTestCase $ \env repo -> do
+    -- Test for correct handling of maybe, bool, and enums in the type checker
+  r <- runQuery_ env repo $ recursive $ angleData @Nat
+    [s|
+      true = true;
+      true : bool = true;
+      true = true : bool;
+      true : bool = true : bool;
+      nothing = nothing : maybe nat;
+      nothing : maybe nat = nothing : maybe nat;
+      { just = 3 } : maybe nat = { just = 3 } : maybe nat;
+      { just = 3 } = { just = 3 } : maybe nat;
+      { just = 3 } = { just = 3 };
+      mon = mon : glean.test.Sum;
+      mon : glean.test.Sum = mon : glean.test.Sum;
+      3
+    |]
+  assertEqual "angle - eqType maybe" 1 (length r)
+
+  -- Test that records are not compared structurally
+  r <- try $ runQuery_ env repo $ angleData @Nat
+    [s| A : { a : nat, b : nat } = { c = 1, d = 1 } : { c : nat, d : nat };
+        { N, _ } = A;
+        N
+    |]
+  print r
+  assertBool
+    "eqType - field versions matter when comparing record types" $
     case r of
       Left (BadQuery x) -> "type error" `Text.isInfixOf` x
       _ -> False
+
+  -- X = Y and Y = X should typecheck in the same way
+  r <- runQuery_ env repo $ angleData @(Nat,Text)
+    [s|
+      {X,Y} where X = 1; "a" = Y
+    |]
+  assertEqual "angle - statement L/R" 1 (length r)
+
+  r <- runQuery_ env repo $ angleData @Nat
+    [s|
+      Y where X = { nat = Y }; glean.test.Predicate X
+    |]
+  assertEqual "angle - inference 1" 2 (length r)
+
+  r <- runQuery_ env repo $ angleData @Text
+    [s|
+      Y where
+        X = { sum_ = { c = { string_ = Y }}};
+        X = { nat = 0 };
+        glean.test.Predicate X
+    |]
+  assertEqual "angle - inference 2" 2 (length r)
+
+  r <- runQuery_ env repo $ angleData @Nat
+    [s|
+      X.nat where
+        X : glean.test.Predicate;
+        X.sum_.c?.string_ = "abba"
+    |]
+  assertEqual "angle - inference 3" 1 (length r)
+
+  r <- runQuery_ env repo $ angle @Glean.Test.Tree
+    [s|
+      Z where
+        X : glean.test.Tree;
+        Y = X.left.just?;
+        Z = Y.right.just?;
+        Z.node = { label = "d" }
+    |]
+  print r
+  assertEqual "angle - inference 4" 1 (length r)
+
+  r <- runQuery_ env repo $ angleData @Text
+    [s|
+      X.a.b.label where
+        X = { a = Y };
+        Y = { b = { label = "a" }};
+        X : { a: { b: glean.test.Node }}
+    |]
+  print r
+  assertEqual "angle - inference 5" 1 (length r)
+
+  -- order of statements shouldn't matter
+  r <- runQuery_ env repo $ angleData @Text
+    [s|
+      X.a.b.label where
+        Y = { b = { label = "a" }};
+        X = { a = Y };
+        X : { a: { b: glean.test.Node }}
+    |]
+  print r
+  assertEqual "angle - inference 6" 1 (length r)

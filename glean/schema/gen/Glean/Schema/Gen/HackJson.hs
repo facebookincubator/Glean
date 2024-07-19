@@ -317,6 +317,8 @@ angleTypeInnerReprFor (EnumeratedTy alts) = do
   tell [enum]
   return $ EnumeratedTEnum alts enumName
 angleTypeInnerReprFor BooleanTy = return BooleanTBool
+angleTypeInnerReprFor TyVar{} = error "angleTypeInnerReprFor: TyVar"
+angleTypeInnerReprFor HasTy{} = error "angleTypeInnerReprFor: HasTy"
 
 defFile :: Either ResolvedPredicateDef ResolvedTypeDef -> FilePath
 defFile (Left p) = fileFor $ predicateDefName p
@@ -423,3 +425,5 @@ cyclesInDefs ctx defs = concatMap hasCycles sccs
   outEdgesT (NamedTy (TypeRef name ver)) = [(name,ver)]
   outEdgesT (PredicateTy (PredicateRef name ver)) = [(name,ver)]
   outEdgesT EnumeratedTy{} = []
+  outEdgesT TyVar{} = error "outEdgesT: TyVar"
+  outEdgesT HasTy{} = error "outEdgesT: HasTy"

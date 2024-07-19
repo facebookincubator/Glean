@@ -12,6 +12,7 @@ module Glean.Query.Typecheck.Types
   , TcStatement(..)
   , TcPat
   , TcTerm(..)
+  , lookupField
   ) where
 
 import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
@@ -62,16 +63,24 @@ data TcTerm
     -- don't expose this at the source level except via
     -- field-selection, e.g. X.a will dereference X before
     -- selecting the field 'a' if X has predicate type.
-  | TcFieldSelect {-# UNPACK #-} !Word64 (Typed TcPat) FieldName
-  | TcAltSelect {-# UNPACK #-} !Word64 (Typed TcPat) FieldName
+  | TcFieldSelect (Typed TcPat) FieldName
+  | TcAltSelect (Typed TcPat) FieldName
+  | TcPromote Type TcPat
+    -- Typed B (TcPromote A P) ("promote pat P from type A to type B")
+    --   - P : A, and either
+    --     - A == B, or
+    --     - B = P, where P : A for some predicate P
+    -- Turns into either nothing or TcFactGen after typechecking
+  | TcStructPat [(FieldName, TcPat)]
+    -- An unresolved pattern matching a record or sum type.
   deriving Show
 
 instance Display TcTerm where
   display opts (TcOr a b) = display opts a <+> "++" <+> display opts b
   display opts (TcDeref _ _ pat) = displayAtom opts pat <> "*"
-  display opts (TcFieldSelect _ (Typed _ pat) field) =
+  display opts (TcFieldSelect (Typed _ pat) field) =
     displayAtom opts pat <> "." <> pretty field
-  display opts (TcAltSelect _ pat field) =
+  display opts (TcAltSelect pat field) =
     displayAtom opts pat <> ".?" <> pretty field
   display opts (TcIf (Typed _ cond) then_ else_) = sep
     [ nest 2 $ sep ["if", displayAtom opts cond ]
@@ -96,6 +105,13 @@ instance Display TcTerm where
     "!" <> parens (sep (punctuate ";" (map (display opts) q)))
   display opts (TcPrimCall op args) =
     hsep (display opts op : map (displayAtom opts) args)
+  display opts (TcPromote _ pat) =
+    "^" <> displayAtom opts pat
+  display opts (TcStructPat fs) =
+    cat [ nest 2 $ cat [ "{", fields fs], "}"]
+    where
+    fields = sep . punctuate "," . map field
+    field (name, pat) = pretty name <+> "=" <+> display opts pat
 
   displayAtom opts pat = case pat of
     TcOr{} -> parens (display opts pat)
@@ -107,3 +123,8 @@ instance Display TcTerm where
     _ -> display opts pat
 
 type TypecheckedQuery = QueryWithInfo TcQuery
+
+lookupField :: FieldName -> [RTS.FieldDef] -> [(Type, Word64)]
+lookupField fieldName fields =
+  [ (ty, n) | (FieldDef name ty, n) <- zip fields [0..]
+  , name == fieldName ]

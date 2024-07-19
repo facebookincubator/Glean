@@ -319,6 +319,8 @@ mkRtsType lookupType lookupPid = rtsType
     rtsType (Schema.MaybeTy eltTy) = Schema.MaybeTy <$> rtsType eltTy
     rtsType (Schema.EnumeratedTy names) = return (Schema.EnumeratedTy names)
     rtsType Schema.BooleanTy = return Schema.BooleanTy
+    rtsType Schema.TyVar{} = error "rtsType: TyVar"
+    rtsType Schema.HasTy{} = error "rtsType: HasTy"
 
     fieldType :: Schema.FieldDef -> Maybe FieldDef
     fieldType (Schema.FieldDef name ty) = Schema.FieldDef name <$> rtsType ty

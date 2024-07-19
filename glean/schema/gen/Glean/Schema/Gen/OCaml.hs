@@ -230,6 +230,8 @@ genOCamlType ns namePolicy t = case t of
   EnumeratedTy names ->
     "\n" <> Text.unlines (("    | " <>) . nameToConstructor <$> names)
   BooleanTy -> "bool"
+  TyVar{} -> error "genOCamlType: TyVar"
+  HasTy{} -> error "genOCamlType: HasTy"
   where
     genField fieldKind field =
       let ty = (genOCamlType' ns namePolicy . fieldDefType) field in
@@ -315,6 +317,8 @@ genOCamlToJson ns namePolicy t = case t of
     let handleEnumCases = enumCase <$> enumNames in
         ("", "function\n" <> Text.unlines handleEnumCases)
   BooleanTy -> ("b", "JSON_Bool b")
+  TyVar{} -> error "genOCamlToJson: TyVar"
+  HasTy{} -> error "genOCamlToJson: HasTy"
 
 genOCamlToJson' :: Text -> NameSpaces -> NamePolicy -> ResolvedType -> Text
 genOCamlToJson' var ns namePolicy t = case t of
@@ -341,6 +345,8 @@ genOCamlToJson' var ns namePolicy t = case t of
         genTy
   EnumeratedTy _ -> "(ignore " <>  var <> "; JSON_Object []) (* unsupported *)"
   BooleanTy -> "JSON_Bool " <> var
+  TyVar{} -> error "genOCamlToJson': TyVar"
+  HasTy{} -> error "genOCamlToJson': HasTy"
 
 refToModule :: NameSpaces -> Maybe (NameSpaces, Text) -> Text
 refToModule curNs ref =

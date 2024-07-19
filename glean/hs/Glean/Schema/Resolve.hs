@@ -445,6 +445,7 @@ resolveType typ = go typ
       mapM_ checkName names
       return (EnumeratedTy names)
     BooleanTy -> return BooleanTy
+    _ -> error "resolveType"
 
   goRef ref = do
     scope <- getScope
