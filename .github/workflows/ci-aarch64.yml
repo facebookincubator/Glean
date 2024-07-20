@@ -38,7 +38,6 @@ jobs:
       - name: Setup build time flags
         run: |
           echo "MAKEFLAGS=-j$(nproc)" >> "$GITHUB_ENV"
-          echo "EXTRA_GHC_OPTS=-j2 +RTS -A128m -n2m -RTS" >> "$GITHUB_ENV"
 
       - name: Setup Haskell
         run: |
@@ -80,7 +79,7 @@ jobs:
             liblzma-dev liblz4-dev libsnappy-dev libsodium-dev libssl-dev libunwind-dev libzstd-dev
 
       - name: Fetch hsthrift and build folly, rocksdb
-        run: ./install_deps.sh --threads $(nproc)
+        run: ./install_deps.sh --threads 2
 
       - name: Nuke build artifacts
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
