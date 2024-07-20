@@ -1,2 +1,2 @@
-action: resolveSymbolRange
+action: symbolLocation
 args: "test/cpp//GlobalClass"

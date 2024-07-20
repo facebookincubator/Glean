@@ -46,7 +46,7 @@ data Command
   = List RepoName Path
   | Describe SymbolId
   | FindRefs SymbolId
-  | Resolve SymbolId
+  | FindLocation SymbolId
   | Search RepoName Text
 
 options :: ParserInfo Options
@@ -79,7 +79,7 @@ options = info (helper <*> parser) (fullDesc <>
             ]
           )
         ) <>
-        command "resolve" (info resolveCommand
+        command "location" (info locationCommand
           (progDesc $ unlines
             ["Find the definition location of a symbol"
             ]
@@ -101,7 +101,7 @@ options = info (helper <*> parser) (fullDesc <>
     listCommand = cmd readListRepoPath (metavar "REPO/PATH")
     describeCommand = cmd (Describe <$> readSymbol) symbolHelp
     findRefsCommand = cmd (FindRefs <$> readSymbol) symbolHelp
-    resolveCommand = cmd (Resolve <$> readSymbol) symbolHelp
+    locationCommand = cmd (FindLocation <$> readSymbol) symbolHelp
     searchCommand = cmd readSearch searchHelp
 
 readService :: ReadM Service
@@ -163,7 +163,7 @@ main = Glean.withOptions options $ \Options{..} ->
         List repo path -> runListSymbols repo path
         Describe sym -> runDescribe sym
         FindRefs sym -> runFindRefs sym
-        Resolve sym -> runResolve sym
+        FindLocation sym -> runLocation sym
         Search repo str -> runSearch repo str
     mapM_ Text.putStrLn res
 
@@ -198,9 +198,9 @@ runSearch repoName strName = do
         def -- kinds
         def -- default search options
 
-runResolve :: Protocol p => SymbolId -> GlassM p [Text]
-runResolve sym = do
-  range <- resolveSymbolRange sym def
+runLocation :: Protocol p => SymbolId -> GlassM p [Text]
+runLocation sym = do
+  range <- symbolLocation sym def
   return [pprLocationRange range]
 
 runFindRefs :: Protocol p => SymbolId -> GlassM p [Text]

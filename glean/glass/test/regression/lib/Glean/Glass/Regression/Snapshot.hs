@@ -193,8 +193,8 @@ evalQuery glassEnv qFile Query{..} oFile = case action of
     (Glass.findReferences glassEnv)
   "findReferenceRanges" -> withSymbolId oFile args
     (Glass.findReferenceRanges glassEnv)
-  "resolveSymbolRange" -> withSymbolId oFile args
-    (Glass.resolveSymbolRange glassEnv)
+  "symbolLocation" -> withSymbolId oFile args
+    (Glass.symbolLocation glassEnv)
   "describeSymbol" -> withSymbolId oFile args
     (Glass.describeSymbol glassEnv)
   "searchSymbol" ->  withObjectArgs qFile oFile args

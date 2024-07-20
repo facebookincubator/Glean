@@ -14,7 +14,7 @@ module Glean.Glass.Regression.Tests (
   testDescribeSymbolHasAnnotations,
   testDescribeSymbolHasVisibility,
   testSearchRelated,
-  testResolveSymbol,
+  testSymbolLocation,
 ) where
 
 import Data.Default
@@ -54,15 +54,15 @@ testDocumentSymbolListX path get =
         (not (null (documentSymbolListXResult_references res)) &&
          not (null (documentSymbolListXResult_definitions res)))
 
-testResolveSymbol :: SymbolId -> Path -> Getter -> Test
-testResolveSymbol sym@(SymbolId name) path get =
+testSymbolLocation :: SymbolId -> Path -> Getter -> Test
+testSymbolLocation sym@(SymbolId name) path get =
   TestLabel (Text.unpack name) $ TestCase $ do
     (backend, _repo) <- get
     withTestEnv backend $ \env -> do
-      LocationRange{..} <- resolveSymbolRange env sym def
-      assertEqual "resolveSymbol Path matches" locationRange_filepath path
+      LocationRange{..} <- symbolLocation env sym def
+      assertEqual "symbolLocation Path matches" locationRange_filepath path
 
--- | Test that both describeSymbol and resolveSymbol for a SymbolId
+-- | Test that both describeSymbol and symbolLocation for a SymbolId
 -- find the symbol in a given Path.
 testDescribeSymbolMatchesPath
   :: SymbolId -> Path -> Getter -> Test
@@ -74,8 +74,8 @@ testDescribeSymbolMatchesPath sym@(SymbolId name) path get =
       assertEqual "describeSymbol Path matches"
         (symbolPath_filepath symbolDescription_location)
         path
-      LocationRange{..} <- resolveSymbolRange env sym def
-      assertEqual "resolveSymbol Path matches" locationRange_filepath path
+      LocationRange{..} <- symbolLocation env sym def
+      assertEqual "symbolLocation Path matches" locationRange_filepath path
 
 -- | Test that both describeSymbol has expected comment
 testDescribeSymbolComments

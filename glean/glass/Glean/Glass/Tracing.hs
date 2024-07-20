@@ -83,8 +83,8 @@ glassTraceEvent (GlassTraceWithId tid (TraceCommand cmd)) = case cmd of
     ( "FindReferences", tid, json $ toEncoding r)
   Glass.FindReferenceRanges r opts ->
     ("FindReferenceRanges", tid, json $ toEncoding r)
-  Glass.ResolveSymbolRange r opts ->
-    ("ResolveSymbolRange", tid, json $ toEncoding r)
+  Glass.SymbolLocation r opts ->
+    ("SymbolLocation", tid, json $ toEncoding r)
   Glass.DescribeSymbol r opts ->
     ("DescribeSymbol", tid, json $ toEncoding r)
   Glass.SearchSymbol r opts ->

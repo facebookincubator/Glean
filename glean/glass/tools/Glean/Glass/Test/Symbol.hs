@@ -84,10 +84,10 @@ main =
 
     case cfgCmd of
       FindLocation -> do
-        let resolveLocation :: SymbolId -> IO LocationRange
-            resolveLocation r =
-              Handle.resolveSymbolRange env r (def :: RequestOptions)
-        forM_ syms $ Text.putStrLn <=< testResolveSymbol resolveLocation
+        let symbolLocation :: SymbolId -> IO LocationRange
+            symbolLocation r =
+              Handle.symbolLocation env r (def :: RequestOptions)
+        forM_ syms $ Text.putStrLn <=< testSymbolLocation symbolLocation
 
       FindReferences -> do
         let findReferences :: SymbolId -> IO [LocationRange]
@@ -121,11 +121,11 @@ testFindReferences handler symbol@(SymbolId name) = do
 
     return $ title : body
 
-testResolveSymbol
+testSymbolLocation
   :: (SymbolId -> IO LocationRange)
   -> SymbolId
   -> IO Text
-testResolveSymbol handler symbol@(SymbolId name) = do
+testSymbolLocation handler symbol@(SymbolId name) = do
   handle (\(ServerException e) -> return ("FAIL " <> e)) $ do
     res <- runTest handler symbol
     return $ Text.concat

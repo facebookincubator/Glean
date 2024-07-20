@@ -186,11 +186,9 @@ glassHandler env0 cmd =
   FindReferences r opts -> Handler.findReferences env r opts
   FindReferenceRanges r opts -> Handler.findReferenceRanges env r opts
 
-  -- Resolving symbol information
-  ResolveSymbolRange r opts -> Handler.resolveSymbolRange env r opts
-
   -- Symbol info
   DescribeSymbol r opts -> Handler.describeSymbol env r opts
+  SymbolLocation r opts -> Handler.symbolLocation env r opts
 
   -- Search for symbols
   -- by string

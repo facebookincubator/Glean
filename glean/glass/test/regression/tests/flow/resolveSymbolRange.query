@@ -1,4 +1,4 @@
-action: resolveSymbolRange
+action: symbolLocation
 args: "test/js/imports/C"
 
 

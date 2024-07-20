@@ -22,7 +22,7 @@ module Glean.Glass.Handler
   , findReferenceRanges
 
   -- * working with symbol ids
-  , resolveSymbolRange
+  , symbolLocation
   , describeSymbol
 
   -- * searching by string
@@ -30,6 +30,8 @@ module Glean.Glass.Handler
 
   -- ** by relationship
   , searchRelated
+
+  -- ** a large report of all information we know about a symbol
   , searchRelatedNeighborhood
 
   ) where
@@ -214,13 +216,13 @@ findReferenceRanges env@Glass.Env{..} sym opts@RequestOptions{..} =
 
 
 -- | Resolve a symbol identifier to its range-based location in the latest db
-resolveSymbolRange
+symbolLocation
   :: Glass.Env
   -> SymbolId
   -> RequestOptions
   -> IO LocationRange
-resolveSymbolRange env@Glass.Env{..} sym opts = do
-  withSymbol "resolveSymbolRange" env opts sym
+symbolLocation env@Glass.Env{..} sym opts = do
+  withSymbol "symbolLocation" env opts sym
     $ \gleanDBs _dbInfo (repo, lang, toks) ->
       findSymbolLocationRange env GleanBackend{..} repo lang toks
 
