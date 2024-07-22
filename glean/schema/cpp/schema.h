@@ -1761,6 +1761,8 @@ struct Ref;
 
 struct Qux;
 
+struct Predicate_0;
+
 struct NodePair;
 
 struct Node;
@@ -1790,10 +1792,6 @@ struct Expr;
 enum class Enum_;
 
 struct Rec;
-
-struct KitchenSink_1;
-
-struct Predicate_1;
 
 struct EmptyStoredStringPair;
 
@@ -15993,7 +15991,7 @@ struct nothingTest : Predicate<std::tuple<boost::variant<Alt<0, std::tuple<>>, A
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct nothingTest
 
@@ -16052,7 +16050,7 @@ struct ViaStringPair : Predicate<std::tuple<std::string, std::string>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct ViaStringPair
 
@@ -16062,7 +16060,7 @@ struct Unbound2 : Predicate<std::tuple<std::string, std::string>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct Unbound2
 
@@ -16072,7 +16070,7 @@ struct Unbound : Predicate<std::tuple<std::string, std::string>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct Unbound
 
@@ -16082,7 +16080,7 @@ struct TreeToTree : Predicate<Fact<Tree>, Fact<Tree>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct TreeToTree
 
@@ -16092,7 +16090,7 @@ struct Tree : Predicate<std::tuple<Fact<Node>, boost::variant<Alt<0, std::tuple<
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct Tree
 
@@ -16162,7 +16160,7 @@ struct StringPairBox : Predicate<std::tuple<Fact<StringPair>>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct StringPairBox
 
@@ -16172,7 +16170,7 @@ struct StringPair : Predicate<std::tuple<std::string, std::string>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct StringPair
 
@@ -16182,7 +16180,7 @@ struct StoredRevStringPairWithRev : Predicate<std::tuple<std::string, std::strin
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct StoredRevStringPairWithRev
 
@@ -16192,7 +16190,7 @@ struct StoredRevStringPairWithA : Predicate<std::tuple<std::string, std::string>
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct StoredRevStringPairWithA
 
@@ -16202,7 +16200,7 @@ struct StoredRevStringPairSum : Predicate<std::tuple<std::string, std::string>> 
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct StoredRevStringPairSum
 
@@ -16212,7 +16210,7 @@ struct StoredRevStringPair : Predicate<std::tuple<std::string, std::string>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct StoredRevStringPair
 
@@ -16222,7 +16220,7 @@ struct StoredDualStringPair : Predicate<std::tuple<Fact<StringPair>, Fact<String
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct StoredDualStringPair
 
@@ -16232,7 +16230,7 @@ struct SkipRevEdge : Predicate<std::tuple<Fact<Node>, Fact<Node>>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct SkipRevEdge
 
@@ -16242,7 +16240,7 @@ struct SameString : Predicate<std::tuple<std::string, std::string>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct SameString
 
@@ -16252,7 +16250,7 @@ struct RevStringPairs : Predicate<std::tuple<std::string, Fact<RevStringPair>>> 
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct RevStringPairs
 
@@ -16262,7 +16260,7 @@ struct RevStringPairRec : Predicate<std::tuple<std::string, std::string>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct RevStringPairRec
 
@@ -16272,7 +16270,7 @@ struct RevStringPair : Predicate<std::tuple<std::string, std::string>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct RevStringPair
 
@@ -16282,7 +16280,7 @@ struct RevRevStringPair : Predicate<std::tuple<std::string, std::string>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct RevRevStringPair
 
@@ -16292,7 +16290,7 @@ struct RevEdge : Predicate<std::tuple<Fact<Node>, Fact<Node>>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct RevEdge
 
@@ -16302,7 +16300,7 @@ struct ReflStringPair : Predicate<std::string> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct ReflStringPair
 
@@ -16312,7 +16310,7 @@ struct RefRef : Predicate<Fact<Ref>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct RefRef
 
@@ -16322,7 +16320,7 @@ struct Ref : Predicate<Fact<Predicate_>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct Ref
 
@@ -16332,9 +16330,19 @@ struct Qux : Predicate<std::string> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct Qux
+
+struct Predicate_0 : Predicate<std::string> {
+  static const char* GLEAN_name() {
+    return "glean.test.Predicate";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 0;
+  }
+}; // struct Predicate_0
 
 struct NodePair : Predicate<std::tuple<Fact<Node>, Fact<Node>>> {
   static const char* GLEAN_name() {
@@ -16342,7 +16350,7 @@ struct NodePair : Predicate<std::tuple<Fact<Node>, Fact<Node>>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct NodePair
 
@@ -16352,7 +16360,7 @@ struct Node : Predicate<std::tuple<std::string>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct Node
 
@@ -16362,7 +16370,7 @@ struct Name : Predicate<std::string> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct Name
 
@@ -16372,7 +16380,7 @@ struct MatchOneAlt : Predicate<std::tuple<Sum_, uint64_t>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct MatchOneAlt
 
@@ -16382,7 +16390,7 @@ struct LeftOr2 : Predicate<std::tuple<std::string, uint64_t>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct LeftOr2
 
@@ -16392,7 +16400,7 @@ struct LeftOr : Predicate<std::tuple<std::string, uint64_t>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct LeftOr
 
@@ -16402,7 +16410,7 @@ struct KeyValue : Predicate<std::tuple<std::string, uint64_t>, std::tuple<uint64
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct KeyValue
 
@@ -16412,7 +16420,7 @@ struct IsThree : Predicate<uint64_t> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct IsThree
 
@@ -16422,7 +16430,7 @@ struct IsParent : Predicate<Fact<Node>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct IsParent
 
@@ -16432,7 +16440,7 @@ struct IsGlean : Predicate<std::string> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct IsGlean
 
@@ -16442,7 +16450,7 @@ struct FooToFoo : Predicate<Fact<Foo>, Fact<Foo>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct FooToFoo
 
@@ -16452,7 +16460,7 @@ struct Foo : Predicate<std::string, Fact<Bar>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct Foo
 
@@ -16462,7 +16470,7 @@ struct Expr : Predicate<boost::variant<Alt<0, Fact<Name>>, Alt<1, uint64_t>, Alt
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct Expr
 
@@ -16535,84 +16543,13 @@ struct Rec {
   }
 }; // struct Rec
 
-} // namespace Test
-
-} // namespace Glean
-
-} // namespace schema
-
-template<> struct Repr_<facebook::glean::cpp::schema::Glean::Test::KitchenSink_1> {
-  using Type = Tuple<Byte, Nat, Array<Byte>, Array<Nat>, Tuple<Byte, Nat>, Sum<Byte, Nat>, Repr<facebook::glean::cpp::schema::Glean::Test::Rec>, Repr<facebook::glean::cpp::schema::Glean::Test::Sum_>, Repr<facebook::glean::cpp::schema::Glean::Test::Enum_>, facebook::glean::cpp::schema::Sys::Blob, Maybe<Tuple<>>, Bool, String>;
-};
-
-
-namespace schema {
-
-namespace Glean {
-
-namespace Test {
-
-struct KitchenSink_1 {
-  uint8_t byt;
-  uint64_t nat;
-  std::vector<uint8_t> array_of_byte;
-  std::vector<uint64_t> array_of_nat;
-  std::tuple<uint8_t, uint64_t> record_;
-  boost::variant<Alt<0, uint8_t>, Alt<1, uint64_t>> sum_;
-  Rec named_record_;
-  Sum_ named_sum_;
-  Enum_ named_enum_;
-  Fact<facebook::glean::cpp::schema::Sys::Blob> pred;
-  boost::variant<Alt<0, std::tuple<>>, Alt<1, std::tuple<>>> maybe_;
-  bool bool_;
-  std::string string_;
-
-  bool operator==(const KitchenSink_1& other) const {
-    return std::tie(byt,nat,array_of_byte,array_of_nat,record_,sum_,named_record_,named_sum_,named_enum_,pred,maybe_,bool_,string_)
-             == std::tie(other.byt,other.nat,other.array_of_byte,other.array_of_nat,other.record_,other.sum_,other.named_record_,other.named_sum_,other.named_enum_,other.pred,other.maybe_,other.bool_,other.string_);
-  }
-  bool operator!=(const KitchenSink_1& other) const {
-    return std::tie(byt,nat,array_of_byte,array_of_nat,record_,sum_,named_record_,named_sum_,named_enum_,pred,maybe_,bool_,string_)
-             != std::tie(other.byt,other.nat,other.array_of_byte,other.array_of_nat,other.record_,other.sum_,other.named_record_,other.named_sum_,other.named_enum_,other.pred,other.maybe_,other.bool_,other.string_);
-  }
-  bool operator<(const KitchenSink_1& other) const {
-    return std::tie(byt,nat,array_of_byte,array_of_nat,record_,sum_,named_record_,named_sum_,named_enum_,pred,maybe_,bool_,string_)
-             < std::tie(other.byt,other.nat,other.array_of_byte,other.array_of_nat,other.record_,other.sum_,other.named_record_,other.named_sum_,other.named_enum_,other.pred,other.maybe_,other.bool_,other.string_);
-  }
-  bool operator<=(const KitchenSink_1& other) const {
-    return std::tie(byt,nat,array_of_byte,array_of_nat,record_,sum_,named_record_,named_sum_,named_enum_,pred,maybe_,bool_,string_)
-             <= std::tie(other.byt,other.nat,other.array_of_byte,other.array_of_nat,other.record_,other.sum_,other.named_record_,other.named_sum_,other.named_enum_,other.pred,other.maybe_,other.bool_,other.string_);
-  }
-  bool operator>(const KitchenSink_1& other) const {
-    return std::tie(byt,nat,array_of_byte,array_of_nat,record_,sum_,named_record_,named_sum_,named_enum_,pred,maybe_,bool_,string_)
-             > std::tie(other.byt,other.nat,other.array_of_byte,other.array_of_nat,other.record_,other.sum_,other.named_record_,other.named_sum_,other.named_enum_,other.pred,other.maybe_,other.bool_,other.string_);
-  }
-  bool operator>=(const KitchenSink_1& other) const {
-    return std::tie(byt,nat,array_of_byte,array_of_nat,record_,sum_,named_record_,named_sum_,named_enum_,pred,maybe_,bool_,string_)
-             >= std::tie(other.byt,other.nat,other.array_of_byte,other.array_of_nat,other.record_,other.sum_,other.named_record_,other.named_sum_,other.named_enum_,other.pred,other.maybe_,other.bool_,other.string_);
-  }
-  void outputRepr(Output<Repr<KitchenSink_1>> out) const {
-    outputValue(out, std::make_tuple(byt, nat, array_of_byte, array_of_nat, record_, sum_, named_record_, named_sum_, named_enum_, pred, maybe_, bool_, string_));
-  }
-}; // struct KitchenSink_1
-
-struct Predicate_1 : Predicate<KitchenSink_1> {
-  static const char* GLEAN_name() {
-    return "glean.test.Predicate";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 1;
-  }
-}; // struct Predicate_1
-
 struct EmptyStoredStringPair : Predicate<std::tuple<std::string, std::string>> {
   static const char* GLEAN_name() {
     return "glean.test.EmptyStoredStringPair";
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct EmptyStoredStringPair
 
@@ -16622,7 +16559,7 @@ struct EdgeWrapper : Predicate<std::tuple<Fact<Edge>>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct EdgeWrapper
 
@@ -16689,7 +16626,7 @@ struct Edge : Predicate<std::tuple<Fact<Node>, Fact<Node>>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct Edge
 
@@ -16699,7 +16636,7 @@ struct DualStringPair : Predicate<std::tuple<Fact<StringPair>, Fact<StringPair>>
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct DualStringPair
 
@@ -16709,7 +16646,7 @@ struct DerivedKeyValue2 : Predicate<std::tuple<std::string, uint64_t>, std::tupl
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct DerivedKeyValue2
 
@@ -16719,7 +16656,7 @@ struct DerivedKeyValue : Predicate<std::tuple<std::string, uint64_t, uint64_t, s
   }
 
   static constexpr size_t GLEAN_version() {
-     return 1;
+     return 6;
   }
 }; // struct DerivedKeyValue
 
@@ -16729,7 +16666,7 @@ struct Bar : Predicate<std::string, Fact<Qux>> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct Bar
 
@@ -16826,7 +16763,7 @@ struct Predicate_ : Predicate<KitchenSink> {
   }
 
   static constexpr size_t GLEAN_version() {
-     return 5;
+     return 6;
   }
 }; // struct Predicate_
 
@@ -31299,20 +31236,20 @@ template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::ReflS
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::RefRef> { static constexpr size_t value = 605; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::Ref> { static constexpr size_t value = 606; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::Qux> { static constexpr size_t value = 607; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::NodePair> { static constexpr size_t value = 608; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::Node> { static constexpr size_t value = 609; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::Name> { static constexpr size_t value = 610; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::MatchOneAlt> { static constexpr size_t value = 611; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::LeftOr2> { static constexpr size_t value = 612; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::LeftOr> { static constexpr size_t value = 613; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::KeyValue> { static constexpr size_t value = 614; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::IsThree> { static constexpr size_t value = 615; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::IsParent> { static constexpr size_t value = 616; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::IsGlean> { static constexpr size_t value = 617; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::FooToFoo> { static constexpr size_t value = 618; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::Foo> { static constexpr size_t value = 619; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::Expr> { static constexpr size_t value = 620; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::Predicate_1> { static constexpr size_t value = 621; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::Predicate_0> { static constexpr size_t value = 608; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::NodePair> { static constexpr size_t value = 609; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::Node> { static constexpr size_t value = 610; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::Name> { static constexpr size_t value = 611; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::MatchOneAlt> { static constexpr size_t value = 612; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::LeftOr2> { static constexpr size_t value = 613; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::LeftOr> { static constexpr size_t value = 614; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::KeyValue> { static constexpr size_t value = 615; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::IsThree> { static constexpr size_t value = 616; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::IsParent> { static constexpr size_t value = 617; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::IsGlean> { static constexpr size_t value = 618; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::FooToFoo> { static constexpr size_t value = 619; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::Foo> { static constexpr size_t value = 620; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::Expr> { static constexpr size_t value = 621; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::EmptyStoredStringPair> { static constexpr size_t value = 622; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::EdgeWrapper> { static constexpr size_t value = 623; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Glean::Test::Edge> { static constexpr size_t value = 624; };
@@ -32600,20 +32537,20 @@ template<> struct SCHEMA::predicate<604> { using type = facebook::glean::cpp::sc
 template<> struct SCHEMA::predicate<605> { using type = facebook::glean::cpp::schema::Glean::Test::RefRef; };
 template<> struct SCHEMA::predicate<606> { using type = facebook::glean::cpp::schema::Glean::Test::Ref; };
 template<> struct SCHEMA::predicate<607> { using type = facebook::glean::cpp::schema::Glean::Test::Qux; };
-template<> struct SCHEMA::predicate<608> { using type = facebook::glean::cpp::schema::Glean::Test::NodePair; };
-template<> struct SCHEMA::predicate<609> { using type = facebook::glean::cpp::schema::Glean::Test::Node; };
-template<> struct SCHEMA::predicate<610> { using type = facebook::glean::cpp::schema::Glean::Test::Name; };
-template<> struct SCHEMA::predicate<611> { using type = facebook::glean::cpp::schema::Glean::Test::MatchOneAlt; };
-template<> struct SCHEMA::predicate<612> { using type = facebook::glean::cpp::schema::Glean::Test::LeftOr2; };
-template<> struct SCHEMA::predicate<613> { using type = facebook::glean::cpp::schema::Glean::Test::LeftOr; };
-template<> struct SCHEMA::predicate<614> { using type = facebook::glean::cpp::schema::Glean::Test::KeyValue; };
-template<> struct SCHEMA::predicate<615> { using type = facebook::glean::cpp::schema::Glean::Test::IsThree; };
-template<> struct SCHEMA::predicate<616> { using type = facebook::glean::cpp::schema::Glean::Test::IsParent; };
-template<> struct SCHEMA::predicate<617> { using type = facebook::glean::cpp::schema::Glean::Test::IsGlean; };
-template<> struct SCHEMA::predicate<618> { using type = facebook::glean::cpp::schema::Glean::Test::FooToFoo; };
-template<> struct SCHEMA::predicate<619> { using type = facebook::glean::cpp::schema::Glean::Test::Foo; };
-template<> struct SCHEMA::predicate<620> { using type = facebook::glean::cpp::schema::Glean::Test::Expr; };
-template<> struct SCHEMA::predicate<621> { using type = facebook::glean::cpp::schema::Glean::Test::Predicate_1; };
+template<> struct SCHEMA::predicate<608> { using type = facebook::glean::cpp::schema::Glean::Test::Predicate_0; };
+template<> struct SCHEMA::predicate<609> { using type = facebook::glean::cpp::schema::Glean::Test::NodePair; };
+template<> struct SCHEMA::predicate<610> { using type = facebook::glean::cpp::schema::Glean::Test::Node; };
+template<> struct SCHEMA::predicate<611> { using type = facebook::glean::cpp::schema::Glean::Test::Name; };
+template<> struct SCHEMA::predicate<612> { using type = facebook::glean::cpp::schema::Glean::Test::MatchOneAlt; };
+template<> struct SCHEMA::predicate<613> { using type = facebook::glean::cpp::schema::Glean::Test::LeftOr2; };
+template<> struct SCHEMA::predicate<614> { using type = facebook::glean::cpp::schema::Glean::Test::LeftOr; };
+template<> struct SCHEMA::predicate<615> { using type = facebook::glean::cpp::schema::Glean::Test::KeyValue; };
+template<> struct SCHEMA::predicate<616> { using type = facebook::glean::cpp::schema::Glean::Test::IsThree; };
+template<> struct SCHEMA::predicate<617> { using type = facebook::glean::cpp::schema::Glean::Test::IsParent; };
+template<> struct SCHEMA::predicate<618> { using type = facebook::glean::cpp::schema::Glean::Test::IsGlean; };
+template<> struct SCHEMA::predicate<619> { using type = facebook::glean::cpp::schema::Glean::Test::FooToFoo; };
+template<> struct SCHEMA::predicate<620> { using type = facebook::glean::cpp::schema::Glean::Test::Foo; };
+template<> struct SCHEMA::predicate<621> { using type = facebook::glean::cpp::schema::Glean::Test::Expr; };
 template<> struct SCHEMA::predicate<622> { using type = facebook::glean::cpp::schema::Glean::Test::EmptyStoredStringPair; };
 template<> struct SCHEMA::predicate<623> { using type = facebook::glean::cpp::schema::Glean::Test::EdgeWrapper; };
 template<> struct SCHEMA::predicate<624> { using type = facebook::glean::cpp::schema::Glean::Test::Edge; };

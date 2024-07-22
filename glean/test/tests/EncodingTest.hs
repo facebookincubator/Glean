@@ -102,7 +102,7 @@ mkE = do
 
   -- glean.test.Predicate has glean.test.KitchenSink as its key
   Right testPred <- return $ lookupPredicateSourceRef
-    (Schema.SourceRef "glean.test.Predicate" (Just 5))
+    (Schema.SourceRef "glean.test.Predicate" Nothing)
     LatestSchemaAll
     dbSchema
 

@@ -1,7 +1,16 @@
-# Copyright (c) Facebook, Inc. and its affiliates.
+# Copyright (c) Facebook, Inc. and its affiliates
 
-schema glean.test.1 {
+# An old version, just so that we can test versions
+schema glean.test.0 {
+
+predicate Predicate : string
+
+}
+
+schema glean.test.6 : glean.test.0 {
 import sys.1
+import code.cxx.4   # for Entity
+import pp1.1        # for Entity
 
 # Named enumerated type for testing
 type Enum_ = enum { red | green | blue }
@@ -25,26 +34,6 @@ type ArrayByte = [byte]
 type ArrayNat = [nat]
 type ArrayBool = [bool]
 type ArrayString = [string]
-
-predicate Predicate : KitchenSink
-
-# Type for testing all the different Glean types
-type KitchenSink =
-  {
-    byt : byte,
-    nat : nat,
-    array_of_byte : [byte],
-    array_of_nat : [nat],
-    record_ : { a : byte, b : nat },
-    sum_ : { c : byte | d : nat },
-    named_record_ : Rec,
-    named_sum_ : Sum,
-    named_enum_ : Enum_,
-    pred : sys.Blob,
-    maybe_ : maybe {},
-    bool_ : bool,
-    string_ : string,
-  }
 
 # A pair of strings
 predicate StringPair : { fst : string, snd : string }
@@ -189,17 +178,6 @@ predicate DerivedKeyValue2 :
   { kstring : string, knat : nat } -> { vnat : nat, vstring : string }
   {KS,KN} -> {VN,VS} where DerivedKeyValue {KS,KN,VN,VS}
 
-} # glean.test.1
-
-
-schema glean.test.4 : glean.test.1 {
-}
-
-schema glean.test.5 : glean.test.1 {
-import sys.1
-import code.cxx.4   # for Entity
-import pp1.1        # for Entity
-
 # Type for testing all the different Glean types
 type KitchenSink =
   {
@@ -295,3 +273,4 @@ predicate Qux : string
 predicate FooToFoo : Foo -> Foo
 
 }
+

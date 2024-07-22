@@ -189,8 +189,9 @@ reorderTest = dbTestCase $ \env repo -> do
           { just = { { label = "d" }, _, _ } }
         }
     |]
+  print stats
   assertEqual "reorder nested 1" (Just 1) $
-    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 6) lookupPid stats
 
   -- Inner match is in a prefix position but irrefutable: do it last
   (_, stats) <- queryStats env repo $ angleData @Text
@@ -198,7 +199,7 @@ reorderTest = dbTestCase $ \env repo -> do
       X where glean.test.Tree { { label = "b" }, { just = { X, _, _ } }, _ }
     |]
   assertEqual "reorder nested 2" Nothing $
-    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 6) lookupPid stats
 
   -- Inner match is in a prefix position and refutable: do it first
   (_, stats) <- queryStats env repo $ angleData @Text
@@ -212,7 +213,7 @@ reorderTest = dbTestCase $ \env repo -> do
     |]
   print stats
   assertEqual "reorder nested 3" Nothing $
-    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 6) lookupPid stats
 
   -- inner match is in a prefix position (conditional on L being
   -- bound, which it is), and refutable, so do it first.
@@ -226,7 +227,7 @@ reorderTest = dbTestCase $ \env repo -> do
            { just = { { label = "d" }, _, _ } } }
     |]
   assertEqual "reorder nested 4" (Just 1) $
-    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 6) lookupPid stats
 
   -- point match in a non-prefix position: do it first
   (_, stats) <- queryStats env repo $ angle @Glean.Test.Predicate
@@ -247,7 +248,7 @@ reorderTest = dbTestCase $ \env repo -> do
         }
     |]
   assertEqual "reorder nested 6" (Just 1) $
-    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 6) lookupPid stats
 
   -- Nested matches on the rhs of a lookup should become lookups
   (_, stats) <- queryStats env repo $ angle @Glean.Test.Tree
@@ -261,7 +262,7 @@ reorderTest = dbTestCase $ \env repo -> do
           # and a lookup is always cheaper than a search.
     |]
   assertEqual "reorder nested 7" (Just 1) $
-    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 6) lookupPid stats
 
   -- Ordering where the nested query is in a prefix position of its
   -- parent and not a point query.
@@ -273,7 +274,7 @@ reorderTest = dbTestCase $ \env repo -> do
           # then the outer query becomes a prefix match.
     |]
   assertEqual "reorder nested 8" (Just 1) $
-    factsSearched (PredicateRef "glean.test.Edge" 5) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Edge" 6) lookupPid stats
 
   -- negations are moved after the binding of the variables it mentions.
   r <- runQuery_ env repo $ angleData @Text
@@ -351,7 +352,7 @@ reorderTest = dbTestCase $ \env repo -> do
         }
     |]
   assertEqual "reorder nested 9" (Just 1) $
-    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 6) lookupPid stats
 
   -- Test for a bug in reordering where we were erroneously hoising
   -- statements that couldn't resolve, because we ignored wildcards
@@ -363,7 +364,7 @@ reorderTest = dbTestCase $ \env repo -> do
         glean.test.Tree X
     |]
   assertEqual "reorder nested 10" (Just 14) $
-    factsSearched (PredicateRef "glean.test.Tree" 5) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Tree" 6) lookupPid stats
 
 angleQueryOptions :: Test
 angleQueryOptions = dbTestCase $ \env repo -> do
@@ -423,7 +424,7 @@ fullScansTest = TestList $
             glean.test.Edge { N, _ };
         |]
       assertEqual "full scans"
-        [PredicateRef "glean.test.Node" 5 ]
+        [PredicateRef "glean.test.Node" 6 ]
         (userQueryStats_full_scans stats)
   , TestLabel "multiple full scans" $ TestCase $ withTestDB [] $ \env repo -> do
       (_, Just stats) <- queryStats env repo $ angleData @Glean.Test.Edge
@@ -432,8 +433,8 @@ fullScansTest = TestList $
             B = glean.test.Node _;
         |]
       assertEqual "full scans"
-        [ PredicateRef "glean.test.Node" 5
-        , PredicateRef "glean.test.Node" 5
+        [ PredicateRef "glean.test.Node" 6
+        , PredicateRef "glean.test.Node" 6
         ]
         (userQueryStats_full_scans stats)
   ]

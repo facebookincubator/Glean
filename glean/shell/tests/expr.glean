@@ -1,6 +1,6 @@
 [
 {
-   "predicate": "glean.test.Expr",
+   "predicate":  { "name" : "glean.test.Expr", "version": 6 },
    "facts" : [ {
       "key": {
         "lam": {
@@ -20,7 +20,7 @@
    ]
 },
 {
-    "predicate":  { "name" : "glean.test.Expr", "version": 1 },
+    "predicate":  { "name" : "glean.test.Expr", "version": 6 },
     "facts" : []
 }
 ]

@@ -194,7 +194,7 @@ class GleanShellListDBs(GleanShellTest):
 class GleanShellStatistics(GleanShellTest):
     def test(self):
         output = self.shellCommand(":statistics")
-        self.assertIsNotNone(re.search("glean.test.Predicate.1\r\n *count: 2", output))
+        self.assertIsNotNone(re.search("glean.test.Predicate.6\r\n *count: 4", output))
         self.assertIsNotNone(re.search("sys.Blob.1\r\n *count: 2", output))
         self.assertIsNotNone(
             re.search("Total: \\d+ facts \\(\\d+\\.\\d+ kiB\\)", output)
@@ -218,7 +218,7 @@ class GleanShellLoad(GleanShellTest):
         self.assertIn("test/0", output)
 
         output = self.shellCommand(":stat", prompt=prompt)
-        self.assertIsNotNone(re.search("glean.test.Expr.1\r\n *count: 6", output))
+        self.assertIsNotNone(re.search("glean.test.Expr.6\r\n *count: 6", output))
 
         output = self.shellCommand(
             'glean.test.Expr { lam = { var_ = "x" } }', prompt=prompt
@@ -278,9 +278,9 @@ class GleanShellCompletion(GleanShellTest):
     def test(self):
         # test completing the argument of :schema
         output = self.shellCommand(":schema glean.test.Ex\t")
-        self.assertIsNotNone(re.search("predicate glean.test.Expr.1 :", output))
+        self.assertIsNotNone(re.search("predicate glean.test.Expr.6 :", output))
         # test completing a predicate name in a query
-        output = self.shellCommand('glea\tP\t { string_ = "abba" }')
+        output = self.shellCommand('glea\tP\t { string_ = "acca" }')
         # test that we completed to the correct thing
         self.assertIn("1 results", output)
 
@@ -296,14 +296,14 @@ class GleanShellAngle(GleanShellTest):
 
         # A query with a pattern
         output = self.shellCommand(
-            "glean.test.Predicate.1 { named_sum_ = { tue = 37 }}"
+            "glean.test.Predicate.6 { named_sum_ = { tue = 37 }}"
         )
         self.assertIn("1 results", output)
         self.assertIn('"byt": 33', output)
 
         # Match and recursively expand
         output = self.shellCommand(
-            'B = sys.Blob "bye"; glean.test.Predicate.5 { pred = B }'
+            'B = sys.Blob "bye"; glean.test.Predicate { pred = B }'
         )
         self.assertIn("2 results", output)
 
@@ -336,7 +336,7 @@ class GleanShellQueryProfiling(GleanShellTest):
             'glean.test.Predicate { pred = "hello" } | '
             + "glean.test.Predicate { nat = 42 }"
         )
-        self.assertIn("glean.test.Predicate.5 : 8", output)
+        self.assertIn("glean.test.Predicate.6 : 8", output)
         self.assertIn("sys.Blob.1 : 1", output)
 
 

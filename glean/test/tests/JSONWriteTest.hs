@@ -133,15 +133,17 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
   -- test a more interesting value:
   let
     batches =
-      [ mkBatch (getName (Proxy @Glean.Test.Predicate_1))
-        [ serializeJSON $ Glean.Test.Predicate_1 1027 $
+      [ mkBatch (getName (Proxy @Glean.Test.Predicate))
+        [ serializeJSON $ Glean.Test.Predicate 1027 $
+            let blob = Sys.Blob 1028 (Just "blobby") in
             Just $ kitchenSink1 {
-              Glean.Test.kitchenSink_1_pred = Sys.Blob 1028 (Just "blobby") }
+              Glean.Test.kitchenSink_pred = blob,
+              Glean.Test.kitchenSink_sum_ = Glean.Test.KitchenSink_sum__d blob }
         ]
       ]
   _ <- syncWriteJsonBatch env repo batches options'
   results <- runQuery_ env repo $ query $
-    predicate @Glean.Test.Predicate_1 $
+    predicate @Glean.Test.Predicate $
       rec $ field @"pred" (byteArray "blobby") end
   case results of
     [_] -> return ()

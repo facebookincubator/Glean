@@ -117,7 +117,7 @@ optTest = dbTestCase $ \env repo -> do
         }
     |]
   assertEqual "opt 4" (Just 4) $
-    factsSearched (PredicateRef "glean.test.Predicate" 5) lookupPid stats
+    factsSearched (PredicateRef "glean.test.Predicate" 6) lookupPid stats
 
   -- test for optimising away unmatchable alternative without
   -- removing matchable ones
@@ -140,7 +140,7 @@ optTest = dbTestCase $ \env repo -> do
   -- we can tell the first alternative was optimised away by counting
   -- the number of facts searched for glean.test.StringPair.
   assertEqual "optimise or 1" (Just 1) $
-    factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats
+    factsSearched (PredicateRef "glean.test.StringPair" 6) lookupPid stats
 
   -- Test that unification works properly with literal fact IDs
   result : _ <- runQuery_ env repo (allFacts :: Query Glean.Test.StringPair)
@@ -156,7 +156,7 @@ optTest = dbTestCase $ \env repo -> do
         !(1 = 1);
     |]
   assertEqual "opt - negation" Nothing $
-    factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats
+    factsSearched (PredicateRef "glean.test.StringPair" 6) lookupPid stats
 
   -- Test for unification inside negation
   (_, stats) <- queryStats env repo $ angleData @Nat
@@ -165,8 +165,8 @@ optTest = dbTestCase $ \env repo -> do
         !(!(glean.test.Node { label = X }; X = "g"..));
         A = 1;
     |]
-  assertEqual "opt - negation 2" Nothing $
-    factsSearched (PredicateRef "glean.test.Node" 1) lookupPid stats
+  assertEqual "opt - negation 2" (Just 1) $
+    factsSearched (PredicateRef "glean.test.Node" 6) lookupPid stats
 
   -- a false condition in an if pattern gets optimised away.
   (_, stats) <- queryStats env repo $ angleData @Nat
@@ -176,7 +176,7 @@ optTest = dbTestCase $ \env repo -> do
         else 1
      |]
   assertEqual "optimise if condition" Nothing $
-    factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats
+    factsSearched (PredicateRef "glean.test.StringPair" 6) lookupPid stats
 
   -- we should recognise that the `cxx1.Name _` statement only checks
   -- whether there is any cxx1.Name fact in the db and stop after finding
@@ -196,7 +196,7 @@ optTest = dbTestCase $ \env repo -> do
         X = glean.test.StringPair { A, B };
     |]
   assertEqual "optimise multiple generators" (Just 1) $
-    factsSearched (PredicateRef "glean.test.StringPair" 1) lookupPid stats
+    factsSearched (PredicateRef "glean.test.StringPair" 6) lookupPid stats
 
   -- Check that the optimiser doesn't get too excited and eliminate generators
   -- that don't bind any variables. These can still fail if they don't match

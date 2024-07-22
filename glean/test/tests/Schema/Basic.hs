@@ -70,7 +70,7 @@ mergeSchemaTest = TestCase $
     appendFile newSchemaFile
       [s|
         schema mergetest.1 {
-          import glean.test.5
+          import glean.test.6
           # pick out the nat field from a glean.test.Predicate
           predicate JustNat : { predicate : glean.test.Predicate, nat : nat }
             {P,N} where P = glean.test.Predicate { nat = N }

@@ -160,20 +160,24 @@ angleDSL = dbTestCase $ \env repo -> do
   r <- runQuery_ env repo $
         query $ var $ \x -> zipp x x `where_` [
           stmt $
-            predicate @Glean.Test.Predicate_1 (
-                rec $ field @"array_of_nat" x
+            predicate @Glean.Test.Predicate (
+                rec $
+                  field @"nat" (nat 42) $
+                  field @"array_of_nat" x
                 end)
         ]
   print r
-  assertEqual "angle - DSL zip" [[],[(Nat 99, Nat 99),(Nat 98, Nat 98)]] r
+  assertEqual "angle - DSL zip" [[(Nat 1, Nat 1),(Nat 2, Nat 2)]] r
 
   r <- runQuery_ env repo $
         query $ var $ \x -> conc x x `where_` [
           stmt $
-            predicate @Glean.Test.Predicate_1 (
-                rec $ field @"array_of_nat" x
+            predicate @Glean.Test.Predicate (
+                rec $
+                  field @"nat" (nat 42) $
+                  field @"array_of_nat" x
                 end
             )
         ]
   print r
-  assertEqual "concat" [[],[Nat 99, Nat 98, Nat 99, Nat 98]] r
+  assertEqual "concat" [[Nat 1, Nat 2, Nat 1, Nat 2]] r

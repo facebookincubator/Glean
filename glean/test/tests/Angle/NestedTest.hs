@@ -28,11 +28,11 @@ main = withUnitTest $ testRunner $ TestList
 -- nested patterns
 angleNested :: (forall a . Query a -> Query a) -> Test
 angleNested modify = dbTestCase $ \env repo -> do
-  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate_1 $
+  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate $
     [s|
-      glean.test.Predicate.1 { pred = "hello" }
+      glean.test.Predicate { pred = "hello" }
     |]
-  assertEqual "angle - nested 0" 1 (length results)
+  assertEqual "angle - nested 0" 2 (length results)
 
   results <- runQuery_ env repo $ modify $ angle @Cxx.FunctionName
     [s|

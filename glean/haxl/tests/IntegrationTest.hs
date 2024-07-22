@@ -67,7 +67,7 @@ getTest env repo = TestLabel "GetRec" $
 
     rs <- runHaxl e $ mapM Glean.getKey stubs
     assertBool "Glean.getKey" $
-      sort (map (fromNat . Glean.Test.kitchenSink_nat) rs) == [ 0, 0, 0, 42 ] &&
+      sort (map (fromNat . Glean.Test.kitchenSink_nat) rs) == [ 0, 0, 42, 43 ] &&
       all (isNothing . Sys.blob_key . Glean.Test.kitchenSink_pred) rs
 
     rs <- runHaxl e $ mapM Glean.getKeyRec stubs

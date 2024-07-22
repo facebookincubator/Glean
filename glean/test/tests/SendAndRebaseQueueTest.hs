@@ -151,7 +151,7 @@ sendAndRebaseQueueTest = TestCase $
     mkReferencingBase env repo schema = do
       id_ <- baseNodeId env repo
       let id = show $ fromFid $ idOf id_
-      mkBatch schema (PredicateRef "glean.test.Edge" 5)
+      mkBatch schema (PredicateRef "glean.test.Edge" 6)
         [ bs [i| { "key": { "parent": #{id}, "child": #{id} } }|]]
 
     bs = Text.encodeUtf8 . Text.pack

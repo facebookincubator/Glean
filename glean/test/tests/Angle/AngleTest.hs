@@ -44,8 +44,10 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "angleTypeTest" angleTypeTest
   ]
 
-ignorePredK :: Glean.Test.KitchenSink_1 -> Glean.Test.KitchenSink_1
-ignorePredK k = k { Glean.Test.kitchenSink_1_pred = def }
+ignorePredK :: Glean.Test.KitchenSink -> Glean.Test.KitchenSink
+ignorePredK k = k {
+  Glean.Test.kitchenSink_pred = def,
+  Glean.Test.kitchenSink_sum_ = def }
 
 angleTest :: (forall a . Query a -> Query a) -> Test
 angleTest modify = dbTestCase $ \env repo -> do
@@ -77,66 +79,53 @@ angleTest modify = dbTestCase $ \env repo -> do
   assertBool "angle - sys.Blob match all" $ length results == 2
 
   -- match one result of many
-  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate_1
+  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
     [s|
-       glean.test.Predicate.1 { named_sum_ = { tue = 37 } }
+       glean.test.Predicate { named_sum_ = { tue = 37 } }
     |]
   print results
   assertBool "angle - glean.test.Predicate 1" $
     case results of
-      [Glean.Test.Predicate_1{Glean.Test.predicate_1_key = Just k}] ->
+      [Glean.Test.Predicate{Glean.Test.predicate_key = Just k}] ->
         ignorePredK k == ignorePredK kitchenSink1
       _ -> False
 
   -- match all results (two)
-  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate_1
+  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
     [s|
-       glean.test.Predicate.1 _
+       glean.test.Predicate _
     |]
   print results
-  assertBool "angle - glean.test.Predicate 2" $
-    case results of
-      [_, _] -> True
-      _ -> False
+  assertEqual "angle - glean.test.Predicate 2" 4 (length results)
 
   -- match one nested pattern
-  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate_1
+  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
     [s|
       Blob = sys.Blob "hello";
-      glean.test.Predicate.1 { pred = Blob }
+      glean.test.Predicate { pred = Blob }
     |]
   print results
   assertBool "angle - glean.test.Predicate nested pattern" $
-    case results of
-      [f1] | Just key <- Glean.Test.predicate_1_key f1
-        , Sys.blob_id (Glean.Test.kitchenSink_1_pred key) == sysBlobId ->
-          True
-      _ -> False
+    let correct Glean.Test.Predicate { predicate_key = Just key }
+          = Sys.blob_id (Glean.Test.kitchenSink_pred key) == sysBlobId
+        correct _ = False
+    in not (null results) && all correct results
 
   -- match a maybe that's missing
-  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate_1
+  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
     [s|
-      glean.test.Predicate.1 { maybe_ = nothing }
+      glean.test.Predicate { maybe_ = nothing }
     |]
   print results
-  assertBool "angle - maybe = nothing" $
-    case results of
-      [f1] | Just key <- Glean.Test.predicate_1_key f1
-        , Sys.blob_id (Glean.Test.kitchenSink_1_pred key) == sysBlobId ->
-          True
-      _ -> False
+  assertEqual "angle - maybe = nothing" 3 (length results)
 
   -- match a maybe that's present
-  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate_1
+  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
     [s|
-      glean.test.Predicate.1 { maybe_ = { just = _ } }
+      glean.test.Predicate { maybe_ = { just = _ } }
     |]
   print results
-  assertBool "angle - maybe = just" $
-    case results of
-      [f1] | Just key <- Glean.Test.predicate_1_key f1
-        , Sys.blob_id (Glean.Test.kitchenSink_1_pred key) /= sysBlobId -> True
-      _ -> False
+  assertEqual "angle - maybe = just" 1 (length results)
 
   -- match multiple alternatives of a sum type.
   results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
@@ -182,29 +171,24 @@ angleTest modify = dbTestCase $ \env repo -> do
       _ -> False
 
   -- match an array
-  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate_1
+  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
     [s|
-      glean.test.Predicate.1 { array_of_nat = [99,98] }
+      glean.test.Predicate { array_of_nat = [1,2] }
     |]
-  assertBool "angle - array - exact" $
-    case results of
-      [f1] | Just key <- Glean.Test.predicate_1_key f1
-        , Sys.blob_id (Glean.Test.kitchenSink_1_pred key) /= sysBlobId -> True
-      _ -> False
+  assertEqual "angle - array - exact" 1 (length results)
 
   -- match against a string
-  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate_1
+  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
     [s|
-      glean.test.Predicate.1 { string_ = "Hello\u0000world!\u0000" }
+      glean.test.Predicate { string_ = "Hello\u0000world!\u0000" }
     |]
   print results
-  assertBool "angle - string" $
-    length results == 1
+  assertEqual "angle - string" 1 (length results)
 
   -- escaped characters (matches nothing, just testing parsing)
-  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate_1
+  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
     [s|
-      glean.test.Predicate.1 { string_ = "!\\\"#$&'()*+,\n" }
+      glean.test.Predicate { string_ = "!\\\"#$&'()*+,\n" }
     |]
   print results
   assertBool "angle - string - escaped characters" $
@@ -594,15 +578,15 @@ angleTest modify = dbTestCase $ \env repo -> do
     let l = length r in l >= 1 && l <= 4
 
   r <- runQuery_ env repo $ modify $ angleData @[(Nat, Nat)]
-      "prim.zip X X where glean.test.Predicate.1 { array_of_nat = X }"
+      "prim.zip X X where glean.test.Predicate { nat = 42, array_of_nat = X }"
   print r
   assertEqual "zipping - zipping an array with itself"
-    [[], [(Nat 99, Nat 99), (Nat 98, Nat 98)]] r
+    [[(Nat 1, Nat 1), (Nat 2, Nat 2)]] r
 
   r <- runQuery_ env repo $ modify $ angleData @[Nat]
-      "prim.concat X X where glean.test.Predicate.1 { array_of_nat = X }"
+      "prim.concat X X where glean.test.Predicate { nat = 42, array_of_nat = X }"
   assertEqual "concat - concatenating an array with itself"
-    [[], [Nat 99, Nat 98, Nat 99, Nat 98]] r
+    [[Nat 1, Nat 2, Nat 1, Nat 2]] r
 
 
 angleDotTest :: Test
@@ -611,7 +595,7 @@ angleDotTest = dbTestCase $ \env repo -> do
   -- record selection
   r <- runQuery_ env repo $ angleData @Text
     "X.string_ where glean.test.Predicate X; X.nat = 42"
-  assertEqual "dot record" ["acca"] r
+  assertEqual "dot record" ["Hello\0world!\0"] r
 
   -- select from a predicate type
   r <- runQuery_ env repo $ angleData @Text
@@ -621,12 +605,12 @@ angleDotTest = dbTestCase $ \env repo -> do
   -- chain of selections: record, predicate, sum type, record
   r <- runQuery_ env repo $ angleData @Text
     "X.sum_.c?.string_ where glean.test.Predicate X"
-  assertEqual "dot record.sum.record" ["abba", "acca"] r
+  assertEqual "dot record.sum.record" ["Hello\0world!\0", "acca"] r
 
   -- maybe
   r <- runQuery_ env repo $ angleData @Text
     "X.string_ where (X : glean.test.Predicate).maybe_.just?"
-  assertEqual "dot maybe" ["abba", "acca"] r
+  assertEqual "dot maybe" ["Hello\0world!\0"] r
 
   -- error: field not found
   r <- try $ runQuery env repo $ angleData @Text
@@ -923,7 +907,7 @@ angleTypeTest = dbTestCase $ \env repo -> do
     [s|
       Y where X = { nat = Y }; glean.test.Predicate X
     |]
-  assertEqual "angle - inference 1" 2 (length r)
+  assertEqual "angle - inference 1" 3 (length r)
 
   r <- runQuery_ env repo $ angleData @Text
     [s|
@@ -932,14 +916,16 @@ angleTypeTest = dbTestCase $ \env repo -> do
         X = { nat = 0 };
         glean.test.Predicate X
     |]
+  print r
   assertEqual "angle - inference 2" 2 (length r)
 
   r <- runQuery_ env repo $ angleData @Nat
     [s|
-      X.nat where
+        X.nat where
         X : glean.test.Predicate;
-        X.sum_.c?.string_ = "abba"
+        X.sum_.c?.string_ = "acca"
     |]
+  print r
   assertEqual "angle - inference 3" 1 (length r)
 
   r <- runQuery_ env repo $ angle @Glean.Test.Tree

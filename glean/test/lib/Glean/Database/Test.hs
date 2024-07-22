@@ -139,7 +139,7 @@ writeFactsIntoDB
   -> (forall m. NewFact m => m ())
   -> IO ()
 writeFactsIntoDB env repo allPredicates facts = do
-  predicates <- loadPredicates env repo allPredicates
+  !predicates <- loadPredicates env repo allPredicates
   batch <- buildBatch predicates Nothing facts
   void $ syncWriteDatabase env repo batch
 

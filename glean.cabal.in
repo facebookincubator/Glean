@@ -1713,12 +1713,6 @@ common angle-test
         glean:if-glean-hs,
         glean:schema
 
-test-suite angle-test-onemany
-    import: test, angle-test
-    type: exitcode-stdio-1.0
-    main-is: Angle/OneManyTest.hs
-    ghc-options: -main-is Angle.OneManyTest
-
 test-suite angle-test-angle
     import: test, angle-test
     type: exitcode-stdio-1.0

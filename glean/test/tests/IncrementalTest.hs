@@ -619,7 +619,7 @@ externalDerivationTest = TestList
 
       void $ completePredicates env repo $ CompletePredicates_derived $
         CompleteDerivedPredicate $
-        PredicateRef "glean.test.StringPair" 1
+        PredicateRef "glean.test.StringPair" 6
 
       owners <- ownersOf env repo $ query $
         predicate @Glean.Test.StringPair wild
@@ -644,11 +644,11 @@ externalDerivationTest = TestList
 
       void $ completePredicates env repo $ CompletePredicates_derived $
         CompleteDerivedPredicate $
-        PredicateRef "glean.test.StringPair" 1
+        PredicateRef "glean.test.StringPair" 6
 
       void $ completePredicates env repo $ CompletePredicates_derived $
         CompleteDerivedPredicate $
-        PredicateRef "glean.test.Name" 1
+        PredicateRef "glean.test.Name" 6
 
       owners <- ownersOf env repo $ query $
         predicate @Glean.Test.StringPair wild

@@ -46,7 +46,7 @@ angleErrorTests = dbTestCase $ \env repo -> do
 
   -- check that we get an error if there's a version mismatch between
   -- query and call site.
-  r <- try $ runQuery_ env repo $ angle @Glean.Test.Predicate_1
+  r <- try $ runQuery_ env repo $ angle @Glean.Test.Predicate_0
     [s|
       glean.test.Predicate { }
     |]
@@ -56,7 +56,7 @@ angleErrorTests = dbTestCase $ \env repo -> do
       _ -> False
 
   -- type error when using a type annotation on the lhs
-  r <- try $ runQuery_ env repo $ angle @Glean.Test.Predicate_1
+  r <- try $ runQuery_ env repo $ angle @Glean.Test.Predicate_0
     [s|
       P where
       P = glean.test.Predicate { array_of_pred = X };
