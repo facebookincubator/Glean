@@ -169,6 +169,10 @@ instance LogResult LocationRange where
     , Logger.setRepo $ unRepoName locationRange_repository
     ]
 
+instance LogResult SymbolLocation where
+  logResult SymbolLocation{..} = logResult symbolLocation_location
+      <> Logger.setRevisionUsed (coerce symbolLocation_revision)
+
 instance LogResult SymbolDescription where
   logResult SymbolDescription{..} =
     logResult symbolDescription_location <>

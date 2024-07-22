@@ -1,13 +1,16 @@
 [
     "@generated",
     {
-        "filepath": "test.cpp",
-        "range": {
-            "columnBegin": 11,
-            "columnEnd": 19,
-            "lineBegin": 45,
-            "lineEnd": 45
+        "location": {
+            "filepath": "test.cpp",
+            "range": {
+                "columnBegin": 11,
+                "columnEnd": 19,
+                "lineBegin": 45,
+                "lineEnd": 45
+            },
+            "repository": "test"
         },
-        "repository": "test"
+        "revision": "testhash"
     }
 ]

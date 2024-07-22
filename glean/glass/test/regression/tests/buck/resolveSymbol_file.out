@@ -1,13 +1,16 @@
 [
     "@generated",
     {
-        "filepath": "buck_project/toto.c",
-        "range": {
-            "columnBegin": 0,
-            "columnEnd": 0,
-            "lineBegin": 0,
-            "lineEnd": 0
+        "location": {
+            "filepath": "buck_project/toto.c",
+            "range": {
+                "columnBegin": 0,
+                "columnEnd": 0,
+                "lineBegin": 0,
+                "lineEnd": 0
+            },
+            "repository": "test"
         },
-        "repository": "test"
+        "revision": "testhash"
     }
 ]

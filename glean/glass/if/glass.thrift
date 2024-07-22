@@ -84,6 +84,14 @@ struct LocationRange {
   3: Range range (hs.strict);
 }
 
+// A Location associated with a specific revision
+struct SymbolLocation {
+  // Repository, filepath and line / column range
+  1: LocationRange location;
+  // the revision for which the location is defined
+  2: Revision revision;
+}
+
 // Generic request options, supported by most calls
 struct RequestOptions {
   // repo-global preferred revision identifier
@@ -758,7 +766,7 @@ service GlassService extends fb303.FacebookService {
   ) throws (1: ServerException e, 2: GlassException g);
 
   // Return just the symbol's location as efficiently as possible
-  LocationRange symbolLocation(
+  SymbolLocation symbolLocation(
     1: SymbolId symbol,
     2: RequestOptions options,
   ) throws (1: ServerException e, 2: GlassException g);

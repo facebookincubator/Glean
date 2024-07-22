@@ -530,7 +530,6 @@ findLanguages RepoMapping{..} repoName@(RepoName repo) pLang =
       langs = filter (Text.isPrefixOf pLang) allLangs
   in map (\lang -> SymbolId $ repo <> "/" <> lang <> "/") langs
 
-
 -- TODO (T122759515): Get repo revision from db properties
 getRepoHash :: Glean.Repo -> Revision
 getRepoHash repo = Revision (Text.take 40 (Glean.repo_hash repo))

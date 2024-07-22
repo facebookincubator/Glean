@@ -333,6 +333,9 @@ instance (DeterministicResponse a, Ord a) => DeterministicResponse [a] where
 instance DeterministicResponse Range where det = id
 instance DeterministicResponse Location where det = id
 instance DeterministicResponse LocationRange where det = id
+instance DeterministicResponse SymbolLocation where
+  det (SymbolLocation loc _rev) = SymbolLocation (det loc) (Revision "testhash")
+
 instance DeterministicResponse SearchRelatedResult where
   det (SearchRelatedResult xs ys) = -- to edit the desc hash
     SearchRelatedResult (det xs) (det ys)

@@ -1,13 +1,16 @@
 [
     "@generated",
     {
-        "filepath": "www/TopLevel.php",
-        "range": {
-            "columnBegin": 1,
-            "columnEnd": 2,
-            "lineBegin": 16,
-            "lineEnd": 22
+        "location": {
+            "filepath": "www/TopLevel.php",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 2,
+                "lineBegin": 16,
+                "lineEnd": 22
+            },
+            "repository": "test"
         },
-        "repository": "test"
+        "revision": "testhash"
     }
 ]

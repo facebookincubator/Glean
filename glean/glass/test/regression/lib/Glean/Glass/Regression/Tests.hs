@@ -59,7 +59,8 @@ testSymbolLocation sym@(SymbolId name) path get =
   TestLabel (Text.unpack name) $ TestCase $ do
     (backend, _repo) <- get
     withTestEnv backend $ \env -> do
-      LocationRange{..} <- symbolLocation env sym def
+      SymbolLocation{..} <- symbolLocation env sym def
+      let LocationRange{..} = symbolLocation_location
       assertEqual "symbolLocation Path matches" locationRange_filepath path
 
 -- | Test that both describeSymbol and symbolLocation for a SymbolId
@@ -74,7 +75,8 @@ testDescribeSymbolMatchesPath sym@(SymbolId name) path get =
       assertEqual "describeSymbol Path matches"
         (symbolPath_filepath symbolDescription_location)
         path
-      LocationRange{..} <- symbolLocation env sym def
+      SymbolLocation{..} <- symbolLocation env sym def
+      let LocationRange{..} = symbolLocation_location
       assertEqual "symbolLocation Path matches" locationRange_filepath path
 
 -- | Test that both describeSymbol has expected comment

@@ -84,7 +84,7 @@ main =
 
     case cfgCmd of
       FindLocation -> do
-        let symbolLocation :: SymbolId -> IO LocationRange
+        let symbolLocation :: SymbolId -> IO SymbolLocation
             symbolLocation r =
               Handle.symbolLocation env r (def :: RequestOptions)
         forM_ syms $ Text.putStrLn <=< testSymbolLocation symbolLocation
@@ -122,7 +122,7 @@ testFindReferences handler symbol@(SymbolId name) = do
     return $ title : body
 
 testSymbolLocation
-  :: (SymbolId -> IO LocationRange)
+  :: (SymbolId -> IO SymbolLocation)
   -> SymbolId
   -> IO Text
 testSymbolLocation handler symbol@(SymbolId name) = do
@@ -134,7 +134,7 @@ testSymbolLocation handler symbol@(SymbolId name) = do
       , " "
       , name
       ," -> "
-      ,pprLocationRange (thd3 res)
+      ,pprLocationRange (symbolLocation_location (thd3 res))
       ]
 
 testDescribe

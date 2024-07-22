@@ -214,23 +214,32 @@ findReferenceRanges env@Glass.Env{..} sym opts@RequestOptions{..} =
   where
     limit = fmap fromIntegral requestOptions_limit
 
-
 -- | Resolve a symbol identifier to its range-based location in the latest db
-symbolLocation
-  :: Glass.Env
-  -> SymbolId
-  -> RequestOptions
-  -> IO LocationRange
-symbolLocation env@Glass.Env{..} sym opts = do
-  withSymbol "symbolLocation" env opts sym
-    $ \gleanDBs _dbInfo (repo, lang, toks) ->
-      findSymbolLocationRange env GleanBackend{..} repo lang toks
+-- This is about 10x cheaper than a full describeSymbol() call
+symbolLocation :: Glass.Env -> SymbolId -> RequestOptions -> IO SymbolLocation
+symbolLocation env@Glass.Env{..} sym opts =
+  withSymbol "symbolLocation" env opts sym $
+    \gleanDBs dbInfo (scmRepo, lang, toks) ->
+      backendRunHaxl GleanBackend{..} env $ do
+        r <- Search.searchEntityLocation lang toks
+        (entity, err) <- case r of
+          None t -> throwM (ServerException t)
+          One e -> return (e, Nothing)
+          Many { initial = e, message = t } ->
+            return (e, Just (GlassExceptionReason_entitySearchFail t))
+        let SearchEntity { entityRepo, decl = (_,file,rangespan,_) } = entity
+        let scmRevs = scmRevisions dbInfo
+        (, fmap logError err) <$> withRepo entityRepo (do
+          location <- rangeSpanToLocationRange scmRepo file rangespan
+          repo_hash <- getRepoHashForLocation location scmRevs <$> Glean.haxlRepo
+          return $ SymbolLocation {
+            symbolLocation_location = location,
+            symbolLocation_revision = repo_hash
+          })
 
 -- | Describe characteristics of a symbol
 describeSymbol
-  :: Glass.Env
-  -> SymbolId
-  -> RequestOptions
+  :: Glass.Env -> SymbolId -> RequestOptions
   -> IO SymbolDescription
 describeSymbol env@Glass.Env{..} symId opts =
   withSymbol "describeSymbol" env opts symId $
@@ -642,18 +651,6 @@ toFileReference :: RepoName -> Path -> FileReference
 toFileReference repo path =
   FileReference repo (toGleanPath $ SymbolRepoPath repo path)
 
--- | Symbol search: try to resolve the line/col range of an entity
-findSymbolLocationRange
-  :: Glean.Backend b
-  => Glass.Env
-  -> GleanBackend b
-  -> RepoName
-  -> Language
-  -> [Text]
-  -> IO (LocationRange, Maybe ErrorLogger)
-findSymbolLocationRange env b repo lang toks = backendRunHaxl b env $
-  withEntity rangeSpanToLocationRange repo lang toks
-
 -- | Symbol search for references
 fetchSymbolReferences
   :: Glean.Backend b
@@ -731,23 +728,6 @@ symbolToAngleEntities lang toks = do
   return $ case allOrError eithers of
     Left err -> Left (logError (GlassExceptionReason_entityNotSupported err))
     Right results -> Right (results, searchErr)
-
-
--- | Run an action on the result of looking up a symbol id
-withEntity
-  :: (RepoName -> Src.File -> Code.RangeSpan -> RepoHaxl u w a)
-  -> RepoName
-  -> Language
-  -> [Text]
-  -> Glean.ReposHaxl u w (a, Maybe ErrorLogger)
-withEntity f scsrepo lang toks = do
-  r <- Search.searchEntityLocation lang toks
-  (SearchEntity{entityRepo, decl=(_,file,rangespan,_)}, err) <- case r of
-    None t -> throwM (ServerException t)
-    One e -> return (e, Nothing)
-    Many { initial = e, message = t } ->
-      return (e, Just (GlassExceptionReason_entitySearchFail t))
-  (, fmap logError err) <$> withRepo entityRepo (f scsrepo file rangespan)
 
 fetchSymbolsAndAttributesGlean
   :: Glean.Backend b

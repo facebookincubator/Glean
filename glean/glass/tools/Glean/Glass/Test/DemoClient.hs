@@ -201,7 +201,7 @@ runSearch repoName strName = do
 runLocation :: Protocol p => SymbolId -> GlassM p [Text]
 runLocation sym = do
   range <- symbolLocation sym def
-  return [pprLocationRange range]
+  return [pprLocationRange (symbolLocation_location range)]
 
 runFindRefs :: Protocol p => SymbolId -> GlassM p [Text]
 runFindRefs sym = do

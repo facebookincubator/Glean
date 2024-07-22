@@ -1,13 +1,16 @@
 [
     "@generated",
     {
-        "filepath": "test/imports.js",
-        "range": {
-            "columnBegin": 21,
-            "columnEnd": 22,
-            "lineBegin": 32,
-            "lineEnd": 32
+        "location": {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 21,
+                "columnEnd": 22,
+                "lineBegin": 32,
+                "lineEnd": 32
+            },
+            "repository": "test"
         },
-        "repository": "test"
+        "revision": "testhash"
     }
 ]
