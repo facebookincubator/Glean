@@ -24,6 +24,8 @@ import Control.Concurrent.Stream
 import Util.OptParse
 import Thrift.Protocol.Compact
 
+import Glean.LocalOrRemote (loadDbSchema)
+import qualified Glean.LocalOrRemote as Glean
 import Glean.Types
 import Glean.RTS.Types
 import Glean.RTS.Foreign.FactSet (FactSet)
@@ -31,26 +33,39 @@ import qualified Glean.RTS.Foreign.FactSet as FactSet
 import Glean.RTS.Foreign.Define (DefineFlags(..), defineBatch)
 import qualified Glean.RTS.Foreign.Inventory as Inventory
 import Glean.RTS.Foreign.Ownership
+import Glean.Database.Schema.Types
 
 import GleanCLI.Types
+import GHC.Generics
+import GleanCLI.Common (dbOpts)
+import Glean.Write (fileToBatches)
+import Glean.Write.JSON (buildJsonBatch)
 
 data MergeCommand = MergeCommand
-  { mergeInventory :: FilePath
-  , mergeFiles :: [FilePath]
+  { mergeFiles :: [FilePath]
   , mergeFileSize :: Int
   , mergeOutDir :: FilePath
+  , fileFormatOpts :: Either Repo FilePath
   }
+
+data FileFormat
+  = JSON DbSchema
+  | Binary Inventory.Inventory
+  deriving (Generic)
+
+inventoryOpt :: Parser FilePath
+inventoryOpt = strOption $
+    long "inventory" <>
+    metavar "FILE" <>
+    help ("Inventory created with --write-serialized-inventory and which "
+      <> "was used to create binary format files of facts")
 
 instance Plugin MergeCommand where
   parseCommand = commandParser "merge" (progDesc "Merge fact files") $ do
     mergeFiles <- many $ strArgument (
       metavar "FILE" <>
-      help "File of facts, in binary format") -- TODO: accept json
-    mergeInventory <- strOption $
-      long "inventory" <>
-      metavar "FILE" <>
-      help ("Inventory created with --write-serialized-inventory and which "
-        <> "was used to create those files of facts")
+      help ("File of facts, either in json or binary format. "
+       <> "Specify inventory for binary format or database for json format"))
     mergeFileSize <- option auto $
       long "max-file-size" <>
       metavar "BYTES" <>
@@ -61,14 +76,23 @@ instance Plugin MergeCommand where
       long "output" <>
       metavar "DIR" <>
       help "Destination directory for the merged fact files"
+    fileFormatOpts <- Left <$> dbOpts <|> Right <$> inventoryOpt
     return MergeCommand{..}
 
   withService _evb _cfgAPI _svc MergeCommand{..} = do
+    fileFormat <- case fileFormatOpts of
+      Left repo -> do
+        dbSchema <- Glean.withBackendWithDefaultOptions
+          _evb _cfgAPI _svc Nothing $ \backend -> do
+            loadDbSchema backend repo
+        return $ JSON dbSchema
+      Right mergeInventory -> do
+        inventory <- Inventory.deserialize <$> B.readFile mergeInventory
+        return $ Binary inventory
     createDirectoryIfMissing True mergeOutDir
-    inventory <- Inventory.deserialize <$> B.readFile mergeInventory
     hSetBuffering stderr LineBuffering
     outputs <- newIORef []
-    stream 1 (merge inventory mergeFiles) (writeToFile outputs)
+    stream 1 (merge fileFormat mergeFiles) (writeToFile outputs)
       -- stream overlaps writing with reading
     files <- readIORef outputs
     L.putStrLn (Aeson.encode (Aeson.toJSON files))
@@ -108,22 +132,29 @@ instance Plugin MergeCommand where
               " (" <> show (B.length batch) <> ")"
             B.writeFile out batch
 
-      merge inventory files write = loop 0 0 Nothing files
+      merge fileFormat files write = loop 0 0 Nothing files
         where
         read :: FilePath -> Int -> FactSet -> IO FactOwnership
         read file size factSet = do
           hPutStrLn stderr $ "Reading " <> file <> " (" <> show size <> ")"
-          bytes <- B.readFile file
-          case deserializeCompact bytes of
-            Left err -> throwIO $ ErrorCall $
-              "failed to deserialize " <> file <> ": " <> err
-            Right batch -> do
-              subst <- defineBatch factSet inventory batch
-                DefineFlags {
-                  trustRefs = True,
-                  ignoreRedef = True }
-              return $! substOwnership subst $
-                FactOwnership (batch_owned batch)
+          (batch, inventory) <- case fileFormat of
+            JSON dbSchema -> do
+              batches <- fileToBatches file
+              batch <- buildJsonBatch dbSchema Nothing batches
+              return (batch, schemaInventory dbSchema)
+            Binary inventory -> do
+              bytes <- B.readFile file
+              case deserializeCompact bytes of
+                Left err -> throwIO $ ErrorCall $
+                  "failed to deserialize " <> file <> ": " <> err
+                Right batch ->
+                  return (batch, inventory)
+          subst <- defineBatch factSet inventory batch
+            DefineFlags {
+              trustRefs = True,
+              ignoreRedef = True }
+          return $! substOwnership subst $
+            FactOwnership (batch_owned batch)
 
         loop !_ _ Nothing [] = return ()
         loop !n _ (Just set) [] = write (n, Right set)
