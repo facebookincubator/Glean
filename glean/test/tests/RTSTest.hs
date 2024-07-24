@@ -10,6 +10,7 @@
 module RTSTest where
 
 import qualified Data.ByteString as BS
+import Data.List
 import qualified Data.Text as Text
 import Data.Text.Arbitrary ()
 import qualified Data.Text.Encoding as Text
@@ -79,9 +80,9 @@ valueFor (T.RecordTy fields) =
 valueFor (T.SumTy fields) = do
   (i, field) <- elements $ zip [0..] fields
   Alt i <$> valueFor (T.fieldDefType field)
-valueFor (T.SetTy ty) = fmap All $ sized $ \n -> do
+valueFor (T.SetTy ty) = fmap Set $ sized $ \n -> do
       k <- choose (0,n)
-      vectorOf k $ resize (n `div` k) $ valueFor ty
+      nub <$> vectorOf k (resize (n `div` k) $ valueFor ty)
 valueFor T.PredicateTy{} = Ref <$> arbitrary
 valueFor (T.NamedTy (ExpandedType _ ty)) = valueFor ty
 valueFor (T.MaybeTy ty) = do

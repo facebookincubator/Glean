@@ -291,7 +291,7 @@ instance Apply Pat where
   apply (Tuple xs) = Tuple <$> mapM apply xs
   apply (Array xs) = Array <$> mapM apply xs
   apply (Alt n x) = Alt n <$> apply x
-  apply (All xs) = All <$> mapM apply xs
+  apply (Set xs) = Set <$> mapM apply xs
   apply (Ref (MatchVar v)) = applyVar v
   apply (Ref (MatchBind v)) = applyVar v
   apply (Ref (MatchAnd x y)) = do
@@ -374,7 +374,7 @@ neverMatches = \case
   ByteArray _ -> False
   String _ -> False
   Tuple terms -> any neverMatches terms
-  All _ -> False
+  Set _ -> False
   Alt _ term -> neverMatches term
   Ref match -> case match of
     MatchWild _ -> False

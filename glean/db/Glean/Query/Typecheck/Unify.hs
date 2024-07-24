@@ -28,7 +28,7 @@ import Glean.Query.Codegen.Types
 import Glean.Query.Typecheck.Monad
 import Glean.Query.Typecheck.Types
 import Glean.RTS.Term hiding
-  (Tuple, ByteArray, String, Array, Nat, All)
+  (Tuple, ByteArray, String, Array, Nat)
 import qualified Glean.RTS.Term as RTS
 import Glean.RTS.Types as RTS
 import Glean.Schema.Util
@@ -205,7 +205,7 @@ zonkTcPat p = case p of
   RTS.Tuple ts -> RTS.Tuple <$> mapM zonkTcPat ts
   RTS.Alt n t -> RTS.Alt n <$> zonkTcPat t
   RTS.String{} -> return p
-  RTS.All ts -> RTS.All <$> mapM zonkTcPat ts
+  RTS.Set ts -> RTS.Set <$> mapM zonkTcPat ts
   Ref (MatchExt (Typed ty (TcPromote inner e))) -> do
     ty' <- zonkType ty
     inner' <- zonkType inner
@@ -275,6 +275,7 @@ zonkTcTerm t = case t of
     TcFactGen pid <$> zonkTcPat k <*> zonkTcPat v <*> pure sec
   TcElementsOfArray a -> TcElementsOfArray <$> zonkTcPat a
   TcQueryGen q -> TcQueryGen <$> zonkTcQuery q
+  TcAll q -> TcAll <$> mapM zonkTcQuery q
   TcNegation stmts -> TcNegation <$> mapM zonkTcStatement stmts
   TcPrimCall op args -> TcPrimCall op <$> mapM zonkTcPat args
   TcIf (Typed ty cond) th el ->

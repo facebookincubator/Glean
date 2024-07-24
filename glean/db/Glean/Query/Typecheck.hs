@@ -31,7 +31,7 @@ import Control.Monad.Except
 import Control.Monad.State
 import Data.Bifoldable
 import Data.Char
-import Data.Foldable (toList)
+import Data.Foldable (toList, asum)
 import Data.List.Extra (firstJust)
 import qualified Data.IntMap as IntMap
 import qualified Data.Map as Map
@@ -59,7 +59,7 @@ import Glean.Query.Typecheck.Monad
 import Glean.Query.Typecheck.Unify
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term hiding
-  (Tuple, ByteArray, String, Array, Nat, All)
+  (Tuple, ByteArray, String, Array, Nat)
 import qualified Glean.RTS.Term as RTS
 import Glean.Database.Schema.Types
 import Glean.Schema.Util
@@ -357,11 +357,14 @@ inferExpr ctx pat = case pat of
             , "does not have a set type"
             ]
   All _ [] ->
-      return (RTS.All [], SetTy (RecordTy []))
+      return (RTS.Set [], SetTy (RecordTy []))
   All _ (e:es) -> do
     (e',elementTy) <- inferExpr ctx e
     es' <- mapM (typecheckPattern ctx elementTy) es
-    return (RTS.All (e':es'), SetTy elementTy)
+    let
+      ty = SetTy elementTy
+      args = map (\p -> TcQuery elementTy p Nothing []) (e':es')
+    return (Ref (MatchExt (Typed ty (TcAll args))), ty)
 
   TypeSignature s e ty -> do
     rtsType <- gets tcRtsType
@@ -638,10 +641,13 @@ typecheckPattern ctx typ pat = case (typ, pat) of
   -- or a variable does a nested match on the key of the predicate:
   (PredicateTy (PidRef _ ref), pat) | not (isVar pat) ->
     fst <$> tcFactGenerator ref pat SeekOnAllFacts
-  (SetTy elemTy, All _ qs) -> do
-    error "Set" <$> mapM (typecheckPattern ctx elemTy) qs
-  (ty, Elements _ pat) ->
-    error "Set" <$> typecheckPattern ctx (SetTy ty) pat
+  (ty@(SetTy elemTy), All _ qs) -> do
+    elems <- mapM (typecheckPattern ctx elemTy) qs
+    let args = map (\p -> TcQuery elemTy p Nothing []) elems
+    return (Ref (MatchExt (Typed ty (TcAll args))))
+  (ty, Elements _ pat) -> do
+    elems <- typecheckPattern ctx (SetTy ty) pat
+    return (Ref (MatchExt (Typed ty (TcElements elems))))
   (ty, Wildcard{}) -> return (mkWild ty)
   (ty, Never{}) -> return $ Ref (MatchNever ty)
   (ty, Variable span name) -> varOcc ctx span name ty
@@ -979,6 +985,7 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
       TcElementsOfArray x -> overPat x
       TcElements x -> overPat x
       TcQueryGen q -> overQuery q
+      TcAll qs -> concatMap overQuery qs
       TcNegation stmts -> foldMap overStatement stmts
       TcPrimCall _ xs -> foldMap overPat xs
       TcIf (Typed _ x) y z -> foldMap overPat [x, y, z]
@@ -1009,7 +1016,7 @@ tcPatUsesNegation = \case
   RTS.Array xs -> firstJust tcPatUsesNegation xs
   RTS.ByteArray _ -> Nothing
   RTS.Tuple xs -> firstJust tcPatUsesNegation xs
-  RTS.All xs -> firstJust tcPatUsesNegation xs
+  RTS.Set xs -> firstJust tcPatUsesNegation xs
   RTS.Alt _ t -> tcPatUsesNegation t
   RTS.String _ -> Nothing
   RTS.Ref match -> matchUsesNegation match
@@ -1033,6 +1040,7 @@ tcTermUsesNegation = \case
   TcElementsOfArray x -> tcPatUsesNegation x
   TcElements x -> tcPatUsesNegation x
   TcQueryGen q -> tcQueryUsesNegation q
+  TcAll qs -> asum (map tcQueryUsesNegation qs)
   TcNegation _ -> Just PatternNegation
   TcPrimCall _ xs -> firstJust tcPatUsesNegation xs
   -- one can replicate negation using if statements

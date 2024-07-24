@@ -1258,7 +1258,7 @@ preProcessPat pat = unsafePerformIO $
       ByteArray bs -> do
         b <- builder
         lift $ encodeByteArray b bs
-      All _xs -> error "Set"
+      Set _xs -> error "Set"
 
 -- | True if the prefix of this query is empty
 emptyPrefix :: [QueryChunk var] -> Bool

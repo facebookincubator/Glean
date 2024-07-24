@@ -79,7 +79,9 @@ encodeValue b (Array xs) = do
   mapM_ (encodeValue b) xs
 encodeValue b (ByteArray xs) = encodeByteArray b xs
 encodeValue b (Tuple xs) = mapM_ (encodeValue b) xs
-encodeValue _ (All _) = error "Set"
+encodeValue b (Set xs) = do
+  FFI.call $ glean_push_value_array b $ fromIntegral $ length xs
+  mapM_ (encodeValue b) xs
 encodeValue b (Alt n x) = do
   FFI.call $ glean_push_value_selector b $ fromIntegral n
   encodeValue b x
@@ -254,7 +256,9 @@ decodeValue d ty = case ty of
   SumRep tys -> do
     sel <- dSelector d
     Alt (fromIntegral sel) <$> decodeValue d (tys !! fromIntegral sel)
-  SetRep _ -> error "Set"
+  SetRep elty -> do
+    size <- dArray d
+    Set <$> replicateM (fromIntegral size) (decodeValue d elty)
   StringRep -> String <$> dString d
   PredicateRep _ -> Ref <$> dFact d
 

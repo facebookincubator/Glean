@@ -280,7 +280,7 @@ flattenPattern pat = case pat of
   ByteArray s -> singleTerm (ByteArray s)
   Array terms -> manyTerms Array <$> mapM flattenPattern terms
   Tuple terms -> manyTerms Tuple <$> mapM flattenPattern terms
-  All terms -> manyTerms All <$> mapM flattenPattern terms
+  Set terms -> manyTerms Set <$> mapM flattenPattern terms
   Alt s x -> fmap (fmap (Alt s)) <$> flattenPattern x
   Ref (MatchWild ty) -> singleTerm (Ref (MatchWild ty))
   Ref (MatchNever ty) -> singleTerm (Ref (MatchNever ty))

@@ -31,8 +31,7 @@ import Data.List.NonEmpty (NonEmpty)
 
 import Glean.Display
 import Glean.Query.Codegen.Types
-import Glean.RTS.Term hiding (All)
-import qualified Glean.RTS.Term as RTS
+import Glean.RTS.Term
 import Glean.RTS.Types as RTS
 
 type VarId = Int
@@ -78,7 +77,7 @@ instance VarsOf m => VarsOf (Term m) where
     Tuple xs -> varsOf w xs r
     Array xs -> varsOf w xs r
     Alt _ x -> varsOf w x r
-    RTS.All xs -> varsOf w xs r
+    Set xs -> varsOf w xs r
 
 instance VarsOf (Match () Var) where
   varsOf w m r = case m of
