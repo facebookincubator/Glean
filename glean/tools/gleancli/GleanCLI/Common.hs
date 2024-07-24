@@ -16,6 +16,8 @@ module GleanCLI.Common
   , dbNameOpt
   , dbInstanceOpt
   , handleOpt
+  , FileFormat(..)
+  , fileFormatOpt
   ) where
 
 import Data.Text (Text)
@@ -93,3 +95,27 @@ handleOpt = textOption
   <> metavar "HANDLE"
   <> value (buildRule <> "@" <> buildRevision)
   )
+
+data FileFormat
+  = JsonFormat
+  | BinaryFormat
+
+instance Show FileFormat where
+  show ff = case ff of
+    JsonFormat -> "json"
+    BinaryFormat -> "binary"
+
+fileFormatOpt :: FileFormat -> Parser FileFormat
+fileFormatOpt defaultFormat = option (eitherReader parseFileFormat)
+  (  long "file-format"
+  <> value defaultFormat
+  <> showDefault
+  <> metavar "(json|binary)"
+  <> help "Format of the files with facts (see FILE for more details)"
+  )
+  where
+    parseFileFormat :: String -> Either String FileFormat
+    parseFileFormat "json" = Right JsonFormat
+    parseFileFormat "binary" = Right BinaryFormat
+    parseFileFormat s = Left $ "unknown format: " <> s
+      <> ", supported values: (json|binary)"

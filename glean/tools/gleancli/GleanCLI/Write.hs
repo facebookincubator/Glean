@@ -46,15 +46,6 @@ import Glean.Database.Meta (utcTimeToPosixEpochTime)
 import Data.ByteString (ByteString)
 import Glean.Util.ThriftService (queueTimeout)
 
-data FileFormat
-  = JsonFormat
-  | BinaryFormat
-
-instance Show FileFormat where
-  show ff = case ff of
-    JsonFormat -> "json"
-    BinaryFormat -> "binary"
-
 data WriteCommand
   = Write
       { writeRepo :: Repo
@@ -105,21 +96,6 @@ dbPropertiesOpt = many $ option readProperty
       case break (=='=') str of
         (name, '=':value) -> Right (Text.pack name, Text.pack value)
         _other -> Left "--property: expecting NAME=VALUE"
-
-fileFormatOpt :: Parser FileFormat
-fileFormatOpt = option (eitherReader parseFileFormat)
-  (  long "file-format"
-  <> value JsonFormat
-  <> showDefault
-  <> metavar "(json|binary)"
-  <> help "Format of the files with facts (see FILE for more details)"
-  )
-  where
-    parseFileFormat :: String -> Either String FileFormat
-    parseFileFormat "json" = Right JsonFormat
-    parseFileFormat "binary" = Right BinaryFormat
-    parseFileFormat s = Left $ "unknown format: " <> s
-      <> ", supported values: (json|binary)"
 
 finishOpt :: Parser Bool
 finishOpt = switch
@@ -218,7 +194,7 @@ instance Plugin WriteCommand where
         writeMaxConcurrency <- maxConcurrencyOpt
         useLocalCache <- useLocalSwitchOpt
         sendQueueSettings <- Glean.sendAndRebaseQueueOptions
-        writeFileFormat <- fileFormatOpt
+        writeFileFormat <- fileFormatOpt JsonFormat
         updateSchemaForStacked <- updateSchemaForStackedOpt
         return Write
           { create=True
@@ -237,7 +213,7 @@ instance Plugin WriteCommand where
         writeMaxConcurrency <- maxConcurrencyOpt
         useLocalCache <- useLocalSwitchOpt
         sendQueueSettings <- Glean.sendAndRebaseQueueOptions
-        writeFileFormat <- fileFormatOpt
+        writeFileFormat <- fileFormatOpt JsonFormat
         return Write
           { create=False, writeRepoTime=Nothing
           , properties=[], dependencies=Nothing
