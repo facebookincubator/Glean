@@ -132,6 +132,8 @@ findOutputs q = findOutputsQuery q IntSet.empty
   findOutputsStmt :: CgStatement -> IntSet -> IntSet
   findOutputsStmt (CgStatement lhs gen) r =
      findOutputsGen gen (foldr findOutputsMatch r lhs)
+  findOutputsStmt (CgAllStatement (Var _ var _) expr stmts) r =
+     IntSet.insert var $ findOutputsPat expr $ foldr findOutputsStmt r stmts
   findOutputsStmt (CgNegation stmts) r =
      foldr findOutputsStmt r stmts
   findOutputsStmt (CgDisjunction stmtss) r =
@@ -496,6 +498,8 @@ compileStatements
           matches :: Term (Match e v) -> [Match e v]
           matches p = foldMap pure p
 
+      compile (CgAllStatement (Var _ _var _) _expr _stmts : _rest) =
+        error "Set"
       compile (CgNegation stmts : rest) = mdo
         singleResult (compileStatements qtrans bounds regs stmts vars) $
           jump fail

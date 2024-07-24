@@ -761,8 +761,7 @@ toCgStatement stmt = case stmt of
     bindVar v
     e' <- fixVars IsExpr e
     stmts' <- mapM toCgStatement stmts
--- TODO: return [CgAllStatement v e' (concat stmts')]
-    error "Set" e' stmts'
+    return [CgAllStatement v e' (concat stmts')]
   FlatNegation stmts -> do
     stmts' <-
       withinNegation $

@@ -19,12 +19,13 @@ import Glean.RTS.Foreign.Bytecode
 import Glean.RTS.Types
 import Glean.RTS.Bytecode.Code
 import Glean.RTS.Bytecode.Gen.Issue
+import GHC.Stack (HasCallStack)
 
 -- | Type tag for Subroutine
 data CompiledTraversal
 
 traversal
-  :: Register ('Fun '[ 'Word, 'Word ])
+  :: HasCallStack => Register ('Fun '[ 'Word, 'Word ])
   -> Register 'DataPtr
   -> Register 'DataPtr
   -> Type
@@ -72,7 +73,14 @@ traversal callback input inputend ty = go False (repType ty)
             return alt
           end <- label
           return ()
-    go _ (SetRep _elty) = error "Set"
+    go refs (SetRep elty) = when (refs || hasRefs elty) $ local $ \size -> mdo
+      inputNat input inputend size
+      jumpIf0 size end
+      loop <- label
+      go True elty
+      decrAndJumpIfNot0 size loop
+      end <- label
+      return ()
     go _ (PredicateRep (Pid pid)) = local $ \ide -> do
       inputNat input inputend ide
       pidr <- constant (fromIntegral pid)
@@ -83,7 +91,7 @@ traversal callback input inputend ty = go False (repType ty)
 -- contained in it.
 --
 -- NOTE: The subroutine assumes that the clause is type correct.
-genTraversal :: Type -> Type -> IO (Subroutine CompiledTraversal)
+genTraversal :: HasCallStack => Type -> Type -> IO (Subroutine CompiledTraversal)
 genTraversal key_ty val_ty =
   fmap snd $ generate Optimised $ \handler clause_begin key_end clause_end -> do
     traversal handler clause_begin key_end key_ty

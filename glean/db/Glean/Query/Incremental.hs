@@ -86,6 +86,7 @@ expandGenerators hasFacts stmts =
       Incremental (generator SeekOnStacked) (generator SeekOnBase)
     CgStatement{} ->
       Incremental Nothing (Just stmt)
+    CgAllStatement{} -> error "Set"
     CgDisjunction stmtss ->
       CgDisjunction <$> expandDisjunction stmtss
     CgNegation{} ->

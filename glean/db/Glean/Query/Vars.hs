@@ -96,6 +96,9 @@ instance VarsOf CgQuery where
 
 instance VarsOf CgStatement where
   varsOf w (CgStatement lhs gen) r = varsOf w lhs $! varsOf w gen r
+  varsOf w (CgAllStatement (Var _ v _) expr stmts) r =
+    varsOf w expr $! varsOf w stmts $!
+    if w /= VarsUsed then IntSet.insert v r else r
   varsOf w (CgNegation stmts) r = varsOf w stmts r
   varsOf w (CgDisjunction stmtss) r = varsOf w stmtss r
   varsOf w (CgConditional cond then_ else_) r =
@@ -183,6 +186,13 @@ reWildGenerator used gen = case gen of
 reWildStatement :: VarMap -> CgStatement -> CgStatement
 reWildStatement used (CgStatement lhs rhs) =
   CgStatement (reWild used lhs) (reWildGenerator used rhs)
+reWildStatement used s@(CgAllStatement (Var ty n x) expr stmts) =
+  case IntMap.lookup n used of
+    Nothing -> error $ "reWildStatement: " <> show (displayVerbose s)
+    Just new ->
+      CgAllStatement
+        (Var ty new x) (reWild used expr)
+        (map (reWildStatement used) stmts)
 reWildStatement used (CgNegation stmts) =
   CgNegation (map (reWildStatement used) stmts)
 reWildStatement used (CgDisjunction stmtss) =

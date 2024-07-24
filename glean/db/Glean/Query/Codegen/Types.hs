@@ -76,6 +76,7 @@ data CgQuery = CgQuery
 --
 data CgStatement_ var
   = CgStatement (Pat_ var) (Generator_ var)
+  | CgAllStatement var (Expr_ var) [CgStatement_ var]
   | CgNegation [CgStatement_ var]
   | CgDisjunction [[CgStatement_ var]]
   -- ^ For rationale, see Note [why do we have sequential composition?]
@@ -310,6 +311,9 @@ instance Display CgStatement where
   display opts = \case
     CgStatement pat gen ->
       hang 2 $ sep [display opts pat <+> "=", display opts gen]
+    CgAllStatement var expr stmts ->
+      hang 2 $ sep [display opts var <+> "="
+                   ,display opts (CgQuery expr stmts)]
     CgNegation stmts -> "!" <> doStmts stmts
     CgDisjunction stmtss -> sep (punctuate " |" (map doStmts stmtss))
     CgConditional cond then_ else_ -> sep
