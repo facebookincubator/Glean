@@ -143,7 +143,7 @@ app :: { SourcePat }
 app
   : list1(kv)  { case $1 of [f] -> f; f:args -> App (s f $ last args) f args }
   | 'elements' kv { Elements (s $1 $2) $2 }
-  | 'all' list1(kv) { All (s $1 (last $2)) $2 }
+  | 'all' kv { All (s $1 $2) $2 }
 
 -- K -> V binds tighter than application, so that e.g.
 --   p K -> V

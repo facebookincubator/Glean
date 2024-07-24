@@ -54,7 +54,7 @@ setTest = TestList
             Right _ -> return ()
     , TestLabel "query parses" $ TestCase $
         case parseQueryWithVersion  v
-            [s| all 1 (all X (all Y))
+            [s| all (all (all Y))
             |]
         of
             Left err ->

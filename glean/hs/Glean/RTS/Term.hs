@@ -57,8 +57,8 @@ instance Display ref => Display (Term ref) where
   display _ (ByteArray xs) = pretty (show xs) <> "#"
   display opts (Tuple xs) =
     align $ encloseSep "{" "}" "," $ map (display opts) xs
-  display opts (Set xs) =
-    align $ "all" <> encloseSep "(" ")" "," (map (display opts) xs)
+  display opts (Set qs) =
+    align $ "set" <+> encloseSep "(" ")" "," (map (display opts) qs)
   display opts (Alt s x) = "(" <> pretty s <> "|" <> display opts x <> ")"
   -- display opts (String s) = "\"" <> display opts s <> "\""
   display _ (String s) =

@@ -201,7 +201,7 @@ data SourcePat_ s p t
   | App s (SourcePat_ s p t) [SourcePat_ s p t]
   | KeyValue s (SourcePat_ s p t) (SourcePat_ s p t)
   | Elements s (SourcePat_ s p t)
-  | All s [SourcePat_ s p t]
+  | All s (SourcePat_ s p t)
   | Wildcard s
   | Variable s Name
   | ElementsOfArray s (SourcePat_ s p t)
@@ -260,7 +260,7 @@ instance Bifunctor (SourcePat_ s) where
     App s l r -> App s (bimap f g l) (map (bimap f g) r)
     KeyValue s k v -> KeyValue s (bimap f g k) (bimap f g v)
     Elements s pat -> Elements s (bimap f g pat)
-    All s qs -> All s (fmap (bimap f g) qs)
+    All s query -> All s (bimap f g query)
     Wildcard s -> Wildcard s
     Variable s n -> Variable s n
     ElementsOfArray s pat -> ElementsOfArray s (bimap f g pat)
@@ -291,7 +291,7 @@ instance Bifoldable (SourcePat_ s) where
     App _ l r -> foldMap (bifoldMap f g) (l:r)
     KeyValue _ k v -> bifoldMap f g k <> bifoldMap f g v
     Elements _ pat -> bifoldMap f g pat
-    All _ qs -> foldMap (bifoldMap f g) qs
+    All _ query -> bifoldMap f g query
     Wildcard{} -> mempty
     Variable{} -> mempty
     ElementsOfArray _ pat -> bifoldMap f g pat
@@ -843,9 +843,9 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
   display opts (KeyValue _ k v) =
     displayAtom opts k <+> "->" <+> displayAtom opts v
   display opts (Elements _ pat) =
-    "elements" <> parens (display opts pat)
-  display opts (All _ qs) =
-    "all" <> hsep (map (parens . display opts) qs)
+    "elements" <+> parens (display opts pat)
+  display opts (All _ query) =
+    "all" <+> parens (display opts query)
   display _ (Wildcard _) = "_"
   display _ (Variable _ name) = pretty name
   display opts (ElementsOfArray _ pat) = displayAtom opts pat <> "[..]"
@@ -983,7 +983,7 @@ rmLocPat = \case
   App _ x xs -> App () (rmLocPat x) (rmLocPat <$> xs)
   KeyValue _ x y -> KeyValue () (rmLocPat x) (rmLocPat y)
   Elements _ pat -> Elements () (rmLocPat pat)
-  All _ qs -> All () (rmLocPat <$> qs)
+  All _ query -> All () (rmLocPat query)
   Wildcard _ -> Wildcard ()
   Never _ -> Never ()
   Variable _ v -> Variable () v

@@ -155,8 +155,8 @@ prune hasFacts (QueryWithInfo q _ t) = do
           Ref . MatchExt . Typed ty . TcQueryGen <$> pruneTcQuery q
         -- we dont' want to handle negation here because if it tries to match
         -- against things that are not in the database it should succeed.
-        TcAll qs ->
-          Ref . MatchExt . Typed ty . TcAll <$> mapM pruneTcQuery qs
+        TcAll query ->
+          Ref . MatchExt . Typed ty . TcAll <$> pruneTcQuery query
         TcNegation{} -> Just pat
         TcPrimCall op xs -> Ref . MatchExt . Typed ty . TcPrimCall op
           <$> traverse prunePat xs
@@ -231,7 +231,7 @@ renumberVars ty q =
     TcElementsOfArray x -> TcElementsOfArray <$> renamePat x
     TcElements x -> TcElements <$> renamePat x
     TcQueryGen q -> TcQueryGen <$> renameQuery q
-    TcAll qs -> TcAll <$> mapM renameQuery qs
+    TcAll query -> TcAll <$> renameQuery query
     TcNegation xs -> TcNegation <$> traverse renameStmt xs
     TcPrimCall op xs -> TcPrimCall op <$> traverse renamePat xs
     TcIf cond then_ else_ ->

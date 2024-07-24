@@ -55,7 +55,7 @@ data TcTerm
   | TcElementsOfArray TcPat
   | TcElements TcPat
   | TcQueryGen TcQuery
-  | TcAll [TcQuery]
+  | TcAll TcQuery
   | TcNegation [TcStatement]
   | TcPrimCall PrimOp [TcPat]
   | TcIf { cond :: Typed TcPat, then_ :: TcPat, else_ :: TcPat }
@@ -102,8 +102,8 @@ instance Display TcTerm where
   display opts (TcElementsOfArray arr) = displayAtom opts arr <> "[..]"
   display opts (TcElements set) = "elements" <+> parens (display opts set)
   display opts (TcQueryGen q) = parens (display opts q)
-  display opts (TcAll qs)
-    = "all" <+> sep (punctuate " " (map (display opts) qs))
+  display opts (TcAll query)
+    = "all" <+> "(" <> display opts query <> ")"
   display opts (TcNegation q) =
     "!" <> parens (sep (punctuate ";" (map (display opts) q)))
   display opts (TcPrimCall op args) =

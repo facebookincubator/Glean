@@ -99,8 +99,8 @@ instantiateWithFreshVariables query numVars = do
     TcElements (instantiatePat base pat)
   instantiateTcTerm base (TcQueryGen query) =
     TcQueryGen (instantiateQuery base query)
-  instantiateTcTerm base (TcAll qs) =
-    TcAll (map (instantiateQuery base) qs)
+  instantiateTcTerm base (TcAll query) =
+    TcAll (instantiateQuery base query)
   instantiateTcTerm base (TcNegation stmts) =
     TcNegation (map (instantiateStmt base) stmts)
   instantiateTcTerm base (TcPrimCall op args) =

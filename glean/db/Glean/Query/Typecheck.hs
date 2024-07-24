@@ -31,7 +31,7 @@ import Control.Monad.Except
 import Control.Monad.State
 import Data.Bifoldable
 import Data.Char
-import Data.Foldable (toList, asum)
+import Data.Foldable (toList)
 import Data.List.Extra (firstJust)
 import qualified Data.IntMap as IntMap
 import qualified Data.Map as Map
@@ -356,15 +356,12 @@ inferExpr ctx pat = case pat of
             , "expression: " <> display opts e
             , "does not have a set type"
             ]
-  All _ [] ->
-      return (RTS.Set [], SetTy (RecordTy []))
-  All _ (e:es) -> do
+  All _ e -> do
     (e',elementTy) <- inferExpr ctx e
-    es' <- mapM (typecheckPattern ctx elementTy) es
     let
+      q = TcQuery elementTy e' Nothing []
       ty = SetTy elementTy
-      args = map (\p -> TcQuery elementTy p Nothing []) (e':es')
-    return (Ref (MatchExt (Typed ty (TcAll args))), ty)
+    return (Ref (MatchExt (Typed ty (TcAll q))), ty)
 
   TypeSignature s e ty -> do
     rtsType <- gets tcRtsType
@@ -641,10 +638,10 @@ typecheckPattern ctx typ pat = case (typ, pat) of
   -- or a variable does a nested match on the key of the predicate:
   (PredicateTy (PidRef _ ref), pat) | not (isVar pat) ->
     fst <$> tcFactGenerator ref pat SeekOnAllFacts
-  (ty@(SetTy elemTy), All _ qs) -> do
-    elems <- mapM (typecheckPattern ctx elemTy) qs
-    let args = map (\p -> TcQuery elemTy p Nothing []) elems
-    return (Ref (MatchExt (Typed ty (TcAll args))))
+  (ty@(SetTy elemTy), All _ query) -> do
+    arg <- typecheckPattern ctx elemTy query
+    let q = TcQuery elemTy arg Nothing []
+    return (Ref (MatchExt (Typed ty (TcAll q))))
   (ty, Elements _ pat) -> do
     elems <- typecheckPattern ctx (SetTy ty) pat
     return (Ref (MatchExt (Typed ty (TcElements elems))))
@@ -927,7 +924,7 @@ varsPat pat r = case pat of
   App _ f ps -> varsPat f $! foldr varsPat r ps
   KeyValue _ k v -> varsPat k (varsPat v r)
   ElementsOfArray _ p -> varsPat p r
-  All _ qs -> foldr varsPat r qs
+  All _ qs -> varsPat qs r
   Elements _ pat -> varsPat pat r
   OrPattern{} -> r -- ignore nested or-patterns. Note (1) above
   IfPattern{} -> r -- ignore nested if-patterns
@@ -985,7 +982,7 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
       TcElementsOfArray x -> overPat x
       TcElements x -> overPat x
       TcQueryGen q -> overQuery q
-      TcAll qs -> concatMap overQuery qs
+      TcAll q -> overQuery q
       TcNegation stmts -> foldMap overStatement stmts
       TcPrimCall _ xs -> foldMap overPat xs
       TcIf (Typed _ x) y z -> foldMap overPat [x, y, z]
@@ -1040,7 +1037,7 @@ tcTermUsesNegation = \case
   TcElementsOfArray x -> tcPatUsesNegation x
   TcElements x -> tcPatUsesNegation x
   TcQueryGen q -> tcQueryUsesNegation q
-  TcAll qs -> asum (map tcQueryUsesNegation qs)
+  TcAll query -> tcQueryUsesNegation query
   TcNegation _ -> Just PatternNegation
   TcPrimCall _ xs -> firstJust tcPatUsesNegation xs
   -- one can replicate negation using if statements
