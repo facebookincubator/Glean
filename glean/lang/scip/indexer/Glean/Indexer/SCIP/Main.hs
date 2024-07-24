@@ -25,6 +25,7 @@ data SCIP = SCIP
   { scipFile :: FilePath -- ^ input file
   , outputFile :: FilePath -- ^ output file
   , scipLanguage :: Maybe LanguageId -- ^ a default language if known
+  , inferLanguage :: Bool -- ^ default False, infer language using file suffix
   , scipPathPrefix :: Maybe FilePath -- ^ optional path to prefix file paths
   , stripPathPrefix :: Maybe FilePath -- ^ optional prefix to drop from paths
   }
@@ -41,6 +42,11 @@ options = do
     metavar "LANGUAGE" <>
     value Nothing <>
     help "Default language of files in the index"
+  inferLanguage <- switch $
+    short 'i' <>
+    long "infer-language" <>
+    help ("Infer symbol language based on file suffix" <>
+     "(when set this takes precedence over --language)")
   scipPathPrefix <- option (Just <$> str) $ long "root-prefix" <>
     metavar "PATH" <>
     value Nothing <>
@@ -49,7 +55,6 @@ options = do
     metavar "PATH" <>
     value Nothing <>
     help "Path prefix to strip from path data"
-
   return SCIP{..}
 
 -- If the indexer doesn't set the langauge Id of the files, we
@@ -71,5 +76,6 @@ main :: IO ()
 main = withOptions (info (helper <*> options) fullDesc) $ \SCIP{..} -> do
   scipExists <- doesFileExist scipFile
   when (not scipExists) $ error ("Could not find SCIP file at: " <> scipFile)
-  json <- SCIP.processSCIP scipLanguage scipPathPrefix stripPathPrefix scipFile
+  json <- SCIP.processSCIP scipLanguage inferLanguage scipPathPrefix
+            stripPathPrefix scipFile
   Util.writeJSON outputFile json

@@ -112,31 +112,35 @@ getOrSetFact sym = do
 --
 scipToAngle
   :: Maybe SCIP.LanguageId
+  -> Bool
   -> Maybe FilePath
   -> Maybe FilePath
   -> B.ByteString
   -> Aeson.Value
-scipToAngle mlang mPathPrefix mStripPrefix scip = Aeson.Array $ V.fromList $
+scipToAngle mlang inferLanguage mPathPrefix mStripPrefix scip =
+  Aeson.Array $ V.fromList $
     SCIP.generateSCIPJSON (SCIP.insertPredicateMap HashMap.empty result)
   where
-    (result,_) = runState
-      (runTranslate mlang mPathPrefix mStripPrefix scip) emptyState
+    (result,_) = runState (runTranslate mlang
+      inferLanguage mPathPrefix mStripPrefix scip) emptyState
 
 -- | First pass, grab all the occurences with _role := Definition
 -- build up symbol string -> fact id for all defs
 runTranslate
   :: Maybe SCIP.LanguageId
+  -> Bool
   -> Maybe FilePath
   -> Maybe FilePath
   -> B.ByteString
   -> Parse [SCIP.Predicate]
-runTranslate mlang mPathPrefix mStripPrefix scip =
+runTranslate mlang inferLanguage mPathPrefix mStripPrefix scip =
   case Proto.decodeMessage scip of
     Left err -> error err
     Right (v :: Scip.Index) -> do
       a <- decodeScipMetadata (v ^. Scip.metadata)
       bs <- mapM
-        (decodeScipDoc mlang mPathPrefix mStripPrefix) (v ^. Scip.documents)
+        (decodeScipDoc mlang inferLanguage mPathPrefix mStripPrefix)
+        (v ^. Scip.documents)
       return (a <> concat bs)
 
 --
@@ -146,11 +150,12 @@ runTranslate mlang mPathPrefix mStripPrefix scip =
 --
 decodeScipDoc
   :: Maybe SCIP.LanguageId
+  -> Bool
   -> Maybe FilePath
   -> Maybe FilePath
   -> Scip.Document
   -> Parse [SCIP.Predicate]
-decodeScipDoc mlang mPathPrefix mStripPrefix doc = do
+decodeScipDoc mlang inferLanguage mPathPrefix mStripPrefix doc = do
   srcFileId <- nextId
   let filepath0 = doc ^. Scip.relativePath
       -- first, strip any matching prefix
@@ -169,9 +174,15 @@ decodeScipDoc mlang mPathPrefix mStripPrefix doc = do
   let parseLang = SCIP.parseLanguage (doc ^. Scip.language)
       langEnum = fromEnum $ case parseLang of
                 SCIP.UnknownLanguage
+                  -- if --infer-language , look at the suffix
+                  | inferLanguage
+                  , Just langId <- fileLanguageOf filepath
+                  -> langId
+                  -- otherwise if --language, assume that's correct
                   | Just langId <- mlang -> langId -- use default if present
+                  -- otherwise its really unknown
                   | otherwise -> SCIP.UnknownLanguage
-                x -> x
+                x -> x -- scip document provides the language
   fileLang <- SCIP.predicateId "scip.FileLanguage" langFileId
     [ "file" .= srcFileId
     , "language" .= langEnum
@@ -179,6 +190,16 @@ decodeScipDoc mlang mPathPrefix mStripPrefix doc = do
   occs <- mapM (decodeScipOccurence srcFileId) (doc ^. Scip.occurrences)
   infos <- mapM decodeScipInfo (doc ^. Scip.symbols)
   return (srcFile : fileLang <> concat (occs <> infos))
+
+-- We really don't want to do a general purpose language detector
+-- but rely on the indexer knowing things. For the Java/Kotlin case,
+-- files are frequently intermingled in the same build so we can't
+-- decide a priori which language is being indexed
+fileLanguageOf :: Text -> Maybe  SCIP.LanguageId
+fileLanguageOf filepath
+  | "kt" `Text.isSuffixOf` filepath = Just SCIP.Kotlin
+  | "java" `Text.isSuffixOf` filepath = Just SCIP.Java
+  | otherwise = Nothing
 
 decodeScipInfo :: Scip.SymbolInformation -> Parse [SCIP.Predicate]
 decodeScipInfo info = do
