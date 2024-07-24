@@ -187,6 +187,13 @@ flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
   TcQueryGen query -> do
     (stmts, term, _) <- flattenQuery' query
     return [(floatGroups (flattenStmtGroups stmts), TermGenerator term)]
+  TcAll query -> do
+    (stmts, term, _) <- flattenQuery' query
+    var <- fresh ty
+    return
+      [ (Statements [FlatAllStatement var term
+                        (concatMap unStatements stmts)]
+        ,TermGenerator (Ref (MatchVar var)))]
   TcNegation stmts -> do
     stmts' <- flattenStmtGroups <$> mapM flattenStatement stmts
     let neg = FlatNegation stmts'
@@ -411,7 +418,7 @@ valid expressions and lifting out won't affect performance.
 
 -- | A set of statements. The statements in the set will be reordered
 -- by the Reorder pass later.
-newtype Statements = Statements [FlatStatement]
+newtype Statements = Statements { unStatements :: [FlatStatement] }
 
 instance Semigroup Statements where
   Statements s1 <> Statements s2 = Statements (s2 <> s1)

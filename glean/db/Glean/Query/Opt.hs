@@ -227,6 +227,8 @@ instance Apply FlatStatement where
   apply (FlatStatement ty lhs rhs) = do
     -- these were already unified by 'unify'
     FlatStatement ty <$> apply lhs <*> apply rhs
+  apply (FlatAllStatement v e stmts) = do
+    FlatAllStatement v <$> apply e <*> mapM apply stmts
   apply (FlatNegation stmts) = do
     -- assumptions arising inside the negation are not true outside of it.
     stmts' <- optStmtsEnclosed stmts
@@ -355,6 +357,7 @@ unifyStmt (FlatStatement _ lhs rhs)
       FactGenerator _ key val _ ->
         return $ r && not (neverMatches key || neverMatches val)
       _ -> return r
+unifyStmt FlatAllStatement{} = return True
 unifyStmt FlatNegation{} = return True
   -- ignore negations for now. We will recurse into it later
 unifyStmt (FlatDisjunction [stmts]) =
@@ -536,6 +539,8 @@ queryScope (FlatQuery key maybeVal groups) =
 
 stmtScope :: FlatStatement -> VarSet -> VarSet
 stmtScope (FlatStatement _ lhs rhs) r = termScope lhs (genScope rhs r)
+stmtScope (FlatAllStatement v e stmts) r =
+  addToCurrentScope v $! termScope e $! foldr stmtScope r stmts
 stmtScope (FlatNegation _) r = r
 stmtScope (FlatDisjunction [stmts]) r =
   foldr (flip (foldr stmtScope)) r stmts
@@ -710,6 +715,7 @@ encloseSeen inner = do
 filterStmt :: FlatStatement -> U FlatStatement
 filterStmt stmt = case stmt of
   FlatStatement{} -> return stmt
+  FlatAllStatement{} -> return stmt
   FlatNegation stmts -> FlatNegation <$> filterGroupsEnclosed stmts
   FlatDisjunction [stmts] -> grouping <$> filterGroups stmts
   FlatDisjunction stmtss ->

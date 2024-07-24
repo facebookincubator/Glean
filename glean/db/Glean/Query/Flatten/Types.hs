@@ -77,6 +77,9 @@ instance Display pat => Display (FlatQuery_ pat) where
 data FlatStatement
   = FlatStatement Type Pat Generator
     -- ^ A simple statement: P = gen
+  | FlatAllStatement Var Pat [FlatStatement]
+    -- ^ Similar to a vanilla statement, but the result is a set
+    -- containing the results of computing the statements.
   | FlatNegation [FlatStatementGroup]
     -- ^ The negation of a series of statements
   | FlatDisjunction [[FlatStatementGroup]]
@@ -104,6 +107,8 @@ grouping groups = FlatDisjunction [groups]
 instance VarsOf FlatStatement where
   varsOf w s r = case s of
     FlatStatement _ lhs rhs -> varsOf w lhs $! varsOf w rhs r
+    FlatAllStatement (Var _ v _) pat stmts ->
+      IntSet.insert v $! varsOf w pat $! varsOf w stmts r
     FlatNegation stmts      -> varsStmts w stmts r
     FlatDisjunction stmtss  -> foldr (varsStmts w) r stmtss
     FlatConditional cond then_ else_ ->
@@ -123,6 +128,10 @@ freshWildStmt (FlatStatement ty pat gen) = do
   pat' <- freshWild pat
   gen' <- freshWildGen gen
   return (FlatStatement ty pat' gen')
+freshWildStmt (FlatAllStatement var pat stmts) = do
+  pat' <- freshWild pat
+  stmts' <- mapM freshWildStmt stmts
+  return (FlatAllStatement var pat' stmts')
 freshWildStmt (FlatNegation groups) =
   FlatNegation <$> mapM freshWildGroup groups
 freshWildStmt (FlatDisjunction alts) =
@@ -166,6 +175,8 @@ boundVars stmt = boundVarsOf stmt IntSet.empty
 boundVarsOf :: FlatStatement -> VarSet -> VarSet
 boundVarsOf (FlatStatement _ lhs rhs) r =
   varsOf AllVars lhs (boundVarsOfGen rhs r)
+boundVarsOf (FlatAllStatement (Var _ v _) p stmts) r =
+  IntSet.insert v $! varsOf AllVars p $! foldr boundVarsOf r stmts
 boundVarsOf (FlatNegation _) r = r -- a negated query cannot bind variables
 boundVarsOf (FlatDisjunction []) r = r
 boundVarsOf (FlatDisjunction stmtss) r =
@@ -193,6 +204,10 @@ instance Display FlatStatement where
   display opts = \case
     FlatStatement _ lhs rhs ->
       hang 2 $ sep [display opts lhs <+> "=", display opts rhs ]
+    FlatAllStatement v e stmts ->
+      sep [hang 2
+            (sep [sep ("(" : punctuate ";" (map (display opts) stmts)), ")"])
+          ,display opts v <+> "=" <+> "all" <+> display opts e]
     FlatNegation groups ->
       "!" <> doStmts groups
     FlatDisjunction groupss ->

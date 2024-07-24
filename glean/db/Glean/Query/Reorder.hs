@@ -218,6 +218,7 @@ withScopeFor stmts act = do
         stmtScope = \case
           FlatNegation{} -> mempty
           s@FlatStatement{} -> vars s
+          s@FlatAllStatement{} -> vars s
           -- only count variables that appear in all branches of the disjunction
           FlatDisjunction [] -> mempty
           FlatDisjunction (s:ss) ->
@@ -283,6 +284,7 @@ reorderStmtGroup scope@(Scope sc _) stmts =
         maybeVar = case (lhs,rhs) of
           (Ref v, FactGenerator{}) | Just (Var _ x _) <- matchVar v -> Just x
           _otherwise -> Nothing
+      FlatAllStatement {} -> (Nothing ,bound,stmt)
       FlatDisjunction{} -> (Nothing, bound, stmt)
       FlatNegation{} ->  (Nothing, bound, stmt)
       FlatConditional{} ->  (Nothing, bound, stmt)
@@ -746,8 +748,8 @@ maybeBindUnboundPredicate e f
     -- LHS = RHS
     return (CgStatement (Ref (MatchBind var)) pat : stmts, a)
 
-  bindVar :: Var -> R ()
-  bindVar (Var _ v _) = modify $ \s -> s { roScope = bind v $ roScope s }
+bindVar :: Var -> R ()
+bindVar (Var _ v _) = modify $ \s -> s { roScope = bind v $ roScope s }
 
 toCgStatement :: FlatStatement -> R [CgStatement]
 toCgStatement stmt = case stmt of
@@ -755,6 +757,12 @@ toCgStatement stmt = case stmt of
     gen' <- fixVars IsExpr gen -- NB. do this first!
     lhs' <- fixVars IsPat lhs
     return [CgStatement lhs' gen']
+  FlatAllStatement v e stmts -> do
+    bindVar v
+    e' <- fixVars IsExpr e
+    stmts' <- mapM toCgStatement stmts
+-- TODO: return [CgAllStatement v e' (concat stmts')]
+    error "Set" e' stmts'
   FlatNegation stmts -> do
     stmts' <-
       withinNegation $
