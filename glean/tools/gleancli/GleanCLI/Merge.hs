@@ -36,8 +36,7 @@ import Glean.RTS.Foreign.Ownership
 import Glean.Database.Schema.Types
 
 import GleanCLI.Types
-import GHC.Generics
-import GleanCLI.Common (dbOpts)
+import GleanCLI.Common (dbOpts, fileFormatOpt, FileFormat (..))
 import Glean.Write (fileToBatches)
 import Glean.Write.JSON (buildJsonBatch)
 
@@ -45,13 +44,9 @@ data MergeCommand = MergeCommand
   { mergeFiles :: [FilePath]
   , mergeFileSize :: Int
   , mergeOutDir :: FilePath
-  , fileFormatOpts :: Either Repo FilePath
+  , fileFormat :: FileFormat
+  , inventorySource :: Either Repo FilePath
   }
-
-data FileFormat
-  = JSON DbSchema
-  | Binary Inventory.Inventory
-  deriving (Generic)
 
 inventoryOpt :: Parser FilePath
 inventoryOpt = strOption $
@@ -65,7 +60,7 @@ instance Plugin MergeCommand where
     mergeFiles <- many $ strArgument (
       metavar "FILE" <>
       help ("File of facts, either in json or binary format. "
-       <> "Specify inventory for binary format or database for json format"))
+       <> "For json format specify the database"))
     mergeFileSize <- option auto $
       long "max-file-size" <>
       metavar "BYTES" <>
@@ -76,23 +71,25 @@ instance Plugin MergeCommand where
       long "output" <>
       metavar "DIR" <>
       help "Destination directory for the merged fact files"
-    fileFormatOpts <- Left <$> dbOpts <|> Right <$> inventoryOpt
+    inventorySource <- Left <$> dbOpts <|> Right <$> inventoryOpt
+    fileFormat <- fileFormatOpt BinaryFormat
     return MergeCommand{..}
 
   withService _evb _cfgAPI _svc MergeCommand{..} = do
-    fileFormat <- case fileFormatOpts of
+    (inventory, dbSchema) <- case inventorySource of
       Left repo -> do
         dbSchema <- Glean.withBackendWithDefaultOptions
           _evb _cfgAPI _svc Nothing $ \backend -> do
             loadDbSchema backend repo
-        return $ JSON dbSchema
+        return (schemaInventory dbSchema, Just dbSchema)
       Right mergeInventory -> do
         inventory <- Inventory.deserialize <$> B.readFile mergeInventory
-        return $ Binary inventory
+        return (inventory, Nothing)
     createDirectoryIfMissing True mergeOutDir
     hSetBuffering stderr LineBuffering
     outputs <- newIORef []
-    stream 1 (merge fileFormat mergeFiles) (writeToFile outputs)
+    stream 1 (merge fileFormat inventory dbSchema mergeFiles)
+      (writeToFile outputs)
       -- stream overlaps writing with reading
     files <- readIORef outputs
     L.putStrLn (Aeson.encode (Aeson.toJSON files))
@@ -132,23 +129,26 @@ instance Plugin MergeCommand where
               " (" <> show (B.length batch) <> ")"
             B.writeFile out batch
 
-      merge fileFormat files write = loop 0 0 Nothing files
+      merge fileFormat inventory dbSchema files write = loop 0 0 Nothing files
         where
         read :: FilePath -> Int -> FactSet -> IO FactOwnership
         read file size factSet = do
           hPutStrLn stderr $ "Reading " <> file <> " (" <> show size <> ")"
-          (batch, inventory) <- case fileFormat of
-            JSON dbSchema -> do
-              batches <- fileToBatches file
-              batch <- buildJsonBatch dbSchema Nothing batches
-              return (batch, schemaInventory dbSchema)
-            Binary inventory -> do
+          batch <- case fileFormat of
+            JsonFormat -> do
+              case dbSchema of
+                Nothing -> throwIO $ ErrorCall $
+                  "No db schema to serialize json format file. "
+                  <> "Please specify the database"
+                Just schema -> do
+                  batches <- fileToBatches file
+                  buildJsonBatch schema Nothing batches
+            BinaryFormat -> do
               bytes <- B.readFile file
               case deserializeCompact bytes of
                 Left err -> throwIO $ ErrorCall $
                   "failed to deserialize " <> file <> ": " <> err
-                Right batch ->
-                  return (batch, inventory)
+                Right batch -> return batch
           subst <- defineBatch factSet inventory batch
             DefineFlags {
               trustRefs = True,
