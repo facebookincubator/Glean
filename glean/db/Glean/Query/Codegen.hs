@@ -71,6 +71,7 @@ import Glean.RTS.Types
 import Glean.RTS.Term
 import Glean.Typed.Binary (buildRtsValue)
 import Glean.Types hiding (Nat, Byte)
+import Glean.Bytecode.SysCalls (userQuerySysCalls)
 
 {- Debugging the bytecode query backend:
 
@@ -274,7 +275,7 @@ compileQuery r qtrans bounds (QueryWithInfo query numVars ty) = do
           return ()
     ret
 
-  TextLog.vlog 3 $ Text.unlines $ disassemble "Query" sub
+  TextLog.vlog 3 $ Text.unlines $ disassemble "Query" userQuerySysCalls sub
 
   -- Tell the query engine how to traverse results for expanding
   -- nested facts.

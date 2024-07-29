@@ -24,8 +24,8 @@ import Glean.Bytecode.Types
 import Glean.RTS.Bytecode.Gen.Instruction
 import Glean.RTS.Foreign.Bytecode
 
-disassemble :: Text -> Subroutine s -> [Text]
-disassemble name sub =
+disassemble :: Text -> [String] -> Subroutine s -> [Text]
+disassemble name syscalls sub =
   [ "Subroutine " <> name
   , "  // Code: "
       <> Text.pack (show (length instructions)) <> " insns, "
@@ -87,6 +87,6 @@ disassemble name sub =
               [IntMap.lookup (fromIntegral o) labels
                 <&> \s -> Text.pack s <> ":"]
             ++
-            [ "  " <> Text.pack (insnShow (show_label o') show_reg insn) ] ))
+            [ "  " <> Text.pack (insnShow syscalls (show_label o') show_reg insn) ] ))
         0
         instructions

@@ -30,6 +30,7 @@ import Glean.Schema.Util (parseRef)
 import Glean.Util.ConfigProvider
 import Glean.Util.ThriftSource (ThriftSource)
 import qualified Glean.Util.ThriftSource as ThriftSource
+import Glean.Bytecode.SysCalls (typecheckSysCalls)
 
 data Config = Config
   { cfgSchemaSource :: ThriftSource SchemaIndex
@@ -41,7 +42,7 @@ newtype Command
 
 options :: ParserInfo Config
 options = info (parser <**> helper)
-  (fullDesc <> progDesc "Disassemle bytecode")
+  (fullDesc <> progDesc "Disassemble bytecode")
   where
     parser :: Parser Config
     parser = do
@@ -84,5 +85,6 @@ predicateTypecheckers schema args = do
         <> predicateRef_name
         <> "."
         <> Text.pack (show $ predicateRef_version))
+      typecheckSysCalls
       predicateTypecheck
     putStrLn ""

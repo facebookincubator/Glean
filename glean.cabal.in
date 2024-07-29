@@ -804,6 +804,7 @@ library bytecode
     exposed-modules:
         Glean.Bytecode.Types
         Glean.Bytecode.Decode
+        Glean.Bytecode.SysCalls
 
 executable gen-bytecode-cpp
     import: fb-haskell, fb-cpp, deps, exe

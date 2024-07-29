@@ -91,6 +91,7 @@ import Glean.Schema.Resolve
 import Glean.Schema.Util
 import Glean.Util.Observed as Observed
 import Glean.Query.Typecheck
+import Glean.Bytecode.SysCalls (userQuerySysCalls)
 
 -- NOTE: We keep the public interface monomorphic, at least for now.
 
@@ -749,7 +750,7 @@ userQueryImpl
           let
             bytecodeDiag sub =
               [ "bytecode:\n" <> Text.unlines
-                (disassemble "Query" $ compiledQuerySub sub)
+                (disassemble "Query" userQuerySysCalls $ compiledQuerySub sub)
               | Thrift.queryDebugOptions_bytecode debug ]
 
           bracket

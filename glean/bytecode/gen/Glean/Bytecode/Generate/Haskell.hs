@@ -287,17 +287,19 @@ genDecodable =
 genInsnShow :: [Text]
 genInsnShow =
   [ "insnShow"
-  , "  :: (Label -> String)"
+  , "  :: [String]"
+  , "  -> (Label -> String)"
   , "  -> (forall t. Register t -> String)"
   , "  -> Insn"
   , "  -> String" ]
   ++
-  [ "insnShow showLabel showReg ("
+  [ "insnShow syscalls showLabel showReg ("
       <> insnPattern id insn
-      <> ") = concat [\"" <> insnName <> "\""
+      <> ") = concat [" <> name
       <> Text.intercalate ", \",\""
-          [", \' \' : " <> w | arg <- insnArgs, w <- showArg arg]
-      <> "]" | insn@Insn{..} <- instructions ]
+          [", \' \' : " <> w | arg <- args, w <- showArg arg]
+      <> "]" | insn@Insn{..} <- instructions
+             , let (name, args) = mkNameArgs insnName insnArgs ]
     where
       showArg (Arg name (Imm ImmOffset)) = ["showLabel " <> name]
       showArg (Arg name (Imm ImmLit)) = ["show (fromLiteral " <> name <> ")"]
@@ -307,3 +309,7 @@ genInsnShow =
         ["showListWith (showString . showLabel) " <> name <> " \"\""]
       showArg (Arg name (Regs tys)) =
         ["showReg " <> reg | reg <- regNames name tys]
+      mkNameArgs name args
+        | "CallFun" `Text.isPrefixOf` name =
+          ("(syscalls !! fromIntegral (fromRegister fun))", tail args)
+        | otherwise = ("\"" <> name <> "\"", args)
