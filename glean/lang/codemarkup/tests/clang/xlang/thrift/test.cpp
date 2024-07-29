@@ -7,12 +7,15 @@
  */
 
 #include "test.h"
-
+#include "test_types.h"
 /** Glean { "file": "test.thrift", "service":"TestService", "function": "thrift1"} */
 void thrift1();
 
 // test thrift annotations
 void thriftCaller() {
+  ResponseCard response;
+  GetNavigationRequest request;
+  GetNavigationException request2;
   thrift1();
   thrift2();
 }

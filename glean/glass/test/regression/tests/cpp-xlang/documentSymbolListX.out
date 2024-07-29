@@ -104,28 +104,362 @@
                     "columnBegin": 1,
                     "columnEnd": 2,
                     "lineBegin": 15,
-                    "lineEnd": 18
+                    "lineEnd": 21
                 },
                 "sym": "test-xlang/cpp//thriftCaller/.f/"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "request"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thriftCaller"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationRequest request"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 24,
+                    "columnEnd": 31,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 31,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test-xlang/cpp//thriftCaller/request/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "request2"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thriftCaller"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationException request2"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 26,
+                    "columnEnd": 34,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 34,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test-xlang/cpp//thriftCaller/request2/.decl"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "response"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thriftCaller"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "ResponseCard response"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 16,
+                    "columnEnd": 24,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 24,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "sym": "test-xlang/cpp//thriftCaller/response/.decl"
             }
         ],
         "digest": {
-            "hash": "c19eedb242a1867935300bf022d4b8ab3d92ae00",
-            "size": 420
+            "hash": "0c803e8a3ee4b0df669ede6b5625da710324a275",
+            "size": 535
         },
         "referenced_file_digests": {
             "test-xlang": {
                 "test.cpp": {
-                    "hash": "c19eedb242a1867935300bf022d4b8ab3d92ae00",
-                    "size": 420
+                    "hash": "0c803e8a3ee4b0df669ede6b5625da710324a275",
+                    "size": 535
                 },
                 "test.h": {
                     "hash": "d31759d38b8e2df1b27e81d34d0d077bf3c73c8d",
                     "size": 324
+                },
+                "test_types.h": {
+                    "hash": "006695cff83784252c087b530ecd4e84bf6597ce",
+                    "size": 573
                 }
             }
         },
         "references": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationException"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class GetNavigationException"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 25,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test-xlang/cpp//GetNavigationException/.decl",
+                "target": {
+                    "filepath": "test_types.h",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 29,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationRequest"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class GetNavigationRequest"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 23,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test-xlang/cpp//GetNavigationRequest/.decl",
+                "target": {
+                    "filepath": "test_types.h",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 27,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "ResponseCard"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class ResponseCard"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 15,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "sym": "test-xlang/cpp//ResponseCard/.decl",
+                "target": {
+                    "filepath": "test_types.h",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 19,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test-xlang"
+                }
+            },
             {
                 "attributes": [
                     {
@@ -168,8 +502,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 10,
-                    "lineBegin": 16,
-                    "lineEnd": 16
+                    "lineBegin": 19,
+                    "lineEnd": 19
                 },
                 "sym": "test-xlang/cpp//thrift1/.f//.decl",
                 "target": {
@@ -225,8 +559,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 10,
-                    "lineBegin": 17,
-                    "lineEnd": 17
+                    "lineBegin": 20,
+                    "lineEnd": 20
                 },
                 "sym": "test-xlang/cpp//thrift2/.f//.decl",
                 "target": {
@@ -295,6 +629,57 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "test_types.h"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 4
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 24,
+                    "lineBegin": 10,
+                    "lineEnd": 10
+                },
+                "sym": "test-xlang/pp/test_types.h",
+                "target": {
+                    "filepath": "test_types.h",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "thrift1"
                         },
                         "key": "symbolName"
@@ -327,8 +712,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 10,
-                    "lineBegin": 16,
-                    "lineEnd": 16
+                    "lineBegin": 19,
+                    "lineEnd": 19
                 },
                 "sym": "test-xlang/thrift/test.thrift/TestService/thrift1",
                 "target": {
@@ -378,8 +763,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 10,
-                    "lineBegin": 17,
-                    "lineEnd": 17
+                    "lineBegin": 20,
+                    "lineEnd": 20
                 },
                 "sym": "test-xlang/thrift/test.thrift/TestService/thrift2",
                 "target": {
