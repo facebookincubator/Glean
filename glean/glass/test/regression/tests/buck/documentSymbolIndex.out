@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 15,
+        "size": 16,
         "symbols": {
             "13": [
                 {
@@ -377,6 +377,41 @@
                     "sym": "test/buck/f/buck_project/my_defs.bzl",
                     "target": {
                         "filepath": "buck_project/my_defs.bzl",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 1,
+                            "lineEnd": 1
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "31": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 4
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 11
+                        },
+                        "symbolName": {
+                            "aString": "toto.c"
+                        },
+                        "symbolParent": {
+                            "aString": "buck_project"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 26,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "sym": "test/buck/f/buck_project/toto.c",
+                    "target": {
+                        "filepath": "buck_project/toto.c",
                         "range": {
                             "columnBegin": 1,
                             "columnEnd": 2,
