@@ -44,3 +44,9 @@ service TestService {
     1: GetCardException get_card_exception,
   );
 }
+
+enum CountOnlyMode {
+  Disabled = 0,
+  HitCount = 1,
+  FileCount = 2,
+}

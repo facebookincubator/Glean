@@ -104,9 +104,62 @@
                     "columnBegin": 1,
                     "columnEnd": 2,
                     "lineBegin": 15,
-                    "lineEnd": 21
+                    "lineEnd": 22
                 },
                 "sym": "test-xlang/cpp//thriftCaller/.f/"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "com"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thriftCaller"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "CountOnlyMode com"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "nameRange": {
+                    "columnBegin": 17,
+                    "columnEnd": 20,
+                    "lineBegin": 21,
+                    "lineEnd": 21
+                },
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 20,
+                    "lineBegin": 21,
+                    "lineEnd": 21
+                },
+                "sym": "test-xlang/cpp//thriftCaller/com/.decl"
             },
             {
                 "attributes": [
@@ -269,26 +322,83 @@
             }
         ],
         "digest": {
-            "hash": "0c803e8a3ee4b0df669ede6b5625da710324a275",
-            "size": 535
+            "hash": "514e33fb84c0bc3a0cc311cc9d5a46e16ceb4b4c",
+            "size": 557
         },
         "referenced_file_digests": {
             "test-xlang": {
                 "test.cpp": {
-                    "hash": "0c803e8a3ee4b0df669ede6b5625da710324a275",
-                    "size": 535
+                    "hash": "514e33fb84c0bc3a0cc311cc9d5a46e16ceb4b4c",
+                    "size": 557
                 },
                 "test.h": {
                     "hash": "d31759d38b8e2df1b27e81d34d0d077bf3c73c8d",
                     "size": 324
                 },
                 "test_types.h": {
-                    "hash": "006695cff83784252c087b530ecd4e84bf6597ce",
-                    "size": 573
+                    "hash": "8be626eeaecc8741bae06cb7cc9ee5b14de10eec",
+                    "size": 732
                 }
             }
         },
         "references": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "CountOnlyMode"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "enum class CountOnlyMode : int"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 12
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 16,
+                    "lineBegin": 21,
+                    "lineEnd": 21
+                },
+                "sym": "test-xlang/cpp//CountOnlyMode/.decl",
+                "target": {
+                    "filepath": "test_types.h",
+                    "range": {
+                        "columnBegin": 12,
+                        "columnEnd": 25,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test-xlang"
+                }
+            },
             {
                 "attributes": [
                     {

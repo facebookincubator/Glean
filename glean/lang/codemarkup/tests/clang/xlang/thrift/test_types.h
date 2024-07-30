@@ -17,3 +17,10 @@ class GetNavigationRequest {
 /** Glean {"file": "test.thrift", "name": "GetNavigationException", "kind": "exception" } */
 class GetNavigationException {
 };
+
+/** Glean {"file": "test.thrift", "name": "CountOnlyMode", "kind": "enum" } */
+enum class CountOnlyMode {
+  Disabled = 0,
+  HitCount = 1,
+  FileCount = 2,
+};
