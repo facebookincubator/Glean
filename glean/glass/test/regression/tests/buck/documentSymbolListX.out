@@ -32,8 +32,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 20,
-                    "lineEnd": 26
+                    "lineBegin": 21,
+                    "lineEnd": 27
                 },
                 "sym": "test/buck/t/buck_project/PATH/./bar"
             },
@@ -67,8 +67,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 12,
-                    "lineEnd": 18
+                    "lineBegin": 13,
+                    "lineEnd": 19
                 },
                 "sym": "test/buck/t/buck_project/PATH/./foo"
             },
@@ -102,10 +102,45 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 4,
-                    "lineEnd": 10
+                    "lineBegin": 5,
+                    "lineEnd": 11
                 },
                 "sym": "test/buck/t/buck_project/PATH/./foobar"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 30
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "rust_binary"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "."
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 11
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 1,
+                    "columnEnd": 2,
+                    "lineBegin": 29,
+                    "lineEnd": 32
+                },
+                "sym": "test/buck/t/buck_project/PATH/./rust_binary"
             }
         ],
         "referenced_file_digests": {},
@@ -140,8 +175,8 @@
                 "range": {
                     "columnBegin": 22,
                     "columnEnd": 25,
-                    "lineBegin": 2,
-                    "lineEnd": 2
+                    "lineBegin": 3,
+                    "lineEnd": 3
                 },
                 "sym": "test/buck/d/buck_project/my_defs.bzl/f",
                 "target": {
@@ -185,8 +220,8 @@
                 "range": {
                     "columnBegin": 27,
                     "columnEnd": 30,
-                    "lineBegin": 2,
-                    "lineEnd": 2
+                    "lineBegin": 3,
+                    "lineEnd": 3
                 },
                 "sym": "test/buck/d/buck_project/my_defs.bzl/g",
                 "target": {
@@ -230,8 +265,8 @@
                 "range": {
                     "columnBegin": 32,
                     "columnEnd": 35,
-                    "lineBegin": 2,
-                    "lineEnd": 2
+                    "lineBegin": 3,
+                    "lineEnd": 3
                 },
                 "sym": "test/buck/d/buck_project/my_defs.bzl/h",
                 "target": {
@@ -275,8 +310,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 20,
-                    "lineBegin": 2,
-                    "lineEnd": 2
+                    "lineBegin": 3,
+                    "lineEnd": 3
                 },
                 "sym": "test/buck/f/buck_project/my_defs.bzl",
                 "target": {
@@ -320,8 +355,8 @@
                 "range": {
                     "columnBegin": 13,
                     "columnEnd": 21,
-                    "lineBegin": 22,
-                    "lineEnd": 22
+                    "lineBegin": 23,
+                    "lineEnd": 23
                 },
                 "sym": "test/buck/f/buck_project/toto.c",
                 "target": {
@@ -365,8 +400,8 @@
                 "range": {
                     "columnBegin": 23,
                     "columnEnd": 31,
-                    "lineBegin": 22,
-                    "lineEnd": 22
+                    "lineBegin": 23,
+                    "lineEnd": 23
                 },
                 "sym": "test/buck/f/buck_project/tutu.c",
                 "target": {
@@ -410,8 +445,8 @@
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 15,
-                    "lineBegin": 7,
-                    "lineEnd": 7
+                    "lineBegin": 8,
+                    "lineEnd": 8
                 },
                 "sym": "test/buck/t/buck_project/PATH/./bar",
                 "target": {
@@ -419,8 +454,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 20,
-                        "lineEnd": 26
+                        "lineBegin": 21,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 }
@@ -455,8 +490,8 @@
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 15,
-                    "lineBegin": 16,
-                    "lineEnd": 16
+                    "lineBegin": 17,
+                    "lineEnd": 17
                 },
                 "sym": "test/buck/t/buck_project/PATH/./bar",
                 "target": {
@@ -464,8 +499,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 20,
-                        "lineEnd": 26
+                        "lineBegin": 21,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 }
@@ -500,8 +535,8 @@
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 15,
-                    "lineBegin": 8,
-                    "lineEnd": 8
+                    "lineBegin": 9,
+                    "lineEnd": 9
                 },
                 "sym": "test/buck/t/buck_project/PATH/./foo",
                 "target": {
@@ -509,8 +544,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 12,
-                        "lineEnd": 18
+                        "lineBegin": 13,
+                        "lineEnd": 19
                     },
                     "repository": "test"
                 }
@@ -545,8 +580,8 @@
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 30,
-                    "lineBegin": 15,
-                    "lineEnd": 15
+                    "lineBegin": 16,
+                    "lineEnd": 16
                 },
                 "sym": "test/buck/t/buck_project/PATH/a/foo",
                 "target": {
@@ -590,8 +625,8 @@
                 "range": {
                     "columnBegin": 9,
                     "columnEnd": 30,
-                    "lineBegin": 24,
-                    "lineEnd": 24
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 },
                 "sym": "test/buck/t/buck_project/PATH/b/bar",
                 "target": {
