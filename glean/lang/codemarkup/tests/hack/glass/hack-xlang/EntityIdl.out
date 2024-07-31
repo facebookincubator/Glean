@@ -328,6 +328,46 @@
         "hack": {
           "decl": {
             "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "CountOnlyMode" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "www/test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "www/test.thrift" } },
+                        "name": { "key": "CountOnlyMode" }
+                      }
+                    },
+                    "kind": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
               "interface_": {
                 "key": {
                   "name": {
@@ -505,6 +545,226 @@
                       "name": { "key": "TestService" }
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "name": { "key": "Disabled" },
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "CountOnlyMode" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "www/test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "enumValue": {
+                "key": {
+                  "enum_": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "www/test.thrift" } },
+                        "name": { "key": "CountOnlyMode" }
+                      }
+                    },
+                    "kind": 1
+                  },
+                  "name": { "key": "Disabled" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "name": { "key": "FileCount" },
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "CountOnlyMode" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "www/test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "enumValue": {
+                "key": {
+                  "enum_": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "www/test.thrift" } },
+                        "name": { "key": "CountOnlyMode" }
+                      }
+                    },
+                    "kind": 1
+                  },
+                  "name": { "key": "FileCount" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "name": { "key": "HitCount" },
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "CountOnlyMode" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "www/test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "enumValue": {
+                "key": {
+                  "enum_": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "www/test.thrift" } },
+                        "name": { "key": "CountOnlyMode" }
+                      }
+                    },
+                    "kind": 1
+                  },
+                  "name": { "key": "HitCount" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "name": { "key": "_EMPTY_" },
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "ResponseCardEnum" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "www/test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "enumValue": {
+                "key": {
+                  "enum_": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "www/test.thrift" } },
+                        "name": { "key": "CountOnlyMode" }
+                      }
+                    },
+                    "kind": 1
+                  },
+                  "name": { "key": "_EMPTY_" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "name": { "key": "static_card" },
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "ResponseCardEnum" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "www/test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "enumValue": {
+                "key": {
+                  "enum_": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "www/test.thrift" } },
+                        "name": { "key": "CountOnlyMode" }
+                      }
+                    },
+                    "kind": 1
+                  },
+                  "name": { "key": "static_card" }
                 }
               }
             }
