@@ -312,7 +312,7 @@
                         "name": { "key": "ResponseCard" }
                       }
                     },
-                    "kind": 2
+                    "kind": 3
                   }
                 }
               }
@@ -1397,7 +1397,7 @@
                       "name": { "key": "ResponseCard" }
                     }
                   },
-                  "kind": 0,
+                  "kind": 1,
                   "name": { "key": "static_card" }
                 }
               }

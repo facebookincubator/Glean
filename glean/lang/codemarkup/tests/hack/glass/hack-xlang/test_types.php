@@ -7,20 +7,49 @@
  *  @codegen-source: test.thrift
  */
 
+/**
+ * Original thrift enum:-
+ * CountOnlyMode
+ */
+enum CountOnlyMode: int {
+  Disabled = 0;
+  HitCount = 1;
+  FileCount = 2;
+}
+
+class CountOnlyMode_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "test.CountOnlyMode",
+        "elements" => dict[
+          0 => "Disabled",
+          1 => "HitCount",
+          2 => "FileCount",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[write_props]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 enum ResponseCardEnum: int {
   _EMPTY_ = 0;
   static_card = 1;
 }
 
 /**
- * Original thrift struct:-
+ * Original thrift union:-
  * ResponseCard
  */
-class ResponseCard
-  implements
-    \IThriftSyncStruct,
-    \IThriftStructMetadata,
-    \IThriftUnion<ResponseCardEnum> {
+class ResponseCard implements \IThriftSyncStruct, \IThriftStructMetadata, \IThriftUnion<ResponseCardEnum> {
   use \ThriftUnionSerializationTrait;
 
   const \ThriftStructTypes::TSpec SPEC = dict[
@@ -59,7 +88,9 @@ class ResponseCard
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(Shapes::idx($shape, 'static_card'));
+    return new static(
+      Shapes::idx($shape, 'static_card'),
+    );
   }
 
   public function getName()[]: string {
@@ -111,24 +142,23 @@ class ResponseCard
               "id" => 1,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" =>
-                    tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                ),
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
               ),
               "name" => "static_card",
-            ),
+            )
           ),
         ],
         "is_union" => true,
-      ),
+      )
     );
   }
 
-  public static function getAllStructuredAnnotations(
-  )[write_props]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
-      'fields' => dict[],
+      'fields' => dict[
+      ],
     );
   }
 
@@ -142,8 +172,7 @@ class ResponseCard
  * Original thrift struct:-
  * GetNavigationRequest
  */
-class GetNavigationRequest
-  implements \IThriftSyncStruct, \IThriftStructMetadata {
+class GetNavigationRequest implements \IThriftSyncStruct, \IThriftStructMetadata {
   use \ThriftSerializationTrait;
 
   const \ThriftStructTypes::TSpec SPEC = dict[
@@ -176,7 +205,9 @@ class GetNavigationRequest
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(Shapes::idx($shape, 'identifier'));
+    return new static(
+      Shapes::idx($shape, 'identifier'),
+    );
   }
 
   public function getName()[]: string {
@@ -193,24 +224,23 @@ class GetNavigationRequest
               "id" => 1,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" =>
-                    tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                ),
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
               ),
               "name" => "identifier",
-            ),
+            )
           ),
         ],
         "is_union" => false,
-      ),
+      )
     );
   }
 
-  public static function getAllStructuredAnnotations(
-  )[write_props]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
-      'fields' => dict[],
+      'fields' => dict[
+      ],
     );
   }
 
@@ -224,8 +254,7 @@ class GetNavigationRequest
  * Original thrift struct:-
  * GetNavigationResponse
  */
-class GetNavigationResponse
-  implements \IThriftSyncStruct, \IThriftStructMetadata {
+class GetNavigationResponse implements \IThriftSyncStruct, \IThriftStructMetadata {
   use \ThriftSerializationTrait;
 
   const \ThriftStructTypes::TSpec SPEC = dict[
@@ -258,7 +287,9 @@ class GetNavigationResponse
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(Shapes::idx($shape, 'tab_group'));
+    return new static(
+      Shapes::idx($shape, 'tab_group'),
+    );
   }
 
   public function getName()[]: string {
@@ -275,24 +306,23 @@ class GetNavigationResponse
               "id" => 1,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" =>
-                    tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                ),
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
               ),
               "name" => "tab_group",
-            ),
+            )
           ),
         ],
         "is_union" => false,
-      ),
+      )
     );
   }
 
-  public static function getAllStructuredAnnotations(
-  )[write_props]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
-      'fields' => dict[],
+      'fields' => dict[
+      ],
     );
   }
 
@@ -306,9 +336,7 @@ class GetNavigationResponse
  * Original thrift exception:-
  * GetNavigationException
  */
-class GetNavigationException
-  extends \TException
-  implements \IThriftSyncStruct, \IThriftExceptionMetadata {
+class GetNavigationException extends \TException implements \IThriftSyncStruct, \IThriftExceptionMetadata {
   use \ThriftSerializationTrait;
 
   const \ThriftStructTypes::TSpec SPEC = dict[
@@ -342,7 +370,9 @@ class GetNavigationException
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(Shapes::idx($shape, 'message_detail'));
+    return new static(
+      Shapes::idx($shape, 'message_detail'),
+    );
   }
 
   public function getName()[]: string {
@@ -359,23 +389,22 @@ class GetNavigationException
               "id" => 1,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" =>
-                    tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                ),
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
               ),
               "name" => "message_detail",
-            ),
+            )
           ),
         ],
-      ),
+      )
     );
   }
 
-  public static function getAllStructuredAnnotations(
-  )[write_props]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
-      'fields' => dict[],
+      'fields' => dict[
+      ],
     );
   }
 
@@ -424,10 +453,7 @@ class GetCardRequest implements \IThriftSyncStruct, \IThriftStructMetadata {
    */
   public string $card_name;
 
-  public function __construct(
-    ?string $identifier = null,
-    ?string $card_name = null,
-  )[] {
+  public function __construct(?string $identifier = null, ?string $card_name = null)[] {
     $this->identifier = $identifier ?? '';
     $this->card_name = $card_name ?? '';
   }
@@ -457,36 +483,34 @@ class GetCardRequest implements \IThriftSyncStruct, \IThriftStructMetadata {
               "id" => 1,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" =>
-                    tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                ),
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
               ),
               "name" => "identifier",
-            ),
+            )
           ),
           tmeta_ThriftField::fromShape(
             shape(
               "id" => 2,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" =>
-                    tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                ),
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
               ),
               "name" => "card_name",
-            ),
+            )
           ),
         ],
         "is_union" => false,
-      ),
+      )
     );
   }
 
-  public static function getAllStructuredAnnotations(
-  )[write_props]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
-      'fields' => dict[],
+      'fields' => dict[
+      ],
     );
   }
 
@@ -534,7 +558,9 @@ class GetCardResponse implements \IThriftSyncStruct, \IThriftStructMetadata {
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(Shapes::idx($shape, 'card'));
+    return new static(
+      Shapes::idx($shape, 'card'),
+    );
   }
 
   public function getName()[]: string {
@@ -554,24 +580,24 @@ class GetCardResponse implements \IThriftSyncStruct, \IThriftStructMetadata {
                   "t_struct" => tmeta_ThriftStructType::fromShape(
                     shape(
                       "name" => "test.ResponseCard",
-                    ),
+                    )
                   ),
-                ),
+                )
               ),
               "name" => "card",
-            ),
+            )
           ),
         ],
         "is_union" => false,
-      ),
+      )
     );
   }
 
-  public static function getAllStructuredAnnotations(
-  )[write_props]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
-      'fields' => dict[],
+      'fields' => dict[
+      ],
     );
   }
 
@@ -585,9 +611,7 @@ class GetCardResponse implements \IThriftSyncStruct, \IThriftStructMetadata {
  * Original thrift exception:-
  * GetCardException
  */
-class GetCardException
-  extends \TException
-  implements \IThriftSyncStruct, \IThriftExceptionMetadata {
+class GetCardException extends \TException implements \IThriftSyncStruct, \IThriftExceptionMetadata {
   use \ThriftSerializationTrait;
 
   const \ThriftStructTypes::TSpec SPEC = dict[
@@ -621,7 +645,9 @@ class GetCardException
   }
 
   public static function fromShape(self::TConstructorShape $shape)[]: this {
-    return new static(Shapes::idx($shape, 'message_detail'));
+    return new static(
+      Shapes::idx($shape, 'message_detail'),
+    );
   }
 
   public function getName()[]: string {
@@ -638,23 +664,22 @@ class GetCardException
               "id" => 1,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
-                  "t_primitive" =>
-                    tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                ),
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
               ),
               "name" => "message_detail",
-            ),
+            )
           ),
         ],
-      ),
+      )
     );
   }
 
-  public static function getAllStructuredAnnotations(
-  )[write_props]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
-      'fields' => dict[],
+      'fields' => dict[
+      ],
     );
   }
 
@@ -668,8 +693,7 @@ class GetCardException
  * Original thrift struct:-
  * ReservationHotfixConfig
  */
-class ReservationHotfixConfig
-  implements \IThriftSyncStruct, \IThriftStructMetadata {
+class ReservationHotfixConfig implements \IThriftSyncStruct, \IThriftStructMetadata {
   use \ThriftSerializationTrait;
 
   const \ThriftStructTypes::TSpec SPEC = dict[
@@ -736,12 +760,11 @@ class ReservationHotfixConfig
    */
   public Map<string, Map<string, int>> $preferences_to_add;
 
-  public function __construct(
-    ?Map<string, Set<string>> $capabilities_to_remove = null,
-    ?Map<string, Map<string, int>> $preferences_to_add = null,
-  )[] {
-    $this->capabilities_to_remove = $capabilities_to_remove ?? Map {};
-    $this->preferences_to_add = $preferences_to_add ?? Map {};
+  public function __construct(?Map<string, Set<string>> $capabilities_to_remove = null, ?Map<string, Map<string, int>> $preferences_to_add = null)[] {
+    $this->capabilities_to_remove = $capabilities_to_remove ?? Map {
+    };
+    $this->preferences_to_add = $preferences_to_add ?? Map {
+    };
   }
 
   public static function withDefaultValues()[]: this {
@@ -773,9 +796,8 @@ class ReservationHotfixConfig
                     shape(
                       "keyType" => tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" =>
-                            tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                        ),
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
                       ),
                       "valueType" => tmeta_ThriftType::fromShape(
                         shape(
@@ -783,20 +805,19 @@ class ReservationHotfixConfig
                             shape(
                               "valueType" => tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_primitive" =>
-                                    tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                                ),
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                )
                               ),
-                            ),
+                            )
                           ),
-                        ),
+                        )
                       ),
-                    ),
+                    )
                   ),
-                ),
+                )
               ),
               "name" => "capabilities_to_remove",
-            ),
+            )
           ),
           tmeta_ThriftField::fromShape(
             shape(
@@ -807,9 +828,8 @@ class ReservationHotfixConfig
                     shape(
                       "keyType" => tmeta_ThriftType::fromShape(
                         shape(
-                          "t_primitive" =>
-                            tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                        ),
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
                       ),
                       "valueType" => tmeta_ThriftType::fromShape(
                         shape(
@@ -817,38 +837,36 @@ class ReservationHotfixConfig
                             shape(
                               "keyType" => tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_primitive" =>
-                                    tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
-                                ),
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                )
                               ),
                               "valueType" => tmeta_ThriftType::fromShape(
                                 shape(
-                                  "t_primitive" =>
-                                    tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
-                                ),
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                                )
                               ),
-                            ),
+                            )
                           ),
-                        ),
+                        )
                       ),
-                    ),
+                    )
                   ),
-                ),
+                )
               ),
               "name" => "preferences_to_add",
-            ),
+            )
           ),
         ],
         "is_union" => false,
-      ),
+      )
     );
   }
 
-  public static function getAllStructuredAnnotations(
-  )[write_props]: \TStructAnnotations {
+  public static function getAllStructuredAnnotations()[write_props]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
-      'fields' => dict[],
+      'fields' => dict[
+      ],
     );
   }
 

@@ -49,3 +49,9 @@ struct ReservationHotfixConfig {
   map<string, set<string>> capabilities_to_remove = {};
   map<string, map<string, i64>> preferences_to_add = {};
 }
+
+enum CountOnlyMode {
+  Disabled = 0,
+  HitCount = 1,
+  FileCount = 2,
+}

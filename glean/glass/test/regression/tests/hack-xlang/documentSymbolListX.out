@@ -45,7 +45,7 @@
                     "columnBegin": 1,
                     "columnEnd": 2,
                     "lineBegin": 10,
-                    "lineEnd": 31
+                    "lineEnd": 32
                 },
                 "sym": "test-xlang/php/SourceA"
             },
@@ -139,13 +139,115 @@
                     "columnBegin": 3,
                     "columnEnd": 4,
                     "lineBegin": 24,
-                    "lineEnd": 30
+                    "lineEnd": 31
                 },
                 "sym": "test-xlang/php/SourceA/g"
             }
         ],
         "referenced_file_digests": {},
         "references": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 12
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "CountOnlyMode"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "enum CountOnlyMode : int"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 10,
+                    "columnEnd": 23,
+                    "lineBegin": 30,
+                    "lineEnd": 30
+                },
+                "sym": "test-xlang/php/CountOnlyMode",
+                "target": {
+                    "filepath": "www/test_types.php",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 19,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Disabled"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "CountOnlyMode"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "CountOnlyMode::Disabled"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 25,
+                    "columnEnd": 33,
+                    "lineBegin": 30,
+                    "lineEnd": 30
+                },
+                "sym": "test-xlang/php/CountOnlyMode/Disabled",
+                "target": {
+                    "filepath": "www/test_types.php",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 11,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test-xlang"
+                }
+            },
             {
                 "attributes": [
                     {
@@ -191,8 +293,8 @@
                     "range": {
                         "columnBegin": 7,
                         "columnEnd": 21,
-                        "lineBegin": 392,
-                        "lineEnd": 392
+                        "lineBegin": 421,
+                        "lineEnd": 421
                     },
                     "repository": "test-xlang"
                 }
@@ -242,8 +344,8 @@
                     "range": {
                         "columnBegin": 19,
                         "columnEnd": 30,
-                        "lineBegin": 427,
-                        "lineEnd": 427
+                        "lineBegin": 456,
+                        "lineEnd": 456
                     },
                     "repository": "test-xlang"
                 }
@@ -293,8 +395,8 @@
                     "range": {
                         "columnBegin": 24,
                         "columnEnd": 29,
-                        "lineBegin": 526,
-                        "lineEnd": 526
+                        "lineBegin": 550,
+                        "lineEnd": 550
                     },
                     "repository": "test-xlang"
                 }
@@ -344,8 +446,8 @@
                     "range": {
                         "columnBegin": 7,
                         "columnEnd": 29,
-                        "lineBegin": 309,
-                        "lineEnd": 309
+                        "lineBegin": 339,
+                        "lineEnd": 339
                     },
                     "repository": "test-xlang"
                 }
@@ -395,8 +497,8 @@
                     "range": {
                         "columnBegin": 17,
                         "columnEnd": 32,
-                        "lineBegin": 333,
-                        "lineEnd": 333
+                        "lineBegin": 361,
+                        "lineEnd": 361
                     },
                     "repository": "test-xlang"
                 }
@@ -446,8 +548,8 @@
                     "range": {
                         "columnBegin": 19,
                         "columnEnd": 30,
-                        "lineBegin": 335,
-                        "lineEnd": 335
+                        "lineBegin": 363,
+                        "lineEnd": 363
                     },
                     "repository": "test-xlang"
                 }
@@ -497,8 +599,8 @@
                     "range": {
                         "columnBegin": 7,
                         "columnEnd": 27,
-                        "lineBegin": 145,
-                        "lineEnd": 145
+                        "lineBegin": 175,
+                        "lineEnd": 175
                     },
                     "repository": "test-xlang"
                 }
@@ -548,8 +650,8 @@
                     "range": {
                         "columnBegin": 17,
                         "columnEnd": 28,
-                        "lineBegin": 168,
-                        "lineEnd": 168
+                        "lineBegin": 197,
+                        "lineEnd": 197
                     },
                     "repository": "test-xlang"
                 }
@@ -599,8 +701,8 @@
                     "range": {
                         "columnBegin": 19,
                         "columnEnd": 30,
-                        "lineBegin": 170,
-                        "lineEnd": 170
+                        "lineBegin": 199,
+                        "lineEnd": 199
                     },
                     "repository": "test-xlang"
                 }
@@ -650,8 +752,8 @@
                     "range": {
                         "columnBegin": 17,
                         "columnEnd": 27,
-                        "lineBegin": 250,
-                        "lineEnd": 250
+                        "lineBegin": 279,
+                        "lineEnd": 279
                     },
                     "repository": "test-xlang"
                 }
@@ -701,8 +803,8 @@
                     "range": {
                         "columnBegin": 18,
                         "columnEnd": 30,
-                        "lineBegin": 46,
-                        "lineEnd": 46
+                        "lineBegin": 75,
+                        "lineEnd": 75
                     },
                     "repository": "test-xlang"
                 }
@@ -1264,6 +1366,57 @@
                         "columnEnd": 23,
                         "lineBegin": 18,
                         "lineEnd": 18
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "static_card"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "ResponseCard"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "union field www/test::ResponseCard::static_card"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 29,
+                    "lineBegin": 29,
+                    "lineEnd": 29
+                },
+                "sym": "test-xlang/thrift/www/test.thrift/ResponseCard/static_card",
+                "target": {
+                    "filepath": "www/test.thrift",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 25,
+                        "lineBegin": 10,
+                        "lineEnd": 10
                     },
                     "repository": "test-xlang"
                 }

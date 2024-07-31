@@ -389,6 +389,14 @@ class TestService_thrift1_result extends \ThriftSyncStructWithResult implements 
     }
     return null;
   }
+
+  public function setException(\TException $e): bool {
+    if ($e is GetNavigationException) {
+      $this->get_navigation_exception = $e;
+      return true;
+    }
+    return false;
+  }
 }
 
 class TestService_thrift2_args implements \IThriftSyncStruct, \IThriftStructMetadata {
@@ -579,6 +587,14 @@ class TestService_thrift2_result extends \ThriftSyncStructWithResult implements 
       return $this->get_card_exception;
     }
     return null;
+  }
+
+  public function setException(\TException $e): bool {
+    if ($e is GetCardException) {
+      $this->get_card_exception = $e;
+      return true;
+    }
+    return false;
   }
 }
 

@@ -5,11 +5,66 @@
       "file": { "key": "www/test.php" },
       "xref": {
         "target": {
+          "name": "CountOnlyMode",
+          "file": { "key": "www/test_types.php" },
+          "location": { "span": { "start": 364, "length": 13 } }
+        },
+        "source": { "span": { "start": 1080, "length": 13 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "enum_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "CountOnlyMode" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
+          "name": "Disabled",
+          "file": { "key": "www/test_types.php" },
+          "location": { "span": { "start": 387, "length": 8 } }
+        },
+        "source": { "span": { "start": 1095, "length": 8 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "name": { "key": "Disabled" },
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "CountOnlyMode" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
           "name": "GetCardRequest",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 9450, "length": 14 } }
+          "location": { "span": { "start": 10093, "length": 14 } }
         },
-        "source": { "span": { "start": 857, "length": 14 } }
+        "source": { "span": { "start": 853, "length": 14 } }
       },
       "entity": {
         "hack": {
@@ -33,9 +88,9 @@
         "target": {
           "name": "GetNavigationException",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 7440, "length": 22 } }
+          "location": { "span": { "start": 8093, "length": 22 } }
         },
-        "source": { "span": { "start": 494, "length": 22 } }
+        "source": { "span": { "start": 492, "length": 22 } }
       },
       "entity": {
         "hack": {
@@ -61,7 +116,7 @@
         "target": {
           "name": "GetNavigationRequest",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 3565, "length": 20 } }
+          "location": { "span": { "start": 4234, "length": 20 } }
         },
         "source": { "span": { "start": 380, "length": 20 } }
       },
@@ -119,7 +174,7 @@
           "file": { "key": "www/TestService.php" },
           "location": { "span": { "start": 2445, "length": 22 } }
         },
-        "source": { "span": { "start": 812, "length": 22 } }
+        "source": { "span": { "start": 808, "length": 22 } }
       },
       "entity": {
         "hack": {
@@ -145,7 +200,7 @@
         "target": {
           "name": "__construct",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 4126, "length": 11 } }
+          "location": { "span": { "start": 4793, "length": 11 } }
         },
         "source": { "span": { "start": 380, "length": 20 } }
       },
@@ -178,9 +233,9 @@
         "target": {
           "name": "__construct",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 8048, "length": 11 } }
+          "location": { "span": { "start": 8697, "length": 11 } }
         },
-        "source": { "span": { "start": 494, "length": 22 } }
+        "source": { "span": { "start": 492, "length": 22 } }
       },
       "entity": {
         "hack": {
@@ -211,9 +266,9 @@
         "target": {
           "name": "__construct",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 10231, "length": 11 } }
+          "location": { "span": { "start": 10874, "length": 11 } }
         },
-        "source": { "span": { "start": 857, "length": 14 } }
+        "source": { "span": { "start": 853, "length": 14 } }
       },
       "entity": {
         "hack": {
@@ -242,9 +297,9 @@
         "target": {
           "name": "card",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 12648, "length": 5 } }
+          "location": { "span": { "start": 13237, "length": 5 } }
         },
-        "source": { "span": { "start": 995, "length": 4 } }
+        "source": { "span": { "start": 990, "length": 4 } }
       },
       "entity": {
         "hack": {
@@ -275,9 +330,9 @@
         "target": {
           "name": "identifier",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 4094, "length": 11 } }
+          "location": { "span": { "start": 4761, "length": 11 } }
         },
-        "source": { "span": { "start": 436, "length": 10 } }
+        "source": { "span": { "start": 435, "length": 10 } }
       },
       "entity": {
         "hack": {
@@ -308,9 +363,9 @@
         "target": {
           "name": "message_detail",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 8012, "length": 15 } }
+          "location": { "span": { "start": 8661, "length": 15 } }
         },
-        "source": { "span": { "start": 556, "length": 14 } }
+        "source": { "span": { "start": 554, "length": 14 } }
       },
       "entity": {
         "hack": {
@@ -341,9 +396,9 @@
         "target": {
           "name": "static_card",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 1031, "length": 12 } }
+          "location": { "span": { "start": 1706, "length": 12 } }
         },
-        "source": { "span": { "start": 1041, "length": 11 } }
+        "source": { "span": { "start": 1036, "length": 11 } }
       },
       "entity": {
         "hack": {
@@ -372,9 +427,9 @@
         "target": {
           "name": "tab_group",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 6030, "length": 10 } }
+          "location": { "span": { "start": 6689, "length": 10 } }
         },
-        "source": { "span": { "start": 714, "length": 9 } }
+        "source": { "span": { "start": 711, "length": 9 } }
       },
       "entity": {
         "hack": {
@@ -407,7 +462,7 @@
           "file": { "key": "www/TestService.php" },
           "location": { "span": { "start": 2775, "length": 7 } }
         },
-        "source": { "span": { "start": 637, "length": 7 } }
+        "source": { "span": { "start": 635, "length": 7 } }
       },
       "entity": {
         "hack": {
@@ -440,7 +495,7 @@
           "file": { "key": "www/TestService.php" },
           "location": { "span": { "start": 3641, "length": 7 } }
         },
-        "source": { "span": { "start": 924, "length": 7 } }
+        "source": { "span": { "start": 919, "length": 7 } }
       },
       "entity": {
         "hack": {
