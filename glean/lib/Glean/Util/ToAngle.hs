@@ -409,6 +409,22 @@ instance Normalize Fbthrift.FieldDecl_key where
       (Fbthrift.Identifier 0 (Just identifier))
   normalize  _ = error "Not fully resolved"
 
+instance Normalize Fbthrift.EnumValue_key where
+  normalize
+    (Fbthrift.EnumValue_key
+      (Fbthrift.NamedType (Fbthrift.QualName _ (Just qualname)) kind)
+      (Fbthrift.Identifier _ (Just identifier))) =
+    Fbthrift.EnumValue_key
+      (Fbthrift.NamedType
+        (Fbthrift.QualName 0 (Just (normalize qualname))) kind)
+      (Fbthrift.Identifier 0 (Just identifier))
+  normalize  _ = error "Not fully resolved"
+
+instance Normalize Fbthrift.Constant_key where
+  normalize (Fbthrift.Constant_key (Fbthrift.QualName _ (Just qualname))) =
+    Fbthrift.Constant_key (Fbthrift.QualName 0 (Just (normalize qualname)))
+  normalize  _ = error "Not fully resolved"
+
 instance Normalize Fbthrift.XRefTarget where
   normalize
     (Fbthrift.XRefTarget_function_
@@ -428,11 +444,23 @@ instance Normalize Fbthrift.XRefTarget where
     (Fbthrift.XRefTarget_field
       (Fbthrift.FieldDecl _ (Just x))) =
     Fbthrift.XRefTarget_field (Fbthrift.FieldDecl 0 (Just (normalize x)))
-  normalize _ = error "unknown Entity"
+  normalize
+    (Fbthrift.XRefTarget_enumValue
+      (Fbthrift.EnumValue _ (Just x))) =
+    Fbthrift.XRefTarget_enumValue (Fbthrift.EnumValue 0 (Just (normalize x)))
+  normalize
+    (Fbthrift.XRefTarget_constant
+      (Fbthrift.Constant _ (Just x))) =
+    Fbthrift.XRefTarget_constant (Fbthrift.Constant 0 (Just (normalize x)))
+  normalize
+    (Fbthrift.XRefTarget_include_
+      (Fbthrift.File _ (Just x))) =
+    Fbthrift.XRefTarget_include_ (Fbthrift.File 0 (Just (normalize x)))
+  normalize _  = error "Not fully resolved"
 
 instance ToAngleFull Fbthrift.File where
   toAngleFull (Fbthrift.File _ (Just k)) = predicate $ toAngleFull k
-  toAngleFull  _ = error "Not Fully resolved"
+  toAngleFull  _ = error "Not fully resolved"
 
 instance ToAngleFull Fbthrift.QualName_key where
   toAngleFull
@@ -441,14 +469,14 @@ instance ToAngleFull Fbthrift.QualName_key where
         field @"file" (sig (toAngleFull file)) $
         field @"name" (string identifier)
     end
-  toAngleFull  _ = error "Not Fully resolved"
+  toAngleFull  _ = error "Not fully resolved"
 
 instance ToAngleFull Fbthrift.ServiceName_key where
   toAngleFull (Fbthrift.ServiceName_key (Fbthrift.QualName _ (Just qualname)))
     = rec $
         field @"name" (toAngleFull qualname)
     end
-  toAngleFull  _ = error "Not Fully resolved"
+  toAngleFull  _ = error "Not fully resolved"
 
 instance ToAngleFull Fbthrift.NamedDecl_key where
   toAngleFull
@@ -464,12 +492,30 @@ instance ToAngleFull Fbthrift.NamedDecl_key where
     end
   toAngleFull  _ = error "Not fully resolved"
 
+instance ToAngleFull Fbthrift.EnumValue_key where
+  toAngleFull
+    (Fbthrift.EnumValue_key
+      (Fbthrift.NamedType (Fbthrift.QualName _ (Just qualname)) kind)
+      (Fbthrift.Identifier _ (Just identifier))
+      ) =
+      let namedType :: Angle Fbthrift.NamedType = rec $
+            field @"name" (toAngleFull qualname) $
+            field @"kind" (enum kind)
+            end
+      in
+      rec $
+        field @"enum_" namedType $
+        field @"name" (string identifier)
+    end
+  toAngleFull  _ = error "Not fully resolved"
+
+
 instance ToAngleFull Fbthrift.ExceptionName_key where
   toAngleFull (Fbthrift.ExceptionName_key (Fbthrift.QualName _ (Just qualname)))
     = rec $
         field @"name" (toAngleFull qualname)
     end
-  toAngleFull  _ = error "Not Fully resolved"
+  toAngleFull  _ = error "Not fully resolved"
 
 instance ToAngleFull Fbthrift.FunctionName_key where
   toAngleFull
@@ -478,7 +524,7 @@ instance ToAngleFull Fbthrift.FunctionName_key where
       field @"service_" (toAngleFull service_) $
       field @"name" (string identifier)
     end
-  toAngleFull  _ = error "Not Fully resolved"
+  toAngleFull  _ = error "Not fully resolved"
 
 instance ToAngleFull Fbthrift.FieldDecl_key where
   toAngleFull
@@ -491,7 +537,16 @@ instance ToAngleFull Fbthrift.FieldDecl_key where
         field @"kind" (enum kind) $
         field @"name" (string identifier)
       end
-  toAngleFull  _ = error "Not Fully resolved"
+  toAngleFull  _ = error "Not fully resolved"
+
+instance ToAngleFull Fbthrift.Constant_key where
+  toAngleFull
+    (Fbthrift.Constant_key
+      (Fbthrift.QualName _ (Just qualname))) =
+      rec $
+        field @"name" (toAngleFull qualname)
+      end
+  toAngleFull  _ = error "Not fully resolved"
 
 instance ToAngleFull Fbthrift.XRefTarget where
   toAngleFull
@@ -509,7 +564,16 @@ instance ToAngleFull Fbthrift.XRefTarget where
   toAngleFull
     (Fbthrift.XRefTarget_field (Fbthrift.FieldDecl _ (Just x))) =
     alt @"field" (toAngleFull x)
-  toAngleFull _ = error "unknown Entity"
+  toAngleFull
+    (Fbthrift.XRefTarget_enumValue (Fbthrift.EnumValue _ (Just x))) =
+    alt @"enumValue" (toAngleFull x)
+  toAngleFull
+    (Fbthrift.XRefTarget_constant (Fbthrift.Constant _ (Just x))) =
+    alt @"constant" (toAngleFull x)
+  toAngleFull
+    (Fbthrift.XRefTarget_include_ (Fbthrift.File _ (Just x))) =
+    alt @"include_" (toAngleFull x)
+  toAngleFull _  = error "Not fully resolved"
 
 instance ToAngle Fbthrift.XRefTarget where
   toAngle (Fbthrift.XRefTarget_include_ x) = alt @"include_" (mkKey x)
