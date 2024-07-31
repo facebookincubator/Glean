@@ -34,6 +34,12 @@ instance Search (ResultLocation GraphQL.Entity) where
     | [name] <- toks -- fragment
     = searchSymbolId toks $ searchFragment name
 
+    | ["o",name] <- toks -- operation
+    = searchSymbolId toks $ searchOperation name
+
+    -- fields and enums don't have entries in the db yet.
+    -- directive defs don't have a sensible location to be an entity?
+
     | otherwise = return $ None "GraphQL.symbolSearch: unsupported symbol id"
 
 searchFragment :: Text -> Angle (ResultLocation GraphQL.Entity)
@@ -42,12 +48,26 @@ searchFragment fname =
     (fragment :: Angle GraphQL.Fragment) (decl :: Angle GraphQL.Declaration)
     (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
   tuple (ent, file, rangespan, lname) `where_` [
-
     fragment .= predicate @GraphQL.Fragment (
       rec $
         field @"name" (string fname)
       end),
     alt @"fragment_" (asPredicate fragment) .= sig decl,
+    alt @"decl" decl .= sig ent,
+    entityLocation (alt @"graphql" ent) file rangespan lname
+  ]
+
+searchOperation :: Text -> Angle (ResultLocation GraphQL.Entity)
+searchOperation fname =
+  vars $ \(ent :: Angle GraphQL.Entity) (file :: Angle Src.File)
+    (op :: Angle GraphQL.Operation) (decl :: Angle GraphQL.Declaration)
+    (rangespan :: Angle Code.RangeSpan) (lname :: Angle Text) ->
+  tuple (ent, file, rangespan, lname) `where_` [
+    op .= predicate @GraphQL.Operation (
+      rec $
+        field @"name" (string fname)
+      end),
+    alt @"operation_" (asPredicate op) .= sig decl,
     alt @"decl" decl .= sig ent,
     entityLocation (alt @"graphql" ent) file rangespan lname
   ]
