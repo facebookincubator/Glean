@@ -324,7 +324,7 @@ predicate SearchByModule :
      { typeDecl = { name = N }}) = D;
 
 # Lookup a declaration knowing its name and its file
-# Should be O(1)
+# Please key by file fact. T
 predicate SearchByFileModule :
   {
     file : src.File,
@@ -332,10 +332,10 @@ predicate SearchByFileModule :
     decl : flow.SomeDeclaration
   }
   { file = F, name = N, decl = D } where
+    FileDeclaration { F, D };
     ({ localDecl = { name = N } } |
      { memberDecl = { name = N } } |
      { typeDecl = { name = N }}) = D;
-    FileDeclaration { F, D };
 
 # For types exported from .flow files the Haste short name is mapped to the
 # .flow file via the ModuleTypeExport facts
