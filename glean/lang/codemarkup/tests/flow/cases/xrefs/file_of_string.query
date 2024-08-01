@@ -1,0 +1,2 @@
+query: flow.FileOfStringModule { file = "more_cjs.js" }
+transform: [gensort, []]

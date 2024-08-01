@@ -23,7 +23,7 @@ import qualified Glean.Schema.Flow.Types as Flow
 import qualified Glean.Schema.Src.Types as Src
 
 import Glean.Glass.Utils
-import Glean.Glass.Base ( GleanPath(GleanPath) )
+import Glean.Glass.Base ( GleanPath(..))
 import Glean.Glass.Types ( Name(..) )
 
 import Glean.Schema.CodeFlow.Types as Flow ( Entity(..) )
@@ -41,8 +41,10 @@ instance Symbol Flow.SomeDeclaration where
     Flow.SomeDeclaration_typeDecl type_ -> toSymbolPredicate type_
     Flow.SomeDeclaration_EMPTY -> return []
 
+-- flow declarations are a bare name and a `Range`, which can be a module or
+-- other location
 instance Symbol Flow.Declaration_key where
-  toSymbol (Flow.Declaration_key name container) = container <:> name
+  toSymbol (Flow.Declaration_key name loc_range) = loc_range <:> name
 
 instance Symbol Flow.MemberDeclaration_key where
   toSymbol (Flow.MemberDeclaration_key name container) = container <:> name
@@ -87,7 +89,7 @@ runModuleNameQuery file = do
     Nothing -> fetchData (moduleStringName $ Glean.getId file)
     Just path -> fetchData (moduleStringNameByFile path)
   case names of
-    Nothing -> reverse . pathFragments <$> Glean.keyOf file
+    Nothing -> pathFragments <$> Glean.keyOf file
     Just n -> return [n]
 
 -- Normalize any .flow suffix of a file to its base .js file

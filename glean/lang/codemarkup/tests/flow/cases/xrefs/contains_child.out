@@ -438,7 +438,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 506, "length": 9 }
+                    "span": { "start": 548, "length": 9 }
                   }
                 }
               }
@@ -606,7 +606,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 676, "length": 3 }
+                    "span": { "start": 744, "length": 3 }
                   }
                 }
               }
@@ -662,7 +662,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 585, "length": 1 }
+                    "span": { "start": 627, "length": 1 }
                   }
                 }
               }
@@ -690,7 +690,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 368, "length": 2 }
+                    "span": { "start": 410, "length": 2 }
                   }
                 }
               }
@@ -774,7 +774,35 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 757, "length": 1 }
+                    "span": { "start": 825, "length": 1 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "flow": {
+          "module_": { "key": { "file": { "key": "test/imports.js" } } }
+        }
+      },
+      "child": {
+        "flow": {
+          "decl": {
+            "localDecl": {
+              "key": {
+                "name": { "key": "times" },
+                "loc": {
+                  "key": {
+                    "module": {
+                      "key": { "file": { "key": "test/imports.js" } }
+                    },
+                    "span": { "start": 367, "length": 5 }
                   }
                 }
               }
@@ -802,7 +830,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 605, "length": 1 }
+                    "span": { "start": 647, "length": 1 }
                   }
                 }
               }
@@ -830,7 +858,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 626, "length": 1 }
+                    "span": { "start": 668, "length": 1 }
                   }
                 }
               }
@@ -858,7 +886,35 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 653, "length": 1 }
+                    "span": { "start": 695, "length": 1 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "flow": {
+          "module_": { "key": { "file": { "key": "test/imports.js" } } }
+        }
+      },
+      "child": {
+        "flow": {
+          "decl": {
+            "localDecl": {
+              "key": {
+                "name": { "key": "z1" },
+                "loc": {
+                  "key": {
+                    "module": {
+                      "key": { "file": { "key": "test/imports.js" } }
+                    },
+                    "span": { "start": 715, "length": 2 }
                   }
                 }
               }
@@ -886,7 +942,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 716, "length": 1 }
+                    "span": { "start": 784, "length": 1 }
                   }
                 }
               }
@@ -914,7 +970,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 549, "length": 9 }
+                    "span": { "start": 591, "length": 9 }
                   }
                 }
               }
@@ -942,7 +998,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 746, "length": 1 }
+                    "span": { "start": 814, "length": 1 }
                   }
                 }
               }
@@ -970,7 +1026,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 676, "length": 3 }
+                    "span": { "start": 744, "length": 3 }
                   }
                 }
               }
@@ -998,7 +1054,7 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 472, "length": 3 }
+                    "span": { "start": 514, "length": 3 }
                   }
                 }
               }
@@ -1026,7 +1082,91 @@
                     "module": {
                       "key": { "file": { "key": "test/imports.js" } }
                     },
-                    "span": { "start": 710, "length": 3 }
+                    "span": { "start": 778, "length": 3 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "flow": {
+          "module_": { "key": { "file": { "key": "test/subdir/more_cjs.js" } } }
+        }
+      },
+      "child": {
+        "flow": {
+          "decl": {
+            "localDecl": {
+              "key": {
+                "name": { "key": "times" },
+                "loc": {
+                  "key": {
+                    "module": {
+                      "key": { "file": { "key": "test/subdir/more_cjs.js" } }
+                    },
+                    "span": { "start": 240, "length": 5 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "flow": {
+          "module_": { "key": { "file": { "key": "test/subdir/more_cjs.js" } } }
+        }
+      },
+      "child": {
+        "flow": {
+          "decl": {
+            "localDecl": {
+              "key": {
+                "name": { "key": "x" },
+                "loc": {
+                  "key": {
+                    "module": {
+                      "key": { "file": { "key": "test/subdir/more_cjs.js" } }
+                    },
+                    "span": { "start": 246, "length": 1 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "flow": {
+          "module_": { "key": { "file": { "key": "test/subdir/more_cjs.js" } } }
+        }
+      },
+      "child": {
+        "flow": {
+          "decl": {
+            "localDecl": {
+              "key": {
+                "name": { "key": "y" },
+                "loc": {
+                  "key": {
+                    "module": {
+                      "key": { "file": { "key": "test/subdir/more_cjs.js" } }
+                    },
+                    "span": { "start": 257, "length": 1 }
                   }
                 }
               }

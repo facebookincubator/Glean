@@ -979,8 +979,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 12,
-                        "lineBegin": 34,
-                        "lineEnd": 34
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -998,8 +998,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 12,
-                        "lineBegin": 34,
-                        "lineEnd": 34
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -1026,8 +1026,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
@@ -1045,8 +1045,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
@@ -1073,8 +1073,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
@@ -1092,8 +1092,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
@@ -1120,8 +1120,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 18,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 25,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -1139,8 +1139,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 18,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 25,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -1167,8 +1167,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 19,
-                        "lineBegin": 35,
-                        "lineEnd": 35
+                        "lineBegin": 37,
+                        "lineEnd": 37
                     },
                     "repository": "test"
                 },
@@ -1186,8 +1186,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 19,
-                        "lineBegin": 35,
-                        "lineEnd": 35
+                        "lineBegin": 37,
+                        "lineEnd": 37
                     },
                     "repository": "test"
                 },
@@ -1214,8 +1214,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 26,
-                        "lineEnd": 26
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 },
@@ -1233,8 +1233,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 26,
-                        "lineEnd": 26
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 },
@@ -1261,8 +1261,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 26,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },
@@ -1280,8 +1280,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 26,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },
@@ -1308,8 +1308,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 19,
-                        "lineBegin": 28,
-                        "lineEnd": 28
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 },
@@ -1327,8 +1327,256 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 19,
-                        "lineBegin": 28,
-                        "lineEnd": 28
+                        "lineBegin": 29,
+                        "lineEnd": 29
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 25,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "imports",
+                    "localName": "z1"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "z1: num",
+                "sym": "test/js/imports/z1",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 25,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": true,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/subdir/more_cjs.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "",
+                    "localName": "more_cjs"
+                },
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test/subdir/more_cjs.js",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 1,
+                                "lineEnd": 7
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
+                "repo_hash": "testhash",
+                "signature": "test/subdir/more_cjs.js",
+                "sym": "test/js/more_cjs",
+                "sym_location": {
+                    "filepath": "test/subdir/more_cjs.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/subdir/more_cjs.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 61,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "more_cjs",
+                    "localName": "times"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "times: (x: number, y: number) => number",
+                "sym": "test/js/more_cjs/times",
+                "sym_location": {
+                    "filepath": "test/subdir/more_cjs.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 61,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/subdir/more_cjs.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "more_cjs",
+                    "localName": "x"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "x: number",
+                "sym": "test/js/more_cjs/x",
+                "sym_location": {
+                    "filepath": "test/subdir/more_cjs.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/subdir/more_cjs.js",
+                    "range": {
+                        "columnBegin": 27,
+                        "columnEnd": 28,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "more_cjs",
+                    "localName": "y"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "y: number",
+                "sym": "test/js/more_cjs/y",
+                "sym_location": {
+                    "filepath": "test/subdir/more_cjs.js",
+                    "range": {
+                        "columnBegin": 27,
+                        "columnEnd": 28,
+                        "lineBegin": 11,
+                        "lineEnd": 11
                     },
                     "repository": "test"
                 },
@@ -1810,8 +2058,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 12,
-                        "lineBegin": 34,
-                        "lineEnd": 34
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -1840,8 +2088,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
@@ -1863,8 +2111,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 25,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
@@ -1886,8 +2134,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 18,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 25,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 },
@@ -1909,8 +2157,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 19,
-                        "lineBegin": 35,
-                        "lineEnd": 35
+                        "lineBegin": 37,
+                        "lineEnd": 37
                     },
                     "repository": "test"
                 },
@@ -1932,8 +2180,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 20,
-                        "lineBegin": 26,
-                        "lineEnd": 26
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 },
@@ -1955,8 +2203,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 26,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "repository": "test"
                 },
@@ -1978,8 +2226,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 19,
-                        "lineBegin": 28,
-                        "lineEnd": 28
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 },
@@ -1992,6 +2240,121 @@
                     "exactness": 2
                 },
                 "symbol": "test/js/imports/z"
+            },
+            {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 25,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "repository": "test"
+                },
+                "name": "z1",
+                "qname": {
+                    "container": "imports",
+                    "localName": "z1"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/imports/z1"
+            },
+            {
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/subdir/more_cjs.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "name": "test/subdir/more_cjs.js",
+                "qname": {
+                    "container": "",
+                    "localName": "more_cjs"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/more_cjs"
+            },
+            {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/subdir/more_cjs.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 61,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "times",
+                "qname": {
+                    "container": "more_cjs",
+                    "localName": "times"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/more_cjs/times"
+            },
+            {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/subdir/more_cjs.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "x",
+                "qname": {
+                    "container": "more_cjs",
+                    "localName": "x"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/more_cjs/x"
+            },
+            {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/subdir/more_cjs.js",
+                    "range": {
+                        "columnBegin": 27,
+                        "columnEnd": 28,
+                        "lineBegin": 11,
+                        "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "y",
+                "qname": {
+                    "container": "more_cjs",
+                    "localName": "y"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/more_cjs/y"
             }
         ]
     }

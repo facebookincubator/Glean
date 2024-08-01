@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 58,
+        "size": 65,
         "symbols": {
             "1": [
                 {
@@ -427,7 +427,71 @@
                     "sym": "test/js/imports/qux"
                 }
             ],
-            "16": [
+            "15": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 21
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "times"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "times: (x: number, y: number) => number"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "sym": "test/js/imports/times"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 21
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "times"
+                        },
+                        "symbolParent": {
+                            "aString": "more_cjs"
+                        },
+                        "symbolSignature": {
+                            "aString": "times: (x: number, y: number) => number"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 13,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "sym": "test/js/more_cjs/times",
+                    "target": {
+                        "filepath": "test/subdir/more_cjs.js",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 15,
+                            "lineBegin": 11,
+                            "lineEnd": 11
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "17": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -449,8 +513,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 10,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 17,
+                        "lineEnd": 17
                     },
                     "sym": "test/js/cjs_exports/plus",
                     "target": {
@@ -485,13 +549,13 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 10,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 17,
+                        "lineEnd": 17
                     },
                     "sym": "test/js/imports/fn"
                 }
             ],
-            "19": [
+            "20": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -513,8 +577,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 17,
-                        "lineBegin": 19,
-                        "lineEnd": 19
+                        "lineBegin": 20,
+                        "lineEnd": 20
                     },
                     "sym": "test/js/es_exports/num",
                     "target": {
@@ -546,13 +610,13 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 17,
-                        "lineBegin": 19,
-                        "lineEnd": 19
+                        "lineBegin": 20,
+                        "lineEnd": 20
                     },
                     "sym": "test/js/imports/num"
                 }
             ],
-            "21": [
+            "22": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -574,8 +638,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 17,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "sym": "test/js/es_exports/d",
                     "target": {
@@ -610,13 +674,13 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 17,
-                        "lineBegin": 21,
-                        "lineEnd": 21
+                        "lineBegin": 22,
+                        "lineEnd": 22
                     },
                     "sym": "test/js/imports/Component"
                 }
             ],
-            "22": [
+            "23": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -638,8 +702,8 @@
                     "range": {
                         "columnBegin": 13,
                         "columnEnd": 22,
-                        "lineBegin": 22,
-                        "lineEnd": 22
+                        "lineBegin": 23,
+                        "lineEnd": 23
                     },
                     "sym": "test/js/es_exports/d",
                     "target": {
@@ -671,13 +735,13 @@
                     "range": {
                         "columnBegin": 13,
                         "columnEnd": 22,
-                        "lineBegin": 22,
-                        "lineEnd": 22
+                        "lineBegin": 23,
+                        "lineEnd": 23
                     },
                     "sym": "test/js/imports/Component"
                 }
             ],
-            "24": [
+            "25": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -699,8 +763,8 @@
                     "range": {
                         "columnBegin": 17,
                         "columnEnd": 18,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 25,
+                        "lineEnd": 25
                     },
                     "sym": "test/js/es_exports/d",
                     "target": {
@@ -735,8 +799,8 @@
                     "range": {
                         "columnBegin": 17,
                         "columnEnd": 18,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 25,
+                        "lineEnd": 25
                     },
                     "sym": "test/js/imports/d",
                     "target": {
@@ -771,13 +835,13 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
-                        "lineBegin": 24,
-                        "lineEnd": 24
+                        "lineBegin": 25,
+                        "lineEnd": 25
                     },
                     "sym": "test/js/imports/e"
                 }
             ],
-            "26": [
+            "27": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -799,8 +863,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 17,
-                        "lineBegin": 26,
-                        "lineEnd": 26
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "sym": "test/js/es_exports/bor",
                     "target": {
@@ -835,8 +899,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 26,
-                        "lineEnd": 26
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "sym": "test/js/es_exports/num",
                     "target": {
@@ -871,8 +935,8 @@
                     "range": {
                         "columnBegin": 18,
                         "columnEnd": 19,
-                        "lineBegin": 26,
-                        "lineEnd": 26
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "sym": "test/js/imports/a",
                     "target": {
@@ -907,8 +971,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 17,
-                        "lineBegin": 26,
-                        "lineEnd": 26
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "sym": "test/js/imports/bar",
                     "target": {
@@ -940,8 +1004,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 26,
-                        "lineEnd": 26
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "sym": "test/js/imports/num",
                     "target": {
@@ -949,8 +1013,8 @@
                         "range": {
                             "columnBegin": 14,
                             "columnEnd": 17,
-                            "lineBegin": 19,
-                            "lineEnd": 19
+                            "lineBegin": 20,
+                            "lineEnd": 20
                         },
                         "repository": "test"
                     }
@@ -976,13 +1040,13 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
-                        "lineBegin": 26,
-                        "lineEnd": 26
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "sym": "test/js/imports/x"
                 }
             ],
-            "27": [
+            "28": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -1004,8 +1068,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 17,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "sym": "test/js/es_exports",
                     "target": {
@@ -1037,8 +1101,8 @@
                     "range": {
                         "columnBegin": 18,
                         "columnEnd": 21,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "sym": "test/js/es_exports/bar",
                     "target": {
@@ -1073,8 +1137,8 @@
                     "range": {
                         "columnBegin": 22,
                         "columnEnd": 25,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "sym": "test/js/es_exports/foo",
                     "target": {
@@ -1109,8 +1173,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "sym": "test/js/es_exports/num",
                     "target": {
@@ -1145,8 +1209,8 @@
                     "range": {
                         "columnBegin": 22,
                         "columnEnd": 25,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "sym": "test/js/imports/foo",
                     "target": {
@@ -1178,8 +1242,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "sym": "test/js/imports/num",
                     "target": {
@@ -1187,8 +1251,8 @@
                         "range": {
                             "columnBegin": 14,
                             "columnEnd": 17,
-                            "lineBegin": 19,
-                            "lineEnd": 19
+                            "lineBegin": 20,
+                            "lineEnd": 20
                         },
                         "repository": "test"
                     }
@@ -1214,8 +1278,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 17,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "sym": "test/js/imports/qux",
                     "target": {
@@ -1250,13 +1314,13 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "lineBegin": 28,
+                        "lineEnd": 28
                     },
                     "sym": "test/js/imports/y"
                 }
             ],
-            "28": [
+            "29": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -1278,8 +1342,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 16,
-                        "lineBegin": 28,
-                        "lineEnd": 28
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "sym": "test/js/cjs_exports/plus",
                     "target": {
@@ -1314,8 +1378,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 28,
-                        "lineEnd": 28
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "sym": "test/js/es_exports/num",
                     "target": {
@@ -1350,8 +1414,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 16,
-                        "lineBegin": 28,
-                        "lineEnd": 28
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "sym": "test/js/imports/fn",
                     "target": {
@@ -1359,8 +1423,8 @@
                         "range": {
                             "columnBegin": 8,
                             "columnEnd": 10,
-                            "lineBegin": 16,
-                            "lineEnd": 16
+                            "lineBegin": 17,
+                            "lineEnd": 17
                         },
                         "repository": "test"
                     }
@@ -1383,8 +1447,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 28,
-                        "lineEnd": 28
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "sym": "test/js/imports/num",
                     "target": {
@@ -1392,8 +1456,8 @@
                         "range": {
                             "columnBegin": 14,
                             "columnEnd": 17,
-                            "lineBegin": 19,
-                            "lineEnd": 19
+                            "lineBegin": 20,
+                            "lineEnd": 20
                         },
                         "repository": "test"
                     }
@@ -1419,13 +1483,182 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
-                        "lineBegin": 28,
-                        "lineEnd": 28
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "sym": "test/js/imports/z"
                 }
             ],
             "30": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 2
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "num"
+                        },
+                        "symbolParent": {
+                            "aString": "es_exports"
+                        },
+                        "symbolSignature": {
+                            "aString": "num: type num = number"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 12,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test/js/es_exports/num",
+                    "target": {
+                        "filepath": "test/es_exports.js.flow",
+                        "range": {
+                            "columnBegin": 13,
+                            "columnEnd": 16,
+                            "lineBegin": 30,
+                            "lineEnd": 30
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 2
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "num"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 12,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test/js/imports/num",
+                    "target": {
+                        "filepath": "test/imports.js",
+                        "range": {
+                            "columnBegin": 14,
+                            "columnEnd": 17,
+                            "lineBegin": 20,
+                            "lineEnd": 20
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 21
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "times"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "times: (x: number, y: number) => number"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 20,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test/js/imports/times",
+                    "target": {
+                        "filepath": "test/imports.js",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 13,
+                            "lineBegin": 15,
+                            "lineEnd": 15
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 21
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "z1"
+                        },
+                        "symbolParent": {
+                            "aString": "imports"
+                        },
+                        "symbolSignature": {
+                            "aString": "z1: num"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 7,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test/js/imports/z1"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 21
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 2
+                        },
+                        "symbolName": {
+                            "aString": "times"
+                        },
+                        "symbolParent": {
+                            "aString": "more_cjs"
+                        },
+                        "symbolSignature": {
+                            "aString": "times: (x: number, y: number) => number"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 20,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test/js/more_cjs/times",
+                    "target": {
+                        "filepath": "test/subdir/more_cjs.js",
+                        "range": {
+                            "columnBegin": 10,
+                            "columnEnd": 15,
+                            "lineBegin": 11,
+                            "lineEnd": 11
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "32": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -1447,8 +1680,8 @@
                     "range": {
                         "columnBegin": 19,
                         "columnEnd": 22,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "sym": "test/js/es_exports/baz",
                     "target": {
@@ -1483,8 +1716,8 @@
                     "range": {
                         "columnBegin": 19,
                         "columnEnd": 22,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "sym": "test/js/imports/baz",
                     "target": {
@@ -1519,8 +1752,8 @@
                     "range": {
                         "columnBegin": 7,
                         "columnEnd": 10,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "sym": "test/js/imports/caz"
                 },
@@ -1545,13 +1778,13 @@
                     "range": {
                         "columnBegin": 7,
                         "columnEnd": 10,
-                        "lineBegin": 30,
-                        "lineEnd": 30
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "sym": "test/js/imports/caz"
                 }
             ],
-            "32": [
+            "34": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -1573,8 +1806,8 @@
                     "range": {
                         "columnBegin": 21,
                         "columnEnd": 22,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 34,
+                        "lineEnd": 34
                     },
                     "sym": "test/js/es_exports/C",
                     "target": {
@@ -1609,8 +1842,8 @@
                     "range": {
                         "columnBegin": 15,
                         "columnEnd": 18,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 34,
+                        "lineEnd": 34
                     },
                     "sym": "test/js/es_exports/d",
                     "target": {
@@ -1642,8 +1875,8 @@
                     "range": {
                         "columnBegin": 21,
                         "columnEnd": 22,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 34,
+                        "lineEnd": 34
                     },
                     "sym": "test/js/imports/C"
                 },
@@ -1665,13 +1898,13 @@
                     "range": {
                         "columnBegin": 15,
                         "columnEnd": 18,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 34,
+                        "lineEnd": 34
                     },
                     "sym": "test/js/imports/str"
                 }
             ],
-            "34": [
+            "36": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -1693,8 +1926,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 11,
-                        "lineBegin": 34,
-                        "lineEnd": 34
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "sym": "test/js/es_exports/C",
                     "target": {
@@ -1726,8 +1959,8 @@
                     "range": {
                         "columnBegin": 10,
                         "columnEnd": 11,
-                        "lineBegin": 34,
-                        "lineEnd": 34
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "sym": "test/js/imports/C",
                     "target": {
@@ -1735,8 +1968,8 @@
                         "range": {
                             "columnBegin": 21,
                             "columnEnd": 22,
-                            "lineBegin": 32,
-                            "lineEnd": 32
+                            "lineBegin": 34,
+                            "lineEnd": 34
                         },
                         "repository": "test"
                     }
@@ -1762,13 +1995,13 @@
                     "range": {
                         "columnBegin": 6,
                         "columnEnd": 7,
-                        "lineBegin": 34,
-                        "lineEnd": 34
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "sym": "test/js/imports/D"
                 }
             ],
-            "35": [
+            "37": [
                 {
                     "attributes": {
                         "symbolKind": {
@@ -1790,8 +2023,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 35,
-                        "lineEnd": 35
+                        "lineBegin": 37,
+                        "lineEnd": 37
                     },
                     "sym": "test/js/es_exports/d",
                     "target": {
@@ -1826,8 +2059,8 @@
                     "range": {
                         "columnBegin": 5,
                         "columnEnd": 6,
-                        "lineBegin": 35,
-                        "lineEnd": 35
+                        "lineBegin": 37,
+                        "lineEnd": 37
                     },
                     "sym": "test/js/imports/s"
                 },
@@ -1849,8 +2082,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 11,
-                        "lineBegin": 35,
-                        "lineEnd": 35
+                        "lineBegin": 37,
+                        "lineEnd": 37
                     },
                     "sym": "test/js/imports/str",
                     "target": {
@@ -1858,8 +2091,8 @@
                         "range": {
                             "columnBegin": 15,
                             "columnEnd": 18,
-                            "lineBegin": 32,
-                            "lineEnd": 32
+                            "lineBegin": 34,
+                            "lineEnd": 34
                         },
                         "repository": "test"
                     }

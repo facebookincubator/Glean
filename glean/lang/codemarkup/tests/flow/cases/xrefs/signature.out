@@ -29,7 +29,7 @@
             "loc": {
               "key": {
                 "module": { "key": { "file": { "key": "test/imports.js" } } },
-                "span": { "start": 506, "length": 9 }
+                "span": { "start": 548, "length": 9 }
               }
             }
           }
@@ -217,7 +217,7 @@
             "loc": {
               "key": {
                 "module": { "key": { "file": { "key": "test/imports.js" } } },
-                "span": { "start": 676, "length": 3 }
+                "span": { "start": 744, "length": 3 }
               }
             }
           }
@@ -273,7 +273,7 @@
             "loc": {
               "key": {
                 "module": { "key": { "file": { "key": "test/imports.js" } } },
-                "span": { "start": 585, "length": 1 }
+                "span": { "start": 627, "length": 1 }
               }
             }
           }
@@ -291,7 +291,7 @@
             "loc": {
               "key": {
                 "module": { "key": { "file": { "key": "test/imports.js" } } },
-                "span": { "start": 368, "length": 2 }
+                "span": { "start": 410, "length": 2 }
               }
             }
           }
@@ -405,13 +405,51 @@
             "loc": {
               "key": {
                 "module": { "key": { "file": { "key": "test/imports.js" } } },
-                "span": { "start": 757, "length": 1 }
+                "span": { "start": 825, "length": 1 }
               }
             }
           }
         }
       },
       "signature": "string"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "localDecl": {
+          "key": {
+            "name": { "key": "times" },
+            "loc": {
+              "key": {
+                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "span": { "start": 367, "length": 5 }
+              }
+            }
+          }
+        }
+      },
+      "signature": "(x: number, y: number) => number"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "localDecl": {
+          "key": {
+            "name": { "key": "times" },
+            "loc": {
+              "key": {
+                "module": {
+                  "key": { "file": { "key": "test/subdir/more_cjs.js" } }
+                },
+                "span": { "start": 240, "length": 5 }
+              }
+            }
+          }
+        }
+      },
+      "signature": "(x: number, y: number) => number"
     }
   },
   {
@@ -463,7 +501,45 @@
             "loc": {
               "key": {
                 "module": { "key": { "file": { "key": "test/imports.js" } } },
-                "span": { "start": 605, "length": 1 }
+                "span": { "start": 647, "length": 1 }
+              }
+            }
+          }
+        }
+      },
+      "signature": "num"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "localDecl": {
+          "key": {
+            "name": { "key": "x" },
+            "loc": {
+              "key": {
+                "module": {
+                  "key": { "file": { "key": "test/subdir/more_cjs.js" } }
+                },
+                "span": { "start": 246, "length": 1 }
+              }
+            }
+          }
+        }
+      },
+      "signature": "number"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "localDecl": {
+          "key": {
+            "name": { "key": "y" },
+            "loc": {
+              "key": {
+                "module": { "key": { "file": { "key": "test/imports.js" } } },
+                "span": { "start": 668, "length": 1 }
               }
             }
           }
@@ -480,8 +556,28 @@
             "name": { "key": "y" },
             "loc": {
               "key": {
+                "module": {
+                  "key": { "file": { "key": "test/subdir/more_cjs.js" } }
+                },
+                "span": { "start": 257, "length": 1 }
+              }
+            }
+          }
+        }
+      },
+      "signature": "number"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "localDecl": {
+          "key": {
+            "name": { "key": "z" },
+            "loc": {
+              "key": {
                 "module": { "key": { "file": { "key": "test/imports.js" } } },
-                "span": { "start": 626, "length": 1 }
+                "span": { "start": 695, "length": 1 }
               }
             }
           }
@@ -495,11 +591,11 @@
       "decl": {
         "localDecl": {
           "key": {
-            "name": { "key": "z" },
+            "name": { "key": "z1" },
             "loc": {
               "key": {
                 "module": { "key": { "file": { "key": "test/imports.js" } } },
-                "span": { "start": 653, "length": 1 }
+                "span": { "start": 715, "length": 2 }
               }
             }
           }
@@ -537,7 +633,7 @@
             "loc": {
               "key": {
                 "module": { "key": { "file": { "key": "test/imports.js" } } },
-                "span": { "start": 746, "length": 1 }
+                "span": { "start": 814, "length": 1 }
               }
             }
           }
@@ -575,7 +671,7 @@
             "loc": {
               "key": {
                 "module": { "key": { "file": { "key": "test/imports.js" } } },
-                "span": { "start": 676, "length": 3 }
+                "span": { "start": 744, "length": 3 }
               }
             }
           }
