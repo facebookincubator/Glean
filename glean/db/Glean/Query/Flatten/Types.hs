@@ -205,9 +205,10 @@ instance Display FlatStatement where
     FlatStatement _ lhs rhs ->
       hang 2 $ sep [display opts lhs <+> "=", display opts rhs ]
     FlatAllStatement v e stmts ->
-      sep [hang 2
+      display opts v <+> "=" <+> "all" <+>
+        sep [hang 2
             (sep [sep ("(" : punctuate ";" (map (display opts) stmts)), ")"])
-          ,display opts v <+> "=" <+> "all" <+> display opts e]
+            ,display opts e]
     FlatNegation groups ->
       "!" <> doStmts groups
     FlatDisjunction groupss ->
