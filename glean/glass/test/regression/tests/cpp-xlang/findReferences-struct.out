@@ -2,6 +2,14 @@
     "@generated",
     [
         {
+            "filepath": "test.cpp",
+            "repository": "test-xlang",
+            "span": {
+                "length": 20,
+                "start": 442
+            }
+        },
+        {
             "filepath": "test.thrift",
             "repository": "test-xlang",
             "span": {

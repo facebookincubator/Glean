@@ -821,6 +821,74 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return me;
   }
 
+  // generate CxxToThrift facts from the cxx declaration fact and
+  //  thrift declaration (json-encoded) fact. Throws on decoding errors.
+  // 
+  // Objects are on the form
+  // Type: {"file": ..., "name": ..., "kind": KIND } 
+  //    Kind \in {"union", "struct", "typedef", "exception"}
+  // Function: {"file": ..., "service": ..., "function": ...}
+  //
+  // Fields, Enum values, consts aren't supported yet
+  static void genCxxToThrift(
+      ASTVisitor& visitor,
+      Cxx::XRefTarget decl,
+      folly::dynamic thriftJson) {
+    std::string thrift_file = thriftJson["file"].asString();
+
+    // TODO We need this adjustment as the thrift file path in the json
+    // is relative to the repo (project root), rather than the repo root
+    // as it should
+    if (visitor.db.cell.has_value()) {
+        thrift_file = visitor.db.cell.value() + "/" + thrift_file;
+    }
+
+    auto file_fact = visitor.db.fact<Fbthrift::File>(
+      visitor.db.fact<Src::File>(thrift_file)
+    );
+
+    folly::Optional<Fbthrift::XRefTarget> thrift_target = folly::none;
+
+    if (thriftJson.find("service") != thriftJson.items().end()) {
+      // Thrift function declaration
+      std::string thrift_service = thriftJson["service"].asString();
+      std::string thrift_function = thriftJson["function"].asString();
+      auto qual_name = visitor.db.fact<Fbthrift::QualName>(
+        file_fact, 
+        visitor.db.fact<Fbthrift::Identifier>(thrift_service)
+      );
+      auto function_name = visitor.db.fact<Fbthrift::FunctionName>(
+        visitor.db.fact<Fbthrift::ServiceName>(qual_name),
+        visitor.db.fact<Fbthrift::Identifier>(thrift_function)
+      );
+      thrift_target = Fbthrift::XRefTarget::function_(function_name);
+    } else {
+      // Thrift type declaration (exception or namedDecl)
+      std::string name = thriftJson["name"].asString();
+      std::string kind = thriftJson["kind"].asString();
+      Fact<Fbthrift::QualName> qual_name = visitor.db.fact<Fbthrift::QualName>(
+        file_fact, 
+        visitor.db.fact<Fbthrift::Identifier>(name)
+      );
+      if (kind == "exception") {
+        auto exception_fact = visitor.db.fact<Fbthrift::ExceptionName>(qual_name);
+        thrift_target =  Fbthrift::XRefTarget::exception_(exception_fact);
+      } else {
+        std::map<std::string, Fbthrift::NamedKind> kind_map = {
+          {"struct", Fbthrift::NamedKind::struct_},
+          {"enum", Fbthrift::NamedKind::enum_},
+          {"union", Fbthrift::NamedKind::union_},
+          {"typedef", Fbthrift::NamedKind::typedef_}
+        };
+        Fbthrift::NamedKind named_kind = kind_map[kind];
+        Fbthrift::NamedType named_type = Fbthrift::NamedType({qual_name, named_kind});
+        Fact<Fbthrift::NamedDecl> named_decl = visitor.db.fact<Fbthrift::NamedDecl>(named_type);
+        thrift_target = Fbthrift::XRefTarget::named(named_decl);
+      };
+    }
+    visitor.db.fact<Cxx::CxxToThrift>(decl, thrift_target.value());
+  }
+
   template<typename Decl>
   struct Declare {
     template<typename ClangDecl>
@@ -865,42 +933,22 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
               crange.range.file,   // might be "<builtin>"
               crange.span);
 
-            // Some comments represent thrift generated functions. Their
-            // content is used to generate Cxx1.CxxToThrift facts.
 
-            std::string thrift_file;
-            std::string thrift_service;
-            std::string thrift_function;
             std::string json_annotation;
+            // Some entities generated from thrift may have a json object as a comment.
+            // This object encodes the Glean fact of the generating entity
+            // We use it to generate CxxToThrift facts
             auto comment_str = comment->getRawText(visitor.db.sourceManager()).str();
             static const RE2 thrift_regex(
               R"(Glean.*({.*}))"
             );
             if (RE2::PartialMatch(comment_str, thrift_regex, &json_annotation)) {
-               try {
-                 folly::dynamic jsonObject = folly::parseJson(json_annotation);
-                 thrift_file = jsonObject["file"].asString();
-                 if (visitor.db.cell.has_value()) {
-                    thrift_file = visitor.db.cell.value() + "/" + thrift_file;
-                 }
-                 thrift_service = jsonObject["service"].asString();
-                 thrift_function = jsonObject["function"].asString();
-
-                 auto qual_name = visitor.db.fact<Fbthrift::QualName>(
-                   visitor.db.fact<Fbthrift::File>(visitor.db.fact<Src::File>(thrift_file)),
-                   visitor.db.fact<Fbthrift::Identifier>(thrift_service)
-                 );
-                 auto function_name = visitor.db.fact<Fbthrift::FunctionName>(
-                   visitor.db.fact<Fbthrift::ServiceName>(qual_name),
-                   visitor.db.fact<Fbthrift::Identifier>(thrift_function)
-                 );
-
-                 visitor.db.fact<Cxx::CxxToThrift>(
-                   Cxx::XRefTarget::declaration(result->declaration()),
-                   Fbthrift::XRefTarget::function_(function_name)
-                 );
-               } catch (...) {
-               }
+              try {
+                folly::dynamic thriftDeclJson = folly::parseJson(json_annotation);
+                auto cxxDecl = Cxx::XRefTarget::declaration(result->declaration());
+                genCxxToThrift(visitor, cxxDecl, thriftDeclJson);
+              } catch (...) {
+              }
             };
           }
         }

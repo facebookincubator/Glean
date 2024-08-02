@@ -5,6 +5,57 @@
       "entity": {
         "cxx": {
           "decl": {
+            "enum_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "CountOnlyMode" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "isScoped": true,
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 22,
+                  "columnBegin": 1,
+                  "lineEnd": 26,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "CountOnlyMode" }
+                      }
+                    },
+                    "kind": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
             "function_": {
               "key": {
                 "name": {
@@ -102,6 +153,156 @@
                     }
                   },
                   "name": { "key": "thrift2" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "GetNavigationException" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 18,
+                  "columnBegin": 1,
+                  "lineEnd": 19,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "exception_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "GetNavigationException" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "GetNavigationRequest" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 14,
+                  "columnBegin": 1,
+                  "lineEnd": 15,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "GetNavigationRequest" }
+                      }
+                    },
+                    "kind": 2
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "ResponseCard" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 10,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "ResponseCard" }
+                      }
+                    },
+                    "kind": 3
+                  }
                 }
               }
             }

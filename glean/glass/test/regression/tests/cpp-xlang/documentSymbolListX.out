@@ -790,6 +790,210 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "CountOnlyMode"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "enum test::CountOnlyMode"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 16,
+                    "lineBegin": 21,
+                    "lineEnd": 21
+                },
+                "sym": "test-xlang/thrift/test.thrift/CountOnlyMode",
+                "target": {
+                    "filepath": "test.thrift",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 48,
+                        "lineEnd": 52
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationException"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "exception test::GetNavigationException"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 25,
+                    "lineBegin": 18,
+                    "lineEnd": 18
+                },
+                "sym": "test-xlang/thrift/test.thrift/GetNavigationException",
+                "target": {
+                    "filepath": "test.thrift",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 21,
+                        "lineEnd": 23
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "GetNavigationRequest"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct test::GetNavigationRequest"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 23,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test-xlang/thrift/test.thrift/GetNavigationRequest",
+                "target": {
+                    "filepath": "test.thrift",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 13,
+                        "lineEnd": 15
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "ResponseCard"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "union test::ResponseCard"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 15,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "sym": "test-xlang/thrift/test.thrift/ResponseCard",
+                "target": {
+                    "filepath": "test.thrift",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 9,
+                        "lineEnd": 11
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "thrift1"
                         },
                         "key": "symbolName"

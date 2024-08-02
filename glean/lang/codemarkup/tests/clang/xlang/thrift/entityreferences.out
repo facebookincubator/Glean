@@ -5,6 +5,28 @@
       "target": {
         "fbthrift": {
           "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "test.thrift" } },
+                    "name": { "key": "GetNavigationException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 474, "length": 22 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
             "function_": {
               "key": {
                 "service_": {
@@ -52,6 +74,81 @@
       },
       "file": { "key": "test.cpp" },
       "range": { "span": { "start": 522, "length": 7 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "CountOnlyMode" }
+                    }
+                  },
+                  "kind": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 535, "length": 13 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 442, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 3
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 417, "length": 12 } }
     }
   }
 ]

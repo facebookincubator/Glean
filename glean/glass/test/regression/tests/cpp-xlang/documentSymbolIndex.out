@@ -22,7 +22,7 @@
             }
         },
         "revision": "testhash",
-        "size": 16,
+        "size": 20,
         "symbols": {
             "10": [
                 {
@@ -192,6 +192,42 @@
                         "lineEnd": 16
                     },
                     "sym": "test-xlang/cpp//thriftCaller/response/.decl"
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "ResponseCard"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "union test::ResponseCard"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 15,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "sym": "test-xlang/thrift/test.thrift/ResponseCard",
+                    "target": {
+                        "filepath": "test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 9,
+                            "lineEnd": 11
+                        },
+                        "repository": "test-xlang"
+                    }
                 }
             ],
             "17": [
@@ -262,6 +298,42 @@
                         "lineEnd": 17
                     },
                     "sym": "test-xlang/cpp//thriftCaller/request/.decl"
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "GetNavigationRequest"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "struct test::GetNavigationRequest"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 23,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "sym": "test-xlang/thrift/test.thrift/GetNavigationRequest",
+                    "target": {
+                        "filepath": "test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 13,
+                            "lineEnd": 15
+                        },
+                        "repository": "test-xlang"
+                    }
                 }
             ],
             "18": [
@@ -332,6 +404,42 @@
                         "lineEnd": 18
                     },
                     "sym": "test-xlang/cpp//thriftCaller/request2/.decl"
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "GetNavigationException"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "exception test::GetNavigationException"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 25,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "sym": "test-xlang/thrift/test.thrift/GetNavigationException",
+                    "target": {
+                        "filepath": "test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 21,
+                            "lineEnd": 23
+                        },
+                        "repository": "test-xlang"
+                    }
                 }
             ],
             "19": [
@@ -556,6 +664,42 @@
                         "lineEnd": 21
                     },
                     "sym": "test-xlang/cpp//thriftCaller/com/.decl"
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "CountOnlyMode"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum test::CountOnlyMode"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 16,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "sym": "test-xlang/thrift/test.thrift/CountOnlyMode",
+                    "target": {
+                        "filepath": "test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 48,
+                            "lineEnd": 52
+                        },
+                        "repository": "test-xlang"
+                    }
                 }
             ],
             "9": [
