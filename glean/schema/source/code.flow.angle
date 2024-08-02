@@ -1,14 +1,5 @@
 # Copyright (c) Facebook, Inc. and its affiliates.
 
-schema code.flow.1 {
-import flow.3
-
-type Entity =
-  {
-    decl : flow.SomeDeclaration |
-  }
-}
-
 schema code.flow.2 {
 import flow.3
 
