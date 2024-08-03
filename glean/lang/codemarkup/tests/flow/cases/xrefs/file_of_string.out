@@ -1,1 +1,9 @@
-[ "@generated" ]
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test/subdir/more_cjs.js" },
+      "string_": "more_cjs"
+    }
+  }
+]

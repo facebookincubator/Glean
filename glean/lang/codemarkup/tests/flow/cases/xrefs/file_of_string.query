@@ -1,2 +1,2 @@
-query: flow.FileOfStringModule { file = "more_cjs.js" }
+query: flow.FileOfStringModule { file = "test/subdir/more_cjs.js" }
 transform: [gensort, []]

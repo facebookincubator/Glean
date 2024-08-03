@@ -301,6 +301,28 @@ predicate SearchByNameModule:
       ( F = src.File Str; Module { file = F } ) ) = Mod;
       # [perf note] search files first and then modules
 
+# Search for Module entities by name, string of file name or file path
+# We have overlapping sets for string modules and string of file module
+# but some modules only show up in one set. So we'll try from most
+# convenient to least. Used to resolved symbol ids for modules.
+predicate SearchByModuleName:
+  {
+    name: string,
+    module: Module
+  }
+  { Str, Mod } where
+   # its conventional encoding of file or lib or string
+   if ( Module { string_ = Str } | Module { lib = Str } = Mod )
+   then ( Mod )
+   # or its a string for a file module
+   else if ( StringToFileModule { Str, F } )
+   then ( Module { file = F } = Mod )
+   # else, worst case, full file path
+   else (
+    F = src.File Str;
+    Module { file = F } = Mod
+   )
+
 # Lower case form of module name search
 # Slightly unusual as we have object names and module names indexed separately
 predicate ModuleNameLowerCase:

@@ -1,0 +1,19 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test/cjs_exports.js" },
+      "string_": "cjs_exports"
+    }
+  },
+  {
+    "key": { "file": { "key": "test/es_exports.js" }, "string_": "es_exports" }
+  },
+  { "key": { "file": { "key": "test/imports.js" }, "string_": "imports" } },
+  {
+    "key": {
+      "file": { "key": "test/subdir/more_cjs.js" },
+      "string_": "more_cjs"
+    }
+  }
+]
