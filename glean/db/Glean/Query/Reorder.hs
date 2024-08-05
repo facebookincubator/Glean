@@ -284,7 +284,7 @@ reorderStmtGroup scope@(Scope sc _) stmts =
         maybeVar = case (lhs,rhs) of
           (Ref v, FactGenerator{}) | Just (Var _ x _) <- matchVar v -> Just x
           _otherwise -> Nothing
-      FlatAllStatement {} -> (Nothing ,bound,stmt)
+      FlatAllStatement (Var _ v _) _ _ -> (Just v,bound,stmt)
       FlatDisjunction{} -> (Nothing, bound, stmt)
       FlatNegation{} ->  (Nothing, bound, stmt)
       FlatConditional{} ->  (Nothing, bound, stmt)
@@ -759,8 +759,8 @@ toCgStatement stmt = case stmt of
     return [CgStatement lhs' gen']
   FlatAllStatement v e stmts -> do
     bindVar v
-    e' <- fixVars IsExpr e
     stmts' <- mapM toCgStatement stmts
+    e' <- fixVars IsExpr e
     return [CgAllStatement v e' (concat stmts')]
   FlatNegation stmts -> do
     stmts' <-
