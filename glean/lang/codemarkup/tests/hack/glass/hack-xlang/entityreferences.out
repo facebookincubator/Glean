@@ -5,6 +5,240 @@
       "target": {
         "fbthrift": {
           "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "CountOnlyMode" }
+                    }
+                  },
+                  "kind": 1
+                },
+                "name": { "key": "Disabled" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test.php" },
+      "range": { "span": { "start": 1095, "length": 8 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "CountOnlyMode" }
+                    }
+                  },
+                  "kind": 1
+                },
+                "name": { "key": "_EMPTY_" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 1776, "length": 7 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "CountOnlyMode" }
+                    }
+                  },
+                  "kind": 1
+                },
+                "name": { "key": "_EMPTY_" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 1886, "length": 7 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "CountOnlyMode" }
+                    }
+                  },
+                  "kind": 1
+                },
+                "name": { "key": "_EMPTY_" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 2619, "length": 7 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "CountOnlyMode" }
+                    }
+                  },
+                  "kind": 1
+                },
+                "name": { "key": "_EMPTY_" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 2686, "length": 7 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "CountOnlyMode" }
+                    }
+                  },
+                  "kind": 1
+                },
+                "name": { "key": "static_card" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 2008, "length": 11 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "CountOnlyMode" }
+                    }
+                  },
+                  "kind": 1
+                },
+                "name": { "key": "static_card" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 2527, "length": 11 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "CountOnlyMode" }
+                    }
+                  },
+                  "kind": 1
+                },
+                "name": { "key": "static_card" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 2833, "length": 11 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "enumValue": {
+              "key": {
+                "enum_": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "CountOnlyMode" }
+                    }
+                  },
+                  "kind": 1
+                },
+                "name": { "key": "static_card" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 3098, "length": 11 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
             "exception_": {
               "key": {
                 "name": {
@@ -926,6 +1160,31 @@
       },
       "file": { "key": "www/test.php" },
       "range": { "span": { "start": 919, "length": 7 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "CountOnlyMode" }
+                    }
+                  },
+                  "kind": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test.php" },
+      "range": { "span": { "start": 1080, "length": 13 } }
     }
   },
   {

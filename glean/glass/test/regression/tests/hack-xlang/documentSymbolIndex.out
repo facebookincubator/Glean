@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 30,
+        "size": 32,
         "symbols": {
             "10": [
                 {
@@ -1082,6 +1082,78 @@
                             "columnEnd": 11,
                             "lineBegin": 15,
                             "lineEnd": 15
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "CountOnlyMode"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum www/test::CountOnlyMode"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 23,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test-xlang/thrift/www/test.thrift/CountOnlyMode",
+                    "target": {
+                        "filepath": "www/test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 53,
+                            "lineEnd": 57
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "Disabled"
+                        },
+                        "symbolParent": {
+                            "aString": "CountOnlyMode"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value www/test::CountOnlyMode::Disabled"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 25,
+                        "columnEnd": 33,
+                        "lineBegin": 30,
+                        "lineEnd": 30
+                    },
+                    "sym": "test-xlang/thrift/www/test.thrift/CountOnlyMode/Disabled",
+                    "target": {
+                        "filepath": "www/test.thrift",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 16,
+                            "lineBegin": 54,
+                            "lineEnd": 54
                         },
                         "repository": "test-xlang"
                     }
