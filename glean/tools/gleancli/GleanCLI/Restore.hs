@@ -7,12 +7,14 @@
 -}
 
 {-# LANGUAGE ApplicativeDo #-}
+{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 module GleanCLI.Restore (RestoreCommand) where
 
 import Control.Exception.Safe (catch)
 import Control.Monad (forM_, forM)
 import Control.Monad.Extra (firstJustM)
 import Control.Concurrent
+import Data.Either
 import Data.List (sortOn)
 import Data.Text (Text)
 import Data.Maybe
@@ -33,7 +35,7 @@ import Glean
   )
 import qualified Glean
 import qualified Glean.Database.Backup.Locator as Backup
-import Glean.LocalOrRemote (BackendKind(BackendEnv), backendKind)
+import Glean.LocalOrRemote (BackendKind(..), backendKind)
 import Glean.Database.Backup.Backend (Site(inspect))
 import Glean.Database.Meta (metaToThriftDatabase)
 
@@ -173,16 +175,49 @@ instance Plugin RestoreCommand where
               `catch` \DBAlreadyExists -> return ()
 
       wait locators = do
-        localDatabases <- Glean.listDatabasesResult_databases <$>
-          Glean.listDatabases backend Glean.ListDatabases
-              { listDatabases_includeBackups = False
-              , listDatabases_client_info = Nothing
-              }
-        dbs <- traverse (locatorDb localDatabases) locators
-        let isRestoring = (DatabaseStatus_Restoring ==) . database_status
-        if any isRestoring dbs
-           then threadDelay 1000000 >> wait locators
-           else forM_ dbs $ \db -> case database_status db of
+        let noRetries =
+              case backendKind backend of
+                -- If we're calling a remote backend, it might not have
+                -- started the restoring yet. So we'll wait a bit to give
+                -- some time to start the restoring.
+                BackendThrift _ -> 5
+                _ -> 0
+        dbs <- waitForRestoreToStart noRetries
+        waitForRestoreToFinish dbs
+        where
+          waitForRestoreToStart (retries::Int) = do
+            let
+              isAvailable =  (DatabaseStatus_Available ==) . database_status
+              retry err =
+                if
+                  | retries > 0
+                    -> do
+                        threadDelay 1000000
+                        waitForRestoreToStart (retries-1)
+                  | retries == 0
+                    -> die 1 err
+            localDatabases <- listLocalDBs
+            (nonExistingLocs, dbs) <- partitionEithers <$>
+              traverse (locatorDb localDatabases) locators
+            if
+              | locator : _ <- nonExistingLocs ->
+                retry $ unwords
+                        ["error: did not find database locator"
+                        ,Text.unpack locator]
+              | db : _ <- filter isAvailable dbs ->
+                retry $ unwords
+                        ["error: timed out restoring"
+                        ,show db]
+              | otherwise -> return dbs
+
+          waitForRestoreToFinish dbs = do
+            let isRestoring = (DatabaseStatus_Restoring ==) . database_status
+            if any isRestoring dbs
+              then do threadDelay 1000000
+                      localDatabases <- listLocalDBs
+                      edbs <- traverse (locatorDb localDatabases) locators
+                      waitForRestoreToFinish (rights edbs)
+              else forM_ dbs $ \db -> case database_status db of
                 DatabaseStatus_Complete -> return ()
                 DatabaseStatus_Missing -> putStrLn $ unwords
                   [ "Some of"
@@ -192,16 +227,21 @@ instance Plugin RestoreCommand where
                   ] -- TODO: List missing dependencies
                 status ->
                   die 1 $ "error: unexpected database status: " <> show status
-        where
+
+          listLocalDBs = Glean.listDatabasesResult_databases <$>
+            Glean.listDatabases backend Glean.ListDatabases
+              { listDatabases_includeBackups = False
+              , listDatabases_client_info = Nothing
+              }
+
           locatorDb databases locator =
             case
               [ db
               | db <- databases
               , database_location db == Just locator ]
             of
-              [db] -> return db
-              [] -> die 1 $ unwords
-                ["error: did not find database locator", Text.unpack locator]
+              [db] -> return (Right db)
+              [] -> return (Left locator)
               _ -> die 1 $ unwords
                 ["error: server has multiple DBs with the locator"
                 , Text.unpack locator]
