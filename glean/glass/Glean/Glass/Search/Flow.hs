@@ -29,12 +29,18 @@ import qualified Glean.Schema.CodemarkupTypes.Types as Code
 instance Search (ResultLocation Flow.Entity) where
   symbolSearch [] = return $ None "Flow.symbolSearch: empty"
 
-  -- if its a single token it is likely a module (tbd: or a global sym)
+  -- if it is a single token it is either a string_ or Haste module name
   symbolSearch toks@[module_] = do
     m <- searchSymbolId toks (searchByModuleName module_)
     return $ mapResultLocation Flow.Entity_module_ <$> m
 
-  -- module , method
+  -- (string or lib) module , method
+  -- module only, of any sort.
+  symbolSearch ("m":toks) = do
+    a <- searchSymbolId toks $ searchByModuleName (joinFragments toks)
+    return $ mapResultLocation Flow.Entity_module_ <$> a
+
+  -- (string or lib) module , method
   symbolSearch toks@[module_, name] = do
     a <- searchSymbolId toks $ searchByModule module_ name
     decl <- case a of
@@ -103,7 +109,7 @@ searchByModuleName modstr = vars $ \(modent :: Angle Flow.Module)
   (file :: Angle Src.File) (rangespan :: Angle Code.RangeSpan)
     (lname :: Angle Text) ->
   tuple (modent, file, rangespan, lname) `where_` [
-    wild .= predicate @Flow.SearchByNameModule (
+    wild .= predicate @Flow.SearchByModuleName (
       rec $
         field @"name" (string modstr) $
         field @"module" (asPredicate modent)

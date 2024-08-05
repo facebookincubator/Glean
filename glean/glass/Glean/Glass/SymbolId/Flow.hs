@@ -31,7 +31,11 @@ import Glean.Schema.CodeFlow.Types as Flow ( Entity(..) )
 instance Symbol Flow.Entity where
   toSymbol e = case e of
     Flow.Entity_decl decl -> toSymbol decl
-    Flow.Entity_module_ module_ -> toSymbolPredicate module_
+    Flow.Entity_module_ module_ -> do
+      symId <- toSymbolPredicate module_
+      case symId of
+        [_] -> return symId -- keep Haste or string_ module symIds neat
+        _ -> return ("m" : symId)
     Flow.Entity_EMPTY -> return []
 
 instance Symbol Flow.SomeDeclaration where
