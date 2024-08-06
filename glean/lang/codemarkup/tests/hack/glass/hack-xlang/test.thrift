@@ -55,3 +55,8 @@ enum CountOnlyMode {
   HitCount = 1,
   FileCount = 2,
 }
+
+const string ENGINE_STRMATCH = "apr_strmatch";
+const string ENGINE_RE2 = "re2";
+const string ENGINE_FILENAME = "filename";
+const string ENGINE_FUZZY = "fuzzy";

@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 32,
+        "size": 34,
         "symbols": {
             "10": [
                 {
@@ -1154,6 +1154,80 @@
                             "columnEnd": 16,
                             "lineBegin": 54,
                             "lineEnd": 54
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "31": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 7
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "test_CONSTANTS"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "class test_CONSTANTS"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 10,
+                        "columnEnd": 24,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "sym": "test-xlang/php/test_CONSTANTS",
+                    "target": {
+                        "filepath": "www/test_constants.php",
+                        "range": {
+                            "columnBegin": 7,
+                            "columnEnd": 21,
+                            "lineBegin": 10,
+                            "lineEnd": 10
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 16
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 3
+                        },
+                        "symbolName": {
+                            "aString": "ENGINE_STRMATCH"
+                        },
+                        "symbolParent": {
+                            "aString": "test_CONSTANTS"
+                        },
+                        "symbolSignature": {
+                            "aString": "const ENGINE_STRMATCH"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 26,
+                        "columnEnd": 41,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "sym": "test-xlang/php/test_CONSTANTS/ENGINE_STRMATCH",
+                    "target": {
+                        "filepath": "www/test_constants.php",
+                        "range": {
+                            "columnBegin": 16,
+                            "columnEnd": 31,
+                            "lineBegin": 15,
+                            "lineEnd": 15
                         },
                         "repository": "test-xlang"
                     }

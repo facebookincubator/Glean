@@ -7,7 +7,7 @@
         "target": {
           "name": "CountOnlyMode",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 364, "length": 13 } }
+          "location": { "span": { "start": 216, "length": 13 } }
         },
         "source": { "span": { "start": 1080, "length": 13 } }
       },
@@ -33,7 +33,7 @@
         "target": {
           "name": "Disabled",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 387, "length": 8 } }
+          "location": { "span": { "start": 239, "length": 8 } }
         },
         "source": { "span": { "start": 1095, "length": 8 } }
       },
@@ -60,9 +60,40 @@
       "file": { "key": "www/test.php" },
       "xref": {
         "target": {
+          "name": "ENGINE_STRMATCH",
+          "file": { "key": "www/test_constants.php" },
+          "location": { "span": { "start": 299, "length": 15 } }
+        },
+        "source": { "span": { "start": 1160, "length": 15 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "ENGINE_STRMATCH" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "test_CONSTANTS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
           "name": "GetCardRequest",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 10093, "length": 14 } }
+          "location": { "span": { "start": 9945, "length": 14 } }
         },
         "source": { "span": { "start": 853, "length": 14 } }
       },
@@ -88,7 +119,7 @@
         "target": {
           "name": "GetNavigationException",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 8093, "length": 22 } }
+          "location": { "span": { "start": 7945, "length": 22 } }
         },
         "source": { "span": { "start": 492, "length": 22 } }
       },
@@ -116,7 +147,7 @@
         "target": {
           "name": "GetNavigationRequest",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 4234, "length": 20 } }
+          "location": { "span": { "start": 4086, "length": 20 } }
         },
         "source": { "span": { "start": 380, "length": 20 } }
       },
@@ -144,7 +175,7 @@
         "target": {
           "name": "TestServiceAsyncClient",
           "file": { "key": "www/TestService.php" },
-          "location": { "span": { "start": 2445, "length": 22 } }
+          "location": { "span": { "start": 2297, "length": 22 } }
         },
         "source": { "span": { "start": 335, "length": 22 } }
       },
@@ -172,7 +203,7 @@
         "target": {
           "name": "TestServiceAsyncClient",
           "file": { "key": "www/TestService.php" },
-          "location": { "span": { "start": 2445, "length": 22 } }
+          "location": { "span": { "start": 2297, "length": 22 } }
         },
         "source": { "span": { "start": 808, "length": 22 } }
       },
@@ -200,7 +231,7 @@
         "target": {
           "name": "__construct",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 4793, "length": 11 } }
+          "location": { "span": { "start": 4645, "length": 11 } }
         },
         "source": { "span": { "start": 380, "length": 20 } }
       },
@@ -233,7 +264,7 @@
         "target": {
           "name": "__construct",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 8697, "length": 11 } }
+          "location": { "span": { "start": 8549, "length": 11 } }
         },
         "source": { "span": { "start": 492, "length": 22 } }
       },
@@ -266,7 +297,7 @@
         "target": {
           "name": "__construct",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 10874, "length": 11 } }
+          "location": { "span": { "start": 10726, "length": 11 } }
         },
         "source": { "span": { "start": 853, "length": 14 } }
       },
@@ -297,7 +328,7 @@
         "target": {
           "name": "card",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 13237, "length": 5 } }
+          "location": { "span": { "start": 13089, "length": 5 } }
         },
         "source": { "span": { "start": 990, "length": 4 } }
       },
@@ -330,7 +361,7 @@
         "target": {
           "name": "identifier",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 4761, "length": 11 } }
+          "location": { "span": { "start": 4613, "length": 11 } }
         },
         "source": { "span": { "start": 435, "length": 10 } }
       },
@@ -363,7 +394,7 @@
         "target": {
           "name": "message_detail",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 8661, "length": 15 } }
+          "location": { "span": { "start": 8513, "length": 15 } }
         },
         "source": { "span": { "start": 554, "length": 14 } }
       },
@@ -396,7 +427,7 @@
         "target": {
           "name": "static_card",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 1706, "length": 12 } }
+          "location": { "span": { "start": 1558, "length": 12 } }
         },
         "source": { "span": { "start": 1036, "length": 11 } }
       },
@@ -427,7 +458,7 @@
         "target": {
           "name": "tab_group",
           "file": { "key": "www/test_types.php" },
-          "location": { "span": { "start": 6689, "length": 10 } }
+          "location": { "span": { "start": 6541, "length": 10 } }
         },
         "source": { "span": { "start": 711, "length": 9 } }
       },
@@ -458,9 +489,35 @@
       "file": { "key": "www/test.php" },
       "xref": {
         "target": {
+          "name": "test_CONSTANTS",
+          "file": { "key": "www/test_constants.php" },
+          "location": { "span": { "start": 166, "length": 14 } }
+        },
+        "source": { "span": { "start": 1144, "length": 14 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "test_CONSTANTS" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
           "name": "thrift1",
           "file": { "key": "www/TestService.php" },
-          "location": { "span": { "start": 2775, "length": 7 } }
+          "location": { "span": { "start": 2627, "length": 7 } }
         },
         "source": { "span": { "start": 635, "length": 7 } }
       },
@@ -493,7 +550,7 @@
         "target": {
           "name": "thrift2",
           "file": { "key": "www/TestService.php" },
-          "location": { "span": { "start": 3641, "length": 7 } }
+          "location": { "span": { "start": 3493, "length": 7 } }
         },
         "source": { "span": { "start": 919, "length": 7 } }
       },

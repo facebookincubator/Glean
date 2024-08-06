@@ -49,7 +49,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 1776, "length": 7 } }
+      "range": { "span": { "start": 1628, "length": 7 } }
     }
   },
   {
@@ -75,7 +75,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 1886, "length": 7 } }
+      "range": { "span": { "start": 1738, "length": 7 } }
     }
   },
   {
@@ -101,7 +101,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 2619, "length": 7 } }
+      "range": { "span": { "start": 2471, "length": 7 } }
     }
   },
   {
@@ -127,7 +127,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 2686, "length": 7 } }
+      "range": { "span": { "start": 2538, "length": 7 } }
     }
   },
   {
@@ -153,7 +153,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 2008, "length": 11 } }
+      "range": { "span": { "start": 1860, "length": 11 } }
     }
   },
   {
@@ -179,7 +179,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 2527, "length": 11 } }
+      "range": { "span": { "start": 2379, "length": 11 } }
     }
   },
   {
@@ -205,7 +205,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 2833, "length": 11 } }
+      "range": { "span": { "start": 2685, "length": 11 } }
     }
   },
   {
@@ -231,7 +231,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 3098, "length": 11 } }
+      "range": { "span": { "start": 2950, "length": 11 } }
     }
   },
   {
@@ -253,7 +253,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 14804, "length": 16 } }
+      "range": { "span": { "start": 14656, "length": 16 } }
     }
   },
   {
@@ -275,7 +275,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 15045, "length": 16 } }
+      "range": { "span": { "start": 14897, "length": 16 } }
     }
   },
   {
@@ -297,7 +297,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 15162, "length": 16 } }
+      "range": { "span": { "start": 15014, "length": 16 } }
     }
   },
   {
@@ -319,7 +319,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 15264, "length": 16 } }
+      "range": { "span": { "start": 15116, "length": 16 } }
     }
   },
   {
@@ -341,7 +341,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 17477, "length": 16 } }
+      "range": { "span": { "start": 17329, "length": 16 } }
     }
   },
   {
@@ -363,29 +363,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 22381, "length": 16 } }
-    }
-  },
-  {
-    "key": {
-      "target": {
-        "fbthrift": {
-          "decl": {
-            "exception_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "file": { "key": { "key": "www/test.thrift" } },
-                    "name": { "key": "GetCardException" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 14701, "length": 16 } }
+      "range": { "span": { "start": 22233, "length": 16 } }
     }
   },
   {
@@ -407,7 +385,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 15500, "length": 6 } }
+      "range": { "span": { "start": 14553, "length": 16 } }
     }
   },
   {
@@ -429,7 +407,29 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 15607, "length": 6 } }
+      "range": { "span": { "start": 15352, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "exception_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "GetCardException" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 15459, "length": 6 } }
     }
   },
   {
@@ -451,7 +451,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 9521, "length": 22 } }
+      "range": { "span": { "start": 9373, "length": 22 } }
     }
   },
   {
@@ -473,7 +473,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 9780, "length": 22 } }
+      "range": { "span": { "start": 9632, "length": 22 } }
     }
   },
   {
@@ -495,7 +495,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 9902, "length": 22 } }
+      "range": { "span": { "start": 9754, "length": 22 } }
     }
   },
   {
@@ -517,7 +517,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 10016, "length": 22 } }
+      "range": { "span": { "start": 9868, "length": 22 } }
     }
   },
   {
@@ -539,7 +539,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 12289, "length": 22 } }
+      "range": { "span": { "start": 12141, "length": 22 } }
     }
   },
   {
@@ -561,7 +561,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 22292, "length": 22 } }
+      "range": { "span": { "start": 22144, "length": 22 } }
     }
   },
   {
@@ -605,7 +605,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 8093, "length": 22 } }
+      "range": { "span": { "start": 7945, "length": 22 } }
     }
   },
   {
@@ -627,7 +627,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 8898, "length": 6 } }
+      "range": { "span": { "start": 8750, "length": 6 } }
     }
   },
   {
@@ -649,7 +649,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 9005, "length": 6 } }
+      "range": { "span": { "start": 8857, "length": 6 } }
     }
   },
   {
@@ -673,7 +673,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 15385, "length": 14 } }
+      "range": { "span": { "start": 15237, "length": 14 } }
     }
   },
   {
@@ -697,7 +697,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 10999, "length": 9 } }
+      "range": { "span": { "start": 10851, "length": 9 } }
     }
   },
   {
@@ -721,7 +721,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 10956, "length": 10 } }
+      "range": { "span": { "start": 10808, "length": 10 } }
     }
   },
   {
@@ -769,7 +769,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 13318, "length": 4 } }
+      "range": { "span": { "start": 13170, "length": 4 } }
     }
   },
   {
@@ -817,7 +817,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 8783, "length": 14 } }
+      "range": { "span": { "start": 8635, "length": 14 } }
     }
   },
   {
@@ -865,7 +865,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 4848, "length": 10 } }
+      "range": { "span": { "start": 4700, "length": 10 } }
     }
   },
   {
@@ -913,7 +913,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 6774, "length": 9 } }
+      "range": { "span": { "start": 6626, "length": 9 } }
     }
   },
   {
@@ -937,7 +937,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 18679, "length": 22 } }
+      "range": { "span": { "start": 18525, "length": 22 } }
     }
   },
   {
@@ -961,7 +961,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 18755, "length": 18 } }
+      "range": { "span": { "start": 18601, "length": 18 } }
     }
   },
   {
@@ -1009,7 +1009,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 1941, "length": 11 } }
+      "range": { "span": { "start": 1793, "length": 11 } }
     }
   },
   {
@@ -1033,7 +1033,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 2555, "length": 11 } }
+      "range": { "span": { "start": 2407, "length": 11 } }
     }
   },
   {
@@ -1057,7 +1057,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 2857, "length": 11 } }
+      "range": { "span": { "start": 2709, "length": 11 } }
     }
   },
   {
@@ -1081,7 +1081,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 2975, "length": 11 } }
+      "range": { "span": { "start": 2827, "length": 11 } }
     }
   },
   {
@@ -1105,7 +1105,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 3252, "length": 11 } }
+      "range": { "span": { "start": 3104, "length": 11 } }
     }
   },
   {
@@ -1209,7 +1209,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 890, "length": 14 } }
+      "range": { "span": { "start": 742, "length": 14 } }
     }
   },
   {
@@ -1234,7 +1234,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 1512, "length": 14 } }
+      "range": { "span": { "start": 1364, "length": 14 } }
     }
   },
   {
@@ -1259,7 +1259,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 2259, "length": 14 } }
+      "range": { "span": { "start": 2111, "length": 14 } }
     }
   },
   {
@@ -1284,7 +1284,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 3650, "length": 14 } }
+      "range": { "span": { "start": 3502, "length": 14 } }
     }
   },
   {
@@ -1309,7 +1309,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 5510, "length": 14 } }
+      "range": { "span": { "start": 5362, "length": 14 } }
     }
   },
   {
@@ -1334,7 +1334,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 6656, "length": 14 } }
+      "range": { "span": { "start": 6508, "length": 14 } }
     }
   },
   {
@@ -1359,7 +1359,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 12668, "length": 14 } }
+      "range": { "span": { "start": 12520, "length": 14 } }
     }
   },
   {
@@ -1384,7 +1384,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 12831, "length": 14 } }
+      "range": { "span": { "start": 12683, "length": 14 } }
     }
   },
   {
@@ -1409,7 +1409,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 12911, "length": 14 } }
+      "range": { "span": { "start": 12763, "length": 14 } }
     }
   },
   {
@@ -1434,7 +1434,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 12968, "length": 14 } }
+      "range": { "span": { "start": 12820, "length": 14 } }
     }
   },
   {
@@ -1459,7 +1459,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 22159, "length": 14 } }
+      "range": { "span": { "start": 22011, "length": 14 } }
     }
   },
   {
@@ -1509,7 +1509,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 10093, "length": 14 } }
+      "range": { "span": { "start": 9945, "length": 14 } }
     }
   },
   {
@@ -1534,7 +1534,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 11104, "length": 6 } }
+      "range": { "span": { "start": 10956, "length": 6 } }
     }
   },
   {
@@ -1559,7 +1559,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 11211, "length": 6 } }
+      "range": { "span": { "start": 11063, "length": 6 } }
     }
   },
   {
@@ -1584,7 +1584,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 926, "length": 15 } }
+      "range": { "span": { "start": 778, "length": 15 } }
     }
   },
   {
@@ -1609,7 +1609,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 1538, "length": 15 } }
+      "range": { "span": { "start": 1390, "length": 15 } }
     }
   },
   {
@@ -1634,7 +1634,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 2295, "length": 15 } }
+      "range": { "span": { "start": 2147, "length": 15 } }
     }
   },
   {
@@ -1659,7 +1659,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 3686, "length": 15 } }
+      "range": { "span": { "start": 3538, "length": 15 } }
     }
   },
   {
@@ -1684,7 +1684,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 5546, "length": 15 } }
+      "range": { "span": { "start": 5398, "length": 15 } }
     }
   },
   {
@@ -1709,7 +1709,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 6908, "length": 15 } }
+      "range": { "span": { "start": 6760, "length": 15 } }
     }
   },
   {
@@ -1734,7 +1734,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 14515, "length": 15 } }
+      "range": { "span": { "start": 14367, "length": 15 } }
     }
   },
   {
@@ -1759,7 +1759,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 14671, "length": 15 } }
+      "range": { "span": { "start": 14523, "length": 15 } }
     }
   },
   {
@@ -1784,32 +1784,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 21922, "length": 15 } }
-    }
-  },
-  {
-    "key": {
-      "target": {
-        "fbthrift": {
-          "decl": {
-            "named": {
-              "key": {
-                "name": {
-                  "name": {
-                    "key": {
-                      "file": { "key": { "key": "www/test.thrift" } },
-                      "name": { "key": "GetCardResponse" }
-                    }
-                  },
-                  "kind": 2
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 12677, "length": 15 } }
+      "range": { "span": { "start": 21774, "length": 15 } }
     }
   },
   {
@@ -1834,7 +1809,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 13407, "length": 6 } }
+      "range": { "span": { "start": 12529, "length": 15 } }
     }
   },
   {
@@ -1859,7 +1834,32 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 13514, "length": 6 } }
+      "range": { "span": { "start": 13259, "length": 6 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "GetCardResponse" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test_types.php" },
+      "range": { "span": { "start": 13366, "length": 6 } }
     }
   },
   {
@@ -1884,7 +1884,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 631, "length": 20 } }
+      "range": { "span": { "start": 483, "length": 20 } }
     }
   },
   {
@@ -1909,7 +1909,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 1264, "length": 20 } }
+      "range": { "span": { "start": 1116, "length": 20 } }
     }
   },
   {
@@ -1934,7 +1934,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 2000, "length": 20 } }
+      "range": { "span": { "start": 1852, "length": 20 } }
     }
   },
   {
@@ -1959,7 +1959,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 2784, "length": 20 } }
+      "range": { "span": { "start": 2636, "length": 20 } }
     }
   },
   {
@@ -1984,7 +1984,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 4644, "length": 20 } }
+      "range": { "span": { "start": 4496, "length": 20 } }
     }
   },
   {
@@ -2009,7 +2009,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 6230, "length": 20 } }
+      "range": { "span": { "start": 6082, "length": 20 } }
     }
   },
   {
@@ -2034,7 +2034,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 7336, "length": 20 } }
+      "range": { "span": { "start": 7188, "length": 20 } }
     }
   },
   {
@@ -2059,7 +2059,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 7505, "length": 20 } }
+      "range": { "span": { "start": 7357, "length": 20 } }
     }
   },
   {
@@ -2084,7 +2084,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 7592, "length": 20 } }
+      "range": { "span": { "start": 7444, "length": 20 } }
     }
   },
   {
@@ -2109,7 +2109,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 7655, "length": 20 } }
+      "range": { "span": { "start": 7507, "length": 20 } }
     }
   },
   {
@@ -2134,7 +2134,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 22005, "length": 20 } }
+      "range": { "span": { "start": 21857, "length": 20 } }
     }
   },
   {
@@ -2184,7 +2184,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 4234, "length": 20 } }
+      "range": { "span": { "start": 4086, "length": 20 } }
     }
   },
   {
@@ -2209,7 +2209,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 4955, "length": 6 } }
+      "range": { "span": { "start": 4807, "length": 6 } }
     }
   },
   {
@@ -2234,7 +2234,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 5062, "length": 6 } }
+      "range": { "span": { "start": 4914, "length": 6 } }
     }
   },
   {
@@ -2259,7 +2259,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 673, "length": 21 } }
+      "range": { "span": { "start": 525, "length": 21 } }
     }
   },
   {
@@ -2284,7 +2284,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 1296, "length": 21 } }
+      "range": { "span": { "start": 1148, "length": 21 } }
     }
   },
   {
@@ -2309,7 +2309,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 2042, "length": 21 } }
+      "range": { "span": { "start": 1894, "length": 21 } }
     }
   },
   {
@@ -2334,7 +2334,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 2826, "length": 21 } }
+      "range": { "span": { "start": 2678, "length": 21 } }
     }
   },
   {
@@ -2359,7 +2359,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 4686, "length": 21 } }
+      "range": { "span": { "start": 4538, "length": 21 } }
     }
   },
   {
@@ -2384,7 +2384,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 6488, "length": 21 } }
+      "range": { "span": { "start": 6340, "length": 21 } }
     }
   },
   {
@@ -2409,7 +2409,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 9214, "length": 21 } }
+      "range": { "span": { "start": 9066, "length": 21 } }
     }
   },
   {
@@ -2434,7 +2434,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 9376, "length": 21 } }
+      "range": { "span": { "start": 9228, "length": 21 } }
     }
   },
   {
@@ -2459,7 +2459,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 21838, "length": 21 } }
+      "range": { "span": { "start": 21690, "length": 21 } }
     }
   },
   {
@@ -2484,7 +2484,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 6165, "length": 21 } }
+      "range": { "span": { "start": 6017, "length": 21 } }
     }
   },
   {
@@ -2509,7 +2509,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 6879, "length": 6 } }
+      "range": { "span": { "start": 6731, "length": 6 } }
     }
   },
   {
@@ -2534,7 +2534,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 6986, "length": 6 } }
+      "range": { "span": { "start": 6838, "length": 6 } }
     }
   },
   {
@@ -2559,7 +2559,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 16692, "length": 23 } }
+      "range": { "span": { "start": 16544, "length": 23 } }
     }
   },
   {
@@ -2584,7 +2584,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 18887, "length": 6 } }
+      "range": { "span": { "start": 18733, "length": 6 } }
     }
   },
   {
@@ -2609,7 +2609,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 18994, "length": 6 } }
+      "range": { "span": { "start": 18840, "length": 6 } }
     }
   },
   {
@@ -2634,7 +2634,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 22085, "length": 12 } }
+      "range": { "span": { "start": 21937, "length": 12 } }
     }
   },
   {
@@ -2659,7 +2659,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 1121, "length": 12 } }
+      "range": { "span": { "start": 973, "length": 12 } }
     }
   },
   {
@@ -2684,7 +2684,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 2102, "length": 6 } }
+      "range": { "span": { "start": 1954, "length": 6 } }
     }
   },
   {
@@ -2709,7 +2709,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 2209, "length": 6 } }
+      "range": { "span": { "start": 2061, "length": 6 } }
     }
   },
   {
@@ -2734,7 +2734,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 12918, "length": 12 } }
+      "range": { "span": { "start": 12770, "length": 12 } }
     }
   },
   {
@@ -2759,7 +2759,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 13073, "length": 12 } }
+      "range": { "span": { "start": 12925, "length": 12 } }
     }
   },
   {
@@ -2784,7 +2784,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 13224, "length": 12 } }
+      "range": { "span": { "start": 13076, "length": 12 } }
     }
   },
   {
@@ -2809,7 +2809,7 @@
         }
       },
       "file": { "key": "www/test_types.php" },
-      "range": { "span": { "start": 13276, "length": 12 } }
+      "range": { "span": { "start": 13128, "length": 12 } }
     }
   },
   {
@@ -2831,7 +2831,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 1653, "length": 18 } }
+      "range": { "span": { "start": 1505, "length": 18 } }
     }
   },
   {
@@ -2853,7 +2853,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 2505, "length": 24 } }
+      "range": { "span": { "start": 2357, "length": 24 } }
     }
   },
   {
@@ -2875,7 +2875,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 2538, "length": 21 } }
+      "range": { "span": { "start": 2390, "length": 21 } }
     }
   },
   {
@@ -2897,7 +2897,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 4370, "length": 19 } }
+      "range": { "span": { "start": 4222, "length": 19 } }
     }
   },
   {
@@ -2919,7 +2919,7 @@
         }
       },
       "file": { "key": "www/TestService.php" },
-      "range": { "span": { "start": 4398, "length": 21 } }
+      "range": { "span": { "start": 4250, "length": 21 } }
     }
   }
 ]

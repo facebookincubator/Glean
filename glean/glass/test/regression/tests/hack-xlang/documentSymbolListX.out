@@ -45,7 +45,7 @@
                     "columnBegin": 1,
                     "columnEnd": 2,
                     "lineBegin": 10,
-                    "lineEnd": 32
+                    "lineEnd": 33
                 },
                 "sym": "test-xlang/php/SourceA"
             },
@@ -139,7 +139,7 @@
                     "columnBegin": 3,
                     "columnEnd": 4,
                     "lineBegin": 24,
-                    "lineEnd": 31
+                    "lineEnd": 32
                 },
                 "sym": "test-xlang/php/SourceA/g"
             }
@@ -1009,6 +1009,108 @@
                         "columnEnd": 32,
                         "lineBegin": 121,
                         "lineEnd": 121
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test_CONSTANTS"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "class test_CONSTANTS"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 10,
+                    "columnEnd": 24,
+                    "lineBegin": 31,
+                    "lineEnd": 31
+                },
+                "sym": "test-xlang/php/test_CONSTANTS",
+                "target": {
+                    "filepath": "www/test_constants.php",
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 21,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 16
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "ENGINE_STRMATCH"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test_CONSTANTS"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "const ENGINE_STRMATCH"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 26,
+                    "columnEnd": 41,
+                    "lineBegin": 31,
+                    "lineEnd": 31
+                },
+                "sym": "test-xlang/php/test_CONSTANTS/ENGINE_STRMATCH",
+                "target": {
+                    "filepath": "www/test_constants.php",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 31,
+                        "lineBegin": 15,
+                        "lineEnd": 15
                     },
                     "repository": "test-xlang"
                 }
