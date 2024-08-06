@@ -828,6 +828,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   // Type: {"file": ..., "name": ..., "kind": KIND } 
   //    Kind \in {"union", "struct", "typedef", "exception"}
   // Function: {"file": ..., "service": ..., "function": ...}
+  // Field: {"file": ..., "name": ..., "kind": KIND, "field": ... } 
+  //    Kind \in {"struct", "exception"}
   //
   // Fields, Enum values, consts aren't supported yet
   static void genCxxToThrift(
@@ -863,17 +865,30 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       );
       thrift_target = Fbthrift::XRefTarget::function_(function_name);
     } else {
-      // Thrift type declaration (exception or namedDecl)
+      // Thrift type declaration or field
       std::string name = thriftJson["name"].asString();
       std::string kind = thriftJson["kind"].asString();
       Fact<Fbthrift::QualName> qual_name = visitor.db.fact<Fbthrift::QualName>(
         file_fact, 
         visitor.db.fact<Fbthrift::Identifier>(name)
       );
-      if (kind == "exception") {
+      if (thriftJson.find("field") != thriftJson.items().end()) {
+        // field declaration: struct or exception
+        std::map<std::string, Fbthrift::FieldKind> kind_map = {
+          {"struct", Fbthrift::FieldKind::struct_},
+          {"exception", Fbthrift::FieldKind::exception_},
+        };
+        Fbthrift::FieldKind field_kind = kind_map[kind];
+        auto field =  visitor.db.fact<Fbthrift::Identifier>(thriftJson["field"].asString());
+        Fact<Fbthrift::FieldDecl> field_decl =
+          visitor.db.fact<Fbthrift::FieldDecl>(qual_name, field_kind, field);
+        thrift_target = Fbthrift::XRefTarget::field(field_decl);
+      } else if (kind == "exception") {
+        // type declaration: exception
         auto exception_fact = visitor.db.fact<Fbthrift::ExceptionName>(qual_name);
         thrift_target =  Fbthrift::XRefTarget::exception_(exception_fact);
       } else {
+        // type declaration: struct, enum, union, typedef
         std::map<std::string, Fbthrift::NamedKind> kind_map = {
           {"struct", Fbthrift::NamedKind::struct_},
           {"enum", Fbthrift::NamedKind::enum_},

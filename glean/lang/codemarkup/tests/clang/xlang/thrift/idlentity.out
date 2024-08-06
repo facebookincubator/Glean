@@ -101,17 +101,16 @@
         "entity": {
           "fbthrift": {
             "decl": {
-              "named": {
+              "field": {
                 "key": {
-                  "name": {
-                    "name": {
-                      "key": {
-                        "file": { "key": { "key": "test.thrift" } },
-                        "name": { "key": "GetNavigationRequest" }
-                      }
-                    },
-                    "kind": 2
-                  }
+                  "qname": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 0,
+                  "name": { "key": "identifier" }
                 }
               }
             }

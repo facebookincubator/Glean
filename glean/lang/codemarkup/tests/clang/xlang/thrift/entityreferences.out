@@ -27,6 +27,30 @@
       "target": {
         "fbthrift": {
           "decl": {
+            "field": {
+              "key": {
+                "qname": {
+                  "key": {
+                    "file": { "key": { "key": "test.thrift" } },
+                    "name": { "key": "GetNavigationRequest" }
+                  }
+                },
+                "kind": 0,
+                "name": { "key": "identifier" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 491, "length": 14 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
             "function_": {
               "key": {
                 "service_": {
@@ -149,31 +173,6 @@
       },
       "file": { "key": "test.cpp" },
       "range": { "span": { "start": 442, "length": 20 } }
-    }
-  },
-  {
-    "key": {
-      "target": {
-        "fbthrift": {
-          "decl": {
-            "named": {
-              "key": {
-                "name": {
-                  "name": {
-                    "key": {
-                      "file": { "key": { "key": "test.thrift" } },
-                      "name": { "key": "GetNavigationRequest" }
-                    }
-                  },
-                  "kind": 2
-                }
-              }
-            }
-          }
-        }
-      },
-      "file": { "key": "test.cpp" },
-      "range": { "span": { "start": 491, "length": 14 } }
     }
   },
   {

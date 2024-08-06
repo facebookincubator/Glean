@@ -1328,19 +1328,19 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "GetNavigationRequest"
+                            "aString": "identifier"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "test"
+                            "aString": "GetNavigationRequest"
                         },
                         "key": "symbolParent"
                     },
                     {
                         "attribute": {
-                            "aString": "struct test::GetNavigationRequest"
+                            "aString": "struct field test::GetNavigationRequest::identifier"
                         },
                         "key": "symbolSignature"
                     },
@@ -1363,14 +1363,14 @@
                     "lineBegin": 18,
                     "lineEnd": 18
                 },
-                "sym": "test-xlang/thrift/test.thrift/GetNavigationRequest",
+                "sym": "test-xlang/thrift/test.thrift/GetNavigationRequest/identifier",
                 "target": {
                     "filepath": "test.thrift",
                     "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 13,
-                        "lineEnd": 15
+                        "columnBegin": 3,
+                        "columnEnd": 24,
+                        "lineBegin": 14,
+                        "lineEnd": 14
                     },
                     "repository": "test-xlang"
                 }
