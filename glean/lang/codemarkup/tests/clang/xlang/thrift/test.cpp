@@ -15,8 +15,10 @@ void thrift1();
 void thriftCaller() {
   ResponseCard response;
   GetNavigationRequest request;
+  auto f = request.get_identifier();
   GetNavigationException request2;
   thrift1();
   thrift2();
   CountOnlyMode com; 
+  auto e = CountOnlyMode::Disabled;
 }

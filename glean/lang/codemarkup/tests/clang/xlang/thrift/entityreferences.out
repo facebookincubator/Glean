@@ -19,7 +19,7 @@
         }
       },
       "file": { "key": "test.cpp" },
-      "range": { "span": { "start": 474, "length": 22 } }
+      "range": { "span": { "start": 511, "length": 22 } }
     }
   },
   {
@@ -46,7 +46,7 @@
         }
       },
       "file": { "key": "test.cpp" },
-      "range": { "span": { "start": 509, "length": 7 } }
+      "range": { "span": { "start": 546, "length": 7 } }
     }
   },
   {
@@ -73,7 +73,7 @@
         }
       },
       "file": { "key": "test.cpp" },
-      "range": { "span": { "start": 522, "length": 7 } }
+      "range": { "span": { "start": 559, "length": 7 } }
     }
   },
   {
@@ -98,7 +98,32 @@
         }
       },
       "file": { "key": "test.cpp" },
-      "range": { "span": { "start": 535, "length": 13 } }
+      "range": { "span": { "start": 572, "length": 13 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "CountOnlyMode" }
+                    }
+                  },
+                  "kind": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 603, "length": 13 } }
     }
   },
   {
@@ -124,6 +149,31 @@
       },
       "file": { "key": "test.cpp" },
       "range": { "span": { "start": 442, "length": 20 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "GetNavigationRequest" }
+                    }
+                  },
+                  "kind": 2
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 491, "length": 14 } }
     }
   },
   {

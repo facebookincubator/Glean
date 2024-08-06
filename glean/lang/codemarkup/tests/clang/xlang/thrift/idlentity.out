@@ -16,9 +16,9 @@
                 "isScoped": true,
                 "source": {
                   "file": { "key": "test_types.h" },
-                  "lineBegin": 22,
+                  "lineBegin": 26,
                   "columnBegin": 1,
-                  "lineEnd": 26,
+                  "lineEnd": 30,
                   "columnEnd": 1
                 }
               }
@@ -42,6 +42,75 @@
                       }
                     },
                     "kind": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "get_identifier" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "GetNavigationRequest" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test_types.h" },
+                  "lineBegin": 18,
+                  "columnBegin": 4,
+                  "lineEnd": 18,
+                  "columnEnd": 23
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "named": {
+                "key": {
+                  "name": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "GetNavigationRequest" }
+                      }
+                    },
+                    "kind": 2
                   }
                 }
               }
@@ -177,9 +246,9 @@
                 "kind": { "class_": { } },
                 "source": {
                   "file": { "key": "test_types.h" },
-                  "lineBegin": 18,
+                  "lineBegin": 22,
                   "columnBegin": 1,
-                  "lineEnd": 19,
+                  "lineEnd": 23,
                   "columnEnd": 1
                 }
               }
@@ -227,7 +296,7 @@
                   "file": { "key": "test_types.h" },
                   "lineBegin": 14,
                   "columnBegin": 1,
-                  "lineEnd": 15,
+                  "lineEnd": 19,
                   "columnEnd": 1
                 }
               }
