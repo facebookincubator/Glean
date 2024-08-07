@@ -290,6 +290,7 @@ predicate SearchByName :
   )
 
 # Search for Module entities by name
+# Does not consider StringOfFileModule cases
 predicate SearchByNameModule:
   {
     name: string,
@@ -329,7 +330,9 @@ predicate ModuleNameLowerCase:
   {
     nameLowerCase: string,
     name: Module
-  } stored { prim.toLower Str, Mod } where SearchByNameModule { Str, Mod }
+  } stored { prim.toLower Str, Mod } where
+    SearchByNameModule { Str, Mod } |
+    ( StringToFileModule { Str, F }; Module { file = F } = Mod )
 
 # Search by Name and string code for the Module
 predicate SearchByModule :

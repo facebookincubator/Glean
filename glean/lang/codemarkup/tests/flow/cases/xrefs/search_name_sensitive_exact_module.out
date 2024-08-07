@@ -1,0 +1,19 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "cjs_exports",
+      "entity": {
+        "flow": { "module_": { "key": { "string_": "cjs_exports" } } }
+      },
+      "location": {
+        "name": "cjs_exports",
+        "file": { "key": "test/cjs_exports.js" },
+        "location": { "span": { "start": 0, "length": 0 } }
+      },
+      "kind": 4,
+      "language": 6
+    }
+  }
+]

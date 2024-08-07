@@ -276,7 +276,7 @@ predicate FlowSearchByName:
     ( Name = flow.Name NameStr;
       FlowSearchByNameWithFact { Name, Entity }
     ) | (
-      flow.SearchByNameModule { NameStr, Mod };
+      flow.SearchByModuleName { NameStr, Mod };
       { flow = { module_ = Mod } } = Entity
     )
 

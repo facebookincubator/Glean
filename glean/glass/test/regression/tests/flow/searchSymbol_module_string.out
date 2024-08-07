@@ -1,0 +1,31 @@
+[
+    "@generated",
+    {
+        "symbolDetails": [],
+        "symbols": [
+            {
+                "kind": 5,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 1
+                    },
+                    "repository": "test"
+                },
+                "name": "cjs_exports",
+                "qname": {
+                    "container": "",
+                    "localName": "cjs_exports"
+                },
+                "score": {
+                    "exactness": 0
+                },
+                "symbol": "test/js/cjs_exports"
+            }
+        ]
+    }
+]
