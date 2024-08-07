@@ -6,12 +6,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+// Test file to be used in Glass smoke test
+
 #include "glean/lang/clang/tests/smoke-xlang/gen-cpp2/smoke_types.h"
 #include "glean/lang/clang/tests/smoke-xlang/gen-cpp2/smoke_clients.h"
 #include "glean/lang/clang/tests/smoke-xlang/gen-cpp2/smoke_constants.h"
 #include <servicerouter/client/cpp2/ServiceRouter.h>
 
-using namespace cpp2;
+using namespace glean;
 
 void thriftCaller() {
   SomeUnion request;

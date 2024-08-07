@@ -6,6 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+// Test file to be used in Glass smoke test
+
+namespace hack GleanGlass
+namespace py3 glean
+namespace cpp2 glean
+
 const string SOME_CONST = "foo";
 
 union SomeUnion {
