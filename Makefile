@@ -217,7 +217,6 @@ SCHEMAS= \
 	symbolid_kotlin \
 	sys \
 	fbthrift \
-	thrift \
 
 .PHONY: thrift
 thrift:: thrift-compiler thrift-hs

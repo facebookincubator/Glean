@@ -674,7 +674,6 @@ library schema
         Glean.Schema.SearchPp
         Glean.Schema.Src
         Glean.Schema.Sys
-        Glean.Schema.Thrift
         Glean.Schema.Buck.Types
         Glean.Schema.Builtin.Types
         Glean.Schema.CodeBuck.Types
@@ -738,7 +737,6 @@ library schema
         Glean.Schema.SymbolidJava.Types
         Glean.Schema.SymbolidKotlin.Types
         Glean.Schema.Sys.Types
-        Glean.Schema.Thrift.Types
         Glean.Schema.Fbthrift.Types
     build-depends:
         glean:if-glean-hs,
