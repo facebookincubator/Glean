@@ -25,6 +25,7 @@ import qualified Glean.Schema.Src.Types as Src
 import Glean.Glass.Utils
 import Glean.Glass.Base ( GleanPath(..))
 import Glean.Glass.Types ( Name(..) )
+import qualified Haxl.Core.Memo as Haxl
 
 import Glean.Schema.CodeFlow.Types as Flow ( Entity(..) )
 
@@ -64,7 +65,7 @@ instance Symbol Flow.Range_key where
 
 instance Symbol Flow.Module_key where
   toSymbol m = case m of
-    Flow.Module_key_file file -> runModuleNameQuery file
+    Flow.Module_key_file file -> memoModuleNameQuery file
     Flow.Module_key_builtin _ -> return []
     Flow.Module_key_lib text -> return [text]
     Flow.Module_key_noSource _ -> return []
@@ -75,6 +76,14 @@ instance Symbol Flow.Name where
   toSymbol k = do
     v <- Glean.keyOf k
     return [v]
+
+-- | Memoize the result of figuring out the best short name for a file
+-- since this is common to all symbols in a file it can be a good win.
+memoModuleNameQuery :: Src.File -> Glean.RepoHaxl u w [Text]
+memoModuleNameQuery file = do
+  repo <- Glean.haxlRepo
+  key <- Glean.keyOf file
+  Haxl.memo (repo, key) $ runModuleNameQuery file
 
 -- Need to encode the module as a "container". For most (?) cases
 -- there is a nice short string associated with the file, so we get
@@ -90,7 +99,9 @@ runModuleNameQuery :: Src.File -> Glean.RepoHaxl u w [Text]
 runModuleNameQuery file = do
   mfile <- toJSFile file
   names <- case mfile of
+    -- its not a .js.flow file so we already have a valid fact id
     Nothing -> fetchData (moduleStringName $ Glean.getId file)
+    -- try for a .js equivalent
     Just path -> fetchData (moduleStringNameByFile path)
   case names of
     Nothing -> pathFragments <$> Glean.keyOf file

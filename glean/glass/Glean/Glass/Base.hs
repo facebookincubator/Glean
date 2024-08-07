@@ -31,7 +31,7 @@ instance IsString GleanDBName where fromString = GleanDBName . fromString
 -- For all other repos, it is relative to the repo root.
 --
 newtype GleanPath = GleanPath { gleanPath :: Text }
-  deriving Eq
+  deriving (Show, Eq)
 
 --
 -- | A path relative to the given repo root
