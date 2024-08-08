@@ -1221,6 +1221,57 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "ENGINE_STRMATCH"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "constant www/test::ENGINE_STRMATCH"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 26,
+                    "columnEnd": 41,
+                    "lineBegin": 31,
+                    "lineEnd": 31
+                },
+                "sym": "test-xlang/thrift/www/test.thrift/ENGINE_STRMATCH",
+                "target": {
+                    "filepath": "www/test.thrift",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 47,
+                        "lineBegin": 59,
+                        "lineEnd": 59
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "GetCardRequest"
                         },
                         "key": "symbolName"

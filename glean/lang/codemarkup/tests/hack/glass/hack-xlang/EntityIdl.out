@@ -5,6 +5,174 @@
       "entity": {
         "hack": {
           "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "ENGINE_FILENAME" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "test_CONSTANTS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "www/test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "constant": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ENGINE_FILENAME" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "ENGINE_FUZZY" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "test_CONSTANTS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "www/test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "constant": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ENGINE_FUZZY" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "ENGINE_RE2" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "test_CONSTANTS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "www/test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "constant": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ENGINE_RE2" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "ENGINE_STRMATCH" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "test_CONSTANTS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "www/test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "constant": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ENGINE_STRMATCH" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
             "container": {
               "class_": {
                 "key": {

@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 34,
+        "size": 35,
         "symbols": {
             "10": [
                 {
@@ -1228,6 +1228,42 @@
                             "columnEnd": 31,
                             "lineBegin": 15,
                             "lineEnd": 15
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "ENGINE_STRMATCH"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "constant www/test::ENGINE_STRMATCH"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 26,
+                        "columnEnd": 41,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "sym": "test-xlang/thrift/www/test.thrift/ENGINE_STRMATCH",
+                    "target": {
+                        "filepath": "www/test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 47,
+                            "lineBegin": 59,
+                            "lineEnd": 59
                         },
                         "repository": "test-xlang"
                     }

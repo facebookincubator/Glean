@@ -5,6 +5,28 @@
       "target": {
         "fbthrift": {
           "decl": {
+            "constant": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "ENGINE_STRMATCH" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/test.php" },
+      "range": { "span": { "start": 1160, "length": 15 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
             "enumValue": {
               "key": {
                 "enum_": {
