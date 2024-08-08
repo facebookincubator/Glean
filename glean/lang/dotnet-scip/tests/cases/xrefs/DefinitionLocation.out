@@ -32,9 +32,9 @@
       "file": { "key": "Program.cs" },
       "range": {
         "lineBegin": 13,
-        "columnBegin": 14,
+        "columnBegin": 17,
         "lineEnd": 13,
-        "columnEnd": 25
+        "columnEnd": 28
       },
       "defn": {
         "key": {
@@ -44,9 +44,9 @@
               "file": { "key": "Program.cs" },
               "range": {
                 "lineBegin": 13,
-                "columnBegin": 14,
+                "columnBegin": 17,
                 "lineEnd": 13,
-                "columnEnd": 25
+                "columnEnd": 28
               }
             }
           }
@@ -59,9 +59,9 @@
       "file": { "key": "Program.cs" },
       "range": {
         "lineBegin": 14,
-        "columnBegin": 17,
+        "columnBegin": 20,
         "lineEnd": 14,
-        "columnEnd": 22
+        "columnEnd": 25
       },
       "defn": {
         "key": {
@@ -71,9 +71,9 @@
               "file": { "key": "Program.cs" },
               "range": {
                 "lineBegin": 14,
-                "columnBegin": 17,
+                "columnBegin": 20,
                 "lineEnd": 14,
-                "columnEnd": 22
+                "columnEnd": 25
               }
             }
           }
@@ -112,10 +112,10 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 20,
-        "columnBegin": 9,
-        "lineEnd": 20,
-        "columnEnd": 14
+        "lineBegin": 21,
+        "columnBegin": 12,
+        "lineEnd": 21,
+        "columnEnd": 17
       },
       "defn": {
         "key": {
@@ -124,285 +124,9 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 20,
-                "columnBegin": 9,
-                "lineEnd": 20,
-                "columnEnd": 14
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Program.cs" },
-      "range": {
-        "lineBegin": 20,
-        "columnBegin": 23,
-        "lineEnd": 20,
-        "columnEnd": 28
-      },
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`(+1).(specie)"
-          },
-          "location": {
-            "key": {
-              "file": { "key": "Program.cs" },
-              "range": {
-                "lineBegin": 20,
-                "columnBegin": 23,
-                "lineEnd": 20,
-                "columnEnd": 28
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Program.cs" },
-      "range": {
-        "lineBegin": 20,
-        "columnBegin": 35,
-        "lineEnd": 20,
-        "columnEnd": 46
-      },
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`(+1).(numberOfLegs)"
-          },
-          "location": {
-            "key": {
-              "file": { "key": "Program.cs" },
-              "range": {
-                "lineBegin": 20,
-                "columnBegin": 35,
-                "lineEnd": 20,
-                "columnEnd": 46
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Program.cs" },
-      "range": {
-        "lineBegin": 26,
-        "columnBegin": 13,
-        "lineEnd": 26,
-        "columnEnd": 24
-      },
-      "defn": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#NumberOfLegs." },
-          "location": {
-            "key": {
-              "file": { "key": "Program.cs" },
-              "range": {
-                "lineBegin": 26,
-                "columnBegin": 13,
-                "lineEnd": 26,
-                "columnEnd": 24
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Program.cs" },
-      "range": {
-        "lineBegin": 34,
-        "columnBegin": 16,
-        "lineEnd": 34,
-        "columnEnd": 21
-      },
-      "defn": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#Specie." },
-          "location": {
-            "key": {
-              "file": { "key": "Program.cs" },
-              "range": {
-                "lineBegin": 34,
-                "columnBegin": 16,
-                "lineEnd": 34,
-                "columnEnd": 21
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Program.cs" },
-      "range": {
-        "lineBegin": 43,
-        "columnBegin": 14,
-        "lineEnd": 43,
-        "columnEnd": 16
-      },
-      "defn": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/Dog#" },
-          "location": {
-            "key": {
-              "file": { "key": "Program.cs" },
-              "range": {
-                "lineBegin": 43,
-                "columnBegin": 14,
-                "lineEnd": 43,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Program.cs" },
-      "range": {
-        "lineBegin": 45,
-        "columnBegin": 9,
-        "lineEnd": 45,
-        "columnEnd": 11
-      },
-      "defn": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/Dog#`.ctor`()." },
-          "location": {
-            "key": {
-              "file": { "key": "Program.cs" },
-              "range": {
-                "lineBegin": 45,
-                "columnBegin": 9,
-                "lineEnd": 45,
-                "columnEnd": 11
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Program.cs" },
-      "range": {
-        "lineBegin": 50,
-        "columnBegin": 14,
-        "lineEnd": 50,
-        "columnEnd": 18
-      },
-      "defn": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/Human#" },
-          "location": {
-            "key": {
-              "file": { "key": "Program.cs" },
-              "range": {
-                "lineBegin": 50,
-                "columnBegin": 14,
-                "lineEnd": 50,
-                "columnEnd": 18
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Program.cs" },
-      "range": {
-        "lineBegin": 52,
-        "columnBegin": 9,
-        "lineEnd": 52,
-        "columnEnd": 13
-      },
-      "defn": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/Human#`.ctor`()." },
-          "location": {
-            "key": {
-              "file": { "key": "Program.cs" },
-              "range": {
-                "lineBegin": 52,
-                "columnBegin": 9,
-                "lineEnd": 52,
-                "columnEnd": 13
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Program.cs" },
-      "range": {
-        "lineBegin": 57,
-        "columnBegin": 7,
-        "lineEnd": 57,
-        "columnEnd": 24
-      },
-      "defn": {
-        "key": {
-          "symbol": { "key": "scip-dotnet nuget . . ``/ExecuteInheritance#" },
-          "location": {
-            "key": {
-              "file": { "key": "Program.cs" },
-              "range": {
-                "lineBegin": 57,
-                "columnBegin": 7,
-                "lineEnd": 57,
-                "columnEnd": 24
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Program.cs" },
-      "range": {
-        "lineBegin": 58,
-        "columnBegin": 14,
-        "lineEnd": 58,
-        "columnEnd": 17
-      },
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "scip-dotnet nuget . . ``/ExecuteInheritance#Main()."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "Program.cs" },
-              "range": {
-                "lineBegin": 58,
-                "columnBegin": 14,
-                "lineEnd": 58,
+                "lineBegin": 21,
+                "columnBegin": 12,
+                "lineEnd": 21,
                 "columnEnd": 17
               }
             }
@@ -415,10 +139,286 @@
     "key": {
       "file": { "key": "Program.cs" },
       "range": {
-        "lineBegin": 58,
-        "columnBegin": 28,
-        "lineEnd": 58,
+        "lineBegin": 21,
+        "columnBegin": 26,
+        "lineEnd": 21,
         "columnEnd": 31
+      },
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`(+1).(specie)"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "Program.cs" },
+              "range": {
+                "lineBegin": 21,
+                "columnBegin": 26,
+                "lineEnd": 21,
+                "columnEnd": 31
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "Program.cs" },
+      "range": {
+        "lineBegin": 21,
+        "columnBegin": 38,
+        "lineEnd": 21,
+        "columnEnd": 49
+      },
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-dotnet nuget . . ``/Mammal#`.ctor`(+1).(numberOfLegs)"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "Program.cs" },
+              "range": {
+                "lineBegin": 21,
+                "columnBegin": 38,
+                "lineEnd": 21,
+                "columnEnd": 49
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "Program.cs" },
+      "range": {
+        "lineBegin": 27,
+        "columnBegin": 16,
+        "lineEnd": 27,
+        "columnEnd": 27
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#NumberOfLegs." },
+          "location": {
+            "key": {
+              "file": { "key": "Program.cs" },
+              "range": {
+                "lineBegin": 27,
+                "columnBegin": 16,
+                "lineEnd": 27,
+                "columnEnd": 27
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "Program.cs" },
+      "range": {
+        "lineBegin": 35,
+        "columnBegin": 19,
+        "lineEnd": 35,
+        "columnEnd": 24
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "scip-dotnet nuget . . ``/Mammal#Specie." },
+          "location": {
+            "key": {
+              "file": { "key": "Program.cs" },
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 19,
+                "lineEnd": 35,
+                "columnEnd": 24
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "Program.cs" },
+      "range": {
+        "lineBegin": 44,
+        "columnBegin": 14,
+        "lineEnd": 44,
+        "columnEnd": 16
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "scip-dotnet nuget . . ``/Dog#" },
+          "location": {
+            "key": {
+              "file": { "key": "Program.cs" },
+              "range": {
+                "lineBegin": 44,
+                "columnBegin": 14,
+                "lineEnd": 44,
+                "columnEnd": 16
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "Program.cs" },
+      "range": {
+        "lineBegin": 46,
+        "columnBegin": 12,
+        "lineEnd": 46,
+        "columnEnd": 14
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "scip-dotnet nuget . . ``/Dog#`.ctor`()." },
+          "location": {
+            "key": {
+              "file": { "key": "Program.cs" },
+              "range": {
+                "lineBegin": 46,
+                "columnBegin": 12,
+                "lineEnd": 46,
+                "columnEnd": 14
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "Program.cs" },
+      "range": {
+        "lineBegin": 51,
+        "columnBegin": 14,
+        "lineEnd": 51,
+        "columnEnd": 18
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "scip-dotnet nuget . . ``/Human#" },
+          "location": {
+            "key": {
+              "file": { "key": "Program.cs" },
+              "range": {
+                "lineBegin": 51,
+                "columnBegin": 14,
+                "lineEnd": 51,
+                "columnEnd": 18
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "Program.cs" },
+      "range": {
+        "lineBegin": 53,
+        "columnBegin": 12,
+        "lineEnd": 53,
+        "columnEnd": 16
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "scip-dotnet nuget . . ``/Human#`.ctor`()." },
+          "location": {
+            "key": {
+              "file": { "key": "Program.cs" },
+              "range": {
+                "lineBegin": 53,
+                "columnBegin": 12,
+                "lineEnd": 53,
+                "columnEnd": 16
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "Program.cs" },
+      "range": {
+        "lineBegin": 58,
+        "columnBegin": 7,
+        "lineEnd": 58,
+        "columnEnd": 24
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "scip-dotnet nuget . . ``/ExecuteInheritance#" },
+          "location": {
+            "key": {
+              "file": { "key": "Program.cs" },
+              "range": {
+                "lineBegin": 58,
+                "columnBegin": 7,
+                "lineEnd": 58,
+                "columnEnd": 24
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "Program.cs" },
+      "range": {
+        "lineBegin": 60,
+        "columnBegin": 17,
+        "lineEnd": 60,
+        "columnEnd": 20
+      },
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "scip-dotnet nuget . . ``/ExecuteInheritance#Main()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "Program.cs" },
+              "range": {
+                "lineBegin": 60,
+                "columnBegin": 17,
+                "lineEnd": 60,
+                "columnEnd": 20
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "Program.cs" },
+      "range": {
+        "lineBegin": 60,
+        "columnBegin": 31,
+        "lineEnd": 60,
+        "columnEnd": 34
       },
       "defn": {
         "key": {
@@ -429,10 +429,10 @@
             "key": {
               "file": { "key": "Program.cs" },
               "range": {
-                "lineBegin": 58,
-                "columnBegin": 28,
-                "lineEnd": 58,
-                "columnEnd": 31
+                "lineBegin": 60,
+                "columnBegin": 31,
+                "lineEnd": 60,
+                "columnEnd": 34
               }
             }
           }
