@@ -85,9 +85,6 @@ instance LogRequest USR where
 instance LogRequest SymbolPath where
   logRequest = logSymbolPathSG Logger.setFilepath Logger.setRepo
 
-instance LogRequest Location where
-  logRequest = logLocationSG Logger.setFilepath Logger.setRepo
-
 instance LogRequest SymbolSearchRequest where
   logRequest = logSymbolSearchRequestSG Logger.setSymbol Logger.setRepo
 
@@ -151,17 +148,8 @@ instance LogResult DocumentSymbolIndex where
 instance LogResult Range where
   logResult _ = mempty
 
-instance LogResult [Location] where
-  logResult xs = Logger.setItemCount (length xs)
-
 instance LogResult [LocationRange] where
   logResult xs = Logger.setItemCount (length xs)
-
-instance LogResult Location where
-  logResult Location{..} = mconcat
-    [ Logger.setItemCount 1
-    , Logger.setRepo $ unRepoName location_repository
-    ]
 
 instance LogResult LocationRange where
   logResult LocationRange{..} = mconcat
@@ -345,11 +333,6 @@ logSymbolPathSG :: Semigroup a => (Text -> a) -> (Text -> a)
 logSymbolPathSG f g SymbolPath{..} =
     f (unPath symbolPath_filepath) <>
       g (unRepoName symbolPath_repository)
-
-logLocationSG :: Semigroup a => (Text -> a) -> (Text -> a) -> Location -> a
-logLocationSG f g Location{..} =
-     f (unPath location_filepath) <>
-      g (unRepoName location_repository)
 
 logDocumentSymbolsRequestSG :: Semigroup a => (Text -> a) -> (Text -> a)
   -> DocumentSymbolsRequest  -> a

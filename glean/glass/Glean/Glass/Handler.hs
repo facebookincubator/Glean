@@ -18,7 +18,6 @@ module Glean.Glass.Handler
   , documentSymbolIndex
 
   -- ** find references
-  , findReferences
   , findReferenceRanges
 
   -- * working with symbol ids
@@ -186,26 +185,9 @@ documentSymbolIndex env r opts =
       (fetchDocumentSymbolIndex env)
       env r opts
 
--- | Symbol-based find-refernces.
-findReferences
-  :: Glass.Env
-  -> SymbolId
-  -> RequestOptions
-  -> IO [Location]
-findReferences env@Glass.Env{..} sym opts@RequestOptions{..} =
-  withSymbol "findReferences" env opts sym $
-    \gleanDBs _dbInfo (repo, lang, toks) ->
-      fetchSymbolReferences env repo lang toks limit
-        GleanBackend{..}
-  where
-    limit = fmap fromIntegral requestOptions_limit
-
--- | Symbol-based find-refernces.
+-- | Symbol-based find-references.
 findReferenceRanges
-  :: Glass.Env
-  -> SymbolId
-  -> RequestOptions
-  -> IO [LocationRange]
+  :: Glass.Env -> SymbolId -> RequestOptions -> IO [LocationRange]
 findReferenceRanges env@Glass.Env{..} sym opts@RequestOptions{..} =
   withSymbol "findReferenceRanges" env opts sym
     $ \gleanDBs _dbInfo (repo, lang, toks) ->
@@ -650,29 +632,6 @@ data FileReference =
 toFileReference :: RepoName -> Path -> FileReference
 toFileReference repo path =
   FileReference repo (toGleanPath $ SymbolRepoPath repo path)
-
--- | Symbol search for references
-fetchSymbolReferences
-  :: Glean.Backend b
-  => Glass.Env
-  -> RepoName
-  -> Language
-  -> [Text]
-  -> Maybe Int
-  -> GleanBackend b
-  -> IO ([Location], Maybe ErrorLogger)
-fetchSymbolReferences env scsrepo lang toks limit b = backendRunHaxl b env $ do
-  er <- symbolToAngleEntities lang toks
-  case er of
-    Left err -> return ([], Just (err <> logError (gleanDBs b)))
-    Right (entities, searchErr) -> do
-      locs <- forM entities $ \(entityRepo, query) ->
-        withRepo entityRepo $ do
-          let convert (targetFile, rspan) =
-                rangeSpanToLocation scsrepo targetFile rspan
-          uses <- searchWithLimit limit $ Query.findReferenceRangeSpan query
-          mapM convert uses
-      return (nubOrd $ concat locs, fmap logError searchErr)
 
 -- | Symbol search for references as ranges.
 fetchSymbolReferenceRanges

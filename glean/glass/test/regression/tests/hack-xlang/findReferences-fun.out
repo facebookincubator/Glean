@@ -3,11 +3,13 @@
     [
         {
             "filepath": "www/test.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 7,
-                "start": 635
-            }
+            "range": {
+                "columnBegin": 32,
+                "columnEnd": 39,
+                "lineBegin": 20,
+                "lineEnd": 20
+            },
+            "repository": "test-xlang"
         }
     ]
 ]

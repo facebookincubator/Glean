@@ -1,2 +1,2 @@
-action: findReferences
+action: findReferenceRanges
 args: "test/rs/rust-analyzer/cargo/relative_path/./%28self%29"

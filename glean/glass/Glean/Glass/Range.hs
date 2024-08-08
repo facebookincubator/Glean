@@ -12,7 +12,6 @@ module Glean.Glass.Range
      rangeContains
 
   -- ** high level
-  , rangeSpanToLocation
   , rangeSpanToLocationRange
 
   -- ** lower level
@@ -39,8 +38,6 @@ import qualified Glean.Schema.Digest.Types as Digest
 
 import Glean.Glass.Types
     ( LocationRange(..),
-      ByteSpan(..),
-      Location(..),
       RepoName,
       Range(range_columnEnd, range_lineEnd, range_columnBegin, range_lineBegin),
       GlassExceptionReason (GlassExceptionReason_noSrcFileFact)
@@ -64,20 +61,6 @@ rangeContains big small =
     checkLE line col a b = GT /= compareLineCol line col a b
     compareLineCol line col a b =
       (compare `on` line) a b <> (compare `on` col) a b
-
--- | Convert Glean-side Location markers to the Glass bytespan locations
--- Like locationRangeFromCodeLocation, memoizes the file offsets needed to do
--- span conversion.
-rangeSpanToLocation
-  :: RepoName -> Src.File -> Code.RangeSpan -> Glean.RepoHaxl u w Glass.Location
-rangeSpanToLocation repo file rangespan = do
-  span <- case rangespan of
-    Code.RangeSpan_span span -> pure span
-    Code.RangeSpan_range range -> do -- expensive:  converting back to bytespans
-      mOffsets <- memoLineOffsets file
-      return $ inclusiveRangeToFileByteSpan mOffsets range
-    Code.RangeSpan_EMPTY -> unexpected
-  toLocation repo file span
 
 -- | Convert Glean-side range span and file to the Glass range locations, with
 -- ranges in exclusive-end form, and paths adjusted to be repo-relative
@@ -197,13 +180,6 @@ fileByteSpanToExclusiveRange (Just lineoffs) bytespan =
     range_columnEnd = fromIntegral $ range_columnEnd + 1
   }
 
--- | (internal) Convert a src.Range from glean to a src.ByteSpan
-inclusiveRangeToFileByteSpan
-  :: Maybe Range.LineOffsets -> Src.Range -> Src.ByteSpan
-inclusiveRangeToFileByteSpan Nothing _ = def
-inclusiveRangeToFileByteSpan (Just lineoffs) range =
-  Range.rangeToByteSpan (Range.srcRangeToSimpleByteRange lineoffs range)
-
 -- | Memoize the result of computing the line offsets on a file
 -- This provides up to 15x win for xrefs on large files
 -- (internal)
@@ -237,29 +213,6 @@ fromFileLines
 fromFileLines mlines = case mlines of
   Nothing -> pure Nothing
   Just offs -> Just . Range.lengthsToLineOffsets <$> Glean.keyOf offs
-
--- | (internal) Target cross-references. these are unresolved (raw) spans of
--- locations.  They can be resolved to Ranges via a FileLines call (client or
--- server-side).
-toLocation
-  :: RepoName -> Src.File -> Src.ByteSpan -> Glean.RepoHaxl u w Location
-toLocation repo file bytespan = do
-  path <- GleanPath <$> Glean.keyOf file
-  let SymbolRepoPath location_repository location_filepath =
-        fromGleanPath repo path
-  return $ Location {
-       location_repository = location_repository,
-       location_filepath = location_filepath,
-       location_span = spanToSpan bytespan
-     }
-  where
-    -- | Span conversion. We hide any Glean-specific types
-    spanToSpan :: Src.ByteSpan -> ByteSpan
-    spanToSpan Src.ByteSpan{..} =
-      ByteSpan {
-        byteSpan_start = Glean.unNat byteSpan_start,
-        byteSpan_length = Glean.unNat byteSpan_length
-      }
 
 -- | (internal) Like toLocation, but for ranges.
 toLocationRange

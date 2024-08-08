@@ -3,19 +3,23 @@
     [
         {
             "filepath": "test.cpp",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 442
-            }
+            "range": {
+                "columnBegin": 3,
+                "columnEnd": 23,
+                "lineBegin": 17,
+                "lineEnd": 17
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "test.thrift",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 723
-            }
+            "range": {
+                "columnBegin": 36,
+                "columnEnd": 56,
+                "lineBegin": 39,
+                "lineEnd": 39
+            },
+            "repository": "test-xlang"
         }
     ]
 ]

@@ -129,16 +129,13 @@ testFindReferences sym@(SymbolId name) paths get =
   TestLabel (Text.unpack name) $ TestCase $ do
     (backend, _repo) <- get
     withTestEnv backend $ \env -> do
-      locs <- findReferences env sym def
+      locs <- findReferenceRanges env sym def
       let
         assertLocsEq s results =
           assertEqual s
             (Map.fromList paths )
             (Map.fromList
               [ (head paths, length paths) | paths <- group (sort results) ])
-      assertLocsEq "findReferences Path matches" $
-        map location_filepath locs
-      locs <- findReferenceRanges env sym def
       assertLocsEq "findReferences Path matches" $
         map locationRange_filepath locs
 

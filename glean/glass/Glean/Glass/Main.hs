@@ -183,7 +183,6 @@ glassHandler env0 cmd =
   DocumentSymbolIndex r opts -> Handler.documentSymbolIndex env r opts
 
   -- Navigating
-  FindReferences r opts -> Handler.findReferences env r opts
   FindReferenceRanges r opts -> Handler.findReferenceRanges env r opts
 
   -- Symbol info

@@ -79,8 +79,6 @@ glassTraceEvent (GlassTraceWithId tid (TraceCommand cmd)) = case cmd of
        "exact" .= requestOptions_exact_revision opts <>
        "matching" .= requestOptions_matching_revision opts
     )
-  Glass.FindReferences r opts ->
-    ( "FindReferences", tid, json $ toEncoding r)
   Glass.FindReferenceRanges r opts ->
     ("FindReferenceRanges", tid, json $ toEncoding r)
   Glass.SymbolLocation r opts ->

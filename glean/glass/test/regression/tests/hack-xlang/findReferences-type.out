@@ -3,131 +3,163 @@
     [
         {
             "filepath": "www/TestService.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 483
-            }
+            "range": {
+                "columnBegin": 28,
+                "columnEnd": 48,
+                "lineBegin": 21,
+                "lineEnd": 21
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/TestService.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 1116
-            }
+            "range": {
+                "columnBegin": 28,
+                "columnEnd": 48,
+                "lineBegin": 43,
+                "lineEnd": 43
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/TestService.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 1852
-            }
+            "range": {
+                "columnBegin": 28,
+                "columnEnd": 48,
+                "lineBegin": 72,
+                "lineEnd": 72
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/TestService.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 2636
-            }
+            "range": {
+                "columnBegin": 34,
+                "columnEnd": 54,
+                "lineBegin": 101,
+                "lineEnd": 101
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/TestService.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 4496
-            }
+            "range": {
+                "columnBegin": 34,
+                "columnEnd": 54,
+                "lineBegin": 146,
+                "lineEnd": 146
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/TestService.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 6082
-            }
+            "range": {
+                "columnBegin": 33,
+                "columnEnd": 53,
+                "lineBegin": 181,
+                "lineEnd": 181
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/TestService.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 7188
-            }
+            "range": {
+                "columnBegin": 18,
+                "columnEnd": 38,
+                "lineBegin": 210,
+                "lineEnd": 210
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/TestService.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 7357
-            }
+            "range": {
+                "columnBegin": 20,
+                "columnEnd": 40,
+                "lineBegin": 218,
+                "lineEnd": 218
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/TestService.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 7444
-            }
+            "range": {
+                "columnBegin": 11,
+                "columnEnd": 31,
+                "lineBegin": 222,
+                "lineEnd": 222
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/TestService.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 7507
-            }
+            "range": {
+                "columnBegin": 32,
+                "columnEnd": 52,
+                "lineBegin": 224,
+                "lineEnd": 224
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/TestService.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 21857
-            }
+            "range": {
+                "columnBegin": 46,
+                "columnEnd": 66,
+                "lineBegin": 728,
+                "lineEnd": 728
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/test.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 380
-            }
+            "range": {
+                "columnBegin": 20,
+                "columnEnd": 40,
+                "lineBegin": 16,
+                "lineEnd": 16
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/test.thrift",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 723
-            }
+            "range": {
+                "columnBegin": 36,
+                "columnEnd": 56,
+                "lineBegin": 39,
+                "lineEnd": 39
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/test_types.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 20,
-                "start": 4086
-            }
+            "range": {
+                "columnBegin": 7,
+                "columnEnd": 27,
+                "lineBegin": 175,
+                "lineEnd": 175
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/test_types.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 6,
-                "start": 4807
-            }
+            "range": {
+                "columnBegin": 16,
+                "columnEnd": 22,
+                "lineBegin": 204,
+                "lineEnd": 204
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/test_types.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 6,
-                "start": 4914
-            }
+            "range": {
+                "columnBegin": 16,
+                "columnEnd": 22,
+                "lineBegin": 208,
+                "lineEnd": 208
+            },
+            "repository": "test-xlang"
         }
     ]
 ]

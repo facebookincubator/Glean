@@ -1,2 +1,2 @@
-action: findReferences
+action: findReferenceRanges
 args: "test/java/lsif/com/glean/app/App%23getMessage%28%29"

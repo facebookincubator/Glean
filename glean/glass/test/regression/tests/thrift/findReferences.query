@@ -1,2 +1,2 @@
-action: findReferences
+action: findReferenceRanges
 args: "test/thrift/lib.thrift/Attributes"

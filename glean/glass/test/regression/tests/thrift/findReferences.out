@@ -3,11 +3,13 @@
     [
         {
             "filepath": "lib.thrift",
-            "repository": "test",
-            "span": {
-                "length": 10,
-                "start": 1861
-            }
+            "range": {
+                "columnBegin": 6,
+                "columnEnd": 16,
+                "lineBegin": 112,
+                "lineEnd": 112
+            },
+            "repository": "test"
         }
     ]
 ]

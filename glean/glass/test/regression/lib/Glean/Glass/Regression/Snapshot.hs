@@ -189,8 +189,6 @@ evalQuery glassEnv qFile Query{..} oFile = case action of
     (\req opts -> Glass.documentSymbolListX glassEnv req (xlang opts))
   "documentSymbolIndex" -> withObjectArgs qFile oFile args
     (\req opts -> Glass.documentSymbolIndex glassEnv req (xlang opts))
-  "findReferences" -> withSymbolId oFile args
-    (Glass.findReferences glassEnv)
   "findReferenceRanges" -> withSymbolId oFile args
     (Glass.findReferenceRanges glassEnv)
   "symbolLocation" -> withSymbolId oFile args
@@ -331,7 +329,6 @@ instance (DeterministicResponse a, Ord a) => DeterministicResponse [a] where
   det = sort . map det
 
 instance DeterministicResponse Range where det = id
-instance DeterministicResponse Location where det = id
 instance DeterministicResponse LocationRange where det = id
 instance DeterministicResponse SymbolLocation where
   det (SymbolLocation loc _rev) = SymbolLocation (det loc) (Revision "testhash")

@@ -60,18 +60,6 @@ struct ByteSpan {
   2: i64 length (hs.strict);
 }
 
-// An universal, unresolved symbol location.
-struct Location {
-  // The repository it is defined in
-  1: RepoName repository;
-
-  // the filepath in that repository
-  2: Path filepath;
-
-  // unresolved bytespan location in file
-  3: ByteSpan span (hs.strict);
-}
-
 // An universal, resolved symbol location.
 struct LocationRange {
   // The repository it is defined in
@@ -744,12 +732,6 @@ service GlassService extends fb303.FacebookService {
   // Return a line-index map of resolved symbols, useful for cursor lookup
   DocumentSymbolIndex documentSymbolIndex(
     1: DocumentSymbolsRequest request,
-    2: RequestOptions options,
-  ) throws (1: ServerException e, 2: GlassException g);
-
-  // Find any uses of a definition, generically
-  list<Location> findReferences(
-    1: SymbolId symbol,
     2: RequestOptions options,
   ) throws (1: ServerException e, 2: GlassException g);
 

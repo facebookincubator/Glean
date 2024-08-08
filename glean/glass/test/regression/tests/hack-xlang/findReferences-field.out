@@ -3,19 +3,23 @@
     [
         {
             "filepath": "www/test.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 9,
-                "start": 711
-            }
+            "range": {
+                "columnBegin": 29,
+                "columnEnd": 38,
+                "lineBegin": 21,
+                "lineEnd": 21
+            },
+            "repository": "test-xlang"
         },
         {
             "filepath": "www/test_types.php",
-            "repository": "test-xlang",
-            "span": {
-                "length": 9,
-                "start": 6626
-            }
+            "range": {
+                "columnBegin": 12,
+                "columnEnd": 21,
+                "lineBegin": 282,
+                "lineEnd": 282
+            },
+            "repository": "test-xlang"
         }
     ]
 ]
