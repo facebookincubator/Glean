@@ -1226,6 +1226,57 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "Disabled"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "CountOnlyMode"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "enum value test::CountOnlyMode::Disabled"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 27,
+                    "columnEnd": 35,
+                    "lineBegin": 23,
+                    "lineEnd": 23
+                },
+                "sym": "test-xlang/thrift/test.thrift/CountOnlyMode/Disabled",
+                "target": {
+                    "filepath": "test.thrift",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 16,
+                        "lineBegin": 49,
+                        "lineEnd": 49
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "GetNavigationException"
                         },
                         "key": "symbolName"

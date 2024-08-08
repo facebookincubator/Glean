@@ -22,7 +22,7 @@
             }
         },
         "revision": "testhash",
-        "size": 28,
+        "size": 29,
         "symbols": {
             "10": [
                 {
@@ -987,6 +987,42 @@
                             "columnEnd": 2,
                             "lineBegin": 48,
                             "lineEnd": 52
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "Disabled"
+                        },
+                        "symbolParent": {
+                            "aString": "CountOnlyMode"
+                        },
+                        "symbolSignature": {
+                            "aString": "enum value test::CountOnlyMode::Disabled"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 27,
+                        "columnEnd": 35,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "sym": "test-xlang/thrift/test.thrift/CountOnlyMode/Disabled",
+                    "target": {
+                        "filepath": "test.thrift",
+                        "range": {
+                            "columnBegin": 3,
+                            "columnEnd": 16,
+                            "lineBegin": 49,
+                            "lineEnd": 49
                         },
                         "repository": "test-xlang"
                     }

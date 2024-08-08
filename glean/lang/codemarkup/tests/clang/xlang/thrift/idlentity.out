@@ -378,5 +378,191 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "Disabled" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "CountOnlyMode" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "isScoped": true,
+                  "source": {
+                    "file": { "key": "test_types.h" },
+                    "lineBegin": 26,
+                    "columnBegin": 1,
+                    "lineEnd": 30,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test_types.h" },
+                "lineBegin": 27,
+                "columnBegin": 3,
+                "lineEnd": 27,
+                "columnEnd": 14
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "enumValue": {
+                "key": {
+                  "enum_": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "CountOnlyMode" }
+                      }
+                    },
+                    "kind": 1
+                  },
+                  "name": { "key": "Disabled" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "FileCount" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "CountOnlyMode" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "isScoped": true,
+                  "source": {
+                    "file": { "key": "test_types.h" },
+                    "lineBegin": 26,
+                    "columnBegin": 1,
+                    "lineEnd": 30,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test_types.h" },
+                "lineBegin": 29,
+                "columnBegin": 3,
+                "lineEnd": 29,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "enumValue": {
+                "key": {
+                  "enum_": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "CountOnlyMode" }
+                      }
+                    },
+                    "kind": 1
+                  },
+                  "name": { "key": "FileCount" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "HitCount" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "CountOnlyMode" },
+                      "scope": { "global_": { } }
+                    }
+                  },
+                  "isScoped": true,
+                  "source": {
+                    "file": { "key": "test_types.h" },
+                    "lineBegin": 26,
+                    "columnBegin": 1,
+                    "lineEnd": 30,
+                    "columnEnd": 1
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test_types.h" },
+                "lineBegin": 28,
+                "columnBegin": 3,
+                "lineEnd": 28,
+                "columnEnd": 14
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "enumValue": {
+                "key": {
+                  "enum_": {
+                    "name": {
+                      "key": {
+                        "file": { "key": { "key": "test.thrift" } },
+                        "name": { "key": "CountOnlyMode" }
+                      }
+                    },
+                    "kind": 1
+                  },
+                  "name": { "key": "HitCount" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 ]
