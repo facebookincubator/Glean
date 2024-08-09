@@ -99,6 +99,7 @@ handleOpt = textOption
 data FileFormat
   = JsonFormat
   | BinaryFormat
+  deriving (Eq)
 
 instance Show FileFormat where
   show ff = case ff of

@@ -160,7 +160,8 @@ instance Plugin MergeCommand where
         loop !n _ (Just set) [] = write (n, Right set)
         loop !n currentSize acc (f : files) = do
           size <- fromIntegral <$> getFileSize f
-          if size > mergeFileSize  -- just copy huge files
+          if size > mergeFileSize && fileFormat == BinaryFormat
+            -- just copy huge binary files
             then do
               write (n, Left f)
               loop (n+1) currentSize acc files
