@@ -325,6 +325,7 @@ bool Subroutine::operator==(const Subroutine& other) const {
     (code == other.code
     && inputs == other.inputs
     && outputs == other.outputs
+    && sets == other.sets
     && locals == other.locals
     && constants == other.constants
     && literals == other.literals);
@@ -358,6 +359,7 @@ void Subroutine::put(binary::Output& out, const Subroutine& sub) {
   serialize::put(out, sub.code, serialize::AsBytes{});
   serialize::put(out, sub.inputs);
   serialize::put(out, sub.outputs);
+  serialize::put(out, sub.sets);
   serialize::put(out, sub.locals);
   serialize::put(out, sub.constants);
   serialize::put(out, sub.literals);
@@ -367,6 +369,7 @@ void Subroutine::get(binary::Input& in, Subroutine& sub) {
   serialize::get(in, sub.code, serialize::AsBytes{});
   serialize::get(in, sub.inputs);
   serialize::get(in, sub.outputs);
+  serialize::get(in, sub.sets);
   serialize::get(in, sub.locals);
   serialize::get(in, sub.constants);
   serialize::get(in, sub.literals);
@@ -383,6 +386,7 @@ void Subroutine::Activation::put(binary::Output& out) const {
   serialize::put(out, sub.literals);
   const folly::Range<const uint64_t*> locals{frame() + sub.inputs, sub.locals};
   serialize::put(out, locals);
+  serialize::put(out, sub.sets);
   serialize::put(out, sub.inputs);
   const folly::Range<const binary::Output*> outputs{
       reinterpret_cast<const binary::Output*>(this + 1), sub.outputs};
@@ -394,6 +398,7 @@ Subroutine::Activation::get(binary::Input& in) {
   uint64_t pc;
   std::vector<uint64_t> code;
   size_t inputs;
+  std::vector<uint64_t> sets;
   std::vector<uint64_t> locals;
   std::vector<std::string> literals;
   std::vector<binary::Output> outputs;
@@ -402,6 +407,7 @@ Subroutine::Activation::get(binary::Input& in) {
   serialize::get(in, pc);
   serialize::get(in, literals);
   serialize::get(in, locals);
+  serialize::get(in, sets);
   serialize::get(in, inputs);
   serialize::get(in, outputs);
 
@@ -409,6 +415,7 @@ Subroutine::Activation::get(binary::Input& in) {
       std::move(code),
       inputs,
       outputs.size(),
+      sets.size(),
       locals.size(),
       std::vector<uint64_t>(), // no constants, they're already on the stack
       std::move(literals));

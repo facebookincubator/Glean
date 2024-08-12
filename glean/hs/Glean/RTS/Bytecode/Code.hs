@@ -22,6 +22,7 @@ module Glean.RTS.Bytecode.Code
   , constant
   , local
   , output
+  , localset
   , generate
   , castRegister
   , callSite
@@ -102,6 +103,10 @@ data CodeS = CodeS
     -- | Maximum number of binary::Output registers
   , csMaxOutputs :: {-# UNPACK #-} !(Register 'BinaryOutputPtr)
 
+  , csNextSet :: {-# UNPACK #-} !(Register 'SetPtr)
+
+  , csMaxSet :: {-# UNPACK #-} !(Register 'SetPtr)
+
     -- | Predicates we perform full scans on.
     -- Repeated entries mean multiple scans of the same predicate
   , csFullScans:: [Pid]
@@ -176,6 +181,17 @@ output = runLocal
   csNextOutput
   (\r s -> s { csNextOutput = r })
   (\r s -> s { csMaxOutputs = max (csMaxOutputs s) r })
+
+-- | Supply of @Register 'SetPtr@
+newtype SetSupply = SetSupply RegSupply
+  deriving (Supply (Register 'SetPtr))
+
+localset :: CodeGen SetSupply cg => cg -> Code (CodeResult cg)
+localset = runLocal
+  (SetSupply . regSupply)
+  csNextSet
+  (\r s -> s { csNextSet = r })
+  (\r s -> s { csMaxSet = max (csMaxSet s) r })
 
 runLocal
   :: (Supply r s, CodeGen s cg)
@@ -266,6 +282,8 @@ generate opt cg =
         , csMaxLocal = register Local 0
         , csNextOutput = castRegister nextInput
         , csMaxOutputs = castRegister nextInput
+        , csNextSet = register Set 0
+        , csMaxSet = register Set 0
         , csFullScans = mempty } of
     ((), CodeS{..}) -> do
       -- sanity check
@@ -273,6 +291,7 @@ generate opt cg =
       let -- output registers go after input registers
           finalInputSize = registerIndex csMaxOutputs
           constantsSize = registerIndex csNextConstant
+          finalSetSize = registerIndex csMaxSet
 
           get_label pc label =
             let addr = offsets VP.! fromLabel label
@@ -281,8 +300,10 @@ generate opt cg =
           get_reg :: forall ty . Register ty -> Word64
           get_reg r = case registerSegment r of
             Input -> assert (n < finalInputSize) n
-            Constant -> assert (n < constantsSize) (n + finalInputSize)
-            Local -> n + finalInputSize + constantsSize
+            Set -> assert (n < finalSetSize) (n + finalInputSize)
+            Constant -> assert (n < constantsSize)
+              (n + finalInputSize + finalSetSize)
+            Local -> n + finalInputSize + constantsSize + finalSetSize
             where
               !n = registerIndex r
 
@@ -309,6 +330,7 @@ generate opt cg =
         (VS.fromListN (length code) code)
         finalInputSize
         (finalInputSize - registerIndex nextInput)
+        finalSetSize
         (registerIndex csMaxLocal + constantsSize)
         (reverse csConstants)
         (map fst $ sortBy (comparing snd) $ HashMap.toList csLiterals)
@@ -434,7 +456,7 @@ layout CFG{..} = runST $ do
       }
 
 -- | Frame segment which a register belongs to
-data Segment = Input | Constant | Local
+data Segment = Input | Constant | Local | Set
   deriving(Eq,Ord,Enum,Bounded,Show)
 
 -- A register has a 'Segment' and an index within the segment, packed into

@@ -39,6 +39,8 @@ data SubroutineCode = SubroutineCode
     -- | Number of outputs
   , subOutputs :: {-# UNPACK #-} !Word64
 
+  , subSets :: {-# UNPACK #-} !Word64
+
     -- | Number of local registers
   , subLocals :: {-# UNPACK #-} !Word64
 
@@ -64,11 +66,12 @@ subroutine
   :: V.Vector Word64 -- ^ instructions
   -> Word64 -- ^ number of inputs
   -> Word64 -- ^ number of outputs
+  -> Word64 -- ^ number of sets
   -> Word64 -- ^ number of local registers
   -> [Word64] -- ^ constants
   -> [ByteString] -- ^ literals
   -> IO (Subroutine s)
-subroutine code inputs outputs locals consts lits =
+subroutine code inputs outputs sets locals consts lits =
   V.unsafeWith code $ \code_ptr ->
   withArrayLen consts $ \consts_len consts_ptr ->
   withMany (\s -> unsafeWithBytes s . curry) lits $ \ps ->
@@ -81,6 +84,7 @@ subroutine code inputs outputs locals consts lits =
     (fromIntegral $ V.length code)
     (fromIntegral inputs)
     (fromIntegral outputs)
+    (fromIntegral sets)
     (fromIntegral locals)
     consts_ptr
     (fromIntegral consts_len)
@@ -95,7 +99,7 @@ size sub = unsafeDupablePerformIO $ with sub $ \p_sub -> do
 inspect :: Subroutine s -> SubroutineCode
 inspect sub = unsafePerformIO $ with sub $ \p_sub -> do
   ( insns_ptr, insns_size
-    , inputs, outputs, locals
+    , inputs, outputs, sets, locals
     , consts_ptr, consts_size
     , lit_count) <- invoke $ glean_subroutine_inspect p_sub
   insns <- V.generateM (fromIntegral insns_size) $ peekElemOff insns_ptr
@@ -107,6 +111,7 @@ inspect sub = unsafePerformIO $ with sub $ \p_sub -> do
     { subInsns = insns
     , subInputs = inputs
     , subOutputs = outputs
+    , subSets = sets
     , subLocals = locals
     , subConstants = consts
     , subLiterals = lits
@@ -114,6 +119,7 @@ inspect sub = unsafePerformIO $ with sub $ \p_sub -> do
 
 foreign import ccall unsafe glean_subroutine_new
   :: Ptr Word64
+  -> CSize
   -> CSize
   -> CSize
   -> CSize
@@ -132,6 +138,7 @@ foreign import ccall unsafe glean_subroutine_inspect
   :: Ptr (Subroutine s)
   -> Ptr (Ptr Word64)
   -> Ptr CSize
+  -> Ptr Word64
   -> Ptr Word64
   -> Ptr Word64
   -> Ptr Word64

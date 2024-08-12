@@ -834,6 +834,7 @@ const char *glean_subroutine_new(
     size_t code_size,
     size_t inputs,
     size_t outputs,
+    size_t sets,
     size_t locals,
     const uint64_t *constants_ptr,
     size_t constants_size,
@@ -855,6 +856,7 @@ const char *glean_subroutine_new(
       std::vector<uint64_t>(code, code + code_size),
       inputs,
       outputs,
+      sets,
       locals,
       std::move(constants),
       std::move(literals)
@@ -871,6 +873,7 @@ void glean_subroutine_inspect(
     size_t *code_size,
     size_t *inputs,
     size_t *outputs,
+    size_t *sets,
     size_t *locals,
     const uint64_t **constants,
     size_t *constants_size,
@@ -879,6 +882,7 @@ void glean_subroutine_inspect(
   *code_size = sub->value->code.size();
   *inputs = sub->value->inputs;
   *outputs = sub->value->outputs;
+  *sets = sub->value->sets;
   *locals = sub->value->locals;
   *constants = sub->value->constants.data();
   *constants_size = sub->value->constants.size();
