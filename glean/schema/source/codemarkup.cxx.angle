@@ -311,7 +311,12 @@ predicate XRefTargetToEntity:
   }
   { X, E } where
     ({ declaration = D } = X; { decl = D } = E) |
-    ({ enumerator = En } = X; { enumerator = En } = E)
+    ({ enumerator = En } = X; { enumerator = En } = E) | (
+      { indirect = { target = X2 } } = X; (
+        ({ declaration = D2 } = X2; { decl = D2 } = E) |
+        ({ enumerator = En2 } = X2; { enumerator = En2 } = E)
+      )
+    )
 
 predicate EntityToXRefTarget:
   {
