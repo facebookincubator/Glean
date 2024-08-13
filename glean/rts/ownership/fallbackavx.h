@@ -17,7 +17,7 @@
 #include <stdint.h>
 
 #include <folly/Range.h>
-#include <folly/experimental/Instructions.h>
+#include <folly/compression/Instructions.h>
 
 /*
  * Stub of EliasFanoCoding.h API used by Glean
