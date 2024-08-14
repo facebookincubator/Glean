@@ -788,6 +788,13 @@ compileStatements
             resetOutput (castRegister reg)
             outputRelToAbsByteSpans ptr end (castRegister reg)
           inner
+      compileGen (PrimCall PrimOpReverse [arg] _) (Just reg) inner =
+        withTerm vars arg $ \str -> do
+          local $ \ptr end -> do
+            getOutput str ptr end
+            resetOutput (castRegister reg)
+            outputStringReverse ptr end (castRegister reg)
+          inner
       compileGen (PrimCall PrimOpUnpackByteSpans [arg] _) (Just reg) inner =
         withTerm vars arg $ \array -> do
           local $ \ptr end -> do

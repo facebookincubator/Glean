@@ -85,6 +85,10 @@ struct Eval {
     unpackByteSpans({a.begin, a.end}, *a.dst);
   }
 
+  FOLLY_ALWAYS_INLINE void execute(OutputStringReverse a) {
+    a.dst->reverseString({a.begin, a.end});
+  }
+
   FOLLY_ALWAYS_INLINE void execute(ResetOutput a) {
     *a.output = binary::Output();
   }

@@ -55,6 +55,8 @@ void mangleString(folly::ByteRange, binary::Output&);
 /// Tolower a mangled string
 void toLowerTrustedString(folly::ByteRange, binary::Output&);
 
+void reverseTrustedString(unsigned char *p, size_t size);
+
 }
 }
 }

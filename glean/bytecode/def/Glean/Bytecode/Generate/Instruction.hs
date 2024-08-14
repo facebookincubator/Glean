@@ -186,6 +186,11 @@ instructions =
       , Arg "end" $ reg DataPtr Load
       , Arg "dst" $ reg BinaryOutputPtr Load ]
 
+  , Insn "OutputStringReverse" [] []
+      [ Arg "begin" $ reg DataPtr Load
+      , Arg "end" $ reg DataPtr Load
+      , Arg "dst" $ reg BinaryOutputPtr Load ]
+
     -- Get the contents of a binary::Output as a pointer and
     -- length. Note that these are only valid until the next operation
     -- on the binary::Output

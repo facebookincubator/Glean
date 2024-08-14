@@ -63,6 +63,10 @@
           eval_OutputUnpackByteSpans();
           break;
   
+        case Op::OutputStringReverse:
+          eval_OutputStringReverse();
+          break;
+  
         case Op::GetOutput:
           eval_GetOutput();
           break;
@@ -229,7 +233,6 @@
         case Op::Ret:
           return eval_Ret();
   
-        case Op::Unused57:
         case Op::Unused58:
         case Op::Unused59:
         case Op::Unused60:
@@ -450,6 +453,7 @@
       &&label_OutputStringToLower,
       &&label_OutputRelToAbsByteSpans,
       &&label_OutputUnpackByteSpans,
+      &&label_OutputStringReverse,
       &&label_GetOutput,
       &&label_GetOutputSize,
       &&label_LoadConst,
@@ -554,6 +558,10 @@
   
   label_OutputUnpackByteSpans:
           eval_OutputUnpackByteSpans();
+    goto *labels[*pc++];
+  
+  label_OutputStringReverse:
+          eval_OutputStringReverse();
     goto *labels[*pc++];
   
   label_GetOutput:
@@ -935,6 +943,21 @@
     args.end = Reg<const unsigned char *>(&frame[*pc++]).get();
     args.dst = Reg<binary::Output *>(&frame[*pc++]).get();
     DVLOG(5) << "OutputUnpackByteSpans" << "  " << "<<ptr>>" << "  " << "<<ptr>>" << "  " << "<<binary::Output>>";
+    return execute(args);
+  }
+
+  struct OutputStringReverse {
+    const unsigned char * begin;
+    const unsigned char * end;
+    binary::Output * dst;
+  };
+  
+  FOLLY_ALWAYS_INLINE void eval_OutputStringReverse() {
+    OutputStringReverse args;
+    args.begin = Reg<const unsigned char *>(&frame[*pc++]).get();
+    args.end = Reg<const unsigned char *>(&frame[*pc++]).get();
+    args.dst = Reg<binary::Output *>(&frame[*pc++]).get();
+    DVLOG(5) << "OutputStringReverse" << "  " << "<<ptr>>" << "  " << "<<ptr>>" << "  " << "<<binary::Output>>";
     return execute(args);
   }
 

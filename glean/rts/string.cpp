@@ -176,6 +176,27 @@ void toLowerTrustedString(folly::ByteRange range, binary::Output& output) {
   }
 }
 
+void reverseTrustedString(unsigned char *p, size_t size) {
+  // Don't reverse the last two bytes, which are the terminators
+  std::reverse(p, p + size - 2);
+
+  // Fix non-ASCII characters
+  size-=2;
+  while (size > 0) {
+    auto* leadcharptr = &p[size-1];
+    auto nBytes = 1;
+    if((*leadcharptr & 0xe0) == 0xc0) {
+      nBytes = 2;
+    } else if ((*leadcharptr & 0xf0) == 0xe0) {
+      nBytes = 3;
+    } else if ((*leadcharptr & 0xf8) == 0xf0) {
+      nBytes = 4;
+    } 
+    std::reverse(leadcharptr-nBytes+1, leadcharptr+1);
+    size -= nBytes;
+  }
+
+}
 }
 }
 }

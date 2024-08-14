@@ -380,6 +380,11 @@ struct Output {
     rts::mangleString(r, *this);
   }
 
+  void reverseString(folly::ByteRange r) {
+    this->bytes(r.data(), r.size());
+    rts::reverseTrustedString(this->mutableData(), this->size());
+  }
+
   folly::ByteRange bytes() const & noexcept {
     return to<folly::ByteRange>();
   }
