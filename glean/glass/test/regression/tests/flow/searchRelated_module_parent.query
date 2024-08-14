@@ -1,2 +1,2 @@
 action: searchRelated
-args: {"symbol":"test/js/imports","request":{"relatedBy":2,"relation":2,"recursive":false,"detailedResults":true}}
+args: {"symbol":"test/js/imports","request":{"relatedBy":2,"relation":2,"recursive":false,"detailedResults":false}}
