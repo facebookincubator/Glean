@@ -27,6 +27,8 @@ module Glean.Glass.Range
 
 import Data.Default ( Default(def) )
 import Data.Function (on)
+import Data.Hashable
+import Data.Text
 
 import qualified Glean
 import qualified Glean.Util.Range as Range
@@ -180,6 +182,10 @@ fileByteSpanToExclusiveRange (Just lineoffs) bytespan =
     range_columnEnd = fromIntegral $ range_columnEnd + 1
   }
 
+newtype Glass_LineOffsets_Cache_Key =
+    Glass_LineOffsets_Cache_Key (Glean.Repo, Text)
+  deriving (Eq, Hashable, Ord, Show)
+
 -- | Memoize the result of computing the line offsets on a file
 -- This provides up to 15x win for xrefs on large files
 -- (internal)
@@ -187,7 +193,11 @@ memoLineOffsets :: Src.File -> Glean.RepoHaxl u w (Maybe Range.LineOffsets)
 memoLineOffsets file = do
   repo <- Glean.haxlRepo
   key <- Glean.keyOf file
-  Haxl.memo (repo, key) $ toLineOffsets file
+  Haxl.memo (Glass_LineOffsets_Cache_Key (repo, key)) $ toLineOffsets file
+
+newtype Glass_FileLines_Conversion_Cache_Key =
+    Glass_FileLines_Conversion_Cache_Key (Glean.Repo, Text)
+  deriving (Eq, Hashable, Ord, Show)
 
 -- | Sometimes we already have the FileLines fact handy. Set the memo table
 -- directly in this case (internal)
@@ -198,7 +208,8 @@ memoLineOffsetsFileLines
 memoLineOffsetsFileLines file mFileLines = do
   repo <- Glean.haxlRepo
   key <- Glean.keyOf file
-  Haxl.memo (repo, key) $ fromFileLines mFileLines
+  Haxl.memo (Glass_FileLines_Conversion_Cache_Key (repo, key)) $
+    fromFileLines mFileLines
 
 -- | (internal) Get the line offsets associated with a file
 -- Use the memoized version, memoLineOffsets

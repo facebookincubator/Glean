@@ -12,6 +12,7 @@
 module Glean.Glass.SymbolId.Flow ( {- instances -} ) where
 
 import Data.Text ( stripSuffix, intercalate, Text )
+import Data.Hashable
 
 import qualified Glean
 import Glean.Angle as Angle
@@ -77,13 +78,18 @@ instance Symbol Flow.Name where
     v <- Glean.keyOf k
     return [v]
 
+newtype Glass_SymbolId_Flow_ModuleName_Key =
+    Glass_SymbolId_Flow_ModuleName_Key (Glean.Repo, Text)
+  deriving (Eq, Hashable, Ord, Show)
+
 -- | Memoize the result of figuring out the best short name for a file
 -- since this is common to all symbols in a file it can be a good win.
 memoModuleNameQuery :: Src.File -> Glean.RepoHaxl u w [Text]
 memoModuleNameQuery file = do
   repo <- Glean.haxlRepo
   key <- Glean.keyOf file
-  Haxl.memo (repo, key) $ runModuleNameQuery file
+  Haxl.memo (Glass_SymbolId_Flow_ModuleName_Key (repo, key)) $
+    runModuleNameQuery file
 
 -- Need to encode the module as a "container". For most (?) cases
 -- there is a nice short string associated with the file, so we get

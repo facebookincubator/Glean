@@ -16,6 +16,7 @@ module Glean.Glass.SymbolId.Hack (
 import Control.Monad (forM)
 import qualified Data.Map.Strict as Map
 import Data.Text (Text, intercalate)
+import Data.Hashable
 
 import qualified Glean
 
@@ -230,13 +231,18 @@ instance ToQName Hack.QName_key where
       Right (Name p, Name ps) -> Right (nameStr, Name (ps <> "\\" <> p))
       Left e -> Left e
 
+newtype Glass_SymbolId_Hack_ShortNamespace_Key =
+    Glass_SymbolId_Hack_ShortNamespace_Key (Glean.Repo, Text)
+  deriving (Eq, Hashable, Ord, Show)
+
 -- Memoize implementation of short namespace lookup
 --
 hackGlobalNamespaceAliases
   :: RepoHaxl u w (Map.Map (Glean.IdOf Hack.NamespaceQName) Text)
 hackGlobalNamespaceAliases = do
   repo <- Glean.haxlRepo -- use repo as memo hash as we store Ids
-  Haxl.memo (repo, "Glean.Glass.SymbolId.Hack"::Text) $ do
+  Haxl.memo (Glass_SymbolId_Hack_ShortNamespace_Key
+      (repo, "Glean.Glass.SymbolId.Hack"::Text)) $ do
     (pairs,_lim) <- Utils.searchRecursiveWithLimit (Just maxMappings) query
     Map.fromList <$> forM pairs (\alias -> do
         Hack.GlobalNamespaceAlias_key{..} <- Glean.keyOf alias
