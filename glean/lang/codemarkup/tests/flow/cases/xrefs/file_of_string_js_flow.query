@@ -1,0 +1,2 @@
+query: flow.FileOfStringModule { file = "test/es_exports.js.flow" }
+transform: [gensort, []]

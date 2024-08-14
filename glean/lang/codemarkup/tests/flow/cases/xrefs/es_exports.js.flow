@@ -19,15 +19,19 @@ function bor(x: number): number {
   return x + 1;
 }
 
-class baz {}
+export class BazClass {}
 
 let d: string = "string";
 
-export {foo, bor as bar, baz};
+export {foo, bor as bar};
 
 export default d;
 
 export type num = number;
+
+export type MyT = {
+  field1: number
+}
 
 export component Introduction(name: string) {
   return <h1>My name is {name}</h1>

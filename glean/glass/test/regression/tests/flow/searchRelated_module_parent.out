@@ -3,11 +3,19 @@
     {
         "edges": [
             {
+                "child": "test/js/imports/BazClass",
+                "parent": "test/js/imports"
+            },
+            {
                 "child": "test/js/imports/C",
                 "parent": "test/js/imports"
             },
             {
-                "child": "test/js/imports/Component",
+                "child": "test/js/imports/CazClass",
+                "parent": "test/js/imports"
+            },
+            {
+                "child": "test/js/imports/CazClass",
                 "parent": "test/js/imports"
             },
             {
@@ -16,6 +24,10 @@
             },
             {
                 "child": "test/js/imports/D",
+                "parent": "test/js/imports"
+            },
+            {
+                "child": "test/js/imports/MyT",
                 "parent": "test/js/imports"
             },
             {
@@ -31,19 +43,7 @@
                 "parent": "test/js/imports"
             },
             {
-                "child": "test/js/imports/baz",
-                "parent": "test/js/imports"
-            },
-            {
                 "child": "test/js/imports/c",
-                "parent": "test/js/imports"
-            },
-            {
-                "child": "test/js/imports/caz",
-                "parent": "test/js/imports"
-            },
-            {
-                "child": "test/js/imports/caz",
                 "parent": "test/js/imports"
             },
             {
@@ -55,15 +55,15 @@
                 "parent": "test/js/imports"
             },
             {
-                "child": "test/js/imports/fn",
-                "parent": "test/js/imports"
-            },
-            {
                 "child": "test/js/imports/foo",
                 "parent": "test/js/imports"
             },
             {
                 "child": "test/js/imports/num",
+                "parent": "test/js/imports"
+            },
+            {
+                "child": "test/js/imports/plus",
                 "parent": "test/js/imports"
             },
             {
@@ -160,6 +160,53 @@
                 "sym_other_locations": [],
                 "type_xrefs": []
             },
+            "test/js/imports/BazClass": {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 30,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "imports",
+                    "localName": "BazClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "BazClass: class BazClass",
+                "sym": "test/js/imports/BazClass",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 30,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
             "test/js/imports/C": {
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -200,6 +247,53 @@
                         "columnEnd": 22,
                         "lineBegin": 34,
                         "lineEnd": 34
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            "test/js/imports/CazClass": {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 35,
+                        "lineBegin": 32,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "imports",
+                    "localName": "CazClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "CazClass: class CazClass",
+                "sym": "test/js/imports/CazClass",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 35,
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
@@ -300,6 +394,52 @@
                 "sym_other_locations": [],
                 "type_xrefs": []
             },
+            "test/js/imports/MyT": {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 17,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "imports",
+                    "localName": "MyT"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/js/imports/MyT",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 17,
+                        "lineBegin": 23,
+                        "lineEnd": 23
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
             "test/js/imports/a": {
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -332,7 +472,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "a: any (implicit)",
+                "signature": "a: number",
                 "sym": "test/js/imports/a",
                 "sym_location": {
                     "filepath": "test/imports.js",
@@ -365,8 +505,8 @@
                 "location": {
                     "filepath": "test/imports.js",
                     "range": {
-                        "columnBegin": 11,
-                        "columnEnd": 12,
+                        "columnBegin": 10,
+                        "columnEnd": 11,
                         "lineBegin": 11,
                         "lineEnd": 11
                     },
@@ -379,13 +519,13 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "b: any (implicit)",
+                "signature": "b: boolean",
                 "sym": "test/js/imports/b",
                 "sym_location": {
                     "filepath": "test/imports.js",
                     "range": {
-                        "columnBegin": 11,
-                        "columnEnd": 12,
+                        "columnBegin": 10,
+                        "columnEnd": 11,
                         "lineBegin": 11,
                         "lineEnd": 11
                     },
@@ -441,53 +581,6 @@
                 "sym_other_locations": [],
                 "type_xrefs": []
             },
-            "test/js/imports/baz": {
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 21,
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 22,
-                        "columnEnd": 25,
-                        "lineBegin": 13,
-                        "lineEnd": 13
-                    },
-                    "repository": "test"
-                },
-                "modifiers": [],
-                "name": {
-                    "container": "imports",
-                    "localName": "baz"
-                },
-                "pretty_comments": [],
-                "repo_hash": "testhash",
-                "signature": "baz: class baz",
-                "sym": "test/js/imports/baz",
-                "sym_location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 22,
-                        "columnEnd": 25,
-                        "lineBegin": 13,
-                        "lineEnd": 13
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "type_xrefs": []
-            },
             "test/js/imports/c": {
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -506,8 +599,8 @@
                 "location": {
                     "filepath": "test/imports.js",
                     "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 15,
+                        "columnBegin": 12,
+                        "columnEnd": 13,
                         "lineBegin": 11,
                         "lineEnd": 11
                     },
@@ -520,62 +613,15 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "c: any (implicit)",
+                "signature": "c: string",
                 "sym": "test/js/imports/c",
                 "sym_location": {
                     "filepath": "test/imports.js",
                     "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 15,
+                        "columnBegin": 12,
+                        "columnEnd": 13,
                         "lineBegin": 11,
                         "lineEnd": 11
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "type_xrefs": []
-            },
-            "test/js/imports/caz": {
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 21,
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 25,
-                        "lineBegin": 32,
-                        "lineEnd": 32
-                    },
-                    "repository": "test"
-                },
-                "modifiers": [],
-                "name": {
-                    "container": "imports",
-                    "localName": "caz"
-                },
-                "pretty_comments": [],
-                "repo_hash": "testhash",
-                "signature": "caz: class caz",
-                "sym": "test/js/imports/caz",
-                "sym_location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 25,
-                        "lineBegin": 32,
-                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
@@ -676,53 +722,6 @@
                 "sym_other_locations": [],
                 "type_xrefs": []
             },
-            "test/js/imports/fn": {
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 21,
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 8,
-                        "columnEnd": 10,
-                        "lineBegin": 17,
-                        "lineEnd": 17
-                    },
-                    "repository": "test"
-                },
-                "modifiers": [],
-                "name": {
-                    "container": "imports",
-                    "localName": "fn"
-                },
-                "pretty_comments": [],
-                "repo_hash": "testhash",
-                "signature": "fn: (x: number) => any",
-                "sym": "test/js/imports/fn",
-                "sym_location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 8,
-                        "columnEnd": 10,
-                        "lineBegin": 17,
-                        "lineEnd": 17
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "type_xrefs": []
-            },
             "test/js/imports/foo": {
                 "contains_relation": {
                     "firstChild": "nondeterministic",
@@ -810,6 +809,53 @@
                         "columnEnd": 17,
                         "lineBegin": 20,
                         "lineEnd": 20
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            "test/js/imports/plus": {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 13,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "imports",
+                    "localName": "plus"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "plus: (x: number) => number",
+                "sym": "test/js/imports/plus",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 13,
+                        "lineBegin": 17,
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 },
@@ -1116,7 +1162,7 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 19,
+                        "columnEnd": 21,
                         "lineBegin": 29,
                         "lineEnd": 29
                     },
@@ -1135,7 +1181,7 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 19,
+                        "columnEnd": 21,
                         "lineBegin": 29,
                         "lineEnd": 29
                     },

@@ -1,0 +1,35 @@
+[
+    "@generated",
+    [
+        {
+            "filepath": "test/cjs_exports.js",
+            "range": {
+                "columnBegin": 23,
+                "columnEnd": 27,
+                "lineBegin": 16,
+                "lineEnd": 16
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 9,
+                "columnEnd": 13,
+                "lineBegin": 17,
+                "lineEnd": 17
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 14,
+                "columnEnd": 18,
+                "lineBegin": 29,
+                "lineEnd": 29
+            },
+            "repository": "test"
+        }
+    ]
+]

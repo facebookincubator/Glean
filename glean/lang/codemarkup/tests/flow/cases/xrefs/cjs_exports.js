@@ -6,11 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-//@flow
+// @flow
 
-function plus(x: number) { return x+1; };
+function plus(x: number): number { return x+1; };
 
 module.exports.a = 1;
 module.exports.b = true;
 module.exports.c = 'three';
-module.exports = plus;
+module.exports.plus = plus;

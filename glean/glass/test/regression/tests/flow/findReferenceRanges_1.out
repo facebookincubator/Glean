@@ -1,0 +1,35 @@
+[
+    "@generated",
+    [
+        {
+            "filepath": "test/es_exports.js.flow",
+            "range": {
+                "columnBegin": 9,
+                "columnEnd": 12,
+                "lineBegin": 26,
+                "lineEnd": 26
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 12,
+                "columnEnd": 15,
+                "lineBegin": 13,
+                "lineEnd": 13
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 22,
+                "columnEnd": 25,
+                "lineBegin": 28,
+                "lineEnd": 28
+            },
+            "repository": "test"
+        }
+    ]
+]

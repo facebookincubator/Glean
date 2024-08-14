@@ -1,0 +1,2 @@
+query: flow.ModuleContains { module =  { file = "test/imports.js" } }
+transform: [gensort, []]

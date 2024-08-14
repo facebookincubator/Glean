@@ -17,9 +17,39 @@
                     "filepath": "test/es_exports.js.flow",
                     "range": {
                         "columnBegin": 8,
+                        "columnEnd": 25,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "name": "BazClass",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "BazClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/BazClass"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "es_exports"
+                    },
+                    "symbol": "test/js/es_exports"
+                },
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 36,
-                        "lineEnd": 36
+                        "lineBegin": 40,
+                        "lineEnd": 40
                     },
                     "repository": "test"
                 },
@@ -46,22 +76,22 @@
                 "location": {
                     "filepath": "test/es_exports.js.flow",
                     "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 22,
-                        "lineEnd": 22
+                        "columnBegin": 8,
+                        "columnEnd": 2,
+                        "lineBegin": 32,
+                        "lineEnd": 34
                     },
                     "repository": "test"
                 },
-                "name": "baz",
+                "name": "MyT",
                 "qname": {
                     "container": "es_exports",
-                    "localName": "baz"
+                    "localName": "MyT"
                 },
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/js/es_exports/baz"
+                "symbol": "test/js/es_exports/MyT"
             },
             {
                 "context": {
@@ -107,21 +137,21 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 12,
-                        "lineBegin": 36,
-                        "lineEnd": 36
+                        "columnEnd": 35,
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
-                "name": "D",
+                "name": "CazClass",
                 "qname": {
                     "container": "imports",
-                    "localName": "D"
+                    "localName": "CazClass"
                 },
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/js/imports/D"
+                "symbol": "test/js/imports/CazClass"
             },
             {
                 "context": {
@@ -137,21 +167,21 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 25,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "columnEnd": 12,
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
-                "name": "caz",
+                "name": "D",
                 "qname": {
                     "container": "imports",
-                    "localName": "caz"
+                    "localName": "D"
                 },
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/js/imports/caz"
+                "symbol": "test/js/imports/D"
             }
         ]
     }

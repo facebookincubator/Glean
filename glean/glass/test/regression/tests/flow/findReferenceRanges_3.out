@@ -1,0 +1,65 @@
+[
+    "@generated",
+    [
+        {
+            "filepath": "test/es_exports.js.flow",
+            "range": {
+                "columnBegin": 16,
+                "columnEnd": 17,
+                "lineBegin": 28,
+                "lineEnd": 28
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 8,
+                "columnEnd": 9,
+                "lineBegin": 13,
+                "lineEnd": 13
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 8,
+                "columnEnd": 17,
+                "lineBegin": 22,
+                "lineEnd": 22
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 17,
+                "columnEnd": 18,
+                "lineBegin": 25,
+                "lineEnd": 25
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 15,
+                "columnEnd": 18,
+                "lineBegin": 34,
+                "lineEnd": 34
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 8,
+                "columnEnd": 11,
+                "lineBegin": 37,
+                "lineEnd": 37
+            },
+            "repository": "test"
+        }
+    ]
+]

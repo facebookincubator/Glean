@@ -1,0 +1,50 @@
+[
+    "@generated",
+    {
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 21,
+        "language": 2,
+        "location": {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 13,
+                "columnEnd": 16,
+                "lineBegin": 14,
+                "lineEnd": 14
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "imports",
+            "localName": "qux"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "qux: module \"./es_exports\"",
+        "sym": "test/js/test/imports.js/qux",
+        "sym_location": {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 13,
+                "columnEnd": 16,
+                "lineBegin": 14,
+                "lineEnd": 14
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]

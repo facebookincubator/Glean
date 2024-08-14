@@ -1,0 +1,61 @@
+[
+    "@generated",
+    {
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 21,
+        "language": 2,
+        "location": {
+            "filepath": "test/cjs_exports.js",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 49,
+                "lineBegin": 11,
+                "lineEnd": 11
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "cjs_exports",
+            "localName": "plus"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "plus: (x: number) => number",
+        "sym": "test/js/test/cjs_exports.js/plus",
+        "sym_location": {
+            "filepath": "test/cjs_exports.js",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 49,
+                "lineBegin": 11,
+                "lineEnd": 11
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [
+            {
+                "filepath": "test/cjs_exports.js",
+                "range": {
+                    "columnBegin": 16,
+                    "columnEnd": 20,
+                    "lineBegin": 16,
+                    "lineEnd": 16
+                },
+                "repository": "test"
+            }
+        ],
+        "type_xrefs": []
+    }
+]

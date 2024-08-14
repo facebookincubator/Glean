@@ -8,28 +8,28 @@
 
 //@flow
 
-const {a, b, c} = require('./cjs_exports');
+const {a,b,c} = require('./cjs_exports');
 
-import d, {foo, bar, baz} from './es_exports';
+import d, {foo, bar, BazClass} from './es_exports';
 import * as qux from './es_exports';
 import times from './subdir/more_cjs.js';
 
-import fn from 'cjs_exports';  // ES import -> commonJS export
+import {plus} from 'cjs_exports';  // ES import -> commonJS export
   // also use a haste module name
 
 import type {num} from './es_exports';
 
 import Component from './es_exports';
-import type Component from './es_exports';
+import type {MyT} from './es_exports';
 
 let e: string = d;
 
 let x: num = bar(a);
 let y: num = qux.bar(foo);
-let z: num = fn(3);
+let z: num = plus(3);
 let z1: num = times(3,8);
 
-class caz extends baz {}
+class CazClass extends BazClass {}
 
 import typeof str, {C} from './es_exports';
 

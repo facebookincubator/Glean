@@ -1,0 +1,50 @@
+[
+    "@generated",
+    {
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 21,
+        "language": 2,
+        "location": {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 8,
+                "columnEnd": 9,
+                "lineBegin": 11,
+                "lineEnd": 11
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "imports",
+            "localName": "a"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "a: number",
+        "sym": "test/js/test/imports.js/a",
+        "sym_location": {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 8,
+                "columnEnd": 9,
+                "lineBegin": 11,
+                "lineEnd": 11
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]

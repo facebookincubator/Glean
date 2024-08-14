@@ -15,7 +15,7 @@
                     "module": {
                       "key": { "file": { "key": "test/es_exports.js.flow" } }
                     },
-                    "span": { "start": 504, "length": 12 }
+                    "span": { "start": 551, "length": 12 }
                   }
                 }
               }
@@ -26,7 +26,7 @@
       "location": {
         "name": "Introduction",
         "file": { "key": "test/es_exports.js.flow" },
-        "location": { "span": { "start": 504, "length": 12 } }
+        "location": { "span": { "start": 551, "length": 12 } }
       },
       "kind": 20,
       "language": 6

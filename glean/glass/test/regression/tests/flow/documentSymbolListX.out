@@ -47,6 +47,47 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 21
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "BazClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "imports"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "BazClass: class BazClass"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 22,
+                    "columnEnd": 30,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                },
+                "sym": "test/js/imports/BazClass"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aInteger": 2
                         },
                         "key": "symbolKind"
@@ -77,6 +118,88 @@
                     "lineEnd": 34
                 },
                 "sym": "test/js/imports/C"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "CazClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "imports"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "CazClass: class CazClass"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 15,
+                    "lineBegin": 32,
+                    "lineEnd": 32
+                },
+                "sym": "test/js/imports/CazClass"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 21
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "CazClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "imports"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "CazClass: class CazClass"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 7,
+                    "columnEnd": 15,
+                    "lineBegin": 32,
+                    "lineEnd": 32
+                },
+                "sym": "test/js/imports/CazClass"
             },
             {
                 "attributes": [
@@ -129,41 +252,6 @@
                     },
                     {
                         "attribute": {
-                            "aString": "Component"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "imports"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 2
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 13,
-                    "columnEnd": 22,
-                    "lineBegin": 23,
-                    "lineEnd": 23
-                },
-                "sym": "test/js/imports/Component"
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 2
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
                             "aString": "D"
                         },
                         "key": "symbolName"
@@ -199,6 +287,41 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "MyT"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "imports"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 14,
+                    "columnEnd": 17,
+                    "lineBegin": 23,
+                    "lineEnd": 23
+                },
+                "sym": "test/js/imports/MyT"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aInteger": 21
                         },
                         "key": "symbolKind"
@@ -217,7 +340,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "a: any (implicit)"
+                            "aString": "a: number"
                         },
                         "key": "symbolSignature"
                     },
@@ -258,7 +381,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "b: any (implicit)"
+                            "aString": "b: boolean"
                         },
                         "key": "symbolSignature"
                     },
@@ -270,8 +393,8 @@
                     }
                 ],
                 "range": {
-                    "columnBegin": 11,
-                    "columnEnd": 12,
+                    "columnBegin": 10,
+                    "columnEnd": 11,
                     "lineBegin": 11,
                     "lineEnd": 11
                 },
@@ -328,47 +451,6 @@
                     },
                     {
                         "attribute": {
-                            "aString": "baz"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "imports"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "baz: class baz"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 2
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 22,
-                    "columnEnd": 25,
-                    "lineBegin": 13,
-                    "lineEnd": 13
-                },
-                "sym": "test/js/imports/baz"
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 21
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
                             "aString": "c"
                         },
                         "key": "symbolName"
@@ -381,7 +463,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "c: any (implicit)"
+                            "aString": "c: string"
                         },
                         "key": "symbolSignature"
                     },
@@ -393,94 +475,12 @@
                     }
                 ],
                 "range": {
-                    "columnBegin": 14,
-                    "columnEnd": 15,
+                    "columnBegin": 12,
+                    "columnEnd": 13,
                     "lineBegin": 11,
                     "lineEnd": 11
                 },
                 "sym": "test/js/imports/c"
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 2
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "caz"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "imports"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "caz: class caz"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 2
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 7,
-                    "columnEnd": 10,
-                    "lineBegin": 32,
-                    "lineEnd": 32
-                },
-                "sym": "test/js/imports/caz"
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 21
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "caz"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "imports"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "caz: class caz"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 2
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 7,
-                    "columnEnd": 10,
-                    "lineBegin": 32,
-                    "lineEnd": 32
-                },
-                "sym": "test/js/imports/caz"
             },
             {
                 "attributes": [
@@ -574,47 +574,6 @@
                     },
                     {
                         "attribute": {
-                            "aString": "fn"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "imports"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "fn: (x: number) => any"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 2
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 8,
-                    "columnEnd": 10,
-                    "lineBegin": 17,
-                    "lineEnd": 17
-                },
-                "sym": "test/js/imports/fn"
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 21
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
                             "aString": "foo"
                         },
                         "key": "symbolName"
@@ -680,6 +639,47 @@
                     "lineEnd": 20
                 },
                 "sym": "test/js/imports/num"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 21
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "plus"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "imports"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "plus: (x: number) => number"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 13,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test/js/imports/plus"
             },
             {
                 "attributes": [
@@ -1010,13 +1010,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aInteger": 21
+                            "aInteger": 9
                         },
                         "key": "symbolKind"
                     },
                     {
                         "attribute": {
-                            "aString": "plus"
+                            "aString": "a"
                         },
                         "key": "symbolName"
                     },
@@ -1025,12 +1025,6 @@
                             "aString": "cjs_exports"
                         },
                         "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "plus: (x: number) => number"
-                        },
-                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1041,18 +1035,18 @@
                 ],
                 "range": {
                     "columnBegin": 8,
-                    "columnEnd": 10,
-                    "lineBegin": 17,
-                    "lineEnd": 17
+                    "columnEnd": 9,
+                    "lineBegin": 11,
+                    "lineEnd": 11
                 },
-                "sym": "test/js/cjs_exports/plus",
+                "sym": "test/js/cjs_exports/a",
                 "target": {
                     "filepath": "test/cjs_exports.js",
                     "range": {
-                        "columnBegin": 10,
-                        "columnEnd": 14,
-                        "lineBegin": 11,
-                        "lineEnd": 11
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 13,
+                        "lineEnd": 13
                     },
                     "repository": "test"
                 }
@@ -1061,7 +1055,142 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aInteger": 21
+                            "aInteger": 9
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "a"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "cjs_exports"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 19,
+                    "lineBegin": 27,
+                    "lineEnd": 27
+                },
+                "sym": "test/js/cjs_exports/a",
+                "target": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "b"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "cjs_exports"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 10,
+                    "columnEnd": 11,
+                    "lineBegin": 11,
+                    "lineEnd": 11
+                },
+                "sym": "test/js/cjs_exports/b",
+                "target": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "c"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "cjs_exports"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 12,
+                    "columnEnd": 13,
+                    "lineBegin": 11,
+                    "lineEnd": 11
+                },
+                "sym": "test/js/cjs_exports/c",
+                "target": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 9
                         },
                         "key": "symbolKind"
                     },
@@ -1079,9 +1208,48 @@
                     },
                     {
                         "attribute": {
-                            "aString": "plus: (x: number) => number"
+                            "aInteger": 2
                         },
-                        "key": "symbolSignature"
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 13,
+                    "lineBegin": 17,
+                    "lineEnd": 17
+                },
+                "sym": "test/js/cjs_exports/plus",
+                "target": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 20,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "plus"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "cjs_exports"
+                        },
+                        "key": "symbolParent"
                     },
                     {
                         "attribute": {
@@ -1092,7 +1260,7 @@
                 ],
                 "range": {
                     "columnBegin": 14,
-                    "columnEnd": 16,
+                    "columnEnd": 18,
                     "lineBegin": 29,
                     "lineEnd": 29
                 },
@@ -1100,10 +1268,10 @@
                 "target": {
                     "filepath": "test/cjs_exports.js",
                     "range": {
-                        "columnBegin": 10,
-                        "columnEnd": 14,
-                        "lineBegin": 11,
-                        "lineEnd": 11
+                        "columnBegin": 16,
+                        "columnEnd": 20,
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 }
@@ -1220,6 +1388,108 @@
                     },
                     {
                         "attribute": {
+                            "aString": "BazClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "es_exports"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "BazClass: class BazClass"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 22,
+                    "columnEnd": 30,
+                    "lineBegin": 13,
+                    "lineEnd": 13
+                },
+                "sym": "test/js/es_exports/BazClass",
+                "target": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 22,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 21
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "BazClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "es_exports"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "BazClass: class BazClass"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 24,
+                    "columnEnd": 32,
+                    "lineBegin": 32,
+                    "lineEnd": 32
+                },
+                "sym": "test/js/es_exports/BazClass",
+                "target": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 22,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 21
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
                             "aString": "C"
                         },
                         "key": "symbolName"
@@ -1255,8 +1525,8 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 15,
-                        "lineBegin": 36,
-                        "lineEnd": 36
+                        "lineBegin": 40,
+                        "lineEnd": 40
                     },
                     "repository": "test"
                 }
@@ -1306,8 +1576,59 @@
                     "range": {
                         "columnBegin": 14,
                         "columnEnd": 15,
-                        "lineBegin": 36,
-                        "lineEnd": 36
+                        "lineBegin": 40,
+                        "lineEnd": 40
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "MyT"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "es_exports"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "MyT: type MyT = {field1: number, ...}"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 14,
+                    "columnEnd": 17,
+                    "lineBegin": 23,
+                    "lineEnd": 23
+                },
+                "sym": "test/js/es_exports/MyT",
+                "target": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 16,
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 }
@@ -1353,108 +1674,6 @@
                         "columnEnd": 13,
                         "lineBegin": 18,
                         "lineEnd": 18
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 21
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "baz"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "es_exports"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "baz: class baz"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 2
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 22,
-                    "columnEnd": 25,
-                    "lineBegin": 13,
-                    "lineEnd": 13
-                },
-                "sym": "test/js/es_exports/baz",
-                "target": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 10,
-                        "lineBegin": 22,
-                        "lineEnd": 22
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 21
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "baz"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "es_exports"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "baz: class baz"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 2
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 19,
-                    "columnEnd": 22,
-                    "lineBegin": 32,
-                    "lineEnd": 32
-                },
-                "sym": "test/js/es_exports/baz",
-                "target": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 10,
-                        "lineBegin": 22,
-                        "lineEnd": 22
                     },
                     "repository": "test"
                 }
@@ -1650,57 +1869,6 @@
                     "columnEnd": 17,
                     "lineBegin": 22,
                     "lineEnd": 22
-                },
-                "sym": "test/js/es_exports/d",
-                "target": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 6,
-                        "lineBegin": 24,
-                        "lineEnd": 24
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 21
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "d"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "es_exports"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "d: string"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 2
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 13,
-                    "columnEnd": 22,
-                    "lineBegin": 23,
-                    "lineEnd": 23
                 },
                 "sym": "test/js/es_exports/d",
                 "target": {
@@ -2228,6 +2396,57 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 21
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "BazClass"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "imports"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "BazClass: class BazClass"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 24,
+                    "columnEnd": 32,
+                    "lineBegin": 32,
+                    "lineEnd": 32
+                },
+                "sym": "test/js/imports/BazClass",
+                "target": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 22,
+                        "columnEnd": 30,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aInteger": 2
                         },
                         "key": "symbolKind"
@@ -2291,7 +2510,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "a: any (implicit)"
+                            "aString": "a: number"
                         },
                         "key": "symbolSignature"
                     },
@@ -2381,57 +2600,6 @@
                     },
                     {
                         "attribute": {
-                            "aString": "baz"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "imports"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "baz: class baz"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 2
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 19,
-                    "columnEnd": 22,
-                    "lineBegin": 32,
-                    "lineEnd": 32
-                },
-                "sym": "test/js/imports/baz",
-                "target": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 22,
-                        "columnEnd": 25,
-                        "lineBegin": 13,
-                        "lineEnd": 13
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 21
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
                             "aString": "d"
                         },
                         "key": "symbolName"
@@ -2469,57 +2637,6 @@
                         "columnEnd": 9,
                         "lineBegin": 13,
                         "lineEnd": 13
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aInteger": 21
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "fn"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "imports"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "fn: (x: number) => any"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 2
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 14,
-                    "columnEnd": 16,
-                    "lineBegin": 29,
-                    "lineEnd": 29
-                },
-                "sym": "test/js/imports/fn",
-                "target": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 8,
-                        "columnEnd": 10,
-                        "lineBegin": 17,
-                        "lineEnd": 17
                     },
                     "repository": "test"
                 }
@@ -2751,6 +2868,57 @@
                         "columnEnd": 17,
                         "lineBegin": 20,
                         "lineEnd": 20
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 21
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "plus"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "imports"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "plus: (x: number) => number"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 14,
+                    "columnEnd": 18,
+                    "lineBegin": 29,
+                    "lineEnd": 29
+                },
+                "sym": "test/js/imports/plus",
+                "target": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 13,
+                        "lineBegin": 17,
+                        "lineEnd": 17
                     },
                     "repository": "test"
                 }

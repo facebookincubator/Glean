@@ -8,80 +8,12 @@
 
 module Glean.Glass.Regression.Flow (main) where
 
-import Test.HUnit
-import Data.Bifunctor
-import Data.Text (Text)
-
-import Glean.Indexer.Flow as Flow
-
-import Glean
-import Glean.LocalOrRemote
-import Glean.Util.Some
-import Glean.Glass.Types
-import Glean.Glass.Regression.Tests
-
-import Glean.Glass.Regression.Snapshot
+import Glean.Indexer.Flow as Flow ( indexer )
+import Glean.Glass.Regression.Snapshot ( mainGlassSnapshot )
 
 main :: IO ()
-main = mainGlassSnapshot testName testPath testIndexer unitTests
+main = mainGlassSnapshot testName testPath testIndexer (const [])
   where
     testName = "glass-regression-flow"
     testPath = "glean/glass/test/regression/tests/flow"
     testIndexer = Flow.indexer
-
-unitTests :: Getter -> [Test]
-unitTests get =
-  [ testDocumentSymbolListX (Path "test/imports.js") get
-  , testSymbolIdLookup get
-  , testFlowFindReferences get
-  ]
-
-testSymbolIdLookup :: IO (Some LocalOrRemote, Repo) -> Test
-testSymbolIdLookup get = TestLabel "describeSymbol" $ TestList [
-  "test/js/test/es_exports.js.flow/foo" --> "test/es_exports.js.flow",
-  "test/js/test/es_exports.js.flow/bor" --> "test/es_exports.js.flow",
-  "test/js/test/es_exports.js.flow/d" --> "test/es_exports.js.flow",
-  "test/js/test/es_exports.js.flow/C" --> "test/es_exports.js.flow",
-  "test/js/test/es_exports.js.flow/num" --> "test/es_exports.js.flow",
-  "test/js/test/cjs_exports.js/plus" --> "test/cjs_exports.js",
-  "test/js/test/imports.js/a" --> "test/imports.js",
-  "test/js/test/imports.js/caz" --> "test/imports.js",
-  "test/js/test/imports.js/s" --> "test/imports.js",
-  "test/js/test/imports.js/qux" --> "test/imports.js",
-  "test/js/test/imports.js/str" --> "test/imports.js",
-  "test/js/test/imports.js/fn" --> "test/imports.js"
-  ]
-  where
-    (-->) :: Text -> Text -> Test
-    sym --> expected =
-      testDescribeSymbolMatchesPath
-        (SymbolId sym)
-        (Path expected)
-        get
-
-testFlowFindReferences :: IO (Some LocalOrRemote, Repo) -> Test
-testFlowFindReferences get = TestLabel "findReferences" $ TestList [
-  "test/js/test/es_exports.js.flow/foo" -->
-   [("test/es_exports.js.flow", 1), ("test/imports.js", 2)],
-  "test/js/test/es_exports.js.flow/bor" -->
-   [("test/es_exports.js.flow", 1), ("test/imports.js", 2)],
-  "test/js/test/es_exports.js.flow/d" -->
-   [("test/es_exports.js.flow", 1), ("test/imports.js", 6)],
-  "test/js/test/es_exports.js.flow/C" --> [("test/imports.js", 2)],
-  "test/js/test/es_exports.js.flow/num" --> [("test/imports.js", 5)],
-  "test/js/test/cjs_exports.js/plus" -->
-  [("test/cjs_exports.js", 1), ("test/imports.js", 2)],
-  "test/js/test/imports.js/a" --> [("test/imports.js", 1)],
-  "test/js/test/imports.js/caz" --> [],
-  "test/js/test/imports.js/s" --> [],
-  "test/js/test/imports.js/qux" --> [("test/imports.js", 1)],
-  "test/js/test/imports.js/str" --> [("test/imports.js", 1)],
-  "test/js/test/imports.js/fn" --> [("test/imports.js", 1)]
-  ]
-  where
-    (-->) :: Text -> [(Text,Int)] -> Test
-    sym --> expected =
-      testFindReferences
-        (SymbolId sym)
-        (map (first Path) expected)
-        get

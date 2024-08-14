@@ -1,0 +1,50 @@
+[
+    "@generated",
+    {
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 21,
+        "language": 2,
+        "location": {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 35,
+                "lineBegin": 32,
+                "lineEnd": 32
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "imports",
+            "localName": "CazClass"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "CazClass: class CazClass",
+        "sym": "test/js/test/imports.js/CazClass",
+        "sym_location": {
+            "filepath": "test/imports.js",
+            "range": {
+                "columnBegin": 1,
+                "columnEnd": 35,
+                "lineBegin": 32,
+                "lineEnd": 32
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]

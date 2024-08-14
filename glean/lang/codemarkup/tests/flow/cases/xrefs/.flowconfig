@@ -2,3 +2,4 @@
 module.system=haste
 module.system.haste.use_name_reducers=true
 exact_by_default=false
+component_syntax=true

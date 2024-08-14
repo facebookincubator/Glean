@@ -1,0 +1,50 @@
+[
+    "@generated",
+    {
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 21,
+        "language": 2,
+        "location": {
+            "filepath": "test/es_exports.js.flow",
+            "range": {
+                "columnBegin": 5,
+                "columnEnd": 25,
+                "lineBegin": 24,
+                "lineEnd": 24
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "es_exports",
+            "localName": "d"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "signature": "d: string",
+        "sym": "test/js/test/es_exports.js.flow/d",
+        "sym_location": {
+            "filepath": "test/es_exports.js.flow",
+            "range": {
+                "columnBegin": 5,
+                "columnEnd": 25,
+                "lineBegin": 24,
+                "lineEnd": 24
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]

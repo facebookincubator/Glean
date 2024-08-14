@@ -1,0 +1,113 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": { "key": "BazClass" },
+      "loc": {
+        "key": {
+          "module": { "key": { "file": { "key": "test/es_exports.js.flow" } } },
+          "span": { "start": 381, "length": 8 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "C" },
+      "loc": {
+        "key": {
+          "module": { "key": { "file": { "key": "test/es_exports.js.flow" } } },
+          "span": { "start": 632, "length": 1 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "C" },
+      "loc": {
+        "key": {
+          "module": { "key": { "file": { "key": "test/imports.js" } } },
+          "span": { "start": 799, "length": 1 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "CazClass" },
+      "loc": {
+        "key": {
+          "module": { "key": { "file": { "key": "test/imports.js" } } },
+          "span": { "start": 749, "length": 8 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "D" },
+      "loc": {
+        "key": {
+          "module": { "key": { "file": { "key": "test/imports.js" } } },
+          "span": { "start": 829, "length": 1 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "MyT" },
+      "loc": {
+        "key": {
+          "module": { "key": { "file": { "key": "test/es_exports.js.flow" } } },
+          "span": { "start": 506, "length": 3 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "MyT" },
+      "loc": {
+        "key": {
+          "module": { "key": { "file": { "key": "test/imports.js" } } },
+          "span": { "start": 599, "length": 3 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "num" },
+      "loc": {
+        "key": {
+          "module": { "key": { "file": { "key": "test/es_exports.js.flow" } } },
+          "span": { "start": 479, "length": 3 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "num" },
+      "loc": {
+        "key": {
+          "module": { "key": { "file": { "key": "test/imports.js" } } },
+          "span": { "start": 521, "length": 3 }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": { "key": "str" },
+      "loc": {
+        "key": {
+          "module": { "key": { "file": { "key": "test/imports.js" } } },
+          "span": { "start": 793, "length": 3 }
+        }
+      }
+    }
+  }
+]

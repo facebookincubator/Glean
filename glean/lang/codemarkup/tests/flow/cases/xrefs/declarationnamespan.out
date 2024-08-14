@@ -2,14 +2,26 @@
   "@generated",
   {
     "key": {
+      "tuplefield0": { "key": "BazClass" },
+      "tuplefield1": { "start": 381, "length": 8 }
+    }
+  },
+  {
+    "key": {
       "tuplefield0": { "key": "C" },
-      "tuplefield1": { "start": 585, "length": 1 }
+      "tuplefield1": { "start": 632, "length": 1 }
     }
   },
   {
     "key": {
       "tuplefield0": { "key": "Introduction" },
-      "tuplefield1": { "start": 504, "length": 12 }
+      "tuplefield1": { "start": 551, "length": 12 }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "key": "MyT" },
+      "tuplefield1": { "start": 506, "length": 3 }
     }
   },
   {
@@ -26,12 +38,6 @@
   },
   {
     "key": {
-      "tuplefield0": { "key": "baz" },
-      "tuplefield1": { "start": 374, "length": 3 }
-    }
-  },
-  {
-    "key": {
       "tuplefield0": { "key": "bor" },
       "tuplefield1": { "start": 324, "length": 3 }
     }
@@ -39,7 +45,7 @@
   {
     "key": {
       "tuplefield0": { "key": "d" },
-      "tuplefield1": { "start": 386, "length": 1 }
+      "tuplefield1": { "start": 398, "length": 1 }
     }
   },
   {
@@ -51,13 +57,13 @@
   {
     "key": {
       "tuplefield0": { "key": "name" },
-      "tuplefield1": { "start": 517, "length": 4 }
+      "tuplefield1": { "start": 564, "length": 4 }
     }
   },
   {
     "key": {
       "tuplefield0": { "key": "num" },
-      "tuplefield1": { "start": 472, "length": 3 }
+      "tuplefield1": { "start": 479, "length": 3 }
     }
   },
   {

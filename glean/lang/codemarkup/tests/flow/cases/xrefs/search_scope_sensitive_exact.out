@@ -16,7 +16,7 @@
                     "module": {
                       "key": { "file": { "key": "test/cjs_exports.js" } }
                     },
-                    "span": { "start": 245, "length": 1 }
+                    "span": { "start": 246, "length": 1 }
                   }
                 }
               }
@@ -27,7 +27,7 @@
       "location": {
         "name": "x",
         "file": { "key": "test/cjs_exports.js" },
-        "location": { "span": { "start": 245, "length": 1 } }
+        "location": { "span": { "start": 246, "length": 1 } }
       },
       "kind": 20,
       "language": 6

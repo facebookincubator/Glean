@@ -75,13 +75,151 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 9,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "cjs_exports",
+                    "localName": "a"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/js/cjs_exports/a",
+                "sym_location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 9,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "cjs_exports",
+                    "localName": "b"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/js/cjs_exports/b",
+                "sym_location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 9,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "cjs_exports",
+                    "localName": "c"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/js/cjs_exports/c",
+                "sym_location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/cjs_exports.js",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 41,
+                        "columnEnd": 49,
                         "lineBegin": 11,
                         "lineEnd": 11
                     },
@@ -100,9 +238,55 @@
                     "filepath": "test/cjs_exports.js",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 41,
+                        "columnEnd": 49,
                         "lineBegin": 11,
                         "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 9,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 20,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "cjs_exports",
+                    "localName": "plus"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/js/cjs_exports/plus",
+                "sym_location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 20,
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -175,9 +359,103 @@
                     "filepath": "test/es_exports.js.flow",
                     "range": {
                         "columnBegin": 8,
+                        "columnEnd": 25,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "es_exports",
+                    "localName": "BazClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "BazClass: class BazClass",
+                "sym": "test/js/es_exports/BazClass",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 25,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 25,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "es_exports",
+                    "localName": "BazClass"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "BazClass: class BazClass",
+                "sym": "test/js/es_exports/BazClass",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 25,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 36,
-                        "lineEnd": 36
+                        "lineBegin": 40,
+                        "lineEnd": 40
                     },
                     "repository": "test"
                 },
@@ -195,8 +473,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 36,
-                        "lineEnd": 36
+                        "lineBegin": 40,
+                        "lineEnd": 40
                     },
                     "repository": "test"
                 },
@@ -223,8 +501,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 36,
-                        "lineEnd": 36
+                        "lineBegin": 40,
+                        "lineEnd": 40
                     },
                     "repository": "test"
                 },
@@ -242,8 +520,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 36,
-                        "lineEnd": 36
+                        "lineBegin": 40,
+                        "lineEnd": 40
                     },
                     "repository": "test"
                 },
@@ -270,8 +548,8 @@
                     "range": {
                         "columnBegin": 18,
                         "columnEnd": 30,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -282,15 +560,62 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "Introduction: any (implicit)",
+                "signature": "Introduction: component Introduction",
                 "sym": "test/js/es_exports/Introduction",
                 "sym_location": {
                     "filepath": "test/es_exports.js.flow",
                     "range": {
                         "columnBegin": 18,
                         "columnEnd": 30,
+                        "lineBegin": 36,
+                        "lineEnd": 36
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 2,
                         "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineEnd": 34
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "es_exports",
+                    "localName": "MyT"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "MyT: type MyT = {field1: number, ...}",
+                "sym": "test/js/es_exports/MyT",
+                "sym_location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 2,
+                        "lineBegin": 32,
+                        "lineEnd": 34
                     },
                     "repository": "test"
                 },
@@ -337,100 +662,6 @@
                         "columnEnd": 13,
                         "lineBegin": 18,
                         "lineEnd": 18
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "type_xrefs": []
-            },
-            {
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 2,
-                "language": 2,
-                "location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 22,
-                        "lineEnd": 22
-                    },
-                    "repository": "test"
-                },
-                "modifiers": [],
-                "name": {
-                    "container": "es_exports",
-                    "localName": "baz"
-                },
-                "pretty_comments": [],
-                "repo_hash": "testhash",
-                "signature": "baz: class baz",
-                "sym": "test/js/es_exports/baz",
-                "sym_location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 22,
-                        "lineEnd": 22
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "type_xrefs": []
-            },
-            {
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 21,
-                "language": 2,
-                "location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 22,
-                        "lineEnd": 22
-                    },
-                    "repository": "test"
-                },
-                "modifiers": [],
-                "name": {
-                    "container": "es_exports",
-                    "localName": "baz"
-                },
-                "pretty_comments": [],
-                "repo_hash": "testhash",
-                "signature": "baz: class baz",
-                "sym": "test/js/es_exports/baz",
-                "sym_location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 22,
-                        "lineEnd": 22
                     },
                     "repository": "test"
                 },
@@ -611,8 +842,8 @@
                     "range": {
                         "columnBegin": 31,
                         "columnEnd": 35,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -623,15 +854,15 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "name: any (implicit)",
+                "signature": "name: string",
                 "sym": "test/js/es_exports/name",
                 "sym_location": {
                     "filepath": "test/es_exports.js.flow",
                     "range": {
                         "columnBegin": 31,
                         "columnEnd": 35,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -751,54 +982,7 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 12,
-                        "lineBegin": 36,
-                        "lineEnd": 36
-                    },
-                    "repository": "test"
-                },
-                "modifiers": [],
-                "name": {
-                    "container": "imports",
-                    "localName": "D"
-                },
-                "pretty_comments": [],
-                "repo_hash": "testhash",
-                "signature": "D: type D = typeof C",
-                "sym": "test/js/imports/D",
-                "sym_location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 12,
-                        "lineBegin": 36,
-                        "lineEnd": 36
-                    },
-                    "repository": "test"
-                },
-                "sym_other_locations": [],
-                "type_xrefs": []
-            },
-            {
-                "contains_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "extends_relation": {
-                    "firstChild": "nondeterministic",
-                    "firstParent": "nondeterministic",
-                    "hasMoreChildren": false,
-                    "hasMoreParents": false
-                },
-                "kind": 2,
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 25,
+                        "columnEnd": 35,
                         "lineBegin": 32,
                         "lineEnd": 32
                     },
@@ -807,17 +991,17 @@
                 "modifiers": [],
                 "name": {
                     "container": "imports",
-                    "localName": "caz"
+                    "localName": "CazClass"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "caz: class caz",
-                "sym": "test/js/imports/caz",
+                "signature": "CazClass: class CazClass",
+                "sym": "test/js/imports/CazClass",
                 "sym_location": {
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 25,
+                        "columnEnd": 35,
                         "lineBegin": 32,
                         "lineEnd": 32
                     },
@@ -845,7 +1029,7 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 25,
+                        "columnEnd": 35,
                         "lineBegin": 32,
                         "lineEnd": 32
                     },
@@ -854,19 +1038,66 @@
                 "modifiers": [],
                 "name": {
                     "container": "imports",
-                    "localName": "caz"
+                    "localName": "CazClass"
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "caz: class caz",
-                "sym": "test/js/imports/caz",
+                "signature": "CazClass: class CazClass",
+                "sym": "test/js/imports/CazClass",
                 "sym_location": {
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 25,
+                        "columnEnd": 35,
                         "lineBegin": 32,
                         "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 36,
+                        "lineEnd": 36
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "imports",
+                    "localName": "D"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "signature": "D: type D = typeof C",
+                "sym": "test/js/imports/D",
+                "sym_location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -1080,7 +1311,7 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 19,
+                        "columnEnd": 21,
                         "lineBegin": 29,
                         "lineEnd": 29
                     },
@@ -1099,7 +1330,7 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 19,
+                        "columnEnd": 21,
                         "lineBegin": 29,
                         "lineEnd": 29
                     },
@@ -1322,15 +1553,107 @@
                 "symbol": "test/js/cjs_exports"
             },
             {
+                "kind": 9,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 13,
+                        "lineEnd": 13
+                    },
+                    "repository": "test"
+                },
+                "name": "a",
+                "qname": {
+                    "container": "cjs_exports",
+                    "localName": "a"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/cjs_exports/a"
+            },
+            {
+                "kind": 9,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test"
+                },
+                "name": "b",
+                "qname": {
+                    "container": "cjs_exports",
+                    "localName": "b"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/cjs_exports/b"
+            },
+            {
+                "kind": 9,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 17,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": "c",
+                "qname": {
+                    "container": "cjs_exports",
+                    "localName": "c"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/cjs_exports/c"
+            },
+            {
                 "kind": 21,
                 "language": 2,
                 "location": {
                     "filepath": "test/cjs_exports.js",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 41,
+                        "columnEnd": 49,
                         "lineBegin": 11,
                         "lineEnd": 11
+                    },
+                    "repository": "test"
+                },
+                "name": "plus",
+                "qname": {
+                    "container": "cjs_exports",
+                    "localName": "plus"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/cjs_exports/plus"
+            },
+            {
+                "kind": 9,
+                "language": 2,
+                "location": {
+                    "filepath": "test/cjs_exports.js",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 20,
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 },
@@ -1381,9 +1704,62 @@
                     "filepath": "test/es_exports.js.flow",
                     "range": {
                         "columnBegin": 8,
+                        "columnEnd": 25,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "name": "BazClass",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "BazClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/BazClass"
+            },
+            {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 25,
+                        "lineBegin": 22,
+                        "lineEnd": 22
+                    },
+                    "repository": "test"
+                },
+                "name": "BazClass",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "BazClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/BazClass"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "es_exports"
+                    },
+                    "symbol": "test/js/es_exports"
+                },
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 36,
-                        "lineEnd": 36
+                        "lineBegin": 40,
+                        "lineEnd": 40
                     },
                     "repository": "test"
                 },
@@ -1405,8 +1781,8 @@
                     "range": {
                         "columnBegin": 8,
                         "columnEnd": 18,
-                        "lineBegin": 36,
-                        "lineEnd": 36
+                        "lineBegin": 40,
+                        "lineEnd": 40
                     },
                     "repository": "test"
                 },
@@ -1428,8 +1804,8 @@
                     "range": {
                         "columnBegin": 18,
                         "columnEnd": 30,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -1442,6 +1818,36 @@
                     "exactness": 2
                 },
                 "symbol": "test/js/es_exports/Introduction"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "",
+                        "localName": "es_exports"
+                    },
+                    "symbol": "test/js/es_exports"
+                },
+                "kind": 2,
+                "language": 2,
+                "location": {
+                    "filepath": "test/es_exports.js.flow",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 2,
+                        "lineBegin": 32,
+                        "lineEnd": 34
+                    },
+                    "repository": "test"
+                },
+                "name": "MyT",
+                "qname": {
+                    "container": "es_exports",
+                    "localName": "MyT"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/es_exports/MyT"
             },
             {
                 "kind": 9,
@@ -1465,59 +1871,6 @@
                     "exactness": 2
                 },
                 "symbol": "test/js/es_exports/bar"
-            },
-            {
-                "context": {
-                    "qname": {
-                        "container": "",
-                        "localName": "es_exports"
-                    },
-                    "symbol": "test/js/es_exports"
-                },
-                "kind": 2,
-                "language": 2,
-                "location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 22,
-                        "lineEnd": 22
-                    },
-                    "repository": "test"
-                },
-                "name": "baz",
-                "qname": {
-                    "container": "es_exports",
-                    "localName": "baz"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/es_exports/baz"
-            },
-            {
-                "kind": 21,
-                "language": 2,
-                "location": {
-                    "filepath": "test/es_exports.js.flow",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 13,
-                        "lineBegin": 22,
-                        "lineEnd": 22
-                    },
-                    "repository": "test"
-                },
-                "name": "baz",
-                "qname": {
-                    "container": "es_exports",
-                    "localName": "baz"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/es_exports/baz"
             },
             {
                 "kind": 21,
@@ -1596,8 +1949,8 @@
                     "range": {
                         "columnBegin": 31,
                         "columnEnd": 35,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
@@ -1678,21 +2031,44 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 12,
-                        "lineBegin": 36,
-                        "lineEnd": 36
+                        "columnEnd": 35,
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 },
-                "name": "D",
+                "name": "CazClass",
                 "qname": {
                     "container": "imports",
-                    "localName": "D"
+                    "localName": "CazClass"
                 },
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/js/imports/D"
+                "symbol": "test/js/imports/CazClass"
+            },
+            {
+                "kind": 21,
+                "language": 2,
+                "location": {
+                    "filepath": "test/imports.js",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 35,
+                        "lineBegin": 32,
+                        "lineEnd": 32
+                    },
+                    "repository": "test"
+                },
+                "name": "CazClass",
+                "qname": {
+                    "container": "imports",
+                    "localName": "CazClass"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/js/imports/CazClass"
             },
             {
                 "context": {
@@ -1708,44 +2084,21 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 25,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "columnEnd": 12,
+                        "lineBegin": 36,
+                        "lineEnd": 36
                     },
                     "repository": "test"
                 },
-                "name": "caz",
+                "name": "D",
                 "qname": {
                     "container": "imports",
-                    "localName": "caz"
+                    "localName": "D"
                 },
                 "score": {
                     "exactness": 2
                 },
-                "symbol": "test/js/imports/caz"
-            },
-            {
-                "kind": 21,
-                "language": 2,
-                "location": {
-                    "filepath": "test/imports.js",
-                    "range": {
-                        "columnBegin": 1,
-                        "columnEnd": 25,
-                        "lineBegin": 32,
-                        "lineEnd": 32
-                    },
-                    "repository": "test"
-                },
-                "name": "caz",
-                "qname": {
-                    "container": "imports",
-                    "localName": "caz"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/js/imports/caz"
+                "symbol": "test/js/imports/D"
             },
             {
                 "kind": 21,
@@ -1846,7 +2199,7 @@
                     "filepath": "test/imports.js",
                     "range": {
                         "columnBegin": 5,
-                        "columnEnd": 19,
+                        "columnEnd": 21,
                         "lineBegin": 29,
                         "lineEnd": 29
                     },
