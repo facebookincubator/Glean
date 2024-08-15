@@ -1030,6 +1030,30 @@
           }
         }
       },
+      "file": { "key": "www/test.php" },
+      "range": { "span": { "start": 1194, "length": 15 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "field": {
+              "key": {
+                "qname": {
+                  "key": {
+                    "file": { "key": { "key": "www/test.thrift" } },
+                    "name": { "key": "ResponseCard" }
+                  }
+                },
+                "kind": 1,
+                "name": { "key": "static_card" }
+              }
+            }
+          }
+        }
+      },
       "file": { "key": "www/test_types.php" },
       "range": { "span": { "start": 1793, "length": 11 } }
     }

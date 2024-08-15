@@ -29,5 +29,6 @@ class SourceA {
     $_ = $card?->static_card; // thrift union field
     $_ = CountOnlyMode::Disabled; // thrift enum and enum value
     $_ = test_CONSTANTS::ENGINE_STRMATCH;
+    $_ = $card?->get_static_card(); // thrift union field
   }
 }

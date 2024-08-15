@@ -948,6 +948,138 @@
           "decl": {
             "method": {
               "key": {
+                "name": { "key": "get_static_card" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "ResponseCard" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "www/test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "field": {
+                "key": {
+                  "qname": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 1,
+                  "name": { "key": "static_card" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "getx_static_card" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "ResponseCard" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "www/test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "field": {
+                "key": {
+                  "qname": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 1,
+                  "name": { "key": "static_card" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "set_static_card" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "ResponseCard" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "www/test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "field": {
+                "key": {
+                  "qname": {
+                    "key": {
+                      "file": { "key": { "key": "www/test.thrift" } },
+                      "name": { "key": "ResponseCard" }
+                    }
+                  },
+                  "kind": 1,
+                  "name": { "key": "static_card" }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
                 "name": { "key": "thrift1" },
                 "container": {
                   "class_": {

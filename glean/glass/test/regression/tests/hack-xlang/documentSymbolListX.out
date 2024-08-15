@@ -45,7 +45,7 @@
                     "columnBegin": 1,
                     "columnEnd": 2,
                     "lineBegin": 10,
-                    "lineEnd": 33
+                    "lineEnd": 34
                 },
                 "sym": "test-xlang/php/SourceA"
             },
@@ -139,7 +139,7 @@
                     "columnBegin": 3,
                     "columnEnd": 4,
                     "lineBegin": 24,
-                    "lineEnd": 32
+                    "lineEnd": 33
                 },
                 "sym": "test-xlang/php/SourceA/g"
             }
@@ -805,6 +805,57 @@
                         "columnEnd": 30,
                         "lineBegin": 75,
                         "lineEnd": 75
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 8
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "get_static_card"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "ResponseCard"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "public function get_static_card()[]: ?string"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 3
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 33,
+                    "lineBegin": 32,
+                    "lineEnd": 32
+                },
+                "sym": "test-xlang/php/ResponseCard/get_static_card",
+                "target": {
+                    "filepath": "www/test_types.php",
+                    "range": {
+                        "columnBegin": 19,
+                        "columnEnd": 34,
+                        "lineBegin": 122,
+                        "lineEnd": 122
                     },
                     "repository": "test-xlang"
                 }
@@ -1663,6 +1714,57 @@
                     "columnEnd": 29,
                     "lineBegin": 29,
                     "lineEnd": 29
+                },
+                "sym": "test-xlang/thrift/www/test.thrift/ResponseCard/static_card",
+                "target": {
+                    "filepath": "www/test.thrift",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 25,
+                        "lineBegin": 10,
+                        "lineEnd": 10
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "static_card"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "ResponseCard"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "union field www/test::ResponseCard::static_card"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 33,
+                    "lineBegin": 32,
+                    "lineEnd": 32
                 },
                 "sym": "test-xlang/thrift/www/test.thrift/ResponseCard/static_card",
                 "target": {

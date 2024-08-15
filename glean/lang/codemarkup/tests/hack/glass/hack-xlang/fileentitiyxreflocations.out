@@ -359,6 +359,37 @@
       "file": { "key": "www/test.php" },
       "xref": {
         "target": {
+          "name": "get_static_card",
+          "file": { "key": "www/test_types.php" },
+          "location": { "span": { "start": 2778, "length": 15 } }
+        },
+        "source": { "span": { "start": 1194, "length": 15 } }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "get_static_card" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "ResponseCard" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "xref": {
+        "target": {
           "name": "identifier",
           "file": { "key": "www/test_types.php" },
           "location": { "span": { "start": 4613, "length": 11 } }
