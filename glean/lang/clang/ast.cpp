@@ -821,21 +821,53 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return me;
   }
 
-  // generate CxxToThrift facts from the cxx declaration fact and
-  //  thrift declaration (json-encoded) fact. Throws on decoding errors.
-  //
-  // Objects are on the form
-  // Type: {"file": ..., "name": ..., "kind": KIND }
-  //    Kind \in {"union", "struct", "typedef", "exception"}
-  // Function: {"file": ..., "service": ..., "function": ...}
-  // Field: {"file": ..., "name": ..., "kind": KIND, "field": ... } 
-  //    Kind \in {"struct", "exception"}
-  //
-  // Fields, Enum values, consts aren't supported yet
-  static std::pair<Fbthrift::XRefTarget, std::optional<Fbthrift::NamedType>>
-  thriftTarget(ASTVisitor& visitor, folly::dynamic thriftJson) {
-    std::string thrift_file = thriftJson["file"].asString();
+  struct ThriftContext {
+    Fact<Fbthrift::QualName> qual_name;
+    // none for exception type
+    std::optional<Fbthrift::NamedKind> kind;
+  };
 
+  /** Generate CxxToThrift facts from the cxx declaration fact and
+    * thrift declaration (json-encoded) fact.
+    *
+    * For members (enum values or field)
+    * we also need the thrift data of the enclosing struct stored
+    * in ThriftContext object. For containers, this returns a ThrifContext.
+    *
+    * Json objects are on the form
+    * Type: {"file": ..., "name": ..., "kind": KIND }
+    *  Kind \in {"union", "struct", "typedef", "exception"}
+    * Function: {"file": ..., "service": ..., "function": ...}
+    * Field: { "field": ... } 
+    *
+    * Throws on decoding errors. */
+  static std::pair<Fbthrift::XRefTarget, std::optional<ThriftContext>>
+  thriftTarget(
+    ASTVisitor& visitor,
+    folly::dynamic thriftJson,
+    const std::optional<ThriftContext>& thrift_ctx_opt) {
+    // TODO thrift constants
+
+    if (thriftJson.find("field") != thriftJson.items().end()) {
+      auto thrift_ctx = thrift_ctx_opt.value();
+      auto qual_name = thrift_ctx.qual_name;
+      auto field =
+          visitor.db.fact<Fbthrift::Identifier>(thriftJson["field"].asString());
+      Fbthrift::FieldKind field_kind;
+      if (!thrift_ctx.kind.has_value()) {
+        field_kind = Fbthrift::FieldKind::exception_;
+      } else {
+          std::map<Fbthrift::NamedKind, Fbthrift::FieldKind> kind_map = {
+            {Fbthrift::NamedKind::struct_, Fbthrift::FieldKind::struct_},
+            {Fbthrift::NamedKind::union_, Fbthrift::FieldKind::union_}, };
+          field_kind = kind_map[thrift_ctx.kind.value()];
+      }
+      Fact<Fbthrift::FieldDecl> field_decl =
+          visitor.db.fact<Fbthrift::FieldDecl>(qual_name, field_kind, field);
+      return {Fbthrift::XRefTarget::field(field_decl), {}};
+    }
+
+    std::string thrift_file = thriftJson["file"].asString();
     // TODO We need this adjustment as the thrift file path in the json
     // is relative to the repo (project root), rather than the repo root
     // as it should
@@ -862,22 +894,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     std::string kind = thriftJson["kind"].asString();
     Fact<Fbthrift::QualName> qual_name = visitor.db.fact<Fbthrift::QualName>(
         file_fact, visitor.db.fact<Fbthrift::Identifier>(name));
-    if (thriftJson.find("field") != thriftJson.items().end()) {
-      // field declaration: struct or exception
-      std::map<std::string, Fbthrift::FieldKind> kind_map = {
-          {"struct", Fbthrift::FieldKind::struct_},
-          {"exception", Fbthrift::FieldKind::exception_},
-      };
-      Fbthrift::FieldKind field_kind = kind_map[kind];
-      auto field =
-          visitor.db.fact<Fbthrift::Identifier>(thriftJson["field"].asString());
-      Fact<Fbthrift::FieldDecl> field_decl =
-          visitor.db.fact<Fbthrift::FieldDecl>(qual_name, field_kind, field);
-      return {Fbthrift::XRefTarget::field(field_decl), {}};
-    }
+
+     
     if (kind == "exception") {
       auto exception_fact = visitor.db.fact<Fbthrift::ExceptionName>(qual_name);
-      return {Fbthrift::XRefTarget::exception_(exception_fact), {}};
+      return {Fbthrift::XRefTarget::exception_(exception_fact), ThriftContext{qual_name, {}}};
     }
     static const std::map<std::string, Fbthrift::NamedKind> kind_map = {
         {"struct", Fbthrift::NamedKind::struct_},
@@ -887,7 +908,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     Fbthrift::NamedKind named_kind = kind_map.at(kind);
     Fbthrift::NamedType named_type{qual_name, named_kind};
     auto named_decl = visitor.db.fact<Fbthrift::NamedDecl>(named_type);
-    return {Fbthrift::XRefTarget::named(named_decl), named_type};
+    return {Fbthrift::XRefTarget::named(named_decl), ThriftContext{qual_name, named_kind}};
   }
 
   template <typename Decl>
@@ -939,16 +960,34 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
             // This object encodes the Glean fact of the generating entity
             // We use it to generate CxxToThrift facts
             auto comment_str = comment->getRawText(visitor.db.sourceManager()).str();
+
             static const RE2 thrift_regex(
               R"(Glean.*({.*}))"
             );
             if (RE2::PartialMatch(comment_str, thrift_regex, &json_annotation)) {
               try {
-                auto [thrift_target, named_type] =
-                    thriftTarget(visitor, folly::parseJson(json_annotation));
-                if constexpr (std::is_same<Decl, EnumDecl>::value) {
-                  result->thrift_type = named_type;
+                std::optional<ThriftContext> thrift_ctx;
+                // For generated method from field, we expect to find
+                // a thrift context in the enclosing struct
+                if constexpr (std::is_same<Decl, FunDecl>::value) {
+                  const clang::DeclContext *context = decl->getDeclContext();
+                  if (context->isRecord()) {
+                    const clang::CXXRecordDecl *recordDecl = clang::cast<clang::CXXRecordDecl>(context);
+                    if (recordDecl->getIdentifier()) {
+                        std::string className = recordDecl->getNameAsString();
+                        auto class_ = visitor.classDecls(recordDecl);
+                        thrift_ctx = class_->thrift_ctx;
+                    }
+                  }
                 }
+                auto [thrift_target, thrift_ctx_res] =
+                    thriftTarget(visitor, folly::parseJson(json_annotation), thrift_ctx);
+                if constexpr (std::is_same<Decl, EnumDecl>::value) {
+                  auto thrift_ctx_ = thrift_ctx_res.value();
+                  result->thrift_type = Fbthrift::NamedType{thrift_ctx_.qual_name, thrift_ctx_.kind.value()};
+                } else if constexpr (std::is_same<Decl, ClassDecl>::value) {
+                  result->thrift_ctx = thrift_ctx_res;
+                } 
                 visitor.db.fact<Cxx::CxxToThrift>(
                     Cxx::XRefTarget::declaration(result->declaration()),
                     thrift_target);
@@ -1355,6 +1394,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   struct ClassDecl : Declare<ClassDecl> {
     Fact<Cxx::QName> qname;
     Fact<Cxx::RecordDeclaration> decl;
+    std::optional<ThriftContext> thrift_ctx;
 
     Cxx::Declaration declaration() const {
       return Cxx::Declaration::record_(decl);

@@ -14,7 +14,7 @@ class ResponseCard {
 class GetNavigationRequest {
 
   public:
-   /** Glean {"file": "test.thrift", "name": "GetNavigationRequest", "kind": "struct", "field": "identifier" } */
+   /** Glean { "field": "identifier" } */
    int get_identifier();
 };
 
