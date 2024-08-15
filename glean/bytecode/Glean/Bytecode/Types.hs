@@ -27,7 +27,6 @@ data Ty
   | Offset -- ^ jump offset (relative to start of next instruction)
   | DataPtr -- ^ a void pointer
   | BinaryOutputPtr -- ^ pointer to binary::Output (temporary, will be removed)
-  | SetPtr  -- ^  pointer to a set representation
   | Fun [Ty] -- ^ pointer to syscall (temporary, will be removed)
   deriving(Eq, Show)
 

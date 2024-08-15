@@ -33,10 +33,7 @@ struct Subroutine {
   /// invokes it to know how many binary::Output objects to allocate.
   size_t outputs;
 
-  /// Number of sets (available in registers [inputs,inputs+sets-1])
-  size_t sets;
-
-  /// Number of local registers (in [inputs+sets,inputs+sets+locals-1])
+  /// Number of local registers (in [inputs,inputs+locals-1])
   size_t locals;
 
   std::vector<uint64_t> constants;
@@ -50,14 +47,12 @@ struct Subroutine {
       std::vector<uint64_t> code0,
       size_t inputs0,
       size_t outputs0,
-      size_t sets0,
       size_t locals0,
       std::vector<uint64_t> constants0,
       std::vector<std::string> literals0)
       : code(std::move(code0)),
         inputs(inputs0),
         outputs(outputs0),
-        sets(sets0),
         locals(locals0),
         constants(std::move(constants0)),
         literals(std::move(literals0)) {}
