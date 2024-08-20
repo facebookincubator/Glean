@@ -184,7 +184,17 @@
                 "name": {
                   "key": {
                     "name": { "key": { "name": { "key": "thrift2" } } },
-                    "scope": { "global_": { } }
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "TestService" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
                   }
                 },
                 "signature": {
@@ -192,10 +202,10 @@
                 },
                 "source": {
                   "file": { "key": "test.h" },
-                  "lineBegin": 11,
-                  "columnBegin": 1,
-                  "lineEnd": 11,
-                  "columnEnd": 14
+                  "lineBegin": 14,
+                  "columnBegin": 3,
+                  "lineEnd": 14,
+                  "columnEnd": 23
                 }
               }
             }
@@ -370,6 +380,54 @@
                       }
                     },
                     "kind": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
+          "decl": {
+            "record_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "TestService" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "kind": { "struct_": { } },
+                "source": {
+                  "file": { "key": "test.h" },
+                  "lineBegin": 12,
+                  "columnBegin": 1,
+                  "lineEnd": 15,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "service_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "TestService" }
+                    }
                   }
                 }
               }

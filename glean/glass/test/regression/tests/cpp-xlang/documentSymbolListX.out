@@ -428,18 +428,18 @@
             }
         ],
         "digest": {
-            "hash": "3754357a9203ef47dd4935f6608b34acaa79f076",
-            "size": 630
+            "hash": "d2c657ee5fa0bfafa75e9a0a3a45dd7a4d119e11",
+            "size": 643
         },
         "referenced_file_digests": {
             "test-xlang": {
                 "test.cpp": {
-                    "hash": "3754357a9203ef47dd4935f6608b34acaa79f076",
-                    "size": 630
+                    "hash": "d2c657ee5fa0bfafa75e9a0a3a45dd7a4d119e11",
+                    "size": 643
                 },
                 "test.h": {
-                    "hash": "d31759d38b8e2df1b27e81d34d0d077bf3c73c8d",
-                    "size": 324
+                    "hash": "223610c7905b89d52aacda3fe52614c40e5f6948",
+                    "size": 424
                 },
                 "test_types.h": {
                     "hash": "520245c02d207df88232a23bd648de4f47e2e8cc",
@@ -851,6 +851,120 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "TestService"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "struct TestService"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 25
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 14,
+                    "lineBegin": 21,
+                    "lineEnd": 21
+                },
+                "sym": "test-xlang/cpp//TestService/.decl",
+                "target": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 8,
+                        "columnEnd": 19,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aString": "thrift2"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "TestService"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "void thrift2()"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 14
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 1
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 2
+                        },
+                        "key": "symbolDefinitionType"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 16,
+                    "columnEnd": 23,
+                    "lineBegin": 21,
+                    "lineEnd": 21
+                },
+                "sym": "test-xlang/cpp//TestService/thrift2/.f//.decl",
+                "target": {
+                    "filepath": "test.h",
+                    "range": {
+                        "columnBegin": 15,
+                        "columnEnd": 22,
+                        "lineBegin": 14,
+                        "lineEnd": 14
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "thrift1"
                         },
                         "key": "symbolName"
@@ -900,63 +1014,6 @@
                         "columnEnd": 13,
                         "lineBegin": 12,
                         "lineEnd": 12
-                    },
-                    "repository": "test-xlang"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "thrift2"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": ""
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "void thrift2()"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 14
-                        },
-                        "key": "symbolKind"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 1
-                        },
-                        "key": "symbolLanguage"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 2
-                        },
-                        "key": "symbolDefinitionType"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 3,
-                    "columnEnd": 10,
-                    "lineBegin": 21,
-                    "lineEnd": 21
-                },
-                "sym": "test-xlang/cpp//thrift2/.f//.decl",
-                "target": {
-                    "filepath": "test.h",
-                    "range": {
-                        "columnBegin": 6,
-                        "columnEnd": 13,
-                        "lineBegin": 11,
-                        "lineEnd": 11
                     },
                     "repository": "test-xlang"
                 }
@@ -1481,6 +1538,57 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aString": "TestService"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "test"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "service test::TestService"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 9
+                        },
+                        "key": "symbolLanguage"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "thrift"
+                        },
+                        "key": "crossLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 3,
+                    "columnEnd": 14,
+                    "lineBegin": 21,
+                    "lineEnd": 21
+                },
+                "sym": "test-xlang/thrift/test.thrift/TestService",
+                "target": {
+                    "filepath": "test.thrift",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 38,
+                        "lineEnd": 46
+                    },
+                    "repository": "test-xlang"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aString": "thrift1"
                         },
                         "key": "symbolName"
@@ -1562,8 +1670,8 @@
                     }
                 ],
                 "range": {
-                    "columnBegin": 3,
-                    "columnEnd": 10,
+                    "columnBegin": 16,
+                    "columnEnd": 23,
                     "lineBegin": 21,
                     "lineEnd": 21
                 },

@@ -18,7 +18,7 @@ void thriftCaller() {
   auto f = request.get_identifier();
   GetNavigationException request2;
   thrift1();
-  thrift2();
+  TestService::thrift2();
   CountOnlyMode com; 
   auto e = CountOnlyMode::Disabled;
 }

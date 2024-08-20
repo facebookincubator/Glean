@@ -846,7 +846,6 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     ASTVisitor& visitor,
     folly::dynamic thriftJson,
     const std::optional<ThriftContext>& thrift_ctx_opt) {
-    // TODO thrift constants
 
     if (thriftJson.find("field") != thriftJson.items().end()) {
       auto thrift_ctx = thrift_ctx_opt.value();
@@ -881,13 +880,20 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     if (thriftJson.find("service") != thriftJson.items().end()) {
       // Thrift function declaration
       std::string thrift_service = thriftJson["service"].asString();
-      std::string thrift_function = thriftJson["function"].asString();
+
       auto qual_name = visitor.db.fact<Fbthrift::QualName>(
           file_fact, visitor.db.fact<Fbthrift::Identifier>(thrift_service));
-      auto function_name = visitor.db.fact<Fbthrift::FunctionName>(
-          visitor.db.fact<Fbthrift::ServiceName>(qual_name),
-          visitor.db.fact<Fbthrift::Identifier>(thrift_function));
-      return {Fbthrift::XRefTarget::function_(function_name), {}};
+
+      auto service_fact = visitor.db.fact<Fbthrift::ServiceName>(qual_name);
+      if (thriftJson.find("function") != thriftJson.items().end()) {
+        std::string thrift_function = thriftJson["function"].asString();
+        auto function_name = visitor.db.fact<Fbthrift::FunctionName>(
+            service_fact,
+            visitor.db.fact<Fbthrift::Identifier>(thrift_function));
+        return {Fbthrift::XRefTarget::function_(function_name), {}};
+      } else {
+          return {Fbthrift::XRefTarget::service_(service_fact), {}};
+      }
     }
     // Thrift type declaration or field
     std::string name = thriftJson["name"].asString();

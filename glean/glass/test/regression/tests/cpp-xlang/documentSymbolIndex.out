@@ -2,18 +2,18 @@
     "@generated",
     {
         "digest": {
-            "hash": "3754357a9203ef47dd4935f6608b34acaa79f076",
-            "size": 630
+            "hash": "d2c657ee5fa0bfafa75e9a0a3a45dd7a4d119e11",
+            "size": 643
         },
         "referenced_file_digests": {
             "test-xlang": {
                 "test.cpp": {
-                    "hash": "3754357a9203ef47dd4935f6608b34acaa79f076",
-                    "size": 630
+                    "hash": "d2c657ee5fa0bfafa75e9a0a3a45dd7a4d119e11",
+                    "size": 643
                 },
                 "test.h": {
-                    "hash": "d31759d38b8e2df1b27e81d34d0d077bf3c73c8d",
-                    "size": 324
+                    "hash": "223610c7905b89d52aacda3fe52614c40e5f6948",
+                    "size": 424
                 },
                 "test_types.h": {
                     "hash": "520245c02d207df88232a23bd648de4f47e2e8cc",
@@ -22,7 +22,7 @@
             }
         },
         "revision": "testhash",
-        "size": 29,
+        "size": 31,
         "symbols": {
             "10": [
                 {
@@ -671,6 +671,45 @@
                             "aInteger": 2
                         },
                         "symbolKind": {
+                            "aInteger": 25
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "TestService"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "struct TestService"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 14,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "sym": "test-xlang/cpp//TestService/.decl",
+                    "target": {
+                        "filepath": "test.h",
+                        "range": {
+                            "columnBegin": 8,
+                            "columnEnd": 19,
+                            "lineBegin": 12,
+                            "lineEnd": 12
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
                             "aInteger": 14
                         },
                         "symbolLanguage": {
@@ -680,26 +719,62 @@
                             "aString": "thrift2"
                         },
                         "symbolParent": {
-                            "aString": ""
+                            "aString": "TestService"
                         },
                         "symbolSignature": {
                             "aString": "void thrift2()"
                         }
                     },
                     "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 10,
+                        "columnBegin": 16,
+                        "columnEnd": 23,
                         "lineBegin": 21,
                         "lineEnd": 21
                     },
-                    "sym": "test-xlang/cpp//thrift2/.f//.decl",
+                    "sym": "test-xlang/cpp//TestService/thrift2/.f//.decl",
                     "target": {
                         "filepath": "test.h",
                         "range": {
-                            "columnBegin": 6,
-                            "columnEnd": 13,
-                            "lineBegin": 11,
-                            "lineEnd": 11
+                            "columnBegin": 15,
+                            "columnEnd": 22,
+                            "lineBegin": 14,
+                            "lineEnd": 14
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "TestService"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "service test::TestService"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 14,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "sym": "test-xlang/thrift/test.thrift/TestService",
+                    "target": {
+                        "filepath": "test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 2,
+                            "lineBegin": 38,
+                            "lineEnd": 46
                         },
                         "repository": "test-xlang"
                     }
@@ -723,8 +798,8 @@
                         }
                     },
                     "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 10,
+                        "columnBegin": 16,
+                        "columnEnd": 23,
                         "lineBegin": 21,
                         "lineEnd": 21
                     },

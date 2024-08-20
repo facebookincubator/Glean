@@ -7,5 +7,9 @@
  */
 
 
-/** Glean { "file": "test.thrift", "service":"TestService", "function": "thrift2"} */
-void thrift2();
+
+/** Glean { "file": "test.thrift", "service":"TestService" } */
+struct TestService {
+  /** Glean { "file": "test.thrift", "service":"TestService", "function": "thrift2"} */
+  static void thrift2();
+};

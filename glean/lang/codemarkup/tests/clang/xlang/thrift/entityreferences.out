@@ -97,7 +97,7 @@
         }
       },
       "file": { "key": "test.cpp" },
-      "range": { "span": { "start": 559, "length": 7 } }
+      "range": { "span": { "start": 572, "length": 7 } }
     }
   },
   {
@@ -122,7 +122,7 @@
         }
       },
       "file": { "key": "test.cpp" },
-      "range": { "span": { "start": 572, "length": 13 } }
+      "range": { "span": { "start": 585, "length": 13 } }
     }
   },
   {
@@ -147,7 +147,7 @@
         }
       },
       "file": { "key": "test.cpp" },
-      "range": { "span": { "start": 603, "length": 13 } }
+      "range": { "span": { "start": 616, "length": 13 } }
     }
   },
   {
@@ -198,6 +198,28 @@
       },
       "file": { "key": "test.cpp" },
       "range": { "span": { "start": 417, "length": 12 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "service_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "test.thrift" } },
+                    "name": { "key": "TestService" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 559, "length": 11 } }
     }
   }
 ]
