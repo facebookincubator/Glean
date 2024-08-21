@@ -103,8 +103,9 @@ predicate FunctionName :
   }
 
 # Declared constant name, always at a particular location
-# could become a full definition
 predicate Constant : { name : QualName }
+
+predicate ConstantDefinition : { constant : Constant, definition : TypedConstT }
 
 # Declared enum value name, scoped to an enum name
 # could become a full definition
