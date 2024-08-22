@@ -5,6 +5,28 @@
       "target": {
         "fbthrift": {
           "decl": {
+            "constant": {
+              "key": {
+                "name": {
+                  "key": {
+                    "file": { "key": { "key": "test.thrift" } },
+                    "name": { "key": "MY_CONST" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 669, "length": 8 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "fbthrift": {
+          "decl": {
             "exception_": {
               "key": {
                 "name": {

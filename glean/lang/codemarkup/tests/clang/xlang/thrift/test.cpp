@@ -21,4 +21,5 @@ void thriftCaller() {
   TestService::thrift2();
   CountOnlyMode com; 
   auto e = CountOnlyMode::Disabled;
+  int x = module_constants::MY_CONST;
 }

@@ -441,6 +441,61 @@
     "key": {
       "entity": {
         "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "MY_CONST" },
+                    "scope": {
+                      "namespace_": {
+                        "key": { "name": { "key": "module_constants" } }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "const int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 0, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.h" },
+                  "lineBegin": 21,
+                  "columnBegin": 3,
+                  "lineEnd": 21,
+                  "columnEnd": 25
+                }
+              }
+            }
+          }
+        }
+      },
+      "idlEntity": {
+        "lang": 8,
+        "file": { "key": "test.thrift" },
+        "entity": {
+          "fbthrift": {
+            "decl": {
+              "constant": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "test.thrift" } },
+                      "name": { "key": "MY_CONST" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "cxx": {
           "enumerator": {
             "key": {
               "name": { "key": "Disabled" },

@@ -2,18 +2,18 @@
     "@generated",
     {
         "digest": {
-            "hash": "d2c657ee5fa0bfafa75e9a0a3a45dd7a4d119e11",
-            "size": 643
+            "hash": "0428937c89336b910af633722a28d6083b400561",
+            "size": 681
         },
         "referenced_file_digests": {
             "test-xlang": {
                 "test.cpp": {
-                    "hash": "d2c657ee5fa0bfafa75e9a0a3a45dd7a4d119e11",
-                    "size": 643
+                    "hash": "0428937c89336b910af633722a28d6083b400561",
+                    "size": 681
                 },
                 "test.h": {
-                    "hash": "223610c7905b89d52aacda3fe52614c40e5f6948",
-                    "size": 424
+                    "hash": "a9c2069c65c80db77d47653e558008d36faef7f4",
+                    "size": 566
                 },
                 "test_types.h": {
                     "hash": "520245c02d207df88232a23bd648de4f47e2e8cc",
@@ -22,7 +22,7 @@
             }
         },
         "revision": "testhash",
-        "size": 31,
+        "size": 35,
         "symbols": {
             "10": [
                 {
@@ -1098,6 +1098,151 @@
                             "columnEnd": 16,
                             "lineBegin": 49,
                             "lineEnd": 49
+                        },
+                        "repository": "test-xlang"
+                    }
+                }
+            ],
+            "24": [
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 6
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "module_constants"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "namespace module_constants"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 27,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "sym": "test-xlang/cpp//module_constants/.decl",
+                    "target": {
+                        "filepath": "test.h",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 27,
+                            "lineBegin": 18,
+                            "lineEnd": 18
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "MY_CONST"
+                        },
+                        "symbolParent": {
+                            "aString": "module_constants"
+                        },
+                        "symbolSignature": {
+                            "aString": "const int MY_CONST"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 29,
+                        "columnEnd": 37,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "sym": "test-xlang/cpp//module_constants/MY_CONST/.decl",
+                    "target": {
+                        "filepath": "test.h",
+                        "range": {
+                            "columnBegin": 13,
+                            "columnEnd": 21,
+                            "lineBegin": 21,
+                            "lineEnd": 21
+                        },
+                        "repository": "test-xlang"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolDefinitionType": {
+                            "aInteger": 2
+                        },
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 1
+                        },
+                        "symbolName": {
+                            "aString": "x"
+                        },
+                        "symbolParent": {
+                            "aString": "thriftCaller"
+                        },
+                        "symbolSignature": {
+                            "aString": "int x"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 7,
+                        "columnEnd": 8,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "sym": "test-xlang/cpp//thriftCaller/x/.decl"
+                },
+                {
+                    "attributes": {
+                        "crossLanguage": {
+                            "aString": "thrift"
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 9
+                        },
+                        "symbolName": {
+                            "aString": "MY_CONST"
+                        },
+                        "symbolParent": {
+                            "aString": "test"
+                        },
+                        "symbolSignature": {
+                            "aString": "constant test::MY_CONST"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 29,
+                        "columnEnd": 37,
+                        "lineBegin": 24,
+                        "lineEnd": 24
+                    },
+                    "sym": "test-xlang/thrift/test.thrift/MY_CONST",
+                    "target": {
+                        "filepath": "test.thrift",
+                        "range": {
+                            "columnBegin": 1,
+                            "columnEnd": 25,
+                            "lineBegin": 54,
+                            "lineEnd": 54
                         },
                         "repository": "test-xlang"
                     }

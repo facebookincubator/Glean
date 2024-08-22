@@ -50,3 +50,5 @@ enum CountOnlyMode {
   HitCount = 1,
   FileCount = 2,
 }
+
+const i32 MY_CONST = 42;

@@ -13,3 +13,11 @@ struct TestService {
   /** Glean { "file": "test.thrift", "service":"TestService", "function": "thrift2"} */
   static void thrift2();
 };
+
+/** Glean { "file": "test.thrift" } */
+namespace module_constants {
+
+  /** Glean { "constant": "MY_CONST" } */
+  const int MY_CONST = 42;
+
+}
