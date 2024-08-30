@@ -138,7 +138,7 @@ jobs:
         run: |
           apt-get install -y git ninja-build \
             libaio-dev libbz2-dev libdouble-conversion-dev libdwarf-dev libgoogle-glog-dev libiberty-dev libjemalloc-dev \
-            liblzma-dev liblz4-dev libsnappy-dev libsodium-dev libssl-dev libunwind-dev libzstd-dev
+            liblzma-dev liblz4-dev libsnappy-dev libsodium-dev libssl-dev libunwind-dev libzstd-dev libfast-float-dev
 
       - name: Fetch hsthrift and build folly, rocksdb
         run: ./install_deps.sh --threads $(nproc)
