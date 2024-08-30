@@ -46,8 +46,10 @@ service TestService {
 }
 
 struct ReservationHotfixConfig {
-  map<string, set<string>> capabilities_to_remove = {};
-  map<string, map<string, i64>> preferences_to_add = {};
+  // @lint-ignore thrift-compiler-warning Negative field id is deprecated, don't add new ones.
+  -1: map<string, set<string>> capabilities_to_remove = {};
+  // @lint-ignore thrift-compiler-warning Negative field id is deprecated, don't add new ones.
+  -2: map<string, map<string, i64>> preferences_to_add = {};
 }
 
 enum CountOnlyMode {
