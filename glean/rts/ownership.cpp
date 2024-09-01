@@ -83,7 +83,7 @@ FOLLY_NOINLINE std::unique_ptr<TrieArray<Uset>> fillOwnership(
     while (const auto d = iter->get()) {
       OwnershipUnitCopy c{d->unit, {d->ids.begin(), d->ids.end()}};
       queue.blockingWrite(std::move(c));
-    };
+    }
     queue.blockingWrite(folly::none);
   });
 
