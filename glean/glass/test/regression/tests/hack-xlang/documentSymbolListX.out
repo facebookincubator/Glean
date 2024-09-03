@@ -1182,7 +1182,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum www/test::CountOnlyMode"
+                            "aString": "enum test.CountOnlyMode"
                         },
                         "key": "symbolSignature"
                     },
@@ -1233,7 +1233,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value www/test::CountOnlyMode::Disabled"
+                            "aString": "enum value test.CountOnlyMode::Disabled"
                         },
                         "key": "symbolSignature"
                     },
@@ -1284,7 +1284,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "constant www/test::ENGINE_STRMATCH"
+                            "aString": "constant test.ENGINE_STRMATCH"
                         },
                         "key": "symbolSignature"
                     },
@@ -1335,7 +1335,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct www/test::GetCardRequest"
+                            "aString": "struct test.GetCardRequest"
                         },
                         "key": "symbolSignature"
                     },
@@ -1386,7 +1386,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field www/test::GetCardResponse::card"
+                            "aString": "struct field test.GetCardResponse::card"
                         },
                         "key": "symbolSignature"
                     },
@@ -1437,7 +1437,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception www/test::GetNavigationException"
+                            "aString": "exception test.GetNavigationException"
                         },
                         "key": "symbolSignature"
                     },
@@ -1488,7 +1488,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception field www/test::GetNavigationException::message_detail"
+                            "aString": "exception field test.GetNavigationException::message_detail"
                         },
                         "key": "symbolSignature"
                     },
@@ -1539,7 +1539,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct www/test::GetNavigationRequest"
+                            "aString": "struct test.GetNavigationRequest"
                         },
                         "key": "symbolSignature"
                     },
@@ -1590,7 +1590,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field www/test::GetNavigationRequest::identifier"
+                            "aString": "struct field test.GetNavigationRequest::identifier"
                         },
                         "key": "symbolSignature"
                     },
@@ -1641,7 +1641,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field www/test::GetNavigationResponse::tab_group"
+                            "aString": "struct field test.GetNavigationResponse::tab_group"
                         },
                         "key": "symbolSignature"
                     },
@@ -1692,7 +1692,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "union field www/test::ResponseCard::static_card"
+                            "aString": "union field test.ResponseCard::static_card"
                         },
                         "key": "symbolSignature"
                     },
@@ -1743,7 +1743,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "union field www/test::ResponseCard::static_card"
+                            "aString": "union field test.ResponseCard::static_card"
                         },
                         "key": "symbolSignature"
                     },
@@ -1794,7 +1794,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function www/test::TestService::thrift1"
+                            "aString": "function test.TestService::thrift1"
                         },
                         "key": "symbolSignature"
                     },
@@ -1845,7 +1845,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function www/test::TestService::thrift2"
+                            "aString": "function test.TestService::thrift2"
                         },
                         "key": "symbolSignature"
                     },

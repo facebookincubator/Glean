@@ -24,7 +24,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "union lib::Attribute"
+                            "aString": "union lib.Attribute"
                         },
                         "key": "symbolSignature"
                     },
@@ -65,7 +65,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "union field lib::Attribute::aBool"
+                            "aString": "union field lib.Attribute::aBool"
                         },
                         "key": "symbolSignature"
                     },
@@ -106,7 +106,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "union field lib::Attribute::aDouble"
+                            "aString": "union field lib.Attribute::aDouble"
                         },
                         "key": "symbolSignature"
                     },
@@ -147,7 +147,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "union field lib::Attribute::aInteger"
+                            "aString": "union field lib.Attribute::aInteger"
                         },
                         "key": "symbolSignature"
                     },
@@ -188,7 +188,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "union field lib::Attribute::aList"
+                            "aString": "union field lib.Attribute::aList"
                         },
                         "key": "symbolSignature"
                     },
@@ -229,7 +229,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "union field lib::Attribute::aString"
+                            "aString": "union field lib.Attribute::aString"
                         },
                         "key": "symbolSignature"
                     },
@@ -270,7 +270,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::AttributeList"
+                            "aString": "typedef lib.AttributeList"
                         },
                         "key": "symbolSignature"
                     },
@@ -311,7 +311,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::Attributes"
+                            "aString": "typedef lib.Attributes"
                         },
                         "key": "symbolSignature"
                     },
@@ -352,7 +352,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "service lib::BaseService"
+                            "aString": "service lib.BaseService"
                         },
                         "key": "symbolSignature"
                     },
@@ -393,7 +393,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::ByteSpan"
+                            "aString": "struct lib.ByteSpan"
                         },
                         "key": "symbolSignature"
                     },
@@ -434,7 +434,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::ByteSpan::length"
+                            "aString": "struct field lib.ByteSpan::length"
                         },
                         "key": "symbolSignature"
                     },
@@ -475,7 +475,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::ByteSpan::start"
+                            "aString": "struct field lib.ByteSpan::start"
                         },
                         "key": "symbolSignature"
                     },
@@ -516,7 +516,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum lib::DefinitionKind"
+                            "aString": "enum lib.DefinitionKind"
                         },
                         "key": "symbolSignature"
                     },
@@ -557,7 +557,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::DefinitionKind::Declaration"
+                            "aString": "enum value lib.DefinitionKind::Declaration"
                         },
                         "key": "symbolSignature"
                     },
@@ -598,7 +598,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::DefinitionKind::Definition"
+                            "aString": "enum value lib.DefinitionKind::Definition"
                         },
                         "key": "symbolSignature"
                     },
@@ -639,7 +639,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::DefinitionSymbolX"
+                            "aString": "struct lib.DefinitionSymbolX"
                         },
                         "key": "symbolSignature"
                     },
@@ -680,7 +680,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::DefinitionSymbolX::attributes"
+                            "aString": "struct field lib.DefinitionSymbolX::attributes"
                         },
                         "key": "symbolSignature"
                     },
@@ -721,7 +721,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::DefinitionSymbolX::range"
+                            "aString": "struct field lib.DefinitionSymbolX::range"
                         },
                         "key": "symbolSignature"
                     },
@@ -762,7 +762,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::DefinitionSymbolX::sym"
+                            "aString": "struct field lib.DefinitionSymbolX::sym"
                         },
                         "key": "symbolSignature"
                     },
@@ -803,7 +803,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::DocumentSymbolIndex"
+                            "aString": "struct lib.DocumentSymbolIndex"
                         },
                         "key": "symbolSignature"
                     },
@@ -844,7 +844,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::DocumentSymbolIndex::revision"
+                            "aString": "struct field lib.DocumentSymbolIndex::revision"
                         },
                         "key": "symbolSignature"
                     },
@@ -885,7 +885,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::DocumentSymbolIndex::size"
+                            "aString": "struct field lib.DocumentSymbolIndex::size"
                         },
                         "key": "symbolSignature"
                     },
@@ -926,7 +926,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::DocumentSymbolIndex::symbols"
+                            "aString": "struct field lib.DocumentSymbolIndex::symbols"
                         },
                         "key": "symbolSignature"
                     },
@@ -967,7 +967,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::DocumentSymbolListXResult"
+                            "aString": "struct lib.DocumentSymbolListXResult"
                         },
                         "key": "symbolSignature"
                     },
@@ -1008,7 +1008,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::DocumentSymbolListXResult::definitions"
+                            "aString": "struct field lib.DocumentSymbolListXResult::definitions"
                         },
                         "key": "symbolSignature"
                     },
@@ -1049,7 +1049,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::DocumentSymbolListXResult::references"
+                            "aString": "struct field lib.DocumentSymbolListXResult::references"
                         },
                         "key": "symbolSignature"
                     },
@@ -1090,7 +1090,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::DocumentSymbolListXResult::revision"
+                            "aString": "struct field lib.DocumentSymbolListXResult::revision"
                         },
                         "key": "symbolSignature"
                     },
@@ -1131,7 +1131,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::DocumentSymbolsRequest"
+                            "aString": "struct lib.DocumentSymbolsRequest"
                         },
                         "key": "symbolSignature"
                     },
@@ -1172,7 +1172,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::DocumentSymbolsRequest::filepath"
+                            "aString": "struct field lib.DocumentSymbolsRequest::filepath"
                         },
                         "key": "symbolSignature"
                     },
@@ -1213,7 +1213,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::DocumentSymbolsRequest::range"
+                            "aString": "struct field lib.DocumentSymbolsRequest::range"
                         },
                         "key": "symbolSignature"
                     },
@@ -1254,7 +1254,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::DocumentSymbolsRequest::repository"
+                            "aString": "struct field lib.DocumentSymbolsRequest::repository"
                         },
                         "key": "symbolSignature"
                     },
@@ -1295,7 +1295,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "service lib::GlassService"
+                            "aString": "service lib.GlassService"
                         },
                         "key": "symbolSignature"
                     },
@@ -1336,7 +1336,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function lib::GlassService::describeSymbol"
+                            "aString": "function lib.GlassService::describeSymbol"
                         },
                         "key": "symbolSignature"
                     },
@@ -1377,7 +1377,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function lib::GlassService::documentSymbolIndex"
+                            "aString": "function lib.GlassService::documentSymbolIndex"
                         },
                         "key": "symbolSignature"
                     },
@@ -1418,7 +1418,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function lib::GlassService::documentSymbolListX"
+                            "aString": "function lib.GlassService::documentSymbolListX"
                         },
                         "key": "symbolSignature"
                     },
@@ -1459,7 +1459,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function lib::GlassService::findReferenceRanges"
+                            "aString": "function lib.GlassService::findReferenceRanges"
                         },
                         "key": "symbolSignature"
                     },
@@ -1500,7 +1500,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function lib::GlassService::findReferences"
+                            "aString": "function lib.GlassService::findReferences"
                         },
                         "key": "symbolSignature"
                     },
@@ -1541,7 +1541,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function lib::GlassService::jumpTo"
+                            "aString": "function lib.GlassService::jumpTo"
                         },
                         "key": "symbolSignature"
                     },
@@ -1582,7 +1582,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function lib::GlassService::resolveSymbol"
+                            "aString": "function lib.GlassService::resolveSymbol"
                         },
                         "key": "symbolSignature"
                     },
@@ -1623,7 +1623,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function lib::GlassService::searchByName"
+                            "aString": "function lib.GlassService::searchByName"
                         },
                         "key": "symbolSignature"
                     },
@@ -1664,7 +1664,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function lib::GlassService::searchByNamePrefix"
+                            "aString": "function lib.GlassService::searchByNamePrefix"
                         },
                         "key": "symbolSignature"
                     },
@@ -1705,7 +1705,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function lib::GlassService::searchBySymbolId"
+                            "aString": "function lib.GlassService::searchBySymbolId"
                         },
                         "key": "symbolSignature"
                     },
@@ -1746,7 +1746,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::KeyedAttribute"
+                            "aString": "struct lib.KeyedAttribute"
                         },
                         "key": "symbolSignature"
                     },
@@ -1787,7 +1787,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::KeyedAttribute::attribute"
+                            "aString": "struct field lib.KeyedAttribute::attribute"
                         },
                         "key": "symbolSignature"
                     },
@@ -1828,7 +1828,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::KeyedAttribute::key"
+                            "aString": "struct field lib.KeyedAttribute::key"
                         },
                         "key": "symbolSignature"
                     },
@@ -1869,7 +1869,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum lib::Language"
+                            "aString": "enum lib.Language"
                         },
                         "key": "symbolSignature"
                     },
@@ -1910,7 +1910,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::Language::Buck"
+                            "aString": "enum value lib.Language::Buck"
                         },
                         "key": "symbolSignature"
                     },
@@ -1951,7 +1951,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::Language::Cpp"
+                            "aString": "enum value lib.Language::Cpp"
                         },
                         "key": "symbolSignature"
                     },
@@ -1992,7 +1992,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::Language::Hack"
+                            "aString": "enum value lib.Language::Hack"
                         },
                         "key": "symbolSignature"
                     },
@@ -2033,7 +2033,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::Language::Haskell"
+                            "aString": "enum value lib.Language::Haskell"
                         },
                         "key": "symbolSignature"
                     },
@@ -2074,7 +2074,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::Language::Java"
+                            "aString": "enum value lib.Language::Java"
                         },
                         "key": "symbolSignature"
                     },
@@ -2115,7 +2115,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::Language::JavaScript"
+                            "aString": "enum value lib.Language::JavaScript"
                         },
                         "key": "symbolSignature"
                     },
@@ -2156,7 +2156,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::Language::ObjectiveC"
+                            "aString": "enum value lib.Language::ObjectiveC"
                         },
                         "key": "symbolSignature"
                     },
@@ -2197,7 +2197,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::Language::PreProcessor"
+                            "aString": "enum value lib.Language::PreProcessor"
                         },
                         "key": "symbolSignature"
                     },
@@ -2238,7 +2238,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::Language::Python"
+                            "aString": "enum value lib.Language::Python"
                         },
                         "key": "symbolSignature"
                     },
@@ -2279,7 +2279,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::Language::Rust"
+                            "aString": "enum value lib.Language::Rust"
                         },
                         "key": "symbolSignature"
                     },
@@ -2320,7 +2320,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::Language::Thrift"
+                            "aString": "enum value lib.Language::Thrift"
                         },
                         "key": "symbolSignature"
                     },
@@ -2361,7 +2361,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::LineRange"
+                            "aString": "struct lib.LineRange"
                         },
                         "key": "symbolSignature"
                     },
@@ -2402,7 +2402,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::LineRange::lineBegin"
+                            "aString": "struct field lib.LineRange::lineBegin"
                         },
                         "key": "symbolSignature"
                     },
@@ -2443,7 +2443,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::LineRange::lineEnd"
+                            "aString": "struct field lib.LineRange::lineEnd"
                         },
                         "key": "symbolSignature"
                     },
@@ -2484,7 +2484,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::Location"
+                            "aString": "struct lib.Location"
                         },
                         "key": "symbolSignature"
                     },
@@ -2525,7 +2525,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::Location::filepath"
+                            "aString": "struct field lib.Location::filepath"
                         },
                         "key": "symbolSignature"
                     },
@@ -2566,7 +2566,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::Location::repository"
+                            "aString": "struct field lib.Location::repository"
                         },
                         "key": "symbolSignature"
                     },
@@ -2607,7 +2607,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::Location::span"
+                            "aString": "struct field lib.Location::span"
                         },
                         "key": "symbolSignature"
                     },
@@ -2648,7 +2648,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::LocationRange"
+                            "aString": "struct lib.LocationRange"
                         },
                         "key": "symbolSignature"
                     },
@@ -2689,7 +2689,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::LocationRange::filepath"
+                            "aString": "struct field lib.LocationRange::filepath"
                         },
                         "key": "symbolSignature"
                     },
@@ -2730,7 +2730,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::LocationRange::range"
+                            "aString": "struct field lib.LocationRange::range"
                         },
                         "key": "symbolSignature"
                     },
@@ -2771,7 +2771,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::LocationRange::repository"
+                            "aString": "struct field lib.LocationRange::repository"
                         },
                         "key": "symbolSignature"
                     },
@@ -2812,7 +2812,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::Name"
+                            "aString": "typedef lib.Name"
                         },
                         "key": "symbolSignature"
                     },
@@ -2853,7 +2853,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::Path"
+                            "aString": "typedef lib.Path"
                         },
                         "key": "symbolSignature"
                     },
@@ -2894,7 +2894,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::QualifiedName"
+                            "aString": "struct lib.QualifiedName"
                         },
                         "key": "symbolSignature"
                     },
@@ -2935,7 +2935,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::QualifiedName::container"
+                            "aString": "struct field lib.QualifiedName::container"
                         },
                         "key": "symbolSignature"
                     },
@@ -2976,7 +2976,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::QualifiedName::localName"
+                            "aString": "struct field lib.QualifiedName::localName"
                         },
                         "key": "symbolSignature"
                     },
@@ -3017,7 +3017,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::Range"
+                            "aString": "struct lib.Range"
                         },
                         "key": "symbolSignature"
                     },
@@ -3058,7 +3058,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::Range::columnBegin"
+                            "aString": "struct field lib.Range::columnBegin"
                         },
                         "key": "symbolSignature"
                     },
@@ -3099,7 +3099,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::Range::columnEnd"
+                            "aString": "struct field lib.Range::columnEnd"
                         },
                         "key": "symbolSignature"
                     },
@@ -3140,7 +3140,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::Range::lineBegin"
+                            "aString": "struct field lib.Range::lineBegin"
                         },
                         "key": "symbolSignature"
                     },
@@ -3181,7 +3181,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::Range::lineEnd"
+                            "aString": "struct field lib.Range::lineEnd"
                         },
                         "key": "symbolSignature"
                     },
@@ -3222,7 +3222,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::ReferenceRangeSymbolX"
+                            "aString": "struct lib.ReferenceRangeSymbolX"
                         },
                         "key": "symbolSignature"
                     },
@@ -3263,7 +3263,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::ReferenceRangeSymbolX::attributes"
+                            "aString": "struct field lib.ReferenceRangeSymbolX::attributes"
                         },
                         "key": "symbolSignature"
                     },
@@ -3304,7 +3304,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::ReferenceRangeSymbolX::range"
+                            "aString": "struct field lib.ReferenceRangeSymbolX::range"
                         },
                         "key": "symbolSignature"
                     },
@@ -3345,7 +3345,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::ReferenceRangeSymbolX::sym"
+                            "aString": "struct field lib.ReferenceRangeSymbolX::sym"
                         },
                         "key": "symbolSignature"
                     },
@@ -3386,7 +3386,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::ReferenceRangeSymbolX::target"
+                            "aString": "struct field lib.ReferenceRangeSymbolX::target"
                         },
                         "key": "symbolSignature"
                     },
@@ -3427,7 +3427,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::RepoName"
+                            "aString": "typedef lib.RepoName"
                         },
                         "key": "symbolSignature"
                     },
@@ -3468,7 +3468,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::RequestOptions"
+                            "aString": "struct lib.RequestOptions"
                         },
                         "key": "symbolSignature"
                     },
@@ -3509,7 +3509,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::RequestOptions::limit"
+                            "aString": "struct field lib.RequestOptions::limit"
                         },
                         "key": "symbolSignature"
                     },
@@ -3550,7 +3550,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::RequestOptions::revision"
+                            "aString": "struct field lib.RequestOptions::revision"
                         },
                         "key": "symbolSignature"
                     },
@@ -3591,7 +3591,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::Revision"
+                            "aString": "typedef lib.Revision"
                         },
                         "key": "symbolSignature"
                     },
@@ -3632,7 +3632,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SearchByNameRequest"
+                            "aString": "struct lib.SearchByNameRequest"
                         },
                         "key": "symbolSignature"
                     },
@@ -3673,7 +3673,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SearchByNameRequest::context"
+                            "aString": "struct field lib.SearchByNameRequest::context"
                         },
                         "key": "symbolSignature"
                     },
@@ -3714,7 +3714,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SearchByNameRequest::name"
+                            "aString": "struct field lib.SearchByNameRequest::name"
                         },
                         "key": "symbolSignature"
                     },
@@ -3755,7 +3755,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SearchByNameResult"
+                            "aString": "struct lib.SearchByNameResult"
                         },
                         "key": "symbolSignature"
                     },
@@ -3796,7 +3796,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SearchByNameResult::symbolDetails"
+                            "aString": "struct field lib.SearchByNameResult::symbolDetails"
                         },
                         "key": "symbolSignature"
                     },
@@ -3837,7 +3837,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SearchByNameResult::symbols"
+                            "aString": "struct field lib.SearchByNameResult::symbols"
                         },
                         "key": "symbolSignature"
                     },
@@ -3878,7 +3878,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SearchBySymbolIdResult"
+                            "aString": "struct lib.SearchBySymbolIdResult"
                         },
                         "key": "symbolSignature"
                     },
@@ -3919,7 +3919,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SearchBySymbolIdResult::symbols"
+                            "aString": "struct field lib.SearchBySymbolIdResult::symbols"
                         },
                         "key": "symbolSignature"
                     },
@@ -3960,7 +3960,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SearchContext"
+                            "aString": "struct lib.SearchContext"
                         },
                         "key": "symbolSignature"
                     },
@@ -4001,7 +4001,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SearchContext::kinds"
+                            "aString": "struct field lib.SearchContext::kinds"
                         },
                         "key": "symbolSignature"
                     },
@@ -4042,7 +4042,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SearchContext::language"
+                            "aString": "struct field lib.SearchContext::language"
                         },
                         "key": "symbolSignature"
                     },
@@ -4083,7 +4083,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SearchContext::repo_name"
+                            "aString": "struct field lib.SearchContext::repo_name"
                         },
                         "key": "symbolSignature"
                     },
@@ -4124,7 +4124,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception lib::ServerException"
+                            "aString": "exception lib.ServerException"
                         },
                         "key": "symbolSignature"
                     },
@@ -4165,7 +4165,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::ServerException"
+                            "aString": "struct lib.ServerException"
                         },
                         "key": "symbolSignature"
                     },
@@ -4206,7 +4206,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception field lib::ServerException::message"
+                            "aString": "exception field lib.ServerException::message"
                         },
                         "key": "symbolSignature"
                     },
@@ -4247,7 +4247,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SymbolDescription"
+                            "aString": "struct lib.SymbolDescription"
                         },
                         "key": "symbolSignature"
                     },
@@ -4288,7 +4288,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SymbolDescription::kind"
+                            "aString": "struct field lib.SymbolDescription::kind"
                         },
                         "key": "symbolSignature"
                     },
@@ -4329,7 +4329,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SymbolDescription::location"
+                            "aString": "struct field lib.SymbolDescription::location"
                         },
                         "key": "symbolSignature"
                     },
@@ -4370,7 +4370,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SymbolDescription::name"
+                            "aString": "struct field lib.SymbolDescription::name"
                         },
                         "key": "symbolSignature"
                     },
@@ -4411,7 +4411,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SymbolDescription::sym"
+                            "aString": "struct field lib.SymbolDescription::sym"
                         },
                         "key": "symbolSignature"
                     },
@@ -4452,7 +4452,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::SymbolId"
+                            "aString": "typedef lib.SymbolId"
                         },
                         "key": "symbolSignature"
                     },
@@ -4493,7 +4493,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum lib::SymbolKind"
+                            "aString": "enum lib.SymbolKind"
                         },
                         "key": "symbolSignature"
                     },
@@ -4534,7 +4534,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Array"
+                            "aString": "enum value lib.SymbolKind::Array"
                         },
                         "key": "symbolSignature"
                     },
@@ -4575,7 +4575,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Boolean"
+                            "aString": "enum value lib.SymbolKind::Boolean"
                         },
                         "key": "symbolSignature"
                     },
@@ -4616,7 +4616,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Class_"
+                            "aString": "enum value lib.SymbolKind::Class_"
                         },
                         "key": "symbolSignature"
                     },
@@ -4657,7 +4657,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Constant"
+                            "aString": "enum value lib.SymbolKind::Constant"
                         },
                         "key": "symbolSignature"
                     },
@@ -4698,7 +4698,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Constructor"
+                            "aString": "enum value lib.SymbolKind::Constructor"
                         },
                         "key": "symbolSignature"
                     },
@@ -4739,7 +4739,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Enum"
+                            "aString": "enum value lib.SymbolKind::Enum"
                         },
                         "key": "symbolSignature"
                     },
@@ -4780,7 +4780,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Enumerator"
+                            "aString": "enum value lib.SymbolKind::Enumerator"
                         },
                         "key": "symbolSignature"
                     },
@@ -4821,7 +4821,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Event"
+                            "aString": "enum value lib.SymbolKind::Event"
                         },
                         "key": "symbolSignature"
                     },
@@ -4862,7 +4862,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Field"
+                            "aString": "enum value lib.SymbolKind::Field"
                         },
                         "key": "symbolSignature"
                     },
@@ -4903,7 +4903,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::File"
+                            "aString": "enum value lib.SymbolKind::File"
                         },
                         "key": "symbolSignature"
                     },
@@ -4944,7 +4944,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Function"
+                            "aString": "enum value lib.SymbolKind::Function"
                         },
                         "key": "symbolSignature"
                     },
@@ -4985,7 +4985,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Interface"
+                            "aString": "enum value lib.SymbolKind::Interface"
                         },
                         "key": "symbolSignature"
                     },
@@ -5026,7 +5026,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Key"
+                            "aString": "enum value lib.SymbolKind::Key"
                         },
                         "key": "symbolSignature"
                     },
@@ -5067,7 +5067,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Macro"
+                            "aString": "enum value lib.SymbolKind::Macro"
                         },
                         "key": "symbolSignature"
                     },
@@ -5108,7 +5108,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Method"
+                            "aString": "enum value lib.SymbolKind::Method"
                         },
                         "key": "symbolSignature"
                     },
@@ -5149,7 +5149,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Module"
+                            "aString": "enum value lib.SymbolKind::Module"
                         },
                         "key": "symbolSignature"
                     },
@@ -5190,7 +5190,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Namespace"
+                            "aString": "enum value lib.SymbolKind::Namespace"
                         },
                         "key": "symbolSignature"
                     },
@@ -5231,7 +5231,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Null"
+                            "aString": "enum value lib.SymbolKind::Null"
                         },
                         "key": "symbolSignature"
                     },
@@ -5272,7 +5272,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Number"
+                            "aString": "enum value lib.SymbolKind::Number"
                         },
                         "key": "symbolSignature"
                     },
@@ -5313,7 +5313,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Object"
+                            "aString": "enum value lib.SymbolKind::Object"
                         },
                         "key": "symbolSignature"
                     },
@@ -5354,7 +5354,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Operator"
+                            "aString": "enum value lib.SymbolKind::Operator"
                         },
                         "key": "symbolSignature"
                     },
@@ -5395,7 +5395,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Package"
+                            "aString": "enum value lib.SymbolKind::Package"
                         },
                         "key": "symbolSignature"
                     },
@@ -5436,7 +5436,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Property"
+                            "aString": "enum value lib.SymbolKind::Property"
                         },
                         "key": "symbolSignature"
                     },
@@ -5477,7 +5477,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::String"
+                            "aString": "enum value lib.SymbolKind::String"
                         },
                         "key": "symbolSignature"
                     },
@@ -5518,7 +5518,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Struct"
+                            "aString": "enum value lib.SymbolKind::Struct"
                         },
                         "key": "symbolSignature"
                     },
@@ -5559,7 +5559,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Type"
+                            "aString": "enum value lib.SymbolKind::Type"
                         },
                         "key": "symbolSignature"
                     },
@@ -5600,7 +5600,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::TypeParameter"
+                            "aString": "enum value lib.SymbolKind::TypeParameter"
                         },
                         "key": "symbolSignature"
                     },
@@ -5641,7 +5641,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Union"
+                            "aString": "enum value lib.SymbolKind::Union"
                         },
                         "key": "symbolSignature"
                     },
@@ -5682,7 +5682,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Value"
+                            "aString": "enum value lib.SymbolKind::Value"
                         },
                         "key": "symbolSignature"
                     },
@@ -5723,7 +5723,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value lib::SymbolKind::Variable"
+                            "aString": "enum value lib.SymbolKind::Variable"
                         },
                         "key": "symbolSignature"
                     },
@@ -5764,7 +5764,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SymbolPath"
+                            "aString": "struct lib.SymbolPath"
                         },
                         "key": "symbolSignature"
                     },
@@ -5805,7 +5805,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SymbolPath::filepath"
+                            "aString": "struct field lib.SymbolPath::filepath"
                         },
                         "key": "symbolSignature"
                     },
@@ -5846,7 +5846,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SymbolPath::range"
+                            "aString": "struct field lib.SymbolPath::range"
                         },
                         "key": "symbolSignature"
                     },
@@ -5887,7 +5887,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SymbolPath::repository"
+                            "aString": "struct field lib.SymbolPath::repository"
                         },
                         "key": "symbolSignature"
                     },
@@ -5928,7 +5928,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SymbolX"
+                            "aString": "struct lib.SymbolX"
                         },
                         "key": "symbolSignature"
                     },
@@ -5969,7 +5969,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SymbolX::attributes"
+                            "aString": "struct field lib.SymbolX::attributes"
                         },
                         "key": "symbolSignature"
                     },
@@ -6010,7 +6010,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SymbolX::range"
+                            "aString": "struct field lib.SymbolX::range"
                         },
                         "key": "symbolSignature"
                     },
@@ -6051,7 +6051,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SymbolX::sym"
+                            "aString": "struct field lib.SymbolX::sym"
                         },
                         "key": "symbolSignature"
                     },
@@ -6092,7 +6092,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field lib::SymbolX::target"
+                            "aString": "struct field lib.SymbolX::target"
                         },
                         "key": "symbolSignature"
                     },
@@ -6133,7 +6133,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "service lib::ZeroService"
+                            "aString": "service lib.ZeroService"
                         },
                         "key": "symbolSignature"
                     },
@@ -6177,7 +6177,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "union lib::Attribute"
+                            "aString": "union lib.Attribute"
                         },
                         "key": "symbolSignature"
                     },
@@ -6228,7 +6228,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "union lib::Attribute"
+                            "aString": "union lib.Attribute"
                         },
                         "key": "symbolSignature"
                     },
@@ -6279,7 +6279,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::AttributeList"
+                            "aString": "typedef lib.AttributeList"
                         },
                         "key": "symbolSignature"
                     },
@@ -6330,7 +6330,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::AttributeList"
+                            "aString": "typedef lib.AttributeList"
                         },
                         "key": "symbolSignature"
                     },
@@ -6381,7 +6381,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::Attributes"
+                            "aString": "typedef lib.Attributes"
                         },
                         "key": "symbolSignature"
                     },
@@ -6432,7 +6432,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "service lib::BaseService"
+                            "aString": "service lib.BaseService"
                         },
                         "key": "symbolSignature"
                     },
@@ -6483,7 +6483,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::ByteSpan"
+                            "aString": "struct lib.ByteSpan"
                         },
                         "key": "symbolSignature"
                     },
@@ -6534,7 +6534,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::DefinitionSymbolX"
+                            "aString": "struct lib.DefinitionSymbolX"
                         },
                         "key": "symbolSignature"
                     },
@@ -6585,7 +6585,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::DocumentSymbolIndex"
+                            "aString": "struct lib.DocumentSymbolIndex"
                         },
                         "key": "symbolSignature"
                     },
@@ -6636,7 +6636,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::DocumentSymbolListXResult"
+                            "aString": "struct lib.DocumentSymbolListXResult"
                         },
                         "key": "symbolSignature"
                     },
@@ -6687,7 +6687,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::DocumentSymbolsRequest"
+                            "aString": "struct lib.DocumentSymbolsRequest"
                         },
                         "key": "symbolSignature"
                     },
@@ -6738,7 +6738,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::DocumentSymbolsRequest"
+                            "aString": "struct lib.DocumentSymbolsRequest"
                         },
                         "key": "symbolSignature"
                     },
@@ -6789,7 +6789,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::KeyedAttribute"
+                            "aString": "struct lib.KeyedAttribute"
                         },
                         "key": "symbolSignature"
                     },
@@ -6840,7 +6840,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum lib::Language"
+                            "aString": "enum lib.Language"
                         },
                         "key": "symbolSignature"
                     },
@@ -6891,7 +6891,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::LineRange"
+                            "aString": "struct lib.LineRange"
                         },
                         "key": "symbolSignature"
                     },
@@ -6942,7 +6942,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::Location"
+                            "aString": "struct lib.Location"
                         },
                         "key": "symbolSignature"
                     },
@@ -6993,7 +6993,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::Location"
+                            "aString": "struct lib.Location"
                         },
                         "key": "symbolSignature"
                     },
@@ -7044,7 +7044,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::Location"
+                            "aString": "struct lib.Location"
                         },
                         "key": "symbolSignature"
                     },
@@ -7095,7 +7095,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::LocationRange"
+                            "aString": "struct lib.LocationRange"
                         },
                         "key": "symbolSignature"
                     },
@@ -7146,7 +7146,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::LocationRange"
+                            "aString": "struct lib.LocationRange"
                         },
                         "key": "symbolSignature"
                     },
@@ -7197,7 +7197,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::LocationRange"
+                            "aString": "struct lib.LocationRange"
                         },
                         "key": "symbolSignature"
                     },
@@ -7248,7 +7248,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::Name"
+                            "aString": "typedef lib.Name"
                         },
                         "key": "symbolSignature"
                     },
@@ -7299,7 +7299,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::Name"
+                            "aString": "typedef lib.Name"
                         },
                         "key": "symbolSignature"
                     },
@@ -7350,7 +7350,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::Path"
+                            "aString": "typedef lib.Path"
                         },
                         "key": "symbolSignature"
                     },
@@ -7401,7 +7401,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::Path"
+                            "aString": "typedef lib.Path"
                         },
                         "key": "symbolSignature"
                     },
@@ -7452,7 +7452,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::Path"
+                            "aString": "typedef lib.Path"
                         },
                         "key": "symbolSignature"
                     },
@@ -7503,7 +7503,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::Path"
+                            "aString": "typedef lib.Path"
                         },
                         "key": "symbolSignature"
                     },
@@ -7554,7 +7554,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::QualifiedName"
+                            "aString": "struct lib.QualifiedName"
                         },
                         "key": "symbolSignature"
                     },
@@ -7605,7 +7605,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::Range"
+                            "aString": "struct lib.Range"
                         },
                         "key": "symbolSignature"
                     },
@@ -7656,7 +7656,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::Range"
+                            "aString": "struct lib.Range"
                         },
                         "key": "symbolSignature"
                     },
@@ -7707,7 +7707,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::Range"
+                            "aString": "struct lib.Range"
                         },
                         "key": "symbolSignature"
                     },
@@ -7758,7 +7758,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::Range"
+                            "aString": "struct lib.Range"
                         },
                         "key": "symbolSignature"
                     },
@@ -7809,7 +7809,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::Range"
+                            "aString": "struct lib.Range"
                         },
                         "key": "symbolSignature"
                     },
@@ -7860,7 +7860,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::Range"
+                            "aString": "struct lib.Range"
                         },
                         "key": "symbolSignature"
                     },
@@ -7911,7 +7911,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::ReferenceRangeSymbolX"
+                            "aString": "struct lib.ReferenceRangeSymbolX"
                         },
                         "key": "symbolSignature"
                     },
@@ -7962,7 +7962,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::RepoName"
+                            "aString": "typedef lib.RepoName"
                         },
                         "key": "symbolSignature"
                     },
@@ -8013,7 +8013,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::RepoName"
+                            "aString": "typedef lib.RepoName"
                         },
                         "key": "symbolSignature"
                     },
@@ -8064,7 +8064,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::RepoName"
+                            "aString": "typedef lib.RepoName"
                         },
                         "key": "symbolSignature"
                     },
@@ -8115,7 +8115,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::RepoName"
+                            "aString": "typedef lib.RepoName"
                         },
                         "key": "symbolSignature"
                     },
@@ -8166,7 +8166,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::RepoName"
+                            "aString": "typedef lib.RepoName"
                         },
                         "key": "symbolSignature"
                     },
@@ -8217,7 +8217,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::RequestOptions"
+                            "aString": "struct lib.RequestOptions"
                         },
                         "key": "symbolSignature"
                     },
@@ -8268,7 +8268,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::RequestOptions"
+                            "aString": "struct lib.RequestOptions"
                         },
                         "key": "symbolSignature"
                     },
@@ -8319,7 +8319,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::RequestOptions"
+                            "aString": "struct lib.RequestOptions"
                         },
                         "key": "symbolSignature"
                     },
@@ -8370,7 +8370,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::RequestOptions"
+                            "aString": "struct lib.RequestOptions"
                         },
                         "key": "symbolSignature"
                     },
@@ -8421,7 +8421,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::RequestOptions"
+                            "aString": "struct lib.RequestOptions"
                         },
                         "key": "symbolSignature"
                     },
@@ -8472,7 +8472,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::RequestOptions"
+                            "aString": "struct lib.RequestOptions"
                         },
                         "key": "symbolSignature"
                     },
@@ -8523,7 +8523,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::RequestOptions"
+                            "aString": "struct lib.RequestOptions"
                         },
                         "key": "symbolSignature"
                     },
@@ -8574,7 +8574,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::RequestOptions"
+                            "aString": "struct lib.RequestOptions"
                         },
                         "key": "symbolSignature"
                     },
@@ -8625,7 +8625,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::RequestOptions"
+                            "aString": "struct lib.RequestOptions"
                         },
                         "key": "symbolSignature"
                     },
@@ -8676,7 +8676,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::RequestOptions"
+                            "aString": "struct lib.RequestOptions"
                         },
                         "key": "symbolSignature"
                     },
@@ -8727,7 +8727,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::Revision"
+                            "aString": "typedef lib.Revision"
                         },
                         "key": "symbolSignature"
                     },
@@ -8778,7 +8778,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::Revision"
+                            "aString": "typedef lib.Revision"
                         },
                         "key": "symbolSignature"
                     },
@@ -8829,7 +8829,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::Revision"
+                            "aString": "typedef lib.Revision"
                         },
                         "key": "symbolSignature"
                     },
@@ -8880,7 +8880,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SearchByNameRequest"
+                            "aString": "struct lib.SearchByNameRequest"
                         },
                         "key": "symbolSignature"
                     },
@@ -8931,7 +8931,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SearchByNameRequest"
+                            "aString": "struct lib.SearchByNameRequest"
                         },
                         "key": "symbolSignature"
                     },
@@ -8982,7 +8982,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SearchByNameResult"
+                            "aString": "struct lib.SearchByNameResult"
                         },
                         "key": "symbolSignature"
                     },
@@ -9033,7 +9033,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SearchByNameResult"
+                            "aString": "struct lib.SearchByNameResult"
                         },
                         "key": "symbolSignature"
                     },
@@ -9084,7 +9084,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SearchBySymbolIdResult"
+                            "aString": "struct lib.SearchBySymbolIdResult"
                         },
                         "key": "symbolSignature"
                     },
@@ -9135,7 +9135,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SearchContext"
+                            "aString": "struct lib.SearchContext"
                         },
                         "key": "symbolSignature"
                     },
@@ -9186,7 +9186,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception lib::ServerException"
+                            "aString": "exception lib.ServerException"
                         },
                         "key": "symbolSignature"
                     },
@@ -9237,7 +9237,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception lib::ServerException"
+                            "aString": "exception lib.ServerException"
                         },
                         "key": "symbolSignature"
                     },
@@ -9288,7 +9288,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception lib::ServerException"
+                            "aString": "exception lib.ServerException"
                         },
                         "key": "symbolSignature"
                     },
@@ -9339,7 +9339,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception lib::ServerException"
+                            "aString": "exception lib.ServerException"
                         },
                         "key": "symbolSignature"
                     },
@@ -9390,7 +9390,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception lib::ServerException"
+                            "aString": "exception lib.ServerException"
                         },
                         "key": "symbolSignature"
                     },
@@ -9441,7 +9441,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception lib::ServerException"
+                            "aString": "exception lib.ServerException"
                         },
                         "key": "symbolSignature"
                     },
@@ -9492,7 +9492,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception lib::ServerException"
+                            "aString": "exception lib.ServerException"
                         },
                         "key": "symbolSignature"
                     },
@@ -9543,7 +9543,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception lib::ServerException"
+                            "aString": "exception lib.ServerException"
                         },
                         "key": "symbolSignature"
                     },
@@ -9594,7 +9594,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception lib::ServerException"
+                            "aString": "exception lib.ServerException"
                         },
                         "key": "symbolSignature"
                     },
@@ -9645,7 +9645,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception lib::ServerException"
+                            "aString": "exception lib.ServerException"
                         },
                         "key": "symbolSignature"
                     },
@@ -9696,7 +9696,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SymbolDescription"
+                            "aString": "struct lib.SymbolDescription"
                         },
                         "key": "symbolSignature"
                     },
@@ -9747,7 +9747,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SymbolDescription"
+                            "aString": "struct lib.SymbolDescription"
                         },
                         "key": "symbolSignature"
                     },
@@ -9798,7 +9798,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::SymbolId"
+                            "aString": "typedef lib.SymbolId"
                         },
                         "key": "symbolSignature"
                     },
@@ -9849,7 +9849,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::SymbolId"
+                            "aString": "typedef lib.SymbolId"
                         },
                         "key": "symbolSignature"
                     },
@@ -9900,7 +9900,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::SymbolId"
+                            "aString": "typedef lib.SymbolId"
                         },
                         "key": "symbolSignature"
                     },
@@ -9951,7 +9951,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::SymbolId"
+                            "aString": "typedef lib.SymbolId"
                         },
                         "key": "symbolSignature"
                     },
@@ -10002,7 +10002,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::SymbolId"
+                            "aString": "typedef lib.SymbolId"
                         },
                         "key": "symbolSignature"
                     },
@@ -10053,7 +10053,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::SymbolId"
+                            "aString": "typedef lib.SymbolId"
                         },
                         "key": "symbolSignature"
                     },
@@ -10104,7 +10104,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::SymbolId"
+                            "aString": "typedef lib.SymbolId"
                         },
                         "key": "symbolSignature"
                     },
@@ -10155,7 +10155,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::SymbolId"
+                            "aString": "typedef lib.SymbolId"
                         },
                         "key": "symbolSignature"
                     },
@@ -10206,7 +10206,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::SymbolId"
+                            "aString": "typedef lib.SymbolId"
                         },
                         "key": "symbolSignature"
                     },
@@ -10257,7 +10257,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::SymbolId"
+                            "aString": "typedef lib.SymbolId"
                         },
                         "key": "symbolSignature"
                     },
@@ -10308,7 +10308,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "typedef lib::SymbolId"
+                            "aString": "typedef lib.SymbolId"
                         },
                         "key": "symbolSignature"
                     },
@@ -10359,7 +10359,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum lib::SymbolKind"
+                            "aString": "enum lib.SymbolKind"
                         },
                         "key": "symbolSignature"
                     },
@@ -10410,7 +10410,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum lib::SymbolKind"
+                            "aString": "enum lib.SymbolKind"
                         },
                         "key": "symbolSignature"
                     },
@@ -10461,7 +10461,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SymbolPath"
+                            "aString": "struct lib.SymbolPath"
                         },
                         "key": "symbolSignature"
                     },
@@ -10512,7 +10512,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct lib::SymbolX"
+                            "aString": "struct lib.SymbolX"
                         },
                         "key": "symbolSignature"
                     },
@@ -10563,7 +10563,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "service lib::ZeroService"
+                            "aString": "service lib.ZeroService"
                         },
                         "key": "symbolSignature"
                     },

@@ -32,7 +32,7 @@
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
-        "signature": "enum value lib::SymbolKind::Type",
+        "signature": "enum value lib.SymbolKind::Type",
         "sym": "test/thrift/lib.thrift/SymbolKind/Type",
         "sym_location": {
             "filepath": "lib.thrift",

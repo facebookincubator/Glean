@@ -1360,7 +1360,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum test::CountOnlyMode"
+                            "aString": "enum test.CountOnlyMode"
                         },
                         "key": "symbolSignature"
                     },
@@ -1411,7 +1411,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum test::CountOnlyMode"
+                            "aString": "enum test.CountOnlyMode"
                         },
                         "key": "symbolSignature"
                     },
@@ -1462,7 +1462,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "enum value test::CountOnlyMode::Disabled"
+                            "aString": "enum value test.CountOnlyMode::Disabled"
                         },
                         "key": "symbolSignature"
                     },
@@ -1513,7 +1513,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "exception test::GetNavigationException"
+                            "aString": "exception test.GetNavigationException"
                         },
                         "key": "symbolSignature"
                     },
@@ -1564,7 +1564,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct test::GetNavigationRequest"
+                            "aString": "struct test.GetNavigationRequest"
                         },
                         "key": "symbolSignature"
                     },
@@ -1615,7 +1615,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "struct field test::GetNavigationRequest::identifier"
+                            "aString": "struct field test.GetNavigationRequest::identifier"
                         },
                         "key": "symbolSignature"
                     },
@@ -1666,7 +1666,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "constant test::MY_CONST"
+                            "aString": "constant test.MY_CONST"
                         },
                         "key": "symbolSignature"
                     },
@@ -1717,7 +1717,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "union test::ResponseCard"
+                            "aString": "union test.ResponseCard"
                         },
                         "key": "symbolSignature"
                     },
@@ -1768,7 +1768,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "service test::TestService"
+                            "aString": "service test.TestService"
                         },
                         "key": "symbolSignature"
                     },
@@ -1819,7 +1819,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function test::TestService::thrift1"
+                            "aString": "function test.TestService::thrift1"
                         },
                         "key": "symbolSignature"
                     },
@@ -1870,7 +1870,7 @@
                     },
                     {
                         "attribute": {
-                            "aString": "function test::TestService::thrift2"
+                            "aString": "function test.TestService::thrift2"
                         },
                         "key": "symbolSignature"
                     },

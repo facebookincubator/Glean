@@ -11,7 +11,7 @@ module Glean.Glass.Pretty.Fbthrift
     prettyFbthriftSignature
   ) where
 
-import System.FilePath( dropExtension )
+import System.FilePath ( dropExtension, takeBaseName )
 import Data.Text ( Text, unpack )
 import Data.Text.Prettyprint.Doc
 
@@ -85,12 +85,14 @@ ppFile (File f) = pretty f
 
 ppQualName :: QualName -> Doc ()
 ppQualName (QualName (File file) (Identifier id)) =
-  pretty (dropExtension (unpack file) <> "::" <> unpack id)
+  pretty (dropExtension (takeBaseName (unpack file)) <> "." <> unpack id)
 
 ppScopedId :: QualName -> Identifier -> Doc ()
 ppScopedId (QualName (File file) (Identifier idService)) (Identifier id) =
-  pretty $ dropExtension (unpack file) <> "::" <> unpack idService <> "::"
-           <> unpack id
+  pretty $ mconcat [
+    dropExtension (takeBaseName (unpack file)), ".", unpack idService, "::",
+    unpack id
+  ]
 
 prettyDecl :: LayoutOptions -> SymbolId -> Declaration -> Doc ()
 prettyDecl _ _sym (Service qName ) = "service" <+> ppQualName qName

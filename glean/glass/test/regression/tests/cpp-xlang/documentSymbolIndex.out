@@ -208,7 +208,7 @@
                             "aString": "test"
                         },
                         "symbolSignature": {
-                            "aString": "union test::ResponseCard"
+                            "aString": "union test.ResponseCard"
                         }
                     },
                     "range": {
@@ -314,7 +314,7 @@
                             "aString": "test"
                         },
                         "symbolSignature": {
-                            "aString": "struct test::GetNavigationRequest"
+                            "aString": "struct test.GetNavigationRequest"
                         }
                     },
                     "range": {
@@ -459,7 +459,7 @@
                             "aString": "GetNavigationRequest"
                         },
                         "symbolSignature": {
-                            "aString": "struct field test::GetNavigationRequest::identifier"
+                            "aString": "struct field test.GetNavigationRequest::identifier"
                         }
                     },
                     "range": {
@@ -565,7 +565,7 @@
                             "aString": "test"
                         },
                         "symbolSignature": {
-                            "aString": "exception test::GetNavigationException"
+                            "aString": "exception test.GetNavigationException"
                         }
                     },
                     "range": {
@@ -642,7 +642,7 @@
                             "aString": "TestService"
                         },
                         "symbolSignature": {
-                            "aString": "function test::TestService::thrift1"
+                            "aString": "function test.TestService::thrift1"
                         }
                     },
                     "range": {
@@ -758,7 +758,7 @@
                             "aString": "test"
                         },
                         "symbolSignature": {
-                            "aString": "service test::TestService"
+                            "aString": "service test.TestService"
                         }
                     },
                     "range": {
@@ -794,7 +794,7 @@
                             "aString": "TestService"
                         },
                         "symbolSignature": {
-                            "aString": "function test::TestService::thrift2"
+                            "aString": "function test.TestService::thrift2"
                         }
                     },
                     "range": {
@@ -900,7 +900,7 @@
                             "aString": "test"
                         },
                         "symbolSignature": {
-                            "aString": "enum test::CountOnlyMode"
+                            "aString": "enum test.CountOnlyMode"
                         }
                     },
                     "range": {
@@ -1045,7 +1045,7 @@
                             "aString": "test"
                         },
                         "symbolSignature": {
-                            "aString": "enum test::CountOnlyMode"
+                            "aString": "enum test.CountOnlyMode"
                         }
                     },
                     "range": {
@@ -1081,7 +1081,7 @@
                             "aString": "CountOnlyMode"
                         },
                         "symbolSignature": {
-                            "aString": "enum value test::CountOnlyMode::Disabled"
+                            "aString": "enum value test.CountOnlyMode::Disabled"
                         }
                     },
                     "range": {
@@ -1226,7 +1226,7 @@
                             "aString": "test"
                         },
                         "symbolSignature": {
-                            "aString": "constant test::MY_CONST"
+                            "aString": "constant test.MY_CONST"
                         }
                     },
                     "range": {
