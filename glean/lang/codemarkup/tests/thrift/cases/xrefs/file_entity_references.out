@@ -8,8 +8,8 @@
           "columnBegin": 3,
           "columnEnd": 7,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 246,
-          "lineEnd": 246
+          "lineBegin": 248,
+          "lineEnd": 248
         }
       },
       "target": {
@@ -41,8 +41,8 @@
           "columnBegin": 3,
           "columnEnd": 10,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 260,
-          "lineEnd": 260
+          "lineBegin": 262,
+          "lineEnd": 262
         }
       },
       "target": {
@@ -74,8 +74,8 @@
           "columnBegin": 3,
           "columnEnd": 19,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 264,
-          "lineEnd": 264
+          "lineBegin": 266,
+          "lineEnd": 266
         }
       },
       "target": {
@@ -107,8 +107,8 @@
           "columnBegin": 3,
           "columnEnd": 20,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 269,
-          "lineEnd": 269
+          "lineBegin": 271,
+          "lineEnd": 271
         }
       },
       "target": {
@@ -140,8 +140,8 @@
           "columnBegin": 3,
           "columnEnd": 20,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 274,
-          "lineEnd": 274
+          "lineBegin": 276,
+          "lineEnd": 276
         }
       },
       "target": {
@@ -173,8 +173,8 @@
           "columnBegin": 3,
           "columnEnd": 21,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 241,
-          "lineEnd": 241
+          "lineBegin": 243,
+          "lineEnd": 243
         }
       },
       "target": {
@@ -206,8 +206,8 @@
           "columnBegin": 3,
           "columnEnd": 24,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 279,
-          "lineEnd": 279
+          "lineBegin": 281,
+          "lineEnd": 281
         }
       },
       "target": {
@@ -239,8 +239,8 @@
           "columnBegin": 3,
           "columnEnd": 27,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 236,
-          "lineEnd": 236
+          "lineBegin": 238,
+          "lineEnd": 238
         }
       },
       "target": {
@@ -272,8 +272,8 @@
           "columnBegin": 6,
           "columnEnd": 9,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 41,
-          "lineEnd": 41
+          "lineBegin": 43,
+          "lineEnd": 43
         }
       },
       "target": {
@@ -304,171 +304,6 @@
         "range": {
           "columnBegin": 6,
           "columnEnd": 9,
-          "file": { "key": "lib.thrift" },
-          "lineBegin": 49,
-          "lineEnd": 49
-        }
-      },
-      "target": {
-        "fbthrift": {
-          "decl": {
-            "named": {
-              "key": {
-                "name": {
-                  "kind": 0,
-                  "name": {
-                    "key": {
-                      "file": { "key": { "key": "lib.thrift" } },
-                      "name": { "key": "Path" }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "lib.thrift" },
-      "range": {
-        "range": {
-          "columnBegin": 6,
-          "columnEnd": 9,
-          "file": { "key": "lib.thrift" },
-          "lineBegin": 63,
-          "lineEnd": 63
-        }
-      },
-      "target": {
-        "fbthrift": {
-          "decl": {
-            "named": {
-              "key": {
-                "name": {
-                  "kind": 0,
-                  "name": {
-                    "key": {
-                      "file": { "key": { "key": "lib.thrift" } },
-                      "name": { "key": "Path" }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "lib.thrift" },
-      "range": {
-        "range": {
-          "columnBegin": 6,
-          "columnEnd": 9,
-          "file": { "key": "lib.thrift" },
-          "lineBegin": 118,
-          "lineEnd": 118
-        }
-      },
-      "target": {
-        "fbthrift": {
-          "decl": {
-            "named": {
-              "key": {
-                "name": {
-                  "kind": 0,
-                  "name": {
-                    "key": {
-                      "file": { "key": { "key": "lib.thrift" } },
-                      "name": { "key": "Path" }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "lib.thrift" },
-      "range": {
-        "range": {
-          "columnBegin": 6,
-          "columnEnd": 9,
-          "file": { "key": "lib.thrift" },
-          "lineBegin": 146,
-          "lineEnd": 146
-        }
-      },
-      "target": {
-        "fbthrift": {
-          "decl": {
-            "named": {
-              "key": {
-                "name": {
-                  "kind": 0,
-                  "name": {
-                    "key": {
-                      "file": { "key": { "key": "lib.thrift" } },
-                      "name": { "key": "Name" }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "lib.thrift" },
-      "range": {
-        "range": {
-          "columnBegin": 6,
-          "columnEnd": 9,
-          "file": { "key": "lib.thrift" },
-          "lineBegin": 147,
-          "lineEnd": 147
-        }
-      },
-      "target": {
-        "fbthrift": {
-          "decl": {
-            "named": {
-              "key": {
-                "name": {
-                  "kind": 0,
-                  "name": {
-                    "key": {
-                      "file": { "key": { "key": "lib.thrift" } },
-                      "name": { "key": "Name" }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "lib.thrift" },
-      "range": {
-        "range": {
-          "columnBegin": 6,
-          "columnEnd": 10,
           "file": { "key": "lib.thrift" },
           "lineBegin": 51,
           "lineEnd": 51
@@ -480,11 +315,11 @@
             "named": {
               "key": {
                 "name": {
-                  "kind": 2,
+                  "kind": 0,
                   "name": {
                     "key": {
                       "file": { "key": { "key": "lib.thrift" } },
-                      "name": { "key": "Range" }
+                      "name": { "key": "Path" }
                     }
                   }
                 }
@@ -501,10 +336,10 @@
       "range": {
         "range": {
           "columnBegin": 6,
-          "columnEnd": 10,
+          "columnEnd": 9,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 90,
-          "lineEnd": 90
+          "lineBegin": 65,
+          "lineEnd": 65
         }
       },
       "target": {
@@ -513,11 +348,11 @@
             "named": {
               "key": {
                 "name": {
-                  "kind": 2,
+                  "kind": 0,
                   "name": {
                     "key": {
                       "file": { "key": { "key": "lib.thrift" } },
-                      "name": { "key": "Range" }
+                      "name": { "key": "Path" }
                     }
                   }
                 }
@@ -534,76 +369,241 @@
       "range": {
         "range": {
           "columnBegin": 6,
-          "columnEnd": 10,
-          "file": { "key": "lib.thrift" },
-          "lineBegin": 100,
-          "lineEnd": 100
-        }
-      },
-      "target": {
-        "fbthrift": {
-          "decl": {
-            "named": {
-              "key": {
-                "name": {
-                  "kind": 2,
-                  "name": {
-                    "key": {
-                      "file": { "key": { "key": "lib.thrift" } },
-                      "name": { "key": "Range" }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "lib.thrift" },
-      "range": {
-        "range": {
-          "columnBegin": 6,
-          "columnEnd": 10,
-          "file": { "key": "lib.thrift" },
-          "lineBegin": 108,
-          "lineEnd": 108
-        }
-      },
-      "target": {
-        "fbthrift": {
-          "decl": {
-            "named": {
-              "key": {
-                "name": {
-                  "kind": 2,
-                  "name": {
-                    "key": {
-                      "file": { "key": { "key": "lib.thrift" } },
-                      "name": { "key": "Range" }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "lib.thrift" },
-      "range": {
-        "range": {
-          "columnBegin": 6,
-          "columnEnd": 10,
+          "columnEnd": 9,
           "file": { "key": "lib.thrift" },
           "lineBegin": 120,
           "lineEnd": 120
+        }
+      },
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 0,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Path" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.thrift" },
+      "range": {
+        "range": {
+          "columnBegin": 6,
+          "columnEnd": 9,
+          "file": { "key": "lib.thrift" },
+          "lineBegin": 148,
+          "lineEnd": 148
+        }
+      },
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 0,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Name" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.thrift" },
+      "range": {
+        "range": {
+          "columnBegin": 6,
+          "columnEnd": 9,
+          "file": { "key": "lib.thrift" },
+          "lineBegin": 149,
+          "lineEnd": 149
+        }
+      },
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 0,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Name" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.thrift" },
+      "range": {
+        "range": {
+          "columnBegin": 6,
+          "columnEnd": 10,
+          "file": { "key": "lib.thrift" },
+          "lineBegin": 53,
+          "lineEnd": 53
+        }
+      },
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Range" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.thrift" },
+      "range": {
+        "range": {
+          "columnBegin": 6,
+          "columnEnd": 10,
+          "file": { "key": "lib.thrift" },
+          "lineBegin": 92,
+          "lineEnd": 92
+        }
+      },
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Range" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.thrift" },
+      "range": {
+        "range": {
+          "columnBegin": 6,
+          "columnEnd": 10,
+          "file": { "key": "lib.thrift" },
+          "lineBegin": 102,
+          "lineEnd": 102
+        }
+      },
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Range" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.thrift" },
+      "range": {
+        "range": {
+          "columnBegin": 6,
+          "columnEnd": 10,
+          "file": { "key": "lib.thrift" },
+          "lineBegin": 110,
+          "lineEnd": 110
+        }
+      },
+      "target": {
+        "fbthrift": {
+          "decl": {
+            "named": {
+              "key": {
+                "name": {
+                  "kind": 2,
+                  "name": {
+                    "key": {
+                      "file": { "key": { "key": "lib.thrift" } },
+                      "name": { "key": "Range" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib.thrift" },
+      "range": {
+        "range": {
+          "columnBegin": 6,
+          "columnEnd": 10,
+          "file": { "key": "lib.thrift" },
+          "lineBegin": 122,
+          "lineEnd": 122
         }
       },
       "target": {
@@ -635,8 +635,8 @@
           "columnBegin": 6,
           "columnEnd": 13,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 39,
-          "lineEnd": 39
+          "lineBegin": 41,
+          "lineEnd": 41
         }
       },
       "target": {
@@ -668,8 +668,8 @@
           "columnBegin": 6,
           "columnEnd": 13,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 43,
-          "lineEnd": 43
+          "lineBegin": 45,
+          "lineEnd": 45
         }
       },
       "target": {
@@ -701,8 +701,8 @@
           "columnBegin": 6,
           "columnEnd": 13,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 47,
-          "lineEnd": 47
+          "lineBegin": 49,
+          "lineEnd": 49
         }
       },
       "target": {
@@ -734,8 +734,8 @@
           "columnBegin": 6,
           "columnEnd": 13,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 61,
-          "lineEnd": 61
+          "lineBegin": 63,
+          "lineEnd": 63
         }
       },
       "target": {
@@ -767,8 +767,8 @@
           "columnBegin": 6,
           "columnEnd": 13,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 88,
-          "lineEnd": 88
+          "lineBegin": 90,
+          "lineEnd": 90
         }
       },
       "target": {
@@ -800,8 +800,8 @@
           "columnBegin": 6,
           "columnEnd": 13,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 98,
-          "lineEnd": 98
+          "lineBegin": 100,
+          "lineEnd": 100
         }
       },
       "target": {
@@ -833,8 +833,8 @@
           "columnBegin": 6,
           "columnEnd": 13,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 106,
-          "lineEnd": 106
+          "lineBegin": 108,
+          "lineEnd": 108
         }
       },
       "target": {
@@ -866,8 +866,8 @@
           "columnBegin": 6,
           "columnEnd": 13,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 116,
-          "lineEnd": 116
+          "lineBegin": 118,
+          "lineEnd": 118
         }
       },
       "target": {
@@ -899,8 +899,8 @@
           "columnBegin": 6,
           "columnEnd": 13,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 128,
-          "lineEnd": 128
+          "lineBegin": 130,
+          "lineEnd": 130
         }
       },
       "target": {
@@ -932,8 +932,8 @@
           "columnBegin": 6,
           "columnEnd": 13,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 134,
-          "lineEnd": 134
+          "lineBegin": 136,
+          "lineEnd": 136
         }
       },
       "target": {
@@ -965,8 +965,8 @@
           "columnBegin": 6,
           "columnEnd": 13,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 151,
-          "lineEnd": 151
+          "lineBegin": 153,
+          "lineEnd": 153
         }
       },
       "target": {
@@ -998,8 +998,8 @@
           "columnBegin": 6,
           "columnEnd": 13,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 158,
-          "lineEnd": 158
+          "lineBegin": 160,
+          "lineEnd": 160
         }
       },
       "target": {
@@ -1031,8 +1031,8 @@
           "columnBegin": 6,
           "columnEnd": 13,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 159,
-          "lineEnd": 159
+          "lineBegin": 161,
+          "lineEnd": 161
         }
       },
       "target": {
@@ -1064,8 +1064,8 @@
           "columnBegin": 6,
           "columnEnd": 14,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 82,
-          "lineEnd": 82
+          "lineBegin": 84,
+          "lineEnd": 84
         }
       },
       "target": {
@@ -1097,8 +1097,8 @@
           "columnBegin": 6,
           "columnEnd": 15,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 112,
-          "lineEnd": 112
+          "lineBegin": 114,
+          "lineEnd": 114
         }
       },
       "target": {
@@ -1130,8 +1130,8 @@
           "columnBegin": 6,
           "columnEnd": 15,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 152,
-          "lineEnd": 152
+          "lineBegin": 154,
+          "lineEnd": 154
         }
       },
       "target": {
@@ -1163,8 +1163,8 @@
           "columnBegin": 6,
           "columnEnd": 18,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 92,
-          "lineEnd": 92
+          "lineBegin": 94,
+          "lineEnd": 94
         }
       },
       "target": {
@@ -1196,8 +1196,8 @@
           "columnBegin": 6,
           "columnEnd": 18,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 94,
-          "lineEnd": 94
+          "lineBegin": 96,
+          "lineEnd": 96
         }
       },
       "target": {
@@ -1229,8 +1229,8 @@
           "columnBegin": 6,
           "columnEnd": 18,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 102,
-          "lineEnd": 102
+          "lineBegin": 104,
+          "lineEnd": 104
         }
       },
       "target": {
@@ -1262,8 +1262,8 @@
           "columnBegin": 6,
           "columnEnd": 18,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 153,
-          "lineEnd": 153
+          "lineBegin": 155,
+          "lineEnd": 155
         }
       },
       "target": {
@@ -1295,8 +1295,8 @@
           "columnBegin": 6,
           "columnEnd": 18,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 216,
-          "lineEnd": 216
+          "lineBegin": 218,
+          "lineEnd": 218
         }
       },
       "target": {
@@ -1328,8 +1328,8 @@
           "columnBegin": 8,
           "columnEnd": 15,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 250,
-          "lineEnd": 250
+          "lineBegin": 252,
+          "lineEnd": 252
         }
       },
       "target": {
@@ -1361,8 +1361,8 @@
           "columnBegin": 8,
           "columnEnd": 15,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 251,
-          "lineEnd": 251
+          "lineBegin": 253,
+          "lineEnd": 253
         }
       },
       "target": {
@@ -1394,8 +1394,8 @@
           "columnBegin": 8,
           "columnEnd": 15,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 256,
-          "lineEnd": 256
+          "lineBegin": 258,
+          "lineEnd": 258
         }
       },
       "target": {
@@ -1427,8 +1427,8 @@
           "columnBegin": 8,
           "columnEnd": 15,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 265,
-          "lineEnd": 265
+          "lineBegin": 267,
+          "lineEnd": 267
         }
       },
       "target": {
@@ -1460,8 +1460,8 @@
           "columnBegin": 8,
           "columnEnd": 15,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 280,
-          "lineEnd": 280
+          "lineBegin": 282,
+          "lineEnd": 282
         }
       },
       "target": {
@@ -1493,8 +1493,8 @@
           "columnBegin": 8,
           "columnEnd": 20,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 255,
-          "lineEnd": 255
+          "lineBegin": 257,
+          "lineEnd": 257
         }
       },
       "target": {
@@ -1526,8 +1526,8 @@
           "columnBegin": 8,
           "columnEnd": 21,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 238,
-          "lineEnd": 238
+          "lineBegin": 240,
+          "lineEnd": 240
         }
       },
       "target": {
@@ -1559,8 +1559,8 @@
           "columnBegin": 8,
           "columnEnd": 21,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 243,
-          "lineEnd": 243
+          "lineBegin": 245,
+          "lineEnd": 245
         }
       },
       "target": {
@@ -1592,8 +1592,8 @@
           "columnBegin": 8,
           "columnEnd": 21,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 252,
-          "lineEnd": 252
+          "lineBegin": 254,
+          "lineEnd": 254
         }
       },
       "target": {
@@ -1625,8 +1625,8 @@
           "columnBegin": 8,
           "columnEnd": 21,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 257,
-          "lineEnd": 257
+          "lineBegin": 259,
+          "lineEnd": 259
         }
       },
       "target": {
@@ -1658,8 +1658,8 @@
           "columnBegin": 8,
           "columnEnd": 21,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 266,
-          "lineEnd": 266
+          "lineBegin": 268,
+          "lineEnd": 268
         }
       },
       "target": {
@@ -1691,8 +1691,8 @@
           "columnBegin": 8,
           "columnEnd": 21,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 271,
-          "lineEnd": 271
+          "lineBegin": 273,
+          "lineEnd": 273
         }
       },
       "target": {
@@ -1724,8 +1724,8 @@
           "columnBegin": 8,
           "columnEnd": 21,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 276,
-          "lineEnd": 276
+          "lineBegin": 278,
+          "lineEnd": 278
         }
       },
       "target": {
@@ -1757,8 +1757,8 @@
           "columnBegin": 8,
           "columnEnd": 21,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 281,
-          "lineEnd": 281
+          "lineBegin": 283,
+          "lineEnd": 283
         }
       },
       "target": {
@@ -1790,8 +1790,8 @@
           "columnBegin": 8,
           "columnEnd": 22,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 247,
-          "lineEnd": 247
+          "lineBegin": 249,
+          "lineEnd": 249
         }
       },
       "target": {
@@ -1820,8 +1820,8 @@
           "columnBegin": 8,
           "columnEnd": 22,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 261,
-          "lineEnd": 261
+          "lineBegin": 263,
+          "lineEnd": 263
         }
       },
       "target": {
@@ -1850,8 +1850,8 @@
           "columnBegin": 8,
           "columnEnd": 26,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 270,
-          "lineEnd": 270
+          "lineBegin": 272,
+          "lineEnd": 272
         }
       },
       "target": {
@@ -1883,8 +1883,8 @@
           "columnBegin": 8,
           "columnEnd": 26,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 275,
-          "lineEnd": 275
+          "lineBegin": 277,
+          "lineEnd": 277
         }
       },
       "target": {
@@ -1916,8 +1916,8 @@
           "columnBegin": 8,
           "columnEnd": 29,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 237,
-          "lineEnd": 237
+          "lineBegin": 239,
+          "lineEnd": 239
         }
       },
       "target": {
@@ -1949,8 +1949,8 @@
           "columnBegin": 8,
           "columnEnd": 29,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 242,
-          "lineEnd": 242
+          "lineBegin": 244,
+          "lineEnd": 244
         }
       },
       "target": {
@@ -1982,8 +1982,8 @@
           "columnBegin": 10,
           "columnEnd": 19,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 160,
-          "lineEnd": 160
+          "lineBegin": 162,
+          "lineEnd": 162
         }
       },
       "target": {
@@ -2015,8 +2015,8 @@
           "columnBegin": 11,
           "columnEnd": 18,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 221,
-          "lineEnd": 221
+          "lineBegin": 223,
+          "lineEnd": 223
         }
       },
       "target": {
@@ -2048,8 +2048,8 @@
           "columnBegin": 11,
           "columnEnd": 18,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 226,
-          "lineEnd": 226
+          "lineBegin": 228,
+          "lineEnd": 228
         }
       },
       "target": {
@@ -2081,8 +2081,8 @@
           "columnBegin": 11,
           "columnEnd": 27,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 126,
-          "lineEnd": 126
+          "lineBegin": 128,
+          "lineEnd": 128
         }
       },
       "target": {
@@ -2114,8 +2114,8 @@
           "columnBegin": 11,
           "columnEnd": 27,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 222,
-          "lineEnd": 222
+          "lineBegin": 224,
+          "lineEnd": 224
         }
       },
       "target": {
@@ -2147,8 +2147,8 @@
           "columnBegin": 11,
           "columnEnd": 31,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 124,
-          "lineEnd": 124
+          "lineBegin": 126,
+          "lineEnd": 126
         }
       },
       "target": {
@@ -2180,8 +2180,8 @@
           "columnBegin": 14,
           "columnEnd": 27,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 85,
-          "lineEnd": 85
+          "lineBegin": 87,
+          "lineEnd": 87
         }
       },
       "target": {
@@ -2213,8 +2213,8 @@
           "columnBegin": 15,
           "columnEnd": 22,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 55,
-          "lineEnd": 55
+          "lineBegin": 57,
+          "lineEnd": 57
         }
       },
       "target": {
@@ -2246,8 +2246,8 @@
           "columnBegin": 15,
           "columnEnd": 24,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 154,
-          "lineEnd": 154
+          "lineBegin": 156,
+          "lineEnd": 156
         }
       },
       "target": {
@@ -2279,8 +2279,8 @@
           "columnBegin": 15,
           "columnEnd": 27,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 110,
-          "lineEnd": 110
+          "lineBegin": 112,
+          "lineEnd": 112
         }
       },
       "target": {
@@ -2312,8 +2312,8 @@
           "columnBegin": 16,
           "columnEnd": 30,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 239,
-          "lineEnd": 239
+          "lineBegin": 241,
+          "lineEnd": 241
         }
       },
       "target": {
@@ -2342,8 +2342,8 @@
           "columnBegin": 16,
           "columnEnd": 30,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 244,
-          "lineEnd": 244
+          "lineBegin": 246,
+          "lineEnd": 246
         }
       },
       "target": {
@@ -2372,8 +2372,8 @@
           "columnBegin": 16,
           "columnEnd": 30,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 253,
-          "lineEnd": 253
+          "lineBegin": 255,
+          "lineEnd": 255
         }
       },
       "target": {
@@ -2402,8 +2402,8 @@
           "columnBegin": 16,
           "columnEnd": 30,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 258,
-          "lineEnd": 258
+          "lineBegin": 260,
+          "lineEnd": 260
         }
       },
       "target": {
@@ -2432,8 +2432,8 @@
           "columnBegin": 16,
           "columnEnd": 30,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 267,
-          "lineEnd": 267
+          "lineBegin": 269,
+          "lineEnd": 269
         }
       },
       "target": {
@@ -2462,8 +2462,8 @@
           "columnBegin": 16,
           "columnEnd": 30,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 272,
-          "lineEnd": 272
+          "lineBegin": 274,
+          "lineEnd": 274
         }
       },
       "target": {
@@ -2492,8 +2492,8 @@
           "columnBegin": 16,
           "columnEnd": 30,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 277,
-          "lineEnd": 277
+          "lineBegin": 279,
+          "lineEnd": 279
         }
       },
       "target": {
@@ -2522,8 +2522,8 @@
           "columnBegin": 16,
           "columnEnd": 30,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 282,
-          "lineEnd": 282
+          "lineBegin": 284,
+          "lineEnd": 284
         }
       },
       "target": {
@@ -2552,8 +2552,8 @@
           "columnBegin": 19,
           "columnEnd": 26,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 246,
-          "lineEnd": 246
+          "lineBegin": 248,
+          "lineEnd": 248
         }
       },
       "target": {
@@ -2585,8 +2585,8 @@
           "columnBegin": 20,
           "columnEnd": 26,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 132,
-          "lineEnd": 132
+          "lineBegin": 134,
+          "lineEnd": 134
         }
       },
       "target": {
@@ -2618,8 +2618,8 @@
           "columnBegin": 20,
           "columnEnd": 28,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 65,
-          "lineEnd": 65
+          "lineBegin": 67,
+          "lineEnd": 67
         }
       },
       "target": {
@@ -2651,8 +2651,8 @@
           "columnBegin": 21,
           "columnEnd": 29,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 78,
-          "lineEnd": 78
+          "lineBegin": 80,
+          "lineEnd": 80
         }
       },
       "target": {
@@ -2684,8 +2684,8 @@
           "columnBegin": 29,
           "columnEnd": 36,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 260,
-          "lineEnd": 260
+          "lineBegin": 262,
+          "lineEnd": 262
         }
       },
       "target": {
@@ -2717,8 +2717,8 @@
           "columnBegin": 29,
           "columnEnd": 39,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 232,
-          "lineEnd": 232
+          "lineBegin": 234,
+          "lineEnd": 234
         }
       },
       "target": {
@@ -2747,8 +2747,8 @@
           "columnBegin": 30,
           "columnEnd": 40,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 235,
-          "lineEnd": 235
+          "lineBegin": 237,
+          "lineEnd": 237
         }
       },
       "target": {
@@ -2777,8 +2777,8 @@
           "columnBegin": 42,
           "columnEnd": 55,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 246,
-          "lineEnd": 246
+          "lineBegin": 248,
+          "lineEnd": 248
         }
       },
       "target": {
@@ -2810,8 +2810,8 @@
           "columnBegin": 49,
           "columnEnd": 62,
           "file": { "key": "lib.thrift" },
-          "lineBegin": 260,
-          "lineEnd": 260
+          "lineBegin": 262,
+          "lineEnd": 262
         }
       },
       "target": {

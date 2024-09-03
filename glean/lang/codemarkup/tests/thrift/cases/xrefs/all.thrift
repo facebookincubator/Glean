@@ -6,4 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+// This is a test file: see output regeneration instruction in TARGETS files
+
 include "lib.thrift"

@@ -6,6 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+// This is a test file: see output regeneration instruction in TARGETS files
+
 namespace hs Glean
 namespace hack GleanGlass
 namespace py3 glean

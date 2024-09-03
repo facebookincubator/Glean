@@ -38,8 +38,8 @@
                 "range": {
                     "columnBegin": 13,
                     "columnEnd": 2,
-                    "lineBegin": 70,
-                    "lineEnd": 76
+                    "lineBegin": 72,
+                    "lineEnd": 78
                 },
                 "sym": "test/thrift/lib.thrift/Attribute"
             },
@@ -79,8 +79,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 17,
-                    "lineBegin": 71,
-                    "lineEnd": 71
+                    "lineBegin": 73,
+                    "lineEnd": 73
                 },
                 "sym": "test/thrift/lib.thrift/Attribute/aBool"
             },
@@ -120,8 +120,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 21,
-                    "lineBegin": 73,
-                    "lineEnd": 73
+                    "lineBegin": 75,
+                    "lineEnd": 75
                 },
                 "sym": "test/thrift/lib.thrift/Attribute/aDouble"
             },
@@ -161,8 +161,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 19,
-                    "lineBegin": 72,
-                    "lineEnd": 72
+                    "lineBegin": 74,
+                    "lineEnd": 74
                 },
                 "sym": "test/thrift/lib.thrift/Attribute/aInteger"
             },
@@ -202,8 +202,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 25,
-                    "lineBegin": 75,
-                    "lineEnd": 75
+                    "lineBegin": 77,
+                    "lineEnd": 77
                 },
                 "sym": "test/thrift/lib.thrift/Attribute/aList"
             },
@@ -243,8 +243,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 21,
-                    "lineBegin": 74,
-                    "lineEnd": 74
+                    "lineBegin": 76,
+                    "lineEnd": 76
                 },
                 "sym": "test/thrift/lib.thrift/Attribute/aString"
             },
@@ -284,8 +284,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 56,
-                    "lineBegin": 85,
-                    "lineEnd": 85
+                    "lineBegin": 87,
+                    "lineEnd": 87
                 },
                 "sym": "test/thrift/lib.thrift/AttributeList"
             },
@@ -325,8 +325,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 55,
-                    "lineBegin": 78,
-                    "lineEnd": 78
+                    "lineBegin": 80,
+                    "lineEnd": 80
                 },
                 "sym": "test/thrift/lib.thrift/Attributes"
             },
@@ -366,8 +366,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 232,
-                    "lineEnd": 233
+                    "lineBegin": 234,
+                    "lineEnd": 235
                 },
                 "sym": "test/thrift/lib.thrift/BaseService"
             },
@@ -407,8 +407,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 33,
-                    "lineEnd": 36
+                    "lineBegin": 35,
+                    "lineEnd": 38
                 },
                 "sym": "test/thrift/lib.thrift/ByteSpan"
             },
@@ -448,8 +448,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 29,
-                    "lineBegin": 35,
-                    "lineEnd": 35
+                    "lineBegin": 37,
+                    "lineEnd": 37
                 },
                 "sym": "test/thrift/lib.thrift/ByteSpan/length"
             },
@@ -489,8 +489,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 28,
-                    "lineBegin": 34,
-                    "lineEnd": 34
+                    "lineBegin": 36,
+                    "lineEnd": 36
                 },
                 "sym": "test/thrift/lib.thrift/ByteSpan/start"
             },
@@ -530,8 +530,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 210,
-                    "lineEnd": 213
+                    "lineBegin": 212,
+                    "lineEnd": 215
                 },
                 "sym": "test/thrift/lib.thrift/DefinitionKind"
             },
@@ -571,8 +571,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 19,
-                    "lineBegin": 212,
-                    "lineEnd": 212
+                    "lineBegin": 214,
+                    "lineEnd": 214
                 },
                 "sym": "test/thrift/lib.thrift/DefinitionKind/Declaration"
             },
@@ -612,8 +612,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 18,
-                    "lineBegin": 211,
-                    "lineEnd": 211
+                    "lineBegin": 213,
+                    "lineEnd": 213
                 },
                 "sym": "test/thrift/lib.thrift/DefinitionKind/Definition"
             },
@@ -653,8 +653,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 97,
-                    "lineEnd": 103
+                    "lineBegin": 99,
+                    "lineEnd": 105
                 },
                 "sym": "test/thrift/lib.thrift/DefinitionSymbolX"
             },
@@ -694,8 +694,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 31,
-                    "lineBegin": 102,
-                    "lineEnd": 102
+                    "lineBegin": 104,
+                    "lineEnd": 104
                 },
                 "sym": "test/thrift/lib.thrift/DefinitionSymbolX/attributes"
             },
@@ -735,8 +735,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 30,
-                    "lineBegin": 100,
-                    "lineEnd": 100
+                    "lineBegin": 102,
+                    "lineEnd": 102
                 },
                 "sym": "test/thrift/lib.thrift/DefinitionSymbolX/range"
             },
@@ -776,8 +776,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 19,
-                    "lineBegin": 98,
-                    "lineEnd": 98
+                    "lineBegin": 100,
+                    "lineEnd": 100
                 },
                 "sym": "test/thrift/lib.thrift/DefinitionSymbolX/sym"
             },
@@ -817,8 +817,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 131,
-                    "lineEnd": 137
+                    "lineBegin": 133,
+                    "lineEnd": 139
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolIndex"
             },
@@ -858,8 +858,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 24,
-                    "lineBegin": 134,
-                    "lineEnd": 134
+                    "lineBegin": 136,
+                    "lineEnd": 136
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolIndex/revision"
             },
@@ -899,8 +899,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 27,
-                    "lineBegin": 136,
-                    "lineEnd": 136
+                    "lineBegin": 138,
+                    "lineEnd": 138
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolIndex/size"
             },
@@ -940,8 +940,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 38,
-                    "lineBegin": 132,
-                    "lineEnd": 132
+                    "lineBegin": 134,
+                    "lineEnd": 134
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolIndex/symbols"
             },
@@ -981,8 +981,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 123,
-                    "lineEnd": 129
+                    "lineBegin": 125,
+                    "lineEnd": 131
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolListXResult"
             },
@@ -1022,8 +1022,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 42,
-                    "lineBegin": 126,
-                    "lineEnd": 126
+                    "lineBegin": 128,
+                    "lineEnd": 128
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolListXResult/definitions"
             },
@@ -1063,8 +1063,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 45,
-                    "lineBegin": 124,
-                    "lineEnd": 124
+                    "lineBegin": 126,
+                    "lineEnd": 126
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolListXResult/references"
             },
@@ -1104,8 +1104,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 24,
-                    "lineBegin": 128,
-                    "lineEnd": 128
+                    "lineBegin": 130,
+                    "lineEnd": 130
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolListXResult/revision"
             },
@@ -1145,8 +1145,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 60,
-                    "lineEnd": 66
+                    "lineBegin": 62,
+                    "lineEnd": 68
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolsRequest"
             },
@@ -1186,8 +1186,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 20,
-                    "lineBegin": 63,
-                    "lineEnd": 63
+                    "lineBegin": 65,
+                    "lineEnd": 65
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolsRequest/filepath"
             },
@@ -1227,8 +1227,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 37,
-                    "lineBegin": 65,
-                    "lineEnd": 65
+                    "lineBegin": 67,
+                    "lineEnd": 67
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolsRequest/range"
             },
@@ -1268,8 +1268,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 26,
-                    "lineBegin": 61,
-                    "lineEnd": 61
+                    "lineBegin": 63,
+                    "lineEnd": 63
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolsRequest/repository"
             },
@@ -1309,8 +1309,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 235,
-                    "lineEnd": 283
+                    "lineBegin": 237,
+                    "lineEnd": 285
                 },
                 "sym": "test/thrift/lib.thrift/GlassService"
             },
@@ -1350,8 +1350,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 35,
-                    "lineBegin": 264,
-                    "lineEnd": 267
+                    "lineBegin": 266,
+                    "lineEnd": 269
                 },
                 "sym": "test/thrift/lib.thrift/GlassService/describeSymbol"
             },
@@ -1391,8 +1391,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 35,
-                    "lineBegin": 241,
-                    "lineEnd": 244
+                    "lineBegin": 243,
+                    "lineEnd": 246
                 },
                 "sym": "test/thrift/lib.thrift/GlassService/documentSymbolIndex"
             },
@@ -1432,8 +1432,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 35,
-                    "lineBegin": 236,
-                    "lineEnd": 239
+                    "lineBegin": 238,
+                    "lineEnd": 241
                 },
                 "sym": "test/thrift/lib.thrift/GlassService/documentSymbolListX"
             },
@@ -1473,8 +1473,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 35,
-                    "lineBegin": 255,
-                    "lineEnd": 258
+                    "lineBegin": 257,
+                    "lineEnd": 260
                 },
                 "sym": "test/thrift/lib.thrift/GlassService/findReferenceRanges"
             },
@@ -1514,8 +1514,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 35,
-                    "lineBegin": 250,
-                    "lineEnd": 253
+                    "lineBegin": 252,
+                    "lineEnd": 255
                 },
                 "sym": "test/thrift/lib.thrift/GlassService/findReferences"
             },
@@ -1555,8 +1555,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 5,
-                    "lineBegin": 246,
-                    "lineEnd": 248
+                    "lineBegin": 248,
+                    "lineEnd": 250
                 },
                 "sym": "test/thrift/lib.thrift/GlassService/jumpTo"
             },
@@ -1596,8 +1596,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 5,
-                    "lineBegin": 260,
-                    "lineEnd": 262
+                    "lineBegin": 262,
+                    "lineEnd": 264
                 },
                 "sym": "test/thrift/lib.thrift/GlassService/resolveSymbol"
             },
@@ -1637,8 +1637,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 35,
-                    "lineBegin": 269,
-                    "lineEnd": 272
+                    "lineBegin": 271,
+                    "lineEnd": 274
                 },
                 "sym": "test/thrift/lib.thrift/GlassService/searchByName"
             },
@@ -1678,8 +1678,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 35,
-                    "lineBegin": 274,
-                    "lineEnd": 277
+                    "lineBegin": 276,
+                    "lineEnd": 279
                 },
                 "sym": "test/thrift/lib.thrift/GlassService/searchByNamePrefix"
             },
@@ -1719,8 +1719,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 35,
-                    "lineBegin": 279,
-                    "lineEnd": 282
+                    "lineBegin": 281,
+                    "lineEnd": 284
                 },
                 "sym": "test/thrift/lib.thrift/GlassService/searchBySymbolId"
             },
@@ -1760,8 +1760,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 80,
-                    "lineEnd": 83
+                    "lineBegin": 82,
+                    "lineEnd": 85
                 },
                 "sym": "test/thrift/lib.thrift/KeyedAttribute"
             },
@@ -1801,8 +1801,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 26,
-                    "lineBegin": 82,
-                    "lineEnd": 82
+                    "lineBegin": 84,
+                    "lineEnd": 84
                 },
                 "sym": "test/thrift/lib.thrift/KeyedAttribute/attribute"
             },
@@ -1842,8 +1842,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 17,
-                    "lineBegin": 81,
-                    "lineEnd": 81
+                    "lineBegin": 83,
+                    "lineEnd": 83
                 },
                 "sym": "test/thrift/lib.thrift/KeyedAttribute/key"
             },
@@ -1883,8 +1883,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 196,
-                    "lineEnd": 208
+                    "lineBegin": 198,
+                    "lineEnd": 210
                 },
                 "sym": "test/thrift/lib.thrift/Language"
             },
@@ -1924,8 +1924,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 13,
-                    "lineBegin": 207,
-                    "lineEnd": 207
+                    "lineBegin": 209,
+                    "lineEnd": 209
                 },
                 "sym": "test/thrift/lib.thrift/Language/Buck"
             },
@@ -1965,8 +1965,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 11,
-                    "lineBegin": 197,
-                    "lineEnd": 197
+                    "lineBegin": 199,
+                    "lineEnd": 199
                 },
                 "sym": "test/thrift/lib.thrift/Language/Cpp"
             },
@@ -2006,8 +2006,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 12,
-                    "lineBegin": 199,
-                    "lineEnd": 199
+                    "lineBegin": 201,
+                    "lineEnd": 201
                 },
                 "sym": "test/thrift/lib.thrift/Language/Hack"
             },
@@ -2047,8 +2047,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 15,
-                    "lineBegin": 200,
-                    "lineEnd": 200
+                    "lineBegin": 202,
+                    "lineEnd": 202
                 },
                 "sym": "test/thrift/lib.thrift/Language/Haskell"
             },
@@ -2088,8 +2088,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 12,
-                    "lineBegin": 201,
-                    "lineEnd": 201
+                    "lineBegin": 203,
+                    "lineEnd": 203
                 },
                 "sym": "test/thrift/lib.thrift/Language/Java"
             },
@@ -2129,8 +2129,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 18,
-                    "lineBegin": 198,
-                    "lineEnd": 198
+                    "lineBegin": 200,
+                    "lineEnd": 200
                 },
                 "sym": "test/thrift/lib.thrift/Language/JavaScript"
             },
@@ -2170,8 +2170,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 18,
-                    "lineBegin": 202,
-                    "lineEnd": 202
+                    "lineBegin": 204,
+                    "lineEnd": 204
                 },
                 "sym": "test/thrift/lib.thrift/Language/ObjectiveC"
             },
@@ -2211,8 +2211,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 20,
-                    "lineBegin": 204,
-                    "lineEnd": 204
+                    "lineBegin": 206,
+                    "lineEnd": 206
                 },
                 "sym": "test/thrift/lib.thrift/Language/PreProcessor"
             },
@@ -2252,8 +2252,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 14,
-                    "lineBegin": 203,
-                    "lineEnd": 203
+                    "lineBegin": 205,
+                    "lineEnd": 205
                 },
                 "sym": "test/thrift/lib.thrift/Language/Python"
             },
@@ -2293,8 +2293,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 13,
-                    "lineBegin": 206,
-                    "lineEnd": 206
+                    "lineBegin": 208,
+                    "lineEnd": 208
                 },
                 "sym": "test/thrift/lib.thrift/Language/Rust"
             },
@@ -2334,8 +2334,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 14,
-                    "lineBegin": 205,
-                    "lineEnd": 205
+                    "lineBegin": 207,
+                    "lineEnd": 207
                 },
                 "sym": "test/thrift/lib.thrift/Language/Thrift"
             },
@@ -2375,8 +2375,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 20,
-                    "lineEnd": 24
+                    "lineBegin": 22,
+                    "lineEnd": 26
                 },
                 "sym": "test/thrift/lib.thrift/LineRange"
             },
@@ -2416,8 +2416,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 32,
-                    "lineBegin": 21,
-                    "lineEnd": 21
+                    "lineBegin": 23,
+                    "lineEnd": 23
                 },
                 "sym": "test/thrift/lib.thrift/LineRange/lineBegin"
             },
@@ -2457,8 +2457,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 30,
-                    "lineBegin": 23,
-                    "lineEnd": 23
+                    "lineBegin": 25,
+                    "lineEnd": 25
                 },
                 "sym": "test/thrift/lib.thrift/LineRange/lineEnd"
             },
@@ -2498,8 +2498,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 38,
-                    "lineEnd": 44
+                    "lineBegin": 40,
+                    "lineEnd": 46
                 },
                 "sym": "test/thrift/lib.thrift/Location"
             },
@@ -2539,8 +2539,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 20,
-                    "lineBegin": 41,
-                    "lineEnd": 41
+                    "lineBegin": 43,
+                    "lineEnd": 43
                 },
                 "sym": "test/thrift/lib.thrift/Location/filepath"
             },
@@ -2580,8 +2580,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 26,
-                    "lineBegin": 39,
-                    "lineEnd": 39
+                    "lineBegin": 41,
+                    "lineEnd": 41
                 },
                 "sym": "test/thrift/lib.thrift/Location/repository"
             },
@@ -2621,8 +2621,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 32,
-                    "lineBegin": 43,
-                    "lineEnd": 43
+                    "lineBegin": 45,
+                    "lineEnd": 45
                 },
                 "sym": "test/thrift/lib.thrift/Location/span"
             },
@@ -2662,8 +2662,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 46,
-                    "lineEnd": 52
+                    "lineBegin": 48,
+                    "lineEnd": 54
                 },
                 "sym": "test/thrift/lib.thrift/LocationRange"
             },
@@ -2703,8 +2703,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 20,
-                    "lineBegin": 49,
-                    "lineEnd": 49
+                    "lineBegin": 51,
+                    "lineEnd": 51
                 },
                 "sym": "test/thrift/lib.thrift/LocationRange/filepath"
             },
@@ -2744,8 +2744,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 30,
-                    "lineBegin": 51,
-                    "lineEnd": 51
+                    "lineBegin": 53,
+                    "lineEnd": 53
                 },
                 "sym": "test/thrift/lib.thrift/LocationRange/range"
             },
@@ -2785,8 +2785,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 26,
-                    "lineBegin": 47,
-                    "lineEnd": 47
+                    "lineBegin": 49,
+                    "lineEnd": 49
                 },
                 "sym": "test/thrift/lib.thrift/LocationRange/repository"
             },
@@ -2826,8 +2826,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 33,
-                    "lineBegin": 143,
-                    "lineEnd": 143
+                    "lineBegin": 145,
+                    "lineEnd": 145
                 },
                 "sym": "test/thrift/lib.thrift/Name"
             },
@@ -2867,8 +2867,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 33,
-                    "lineBegin": 16,
-                    "lineEnd": 16
+                    "lineBegin": 18,
+                    "lineEnd": 18
                 },
                 "sym": "test/thrift/lib.thrift/Path"
             },
@@ -2908,8 +2908,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 145,
-                    "lineEnd": 148
+                    "lineBegin": 147,
+                    "lineEnd": 150
                 },
                 "sym": "test/thrift/lib.thrift/QualifiedName"
             },
@@ -2949,8 +2949,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 21,
-                    "lineBegin": 147,
-                    "lineEnd": 147
+                    "lineBegin": 149,
+                    "lineEnd": 149
                 },
                 "sym": "test/thrift/lib.thrift/QualifiedName/container"
             },
@@ -2990,8 +2990,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 21,
-                    "lineBegin": 146,
-                    "lineEnd": 146
+                    "lineBegin": 148,
+                    "lineEnd": 148
                 },
                 "sym": "test/thrift/lib.thrift/QualifiedName/localName"
             },
@@ -3031,8 +3031,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 26,
-                    "lineEnd": 31
+                    "lineBegin": 28,
+                    "lineEnd": 33
                 },
                 "sym": "test/thrift/lib.thrift/Range"
             },
@@ -3072,8 +3072,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 34,
-                    "lineBegin": 28,
-                    "lineEnd": 28
+                    "lineBegin": 30,
+                    "lineEnd": 30
                 },
                 "sym": "test/thrift/lib.thrift/Range/columnBegin"
             },
@@ -3113,8 +3113,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 32,
-                    "lineBegin": 30,
-                    "lineEnd": 30
+                    "lineBegin": 32,
+                    "lineEnd": 32
                 },
                 "sym": "test/thrift/lib.thrift/Range/columnEnd"
             },
@@ -3154,8 +3154,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 32,
-                    "lineBegin": 27,
-                    "lineEnd": 27
+                    "lineBegin": 29,
+                    "lineEnd": 29
                 },
                 "sym": "test/thrift/lib.thrift/Range/lineBegin"
             },
@@ -3195,8 +3195,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 30,
-                    "lineBegin": 29,
-                    "lineEnd": 29
+                    "lineBegin": 31,
+                    "lineEnd": 31
                 },
                 "sym": "test/thrift/lib.thrift/Range/lineEnd"
             },
@@ -3236,8 +3236,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 87,
-                    "lineEnd": 95
+                    "lineBegin": 89,
+                    "lineEnd": 97
                 },
                 "sym": "test/thrift/lib.thrift/ReferenceRangeSymbolX"
             },
@@ -3277,8 +3277,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 31,
-                    "lineBegin": 94,
-                    "lineEnd": 94
+                    "lineBegin": 96,
+                    "lineEnd": 96
                 },
                 "sym": "test/thrift/lib.thrift/ReferenceRangeSymbolX/attributes"
             },
@@ -3318,8 +3318,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 30,
-                    "lineBegin": 90,
-                    "lineEnd": 90
+                    "lineBegin": 92,
+                    "lineEnd": 92
                 },
                 "sym": "test/thrift/lib.thrift/ReferenceRangeSymbolX/range"
             },
@@ -3359,8 +3359,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 19,
-                    "lineBegin": 88,
-                    "lineEnd": 88
+                    "lineBegin": 90,
+                    "lineEnd": 90
                 },
                 "sym": "test/thrift/lib.thrift/ReferenceRangeSymbolX/sym"
             },
@@ -3400,8 +3400,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 27,
-                    "lineBegin": 92,
-                    "lineEnd": 92
+                    "lineBegin": 94,
+                    "lineEnd": 94
                 },
                 "sym": "test/thrift/lib.thrift/ReferenceRangeSymbolX/target"
             },
@@ -3441,8 +3441,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 37,
-                    "lineBegin": 14,
-                    "lineEnd": 14
+                    "lineBegin": 16,
+                    "lineEnd": 16
                 },
                 "sym": "test/thrift/lib.thrift/RepoName"
             },
@@ -3482,8 +3482,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 54,
-                    "lineEnd": 58
+                    "lineBegin": 56,
+                    "lineEnd": 60
                 },
                 "sym": "test/thrift/lib.thrift/RequestOptions"
             },
@@ -3523,8 +3523,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 25,
-                    "lineBegin": 57,
-                    "lineEnd": 57
+                    "lineBegin": 59,
+                    "lineEnd": 59
                 },
                 "sym": "test/thrift/lib.thrift/RequestOptions/limit"
             },
@@ -3564,8 +3564,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 33,
-                    "lineBegin": 55,
-                    "lineEnd": 55
+                    "lineBegin": 57,
+                    "lineEnd": 57
                 },
                 "sym": "test/thrift/lib.thrift/RequestOptions/revision"
             },
@@ -3605,8 +3605,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 37,
-                    "lineBegin": 18,
-                    "lineEnd": 18
+                    "lineBegin": 20,
+                    "lineEnd": 20
                 },
                 "sym": "test/thrift/lib.thrift/Revision"
             },
@@ -3646,8 +3646,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 215,
-                    "lineEnd": 218
+                    "lineBegin": 217,
+                    "lineEnd": 220
                 },
                 "sym": "test/thrift/lib.thrift/SearchByNameRequest"
             },
@@ -3687,8 +3687,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 28,
-                    "lineBegin": 216,
-                    "lineEnd": 216
+                    "lineBegin": 218,
+                    "lineEnd": 218
                 },
                 "sym": "test/thrift/lib.thrift/SearchByNameRequest/context"
             },
@@ -3728,8 +3728,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 18,
-                    "lineBegin": 217,
-                    "lineEnd": 217
+                    "lineBegin": 219,
+                    "lineEnd": 219
                 },
                 "sym": "test/thrift/lib.thrift/SearchByNameRequest/name"
             },
@@ -3769,8 +3769,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 220,
-                    "lineEnd": 223
+                    "lineBegin": 222,
+                    "lineEnd": 225
                 },
                 "sym": "test/thrift/lib.thrift/SearchByNameResult"
             },
@@ -3810,8 +3810,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 44,
-                    "lineBegin": 222,
-                    "lineEnd": 222
+                    "lineBegin": 224,
+                    "lineEnd": 224
                 },
                 "sym": "test/thrift/lib.thrift/SearchByNameResult/symbolDetails"
             },
@@ -3851,8 +3851,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 29,
-                    "lineBegin": 221,
-                    "lineEnd": 221
+                    "lineBegin": 223,
+                    "lineEnd": 223
                 },
                 "sym": "test/thrift/lib.thrift/SearchByNameResult/symbols"
             },
@@ -3892,8 +3892,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 225,
-                    "lineEnd": 227
+                    "lineBegin": 227,
+                    "lineEnd": 229
                 },
                 "sym": "test/thrift/lib.thrift/SearchBySymbolIdResult"
             },
@@ -3933,8 +3933,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 29,
-                    "lineBegin": 226,
-                    "lineEnd": 226
+                    "lineBegin": 228,
+                    "lineEnd": 228
                 },
                 "sym": "test/thrift/lib.thrift/SearchBySymbolIdResult/symbols"
             },
@@ -3974,8 +3974,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 157,
-                    "lineEnd": 161
+                    "lineBegin": 159,
+                    "lineEnd": 163
                 },
                 "sym": "test/thrift/lib.thrift/SearchContext"
             },
@@ -4015,8 +4015,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 28,
-                    "lineBegin": 160,
-                    "lineEnd": 160
+                    "lineBegin": 162,
+                    "lineEnd": 162
                 },
                 "sym": "test/thrift/lib.thrift/SearchContext/kinds"
             },
@@ -4056,8 +4056,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 24,
-                    "lineBegin": 159,
-                    "lineEnd": 159
+                    "lineBegin": 161,
+                    "lineEnd": 161
                 },
                 "sym": "test/thrift/lib.thrift/SearchContext/language"
             },
@@ -4097,8 +4097,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 25,
-                    "lineBegin": 158,
-                    "lineEnd": 158
+                    "lineBegin": 160,
+                    "lineEnd": 160
                 },
                 "sym": "test/thrift/lib.thrift/SearchContext/repo_name"
             },
@@ -4138,8 +4138,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 139,
-                    "lineEnd": 141
+                    "lineBegin": 141,
+                    "lineEnd": 143
                 },
                 "sym": "test/thrift/lib.thrift/ServerException"
             },
@@ -4179,8 +4179,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 139,
-                    "lineEnd": 141
+                    "lineBegin": 141,
+                    "lineEnd": 143
                 },
                 "sym": "test/thrift/lib.thrift/ServerException"
             },
@@ -4220,8 +4220,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 21,
-                    "lineBegin": 140,
-                    "lineEnd": 140
+                    "lineBegin": 142,
+                    "lineEnd": 142
                 },
                 "sym": "test/thrift/lib.thrift/ServerException/message"
             },
@@ -4261,8 +4261,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 150,
-                    "lineEnd": 155
+                    "lineBegin": 152,
+                    "lineEnd": 157
                 },
                 "sym": "test/thrift/lib.thrift/SymbolDescription"
             },
@@ -4302,8 +4302,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 31,
-                    "lineBegin": 154,
-                    "lineEnd": 154
+                    "lineBegin": 156,
+                    "lineEnd": 156
                 },
                 "sym": "test/thrift/lib.thrift/SymbolDescription/kind"
             },
@@ -4343,8 +4343,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 26,
-                    "lineBegin": 152,
-                    "lineEnd": 152
+                    "lineBegin": 154,
+                    "lineEnd": 154
                 },
                 "sym": "test/thrift/lib.thrift/SymbolDescription/location"
             },
@@ -4384,8 +4384,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 25,
-                    "lineBegin": 153,
-                    "lineEnd": 153
+                    "lineBegin": 155,
+                    "lineEnd": 155
                 },
                 "sym": "test/thrift/lib.thrift/SymbolDescription/name"
             },
@@ -4425,8 +4425,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 19,
-                    "lineBegin": 151,
-                    "lineEnd": 151
+                    "lineBegin": 153,
+                    "lineEnd": 153
                 },
                 "sym": "test/thrift/lib.thrift/SymbolDescription/sym"
             },
@@ -4466,8 +4466,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 37,
-                    "lineBegin": 68,
-                    "lineEnd": 68
+                    "lineBegin": 70,
+                    "lineEnd": 70
                 },
                 "sym": "test/thrift/lib.thrift/SymbolId"
             },
@@ -4507,8 +4507,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 163,
-                    "lineEnd": 194
+                    "lineBegin": 165,
+                    "lineEnd": 196
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind"
             },
@@ -4548,8 +4548,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 14,
-                    "lineBegin": 183,
-                    "lineEnd": 183
+                    "lineBegin": 185,
+                    "lineEnd": 185
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Array"
             },
@@ -4589,8 +4589,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 16,
-                    "lineBegin": 182,
-                    "lineEnd": 182
+                    "lineBegin": 184,
+                    "lineEnd": 184
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Boolean"
             },
@@ -4630,8 +4630,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 14,
-                    "lineBegin": 170,
-                    "lineEnd": 170
+                    "lineBegin": 172,
+                    "lineEnd": 172
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Class_"
             },
@@ -4671,8 +4671,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 17,
-                    "lineBegin": 179,
-                    "lineEnd": 179
+                    "lineBegin": 181,
+                    "lineEnd": 181
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Constant"
             },
@@ -4712,8 +4712,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 20,
-                    "lineBegin": 174,
-                    "lineEnd": 174
+                    "lineBegin": 176,
+                    "lineEnd": 176
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Constructor"
             },
@@ -4753,8 +4753,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 13,
-                    "lineBegin": 175,
-                    "lineEnd": 175
+                    "lineBegin": 177,
+                    "lineEnd": 177
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Enum"
             },
@@ -4794,8 +4794,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 19,
-                    "lineBegin": 187,
-                    "lineEnd": 187
+                    "lineBegin": 189,
+                    "lineEnd": 189
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Enumerator"
             },
@@ -4835,8 +4835,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 14,
-                    "lineBegin": 189,
-                    "lineEnd": 189
+                    "lineBegin": 191,
+                    "lineEnd": 191
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Event"
             },
@@ -4876,8 +4876,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 14,
-                    "lineBegin": 173,
-                    "lineEnd": 173
+                    "lineBegin": 175,
+                    "lineEnd": 175
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Field"
             },
@@ -4917,8 +4917,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 12,
-                    "lineBegin": 167,
-                    "lineEnd": 167
+                    "lineBegin": 169,
+                    "lineEnd": 169
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/File"
             },
@@ -4958,8 +4958,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 17,
-                    "lineBegin": 177,
-                    "lineEnd": 177
+                    "lineBegin": 179,
+                    "lineEnd": 179
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Function"
             },
@@ -4999,8 +4999,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 18,
-                    "lineBegin": 176,
-                    "lineEnd": 176
+                    "lineBegin": 178,
+                    "lineEnd": 178
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Interface"
             },
@@ -5040,8 +5040,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 12,
-                    "lineBegin": 185,
-                    "lineEnd": 185
+                    "lineBegin": 187,
+                    "lineEnd": 187
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Key"
             },
@@ -5081,8 +5081,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 14,
-                    "lineBegin": 193,
-                    "lineEnd": 193
+                    "lineBegin": 195,
+                    "lineEnd": 195
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Macro"
             },
@@ -5122,8 +5122,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 14,
-                    "lineBegin": 171,
-                    "lineEnd": 171
+                    "lineBegin": 173,
+                    "lineEnd": 173
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Method"
             },
@@ -5163,8 +5163,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 14,
-                    "lineBegin": 168,
-                    "lineEnd": 168
+                    "lineBegin": 170,
+                    "lineEnd": 170
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Module"
             },
@@ -5204,8 +5204,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 17,
-                    "lineBegin": 169,
-                    "lineEnd": 169
+                    "lineBegin": 171,
+                    "lineEnd": 171
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Namespace"
             },
@@ -5245,8 +5245,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 13,
-                    "lineBegin": 186,
-                    "lineEnd": 186
+                    "lineBegin": 188,
+                    "lineEnd": 188
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Null"
             },
@@ -5286,8 +5286,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 15,
-                    "lineBegin": 181,
-                    "lineEnd": 181
+                    "lineBegin": 183,
+                    "lineEnd": 183
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Number"
             },
@@ -5327,8 +5327,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 15,
-                    "lineBegin": 184,
-                    "lineEnd": 184
+                    "lineBegin": 186,
+                    "lineEnd": 186
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Object"
             },
@@ -5368,8 +5368,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 17,
-                    "lineBegin": 190,
-                    "lineEnd": 190
+                    "lineBegin": 192,
+                    "lineEnd": 192
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Operator"
             },
@@ -5409,8 +5409,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 15,
-                    "lineBegin": 164,
-                    "lineEnd": 164
+                    "lineBegin": 166,
+                    "lineEnd": 166
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Package"
             },
@@ -5450,8 +5450,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 16,
-                    "lineBegin": 172,
-                    "lineEnd": 172
+                    "lineBegin": 174,
+                    "lineEnd": 174
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Property"
             },
@@ -5491,8 +5491,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 15,
-                    "lineBegin": 180,
-                    "lineEnd": 180
+                    "lineBegin": 182,
+                    "lineEnd": 182
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/String"
             },
@@ -5532,8 +5532,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 15,
-                    "lineBegin": 188,
-                    "lineEnd": 188
+                    "lineBegin": 190,
+                    "lineEnd": 190
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Struct"
             },
@@ -5573,8 +5573,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 12,
-                    "lineBegin": 165,
-                    "lineEnd": 165
+                    "lineBegin": 167,
+                    "lineEnd": 167
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Type"
             },
@@ -5614,8 +5614,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 22,
-                    "lineBegin": 191,
-                    "lineEnd": 191
+                    "lineBegin": 193,
+                    "lineEnd": 193
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/TypeParameter"
             },
@@ -5655,8 +5655,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 14,
-                    "lineBegin": 192,
-                    "lineEnd": 192
+                    "lineBegin": 194,
+                    "lineEnd": 194
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Union"
             },
@@ -5696,8 +5696,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 13,
-                    "lineBegin": 166,
-                    "lineEnd": 166
+                    "lineBegin": 168,
+                    "lineEnd": 168
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Value"
             },
@@ -5737,8 +5737,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 17,
-                    "lineBegin": 178,
-                    "lineEnd": 178
+                    "lineBegin": 180,
+                    "lineEnd": 180
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind/Variable"
             },
@@ -5778,8 +5778,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 115,
-                    "lineEnd": 121
+                    "lineBegin": 117,
+                    "lineEnd": 123
                 },
                 "sym": "test/thrift/lib.thrift/SymbolPath"
             },
@@ -5819,8 +5819,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 20,
-                    "lineBegin": 118,
-                    "lineEnd": 118
+                    "lineBegin": 120,
+                    "lineEnd": 120
                 },
                 "sym": "test/thrift/lib.thrift/SymbolPath/filepath"
             },
@@ -5860,8 +5860,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 30,
-                    "lineBegin": 120,
-                    "lineEnd": 120
+                    "lineBegin": 122,
+                    "lineEnd": 122
                 },
                 "sym": "test/thrift/lib.thrift/SymbolPath/range"
             },
@@ -5901,8 +5901,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 26,
-                    "lineBegin": 116,
-                    "lineEnd": 116
+                    "lineBegin": 118,
+                    "lineEnd": 118
                 },
                 "sym": "test/thrift/lib.thrift/SymbolPath/repository"
             },
@@ -5942,8 +5942,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 105,
-                    "lineEnd": 113
+                    "lineBegin": 107,
+                    "lineEnd": 115
                 },
                 "sym": "test/thrift/lib.thrift/SymbolX"
             },
@@ -5983,8 +5983,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 28,
-                    "lineBegin": 112,
-                    "lineEnd": 112
+                    "lineBegin": 114,
+                    "lineEnd": 114
                 },
                 "sym": "test/thrift/lib.thrift/SymbolX/attributes"
             },
@@ -6024,8 +6024,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 30,
-                    "lineBegin": 108,
-                    "lineEnd": 108
+                    "lineBegin": 110,
+                    "lineEnd": 110
                 },
                 "sym": "test/thrift/lib.thrift/SymbolX/range"
             },
@@ -6065,8 +6065,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 19,
-                    "lineBegin": 106,
-                    "lineEnd": 106
+                    "lineBegin": 108,
+                    "lineEnd": 108
                 },
                 "sym": "test/thrift/lib.thrift/SymbolX/sym"
             },
@@ -6106,8 +6106,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 36,
-                    "lineBegin": 110,
-                    "lineEnd": 110
+                    "lineBegin": 112,
+                    "lineEnd": 112
                 },
                 "sym": "test/thrift/lib.thrift/SymbolX/target"
             },
@@ -6147,8 +6147,8 @@
                 "range": {
                     "columnBegin": 1,
                     "columnEnd": 2,
-                    "lineBegin": 229,
-                    "lineEnd": 230
+                    "lineBegin": 231,
+                    "lineEnd": 232
                 },
                 "sym": "test/thrift/lib.thrift/ZeroService"
             }
@@ -6191,8 +6191,8 @@
                 "range": {
                     "columnBegin": 21,
                     "columnEnd": 30,
-                    "lineBegin": 78,
-                    "lineEnd": 78
+                    "lineBegin": 80,
+                    "lineEnd": 80
                 },
                 "sym": "test/thrift/lib.thrift/Attribute",
                 "target": {
@@ -6200,8 +6200,8 @@
                     "range": {
                         "columnBegin": 13,
                         "columnEnd": 2,
-                        "lineBegin": 70,
-                        "lineEnd": 76
+                        "lineBegin": 72,
+                        "lineEnd": 78
                     },
                     "repository": "test"
                 }
@@ -6242,8 +6242,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 15,
-                    "lineBegin": 82,
-                    "lineEnd": 82
+                    "lineBegin": 84,
+                    "lineEnd": 84
                 },
                 "sym": "test/thrift/lib.thrift/Attribute",
                 "target": {
@@ -6251,8 +6251,8 @@
                     "range": {
                         "columnBegin": 13,
                         "columnEnd": 2,
-                        "lineBegin": 70,
-                        "lineEnd": 76
+                        "lineBegin": 72,
+                        "lineEnd": 78
                     },
                     "repository": "test"
                 }
@@ -6293,8 +6293,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 19,
-                    "lineBegin": 94,
-                    "lineEnd": 94
+                    "lineBegin": 96,
+                    "lineEnd": 96
                 },
                 "sym": "test/thrift/lib.thrift/AttributeList",
                 "target": {
@@ -6302,8 +6302,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 56,
-                        "lineBegin": 85,
-                        "lineEnd": 85
+                        "lineBegin": 87,
+                        "lineEnd": 87
                     },
                     "repository": "test"
                 }
@@ -6344,8 +6344,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 19,
-                    "lineBegin": 102,
-                    "lineEnd": 102
+                    "lineBegin": 104,
+                    "lineEnd": 104
                 },
                 "sym": "test/thrift/lib.thrift/AttributeList",
                 "target": {
@@ -6353,8 +6353,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 56,
-                        "lineBegin": 85,
-                        "lineEnd": 85
+                        "lineBegin": 87,
+                        "lineEnd": 87
                     },
                     "repository": "test"
                 }
@@ -6395,8 +6395,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 16,
-                    "lineBegin": 112,
-                    "lineEnd": 112
+                    "lineBegin": 114,
+                    "lineEnd": 114
                 },
                 "sym": "test/thrift/lib.thrift/Attributes",
                 "target": {
@@ -6404,8 +6404,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 55,
-                        "lineBegin": 78,
-                        "lineEnd": 78
+                        "lineBegin": 80,
+                        "lineEnd": 80
                     },
                     "repository": "test"
                 }
@@ -6446,8 +6446,8 @@
                 "range": {
                     "columnBegin": 30,
                     "columnEnd": 41,
-                    "lineBegin": 235,
-                    "lineEnd": 235
+                    "lineBegin": 237,
+                    "lineEnd": 237
                 },
                 "sym": "test/thrift/lib.thrift/BaseService",
                 "target": {
@@ -6455,8 +6455,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 232,
-                        "lineEnd": 233
+                        "lineBegin": 234,
+                        "lineEnd": 235
                     },
                     "repository": "test"
                 }
@@ -6497,8 +6497,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 14,
-                    "lineBegin": 43,
-                    "lineEnd": 43
+                    "lineBegin": 45,
+                    "lineEnd": 45
                 },
                 "sym": "test/thrift/lib.thrift/ByteSpan",
                 "target": {
@@ -6506,8 +6506,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 33,
-                        "lineEnd": 36
+                        "lineBegin": 35,
+                        "lineEnd": 38
                     },
                     "repository": "test"
                 }
@@ -6548,8 +6548,8 @@
                 "range": {
                     "columnBegin": 11,
                     "columnEnd": 28,
-                    "lineBegin": 126,
-                    "lineEnd": 126
+                    "lineBegin": 128,
+                    "lineEnd": 128
                 },
                 "sym": "test/thrift/lib.thrift/DefinitionSymbolX",
                 "target": {
@@ -6557,8 +6557,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 97,
-                        "lineEnd": 103
+                        "lineBegin": 99,
+                        "lineEnd": 105
                     },
                     "repository": "test"
                 }
@@ -6599,8 +6599,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 22,
-                    "lineBegin": 241,
-                    "lineEnd": 241
+                    "lineBegin": 243,
+                    "lineEnd": 243
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolIndex",
                 "target": {
@@ -6608,8 +6608,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 131,
-                        "lineEnd": 137
+                        "lineBegin": 133,
+                        "lineEnd": 139
                     },
                     "repository": "test"
                 }
@@ -6650,8 +6650,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 28,
-                    "lineBegin": 236,
-                    "lineEnd": 236
+                    "lineBegin": 238,
+                    "lineEnd": 238
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolListXResult",
                 "target": {
@@ -6659,8 +6659,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 123,
-                        "lineEnd": 129
+                        "lineBegin": 125,
+                        "lineEnd": 131
                     },
                     "repository": "test"
                 }
@@ -6701,8 +6701,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 30,
-                    "lineBegin": 237,
-                    "lineEnd": 237
+                    "lineBegin": 239,
+                    "lineEnd": 239
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolsRequest",
                 "target": {
@@ -6710,8 +6710,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 60,
-                        "lineEnd": 66
+                        "lineBegin": 62,
+                        "lineEnd": 68
                     },
                     "repository": "test"
                 }
@@ -6752,8 +6752,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 30,
-                    "lineBegin": 242,
-                    "lineEnd": 242
+                    "lineBegin": 244,
+                    "lineEnd": 244
                 },
                 "sym": "test/thrift/lib.thrift/DocumentSymbolsRequest",
                 "target": {
@@ -6761,8 +6761,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 60,
-                        "lineEnd": 66
+                        "lineBegin": 62,
+                        "lineEnd": 68
                     },
                     "repository": "test"
                 }
@@ -6803,8 +6803,8 @@
                 "range": {
                     "columnBegin": 14,
                     "columnEnd": 28,
-                    "lineBegin": 85,
-                    "lineEnd": 85
+                    "lineBegin": 87,
+                    "lineEnd": 87
                 },
                 "sym": "test/thrift/lib.thrift/KeyedAttribute",
                 "target": {
@@ -6812,8 +6812,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 80,
-                        "lineEnd": 83
+                        "lineBegin": 82,
+                        "lineEnd": 85
                     },
                     "repository": "test"
                 }
@@ -6854,8 +6854,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 14,
-                    "lineBegin": 159,
-                    "lineEnd": 159
+                    "lineBegin": 161,
+                    "lineEnd": 161
                 },
                 "sym": "test/thrift/lib.thrift/Language",
                 "target": {
@@ -6863,8 +6863,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 196,
-                        "lineEnd": 208
+                        "lineBegin": 198,
+                        "lineEnd": 210
                     },
                     "repository": "test"
                 }
@@ -6905,8 +6905,8 @@
                 "range": {
                     "columnBegin": 20,
                     "columnEnd": 29,
-                    "lineBegin": 65,
-                    "lineEnd": 65
+                    "lineBegin": 67,
+                    "lineEnd": 67
                 },
                 "sym": "test/thrift/lib.thrift/LineRange",
                 "target": {
@@ -6914,8 +6914,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 20,
-                        "lineEnd": 24
+                        "lineBegin": 22,
+                        "lineEnd": 26
                     },
                     "repository": "test"
                 }
@@ -6956,8 +6956,8 @@
                 "range": {
                     "columnBegin": 19,
                     "columnEnd": 27,
-                    "lineBegin": 246,
-                    "lineEnd": 246
+                    "lineBegin": 248,
+                    "lineEnd": 248
                 },
                 "sym": "test/thrift/lib.thrift/Location",
                 "target": {
@@ -6965,8 +6965,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 38,
-                        "lineEnd": 44
+                        "lineBegin": 40,
+                        "lineEnd": 46
                     },
                     "repository": "test"
                 }
@@ -7007,8 +7007,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 16,
-                    "lineBegin": 250,
-                    "lineEnd": 250
+                    "lineBegin": 252,
+                    "lineEnd": 252
                 },
                 "sym": "test/thrift/lib.thrift/Location",
                 "target": {
@@ -7016,8 +7016,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 38,
-                        "lineEnd": 44
+                        "lineBegin": 40,
+                        "lineEnd": 46
                     },
                     "repository": "test"
                 }
@@ -7058,8 +7058,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 11,
-                    "lineBegin": 260,
-                    "lineEnd": 260
+                    "lineBegin": 262,
+                    "lineEnd": 262
                 },
                 "sym": "test/thrift/lib.thrift/Location",
                 "target": {
@@ -7067,8 +7067,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 38,
-                        "lineEnd": 44
+                        "lineBegin": 40,
+                        "lineEnd": 46
                     },
                     "repository": "test"
                 }
@@ -7109,8 +7109,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 19,
-                    "lineBegin": 92,
-                    "lineEnd": 92
+                    "lineBegin": 94,
+                    "lineEnd": 94
                 },
                 "sym": "test/thrift/lib.thrift/LocationRange",
                 "target": {
@@ -7118,8 +7118,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 46,
-                        "lineEnd": 52
+                        "lineBegin": 48,
+                        "lineEnd": 54
                     },
                     "repository": "test"
                 }
@@ -7160,8 +7160,8 @@
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 28,
-                    "lineBegin": 110,
-                    "lineEnd": 110
+                    "lineBegin": 112,
+                    "lineEnd": 112
                 },
                 "sym": "test/thrift/lib.thrift/LocationRange",
                 "target": {
@@ -7169,8 +7169,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 46,
-                        "lineEnd": 52
+                        "lineBegin": 48,
+                        "lineEnd": 54
                     },
                     "repository": "test"
                 }
@@ -7211,8 +7211,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 21,
-                    "lineBegin": 255,
-                    "lineEnd": 255
+                    "lineBegin": 257,
+                    "lineEnd": 257
                 },
                 "sym": "test/thrift/lib.thrift/LocationRange",
                 "target": {
@@ -7220,8 +7220,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 46,
-                        "lineEnd": 52
+                        "lineBegin": 48,
+                        "lineEnd": 54
                     },
                     "repository": "test"
                 }
@@ -7262,8 +7262,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 10,
-                    "lineBegin": 146,
-                    "lineEnd": 146
+                    "lineBegin": 148,
+                    "lineEnd": 148
                 },
                 "sym": "test/thrift/lib.thrift/Name",
                 "target": {
@@ -7271,8 +7271,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 33,
-                        "lineBegin": 143,
-                        "lineEnd": 143
+                        "lineBegin": 145,
+                        "lineEnd": 145
                     },
                     "repository": "test"
                 }
@@ -7313,8 +7313,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 10,
-                    "lineBegin": 147,
-                    "lineEnd": 147
+                    "lineBegin": 149,
+                    "lineEnd": 149
                 },
                 "sym": "test/thrift/lib.thrift/Name",
                 "target": {
@@ -7322,8 +7322,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 33,
-                        "lineBegin": 143,
-                        "lineEnd": 143
+                        "lineBegin": 145,
+                        "lineEnd": 145
                     },
                     "repository": "test"
                 }
@@ -7364,8 +7364,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 10,
-                    "lineBegin": 41,
-                    "lineEnd": 41
+                    "lineBegin": 43,
+                    "lineEnd": 43
                 },
                 "sym": "test/thrift/lib.thrift/Path",
                 "target": {
@@ -7373,8 +7373,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 33,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 }
@@ -7415,8 +7415,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 10,
-                    "lineBegin": 49,
-                    "lineEnd": 49
+                    "lineBegin": 51,
+                    "lineEnd": 51
                 },
                 "sym": "test/thrift/lib.thrift/Path",
                 "target": {
@@ -7424,8 +7424,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 33,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 }
@@ -7466,8 +7466,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 10,
-                    "lineBegin": 63,
-                    "lineEnd": 63
+                    "lineBegin": 65,
+                    "lineEnd": 65
                 },
                 "sym": "test/thrift/lib.thrift/Path",
                 "target": {
@@ -7475,8 +7475,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 33,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 }
@@ -7517,8 +7517,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 10,
-                    "lineBegin": 118,
-                    "lineEnd": 118
+                    "lineBegin": 120,
+                    "lineEnd": 120
                 },
                 "sym": "test/thrift/lib.thrift/Path",
                 "target": {
@@ -7526,8 +7526,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 33,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 18,
+                        "lineEnd": 18
                     },
                     "repository": "test"
                 }
@@ -7568,8 +7568,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 19,
-                    "lineBegin": 153,
-                    "lineEnd": 153
+                    "lineBegin": 155,
+                    "lineEnd": 155
                 },
                 "sym": "test/thrift/lib.thrift/QualifiedName",
                 "target": {
@@ -7577,8 +7577,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 145,
-                        "lineEnd": 148
+                        "lineBegin": 147,
+                        "lineEnd": 150
                     },
                     "repository": "test"
                 }
@@ -7619,8 +7619,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 11,
-                    "lineBegin": 51,
-                    "lineEnd": 51
+                    "lineBegin": 53,
+                    "lineEnd": 53
                 },
                 "sym": "test/thrift/lib.thrift/Range",
                 "target": {
@@ -7628,8 +7628,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 26,
-                        "lineEnd": 31
+                        "lineBegin": 28,
+                        "lineEnd": 33
                     },
                     "repository": "test"
                 }
@@ -7670,8 +7670,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 11,
-                    "lineBegin": 90,
-                    "lineEnd": 90
+                    "lineBegin": 92,
+                    "lineEnd": 92
                 },
                 "sym": "test/thrift/lib.thrift/Range",
                 "target": {
@@ -7679,8 +7679,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 26,
-                        "lineEnd": 31
+                        "lineBegin": 28,
+                        "lineEnd": 33
                     },
                     "repository": "test"
                 }
@@ -7721,8 +7721,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 11,
-                    "lineBegin": 100,
-                    "lineEnd": 100
+                    "lineBegin": 102,
+                    "lineEnd": 102
                 },
                 "sym": "test/thrift/lib.thrift/Range",
                 "target": {
@@ -7730,8 +7730,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 26,
-                        "lineEnd": 31
+                        "lineBegin": 28,
+                        "lineEnd": 33
                     },
                     "repository": "test"
                 }
@@ -7772,8 +7772,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 11,
-                    "lineBegin": 108,
-                    "lineEnd": 108
+                    "lineBegin": 110,
+                    "lineEnd": 110
                 },
                 "sym": "test/thrift/lib.thrift/Range",
                 "target": {
@@ -7781,8 +7781,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 26,
-                        "lineEnd": 31
+                        "lineBegin": 28,
+                        "lineEnd": 33
                     },
                     "repository": "test"
                 }
@@ -7823,8 +7823,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 11,
-                    "lineBegin": 120,
-                    "lineEnd": 120
+                    "lineBegin": 122,
+                    "lineEnd": 122
                 },
                 "sym": "test/thrift/lib.thrift/Range",
                 "target": {
@@ -7832,8 +7832,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 26,
-                        "lineEnd": 31
+                        "lineBegin": 28,
+                        "lineEnd": 33
                     },
                     "repository": "test"
                 }
@@ -7874,8 +7874,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 8,
-                    "lineBegin": 246,
-                    "lineEnd": 246
+                    "lineBegin": 248,
+                    "lineEnd": 248
                 },
                 "sym": "test/thrift/lib.thrift/Range",
                 "target": {
@@ -7883,8 +7883,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 26,
-                        "lineEnd": 31
+                        "lineBegin": 28,
+                        "lineEnd": 33
                     },
                     "repository": "test"
                 }
@@ -7925,8 +7925,8 @@
                 "range": {
                     "columnBegin": 11,
                     "columnEnd": 32,
-                    "lineBegin": 124,
-                    "lineEnd": 124
+                    "lineBegin": 126,
+                    "lineEnd": 126
                 },
                 "sym": "test/thrift/lib.thrift/ReferenceRangeSymbolX",
                 "target": {
@@ -7934,8 +7934,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 87,
-                        "lineEnd": 95
+                        "lineBegin": 89,
+                        "lineEnd": 97
                     },
                     "repository": "test"
                 }
@@ -7976,8 +7976,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 14,
-                    "lineBegin": 39,
-                    "lineEnd": 39
+                    "lineBegin": 41,
+                    "lineEnd": 41
                 },
                 "sym": "test/thrift/lib.thrift/RepoName",
                 "target": {
@@ -7985,8 +7985,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 14,
-                        "lineEnd": 14
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 }
@@ -8027,8 +8027,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 14,
-                    "lineBegin": 47,
-                    "lineEnd": 47
+                    "lineBegin": 49,
+                    "lineEnd": 49
                 },
                 "sym": "test/thrift/lib.thrift/RepoName",
                 "target": {
@@ -8036,8 +8036,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 14,
-                        "lineEnd": 14
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 }
@@ -8078,8 +8078,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 14,
-                    "lineBegin": 61,
-                    "lineEnd": 61
+                    "lineBegin": 63,
+                    "lineEnd": 63
                 },
                 "sym": "test/thrift/lib.thrift/RepoName",
                 "target": {
@@ -8087,8 +8087,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 14,
-                        "lineEnd": 14
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 }
@@ -8129,8 +8129,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 14,
-                    "lineBegin": 116,
-                    "lineEnd": 116
+                    "lineBegin": 118,
+                    "lineEnd": 118
                 },
                 "sym": "test/thrift/lib.thrift/RepoName",
                 "target": {
@@ -8138,8 +8138,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 14,
-                        "lineEnd": 14
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 }
@@ -8180,8 +8180,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 14,
-                    "lineBegin": 158,
-                    "lineEnd": 158
+                    "lineBegin": 160,
+                    "lineEnd": 160
                 },
                 "sym": "test/thrift/lib.thrift/RepoName",
                 "target": {
@@ -8189,8 +8189,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 14,
-                        "lineEnd": 14
+                        "lineBegin": 16,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 }
@@ -8231,8 +8231,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 22,
-                    "lineBegin": 238,
-                    "lineEnd": 238
+                    "lineBegin": 240,
+                    "lineEnd": 240
                 },
                 "sym": "test/thrift/lib.thrift/RequestOptions",
                 "target": {
@@ -8240,8 +8240,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 58
+                        "lineBegin": 56,
+                        "lineEnd": 60
                     },
                     "repository": "test"
                 }
@@ -8282,8 +8282,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 22,
-                    "lineBegin": 243,
-                    "lineEnd": 243
+                    "lineBegin": 245,
+                    "lineEnd": 245
                 },
                 "sym": "test/thrift/lib.thrift/RequestOptions",
                 "target": {
@@ -8291,8 +8291,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 58
+                        "lineBegin": 56,
+                        "lineEnd": 60
                     },
                     "repository": "test"
                 }
@@ -8333,8 +8333,8 @@
                 "range": {
                     "columnBegin": 42,
                     "columnEnd": 56,
-                    "lineBegin": 246,
-                    "lineEnd": 246
+                    "lineBegin": 248,
+                    "lineEnd": 248
                 },
                 "sym": "test/thrift/lib.thrift/RequestOptions",
                 "target": {
@@ -8342,8 +8342,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 58
+                        "lineBegin": 56,
+                        "lineEnd": 60
                     },
                     "repository": "test"
                 }
@@ -8384,8 +8384,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 22,
-                    "lineBegin": 252,
-                    "lineEnd": 252
+                    "lineBegin": 254,
+                    "lineEnd": 254
                 },
                 "sym": "test/thrift/lib.thrift/RequestOptions",
                 "target": {
@@ -8393,8 +8393,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 58
+                        "lineBegin": 56,
+                        "lineEnd": 60
                     },
                     "repository": "test"
                 }
@@ -8435,8 +8435,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 22,
-                    "lineBegin": 257,
-                    "lineEnd": 257
+                    "lineBegin": 259,
+                    "lineEnd": 259
                 },
                 "sym": "test/thrift/lib.thrift/RequestOptions",
                 "target": {
@@ -8444,8 +8444,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 58
+                        "lineBegin": 56,
+                        "lineEnd": 60
                     },
                     "repository": "test"
                 }
@@ -8486,8 +8486,8 @@
                 "range": {
                     "columnBegin": 49,
                     "columnEnd": 63,
-                    "lineBegin": 260,
-                    "lineEnd": 260
+                    "lineBegin": 262,
+                    "lineEnd": 262
                 },
                 "sym": "test/thrift/lib.thrift/RequestOptions",
                 "target": {
@@ -8495,8 +8495,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 58
+                        "lineBegin": 56,
+                        "lineEnd": 60
                     },
                     "repository": "test"
                 }
@@ -8537,8 +8537,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 22,
-                    "lineBegin": 266,
-                    "lineEnd": 266
+                    "lineBegin": 268,
+                    "lineEnd": 268
                 },
                 "sym": "test/thrift/lib.thrift/RequestOptions",
                 "target": {
@@ -8546,8 +8546,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 58
+                        "lineBegin": 56,
+                        "lineEnd": 60
                     },
                     "repository": "test"
                 }
@@ -8588,8 +8588,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 22,
-                    "lineBegin": 271,
-                    "lineEnd": 271
+                    "lineBegin": 273,
+                    "lineEnd": 273
                 },
                 "sym": "test/thrift/lib.thrift/RequestOptions",
                 "target": {
@@ -8597,8 +8597,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 58
+                        "lineBegin": 56,
+                        "lineEnd": 60
                     },
                     "repository": "test"
                 }
@@ -8639,8 +8639,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 22,
-                    "lineBegin": 276,
-                    "lineEnd": 276
+                    "lineBegin": 278,
+                    "lineEnd": 278
                 },
                 "sym": "test/thrift/lib.thrift/RequestOptions",
                 "target": {
@@ -8648,8 +8648,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 58
+                        "lineBegin": 56,
+                        "lineEnd": 60
                     },
                     "repository": "test"
                 }
@@ -8690,8 +8690,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 22,
-                    "lineBegin": 281,
-                    "lineEnd": 281
+                    "lineBegin": 283,
+                    "lineEnd": 283
                 },
                 "sym": "test/thrift/lib.thrift/RequestOptions",
                 "target": {
@@ -8699,8 +8699,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 54,
-                        "lineEnd": 58
+                        "lineBegin": 56,
+                        "lineEnd": 60
                     },
                     "repository": "test"
                 }
@@ -8741,8 +8741,8 @@
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 23,
-                    "lineBegin": 55,
-                    "lineEnd": 55
+                    "lineBegin": 57,
+                    "lineEnd": 57
                 },
                 "sym": "test/thrift/lib.thrift/Revision",
                 "target": {
@@ -8750,8 +8750,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 18,
-                        "lineEnd": 18
+                        "lineBegin": 20,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 }
@@ -8792,8 +8792,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 14,
-                    "lineBegin": 128,
-                    "lineEnd": 128
+                    "lineBegin": 130,
+                    "lineEnd": 130
                 },
                 "sym": "test/thrift/lib.thrift/Revision",
                 "target": {
@@ -8801,8 +8801,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 18,
-                        "lineEnd": 18
+                        "lineBegin": 20,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 }
@@ -8843,8 +8843,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 14,
-                    "lineBegin": 134,
-                    "lineEnd": 134
+                    "lineBegin": 136,
+                    "lineEnd": 136
                 },
                 "sym": "test/thrift/lib.thrift/Revision",
                 "target": {
@@ -8852,8 +8852,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 18,
-                        "lineEnd": 18
+                        "lineBegin": 20,
+                        "lineEnd": 20
                     },
                     "repository": "test"
                 }
@@ -8894,8 +8894,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 27,
-                    "lineBegin": 270,
-                    "lineEnd": 270
+                    "lineBegin": 272,
+                    "lineEnd": 272
                 },
                 "sym": "test/thrift/lib.thrift/SearchByNameRequest",
                 "target": {
@@ -8903,8 +8903,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 215,
-                        "lineEnd": 218
+                        "lineBegin": 217,
+                        "lineEnd": 220
                     },
                     "repository": "test"
                 }
@@ -8945,8 +8945,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 27,
-                    "lineBegin": 275,
-                    "lineEnd": 275
+                    "lineBegin": 277,
+                    "lineEnd": 277
                 },
                 "sym": "test/thrift/lib.thrift/SearchByNameRequest",
                 "target": {
@@ -8954,8 +8954,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 215,
-                        "lineEnd": 218
+                        "lineBegin": 217,
+                        "lineEnd": 220
                     },
                     "repository": "test"
                 }
@@ -8996,8 +8996,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 21,
-                    "lineBegin": 269,
-                    "lineEnd": 269
+                    "lineBegin": 271,
+                    "lineEnd": 271
                 },
                 "sym": "test/thrift/lib.thrift/SearchByNameResult",
                 "target": {
@@ -9005,8 +9005,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 220,
-                        "lineEnd": 223
+                        "lineBegin": 222,
+                        "lineEnd": 225
                     },
                     "repository": "test"
                 }
@@ -9047,8 +9047,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 21,
-                    "lineBegin": 274,
-                    "lineEnd": 274
+                    "lineBegin": 276,
+                    "lineEnd": 276
                 },
                 "sym": "test/thrift/lib.thrift/SearchByNameResult",
                 "target": {
@@ -9056,8 +9056,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 220,
-                        "lineEnd": 223
+                        "lineBegin": 222,
+                        "lineEnd": 225
                     },
                     "repository": "test"
                 }
@@ -9098,8 +9098,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 25,
-                    "lineBegin": 279,
-                    "lineEnd": 279
+                    "lineBegin": 281,
+                    "lineEnd": 281
                 },
                 "sym": "test/thrift/lib.thrift/SearchBySymbolIdResult",
                 "target": {
@@ -9107,8 +9107,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 225,
-                        "lineEnd": 227
+                        "lineBegin": 227,
+                        "lineEnd": 229
                     },
                     "repository": "test"
                 }
@@ -9149,8 +9149,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 19,
-                    "lineBegin": 216,
-                    "lineEnd": 216
+                    "lineBegin": 218,
+                    "lineEnd": 218
                 },
                 "sym": "test/thrift/lib.thrift/SearchContext",
                 "target": {
@@ -9158,8 +9158,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 157,
-                        "lineEnd": 161
+                        "lineBegin": 159,
+                        "lineEnd": 163
                     },
                     "repository": "test"
                 }
@@ -9200,8 +9200,8 @@
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 31,
-                    "lineBegin": 239,
-                    "lineEnd": 239
+                    "lineBegin": 241,
+                    "lineEnd": 241
                 },
                 "sym": "test/thrift/lib.thrift/ServerException",
                 "target": {
@@ -9209,8 +9209,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 139,
-                        "lineEnd": 141
+                        "lineBegin": 141,
+                        "lineEnd": 143
                     },
                     "repository": "test"
                 }
@@ -9251,8 +9251,8 @@
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 31,
-                    "lineBegin": 244,
-                    "lineEnd": 244
+                    "lineBegin": 246,
+                    "lineEnd": 246
                 },
                 "sym": "test/thrift/lib.thrift/ServerException",
                 "target": {
@@ -9260,8 +9260,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 139,
-                        "lineEnd": 141
+                        "lineBegin": 141,
+                        "lineEnd": 143
                     },
                     "repository": "test"
                 }
@@ -9302,8 +9302,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 23,
-                    "lineBegin": 247,
-                    "lineEnd": 247
+                    "lineBegin": 249,
+                    "lineEnd": 249
                 },
                 "sym": "test/thrift/lib.thrift/ServerException",
                 "target": {
@@ -9311,8 +9311,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 139,
-                        "lineEnd": 141
+                        "lineBegin": 141,
+                        "lineEnd": 143
                     },
                     "repository": "test"
                 }
@@ -9353,8 +9353,8 @@
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 31,
-                    "lineBegin": 253,
-                    "lineEnd": 253
+                    "lineBegin": 255,
+                    "lineEnd": 255
                 },
                 "sym": "test/thrift/lib.thrift/ServerException",
                 "target": {
@@ -9362,8 +9362,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 139,
-                        "lineEnd": 141
+                        "lineBegin": 141,
+                        "lineEnd": 143
                     },
                     "repository": "test"
                 }
@@ -9404,8 +9404,8 @@
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 31,
-                    "lineBegin": 258,
-                    "lineEnd": 258
+                    "lineBegin": 260,
+                    "lineEnd": 260
                 },
                 "sym": "test/thrift/lib.thrift/ServerException",
                 "target": {
@@ -9413,8 +9413,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 139,
-                        "lineEnd": 141
+                        "lineBegin": 141,
+                        "lineEnd": 143
                     },
                     "repository": "test"
                 }
@@ -9455,8 +9455,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 23,
-                    "lineBegin": 261,
-                    "lineEnd": 261
+                    "lineBegin": 263,
+                    "lineEnd": 263
                 },
                 "sym": "test/thrift/lib.thrift/ServerException",
                 "target": {
@@ -9464,8 +9464,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 139,
-                        "lineEnd": 141
+                        "lineBegin": 141,
+                        "lineEnd": 143
                     },
                     "repository": "test"
                 }
@@ -9506,8 +9506,8 @@
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 31,
-                    "lineBegin": 267,
-                    "lineEnd": 267
+                    "lineBegin": 269,
+                    "lineEnd": 269
                 },
                 "sym": "test/thrift/lib.thrift/ServerException",
                 "target": {
@@ -9515,8 +9515,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 139,
-                        "lineEnd": 141
+                        "lineBegin": 141,
+                        "lineEnd": 143
                     },
                     "repository": "test"
                 }
@@ -9557,8 +9557,8 @@
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 31,
-                    "lineBegin": 272,
-                    "lineEnd": 272
+                    "lineBegin": 274,
+                    "lineEnd": 274
                 },
                 "sym": "test/thrift/lib.thrift/ServerException",
                 "target": {
@@ -9566,8 +9566,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 139,
-                        "lineEnd": 141
+                        "lineBegin": 141,
+                        "lineEnd": 143
                     },
                     "repository": "test"
                 }
@@ -9608,8 +9608,8 @@
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 31,
-                    "lineBegin": 277,
-                    "lineEnd": 277
+                    "lineBegin": 279,
+                    "lineEnd": 279
                 },
                 "sym": "test/thrift/lib.thrift/ServerException",
                 "target": {
@@ -9617,8 +9617,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 139,
-                        "lineEnd": 141
+                        "lineBegin": 141,
+                        "lineEnd": 143
                     },
                     "repository": "test"
                 }
@@ -9659,8 +9659,8 @@
                 "range": {
                     "columnBegin": 16,
                     "columnEnd": 31,
-                    "lineBegin": 282,
-                    "lineEnd": 282
+                    "lineBegin": 284,
+                    "lineEnd": 284
                 },
                 "sym": "test/thrift/lib.thrift/ServerException",
                 "target": {
@@ -9668,8 +9668,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 139,
-                        "lineEnd": 141
+                        "lineBegin": 141,
+                        "lineEnd": 143
                     },
                     "repository": "test"
                 }
@@ -9710,8 +9710,8 @@
                 "range": {
                     "columnBegin": 11,
                     "columnEnd": 28,
-                    "lineBegin": 222,
-                    "lineEnd": 222
+                    "lineBegin": 224,
+                    "lineEnd": 224
                 },
                 "sym": "test/thrift/lib.thrift/SymbolDescription",
                 "target": {
@@ -9719,8 +9719,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 150,
-                        "lineEnd": 155
+                        "lineBegin": 152,
+                        "lineEnd": 157
                     },
                     "repository": "test"
                 }
@@ -9761,8 +9761,8 @@
                 "range": {
                     "columnBegin": 3,
                     "columnEnd": 20,
-                    "lineBegin": 264,
-                    "lineEnd": 264
+                    "lineBegin": 266,
+                    "lineEnd": 266
                 },
                 "sym": "test/thrift/lib.thrift/SymbolDescription",
                 "target": {
@@ -9770,8 +9770,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 150,
-                        "lineEnd": 155
+                        "lineBegin": 152,
+                        "lineEnd": 157
                     },
                     "repository": "test"
                 }
@@ -9812,8 +9812,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 14,
-                    "lineBegin": 88,
-                    "lineEnd": 88
+                    "lineBegin": 90,
+                    "lineEnd": 90
                 },
                 "sym": "test/thrift/lib.thrift/SymbolId",
                 "target": {
@@ -9821,8 +9821,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 68,
-                        "lineEnd": 68
+                        "lineBegin": 70,
+                        "lineEnd": 70
                     },
                     "repository": "test"
                 }
@@ -9863,8 +9863,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 14,
-                    "lineBegin": 98,
-                    "lineEnd": 98
+                    "lineBegin": 100,
+                    "lineEnd": 100
                 },
                 "sym": "test/thrift/lib.thrift/SymbolId",
                 "target": {
@@ -9872,8 +9872,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 68,
-                        "lineEnd": 68
+                        "lineBegin": 70,
+                        "lineEnd": 70
                     },
                     "repository": "test"
                 }
@@ -9914,8 +9914,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 14,
-                    "lineBegin": 106,
-                    "lineEnd": 106
+                    "lineBegin": 108,
+                    "lineEnd": 108
                 },
                 "sym": "test/thrift/lib.thrift/SymbolId",
                 "target": {
@@ -9923,8 +9923,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 68,
-                        "lineEnd": 68
+                        "lineBegin": 70,
+                        "lineEnd": 70
                     },
                     "repository": "test"
                 }
@@ -9965,8 +9965,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 14,
-                    "lineBegin": 151,
-                    "lineEnd": 151
+                    "lineBegin": 153,
+                    "lineEnd": 153
                 },
                 "sym": "test/thrift/lib.thrift/SymbolId",
                 "target": {
@@ -9974,8 +9974,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 68,
-                        "lineEnd": 68
+                        "lineBegin": 70,
+                        "lineEnd": 70
                     },
                     "repository": "test"
                 }
@@ -10016,8 +10016,8 @@
                 "range": {
                     "columnBegin": 11,
                     "columnEnd": 19,
-                    "lineBegin": 221,
-                    "lineEnd": 221
+                    "lineBegin": 223,
+                    "lineEnd": 223
                 },
                 "sym": "test/thrift/lib.thrift/SymbolId",
                 "target": {
@@ -10025,8 +10025,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 68,
-                        "lineEnd": 68
+                        "lineBegin": 70,
+                        "lineEnd": 70
                     },
                     "repository": "test"
                 }
@@ -10067,8 +10067,8 @@
                 "range": {
                     "columnBegin": 11,
                     "columnEnd": 19,
-                    "lineBegin": 226,
-                    "lineEnd": 226
+                    "lineBegin": 228,
+                    "lineEnd": 228
                 },
                 "sym": "test/thrift/lib.thrift/SymbolId",
                 "target": {
@@ -10076,8 +10076,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 68,
-                        "lineEnd": 68
+                        "lineBegin": 70,
+                        "lineEnd": 70
                     },
                     "repository": "test"
                 }
@@ -10118,8 +10118,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 16,
-                    "lineBegin": 251,
-                    "lineEnd": 251
+                    "lineBegin": 253,
+                    "lineEnd": 253
                 },
                 "sym": "test/thrift/lib.thrift/SymbolId",
                 "target": {
@@ -10127,8 +10127,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 68,
-                        "lineEnd": 68
+                        "lineBegin": 70,
+                        "lineEnd": 70
                     },
                     "repository": "test"
                 }
@@ -10169,8 +10169,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 16,
-                    "lineBegin": 256,
-                    "lineEnd": 256
+                    "lineBegin": 258,
+                    "lineEnd": 258
                 },
                 "sym": "test/thrift/lib.thrift/SymbolId",
                 "target": {
@@ -10178,8 +10178,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 68,
-                        "lineEnd": 68
+                        "lineBegin": 70,
+                        "lineEnd": 70
                     },
                     "repository": "test"
                 }
@@ -10220,8 +10220,8 @@
                 "range": {
                     "columnBegin": 29,
                     "columnEnd": 37,
-                    "lineBegin": 260,
-                    "lineEnd": 260
+                    "lineBegin": 262,
+                    "lineEnd": 262
                 },
                 "sym": "test/thrift/lib.thrift/SymbolId",
                 "target": {
@@ -10229,8 +10229,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 68,
-                        "lineEnd": 68
+                        "lineBegin": 70,
+                        "lineEnd": 70
                     },
                     "repository": "test"
                 }
@@ -10271,8 +10271,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 16,
-                    "lineBegin": 265,
-                    "lineEnd": 265
+                    "lineBegin": 267,
+                    "lineEnd": 267
                 },
                 "sym": "test/thrift/lib.thrift/SymbolId",
                 "target": {
@@ -10280,8 +10280,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 68,
-                        "lineEnd": 68
+                        "lineBegin": 70,
+                        "lineEnd": 70
                     },
                     "repository": "test"
                 }
@@ -10322,8 +10322,8 @@
                 "range": {
                     "columnBegin": 8,
                     "columnEnd": 16,
-                    "lineBegin": 280,
-                    "lineEnd": 280
+                    "lineBegin": 282,
+                    "lineEnd": 282
                 },
                 "sym": "test/thrift/lib.thrift/SymbolId",
                 "target": {
@@ -10331,8 +10331,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 37,
-                        "lineBegin": 68,
-                        "lineEnd": 68
+                        "lineBegin": 70,
+                        "lineEnd": 70
                     },
                     "repository": "test"
                 }
@@ -10373,8 +10373,8 @@
                 "range": {
                     "columnBegin": 15,
                     "columnEnd": 25,
-                    "lineBegin": 154,
-                    "lineEnd": 154
+                    "lineBegin": 156,
+                    "lineEnd": 156
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind",
                 "target": {
@@ -10382,8 +10382,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 163,
-                        "lineEnd": 194
+                        "lineBegin": 165,
+                        "lineEnd": 196
                     },
                     "repository": "test"
                 }
@@ -10424,8 +10424,8 @@
                 "range": {
                     "columnBegin": 10,
                     "columnEnd": 20,
-                    "lineBegin": 160,
-                    "lineEnd": 160
+                    "lineBegin": 162,
+                    "lineEnd": 162
                 },
                 "sym": "test/thrift/lib.thrift/SymbolKind",
                 "target": {
@@ -10433,8 +10433,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 163,
-                        "lineEnd": 194
+                        "lineBegin": 165,
+                        "lineEnd": 196
                     },
                     "repository": "test"
                 }
@@ -10475,8 +10475,8 @@
                 "range": {
                     "columnBegin": 6,
                     "columnEnd": 16,
-                    "lineBegin": 152,
-                    "lineEnd": 152
+                    "lineBegin": 154,
+                    "lineEnd": 154
                 },
                 "sym": "test/thrift/lib.thrift/SymbolPath",
                 "target": {
@@ -10484,8 +10484,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 115,
-                        "lineEnd": 121
+                        "lineBegin": 117,
+                        "lineEnd": 123
                     },
                     "repository": "test"
                 }
@@ -10526,8 +10526,8 @@
                 "range": {
                     "columnBegin": 20,
                     "columnEnd": 27,
-                    "lineBegin": 132,
-                    "lineEnd": 132
+                    "lineBegin": 134,
+                    "lineEnd": 134
                 },
                 "sym": "test/thrift/lib.thrift/SymbolX",
                 "target": {
@@ -10535,8 +10535,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 105,
-                        "lineEnd": 113
+                        "lineBegin": 107,
+                        "lineEnd": 115
                     },
                     "repository": "test"
                 }
@@ -10577,8 +10577,8 @@
                 "range": {
                     "columnBegin": 29,
                     "columnEnd": 40,
-                    "lineBegin": 232,
-                    "lineEnd": 232
+                    "lineBegin": 234,
+                    "lineEnd": 234
                 },
                 "sym": "test/thrift/lib.thrift/ZeroService",
                 "target": {
@@ -10586,8 +10586,8 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
-                        "lineBegin": 229,
-                        "lineEnd": 230
+                        "lineBegin": 231,
+                        "lineEnd": 232
                     },
                     "repository": "test"
                 }
