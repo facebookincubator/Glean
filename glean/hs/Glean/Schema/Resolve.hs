@@ -102,7 +102,7 @@ parseAndResolveSchemaCached cache str = do
 
   parsed <- forM schemaFragments $ \(key, str) ->
     case HashMap.lookup key cache of
-      Nothing -> case parseSchema str of
+      Nothing -> case parseSchemaWithVersion ver str of
         Left err -> Left err
         Right ss -> return (key, ss)
       Just cached -> return (key, cached)
