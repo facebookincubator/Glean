@@ -820,13 +820,20 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     std::optional<Fact<Fbthrift::QualName>> qual_name;
     // none for exception type
     std::optional<Fbthrift::NamedKind> kind;
+  }; 
+
+  class ThriftDecodingException : public std::runtime_error {
+  public:
+      explicit ThriftDecodingException(const std::string& message)
+          : std::runtime_error(message) {}
   };
 
   /** Generate CxxToThrift facts and/or Thrift contexts from the 
     * cxx declaration fact and json in comment.
     *
-    * For members (enum values or field) and constants,
-    * we also need the context computed from the enclosing declaration.
+    * To generate Thrift members declarations (enum values or field) and
+    * constants, we also need the ThriftContext computed from the enclosing
+    * declaration annoations.
     *
     * Json annotations are of the form
     * Type: {"file": ..., "name": ..., "kind": KIND }
@@ -845,11 +852,18 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     if (thriftJson.find("field") != thriftJson.items().end()) {
       // Field: { "field": ... } 
-      // field annotation, expect qual_name in context
-      auto thrift_ctx = thrift_ctx_opt.value();
-      auto qual_name = thrift_ctx.qual_name.value();
       auto field =
           visitor.db.fact<Fbthrift::Identifier>(thriftJson["field"].asString());
+
+      if (!thrift_ctx_opt.has_value()) {
+        throw ThriftDecodingException("Expect a Thrift context when decoding a field");
+      }
+      auto thrift_ctx = thrift_ctx_opt.value();
+      if (!thrift_ctx.qual_name.has_value()) {
+        throw ThriftDecodingException("Expect a qual name in context when decoding a field");
+      }
+      auto qual_name = thrift_ctx.qual_name.value();
+
       Fbthrift::FieldKind field_kind;
       if (!thrift_ctx.kind.has_value()) {
         field_kind = Fbthrift::FieldKind::exception_;
@@ -866,14 +880,25 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     if (thriftJson.find("constant") != thriftJson.items().end()) {
       // Constant: { "constant": ... } 
-      // Constant declaration, expect file in context
-      auto thrift_ctx = thrift_ctx_opt.value();
-      auto file_fact = thrift_ctx.file.value();
       std::string thrift_constant = thriftJson["constant"].asString();
+
+      if (!thrift_ctx_opt.has_value()) {
+        throw ThriftDecodingException("Expect a Thrift context");
+      }
+      auto thrift_ctx = thrift_ctx_opt.value();
+      if (!thrift_ctx.file.has_value()) {
+        throw ThriftDecodingException("Expect a file name in context");
+      }
+
+      auto file_fact = thrift_ctx.file.value();
       auto qual_name = visitor.db.fact<Fbthrift::QualName>(
           file_fact, visitor.db.fact<Fbthrift::Identifier>(thrift_constant));
       auto constant_ = visitor.db.fact<Fbthrift::Constant>(qual_name);
       return {Fbthrift::XRefTarget::constant(constant_), {}};
+    }
+
+    if (thriftJson.find("file") == thriftJson.items().end()) { 
+      throw ThriftDecodingException("Expect a file in Thrift json annotation");
     }
 
     std::string thrift_file = thriftJson["file"].asString();
@@ -903,15 +928,18 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
             visitor.db.fact<Fbthrift::Identifier>(thrift_function));
         return {Fbthrift::XRefTarget::function_(function_name), {}};
       } else {
-          return {Fbthrift::XRefTarget::service_(service_fact), {}};
+        return {Fbthrift::XRefTarget::service_(service_fact), {}};
       }
     }
 
     if (thriftJson.find("kind") != thriftJson.items().end()) {
       // Type: {"file": ..., "name": ..., "kind": KIND }
       // returns "type" context
-      std::string name = thriftJson["name"].asString();
       std::string kind = thriftJson["kind"].asString();
+      if (thriftJson.find("name") == thriftJson.items().end()) { 
+        throw ThriftDecodingException("Expect a name in Thrift json annotation");
+      }
+      std::string name = thriftJson["name"].asString();
       Fact<Fbthrift::QualName> qual_name = visitor.db.fact<Fbthrift::QualName>(
           file_fact, visitor.db.fact<Fbthrift::Identifier>(name));
       
@@ -990,8 +1018,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
             if (RE2::PartialMatch(comment_str, thrift_regex, &json_annotation)) {
               try {
                 std::optional<ThriftContext> thrift_ctx;
-                // For generated fields and constants, we expect to find
-                // a thrift context in the enclosing context
+
+                // Get ThriftContext from parent decl if any
                 const clang::DeclContext *context = decl->getDeclContext();
                 if (context->isRecord()) {
                   const clang::CXXRecordDecl *recordDecl = clang::cast<clang::CXXRecordDecl>(context);
@@ -1005,19 +1033,38 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
                     auto ns_ = visitor.namespaces(ns);
                     thrift_ctx = ns_->thrift_ctx;
                 }
+
                 auto [thrift_target_opt, thrift_ctx_res] =
                     thriftTarget(visitor, folly::parseJson(json_annotation), thrift_ctx);
+
+                //  Propagate context
                 if constexpr (std::is_same<Decl, EnumDecl>::value) {
+                  if (!thrift_ctx_res.has_value()) {
+                    throw ThriftDecodingException("Expect a Thrift context from EnumDecl");
+                  }
                   auto thrift_ctx_ = thrift_ctx_res.value();
+                  if (!(thrift_ctx_.qual_name.has_value() && thrift_ctx_.kind.has_value())) {
+                    throw ThriftDecodingException("Expect a Thrift context with qualname and kind from EnumDecl");
+                  }
                   result->thrift_type = Fbthrift::NamedType{thrift_ctx_.qual_name.value(), thrift_ctx_.kind.value()};
                 } else if constexpr (std::is_same<Decl, ClassDecl>::value || std::is_same<Decl, NamespaceDecl>::value) {
                   result->thrift_ctx = thrift_ctx_res;
-                } 
-                auto thrift_target = thrift_target_opt.value();
-                visitor.db.fact<Cxx::CxxToThrift>(
-                    Cxx::XRefTarget::declaration(result->declaration()),
-                    thrift_target);
-              } catch (...) {
+                }  
+
+                // For all type of decls, expect namespace, we should generate a thrift fact
+                if constexpr (!std::is_same<Decl, NamespaceDecl>::value) {
+                  if (!thrift_target_opt.has_value()) {
+                    throw ThriftDecodingException("No thrift fact to generate");
+                  }
+                  auto thrift_target = thrift_target_opt.value();
+                  visitor.db.fact<Cxx::CxxToThrift>(
+                      Cxx::XRefTarget::declaration(result->declaration()),
+                      thrift_target);
+                }
+              } catch (const folly::json::parse_error& e) {
+                LOG(WARNING) << "Couldn't parse Thrift json annotation: " << comment_str; 
+              } catch (const ThriftDecodingException &e) {
+                LOG(WARNING) << "Thrift json decoding internal error: " << e.what(); 
               }
             };
           }
