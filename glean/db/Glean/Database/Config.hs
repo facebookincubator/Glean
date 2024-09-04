@@ -322,7 +322,8 @@ schemaSourceIndexConfig key = ThriftSource.genericConfig
             cache <- State.get
             case processSchemaCached versions cache str of
               Left err -> lift $ throwIO $ Exception $
-                "error in schema: " <> Text.pack err
+                "error in schema: " <> Text.pack err <>
+                "\nFile: " <> instanceKey
               Right (newcache, result) -> do
                 State.put newcache
                 return result
