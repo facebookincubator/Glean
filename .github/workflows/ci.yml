@@ -133,6 +133,7 @@ jobs:
           update-alternatives --install /usr/bin/gcc gcc /usr/bin/clang-$VER 10
           # needed for `hsc2hs`, `g++` is hardcoded into `hsc2hs-options`.
           update-alternatives --install /usr/bin/g++ g++ /usr/bin/clang++-$VER 10
+          echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS -fclang" >>"$GITHUB_ENV"
 
       - name: Install folly and rocksdb dependencies
         run: |
@@ -156,7 +157,7 @@ jobs:
         run: cabal update
 
       - name: Disable some tests
-        run: echo CABAL_CONFIG_FLAGS="-f-hack-tests -f-rust-tests -f-python-tests" >> "$GITHUB_ENV"
+        run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS -f-hack-tests -f-rust-tests -f-python-tests" >> "$GITHUB_ENV"
 
       - name: Install hsthrift and Glean dependencies
         run: apt-get install -y pkg-config rsync libgmock-dev libpcre3-dev libtinfo-dev libxxhash-dev
