@@ -52,7 +52,9 @@ common fb-haskell
      ghc-options: -O2
 
 common fb-cpp
-  cxx-options: -std=c++17 -fcoroutines
+  cxx-options: -std=c++17
+  if !flag(clang)
+     cxx-options: -fcoroutines
   if arch(x86_64)
      cxx-options: -march=haswell
   if flag(opt)
@@ -62,6 +64,9 @@ common fb-cpp
 
 common exe
   ghc-options: -threaded
+
+flag clang
+     default: False
 
 flag opt
      default: False
