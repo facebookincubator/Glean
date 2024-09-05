@@ -257,16 +257,9 @@ predicate PythonExtendsParentEntity :
     parent : code.python.Entity
   }
   { Child, Parent } where
-    (
-      { decl = { cls = ChildClassDecl } } = Child;
-      python.DerivedClassToBase { ChildClassDecl, ParentClassDecl };
-      { decl = { cls = ParentClassDecl } } = Parent;
-    ) | (
-      { decl = { func = ChildMethodDecl } } = Child;
-      python.MethodOverrides { ChildMethodDecl, ParentMethodDecl};
-      { decl = { func = ParentMethodDecl } } = Parent;
-    )
-
+    { decl = { cls = ChildClassDecl } } = Child;
+    python.DerivedClassToBase { ChildClassDecl, ParentClassDecl };
+    { decl = { cls = ParentClassDecl } } = Parent;
 
 predicate PythonExtendsChildEntity :
   {
@@ -274,15 +267,9 @@ predicate PythonExtendsChildEntity :
     child: code.python.Entity
   }
   { Parent, Child } where
-    (
-      { decl = {cls = ParentClassDecl} } = Parent;
-      python.BaseClassToDerived { base = ParentClassDecl, derived = ChildClassDecl };
-      { decl = { cls = ChildClassDecl } } = Child;
-    ) | (
-      { decl = { func = ParentMethodDecl} } = Parent;
-      python.MethodOverriden { ParentMethodDecl, ChildMethodDecl };
-      { decl = { func = ChildMethodDecl } } = Child;
-    )
+    { decl = {cls = ParentClassDecl} } = Parent;
+    python.BaseClassToDerived { base = ParentClassDecl, derived = ChildClassDecl };
+    { decl = { cls = ChildClassDecl } } = Child;
 
 predicate PythonEntityModuleName :
   {
