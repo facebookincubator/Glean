@@ -91,7 +91,7 @@ flag dotnet-tests
 
 -- run tests that require lsif-go
 flag go-tests
-     default: True
+     default: False
 
 -- run tests that require rust-analyzer
 flag rust-tests
