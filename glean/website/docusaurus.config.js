@@ -68,6 +68,10 @@ module.exports = {
               label: 'Twitter',
               href: 'https://twitter.com/MetaOpenSource',
             },
+            {
+              label: 'Discord',
+              href: 'https://discord.gg/w3s6X6QAHZ',
+            },
           ],
         },
         {
