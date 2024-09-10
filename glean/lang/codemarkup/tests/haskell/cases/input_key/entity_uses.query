@@ -1,4 +1,3 @@
-query: |
-  codemarkup.EntityUses {target = {hs = { definition = {name = "Lib.Input.InputKey.fetchDefault"}}}}
+query: codemarkup.EntityUses _
 perf: true
 transform: [gensort, []]

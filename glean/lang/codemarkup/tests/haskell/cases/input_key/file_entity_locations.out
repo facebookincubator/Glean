@@ -2,20 +2,20 @@
   "@generated",
   {
     "key": {
-      "file": { "key": "Lib/Input/InputKey.hs" },
+      "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
       "location": {
-        "name": "Lib.Input.InputKey.InputKey",
-        "file": { "key": "Lib/Input/InputKey.hs" },
-        "location": { "span": { "start": 262, "length": 34 } }
+        "name": "A.a",
+        "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
+        "location": { "span": { "start": 281, "length": 1 } }
       },
       "entity": {
         "hs": {
           "definition": {
             "key": {
-              "name": { "key": "Lib.Input.InputKey.InputKey" },
+              "name": { "key": "A.a" },
               "source": {
-                "file": { "key": "Lib/Input/InputKey.hs" },
-                "span": { "start": 262, "length": 34 }
+                "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
+                "span": { "start": 281, "length": 1 }
               }
             }
           }
@@ -25,250 +25,20 @@
   },
   {
     "key": {
-      "file": { "key": "Lib/Input/InputKey.hs" },
+      "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
       "location": {
-        "name": "Lib.Input.InputKey.InputKey",
-        "file": { "key": "Lib/Input/InputKey.hs" },
-        "location": { "span": { "start": 283, "length": 13 } }
+        "name": "B.b",
+        "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
+        "location": { "span": { "start": 284, "length": 1 } }
       },
       "entity": {
         "hs": {
           "definition": {
             "key": {
-              "name": { "key": "Lib.Input.InputKey.InputKey" },
+              "name": { "key": "B.b" },
               "source": {
-                "file": { "key": "Lib/Input/InputKey.hs" },
-                "span": { "start": 283, "length": 13 }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Lib/Input/InputKey.hs" },
-      "location": {
-        "name": "Lib.Input.InputKey.fetch",
-        "file": { "key": "Lib/Input/InputKey.hs" },
-        "location": { "span": { "start": 353, "length": 5 } }
-      },
-      "entity": {
-        "hs": {
-          "definition": {
-            "key": {
-              "name": { "key": "Lib.Input.InputKey.fetch" },
-              "source": {
-                "file": { "key": "Lib/Input/InputKey.hs" },
-                "span": { "start": 353, "length": 5 }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Lib/Input/InputKey.hs" },
-      "location": {
-        "name": "Lib.Input.InputKey.fetchDefault",
-        "file": { "key": "Lib/Input/InputKey.hs" },
-        "location": { "span": { "start": 1518, "length": 12 } }
-      },
-      "entity": {
-        "hs": {
-          "definition": {
-            "key": {
-              "name": { "key": "Lib.Input.InputKey.fetchDefault" },
-              "source": {
-                "file": { "key": "Lib/Input/InputKey.hs" },
-                "span": { "start": 1518, "length": 12 }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Lib/Input/InputKey.hs" },
-      "location": {
-        "name": "Lib.Input.InputKey.fetchEnt",
-        "file": { "key": "Lib/Input/InputKey.hs" },
-        "location": { "span": { "start": 1153, "length": 8 } }
-      },
-      "entity": {
-        "hs": {
-          "definition": {
-            "key": {
-              "name": { "key": "Lib.Input.InputKey.fetchEnt" },
-              "source": {
-                "file": { "key": "Lib/Input/InputKey.hs" },
-                "span": { "start": 1153, "length": 8 }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Lib/Input/InputKey.hs" },
-      "location": {
-        "name": "Lib.Input.InputKey.fetchEntMay",
-        "file": { "key": "Lib/Input/InputKey.hs" },
-        "location": { "span": { "start": 1265, "length": 11 } }
-      },
-      "entity": {
-        "hs": {
-          "definition": {
-            "key": {
-              "name": { "key": "Lib.Input.InputKey.fetchEntMay" },
-              "source": {
-                "file": { "key": "Lib/Input/InputKey.hs" },
-                "span": { "start": 1265, "length": 11 }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Lib/Input/InputKey.hs" },
-      "location": {
-        "name": "Lib.Input.InputKey.fetchId",
-        "file": { "key": "Lib/Input/InputKey.hs" },
-        "location": { "span": { "start": 557, "length": 7 } }
-      },
-      "entity": {
-        "hs": {
-          "definition": {
-            "key": {
-              "name": { "key": "Lib.Input.InputKey.fetchId" },
-              "source": {
-                "file": { "key": "Lib/Input/InputKey.hs" },
-                "span": { "start": 557, "length": 7 }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Lib/Input/InputKey.hs" },
-      "location": {
-        "name": "Lib.Input.InputKey.fetchIdMay",
-        "file": { "key": "Lib/Input/InputKey.hs" },
-        "location": { "span": { "start": 800, "length": 10 } }
-      },
-      "entity": {
-        "hs": {
-          "definition": {
-            "key": {
-              "name": { "key": "Lib.Input.InputKey.fetchIdMay" },
-              "source": {
-                "file": { "key": "Lib/Input/InputKey.hs" },
-                "span": { "start": 800, "length": 10 }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Lib/Input/InputKey.hs" },
-      "location": {
-        "name": "Lib.Input.InputKey.fetchMay",
-        "file": { "key": "Lib/Input/InputKey.hs" },
-        "location": { "span": { "start": 433, "length": 8 } }
-      },
-      "entity": {
-        "hs": {
-          "definition": {
-            "key": {
-              "name": { "key": "Lib.Input.InputKey.fetchMay" },
-              "source": {
-                "file": { "key": "Lib/Input/InputKey.hs" },
-                "span": { "start": 433, "length": 8 }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Lib/Input/InputKey.hs" },
-      "location": {
-        "name": "Lib.Input.InputKey.fetchThrift",
-        "file": { "key": "Lib/Input/InputKey.hs" },
-        "location": { "span": { "start": 1721, "length": 11 } }
-      },
-      "entity": {
-        "hs": {
-          "definition": {
-            "key": {
-              "name": { "key": "Lib.Input.InputKey.fetchThrift" },
-              "source": {
-                "file": { "key": "Lib/Input/InputKey.hs" },
-                "span": { "start": 1721, "length": 11 }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Lib/Input/InputKey.hs" },
-      "location": {
-        "name": "Lib.Input.InputKey.fetchable",
-        "file": { "key": "Lib/Input/InputKey.hs" },
-        "location": { "span": { "start": 1592, "length": 9 } }
-      },
-      "entity": {
-        "hs": {
-          "definition": {
-            "key": {
-              "name": { "key": "Lib.Input.InputKey.fetchable" },
-              "source": {
-                "file": { "key": "Lib/Input/InputKey.hs" },
-                "span": { "start": 1592, "length": 9 }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "Lib/Input/InputKey.hs" },
-      "location": {
-        "name": "Lib.Input.InputKey.withInput",
-        "file": { "key": "Lib/Input/InputKey.hs" },
-        "location": { "span": { "start": 1982, "length": 9 } }
-      },
-      "entity": {
-        "hs": {
-          "definition": {
-            "key": {
-              "name": { "key": "Lib.Input.InputKey.withInput" },
-              "source": {
-                "file": { "key": "Lib/Input/InputKey.hs" },
-                "span": { "start": 1982, "length": 9 }
+                "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
+                "span": { "start": 284, "length": 1 }
               }
             }
           }

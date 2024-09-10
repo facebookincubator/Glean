@@ -1,8 +1,3 @@
-query: |
-  E where
-    codemarkup.ResolveLocation {
-       location = { file = "Lib/Input/InputKey.hs", location = { span = { 1982, 9 } } },
-       entity = E
-    };
+query: codemarkup.ResolveLocation _
 perf: true
 transform: [gensort, []]

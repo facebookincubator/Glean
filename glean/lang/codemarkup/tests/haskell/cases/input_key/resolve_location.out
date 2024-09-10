@@ -2,13 +2,42 @@
   "@generated",
   {
     "key": {
-      "hs": {
-        "definition": {
-          "key": {
-            "name": { "key": "Lib.Input.InputKey.withInput" },
-            "source": {
-              "file": { "key": "Lib/Input/InputKey.hs" },
-              "span": { "start": 1982, "length": 9 }
+      "location": {
+        "name": "A.a",
+        "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
+        "location": { "span": { "start": 281, "length": 1 } }
+      },
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "A.a" },
+              "source": {
+                "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
+                "span": { "start": 281, "length": 1 }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "location": {
+        "name": "B.b",
+        "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
+        "location": { "span": { "start": 284, "length": 1 } }
+      },
+      "entity": {
+        "hs": {
+          "definition": {
+            "key": {
+              "name": { "key": "B.b" },
+              "source": {
+                "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
+                "span": { "start": 284, "length": 1 }
+              }
             }
           }
         }

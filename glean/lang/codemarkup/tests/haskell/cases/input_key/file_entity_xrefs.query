@@ -1,4 +1,3 @@
-query: |
-  codemarkup.FileEntityXRefLocations { file = "Lib/Input/InputKey.hs"};
+query: codemarkup.FileEntityXRefLocations _
 perf: true
 transform: [gensort, []]
