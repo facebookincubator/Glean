@@ -50,7 +50,7 @@ arc=/usr/local/bin/arc
 
 scheduleJob() {
 $arc skycastle schedule //tools/skycastle/workflows3/glean/diff_sketch.sky:snapshot-clang \
---repository-state=fbsource=$REV \
+--repository-state=full-fbsource=$REV \
 '--flag' "//tools/skycastle/lib2/glean/diff/core.sky:base_rev=$PREV" \
 '--flag' '//tools/skycastle/lib2/glean/flags.sky:local=true'   \
  --flag "//tools/skycastle/lib2/glean/diff/glass.sky:upload_glass_snapshot=False" \
