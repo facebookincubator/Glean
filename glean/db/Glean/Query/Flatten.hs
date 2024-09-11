@@ -321,15 +321,19 @@ flattenPattern pat = case pat of
   -- pat.field ==> X where { field = X } = pat
   Ref (MatchExt (Typed ty (TcFieldSelect (Typed recTy pat) name))) -> do
     r <- flattenPattern pat
-    let sel v =
-          [ if name == n then v else Ref (MatchWild ty)
-          | Angle.RecordTy fields <- [derefType recTy]
-          , Angle.FieldDef n ty <- fields
-          ]
-    forM r $ \(stmts, p) -> do
-      v <- Ref . MatchVar <$> fresh ty
-      let stmt = FlatStatement recTy (Tuple (sel v)) (TermGenerator p)
-      return (stmts `thenStmt` stmt, v)
+    case derefType recTy of
+      Angle.RecordTy fields -> do
+        let sel v =
+              [ if name == n then v else Ref (MatchWild ty)
+              | Angle.FieldDef n ty <- fields
+              ]
+        forM r $ \(stmts, p) -> do
+          v <- Ref . MatchVar <$> fresh ty
+          let stmt = FlatStatement recTy (Tuple (sel v)) (TermGenerator p)
+          return (stmts `thenStmt` stmt, v)
+      _other ->
+        throwError $ "internal: TcFieldSelect: " <>
+          Text.pack (show (displayDefault recTy))
 
   -- pat.field? ==> X where { field = X } = pat
   Ref (MatchExt (Typed ty (TcAltSelect (Typed sumTy pat) name))) -> do

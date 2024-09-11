@@ -397,14 +397,17 @@ data Type_ pref tref
 
   -- These are used during typechecking only
   | TyVar {-# UNPACK #-}!Int
-  | HasTy (Map Name (Type_ pref tref)) !Bool {-# UNPACK #-}!Int
+  | HasTy (Map Name (Type_ pref tref)) !(Maybe Bool) {-# UNPACK #-}!Int
     -- HasTy { field:type .. } R X
     --   Constrains X to be a record or sum type containing at least
     --   the given fields/types. X can only be instantiated
     --   with a type containing a superset of those fields: either
     --   a bigger HasTy or a RecordTy/SumTy.
-    --   B is True if the type must be a RecordTy, otherwise it
-    --   can be either a RecordTy or a SumTy.
+    --   R is
+    --     Just True -> type must be a record
+    --     Just False -> type must be a sum type
+    --     Nothing -> type can beeither a RecordTy or a SumTy
+    --   can be
   deriving (Eq, Show, Functor, Foldable, Generic)
 
 instance (Binary pref, Binary tref) => Binary (Type_ pref tref)
@@ -713,7 +716,8 @@ instance (Display pref, Display tref) => Display (Type_ pref tref) where
       [ nest 2 $ vsep $ "{" :  punctuate sepr (map doField (Map.toList m))
       , "..." <> pretty x <> "}" ]
     where
-    sepr = if rec then "," else "|"
+    sepr | Just False <- rec =  "|"
+         | otherwise = ","
     doField (n, ty) = pretty n <> " : " <> display opts ty
 
   displayAtom opts t = case t of

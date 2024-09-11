@@ -9,7 +9,6 @@
 {- TODO
   - implement mutable type variables to speed up type inference
   - cleanup:
-    - split up into separate files
     - merge inferExpr and typecheckPattern?
 -}
 
@@ -389,7 +388,11 @@ inferExpr ctx pat = case pat of
       return ((name, expr'), (name, ty))
     let (fields', types) = unzip pairs
     x <- freshTyVarInt
-    let ty = HasTy (Map.fromList types) (length fields > 1) x
+    let
+      must_be_rec
+        | length fields > 1 = Just True
+        | otherwise = Nothing
+      ty = HasTy (Map.fromList types) must_be_rec x
     promote (sourcePatSpan pat)
       (Ref (MatchExt (Typed ty (TcStructPat fields')))) ty
 
@@ -399,7 +402,7 @@ inferExpr ctx pat = case pat of
 
   Enum _ name -> do
     x <- freshTyVarInt
-    let ty = HasTy (Map.singleton name unit) False x
+    let ty = HasTy (Map.singleton name unit) Nothing x
     promote (sourcePatSpan pat)
       (Ref (MatchExt (Typed ty (TcStructPat [(name, RTS.Tuple [])])))) ty
 
@@ -459,11 +462,15 @@ fieldSelect src ty pat fieldName sum = do
           "?' not '." <> pretty fieldName <> "'"
     MaybeTy elemTy ->
       fieldSelect src (lowerMaybe elemTy) pat fieldName sum
-    TyVar{} ->
-      prettyErrorIn src $ nest 4 $ vcat [
-        "cannot determine the type of the left-hand-side of '.'",
-        "please add a type signature."
-      ]
+    TyVar{} -> do
+      x <- freshTyVarInt
+      fieldTy <- freshTyVar
+      let recTy = HasTy (Map.singleton fieldName fieldTy) (Just (not sum)) x
+      -- allow the lhs to be a predicate:
+      fn <- demoteTo (sourcePatSpan src) ty' recTy
+      let sel | sum = TcAltSelect (Typed recTy (fn pat)) fieldName
+              | otherwise = TcFieldSelect (Typed recTy (fn pat)) fieldName
+      return (Ref (MatchExt (Typed fieldTy sel)), fieldTy)
     _other ->
       err $ "expression is not a " <> if sum then "union type" else "record"
 
@@ -991,6 +998,7 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
       TcFieldSelect (Typed _ p) _ -> overPat p
       TcAltSelect (Typed _ p) _ -> overPat p
       TcPromote _ p -> overPat p
+      TcDemote _ p -> overPat p
       TcStructPat fs -> foldMap overPat (map snd fs)
 
 data UseOfNegation
@@ -1047,6 +1055,7 @@ tcTermUsesNegation = \case
   TcFieldSelect (Typed _ p) _ -> tcPatUsesNegation p
   TcAltSelect (Typed _ p) _ -> tcPatUsesNegation p
   TcPromote _ p -> tcPatUsesNegation p
+  TcDemote _ p -> tcPatUsesNegation p
   TcStructPat fs -> firstJust tcPatUsesNegation (map snd fs)
 
 {-
@@ -1159,6 +1168,28 @@ promoteTo s t u = do
   addErrSpan s $ unify t u
   return id
 
+-- | dual to promoteTo. The destination type cannot be a TyVar.
+demoteTo :: IsSrcSpan s => s -> Type -> Type -> T (TcPat -> TcPat)
+demoteTo _ _ TyVar{} = error "demote: TyVar"
+demoteTo s t@(TyVar x) u = do
+  subst <- gets tcSubst
+  case IntMap.lookup x subst of
+    Just t -> demoteTo s t u
+    Nothing -> do
+      addPromote s u (TyVar x)
+      return (Ref . MatchExt . Typed u . TcDemote t)
+demoteTo _ (PredicateTy (PidRef p _)) (PredicateTy (PidRef q _))
+  | p == q = return id
+demoteTo s t@(PredicateTy (PidRef _ ref)) u = do
+  PredicateDetails{..} <- getPredicateDetails ref
+  addErrSpan s $ unify predicateKeyType u
+  return (Ref . MatchExt . Typed u . TcDemote t)
+demoteTo s t u = do
+  -- the source type (t) is not a predicate or a tyvar, so it must be
+  -- the key type and we can unify directly.
+  addErrSpan s $ unify t u
+  return id
+
 addPromote :: IsSrcSpan s => s -> Type -> Type -> T ()
 addPromote span from to =
   modify $ \s ->
@@ -1167,13 +1198,6 @@ addPromote span from to =
 resolvePromote :: T ()
 resolvePromote = do
   promotes <- gets tcPromote
-  whenDebug $ liftIO $ hPutStrLn stderr $ show $ vcat
-    [ "promotes: "
-    , vcat
-      [ displayDefault from <> " -> " <> displayDefault to
-      | (from,to,_) <- promotes
-      ]
-    ]
   let
     resolve
       :: [(Type,Type,Some IsSrcSpan)]
@@ -1199,6 +1223,13 @@ resolvePromote = do
 
     loop [] = return ()
     loop promotes = do
+      whenDebug $ liftIO $ hPutStrLn stderr $ show $ vcat
+        [ "promotes: "
+        , vcat
+          [ displayDefault from <> " -> " <> displayDefault to
+          | (from,to,_) <- promotes
+          ]
+        ]
       resolved <- resolve promotes False
       if length resolved < length promotes
         then loop resolved

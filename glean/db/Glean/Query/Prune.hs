@@ -189,6 +189,7 @@ prune hasFacts (QueryWithInfo q _ t) = do
           p' <- prunePat p
           return $ Ref $ MatchExt $ Typed ty $ TcAltSelect (Typed ty' p') f
         TcPromote _ p -> prunePat p
+        TcDemote _ p -> prunePat p
         TcStructPat{} -> error "prune: TcStructPat"
 
 type R a = State S a
@@ -244,6 +245,7 @@ renumberVars ty q =
       p' <- renamePat p
       return $ TcAltSelect (Typed ty p') f
     TcPromote ty p -> TcPromote ty <$> renamePat p
+    TcDemote ty p -> TcDemote ty <$> renamePat p
     TcStructPat fs -> fmap TcStructPat $ forM fs $ \(n,p) ->
       (n,) <$> renamePat p
 

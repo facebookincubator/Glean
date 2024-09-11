@@ -72,6 +72,7 @@ data TcTerm
     --     - A == B, or
     --     - B = P, where P : A for some predicate P
     -- Turns into either nothing or TcFactGen after typechecking
+  | TcDemote Type TcPat
   | TcStructPat [(FieldName, TcPat)]
     -- An unresolved pattern matching a record or sum type.
   deriving Show
@@ -110,6 +111,8 @@ instance Display TcTerm where
     hsep (display opts op : map (displayAtom opts) args)
   display opts (TcPromote _ pat) =
     "^" <> displayAtom opts pat
+  display opts (TcDemote _ pat) =
+    "↓" <> displayAtom opts pat
   display opts (TcStructPat fs) =
     cat [ nest 2 $ cat [ "{", fields fs], "}"]
     where

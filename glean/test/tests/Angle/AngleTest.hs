@@ -648,6 +648,27 @@ angleDotTest = dbTestCase $ \env repo -> do
       Left (BadQuery x) -> "type error" `Text.isInfixOf` x
       _ -> False
 
+  -- infer the lhs of the dot
+  r <- runQuery env repo $ angle @Glean.Test.Predicate
+    "X where X.sum_.c?.nat = 42; X : glean.test.Predicate"
+  assertEqual "infer lhs" 1 (length r)
+
+  -- ensure that we catch wrong usage of .field?
+  r <- try $ runQuery env repo $ angleData @Text
+    "X where X.sum_.c.nat = 42; X : glean.test.Predicate"
+  print r
+  assertBool "infer lhs error 1" $
+    case r of
+      Left (BadQuery x) -> "type error" `Text.isInfixOf` x
+      _ -> False
+
+  r <- try $ runQuery env repo $ angleData @Text
+    "X where X.sum_.c?.nat? = 42; X : glean.test.Predicate"
+  print r
+  assertBool "infer lhs error 2" $
+    case r of
+      Left (BadQuery x) -> "type error" `Text.isInfixOf` x
+      _ -> False
 
 -- if statements
 angleIfThenElse :: (forall a . Query a -> Query a) -> Test

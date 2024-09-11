@@ -70,13 +70,19 @@ unify (TyVar x) (TyVar y) | x == y = return ()
 unify (TyVar x) t = extend x t
 unify t (TyVar x) = extend x t
 
-unify (HasTy a ra x) (HasTy b rb y) = do
-  mapM_ (uncurry unify) $ Map.intersectionWith (,) a b
+unify a@(HasTy fa ra x) b@(HasTy fb rb y) = do
+  rec <- case (ra,rb) of
+    (Just x, Just y) | x /= y -> unifyError a b
+    (Nothing, _) -> return rb
+    _otherwise -> return ra
+  mapM_ (uncurry unify) $ Map.intersectionWith (,) fa fb
   z <- freshTyVarInt
-  let all = HasTy (Map.union a b) (ra || rb) z
+  let all = HasTy (Map.union fa fb) rec z
   extend x all
   extend y all
 
+unify a@(HasTy _ (Just False) _) b@RecordTy{} =
+  unifyError a b
 unify a@(HasTy m _ x) b@(RecordTy fs) = do
   forM_ fs $ \(FieldDef f ty) ->
     case Map.lookup f m of
@@ -87,7 +93,9 @@ unify a@(HasTy m _ x) b@(RecordTy fs) = do
       unifyError a b
   extend x (RecordTy fs)
 
-unify a@(HasTy m False x) b@(SumTy fs) = do
+unify a@(HasTy _ (Just True) _) b@SumTy{} =
+  unifyError a b
+unify a@(HasTy m _ x) b@(SumTy fs) = do
   forM_ fs $ \(FieldDef f ty) ->
     case Map.lookup f m of
       Nothing -> return ()
@@ -222,6 +230,21 @@ zonkTcPat p = case p of
           (TcFactGen pidRef e' vpat SeekOnAllFacts))))
       _ ->
         return e'
+  Ref (MatchExt (Typed ty (TcDemote inner e))) -> do
+    ty' <- zonkType ty
+    inner' <- zonkType inner
+    e' <- zonkTcPat e
+    case (ty', inner') of
+      (TyVar{}, _) -> error "zonkMatch: tyvar"
+      (_, TyVar{}) -> error "zonkMatch: tyvar"
+      (PredicateTy (PidRef _ ref), PredicateTy (PidRef _ ref'))
+        | ref == ref' -> return e'
+      (_other, PredicateTy (PidRef _ ref)) -> do
+        PredicateDetails{..} <- getPredicateDetails ref
+        return (Ref (MatchExt (Typed ty'
+          (TcDeref inner' predicateValueType e'))))
+      _ ->
+        return e'
   Ref (MatchExt (Typed ty (TcStructPat fs))) -> do
     ty' <- zonkType ty
     case ty' of
@@ -295,6 +318,7 @@ zonkTcTerm t = case t of
       <*> pure f
   TcElements p -> TcElements <$> zonkTcPat p
   TcPromote{} -> error "zonkTcTerm: TcPromote" -- handled in zonkTcPat
+  TcDemote{} -> error "zonkTcTerm: TcPromote" -- handled in zonkTcPat
   TcStructPat{} -> error "zonkTcTerm: TcStructPat" -- handled in zonkTcPat
 
 zonkTcStatement :: TcStatement -> T TcStatement

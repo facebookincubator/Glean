@@ -118,6 +118,8 @@ instantiateWithFreshVariables query numVars = do
     TcAltSelect (Typed ty (instantiatePat base pat)) field
   instantiateTcTerm base (TcPromote ty pat) =
     TcPromote ty (instantiatePat base pat)
+  instantiateTcTerm base (TcDemote ty pat) =
+    TcDemote ty (instantiatePat base pat)
   instantiateTcTerm base (TcStructPat fs) =
     TcStructPat [(n, instantiatePat base p) | (n,p) <- fs]
 
