@@ -103,6 +103,7 @@ import Data.Binary
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Lazy as BL
 import Data.Hashable
+import Data.List
 import Data.List.NonEmpty (NonEmpty, toList)
 import Data.Map (Map)
 import qualified Data.Map as Map
@@ -711,13 +712,16 @@ instance (Display pref, Display tref) => Display (Type_ pref tref) where
       , "}" ]
   display _ BooleanTy = "bool"
   display _ (TyVar n) = "T" <> pretty n
-  display opts (HasTy m rec x) =
+  display opts (HasTy m rec x)
+    | Just False <- rec =
     sep
-      [ nest 2 $ vsep $ "{" :  punctuate sepr (map doField (Map.toList m))
-      , "..." <> pretty x <> "}" ]
+      [ nest 2 $ vsep $ "{" :  intersperse "|" (map doField (Map.toList m))
+      , "|", "T" <> pretty x, "}" ]
+    | otherwise =
+    sep
+      [ nest 2 $ vsep $ "{" :  map (<> ",") (map doField (Map.toList m))
+      , "T" <> pretty x, "}" ]
     where
-    sepr | Just False <- rec =  "|"
-         | otherwise = ","
     doField (n, ty) = pretty n <> " : " <> display opts ty
 
   displayAtom opts t = case t of

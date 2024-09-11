@@ -79,7 +79,7 @@
   $ query "{ wrong = what } : string"
   [>] { wrong = what } : string (re)
   type error:
-    { wrong : T1 ...2}
+    { wrong : T1, T2 }
   does not match:
     string
        
