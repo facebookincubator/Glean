@@ -13,7 +13,12 @@ def _impl(ctx):
     bxl_actions = ctx.bxl_actions(exec_deps = [hie_indexer])
     action_factory = bxl_actions.actions
 
-    deps = [ctx.analysis(label).as_dependency() for label in ctx.cli_args.targets]
+    ctargets = ctx.configured_targets(
+        ctx.cli_args.targets,
+        modifiers = ["ovr_config//third-party/ghc/constraints:8.8.3"],
+    )
+
+    deps = [ctx.analysis(t).as_dependency() for t in ctargets]
 
     hie = action_factory.anon_target(
         haskell_index_rule,
