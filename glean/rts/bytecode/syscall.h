@@ -10,6 +10,7 @@
 
 #include "glean/rts/binary.h"
 #include "glean/rts/id.h"
+#include "glean/rts/set.h"
 
 namespace facebook {
 namespace glean {
@@ -106,7 +107,16 @@ private:
   static uint64_t toWord(SysFun x) {
     return reinterpret_cast<uint64_t>(x);
   }
-};
+
+  //Sets
+  static void fromWord(BytestringSet *&x, uint64_t w) {
+    x = reinterpret_cast<BytestringSet *>(w);
+  }
+
+  static void fromWord(const BytestringSet *&x, uint64_t w) {
+    x = reinterpret_cast<const BytestringSet*>(w);
+  }
+}; 
 
 template<typename T>
 inline std::ostream& operator<<(std::ostream& os, const Reg<T>& reg)

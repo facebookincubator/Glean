@@ -12,7 +12,6 @@
 #include "glean/rts/serialize.h"
 #include "glean/rts/bytecode/subroutine.h"
 #include "glean/rts/bytecode/syscall.h"
-#include "glean/rts/id.h"
 #include "glean/rts/string.h"
 #include "glean/rts/prim.h"
 
@@ -21,7 +20,7 @@ namespace glean {
 namespace rts {
 
 namespace {
-
+ 
 struct Eval {
   const std::string *literals;
   const uint64_t *code;
