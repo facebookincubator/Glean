@@ -93,11 +93,11 @@ module.exports = {
           items: [
             {
               label: 'Privacy',
-              href: 'https://opensource.facebook.com/legal/privacy/',
+              href: 'https://opensource.fb.com/legal/privacy',
             },
             {
               label: 'Terms',
-              href: 'https://opensource.facebook.com/legal/terms/',
+              href: 'https://opensource.fb.com/legal/terms',
             },
           ],
         },
@@ -108,7 +108,7 @@ module.exports = {
         href: 'https://opensource.facebook.com',
       },
       // Please do not remove the credits, help to publicize Docusaurus :)
-      copyright: `Copyright © ${new Date().getFullYear()} Meta Platforms, Inc. Built with Docusaurus.`,
+      copyright: `Copyright © Meta Platforms, Inc. Built with Docusaurus.`,
     },
   },
   presets: [
