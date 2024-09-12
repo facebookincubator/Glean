@@ -129,7 +129,7 @@ instance Storage RocksDB where
   safeRemoveForcibly rocks =
       safeRemovePathForcibly . databasePath (rocksRoot rocks)
 
-  predicateStats db = withForeignPtr (dbPtr db)
+  predicateStats db = unsafeWithForeignPtr (dbPtr db)
     $ marshalPredicateStats . glean_rocksdb_database_predicateStats
 
   store db key value =
@@ -152,11 +152,11 @@ instance Storage RocksDB where
         then Just <$> unsafeMallocedByteString value_ptr value_size
         else return Nothing
 
-  commit db facts = withForeignPtr (dbPtr db) $ \db_ptr -> do
+  commit db facts = unsafeWithForeignPtr (dbPtr db) $ \db_ptr -> do
     with facts $ \facts_ptr -> invoke $ glean_rocksdb_commit db_ptr facts_ptr
 
   addOwnership db owned =
-    withForeignPtr (dbPtr db) $ \db_ptr ->
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     when (not $ HashMap.null owned) $
       withMany entry (HashMap.toList owned) $ \xs ->
       let (unit_ptrs, unit_sizes, facts_ptrs, facts_sizes) = unzip4 xs
@@ -183,21 +183,21 @@ instance Storage RocksDB where
       (fromIntegral (fromEnum compact))
 
   computeOwnership db base inv =
-    withForeignPtr (dbPtr db) $ \db_ptr ->
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     using (invoke $ glean_rocksdb_get_ownership_unit_iterator db_ptr) $
     Ownership.compute inv db base
 
   storeOwnership db own =
-    withForeignPtr (dbPtr db) $ \db_ptr ->
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     with own $ \own_ptr ->
     invoke $ glean_rocksdb_store_ownership db_ptr own_ptr
 
   getOwnership db = fmap Just $
-    withForeignPtr (dbPtr db) $ \db_ptr ->
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     construct $ invoke $ glean_rocksdb_get_ownership db_ptr
 
   getUnitId db unit =
-    withForeignPtr (dbPtr db) $ \db_ptr ->
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     unsafeWithBytes unit $ \unit_ptr unit_size -> do
       w64 <- invoke $ glean_rocksdb_get_unit_id db_ptr unit_ptr unit_size
       if w64 > 0xffffffff
@@ -205,19 +205,19 @@ instance Storage RocksDB where
         else return (Just (UnitId (fromIntegral w64)))
 
   getUnit db unit =
-    withForeignPtr (dbPtr db) $ \db_ptr -> do
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr -> do
       (unit_ptr, unit_size) <- invoke $ glean_rocksdb_get_unit db_ptr unit
       if unit_size /= 0
         then Just <$> unsafeMallocedByteString unit_ptr unit_size
         else return Nothing
 
   addDefineOwnership db define =
-    withForeignPtr (dbPtr db) $ \db_ptr ->
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     with define $ \define_ptr ->
       invoke $ glean_rocksdb_add_define_ownership db_ptr define_ptr
 
   computeDerivedOwnership db ownership base (Pid pid) =
-    withForeignPtr (dbPtr db) $ \db_ptr ->
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     using
       (invoke $
         glean_rocksdb_get_derived_fact_ownership_iterator
@@ -226,11 +226,11 @@ instance Storage RocksDB where
       Ownership.computeDerivedOwnership ownership base
 
   cacheOwnership db =
-    withForeignPtr (dbPtr db) $ \db_ptr ->
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
       invoke $ glean_rocksdb_cache_ownership db_ptr
 
   prepareFactOwnerCache db =
-    withForeignPtr (dbPtr db) $ \db_ptr ->
+    unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
       invoke $ glean_rocksdb_prepare_fact_owner_cache db_ptr
 
   getTotalCapacity = getDiskSize . rocksRoot
@@ -300,11 +300,11 @@ containerPath RocksDB{..} repo = databasePath rocksRoot repo </> "db"
 
 instance CanLookup (Database RocksDB) where
   lookupName db = "rocksdb:" <> repoToText (dbRepo db)
-  withLookup db f = withForeignPtr (dbPtr db) $
+  withLookup db f = unsafeWithForeignPtr (dbPtr db) $
     f . glean_rocksdb_database_lookup
 
 withContainer :: Database RocksDB -> (Container -> IO a) -> IO a
-withContainer db f = withForeignPtr (dbPtr db) $
+withContainer db f = unsafeWithForeignPtr (dbPtr db) $
   f . glean_rocksdb_database_container
 
 foreign import ccall unsafe glean_rocksdb_new_cache

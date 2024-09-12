@@ -88,7 +88,7 @@ construct :: Object a => IO (Ptr a) -> IO a
 construct mk = mask_ $ mk >>= create
 
 with :: Object a => a -> (Ptr a -> IO b) -> IO b
-with x f = withForeignPtr (unwrap x) f
+with x f = unsafeWithForeignPtr (unwrap x) f
 
 class Static a where
   destroyStatic :: a -> IO ()
