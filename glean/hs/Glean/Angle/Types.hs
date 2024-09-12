@@ -39,6 +39,7 @@ module Glean.Angle.Types
 
   -- * Types
   , Type_(..)
+  , RecordOrSum(..)
 
   -- * Queries
   , SourceQuery_(..)
@@ -218,7 +219,7 @@ data SourcePat_ s p t
       , then_ :: SourcePat_ s p t
       , else_ :: SourcePat_ s p t
       }
-  | FieldSelect s (SourcePat_ s p t) FieldName Bool
+  | FieldSelect s (SourcePat_ s p t) FieldName RecordOrSum
   | Enum s Text
 
   -- The following forms are introduced by the resolver, and replace
@@ -398,18 +399,23 @@ data Type_ pref tref
 
   -- These are used during typechecking only
   | TyVar {-# UNPACK #-}!Int
-  | HasTy (Map Name (Type_ pref tref)) !(Maybe Bool) {-# UNPACK #-}!Int
+  | HasTy (Map Name (Type_ pref tref)) !(Maybe RecordOrSum) {-# UNPACK #-}!Int
     -- HasTy { field:type .. } R X
     --   Constrains X to be a record or sum type containing at least
     --   the given fields/types. X can only be instantiated
     --   with a type containing a superset of those fields: either
     --   a bigger HasTy or a RecordTy/SumTy.
     --   R is
-    --     Just True -> type must be a record
-    --     Just False -> type must be a sum type
-    --     Nothing -> type can beeither a RecordTy or a SumTy
+    --     Just Record -> type must be a record
+    --     Just Sum -> type must be a sum type
+    --     Nothing -> type can be either a RecordTy or a SumTy
     --   can be
   deriving (Eq, Show, Functor, Foldable, Generic)
+
+data RecordOrSum = Record | Sum
+  deriving (Eq, Show, Generic)
+
+instance Binary RecordOrSum
 
 instance (Binary pref, Binary tref) => Binary (Type_ pref tref)
 
@@ -713,7 +719,7 @@ instance (Display pref, Display tref) => Display (Type_ pref tref) where
   display _ BooleanTy = "bool"
   display _ (TyVar n) = "T" <> pretty n
   display opts (HasTy m rec x)
-    | Just False <- rec =
+    | Just Sum <- rec =
     sep
       [ nest 2 $ vsep $ "{" :  intersperse "|" (map doField (Map.toList m))
       , "|", "T" <> pretty x, "}" ]
@@ -881,7 +887,10 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
   display opts (Prim _ p pats) =
     display opts p <+> hsep (punctuate " " (map (displayAtom opts) pats))
   display opts (FieldSelect _ pat field q) =
-    displayAtom opts pat <> "." <> pretty field <> if q then "?" else mempty
+    displayAtom opts pat <> "." <> pretty field <>
+      case q of
+        Sum -> "?"
+        Record -> mempty
   display _ (Enum _ f) = pretty f
 
   displayAtom opts pat = case pat of

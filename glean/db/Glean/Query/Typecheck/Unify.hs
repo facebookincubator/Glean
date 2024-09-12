@@ -81,7 +81,7 @@ unify a@(HasTy fa ra x) b@(HasTy fb rb y) = do
   extend x all
   extend y all
 
-unify a@(HasTy _ (Just False) _) b@RecordTy{} =
+unify a@(HasTy _ (Just Sum) _) b@RecordTy{} =
   unifyError a b
 unify a@(HasTy m _ x) b@(RecordTy fs) = do
   forM_ fs $ \(FieldDef f ty) ->
@@ -93,7 +93,7 @@ unify a@(HasTy m _ x) b@(RecordTy fs) = do
       unifyError a b
   extend x (RecordTy fs)
 
-unify a@(HasTy _ (Just True) _) b@SumTy{} =
+unify a@(HasTy _ (Just Record) _) b@SumTy{} =
   unifyError a b
 unify a@(HasTy m _ x) b@(SumTy fs) = do
   forM_ fs $ \(FieldDef f ty) ->

@@ -390,7 +390,7 @@ inferExpr ctx pat = case pat of
     x <- freshTyVarInt
     let
       must_be_rec
-        | length fields > 1 = Just True
+        | length fields > 1 = Just Record
         | otherwise = Nothing
       ty = HasTy (Map.fromList types) must_be_rec x
     promote (sourcePatSpan pat)
@@ -420,9 +420,9 @@ fieldSelect
   -> Type
   -> TcPat
   -> FieldName
-  -> Bool
+  -> RecordOrSum
   -> T (TcPat, Type)
-fieldSelect src ty pat fieldName sum = do
+fieldSelect src ty pat fieldName recordOrSum = do
   opts <- gets tcDisplayOpts
   let err x = do
         prettyErrorIn src $ nest 4 $ vcat
@@ -437,9 +437,9 @@ fieldSelect src ty pat fieldName sum = do
       let deref = TcDeref ty predicateValueType pat
       fieldSelect src predicateKeyType
         (Ref (MatchExt (Typed predicateKeyType deref)))
-        fieldName sum
+        fieldName recordOrSum
     RecordTy fields
-      | not sum -> case lookupField fieldName fields of
+      | Record <- recordOrSum -> case lookupField fieldName fields of
           (fieldTy,_):_ -> do
             let sel = TcFieldSelect (Typed ty pat) fieldName
             return (Ref (MatchExt (Typed fieldTy sel)), fieldTy)
@@ -450,7 +450,7 @@ fieldSelect src ty pat fieldName sum = do
         "expression is a record, use '." <> pretty fieldName <>
           "' not '." <> pretty fieldName <> "?'"
     SumTy fields
-      | sum -> case lookupField fieldName fields of
+      | Sum <- recordOrSum -> case lookupField fieldName fields of
           (fieldTy,_):_ -> do
             let sel = TcAltSelect (Typed ty pat) fieldName
             return (Ref (MatchExt (Typed fieldTy sel)), fieldTy)
@@ -461,18 +461,21 @@ fieldSelect src ty pat fieldName sum = do
         "expression is a union type, use '." <> pretty fieldName <>
           "?' not '." <> pretty fieldName <> "'"
     MaybeTy elemTy ->
-      fieldSelect src (lowerMaybe elemTy) pat fieldName sum
+      fieldSelect src (lowerMaybe elemTy) pat fieldName recordOrSum
     TyVar{} -> do
       x <- freshTyVarInt
       fieldTy <- freshTyVar
-      let recTy = HasTy (Map.singleton fieldName fieldTy) (Just (not sum)) x
+      let recTy = HasTy (Map.singleton fieldName fieldTy) (Just recordOrSum) x
       -- allow the lhs to be a predicate:
       fn <- demoteTo (sourcePatSpan src) ty' recTy
-      let sel | sum = TcAltSelect (Typed recTy (fn pat)) fieldName
-              | otherwise = TcFieldSelect (Typed recTy (fn pat)) fieldName
+      let sel = case recordOrSum of
+            Sum -> TcAltSelect (Typed recTy (fn pat)) fieldName
+            Record -> TcFieldSelect (Typed recTy (fn pat)) fieldName
       return (Ref (MatchExt (Typed fieldTy sel)), fieldTy)
     _other ->
-      err $ "expression is not a " <> if sum then "union type" else "record"
+      err $ "expression is not a " <> case recordOrSum of
+        Sum -> "union type"
+        Record -> "record"
 
 convertType
   :: IsSrcSpan s => s -> ToRtsType -> Schema.Type -> T Type

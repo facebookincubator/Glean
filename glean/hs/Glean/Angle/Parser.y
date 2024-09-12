@@ -155,8 +155,8 @@ kv
 
 select :: { SourcePat }
 select
-  : select SELECT { FieldSelect (s $1 $2) $1 (lval $2) False }
-  | select SELECTALT { FieldSelect (s $1 $2) $1 (lval $2) True }
+  : select SELECT { FieldSelect (s $1 $2) $1 (lval $2) Record }
+  | select SELECTALT { FieldSelect (s $1 $2) $1 (lval $2) Sum }
   | apat  { $1 }
 
 apat :: { SourcePat }
