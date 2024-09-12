@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE OverloadedLists #-}
 {-# OPTIONS_GHC -Wno-orphans #-}
 
@@ -26,7 +27,15 @@ import Data.IORef
 import Data.List (intercalate)
 import Database.SQLite.Simple (withTransaction)
 import GHC.Fingerprint (getFileHash)
+#if __GLASGOW_HASKELL__ >= 902
+import GHC.Plugins (mkSplitUniqSupply)
+import GHC.Iface.Ext.Types (hie_hs_file)
+import GHC.Types.Name.Cache (initNameCache)
+#else
 import GhcPlugins (mkSplitUniqSupply)
+import HieTypes (hie_hs_file)
+import NameCache (initNameCache)
+#endif
 import HieDb (
   HieDb (getConn),
   SourceFile (RealFile),
@@ -37,8 +46,6 @@ import HieDb (
   withHieFile,
  )
 import HieDb.Run (Options (..))
-import HieTypes (hie_hs_file)
-import NameCache (initNameCache)
 import System.Directory
 import System.FilePath (
   isExtensionOf,

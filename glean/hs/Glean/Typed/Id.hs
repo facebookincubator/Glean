@@ -17,7 +17,7 @@ module Glean.Typed.Id
 
 import Control.DeepSeq
 import Data.Hashable (Hashable)
-import Data.Text.Prettyprint.Doc (Pretty(..))
+import Compat.Prettyprinter (Pretty(..))
 import Data.Vector.Primitive (Prim)
 import Foreign.Storable (Storable)
 

@@ -40,7 +40,7 @@ import Glean.Glass.Types (
   RequestOptions (..),
   GlassException (..),
  )
-import qualified Glean.Glass.Env as Glass
+import qualified Glean.Glass.Env as Glass hiding (Config(..))
 import qualified Glean.Glass.Handler as Glass
 import qualified Glean.Glass.Regression.Util as Glass
 import Glean.Glass.SourceControl
@@ -106,12 +106,12 @@ main = do
 testBaselineDB :: WithEnv -> Test
 testBaselineDB withEnv = TestLabel "DBs" $ TestCase $ withEnv $ \env -> do
 
-  result <- symbolsList env def{revision = Glass.Revision "3"}
+  result <- symbolsList env def{revision2 = Glass.Revision "3"}
   assertEqual "should return the latest DB available"
     (SimpleSymbolsListXResult (Glass.Revision "2") False)
     result
 
-  result <- symbolsList env def{revision = Glass.Revision "1"}
+  result <- symbolsList env def{revision2 = Glass.Revision "1"}
   assertEqual "should return exact DB match"
     (SimpleSymbolsListXResult (Glass.Revision "1") False)
     result
@@ -122,16 +122,16 @@ testBaselineSnapshot withEnv = TestLabel "snaphots" $ TestCase $ withEnv $ \env 
     [(examplePath, Glass.Revision "3", gen0)
     ,(newPath, Glass.Revision "4", gen0)
     ]
-  let env' :: Glass.Env = env {Glass.snapshotBackend = Some sb}
+  let env' :: Glass.Env = (env :: Glass.Env) {Glass.snapshotBackend = Some sb}
 
   resultOlderMatch <-
-    symbolsList env' def{revision = Glass.Revision "3", exact = True}
+    symbolsList env' def{revision2 = Glass.Revision "3", exact = True}
   assertEqual "Older snapshot match is honored"
     (SimpleSymbolsListXResult (Glass.Revision "3") True)
     resultOlderMatch
 
   resultNewFile <-
-    symbolsList env' def{revision = Glass.Revision "5", path = newPath}
+    symbolsList env' def{revision2 = Glass.Revision "5", path = newPath}
   assertEqual "Latest snapshot available is used for a new file"
     (SimpleSymbolsListXResult (Glass.Revision "4") True)
     resultNewFile
@@ -140,13 +140,13 @@ testExactRevision :: WithEnv -> Test
 testExactRevision withEnv = TestLabel "exact-revision" $ TestList
   [ TestLabel "DB match" $ TestCase $ withEnv $ \env -> do
       result <- symbolsList (failSourceControl env)
-        def{revision = Glass.Revision "2", exact = True}
+        def{revision2 = Glass.Revision "2", exact = True}
       assertEqual "DB match"
         (SimpleSymbolsListXResult (Glass.Revision "2") False)
         result
   , TestLabel "no match" $ TestCase $ withEnv $ \env -> do
       result <- try $ symbolsList (failSourceControl env)
-        def{revision = Glass.Revision "3", exact = True}
+        def{revision2 = Glass.Revision "3", exact = True}
       assertGlassException
         "exact revision throws if no match"
         (GlassExceptionReason_exactRevisionNotAvailable "Requested exactly 3")
@@ -155,18 +155,18 @@ testExactRevision withEnv = TestLabel "exact-revision" $ TestList
       sb <- mockSnapshotBackendSimple
             [(examplePath, Glass.Revision "2", gen0),
              (examplePath, Glass.Revision "3", gen0)]
-      let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
+      let env' = (env :: Glass.Env) { Glass.snapshotBackend = Some sb}
 
       result' <-
         symbolsList (failSourceControl env')
-          def{revision = Glass.Revision "3", exact = True}
+          def{revision2 = Glass.Revision "3", exact = True}
       assertEqual "Snapshot match"
         (SimpleSymbolsListXResult (Glass.Revision "3") True)
         result'
 
       result' <-
         symbolsList (failSourceControl env')
-          def{revision = Glass.Revision "2", exact = True}
+          def{revision2 = Glass.Revision "2", exact = True}
       assertEqual "DB match has priority over snapshot match"
         (SimpleSymbolsListXResult (Glass.Revision "2") False)
         result'
@@ -176,7 +176,7 @@ testUseRevision :: WithEnv -> Test
 testUseRevision withEnv = TestList
   [ TestLabel "exact" $ TestCase $ withEnv $ \env -> do
       result <- try $ symbolsList env def{
-        revision = Glass.Revision "3",
+        revision2 = Glass.Revision "3",
         exact = True}
       assertGlassException
         "exact revision throws if no match"
@@ -184,7 +184,7 @@ testUseRevision withEnv = TestList
         result
   , TestLabel "default" $ TestCase $ withEnv $ \env -> do
       result <- symbolsList env def{
-        revision = Glass.Revision "3",
+        revision2 = Glass.Revision "3",
         exact = False}
       assertEqual "Pick latest if missing"
         (SimpleSymbolsListXResult (Glass.Revision "2") False)
@@ -195,42 +195,42 @@ testUseRevisionJK :: WithEnv -> Test
 testUseRevisionJK withEnv = TestLabel "incr" $ TestList
   [ TestLabel "default" $ TestCase $ withEnv $ \env -> do
       result <- symbolsList env def{
-        revision = Glass.Revision "1",
+        revision2 = Glass.Revision "1",
         exact = False}
       assertEqual "Expected matching revision"
         (SimpleSymbolsListXResult (Glass.Revision "1") False)
         result
   , TestLabel "exact" $ TestCase $ withEnv $ \env -> do
       result <- symbolsList env def{
-        revision = Glass.Revision "1",
+        revision2 = Glass.Revision "1",
         exact = True}
       assertEqual "Expected matching revision"
         (SimpleSymbolsListXResult (Glass.Revision "1") False)
         result
   , TestLabel "snapshot and stale DB" $ TestCase $ withEnv $ \env -> do
       sb <- mockSnapshotBackendSimple [(examplePath, Glass.Revision "3", gen0)]
-      let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
+      let env' = (env :: Glass.Env) { Glass.snapshotBackend = Some sb}
       result <- symbolsList env' def{
-        revision = Glass.Revision "3",
+        revision2 = Glass.Revision "3",
         exact = True}
       assertEqual "Expected snapshot"
         (SimpleSymbolsListXResult (Glass.Revision "3") True)
         result
   , TestLabel "snapshot and exact DB" $ TestCase $ withEnv $ \env -> do
       sb <- mockSnapshotBackendSimple [(examplePath, Glass.Revision "1", gen0)]
-      let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
+      let env' = (env :: Glass.Env) { Glass.snapshotBackend = Some sb}
       result <- symbolsList env' def{
-        revision = Glass.Revision "1",
+        revision2 = Glass.Revision "1",
         exact = True}
       assertEqual "Expected snapshot"
         (SimpleSymbolsListXResult (Glass.Revision "1") False)
         result
   , TestLabel "snapshot only" $ TestCase $ withEnv $ \env -> do
       sb <- mockSnapshotBackendSimple [(newPath, Glass.Revision "3", gen0)]
-      let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
+      let env' = (env :: Glass.Env) { Glass.snapshotBackend = Some sb}
       result <- symbolsList env' def{
         path = newPath,
-        revision = Glass.Revision "3",
+        revision2 = Glass.Revision "3",
         exact = True}
       assertEqual "Expected snapshot"
         (SimpleSymbolsListXResult (Glass.Revision "3") True)
@@ -244,25 +244,25 @@ testNearestRevision :: WithEnv -> Test
 testNearestRevision withEnv = TestLabel "nearest" $ TestList
   [ TestLabel "pick" $ TestCase $ withEnv $ \env -> do
     result <- symbolsList env def {
-      revision = Glass.Revision "1a"}
+      revision2 = Glass.Revision "1a"}
     assertEqual "Nearest DB to 1a should be 1"
       (SimpleSymbolsListXResult (Glass.Revision "1") False)
       result
 
     result <- symbolsList env def {
-      revision = Glass.Revision "1b"}
+      revision2 = Glass.Revision "1b"}
     assertEqual "Nearest DB to 1b should be 2"
       (SimpleSymbolsListXResult (Glass.Revision "2") False)
       result
 
     result <- symbolsList env def {
-      revision = Glass.Revision "2a"}
+      revision2 = Glass.Revision "2a"}
     assertEqual "Nearest DB to 2a should be 2"
       (SimpleSymbolsListXResult (Glass.Revision "2") False)
       result
 
     result <- symbolsList env def {
-      revision = Glass.Revision "1"}
+      revision2 = Glass.Revision "1"}
     assertEqual "Nearest DB to 1 should be 1"
       (SimpleSymbolsListXResult (Glass.Revision "1") False)
       result
@@ -278,18 +278,18 @@ testMatchingRevision withEnv = TestLabel "matching" $ TestList
     sb <- mockSnapshotBackendSimple
       [(examplePath, Glass.Revision "14", ScmGeneration 14)
       ,(examplePath, Glass.Revision "16", ScmGeneration 16)]
-    let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
+    let env' = (env :: Glass.Env) { Glass.snapshotBackend = Some sb}
     result <- symbolsList env' def
-      { revision = Glass.Revision "15", exact = False, matching = True }
+      { revision2 = Glass.Revision "15", exact = False, matching = True }
     assertEqual "Nearest DB to 15 should be 16"
       (SimpleSymbolsListXResult (Glass.Revision "16") True)
       result
   , TestLabel "no match" $ TestCase $ withEnv $ \env -> do
     sb <- mockSnapshotBackendSimple
       [(examplePath, Glass.Revision "21", ScmGeneration 21)]
-    let env' :: Glass.Env = env { Glass.snapshotBackend = Some sb}
+    let env' = (env :: Glass.Env) { Glass.snapshotBackend = Some sb}
     result <- try $ symbolsList env' def
-      { revision = Glass.Revision "1b", exact = False, matching = True }
+      { revision2 = Glass.Revision "1b", exact = False, matching = True }
     assertGlassException
       "Nothing matches revision 1b"
       (GlassExceptionReason_matchingRevisionNotAvailable "1b")
@@ -328,7 +328,8 @@ instance SourceControl FailSourceControl where
   getFileContentHash _ _repo _path _rev0 = return Nothing
 
 failSourceControl :: Glass.Env -> Glass.Env
-failSourceControl env = env { Glass.sourceControl = Some FailSourceControl }
+failSourceControl env =
+  (env :: Glass.Env) { Glass.sourceControl = Some FailSourceControl }
 
 --------------------------------------------------------------------------------
 -- helpers
@@ -370,7 +371,7 @@ instance Simplify GlassException where
 
 instance Simplify DocumentSymbolListXResult where
   data Simple DocumentSymbolListXResult = SimpleSymbolsListXResult
-      { revision :: Glass.Revision
+      { revision1 :: Glass.Revision
       , isSnapshot :: Bool }
     deriving (Eq, Show)
   simplify DocumentSymbolListXResult{..} =
@@ -385,7 +386,7 @@ instance Simplify (DocumentSymbolsRequest, RequestOptions) where
     SimpleDocumentSymbolsRequest {
       repo :: Glass.RepoName,
       path :: Glass.Path,
-      revision :: Glass.Revision,
+      revision2 :: Glass.Revision,
       exact :: Bool,
       matching :: Bool
     }
@@ -397,7 +398,7 @@ instance Simplify (DocumentSymbolsRequest, RequestOptions) where
           , documentSymbolsRequest_include_refs = False
           }
     , def
-          { requestOptions_revision = Just revision
+          { requestOptions_revision = Just revision2
           , requestOptions_strict = True
           , requestOptions_exact_revision = exact
           , requestOptions_matching_revision = matching
@@ -408,7 +409,7 @@ instance Default (Simple (DocumentSymbolsRequest, RequestOptions)) where
   def = SimpleDocumentSymbolsRequest
     { repo = Glass.RepoName "fbsource"
     , path = examplePath
-    , revision = Glass.Revision "1"
+    , revision2 = Glass.Revision "1"
     , exact = False
     , matching = False
     }

@@ -15,7 +15,7 @@ module Glean.Glass.SymbolSig
   ) where
 
 import Data.Text (Text, replicate, length)
-import Data.Text.Prettyprint.Doc
+import Compat.Prettyprinter
 
 import qualified Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.Code.Types as Code

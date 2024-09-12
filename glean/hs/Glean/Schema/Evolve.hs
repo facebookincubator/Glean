@@ -11,6 +11,7 @@ This module focuses on determining which predicate should be transformed
 into which by looking at the contents of schemas and at the evolution
 relationships between schemas.
 -}
+{-# LANGUAGE CPP #-}
 module Glean.Schema.Evolve
   ( validateResolvedEvolutions
   , directSchemaEvolutions
@@ -25,7 +26,9 @@ module Glean.Schema.Evolve
 
 import Control.Applicative
 import Control.Monad.Except
+#if !MIN_VERSION_base(4,16,0)
 import Data.Foldable
+#endif
 import Data.Graph
 import Data.Hashable
 import qualified Data.HashSet as HashSet

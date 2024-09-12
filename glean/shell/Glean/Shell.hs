@@ -22,7 +22,7 @@ import qualified Control.Monad.Trans.State.Strict as State
 import qualified Data.ByteString.UTF8 as UTF8
 import Data.Char
 import Data.Default
-import Data.Foldable (asum)
+import Data.Foldable
 import qualified Data.HashMap.Strict as HashMap
 import Data.Int
 import qualified Data.IntMap as IntMap
@@ -36,9 +36,9 @@ import qualified Data.Set as Set
 import Text.Printf
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
-import Data.Text.Prettyprint.Doc as Pretty hiding ((<>), pageWidth)
-import Data.Text.Prettyprint.Doc.Util as Pretty hiding (words)
-import qualified Data.Text.Prettyprint.Doc.Render.Terminal as Pretty
+import Compat.Prettyprinter as Pretty hiding ((<>), pageWidth)
+import Compat.Prettyprinter.Util as Pretty hiding (words)
+import qualified Prettyprinter.Render.Terminal as Pretty
 import Data.Time.Clock
 import Data.Time.Clock.POSIX
 import qualified Options.Applicative as O
@@ -54,6 +54,12 @@ import System.Posix.Signals
 import System.Exit
 import qualified Text.JSON as JSON
 import Text.Parsec (runParser)
+
+#if MIN_VERSION_haskeline(0,8,0)
+import qualified Control.Monad.Catch as HEx (handle, bracket)
+#else
+import qualified System.Console.Haskeline as HEx (handle, bracket)
+#endif
 
 import Util.JSON.Pretty ()
 import Util.List
@@ -170,8 +176,13 @@ outputShellPrint x = do
 newtype Repl a = Repl
   { unRepl :: Haskeline.InputT Eval a
   }
-  deriving (Functor, Applicative, Monad, Haskeline.MonadException, MonadIO)
-
+  deriving (Functor, Applicative, Monad, MonadIO
+#if MIN_VERSION_haskeline(0,8,0)
+    , C.MonadThrow, C.MonadCatch, C.MonadMask
+#else
+    , Haskeline.MonadException
+#endif
+  )
 repoString :: Thrift.Repo -> String
 repoString repo = concat
   [Text.unpack (Thrift.repo_name repo)
@@ -747,7 +758,6 @@ timeoutCmd str
 
 countCmd :: String -> Eval ()
 countCmd str = do
-  ShellState {..} <- getState
   case runParser parse () "<input>" str of
     Left err -> do
       output $ "*** Syntax error:" <+> pretty (show err)
@@ -1078,7 +1088,7 @@ getInputLines = Repl $ getLines prompt1 []
 
     getLines prompt prior = do
       maybeLine <-
-        Haskeline.handle (\(e::IOError) -> do
+        HEx.handle (\(e::IOError) -> do
           liftIO $ hPrint stderr e
           return Nothing) $
           Haskeline.getInputLine =<< prompt
@@ -1117,6 +1127,16 @@ repl = replMask $ \restore ->
   in
   loop
 
+#if MIN_VERSION_haskeline(0,8,0)
+
+replTry :: Exception e => Repl a -> Repl (Either e a)
+replTry = C.try
+
+replMask :: ((Repl a -> Repl a) -> Repl b) -> Repl b
+replMask = C.mask
+
+#else
+
 replTry :: Exception e => Repl a -> Repl (Either e a)
 replTry r = Haskeline.controlIO $ \(Haskeline.RunIO run) -> do
   result <- try (run r)
@@ -1129,6 +1149,7 @@ replMask f = Haskeline.controlIO $ \(Haskeline.RunIO run) -> do
   mask $ \restore ->
     run (f (\repl -> Haskeline.controlIO $ \(Haskeline.RunIO run') ->
                 restore (run' repl)))
+#endif
 
 -- | Temporarily install standard signal handlers for catching ^C, which just
 -- throw an exception in the current thread.
@@ -1157,7 +1178,7 @@ withSignalHandlers act = do
       _ <- installHandler sigINT   hdlINT  Nothing
       return ()
 
-  Haskeline.bracket installHandlers uninstallHandlers (const act)
+  HEx.bracket installHandlers uninstallHandlers (const act)
 
 completeDatabases :: Haskeline.CompletionFunc Eval
 completeDatabases =
@@ -1231,7 +1252,7 @@ availablePredicates = maybe [] preds <$> getNameEnv
 indexCompletion :: Haskeline.CompletionFunc Eval
 indexCompletion line@(left,_) =
   case splitWhen isSpace (reverse left) of
-    [_cmd, _lang] -> ($line) $ Haskeline.completeWord Nothing " \t" $ \str ->
+    [_cmd, _lang] -> ($ line) $ Haskeline.completeWord Nothing " \t" $ \str ->
       let words = [ indexerShortName ix | SomeIndexer ix <- indexers ] in
       return (fromVocabulary str words)
     (_cmd : _lang : rest)

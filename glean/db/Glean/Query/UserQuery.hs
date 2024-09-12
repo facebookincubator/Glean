@@ -37,8 +37,8 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
-import Data.Text.Prettyprint.Doc hiding ((<>))
-import Data.Text.Prettyprint.Doc.Render.Text
+import Compat.Prettyprinter hiding ((<>))
+import Compat.Prettyprinter.Render.Text
 import qualified Data.Vector as Vector
 import Data.Vector (Vector)
 import Data.Word (Word64)

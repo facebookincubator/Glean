@@ -43,7 +43,7 @@ instance IOBased (IO a) where
 instance IOBased b => IOBased (a -> b) where
   constIO io _ = constIO io
   mapIO f g x = mapIO f (g x)
-  joinIO io x = joinIO $ ($x) <$> io
+  joinIO io x = joinIO $ ($ x) <$> io
 
 -- | Execute an `IO` before the action
 doBefore :: IOBased a => IO () -> a -> a

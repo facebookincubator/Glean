@@ -51,7 +51,7 @@ import Data.Maybe (fromMaybe, isJust)
 import qualified Data.Set as Set
 import Data.Set (Set)
 import Data.Text (Text)
-import Data.Text.Prettyprint.Doc hiding ((<>))
+import Compat.Prettyprinter hiding ((<>))
 
 import Glean.Angle.Hash
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)

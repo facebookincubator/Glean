@@ -403,8 +403,6 @@ symbolFromString str
   , (text, suffix) <- SCIP.parseSuffix symStrs
   = Right $ Global scheme Package{..} Descriptor {..}
 
-  | otherwise = Left $ "Unknown symbol: " <> str
-
   where
     -- we normalize space-escaping in identifiers with underscore
     normalStr = Text.intercalate "_" (Text.splitOn doubleSpace str)

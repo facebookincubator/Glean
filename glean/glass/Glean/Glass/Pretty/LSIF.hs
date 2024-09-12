@@ -16,7 +16,7 @@ import qualified Glean
 import Glean.Angle as Angle
 import Glean.Haxl.Repos as Glean ( RepoHaxl )
 import Glean.Glass.Utils ( fetchData )
-import Data.Text.Prettyprint.Doc
+import Compat.Prettyprinter
   (pretty,
    layoutSmart,
    LayoutOptions,

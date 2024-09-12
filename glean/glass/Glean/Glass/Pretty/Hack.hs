@@ -50,8 +50,8 @@ module Glean.Glass.Pretty.Hack
 import Data.List as List ( foldl' )
 import Data.Maybe (fromMaybe, mapMaybe)
 import Data.Text (Text)
-import Data.Text.Prettyprint.Doc
-import Data.Text.Prettyprint.Doc.Render.Text (renderStrict)
+import Compat.Prettyprinter
+import Compat.Prettyprinter.Render.Text (renderStrict)
 import qualified Data.Text as Text
 import Control.Monad.Extra ( when, whenJust )
 import Control.Monad.Trans (MonadTrans(lift))

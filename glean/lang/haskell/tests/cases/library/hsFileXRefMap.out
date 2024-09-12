@@ -5,6 +5,18 @@
       "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
       "refs": [
         {
+          "target": { "definition": { "key": "Data.String.IsString[]" } },
+          "spans": [ { "start": 0, "length": 0 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.String" } },
+          "spans": [ { "start": 274, "length": 6 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.map" } },
+          "spans": [ { "start": 285, "length": 3 } ]
+        },
+        {
           "target": { "definition": { "key": "GHC.Unicode.toLower" } },
           "spans": [
             { "start": 259, "length": 7 },
@@ -18,14 +30,6 @@
             { "start": 269, "length": 1 },
             { "start": 281, "length": 1 }
           ]
-        },
-        {
-          "target": { "definition": { "key": "GHC.Base.String" } },
-          "spans": [ { "start": 274, "length": 6 } ]
-        },
-        {
-          "target": { "definition": { "key": "GHC.Base.map" } },
-          "spans": [ { "start": 285, "length": 3 } ]
         }
       ]
     }
@@ -39,6 +43,25 @@
           "spans": [ { "start": 288, "length": 7 } ]
         },
         {
+          "target": { "definition": { "key": "GHC.Base.$" } },
+          "spans": [ { "start": 296, "length": 1 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Types.Int" } },
+          "spans": [ { "start": 279, "length": 3 } ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.ord" } },
+          "spans": [
+            { "start": 267, "length": 3 },
+            { "start": 302, "length": 3 }
+          ]
+        },
+        {
+          "target": { "definition": { "key": "GHC.Base.map" } },
+          "spans": [ { "start": 298, "length": 3 } ]
+        },
+        {
           "target": { "definition": { "key": "B.b" } },
           "spans": [
             { "start": 228, "length": 1 },
@@ -49,25 +72,6 @@
         {
           "target": { "definition": { "key": "A.a" } },
           "spans": [ { "start": 306, "length": 1 } ]
-        },
-        {
-          "target": { "definition": { "key": "GHC.Types.Int" } },
-          "spans": [ { "start": 279, "length": 3 } ]
-        },
-        {
-          "target": { "definition": { "key": "GHC.Base.map" } },
-          "spans": [ { "start": 298, "length": 3 } ]
-        },
-        {
-          "target": { "definition": { "key": "GHC.Base.$" } },
-          "spans": [ { "start": 296, "length": 1 } ]
-        },
-        {
-          "target": { "definition": { "key": "GHC.Base.ord" } },
-          "spans": [
-            { "start": 267, "length": 3 },
-            { "start": 302, "length": 3 }
-          ]
         }
       ]
     }

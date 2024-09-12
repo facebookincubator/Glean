@@ -38,7 +38,7 @@ import qualified Data.HashSet as HashSet
 import Data.HashSet (HashSet)
 import qualified Data.IntMap as IntMap
 import Data.IntMap (IntMap)
-import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
+import Compat.Prettyprinter hiding ((<>), enclose)
 
 import Glean.Angle.Types hiding (Type)
 import qualified Glean.Angle.Types as Schema

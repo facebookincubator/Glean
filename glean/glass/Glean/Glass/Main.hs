@@ -79,7 +79,7 @@ withGlass
   :: TextShow trace
   => Server trace -> Parser (Glass.Config trace -> Glass.Config trace) -> IO ()
 withGlass f backendsP =
-  withOptions (Glass.options backendsP) $ \config@Glass.Config{..} ->
+  withOptions (Glass.options backendsP) $ \config ->
   withEnv config Nothing $ \env -> f env config
 
 -- | Construct a server environment

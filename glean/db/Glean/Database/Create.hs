@@ -65,7 +65,6 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
   | Just err <- validateDbName kickOff_repo = dbError kickOff_repo $
     "Can't create database: " <> err
   | otherwise = do
-      ServerConfig.Config{..} <- Observed.get envServerConfig
       let
         schemaToUse =
           case HashMap.lookup "glean.schema_id" kickOff_properties of

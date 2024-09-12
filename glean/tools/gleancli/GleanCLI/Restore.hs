@@ -7,7 +7,7 @@
 -}
 
 {-# LANGUAGE ApplicativeDo #-}
-{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
+{-# OPTIONS_GHC -Wno-incomplete-patterns -Wno-deprecations #-}
 module GleanCLI.Restore (RestoreCommand) where
 
 import Control.Exception.Safe (catch)

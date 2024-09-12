@@ -13,7 +13,7 @@ module Glean.Glass.Pretty.Fbthrift
 
 import System.FilePath ( dropExtension, takeBaseName )
 import Data.Text ( Text, unpack )
-import Data.Text.Prettyprint.Doc
+import Compat.Prettyprinter
 
 import Glean.Glass.Types ( SymbolId(..), RepoName(..) )
 import qualified Glean

@@ -33,7 +33,7 @@ import Data.Bitraversable
 import Data.ByteString (ByteString)
 import Data.Maybe (fromMaybe)
 import Data.Text (Text)
-import Data.Text.Prettyprint.Doc
+import Compat.Prettyprinter
 
 import Glean.Angle.Types (IsWild(..), PrimOp(..), SeekSection(..))
 import Glean.Bytecode.Types (Register, Ty(..))

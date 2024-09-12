@@ -7,6 +7,7 @@
 -}
 
 {-# LANGUAGE AllowAmbiguousTypes, TypeFamilyDependencies #-}
+{-# OPTIONS_GHC -Wno-star-is-type #-}
 module Glean.Util.ConfigProvider
   ( ConfigProvider(..)
   , ConfigOptions

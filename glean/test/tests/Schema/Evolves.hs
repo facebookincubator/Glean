@@ -7,6 +7,7 @@
 -}
 
 {-# LANGUAGE QuasiQuotes #-}
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 module Schema.Evolves (main) where
 
 import Control.Exception

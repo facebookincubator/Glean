@@ -10,7 +10,7 @@
 // @lint-ignore-every HSMODULEHEADER
 -}
 
-import Data.Text.Prettyprint.Doc
+import Compat.Prettyprinter
 
 instance Pretty PredicateRef where
   pretty (PredicateRef n v) = pretty n <> "." <> pretty v

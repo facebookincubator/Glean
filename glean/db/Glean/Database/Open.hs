@@ -193,7 +193,7 @@ withOpenDBStack
   -> Lookup  -- Stacked DB
   -> (Lookup -> IO a)
   -> IO a
-withOpenDBStack env@Env{..} repo lookup f = do
+withOpenDBStack env repo lookup f = do
   parent <- repoParent env repo
   case parent of
     Nothing -> f lookup

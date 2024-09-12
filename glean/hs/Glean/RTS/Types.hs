@@ -37,7 +37,7 @@ module Glean.RTS.Types
 import Control.DeepSeq
 import Data.Hashable
 import qualified Data.Text as Text
-import Data.Text.Prettyprint.Doc
+import Compat.Prettyprinter
 import Data.Vector.Primitive (Prim)
 import Foreign
 

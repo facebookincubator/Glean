@@ -50,7 +50,12 @@ import Data.List (unzip4)
 import Data.Text (Text)
 import qualified Data.Vector.Storable as VS
 import Data.Vector.Storable (Vector)
-import Foreign hiding (with)
+import Data.Int
+import Data.Word
+import Foreign.Ptr
+import Foreign.ForeignPtr
+import Foreign.Storable
+import Foreign.Marshal hiding (with)
 import Foreign.C
 import TextShow
 

@@ -10,6 +10,7 @@
 {-# LANGUAGE ConstraintKinds #-}
 -- Copyright 2004-present Facebook. All Rights Reserved.
 
+{-# OPTIONS_GHC -Wno-star-is-type #-}
 module Glean.Glass.Attributes.Class
   ( ToAttributes(..)
   , SymbolIdentifier(..)

@@ -47,7 +47,7 @@ import Data.Maybe
 import Data.Proxy
 import Data.Text as Text
 import qualified Data.Text.Encoding as Text
-import Data.Text.Prettyprint.Doc hiding ((<>))
+import Compat.Prettyprinter hiding ((<>))
 import qualified Data.Vector as Vector
 import Text.Printf
 

@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE CPP #-}
 module Glean.Database.Work.Queue (
   Parcel(..), WorkQueue,
   newWorkQueue, insertWorkQueue, writeWorkQueue, readWorkQueue
@@ -15,7 +16,9 @@ import qualified Glean.Types as Thrift
 
 import Control.Applicative
 import Control.Exception (assert)
+#if !MIN_VERSION_base(4,16,0)
 import Data.Foldable (asum)
+#endif
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.IntMap.Strict (IntMap)

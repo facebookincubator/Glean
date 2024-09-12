@@ -15,7 +15,7 @@ module Glean.Glass.Pretty.Java
 
 import Data.Maybe
 import Data.Text ( Text )
-import Data.Text.Prettyprint.Doc
+import Compat.Prettyprinter
 import Control.Monad.Trans.Maybe (MaybeT (..))
 import Control.Monad ( (<=<) )
 

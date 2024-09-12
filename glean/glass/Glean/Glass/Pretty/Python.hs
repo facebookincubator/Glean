@@ -17,7 +17,7 @@ import Data.Maybe ( mapMaybe, isNothing )
 import Data.Map.Strict ( Map )
 import qualified Data.Map.Strict as Map
 import Data.Text ( Text, takeWhileEnd )
-import Data.Text.Prettyprint.Doc
+import Compat.Prettyprinter
 import Control.Monad.Trans.Maybe (MaybeT (..))
 import Control.Monad ( forM )
 import Util.List ( uniq )

@@ -17,7 +17,7 @@ module Glean.Display (
   ) where
 
 import Data.Text (Text)
-import Data.Text.Prettyprint.Doc
+import Compat.Prettyprinter
 
 data PredicateStyle = PredicateWithHash | PredicateWithoutHash
 

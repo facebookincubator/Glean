@@ -16,7 +16,7 @@ import Data.ByteString (ByteString)
 import Data.Hashable
 import qualified Data.Text.Encoding as Text
 import qualified Data.Text.Encoding.Error as Text
-import Data.Text.Prettyprint.Doc
+import Compat.Prettyprinter
 import Data.Word (Word8, Word64)
 import GHC.Generics hiding (Rep)
 

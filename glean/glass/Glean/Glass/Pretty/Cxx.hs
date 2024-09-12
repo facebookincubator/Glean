@@ -21,7 +21,7 @@ import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.Cxx1.Types as Cxx
 
 import Data.Text ( Text, intercalate )
-import Data.Text.Prettyprint.Doc
+import Compat.Prettyprinter
   (pretty, layoutSmart, LayoutOptions, SimpleDocStream, reAnnotateS)
 import Data.Maybe ( fromMaybe )
 import qualified Data.Text as Text

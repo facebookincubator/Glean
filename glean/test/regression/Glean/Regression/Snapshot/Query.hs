@@ -21,7 +21,7 @@ import Data.Ord
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
-import Data.Text.Prettyprint.Doc (pretty)
+import Compat.Prettyprinter (pretty)
 import qualified Data.Yaml as Yaml
 import System.Exit
 import qualified Text.JSON as JSON

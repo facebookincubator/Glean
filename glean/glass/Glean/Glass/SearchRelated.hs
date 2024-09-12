@@ -72,7 +72,7 @@ data RelatedEntities = RelatedEntities
 data RelatedLocatedEntities = RelatedLocatedEntities
   { parentRL :: LocatedEntity
   , childRL :: LocatedEntity
-  } deriving (Generic,Hashable)
+  } deriving (Generic,Eq,Hashable)
 
 type LocatedEntity = (ResultLocation Code.Entity, SymbolId)
 

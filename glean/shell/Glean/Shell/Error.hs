@@ -18,10 +18,10 @@ import Control.Applicative ((<|>))
 import Text.Read (readMaybe)
 import Data.Maybe (isJust)
 import Data.Text (Text)
-import Data.Text.Prettyprint.Doc as Pretty hiding ((<>), pageWidth)
+import Compat.Prettyprinter as Pretty hiding ((<>), pageWidth)
 
 import qualified Data.Text as Text
-import qualified Data.Text.Prettyprint.Doc.Render.Terminal as Pretty
+import qualified Prettyprinter.Render.Terminal as Pretty
 import qualified Text.Parsec as Parsec
 
 import Glean.Angle.Types

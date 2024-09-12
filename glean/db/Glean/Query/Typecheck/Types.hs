@@ -15,7 +15,7 @@ module Glean.Query.Typecheck.Types
   , lookupField
   ) where
 
-import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
+import Compat.Prettyprinter hiding ((<>), enclose)
 import Data.Word
 
 import Glean.Query.Codegen.Types

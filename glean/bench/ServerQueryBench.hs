@@ -30,7 +30,6 @@ module ServerQueryBench (main) where
 import Control.Monad
 import qualified Data.Aeson as Aeson
 import qualified Data.ByteString.Lazy.Char8 as BSL
-import qualified Data.HashMap.Strict as HashMap
 import Data.List
 import Data.Scientific as Scientific
 import qualified Data.Text as Text
@@ -40,6 +39,8 @@ import System.IO
 import System.IO.Temp
 import System.Process
 import Text.Printf
+
+import Util.Aeson
 
 import Glean.Init
 import Glean.Server.Spawn (withServer)
@@ -172,7 +173,8 @@ runBenchmark Config{..} service hstats Benchmark{..} = do
       forM_ hstats $ \h -> dump_stats h benchmarkName it s
       xs <- forM (BSL.lines s) $ \line -> case Aeson.decode' line of
         Just (Aeson.Object obj)
-          | Just (Aeson.Number m) <- HashMap.lookup (Text.pack cfgWhat) obj
+          | Just (Aeson.Number m) <-
+              lookupKeyMap (keyFromText (Text.pack cfgWhat)) obj
           , Just n <- Scientific.toBoundedInteger m -> return n
         _ -> die $ "couldn't parse output from glean query: " ++ BSL.unpack line
       return $ sum (xs :: [Int])

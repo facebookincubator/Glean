@@ -24,7 +24,7 @@ import Data.IORef
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
 import Data.Maybe
-import Data.Text.Prettyprint.Doc hiding ((<>))
+import Compat.Prettyprinter hiding ((<>))
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text

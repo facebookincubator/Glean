@@ -35,19 +35,19 @@ import Data.Int
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
-import qualified Data.Text.Prettyprint.Doc.Render.Terminal as Pretty
 import qualified Data.HashMap.Strict as HashMap
 import Data.Time.Clock.POSIX
 import Data.List hiding (span)
 import Data.Void
 import Options.Applicative as O
-import Data.Text.Prettyprint.Doc
 import Text.Printf hiding (parseFormat)
 import System.Exit
 import System.IO
 import System.Process
 import System.Timeout
-import Prettyprinter.Render.Terminal
+import Compat.Prettyprinter
+import Prettyprinter.Render.Terminal as Pretty
+import Util.Aeson
 import Util.Control.Exception (catchAll)
 import Util.TimeSec
 import Util.Timing
@@ -338,7 +338,7 @@ instance (ShellFormat DbVerbosity v)
       , "size" .= maybe J.Null J.toJSON
           (Thrift.databaseComplete_bytes <$> Thrift.database_complete db)
       ] ++
-      [ jsonKeyFrom key .= shellFormatJson ctx opts value
+      [ keyFromText (jsonKeyFrom key) .= shellFormatJson ctx opts value
       | (key, value) <- extras]
       where
         status = Thrift.database_status db
@@ -424,7 +424,9 @@ getTerminalWidth = fmap join $
   System.Timeout.timeout 100000
     (withCreateProcess
       (proc "stty" ["size"]){std_out = CreatePipe, std_err = CreatePipe}
-      (\_ (Just outh) (Just errh) ph -> do
+      (\_ mouth merrh ph -> do
+          let outh = fromMaybe (error "outh") mouth
+          let errh = fromMaybe (error "errh") merrh
           out <- hGetContents outh
           err <- hGetContents errh
           length out `seq` length err `seq` return ()

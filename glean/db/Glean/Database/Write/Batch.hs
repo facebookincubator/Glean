@@ -126,7 +126,7 @@ writeDatabase
   -> Point
   -> IO Subst
 writeDatabase env repo WriteContent{..} latency =
-  readDatabase env repo $ \odb@OpenDB{..} lookup -> do
+  readDatabase env repo $ \odb lookup -> do
     writing <- checkWritable repo odb
     checkComplete env repo writeBatch
     Stats.bump (envStats env) Stats.mutatorLatency =<< endTick latency

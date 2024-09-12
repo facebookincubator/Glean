@@ -19,7 +19,7 @@ import qualified Data.IntMap as IntMap
 import qualified Data.Map as Map
 import Data.Maybe
 import qualified Data.Text as Text
-import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
+import Compat.Prettyprinter hiding ((<>), enclose)
 
 import Glean.Angle.Types hiding (Type)
 import Glean.Database.Schema.Types

@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 module BackupTest (main) where
 
 import Util.STM

@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE BangPatterns #-}
 {-# LANGUAGE StrictData #-}
@@ -45,8 +46,24 @@ import Database.SQLite.Simple (
   foldNamed,
   queryNamed,
  )
+#if __GLASGOW_HASKELL__ >= 902
+import Data.IORef
+import GHC.Plugins (mkSplitUniqSupply)
+import GHC.Iface.Ext.Binary (HieFileResult (hie_file_result), readHieFile,
+  NameCacheUpdater(..))
+import GHC.Iface.Env (updNameCache)
+import GHC.Iface.Ext.Types (HieFile (..))
+import GHC.Unit.Module.Name (moduleNameString)
+import GHC.Types.Name.Cache (NameCache, initNameCache)
+import GHC.Types.Name.Occurrence (occNameString)
+#else
 import GhcPlugins (mkSplitUniqSupply)
 import HieBin (HieFileResult (hie_file_result), readHieFile)
+import HieTypes (HieFile (..))
+import Module (moduleNameString)
+import NameCache (NameCache, initNameCache)
+import OccName (occNameString)
+#endif
 import HieDBIndexer.Options (HieDBIndexerOptions (..))
 import HieDBIndexer.Trace
 import HieDBIndexer.Types (
@@ -68,10 +85,6 @@ import HieDb (
   setHieTrace,
   withHieDb,
  )
-import HieTypes (HieFile (..))
-import Module (moduleNameString)
-import NameCache (NameCache, initNameCache)
-import OccName (occNameString)
 import System.Directory (doesFileExist)
 import System.FilePath (makeRelative, (</>))
 import qualified Text.Printf as Text
@@ -226,7 +239,13 @@ mkLineLengths logger nc (srcFp, hieFp) = handle exHandler $ do
 sourceFileLineLengths ::
   NameCache -> FilePath -> IO [Int]
 sourceFileLineLengths nc hieFp = do
+#if __GLASGOW_HASKELL__ >= 902
+  ref <- newIORef nc
+  let ncu = NCU (updNameCache ref)
+  srcContent <- hie_hs_src . hie_file_result <$> readHieFile ncu hieFp
+#else
   srcContent <- hie_hs_src . hie_file_result . fst <$> readHieFile nc hieFp
+#endif
   let !lineLengths =
         map ((1 +) . Text.length) $ -- +1 to count the newlines
           Text.lines $ Text.decodeUtf8 srcContent

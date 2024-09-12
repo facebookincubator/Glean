@@ -228,7 +228,7 @@ execTrace env repo (Trace actions expected) = do
 prop_workQueue :: Property
 prop_workQueue = forAll (genTrace $ initialState fbsource_recipes) $ \trace ->
   monadicIO $ run $
-  withTestEnv [setRecipes recipes, setMemoryStorage] $ \env@Env{..} -> do
+  withTestEnv [setRecipes recipes, setMemoryStorage] $ \env -> do
   let repo = Repo "fbsource" "foobar"
   Thrift.KickOffResponse{kickOffResponse_alreadyExists=False}
     <- kickOffDatabase env def{ Thrift.kickOff_repo = repo }

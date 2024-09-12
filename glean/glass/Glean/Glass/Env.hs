@@ -70,19 +70,19 @@ data Config trace = Config
 
 setSnapshotBackend
   :: (EventBaseDataplane -> IO(Some SnapshotBackend)) -> Config a -> Config a
-setSnapshotBackend snapshotBackend config =
-  config { snapshotBackend = snapshotBackend }
+setSnapshotBackend snapshotBackend_ Config{..} =
+  Config { snapshotBackend = snapshotBackend_, .. }
 
 setSourceControl
   :: (EventBaseDataplane -> IO (Some SourceControl))
   -> Config a -> Config a
-setSourceControl sourceControl config =
-  config { sourceControl = sourceControl }
+setSourceControl sourceControl_ Config{..} =
+  Config { sourceControl = sourceControl_, .. }
 
 setHaxlState
   :: (EventBaseDataplane -> IO Haxl.StateStore)
   -> Config a -> Config a
-setHaxlState st config = config { haxlState = st }
+setHaxlState st Config{..} = Config { haxlState = st, .. }
 
 setTracer :: Tracer trace -> Config trace -> Config trace
 setTracer tracer' Config{..}= Config{ tracer = tracer <> tracer', .. }
@@ -92,7 +92,7 @@ setUseSnapshotsForSymbolsList check Config{..} =
   Config { useSnapshotsForSymbolsList = check, .. }
 
 setAllocationLimit :: IO (Maybe Int64) -> Config a -> Config a
-setAllocationLimit l config = config { allocationLimit = l }
+setAllocationLimit l Config{..} = Config { allocationLimit = l, .. }
 
 updateWelcomeMessage
   :: ( forall a. (EventBaseDataplane -> Config a -> IO Text)

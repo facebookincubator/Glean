@@ -34,7 +34,7 @@ import Data.Maybe
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Data.Text.Prettyprint.Doc hiding (group)
+import Compat.Prettyprinter hiding (group)
 import TextShow
 
 import Glean.Angle.Hash
@@ -353,8 +353,9 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
       qualInheritedScope
 
   -- resolve queries
-  localDeriving <- forM [ d | d@SourceDeriving{} <- schemaDecls ] $
-    \(SourceDeriving ref derive) -> do
+  localDeriving <-
+    forM [ (ref,derive) | SourceDeriving ref derive <- schemaDecls ] $
+    \(ref, derive) -> do
       ty <- lookupResultToExcept ref $ predScope ref
       ref <- case ty of
         RefPred ref -> return ref

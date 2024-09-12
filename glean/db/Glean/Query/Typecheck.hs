@@ -45,7 +45,7 @@ import qualified Data.Set as Set
 import Data.Set (Set)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
-import Data.Text.Prettyprint.Doc hiding ((<>), enclose)
+import Compat.Prettyprinter hiding ((<>), enclose)
 import System.IO
 
 import Glean.Angle.Types hiding (Type)

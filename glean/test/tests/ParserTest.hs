@@ -14,10 +14,10 @@ module ParserTest
 import Data.ByteString.Lazy.Char8 ()
 import Data.Either
 import Data.List
-import Data.Text.Prettyprint.Doc.Render.Text
 import Test.HUnit
 
 import TestRunner
+import Compat.Prettyprinter.Render.Text
 import Util.String.Quasi
 
 import Glean.Angle.Parser

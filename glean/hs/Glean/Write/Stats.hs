@@ -72,11 +72,10 @@ bumper f = Bump $ \stats x -> atomicModifyIORef' (f stats) $
 newtype Bump a = Bump { runBump :: Stats -> a -> IO () }
 
 instance Semigroup (Bump a) where
-  (<>) = mappend
+  Bump p <> Bump q = Bump $ \stats a -> p stats a >> q stats a
 
 instance Monoid (Bump a) where
   mempty = Bump $ const $ const $ return ()
-  Bump p `mappend` Bump q = Bump $ \stats a -> p stats a >> q stats a
 
 instance Contravariant Bump where
   contramap f (Bump g) = Bump $ \stats a -> g stats (f a)

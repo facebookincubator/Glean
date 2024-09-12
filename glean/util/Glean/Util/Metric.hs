@@ -23,11 +23,10 @@ data Tick = Tick
   }
 
 instance Semigroup Tick where
-  (<>) = mappend
+  Tick v1 d1 <> Tick v2 d2 = Tick (v1+v2) (d1+d2)
 
 instance Monoid Tick where
   mempty = Tick 0 0
-  mappend (Tick v1 d1) (Tick v2 d2) = Tick (v1+v2) (d1+d2)
 
 showLatency :: Tick -> String
 showLatency = pad 5 . f where

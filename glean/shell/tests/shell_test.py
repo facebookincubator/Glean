@@ -260,7 +260,7 @@ class GleanShellOwner(GleanShellTest):
 
         # 1024 should be the first fact created, i.e. Node "d"
         output = self.shellCommand(":!owner 1024", prompt="owner>")
-        self.assertIn("D || B || C", output)
+        self.assertIn("B || C || D", output)
 
 
 class GleanShellDump(GleanShellTest):

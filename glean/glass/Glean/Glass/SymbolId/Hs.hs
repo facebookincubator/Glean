@@ -59,7 +59,7 @@ instance ToQName Hs.Definition_key where
       (x:xs) -> Right (Name x, joinDotted xs)
 
 instance ToQName Hs.FunctionDefinition_key where
-  toQName (Hs.FunctionDefinition_key fnName Src.Range{..}) = do
+  toQName (Hs.FunctionDefinition_key fnName _) = do
     name <- Glean.keyOf fnName
     return $ case reverse (Text.splitOn "." name) of
       [] -> Left "toQName: Haskell: empty function qname"
@@ -68,7 +68,7 @@ instance ToQName Hs.FunctionDefinition_key where
 
 
 instance ToQName Hs.Class_key where
-  toQName (Hs.Class_key clsName Src.Range{..}) = do
+  toQName (Hs.Class_key clsName _) = do
     name <- Glean.keyOf clsName
     return $ case reverse (Text.splitOn "." name) of
       [] -> Left "toQName: Haskell: empty class qname"

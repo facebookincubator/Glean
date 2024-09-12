@@ -31,8 +31,10 @@ import qualified Control.Monad.Trans.State.Strict as State
 import Data.Int
 import Data.List
 import qualified Data.Map as Map
-import Data.Text.Prettyprint.Doc as Pretty
+import Compat.Prettyprinter as Pretty
+#if !MIN_VERSION_haskeline(0,8,0)
 import qualified System.Console.Haskeline as Haskeline
+#endif
 import System.IO
 import qualified Text.JSON as JSON
 import qualified Text.Parsec as P
@@ -147,7 +149,9 @@ newtype Eval a = Eval
     ( Functor
     , Applicative
     , Monad
+#if !MIN_VERSION_haskeline(0,8,0)
     , Haskeline.MonadException
+#endif
     , MonadIO
     , C.MonadCatch
     , C.MonadMask

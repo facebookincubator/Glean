@@ -11,6 +11,7 @@
 -- programmatically.
 --
 {-# LANGUAGE TypeApplications, TypeOperators, AllowAmbiguousTypes #-}
+{-# OPTIONS_GHC -Wno-star-is-type #-}
 module Glean.Query.Angle
   ( Angle
   , AngleStatement
@@ -77,8 +78,8 @@ import qualified Data.List.Extra as List (nubOrd)
 import Data.List.NonEmpty (NonEmpty(..))
 import qualified Data.List.NonEmpty as NonEmpty (fromList, toList)
 import Data.Text (Text)
-import Data.Text.Prettyprint.Doc hiding ((<>))
-import Data.Text.Prettyprint.Doc.Render.Text
+import Compat.Prettyprinter hiding ((<>))
+import Compat.Prettyprinter.Render.Text
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Data.Word

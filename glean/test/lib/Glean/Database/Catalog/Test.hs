@@ -82,9 +82,9 @@ checkConsistency cat = do
 
     not_live repo = do
       assert $ not <$> Catalog.exists cat [Local] repo
-      assertThrowsType "" (Proxy @ UnknownDatabase)
+      assertThrowsType "" (Proxy @UnknownDatabase)
         $ atomically $ Catalog.readMeta cat repo
-      assertThrowsType "" (Proxy @ UnknownDatabase)
+      assertThrowsType "" (Proxy @UnknownDatabase)
         $ atomically $ Catalog.writeMeta cat repo def
-      assertThrowsType "" (Proxy @ UnknownDatabase)
+      assertThrowsType "" (Proxy @UnknownDatabase)
         $ atomically $ Catalog.modifyMeta cat repo return

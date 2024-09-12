@@ -14,7 +14,7 @@ module Glean.Glass.Pretty.Flow
   ) where
 
 import Data.Text ( Text )
-import Data.Text.Prettyprint.Doc
+import Compat.Prettyprinter
 
 import qualified Glean
 import Glean.Angle as Angle

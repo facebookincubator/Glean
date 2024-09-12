@@ -44,7 +44,7 @@ commandType (ShardingAssignmentChange ShardRemoved {}) = "ShardRemoved"
 commandType DBDownloaded {} = "DBDownloaded"
 
 instance Show Command where
-  show (NewRemoteDB Repo {..} Meta {..}) =
+  show (NewRemoteDB Repo {..} _) =
     printf "DB %s %s" repo_name repo_hash
   show (TimeElapsed n) = printf "T %d" n
   show (ShardingAssignmentChange x) = show x

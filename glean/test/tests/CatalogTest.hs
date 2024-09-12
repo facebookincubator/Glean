@@ -269,7 +269,7 @@ deleteExisting :: HasCallStack => Catalog -> Repo -> IO ()
 deleteExisting cat repo = Catalog.delete cat repo
 
 deleteUnknown :: HasCallStack => Catalog -> Repo -> IO ()
-deleteUnknown cat repo = assertThrowsType "" (Proxy @ UnknownDatabase)
+deleteUnknown cat repo = assertThrowsType "" (Proxy @UnknownDatabase)
   $ Catalog.delete cat repo
 
 main :: IO ()

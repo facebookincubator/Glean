@@ -10,7 +10,7 @@
 {-# LANGUAGE DeriveFunctor #-}
 {-# LANGUAGE DeriveFoldable  #-}
 {-# LANGUAGE DeriveAnyClass  #-}
-{-# OPTIONS_GHC -Wno-orphans #-}
+{-# OPTIONS_GHC -Wno-orphans -Wno-star-is-type #-}
 
 -- | Types representing a source-level schema
 module Glean.Angle.Types
@@ -110,7 +110,7 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Text (Text)
 import qualified Data.Text.Encoding as Text
-import Data.Text.Prettyprint.Doc
+import Compat.Prettyprinter
 import Data.Bifunctor
 import Data.Bifoldable
 import GHC.Generics

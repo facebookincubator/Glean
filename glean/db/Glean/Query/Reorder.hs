@@ -27,7 +27,7 @@ import qualified Data.List.NonEmpty as NonEmpty
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Data.Text.Prettyprint.Doc hiding ((<>))
+import Compat.Prettyprinter hiding ((<>))
 
 import Glean.Query.BindOrder
 import Glean.Query.Codegen.Types

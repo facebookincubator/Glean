@@ -60,8 +60,8 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
-import Data.Text.Prettyprint.Doc
-import Data.Text.Prettyprint.Doc.Render.Text
+import Compat.Prettyprinter
+import Compat.Prettyprinter.Render.Text
 import Data.Tuple (swap)
 import Safe (maximumMay)
 import TextShow
@@ -1013,7 +1013,7 @@ validateNewSchema
   -> SchemaIndex
   -> DebugFlags
   -> IO ()
-validateNewSchema ServerConfig.Config{..} newSrc current debug = do
+validateNewSchema _config newSrc current debug = do
   schema <- case processSchema Map.empty newSrc of
     Left msg -> throwIO $ Thrift.Exception $ Text.pack msg
     Right resolved -> return resolved

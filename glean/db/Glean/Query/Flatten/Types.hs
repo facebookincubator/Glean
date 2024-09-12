@@ -32,7 +32,7 @@ import qualified Data.IntSet as IntSet
 import qualified Data.List.NonEmpty as NonEmpty
 import Data.List.NonEmpty (NonEmpty(..))
 import Data.Text (Text)
-import Data.Text.Prettyprint.Doc hiding ((<>))
+import Compat.Prettyprinter hiding ((<>))
 
 import Glean.Angle.Types ( PredicateId )
 import Glean.Query.Codegen.Types

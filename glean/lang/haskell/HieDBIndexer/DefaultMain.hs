@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 module HieDBIndexer.DefaultMain (defaultMain, outputMain) where
 
 import Control.Monad.Extra (unlessM, when)
@@ -53,7 +54,7 @@ defaultMain
   -> b
   -> IO ()
 defaultMain tracer cfg repo dontCreateDb backend =
-  (if dontCreateDb then handleDontCreateDb cfg else ($cfg)) $ \cfg' ->
+  (if dontCreateDb then handleDontCreateDb cfg else ($ cfg)) $ \cfg' ->
   withHieDB cfg $ \hiedb -> do
     let finalCfg = cfg' {sources = hiedb}
     (fileLinesMap, xrefMapData) <-

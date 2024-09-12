@@ -199,7 +199,7 @@ deleteOpen = TestCase $ withTEnv $ \TEnv{..} -> do
   atomically $ do
     ex <- Catalog.exists (envCatalog tEnv) [Local] repo1
     when ex retry
-  assertThrowsType "" (Proxy @ UnknownDatabase) $
+  assertThrowsType "" (Proxy @UnknownDatabase) $
     withOpenDatabase tEnv repo1 $ \_ -> return ()
 
 deleteWhileUsing :: Test
@@ -241,7 +241,7 @@ useWhileDeleting = TestCase $ withTEnv $ \TEnv{..} -> do
   prepare (storeDelete tStore) [ doBefore $ do putMVar v1 () ; takeMVar v2 ]
   concurrently_ (deleteDatabase tEnv repo1) $ do
     takeMVar v1
-    assertThrowsType "" (Proxy @ UnknownDatabase) $
+    assertThrowsType "" (Proxy @UnknownDatabase) $
       withOpenDatabase tEnv repo1 $ \_ -> return ()
     putMVar v2 ()
 

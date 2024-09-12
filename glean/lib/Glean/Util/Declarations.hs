@@ -7,6 +7,7 @@
 -}
 
 {-# LANGUAGE TypeApplications, ConstraintKinds #-}
+{-# OPTIONS_GHC -Wno-star-is-type #-}
 
 -- | The 'Cxx.Declaration' type has so many cases.  Try to capture some
 -- using 'IsDeclaration' so we can reuse them.
