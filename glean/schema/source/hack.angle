@@ -82,7 +82,8 @@ type ConstraintKind = enum { As | Equal | Super }
 type Constraint =
   {
     constraintKind : ConstraintKind,
-    type: Type,
+    type: Type,  # deprecated, replaced by TypeInfo
+    typeInfo: maybe TypeInfo
   }
 
 type ReadonlyKind = enum { Readonly }
@@ -298,9 +299,11 @@ predicate TraitDefinition :
 predicate EnumDefinition :
   {
     declaration : EnumDeclaration,
-    enumBase: Type,
+    enumBase: Type,  # deprecated, replaced by TypeInfo
+    enumBaseTypeInfo: maybe TypeInfo,
     # 'as' type; always nothing for enum classes
     enumConstraint: maybe Type,
+    enumConstraintTypeInfo: maybe TypeInfo,
     enumerators : [Enumerator],
     attributes : [UserAttribute],
     # uses for normal enums, and extends for enum classes
@@ -345,6 +348,7 @@ predicate PropertyDefinition :
     isAbstract : bool,
     isStatic : bool,
     attributes : [UserAttribute],
+    typeInfo: maybe TypeInfo
   }
 
 # Definition of a Hack global (top-level) constant
@@ -353,6 +357,7 @@ predicate GlobalConstDefinition :
     declaration : GlobalConstDeclaration,
     type : maybe Type,
     value : string,
+    typeInfo: maybe TypeInfo,
   }
 
 # Definition of a member constant
@@ -362,6 +367,7 @@ predicate ClassConstDefinition :
     type : maybe Type,
     # A none/nothing value indicates an abstract const
     value : maybe string,
+    typeInfo: maybe TypeInfo
   }
 
 type TypeConstKind = enum { Abstract | Concrete | PartiallyAbstract }
@@ -373,6 +379,7 @@ predicate TypeConstDefinition :
     type : maybe Type,
     kind : TypeConstKind,
     attributes : [UserAttribute],
+    typeInfo: maybe TypeInfo
   }
 
 # Definition of a Hack function

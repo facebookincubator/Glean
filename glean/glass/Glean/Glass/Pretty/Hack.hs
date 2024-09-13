@@ -779,7 +779,7 @@ toReifyKind Hack.ReifyKind_Erased = Erased
 toReifyKind (Hack.ReifyKind__UNKNOWN _) = Erased
 
 toConstraint :: Hack.Constraint -> Constraint
-toConstraint (Hack.Constraint kind ty) =
+toConstraint (Hack.Constraint kind ty _typeInfo) =
   Constraint (toConstraintKind kind) (toType $ Just ty)
 
 toConstraintKind :: Hack.ConstraintKind -> ConstraintKind

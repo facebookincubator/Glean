@@ -11389,7 +11389,7 @@ namespace Hack {
 
 enum class TypeConstKind { Abstract, Concrete, PartiallyAbstract };
 
-struct TypeConstDefinition : Predicate<std::tuple<Fact<TypeConstDeclaration>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Type>>>, TypeConstKind, std::vector<Fact<UserAttribute>>>> {
+struct TypeConstDefinition : Predicate<std::tuple<Fact<TypeConstDeclaration>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Type>>>, TypeConstKind, std::vector<Fact<UserAttribute>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<TypeInfo>>>>> {
   static const char* GLEAN_name() {
     return "hack.TypeConstDefinition";
   }
@@ -11469,7 +11469,7 @@ struct QName : Predicate<std::tuple<Fact<Name>, boost::variant<Alt<0, std::tuple
   }
 }; // struct QName
 
-struct PropertyDefinition : Predicate<std::tuple<Fact<PropertyDeclaration>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Type>>>, Visibility, bool, bool, bool, std::vector<Fact<UserAttribute>>>> {
+struct PropertyDefinition : Predicate<std::tuple<Fact<PropertyDeclaration>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Type>>>, Visibility, bool, bool, bool, std::vector<Fact<UserAttribute>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<TypeInfo>>>>> {
   static const char* GLEAN_name() {
     return "hack.PropertyDefinition";
   }
@@ -11757,7 +11757,7 @@ struct GlobalNamespaceAlias : Predicate<std::tuple<Fact<Name>, Fact<NamespaceQNa
   }
 }; // struct GlobalNamespaceAlias
 
-struct GlobalConstDefinition : Predicate<std::tuple<Fact<GlobalConstDeclaration>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Type>>>, std::string>> {
+struct GlobalConstDefinition : Predicate<std::tuple<Fact<GlobalConstDeclaration>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Type>>>, std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<TypeInfo>>>>> {
   static const char* GLEAN_name() {
     return "hack.GlobalConstDefinition";
   }
@@ -11797,7 +11797,7 @@ struct Enumerator : Predicate<std::tuple<Fact<Name>, Fact<EnumDeclaration>>> {
   }
 }; // struct Enumerator
 
-struct EnumDefinition : Predicate<std::tuple<Fact<EnumDeclaration>, Fact<Type>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Type>>>, std::vector<Fact<Enumerator>>, std::vector<Fact<UserAttribute>>, std::vector<Fact<EnumDeclaration>>, bool, boost::variant<Alt<0, std::tuple<>>, Alt<1, ModuleMembership>>>> {
+struct EnumDefinition : Predicate<std::tuple<Fact<EnumDeclaration>, Fact<Type>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<TypeInfo>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Type>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<TypeInfo>>>, std::vector<Fact<Enumerator>>, std::vector<Fact<UserAttribute>>, std::vector<Fact<EnumDeclaration>>, bool, boost::variant<Alt<0, std::tuple<>>, Alt<1, ModuleMembership>>>> {
   static const char* GLEAN_name() {
     return "hack.EnumDefinition";
   }
@@ -12622,7 +12622,7 @@ enum class ConstraintKind { As, Equal, Super };
 } // namespace schema
 
 template<> struct Repr_<facebook::glean::cpp::schema::Hack::Constraint> {
-  using Type = Tuple<Repr<facebook::glean::cpp::schema::Hack::ConstraintKind>, facebook::glean::cpp::schema::Hack::Type>;
+  using Type = Tuple<Repr<facebook::glean::cpp::schema::Hack::ConstraintKind>, facebook::glean::cpp::schema::Hack::Type, Maybe<facebook::glean::cpp::schema::Hack::TypeInfo>>;
 };
 
 
@@ -12633,33 +12633,34 @@ namespace Hack {
 struct Constraint {
   ConstraintKind constraintKind;
   Fact<Type> type;
+  boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<TypeInfo>>> typeInfo;
 
   bool operator==(const Constraint& other) const {
-    return std::tie(constraintKind,type)
-             == std::tie(other.constraintKind,other.type);
+    return std::tie(constraintKind,type,typeInfo)
+             == std::tie(other.constraintKind,other.type,other.typeInfo);
   }
   bool operator!=(const Constraint& other) const {
-    return std::tie(constraintKind,type)
-             != std::tie(other.constraintKind,other.type);
+    return std::tie(constraintKind,type,typeInfo)
+             != std::tie(other.constraintKind,other.type,other.typeInfo);
   }
   bool operator<(const Constraint& other) const {
-    return std::tie(constraintKind,type)
-             < std::tie(other.constraintKind,other.type);
+    return std::tie(constraintKind,type,typeInfo)
+             < std::tie(other.constraintKind,other.type,other.typeInfo);
   }
   bool operator<=(const Constraint& other) const {
-    return std::tie(constraintKind,type)
-             <= std::tie(other.constraintKind,other.type);
+    return std::tie(constraintKind,type,typeInfo)
+             <= std::tie(other.constraintKind,other.type,other.typeInfo);
   }
   bool operator>(const Constraint& other) const {
-    return std::tie(constraintKind,type)
-             > std::tie(other.constraintKind,other.type);
+    return std::tie(constraintKind,type,typeInfo)
+             > std::tie(other.constraintKind,other.type,other.typeInfo);
   }
   bool operator>=(const Constraint& other) const {
-    return std::tie(constraintKind,type)
-             >= std::tie(other.constraintKind,other.type);
+    return std::tie(constraintKind,type,typeInfo)
+             >= std::tie(other.constraintKind,other.type,other.typeInfo);
   }
   void outputRepr(Output<Repr<Constraint>> out) const {
-    outputValue(out, std::make_tuple(constraintKind, type));
+    outputValue(out, std::make_tuple(constraintKind, type, typeInfo));
   }
 }; // struct Constraint
 
@@ -12782,7 +12783,7 @@ struct ClassDeclaration : Predicate<std::tuple<Fact<QName>>> {
   }
 }; // struct ClassDeclaration
 
-struct ClassConstDefinition : Predicate<std::tuple<Fact<ClassConstDeclaration>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Type>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, std::string>>>> {
+struct ClassConstDefinition : Predicate<std::tuple<Fact<ClassConstDeclaration>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Type>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, std::string>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<TypeInfo>>>>> {
   static const char* GLEAN_name() {
     return "hack.ClassConstDefinition";
   }
