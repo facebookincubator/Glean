@@ -232,6 +232,7 @@ filetype (Path file)
   | is ".hs"  = Just Language_Haskell
 
   | is ".py"  = Just Language_Python
+  | is ".pyi"  = Just Language_Python
   | is ".cinc"  = Just Language_Python
   | is ".cconf"  = Just Language_Python
   | is ".mcconf"  = Just Language_Python
