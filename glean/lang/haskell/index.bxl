@@ -9,10 +9,12 @@
 load("//common/hs/index:rules.bzl", "haskell_index_rule")
 
 def _impl(ctx):
-    hie_indexer = ctx.unconfigured_sub_targets("fbcode//glean/lang/haskell:indexer")
-    bxl_actions = ctx.bxl_actions(exec_deps = [hie_indexer])
+    bxl_actions = ctx.bxl_actions()
     action_factory = bxl_actions.actions
 
+    # TODO: have a separate indexer for each compiler version, and index targets using
+    # the correct one. Probably needs a provider or an attribute to tell us which
+    # compiler to use.
     ctargets = ctx.configured_targets(
         ctx.cli_args.targets,
         modifiers = ["ovr_config//third-party/ghc/constraints:8.8.3"],
@@ -31,8 +33,13 @@ def _impl(ctx):
     hie_result = ctx.resolve(action_factory, hie.promise)
     hie_files = (hie_result[DefaultInfo].default_outputs[0])
 
+    hie_indexer = ctx.analysis(ctx.configured_targets(
+        "fbcode//glean/lang/haskell:indexer",
+        modifiers = ["ovr_config//third-party/ghc/constraints:8.8.3"],
+    ))
+
     facts = action_factory.declare_output("facts")
-    args = cmd_args(bxl_actions.exec_deps[hie_indexer][RunInfo])
+    args = cmd_args(hie_indexer.providers()[RunInfo])
     args.add(ctx.cli_args.backend)
     args.add("--repo-path", ctx.root())
     args.add("--output", facts.as_output())
