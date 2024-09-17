@@ -416,14 +416,8 @@ options = do
   cfgDataStore <- dbRoot <|> dbTmp <|> dbMem <|> pure tmpDataStore
   ~(cfgSchemaDir, cfgSchemaSource) <- schemaSourceOption
   _ignored_for_backwards_compat <- switch (long "db-schema-override")
-  cfgSchemaId <- fmap (fmap SchemaId) $ optional $ strOption
-    ( long "schema-id"
-    <> metavar "ID"
-    <> help (
-      "version of schema to use when resolving queries " <>
-      "(mostly for testing purposes; defaults to the version this binary " <>
-      "was compiled against)")
-    )
+  _cfgSchemaId <- fmap (fmap SchemaId) $ optional $ strOption
+    ( long "schema-id" <> hidden ) -- ignored for backwards compat
 
   cfgRecipeConfig <- recipesConfigThriftSource
   cfgServerConfig <-
@@ -447,6 +441,7 @@ options = do
     , cfgBackupBackends = cfgBackupBackends def
     , cfgFilterAvailableDBs = return
     , cfgTracer = mempty
+    , cfgSchemaId = Nothing
     , .. }
   where
     debugParser :: Parser DebugFlags

@@ -234,6 +234,7 @@ data Env = forall storage. Storage storage => Env
   , envUpdateSchema :: Bool
   , envSchemaUpdateSignal :: TMVar ()
   , envSchemaId :: Maybe Thrift.SchemaId
+    -- ^ Used to store the schema ID for the session when using the local backend
   , envRecipeConfig :: Observed Recipes.Config
   , envServerConfig :: Observed ServerConfig.Config
   , envBackupBackends :: Backup.Backends

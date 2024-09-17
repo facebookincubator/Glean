@@ -183,8 +183,8 @@ getPredicate
   -> IO PredicateDetails
 getPredicate env repo schema ref = do
   config <- Observed.get (envServerConfig env)
-  schemaVersion <- UserQuery.schemaVersionForQuery env schema config
-    (Just repo) Nothing
+  schemaId <- getDbSchemaVersion env repo
+  schemaVersion <- UserQuery.schemaVersionForQuery schema config schemaId
       -- we default to resolving this predicate using the schema
       -- version stored in the glean.schema_id property of the
       -- DB. This is important because the client is often just "glean

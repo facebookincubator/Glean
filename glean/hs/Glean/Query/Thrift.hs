@@ -95,7 +95,6 @@ runQueryPage be repo cont (Query query) = do
           UserQueryEncoding_listbin def,
           UserQueryEncoding_bin def
         ]
-      , userQuery_schema_id = schemaId be
       }
   UserQueryResults{..} <- userQuery be repo query'
   mapM_ reportUserQueryStats userQueryResults_stats

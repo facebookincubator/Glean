@@ -28,7 +28,6 @@ import Data.Hashable (hash)
 import Data.Int
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
-import Data.List
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
@@ -151,7 +150,7 @@ genericUserQueryFacts env repo query enc = do
   config <- Observed.get (envServerConfig env)
   readDatabase env repo $ \odb lookup ->
     performUserQuery enc (odbSchema odb) $
-      userQueryFactsImpl env (odbSchema odb) config lookup query
+      userQueryFactsImpl (odbSchema odb) config lookup query
 
 -- | Results returned from a query, parametrised of the types of facts and
 -- statistics
@@ -423,8 +422,7 @@ pidDetails schema ty = do
     Just d -> return d
 
 userQueryFactsImpl
-  :: Database.Env
-  -> DbSchema
+  :: DbSchema
   -> ServerConfig.Config
   -> Lookup
   -> Thrift.UserQueryFacts
@@ -432,15 +430,13 @@ userQueryFactsImpl
      -- The length of the result list is guaranteed to be the same
      -- as the userQueryFacts_facts list in the input.
 userQueryFactsImpl
-    env
     schema@DbSchema{..}
     config
     lookup
     query@Thrift.UserQueryFacts{..} = do
   let opts = fromMaybe def userQueryFacts_options
 
-  schemaSelector <- schemaVersionForQuery env schema config Nothing
-      userQueryFacts_schema_id
+  schemaSelector <- schemaVersionForQuery schema config userQueryFacts_schema_id
 
   expandPids <- optsExpandPids opts schemaSelector schema
   let limits = mkQueryRuntimeOptions opts config expandPids
@@ -636,8 +632,7 @@ userQueryImpl
       debug = Thrift.userQueryOptions_debug opts
 
     schemaVersion <-
-      schemaVersionForQuery env schema config Nothing
-        userQuery_schema_id
+      schemaVersionForQuery schema config userQuery_schema_id
     trans <- transformationsForQuery schema schemaVersion
 
     (returnType, compileTime, irDiag, cont) <-
@@ -821,44 +816,23 @@ transformationsForQuery schema selector = do
         Nothing -> throwIO $ Thrift.BadQuery "no transformations for schema_id"
 
 schemaVersionForQuery
-  :: Database.Env
-  -> DbSchema
+  :: DbSchema
   -> ServerConfig.Config
-  -> Maybe Thrift.Repo -- ^ default to the DB version if this is supplied
   -> Maybe Thrift.SchemaId  -- ^ SchemaId specified by client
   -> IO SchemaSelector
-schemaVersionForQuery env schema ServerConfig.Config{..} repo qid = do
-  dbSchemaId <-
-    case repo of
-      Nothing -> return Nothing
-      Just repo -> getDbSchemaVersion env repo
-  let
-     allSelectors = catMaybes
-       [ SpecificSchemaId <$> qid
-       , SpecificSchemaId <$> envSchemaId env
-       , SpecificSchemaId <$> dbSchemaId
-       ]
-  vlog 1 $ "all selectors: " <> show (pretty allSelectors)
-
-  let
-    isAvailable (SpecificSchemaId id) =
-      id `Map.member` schemaEnvs schema
-    isAvailable _ = True
-
+schemaVersionForQuery schema ServerConfig.Config{..} qid = do
   use <-
-    if config_strict_query_schema_id
-      then case allSelectors of
-        [] -> return LatestSchemaAll
-        (id : _)
-          | isAvailable id -> return id
-          | SpecificSchemaId schema_id <- id ->
-            throwIO (Thrift.UnknownSchemaId schema_id)
-          | otherwise ->
-            throwIO (Thrift.Exception "Unknown schema version")
-      else
-        return $ fromMaybe LatestSchemaAll $ find isAvailable allSelectors
+    case qid of
+      Nothing -> return LatestSchemaAll
+      Just id
+        | id `Map.member` schemaEnvs schema -> return (SpecificSchemaId id)
+        | config_strict_query_schema_id ->
+            throwIO (Thrift.UnknownSchemaId id)
+        | otherwise -> do
+            logWarning $ "schema unavailable: " <> show id
+            return LatestSchemaAll
 
-  vlog 1 $ "using selector: " <> show (pretty use)
+  vlog 1 $ "using schema ID: " <> show (pretty use)
   return use
 
 optsExpandPids

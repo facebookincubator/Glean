@@ -203,24 +203,37 @@ instance Backend ThriftBackend where
         <|> Just (thriftBackendClientInfo t)
   getDatabase t repo = withShard t repo $ GleanService.getDatabase repo
   userQueryFacts t repo q = withShard t repo $
-    GleanService.userQueryFacts repo q
-      { Thrift.userQueryFacts_client_info = client }
+    GleanService.userQueryFacts repo q {
+      Thrift.userQueryFacts_client_info = client,
+      Thrift.userQueryFacts_schema_id = schema_id
+    }
     where
       client = Thrift.userQueryFacts_client_info q
         <|> Just (thriftBackendClientInfo t)
+      schema_id = Thrift.userQueryFacts_schema_id q
+        <|> schemaId t
 
   userQuery t repo q = withShard t repo $
-    GleanService.userQuery repo q { Thrift.userQuery_client_info = client }
+    GleanService.userQuery repo q {
+      Thrift.userQuery_client_info = client,
+      Thrift.userQuery_schema_id = schema_id
+    }
     where
       client = Thrift.userQuery_client_info q
         <|> Just (thriftBackendClientInfo t)
+      schema_id = Thrift.userQuery_schema_id q
+        <|> schemaId t
 
   userQueryBatch t repo q = withShard t repo $
-    GleanService.userQueryBatch repo q
-      { Thrift.userQueryBatch_client_info = client }
+    GleanService.userQueryBatch repo q {
+      Thrift.userQueryBatch_client_info = client,
+      Thrift.userQueryBatch_schema_id = schema_id
+    }
     where
       client = Thrift.userQueryBatch_client_info q
         <|> Just (thriftBackendClientInfo t)
+      schema_id = Thrift.userQueryBatch_schema_id q
+        <|> schemaId t
 
   deriveStored t _ repo pred = withShard t repo $
     GleanService.deriveStored repo pred

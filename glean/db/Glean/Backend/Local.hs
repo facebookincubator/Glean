@@ -24,6 +24,7 @@ module Glean.Backend.Local
   , serializeInventory
   ) where
 
+import Control.Applicative
 import Control.Concurrent (getNumCapabilities)
 import Control.Concurrent.Stream (stream)
 import Control.Exception (catches, Handler (Handler), throwIO)
@@ -33,6 +34,7 @@ import Data.Default
 import Data.IORef.Extra
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map.Strict as Map
+import Data.Maybe
 import Data.Typeable
 import qualified Haxl.Core as Haxl
 
@@ -98,8 +100,20 @@ instance Backend Database.Env where
 
   predicateStats env repo opts = Database.predicateStats env repo opts
 
-  userQueryFacts = UserQuery.userQueryFacts
-  userQuery = UserQuery.userQuery
+  userQueryFacts env repo q
+    | isNothing (Thrift.userQueryFacts_schema_id q) =
+      UserQuery.userQueryFacts env repo q {
+        Thrift.userQueryFacts_schema_id = schemaId env
+      }
+    | otherwise = UserQuery.userQueryFacts env repo q
+
+  userQuery env repo q
+    | isNothing (Thrift.userQuery_schema_id q) =
+      UserQuery.userQuery env repo q {
+        Thrift.userQuery_schema_id = schemaId env
+      }
+    | otherwise = UserQuery.userQuery env repo q
+
   userQueryBatch env repo Thrift.UserQueryBatch{..} = do
       resultsRef <- newIORef mempty
       numCaps <- getNumCapabilities
@@ -115,7 +129,7 @@ instance Backend Database.Env where
             , userQuery_predicate_version = userQueryBatch_predicate_version
             , userQuery_encodings  = userQueryBatch_encodings
             , userQuery_client_info = userQueryBatch_client_info
-            , userQuery_schema_id = userQueryBatch_schema_id
+            , userQuery_schema_id = userQueryBatch_schema_id <|> schemaId env
             , userQuery_options = userQueryBatch_options
             , userQuery_query = q
             }
