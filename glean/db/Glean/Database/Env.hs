@@ -14,8 +14,10 @@ import Control.Exception.Safe
 import Control.Monad.Extra
 import Data.Default
 import qualified Data.HashMap.Strict as HashMap
+import Data.List.Split
 import Data.Time
 import System.Clock (TimeSpec(..))
+import System.Environment
 import System.Time.Extra (sleep, Seconds, timeout)
 
 import Data.RateLimiterMap
@@ -128,6 +130,8 @@ initEnv evb envStorage envCatalog shardManager cfg
 
     envDbSchemaCache <- newMVar HashMap.empty
 
+    debug <- getDebugEnv
+
     return Env
       { envEventBase = evb
       , envServerLogger = cfgServerLogger cfg
@@ -146,8 +150,21 @@ initEnv evb envStorage envCatalog shardManager cfg
           else DisableRecursion
       , envFilterAvailableDBs = cfgFilterAvailableDBs cfg
       , envTracer = cfgTracer cfg
-      , envDebug = cfgDebug cfg
+      , envDebug = cfgDebug cfg <> debug
       , .. }
+
+getDebugEnv :: IO DebugFlags
+getDebugEnv = do
+  m <- lookupEnv "GLEAN_DEBUG"
+  case m of
+    Just str -> mconcat <$> mapM add (splitOn "," str)
+    Nothing -> return def
+  where
+  add "tc" = return def { tcDebug = True }
+  add "query" = return def { queryDebug = True }
+  add other = do
+    logWarning $ "Unkonwn GLEAN_DEBUG class: " <> other
+    return def
 
 spawnThreads :: Env -> IO ()
 spawnThreads env@Env{..} = do

@@ -543,6 +543,7 @@ library db
         Glean.Logger
 
     build-depends:
+        split,
         glean:bytecode,
         glean:config,
         glean:core,

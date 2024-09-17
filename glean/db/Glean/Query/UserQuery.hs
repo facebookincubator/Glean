@@ -41,6 +41,7 @@ import Compat.Prettyprinter.Render.Text
 import qualified Data.Vector as Vector
 import Data.Vector (Vector)
 import Data.Word (Word64)
+import System.IO
 import TextShow
 
 import ServiceData.GlobalStats as Stats
@@ -865,29 +866,29 @@ compileAngleQuery
   -> IO (CodegenQuery, Type)
 compileAngleQuery rec ver dbSchema mode source stored debug = do
   parsed <- checkBadQuery Text.pack $ Angle.parseQuery source
-  vlog 2 $ "parsed query: " <> show (displayDefault parsed)
+  ifDebug $ "parsed query: " <> show (displayDefault parsed)
 
   let scope = addTmpPredicate $ fromMaybe HashMap.empty $
         schemaNameEnv dbSchema ver
 
   resolved <- checkBadQuery id $ runExcept $
     runResolve latestAngleVersion scope $ resolveQuery parsed
-  vlog 2 $ "resolved query: " <> show (displayDefault resolved)
+  ifDebug $ "resolved query: " <> show (displayDefault resolved)
 
   typechecked <- (checkBadQuery id =<<) $ runExceptT $
     typecheck dbSchema (defaultTcOpts debug latestAngleVersion)
       (dbSchemaRtsType dbSchema) resolved
-  vlog 2 $ "typechecked query: " <> show (displayDefault (qiQuery typechecked))
+  ifDebug $ "typechecked query: " <> show (displayDefault (qiQuery typechecked))
 
   flattened <- checkBadQuery id $ runExcept $
     flatten rec dbSchema latestAngleVersion stored typechecked
-  vlog 2 $ "flattened query: " <> show (displayDefault (qiQuery flattened))
+  ifDebug $ "flattened query: " <> show (displayDefault (qiQuery flattened))
 
   optimised <- checkBadQuery id $ runExcept $ optimise flattened
-  vlog 2 $ "optimised query: " <> show (displayDefault (qiQuery optimised))
+  ifDebug $ "optimised query: " <> show (displayDefault (qiQuery optimised))
 
-  -- no need to vlog, compileQuery will vlog it later
   reordered <- checkBadQuery id $ runExcept $ reorder dbSchema optimised
+  ifDebug $ "reordered query: " <> show (displayDefault (qiQuery reordered))
 
   final <- case mode of
     NoExtraSteps -> return reordered
@@ -897,6 +898,8 @@ compileAngleQuery rec ver dbSchema mode source stored debug = do
 
   return (final, qiReturnType typechecked)
   where
+  ifDebug = when (queryDebug debug) . hPutStrLn stderr
+
   checkBadQuery :: (err -> Text) -> Either err a -> IO a
   checkBadQuery txt act = case act of
     Left str -> throwIO $ Thrift.BadQuery $ txt str

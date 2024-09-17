@@ -165,10 +165,20 @@ data Config = Config
 
 data DebugFlags = DebugFlags
   { tcDebug :: !Bool
+  , queryDebug :: !Bool
   }
 
 instance Default DebugFlags where
-  def = DebugFlags { tcDebug = False }
+  def = DebugFlags { tcDebug = False, queryDebug = False }
+
+instance Semigroup DebugFlags where
+  a <> b = DebugFlags
+    { tcDebug = tcDebug a || tcDebug b
+    , queryDebug = queryDebug a || queryDebug b
+    }
+
+instance Monoid DebugFlags where
+  mempty = def
 
 instance Show Config where
   show c = unwords [ "Config {"
@@ -447,6 +457,7 @@ options = do
     debugParser :: Parser DebugFlags
     debugParser = do
       tcDebug <- switch (long "debug-tc")
+      queryDebug <- switch (long "debug-query")
       return DebugFlags{..}
 
     recipesConfigThriftSource = option (eitherReader ThriftSource.parse)
