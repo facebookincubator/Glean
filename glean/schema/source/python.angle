@@ -755,17 +755,6 @@ predicate MethodByLocalName:
     Contains { { cls = ClassDecl }, { func = MethodDecl } };
     SearchByLocalName { MethodLocalName, { func = MethodDecl } };
 
-# (internal) helper for MethodOverrides
-predicate MethodWithLocalName:
-  {
-    cls: ClassDeclaration,
-    method_local_name: Name,
-    method: FunctionDeclaration,
-  }
-  { ClassDecl, MethodLocalName, MethodDecl } where
-    Contains { { cls = ClassDecl }, { func = MethodDecl } };
-    SNameWithDeclaration { { func = MethodDecl }, { local_name = MethodLocalName } };
-
 # Let's imagine:
 # module A has function Foo
 # module B imports Foo from A
