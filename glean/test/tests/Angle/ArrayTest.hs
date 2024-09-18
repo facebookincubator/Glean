@@ -156,4 +156,12 @@ angleArrayPrefix modify = TestList
           |]
         assertEqual "angle - array prefix" 1 (length results)
     ]
+
+  -- regression test for a bug in MatchArrayPrefix handling
+  , TestLabel "buildTerm" $ dbTestCase $ \env repo -> do
+        results <- runQuery_ env repo $ modify $ angleData @[Text]
+          [s|
+            X where X = ["a","b"]; X = ["a",..]
+          |]
+        assertEqual "angle - array prefix" 1 (length results)
   ]

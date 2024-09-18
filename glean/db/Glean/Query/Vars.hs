@@ -88,7 +88,7 @@ instance VarsOf (Match () Var) where
     MatchVar (Var _ v _) -> if w == VarsBound then r else IntSet.insert v r
     MatchAnd a b -> varsOf w a $! varsOf w b r
     MatchPrefix _ t -> varsOf w t r
-    MatchArrayPrefix _ty pre -> varsOf w pre r
+    MatchArrayPrefix _ty pre all -> varsOf w pre (varsOf w all r)
     MatchExt{} -> r
 
 instance VarsOf CgQuery where
@@ -139,8 +139,10 @@ freshWild pat = mapM freshWildMatch pat
   freshWildMatch m = case m of
     MatchWild ty -> MatchBind <$> fresh ty
     MatchPrefix str rest -> MatchPrefix str <$> mapM freshWildMatch rest
-    MatchArrayPrefix ty pre ->
-      MatchArrayPrefix ty <$> (mapM.mapM) freshWildMatch pre
+    MatchArrayPrefix ty pre all ->
+      MatchArrayPrefix ty
+        <$> (mapM.mapM) freshWildMatch pre
+        <*> mapM freshWildMatch all
     MatchNever ty -> return (MatchNever ty)
     MatchFid f -> return (MatchFid f)
     MatchBind v -> return (MatchVar v)  -- also make all variables MatchVar
@@ -162,8 +164,8 @@ reWild used pat = fmap reWildMatch pat
       Nothing -> error $ "reWild: " <> show (displayVerbose m)
       Just new -> MatchVar (Var ty new x)
     MatchPrefix str rest -> MatchPrefix str (fmap reWildMatch rest)
-    MatchArrayPrefix ty pre ->
-      MatchArrayPrefix ty $ (fmap . fmap) reWildMatch pre
+    MatchArrayPrefix ty pre all ->
+      MatchArrayPrefix ty ((fmap . fmap) reWildMatch pre) (fmap reWildMatch all)
     MatchAnd x y -> MatchAnd (fmap reWildMatch x) (fmap reWildMatch y)
     MatchNever ty -> MatchNever ty
     MatchFid f -> MatchFid f

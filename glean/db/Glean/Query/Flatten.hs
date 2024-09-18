@@ -300,8 +300,10 @@ flattenPattern pat = case pat of
       <*> flattenPattern b
   Ref (MatchPrefix str t) ->
     fmap (fmap (Ref . MatchPrefix str)) <$> flattenPattern t
-  Ref (MatchArrayPrefix ty prefix) -> do
-    manyTerms (Ref . MatchArrayPrefix ty) <$> mapM flattenPattern prefix
+  Ref (MatchArrayPrefix ty prefix all) -> do
+    twoTerms (\pre all -> Ref (MatchArrayPrefix ty pre all))
+      <$> (manyTerms id <$> mapM flattenPattern prefix)
+      <*> flattenPattern all
   Ref (MatchExt (Typed _ (TcOr a b))) -> do  -- Note [flattening TcOr]
     as <- flattenPattern a
     bs <- flattenPattern b

@@ -141,7 +141,8 @@ prune hasFacts (QueryWithInfo q _ t) = do
       MatchVar{} -> Just pat
       MatchAnd a b -> Ref <$> (MatchAnd <$> prunePat a <*> prunePat b)
       MatchPrefix s x -> Ref . MatchPrefix s <$> prunePat x
-      MatchArrayPrefix t xs -> Ref . MatchArrayPrefix t <$> traverse prunePat xs
+      MatchArrayPrefix t xs all ->
+        Ref <$> (MatchArrayPrefix t <$> traverse prunePat xs <*> prunePat all)
       MatchExt (Typed ty tcterm) -> case tcterm of
         TcFactGen (PidRef _ predId) _ _ _
           | not $ hasFacts predId

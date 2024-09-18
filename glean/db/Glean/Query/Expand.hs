@@ -132,5 +132,5 @@ instantiateWithFreshVariables query numVars = do
     MatchAnd l r -> MatchAnd (instantiatePat base l) (instantiatePat base r)
     MatchPrefix s t -> MatchPrefix s (instantiatePat base t)
     MatchExt (Typed ty ext) -> MatchExt (Typed ty (instantiateTcTerm base ext))
-    MatchArrayPrefix ty pre -> MatchArrayPrefix ty (instantiatePat base <$> pre)
+    MatchArrayPrefix ty pre all -> MatchArrayPrefix ty (instantiatePat base <$> pre) (instantiatePat base all)
     other -> other

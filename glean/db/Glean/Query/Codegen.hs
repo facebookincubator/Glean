@@ -159,6 +159,8 @@ findOutputs q = findOutputsQuery q IntSet.empty
   findOutputsMatch (MatchBind (Var ty var _)) r
     | not (isWordTy ty) = IntSet.insert var r
   findOutputsMatch (MatchAnd a b) r = findOutputsPat a (findOutputsPat b r)
+  findOutputsMatch (MatchArrayPrefix _ exps all) r =
+    foldr findOutputsPat r (all:exps)
   findOutputsMatch _ r = r
 
 -- | The database boundaries we are interested in to implement
@@ -493,7 +495,7 @@ compileStatements
             MatchVar _ -> False
             MatchAnd l r -> bindsIn l || bindsIn r
             MatchPrefix _ exp -> bindsIn exp
-            MatchArrayPrefix _ exps -> any bindsIn exps
+            MatchArrayPrefix _ exps all -> any bindsIn exps || bindsIn all
             MatchExt _ -> False
 
           matches :: Term (Match e v) -> [Match e v]
@@ -1252,9 +1254,12 @@ preProcessPat pat = unsafePerformIO $
       Ref (MatchPrefix txt rest) -> do
         prefixString txt
         build rest
-      Ref (MatchArrayPrefix ty prefix) -> do
-        chunks <- getChunks $ mapM_ build prefix
-        chunk $ QueryArrayPrefix (genericLength chunks) ty chunks
+      Ref (MatchArrayPrefix ty prefix all) -> do
+        endOfChunk
+        let arr = do
+              chunks <- getChunks $ mapM_ build prefix
+              chunk $ QueryArrayPrefix (genericLength chunks) ty chunks
+        chunk =<< QueryAnd <$> getChunks arr <*> getChunks (build all)
       Ref (MatchExt (TransformAndBind src dst)) ->
         chunk $ QueryTransformAndBind src dst
       Byte w -> do
@@ -1427,7 +1432,7 @@ matchPat (Bytes input inputend) fail chunks = match True chunks
 
       QueryWild ty
         -- skip trailing wildcards
-        | all isWild rest -> return ()
+        | tillEnd && all isWild rest -> return ()
         | otherwise -> do
           skipTrusted input inputend ty
           match tillEnd rest
@@ -1512,8 +1517,7 @@ matchPat (Bytes input inputend) fail chunks = match True chunks
           -- skip to the end unless we are done matching this branch, in which
           -- case we don't need to leave the 'input' pointer in the right
           -- place.
-          let doneMatching = null rest
-          unless doneMatching $ mdo
+          unless isLastPattern $ mdo
             sub patternsLen size
             jumpIf0 size done
             skip <- label

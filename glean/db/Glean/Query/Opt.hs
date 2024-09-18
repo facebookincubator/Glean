@@ -301,8 +301,8 @@ instance Apply Pat where
     y' <- apply y
     return (Ref (MatchAnd x' y'))
   apply (Ref (MatchPrefix str x)) = Ref . MatchPrefix str <$> apply x
-  apply (Ref (MatchArrayPrefix ty pre)) =
-    Ref . MatchArrayPrefix ty <$> mapM apply pre
+  apply (Ref (MatchArrayPrefix ty pre all)) =
+    Ref <$> (MatchArrayPrefix ty <$> mapM apply pre <*> apply all)
   apply t@Byte{} = return t
   apply t@ByteArray{} = return t
   apply t@Nat{} = return t
@@ -387,7 +387,7 @@ neverMatches = \case
     MatchVar _ -> False
     MatchAnd left right -> neverMatches left || neverMatches right
     MatchPrefix _ term -> neverMatches term
-    MatchArrayPrefix _ty pre -> any neverMatches pre
+    MatchArrayPrefix _ty pre all -> any neverMatches pre || neverMatches all
     MatchExt () -> False
 
 unifyGen :: Generator -> Generator -> U Bool
@@ -432,12 +432,16 @@ unify (String x) (Ref (MatchPrefix s y))
   | Just r <- B.stripPrefix s x = unify y (String r)
 unify (Ref (MatchAnd x y)) z = (&&) <$> unify x z <*> unify y z
 unify z (Ref (MatchAnd x y)) = (&&) <$> unify z x <*> unify z y
-unify (Ref (MatchArrayPrefix _ pre)) (Ref (MatchArrayPrefix _ pre')) = do
-  and <$> zipWithM unify pre pre'
-unify (Ref (MatchArrayPrefix _ pre)) (Array xs)
-  | length pre <= length xs = and <$> zipWithM unify pre xs
-unify (Array xs) (Ref (MatchArrayPrefix _ pre))
-  | length pre <= length xs = and <$> zipWithM unify xs pre
+unify (Ref (MatchArrayPrefix _ pre all)) (Ref (MatchArrayPrefix _ pre' all')) = do
+  b <- unify all all'
+  bs <- zipWithM unify pre pre'
+  return (and (b:bs))
+unify (Ref (MatchArrayPrefix _ pre all)) (Array xs)
+  | length pre <= length xs = do
+    b <- unify all (Array xs)
+    bs <- zipWithM unify pre xs
+    return (and (b:bs))
+unify a@Array{} b@(Ref (MatchArrayPrefix{})) = unify b a
 unify _ _ = return False
 
 extend :: Var -> Generator -> U Bool
@@ -569,7 +573,8 @@ termScope pat r = foldr onMatch r pat
     MatchBind v -> addToCurrentScope v r
     MatchVar v -> addToCurrentScope v r
     MatchAnd x y -> foldr onMatch (foldr onMatch r y) x
-    MatchArrayPrefix _ty pre -> foldr onMatch r (foldMap toList pre)
+    MatchArrayPrefix _ty pre all ->
+      foldr onMatch (foldr onMatch r all) (foldMap toList pre)
     MatchNever{} -> r
     MatchWild{} -> r
     MatchExt{} -> r
@@ -632,14 +637,14 @@ expandStmt (FlatStatement stmtTy lhs (TermGenerator rhs)) =
     (Ref (MatchPrefix s a), Ref (MatchPrefix t b))
       | t == s -> expand ty a b
     (Ref (MatchFid x), Ref (MatchFid y)) | x == y -> []
-    (Ref (MatchArrayPrefix eltTy0 ts), Array us)
+    (Ref (MatchArrayPrefix eltTy0 ts all), Array us)
       | length ts <= length us
       , eltTy <- derefType eltTy0
-      -> concat (zipWith (expand eltTy) ts us)
-    (Ref (MatchArrayPrefix eltTy0 ts), Ref (MatchArrayPrefix _ty us))
+      -> concat (expand ty all (Array us) : zipWith (expand eltTy) ts us)
+    (Ref (MatchArrayPrefix eltTy0 ts all), Ref (MatchArrayPrefix _ty us all'))
       | eltTy <- derefType eltTy0
       , length ts == length us
-      -> concat (zipWith (expand eltTy) ts us)
+      -> concat (expand ty all all' : zipWith (expand eltTy) ts us)
     _ -> [(ty,a,b)]
 expandStmt s@(FlatNegation _) = [s]
   -- the expansion is handled by @apply@ with @optStmts@ because we need to

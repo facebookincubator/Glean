@@ -297,8 +297,10 @@ inferExpr ctx pat = case pat of
   ArrayPrefix _ (t:|ts) -> do
     (t',ty) <- inferExpr ctx t
     ts' <- mapM (typecheckPattern ctx ty) ts
-    let tcPat = RTS.Ref (MatchArrayPrefix ty (t':ts'))
-    promote (sourcePatSpan pat) tcPat (ArrayTy ty)
+    let
+      aty = ArrayTy ty
+      tcPat = RTS.Ref (MatchArrayPrefix ty (t':ts') (RTS.Ref (MatchWild aty)))
+    promote (sourcePatSpan pat) tcPat aty
   Variable span name -> inferVar ctx span name
   Prim span primOp args -> do
     (primArgTys, retTy) <- primOpType primOp
@@ -505,7 +507,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     RTS.Array <$> mapM (typecheckPattern ctx elemTy) pats
   (ArrayTy elemTy, ArrayPrefix _ pre) -> do
     pre <- mapM (typecheckPattern ctx elemTy) pre
-    let match = MatchArrayPrefix elemTy (toList pre)
+    let match = MatchArrayPrefix elemTy (toList pre) (RTS.Ref (MatchWild typ))
     return (RTS.Ref match)
   (RecordTy fields, Tuple _ pats) | length fields == length pats ->
     RTS.Tuple <$>
@@ -1039,7 +1041,8 @@ matchUsesNegation = \case
   MatchVar _ -> Nothing
   MatchAnd one two -> tcPatUsesNegation one <|> tcPatUsesNegation two
   MatchPrefix _ x -> tcPatUsesNegation x
-  MatchArrayPrefix _ty prefix -> firstJust tcPatUsesNegation prefix
+  MatchArrayPrefix _ty prefix all ->
+    firstJust tcPatUsesNegation prefix <|> tcPatUsesNegation all
   MatchExt (Typed _ tcterm) -> tcTermUsesNegation tcterm
 
 tcTermUsesNegation  :: TcTerm -> Maybe UseOfNegation

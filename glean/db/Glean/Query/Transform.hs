@@ -242,6 +242,7 @@ buildTerm output vars term = go term
         local $ \ptr end -> do
           getOutput (castRegister (vars ! var)) ptr end
           outputBytes ptr end output
+    Ref (MatchArrayPrefix _ _ all) -> go all
     other -> error $ "buildTerm: " <> show other
 
 -- | A 'ResultTerm' is represented in two ways depending on the type
@@ -376,10 +377,11 @@ transformMatch discard from to overTerm match = case match of
     return $ MatchAnd left' right'
   -- both types must be StringTy so this transformation is a no-op
   MatchPrefix prefix rest -> return $ MatchPrefix prefix rest
-  MatchArrayPrefix _ prefix -> do
+  MatchArrayPrefix _ prefix all -> do
+    all' <- overTerm all
     res <- overTerm (Array prefix)
     case res of
-      Array prefix' -> return $ MatchArrayPrefix to prefix'
+      Array prefix' -> return $ MatchArrayPrefix to prefix' all'
       _ -> error "array transformation did not yield another array"
   MatchExt x -> return $ MatchExt x
   where

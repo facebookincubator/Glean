@@ -280,8 +280,11 @@ zonkMatch m = case m of
   MatchVar v -> MatchVar <$> var v
   MatchAnd a b -> MatchAnd <$> zonkTcPat a <*> zonkTcPat b
   MatchPrefix s pat -> MatchPrefix s <$> zonkTcPat pat
-  MatchArrayPrefix ty ts ->
-    MatchArrayPrefix <$> zonkType ty <*> mapM zonkTcPat ts
+  MatchArrayPrefix ty ts all ->
+    MatchArrayPrefix
+      <$> zonkType ty
+      <*> mapM zonkTcPat ts
+      <*> zonkTcPat all
   MatchExt (Typed ty e) ->
     MatchExt <$> (Typed <$> zonkType ty <*> zonkTcTerm e)
   where

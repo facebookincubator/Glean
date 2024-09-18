@@ -230,9 +230,16 @@ data Match ext var
       ByteString  -- the prefix of the string (utf-8 encoded)
       (Term (Match ext var))  -- the rest of the string
 
+    -- | Match a prefix of an array. Note that this may occur in a
+    -- position that requires us to build the term instead of
+    -- matching, so we have an additional field that matches the whole
+    -- array. Typically this will be either a wildcard, if we never
+    -- need to build a term involving this array, or a variable which
+    -- will be bound to the array when it is matched.
   | MatchArrayPrefix
       Type                     -- ^ The type of elements
       [Term (Match ext var)]   -- ^ The prefix
+      (Term (Match ext var))   -- ^ matches the whole array
 
     -- | placeholder for extending this type
   | MatchExt ext
@@ -255,8 +262,9 @@ instance Bifunctor Match where
     MatchBind var -> MatchBind (g var)
     MatchAnd a b -> MatchAnd (fmap (bimap f g) a) (fmap (bimap f g) b)
     MatchPrefix b term -> MatchPrefix b $ fmap (bimap f g) term
-    MatchArrayPrefix ty prefix ->
+    MatchArrayPrefix ty prefix all ->
       MatchArrayPrefix ty ((fmap.fmap) (bimap f g) prefix)
+        (fmap (bimap f g) all)
 
 instance Bifoldable Match where
   bifoldMap f g = \case
@@ -268,8 +276,8 @@ instance Bifoldable Match where
     MatchBind var -> g var
     MatchAnd a b -> foldMap (bifoldMap f g) a <> foldMap (bifoldMap f g) b
     MatchPrefix _ term -> foldMap (bifoldMap f g) term
-    MatchArrayPrefix _ty pre ->
-      (foldMap.foldMap) (bifoldMap f g) pre
+    MatchArrayPrefix _ty pre all ->
+      (foldMap.foldMap) (bifoldMap f g) pre <> foldMap (bifoldMap f g) all
 
 instance Bitraversable Match where
   bitraverse f g = \case
@@ -283,8 +291,9 @@ instance Bitraversable Match where
       <$> traverse (bitraverse f g) a
       <*> traverse (bitraverse f g) b
     MatchPrefix b term -> MatchPrefix b <$> traverse (bitraverse f g) term
-    MatchArrayPrefix ty prefix ->
+    MatchArrayPrefix ty prefix all ->
       MatchArrayPrefix ty <$> traverse (traverse (bitraverse f g)) prefix
+        <*> traverse (bitraverse f g) all
 
 matchVar :: Match ext var -> Maybe var
 matchVar (MatchVar v) = Just v
@@ -356,6 +365,12 @@ instance Display ext => Display (Match ext Var) where
   display opts (MatchPrefix str rest) =
     display opts (show str) <> ".." <> display opts rest
   display opts (MatchExt ext) = display opts ext
+  display opts (MatchArrayPrefix _ty pre all) =
+    case all of
+      Ref MatchWild{} -> arr
+      _ -> arr <+> "@" <+> display opts all
+    where
+    arr = align $ encloseSep "[" "..]" "," $ map (display opts) pre
   display opts other = displayAtom opts other
 
   displayAtom _ (MatchWild _) = "_"
@@ -364,8 +379,7 @@ instance Display ext => Display (Match ext Var) where
   displayAtom opts (MatchVar v) = display opts v
   displayAtom opts (MatchPrefix str rest) =
     pretty (show str) <> ".." <> display opts rest
-  displayAtom opts (MatchArrayPrefix _ty pre) =
-    align $ encloseSep "[" "..]" "," $ map (display opts) pre
   displayAtom opts other@MatchAnd{} = parens (display opts other)
   displayAtom opts other@MatchBind{} = parens (display opts other)
+  displayAtom opts other@MatchArrayPrefix{} = parens (display opts other)
   displayAtom opts (MatchExt ext) = displayAtom opts ext
