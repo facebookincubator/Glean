@@ -580,65 +580,67 @@ predicate MethodOverrides :
     # find class where method is defined
     ContainedBy { { func = DerivedMethodDecl }, { cls = DerivedClassDecl } };
     # find local name of method {module_name}.{class_name}.{method_local_name}
-    SNameWithDeclaration { { func = DerivedMethodDecl}, { local_name = MethodLocalName } };
+    SNameWithDeclaration { { func = DerivedMethodDecl}, { local_name = LocalName } };
+    LocalName = python.Name NameStr;
+    MethodLocalName = python.LocalName NameStr;
 
     DerivedClassToBase { DerivedClassDecl, BaseClassDeclL1 };
     MaybeBaseMethodDecl = if (
-      MethodWithLocalName { BaseClassDeclL1, MethodLocalName, BaseMethodDeclL1 };
+      MethodByLocalName { BaseClassDeclL1, MethodLocalName, BaseMethodDeclL1 };
     ) then (
       { just = BaseMethodDeclL1 }
     ) else (
       DerivedClassToBase { BaseClassDeclL1, BaseClassDeclL2 };
       if (
-        MethodWithLocalName { BaseClassDeclL2, MethodLocalName, BaseMethodDeclL2 };
+        MethodByLocalName { BaseClassDeclL2, MethodLocalName, BaseMethodDeclL2 };
       ) then (
         { just = BaseMethodDeclL2 }
       ) else (
         DerivedClassToBase { BaseClassDeclL2, BaseClassDeclL3 };
         if (
-          MethodWithLocalName { BaseClassDeclL3, MethodLocalName, BaseMethodDeclL3 };
+          MethodByLocalName { BaseClassDeclL3, MethodLocalName, BaseMethodDeclL3 };
         ) then (
           { just = BaseMethodDeclL3 }
         ) else (
           DerivedClassToBase { BaseClassDeclL3, BaseClassDeclL4 };
           if (
-            MethodWithLocalName { BaseClassDeclL4, MethodLocalName, BaseMethodDeclL4 };
+            MethodByLocalName { BaseClassDeclL4, MethodLocalName, BaseMethodDeclL4 };
           ) then (
             { just = BaseMethodDeclL4 }
           ) else (
             DerivedClassToBase { BaseClassDeclL4, BaseClassDeclL5 };
             if (
-              MethodWithLocalName { BaseClassDeclL5, MethodLocalName, BaseMethodDeclL5 };
+              MethodByLocalName { BaseClassDeclL5, MethodLocalName, BaseMethodDeclL5 };
             ) then (
               { just = BaseMethodDeclL5 }
             ) else (
               DerivedClassToBase { BaseClassDeclL5, BaseClassDeclL6 };
               if (
-                MethodWithLocalName { BaseClassDeclL6, MethodLocalName, BaseMethodDeclL6 };
+                MethodByLocalName { BaseClassDeclL6, MethodLocalName, BaseMethodDeclL6 };
               ) then (
                 { just = BaseMethodDeclL6 }
               ) else (
                 DerivedClassToBase { BaseClassDeclL6, BaseClassDeclL7 };
                 if (
-                  MethodWithLocalName { BaseClassDeclL7, MethodLocalName, BaseMethodDeclL7 };
+                  MethodByLocalName { BaseClassDeclL7, MethodLocalName, BaseMethodDeclL7 };
                 ) then (
                   { just = BaseMethodDeclL7 }
                 ) else (
                   DerivedClassToBase { BaseClassDeclL7, BaseClassDeclL8 };
                   if (
-                    MethodWithLocalName { BaseClassDeclL8, MethodLocalName, BaseMethodDeclL8 };
+                    MethodByLocalName { BaseClassDeclL8, MethodLocalName, BaseMethodDeclL8 };
                   ) then (
                     { just = BaseMethodDeclL8 }
                   ) else (
                     DerivedClassToBase { BaseClassDeclL8, BaseClassDeclL9 };
                     if (
-                      MethodWithLocalName { BaseClassDeclL9, MethodLocalName, BaseMethodDeclL9 };
+                      MethodByLocalName { BaseClassDeclL9, MethodLocalName, BaseMethodDeclL9 };
                     ) then (
                       { just = BaseMethodDeclL9 }
                     ) else (
                       DerivedClassToBase { BaseClassDeclL9, BaseClassDeclL10 };
                       if (
-                        MethodWithLocalName { BaseClassDeclL10, MethodLocalName, BaseMethodDeclL10 };
+                        MethodByLocalName { BaseClassDeclL10, MethodLocalName, BaseMethodDeclL10 };
                       ) then (
                         { just = BaseMethodDeclL10 }
                       ) else (
@@ -665,65 +667,67 @@ predicate MethodOverriden:
     # find class where method is defined
     ContainedBy { { func = BaseMethodDecl }, { cls = BaseClassDecl } };
     # find local name of method {module_name}.{class_name}.{method_local_name}
-    SNameWithDeclaration { { func = BaseMethodDecl}, { local_name = MethodLocalName } };
+    SNameWithDeclaration { { func = BaseMethodDecl}, { local_name = LocalName } };
+    LocalName = python.Name NameStr;
+    MethodLocalName = python.LocalName NameStr;
 
     BaseClassToDerived { BaseClassDecl, DerivedClassDeclL1 };
     MaybeDerivedMethodDecl = if (
-      MethodWithLocalName { DerivedClassDeclL1, MethodLocalName, DerivedMethodDeclL1 };
+      MethodByLocalName { DerivedClassDeclL1, MethodLocalName, DerivedMethodDeclL1 };
     ) then (
       { just = DerivedMethodDeclL1 }
     ) else (
       BaseClassToDerived { DerivedClassDeclL1, DerivedClassDeclL2 };
       if (
-        MethodWithLocalName { DerivedClassDeclL2, MethodLocalName, DerivedMethodDeclL2 };
+        MethodByLocalName { DerivedClassDeclL2, MethodLocalName, DerivedMethodDeclL2 };
       ) then (
         { just = DerivedMethodDeclL2 }
       ) else (
         BaseClassToDerived { DerivedClassDeclL2, DerivedClassDeclL3 };
         if (
-          MethodWithLocalName { DerivedClassDeclL3, MethodLocalName, DerivedMethodDeclL3 };
+          MethodByLocalName { DerivedClassDeclL3, MethodLocalName, DerivedMethodDeclL3 };
         ) then (
           { just = DerivedMethodDeclL3 }
         ) else (
           BaseClassToDerived { DerivedClassDeclL3, DerivedClassDeclL4 };
           if (
-            MethodWithLocalName { DerivedClassDeclL4, MethodLocalName, DerivedMethodDeclL4 };
+            MethodByLocalName { DerivedClassDeclL4, MethodLocalName, DerivedMethodDeclL4 };
           ) then (
             { just = DerivedMethodDeclL4 }
           ) else (
             BaseClassToDerived { DerivedClassDeclL4, DerivedClassDeclL5 };
             if (
-              MethodWithLocalName { DerivedClassDeclL5, MethodLocalName, DerivedMethodDeclL5 };
+              MethodByLocalName { DerivedClassDeclL5, MethodLocalName, DerivedMethodDeclL5 };
             ) then (
               { just = DerivedMethodDeclL5 }
             ) else (
               BaseClassToDerived { DerivedClassDeclL5, DerivedClassDeclL6 };
               if (
-                MethodWithLocalName { DerivedClassDeclL6, MethodLocalName, DerivedMethodDeclL6 };
+                MethodByLocalName { DerivedClassDeclL6, MethodLocalName, DerivedMethodDeclL6 };
               ) then (
                 { just = DerivedMethodDeclL6 }
               ) else (
                 BaseClassToDerived { DerivedClassDeclL6, DerivedClassDeclL7 };
                 if (
-                  MethodWithLocalName { DerivedClassDeclL7, MethodLocalName, DerivedMethodDeclL7 };
+                  MethodByLocalName { DerivedClassDeclL7, MethodLocalName, DerivedMethodDeclL7 };
                 ) then (
                   { just = DerivedMethodDeclL7 }
                 ) else (
                   BaseClassToDerived { DerivedClassDeclL7, DerivedClassDeclL8 };
                   if (
-                    MethodWithLocalName { DerivedClassDeclL8, MethodLocalName, DerivedMethodDeclL8 };
+                    MethodByLocalName { DerivedClassDeclL8, MethodLocalName, DerivedMethodDeclL8 };
                   ) then (
                     { just = DerivedMethodDeclL8 }
                   ) else (
                     BaseClassToDerived { DerivedClassDeclL8, DerivedClassDeclL9 };
                     if (
-                      MethodWithLocalName { DerivedClassDeclL9, MethodLocalName, DerivedMethodDeclL9 };
+                      MethodByLocalName { DerivedClassDeclL9, MethodLocalName, DerivedMethodDeclL9 };
                     ) then (
                       { just = DerivedMethodDeclL9 }
                     ) else (
                       BaseClassToDerived { DerivedClassDeclL9, DerivedClassDeclL10 };
                       if (
-                        MethodWithLocalName { DerivedClassDeclL10, MethodLocalName, DerivedMethodDeclL10 };
+                        MethodByLocalName { DerivedClassDeclL10, MethodLocalName, DerivedMethodDeclL10 };
                       ) then (
                         { just = DerivedMethodDeclL10 }
                       ) else (
@@ -739,6 +743,17 @@ predicate MethodOverriden:
       )
     );
     MaybeDerivedMethodDecl = { just = DerivedMethodDecl };
+
+# (internal) helper for MethodOverrides
+predicate MethodByLocalName:
+  {
+    cls: ClassDeclaration,
+    method_local_name: LocalName,
+    method: FunctionDeclaration,
+  }
+  { ClassDecl, MethodLocalName, MethodDecl } where
+    Contains { { cls = ClassDecl }, { func = MethodDecl } };
+    SearchByLocalName { MethodLocalName, { func = MethodDecl } };
 
 # (internal) helper for MethodOverrides
 predicate MethodWithLocalName:
