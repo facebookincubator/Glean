@@ -243,7 +243,7 @@ genOCamlType ns namePolicy t = case t of
 --   types, so we can't translate them directly. TODO.
 genOCamlType' :: NameSpaces -> NamePolicy -> ResolvedType -> Text
 genOCamlType' ns namePolicy t = Text.pack $ case t of
-  RecordTy _ -> "unit (* unsupported *)"
+  RecordTy (_ : _) -> "unit (* unsupported *)"
   SumTy _ -> "unit (* unsupported *)"
   EnumeratedTy _ -> "unit (* unsupported *)"
   _ -> Text.unpack $ genOCamlType ns namePolicy t
@@ -327,10 +327,11 @@ genOCamlToJson' var ns namePolicy t = case t of
   StringTy -> "JSON_String " <> var
   ArrayTy ByteTy ->
     "JSON_String (List.map ~f:Base64.encode_string " <> var
-    <> "|> String.concat \"\")"
+    <> "|> String.concat ~sep:\"\")"
   ArrayTy ty ->
     let code = genOCamlToJson' "x" ns namePolicy ty in
     "JSON_Array (List.map ~f:(fun x -> " <> code  <> ") " <> var <> ")"
+  RecordTy [] -> "(ignore " <>  var <> "; JSON_Object [])"
   RecordTy _ -> "(ignore " <>  var <> "; JSON_Object []) (* unsupported *)"
   SumTy _ -> "(ignore " <>  var <> "; JSON_Object []) (* unsupported *)"
   SetTy _ -> error "Set"
