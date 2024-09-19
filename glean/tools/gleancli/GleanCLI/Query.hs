@@ -14,6 +14,7 @@ import qualified Data.ByteString.Char8 as B8
 import Data.Default
 import Data.Int (Int64)
 import Data.Text (Text)
+import Data.Maybe (isJust, isNothing)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import qualified Data.Text.IO as Text
@@ -29,6 +30,7 @@ import Glean.Types as Thrift
 
 import GleanCLI.Common
 import GleanCLI.Types
+import Control.Monad (when)
 
 data QueryCommand
   = Query
@@ -44,6 +46,7 @@ data QueryCommand
       , debugOutput :: Maybe FilePath
       , debugBytecode :: Bool
       , debugIr :: Bool
+      , profileOutput :: Bool
       }
 
 instance Plugin QueryCommand where
@@ -71,6 +74,10 @@ instance Plugin QueryCommand where
         <> metavar "FILE"
         <> help "output stats to a file ('-' for stdout)"
         )
+      profileOutput <- switch $ long "profile"
+        <> help (
+          "get full profiling information; " <>
+          "use with --stats to include facts_searched")
       timeout <- optional $ option auto
         ( long "timeout"
         <> metavar "MILLISECONDS"
@@ -98,6 +105,8 @@ instance Plugin QueryCommand where
         Query{..}
 
   runCommand _ _ backend Query{..} = do
+    when (isNothing statsOutput && profileOutput) $
+      die 3 "Invalid options: --profile needs to be used together with --stats"
     query_bytes <- case query of
       "-" -> B.hGetContents stdin
       '@':path -> B.readFile path
@@ -151,6 +160,8 @@ instance Plugin QueryCommand where
                 , userQueryOptions_syntax = QuerySyntax_ANGLE
                 , userQueryOptions_recursive = recurse
                 , userQueryOptions_omit_results = omitResults
+                , userQueryOptions_collect_facts_searched =
+                    isJust statsOutput && profileOutput
                 , userQueryOptions_debug = case cont of
                     Nothing -> QueryDebugOptions
                       { queryDebugOptions_bytecode = debugBytecode
