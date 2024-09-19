@@ -234,31 +234,31 @@ genOCamlType ns namePolicy t = case t of
   HasTy{} -> error "genOCamlType: HasTy"
   where
     genField fieldKind field =
-      let ty = (genOCamlType' ns namePolicy . fieldDefType) field in
+      let ty = (genOCamlTypeFromField ns namePolicy . fieldDefType) field in
       case fieldKind of
         Record -> "    " <> fieldToVar field <> ": " <> ty <> ";"
         Sum -> "     | " <> fieldToConstructor field <> " of " <> ty
 
 --   Unlike Angle, OCaml doesn't support anonymous record or sum
 --   types, so we can't translate them directly. TODO.
-genOCamlType' :: NameSpaces -> NamePolicy -> ResolvedType -> Text
-genOCamlType' ns namePolicy t = Text.pack $ case t of
+genOCamlTypeFromField :: NameSpaces -> NamePolicy -> ResolvedType -> Text
+genOCamlTypeFromField ns namePolicy t = Text.pack $ case t of
   RecordTy (_ : _) -> "unit (* unsupported *)"
   SumTy _ -> "unit (* unsupported *)"
   EnumeratedTy _ -> "unit (* unsupported *)"
   _ -> Text.unpack $ genOCamlType ns namePolicy t
 
-genOCamlToJson :: NameSpaces -> NamePolicy -> ResolvedType -> (Text, Text)
-genOCamlToJson ns namePolicy t = case t of
-  ByteTy -> ("b", "JSON_Number (string_of_int (int_of_char b))")
-  NatTy -> ("i", "JSON_Number (string_of_int i)")
-  StringTy -> ("str", "JSON_String str")
+genOCamlToJson :: Text -> NameSpaces -> NamePolicy -> ResolvedType -> (Text, Text)
+genOCamlToJson var ns namePolicy t = case t of
+  ByteTy -> (var, "JSON_Number (string_of_int (int_of_char " <> var <> "))")
+  NatTy -> (var, "JSON_Number (string_of_int " <> var <> ")")
+  StringTy -> (var, "JSON_String " <> var)
   ArrayTy ByteTy ->
-    ("v",
-     "JSON_String (List.map ~f:Base64.encode_string v |> String.concat ~sep:\"\")")
+    (var, "JSON_String (List.map ~f:Base64.encode_string " <> var
+    <> "|> String.concat ~sep:\"\")")
   ArrayTy ty ->
-    let (var, code) = genOCamlToJson ns namePolicy ty in
-    ("l", "JSON_Array (List.map ~f:(fun " <> var <> " -> " <> code  <> ") l)")
+    let (_, code) = genOCamlToJson "x" ns namePolicy ty in
+    (var, "JSON_Array (List.map ~f:(fun x -> " <> code  <> ") " <> var <> ")")
   RecordTy [] ->
     ("_", "JSON_Object []")
   RecordTy fields ->
@@ -268,7 +268,7 @@ genOCamlToJson ns namePolicy t = case t of
           let camlVar = fieldToVar field
               jsonKey = fieldToJSONKey field
               type_ = fieldDefType field
-              camlType = genOCamlToJson' camlVar ns namePolicy type_
+              (_, camlType) = genOCamlToJsonFromField camlVar ns namePolicy type_
               isOpt = case type_ of
                 MaybeTy _ -> True
                 _ -> False
@@ -292,7 +292,7 @@ genOCamlToJson ns namePolicy t = case t of
     (vars, "\n" <> reqFieldsDefs <> optFieldsDefs <> "    JSON_Object fields\n")
   SumTy fields ->
     let typeSumField field =
-          let genType = genOCamlToJson' var ns namePolicy (fieldDefType field)
+          let (_, genType) = genOCamlToJsonFromField var ns namePolicy (fieldDefType field)
               var = fieldToVar field
               key = fieldToJSONKey field
               constr = fieldToConstructor field in
@@ -302,12 +302,12 @@ genOCamlToJson ns namePolicy t = case t of
   SetTy _ -> error "Set"
   PredicateTy pred ->
     let moduleName = predToModule ns pred namePolicy in
-        ("x",  moduleName <> ".to_json x")
+        (var, moduleName <> ".to_json " <> var)
   NamedTy tref ->
     let moduleName = typeToModule ns tref namePolicy in
-        ("x",  moduleName <> ".to_json x")
-  MaybeTy ty -> let genTy = genOCamlToJson' "x" ns namePolicy ty in
-    ("x", "Option.map ~f:(fun x -> " <> genTy <> ") x")
+        (var, moduleName <> ".to_json " <> var)
+  MaybeTy ty -> let (_, genTy) = genOCamlToJson "x" ns namePolicy ty in
+    (var, "Option.map ~f:(fun x -> " <> genTy <> ") " <> var)
   EnumeratedTy names ->
     let enumNames = zipWith (\idx val -> (idx, val)) [(0::Int)..] names in
     let enumCase (num, name) =
@@ -316,38 +316,20 @@ genOCamlToJson ns namePolicy t = case t of
              " -> JSON_Number (string_of_int ", Text.pack $ show num, ")"] in
     let handleEnumCases = enumCase <$> enumNames in
         ("", "function\n" <> Text.unlines handleEnumCases)
-  BooleanTy -> ("b", "JSON_Bool b")
+  BooleanTy -> (var, "JSON_Bool " <> var)
   TyVar{} -> error "genOCamlToJson: TyVar"
   HasTy{} -> error "genOCamlToJson: HasTy"
 
-genOCamlToJson' :: Text -> NameSpaces -> NamePolicy -> ResolvedType -> Text
-genOCamlToJson' var ns namePolicy t = case t of
-  ByteTy -> "JSON_Number (string_of_int (int_of_char " <> var <> "))"
-  NatTy -> "JSON_Number (string_of_int " <> var <> ")"
-  StringTy -> "JSON_String " <> var
-  ArrayTy ByteTy ->
-    "JSON_String (List.map ~f:Base64.encode_string " <> var
-    <> "|> String.concat ~sep:\"\")"
-  ArrayTy ty ->
-    let code = genOCamlToJson' "x" ns namePolicy ty in
-    "JSON_Array (List.map ~f:(fun x -> " <> code  <> ") " <> var <> ")"
-  RecordTy [] -> "(ignore " <>  var <> "; JSON_Object [])"
-  RecordTy _ -> "(ignore " <>  var <> "; JSON_Object []) (* unsupported *)"
-  SumTy _ -> "(ignore " <>  var <> "; JSON_Object []) (* unsupported *)"
-  SetTy _ -> error "Set"
-  PredicateTy pred ->
-    let moduleName = predToModule ns pred namePolicy in
-        (moduleName <> ".to_json " <> var)
-  NamedTy tref ->
-    let moduleName = typeToModule ns tref namePolicy in
-        moduleName <> ".to_json " <> var
-  MaybeTy ty ->
-    let genTy = genOCamlToJson' var ns namePolicy ty in
-        genTy
-  EnumeratedTy _ -> "(ignore " <>  var <> "; JSON_Object []) (* unsupported *)"
-  BooleanTy -> "JSON_Bool " <> var
-  TyVar{} -> error "genOCamlToJson': TyVar"
-  HasTy{} -> error "genOCamlToJson': HasTy"
+genOCamlToJsonFromField
+  :: Text -> NameSpaces -> NamePolicy -> ResolvedType -> (Text, Text)
+genOCamlToJsonFromField var ns namePolicy t = case t of
+  RecordTy [] -> (var, "(ignore " <>  var <> "; JSON_Object [])")
+  RecordTy _ -> (var, "(ignore " <>  var <> "; JSON_Object []) (* unsupported *)")
+  SumTy _ -> (var, "(ignore " <>  var <> "; JSON_Object []) (* unsupported *)")
+  EnumeratedTy _ -> (var, "(ignore " <>  var <> "; JSON_Object []) (* unsupported *)")
+  MaybeTy ty -> genOCamlToJsonFromField var ns namePolicy ty
+  _ -> genOCamlToJson var ns namePolicy t
+
 
 refToModule :: NameSpaces -> Maybe (NameSpaces, Text) -> Text
 refToModule curNs ref =
@@ -426,8 +408,8 @@ genSchema namespaces preds types namePolicy =
             kTy = genOCamlType ns namePolicy key
             kTy' = genOCamlType ns namePolicy value
             name = predToModule ns ref namePolicy
-            (var, code) = genOCamlToJson ns namePolicy key
-            (var', code') = genOCamlToJson ns namePolicy value in
+            (var, code) = genOCamlToJson "x" ns namePolicy key
+            (var', code') = genOCamlToJson "x" ns namePolicy value in
             case value of
               RecordTy [] ->
                 genModulePred num name [("key", kTy, var, code)]
@@ -439,7 +421,7 @@ genSchema namespaces preds types namePolicy =
             key = typeDefType type_
             kTy = genOCamlType ns namePolicy key
             name = typeToModule ns ref namePolicy
-            (var, code) = genOCamlToJson ns namePolicy key in
+            (var, code) = genOCamlToJson "x" ns namePolicy key in
             genModuleType num name kTy var code
 
 genTargets :: [(NameSpaces, [NameSpaces])] -> Text
