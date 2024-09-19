@@ -68,7 +68,7 @@ struct PPCallbacks final : public clang::PPCallbacks {
       clang::StringRef,
       clang::StringRef,
       const clang::Module *,
-#if defined(CAST_COMPILER_TOOLCHAIN_FBOBJC_16)
+#if LLVM_VERSION_MAJOR >= 19 || defined(CAST_COMPILER_TOOLCHAIN_FBOBJC_16)
       bool,
 #endif
       clang::SrcMgr::CharacteristicKind
