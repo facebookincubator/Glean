@@ -16,6 +16,7 @@
     "prettier:diff": "prettier --config .prettierrc --list-different \"**/*.{js,md}\""
   },
   "dependencies": {
+    "@babel/helper-hoist-variables": "^7.24.7",
     "@docusaurus/core": "2.1.0",
     "@docusaurus/preset-classic": "2.1.0",
     "@mdx-js/react": "^1.6.21",
