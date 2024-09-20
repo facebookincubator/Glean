@@ -700,7 +700,7 @@ relSpansToAbs byteSpans = snd $ List.foldl' f (0, []) byteSpans
 -- default.
 toTypeAndXRefs :: Maybe Hack.Type -> Maybe Hack.TypeInfo -> (HackType, XRefs)
 toTypeAndXRefs type_ typeInfo = case typeInfo of
-  (Just (Hack.TypeInfo _ (Just (Hack.TypeInfo_key displayType hackXRefs)))) ->
+  (Just (Hack.TypeInfo _ (Just (Hack.TypeInfo_key displayType hackXRefs _)))) ->
     let f (Hack.XRef declaration ranges) = case declaration of
           Hack.XRefTarget_declaration decl ->
             Just ((\x -> (decl, x)) <$> relSpansToAbs ranges)

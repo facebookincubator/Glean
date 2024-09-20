@@ -34,9 +34,52 @@ predicate Type : string
 
 predicate Context_ : string
 
+# Hint predicate follow closely the Hack hint AST (Aast_defs.hint)
+
+#  QName uniquely defines a container, the kind (class, trait...) isn't
+#  needed.
+type FieldClassConst = { container : QName, name : Name }
+
+type ShapeKV = {
+  key: {
+    sf_regex_group : string |
+    sf_lit_string : string |
+    sf_class_const : FieldClassConst
+  },
+  value: Hint,
+  opt: bool,
+}
+
+# follow the structure of Aast_defs.hint
+predicate Hint : {
+  apply : { class_name : QName, values : [Hint] } |
+  option : Hint |
+  like : Hint |
+  tuple : { req: [ Hint ], opt: [ Hint ], variadic : maybe Hint }  |
+  class_args : Hint |
+  shape :  { open_ : bool, map_ : [ShapeKV] } |
+  soft : Hint |
+  intersection : [ Hint ] |
+  union_ : [ Hint ] |
+  vect_or_dict : { maybe_key : maybe Hint, value_ : Hint } |
+  prim : Type |
+  var_ : string |
+  fun_context : string |
+  mixed |
+  wildcard |
+  nonnull |
+  this_ |
+  dynamic |
+  nothing |
+  other : Type | # fall back to pretty-printed type for non implemented types
+}
+
+# End Hints
+
 predicate TypeInfo : {
   displayType : Type, # human friendly textual representation
   xrefs : [XRef], # spans are relative to the "displayType" field content
+  hint : maybe Hint, # structured representation of the type
 }
 
 # Named parameter
