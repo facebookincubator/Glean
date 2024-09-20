@@ -155,6 +155,9 @@ Output the facts to a file
 * `--stats FILE`<br />
 Output stats to a file ('-' for stdout)
 
+* `--profile`<br />
+Get full profiling information; use with `--stats` to include facts_searched
+
 * `--timeout MILLISECONDS`
 Override the default query timeout
 
