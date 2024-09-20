@@ -62,6 +62,8 @@ dune modules = Text.unlines
   , " (pps ppx_deriving.std)))"
   ]
 
+-- disable warning for "unused module imports" and "unused rec".
+-- Not all generated files use it.
 ocamlHeaderGen :: [Text] -> Text
 ocamlHeaderGen imports = Text.unlines $
   [ "(*"
@@ -75,12 +77,11 @@ ocamlHeaderGen imports = Text.unlines $
   , "(* \x40generated"
   , "   " <> generated <> " *)"
   , ""
+  , "[@@@warning \"-33-39\"]"
   ] ++ (("open " <>) <$> imports) ++ [ "" ]
 
--- disable warning for "unused module imports". Not all generated
--- files use it.
 ocamlHeader :: Text
-ocamlHeader =  ocamlHeaderGen ["Hh_json", "Core [@@warning \"-33\"]"]
+ocamlHeader =  ocamlHeaderGen ["Hh_json", "Core"]
 
 ocamlHeader' :: Text
 ocamlHeader' =  ocamlHeaderGen ["Hh_json"]
@@ -154,34 +155,49 @@ moduleDecl :: Int -> Text
 moduleDecl 0 = "module rec "
 moduleDecl _ = "and "
 
-typeDecl :: (Text, Text, Text, Text) -> Text
-typeDecl (name, type_, _var, _code ) =
-  Text.concat ["  and ", name, "= ", type_, "\n  [@@deriving ord]"]
+type GenTypeName = Text
+type GenFunName = Text
+type GenVars = Text
+type GenCode = Text
+type GenType = Text
 
-toJsonDecl :: (Text, Text, Text, Text) -> Text
-toJsonDecl (name, _type, _var, _code ) =
-  Text.concat ["  val to_json_", name, ": ", name, " -> json"]
+-- all the text generated from an angle type/pred
+-- we pick pieces of this to generate the OCaml modules
+-- signature and implementation
+type GenEntity = (GenTypeName, GenFunName, GenType, GenVars, GenCode)
 
-toJsonImpl :: (Text, Text, Text, Text) -> Text
-toJsonImpl (name, _type, var, code ) =
-  Text.concat ["  and to_json_", name, " ", var, " = ", code]
+displayList :: Text -> Text -> Text -> [Text] -> Text
+displayList first second sep texts =
+    Text.intercalate sep $ zipWith (<>) prefixes texts
+  where
+     prefixes = first : repeat second
 
-genModuleType :: Int -> Text -> Text -> Text -> Text -> Text
-genModuleType decl name type_ var code = Text.unlines
-  [ moduleDecl decl <> name <> ": sig"
-  , "  type t = " <> type_
-  , "  [@@deriving ord]"
-  , ""
-  , "  val to_json : t -> json"
-  , "end = struct"
-  , "  type t = " <> type_
-  , "  [@@deriving ord]"
-  , ""
-  , "  let to_json " <> var <> " = " <> code
-  , "end"
-  ]
+typeDecl :: GenEntity -> Text
+typeDecl (name, _fun_name, type_, _var, _code ) =
+  mconcat [name, " = ", type_, "\n  [@@deriving ord]"]
 
-genModulePred :: Int -> Text -> [(Text,  Text, Text, Text)] -> Text
+toJsonDecl :: GenEntity -> Text
+toJsonDecl (name, fun_name, _type, _var, _code ) =
+  mconcat ["  val ", fun_name, ": ", name, " -> json"]
+
+toJsonImpl :: GenEntity -> Text
+toJsonImpl (_name, fun_name, _type, var, code ) =
+  mconcat [fun_name, " ", var, " = ", code]
+
+genModuleType :: Int -> Text -> [GenEntity] -> Text
+genModuleType decl name types = Text.unlines
+    [ moduleDecl decl <> name <> ": sig"
+    , displayList "  type " "  and " "\n" (typeDecl <$> types)
+    , ""
+    , "  val to_json : t -> json"
+    , "end = struct"
+    , displayList "  type " "  and " "\n" (typeDecl <$> types)
+    , ""
+    , displayList "  let rec " "  and " "\n" (toJsonImpl <$> types)
+    , "end"
+    ]
+
+genModulePred :: Int -> Text -> [GenEntity] -> Text
 genModulePred decl name types = Text.unlines
   [ moduleDecl decl <> name <> ": sig"
   , "  type t ="
@@ -189,7 +205,7 @@ genModulePred decl name types = Text.unlines
   , "    | Key of key"
   , "  [@@deriving ord]"
   , ""
-  , Text.intercalate "\n" (typeDecl <$> types)
+  , displayList "  and " "  and " "\n" (typeDecl <$> types)
   , ""
   , "  val to_json: t -> json"
   , ""
@@ -201,20 +217,27 @@ genModulePred decl name types = Text.unlines
   , "    | Key of key"
   , "  [@@deriving ord]"
   , ""
-  , Text.intercalate "\n" (typeDecl <$> types)
+  , displayList "  and " "  and " "\n" (typeDecl <$> types)
   , ""
   , "  let rec to_json = function"
   , "    | Id f -> Util.id f"
   , "    | Key t -> Util.key (to_json_key t)"
   , ""
-  , Text.intercalate "\n" (toJsonImpl <$> types)
+  , displayList "  and " "  and " "\n" (toJsonImpl <$> types)
   , "end"
   ]
+
+-- Extra state used in generation function to store generated
+-- code/type for anonymous datatypes we can't translate directly
+-- in OCaml
+type GenAnonTypes = [(GenTypeName, GenType)]
+type GenAnonTypesCode = [(GenTypeName, GenVars, GenCode)]
 
 data FieldKind = Sum | Record
 
 -- | Generate the type representing a predicate or type
-genOCamlType :: NameSpaces -> NamePolicy -> ResolvedType -> State () Text
+genOCamlType
+  :: NameSpaces -> NamePolicy -> ResolvedType -> State GenAnonTypes GenType
 genOCamlType ns namePolicy t = case t of
   ByteTy -> return "char"
   NatTy -> return "int"
@@ -243,24 +266,33 @@ genOCamlType ns namePolicy t = case t of
   HasTy{} -> error "genOCamlType: HasTy"
   where
     genField fieldKind field = do
-      ty <- genOCamlTypeFromField ns namePolicy (fieldDefType field)
-      return $ case fieldKind of
-        Record -> "    " <> fieldToVar field <> ": " <> ty <> ";"
-        Sum -> "     | " <> fieldToConstructor field <> " of " <> ty
+      ty <- genOCamlTypeFromField field ns namePolicy (fieldDefType field)
+      case fieldKind of
+        Record -> return $ "    " <> fieldToVar field <> ": " <> ty <> ";"
+        Sum -> return $ "     | " <> fieldToConstructor field <> " of " <> ty
 
-
---   Unlike Angle, OCaml doesn't support anonymous record or sum
---   types, so we can't translate them directly. TODO.
 genOCamlTypeFromField
-  :: NameSpaces -> NamePolicy -> ResolvedType -> State () Text
-genOCamlTypeFromField ns namePolicy t = case t of
-  RecordTy (_ : _) -> return "unit (* unsupported *)"
-  SumTy _ -> return "unit (* unsupported *)"
-  EnumeratedTy _ -> return "unit (* unsupported *)"
-  _ -> genOCamlType ns namePolicy t
+  :: FieldDef_ PredicateRef TypeRef -> NameSpaces -> NamePolicy -> ResolvedType
+  -> State GenAnonTypes GenType
+genOCamlTypeFromField field ns namePolicy t = do
+  let typeName = fieldToTypeName field
+  type_ <- genOCamlType ns namePolicy t
+  st <- get
+  case t of
+    RecordTy (_ : _) -> do
+      put $ (typeName, type_) : st
+      return typeName
+    SumTy _ -> do
+      put $ (typeName, type_) : st
+      return typeName
+    EnumeratedTy _ -> do
+      put $ (typeName, type_) : st
+      return typeName
+    _ -> return type_
 
 genOCamlToJson
-  :: Text -> NameSpaces -> NamePolicy -> ResolvedType -> State () (Text, Text)
+  :: GenVars -> NameSpaces -> NamePolicy -> ResolvedType
+  -> State GenAnonTypesCode (GenVars, GenCode)
 genOCamlToJson var ns namePolicy t = case t of
   ByteTy ->
     return (var, "JSON_Number (string_of_int (int_of_char " <> var <> "))")
@@ -272,7 +304,7 @@ genOCamlToJson var ns namePolicy t = case t of
   ArrayTy ty -> do
     (_, code) <- genOCamlToJson "x" ns namePolicy ty
     return (var, "JSON_Array (List.map ~f:(fun x -> " <> code  <> ") "
-      <> var <> ")")
+       <> var <> ")")
   RecordTy [] ->
     return ("_", "JSON_Object []")
   RecordTy fields -> do
@@ -282,7 +314,8 @@ genOCamlToJson var ns namePolicy t = case t of
           let camlVar = fieldToVar field
               jsonKey = fieldToJSONKey field
               type_ = fieldDefType field
-          (_, camlType) <- genOCamlToJsonFromField camlVar ns namePolicy type_
+          (_, camlType) <-
+            genOCamlToJsonFromField field camlVar ns namePolicy type_
           let isOpt = case type_ of
                 MaybeTy _ -> True
                 _ -> False
@@ -304,12 +337,12 @@ genOCamlToJson var ns namePolicy t = case t of
           in
           Text.concat $ toOptFieldDef <$> optFields
     return (vars, "\n" <> reqFieldsDefs <> optFieldsDefs
-      <> "    JSON_Object fields\n")
+     <> "    JSON_Object fields\n")
   SumTy fields -> do
     let typeSumField field = do
           let var = fieldToVar field
           (_, genType) <-
-            genOCamlToJsonFromField var ns namePolicy (fieldDefType field)
+            genOCamlToJsonFromField field var ns namePolicy (fieldDefType field)
           let key = fieldToJSONKey field
           let constr = fieldToConstructor field
           return $ Text.concat [ "     | ", constr, " ", var,
@@ -339,18 +372,27 @@ genOCamlToJson var ns namePolicy t = case t of
   HasTy{} -> error "genOCamlToJson: HasTy"
 
 genOCamlToJsonFromField
-  :: Text -> NameSpaces -> NamePolicy -> ResolvedType -> State () (Text, Text)
-genOCamlToJsonFromField var ns namePolicy t = case t of
-  RecordTy [] ->
-    return (var, "(ignore " <>  var <> "; JSON_Object [])")
-  RecordTy _ ->
-    return (var, "(ignore " <>  var <> "; JSON_Object []) (* unsupported *)")
-  SumTy _ ->
-    return (var, "(ignore " <>  var <> "; JSON_Object []) (* unsupported *)")
-  EnumeratedTy _ ->
-    return (var, "(ignore " <>  var <> "; JSON_Object []) (* unsupported *)")
-  MaybeTy ty -> genOCamlToJsonFromField var ns namePolicy ty
-  _ -> genOCamlToJson var ns namePolicy t
+  :: FieldDef_ PredicateRef TypeRef -> GenVars -> NameSpaces -> NamePolicy
+  -> ResolvedType -> State GenAnonTypesCode (GenVars, GenCode)
+genOCamlToJsonFromField field var ns namePolicy t = do
+  let typeName = fieldToTypeName field
+      res = (var, typeName <> "_to_json " <> var)
+  st <- get
+  (var0, code) <- genOCamlToJson var ns namePolicy t
+  case t of
+   RecordTy [] -> do
+     return (var, "(ignore " <>  var <> "; JSON_Object [])")
+   RecordTy _ -> do
+     put $ (typeName, var0, code) : st
+     return res
+   SumTy _ -> do
+     put $ (typeName, var0, code) : st
+     return res
+   EnumeratedTy _ -> do
+     put $ (typeName, var0, code) : st
+     return res
+   MaybeTy ty -> genOCamlToJsonFromField field var ns namePolicy ty
+   _ -> return (var0, code)
 
 
 refToModule :: NameSpaces -> Maybe (NameSpaces, Text) -> Text
@@ -373,6 +415,13 @@ predToModule :: NameSpaces -> PredicateRef -> NamePolicy -> Text
 predToModule curNs ref namePolicy =
   let map = predNames namePolicy in
   refToModule curNs (HashMap.lookup ref map)
+
+-- used for anonymous types, we reuse the field name
+-- e.g. angle: type t = { a : { ...} }
+--      ocaml: type a = ...
+-- TODO: handle naming conflict, use path of fields
+fieldToTypeName :: FieldDef_ PredicateRef TypeRef -> GenTypeName
+fieldToTypeName = fieldDefName
 
 nameToConstructor :: Text -> Text
 nameToConstructor = cap1
@@ -427,25 +476,36 @@ genSchema namespaces preds types namePolicy =
         let ref = predicateDefRef pred
             key = predicateDefKeyType pred
             value = predicateDefValueType pred
-            kTy = evalState (genOCamlType ns namePolicy key) ()
-            kTy' = evalState (genOCamlType ns namePolicy value) ()
             name = predToModule ns ref namePolicy
-            (var, code) =
-              evalState (genOCamlToJson "x" ns namePolicy key) ()
-            (var', code') =
-              evalState (genOCamlToJson "x" ns namePolicy value) ()
         in case value of
-              RecordTy [] -> genModulePred num name [("key", kTy, var, code)]
-              _ -> genModulePred num name
-                  [("key", kTy, var, code), ("value", kTy', var', code')]
+              RecordTy [] ->
+                genModulePred num name
+                  (typeToGenEntity "key" "to_json_key" ns namePolicy key)
+              _ ->
+                genModulePred num name
+                  (typeToGenEntity "key" "to_json_key" ns namePolicy key ++
+                   typeToGenEntity "value" "to_json_value" ns namePolicy value)
       genModuleT (num :: Int) ns namePolicy type_ =
-            genModuleType num name kTy var code
+          genModuleType num name
+            (typeToGenEntity "t" "to_json" ns namePolicy key)
         where
-            ref = typeDefRef type_
-            key = typeDefType type_
-            kTy = evalState (genOCamlType ns namePolicy key) ()
-            name = typeToModule ns ref namePolicy
-            (var, code) = evalState (genOCamlToJson "x" ns namePolicy key) ()
+          ref = typeDefRef type_
+          key = typeDefType type_
+          name = typeToModule ns ref namePolicy
+
+      typeToGenEntity
+        :: GenTypeName -> GenFunName -> NameSpaces -> NamePolicy -> ResolvedType
+        -> [GenEntity]
+      typeToGenEntity typeName funName ns namePolicy x  =
+        let ((var, code), otherCode) =
+              runState (genOCamlToJson "x" ns namePolicy x) []
+            (kTy, otherTypes) =
+              runState (genOCamlType ns namePolicy x) []
+            others = [(name, name <> "_to_json", kTy, var, code) |
+              (name, kTy) <- otherTypes,
+              (name', var, code) <- otherCode, name == name']
+        in
+          (typeName, funName, kTy, var, code) : others
 
 genTargets :: [(NameSpaces, [NameSpaces])] -> Text
 genTargets deps =
