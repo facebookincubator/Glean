@@ -769,6 +769,8 @@ predicate ModuleChild:
     decl : hack.Declaration
   } stored { Module, Decl } where hack.ModuleParent { Decl, Module }
 
+# Class methods implementation of an interface aren't considered as override.
+# However, the methods introduced by `use T` can override interface methods.
 predicate MethodOverrides :
   {
     derived : MethodDeclaration,
