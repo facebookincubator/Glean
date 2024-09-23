@@ -90,6 +90,7 @@ DEFINE_string(clang_arguments, "", "arguments to pass to Clang");
 DEFINE_bool(clang_no_pch, false, "disable PCH");
 DEFINE_bool(clang_no_modules, false, "disable modules");
 DEFINE_string(clang_resource_dir, "", "PATH to Clang resource dir");
+DEFINE_string(platform, "", "platform to store in buck.TranslationUnit facts");
 
 // Index single cdb
 DEFINE_string(cdb_target, "", "Target name");
@@ -300,7 +301,9 @@ struct Config {
 
       for (const auto& item : folly::parseJson(contents)) {
         folly::Optional<std::string> platform;
-        if (auto *p = item.get_ptr("platform")) {
+        if (!FLAGS_platform.empty()) {
+          platform = FLAGS_platform;
+        } else if (auto *p = item.get_ptr("platform")) {
           platform = p->getString();
         }
         sources.push_back(SourceFile{
