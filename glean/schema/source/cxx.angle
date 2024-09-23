@@ -361,7 +361,7 @@ predicate ObjcContainerDefinition :
 type IncludeTrace =
   {
     include_ : pp1.Include,
-    trace : maybe Trace,
+    trace : maybe Trace,  # deprecated; always nothing. See IncludeTree.
   }
 
 # A C++ preprocessor event
@@ -399,6 +399,15 @@ predicate IncludeTree :
     # The elements in this list map 1:1 to the `IncludeTrace` in `PPTrace`.
     children : [MaybeIncludeTree],
   }
+
+predicate IncludeTreeParent :
+  {
+    tree : IncludeTree,
+    parent : IncludeTree
+  }
+  stored { Child , Parent } where
+    Parent = IncludeTree { _, Children };
+    { tree = { just = Child }} = Children[..]
 
 # C++ type alias kind
 type TypeAliasKind = enum { Typedef | Using }
@@ -776,6 +785,13 @@ predicate TranslationUnitIncludeTree :
     tunit : buck.TranslationUnit,
     tree : IncludeTree,
   }
+
+predicate IncludeTreeTranslationUnit :
+  {
+    tree : IncludeTree,
+    tunit : buck.TranslationUnit,
+  }
+  stored { T, U } where TranslationUnitIncludeTree { U, T }
 
 # The fileXRefs corresponding to a particular translation unit
 predicate TranslationUnitXRefs :  # 2 is already used in cxx1
