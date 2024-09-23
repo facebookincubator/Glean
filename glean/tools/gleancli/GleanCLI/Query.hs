@@ -143,7 +143,7 @@ instance Plugin QueryCommand where
           | m > n = Just $ Just (m-n)
           | otherwise = Nothing
 
-        loop cont limit = do
+        loop prev_stats cont limit = do
           UserQueryResults{..} <- Glean.userQuery backend repo def
             { userQuery_query = query_bytes
             , userQuery_encodings = [UserQueryEncoding_json
@@ -170,16 +170,18 @@ instance Plugin QueryCommand where
                     Just _ -> def
                 }
             }
+          let stats = prev_stats <> userQueryResults_stats
           n <- case userQueryResults_results of
             UserQueryEncodedResults_json UserQueryResultsJSON{..} -> do
               mapM_ (B8.hPutStrLn h_out) userQueryResultsJSON_facts
               return $ length userQueryResultsJSON_facts
             _ -> die 1 "error: unexpected results encoding"
-          print_stats userQueryResults_stats
           print_debug userQueryResults_diagnostics
           case userQueryResults_continuation of
             Just new_cont
               | Just new_limit <- subtract_limit limit $ fromIntegral n ->
-                  loop (Just new_cont) new_limit
-            _ -> return ()
-    loop Nothing $ fromIntegral <$> limitFacts
+                  loop stats (Just new_cont) new_limit
+            _ ->  do
+              print_stats stats
+              return ()
+    loop Nothing Nothing $ fromIntegral <$> limitFacts
