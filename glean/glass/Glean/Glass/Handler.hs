@@ -707,8 +707,11 @@ fetchSymbolsAndAttributesGlean env@Glass.Env{..} dbInfo req opts be mlang = do
       (requestOptions_exact_revision opts)
       includeRefs includeXlangRefs
       (shouldFetchContentHash opts) be mlang dbInfo
-  let res2 = toDocumentSymbolResult res1
-  return ((res2, gLogs), elogs)
+
+  res2 <- resolveIdlXrefs env res1 repo be dbInfo
+
+  let res3 = toDocumentSymbolResult res2
+  return ((res3, gLogs), elogs)
   where
     repo = documentSymbolsRequest_repository req
     path = documentSymbolsRequest_filepath req
@@ -899,6 +902,9 @@ fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
       Glass.withAllocationLimit env $
         fetchSymbolsAndAttributesGlean env dbInfo req opts be mlang
 
+xRefDataToRefEntitySymbol :: XRefData -> (Code.Entity, ReferenceRangeSymbolX)
+xRefDataToRefEntitySymbol XRefData{..} = (xrefEntity, xrefSymbol)
+
 -- Find all references and definitions in a file that might be in a set of repos
 fetchDocumentSymbols
   :: Glean.Backend b
@@ -919,106 +925,95 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
     repoPath mlimit wantedRevision
     exactRevision includeRefs includeXlangRefs fetchContentHash
     b mlang dbInfo =
-  backendRunHaxl b env $ do
-  --
-  -- we pick the first db in the list that has the full FileInfo{..}
-  -- and in exact_revision mode the rev also has to match precisely
-  --
-  efile <- firstOrErrors $ do
-    repo <- Glean.haxlRepo
-    if not (revisionAcceptable repo)
-      then return $ Left $ GlassExceptionReason_exactRevisionNotAvailable $
-        revisionSpecifierError wantedRevision
-      else do
-        res <- getFileInfo repo path
-        return $ case res of
-          Left _ -> res
-          Right fi@FileInfo{..}
-            | not isIndexed -> Left $ GlassExceptionReason_notIndexedFile $
-              case indexFailure of
-                Nothing -> "Not indexed: " <> gleanPath path
-                Just Src.IndexFailure_key{..} -> Text.pack $
-                    show indexFailure_key_reason
-                    <> ": " <>
-                    show indexFailure_key_details
-            | otherwise -> Right fi
+  do
+  (docSyms, queryLog, logger) <- backendRunHaxl b env $ do
+    --
+    -- we pick the first db in the list that has the full FileInfo{..}
+    -- and in exact_revision mode the rev also has to match precisely
+    --
+    efile <- firstOrErrors $ do
+      repo <- Glean.haxlRepo
+      if not (revisionAcceptable repo)
+        then return $ Left $ GlassExceptionReason_exactRevisionNotAvailable $
+          revisionSpecifierError wantedRevision
+        else do
+          res <- getFileInfo repo path
+          return $ case res of
+            Left _ -> res
+            Right fi@FileInfo{..}
+              | not isIndexed -> Left $ GlassExceptionReason_notIndexedFile $
+                case indexFailure of
+                  Nothing -> "Not indexed: " <> gleanPath path
+                  Just Src.IndexFailure_key{..} -> Text.pack $
+                      show indexFailure_key_reason
+                      <> ": " <>
+                      show indexFailure_key_details
+              | otherwise -> Right fi
 
-  case efile of
-    Left err -> do
-      let logs = logError err <> logError (gleanDBs b)
-      return (emptyDocumentSymbols (revision b), FoundNone, Just logs)
-      where
-        -- Use first db's revision
-        revision GleanBackend {gleanDBs = ((_, repo) :| _)} =
-          getDBRevision (scmRevisions dbInfo) repo scsrepo
+    case efile of
+      Left err -> do
+        let logs = logError err <> logError (gleanDBs b)
+        return (emptyDocumentSymbols (revision b), FoundNone, Just logs)
+        where
+          -- Use first db's revision
+          revision GleanBackend {gleanDBs = ((_, repo) :| _)} =
+            getDBRevision (scmRevisions dbInfo) repo scsrepo
 
-    Right (FileInfo{..}, gleanDataLog) -> do
+      Right (FileInfo{..}, gleanDataLog) -> do
 
-      -- from Glean, fetch xrefs and defs in two batches
-      (xrefs, defns, truncated) <- withRepo fileRepo $
-        documentSymbolsForLanguage mlimit mlang includeRefs includeXlangRefs
-          fileId
-      (kindMap, merr) <- withRepo fileRepo $
-        documentSymbolKinds mlimit mlang fileId
+        -- from Glean, fetch xrefs and defs in two batches
+        (xrefs, defns, truncated) <- withRepo fileRepo $
+          documentSymbolsForLanguage mlimit mlang includeRefs includeXlangRefs
+            fileId
+        (kindMap, merr) <- withRepo fileRepo $
+          documentSymbolKinds mlimit mlang fileId
 
-      let revision = getDBRevision (scmRevisions dbInfo) fileRepo scsrepo
-      contentMatch <- case wantedRevision of
-        Nothing -> return Nothing
-        Just wanted
-          | wanted == revision -> return (Just True)
-          | fetchContentHash -> withRepo fileRepo $ do
-            let getHash = getFileContentHash sourceControl scsrepo repoPath
-            contentHash <- getHash revision
-            wantedHash <- getHash wanted
-            return $ (==) <$> contentHash <*> wantedHash
-              -- Nothing if either getContentHash failed
-          | otherwise ->
-            return Nothing
+        let revision = getDBRevision (scmRevisions dbInfo) fileRepo scsrepo
+        contentMatch <- case wantedRevision of
+          Nothing -> return Nothing
+          Just wanted
+            | wanted == revision -> return (Just True)
+            | fetchContentHash -> withRepo fileRepo $ do
+              let getHash = getFileContentHash sourceControl scsrepo repoPath
+              contentHash <- getHash revision
+              wantedHash <- getHash wanted
+              return $ (==) <$> contentHash <*> wantedHash
+                -- Nothing if either getContentHash failed
+            | otherwise ->
+              return Nothing
 
-      let xrefsPlain = [ (refloc, ent) | PlainXRef (refloc, ent) <- xrefs ]
-      -- TODO handle IdlEntities without entity or with range annotations
-      let xrefsIdl = [ (ent, rangeSpan) |
-            IdlXRef (rangeSpan, Code.IdlEntity {
-              idlEntity_entity = Just ent }) <- xrefs ]
+        let xrefsPlain = [ (refloc, ent) | PlainXRef (refloc, ent) <- xrefs ]
 
-      -- mark up symbols into normal format with static attributes
-      -- Idl xrefs also needs db determination and range resolution
+        refsPlain <- withRepo fileRepo $
+          mapM (toReferenceSymbolPlain scsrepo srcFile offsets) xrefsPlain
 
-      refsPlain <- withRepo fileRepo $
-        mapM (toReferenceSymbolPlain scsrepo srcFile offsets) xrefsPlain
+        -- mark up symbols into normal format with static attributes
 
-      refsIdl <- case xrefsIdl of
-        [] -> return []
-        (ent, _) : _ ->
-          -- TODO we assume all idl xrefs belong to the same db
-          let lang = entityLanguage ent in
-          case getLatestRepo (Glass.repoMapping env) dbInfo scsrepo lang of
-            Nothing -> return []
-            -- TODO we look only in the first repo available, this assumes
-            --  the Idl repo comes first in the repomapping
-            Just idlRepo -> do
-              xrefs <- withRepo idlRepo $
-                resolveEntitiesRange scsrepo fst xrefsIdl
-              withRepo idlRepo $
-                mapM (toReferenceSymbolIdl scsrepo srcFile offsets lang) xrefs
+        defs1 <- withRepo fileRepo $
+          mapM (toDefinitionSymbol scsrepo srcFile offsets) defns
 
-      let refs1 = refsPlain ++ refsIdl
+        xref_digests <- withRepo fileRepo $ do
+          let fileMap = xrefFileMap refsPlain
+          results <- fetchFileDigests (Map.size fileMap) (Map.keys fileMap)
+          toDigestMap fileMap results
 
-      defs1 <- withRepo fileRepo $
-        mapM (toDefinitionSymbol scsrepo srcFile offsets) defns
+        let digest = toDigest <$> fileDigest
 
-      xref_digests <- withRepo fileRepo $ do
-        let fileMap = xrefFileMap refsPlain
-        results <- fetchFileDigests (Map.size fileMap) (Map.keys fileMap)
-        toDigestMap fileMap results
+        -- only handle IdlEntities with known entity
+        let unresolvedXrefsIdl = [ (ent, rangeSpan) |
+              IdlXRef (rangeSpan, Code.IdlEntity {
+                idlEntity_entity = Just ent }) <- xrefs ]
 
-      let (refs, defs) = Attributes.extendAttributes
-            (Attributes.fromSymbolId Attributes.SymbolKindAttr)
-              kindMap (map (\XRefData{..} -> (xrefEntity, xrefSymbol)) refs1)
-                defs1
-      let digest = toDigest <$> fileDigest
+        let (refs, defs) = Attributes.extendAttributes
+              (Attributes.fromSymbolId Attributes.SymbolKindAttr)
+              kindMap
+              (xRefDataToRefEntitySymbol <$> refsPlain)
+              defs1
 
-      return (DocumentSymbols {..}, gleanDataLog, merr)
+        return (DocumentSymbols { srcFile = Just srcFile, .. },
+                gleanDataLog, merr)
+
+  return (docSyms, queryLog, logger)
 
   where
     revisionAcceptable :: Glean.Repo -> Bool
@@ -1036,6 +1031,35 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
           in (locationRange_repository, locationRange_filepath)
       )) xrefs
 
+-- Idl xrefs needs db determination and range resolution
+resolveIdlXrefs
+  :: Glean.Backend b
+  => Glass.Env
+  -> DocumentSymbols
+  -> RepoName
+  -> GleanBackend b
+  -> GleanDBInfo
+  -> IO DocumentSymbols
+resolveIdlXrefs env docSyms@DocumentSymbols{..} scsrepo b dbInfo = do
+  case (unresolvedXrefsIdl, srcFile) of
+    ((ent, _) : _, Just srcFile) -> do
+      backendRunHaxl b env $ do
+        -- we assume all idl xrefs belong to the same db
+        let lang = entityLanguage ent
+        xrefsIdl <- case getLatestRepo
+          (Glass.repoMapping env) dbInfo scsrepo lang of
+            --  we look only in the first repo available, this assumes
+            --  the Idl repo comes first in the repomapping
+            Just idlRepo -> do
+              xrefs <- withRepo idlRepo $
+                resolveEntitiesRange scsrepo fst unresolvedXrefsIdl
+              withRepo idlRepo $
+                mapM (toReferenceSymbolIdl scsrepo srcFile offsets lang) xrefs
+            _ -> return []
+        let idlRefs = xRefDataToRefEntitySymbol <$> xrefsIdl
+        return $ docSyms  { refs = refs ++ idlRefs, unresolvedXrefsIdl = [] }
+    _ -> return docSyms
+
 -- | Wrapper for tracking symbol/entity pairs through processing
 data DocumentSymbols = DocumentSymbols
   { refs :: [(Code.Entity, ReferenceRangeSymbolX)]
@@ -1045,11 +1069,15 @@ data DocumentSymbols = DocumentSymbols
   , truncated :: !Bool
   , digest :: Maybe FileDigest
   , xref_digests :: Map.Map Text FileDigestMap
+  , unresolvedXrefsIdl :: [(Code.Entity, Code.RangeSpan)]
+  , srcFile :: Maybe Src.File
+  , offsets :: Maybe Range.LineOffsets
   }
 
 emptyDocumentSymbols :: Revision -> DocumentSymbols
 emptyDocumentSymbols revision =
-  DocumentSymbols [] [] revision Nothing False Nothing mempty
+  DocumentSymbols [] [] revision Nothing False Nothing mempty mempty Nothing
+    Nothing
 
 -- | Drop any remnant entities after we are done with them
 toDocumentSymbolResult :: DocumentSymbols -> DocumentSymbolListXResult
