@@ -924,9 +924,8 @@ fetchDocumentSymbols
 fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
     repoPath mlimit wantedRevision
     exactRevision includeRefs includeXlangRefs fetchContentHash
-    b mlang dbInfo =
-  do
-  (docSyms, queryLog, logger) <- backendRunHaxl b env $ do
+    b mlang dbInfo = do
+  backendRunHaxl b env $ do
     --
     -- we pick the first db in the list that has the full FileInfo{..}
     -- and in exact_revision mode the rev also has to match precisely
@@ -1012,8 +1011,6 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
 
         return (DocumentSymbols { srcFile = Just srcFile, .. },
                 gleanDataLog, merr)
-
-  return (docSyms, queryLog, logger)
 
   where
     revisionAcceptable :: Glean.Repo -> Bool
