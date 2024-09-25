@@ -90,10 +90,10 @@ and after applying the substitution and simplification we will have
 which is exactly what we wanted.
 
 
-Dealing with Or-Patterns
-------------------------
+Dealing with Choice
+-------------------
 
-Or-patterns are the main source of complexity here.
+Choice is the main source of complexity here.
 
 For example, suppose we have
 
@@ -112,7 +112,7 @@ The problem is that we bound X during unification and then discarded
 that part of the substitution. We must never discard a substitution
 when it has not been applied to all instances of a variable - and yet
 we cannot let the substitition for X escape from the branch of this
-or-pattern, because it isn't valid outside. This is a contradiction,
+choice, because it isn't valid outside. This is a contradiction,
 so the solution is not to unify X in the first place. But how do we
 know we shouldn't unify X? Because it is visible *outside* the scope
 of the local substitution.
@@ -169,7 +169,7 @@ optimise query@QueryWithInfo{..} = do
 
 optimiseQuery :: FlatQuery -> U FlatQuery
 optimiseQuery query@(FlatQuery key maybeVal stmts) = do
-  -- determine variables visible outside of any nested or-patterns:
+  -- determine variables visible outside of any nested choice:
   modify $ \s -> s { optCurrentScope = queryScope query }
   stmts' <- optStmts stmts
   FlatQuery
@@ -196,7 +196,7 @@ instance Apply Generator where
 
 {- Note [unification failure]
 
-Unification failure can easily arise as a result of or-patterns. For
+Unification failure can easily arise as a result of choice. For
 example:
 
 (0|X = 0|"abc") | (0|X = 1|"def")
@@ -324,7 +324,7 @@ applyVar var@(Var _ v _) = do
       -- important enough to fix yet.
     _otherwise -> return (Ref (MatchVar var))
 
--- | For running unification on one alternative of nested or-pattern
+-- | For running unification on one alternative of nested choice
 -- or a negated query.
 --
 -- Does not add substitutions or new variables to the parent scope.
