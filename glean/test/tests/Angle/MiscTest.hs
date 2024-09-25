@@ -366,6 +366,15 @@ reorderTest = dbTestCase $ \env repo -> do
   assertEqual "reorder nested 10" (Just 14) $
     factsSearched (PredicateRef "glean.test.Tree" 6) lookupPid stats
 
+  results <- runQuery_ env repo $ angleData @(Nat,Nat)
+    [s|
+      { A, B } where
+        (A = 1) | (B = 2);
+        A = 1 | 2;
+        B = 2 | 3
+    |]
+  assertEqual "reorder unbound choice" 3 (length results)
+
 angleQueryOptions :: Test
 angleQueryOptions = dbTestCase $ \env repo -> do
   let omitResults :: Bool -> Query q -> Query q

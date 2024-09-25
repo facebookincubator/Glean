@@ -25,6 +25,8 @@ import Control.Monad.Except
 import Control.Monad.State
 import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
+import Data.IntMap (IntMap)
+import qualified Data.IntMap as IntMap
 
 import Glean.Query.Codegen.Types (Match(..), Var(..), Generator_(..), Generator)
 import Glean.Query.Vars (VarSet)
@@ -50,17 +52,17 @@ import Glean.RTS.Term as RTS
 
 data Scope = Scope
   { isScope :: VarSet
-  , bound :: VarSet
+  , bound :: IntMap Var
   }
   deriving (Show)
 
 type Variable = Int
 
 isBound :: Scope -> Variable -> Bool
-isBound (Scope _ bound) var = IntSet.member var bound
+isBound (Scope _ bound) var = IntMap.member var bound
 
-bind :: Variable -> Scope -> Scope
-bind var (Scope scope bound) = Scope scope (IntSet.insert var bound)
+bind :: Var -> Scope -> Scope
+bind var (Scope scope bound) = Scope scope (IntMap.insert (varId var) var bound)
 
 
 -- | Variables that should not be bound.
@@ -142,5 +144,5 @@ fixVar isPat var@(Var _ v _) = do
     | (IsExpr == isPat) || (v `IntSet.member` noBind)
       -> throwError $ UnboundVariable var
     | otherwise -> do
-      put (bind v scope, NoBind noBind)
+      put (bind var scope, NoBind noBind)
       return (MatchBind var)

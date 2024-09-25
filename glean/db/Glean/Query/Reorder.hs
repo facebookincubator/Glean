@@ -20,7 +20,6 @@ import Data.Functor.Identity (Identity(..))
 import qualified Data.ByteString as ByteString
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
-import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
 import Data.List (uncons, partition)
 import qualified Data.List.NonEmpty as NonEmpty
@@ -179,16 +178,17 @@ reorderQuery (FlatQuery pat _ stmts) =
 reorderGroups :: [FlatStatementGroup] -> R [CgStatement]
 reorderGroups groups = do
   scope <- gets roScope
-  let stmts = go scope groups
-  reorderStmts stmts
-  where
+  let
+    bound0 = IntMap.keysSet (allBound scope)
+
     go _ [] = []
-    go scope (group : groups) = stmts <> go scope' groups
+    go bound (group : groups) = stmts <> go bound' groups
       where
-        stmts = reorderStmtGroup scope group
-        stmtsVars = IntSet.toList (vars stmts)
-        scope' = foldr bind scope stmtsVars
+        stmts = reorderStmtGroup (isScope scope) bound group
+        bound' = IntSet.union bound (vars stmts)
         -- mark all variables from stmts as bound.
+
+  reorderStmts (go bound0 groups)
 
 -- | Define a new scope.
 -- Adds all variables local to the statements to the scope at the start and
@@ -205,7 +205,8 @@ withScopeFor stmts act = do
   return res
   where
     without (Scope scope bound) x =
-      Scope (IntSet.difference scope x) (IntSet.difference bound x)
+      Scope (IntSet.difference scope x)
+        (IntMap.filterWithKey (\v _ -> v `IntSet.notMember` x) bound)
     -- | All variables that appear in the scope these statements are in.
     -- Does not include variables local to sub-scopes such as those that only
     -- appear:
@@ -268,15 +269,13 @@ data StmtCost
   | StmtUnresolved
   deriving (Bounded, Eq, Show, Ord)
 
-reorderStmtGroup :: Scope -> FlatStatementGroup -> [FlatStatement]
-reorderStmtGroup scope@(Scope sc _) stmts =
+reorderStmtGroup :: VarSet -> VarSet -> FlatStatementGroup -> [FlatStatement]
+reorderStmtGroup sc bound stmts =
   let
     (lookups, others) = partitionStmts (map summarise (NonEmpty.toList stmts))
   in
-  layout (IntSet.toList bound0) bound0 lookups others
+  layout (IntSet.toList bound) bound lookups others
   where
-    bound0 = allBound scope
-
     summarise :: FlatStatement -> (Maybe VarId, VarSet, FlatStatement)
     summarise stmt = case stmt of
       FlatStatement _ lhs rhs -> (maybeVar, bound, stmt)
@@ -309,8 +308,9 @@ reorderStmtGroup scope@(Scope sc _) stmts =
         PatternMatch _ Scan -> StmtScan
     classify _ (FlatDisjunction []) = StmtFilter -- False
     classify bound stmt
-      | isResolvedFilter (Scope sc bound) stmt = StmtFilter
-      | isCurrentlyUnresolved (Scope sc bound) stmt = StmtUnresolved
+      | isResolvedFilter inScope stmt = StmtFilter
+      | isCurrentlyUnresolved inScope stmt = StmtUnresolved
+      where inScope = mkInScopeForClassify sc bound
     classify bound (FlatDisjunction alts@(_:_)) =
       maximum (map (classifyAlt bound) alts)
     classify _ (FlatStatement _ _ ArrayElementGenerator{}) = StmtPrefixMatch
@@ -472,7 +472,7 @@ reorderStmts stmts = iterate stmts []
     -> (FlatStatement,[FlatStatement])
   choose _ [one] = (one, [])
   choose scope stmts = fromMaybe (error "choose") $
-    find (isResolvedFilter scope . fst) stmts' <|>
+    find (isResolvedFilter (ifBoundOnly scope) . fst) stmts' <|>
     find (not . isUnresolved scope . fst) stmts' <|>
     uncons stmts
     where
@@ -484,11 +484,11 @@ reorderStmts stmts = iterate stmts []
 
 
 -- | True if the statement is O(1) and resolved
-isResolvedFilter :: Scope -> FlatStatement -> Bool
+isResolvedFilter :: InScope -> FlatStatement -> Bool
 isResolvedFilter scope stmt = case stmt of
   FlatStatement _ _ ArrayElementGenerator{} -> False
     -- an ArrayElementGenerator is not O(1)
-  _otherwise -> isReadyFilter (ifBoundOnly scope) stmt False
+  _otherwise -> isReadyFilter scope stmt False
 
 -- | True if the statement is definitely unresolved in the given
 -- scope. False indicates "maybe resolved"; we'll fall back to trying
@@ -504,14 +504,12 @@ isUnresolved scope stmt = case stmt of
   -- an unbound variable of predicate type counts as resolved, because
   -- it will be resolved by adding a generator in reorderStmt later.
 
-isCurrentlyUnresolved :: Scope -> FlatStatement -> Bool
+isCurrentlyUnresolved :: InScope -> FlatStatement -> Bool
 isCurrentlyUnresolved scope stmt = case stmt of
   FlatDisjunction{} -> False -- don't know
   FlatStatement _ _ (ArrayElementGenerator _ arr) ->
-    not (patIsBound inScope arr)
-  _otherwise -> not (isReadyFilter inScope stmt True)
-  where
-  inScope = ifBoundOnly scope
+    not (patIsBound scope arr)
+  _otherwise -> not (isReadyFilter scope stmt True)
 
 isReadyFilter :: InScope -> FlatStatement -> Bool -> Bool
 isReadyFilter scope stmt notFilter = case stmt of
@@ -531,33 +529,49 @@ isReadyFilter scope stmt notFilter = case stmt of
     where
       isReady stmt = isReadyFilter scope stmt notFilter
       appearInStmts = foldMap (foldMap vars) stmtss
-      InScope _ scope' = scope
       hasAllNonLocalsBound =
         IntSet.null $
-        IntSet.filter (\var -> isInScope scope' var && not (isBound scope' var))
+        IntSet.filter (\var -> isInScope scope var && not (inScopeBound scope var))
         appearInStmts
   _ -> notFilter
 
-data InScope = InScope Bool Scope
+data InScope = InScope
+  { unboundPredicates :: Bool
+  , isInScope :: Variable -> Bool
+  , inScopeBound :: Variable -> Bool
+  }
+
+mkInScope :: Bool -> Scope -> InScope
+mkInScope allowPred (Scope scope bound) =
+  InScope
+    { unboundPredicates = allowPred
+    , isInScope = \var -> var `IntSet.member` scope
+    , inScopeBound = \var -> var `IntMap.member` bound
+    }
+
+mkInScopeForClassify :: VarSet -> VarSet -> InScope
+mkInScopeForClassify scope bound =
+  InScope
+    { unboundPredicates = False
+    , isInScope = \var -> var `IntSet.member` scope
+    , inScopeBound = \var -> var `IntSet.member` bound
+    }
 
 allowUnboundPredicates :: Scope -> InScope
-allowUnboundPredicates = InScope True
+allowUnboundPredicates = mkInScope True
 
 ifBoundOnly :: Scope -> InScope
-ifBoundOnly = InScope False
-
-isInScope :: Scope -> Variable -> Bool
-isInScope (Scope scope _) var = var `IntSet.member` scope
+ifBoundOnly = mkInScope False
 
 isBoundInScope :: InScope -> Var -> Bool
-isBoundInScope (InScope allowPredicate scope) (Var ty v _) =
-  isBound scope v || (allowPredicate && isPredicate ty)
+isBoundInScope scope (Var ty v _) =
+  inScopeBound scope v || (unboundPredicates scope && isPredicate ty)
   where
   isPredicate ty
     | RTS.PredicateRep{} <- RTS.repType ty = True
     | otherwise = False
 
-allBound :: Scope -> VarSet
+allBound :: Scope -> IntMap Var
 allBound (Scope _ bound) = bound
 
 allVars :: Scope -> VarSet
@@ -667,7 +681,7 @@ classifyPattern bound t = go PrefixEmpty t end
 -- sides, let's conservatively try not flipping first.
 --
 reorderStmt :: FlatStatement -> R [CgStatement]
-reorderStmt stmt@(FlatStatement ty lhs gen)
+reorderStmt stmt
   | Just flip <- canFlip =
     noflip `catchError` \e ->
       flip `catchError` \e' ->
@@ -681,9 +695,9 @@ reorderStmt stmt@(FlatStatement ty lhs gen)
       attemptBindFromType e noflip `catchError` \_ ->
          giveUp e
   where
-  noflip = toCgStatement (FlatStatement ty lhs gen)
+  noflip = toCgStatement stmt
   canFlip
-    | TermGenerator rhs <- gen
+    | FlatStatement ty lhs gen <- stmt, TermGenerator rhs <- gen
     = Just $ toCgStatement (FlatStatement ty rhs (TermGenerator lhs))
     | otherwise
     = Nothing
@@ -698,9 +712,6 @@ reorderStmt stmt@(FlatStatement ty lhs gen)
     [ nest 2 $ vcat ["cannot resolve:", displayDefault stmt]
     , nest 2 $ vcat ["because:", displayDefault s]
     ]
-
--- fallback: just convert other statements to CgStatement
-reorderStmt stmt = toCgStatement stmt
 
 -- In general if we have X = Y where both X and Y are unbound (or LHS = RHS
 -- containing unbound variables on both sides) then we have no choice
@@ -749,7 +760,7 @@ maybeBindUnboundPredicate e f
     return (CgStatement (Ref (MatchBind var)) pat : stmts, a)
 
 bindVar :: Var -> R ()
-bindVar (Var _ v _) = modify $ \s -> s { roScope = bind v $ roScope s }
+bindVar v = modify $ \s -> s { roScope = bind v $ roScope s }
 
 toCgStatement :: FlatStatement -> R [CgStatement]
 toCgStatement stmt = case stmt of
@@ -791,29 +802,16 @@ toCgStatement stmt = case stmt of
         newScope <- gets roScope
         return (tstmts, allBound newScope)
 
-    let boundInAllBranches = foldr1 IntSet.intersection (map snd results)
-    tstmtss <- forM results $ \(tstmts, boundInThisBranch) -> do
-      let needsRenaming = IntSet.difference boundInThisBranch boundInAllBranches
-      traverse (renameAlt needsRenaming) tstmts
+    let boundInAllBranches = foldr1 IntMap.intersection (map snd results)
+    forM_ results $ \(_, boundInThisBranch) -> do
+      let unbound = IntMap.difference boundInThisBranch boundInAllBranches
+      forM_ (IntMap.elems unbound) $ \var -> do
+        let e = UnboundVariable var
+        throwError (errMsg e, Just e)
 
-    let newScope = foldr bind initialScope $ IntSet.toList boundInAllBranches
+    let newScope = foldr bind initialScope $ IntMap.elems boundInAllBranches
     modify $ \state -> state { roScope = newScope }
-    return tstmtss
-
-
-  -- Rename local variables in each branch of |. See Note [local variables].
-  renameAlt :: IntSet -> [CgStatement] -> R [CgStatement]
-  renameAlt vars stmts = do
-    let n = IntSet.size vars
-    state@ReorderState{..} <- get
-    put state { roNextVar = roNextVar + n }
-    let env = IntMap.fromList (zip (IntSet.toList vars) [ roNextVar .. ])
-    return (map (fmap (rename env)) stmts)
-
-  rename :: IntMap Int -> Var -> Var
-  rename env v@(Var ty x nm) = case IntMap.lookup x env of
-    Nothing -> v
-    Just y -> Var ty y nm
+    return (map fst results)
 
 -- | Keep track of variables in the scope outside of the negation so that we
 -- can make reordering decisions about variables local to the negation.
@@ -826,48 +824,6 @@ withinNegation act = do
   modify $ \s -> s { roNegationEnclosingScope = roNegationEnclosingScope before }
   return res
 
-{- Note [local variables]
-
-This is a legit query:
-
-  X = "a" | (X where cxx.Name X)
-
-This looks dodgy because X only appears in one branch on the rhs, but
-in fact it's fine:
-* (X where cxx.Name X) is reasonable
-* "a" | (X where cxx.Name X) is reasonable, but doesn't bind X
-* therefore in X = "a" | (X where cxx.Name X), the X on the left is binding.
-
-You might think "let's reject it".  But even if the user didn't write
-it like this, We might end up here after query optimisation, e.g. it
-can start as
-
-  X = "a" | (Z where cxx.Name Z)
-
-and then unification will replace [X/Z]. Should we avoid doing that?
-It seems hard to avoid while still doing all the useful optimisation
-we want. e.g. in
-
-  X = cxx.Name "foo"
-  { X, Y } = { N, cxx.RecordDeclaraiton { name = N } } | ...
-
-we'd really like N to unify with X.
-
-So, let's just make it work.  If we do the naive thing and map X to a
-variable _0, the codegen will see
-
-  _0:string = "a" | (_0 where cxx.Name _0:string)
-
-and it will generate bogus code, because the value we build in _0 on
-the left depends on a value in _0 on the right.
-
-To fix this we need to identify variables that are local to one side
-of | and rename them so they can't clash with variables mentioned
-elsewhere.  A "local" variable is one that isn't bound by both
-branches of |.
--}
-
-
 fixVars :: FixBindOrder a => IsPat -> a -> R a
 fixVars isPat p = do
   state <- get
@@ -879,13 +835,14 @@ fixVars isPat p = do
       runFixBindOrder scope noBind (fixBindOrder isPat p)
   modify $ \s -> s { roScope = scope' }
   return p'
-  where
-    errMsg err = case err of
-      UnboundVariable v@(Var ty _ _) ->
-        "unbound variable: " <>
-        Text.pack (show (displayDefault v <+> ":" <+> displayDefault ty))
-      CannotUseWildcardInExpr -> "cannot use a wildcard in an expression"
-      CannotUseNeverInExpr -> "cannot use 'never' in an expression"
+
+errMsg :: FixBindOrderError -> Text
+errMsg err = case err of
+  UnboundVariable v@(Var ty _ _) ->
+    "unbound variable: " <>
+    Text.pack (show (displayDefault v <+> ":" <+> displayDefault ty))
+  CannotUseWildcardInExpr -> "cannot use a wildcard in an expression"
+  CannotUseNeverInExpr -> "cannot use 'never' in an expression"
 
 
 data ReorderState = ReorderState
