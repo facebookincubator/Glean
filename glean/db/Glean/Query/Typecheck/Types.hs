@@ -78,7 +78,7 @@ data TcTerm
   deriving Show
 
 instance Display TcTerm where
-  display opts (TcOr a b) = display opts a <+> "++" <+> display opts b
+  display opts (TcOr a b) = display opts a <+> "|" <+> display opts b
   display opts (TcDeref _ _ pat) = displayAtom opts pat <> "*"
   display opts (TcFieldSelect (Typed _ pat) field) =
     displayAtom opts pat <> "." <> pretty field
