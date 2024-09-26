@@ -17,7 +17,8 @@ userQuerySysCalls :: [String]
 userQuerySysCalls =
   ["seek","seekWithinSection","currentSeek", "endSeek"
   ,"next", "lookupKeyValue", "result", "resultWithPid"
-  , "newDerivedFact", "firstFreeId"]
+  , "newDerivedFact", "firstFreeId"
+  , "newSet", "insertOutputSet", "setToArray", "freeSet"]
 
 -- This list has to sync up with the list in Glean.RTS.Typecheck or
 -- the wrong name will be printed

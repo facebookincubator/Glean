@@ -1637,6 +1637,24 @@ data QueryRegs = QueryRegs
     :: Register 'Word -- first free id
     -> Code ()
 
+  , newSet
+    :: Register 'Word -- (output) set token
+    -> Code ()
+
+  , insertOutputSet
+    :: Register 'Word -- set token
+    -> Register 'BinaryOutputPtr
+    -> Code ()
+
+  , setToArray
+    :: Register 'Word -- set token
+    -> Register 'BinaryOutputPtr -- (output) array
+    -> Code ()
+
+  , freeSet
+    :: Register 'Word -- set token (invalid after this call)
+    -> Code ()
+
     -- | Unused, temporarily kept for backwards compatibility
   , saveState :: Register 'Word
 
@@ -1653,8 +1671,8 @@ generateQueryCode
 generateQueryCode f = generate Optimised $
   \ seek_ seekWithinSection_ currentSeek_ endSeek_ next_
     lookupKey_ result_ resultWithPid_ newDerivedFact_
-    firstFreeId_ saveState
-    maxResults maxBytes ->
+    firstFreeId_ newSet_ insertOutputSet_ setToArray_ freeSet_
+    saveState maxResults maxBytes ->
   let
     seek typ ptr end tok =
       callFun_3_1 seek_ typ (castRegister ptr) (castRegister end) tok
@@ -1698,6 +1716,18 @@ generateQueryCode f = generate Optimised $
 
     firstFreeId fid =
       callFun_0_1 firstFreeId_ fid
+
+    newSet setToken =
+      callFun_0_1 newSet_ setToken
+
+    insertOutputSet setToken outputPtr =
+      callFun_1_1 insertOutputSet_ setToken (castRegister outputPtr)
+
+    setToArray setToken outputPtr =
+      callFun_1_1 setToArray_ setToken (castRegister outputPtr)
+
+    freeSet setToken =
+      callFun_1_0 freeSet_ setToken
 
   in
     f QueryRegs{..}
