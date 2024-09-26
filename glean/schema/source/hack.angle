@@ -290,6 +290,9 @@ predicate MemberCluster :
     members : [Declaration]
   }
 
+# All declarations in a container coming from a parent class (recursively)
+# or a trait. Doesn't include the declarations that directly defined
+# in the container. Members are grouped in clusters for storage efficiency.
 predicate InheritedMembers :
   {
     container : ContainerDeclaration,
@@ -769,8 +772,10 @@ predicate ModuleChild:
     decl : hack.Declaration
   } stored { Module, Decl } where hack.ModuleParent { Decl, Module }
 
-# Class methods implementation of an interface aren't considered as override.
-# However, the methods introduced by `use T` can override interface methods.
+#  Generally, method "derived" overrides "base", if "derived" would have been inherited
+#  in case where "base" wasn't defined.
+#  Note that class methods implementing interface aren't considered as override, but
+#  trait methods can override interface methods.
 predicate MethodOverrides :
   {
     derived : MethodDeclaration,
