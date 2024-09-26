@@ -323,10 +323,14 @@ struct Config {
         fail("missing --cdb-dir");
       }
       auto cdb = loadCompilationDatabase(FLAGS_cdb_dir);
+      folly::Optional<std::string> platform;
+      if (!FLAGS_platform.empty()) {
+        platform = FLAGS_platform;
+      }
       for(const auto& file : cdb->getAllFiles()){
         sources.push_back(SourceFile{
             FLAGS_cdb_target.c_str(),
-            folly::Optional<std::string>(),
+            platform,
             FLAGS_cdb_dir.c_str(),
             file,
         });
