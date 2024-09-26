@@ -24,6 +24,8 @@ struct CmpSet {
 
 using BytestringSet = std::set<folly::fbstring, CmpSet>;
 
+using WordSet = std::set<uint64_t>;
+
 }
 }
 } // namespace facebook

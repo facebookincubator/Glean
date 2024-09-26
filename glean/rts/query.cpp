@@ -142,6 +142,14 @@ struct QueryExecutor {
 
   void freeSet(SetToken token);
 
+  SetToken newWordSet();
+
+  void insertWordSet(SetToken token, uint64_t out);
+
+  void wordSetToArray(SetToken token, binary::Output* out);
+
+  void freeWordSet(SetToken token);
+
   //
   // First free id of the underlying Define.
   //
@@ -249,6 +257,7 @@ struct QueryExecutor {
 
   std::vector<Iter> iters;
   std::vector<BytestringSet> sets;
+  std::vector<WordSet> wordsets;
 };
 
 
@@ -528,6 +537,26 @@ void QueryExecutor::freeSet(QueryExecutor::SetToken token) {
   sets.erase(sets.begin() + token);
 }
 
+QueryExecutor::SetToken QueryExecutor::newWordSet() { 
+  wordsets.emplace_back(WordSet());
+  return wordsets.size() - 1;
+}
+
+void QueryExecutor::insertWordSet(QueryExecutor::SetToken token, uint64_t value) {
+  wordsets[token].insert(value);
+}
+
+void QueryExecutor::wordSetToArray(QueryExecutor::SetToken token, binary::Output* out) {
+  auto& s = wordsets[token];
+  out->packed(s.size());
+  for(const auto &v : s) {
+    out->nat(v);
+  }
+}
+
+void QueryExecutor::freeWordSet(QueryExecutor::SetToken token) {
+  wordsets.erase(wordsets.begin() + token);
+}
 
 std::unique_ptr<QueryResults> QueryExecutor::finish(
     folly::Optional<SerializedCont> cont) {
@@ -614,7 +643,11 @@ std::unique_ptr<QueryResults> executeQuery(
     &QueryExecutor::newSet,
     &QueryExecutor::insertOutputSet,
     &QueryExecutor::setToArray,
-    &QueryExecutor::freeSet>(q);
+    &QueryExecutor::freeSet,
+    &QueryExecutor::newWordSet,
+    &QueryExecutor::insertWordSet,
+    &QueryExecutor::wordSetToArray,
+    &QueryExecutor::freeWordSet>(q);
 
   folly::Optional<SerializedCont> cont;
   Subroutine::Activation::with(sub, context_.contextptr(), [&](Subroutine::Activation& activation) {
