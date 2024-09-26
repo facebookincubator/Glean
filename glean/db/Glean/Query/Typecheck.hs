@@ -348,7 +348,7 @@ inferExpr ctx pat = case pat of
     (e', ty) <- inferExpr ContextExpr e
     case ty of
       SetTy elemTy ->
-        return (Ref (MatchExt (Typed ty (TcElements e'))), elemTy)
+        return (Ref (MatchExt (Typed elemTy (TcElements e'))), elemTy)
       _other -> do
         opts <- gets tcDisplayOpts
         prettyErrorIn pat $
