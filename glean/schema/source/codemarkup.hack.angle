@@ -605,6 +605,226 @@ predicate ConvertCallArguments :
         code.CallArgument{nothing, Span5, CodeArgument5},
         code.CallArgument{nothing, Span6, CodeArgument6}
         ]
+    ) |
+    (
+      [
+        hack.CallArgument{Span_rel, Argument},
+        hack.CallArgument{Span2_rel, Argument2},
+        hack.CallArgument{Span3_rel, Argument3},
+        hack.CallArgument{Span4_rel, Argument4},
+        hack.CallArgument{Span5_rel, Argument5},
+        hack.CallArgument{Span6_rel, Argument6},
+        hack.CallArgument{Span7_rel, Argument7}
+      ] = HackArgs;
+      [Span, Span2, Span3, Span4, Span5, Span6, Span7] = prim.relToAbsByteSpans
+        [ Span_rel,
+          Span2_rel,
+          Span3_rel,
+          Span4_rel,
+          Span5_rel,
+          Span6_rel,
+          Span7_rel
+        ];
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      ConvertArgument{Argument3, CodeArgument3};
+      ConvertArgument{Argument4, CodeArgument4};
+      ConvertArgument{Argument5, CodeArgument5};
+      ConvertArgument{Argument6, CodeArgument6};
+      ConvertArgument{Argument7, CodeArgument7};
+      CodeArgs = [
+        code.CallArgument{nothing, Span, CodeArgument},
+        code.CallArgument{nothing, Span2, CodeArgument2},
+        code.CallArgument{nothing, Span3, CodeArgument3},
+        code.CallArgument{nothing, Span4, CodeArgument4},
+        code.CallArgument{nothing, Span5, CodeArgument5},
+        code.CallArgument{nothing, Span6, CodeArgument6},
+        code.CallArgument{nothing, Span7, CodeArgument7}
+        ]
+    ) |
+    (
+      [
+        hack.CallArgument{Span_rel, Argument},
+        hack.CallArgument{Span2_rel, Argument2},
+        hack.CallArgument{Span3_rel, Argument3},
+        hack.CallArgument{Span4_rel, Argument4},
+        hack.CallArgument{Span5_rel, Argument5},
+        hack.CallArgument{Span6_rel, Argument6},
+        hack.CallArgument{Span7_rel, Argument7},
+        hack.CallArgument{Span8_rel, Argument8}
+      ] = HackArgs;
+      [Span, Span2, Span3, Span4, Span5, Span6, Span7, Span8] = prim.relToAbsByteSpans
+        [ Span_rel,
+          Span2_rel,
+          Span3_rel,
+          Span4_rel,
+          Span5_rel,
+          Span6_rel,
+          Span7_rel,
+          Span8_rel
+        ];
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      ConvertArgument{Argument3, CodeArgument3};
+      ConvertArgument{Argument4, CodeArgument4};
+      ConvertArgument{Argument5, CodeArgument5};
+      ConvertArgument{Argument6, CodeArgument6};
+      ConvertArgument{Argument7, CodeArgument7};
+      ConvertArgument{Argument8, CodeArgument8};
+      CodeArgs = [
+        code.CallArgument{nothing, Span, CodeArgument},
+        code.CallArgument{nothing, Span2, CodeArgument2},
+        code.CallArgument{nothing, Span3, CodeArgument3},
+        code.CallArgument{nothing, Span4, CodeArgument4},
+        code.CallArgument{nothing, Span5, CodeArgument5},
+        code.CallArgument{nothing, Span6, CodeArgument6},
+        code.CallArgument{nothing, Span7, CodeArgument7},
+        code.CallArgument{nothing, Span8, CodeArgument8}
+        ]
+    ) |
+    (
+      [
+        hack.CallArgument{Span_rel, Argument},
+        hack.CallArgument{Span2_rel, Argument2},
+        hack.CallArgument{Span3_rel, Argument3},
+        hack.CallArgument{Span4_rel, Argument4},
+        hack.CallArgument{Span5_rel, Argument5},
+        hack.CallArgument{Span6_rel, Argument6},
+        hack.CallArgument{Span7_rel, Argument7},
+        hack.CallArgument{Span8_rel, Argument8},
+        hack.CallArgument{Span9_rel, Argument9}
+      ] = HackArgs;
+      [Span, Span2, Span3, Span4, Span5, Span6, Span7, Span8, Span9] = prim.relToAbsByteSpans
+        [ Span_rel,
+          Span2_rel,
+          Span3_rel,
+          Span4_rel,
+          Span5_rel,
+          Span6_rel,
+          Span7_rel,
+          Span8_rel,
+          Span9_rel
+        ];
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      ConvertArgument{Argument3, CodeArgument3};
+      ConvertArgument{Argument4, CodeArgument4};
+      ConvertArgument{Argument5, CodeArgument5};
+      ConvertArgument{Argument6, CodeArgument6};
+      ConvertArgument{Argument7, CodeArgument7};
+      ConvertArgument{Argument8, CodeArgument8};
+      ConvertArgument{Argument9, CodeArgument9};
+      CodeArgs = [
+        code.CallArgument{nothing, Span, CodeArgument},
+        code.CallArgument{nothing, Span2, CodeArgument2},
+        code.CallArgument{nothing, Span3, CodeArgument3},
+        code.CallArgument{nothing, Span4, CodeArgument4},
+        code.CallArgument{nothing, Span5, CodeArgument5},
+        code.CallArgument{nothing, Span6, CodeArgument6},
+        code.CallArgument{nothing, Span7, CodeArgument7},
+        code.CallArgument{nothing, Span8, CodeArgument8},
+        code.CallArgument{nothing, Span9, CodeArgument9}
+        ]
+    ) |
+    (
+      [
+        hack.CallArgument{Span_rel, Argument},
+        hack.CallArgument{Span2_rel, Argument2},
+        hack.CallArgument{Span3_rel, Argument3},
+        hack.CallArgument{Span4_rel, Argument4},
+        hack.CallArgument{Span5_rel, Argument5},
+        hack.CallArgument{Span6_rel, Argument6},
+        hack.CallArgument{Span7_rel, Argument7},
+        hack.CallArgument{Span8_rel, Argument8},
+        hack.CallArgument{Span9_rel, Argument9},
+        hack.CallArgument{Span10_rel, Argument10}
+      ] = HackArgs;
+      [Span, Span2, Span3, Span4, Span5, Span6, Span7, Span8, Span9, Span10] = prim.relToAbsByteSpans
+        [ Span_rel,
+          Span2_rel,
+          Span3_rel,
+          Span4_rel,
+          Span5_rel,
+          Span6_rel,
+          Span7_rel,
+          Span8_rel,
+          Span9_rel,
+          Span10_rel
+        ];
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      ConvertArgument{Argument3, CodeArgument3};
+      ConvertArgument{Argument4, CodeArgument4};
+      ConvertArgument{Argument5, CodeArgument5};
+      ConvertArgument{Argument6, CodeArgument6};
+      ConvertArgument{Argument7, CodeArgument7};
+      ConvertArgument{Argument8, CodeArgument8};
+      ConvertArgument{Argument9, CodeArgument9};
+      ConvertArgument{Argument10, CodeArgument10};
+      CodeArgs = [
+        code.CallArgument{nothing, Span, CodeArgument},
+        code.CallArgument{nothing, Span2, CodeArgument2},
+        code.CallArgument{nothing, Span3, CodeArgument3},
+        code.CallArgument{nothing, Span4, CodeArgument4},
+        code.CallArgument{nothing, Span5, CodeArgument5},
+        code.CallArgument{nothing, Span6, CodeArgument6},
+        code.CallArgument{nothing, Span7, CodeArgument7},
+        code.CallArgument{nothing, Span8, CodeArgument8},
+        code.CallArgument{nothing, Span9, CodeArgument9},
+        code.CallArgument{nothing, Span10, CodeArgument10}
+        ]
+    ) |
+    (
+      [
+        hack.CallArgument{Span_rel, Argument},
+        hack.CallArgument{Span2_rel, Argument2},
+        hack.CallArgument{Span3_rel, Argument3},
+        hack.CallArgument{Span4_rel, Argument4},
+        hack.CallArgument{Span5_rel, Argument5},
+        hack.CallArgument{Span6_rel, Argument6},
+        hack.CallArgument{Span7_rel, Argument7},
+        hack.CallArgument{Span8_rel, Argument8},
+        hack.CallArgument{Span9_rel, Argument9},
+        hack.CallArgument{Span10_rel, Argument10},
+        hack.CallArgument{Span11_rel, Argument11}
+      ] = HackArgs;
+      [Span, Span2, Span3, Span4, Span5, Span6, Span7, Span8, Span9, Span10, Span11] = prim.relToAbsByteSpans
+        [ Span_rel,
+          Span2_rel,
+          Span3_rel,
+          Span4_rel,
+          Span5_rel,
+          Span6_rel,
+          Span7_rel,
+          Span8_rel,
+          Span9_rel,
+          Span10_rel,
+          Span11_rel
+        ];
+      ConvertArgument{Argument, CodeArgument};
+      ConvertArgument{Argument2, CodeArgument2};
+      ConvertArgument{Argument3, CodeArgument3};
+      ConvertArgument{Argument4, CodeArgument4};
+      ConvertArgument{Argument5, CodeArgument5};
+      ConvertArgument{Argument6, CodeArgument6};
+      ConvertArgument{Argument7, CodeArgument7};
+      ConvertArgument{Argument8, CodeArgument8};
+      ConvertArgument{Argument9, CodeArgument9};
+      ConvertArgument{Argument10, CodeArgument10};
+      ConvertArgument{Argument11, CodeArgument11};
+      CodeArgs = [
+        code.CallArgument{nothing, Span, CodeArgument},
+        code.CallArgument{nothing, Span2, CodeArgument2},
+        code.CallArgument{nothing, Span3, CodeArgument3},
+        code.CallArgument{nothing, Span4, CodeArgument4},
+        code.CallArgument{nothing, Span5, CodeArgument5},
+        code.CallArgument{nothing, Span6, CodeArgument6},
+        code.CallArgument{nothing, Span7, CodeArgument7},
+        code.CallArgument{nothing, Span8, CodeArgument8},
+        code.CallArgument{nothing, Span9, CodeArgument9},
+        code.CallArgument{nothing, Span10, CodeArgument10},
+        code.CallArgument{nothing, Span11, CodeArgument11}
+        ]
     )
   )
 
