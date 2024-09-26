@@ -176,7 +176,7 @@ DB location, see `:list-all` in glean shell.
 
 Alternatively the DB to restore can be specified by:
 
-* `--db NAME/INSTANCE` or `--db-name NAME` and (`--db-instance INSTANCE` or `--date YYY-MM-DD`)
+* `--db NAME/INSTANCE` or `--db-name NAME` and (`--db-instance INSTANCE` or `--date YYY-MM-DD` or `--latest`)
 
 ### `glean validate`
 

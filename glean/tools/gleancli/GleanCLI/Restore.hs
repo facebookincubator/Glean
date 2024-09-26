@@ -50,6 +50,12 @@ data WhatToRestore
   = RestoreLocator Text
   | RestoreDb Repo
   | RestoreDbOnDay Text Day
+  | RestoreDbLatest Text
+
+data RestoreDbSpec
+  = InstanceOpt Text
+  | DateOpt Day
+  | LatestOpt
 
 data RestoreCommand
   = Restore
@@ -77,10 +83,12 @@ instance Plugin RestoreCommand where
         (RestoreLocator <$> locator) <|>
         (RestoreDb <$> dbSlash) <|> do
           repoName <- dbNameOpt
-          spec <- Left <$> dbInstanceOpt <|> Right <$> dayOpt
+          spec <- InstanceOpt <$> dbInstanceOpt <|> DateOpt <$> dayOpt
+            <|> latestOpt
           return $ case spec of
-            Left hash -> RestoreDb (Repo repoName hash)
-            Right day -> RestoreDbOnDay repoName day
+            InstanceOpt hash -> RestoreDb (Repo repoName hash)
+            DateOpt day -> RestoreDbOnDay repoName day
+            LatestOpt  -> RestoreDbLatest repoName
 
       parseDay = return .
         parseTimeOrError False defaultTimeLocale (iso8601DateFormat Nothing)
@@ -89,6 +97,10 @@ instance Plugin RestoreCommand where
         (  long "date"
         <> metavar "YYYY-MM-DD"
         <> help "find a DB for this date (UTC)")
+
+      latestOpt = flag' LatestOpt
+        (long "latest"
+        <> help "find latest instance")
 
   runCommand _ _ backend Restore{..} = do
     targets <- locatorsToRestore
@@ -115,9 +127,6 @@ instance Plugin RestoreCommand where
         RestoreDbOnDay repoName day -> do
           databases <- listWithBackups
           let
-            dbTime Database{..} =
-              fromMaybe database_created_since_epoch
-                database_repo_hash_time
             matchingDay = listToMaybe
                 [ database_repo
                 | db@Database{..} <- sortOn dbTime databases
@@ -134,6 +143,20 @@ instance Plugin RestoreCommand where
             Nothing -> die 1 $ unwords
               ["Cannot find backup locator for", Text.unpack repoName, "on"
               , formatTime defaultTimeLocale (iso8601DateFormat Nothing) day ]
+        RestoreDbLatest repoName -> do
+          databases <- listWithBackups
+          let latestRepo = listToMaybe $ reverse
+                [ database_repo
+                | Database{..} <- sortOn dbTime databases
+                , repo_name database_repo == repoName
+                ]
+          case latestRepo of
+            Just repo -> do
+              let deps = if ignoreDependencies
+                    then []
+                    else dependencies databases repo
+              withLocator databases $ repo : deps
+            Nothing -> die 1 $ "Cannot find repo for " <> Text.unpack repoName
 
       getDependenciesOneByOne sites db = do
         case database_dependencies db of
@@ -152,6 +175,10 @@ instance Plugin RestoreCommand where
           metaToThriftDatabase Glean.DatabaseStatus_Restorable Nothing repo meta
 
       dieHere repo = die 1 $ "Cannot find " <> show repo
+
+      dbTime Database{..} =
+              fromMaybe database_created_since_epoch
+                database_repo_hash_time
 
       withLocator :: [Database] -> [Repo] -> IO [(Locator, Maybe Repo)]
       withLocator databases repos = forM repos $ \repo -> do
