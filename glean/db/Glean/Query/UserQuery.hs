@@ -40,6 +40,7 @@ import Compat.Prettyprinter hiding ((<>))
 import Compat.Prettyprinter.Render.Text
 import qualified Data.Vector as Vector
 import Data.Vector (Vector)
+import qualified Data.Vector.Storable as VS
 import Data.Word (Word64)
 import System.IO
 import TextShow
@@ -767,6 +768,7 @@ userQueryImpl
     maybeWriteHandle <-
       if stored
         then writeDerivedFacts env repo nextId derived defineOwners
+          queryResultsFacts
         else return Nothing
 
     userCont <- case queryResultsCont of
@@ -942,21 +944,73 @@ mkQueryRuntimeOptions
     }
 
 
+{- Note [Writing derived facts]
+
+When deriving, we
+  (1) Run a query that produces all the derived facts
+  (2) Serialize the FactSet
+  (3) Write this to the DB
+
+As the query runs, it writes derived facts into a FactSet and also
+produces a set of results. The results are correct, however the
+FactSet may contain some additional invalid facts. For example, this
+can happen if the derived predicate is something like
+
+predicate P : string
+  X where
+    Q X;
+    X != "foo"
+
+when we compile the query, it can look something like
+
+F where
+  Q X;
+  F = P<- X;    -- (*)
+  X != "foo"
+
+The statement labelled (*) produces the derived fact. Note that this
+is just a regular statement; it can get arbitrarily reordered relative
+to the other statements. In this case the compiler chose to put it
+before the final filter X != "foo", which means that we'll create some
+derived facts that aren't actually true. There's nothing wrong with
+this: the result of the query is still correct, but we have to be
+careful to use the query results and not just write the whole contents
+of the FactSet to the DB.
+
+It would be difficult to ensure the compiler always ordered F = P<- X
+after the filter, there's nothing requiring it to do this. We can't
+use statement ordering for this, because statement ordering is for
+optimisation and shouldn't change sementics. The compiler can override
+ordering hints if it wants.
+
+The right thing to do is to use the query results to filter the
+FactSet, and fortunately there's a good place to do this: we already
+reorder the results when we serialize the FactSet (for ownership
+reasons), so we can do the filtering there.
+-}
+
 writeDerivedFacts
   :: Env
   -> Thrift.Repo
   -> Fid
   -> FactSet
   -> Maybe DefineOwnership
+  -> Vector (Fid, Thrift.Fact)
   -> IO (Maybe Thrift.Handle)
-writeDerivedFacts env repo firstId derived owned = do
+writeDerivedFacts env repo firstId derived owned results = do
+  -- See Note [Writing Derived Facts] for why we filter here
+  let order = VS.fromList
+         [ fromFid fid
+         | (fid,_) <- Vector.toList results
+         , fid >= firstId  -- ignore existing facts
+         ]
   batch <- case owned of
-    Nothing -> FactSet.serialize derived
+    Nothing -> FactSet.serializeReorder derived order
     Just define -> do
       nextId <- firstFreeId derived
-      order <- defineOwnershipSortByOwner define
-        (fromIntegral (fromFid nextId - fromFid firstId))
-      FactSet.serializeReorder derived order
+      let count = fromIntegral (fromFid nextId - fromFid firstId)
+      sorted <- defineOwnershipSortByOwner define count order
+      FactSet.serializeReorder derived sorted
   -- If the batch is empty, we may still have new ownership data about
   -- existing facts, so we have to write that
   if Thrift.batch_count batch == 0 && isNothing owned

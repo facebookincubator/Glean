@@ -84,3 +84,17 @@ angleStored modify = dbTestCaseWritable $ \env repo -> do
       glean.test.StoredRevStringPairWithA _
     |]
   assertEqual "angle - stored 6" 1 (length results)
+
+  results <- runQuery_ env repo $ modify $ store $
+    angle @Glean.Test.EdgeFromNotA $
+    [s|
+      glean.test.EdgeFromNotA _
+    |]
+  assertEqual "angle - stored 7" 2 (length results)
+
+  results <- runQuery_ env repo $ modify $
+    angle @Glean.Test.EdgeFromNotA $
+    [s|
+      glean.test.EdgeFromNotA _
+    |]
+  assertEqual "angle - stored 7" 2 (length results)

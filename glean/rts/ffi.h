@@ -635,6 +635,8 @@ const char *glean_define_ownership_subst(
 const char *glean_define_ownership_sort_by_owner(
   DefineOwnership *define,
   uint64_t facts,
+  int64_t *order,
+  size_t size,
   FactOrder *result
 );
 

@@ -249,12 +249,14 @@ computeDerivedOwnership ownership base iter =
 defineOwnershipSortByOwner
   :: DefineOwnership
   -> Int
+  -> VS.Vector Int64
   -> IO (VS.Vector Int64)
-defineOwnershipSortByOwner define count =
+defineOwnershipSortByOwner define count order =
   with define $ \define_ptr -> do
+  VS.unsafeWith order $ \order_ptr -> do
   withDefaultCxxObject $ \arr_ptr -> do
     invoke $ glean_define_ownership_sort_by_owner define_ptr
-      (fromIntegral count) arr_ptr
+      (fromIntegral count) order_ptr (fromIntegral (VS.length order)) arr_ptr
     hsArrayStorable <$> peek (castPtr arr_ptr)
 
 #include <glean/rts/ownership/uset.h>
@@ -382,6 +384,8 @@ foreign import ccall safe glean_define_ownership_subst
 foreign import ccall safe glean_define_ownership_sort_by_owner
   :: Ptr DefineOwnership
   -> Word64
+  -> Ptr Int64
+  -> CSize
   -> Ptr (HsArray Int64)
   -> IO CString
 

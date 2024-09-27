@@ -1081,9 +1081,13 @@ const char *glean_define_ownership_subst(
 const char *glean_define_ownership_sort_by_owner(
   DefineOwnership *define,
   uint64_t facts,
+  int64_t *order,
+  size_t size,
   HsArray<int64_t> *result) {
   return ffi::wrap([=] {
-    *result = define->sortByOwner(facts);
+    std::vector<int64_t> vec(order, order+size);
+    define->sortByOwner(facts, vec);
+    *result = vec;
   });
 }
 

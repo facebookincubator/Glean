@@ -57,7 +57,7 @@ void DefineOwnership::derivedFrom(Pid pid, Id id, const std::set<UsetId>& deps) 
   }
 }
 
-std::vector<int64_t> DefineOwnership::sortByOwner(uint64_t facts) {
+void DefineOwnership::sortByOwner(uint64_t facts, std::vector<int64_t>& order) {
   // We have a set of facts in the batch with Ids [first_id, first_id+1, ..]
   // We want to group these facts by owner, so that facts with the same
   // owner are adjacent.
@@ -94,13 +94,7 @@ std::vector<int64_t> DefineOwnership::sortByOwner(uint64_t facts) {
     }
   }
 
-  // 2. make a vector order = [0..facts-1]
-  // this will become the ordering that we return after we sort it.
-
-  std::vector<int64_t> order(facts);
-  std::iota(order.begin(), order.end(), first_id_.toWord());
-
-  // 2. sort order by owner = [ 2, 1, 3, 0 ]
+  // 2. order is some permutation of [0..facts-1]. sort by owner = [ 2, 1, 3, 0 ]
   //
   // This is the order in which we will serialize the facts, which
   // essentially renumbers them. Hence the facts will be renumbered
@@ -115,8 +109,8 @@ std::vector<int64_t> DefineOwnership::sortByOwner(uint64_t facts) {
 
   // 3. produce a mapping from old fact Ids to new fact Ids
 
-  std::vector<Id> idmap(facts);
-  for (size_t i = 0; i < facts; i++) {
+  std::vector<Id> idmap(facts, Id::invalid());
+  for (size_t i = 0; i < order.size(); i++) {
     idmap[order[i] - first_id_.toWord()] = Id::fromWord(i + first_id_.toWord());
   }
 
@@ -127,8 +121,6 @@ std::vector<int64_t> DefineOwnership::sortByOwner(uint64_t facts) {
       pred.new_ids_[i] = idmap[pred.new_ids_[i] - first_id_];
     }
   }
-
-  return order;
 
   // At this point we must serialize the batch using
   // serializeReorder(order) so that the facts agree with the IDs used

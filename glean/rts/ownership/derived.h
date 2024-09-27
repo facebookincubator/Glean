@@ -30,7 +30,7 @@ struct DefineOwnership {
   // Apply a substitution to the Ids
   void subst(const Substitution& subst);
 
-  std::vector<int64_t> sortByOwner(uint64_t facts);
+  void sortByOwner(uint64_t facts, std::vector<int64_t>& order);
 
   struct PerPredicate {
     // new owners for exsiting facts (< first_id)

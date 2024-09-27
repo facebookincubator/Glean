@@ -288,8 +288,8 @@ FactSet::Serialized FactSet::serialize() const {
 // * The facts in the set cannot refer to each other (because then we
 //   would need to substitute in addition to reordering)
 //
-// The ordering can omit facts or mention facts multiple times,
-// although I'm not sure why you would want to do that.
+// The ordering can omit facts. This is useful for filtering a FactSet,
+// see Glean/Query/UserQuery.hs.
 //
 FactSet::Serialized FactSet::serializeReorder(
     folly::Range<const uint64_t*> order) const {
@@ -300,7 +300,7 @@ FactSet::Serialized FactSet::serializeReorder(
     facts[i - startingId().toWord()].serialize(output);
   }
 
-  return {startingId(), size(), std::move(output)};
+  return {startingId(), order.size(), std::move(output)};
 }
 
 namespace {

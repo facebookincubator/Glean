@@ -234,6 +234,9 @@ predicate NodePair : { fst : Node, snd : Node }
 predicate IsParent : Node
   stored P where Edge { parent = P }
 
+predicate EdgeFromNotA : Edge
+  stored E where E = Edge { A, _ }; A = { label = N }; N != "a"
+
 # Recursive binary tree (DAG) type
 predicate Tree :
   {
