@@ -17,9 +17,6 @@ import Data.Foldable (toList)
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
 import qualified Data.IntSet as IntSet
-import Data.Maybe
-import Data.List.NonEmpty (NonEmpty(..), nonEmpty)
-import qualified Data.List.NonEmpty as NonEmpty
 import Data.Text (Text)
 
 import qualified Glean.Angle.Types as Type
@@ -223,18 +220,22 @@ can leave unbound variables behind.  See optStmts and apply below.
 
 -}
 
+instance Apply FlatStatementGroup where
+  apply (FlatStatementGroup stmts ord) =
+    FlatStatementGroup <$> mapM apply stmts <*> pure ord
+
 instance Apply FlatStatement where
   apply (FlatStatement ty lhs rhs) = do
     -- these were already unified by 'unify'
     FlatStatement ty <$> apply lhs <*> apply rhs
-  apply (FlatAllStatement v e stmts) = do
-    FlatAllStatement v <$> apply e <*> mapM apply stmts
+  apply (FlatAllStatement v e g) = do
+    FlatAllStatement v <$> apply e <*> apply g
   apply (FlatNegation stmts) = do
     -- assumptions arising inside the negation are not true outside of it.
     stmts' <- optStmtsEnclosed stmts
     return (FlatNegation  stmts')
   apply (FlatDisjunction [stmts]) = do
-    stmts' <- mapM (mapM apply) stmts
+    stmts' <- apply stmts
     return (grouping stmts')
   apply (FlatDisjunction stmtss) = do
     stmtss' <- mapM optStmtsEnclosed stmtss
@@ -261,32 +262,33 @@ instance Apply FlatStatement where
       then grouping else'
       else FlatConditional cond' then' else'
 
-optStmtsEnclosed :: [FlatStatementGroup] -> U [FlatStatementGroup]
+optStmtsEnclosed :: FlatStatementGroup -> U FlatStatementGroup
 optStmtsEnclosed stmts = enclose stmts $ optStmts stmts
 
 -- If a sequence of statements is found to be false, then we place
 -- a falseStmt sentinel at the beginning. We don't actually remove
 -- any statements at this stage, because we have to be careful not to
 -- leave any variables unbound.
-optStmts :: [FlatStatementGroup] -> U [FlatStatementGroup]
-optStmts stmts = do
-  notFalse <- all and <$> mapM (mapM unifyStmt) stmts
-  stmts' <- expandGroups <$> mapM (mapM apply) stmts
-  stmts'' <- filterGroups stmts'
+optStmts :: FlatStatementGroup -> U FlatStatementGroup
+optStmts (FlatStatementGroup stmts ord) = do
+  notFalse <- and <$> mapM unifyStmt stmts
+  stmts' <- concatMap expandStmt <$> mapM apply stmts
+  stmts'' <- filterStmts stmts'
   -- unify may fail, but apply may also leave behind a false statement:
-  if notFalse && not (any (any isFalseStmt) stmts'')
-    then return stmts''
-    else return ( (falseStmt :| []) : stmts'' )
+  if notFalse && not (any isFalseStmt stmts'')
+    then return (FlatStatementGroup stmts'' ord)
+    else return (FlatStatementGroup (falseStmt : stmts'' ) ord)
 
 -- Look for the sentinel left by optStmts
-isFalseGroups :: [FlatStatementGroup] -> Bool
-isFalseGroups ((s :| _) : _) = isFalseStmt s
-isFalseGroups [] = False
+isFalseGroups :: FlatStatementGroup -> Bool
+isFalseGroups (FlatStatementGroup (s : _) _) = isFalseStmt s
+isFalseGroups (FlatStatementGroup [] _) = False
 
 isFalseStmt :: FlatStatement -> Bool
-isFalseStmt (FlatNegation []) = True
+isFalseStmt (FlatNegation (FlatStatementGroup [] _)) = True
 isFalseStmt (FlatDisjunction []) = True
-isFalseStmt (FlatDisjunction [stmts]) = any (any isFalseStmt) stmts
+isFalseStmt (FlatDisjunction [FlatStatementGroup stmts _]) =
+  any isFalseStmt stmts
 isFalseStmt _ = False
 
 instance Apply Pat where
@@ -328,12 +330,11 @@ applyVar var@(Var _ v _) = do
 -- or a negated query.
 --
 -- Does not add substitutions or new variables to the parent scope.
-enclose :: [FlatStatementGroup] -> U a -> U a
-enclose stmts u = do
+enclose :: FlatStatementGroup -> U a -> U a
+enclose (FlatStatementGroup stmts _) u = do
   state0 <- get
   -- set the outer scope to be the current scope
-  let scope = foldr f (optCurrentScope state0) stmts
-        where f group r = foldr stmtScope r group
+  let scope = foldr stmtScope (optCurrentScope state0) stmts
   modify $ \s ->
     s { optCurrentScope = scope, optOuterScope = optCurrentScope state0 }
   a <- u
@@ -360,8 +361,8 @@ unifyStmt (FlatStatement _ lhs rhs)
 unifyStmt FlatAllStatement{} = return True
 unifyStmt FlatNegation{} = return True
   -- ignore negations for now. We will recurse into it later
-unifyStmt (FlatDisjunction [stmts]) =
-  all and <$> mapM (mapM unifyStmt) stmts
+unifyStmt (FlatDisjunction [FlatStatementGroup stmts _]) =
+  and <$> mapM unifyStmt stmts
   -- singleton FlatDisjunction is used for grouping, we must retain
   -- it, but not treat it as a disjunction.
 unifyStmt FlatDisjunction{} = return True
@@ -535,19 +536,18 @@ type Subst = IntMap Pat
 -- visible outside it. Variables that are local to one of these subterms
 -- may be safely unified.
 queryScope :: FlatQuery -> VarSet
-queryScope (FlatQuery key maybeVal groups) =
-  foldr termScope (foldr f s groups) maybeVal
+queryScope (FlatQuery key maybeVal (FlatStatementGroup stmts _)) =
+  foldr termScope (foldr stmtScope s stmts) maybeVal
   where
-    f group s = foldr stmtScope s group
     s = termScope key IntSet.empty
 
 stmtScope :: FlatStatement -> VarSet -> VarSet
 stmtScope (FlatStatement _ lhs rhs) r = termScope lhs (genScope rhs r)
-stmtScope (FlatAllStatement v e stmts) r =
+stmtScope (FlatAllStatement v e (FlatStatementGroup stmts _)) r =
   addToCurrentScope v $! termScope e $! foldr stmtScope r stmts
 stmtScope (FlatNegation _) r = r
-stmtScope (FlatDisjunction [stmts]) r =
-  foldr (flip (foldr stmtScope)) r stmts
+stmtScope (FlatDisjunction [FlatStatementGroup stmts _]) r =
+  foldr stmtScope r stmts
 stmtScope FlatDisjunction{} r = r
   -- contents of or-patterns are not part of the "current scope"
 stmtScope FlatConditional{} r = r
@@ -595,12 +595,9 @@ termScope pat r = foldr onMatch r pat
 -- when the lhs obviously matches the rhs, and the statement binds no
 -- variables.
 --
-expandGroups :: [FlatStatementGroup] -> [FlatStatementGroup]
-expandGroups = mapMaybe optGroup
-  where
-  optGroup g = case concatMap expandStmt (NonEmpty.toList g) of
-    [] -> Nothing
-    (x:xs) -> Just (x :| xs)
+expandGroup :: FlatStatementGroup -> FlatStatementGroup
+expandGroup (FlatStatementGroup stmts ord) =
+  FlatStatementGroup (concatMap expandStmt stmts) ord
 
 expandStmt :: FlatStatement -> [FlatStatement]
 expandStmt (FlatStatement stmtTy lhs (TermGenerator rhs)) =
@@ -650,8 +647,8 @@ expandStmt s@(FlatNegation _) = [s]
   -- the expansion is handled by @apply@ with @optStmts@ because we need to
   -- constrain the scope of the substitutions arising from inside the negation.
 expandStmt (FlatDisjunction [stmts]) =
-  case expandGroups stmts of
-    [] -> []
+  case expandGroup stmts of
+    FlatStatementGroup [] _ -> []
     xs -> [grouping xs]
   -- non-singleton disjunctions are handled by apply, which will
   -- expand the stmts via optStmts.
@@ -721,25 +718,27 @@ filterStmt :: FlatStatement -> U FlatStatement
 filterStmt stmt = case stmt of
   FlatStatement{} -> return stmt
   FlatAllStatement{} -> return stmt
-  FlatNegation stmts -> FlatNegation <$> filterGroupsEnclosed stmts
-  FlatDisjunction [stmts] -> grouping <$> filterGroups stmts
+  FlatNegation stmts -> FlatNegation <$> filterGroupEnclosed stmts
+  FlatDisjunction [stmts] -> grouping <$> filterGroup stmts
   FlatDisjunction stmtss ->
-    FlatDisjunction <$> mapM filterGroupsEnclosed stmtss
+    FlatDisjunction <$> mapM filterGroupEnclosed stmtss
   FlatConditional cond then_ else_ -> do
     (cond', then') <- encloseSeen $ do
-      cond' <- filterGroups cond
-      then' <- filterGroupsEnclosed then_
+      cond' <- filterGroup cond
+      then' <- filterGroupEnclosed then_
       return (cond', then')
-    else' <- filterGroupsEnclosed else_
+    else' <- filterGroupEnclosed else_
     return (FlatConditional cond' then' else')
 
-filterGroup :: FlatStatementGroup -> U (Maybe FlatStatementGroup)
-filterGroup stmts = do
-  filtered <- filterM notDuplicateStmt (NonEmpty.toList stmts)
-  nonEmpty <$> mapM filterStmt filtered
+filterGroup :: FlatStatementGroup -> U FlatStatementGroup
+filterGroup (FlatStatementGroup stmts ord) = do
+  stmts' <- filterStmts stmts
+  return (FlatStatementGroup stmts' ord)
 
-filterGroupsEnclosed :: [FlatStatementGroup] -> U [FlatStatementGroup]
-filterGroupsEnclosed = encloseSeen . filterGroups
+filterStmts :: [FlatStatement] -> U [FlatStatement]
+filterStmts stmts = do
+  filtered <- filterM notDuplicateStmt stmts
+  mapM filterStmt filtered
 
-filterGroups :: [FlatStatementGroup] -> U [FlatStatementGroup]
-filterGroups groups = catMaybes <$> mapM filterGroup groups
+filterGroupEnclosed :: FlatStatementGroup -> U FlatStatementGroup
+filterGroupEnclosed = encloseSeen . filterGroup

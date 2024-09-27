@@ -15,14 +15,13 @@ module Glean.Query.Reorder
 import Control.Applicative ((<|>))
 import Control.Monad.Except
 import Control.Monad.State.Strict
-import Data.Foldable (find, fold)
+import Data.Foldable (find, toList)
 import Data.Functor.Identity (Identity(..))
 import qualified Data.ByteString as ByteString
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
 import qualified Data.IntSet as IntSet
 import Data.List (uncons, partition)
-import qualified Data.List.NonEmpty as NonEmpty
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -166,8 +165,8 @@ reorder dbSchema QueryWithInfo{..} =
 
 reorderQuery :: FlatQuery -> R CgQuery
 reorderQuery (FlatQuery pat _ stmts) =
-  withScopeFor stmts $ do
-    stmts' <- reorderGroups stmts
+  withScopeFor [stmts] $ do
+    stmts' <- reorderGroup stmts
     (extra, pat') <- resolved `catchError` \e ->
       maybeBindUnboundPredicate e resolved
     return (CgQuery pat' (extra <> stmts'))
@@ -175,20 +174,40 @@ reorderQuery (FlatQuery pat _ stmts) =
     resolved = do pat' <- fixVars IsExpr pat; return ([], pat')
 
 
-reorderGroups :: [FlatStatementGroup] -> R [CgStatement]
-reorderGroups groups = do
+reorderGroup :: FlatStatementGroup -> R [CgStatement]
+reorderGroup g = do
   scope <- gets roScope
   let
     bound0 = IntMap.keysSet (allBound scope)
 
-    go _ [] = []
-    go bound (group : groups) = stmts <> go bound' groups
-      where
-        stmts = reorderStmtGroup (isScope scope) bound group
-        bound' = IntSet.union bound (vars stmts)
-        -- mark all variables from stmts as bound.
+    -- we'll call reorderStmtGroup on the (unordered) inner groups
+    -- first, and then flatten the group structure and do the final
+    -- reorderStmts pass on the whole flattened list.
+    group bound (FlatStatementGroup stmts ord) = do
+      (stmts',bound') <- go bound stmts
+      let
+        reordered = case ord of
+          Unordered -> reorderStmtGroup (isScope scope) bound stmts'
+          Ordered -> stmts'
+      return (FlatStatementGroup reordered ord, bound')
 
-  reorderStmts (go bound0 groups)
+    go bound [] = return ([], bound)
+    go bound (FlatDisjunction [g] : rest) = do
+      (g', bound') <- group bound g
+      (stmts'',bound'') <- go bound' rest
+      return (FlatDisjunction [g'] : stmts'', bound'')
+    go bound (stmt : rest) = do
+      (stmts', bound') <- go (IntSet.union (vars stmt) bound) rest
+      return (stmt : stmts', bound')
+
+    squash [] = []
+    squash (stmt : rest) = case stmt of
+      FlatDisjunction [FlatStatementGroup stmts _] ->
+        squash (stmts <> rest)
+      _other -> stmt : squash rest
+
+  (FlatStatementGroup stmts _, _) <- group bound0 g
+  reorderStmts (squash stmts)
 
 -- | Define a new scope.
 -- Adds all variables local to the statements to the scope at the start and
@@ -196,7 +215,7 @@ reorderGroups groups = do
 withScopeFor :: [FlatStatementGroup] -> R a -> R a
 withScopeFor stmts act = do
   Scope outerScope bound <- gets roScope
-  let stmtsVars = scopeVars stmts
+  let stmtsVars = foldMap scopeVars stmts
       locals = IntSet.filter (`IntSet.notMember` outerScope) stmtsVars
 
   modify $ \s -> s { roScope = Scope (outerScope <> locals) bound }
@@ -213,8 +232,8 @@ withScopeFor stmts act = do
     --  - inside a negated subquery
     --  - in some but not all branches of a disjunction
     --  - in only one of 'else' or (condition + 'then') clauses of an if stmt
-    scopeVars :: [FlatStatementGroup] -> VarSet
-    scopeVars stmtss = foldMap (foldMap stmtScope) stmtss
+    scopeVars :: FlatStatementGroup -> VarSet
+    scopeVars (FlatStatementGroup stmts _) = foldMap stmtScope stmts
       where
         stmtScope = \case
           FlatNegation{} -> mempty
@@ -226,7 +245,7 @@ withScopeFor stmts act = do
             foldr (IntSet.intersection . scopeVars) (scopeVars s) ss
           FlatConditional cond then_ else_ ->
             IntSet.intersection
-              (scopeVars $ cond <> then_)
+              (scopeVars cond <> scopeVars then_)
               (scopeVars else_)
 
 {-
@@ -269,10 +288,10 @@ data StmtCost
   | StmtUnresolved
   deriving (Bounded, Eq, Show, Ord)
 
-reorderStmtGroup :: VarSet -> VarSet -> FlatStatementGroup -> [FlatStatement]
+reorderStmtGroup :: VarSet -> VarSet -> [FlatStatement] -> [FlatStatement]
 reorderStmtGroup sc bound stmts =
   let
-    (lookups, others) = partitionStmts (map summarise (NonEmpty.toList stmts))
+    (lookups, others) = partitionStmts (map summarise stmts)
   in
   layout (IntSet.toList bound) bound lookups others
   where
@@ -320,8 +339,8 @@ reorderStmtGroup sc bound stmts =
     -- accurate we would have to recursively reorder the
     -- statements in the disjunction. TODO: recursively reorder
     -- but only if there are no O(1) statements in the group.
-    classifyAlt bound groups =
-      go bound (concatMap NonEmpty.toList groups) minBound
+    classifyAlt bound (FlatStatementGroup stmts _) =
+      go bound stmts minBound
       where
       go _ [] cost = cost
       go bound (stmt : stmts) cost =
@@ -448,15 +467,21 @@ reorderStmts stmts = iterate stmts []
     -- we already tried the bad list, so the first one should throw
   iterate stmts bad = do
     scope <- gets roScope
-    let (chosen, rest) = choose scope stmts
+    let (desc, (chosen, rest)) = choose scope stmts
+    trace (show (vcat [
+      "choose:",
+      indent 2 (vcat (map displayDefault stmts)),
+      pretty desc <> ": " <> displayDefault chosen])) $ return ()
     r <- tryError $ reorderStmt chosen
     case r of
-      Left{} -> iterate rest (chosen : bad)
+      Left{} -> trace ("bad: " <> show (displayDefault chosen)) $ iterate rest (chosen : bad)
       Right cgChosen -> do
         -- we made some progress, so reset the bad list
         let next = if null bad then rest else rest <> reverse bad
         cgRest <- iterate next []
         return (cgChosen <> cgRest)
+
+  trace _ x = x -- comment out to debug
 
   tryError m = (Right <$> m) `catchError` (return . Left)
 
@@ -469,13 +494,28 @@ reorderStmts stmts = iterate stmts []
   choose
     :: Scope
     -> [FlatStatement]
-    -> (FlatStatement,[FlatStatement])
-  choose _ [one] = (one, [])
+    -> (Text, (FlatStatement, [FlatStatement]))
+  choose _ [one] = ("only", (one, []))
   choose scope stmts = fromMaybe (error "choose") $
-    find (isResolvedFilter (ifBoundOnly scope) . fst) stmts' <|>
-    find (not . isUnresolved scope . fst) stmts' <|>
-    uncons stmts
+    firstResolved <|>
+    firstNotUnresolved <|>
+    firstNotUnresolvedLenient <|>
+    fallback
     where
+      firstResolved = ("resolved",) <$>
+        find (isResolvedFilter (ifBoundOnly scope) . fst) stmts'
+
+      -- try to find a statement that's already resolved without
+      -- adding any missing generators, and then try again allowing
+      -- unbound predicates to be resolved.
+      firstNotUnresolved = ("not unresolved",) <$>
+        find (not . isUnresolved (ifBoundOnly scope) . fst) stmts'
+
+      firstNotUnresolvedLenient = ("not unresolved lenient",) <$>
+        find (not . isUnresolved (allowUnboundPredicates scope) . fst) stmts'
+
+      fallback = ("take first",) <$> uncons stmts
+
       stmts' = go [] stmts
 
       go :: [a] -> [a] -> [(a,[a])]
@@ -493,16 +533,12 @@ isResolvedFilter scope stmt = case stmt of
 -- | True if the statement is definitely unresolved in the given
 -- scope. False indicates "maybe resolved"; we'll fall back to trying
 -- to resolve the stmt in reorderStmts.
-isUnresolved :: Scope -> FlatStatement -> Bool
-isUnresolved scope stmt = case stmt of
+isUnresolved :: InScope -> FlatStatement -> Bool
+isUnresolved inScope stmt = case stmt of
   FlatDisjunction{} -> False -- don't know
   FlatStatement _ _ (ArrayElementGenerator _ arr) ->
     not (patIsBound inScope arr)
   _otherwise -> not (isReadyFilter inScope stmt True)
-  where
-  inScope = allowUnboundPredicates scope
-  -- an unbound variable of predicate type counts as resolved, because
-  -- it will be resolved by adding a generator in reorderStmt later.
 
 isCurrentlyUnresolved :: InScope -> FlatStatement -> Bool
 isCurrentlyUnresolved scope stmt = case stmt of
@@ -513,7 +549,7 @@ isCurrentlyUnresolved scope stmt = case stmt of
 
 isReadyFilter :: InScope -> FlatStatement -> Bool -> Bool
 isReadyFilter scope stmt notFilter = case stmt of
-  FlatDisjunction [one] -> all (all isReady) one
+  FlatDisjunction [FlatStatementGroup one _] -> all isReady one
     where isReady stmt = isReadyFilter scope stmt notFilter
     -- Don't hoist a disjunction with multiple alts, even if they're
     -- all resolved, because that might duplicate work.
@@ -523,12 +559,12 @@ isReadyFilter scope stmt notFilter = case stmt of
     all (patIsBound scope) args
   FlatStatement _ _ (DerivedFactGenerator _ key val) ->
     patIsBound scope key && patIsBound scope val
-  FlatNegation stmtss ->
+  FlatNegation (FlatStatementGroup stmts _) ->
     -- See Note [Reordering negations]
-    all (all isReady) stmtss && hasAllNonLocalsBound
+    all isReady stmts && hasAllNonLocalsBound
     where
       isReady stmt = isReadyFilter scope stmt notFilter
-      appearInStmts = foldMap (foldMap vars) stmtss
+      appearInStmts = foldMap vars stmts
       hasAllNonLocalsBound =
         IntSet.null $
         IntSet.filter (\var -> isInScope scope var && not (inScopeBound scope var))
@@ -768,7 +804,7 @@ toCgStatement stmt = case stmt of
     gen' <- fixVars IsExpr gen -- NB. do this first!
     lhs' <- fixVars IsPat lhs
     return [CgStatement lhs' gen']
-  FlatAllStatement v e stmts -> do
+  FlatAllStatement v e (FlatStatementGroup stmts _) -> do
     bindVar v
     stmts' <- mapM toCgStatement stmts
     e' <- fixVars IsExpr e
@@ -776,13 +812,13 @@ toCgStatement stmt = case stmt of
   FlatNegation stmts -> do
     stmts' <-
       withinNegation $
-      withScopeFor stmts $
-      reorderGroups stmts
+      withScopeFor [stmts] $
+      reorderGroup stmts
     return [CgNegation stmts']
   FlatDisjunction [stmts] ->
-    withScopeFor stmts $ reorderGroups stmts
-  FlatDisjunction stmtss -> do
-    cg <- map runIdentity <$> intersectBindings (map Identity stmtss)
+    withScopeFor [stmts] $ reorderGroup stmts
+  FlatDisjunction groups -> do
+    cg <- map runIdentity <$> intersectBindings (map Identity groups)
     return [CgDisjunction cg]
   FlatConditional cond then_ else_ -> do
     r <- intersectBindings [[ cond, then_ ], [ else_ ]]
@@ -792,15 +828,15 @@ toCgStatement stmt = case stmt of
   where
 
   intersectBindings :: (Traversable t, Foldable t) =>
-    [t [FlatStatementGroup]] -> R [t [CgStatement]]
+    [t FlatStatementGroup] -> R [t [CgStatement]]
   intersectBindings [] = return []
-  intersectBindings groupss = do
+  intersectBindings groups = do
     initialScope <- gets roScope
-    results <- forM groupss $ \tgroup -> do
-        modify $ \state -> state { roScope = initialScope }
-        tstmts <- withScopeFor (fold tgroup) $ traverse reorderGroups tgroup
-        newScope <- gets roScope
-        return (tstmts, allBound newScope)
+    results <- forM groups $ \tgroup -> do
+      modify $ \state -> state { roScope = initialScope }
+      tstmts <- withScopeFor (toList tgroup) $ traverse reorderGroup tgroup
+      newScope <- gets roScope
+      return (tstmts, allBound newScope)
 
     let boundInAllBranches = foldr1 IntMap.intersection (map snd results)
     forM_ results $ \(_, boundInThisBranch) -> do

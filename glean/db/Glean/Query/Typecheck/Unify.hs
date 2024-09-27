@@ -197,12 +197,13 @@ zonkVars = do
   modify $ \s -> s { tcVars = zonked }
 
 zonkTcQuery :: TcQuery -> T TcQuery
-zonkTcQuery (TcQuery ty k mv stmts) =
+zonkTcQuery (TcQuery ty k mv stmts ord) =
   TcQuery
     <$> zonkType ty
     <*> zonkTcPat k
     <*> mapM zonkTcPat mv
     <*> mapM zonkTcStatement stmts
+    <*> pure ord
 
 zonkTcPat :: TcPat -> T TcPat
 zonkTcPat p = case p of

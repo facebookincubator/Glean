@@ -616,10 +616,11 @@ resolveQuery
   :: (ShowRef t, ShowRef p)
   => SourceQuery
   -> Resolve p t (Query_ p t)
-resolveQuery (SourceQuery head stmts) =
+resolveQuery (SourceQuery head stmts ord) =
   SourceQuery
     <$> mapM resolvePat head
     <*> mapM resolveStatement stmts
+    <*> pure ord
 
 resolvePat
   :: (ShowRef t, ShowRef p)

@@ -108,13 +108,14 @@ prune hasFacts (QueryWithInfo q _ t) = do
   renumberVars t <$> pruneTcQuery q
   where
   pruneTcQuery :: TcQuery -> Maybe TcQuery
-  pruneTcQuery (TcQuery ty keyPat mvalPat stmts) =
+  pruneTcQuery (TcQuery ty keyPat mvalPat stmts ord) =
     TcQuery ty
       <$> prunePat keyPat
       <*> case mvalPat of
             Nothing -> Just Nothing
             Just v -> Just <$> prunePat v
       <*> pruneSequence stmts
+      <*> pure ord
 
   pruneSequence :: [TcStatement] -> Maybe [TcStatement]
   pruneSequence = traverse pruneStmt
@@ -209,11 +210,12 @@ renumberVars ty q =
   QueryWithInfo newQuery varCount ty
   where
   renameQuery :: TcQuery -> R TcQuery
-  renameQuery (TcQuery ty key mval stmts) =
+  renameQuery (TcQuery ty key mval stmts ord) =
     TcQuery ty
       <$> renamePat key
       <*> traverse renamePat mval
       <*> traverse renameStmt stmts
+      <*> pure ord
 
   renameStmt :: TcStatement -> R TcStatement
   renameStmt (TcStatement ty lhs rhs) =

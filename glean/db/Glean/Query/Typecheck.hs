@@ -85,11 +85,11 @@ typecheck dbSchema opts rtsType query = do
       { tcEnvPredicates = predicatesById dbSchema
       , tcEnvTypes = typesById dbSchema
       }
-  (q@(TcQuery ty _ _ _), TypecheckState{..}) <-
+  (q@(TcQuery ty _ _ _ _), TypecheckState{..}) <-
     let state = initialTypecheckState tcEnv opts rtsType TcModeQuery in
     withExceptT (Text.pack . show) $ flip runStateT state $ do
       modify $ \s -> s { tcVisible = varsQuery query mempty }
-      q@(TcQuery retTy _ _ _) <- inferQuery ContextExpr query
+      q@(TcQuery retTy _ _ _ _) <- inferQuery ContextExpr query
         <* freeVariablesAreErrors <* unboundVariablesAreErrors
       subst <- gets tcSubst
       whenDebug $ liftIO $ hPutStrLn stderr $ show $
@@ -104,7 +104,7 @@ typecheck dbSchema opts rtsType query = do
       zonkVars
       zonkTcQuery q
         `catchError` \_ -> do
-           (head,_) <- needsResult query
+           (head,_,_) <- needsResult query
            opts <- gets tcDisplayOpts
            retTy' <- apply retTy
            prettyErrorAt (sourcePatSpan head) $ vcat
@@ -136,7 +136,7 @@ typecheckDeriving tcEnv opts rtsType PredicateDetails{..} derivingInfo = do
         Derive deriveWhen q -> do
           modify $ \s -> s { tcVisible = varsQuery q mempty }
           -- we typecheck the pattern first, because we know its type.
-          (head, stmts) <- needsResult q
+          (head, stmts, ord) <- needsResult q
           let
             (key, maybeVal) = case head of
               KeyValue _ key val -> (key, Just val)
@@ -166,7 +166,7 @@ typecheckDeriving tcEnv opts rtsType PredicateDetails{..} derivingInfo = do
           unboundVariablesAreErrors
           resolvePromote
           zonkVars
-          q <- zonkTcQuery (TcQuery predicateKeyType key' maybeVal' stmts')
+          q <- zonkTcQuery (TcQuery predicateKeyType key' maybeVal' stmts' ord)
           nextVar <- gets tcNextVar
           return $ Derive deriveWhen $
             QueryWithInfo q nextVar predicateKeyType
@@ -175,13 +175,13 @@ typecheckDeriving tcEnv opts rtsType PredicateDetails{..} derivingInfo = do
 needsResult
   :: IsSrcSpan s
   => Query' s
-  -> T (Pat' s, [Statement' s])
-needsResult (SourceQuery (Just p) stmts) = return (p,stmts)
-needsResult q@(SourceQuery Nothing stmts) = case reverse stmts of
+  -> T (Pat' s, [Statement' s], Ordered)
+needsResult (SourceQuery (Just p) stmts ord) = return (p, stmts, ord)
+needsResult q@(SourceQuery Nothing stmts ord) = case reverse stmts of
   (SourceStatement (Variable s v) _ : _) ->
-    return (Variable s v, stmts)
+    return (Variable s v, stmts, ord)
   (SourceStatement Wildcard{} rhs : rstmts) ->
-    return (rhs, reverse rstmts)
+    return (rhs, reverse rstmts, ord)
   (SourceStatement pat _ : _) ->
     prettyErrorIn pat =<< err
   _ ->
@@ -197,13 +197,13 @@ ignoreResult :: IsSrcSpan s => Pat' s -> Pat' s
 ignoreResult p = case p of
   OrPattern s a b -> OrPattern s (ignoreResult a) (ignoreResult b)
   IfPattern s a b c -> IfPattern s a (ignoreResult b) (ignoreResult c)
-  NestedQuery s (SourceQuery Nothing stmts) ->
-    NestedQuery s (SourceQuery (Just empty) stmts)
+  NestedQuery s (SourceQuery Nothing stmts ord) ->
+    NestedQuery s (SourceQuery (Just empty) stmts ord)
   other ->
     NestedQuery fullSpan
       (SourceQuery
         (Just empty)
-        [SourceStatement (Wildcard fullSpan) other])
+        [SourceStatement (Wildcard fullSpan) other] Unordered)
   where
     fullSpan = sourcePatSpan p
     startPos = mkSpan (startLoc fullSpan) (startLoc fullSpan)
@@ -211,10 +211,10 @@ ignoreResult p = case p of
 
 inferQuery :: IsSrcSpan s => Context -> Query' s -> T TcQuery
 inferQuery ctx q = do
-  (head,stmts) <- needsResult q
+  (head,stmts,ord) <- needsResult q
   stmts' <- mapM typecheckStatement stmts
   (head', ty) <- inferExpr ctx head
-  return (TcQuery ty head' Nothing stmts')
+  return (TcQuery ty head' Nothing stmts' ord)
 
 typecheckQuery
   :: IsSrcSpan s
@@ -223,10 +223,10 @@ typecheckQuery
   -> Query' s
   -> T TcQuery
 typecheckQuery ctx ty q = do
-  (head,stmts) <- needsResult q
+  (head,stmts,ord) <- needsResult q
   head' <- typecheckPattern ctx  ty head
   stmts' <- mapM typecheckStatement stmts
-  return (TcQuery ty head' Nothing stmts')
+  return (TcQuery ty head' Nothing stmts' ord)
 
 unexpectedValue :: IsSrcSpan a => Pat' a -> T b
 unexpectedValue pat = prettyErrorIn pat
@@ -316,7 +316,7 @@ inferExpr ctx pat = case pat of
         (varsPat b mempty) (\(_,ty) -> typecheckPattern ctx ty b)
     return (Ref (MatchExt (Typed ty (TcOr a' b'))), ty)
   NestedQuery _ q -> do
-    q@(TcQuery ty _ _ _) <- inferQuery ctx q
+    q@(TcQuery ty _ _ _ _) <- inferQuery ctx q
     return (Ref (MatchExt (Typed ty (TcQueryGen q))), ty)
   Negation _ _ ->
     (,unit) <$> typecheckPattern ctx unit pat
@@ -360,7 +360,7 @@ inferExpr ctx pat = case pat of
   All _ e -> do
     (e',elementTy) <- inferExpr ctx e
     let
-      q = TcQuery elementTy e' Nothing []
+      q = TcQuery elementTy e' Nothing [] Unordered
       ty = SetTy elementTy
     return (Ref (MatchExt (Typed ty (TcAll q))), ty)
 
@@ -602,12 +602,12 @@ typecheckPattern ctx typ pat = case (typ, pat) of
   (ty, Negation s pat) | ty == unit -> do
     let startPos = mkSpan (startLoc s) (startLoc s)
         empty = Tuple startPos []
-        stmts = case pat of
-          NestedQuery _ (SourceQuery Nothing stmts) -> stmts
-          other -> [SourceStatement (Wildcard s) other]
+        (stmts, ord) = case pat of
+          NestedQuery _ (SourceQuery Nothing stmts _) -> (stmts, ord)
+          other -> ([SourceStatement (Wildcard s) other], Unordered)
 
         -- A negated pattern must always have type {}.
-        query = SourceQuery (Just empty) stmts
+        query = SourceQuery (Just empty) stmts ord
 
         -- Variables bound within a negated query are
         -- not considered bound outside of it.
@@ -626,7 +626,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
             }
           return res
 
-    TcQuery _ _ _ stmts <- enclose $ typecheckQuery ctx unit query
+    TcQuery _ _ _ stmts _ <- enclose $ typecheckQuery ctx unit query
     return $ Ref (MatchExt (Typed unit (TcNegation stmts)))
 
   (PredicateTy _, FactId _ Nothing fid) -> do
@@ -652,7 +652,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     fst <$> tcFactGenerator ref pat SeekOnAllFacts
   (ty@(SetTy elemTy), All _ query) -> do
     arg <- typecheckPattern ctx elemTy query
-    let q = TcQuery elemTy arg Nothing []
+    let q = TcQuery elemTy arg Nothing [] Unordered
     return (Ref (MatchExt (Typed ty (TcAll q))))
   (ty, Elements _ pat) -> do
     elems <- typecheckPattern ctx (SetTy ty) pat
@@ -957,7 +957,7 @@ varsPat pat r = case pat of
   Enum{} -> r
 
 varsQuery :: IsSrcSpan s => Query' s -> VarSet -> VarSet
-varsQuery (SourceQuery head stmts) r =
+varsQuery (SourceQuery head stmts _) r =
   foldr varsStmt (foldr varsPat r head) stmts
   where
   varsStmt (SourceStatement a b) r = varsPat a $! varsPat b r
@@ -969,7 +969,7 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
     getRef (PidRef _ ref) = ref
 
     overQuery :: TcQuery -> [PidRef]
-    overQuery (TcQuery ty key mval stmts) =
+    overQuery (TcQuery ty key mval stmts _) =
       overType ty
         <> overPat key
         <> maybe [] overPat mval
@@ -1013,7 +1013,7 @@ data UseOfNegation
 -- | Whether a query uses negation in its definition.
 -- Does not check for transitive uses of negation.
 tcQueryUsesNegation :: TcQuery -> Maybe UseOfNegation
-tcQueryUsesNegation (TcQuery _ _ _ stmts) =
+tcQueryUsesNegation (TcQuery _ _ _ stmts _) =
   firstJust tcStatementUsesNegation stmts
 
 tcStatementUsesNegation :: TcStatement -> Maybe UseOfNegation

@@ -29,7 +29,7 @@ expandDerivedPredicateCall
   -> TypecheckedQuery   -- ^ query from the derived predicate
   -> F TcQuery
 expandDerivedPredicateCall PredicateDetails{..} key val QueryWithInfo{..} = do
-  (TcQuery _ keyDef maybeValDef stmts) <-
+  (TcQuery _ keyDef maybeValDef stmts ord) <-
     instantiateWithFreshVariables qiQuery qiNumVars
 
   let
@@ -55,19 +55,21 @@ expandDerivedPredicateCall PredicateDetails{..} key val QueryWithInfo{..} = do
       x <- fresh predicateKeyType
       y <- fresh predicateValueType
       return $
-        TcQuery predicateKeyType (Ref (MatchVar x)) (Just (Ref (MatchVar y))) $
-          stmts ++ [
+        TcQuery predicateKeyType (Ref (MatchVar x)) (Just (Ref (MatchVar y)))
+          (stmts ++ [
             TcStatement predicateKeyType (Ref (MatchBind x)) keyDef,
             TcStatement predicateKeyType (Ref (MatchVar x)) key',
             TcStatement predicateValueType (Ref (MatchBind y)) valDef,
-            TcStatement predicateValueType (Ref (MatchVar y)) val' ]
+            TcStatement predicateValueType (Ref (MatchVar y)) val' ])
+          ord
     Nothing -> do
       x <- fresh predicateKeyType
       return $
-        TcQuery predicateKeyType (Ref (MatchVar x)) Nothing $
-          stmts ++ [
+        TcQuery predicateKeyType (Ref (MatchVar x)) Nothing
+          (stmts ++ [
             TcStatement predicateKeyType (Ref (MatchBind x)) keyDef,
-            TcStatement predicateKeyType (Ref (MatchVar x)) key' ]
+            TcStatement predicateKeyType (Ref (MatchVar x)) key' ])
+          ord
 
 -- | Make a fresh instance of a query where none of the variables
 -- clash with existing variables. We know the maximum variable in the
@@ -80,11 +82,12 @@ instantiateWithFreshVariables query numVars = do
   put state { flNextVar = base + numVars }
   return $ instantiateQuery base query
   where
-  instantiateQuery base (TcQuery ty head maybeVal stmts) =
+  instantiateQuery base (TcQuery ty head maybeVal stmts ord) =
     TcQuery ty
       (instantiatePat base head)
       (fmap (instantiatePat base) maybeVal)
       (map (instantiateStmt base) stmts)
+      ord
 
   instantiateStmt base (TcStatement ty lhs rhs) =
     TcStatement ty (instantiatePat base lhs) (instantiatePat base rhs)

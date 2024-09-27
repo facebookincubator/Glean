@@ -32,7 +32,7 @@ queryParser = TestCase $ do
   either print (putDoc . displayDefault) r
   assertBool "simple query" $ case r of
     Right (SourceQuery Nothing [
-      SourceStatement (Wildcard _) (App _ _pred [String _ _str])]) -> True
+      SourceStatement (Wildcard _) (App _ _pred [String _ _str])] _) -> True
     _ -> False
 
   -- lexer error

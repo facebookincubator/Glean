@@ -15,7 +15,8 @@ module Glean.Query.Flatten.Types
   , FlatQuery
   , FlatStatement(..)
   , falseStmt
-  , FlatStatementGroup
+  , FlatStatementGroup(..)
+  , Ordered(..)
   , grouping
   , singletonGroup
   , boundVars
@@ -29,12 +30,10 @@ module Glean.Query.Flatten.Types
 import Control.Monad.Except
 import Control.Monad.State
 import qualified Data.IntSet as IntSet
-import qualified Data.List.NonEmpty as NonEmpty
-import Data.List.NonEmpty (NonEmpty(..))
 import Data.Text (Text)
 import Compat.Prettyprinter hiding ((<>))
 
-import Glean.Angle.Types ( PredicateId )
+import Glean.Angle.Types ( PredicateId, Ordered(..) )
 import Glean.Query.Codegen.Types
 import Glean.Database.Schema
 import Glean.Database.Types (EnableRecursion(..))
@@ -45,7 +44,7 @@ import Glean.Query.Vars
 
 type FlattenedQuery = QueryWithInfo FlatQuery
 
-data FlatQuery_ p = FlatQuery p (Maybe p) [FlatStatementGroup]
+data FlatQuery_ p = FlatQuery p (Maybe p) FlatStatementGroup
   -- Statements are grouped by the flattener:
 
 type FlatQuery = FlatQuery_ Pat
@@ -58,39 +57,45 @@ type FlatQuery = FlatQuery_ Pat
 -- groups will be retained.  In other words: we don't change the order
 -- of statements you write, but we'll try to optimise the order of
 -- matches in a nested match.
-type FlatStatementGroup = NonEmpty FlatStatement
+data FlatStatementGroup = FlatStatementGroup [FlatStatement] Ordered
+  deriving Show
 
 singletonGroup :: FlatStatement -> FlatStatementGroup
-singletonGroup s = s :| []
+singletonGroup s = FlatStatementGroup [s] Unordered
 
 instance Display pat => Display (FlatQuery_ pat) where
-  display opts (FlatQuery key maybeVal stmts) = case stmts of
-    [] -> head
-    _ -> hang 2 (sep (head <+> "where" : map prettyGroup stmts))
+  display opts (FlatQuery key maybeVal g@(FlatStatementGroup stmts _)) =
+    case stmts of
+      [] -> head
+      _ -> hang 2 (sep [head <+> "where", display opts g])
     where
     head = display opts key <>
       maybe mempty (\val -> " -> " <> display opts val) maybeVal
-    prettyGroup stmts =
-      brackets (align (sep (punctuate ";"
-        (map (display opts) (NonEmpty.toList stmts)))))
+
+instance Display FlatStatementGroup where
+  display opts (FlatStatementGroup stmts ord) = case ord of
+    Unordered -> sep [hang 2 (sep ["{", p]), "}"]
+    Ordered -> sep [hang 2 (sep ["[", p]), "]"]
+    where
+    p = sep (punctuate ";" (map (display opts) stmts))
 
 data FlatStatement
   = FlatStatement Type Pat Generator
     -- ^ A simple statement: P = gen
-  | FlatAllStatement Var Pat [FlatStatement]
+  | FlatAllStatement Var Pat FlatStatementGroup
     -- ^ Similar to a vanilla statement, but the result is a set
     -- containing the results of computing the statements.
-  | FlatNegation [FlatStatementGroup]
+  | FlatNegation FlatStatementGroup
     -- ^ The negation of a series of statements
-  | FlatDisjunction [[FlatStatementGroup]]
+  | FlatDisjunction [FlatStatementGroup]
     -- ^ A disjunction of alternatives: (stmts; ...) | ... | (stmts; ...)
     -- As a special case, if there is just one alternative this construct
     -- is used for nesting groups within a FlatStatementGroup. See
     -- Glean.Query.Flatten.floatGroups.
   | FlatConditional
-      { cond :: [FlatStatementGroup]
-      , then_ :: [FlatStatementGroup]
-      , else_ :: [FlatStatementGroup]
+      { cond :: FlatStatementGroup
+      , then_ :: FlatStatementGroup
+      , else_ :: FlatStatementGroup
       }
     -- ^ An if-then-else statement.
     -- If the statements in the condition match, the 'then' statements are
@@ -100,28 +105,30 @@ data FlatStatement
 
 -- | Smart constructor for a subgroup of statements, ensures we don't
 -- create unnecessary nested singleton groups.
-grouping :: [FlatStatementGroup] -> FlatStatement
-grouping [one :| []] = one
-grouping groups = FlatDisjunction [groups]
+grouping :: FlatStatementGroup -> FlatStatement
+grouping (FlatStatementGroup [one] _) = one
+grouping group = FlatDisjunction [group]
+
+instance VarsOf FlatStatementGroup where
+  varsOf w (FlatStatementGroup stmts _) r =
+    foldr (varsOf w) r stmts
 
 instance VarsOf FlatStatement where
   varsOf w s r = case s of
     FlatStatement _ lhs rhs -> varsOf w lhs $! varsOf w rhs r
     FlatAllStatement (Var _ v _) pat stmts ->
       IntSet.insert v $! varsOf w pat $! varsOf w stmts r
-    FlatNegation stmts      -> varsStmts w stmts r
-    FlatDisjunction stmtss  -> foldr (varsStmts w) r stmtss
+    FlatNegation stmts      -> varsOf w stmts r
+    FlatDisjunction stmtss  -> foldr (varsOf w) r stmtss
     FlatConditional cond then_ else_ ->
-      foldr (varsStmts w) r [cond, then_, else_]
-    where
-      varsStmts w stmts r = foldr (\g r -> foldr (varsOf w) r g) r stmts
+      foldr (varsOf w) r [cond, then_, else_]
 
 freshWildQuery :: (Monad m, Fresh m) => FlatQuery -> m FlatQuery
 freshWildQuery (FlatQuery p v stmts) =
   FlatQuery
     <$> freshWild p
     <*> mapM freshWild v
-    <*> mapM freshWildGroup stmts
+    <*> freshWildGroup stmts
 
 freshWildStmt :: (Monad m, Fresh m) => FlatStatement -> m FlatStatement
 freshWildStmt (FlatStatement ty pat gen) = do
@@ -130,23 +137,26 @@ freshWildStmt (FlatStatement ty pat gen) = do
   return (FlatStatement ty pat' gen')
 freshWildStmt (FlatAllStatement var pat stmts) = do
   pat' <- freshWild pat
-  stmts' <- mapM freshWildStmt stmts
+  stmts' <- freshWildGroup stmts
   return (FlatAllStatement var pat' stmts')
-freshWildStmt (FlatNegation groups) =
-  FlatNegation <$> mapM freshWildGroup groups
+freshWildStmt (FlatNegation group) =
+  FlatNegation <$> freshWildGroup group
 freshWildStmt (FlatDisjunction alts) =
-  FlatDisjunction <$> mapM (mapM freshWildGroup) alts
+  FlatDisjunction <$> mapM freshWildGroup alts
 freshWildStmt (FlatConditional cond then_ else_) =
   FlatConditional
-    <$> mapM freshWildGroup cond
-    <*> mapM freshWildGroup then_
-    <*> mapM freshWildGroup else_
+    <$> freshWildGroup cond
+    <*> freshWildGroup then_
+    <*> freshWildGroup else_
 
 freshWildGroup
   :: (Monad m, Fresh m)
   => FlatStatementGroup
   -> m FlatStatementGroup
-freshWildGroup = mapM freshWildStmt
+freshWildGroup (FlatStatementGroup stmts ord) =
+  FlatStatementGroup
+    <$> mapM freshWildStmt stmts
+    <*> pure ord
 
 freshWildGen :: (Monad m, Fresh m) => Generator -> m Generator
 freshWildGen gen = case gen of
@@ -176,19 +186,22 @@ boundVarsOf :: FlatStatement -> VarSet -> VarSet
 boundVarsOf (FlatStatement _ lhs rhs) r =
   varsOf AllVars lhs (boundVarsOfGen rhs r)
 boundVarsOf (FlatAllStatement (Var _ v _) p stmts) r =
-  IntSet.insert v $! varsOf AllVars p $! foldr boundVarsOf r stmts
+  IntSet.insert v $! varsOf AllVars p $! boundVarsOfGroup stmts r
 boundVarsOf (FlatNegation _) r = r -- a negated query cannot bind variables
 boundVarsOf (FlatDisjunction []) r = r
-boundVarsOf (FlatDisjunction stmtss) r =
-  foldr1 IntSet.intersection $ map varsStmts stmtss
+boundVarsOf (FlatDisjunction groups) r = s `IntSet.union` r
   where
-    varsStmts stmts = foldr (\g r -> foldr boundVarsOf r g) r stmts
+  s = foldr1 IntSet.intersection $
+    map (\g -> boundVarsOfGroup g IntSet.empty) groups
 boundVarsOf (FlatConditional cond then_ else_) r =
   varsThen `IntSet.intersection` varsElse
   where
-    varsThen = varsStmts cond $ varsStmts then_ r
-    varsElse = varsStmts else_ r
-    varsStmts stmts r = foldr (\g r -> foldr boundVarsOf r g) r stmts
+    varsThen = boundVarsOfGroup cond $ boundVarsOfGroup then_ r
+    varsElse = boundVarsOfGroup else_ r
+
+boundVarsOfGroup :: FlatStatementGroup -> VarSet -> VarSet
+boundVarsOfGroup (FlatStatementGroup stmts _) r =
+  foldr boundVarsOf r stmts
 
 boundVarsOfGen :: Generator -> VarSet -> VarSet
 boundVarsOfGen DerivedFactGenerator{} r = r
@@ -206,24 +219,16 @@ instance Display FlatStatement where
       hang 2 $ sep [display opts lhs <+> "=", display opts rhs ]
     FlatAllStatement v e stmts ->
       display opts v <+> "=" <+> "all" <+>
-        sep [hang 2
-            (sep [sep ("(" : punctuate ";" (map (display opts) stmts)), ")"])
-            ,display opts e]
-    FlatNegation groups ->
-      "!" <> doStmts groups
+        sep [hang 2 (display opts stmts), display opts e]
+    FlatNegation group ->
+      "!" <> display opts group
     FlatDisjunction groupss ->
-      sep (punctuate " |" (map doStmts groupss))
+      sep (punctuate " |" (map (display opts) groupss))
     FlatConditional cond then_ else_ -> sep
-      [ nest 2 $ sep ["if", doStmts cond ]
-      , nest 2 $ sep ["then", doStmts then_]
-      , nest 2 $ sep ["else", doStmts else_]
+      [ nest 2 $ sep ["if", display opts cond ]
+      , nest 2 $ sep ["then", display opts then_]
+      , nest 2 $ sep ["else", display opts else_]
       ]
-    where
-    doStmts groups =
-      hang 2 (sep [sep ("(" : punctuate ";" (map stmtGroup groups)), ")"])
-
-    stmtGroup group = brackets $
-      sep (punctuate ";" (map (display opts) (NonEmpty.toList group)))
 
 data FlattenState = FlattenState
   { flDbSchema :: DbSchema

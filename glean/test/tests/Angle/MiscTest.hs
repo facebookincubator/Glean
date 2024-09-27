@@ -255,7 +255,7 @@ reorderTest = dbTestCase $ \env repo -> do
     [s|
       L where
         L = glean.test.Tree { { label = "a" }, { just = M }, _ };
-        M = glean.test.Tree { { label = "b" }, { just = { { label = "d" }, _, _ }}, _}
+        M = glean.test.Tree { { label = "c" }, { just = { { label = "d" }, _, _ }}, _}
           # L is bound, so even though the nested match { { label = "d" }, _, _ }
           # is in a prefix position and would normally be done first,
           # in this case we want to do it afterwards because it's a lookup

@@ -126,7 +126,7 @@ build :: Angle t -> SourceQuery
 build (Angle m) =
   case evalState m 0 of
     NestedQuery _ q -> q
-    t -> Angle.SourceQuery (Just t) []
+    t -> Angle.SourceQuery (Just t) [] Unordered
 
 -- | Build a query. It can returns facts of a predicate:
 --
@@ -171,10 +171,10 @@ var f = Angle $ do
   r <- gen (f v)
   let stmt = Angle.SourceStatement (Wildcard DSL) ty
   case r of
-    Angle.NestedQuery DSL (Angle.SourceQuery q stmts) ->
-      return (Angle.NestedQuery DSL (Angle.SourceQuery q (stmt : stmts)))
+    Angle.NestedQuery DSL (Angle.SourceQuery q stmts ord) ->
+      return (Angle.NestedQuery DSL (Angle.SourceQuery q (stmt : stmts) ord))
     _ ->
-      return (Angle.NestedQuery DSL (Angle.SourceQuery (Just r) [stmt]))
+      return (Angle.NestedQuery DSL (Angle.SourceQuery (Just r) [stmt] Ordered))
 
 predicate :: forall p . Predicate p => Angle (KeyType p) -> Angle p
 predicate (Angle pat) = Angle $ do
@@ -187,11 +187,11 @@ where_ t stmts = Angle $
   nest <$> gen t <*> mapM genStmt stmts
   where
   -- merge adjacent where-clauses
-  nest (Angle.NestedQuery DSL (Angle.SourceQuery (Just q) stmts1)) stmts2 =
+  nest (Angle.NestedQuery DSL (Angle.SourceQuery (Just q) stmts1 ord)) stmts2 =
     Angle.NestedQuery DSL $
-      Angle.SourceQuery (Just q) (stmts1 <> stmts2)
+      Angle.SourceQuery (Just q) (stmts1 <> stmts2) ord
   nest q stmts =
-    Angle.NestedQuery DSL (Angle.SourceQuery (Just q) stmts)
+    Angle.NestedQuery DSL (Angle.SourceQuery (Just q) stmts Ordered)
 
 not_ :: [AngleStatement] -> AngleStatement
 not_ stmts = unit' .= Angle (Negation DSL <$> gen t)

@@ -257,8 +257,8 @@ resolveQuery
   :: RefToIdEnv
   -> Query_ PredicateRef TypeRef
   -> Query_ PredicateId TypeId
-resolveQuery env (SourceQuery head stmts) =
-  SourceQuery (refsToIds env <$> head) (refsToIds env <$> stmts)
+resolveQuery env (SourceQuery head stmts ord) =
+  SourceQuery (refsToIds env <$> head) (refsToIds env <$> stmts) ord
 
 -- Serialize a definition to produce its hash.  Note that the hash
 -- includes the PredicateRef/TypeRef: two predicates or types are the

@@ -43,6 +43,7 @@ module Glean.Angle.Types
 
   -- * Queries
   , SourceQuery_(..)
+  , Ordered(..)
   , SourceStatement_(..)
   , SourcePat_(..)
   , PrimOp(..)
@@ -164,17 +165,23 @@ data SrcLoc = SrcLoc
 data SourceQuery_ s p t = SourceQuery
   { srcQueryHead :: Maybe (SourcePat_ s p t)
   , srcQueryStmts :: [SourceStatement_ s p t]
+  , srcQueryOrdered :: Ordered
   }
   deriving (Eq, Show, Generic)
+
+data Ordered = Ordered | Unordered
+  deriving (Eq, Show, Generic)
+
+instance Binary Ordered
 
 instance (Binary p, Binary t) => Binary (SourceQuery_ () p t)
 
 instance Bifunctor (SourceQuery_ s) where
-  bimap f g (SourceQuery h s) =
-    SourceQuery (fmap (bimap f g) h) (fmap (bimap f g) s)
+  bimap f g (SourceQuery h s o) =
+    SourceQuery (fmap (bimap f g) h) (fmap (bimap f g) s) o
 
 instance Bifoldable (SourceQuery_ s) where
-  bifoldMap f g (SourceQuery h s) =
+  bifoldMap f g (SourceQuery h s _) =
     foldMap (bifoldMap f g) h <> foldMap (bifoldMap f g) s
 
 data SourceStatement_ s p t =
@@ -267,9 +274,9 @@ instance Bifunctor (SourcePat_ s) where
     Variable s n -> Variable s n
     ElementsOfArray s pat -> ElementsOfArray s (bimap f g pat)
     OrPattern s l r -> OrPattern s (bimap f g l) (bimap f g r)
-    NestedQuery s (SourceQuery head stmts) ->
+    NestedQuery s (SourceQuery head stmts ord) ->
       NestedQuery s (SourceQuery (fmap (bimap f g) head)
-        (fmap (bimap f g) stmts))
+        (fmap (bimap f g) stmts) ord)
     Negation s pat -> Negation s (bimap f g pat)
     FactId s n w -> FactId s n w
     TypeSignature s pat ty -> TypeSignature s (bimap f g pat) (bimap f g ty)
@@ -298,7 +305,7 @@ instance Bifoldable (SourcePat_ s) where
     Variable{} -> mempty
     ElementsOfArray _ pat -> bifoldMap f g pat
     OrPattern _ l r -> bifoldMap f g l <> bifoldMap f g r
-    NestedQuery _ (SourceQuery head stmts) ->
+    NestedQuery _ (SourceQuery head stmts _) ->
       foldMap (bifoldMap f g) head <> foldMap (bifoldMap f g) stmts
     Negation _ pat -> bifoldMap f g pat
     FactId{} -> mempty
@@ -922,7 +929,7 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
     Enum _ _ -> display opts pat
 
 instance (Display p, Display t) => Display (SourceQuery_ s p t) where
-  display opts (SourceQuery maybeHead stmts) = case stmts of
+  display opts (SourceQuery maybeHead stmts _ord) = case stmts of
     [] -> maybe mempty (display opts) maybeHead
     _ -> case maybeHead of
       Just head -> hang 2 (sep (display opts head <+> "where" : pstmts))
@@ -982,8 +989,8 @@ rmLocDecl = \case
   SourceDeriving ref deriv -> SourceDeriving ref $ rmLocQuery <$> deriv
 
 rmLocQuery :: SourceQuery_ s p t -> SourceQuery_ () p t
-rmLocQuery (SourceQuery mhead stmts) =
-  SourceQuery (rmLocPat <$> mhead) (rmLocStatement <$> stmts)
+rmLocQuery (SourceQuery mhead stmts ord) =
+  SourceQuery (rmLocPat <$> mhead) (rmLocStatement <$> stmts) ord
 
 rmLocStatement :: SourceStatement_ s p t -> SourceStatement_ () p t
 rmLocStatement (SourceStatement x y) =

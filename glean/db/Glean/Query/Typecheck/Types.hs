@@ -28,15 +28,16 @@ import Glean.RTS.Term as RTS
 -- | The typechecking phase turns 'ParsedPat' (source-level terms) into
 -- 'TcPat' (representational terms), but it doesn't flatten nested
 -- generators, so it leaves the query as a 'SourceQuery'.
-data TcQuery = TcQuery Type TcPat (Maybe TcPat) [TcStatement]
+data TcQuery = TcQuery Type TcPat (Maybe TcPat) [TcStatement] Ordered
   deriving Show
 
 instance Display TcQuery where
-  display opts (TcQuery _ key maybeVal stmts) = case stmts of
+  display opts (TcQuery _ key maybeVal stmts _ord) = case stmts of
     [] -> head
     _ ->
       hang 2 $ sep $ head <+>
         "where" : punctuate ";" (map (display opts) stmts)
+        -- TODO: syntax for ordering
     where
    head = display opts key <>
      maybe mempty (\val -> " -> " <> display opts val) maybeVal

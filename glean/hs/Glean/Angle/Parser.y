@@ -99,8 +99,8 @@ import Glean.Angle.Types as Schema
 
 query :: { SourceQuery }
 query
-  : pattern 'where' seplist_(statement,';') { SourceQuery (Just $1) $3 }
-  | seplist_(statement,';')  { SourceQuery Nothing $1 }
+  : pattern 'where' seplist_(statement,';') { SourceQuery (Just $1) $3 Ordered }
+  | seplist_(statement,';')  { SourceQuery Nothing $1 Ordered }
 
 statement :: { SourceStatement }
 statement
@@ -175,9 +175,6 @@ apat
   | lident                          { Enum (sspan $1) (lval $1) }
   | 'never'                         { Never (sspan $1) }
   | '(' query ')'                   { nestedQuery (s $1 $3) $2 }
-  -- OLD version 1 constructs:
-  | '(' ')'                         {% ifVersionOrOlder (AngleVersion 1) $2 (Tuple (s $1 $2) []) }
-  | '(' seplist2(pattern,',') ')'   {% ifVersionOrOlder (AngleVersion 1) $3 (Tuple (s $1 $3) $2) }
 
 field :: { Field SrcSpan SourceRef SourceRef }
 field
@@ -455,8 +452,8 @@ instance HasSpan (SourcePat_ SrcSpan a b) where
 instance HasSpan (SourceStatement_ SrcSpan p t) where
   sspan (SourceStatement p1 p2) = s p1 p2
 instance HasSpan (SourceQuery_ SrcSpan p t) where
-  sspan (SourceQuery Nothing stmts) = s (head stmts) (last stmts)
-  sspan (SourceQuery (Just pat) stmts) = s pat (last stmts)
+  sspan (SourceQuery Nothing stmts _) = s (head stmts) (last stmts)
+  sspan (SourceQuery (Just pat) stmts _) = s pat (last stmts)
 
 s :: (HasSpan a, HasSpan b) => a -> b -> SrcSpan
 s from to = spanBetween (sspan from) (sspan to)
@@ -484,7 +481,7 @@ parseError (L (SrcSpan loc _) (Token b t)) = do
 
 -- | Smart constructor for NestedQuery
 nestedQuery :: SrcSpan -> SourceQuery -> SourcePat
-nestedQuery _s (SourceQuery Nothing [SourceStatement (Wildcard _) pat]) = pat
+nestedQuery _s (SourceQuery Nothing [SourceStatement (Wildcard _) pat] _) = pat
 nestedQuery s q = NestedQuery s q
 
 -- Accept older constructs for backwards-compability only when we're
