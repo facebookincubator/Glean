@@ -560,7 +560,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
-                "signature": "Introduction: component Introduction(name: string) renders React.Node",
+                "signature": "Introduction: component Introduction(name: string)",
                 "sym": "test/js/es_exports/Introduction",
                 "sym_location": {
                     "filepath": "test/es_exports.js.flow",
