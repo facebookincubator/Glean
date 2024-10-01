@@ -38,6 +38,7 @@ unify ByteTy ByteTy = return ()
 unify NatTy NatTy = return ()
 unify StringTy StringTy = return ()
 unify (ArrayTy t) (ArrayTy u) = unify t u
+unify (SetTy t) (SetTy u) = unify t u
 unify a@(RecordTy ts) b@(RecordTy us)
   | length ts == length us = forM_ (zip ts us) $
       \(FieldDef f t, FieldDef g u) ->
