@@ -8,8 +8,8 @@
 
 #include "glean/rts/define.h"
 
-#include <folly/container/F14Map.h>
 #include <folly/MapUtil.h>
+#include <folly/container/F14Map.h>
 
 namespace facebook {
 namespace glean {
@@ -21,7 +21,7 @@ Substitution defineBatch(
     Define& def,
     const Inventory& inventory,
     Id first,
-    const Id * FOLLY_NULLABLE ids,   // nullptr if there are no named facts
+    const Id* FOLLY_NULLABLE ids, // nullptr if there are no named facts
     size_t count,
     folly::ByteRange batch,
     bool trustRefs,
@@ -32,7 +32,7 @@ Substitution defineBatch(
 
   MutableSubstitution subst(first, count);
 
-  folly::F14FastMap<Id,Id,folly::Hash> idmap;
+  folly::F14FastMap<Id, Id, folly::Hash> idmap;
 
   binary::Input input(batch);
 
@@ -58,19 +58,21 @@ Substitution defineBatch(
       auto pred = inventory.lookupPredicate(type);
       CHECK_NOTNULL(pred);
       if (!real_type) {
-        error("unknown fact {}, expecting a fact of predicate {}.{}",
+        error(
+            "unknown fact {}, expecting a fact of predicate {}.{}",
             id,
             pred->name,
             pred->version);
       } else {
         auto real_pred = inventory.lookupPredicate(real_type);
         CHECK_NOTNULL(real_pred);
-        error("invalid reference to fact {}: expected {}.{}, got {}.{}",
-              id,
-              pred->name,
-              pred->version,
-              real_pred->name,
-              real_pred->version);
+        error(
+            "invalid reference to fact {}: expected {}.{}, got {}.{}",
+            id,
+            pred->name,
+            pred->version,
+            real_pred->name,
+            real_pred->version);
       }
     }
   });
@@ -80,7 +82,7 @@ Substitution defineBatch(
     Fact::Clause clause;
     Fact::deserialize(input, ty, clause);
 
-    if (const auto *predicate = inventory.lookupPredicate(ty)) {
+    if (const auto* predicate = inventory.lookupPredicate(ty)) {
       max_ref = Id::invalid();
 
       binary::Output out;
@@ -93,8 +95,11 @@ Substitution defineBatch(
         const auto real_id = def.idByKey(ty, clause.key());
         if (ignoreRedef) {
           id = real_id;
-        } else  {
-          error("invalid fact redefinition of ${} : {}", real_id, predicate->name);
+        } else {
+          error(
+              "invalid fact redefinition of ${} : {}",
+              real_id,
+              predicate->name);
         }
       }
 
@@ -110,6 +115,6 @@ Substitution defineBatch(
   return subst.freeze();
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

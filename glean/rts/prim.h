@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-
 #pragma once
 
 #include "glean/rts/binary.h"
@@ -23,6 +22,6 @@ void relToAbsByteSpans(folly::ByteRange, binary::Output&);
 /// Converting packed byte spans to absolute bytespans
 void unpackByteSpans(folly::ByteRange range, binary::Output& output);
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

@@ -6,23 +6,26 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include <numeric>
 #include <folly/container/F14Map.h>
+#include <numeric>
 
-#include "glean/rts/ownership/derived.h"
 #include "glean/rts/lookup.h"
+#include "glean/rts/ownership/derived.h"
 #include "glean/rts/timer.h"
 
 namespace facebook {
 namespace glean {
 namespace rts {
 
-void DefineOwnership::derivedFrom(Pid pid, Id id, const std::set<UsetId>& deps) {
+void DefineOwnership::derivedFrom(
+    Pid pid,
+    Id id,
+    const std::set<UsetId>& deps) {
   if (deps.size() == 0) {
     return;
   }
 
-  const auto [it, _ ] = defines_.insert({ pid, PerPredicate() });
+  const auto [it, _] = defines_.insert({pid, PerPredicate()});
   PerPredicate& pred = it->second;
 
   SetU32 set = SetU32::from(deps);
@@ -94,7 +97,8 @@ void DefineOwnership::sortByOwner(uint64_t facts, std::vector<int64_t>& order) {
     }
   }
 
-  // 2. order is some permutation of [0..facts-1]. sort by owner = [ 2, 1, 3, 0 ]
+  // 2. order is some permutation of [0..facts-1]. sort by owner = [ 2, 1, 3, 0
+  // ]
   //
   // This is the order in which we will serialize the facts, which
   // essentially renumbers them. Hence the facts will be renumbered
@@ -139,9 +143,9 @@ void DefineOwnership::subst(const Substitution& subst) {
 }
 
 std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
-  Ownership& ownership,
-  Lookup* base, // Lookup for the base DB, if there is one
-  DerivedFactOwnershipIterator *iter) {
+    Ownership& ownership,
+    Lookup* base, // Lookup for the base DB, if there is one
+    DerivedFactOwnershipIterator* iter) {
   auto t = makeAutoTimer("computeDerivedOwnership");
   VLOG(1) << "computing derived ownership";
 
@@ -150,8 +154,8 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
   // and B, then its final ownership set will be A || B. That is, the
   // fact will be visibile (derivable) if either A or B are visible.
 
-  std::map<uint64_t,UsetId> factOwners;
-  folly::F14FastMap<uint64_t,std::set<UsetId>> factOwnerSets;
+  std::map<uint64_t, UsetId> factOwners;
+  folly::F14FastMap<uint64_t, std::set<UsetId>> factOwnerSets;
 
   auto min_id = base ? base->firstFreeId() : Id::lowest();
 
@@ -172,7 +176,7 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
           auto baseOwner = base->getOwner(Id::fromWord(id));
           VLOG(2) << "baseOwner: " << baseOwner;
           if (baseOwner != INVALID_USET) {
-             it2->second.insert(baseOwner);
+            it2->second.insert(baseOwner);
           }
         }
       }
@@ -205,7 +209,7 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
   // convert factOwners into a vector of intervals. factOwners may be sparse,
   // because we may have derived facts that already existed in a base DB, so we
   // have to be careful to fill in gaps in the interval map with INVALID_USET
-  std::vector<std::pair<Id,UsetId>> intervals;
+  std::vector<std::pair<Id, UsetId>> intervals;
   intervals.reserve(factOwners.size());
   UsetId current = INVALID_USET;
   Id prev = Id::lowest() - 1;
@@ -225,18 +229,17 @@ std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
     intervals.emplace_back(prev + 1, INVALID_USET);
   }
 
-  VLOG(1) << "computing derived ownership: " <<
-    intervals.size() << " intervals";
+  VLOG(1) << "computing derived ownership: " << intervals.size()
+          << " intervals";
 
   // Now build a ComputedOwnership that we can return
   return std::make_unique<ComputedOwnership>(
-      std::move(usets),
-      std::move(intervals));
+      std::move(usets), std::move(intervals));
 }
 
 void addDerived(
-    Lookup *lookup,
-    DefineOwnership *define,
+    Lookup* lookup,
+    DefineOwnership* define,
     Pid pid,
     DerivedDependencyIterator* it) {
   while (auto v = it->get()) {
@@ -260,6 +263,6 @@ void addDerived(
   }
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

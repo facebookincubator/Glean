@@ -14,7 +14,7 @@ namespace rts {
 
 struct FactSet::Index {
   /// Type of index maps
-  using map_t = std::map<folly::ByteRange, const Fact *>;
+  using map_t = std::map<folly::ByteRange, const Fact*>;
 
   /// Type of index maps with synchronised access
   using entry_t = folly::Synchronized<map_t>;
@@ -74,8 +74,8 @@ PredicateStats FactSet::predicateStats() const {
   if (ulock->upto < facts.size()) {
     auto wlock = ulock.moveFromUpgradeToWrite();
     wlock->stats.reserve(keys.low_bound(), keys.high_bound());
-    for (const auto& fact
-          : folly::range(facts.begin() + wlock->upto, facts.end())) {
+    for (const auto& fact :
+         folly::range(facts.begin() + wlock->upto, facts.end())) {
       wlock->stats[fact.type] += MemoryStats::one(fact.clause.size());
     }
     wlock->upto = facts.size();
@@ -127,8 +127,7 @@ std::unique_ptr<FactIterator> FactSet::enumerate(Id from, Id upto) {
     iter_t pos;
     const iter_t end;
 
-    Iterator(iter_t p, iter_t e)
-      : pos(p), end(e) {}
+    Iterator(iter_t p, iter_t e) : pos(p), end(e) {}
 
     void next() override {
       assert(pos != end);
@@ -139,13 +138,16 @@ std::unique_ptr<FactIterator> FactSet::enumerate(Id from, Id upto) {
       return pos != end ? *pos : Fact::Ref::invalid();
     }
 
-    std::optional<Id> lower_bound() override { return std::nullopt; }
-    std::optional<Id> upper_bound() override { return std::nullopt; }
+    std::optional<Id> lower_bound() override {
+      return std::nullopt;
+    }
+    std::optional<Id> upper_bound() override {
+      return std::nullopt;
+    }
   };
 
   return std::make_unique<Iterator>(
-    lower_bound(from),
-    upto ? lower_bound(upto) : end());
+      lower_bound(from), upto ? lower_bound(upto) : end());
 }
 
 std::unique_ptr<FactIterator> FactSet::enumerateBack(Id from, Id downto) {
@@ -154,8 +156,7 @@ std::unique_ptr<FactIterator> FactSet::enumerateBack(Id from, Id downto) {
     iter_t pos;
     const iter_t end;
 
-    BackIterator(iter_t p, iter_t e)
-      : pos(p), end(e) {}
+    BackIterator(iter_t p, iter_t e) : pos(p), end(e) {}
 
     void next() override {
       assert(pos != end);
@@ -172,24 +173,23 @@ std::unique_ptr<FactIterator> FactSet::enumerateBack(Id from, Id downto) {
       }
     }
 
-    std::optional<Id> lower_bound() override { return std::nullopt; }
-    std::optional<Id> upper_bound() override { return std::nullopt; }
+    std::optional<Id> lower_bound() override {
+      return std::nullopt;
+    }
+    std::optional<Id> upper_bound() override {
+      return std::nullopt;
+    }
   };
 
   return std::make_unique<BackIterator>(
-    from ? lower_bound(from) : end(),
-    lower_bound(downto));
+      from ? lower_bound(from) : end(), lower_bound(downto));
 }
 
-std::unique_ptr<FactIterator> FactSet::seek(
-    Pid type,
-    folly::ByteRange start,
-    size_t prefix_size) {
+std::unique_ptr<FactIterator>
+FactSet::seek(Pid type, folly::ByteRange start, size_t prefix_size) {
   struct SeekIterator : FactIterator {
     explicit SeekIterator(Index::map_t::iterator b, Index::map_t::iterator e)
-      : current(b)
-      , end(e)
-    {}
+        : current(b), end(e) {}
 
     void next() override {
       assert(current != end);
@@ -200,8 +200,12 @@ std::unique_ptr<FactIterator> FactSet::seek(
       return current != end ? current->second->ref() : Fact::Ref::invalid();
     }
 
-    std::optional<Id> lower_bound() override { return std::nullopt; }
-    std::optional<Id> upper_bound() override { return std::nullopt; }
+    std::optional<Id> lower_bound() override {
+      return std::nullopt;
+    }
+    std::optional<Id> upper_bound() override {
+      return std::nullopt;
+    }
 
     Index::map_t::const_iterator current;
     const Index::map_t::const_iterator end;
@@ -217,7 +221,7 @@ std::unique_ptr<FactIterator> FactSet::seek(
       entry.withWLock([&](auto& map) {
         if (map.size() != p->size()) {
           map.clear();
-          for (const Fact *fact : *p) {
+          for (const Fact* fact : *p) {
             map.insert({fact->key(), fact});
           }
         }
@@ -229,12 +233,10 @@ std::unique_ptr<FactIterator> FactSet::seek(
     auto& map = entry.unsafeGetUnlocked();
 
     const auto next =
-      binary::lexicographicallyNext({start.data(), prefix_size});
+        binary::lexicographicallyNext({start.data(), prefix_size});
     return std::make_unique<SeekIterator>(
-      map.lower_bound(start),
-      next.empty()
-        ? map.end()
-        : map.lower_bound(binary::byteRange(next)));
+        map.lower_bound(start),
+        next.empty() ? map.end() : map.lower_bound(binary::byteRange(next)));
   } else {
     return std::make_unique<EmptyIterator>();
   }
@@ -245,7 +247,7 @@ std::unique_ptr<FactIterator> FactSet::seekWithinSection(
     folly::ByteRange start,
     size_t prefix_size,
     Id from,
-    Id to ) {
+    Id to) {
   if (from <= startingId() && firstFreeId() <= to) {
     return seek(type, start, prefix_size);
   }
@@ -268,8 +270,8 @@ Id FactSet::define(Pid type, Fact::Clause clause, Id) {
     facts.commit(std::move(fact));
     return next_id;
   } else {
-    return
-      fact->value() == (*r.first)->value() ? (*r.first)->id() : Id::invalid();
+    return fact->value() == (*r.first)->value() ? (*r.first)->id()
+                                                : Id::invalid();
   }
 }
 
@@ -305,7 +307,7 @@ FactSet::Serialized FactSet::serializeReorder(
 
 namespace {
 
-template<typename Context>
+template <typename Context>
 std::pair<binary::Output, size_t> substituteFact(
     const Inventory& inventory,
     const Predicate::Rename<Context>& substitute,
@@ -318,7 +320,7 @@ std::pair<binary::Output, size_t> substituteFact(
   return {std::move(clause), key_size};
 }
 
-}
+} // namespace
 
 /*
   How rebasing works:
@@ -342,24 +344,22 @@ std::pair<binary::Output, size_t> substituteFact(
   global facts.
 */
 
-std::pair<FactSet,Substitution> FactSet::rebase(
+std::pair<FactSet, Substitution> FactSet::rebase(
     const Inventory& inventory,
     const Substitution& subst,
     Store& global) const {
   const auto new_start = subst.firstFreeId();
-  const auto substitute = syscall([&subst](Id id, Pid) {
-    return subst.subst(id);
-  });
+  const auto substitute =
+      syscall([&subst](Id id, Pid) { return subst.subst(id); });
 
   const auto split = lower_bound(subst.finish());
 
   for (auto fact : folly::range(begin(), split)) {
     auto r = substituteFact(inventory, substitute, fact);
-    global.insert({
-      subst.subst(fact.id),
-      fact.type,
-      Fact::Clause::from(r.first.bytes(), r.second)
-    });
+    global.insert(
+        {subst.subst(fact.id),
+         fact.type,
+         Fact::Clause::from(r.first.bytes(), r.second)});
   }
 
   // build a substitution that covers the whole of the FactSet,
@@ -373,9 +373,8 @@ std::pair<FactSet,Substitution> FactSet::rebase(
   });
   MutableSubstitution localSubst(subst.start(), rebase_ids);
 
-  const auto substituteLocal = syscall([&localSubst](Id id, Pid) {
-    return localSubst.subst(id);
-  });
+  const auto substituteLocal =
+      syscall([&localSubst](Id id, Pid) { return localSubst.subst(id); });
 
   FactSet local(new_start);
   for (auto fact : folly::range(split, end())) {
@@ -394,7 +393,8 @@ std::pair<FactSet,Substitution> FactSet::rebase(
     localSubst.set(old_id, new_id);
   }
 
-  return std::make_pair<FactSet,Substitution>(std::move(local), localSubst.freeze());
+  return std::make_pair<FactSet, Substitution>(
+      std::move(local), localSubst.freeze());
 }
 
 void FactSet::append(FactSet other) {
@@ -417,7 +417,7 @@ bool FactSet::appendable(const FactSet& other) const {
   }
 
   for (const auto& k : other.keys) {
-    if (const auto *p = keys.lookup(k.first)) {
+    if (const auto* p = keys.lookup(k.first)) {
       for (auto i = k.second.begin(); i != k.second.end(); ++i) {
         if (p->contains((*i)->key())) {
           return false;
@@ -434,7 +434,6 @@ bool FactSet::sanityCheck() const {
   return true;
 }
 
-
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

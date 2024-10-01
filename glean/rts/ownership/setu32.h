@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <folly/Optional.h>
 #include <stdint.h>
 #include <algorithm>
 #include <cassert>
@@ -15,11 +16,10 @@
 #include <set>
 #include <tuple>
 #include <vector>
-#include <folly/Optional.h>
 
 #if __x86_64__ // AVX required
-#include <immintrin.h>
 #include <folly/compression/elias_fano/EliasFanoCoding.h>
+#include <immintrin.h>
 #else
 #include "glean/rts/ownership/fallbackavx.h"
 #endif
@@ -55,10 +55,10 @@ inline __m256i all() {
 
 inline __m256i single(uint8_t n) {
   return _mm256_sllv_epi32(
-          _mm256_set1_epi32(1),
-          _mm256_sub_epi32(
-              _mm256_set1_epi32(n),
-              _mm256_set_epi32(224,192,160,128,96,64,32,0)));
+      _mm256_set1_epi32(1),
+      _mm256_sub_epi32(
+          _mm256_set1_epi32(n),
+          _mm256_set_epi32(224, 192, 160, 128, 96, 64, 32, 0)));
 }
 
 inline bool includes(__m256i value, __m256i other) {
@@ -68,21 +68,24 @@ inline bool includes(__m256i value, __m256i other) {
 inline size_t count(__m256i value) {
   const uint64_t* p = reinterpret_cast<const uint64_t*>(&value);
   // _mm256_popcnt instructions require AVX512
-  return
-    _mm_popcnt_u64(p[0]) +
-    _mm_popcnt_u64(p[1]) +
-    _mm_popcnt_u64(p[2]) +
-    _mm_popcnt_u64(p[3]);
+  return _mm_popcnt_u64(p[0]) + _mm_popcnt_u64(p[1]) + _mm_popcnt_u64(p[2]) +
+      _mm_popcnt_u64(p[3]);
 }
 
 inline uint32_t upper(__m256i value) {
   const uint64_t* p = reinterpret_cast<const uint64_t*>(&value);
   auto a = _lzcnt_u64(p[3]);
-  if (a < 64) { return 255 - a; }
+  if (a < 64) {
+    return 255 - a;
+  }
   a = _lzcnt_u64(p[2]);
-  if (a < 64) { return 191 - a; }
+  if (a < 64) {
+    return 191 - a;
+  }
   a = _lzcnt_u64(p[1]);
-  if (a < 64) { return 127 - a; }
+  if (a < 64) {
+    return 127 - a;
+  }
   return (63 - _lzcnt_u64(p[0]));
 }
 
@@ -101,8 +104,9 @@ inline __m256i xor_(__m256i value, __m256i other) {
 #else // not x86_64
 
 inline bool empty(__m256i value) {
-  return !(value[0] || value[1] || value[2] || value[3] ||
-           value[4] || value[5] || value[6] || value[7]);
+  return !(
+      value[0] || value[1] || value[2] || value[3] || value[4] || value[5] ||
+      value[6] || value[7]);
 }
 
 inline __m256i none() {
@@ -116,7 +120,8 @@ inline __m256i all() {
 }
 
 inline __m256i single(uint8_t n) {
-  __m256i v0 = {224,192,160,128,96,64,32,0}, v1 = {1,1,1,1,1,1,1,1};
+  __m256i v0 = {224, 192, 160, 128, 96, 64, 32, 0},
+          v1 = {1, 1, 1, 1, 1, 1, 1, 1};
   return v1 << (v0 - n);
 }
 
@@ -126,19 +131,24 @@ inline bool includes(__m256i value, __m256i other) {
 
 inline size_t count(__m256i value) {
   const uint64_t* p = reinterpret_cast<const uint64_t*>(&value);
-  return
-    __builtin_popcountl(p[0]) +
-    __builtin_popcountl(p[1]) +
-    __builtin_popcountl(p[2]) +
-    __builtin_popcountl(p[3]);
+  return __builtin_popcountl(p[0]) + __builtin_popcountl(p[1]) +
+      __builtin_popcountl(p[2]) + __builtin_popcountl(p[3]);
 }
 
 inline uint32_t upper(__m256i value) {
   const uint64_t* p = reinterpret_cast<const uint64_t*>(&value);
-  if (p[3]) { return 255 - __builtin_clzl(p[3]); }
-  if (p[2]) { return 191 - __builtin_clzl(p[2]); }
-  if (p[1]) { return 127 - __builtin_clzl(p[1]); }
-  if (p[0]) { return 63 - __builtin_clzl(p[0]); }
+  if (p[3]) {
+    return 255 - __builtin_clzl(p[3]);
+  }
+  if (p[2]) {
+    return 191 - __builtin_clzl(p[2]);
+  }
+  if (p[1]) {
+    return 127 - __builtin_clzl(p[1]);
+  }
+  if (p[0]) {
+    return 63 - __builtin_clzl(p[0]);
+  }
   return 0; // undefined
 }
 
@@ -209,7 +219,7 @@ struct Bits256 {
     return impl::upper(value);
   }
 
-  Bits256 with(const uint8_t *vals, uint8_t len) const {
+  Bits256 with(const uint8_t* vals, uint8_t len) const {
     // TODO: try to vectorise and/or use lookup table
     auto x = *this;
 
@@ -274,7 +284,7 @@ struct Bits256 {
  * representation simple.
  */
 class SetU32 {
-public:
+ public:
   /**
    * Header control words. This is morally equivalent to
    *
@@ -319,7 +329,7 @@ public:
 
     /// sparseLen can be called on non-sparse blocks and will be 0 for them
     uint32_t sparseLen() const {
-        return (value >> 2) & 63;
+      return (value >> 2) & 63;
     }
 
     void addSparseLen(uint8_t n) {
@@ -329,7 +339,7 @@ public:
 
     /// Number of Bits256 blocks - 1 for dense blocks, 0 otherwise.
     size_t denseLen() const {
-        return value & 1;
+      return value & 1;
     }
 
     bool operator==(Hdr other) const {
@@ -344,7 +354,7 @@ public:
       return value < (id << 8);
     }
 
-  private:
+   private:
     Hdr(uint32_t id, uint8_t len, Type type) {
       value = (id << 8) | (uint32_t(len) << 2) | static_cast<uint32_t>(type);
     }
@@ -358,7 +368,10 @@ public:
     size_t sparse = 0;
 
     static Sizes max(const Sizes& x, const Sizes& y) {
-      return {std::max(x.hdrs, y.hdrs), std::max(x.dense, y.dense), std::max(x.sparse, y.sparse)};
+      return {
+          std::max(x.hdrs, y.hdrs),
+          std::max(x.dense, y.dense),
+          std::max(x.sparse, y.sparse)};
     }
 
     Sizes operator+(const Sizes& other) const {
@@ -369,7 +382,7 @@ public:
   SetU32() = default;
 
   struct copy_capacity_tag {};
-  static constexpr copy_capacity_tag copy_capacity {};
+  static constexpr copy_capacity_tag copy_capacity{};
 
   SetU32(const SetU32& other, copy_capacity_tag);
 
@@ -407,8 +420,7 @@ public:
         std::vector<Hdr>::const_iterator hdrs,
         std::vector<Bits256>::const_iterator dense,
         std::vector<uint8_t>::const_iterator sparse)
-      : hdrs(hdrs), block{Hdr::null(), dense, sparse}
-      {}
+        : hdrs(hdrs), block{Hdr::null(), dense, sparse} {}
 
     const Block& operator*() const {
       const_cast<Hdr&>(block.hdr) = *hdrs;
@@ -442,25 +454,15 @@ public:
   };
 
   const_iterator begin() const {
-    return {
-      hdrs.begin(),
-      dense.begin(),
-      sparse.begin()
-    };
+    return {hdrs.begin(), dense.begin(), sparse.begin()};
   }
 
   const_iterator end() const {
-    return {
-      hdrs.end(),
-      dense.end(),
-      sparse.end()
-    };
+    return {hdrs.end(), dense.end(), sparse.end()};
   }
 
-  static const_iterator lower_bound(
-    const_iterator start,
-    const_iterator finish,
-    uint32_t id);
+  static const_iterator
+  lower_bound(const_iterator start, const_iterator finish, uint32_t id);
 
   void reserve(Sizes sizes);
   void shrink_to_fit();
@@ -482,11 +484,12 @@ public:
    * pointer to the superset. Otherwise, stores the result in `result` and
    * returns a pointer to it.
    */
-  static const SetU32 *merge(SetU32& result, const SetU32& left, const SetU32& right);
+  static const SetU32*
+  merge(SetU32& result, const SetU32& left, const SetU32& right);
 
-  template<typename F>
+  template <typename F>
   void foreach(F&& f) const {
-    for (auto &block : *this) {
+    for (auto& block : *this) {
       auto id = block.hdr.id() << 8;
       switch (block.hdr.type()) {
         case SetU32::Hdr::Sparse: {
@@ -514,14 +517,14 @@ public:
   }
 
   using MutableEliasFanoList =
-    folly::compression::MutableEliasFanoCompressedList;
+      folly::compression::MutableEliasFanoCompressedList;
   using EliasFanoList = folly::compression::EliasFanoCompressedList;
   MutableEliasFanoList toEliasFano();
   static SetU32 fromEliasFano(const EliasFanoList& list);
 
-  static void dump(SetU32 &);
+  static void dump(SetU32&);
 
-private:
+ private:
   static bool fitsSparse(uint8_t m, uint8_t n) {
     return int(m) + n < 32;
   }
@@ -530,10 +533,10 @@ private:
   void append(uint32_t id, Bits256 w);
 
   void appendMerge(
-    const_iterator left,
-    const_iterator left_end,
-    const_iterator right,
-    const_iterator right_end);
+      const_iterator left,
+      const_iterator left_end,
+      const_iterator right,
+      const_iterator right_end);
   void appendMerge(Block left, Block right);
 
   std::vector<Hdr> hdrs;
@@ -541,6 +544,6 @@ private:
   std::vector<uint8_t> sparse;
 };
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

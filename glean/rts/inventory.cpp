@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#include "glean/rts/inventory.h"
 #include "glean/rts/bytecode/subroutine.h"
 #include "glean/rts/fact.h"
-#include "glean/rts/inventory.h"
 #include "glean/rts/serialize.h"
 
 namespace facebook {
@@ -22,8 +22,7 @@ bool Predicate::operator==(const Predicate& other) const {
         *typechecker == *other.typechecker && *traverser == *other.traverser));
 }
 
-Inventory::Inventory() : first_id(Pid::lowest())
-{}
+Inventory::Inventory() : first_id(Pid::lowest()) {}
 
 Inventory::Inventory(std::vector<Predicate> ps) {
   first_id = Pid::invalid();
@@ -35,19 +34,19 @@ Inventory::Inventory(std::vector<Predicate> ps) {
     } else {
       first_id = std::min(first_id, p.id);
     }
-    last_id = std::max(last_id, p.id+1);
+    last_id = std::max(last_id, p.id + 1);
   }
 
   preds = std::vector<Predicate>(
-    distance(first_id ? first_id : Pid::lowest(), last_id),
-    Predicate{Pid::invalid(), {}, 0, {}});
+      distance(first_id ? first_id : Pid::lowest(), last_id),
+      Predicate{Pid::invalid(), {}, 0, {}});
   for (auto& p : ps) {
     const auto i = distance(first_id, p.id);
     preds[i] = std::move(p);
   }
 }
 
-const Predicate * FOLLY_NULLABLE Inventory::lookupPredicate(Pid id) const & {
+const Predicate* FOLLY_NULLABLE Inventory::lookupPredicate(Pid id) const& {
   if (id >= firstId()) {
     const auto i = distance(firstId(), id);
     return i < preds.size() && preds[i].id ? &preds[i] : nullptr;
@@ -56,8 +55,8 @@ const Predicate * FOLLY_NULLABLE Inventory::lookupPredicate(Pid id) const & {
   }
 }
 
-std::vector<const Predicate *> Inventory::predicates() const {
-  std::vector<const Predicate *> ps;
+std::vector<const Predicate*> Inventory::predicates() const {
+  std::vector<const Predicate*> ps;
   ps.reserve(preds.size());
   for (const auto& p : preds) {
     if (p.id) {
@@ -104,6 +103,6 @@ Inventory Inventory::deserialize(folly::ByteRange bytes) {
   }
   return Inventory(std::move(preds));
 }
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

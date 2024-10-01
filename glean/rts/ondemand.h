@@ -18,15 +18,14 @@ namespace rts {
 /// Values which are created once when needed. OnDemand is thread safe and
 /// always returns the same value. However, it might speculatively create (and
 /// then destroy) additional values.
-template<typename T>
+template <typename T>
 class OnDemand final {
-public:
+ public:
   /// Create an empty OnDemand
   OnDemand() noexcept : ptr_(nullptr) {}
 
   OnDemand(OnDemand&& other) noexcept
-    : ptr_(other.ptr_.exchange(nullptr, std::memory_order_acq_rel))
-    {}
+      : ptr_(other.ptr_.exchange(nullptr, std::memory_order_acq_rel)) {}
 
   OnDemand& operator=(OnDemand&& other) noexcept {
     auto p = other.ptr_.exchange(nullptr, std::memory_order_acq_rel);
@@ -60,10 +59,10 @@ public:
     return const_cast<OnDemand*>(this)->get();
   }
 
-private:
+ private:
   mutable std::atomic<T*> ptr_;
 };
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

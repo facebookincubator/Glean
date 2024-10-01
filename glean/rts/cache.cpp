@@ -37,20 +37,20 @@ LookupCache::Storage::~Storage() {
   facts.erase_and_dispose(facts.begin(), facts.end(), Fact::destroy);
 }
 
-const Fact *LookupCache::Storage::push_back(Fact::unique_ptr fact) {
+const Fact* LookupCache::Storage::push_back(Fact::unique_ptr fact) {
   facts.push_back(*fact);
   bytes += fact->size();
   ++count;
   return fact.release();
 }
 
-Fact::unique_ptr LookupCache::Storage::release(const Fact *fact) {
+Fact::unique_ptr LookupCache::Storage::release(const Fact* fact) {
   assert(bytes >= fact->size());
   assert(count > 0);
   bytes -= fact->size();
   --count;
   facts.erase(facts.iterator_to(*fact));
-  return Fact::unique_ptr(const_cast<Fact *>(fact));
+  return Fact::unique_ptr(const_cast<Fact*>(fact));
 }
 
 void LookupCache::Storage::splice_to(
@@ -64,7 +64,7 @@ void LookupCache::Storage::splice_to(
   count -= range.count;
 }
 
-void LookupCache::Storage::touch(const Fact *fact) {
+void LookupCache::Storage::touch(const Fact* fact) {
   facts.erase(facts.iterator_to(*fact));
   facts.push_back(const_cast<Fact&>(*fact));
 }
@@ -78,17 +78,15 @@ enum Tag : unsigned int {
   FULL = 2 // everything
 };
 
-}
+} // namespace
 
 LookupCache::LookupCache(
     const Options& opts,
     std::shared_ptr<LookupCache::Stats> s)
-    : options(opts)
-    , touched(opts.shards)
-    , stats(std::move(s)) {
+    : options(opts), touched(opts.shards), stats(std::move(s)) {
   for (auto& t : touched) {
-    t.facts = std::make_unique<std::atomic<const Fact *>[]>(
-      options.touched_buffer_size);
+    t.facts = std::make_unique<std::atomic<const Fact*>[]>(
+        options.touched_buffer_size);
   }
 }
 
@@ -160,7 +158,7 @@ Pid LookupCache::Anchor::typeById(Id id) {
   if (cached) {
     ++cache->stats->values[Stats::typeById_hits];
     return cached;
-  } else if(auto type = base->typeById(id)) {
+  } else if (auto type = base->typeById(id)) {
     ++cache->stats->values[Stats::typeById_misses];
     cache->insert(Fact::create({id, type, {}}, TYPE));
     return type;
@@ -222,18 +220,19 @@ std::unique_ptr<FactIterator> LookupCache::Anchor::enumerate(Id from, Id upto) {
 }
 
 std::unique_ptr<FactIterator> LookupCache::Anchor::enumerateBack(
-    Id from, Id downto) {
+    Id from,
+    Id downto) {
   return base->enumerateBack(from, downto);
 }
 
-std::unique_ptr<FactIterator>LookupCache::Anchor::seek(
+std::unique_ptr<FactIterator> LookupCache::Anchor::seek(
     Pid type,
     folly::ByteRange start,
     size_t prefix_size) {
   return base->seek(type, start, prefix_size);
 }
 
-std::unique_ptr<FactIterator>LookupCache::Anchor::seekWithinSection(
+std::unique_ptr<FactIterator> LookupCache::Anchor::seekWithinSection(
     Pid type,
     folly::ByteRange start,
     size_t prefix_size,
@@ -270,7 +269,7 @@ void LookupCache::insertOne(
   }
 
   // check if we already have a fact with this id in the cache
-  const Fact *existing = nullptr;
+  const Fact* existing = nullptr;
   {
     auto o = index.ids.find(owned->id());
     if (o != index.ids.end()) {
@@ -318,7 +317,7 @@ void LookupCache::insertOne(
     if (storage.factBytes() + size > options.capacity) {
       // shrink cache to ~90% of capacity
       const auto wanted =
-        options.capacity * 0.9 > size ? options.capacity * 0.9 - size : 0;
+          options.capacity * 0.9 > size ? options.capacity * 0.9 - size : 0;
       evict(index, storage, wanted, dead);
     }
   }
@@ -335,7 +334,7 @@ void LookupCache::insertOne(
   }
 }
 
-void LookupCache::deleteFromIndex(Index& index, const Fact *fact) {
+void LookupCache::deleteFromIndex(Index& index, const Fact* fact) {
   index.ids.erase(fact);
   if (fact->tag() > TYPE) {
     index.keys.erase(fact);
@@ -356,7 +355,7 @@ void LookupCache::evict(
 
 void LookupCache::touch(
     LookupCache::SyncIndex::RLockedPtr rindex,
-    const Fact *fact) {
+    const Fact* fact) {
   if (options.shards > 0) {
     auto& t = touched[folly::AccessSpreader<>::cachedCurrent(options.shards)];
 
@@ -366,7 +365,7 @@ void LookupCache::touch(
       // yes, we might overwrite a previous store
       t.facts[k].store(fact, std::memory_order_release);
       // yes, there might have been other stores here in the meantime
-      t.next.store(k+1, std::memory_order_release);
+      t.next.store(k + 1, std::memory_order_release);
     } else {
       rindex.unlock();
       if (auto wstorage = storage.tryLock()) {
@@ -376,9 +375,7 @@ void LookupCache::touch(
       }
     }
   } else {
-    storage.withLock([&](auto& wstorage) {
-      wstorage.touch(fact);
-    });
+    storage.withLock([&](auto& wstorage) { wstorage.touch(fact); });
   }
 }
 
@@ -396,17 +393,13 @@ void LookupCache::drain(Storage& storage, Touched& t) {
 
 void LookupCache::Inserter::insert(Fact::Ref fact) {
   Fact::intrusive_list dead;
-  cache.insertOne(
-    index,
-    storage,
-    Fact::create(fact, FULL),
-    dead);
+  cache.insertOne(index, storage, Fact::create(fact, FULL), dead);
   if (!dead.empty()) {
     std::unique_lock delete_write(index.delete_lock);
     dead.erase_and_dispose(dead.begin(), dead.end(), Fact::destroy);
   }
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

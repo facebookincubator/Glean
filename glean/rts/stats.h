@@ -22,9 +22,15 @@ namespace rts {
 struct Interval {
   Interval(size_t n = 0) : lo(n), hi(n) {}
 
-  constexpr bool exact() const { return lo == hi; }
-  constexpr size_t low() const { return lo; }
-  constexpr size_t high() const { return hi; }
+  constexpr bool exact() const {
+    return lo == hi;
+  }
+  constexpr size_t low() const {
+    return lo;
+  }
+  constexpr size_t high() const {
+    return hi;
+  }
 
   static Interval atLeast(size_t n) {
     return Interval(n, std::numeric_limits<size_t>::max());
@@ -48,13 +54,13 @@ struct Interval {
     return Interval(lo, std::numeric_limits<size_t>::max());
   }
 
-private:
+ private:
   Interval(size_t low, size_t high) : lo(low), hi(high) {}
 
   static size_t sat_add(size_t x, size_t y) {
     return std::numeric_limits<size_t>::max() - x < y
-      ? std::numeric_limits<size_t>::max()
-      : x+y;
+        ? std::numeric_limits<size_t>::max()
+        : x + y;
   }
 
   size_t lo;
@@ -76,7 +82,6 @@ inline Interval operator+(const Interval& x, const Interval& y) {
 }
 
 struct MemoryStats {
-
   /// Number of items
   size_t count;
 
@@ -87,7 +92,7 @@ struct MemoryStats {
   MemoryStats(size_t n, size_t mem) : count(n), memory(mem) {}
 
   static MemoryStats one(size_t mem) {
-    return MemoryStats(1,mem);
+    return MemoryStats(1, mem);
   }
 
   MemoryStats& operator+=(const MemoryStats& other) {
@@ -114,12 +119,12 @@ struct MemoryStats {
 using PredicateStats = DenseMap<Pid, MemoryStats>;
 
 void marshal(
-  const PredicateStats& stats,
-  size_t *count,
-  int64_t **ids,
-  uint64_t **counts,
-  uint64_t **sizes);
+    const PredicateStats& stats,
+    size_t* count,
+    int64_t** ids,
+    uint64_t** counts,
+    uint64_t** sizes);
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

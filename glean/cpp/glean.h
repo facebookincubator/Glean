@@ -13,16 +13,16 @@
 
 #pragma once
 
-#include <tuple>
 #include <boost/icl/interval_set.hpp>
 #include <boost/operators.hpp>
 #include <boost/variant.hpp>
 #include <folly/Format.h>
+#include <tuple>
 
 #include "glean/rts/binary.h"
 #include "glean/rts/cache.h"
-#include "glean/rts/inventory.h"
 #include "glean/rts/id.h"
+#include "glean/rts/inventory.h"
 #include "glean/rts/stacked.h"
 #include "glean/rts/substitution.h"
 
@@ -118,45 +118,62 @@ using rts::Pid;
 //   * user-defined structs
 //   * enumerated types
 
-template<typename T> struct Repr_;
+template <typename T>
+struct Repr_;
 
 // Convenience:
-template<typename T> using Repr = typename Repr_<T>::Type;
+template <typename T>
+using Repr = typename Repr_<T>::Type;
 
 struct Byte;
 
-template<> struct Repr_<unsigned char> { using Type = Byte; };
+template <>
+struct Repr_<unsigned char> {
+  using Type = Byte;
+};
 
 struct Nat;
 
-template<> struct Repr_<unsigned long> { using Type = Nat; };
-template<> struct Repr_<unsigned long long> { using Type = Nat; };
+template <>
+struct Repr_<unsigned long> {
+  using Type = Nat;
+};
+template <>
+struct Repr_<unsigned long long> {
+  using Type = Nat;
+};
 
 struct String;
 
-template<> struct Repr_<std::string> { using Type = String; };
+template <>
+struct Repr_<std::string> {
+  using Type = String;
+};
 
-template<typename T> struct Array;
+template <typename T>
+struct Array;
 
-template<typename T>
+template <typename T>
 struct Repr_<std::vector<T>> {
   using Type = Array<Repr<T>>;
 };
 
-template<typename... Ts> struct Tuple;
+template <typename... Ts>
+struct Tuple;
 using Unit = Tuple<>;
 
-template<typename... Ts>
+template <typename... Ts>
 struct Repr_<std::tuple<Ts...>> {
   using Type = Tuple<Repr<Ts>...>;
 };
 
-template<typename... Ts> struct Sum;
-template<typename T>
-using Maybe = Sum<Unit,T>;
+template <typename... Ts>
+struct Sum;
+template <typename T>
+using Maybe = Sum<Unit, T>;
 
-template<size_t i, typename T>
-struct Alt : private boost::operators<Alt<i,T>> {
+template <size_t i, typename T>
+struct Alt : private boost::operators<Alt<i, T>> {
   T value;
   explicit Alt(const T& x) : value(x) {}
   explicit Alt(T&& x) : value(std::forward<T>(x)) {}
@@ -170,29 +187,29 @@ struct Alt : private boost::operators<Alt<i,T>> {
   }
 };
 
-template<size_t... is, typename... Ts>
-struct Repr_<boost::variant<Alt<is,Ts>...>> {
+template <size_t... is, typename... Ts>
+struct Repr_<boost::variant<Alt<is, Ts>...>> {
   using Type = Sum<Repr<Ts>...>;
 };
 
-template<size_t i, typename T>
-Alt<i,std::decay_t<T>> alt(T&& x) {
-  return Alt<i,std::decay_t<T>>(std::forward<T>(x));
+template <size_t i, typename T>
+Alt<i, std::decay_t<T>> alt(T&& x) {
+  return Alt<i, std::decay_t<T>>(std::forward<T>(x));
 }
 
-inline Alt<0,std::tuple<>> nothing() {
+inline Alt<0, std::tuple<>> nothing() {
   return alt<0>(std::make_tuple());
 }
 
-template<typename T>
-Alt<1,std::decay_t<T>> just(T&& x) {
+template <typename T>
+Alt<1, std::decay_t<T>> just(T&& x) {
   return alt<1>(std::forward<T>(x));
 }
 
-template<typename T> using maybe_type =
-  boost::variant<Alt<0, std::tuple<>>, Alt<1,T>>;
+template <typename T>
+using maybe_type = boost::variant<Alt<0, std::tuple<>>, Alt<1, T>>;
 
-template<typename T>
+template <typename T>
 maybe_type<T> maybe(const folly::Optional<T>& x) {
   if (x) {
     return alt<1>(x.value());
@@ -204,9 +221,13 @@ maybe_type<T> maybe(const folly::Optional<T>& x) {
 // Enums - a special case of sums
 //
 // T is the actual value type, N is the range of the enum
-template<size_t N> struct Enum {};
+template <size_t N>
+struct Enum {};
 using Bool = Enum<2>;
-template<> struct Repr_<bool> { using Type = Bool; };
+template <>
+struct Repr_<bool> {
+  using Type = Bool;
+};
 
 // Predicates
 //
@@ -222,15 +243,18 @@ template<> struct Repr_<bool> { using Type = Bool; };
 //   static const char *name() { return "bar"; }
 // };
 //
-template<typename Key, typename Value = std::tuple<>>
+template <typename Key, typename Value = std::tuple<>>
 struct Predicate {
   using KeyType = Key;
   using ValueType = Value;
 };
 
 // Facts
-template<typename P> struct Fact : private boost::operators<Fact<P>> {
-  Id getId() const { return id; }
+template <typename P>
+struct Fact : private boost::operators<Fact<P>> {
+  Id getId() const {
+    return id;
+  }
 
   bool operator==(const Fact& other) const {
     return id == other.id;
@@ -240,25 +264,28 @@ template<typename P> struct Fact : private boost::operators<Fact<P>> {
     return id < other.id;
   }
 
-private:
-  template<typename Schema>
+ private:
+  template <typename Schema>
   friend class Batch;
   explicit Fact(Id i) : id(i) {}
   Id id;
 };
 
 // The representation type of a Fact is its predicate:
-template<typename P> struct Repr_<Fact<P>> { using Type = P; };
+template <typename P>
+struct Repr_<Fact<P>> {
+  using Type = P;
+};
 
 // Typed value output buffers
-template<typename T>
+template <typename T>
 struct Output {
   binary::Output& output;
 
   explicit Output(binary::Output& o) : output(o) {}
 };
 
-template<typename T, typename U>
+template <typename T, typename U>
 Output<T> unsafeAs(Output<U> o) {
   return Output<T>(o.output);
 }
@@ -276,7 +303,7 @@ inline void outputValue(Output<String> o, const std::string& s) {
   o.output.mangleString(binary::byteRange(s));
 }
 
-template<typename T, typename U>
+template <typename T, typename U>
 void outputValue(Output<Array<T>> o, std::initializer_list<U> xs) {
   o.output.packed(xs.size());
   for (const auto& x : xs) {
@@ -284,7 +311,7 @@ void outputValue(Output<Array<T>> o, std::initializer_list<U> xs) {
   }
 }
 
-template<typename T, typename U>
+template <typename T, typename U>
 void outputValue(Output<Array<T>> o, const std::vector<U>& xs) {
   o.output.packed(xs.size());
   for (const auto& x : xs) {
@@ -292,7 +319,7 @@ void outputValue(Output<Array<T>> o, const std::vector<U>& xs) {
   }
 }
 
-template<typename T, typename Iter>
+template <typename T, typename Iter>
 void outputValue(Output<Array<T>> o, const folly::Range<Iter>& range) {
   o.output.packed(range.size());
   for (const auto& x : range) {
@@ -315,63 +342,63 @@ inline void outputValue(Output<Array<Byte>> o, const folly::fbstring& s) {
 
 namespace detail {
 
-template<size_t i, typename U>
+template <size_t i, typename U>
 void outputValues(binary::Output&, const U&) {}
 
-template<size_t i, typename U, typename T, typename... Ts>
+template <size_t i, typename U, typename T, typename... Ts>
 void outputValues(binary::Output& output, const U& u) {
   outputValue(Output<T>(output), std::get<i>(u));
-  outputValues<i+1, U, Ts...>(output,u);
+  outputValues<i + 1, U, Ts...>(output, u);
 }
 
-}
+} // namespace detail
 
-template<
-  typename... Ts,
-  typename... Us,
-  typename = std::enable_if_t<sizeof...(Ts) == sizeof...(Us)>>
+template <
+    typename... Ts,
+    typename... Us,
+    typename = std::enable_if_t<sizeof...(Ts) == sizeof...(Us)>>
 void outputValue(Output<Tuple<Ts...>> o, const std::tuple<Us...>& xs) {
   detail::outputValues<0, std::tuple<Us...>, Ts...>(o.output, xs);
 }
 
-template<
-  size_t i,
-  typename U,
-  typename... Ts,
-  typename = std::enable_if_t<i < sizeof...(Ts)>>
-void outputValue(Output<Sum<Ts...>> o, const Alt<i,U>& alt) {
+template <
+    size_t i,
+    typename U,
+    typename... Ts,
+    typename = std::enable_if_t<i<sizeof...(Ts)>> void
+        outputValue(Output<Sum<Ts...>> o, const Alt<i, U>& alt) {
   o.output.packed(i);
   outputValue(
-    unsafeAs<typename std::tuple_element<i, std::tuple<Ts...>>::type>(o),
-    alt.value);
+      unsafeAs<typename std::tuple_element<i, std::tuple<Ts...>>::type>(o),
+      alt.value);
 }
 
 namespace {
 
-template<typename... Ts>
+template <typename... Ts>
 struct OutputAlt : public boost::static_visitor<void> {
   explicit OutputAlt(Output<Sum<Ts...>> o) : out(o) {}
 
-  template<size_t i, typename U>
-  void operator()(const Alt<i,U>& alt) const {
-    outputValue(out,alt);
+  template <size_t i, typename U>
+  void operator()(const Alt<i, U>& alt) const {
+    outputValue(out, alt);
   }
 
   Output<Sum<Ts...>> out;
 };
 
-}
+} // namespace
 
-template<
-  typename... Ts,
-  typename... Us,
-  typename = std::enable_if_t<sizeof...(Ts) == sizeof...(Us)>>
+template <
+    typename... Ts,
+    typename... Us,
+    typename = std::enable_if_t<sizeof...(Ts) == sizeof...(Us)>>
 void outputValue(Output<Sum<Ts...>> o, const boost::variant<Us...>& v) {
   boost::apply_visitor(OutputAlt<Ts...>(o), v);
 }
 
-template<typename T, typename U>
-void outputValue(Output<Sum<Unit,T>> o, const folly::Optional<U>& x) {
+template <typename T, typename U>
+void outputValue(Output<Sum<Unit, T>> o, const folly::Optional<U>& x) {
   if (x) {
     o.output.packed(1);
     outputValue(unsafeAs<T>(o), x.value());
@@ -380,24 +407,24 @@ void outputValue(Output<Sum<Unit,T>> o, const folly::Optional<U>& x) {
   }
 }
 
-template<typename T>
-void outputValue(Output<Sum<Unit,T>> o, folly::None) {
+template <typename T>
+void outputValue(Output<Sum<Unit, T>> o, folly::None) {
   o.output.packed(0);
 }
 
-template<typename T, size_t N>
+template <typename T, size_t N>
 void outputValue(Output<Enum<N>> o, T x) {
   uint64_t n = static_cast<uint64_t>(x);
-  assert (n < N);
+  assert(n < N);
   outputValue(unsafeAs<Nat>(o), n);
 }
 
-template<typename P>
+template <typename P>
 void outputValue(Output<P> o, Fact<P> fact) {
   o.output.packed(fact.getId());
 }
 
-template<typename T>
+template <typename T>
 void outputValue(Output<Repr<T>> o, const T& x) {
   x.outputRepr(o);
 }
@@ -406,7 +433,6 @@ struct FactStats {
   size_t memory;
   size_t count;
 };
-
 
 struct SchemaInventory {
   rts::Inventory inventory;
@@ -417,16 +443,14 @@ struct SchemaInventory {
 };
 
 class BatchBase {
-public:
-  explicit BatchBase(
-    const SchemaInventory *inventory,
-    size_t cache_capacity);
+ public:
+  explicit BatchBase(const SchemaInventory* inventory, size_t cache_capacity);
   BatchBase(const BatchBase&) = delete;
   BatchBase(BatchBase&&) = delete;
   BatchBase& operator=(const BatchBase&) = delete;
   BatchBase& operator=(BatchBase&&) = delete;
 
-  const rts::Predicate * FOLLY_NULLABLE predicate(size_t i) const {
+  const rts::Predicate* FOLLY_NULLABLE predicate(size_t i) const {
     return inventory->predicates[i];
   }
 
@@ -452,15 +476,17 @@ public:
 
   CacheStats cacheStats();
 
-  Id firstFreeId() const { return facts.firstFreeId(); }
+  Id firstFreeId() const {
+    return facts.firstFreeId();
+  }
 
   void beginUnit(std::string);
   void endUnit();
 
   void logEnd() const;
 
-private:
-  const SchemaInventory *inventory;
+ private:
+  const SchemaInventory* inventory;
   std::shared_ptr<rts::LookupCache::Stats> stats;
   rts::LookupCache cache;
   rts::LookupCache::Anchor anchor;
@@ -475,7 +501,7 @@ private:
   };
 
   std::deque<Owned> owned;
-  Owned *current = nullptr;
+  Owned* current = nullptr;
   size_t seen_units = 0;
   mutable size_t last_serialized_units = 0;
   mutable size_t total_serialized_units = 0;
@@ -483,33 +509,31 @@ private:
 };
 
 /// A typed instantiation of an Inventory for a particular Schema.
-template<typename Schema>
+template <typename Schema>
 struct DbSchema {
   SchemaInventory inventory;
 
-  explicit DbSchema(rts::Inventory inv)
-    : inventory{std::move(inv), {}}
-    {
-      inventory.predicates = getPredicates(inventory.inventory);
-    }
+  explicit DbSchema(rts::Inventory inv) : inventory{std::move(inv), {}} {
+    inventory.predicates = getPredicates(inventory.inventory);
+  }
 
-private:
+ private:
   using ref_t = std::pair<std::string, size_t>;
 
-  template<size_t i> using pred_t =
-    typename Schema::template predicate<i>::type;
+  template <size_t i>
+  using pred_t = typename Schema::template predicate<i>::type;
 
-  template<size_t... I> static std::vector<ref_t> getRefs(
-      std::index_sequence<I...>) {
+  template <size_t... I>
+  static std::vector<ref_t> getRefs(std::index_sequence<I...>) {
     return std::vector<ref_t>{
-      ref_t{pred_t<I>::GLEAN_name(),pred_t<I>::GLEAN_version()}...};
+        ref_t{pred_t<I>::GLEAN_name(), pred_t<I>::GLEAN_version()}...};
   }
 
   using pred_map_t =
-    std::unordered_map<std::pair<std::string, int32_t>, size_t>;
+      std::unordered_map<std::pair<std::string, int32_t>, size_t>;
 
-  static std::vector<const rts::Predicate * FOLLY_NULLABLE>
-      getPredicates(const rts::Inventory& inventory) {
+  static std::vector<const rts::Predicate * FOLLY_NULLABLE> getPredicates(
+      const rts::Inventory& inventory) {
     const auto seq = std::make_index_sequence<Schema::count>();
     auto refs = getRefs(seq);
 
@@ -519,8 +543,8 @@ private:
     }
 
     const auto inventory_preds = inventory.predicates();
-    std::vector<const rts::Predicate * FOLLY_NULLABLE>
-      preds(refs.size(), nullptr);
+    std::vector<const rts::Predicate * FOLLY_NULLABLE> preds(
+        refs.size(), nullptr);
     for (auto p : inventory_preds) {
       auto i = indices.find({p->name, p->version});
       if (i != indices.end()) {
@@ -543,71 +567,72 @@ private:
 // that are in range of the substitution are moved to the cache; the remaining
 // local facts are assigned new Ids which don't clash which cached ones.
 //
-template<typename Schema>
+template <typename Schema>
 class Batch : private BatchBase {
-public:
+ public:
   Batch(const DbSchema<Schema>* schema, size_t cache_capacity)
-    : BatchBase(&(schema->inventory), cache_capacity)
-    {}
+      : BatchBase(&(schema->inventory), cache_capacity) {}
 
-  template<typename P>
-  const rts::Predicate *predicate() const {
+  template <typename P>
+  const rts::Predicate* predicate() const {
     if (auto p = base().predicate(Schema::template index<P>::value)) {
       return p;
     } else {
       throw std::runtime_error(
-        std::string("unknown predicate ") + P::GLEAN_name()
-        + "[" + folly::to<std::string>(P::GLEAN_version()) + "]");
+          std::string("unknown predicate ") + P::GLEAN_name() + "[" +
+          folly::to<std::string>(P::GLEAN_version()) + "]");
     }
   }
 
-  template<
-    typename P,
-    typename =
-      std::enable_if_t<
-        std::is_same<typename P::ValueType, std::tuple<>>::value>>
+  template <
+      typename P,
+      typename = std::enable_if_t<
+          std::is_same<typename P::ValueType, std::tuple<>>::value>>
   Fact<P> fact(const typename P::KeyType& x) {
     binary::Output output;
     outputValue(Output<Repr<typename P::KeyType>>(output), x);
     auto fact = base().define(
-      predicate<P>()->id, rts::Fact::Clause::fromKey(output.bytes()));
+        predicate<P>()->id, rts::Fact::Clause::fromKey(output.bytes()));
     assert(fact);
     return Fact<P>(fact);
   }
 
-  template<
-    typename P,
-    typename... Ts,
-    typename = std::enable_if_t<1 < sizeof...(Ts)>>
+  template <
+      typename P,
+      typename... Ts,
+      typename = std::enable_if_t<1 < sizeof...(Ts)>>
   Fact<P> fact(Ts&&... xs) {
     return fact<P>(std::make_tuple(std::forward<Ts>(xs)...));
   }
 
-  template<typename P>
+  template <typename P>
   Fact<P> factV(const typename P::KeyType& k, const typename P::ValueType& v) {
     binary::Output clause;
     outputValue(Output<Repr<typename P::KeyType>>(clause), k);
     const auto key_size = clause.size();
     outputValue(Output<Repr<typename P::ValueType>>(clause), v);
     auto fact = base().define(
-      predicate<P>()->id, rts::Fact::Clause::from(clause.bytes(), key_size));
+        predicate<P>()->id, rts::Fact::Clause::from(clause.bytes(), key_size));
     assert(fact);
     return Fact<P>(fact);
-
   }
 
-  BatchBase& base() { return *this; }
-  const BatchBase& base() const { return *this; }
+  BatchBase& base() {
+    return *this;
+  }
+  const BatchBase& base() const {
+    return *this;
+  }
 
-  using BatchBase::rebase;
+  using BatchBase::beginUnit;
   using BatchBase::bufferStats;
   using BatchBase::CacheStats;
   using BatchBase::cacheStats;
-  using BatchBase::beginUnit;
   using BatchBase::endUnit;
   using BatchBase::logEnd;
+  using BatchBase::rebase;
 };
 
-}
-}
-}
+} // namespace cpp
+} // namespace glean
+} // namespace facebook

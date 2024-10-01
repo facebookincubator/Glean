@@ -18,7 +18,8 @@ struct PPCallbacks final : public clang::PPCallbacks {
   explicit PPCallbacks(ClangDB* d) : db(*d) {}
 
   Fact<Pp::Macro> macro(const clang::Token& name) {
-    return db.fact<Pp::Macro>(static_cast<std::string>(name.getIdentifierInfo()->getName()));
+    return db.fact<Pp::Macro>(
+        static_cast<std::string>(name.getIdentifierInfo()->getName()));
   }
 
   // clang::PPCallbacks overrides
@@ -63,20 +64,20 @@ struct PPCallbacks final : public clang::PPCallbacks {
 #elif LLVM_VERSION_MAJOR >= 15
       llvm::Optional<clang::FileEntryRef> file,
 #else
-      const clang::FileEntry *file,
+      const clang::FileEntry* file,
 #endif
       clang::StringRef,
       clang::StringRef,
-      const clang::Module *,
+      const clang::Module*,
 #if LLVM_VERSION_MAJOR >= 19 || defined(CAST_COMPILER_TOOLCHAIN_FBOBJC_16)
       bool,
 #endif
-      clang::SrcMgr::CharacteristicKind
-      ) override {
+      clang::SrcMgr::CharacteristicKind) override {
 #if LLVM_VERSION_MAJOR >= 15
     // file may be empty if it was not found (a preprocessor error)
     if (file) {
-      last_include = ClangDB::Include{hashLoc, filenameRange, &file->getFileEntry()};
+      last_include =
+          ClangDB::Include{hashLoc, filenameRange, &file->getFileEntry()};
     }
 #else
     last_include = ClangDB::Include{hashLoc, filenameRange, file};
@@ -86,7 +87,7 @@ struct PPCallbacks final : public clang::PPCallbacks {
   void Ifdef(
       clang::SourceLocation,
       const clang::Token& name,
-    const clang::MacroDefinition& def) override {
+      const clang::MacroDefinition& def) override {
     clang::SourceRange range(name.getLocation(), name.getEndLoc());
     macroUsed(name, def, range, false);
   }
@@ -94,14 +95,13 @@ struct PPCallbacks final : public clang::PPCallbacks {
   void Ifndef(
       clang::SourceLocation,
       const clang::Token& name,
-    const clang::MacroDefinition& def) override {
+      const clang::MacroDefinition& def) override {
     clang::SourceRange range(name.getLocation(), name.getEndLoc());
     macroUsed(name, def, range, false);
   }
 
-  void MacroDefined(
-      const clang::Token& name,
-      const clang::MacroDirective *) override {
+  void MacroDefined(const clang::Token& name, const clang::MacroDirective*)
+      override {
     auto loc = name.getLocation();
     // Skip predefined macros such as `__cplusplus`.
     // Built-in macros such as `__LINE__` aren't defined.
@@ -117,7 +117,7 @@ struct PPCallbacks final : public clang::PPCallbacks {
   void MacroUndefined(
       const clang::Token& name,
       const clang::MacroDefinition&,
-      const clang::MacroDirective *) override {
+      const clang::MacroDirective*) override {
     auto src = db.srcRange(name.getLocation());
     auto undef = db.fact<Pp::Undef>(macro(name), src.range);
     db.ppevent(Cxx::PPEvent::undef(undef), src);
@@ -128,7 +128,6 @@ struct PPCallbacks final : public clang::PPCallbacks {
       const clang::MacroDefinition& def,
       clang::SourceRange range,
       bool expand) {
-
 #define PROFILE_macroUsed 0
 
 #if PROFILE_macroUsed
@@ -138,7 +137,6 @@ struct PPCallbacks final : public clang::PPCallbacks {
 
     const auto start = Clock::now();
 #endif
-
 
     // Getting the location is expensive and there are a lot fewer macro
     // definition sites than there are macro expansions so let's cache those
@@ -178,38 +176,35 @@ struct PPCallbacks final : public clang::PPCallbacks {
     // massive win in performance - at one time, this function accounted for
     // >40% of the running time in Strobelight (cf. T59197014).
     const ClangDB::SourceRange src =
-      (range.getBegin().isMacroID() && expansion.has_value())
+        (range.getBegin().isMacroID() && expansion.has_value())
 
-      // This is part of the current top-level expansion, just use its
-      // range.
-      ? expansion.value()
+        // This is part of the current top-level expansion, just use its
+        // range.
+        ? expansion.value()
 
-      // Manually convert this to a CharSourceRange and call the more
-      // efficient immediateSourceRange rather than srcRange.
-      : db.immediateSrcRange(
-          clang::CharSourceRange::getCharRange(
-            { // getBegin points at the start of the first token
-              range.getBegin(),
+        // Manually convert this to a CharSourceRange and call the more
+        // efficient immediateSourceRange rather than srcRange.
+        : db.immediateSrcRange(clang::CharSourceRange::getCharRange(
+              {// getBegin points at the start of the first token
+               range.getBegin(),
 
-              // getEnd points at the start of the last token.
-              range.getEnd().getLocWithOffset(
-                // Skip over the last token to make this an proper (exclusive)
-                // char range.
-                range.getBegin() == range.getEnd()
-                  // The macro expansion range is only one token which must be
-                  // the macro name.
-                  ? name.getLength()
+               // getEnd points at the start of the last token.
+               range.getEnd().getLocWithOffset(
+                   // Skip over the last token to make this an proper
+                   // (exclusive) char range.
+                   range.getBegin() == range.getEnd()
+                       // The macro expansion range is only one token which must
+                       // be the macro name.
+                       ? name.getLength()
 
-                  // Multiple tokens which means the last token must be the
-                  // closing parenthesis.
-                  : 1)
-            }));
+                       // Multiple tokens which means the last token must be the
+                       // closing parenthesis.
+                       : 1)}));
 
     if (range.getBegin().isMacroID() && !expansion.has_value()) {
       // This really shouldn't happen.
-      LOG(ERROR)
-        << "Unexpected nested macro expansion at "
-        << range.printToString(db.sourceManager());
+      LOG(ERROR) << "Unexpected nested macro expansion at "
+                 << range.printToString(db.sourceManager());
     }
 
     // Don't update expansion if this is an expansion of a macro argument.
@@ -236,10 +231,9 @@ struct PPCallbacks final : public clang::PPCallbacks {
     // without actually resolving the MacroID ranges. Perhaps we could hook
     // into the lexer somehow.
     if (!range.getBegin().isMacroID() &&
-        (!expansion.has_value()
-          || src.file != expansion->file
-          || src.span.start + src.span.length
-              > expansion->span.start + expansion->span.length)) {
+        (!expansion.has_value() || src.file != expansion->file ||
+         src.span.start + src.span.length >
+             expansion->span.start + expansion->span.length)) {
       expansion = src;
     }
 
@@ -248,19 +242,16 @@ struct PPCallbacks final : public clang::PPCallbacks {
     // the current schema is broken anyway - we assign the range of the
     // top-level expansion (it should be spelling file + range).
     const auto name_r = name.getLocation().isMacroID()
-      ? src
-      : db.immediateSrcRange(
-          clang::CharSourceRange::getCharRange({
-            name.getLocation(),
-            name.getEndLoc()
-          }));
+        ? src
+        : db.immediateSrcRange(clang::CharSourceRange::getCharRange(
+              {name.getLocation(), name.getEndLoc()}));
 
     auto use = db.fact<Pp::Use>(
-      macro(name),
-      maybe(defloc),
-      expand,
-      src.range,
-      Src::ByteSpan{name_r.span.start, name_r.span.length});
+        macro(name),
+        maybe(defloc),
+        expand,
+        src.range,
+        Src::ByteSpan{name_r.span.start, name_r.span.length});
     db.ppevent(Cxx::PPEvent::use(use), src);
 
 #if PROFILE_macroUsed
@@ -278,7 +269,7 @@ struct PPCallbacks final : public clang::PPCallbacks {
       const clang::Token& name,
       const clang::MacroDefinition& def,
       clang::SourceRange range,
-      const clang::MacroArgs *) override {
+      const clang::MacroArgs*) override {
     macroUsed(name, def, range, true);
   }
 
@@ -297,10 +288,10 @@ struct PPCallbacks final : public clang::PPCallbacks {
   folly::Optional<ClangDB::SourceRange> expansion;
 
   // Cached locations of macro definitions (see macroUsed).
-  folly::F14FastMap<const clang::MacroInfo *, folly::Optional<Src::Loc>> macros;
+  folly::F14FastMap<const clang::MacroInfo*, folly::Optional<Src::Loc>> macros;
 };
 
-}
+} // namespace
 
 namespace facebook::glean::clangx {
 
@@ -308,4 +299,4 @@ std::unique_ptr<clang::PPCallbacks> newPPCallbacks(ClangDB* db) {
   return std::make_unique<PPCallbacks>(db);
 }
 
-}
+} // namespace facebook::glean::clangx

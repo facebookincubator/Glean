@@ -161,6 +161,7 @@ struct EncodedNat {
   folly::ByteRange byteRange() {
     return folly::ByteRange(buf, buf + encoded_size);
   }
+
  private:
   uint8_t buf[rts::MAX_NAT_SIZE];
   size_t encoded_size;

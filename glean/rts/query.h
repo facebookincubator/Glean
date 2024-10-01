@@ -38,11 +38,7 @@ struct QueryResults {
   HsString continuation;
 };
 
-enum class Depth {
-  ResultsOnly,
-  ExpandRecursive,
-  ExpandPartial
-};
+enum class Depth { ResultsOnly, ExpandRecursive, ExpandPartial };
 
 std::unique_ptr<QueryResults> executeQuery(
     Inventory& inventory,
@@ -72,6 +68,6 @@ std::unique_ptr<QueryResults> restartQuery(
     uint64_t serializedContLen);
 
 void interruptRunningQueries();
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

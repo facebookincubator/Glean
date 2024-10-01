@@ -30,10 +30,10 @@ void Output::realloc(size_t n) {
   const size_t k = capacity() + std::max(capacity(), n);
   const auto wanted = folly::goodMallocSize(k);
   if (isMalloced()) {
-    large.data = static_cast<unsigned char *>(
-      folly::checkedRealloc(large.data, wanted));
+    large.data =
+        static_cast<unsigned char*>(folly::checkedRealloc(large.data, wanted));
   } else {
-    const auto p = static_cast<unsigned char *>(folly::checkedMalloc(wanted));
+    const auto p = static_cast<unsigned char*>(folly::checkedMalloc(wanted));
     std::memcpy(p, data(), size());
     large.data = p;
     large.size = (size() << TAG_BITS) | LARGE_BIT | MALLOC_BIT;
@@ -64,15 +64,12 @@ folly::fbstring Output::moveToFbString() {
     const auto c = large.cap;
     markEmpty();
     return folly::fbstring(
-      reinterpret_cast<char *>(d),
-      s,
-      c,
-      folly::AcquireMallocatedString());
+        reinterpret_cast<char*>(d), s, c, folly::AcquireMallocatedString());
   } else {
     return folly::fbstring(data(), data() + size());
   }
 }
 
-}
-}
-}
+} // namespace binary
+} // namespace glean
+} // namespace facebook

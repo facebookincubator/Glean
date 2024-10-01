@@ -18,13 +18,14 @@ struct Sanity {
   static bool enabled;
 };
 
-#define GLEAN_SANITY_CHECK(expr) \
-  if (!::facebook::glean::rts::Sanity::enabled) {} else { \
-    if (!(expr)) { \
+#define GLEAN_SANITY_CHECK(expr)                      \
+  if (!::facebook::glean::rts::Sanity::enabled) {     \
+  } else {                                            \
+    if (!(expr)) {                                    \
       LOG(FATAL) << "sanity check '" #expr "'failed"; \
-    } \
+    }                                                 \
   }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

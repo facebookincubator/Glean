@@ -9,65 +9,65 @@
 #include <glog/logging.h>
 
 #include "glean/rts/binary.h"
-#include "glean/rts/serialize.h"
 #include "glean/rts/bytecode/subroutine.h"
 #include "glean/rts/bytecode/syscall.h"
-#include "glean/rts/string.h"
 #include "glean/rts/prim.h"
+#include "glean/rts/serialize.h"
+#include "glean/rts/string.h"
 
 namespace facebook {
 namespace glean {
 namespace rts {
 
 namespace {
- 
+
 struct Eval {
-  const std::string *literals;
-  const uint64_t *code;
-  const uint64_t *pc;
-  void *context;
-  uint64_t *frame;
+  const std::string* literals;
+  const uint64_t* code;
+  const uint64_t* pc;
+  void* context;
+  uint64_t* frame;
 
 #include "glean/bytecode/evaluate.h"
 
   FOLLY_ALWAYS_INLINE void execute(InputNat a) {
-    binary::Input input { *a.begin, a.end };
+    binary::Input input{*a.begin, a.end};
     a.dst << input.packed<uint64_t>();
     a.begin << input.data();
   }
 
   FOLLY_ALWAYS_INLINE void execute(InputBytes a) {
-    binary::Input input { *a.begin, a.end };
+    binary::Input input{*a.begin, a.end};
     input.bytes(a.size);
     a.begin << input.data();
   }
 
   FOLLY_ALWAYS_INLINE void execute(InputSkipUntrustedString a) {
-    binary::Input input { *a.begin, a.end };
+    binary::Input input{*a.begin, a.end};
     input.skipUntrustedString();
     a.begin << input.data();
   }
 
   FOLLY_ALWAYS_INLINE void execute(InputShiftLit a) {
-    binary::Input input { *a.begin, a.end };
+    binary::Input input{*a.begin, a.end};
     a.match << input.shift(binary::byteRange(*a.lit));
     a.begin << input.data();
   }
 
   FOLLY_ALWAYS_INLINE void execute(InputShiftBytes a) {
-    binary::Input input { *a.begin, a.end };
+    binary::Input input{*a.begin, a.end};
     a.match << input.shift(folly::ByteRange(a.ptr, a.ptrend));
     a.begin << input.data();
   }
 
   FOLLY_ALWAYS_INLINE void execute(InputSkipNat a) {
-    binary::Input input { *a.begin, a.end };
+    binary::Input input{*a.begin, a.end};
     input.packed<uint64_t>();
     a.begin << input.data();
   }
 
   FOLLY_ALWAYS_INLINE void execute(InputSkipTrustedString a) {
-    binary::Input input { *a.begin, a.end };
+    binary::Input input{*a.begin, a.end};
     input.skipTrustedString();
     a.begin << input.data();
   }
@@ -122,9 +122,9 @@ struct Eval {
   }
 
   FOLLY_ALWAYS_INLINE void execute(LoadLiteral a) {
-    a.ptr << reinterpret_cast<const unsigned char *>(a.lit->data());
-    a.end <<
-      reinterpret_cast<const unsigned char *>(a.lit->data() + a.lit->size());
+    a.ptr << reinterpret_cast<const unsigned char*>(a.lit->data());
+    a.end << reinterpret_cast<const unsigned char*>(
+        a.lit->data() + a.lit->size());
   }
 
   FOLLY_ALWAYS_INLINE void execute(Move a) {
@@ -153,7 +153,7 @@ struct Eval {
 
   FOLLY_ALWAYS_INLINE void execute(LoadLabel a) {
     a.dst << static_cast<uint64_t>(pc - code + std::ptrdiff_t(a.lbl));
-      // turn relative into absolute offset
+    // turn relative into absolute offset
   }
 
   FOLLY_ALWAYS_INLINE void execute(Jump a) {
@@ -296,57 +296,46 @@ struct Eval {
     LOG(INFO) << *a.msg << ": " << folly::to<std::string>(a.reg);
   }
 
-  FOLLY_ALWAYS_INLINE const uint64_t *execute(Suspend a) {
+  FOLLY_ALWAYS_INLINE const uint64_t* execute(Suspend a) {
     return pc + std::ptrdiff_t(a.cont);
   }
 
-  FOLLY_ALWAYS_INLINE const uint64_t * FOLLY_NULLABLE execute(Ret) {
+  FOLLY_ALWAYS_INLINE const uint64_t* FOLLY_NULLABLE execute(Ret) {
     return nullptr;
   }
 };
 
-}
+} // namespace
 
 #define USE_SWITCH 1
 
 void Subroutine::Activation::execute() {
-  pc = Eval{
-    sub.literals.data(),
-    sub.code.data(),
-    pc,
-    context,
-    frame()}.
+  pc = Eval{sub.literals.data(), sub.code.data(), pc, context, frame()}.
 #if USE_SWITCH
-    evalSwitch();
+       evalSwitch();
 #else
-    evalIndirect();
+       evalIndirect();
 #endif
 }
 
 bool Subroutine::operator==(const Subroutine& other) const {
   return this == &other ||
-    (code == other.code
-    && inputs == other.inputs
-    && outputs == other.outputs
-    && locals == other.locals
-    && constants == other.constants
-    && literals == other.literals);
+      (code == other.code && inputs == other.inputs &&
+       outputs == other.outputs && locals == other.locals &&
+       constants == other.constants && literals == other.literals);
 }
 
 size_t Subroutine::size() const {
   size_t litsz = 0;
-  for (auto &lit : literals) {
+  for (auto& lit : literals) {
     litsz += lit.size();
   }
-  return
-    litsz +
-    sizeof(this) +
-    code.size() * sizeof(uint64_t) +
-    constants.size() * sizeof(uint64_t);
+  return litsz + sizeof(this) + code.size() * sizeof(uint64_t) +
+      constants.size() * sizeof(uint64_t);
 }
 
 namespace {
-template<typename T, typename U>
+template <typename T, typename U>
 std::vector<T> copy_as(const std::vector<U>& xs) {
   std::vector<T> ys;
   ys.reserve(xs.size());
@@ -355,7 +344,7 @@ std::vector<T> copy_as(const std::vector<U>& xs) {
   }
   return ys;
 }
-}
+} // namespace
 
 void Subroutine::put(binary::Output& out, const Subroutine& sub) {
   serialize::put(out, sub.code, serialize::AsBytes{});
@@ -418,9 +407,9 @@ Subroutine::Activation::get(binary::Input& in) {
 
   Subroutine::Activation::State state{
       pc, std::move(locals), std::move(outputs)};
-  return { std::move(sub), std::move(state) };
+  return {std::move(sub), std::move(state)};
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

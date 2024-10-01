@@ -22,10 +22,10 @@ namespace rts {
 
 void marshal(
     const PredicateStats& stats,
-    size_t *count,
-    int64_t **ids,
-    uint64_t **counts,
-    uint64_t **sizes) {
+    size_t* count,
+    int64_t** ids,
+    uint64_t** counts,
+    uint64_t** sizes) {
   const auto n = stats.size();
   auto ids_arr = ffi::malloc_array<int64_t>(n);
   auto counts_arr = ffi::malloc_array<uint64_t>(n);
@@ -45,6 +45,6 @@ void marshal(
   *sizes = sizes_arr.release();
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

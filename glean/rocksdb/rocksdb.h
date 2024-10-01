@@ -19,9 +19,9 @@
 namespace rocksdb {
 struct Cache;
 struct Iterator;
-}
+} // namespace rocksdb
 
-namespace facebook{
+namespace facebook {
 namespace glean {
 namespace rocks {
 
@@ -30,9 +30,7 @@ using rts::Pid;
 
 using Cache = ::rocksdb::Cache;
 
-std::shared_ptr<Cache> newCache(
-  size_t capacity
-);
+std::shared_ptr<Cache> newCache(size_t capacity);
 
 struct Database;
 
@@ -48,7 +46,8 @@ struct Container {
 
   /// Lookup a key in the Container metadata.
   virtual bool readData(
-    folly::ByteRange key, std::function<void(folly::ByteRange)> f) = 0;
+      folly::ByteRange key,
+      std::function<void(folly::ByteRange)> f) = 0;
 
   /// Optimise the container for reading
   virtual void optimize(bool compact) = 0;
@@ -66,17 +65,13 @@ struct Container {
   openDatabase(Id start, rts::UsetId first_unit_id, int32_t version) && = 0;
 };
 
-enum class Mode {
-  ReadOnly = 0,
-  ReadWrite = 1,
-  Create = 2
-};
+enum class Mode { ReadOnly = 0, ReadWrite = 1, Create = 2 };
 
 std::unique_ptr<Container> open(
-  const std::string& path,
-  Mode mode,
-  bool cache_index_and_filter_blocks,
-  folly::Optional<std::shared_ptr<Cache>> cache);
+    const std::string& path,
+    Mode mode,
+    bool cache_index_and_filter_blocks,
+    folly::Optional<std::shared_ptr<Cache>> cache);
 
 /// A rocksdb-based fact database
 struct Database : rts::Lookup {
@@ -86,25 +81,25 @@ struct Database : rts::Lookup {
 
   struct OwnershipSet {
     folly::ByteRange unit;
-    folly::Range<const int64_t *> ids;
-      // This is a list of intervals [x1,x2, y1,y2, ...]
-      // representing the inclusive ranges x1..x2, y1..y2, ...
+    folly::Range<const int64_t*> ids;
+    // This is a list of intervals [x1,x2, y1,y2, ...]
+    // representing the inclusive ranges x1..x2, y1..y2, ...
   };
 
   virtual void commit(rts::FactSet& facts) = 0;
 
   virtual void addOwnership(const std::vector<OwnershipSet>& ownership) = 0;
   virtual std::unique_ptr<rts::OwnershipUnitIterator>
-    getOwnershipUnitIterator() = 0;
+  getOwnershipUnitIterator() = 0;
 
   virtual void addDefineOwnership(rts::DefineOwnership& def) = 0;
   virtual std::unique_ptr<rts::DerivedFactOwnershipIterator>
-    getDerivedFactOwnershipIterator(Pid pid) = 0;
+  getDerivedFactOwnershipIterator(Pid pid) = 0;
 
   virtual folly::Optional<uint32_t> getUnitId(folly::ByteRange) = 0;
   virtual folly::Optional<std::string> getUnit(uint32_t) = 0;
 
-  virtual void storeOwnership(rts::ComputedOwnership &ownership) = 0;
+  virtual void storeOwnership(rts::ComputedOwnership& ownership) = 0;
   virtual std::unique_ptr<rts::Ownership> getOwnership() = 0;
 
   virtual void cacheOwnership() = 0;
@@ -113,6 +108,6 @@ struct Database : rts::Lookup {
 
 void restore(const std::string& target, const std::string& source);
 
-}
-}
-}
+} // namespace rocks
+} // namespace glean
+} // namespace facebook

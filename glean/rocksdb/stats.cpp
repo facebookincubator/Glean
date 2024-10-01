@@ -24,7 +24,7 @@ struct AtomicPredicateStats::Impl {
     explicit Holder(PredicateStats s) : stats(std::move(s)) {}
   };
 
-  std::atomic<Holder *> holder = new Holder({});
+  std::atomic<Holder*> holder = new Holder({});
 
   // We have a separate cohort for each DB - the stats objects we create
   // are local to the DB so they should be destroyed when the DB object is
@@ -32,12 +32,9 @@ struct AtomicPredicateStats::Impl {
   folly::hazptr_obj_cohort<> cohort;
 };
 
-AtomicPredicateStats::AtomicPredicateStats()
-  : impl(std::make_unique<Impl>())
-{}
+AtomicPredicateStats::AtomicPredicateStats() : impl(std::make_unique<Impl>()) {}
 
-AtomicPredicateStats::~AtomicPredicateStats()
-{
+AtomicPredicateStats::~AtomicPredicateStats() {
   delete impl->holder.load();
 }
 
@@ -68,6 +65,6 @@ size_t AtomicPredicateStats::count(rts::Pid pid) const {
   }
 }
 
-}
-}
-}
+} // namespace rocks
+} // namespace glean
+} // namespace facebook

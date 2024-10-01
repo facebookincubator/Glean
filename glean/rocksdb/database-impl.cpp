@@ -6,8 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "glean/rocksdb/container-impl.h"
 #include "glean/rocksdb/database-impl.h"
+#include "glean/rocksdb/container-impl.h"
 
 #include "glean/rts/timer.h"
 
@@ -18,13 +18,13 @@ namespace impl {
 
 using namespace rts;
 
-const char *admin_names[] = {
-  "NEXT_ID",
-  "VERSION",
-  "STARTING_ID",
-  "FIRST_UNIT_ID",
-  "NEXT_UNIT_ID",
-  "ORPHAN_FACTS",
+const char* admin_names[] = {
+    "NEXT_ID",
+    "VERSION",
+    "STARTING_ID",
+    "FIRST_UNIT_ID",
+    "NEXT_UNIT_ID",
+    "ORPHAN_FACTS",
 };
 
 namespace {
@@ -196,7 +196,7 @@ rts::Fact::Ref decomposeFact(Id id, const rocksdb::Slice& data) {
   return rts::Fact::Ref{id, ty, rts::Fact::Clause::from(inp.bytes(), key_size)};
 }
 
-}
+} // namespace
 
 bool DatabaseImpl::factById(Id id, std::function<void(Pid, Fact::Clause)> f) {
   container_.requireOpen();
@@ -303,7 +303,7 @@ struct SeekIterator final : rts::FactIterator {
   rocksdb::PinnableSlice slice_;
 };
 
-}
+} // namespace
 
 std::unique_ptr<rts::FactIterator>
 DatabaseImpl::seek(Pid type, folly::ByteRange start, size_t prefix_size) {
@@ -430,7 +430,7 @@ struct Backward {
   static inline constexpr auto next = &rocksdb::Iterator::Prev;
 };
 
-}
+} // namespace
 
 template <typename Direction>
 std::unique_ptr<rts::FactIterator>
@@ -532,7 +532,7 @@ void DatabaseImpl::commit(rts::FactSet& facts) {
   stats_.set(std::move(new_stats));
 }
 
-}
-}
-}
+} // namespace impl
+} // namespace rocks
+} // namespace glean
 } // namespace facebook

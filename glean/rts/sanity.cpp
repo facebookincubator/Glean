@@ -18,5 +18,5 @@ namespace rts {
 bool Sanity::enabled = FLAGS_sanity_checks;
 
 }
-}
-}
+} // namespace glean
+} // namespace facebook

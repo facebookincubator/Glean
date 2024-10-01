@@ -51,15 +51,14 @@ std::unique_ptr<Counter> serialCounter(size_t index, size_t end);
 
 /// A work-stealing Counter.
 std::unique_ptr<Counter> stealingCounter(
-  const std::string& path,  // path a file initialised via stealingCounterSetup
-  size_t worker_index,      // index of current worker
-  size_t worker_count       // total number of workers
+    const std::string& path, // path a file initialised via stealingCounterSetup
+    size_t worker_index, // index of current worker
+    size_t worker_count // total number of workers
 );
 
 /// Setup a stealing counter file
 void stealingCounterSetup(
-  const std::string& path,
-  const std::vector<Counter::Value>& values
-);
+    const std::string& path,
+    const std::vector<Counter::Value>& values);
 
-}
+} // namespace facebook::glean::worklist

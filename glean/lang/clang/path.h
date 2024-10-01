@@ -28,8 +28,8 @@ namespace facebook::glean::clangx {
 /// root or just fail if path isn't under root. We probably also want to resolve
 /// symlinks as long as they don't point to something outside of root.
 std::filesystem::path goodPath(
-  std::filesystem::path root,
-  std::filesystem::path path);
+    std::filesystem::path root,
+    std::filesystem::path path);
 
 // Resolve symlinks in source, but only those that keep the path inside root.
 // Where the path traverses symlinks, those are resolved too.
@@ -37,5 +37,6 @@ std::filesystem::path goodPath(
 // root must be absolute, source must be relative.
 //
 std::filesystem::path followSymlinksInsideRoot(
-    std::filesystem::path root, std::filesystem::path source);
-}
+    std::filesystem::path root,
+    std::filesystem::path source);
+} // namespace facebook::glean::clangx

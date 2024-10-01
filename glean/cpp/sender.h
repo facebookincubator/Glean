@@ -41,5 +41,5 @@ struct Sender {
   virtual void flush(cpp::BatchBase& batch) = 0;
 };
 
-}
-}
+} // namespace glean
+} // namespace facebook

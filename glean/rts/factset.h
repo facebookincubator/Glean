@@ -17,11 +17,11 @@
 #include "glean/rts/store.h"
 #include "glean/rts/substitution.h"
 
-#include <atomic>
 #include <boost/intrusive/list.hpp>
 #include <boost/iterator/transform_iterator.hpp>
-#include <folly/container/F14Set.h>
 #include <folly/Synchronized.h>
+#include <folly/container/F14Set.h>
+#include <atomic>
 
 namespace facebook {
 namespace glean {
@@ -35,7 +35,7 @@ namespace rts {
 struct FactById {
   using value_type = Id;
 
-  static value_type get(const Fact *fact) {
+  static value_type get(const Fact* fact) {
     return fact->id();
   }
 
@@ -51,7 +51,7 @@ struct FactById {
 struct FactByKey {
   using value_type = std::pair<Pid, folly::ByteRange>;
 
-  static value_type get(const Fact *fact) {
+  static value_type get(const Fact* fact) {
     return {fact->type(), fact->key()};
   }
 
@@ -67,7 +67,7 @@ struct FactByKey {
 struct FactByKeyOnly {
   using value_type = folly::ByteRange;
 
-  static value_type get(const Fact *fact) {
+  static value_type get(const Fact* fact) {
     return fact->key();
   }
 
@@ -80,22 +80,24 @@ struct FactByKeyOnly {
   }
 };
 
-template<typename By> struct EqualBy {
-  template<typename T, typename U>
+template <typename By>
+struct EqualBy {
+  template <typename T, typename U>
   bool operator()(const T& x, const U& y) const {
     return By::get(x) == By::get(y);
   }
 };
 
-template<typename By> struct HashBy {
-  template<typename T>
+template <typename By>
+struct HashBy {
+  template <typename T>
   uint64_t operator()(const T& x) const {
     return folly::Hash()(By::get(x));
   }
 };
 
-template<typename T, typename By> using FastSetBy =
-  folly::F14FastSet<
+template <typename T, typename By>
+using FastSetBy = folly::F14FastSet<
     T,
     folly::transparent<HashBy<By>>,
     folly::transparent<EqualBy<By>>>;
@@ -108,15 +110,14 @@ template<typename T, typename By> using FastSetBy =
  *
  */
 class FactSet final : public Define {
-private:
+ private:
   class Facts final {
-  public:
-    explicit Facts(Id start) noexcept
-      : starting_id(start) {}
+   public:
+    explicit Facts(Id start) noexcept : starting_id(start) {}
     Facts(Facts&& other) noexcept
-      : starting_id(other.starting_id)
-      , facts(std::move(other.facts))
-      , fact_memory(other.fact_memory) {}
+        : starting_id(other.starting_id),
+          facts(std::move(other.facts)),
+          fact_memory(other.fact_memory) {}
     Facts& operator=(Facts&& other) noexcept {
       starting_id = other.starting_id;
       facts = std::move(other.facts);
@@ -142,8 +143,7 @@ private:
       }
     };
 
-    using const_iterator =
-      boost::transform_iterator<
+    using const_iterator = boost::transform_iterator<
         deref,
         std::vector<Fact::unique_ptr>::const_iterator>;
 
@@ -156,7 +156,7 @@ private:
     }
 
     Fact::Ref operator[](size_t i) const {
-      assert (i < facts.size());
+      assert(i < facts.size());
       return facts[i]->ref();
     }
 
@@ -178,9 +178,9 @@ private:
 
     void append(Facts other) {
       facts.insert(
-        facts.end(),
-        std::make_move_iterator(other.facts.begin()),
-        std::make_move_iterator(other.facts.end()));
+          facts.end(),
+          std::make_move_iterator(other.facts.begin()),
+          std::make_move_iterator(other.facts.end()));
       fact_memory += other.fact_memory;
     }
 
@@ -194,13 +194,13 @@ private:
     /// indices.
     size_t allocatedMemory() const noexcept;
 
-  private:
+   private:
     Id starting_id;
     std::vector<Fact::unique_ptr> facts;
     size_t fact_memory = 0;
   };
 
-public:
+ public:
   explicit FactSet(Id start);
   FactSet(FactSet&&) noexcept;
   FactSet& operator=(FactSet&&);
@@ -208,7 +208,6 @@ public:
 
   FactSet(const FactSet&) = delete;
   FactSet& operator=(const FactSet&) = delete;
-
 
   size_t size() const noexcept {
     return facts.size();
@@ -232,16 +231,16 @@ public:
   /// given id (or end() if no such fact exists).
   const_iterator lower_bound(Id id) const {
     return begin() +
-      (id <= facts.startingId()
-        ? 0
-        : std::min(distance(facts.startingId(), id), facts.size()));
+        (id <= facts.startingId()
+             ? 0
+             : std::min(distance(facts.startingId(), id), facts.size()));
   }
 
   const_iterator upper_bound(Id id) const {
     return begin() +
-      (id < facts.startingId()
-        ? 0
-        : std::min(distance(facts.startingId(), id)+1, facts.size()));
+        (id < facts.startingId()
+             ? 0
+             : std::min(distance(facts.startingId(), id) + 1, facts.size()));
   }
 
   /// Return the number of bytes occupied by facts.
@@ -253,7 +252,7 @@ public:
 
   PredicateStats predicateStats() const;
 
- // Lookup implementation
+  // Lookup implementation
 
   Id idByKey(Pid type, folly::ByteRange key) override;
 
@@ -272,11 +271,11 @@ public:
   Interval count(Pid pid) const override;
 
   std::unique_ptr<FactIterator> enumerate(
-    Id from = Id::invalid(),
-    Id upto = Id::invalid()) override;
+      Id from = Id::invalid(),
+      Id upto = Id::invalid()) override;
   std::unique_ptr<FactIterator> enumerateBack(
-    Id from = Id::invalid(),
-    Id downto = Id::invalid()) override;
+      Id from = Id::invalid(),
+      Id downto = Id::invalid()) override;
 
   /// Prefix seeks. This function can be called from multiple threads but prefix
   /// seeks can *not* be interleaved with modifying the FactSet.
@@ -284,19 +283,19 @@ public:
   /// WARNING: This is currently not intended for production use as it is very
   /// slow. The first call for each predicate will be especially slow as it will
   /// need to create an index.
-  std::unique_ptr<FactIterator> seek(
-    Pid type,
-    folly::ByteRange start,
-    size_t prefix_size) override;
+  std::unique_ptr<FactIterator>
+  seek(Pid type, folly::ByteRange start, size_t prefix_size) override;
 
   std::unique_ptr<FactIterator> seekWithinSection(
-    Pid type,
-    folly::ByteRange start,
-    size_t prefix_size,
-    Id from,
-    Id to) override;
+      Pid type,
+      folly::ByteRange start,
+      size_t prefix_size,
+      Id from,
+      Id to) override;
 
-  UsetId getOwner(Id) override { return INVALID_USET; }
+  UsetId getOwner(Id) override {
+    return INVALID_USET;
+  }
 
   // Define implementation
 
@@ -318,10 +317,10 @@ public:
   // id >= subst.finish()) are assigned new Ids which don't clash with the
   // domain of the substitution and are added to the local part which is
   // returned by the function.
-  std::pair<FactSet,Substitution> rebase(
-    const Inventory& inventory,
-    const Substitution& subst,
-    Store& global) const;
+  std::pair<FactSet, Substitution> rebase(
+      const Inventory& inventory,
+      const Substitution& subst,
+      Store& global) const;
 
   /// Append a set of facts. This operation is only well defined under the
   /// following conditions.
@@ -338,9 +337,9 @@ public:
 
   bool sanityCheck() const;
 
-private:
+ private:
   Facts facts;
-  DenseMap<Pid, FastSetBy<const Fact *, FactByKeyOnly>> keys;
+  DenseMap<Pid, FastSetBy<const Fact*, FactByKeyOnly>> keys;
 
   /// Cached predicate stats. We create these on-demand rather than maintain
   /// them throughout because most FactSets don't need them.
@@ -353,6 +352,6 @@ private:
   OnDemand<Index> index;
 };
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

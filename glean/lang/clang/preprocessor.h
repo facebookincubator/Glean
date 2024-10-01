@@ -13,6 +13,6 @@
 namespace facebook::glean::clangx {
 
 // Create a new PPCallbacks that write to a particular ClangDB
-std::unique_ptr<clang::PPCallbacks> newPPCallbacks(ClangDB *db);
+std::unique_ptr<clang::PPCallbacks> newPPCallbacks(ClangDB* db);
 
-}
+} // namespace facebook::glean::clangx

@@ -20,22 +20,24 @@ namespace rocks {
 namespace impl {
 
 struct Family {
-private:
-  template<typename F>
-  Family(const char *n, F&& o, bool keep_ = true)
-    : index(families.size()), name(n), options(std::forward<F>(o)), keep(keep_)
-  {
+ private:
+  template <typename F>
+  Family(const char* n, F&& o, bool keep_ = true)
+      : index(families.size()),
+        name(n),
+        options(std::forward<F>(o)),
+        keep(keep_) {
     families.push_back(this);
   }
 
   Family(const Family&) = delete;
   Family& operator=(const Family&) = delete;
 
-  static std::vector<const Family *> families;
+  static std::vector<const Family*> families;
 
-public:
+ public:
   size_t index;
-  const char *name;
+  const char* name;
   std::function<void(rocksdb::ColumnFamilyOptions&)> options;
 
   // Whether to keep this column family after the DB is complete. If
@@ -56,9 +58,11 @@ public:
   static const Family factOwners;
   static const Family factOwnerPages;
 
-  static size_t count() { return families.size(); }
+  static size_t count() {
+    return families.size();
+  }
 
-  static const Family * FOLLY_NULLABLE family(const std::string& name) {
+  static const Family* FOLLY_NULLABLE family(const std::string& name) {
     for (auto p : families) {
       if (name == p->name) {
         return p;
@@ -67,7 +71,7 @@ public:
     return nullptr;
   }
 
-  static const Family * FOLLY_NULLABLE family(size_t i) {
+  static const Family* FOLLY_NULLABLE family(size_t i) {
     return i < families.size() ? families[i] : nullptr;
   }
 };
@@ -100,8 +104,9 @@ struct ContainerImpl final : Container {
   void requireOpen() const;
 
   void backup(const std::string& path) override;
-  std::unique_ptr<Database> openDatabase(
-      Id start, rts::UsetId first_unit_id, int32_t version) && override;
+  std::unique_ptr<Database>
+      openDatabase(Id start, rts::UsetId first_unit_id, int32_t version) &&
+      override;
 
   void writeData(folly::ByteRange key, folly::ByteRange value) override;
 
@@ -111,10 +116,9 @@ struct ContainerImpl final : Container {
   void optimize(bool compact) override;
 
   rocksdb::ColumnFamilyHandle* family(const Family& family) const;
-
 };
 
-}
-}
-}
+} // namespace impl
+} // namespace rocks
+} // namespace glean
 } // namespace facebook

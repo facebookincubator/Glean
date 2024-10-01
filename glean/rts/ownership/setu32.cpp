@@ -20,26 +20,24 @@ namespace rts {
 
 namespace {
 
-template<typename T>
+template <typename T>
 bool vec_eq(const std::vector<T>& x, const std::vector<T>& y) {
   const auto n = x.size();
-  return n == y.size()
-    && (n == 0 || std::memcmp(x.data(), y.data(), n * sizeof(x[0])) == 0);
+  return n == y.size() &&
+      (n == 0 || std::memcmp(x.data(), y.data(), n * sizeof(x[0])) == 0);
 }
 
-
-template<typename T>
+template <typename T>
 static uint64_t vec_hash(const std::vector<T>& x, uint64_t seed = 0) {
   return XXH64(x.data(), x.size() * sizeof(x[0]), seed);
 }
 
-
-template<typename T>
+template <typename T>
 static size_t vec_bytes(const std::vector<T>& x) {
   return x.size() * sizeof(x[0]);
 }
 
-}
+} // namespace
 
 bool SetU32::Block::operator==(const SetU32::Block& other) const {
   if (hdr != other.hdr) {
@@ -63,12 +61,12 @@ bool SetU32::Block::includes(const SetU32::Block& other) const {
 
   switch (hdr.type()) {
     case SetU32::Hdr::Sparse:
-      return other.hdr.type() == SetU32::Hdr::Sparse
-        && std::includes(
-            sparse,
-            sparse + hdr.sparseLen(),
-            other.sparse,
-            other.sparse + other.hdr.sparseLen());
+      return other.hdr.type() == SetU32::Hdr::Sparse &&
+          std::includes(
+                 sparse,
+                 sparse + hdr.sparseLen(),
+                 other.sparse,
+                 other.sparse + other.hdr.sparseLen());
 
     case SetU32::Hdr::Dense:
       switch (other.hdr.type()) {
@@ -106,11 +104,9 @@ SetU32::SetU32(const SetU32& other, SetU32::copy_capacity_tag) {
 }
 
 bool SetU32::operator==(const SetU32& other) const {
-  return vec_eq(hdrs, other.hdrs)
-    && vec_eq(dense, other.dense)
-    && vec_eq(sparse, other.sparse);
+  return vec_eq(hdrs, other.hdrs) && vec_eq(dense, other.dense) &&
+      vec_eq(sparse, other.sparse);
 }
-
 
 uint64_t SetU32::hash(uint64_t seed) const {
   return vec_hash(sparse, vec_hash(dense, vec_hash(hdrs, seed)));
@@ -139,26 +135,24 @@ SetU32::const_iterator SetU32::lower_bound(
       uint32_t dense = 0;
       uint32_t sparse = 0;
       while (first != last) {
-          dense += first->denseLen();
-          sparse += first->sparseLen();
-          ++first;
+        dense += first->denseLen();
+        sparse += first->sparseLen();
+        ++first;
       }
       return {dense, sparse};
     }
   };
 
-  auto pos = std::lower_bound(
-    start.hdrs,
-    finish.hdrs,
-    id,
-    [](auto x, auto id) { return x.before(id); });
+  auto pos = std::lower_bound(start.hdrs, finish.hdrs, id, [](auto x, auto id) {
+    return x.before(id);
+  });
   const auto l = pos - start.hdrs;
   const auto r = finish.hdrs - pos;
   if (l <= r) {
-    const auto [d,s] = Local::lengths(start.hdrs, pos);
+    const auto [d, s] = Local::lengths(start.hdrs, pos);
     return {pos, start.block.dense + d, start.block.sparse + s};
   } else {
-    const auto [d,s] = Local::lengths(pos, finish.hdrs);
+    const auto [d, s] = Local::lengths(pos, finish.hdrs);
     return {pos, finish.block.dense - d, finish.block.sparse - s};
   }
 }
@@ -177,7 +171,7 @@ void SetU32::shrink_to_fit() {
 
 size_t SetU32::size() const {
   size_t s = 0;
-  for (auto &block : *this) {
+  for (auto& block : *this) {
     switch (block.hdr.type()) {
       case Hdr::Sparse: {
         s += block.hdr.sparseLen();
@@ -197,7 +191,7 @@ size_t SetU32::size() const {
 }
 
 uint32_t SetU32::upper() const {
-  auto &hdr = this->hdrs.back();
+  auto& hdr = this->hdrs.back();
   auto id = hdr.id() << 8;
   switch (hdr.type()) {
     case Hdr::Sparse: {
@@ -227,7 +221,8 @@ void SetU32::append(uint32_t value) {
             hdr.addSparseLen(1);
             sparse.push_back(bit);
           } else {
-            dense.push_back(Bits256(&*(sparse.end() - len), len) | Bits256::single(bit));
+            dense.push_back(
+                Bits256(&*(sparse.end() - len), len) | Bits256::single(bit));
             sparse.resize(sparse.size() - len);
             hdr = Hdr::dense(block);
           }
@@ -260,8 +255,12 @@ namespace {
 
 enum Which { Left, Right };
 
-std::tuple<const SetU32*, const SetU32*, SetU32::const_iterator, SetU32::const_iterator>
-    skipSubset(const SetU32* l, const SetU32* r) {
+std::tuple<
+    const SetU32*,
+    const SetU32*,
+    SetU32::const_iterator,
+    SetU32::const_iterator>
+skipSubset(const SetU32* l, const SetU32* r) {
   auto left = l->begin();
   auto left_end = l->end();
   auto right = r->begin();
@@ -276,7 +275,7 @@ std::tuple<const SetU32*, const SetU32*, SetU32::const_iterator, SetU32::const_i
   if (right != right_end) {
     if (left == left_end || right.hdrs->id() < left.hdrs->id()) {
       swapit = true;
-    } else if(right->includes(*left)) {
+    } else if (right->includes(*left)) {
       ++left;
       ++right;
       swapit = true;
@@ -284,9 +283,9 @@ std::tuple<const SetU32*, const SetU32*, SetU32::const_iterator, SetU32::const_i
   }
 
   if (swapit) {
-    std::swap(l,r);
-    std::swap(left,right);
-    std::swap(left_end,right_end);
+    std::swap(l, r);
+    std::swap(left, right);
+    std::swap(left_end, right_end);
   }
 
   while (left != left_end && right != right_end) {
@@ -302,7 +301,7 @@ std::tuple<const SetU32*, const SetU32*, SetU32::const_iterator, SetU32::const_i
   return {l, r, left, right};
 }
 
-}
+} // namespace
 
 void SetU32::append(uint32_t id, Bits256 w) {
   if (w == Bits256::all()) {
@@ -323,7 +322,7 @@ void SetU32::appendMerge(SetU32::Block left, SetU32::Block right) {
         std::vector<uint8_t>::const_iterator rs,
         uint8_t rn) {
       uint8_t n = 0;
-      while (ln != 0 && rn != 0 && fitsSparse(n,1)) {
+      while (ln != 0 && rn != 0 && fitsSparse(n, 1)) {
         const auto l = *ls;
         const auto r = *rs;
         set.sparse.push_back(l <= r ? l : r);
@@ -337,28 +336,37 @@ void SetU32::appendMerge(SetU32::Block left, SetU32::Block right) {
           --rn;
         }
       }
-      if (fitsSparse(n, ln+rn)) {
-        set.hdrs.push_back(Hdr::sparse(id, n+ln+rn));
-        set.sparse.insert(set.sparse.end(), ls, ls+ln);
-        set.sparse.insert(set.sparse.end(), rs, rs+rn);
+      if (fitsSparse(n, ln + rn)) {
+        set.hdrs.push_back(Hdr::sparse(id, n + ln + rn));
+        set.sparse.insert(set.sparse.end(), ls, ls + ln);
+        set.sparse.insert(set.sparse.end(), rs, rs + rn);
       } else {
-        const auto dense = Bits256(&*(set.sparse.end()-n),n).with(&*ls,ln).with(&*rs,rn);
+        const auto dense =
+            Bits256(&*(set.sparse.end() - n), n).with(&*ls, ln).with(&*rs, rn);
         set.hdrs.push_back(Hdr::dense(id));
         set.dense.push_back(dense);
-        set.sparse.resize(set.sparse.size()-n);
+        set.sparse.resize(set.sparse.size() - n);
       }
     }
   };
 
-  switch(left.hdr.type()) {
+  switch (left.hdr.type()) {
     case SetU32::Hdr::Sparse:
-      switch(right.hdr.type()) {
+      switch (right.hdr.type()) {
         case SetU32::Hdr::Sparse:
-          Local::mergeSparse(*this, left.hdr.id(), left.sparse, left.hdr.sparseLen(), right.sparse, right.hdr.sparseLen());
+          Local::mergeSparse(
+              *this,
+              left.hdr.id(),
+              left.sparse,
+              left.hdr.sparseLen(),
+              right.sparse,
+              right.hdr.sparseLen());
           break;
 
         case SetU32::Hdr::Dense:
-          append(left.hdr.id(), right.dense->with(&*left.sparse, left.hdr.sparseLen()));
+          append(
+              left.hdr.id(),
+              right.dense->with(&*left.sparse, left.hdr.sparseLen()));
           break;
 
         case SetU32::Hdr::Full:
@@ -370,7 +378,9 @@ void SetU32::appendMerge(SetU32::Block left, SetU32::Block right) {
     case SetU32::Hdr::Dense:
       switch (right.hdr.type()) {
         case SetU32::Hdr::Sparse:
-          append(left.hdr.id(), left.dense->with(&*right.sparse, right.hdr.sparseLen()));
+          append(
+              left.hdr.id(),
+              left.dense->with(&*right.sparse, right.hdr.sparseLen()));
           break;
 
         case SetU32::Hdr::Dense:
@@ -398,11 +408,11 @@ void SetU32::appendMerge(
     if (left.hdrs->id() < right.hdrs->id()) {
       const auto prev = left;
       left = SetU32::lower_bound(left, left_end, right.hdrs->id());
-      append(prev,left);
+      append(prev, left);
     } else if (right.hdrs->id() < left.hdrs->id()) {
       const auto prev = right;
       right = SetU32::lower_bound(right, right_end, left.hdrs->id());
-      append(prev,right);
+      append(prev, right);
     } else {
       appendMerge(*left, *right);
       ++left;
@@ -413,7 +423,8 @@ void SetU32::appendMerge(
   append(right, right_end);
 }
 
-const SetU32 *SetU32::merge(SetU32& result, const SetU32& left, const SetU32& right) {
+const SetU32*
+SetU32::merge(SetU32& result, const SetU32& left, const SetU32& right) {
   if (&left == &right) {
     return &left;
   } else {
@@ -436,9 +447,7 @@ SetU32::MutableEliasFanoList SetU32::toEliasFano() {
       size, upperBound);
 
   VLOG(5) << "upper=" << upperBound << ", size=" << size;
-  foreach([&](uint32_t elt) {
-    encoder.add(elt);
-  });
+  foreach([&](uint32_t elt) { encoder.add(elt); });
   return encoder.finish();
 }
 
@@ -453,8 +462,8 @@ SetU32 SetU32::fromEliasFano(const EliasFanoList& list) {
   return set;
 }
 
-void SetU32::dump(SetU32 &set) {
-  for (auto &block : set) {
+void SetU32::dump(SetU32& set) {
+  for (auto& block : set) {
     auto id = block.hdr.id() << 8;
     switch (block.hdr.type()) {
       case SetU32::Hdr::Sparse: {
@@ -481,6 +490,6 @@ void SetU32::dump(SetU32 &set) {
   }
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

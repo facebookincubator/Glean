@@ -29,11 +29,11 @@ namespace rts {
  *
  */
 class Fact {
-public:
+ public:
   static constexpr uint32_t MAX_KEY_SIZE = 0xFFFFFFF;
 
   struct Clause {
-    const unsigned char *data = nullptr;
+    const unsigned char* data = nullptr;
     uint32_t key_size = 0;
     uint32_t value_size = 0;
 
@@ -42,7 +42,7 @@ public:
     }
 
     folly::ByteRange value() const {
-      return {data+key_size, value_size};
+      return {data + key_size, value_size};
     }
 
     size_t size() const {
@@ -58,10 +58,9 @@ public:
       const size_t value_size = bytes.size() - key_size;
       assert(value_size <= 0xFFFFFFFF);
       return {
-        bytes.data(),
-        static_cast<uint32_t>(key_size),
-        static_cast<uint32_t>(value_size)
-      };
+          bytes.data(),
+          static_cast<uint32_t>(key_size),
+          static_cast<uint32_t>(value_size)};
     }
 
     static Clause fromKey(folly::ByteRange bytes) {
@@ -108,8 +107,8 @@ public:
   }
 
   Clause clause() const {
-    return
-      {reinterpret_cast<const unsigned char *>(this+1), key_size, value_size};
+    return {
+        reinterpret_cast<const unsigned char*>(this + 1), key_size, value_size};
   }
 
   Ref ref() const {
@@ -129,13 +128,10 @@ public:
   }
 
   bool operator==(const Fact& other) const {
-    return id_ == other.id_
-            && type_ == other.type_
-            && key_size == other.key_size
-            && value_size == other.value_size
-            && key() == other.key()
-            && value() == other.value()
-            && tag() == other.tag();
+    return id_ == other.id_ && type_ == other.type_ &&
+        key_size == other.key_size && value_size == other.value_size &&
+        key() == other.key() && value() == other.value() &&
+        tag() == other.tag();
   }
 
   bool operator!=(const Fact& other) const {
@@ -150,7 +146,6 @@ public:
     return size(key_size, value_size);
   }
 
-
   void serialize(binary::Output& output) const {
     serialize(output, type(), clause());
   }
@@ -159,15 +154,15 @@ public:
 
   std::string dump() const;
 
-  static void destroy(const Fact *fact) {
+  static void destroy(const Fact* fact) {
     if (fact) {
       fact->Fact::~Fact();
-      ::operator delete(const_cast<Fact *>(fact));
+      ::operator delete(const_cast<Fact*>(fact));
     }
   }
 
   struct deleter {
-    void operator()(const Fact *fact) const {
+    void operator()(const Fact* fact) const {
       Fact::destroy(fact);
     }
   };
@@ -178,8 +173,8 @@ public:
     // this should be checked earlier hence just an assert here
     assert(ref.clause.key_size <= 0xFFFFFFF);
     const auto size = ref.clause.size();
-    Fact *fact = static_cast<Fact *>(::operator new(sizeof(Fact) + size));
-    new(fact) Fact();
+    Fact* fact = static_cast<Fact*>(::operator new(sizeof(Fact) + size));
+    new (fact) Fact();
     fact->id_ = ref.id;
     fact->type_ = ref.type;
     fact->key_size = ref.clause.key_size;
@@ -188,15 +183,12 @@ public:
     // memcpy(p, 0, 0) is undefined behaviour according to the C standard,
     // apparently, and this gets flagged in debug mode
     if (size > 0) {
-      memcpy(
-        reinterpret_cast<unsigned char *>(fact+1),
-        ref.clause.data,
-        size);
+      memcpy(reinterpret_cast<unsigned char*>(fact + 1), ref.clause.data, size);
     }
     return unique_ptr(fact);
   }
 
-private:
+ private:
   Fact() {}
   ~Fact() {}
 
@@ -214,14 +206,15 @@ private:
   };
   uint32_t value_size;
 
-public:
-  using intrusive_list = boost::intrusive::list<Fact,
-    boost::intrusive::member_hook<
-    Fact,
-    boost::intrusive::list_member_hook<>,
-    &Fact::list_hook>>;
+ public:
+  using intrusive_list = boost::intrusive::list<
+      Fact,
+      boost::intrusive::member_hook<
+          Fact,
+          boost::intrusive::list_member_hook<>,
+          &Fact::list_hook>>;
 };
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

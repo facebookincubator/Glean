@@ -52,49 +52,45 @@ extern "C" {
 struct glean_interprocess_worklist_t {
   boost::interprocess::file_mapping mapping;
   boost::interprocess::mapped_region region;
-  std::atomic<uint64_t> *counters;
+  std::atomic<uint64_t>* counters;
   size_t size;
 
   static worklist::Counter::Value unpack(uint64_t n) {
-      return {static_cast<uint32_t>(n), static_cast<uint32_t>(n >> 32)};
+    return {static_cast<uint32_t>(n), static_cast<uint32_t>(n >> 32)};
   }
 
   static uint64_t pack(worklist::Counter::Value val) {
     return (uint64_t(val.end) << 32) | val.start;
   }
 
-  explicit glean_interprocess_worklist_t(const char *path) {
+  explicit glean_interprocess_worklist_t(const char* path) {
     mapping = boost::interprocess::file_mapping(
-      path, boost::interprocess::read_write);
+        path, boost::interprocess::read_write);
     region = boost::interprocess::mapped_region(
-      mapping,
-      boost::interprocess::read_only,
-      0,
-      sizeof(uint64_t));
-    size = *static_cast<const uint64_t *>(region.get_address());
+        mapping, boost::interprocess::read_only, 0, sizeof(uint64_t));
+    size = *static_cast<const uint64_t*>(region.get_address());
     region = boost::interprocess::mapped_region(
-      mapping,
-      boost::interprocess::read_write,
-      0,
-      sizeof(uint64_t) * (size + 1));
-    counters =
-      static_cast<std::atomic<uint64_t> *>(region.get_address()) + 1;
+        mapping,
+        boost::interprocess::read_write,
+        0,
+        sizeof(uint64_t) * (size + 1));
+    counters = static_cast<std::atomic<uint64_t>*>(region.get_address()) + 1;
     assert(std::atomic_is_lock_free(counters));
   }
 
   static void create(
-      const char *path,
+      const char* path,
       const std::vector<worklist::Counter::Value>& values) {
     std::vector<uint64_t> words;
-    words.reserve(values.size()+1);
+    words.reserve(values.size() + 1);
     words.push_back(values.size());
     for (const auto& value : values) {
       words.push_back(pack(value));
     }
     std::ofstream stream(path, std::ios::out | std::ios::binary);
     stream.write(
-      reinterpret_cast<const char *>(words.data()),
-      words.size() * sizeof(uint64_t));
+        reinterpret_cast<const char*>(words.data()),
+        words.size() * sizeof(uint64_t));
   }
 
   worklist::Counter::Value get(size_t worker) const noexcept {
@@ -116,7 +112,7 @@ struct glean_interprocess_worklist_t {
         worklist::Counter::Value other = value;
 
         // Find the worker with the most work.
-        for (size_t i = (worker+1) % size; i != worker; i = (i+1) % size) {
+        for (size_t i = (worker + 1) % size; i != worker; i = (i + 1) % size) {
           auto x = get(i);
           if (x.size() > other.size()) {
             other = x;
@@ -132,12 +128,12 @@ struct glean_interprocess_worklist_t {
           // To steal, just update their start/end pair provided it hasn't
           // changed. If it has, we'll do the whole thing again.
           if (counters[victim].compare_exchange_strong(
-                expected, pack({other.start, split}))) {
+                  expected, pack({other.start, split}))) {
             // We've stolen work, now set our start/end pair. We know it hasn't
             // changed because we have no more work left so nobody else is going
             // to update it.
             value = {split, other.end};
-            counters[worker].store(pack({split+1, other.end}));
+            counters[worker].store(pack({split + 1, other.end}));
             done = true;
           }
         } else {
@@ -151,11 +147,11 @@ struct glean_interprocess_worklist_t {
   }
 };
 
-const char *glean_interprocess_worklist_create(
-    const char *path,
+const char* glean_interprocess_worklist_create(
+    const char* path,
     size_t count,
-    const uint32_t *starts,
-    const uint32_t *ends) {
+    const uint32_t* starts,
+    const uint32_t* ends) {
   return ffi::wrap([=] {
     std::vector<worklist::Counter::Value> values;
     values.reserve(count);
@@ -166,9 +162,9 @@ const char *glean_interprocess_worklist_create(
   });
 }
 
-const char *glean_interprocess_worklist_open(
-    const char *path,
-    glean_interprocess_worklist_t **worklist) {
+const char* glean_interprocess_worklist_open(
+    const char* path,
+    glean_interprocess_worklist_t** worklist) {
   return ffi::wrap([=] {
     auto w = std::make_unique<glean_interprocess_worklist_t>(path);
     *worklist = w.release();
@@ -176,33 +172,31 @@ const char *glean_interprocess_worklist_open(
 }
 
 void glean_interprocess_worklist_close(
-    glean_interprocess_worklist_t *worklist) {
+    glean_interprocess_worklist_t* worklist) {
   ffi::free_(worklist);
 }
 
-
 void glean_interprocess_worklist_get(
-    const glean_interprocess_worklist_t *worklist,
+    const glean_interprocess_worklist_t* worklist,
     size_t worker,
-    uint32_t *start,
-    uint32_t *end) {
+    uint32_t* start,
+    uint32_t* end) {
   auto value = worklist->get(worker);
   *start = value.start;
   *end = value.end;
 }
 
 void glean_interprocess_worklist_next(
-    glean_interprocess_worklist_t *worklist,
+    glean_interprocess_worklist_t* worklist,
     size_t worker,
-    uint32_t *start,
-    uint32_t *end,
-    size_t *victim) {
+    uint32_t* start,
+    uint32_t* end,
+    size_t* victim) {
   auto r = worklist->next(worker);
   *start = r.first.start;
   *end = r.first.end;
   *victim = r.second;
 }
-
 }
 
 namespace facebook::glean::worklist {
@@ -219,7 +213,7 @@ struct SerialCounter : public Counter {
     if (start < end) {
       auto i = start;
       ++start;
-      return Value{i,end};
+      return Value{i, end};
     } else {
       return folly::none;
     }
@@ -231,7 +225,9 @@ struct StealingCounter : public Counter {
   size_t worker;
 
   StealingCounter(
-      const std::string& path, size_t worker_index, size_t worker_count)
+      const std::string& path,
+      size_t worker_index,
+      size_t worker_count)
       : worklist(path.c_str()) {
     CHECK_EQ(worker_count, worklist.size);
     worker = worker_index;
@@ -240,8 +236,8 @@ struct StealingCounter : public Counter {
   folly::Optional<Value> next() override {
     auto r = worklist.next(worker);
     if (r.second != worker) {
-      LOG(INFO) << worker << ": stole "
-        << r.first.start+1 << "-" << r.first.end << " from " << r.second;
+      LOG(INFO) << worker << ": stole " << r.first.start + 1 << "-"
+                << r.first.end << " from " << r.second;
     }
     if (!r.first.empty()) {
       return r.first;
@@ -251,10 +247,10 @@ struct StealingCounter : public Counter {
   }
 };
 
-}
+} // namespace
 
 std::unique_ptr<Counter> serialCounter(size_t start, size_t end) {
-  return std::make_unique<SerialCounter>(start,end);
+  return std::make_unique<SerialCounter>(start, end);
 }
 
 std::unique_ptr<Counter> stealingCounter(
@@ -270,4 +266,4 @@ void stealingCounterSetup(
   glean_interprocess_worklist_t::create(path.c_str(), values);
 }
 
-}
+} // namespace facebook::glean::worklist

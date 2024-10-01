@@ -17,12 +17,10 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
-template<typename Iface>
+template <typename Iface>
 struct StackedBase : Iface {
-  StackedBase(Lookup *b, Iface *s)
-    : base(b)
-    , stacked(s)
-    , mid(stacked->startingId()) {}
+  StackedBase(Lookup* b, Iface* s)
+      : base(b), stacked(s), mid(stacked->startingId()) {}
 
   // Lookup implementation
 
@@ -30,7 +28,7 @@ struct StackedBase : Iface {
     if (auto id = stacked->idByKey(type, key)) {
       return id;
     } else {
-      auto bid = base->idByKey(type,key);
+      auto bid = base->idByKey(type, key);
       return bid < mid ? bid : Id::invalid();
     }
   }
@@ -40,9 +38,8 @@ struct StackedBase : Iface {
   }
 
   bool factById(Id id, std::function<void(Pid, Fact::Clause)> f) override {
-    return id < mid
-      ? base->factById(id, std::move(f))
-      : stacked->factById(id, std::move(f));
+    return id < mid ? base->factById(id, std::move(f))
+                    : stacked->factById(id, std::move(f));
   }
 
   Id startingId() const override {
@@ -62,8 +59,7 @@ struct StackedBase : Iface {
         return base->enumerate(from, upto);
       } else {
         return FactIterator::append(
-          base->enumerate(from, mid),
-          stacked->enumerate(mid, upto));
+            base->enumerate(from, mid), stacked->enumerate(mid, upto));
       }
     } else {
       return stacked->enumerate(from, upto);
@@ -77,19 +73,16 @@ struct StackedBase : Iface {
       return stacked->enumerateBack(from, downto);
     } else {
       return FactIterator::append(
-        stacked->enumerateBack(from, mid),
-        base->enumerateBack(mid, downto));
+          stacked->enumerateBack(from, mid), base->enumerateBack(mid, downto));
     }
   }
 
-  std::unique_ptr<FactIterator> seek(
-      Pid type,
-      folly::ByteRange start,
-      size_t prefix_size) override {
+  std::unique_ptr<FactIterator>
+  seek(Pid type, folly::ByteRange start, size_t prefix_size) override {
     return FactIterator::merge(
-      base->seekWithinSection(type, start, prefix_size, Id::invalid(), mid),
-      stacked->seek(type, start, prefix_size),
-      prefix_size);
+        base->seekWithinSection(type, start, prefix_size, Id::invalid(), mid),
+        stacked->seek(type, start, prefix_size),
+        prefix_size);
   }
 
   std::unique_ptr<FactIterator> seekWithinSection(
@@ -104,9 +97,9 @@ struct StackedBase : Iface {
       return stacked->seekWithinSection(type, start, prefix_size, from, to);
     } else {
       return FactIterator::merge(
-        base->seekWithinSection(type, start, prefix_size, from, mid),
-        stacked->seekWithinSection(type, start, prefix_size, mid, to),
-        prefix_size);
+          base->seekWithinSection(type, start, prefix_size, from, mid),
+          stacked->seekWithinSection(type, start, prefix_size, mid, to),
+          prefix_size);
     }
   }
 
@@ -122,9 +115,9 @@ struct StackedBase : Iface {
     }
   }
 
-protected:
-  Lookup *base;
-  Iface *stacked;
+ protected:
+  Lookup* base;
+  Iface* stacked;
   Id mid;
 };
 
@@ -137,21 +130,22 @@ protected:
  *
  * This is an attempt to model the corresponding Haskell hierarchy in C++.
  */
-template<typename Iface>
+template <typename Iface>
 struct Stacked;
 
-template<>
+template <>
 struct Stacked<Lookup> final : StackedBase<Lookup> {
   using StackedBase<Lookup>::StackedBase;
 };
 
-template<>
+template <>
 struct Stacked<Define> final : StackedBase<Define> {
   using StackedBase<Define>::StackedBase;
 
   // Define implementation
 
-  Id define(Pid type, Fact::Clause clause, Id max_ref = Id::invalid()) override {
+  Id define(Pid type, Fact::Clause clause, Id max_ref = Id::invalid())
+      override {
     // TODO: We probably want to look up in stacked first but the current
     // interface doesn't support doing that without two lookups.
 
@@ -160,7 +154,8 @@ struct Stacked<Define> final : StackedBase<Define> {
     if (max_ref < mid) {
       auto id = base->idByKey(type, clause.key());
       if (id && id < mid) {
-        // NOTE: We assume that 'value' has been typechecked. If it is empty then
+        // NOTE: We assume that 'value' has been typechecked. If it is empty
+        // then
         //       it must be the only inhabitant of its type (which must be () or
         //       similar). This means that there is no need to check against the
         //       value stored in the database as that must be empty, too.
@@ -179,6 +174,6 @@ struct Stacked<Define> final : StackedBase<Define> {
   }
 };
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

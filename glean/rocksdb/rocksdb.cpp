@@ -26,6 +26,6 @@ std::unique_ptr<Container> open(
       path, mode, cache_index_and_filter_blocks, std::move(cache));
 }
 
-}
-}
-}
+} // namespace rocks
+} // namespace glean
+} // namespace facebook

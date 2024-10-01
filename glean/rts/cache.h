@@ -8,10 +8,10 @@
 
 #pragma once
 
-#include <vector>
 #include <folly/SharedMutex.h>
 #include <folly/Synchronized.h>
 #include <folly/ThreadCachedInt.h>
+#include <vector>
 
 #include "glean/rts/factset.h"
 #include "glean/rts/lookup.h"
@@ -51,8 +51,7 @@ namespace rts {
 ///       of a problem this is.
 /// TODO: We want to share one capacity between all db caches.
 class LookupCache {
-public:
-
+ public:
   // A Stats object can be shared between different caches which will accumulate
   // their statistics into it.
   //
@@ -136,28 +135,36 @@ public:
     Pid typeById(Id id) override;
     bool factById(Id id, std::function<void(Pid, Fact::Clause)> f) override;
 
-    virtual Id startingId() const override { return base->startingId(); }
-    virtual Id firstFreeId() const override { return base->firstFreeId(); }
+    virtual Id startingId() const override {
+      return base->startingId();
+    }
+    virtual Id firstFreeId() const override {
+      return base->firstFreeId();
+    }
 
     std::unique_ptr<FactIterator> enumerate(Id from, Id upto) override;
     std::unique_ptr<FactIterator> enumerateBack(Id from, Id downto) override;
 
-    Interval count(Pid pid) const override { return base->count(pid); }
+    Interval count(Pid pid) const override {
+      return base->count(pid);
+    }
 
     std::unique_ptr<FactIterator>
-      seek(Pid type, folly::ByteRange start, size_t prefix_size) override;
+    seek(Pid type, folly::ByteRange start, size_t prefix_size) override;
 
     std::unique_ptr<FactIterator> seekWithinSection(
-      Pid type,
-      folly::ByteRange start,
-      size_t prefix_size,
-      Id from,
-      Id to) override;
+        Pid type,
+        folly::ByteRange start,
+        size_t prefix_size,
+        Id from,
+        Id to) override;
 
-    UsetId getOwner(Id id) override { return base->getOwner(id); }
+    UsetId getOwner(Id id) override {
+      return base->getOwner(id);
+    }
 
-    Lookup *base;
-    LookupCache *cache;
+    Lookup* base;
+    LookupCache* cache;
     const ReplacementPolicy replacementPolicy;
   };
 
@@ -172,7 +179,8 @@ public:
 
   // Execute a bulk loading function which takes a 'Store&' argument. The cache
   // will be locked during the execution so any lookups will cause a deadlock.
-  template<typename F> inline void withBulkStore(F&& f) {
+  template <typename F>
+  inline void withBulkStore(F&& f) {
     performUpdate([&](auto& windex, auto& wstorage) {
       Inserter inserter(*this, windex, wstorage);
       f(static_cast<Store&>(inserter));
@@ -181,12 +189,12 @@ public:
 
   ~LookupCache();
 
-private:
+ private:
   Options options;
 
   struct Index {
-    FastSetBy<const Fact *, FactById> ids; // id -> fact
-    FastSetBy<const Fact *, FactByKey> keys; // (type,key) -> fact
+    FastSetBy<const Fact*, FactById> ids; // id -> fact
+    FastSetBy<const Fact*, FactByKey> keys; // (type,key) -> fact
 
     // Only delete (as in free) facts while holding this lock exclusively. By
     // construction, it can only be acquired when holding a lock for the Index.
@@ -196,7 +204,7 @@ private:
   SyncIndex index; // index guarded by r/w lock
 
   class Storage {
-  public:
+   public:
     Storage() {}
     Storage(Storage&&) = default;
     Storage(const Storage&) = delete;
@@ -206,19 +214,27 @@ private:
 
     using iterator = Fact::intrusive_list::iterator;
 
-    iterator begin() { return facts.begin(); }
-    iterator end() { return facts.end(); }
+    iterator begin() {
+      return facts.begin();
+    }
+    iterator end() {
+      return facts.end();
+    }
 
-    size_t factBytes() const { return bytes; }
-    size_t factCount() const { return count; }
+    size_t factBytes() const {
+      return bytes;
+    }
+    size_t factCount() const {
+      return count;
+    }
 
-    const Fact *push_back(Fact::unique_ptr fact);
-    Fact::unique_ptr release(const Fact *fact);
-    void touch(const Fact *fact);
+    const Fact* push_back(Fact::unique_ptr fact);
+    Fact::unique_ptr release(const Fact* fact);
+    void touch(const Fact* fact);
 
     class Range {
-    public:
-      const Fact * FOLLY_NULLABLE next() {
+     public:
+      const Fact* FOLLY_NULLABLE next() {
         if (pos != finish) {
           const auto fact = &*pos;
           bytes += fact->size();
@@ -234,17 +250,16 @@ private:
         return pos == finish;
       }
 
-      size_t factBytes() const { return bytes; }
-      size_t factCount() const { return count; }
+      size_t factBytes() const {
+        return bytes;
+      }
+      size_t factCount() const {
+        return count;
+      }
 
-    private:
+     private:
       Range(iterator s, iterator e)
-        : start(s)
-        , pos(s)
-        , finish(e)
-        , bytes(0)
-        , count(0)
-        {}
+          : start(s), pos(s), finish(e), bytes(0), count(0) {}
 
       friend class Storage;
 
@@ -260,11 +275,11 @@ private:
     }
 
     void splice_to(
-      Fact::intrusive_list& list,
-      Fact::intrusive_list::iterator pos,
-      Range range);
+        Fact::intrusive_list& list,
+        Fact::intrusive_list::iterator pos,
+        Range range);
 
-  private:
+   private:
     Fact::intrusive_list facts;
     size_t bytes = 0;
     size_t count = 0;
@@ -280,15 +295,16 @@ private:
   struct alignas(folly::hardware_destructive_interference_size) Touched {
     // Make things atomic for the unlikely case we're ever going to be running
     // on something other than x86_64.
-    std::unique_ptr<std::atomic<const Fact *>[]> facts;
-    std::atomic<size_t> next { 0 };
+    std::unique_ptr<std::atomic<const Fact*>[]> facts;
+    std::atomic<size_t> next{0};
   };
   std::vector<Touched> touched; // cache hits sharded by thread
 
   std::shared_ptr<Stats> stats; // statistics
 
   // Execute a function which updates the cache and updates statistics.
-  template<typename F> inline void performUpdate(F&& f) {
+  template <typename F>
+  inline void performUpdate(F&& f) {
     // We actually rely on wrap-around for underflow for these two. Initialise
     // to make Infer happy.
     uint64_t bytes_diff = 0;
@@ -314,25 +330,25 @@ private:
   // Insert a new fact into the locked cache and move all evicted facts into
   // 'dead'.
   void insertOne(
-    Index& index,
-    Storage& storage,
-    Fact::unique_ptr,
-    Fact::intrusive_list& dead);
+      Index& index,
+      Storage& storage,
+      Fact::unique_ptr,
+      Fact::intrusive_list& dead);
 
   // Delete a fact from the locked index but not from the storage
-  static void deleteFromIndex(Index& index, const Fact *fact);
+  static void deleteFromIndex(Index& index, const Fact* fact);
 
   // Record a hit on a particular fact. Note that the ownership of the read
   // lock is passed to touch which will release it.
-  void touch(SyncIndex::RLockedPtr, const Fact *);
+  void touch(SyncIndex::RLockedPtr, const Fact*);
 
   // Evict facts from the cache until we've freed up at least target bytes and
   // move evicted facts into 'dead'.
   static void evict(
-    Index& index,
-    Storage& storage,
-    size_t target,
-    Fact::intrusive_list& dead);
+      Index& index,
+      Storage& storage,
+      size_t target,
+      Fact::intrusive_list& dead);
 
   // Drain hits recorded in 'touched', updating the storage as necessary.
   static void drain(Storage& storage, Touched& touched);
@@ -343,12 +359,12 @@ private:
     Storage& storage;
 
     Inserter(LookupCache& c, Index& i, Storage& s)
-      : cache(c), index(i), storage(s) {}
+        : cache(c), index(i), storage(s) {}
 
     void insert(Fact::Ref fact) override;
   };
 };
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

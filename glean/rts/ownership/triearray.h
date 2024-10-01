@@ -11,12 +11,12 @@
 #include <folly/container/F14Map.h>
 #include <glog/logging.h>
 #include "glean/rts/error.h"
-#include "glean/rts/ownership/pool.h"
 #include "glean/rts/ownership.h"
+#include "glean/rts/ownership/pool.h"
 
 #include <cstdint>
-#include <vector>
 #include <queue>
+#include <vector>
 
 namespace facebook {
 namespace glean {
@@ -31,9 +31,9 @@ namespace rts {
  *
  * This should most likely be switched to some form of Patricia tree.
  */
-template<typename T>
+template <typename T>
 class TrieArray {
-public:
+ public:
   TrieArray() : trees_(new ForestN<FANOUT_TOP>(Tree::null())) {}
 
   /**
@@ -53,8 +53,11 @@ public:
    *   and for releasing (or reusing) it to avoid leaking memory if
    *   its refcount would fall to zero.
    */
-  template<typename Get>
-  void insert(const OwnershipUnit::Ids *start, const OwnershipUnit::Ids *finish, Get&& get) {
+  template <typename Get>
+  void insert(
+      const OwnershipUnit::Ids* start,
+      const OwnershipUnit::Ids* finish,
+      Get&& get) {
     if (start == finish) {
       return;
     }
@@ -86,40 +89,40 @@ public:
     //   a pointer to the new value in each one.
     // - Do the same for `null_link`.
     std::vector<T*> values;
-    Tree *null_link = nullptr;
+    Tree* null_link = nullptr;
 
     while (start != finish) {
       const auto [first_id, last_id] = *start++;
       if (first_id <= last_id) {
         traverse(
-          first_id.toWord(),
-          last_id.toWord() - first_id.toWord() + 1,
-          [&](Tree& tree, uint64_t key, uint64_t size, size_t block) {
-            if (size == block) {
-              if (const auto value = tree.value()) {
-                const auto prev = static_cast<Tree *>(value->link());
-                value->link(&tree);
-                tree = Tree::link(prev);
-                if (prev == nullptr) {
-                  values.push_back(value);
+            first_id.toWord(),
+            last_id.toWord() - first_id.toWord() + 1,
+            [&](Tree& tree, uint64_t key, uint64_t size, size_t block) {
+              if (size == block) {
+                if (const auto value = tree.value()) {
+                  const auto prev = static_cast<Tree*>(value->link());
+                  value->link(&tree);
+                  tree = Tree::link(prev);
+                  if (prev == nullptr) {
+                    values.push_back(value);
+                  } else {
+                    value->use(-1); // we dropped the ref from the trie
+                  }
                 } else {
-                  value->use(-1); // we dropped the ref from the trie
+                  tree = Tree::link(null_link);
+                  null_link = &tree;
                 }
               } else {
-                tree = Tree::link(null_link);
-                null_link = &tree;
+                if (auto value = tree.value()) {
+                  value->use(FANOUT - 1);
+                }
+                tree = Tree::forest(pool_.alloc(tree));
               }
-            } else {
-              if (auto value = tree.value()) {
-                value->use(FANOUT-1);
-              }
-              tree = Tree::forest(pool_.alloc(tree));
-            }
-          });
+            });
       }
     }
 
-    const auto unlink = [&](Tree *tree, T * FOLLY_NULLABLE value) {
+    const auto unlink = [&](Tree* tree, T* FOLLY_NULLABLE value) {
       // If we are updating *all* references to this value, then the
       // refcount for the old value will be 1 here, and get() can do
       // an in-place update.
@@ -131,7 +134,7 @@ public:
         tree = next;
         ++refs;
       }
-      upd->use(refs-1);
+      upd->use(refs - 1);
     };
 
     if (null_link) {
@@ -139,25 +142,26 @@ public:
     }
 
     for (auto value : values) {
-      Tree *tree = static_cast<Tree*>(value->link());
+      Tree* tree = static_cast<Tree*>(value->link());
       value->link(nullptr);
       unlink(tree, value);
     }
   }
 
-  template<typename F>
+  template <typename F>
   void foreach(F&& f) {
-    traverse([&](Tree& tree, uint64_t key, uint64_t size, uint64_t /* block */) {
-      if (auto *value = tree.value()) {
-        if (auto new_value = f(value)) {
-          tree = Tree::value(new_value);
-        }
-      }
-    });
+    traverse(
+        [&](Tree& tree, uint64_t key, uint64_t size, uint64_t /* block */) {
+          if (auto* value = tree.value()) {
+            if (auto new_value = f(value)) {
+              tree = Tree::value(new_value);
+            }
+          }
+        });
   }
 
   struct Flattened {
-    folly::F14FastMap<uint64_t,T*> sparse;
+    folly::F14FastMap<uint64_t, T*> sparse;
     std::vector<T*> dense;
   };
 
@@ -166,11 +170,15 @@ public:
   ///    - a sparse mapping for elements less than start
   Flattened flatten(uint64_t start, uint64_t end) {
     if (end <= maxkey_) {
-      error("flatten: invalid bounds ({},{}) ({},{})",
-        start, end, minkey_, maxkey_);
+      error(
+          "flatten: invalid bounds ({},{}) ({},{})",
+          start,
+          end,
+          minkey_,
+          maxkey_);
     }
-    VLOG(1) << folly::sformat("flatten: ({},{}) ({},{})",
-        start, end, minkey_, maxkey_);
+    VLOG(1) << folly::sformat(
+        "flatten: ({},{}) ({},{})", start, end, minkey_, maxkey_);
 
     // If there's no data in the tree, just return an empty result instead of
     // allocating an array of nullptr.
@@ -178,8 +186,8 @@ public:
       return {};
     }
 
-    folly::F14FastMap<uint64_t,T*> sparse;
-    std::vector<T*> vec(end-start, nullptr);
+    folly::F14FastMap<uint64_t, T*> sparse;
+    std::vector<T*> vec(end - start, nullptr);
 
     traverse(
         [&, start](
@@ -200,13 +208,14 @@ public:
           }
         });
 
-    return { std::move(sparse), std::move(vec) };
+    return {std::move(sparse), std::move(vec)};
   }
 
-private:
+ private:
   static constexpr size_t FANOUT_TOP = 65536;
   static constexpr size_t FANOUT = 16;
-  static constexpr size_t BLOCK = (size_t(std::numeric_limits<uint32_t>::max()) + 1) / FANOUT_TOP;
+  static constexpr size_t BLOCK =
+      (size_t(std::numeric_limits<uint32_t>::max()) + 1) / FANOUT_TOP;
 
   static constexpr size_t blockSize(uint8_t level) {
     auto size = BLOCK;
@@ -217,7 +226,8 @@ private:
     return size;
   }
 
-  template<uint32_t N> struct ForestN;
+  template <uint32_t N>
+  struct ForestN;
   using Forest = ForestN<FANOUT>;
 
   // A tagged pointer based sum of nothing (`nullptr`), a non-null pointer to a
@@ -231,23 +241,23 @@ private:
       return t;
     }
 
-    static Tree value(T *x) {
+    static Tree value(T* x) {
       Tree t;
       t.ptr = reinterpret_cast<uintptr_t>(x);
-      assert((t.ptr&1) == 0);
+      assert((t.ptr & 1) == 0);
       assert(t.ptr != 0);
       return t;
     }
 
-    static Tree forest(Forest *forest) {
+    static Tree forest(Forest* forest) {
       Tree t;
       t.ptr = reinterpret_cast<uintptr_t>(forest);
-      assert((t.ptr&1) == 0);
+      assert((t.ptr & 1) == 0);
       t.ptr |= 1;
       return t;
     }
 
-    static Tree link(Tree *x) {
+    static Tree link(Tree* x) {
       Tree t;
       t.ptr = reinterpret_cast<uintptr_t>(x);
       return t;
@@ -257,29 +267,29 @@ private:
       return ptr == 0;
     }
 
-    T * FOLLY_NULLABLE value() const {
-      return (ptr&1) == 0 ? reinterpret_cast<T *>(ptr) : nullptr;
+    T* FOLLY_NULLABLE value() const {
+      return (ptr & 1) == 0 ? reinterpret_cast<T*>(ptr) : nullptr;
     }
 
-    Forest * FOLLY_NULLABLE forest() {
-      return (ptr&1) == 1 ? reinterpret_cast<Forest *>(ptr-1) : nullptr;
+    Forest* FOLLY_NULLABLE forest() {
+      return (ptr & 1) == 1 ? reinterpret_cast<Forest*>(ptr - 1) : nullptr;
     }
 
-    Tree *link() const {
-      return reinterpret_cast<Tree *>(ptr);
+    Tree* link() const {
+      return reinterpret_cast<Tree*>(ptr);
     }
 
     bool isForest() const {
-      return (ptr&1) == 1;
+      return (ptr & 1) == 1;
     }
   };
 
-  template<uint32_t N>
+  template <uint32_t N>
   struct ForestN {
     Tree trees_[N];
 
     explicit ForestN(Tree tree) {
-      std::fill(trees_, trees_+N, tree);
+      std::fill(trees_, trees_ + N, tree);
     }
 
     Tree& at(uint32_t i) {
@@ -296,10 +306,10 @@ private:
     return {key / BLOCK, key % BLOCK};
   }
 
-  template<typename F>
+  template <typename F>
   void traverse(F&& f) {
     if (minkey_ <= maxkey_) {
-      traverse(minkey_, maxkey_-minkey_+1, f);
+      traverse(minkey_, maxkey_ - minkey_ + 1, f);
     }
   }
 
@@ -308,7 +318,7 @@ private:
   //
   // `F` gets called for each leaf tree (with or without a value). It can modify
   // the tree to become a forest in which case `traverse` will descend into it.
-  template<typename F>
+  template <typename F>
   void traverse(uint64_t start, uint64_t size, F&& f) {
     auto [first_block, first_index] = location(start);
     auto [last_block, last_index] = location(start + (size - 1));
@@ -321,22 +331,28 @@ private:
       ++first_block;
       first_index = 0;
     }
-    traverse<0>(trees_->at(first_block), key, first_index, last_index - first_index + 1, f);
+    traverse<0>(
+        trees_->at(first_block),
+        key,
+        first_index,
+        last_index - first_index + 1,
+        f);
   }
 
-  template<size_t level, typename F>
-  static void traverse(Tree& tree, uint64_t key, uint64_t start, uint64_t size, F& f) {
+  template <size_t level, typename F>
+  static void
+  traverse(Tree& tree, uint64_t key, uint64_t start, uint64_t size, F& f) {
     if (!tree.isForest()) {
       f(tree, key, size, blockSize(level));
     }
     if (auto forest = tree.forest()) {
-      constexpr auto block = blockSize(level+1);
+      constexpr auto block = blockSize(level + 1);
       if constexpr (block != 0) {
         auto t = start / block;
         auto i = start % block;
         while (size != 0) {
-          const auto n = std::min(size, block-i);
-          traverse<level+1>(forest->at(t), key, i, n, f);
+          const auto n = std::min(size, block - i);
+          traverse<level + 1>(forest->at(t), key, i, n, f);
           i = 0;
           key += n;
           size -= n;
@@ -352,6 +368,6 @@ private:
   uint64_t maxkey_ = 0;
 };
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

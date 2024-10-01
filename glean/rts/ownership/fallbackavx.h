@@ -27,7 +27,6 @@ namespace compression {
 
 template <class Pointer>
 struct EliasFanoCompressedListBase {
-
   EliasFanoCompressedListBase() = default;
 
   template <class OtherPointer>
@@ -42,7 +41,9 @@ struct EliasFanoCompressedListBase {
         lower(reinterpret_cast<Pointer>(other.lower)),
         upper(reinterpret_cast<Pointer>(other.upper)) {}
 
-  void free(void) { return; }
+  void free(void) {
+    return;
+  }
   size_t size = 0;
   uint8_t numLowerBits = 0;
   size_t upperSizeBytes = 0;
@@ -63,7 +64,6 @@ template <
     size_t kForwardQuantum = 0, // 0 = disabled
     bool kUpperFirst = false>
 struct EliasFanoEncoder {
-
   using CompressedList = EliasFanoCompressedList;
   using MutableCompressedList = MutableEliasFanoCompressedList;
 
@@ -72,7 +72,9 @@ struct EliasFanoEncoder {
 
   EliasFanoEncoder(size_t size_, ValueType upperBound) : size(size_) {}
 
-  void add(ValueType value) { return; }
+  void add(ValueType value) {
+    return;
+  }
 
   const MutableCompressedList& finish() {
     return result_;
@@ -88,34 +90,38 @@ template <
     bool kUnchecked = false,
     class SizeT = typename Encoder::SkipValueType>
 class EliasFanoReader {
-
  public:
-    using EncoderType = Encoder;
-    using ValueType = typename Encoder::ValueType;
-    using SizeType = SizeT;
+  using EncoderType = Encoder;
+  using ValueType = typename Encoder::ValueType;
+  using SizeType = SizeT;
 
-    EliasFanoReader(const typename Encoder::CompressedList& list)
+  EliasFanoReader(const typename Encoder::CompressedList& list)
       : numLowerBits_(list.numLowerBits) {}
 
-    bool previous() { return false; }
-    bool next() { return false; }
+  bool previous() {
+    return false;
+  }
+  bool next() {
+    return false;
+  }
 
-    ValueType value() const {
-       return value_;
-    }
+  ValueType value() const {
+    return value_;
+  }
 
-    template <bool kCanBeAtValue = true>
-    bool skipTo(ValueType value) {
-        return true;
-    }
+  template <bool kCanBeAtValue = true>
+  bool skipTo(ValueType value) {
+    return true;
+  }
 
-    bool valid() const { return true; }
+  bool valid() const {
+    return true;
+  }
 
  private:
-    ValueType value_;
-    const uint8_t numLowerBits_;
-
+  ValueType value_;
+  const uint8_t numLowerBits_;
 };
 
-}
-}
+} // namespace compression
+} // namespace folly

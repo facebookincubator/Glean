@@ -15,9 +15,7 @@ namespace glean {
 
 // A Sender which dumps all data into a file. This happens on the final flush,
 // rebaseAndSend is a noop. This is mostly useful for testing.
-std::unique_ptr<Sender> fileWriter(
-  std::string path
-);
+std::unique_ptr<Sender> fileWriter(std::string path);
 
-}
-}
+} // namespace glean
+} // namespace facebook

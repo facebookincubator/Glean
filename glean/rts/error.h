@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <string>
 #include <folly/Format.h>
+#include <string>
 
 namespace facebook {
 namespace glean {
@@ -23,6 +23,6 @@ inline std::string error(folly::StringPiece fmt, Args&&... args) {
   raiseError(folly::sformat(fmt, std::forward<Args>(args)...));
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

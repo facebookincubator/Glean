@@ -36,27 +36,24 @@ struct FactBlock {
 
   struct deref {
     Id starting_id;
-    const Ref *refs;
-    const unsigned char *data;
+    const Ref* refs;
+    const unsigned char* data;
     const size_t count;
     Fact::Ref operator()(const FactBlock::Ref& r) const {
       assert(&r >= refs && &r < refs + count);
       return Fact::Ref{
-        starting_id + (&r - refs),
-        r.type,
-        Fact::Clause{data + r.offset, r.key_size, r.value_size
-        }
-      };
+          starting_id + (&r - refs),
+          r.type,
+          Fact::Clause{data + r.offset, r.key_size, r.value_size}};
     }
   };
 
   using const_iterator =
-    boost::transform_iterator<deref, std::vector<Ref>::const_iterator>;
+      boost::transform_iterator<deref, std::vector<Ref>::const_iterator>;
 
   const_iterator iterator(std::vector<Ref>::const_iterator base) const {
     return boost::make_transform_iterator(
-      base,
-      deref{starting_id, refs.data(), data.data(), refs.size()});
+        base, deref{starting_id, refs.data(), data.data(), refs.size()});
   }
 
   const_iterator begin() const {
@@ -83,7 +80,7 @@ struct FactBlock {
   bool seekToEach(Lookup& lookup) const;
 };
 
-}
-}
-}
-}
+} // namespace benchmarking
+} // namespace rts
+} // namespace glean
+} // namespace facebook

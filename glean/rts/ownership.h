@@ -25,8 +25,9 @@ using OwnerSet = folly::compression::EliasFanoCompressedList;
 
 struct OwnershipSetIterator {
   virtual ~OwnershipSetIterator() {}
-  virtual std::pair<size_t,size_t> sizes() const = 0;
-  virtual folly::Optional<std::pair<UsetId,SetExpr<const OwnerSet*>>> get() = 0;
+  virtual std::pair<size_t, size_t> sizes() const = 0;
+  virtual folly::Optional<std::pair<UsetId, SetExpr<const OwnerSet*>>>
+  get() = 0;
 };
 
 struct OwnershipStats {
@@ -74,19 +75,15 @@ struct Ownership {
 // Contains the canonical 'UsetId's that will be added to the database.
 //
 struct ComputedOwnership {
-  ComputedOwnership(
-        Usets&& sets,
-        std::vector<std::pair<Id,UsetId>>&& facts) :
-      sets_(std::move(sets)),
-      facts_(std::move(facts)) {}
+  ComputedOwnership(Usets&& sets, std::vector<std::pair<Id, UsetId>>&& facts)
+      : sets_(std::move(sets)), facts_(std::move(facts)) {}
 
   // Sets, indexed by UsetId starting at firstId_
   Usets sets_;
 
   // Maps fact Ids to owner sets, represented as intervals
-  std::vector<std::pair<Id,UsetId>> facts_;
+  std::vector<std::pair<Id, UsetId>> facts_;
 };
-
 
 /**
  * Raw ownership data (facts -> unit)
@@ -105,7 +102,7 @@ struct OwnershipUnit {
   UnitId unit;
 
   /** Fact ids owner by the unit. */
-  folly::Range<const Ids *> ids;
+  folly::Range<const Ids*> ids;
 };
 
 struct OwnershipUnitIterator {
@@ -123,11 +120,11 @@ struct Lookup;
  * Compute ownership data for non-derived facts
  */
 std::unique_ptr<ComputedOwnership> computeOwnership(
-  const Inventory& inventory,
-  Lookup& lookup,
-  Lookup *base_lookup,
-  OwnershipUnitIterator *iter);
+    const Inventory& inventory,
+    Lookup& lookup,
+    Lookup* base_lookup,
+    OwnershipUnitIterator* iter);
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

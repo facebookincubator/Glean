@@ -8,9 +8,9 @@
 
 #include "glean/lang/clang/path.h"
 
+#include <glog/logging.h>
 #include <algorithm>
 #include <cassert>
-#include <glog/logging.h>
 
 namespace facebook::glean::clangx {
 
@@ -49,8 +49,7 @@ std::filesystem::path goodPath(
     }
     return result;
   } else {
-    auto d = std::mismatch(
-      path.begin(), path.end(), root.begin(), root.end());
+    auto d = std::mismatch(path.begin(), path.end(), root.begin(), root.end());
     if (d.second == root.end()) {
       std::filesystem::path ret;
       for (auto i = d.first; i != path.end(); ++i) {
@@ -64,13 +63,14 @@ std::filesystem::path goodPath(
 }
 
 std::filesystem::path followSymlinksInsideRoot(
-    std::filesystem::path root, std::filesystem::path source) {
+    std::filesystem::path root,
+    std::filesystem::path source) {
   CHECK(source.is_relative());
 
   std::filesystem::path path; // current path
   std::filesystem::path tail = source; // remaining path
 
-  for (auto next = tail.begin(); next != tail.end(); ) {
+  for (auto next = tail.begin(); next != tail.end();) {
     auto component = *next;
     auto cur = root / path / component;
     if (std::filesystem::is_symlink(cur)) {
@@ -110,4 +110,4 @@ std::filesystem::path followSymlinksInsideRoot(
   return path;
 }
 
-}
+} // namespace facebook::glean::clangx

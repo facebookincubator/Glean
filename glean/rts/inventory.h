@@ -8,12 +8,12 @@
 
 #pragma once
 
+#include "glean/rts/bytecode/subroutine.h"
+#include "glean/rts/bytecode/syscall.h"
 #include "glean/rts/fact.h"
 #include "glean/rts/id.h"
 #include "glean/rts/lookup.h"
 #include "glean/rts/substitution.h"
-#include "glean/rts/bytecode/subroutine.h"
-#include "glean/rts/bytecode/syscall.h"
 
 #include <vector>
 
@@ -33,9 +33,9 @@ struct Predicate {
   std::string name;
   int32_t version;
 
-  template<typename Context>
+  template <typename Context>
   using Rename = SysCalls<Context, SysCall<Id, Pid, Reg<Id>>>;
-  template<typename Context>
+  template <typename Context>
   using Descend = SysCalls<Context, SysCall<Id, Pid>>;
 
   /// Typechecker for clauses. It should take the following arguments:
@@ -62,7 +62,7 @@ struct Predicate {
     return !(*this == other);
   }
 
-  template<typename Context>
+  template <typename Context>
   void typecheck(
       const Rename<Context>& rename,
       Fact::Clause clause,
@@ -71,7 +71,7 @@ struct Predicate {
     runTypecheck(*typechecker, rename, clause, output, key_size);
   }
 
-  template<typename Context>
+  template <typename Context>
   void substitute(
       const Rename<Context>& rename,
       Fact::Clause clause,
@@ -82,7 +82,7 @@ struct Predicate {
     typecheck(rename, clause, output, key_size);
   }
 
-  template<typename Context>
+  template <typename Context>
   static void runTypecheck(
       const Subroutine& sub,
       const Rename<Context>& rename,
@@ -90,54 +90,48 @@ struct Predicate {
       binary::Output& output,
       uint64_t& key_size) {
     Subroutine::Activation::with(
-      sub,
-      rename.contextptr(),
-      [&](auto& activation) {
-        activation.run({
-          *rename.handlers_begin(),
-          reinterpret_cast<uint64_t>(clause.data),
-          reinterpret_cast<uint64_t>(clause.data + clause.key_size),
-          reinterpret_cast<uint64_t>(clause.data + clause.size())});
-        output = std::move(activation.output(0));
-        key_size = activation.results()[0];
-    });
+        sub, rename.contextptr(), [&](auto& activation) {
+          activation.run(
+              {*rename.handlers_begin(),
+               reinterpret_cast<uint64_t>(clause.data),
+               reinterpret_cast<uint64_t>(clause.data + clause.key_size),
+               reinterpret_cast<uint64_t>(clause.data + clause.size())});
+          output = std::move(activation.output(0));
+          key_size = activation.results()[0];
+        });
   }
 
-  template<typename Context>
-  void traverse(
-      const Descend<Context>& descend,
-      Fact::Clause clause) const {
+  template <typename Context>
+  void traverse(const Descend<Context>& descend, Fact::Clause clause) const {
     runTraverse(*traverser, descend, clause);
   }
 
-  template<typename Context>
+  template <typename Context>
   static void runTraverse(
       const Subroutine& sub,
       const Descend<Context>& descend,
       Fact::Clause clause) {
     Subroutine::Activation::with(
-      sub,
-      descend.contextptr(),
-      [&](auto& activation) {
-        activation.run({
-          *descend.handlers_begin(),
-          reinterpret_cast<uint64_t>(clause.data),
-          reinterpret_cast<uint64_t>(clause.data + clause.key_size),
-          reinterpret_cast<uint64_t>(clause.data + clause.size())});
-    });
+        sub, descend.contextptr(), [&](auto& activation) {
+          activation.run(
+              {*descend.handlers_begin(),
+               reinterpret_cast<uint64_t>(clause.data),
+               reinterpret_cast<uint64_t>(clause.data + clause.key_size),
+               reinterpret_cast<uint64_t>(clause.data + clause.size())});
+        });
   }
 };
 
 /// Information about predicates in an open DB.
 class Inventory {
-public:
+ public:
   Inventory();
 
   // The ids in 'predicates' are expected to be mostly dense (gaps are ok for
   // now but the Inventory will use O(max_id - min_id) space.
   explicit Inventory(std::vector<Predicate> predicates);
 
-  const Predicate * FOLLY_NULLABLE lookupPredicate(Pid id) const &;
+  const Predicate* FOLLY_NULLABLE lookupPredicate(Pid id) const&;
 
   Pid firstId() const {
     return first_id;
@@ -148,25 +142,24 @@ public:
   }
 
   // TEMPORARY
-  std::vector<const Predicate *> predicates() const;
+  std::vector<const Predicate*> predicates() const;
 
   std::string serialize() const;
   static Inventory deserialize(folly::ByteRange);
 
   bool operator==(const Inventory& other) const {
-    return first_id == other.first_id
-      && preds == other.preds;
+    return first_id == other.first_id && preds == other.preds;
   }
   bool operator!=(const Inventory& other) const {
     return !(*this == other);
   }
 
-private:
+ private:
   Pid first_id;
   std::vector<Predicate> preds;
-    // an INVALID Predicate::id means there is no predicate with that id
+  // an INVALID Predicate::id means there is no predicate with that id
 };
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

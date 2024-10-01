@@ -16,9 +16,10 @@ namespace glean {
 namespace rts {
 
 struct CmpSet {
-  bool operator()(const folly::fbstring& lhs
-                 ,const folly::fbstring& rhs) const {
-    return std::lexicographical_compare(lhs.begin(),lhs.end(),rhs.begin(),rhs.end());
+  bool operator()(const folly::fbstring& lhs, const folly::fbstring& rhs)
+      const {
+    return std::lexicographical_compare(
+        lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
   }
 };
 
@@ -26,6 +27,6 @@ using BytestringSet = std::set<folly::fbstring, CmpSet>;
 
 using WordSet = std::set<uint64_t>;
 
-}
-}
+} // namespace rts
+} // namespace glean
 } // namespace facebook

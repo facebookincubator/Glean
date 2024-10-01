@@ -14,7 +14,7 @@
 
 namespace facebook {
 namespace glean {
-namespace rts{
+namespace rts {
 
 namespace {
 
@@ -27,10 +27,9 @@ void roundtripString(const std::string& s) {
   CHECK_EQ(s, binary::mkString(demangled.bytes()));
 }
 
-}
+} // namespace
 
 using namespace std::string_literals;
-
 
 TEST(BinaryTest, utf8String) {
   roundtripString(""s);
@@ -40,7 +39,6 @@ TEST(BinaryTest, utf8String) {
   roundtripString("abc\0\0");
 }
 
-
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

@@ -23,7 +23,7 @@ using PredicateStats = rts::DenseMap<rts::Pid, rts::MemoryStats>;
 /// rest of rocksdb.cpp with -fno-rtti because some pre-compiled RocksDB
 /// packages are compiled with -fno-rtti and otherwise we get linker errors.
 class AtomicPredicateStats {
-public:
+ public:
   AtomicPredicateStats();
   ~AtomicPredicateStats();
 
@@ -33,11 +33,11 @@ public:
 
   const PredicateStats& unprotected() const;
 
-private:
+ private:
   class Impl;
   std::unique_ptr<Impl> impl;
 };
 
-}
-}
-}
+} // namespace rocks
+} // namespace glean
+} // namespace facebook

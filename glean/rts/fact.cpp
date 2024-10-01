@@ -34,8 +34,8 @@ std::string Fact::dump() const {
   std::ostringstream os;
 
   auto bytes = [](std::ostream& os, folly::ByteRange bs) {
-    if (std::all_of(bs.begin(), bs.end(),
-          [](auto c) { return c >= 32 && c < 127; })) {
+    if (std::all_of(
+            bs.begin(), bs.end(), [](auto c) { return c >= 32 && c < 127; })) {
       os << '"' << std::string(bs.begin(), bs.end()) << '"';
     } else {
       os << folly::hexlify(bs);
@@ -50,6 +50,6 @@ std::string Fact::dump() const {
   return os.str();
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

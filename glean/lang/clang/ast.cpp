@@ -17,11 +17,11 @@
 #include <llvm/Support/SHA1.h>
 #include <re2/re2.h>
 
+#include <folly/json/json.h>
 #include "folly/MapUtil.h"
 #include "folly/Overload.h"
 #include "folly/ScopeGuard.h"
 #include "folly/lang/Assume.h"
-#include <folly/json/json.h>
 #include "glean/lang/clang/ast.h"
 #include "glean/lang/clang/index.h"
 
@@ -33,7 +33,10 @@ using namespace facebook::glean::clangx;
 using namespace facebook::glean::cpp;
 using namespace re2;
 
-template<typename T> T identity(T x) { return x; }
+template <typename T>
+T identity(T x) {
+  return x;
+}
 
 /// Utility function to get Unified Symbol Resolution (USR) Hash for a Decl
 /// Creates SHA1 hash of USR and uses 8 bytes of which as Index. This is same
@@ -42,7 +45,7 @@ template<typename T> T identity(T x) { return x; }
 /// We currently keep hex string (16bit encoding). We could use 64bit encoding
 /// to reduce the size further.
 //
-std::optional<std::string> getUsrHash(const clang::Decl *decl){
+std::optional<std::string> getUsrHash(const clang::Decl* decl) {
   llvm::SmallString<32> usr;
   if (clang::index::generateUSRForDecl(decl, usr)) {
     return {};
@@ -63,35 +66,35 @@ std::optional<std::string> getUsrHash(const clang::Decl *decl){
 
 /// Track usage of using declarations
 class UsingTracker {
-public:
-  explicit UsingTracker(const clang::DeclContext *context, ClangDB& d)
-    : globalContext(getCanonicalDeclContext(context))
-    , currentContext(CHECK_NOTNULL(globalContext))
-    , db(d) {}
+ public:
+  explicit UsingTracker(const clang::DeclContext* context, ClangDB& d)
+      : globalContext(getCanonicalDeclContext(context)),
+        currentContext(CHECK_NOTNULL(globalContext)),
+        db(d) {}
 
-  void addNamespace(const clang::NamespaceDecl *decl) {
+  void addNamespace(const clang::NamespaceDecl* decl) {
     if (decl->isAnonymousNamespace() || decl->isInline()) {
       auto parent = getCanonicalDeclContext(decl->getParent());
       auto context = getCanonicalDeclContext(decl);
       forwards[parent].push_back(
-        Forward{decl->getBeginLoc(), context, folly::none});
-
+          Forward{decl->getBeginLoc(), context, folly::none});
     }
   }
 
   /// Add a UsingDecl to the current DeclContext
   void addUsingDecl(
-      const clang::UsingDecl *decl, Fact<Cxx::UsingDeclaration> fact) {
+      const clang::UsingDecl* decl,
+      Fact<Cxx::UsingDeclaration> fact) {
     // TODO: We don't handle class-scope UsingDecls for now as we'd have to
     // deal with inheritance for that.
     if (!clang::isa<clang::RecordDecl>(decl->getDeclContext())) {
       const auto context = getCanonicalDeclContext(decl->getDeclContext());
-      for (const auto *shadow : decl->shadows()) {
+      for (const auto* shadow : decl->shadows()) {
         if (const auto target = shadow->getTargetDecl()) {
           if (auto canonical = clang::dyn_cast<clang::NamedDecl>(
-              target->getCanonicalDecl())) {
+                  target->getCanonicalDecl())) {
             if (auto tpl = clang::dyn_cast<clang::RedeclarableTemplateDecl>(
-                  canonical)) {
+                    canonical)) {
               canonical = tpl->getTemplatedDecl();
             }
             usingDecls.insert({{context, canonical}, {decl, fact}});
@@ -102,32 +105,30 @@ public:
   }
 
   void addUsingDirective(
-      const clang::UsingDirectiveDecl *decl, Fact<Cxx::UsingDirective> fact) {
+      const clang::UsingDirectiveDecl* decl,
+      Fact<Cxx::UsingDirective> fact) {
     if (auto context = getCanonicalDeclContext(decl->getDeclContext())) {
       if (auto dir_context =
-            getCanonicalDeclContext(
-              clang::dyn_cast<clang::DeclContext>(
-                decl->getNominatedNamespace()))) {
+              getCanonicalDeclContext(clang::dyn_cast<clang::DeclContext>(
+                  decl->getNominatedNamespace()))) {
         forwards[context].push_back(
-          Forward{decl->getUsingLoc(), dir_context, fact});
+            Forward{decl->getUsingLoc(), dir_context, fact});
       }
     }
   }
 
-
   /// Given a NamedDecl and its XRefTarget, add XRefTarget.indirect if the xref
   /// goes through using declarations
   Cxx::XRefTarget retarget(
-      const clang::Decl * FOLLY_NULLABLE base,
+      const clang::Decl* FOLLY_NULLABLE base,
       Cxx::XRefTarget target) {
     if (base) {
-      if (const auto decl =
-            clang::dyn_cast_or_null<clang::NamedDecl>(
+      if (const auto decl = clang::dyn_cast_or_null<clang::NamedDecl>(
               base->getCanonicalDecl())) {
         const auto declContext =
-          getCanonicalDeclContext(decl->getDeclContext());
+            getCanonicalDeclContext(decl->getDeclContext());
         if (declContext != currentContext) {
-          const clang::DeclContext *parentContext = nullptr;
+          const clang::DeclContext* parentContext = nullptr;
           // For non-scoped enumerators, we need to take into account that
           // using the enclosing namespace of the enum type also brings the
           // enumerators into scope:
@@ -139,10 +140,10 @@ public:
           // So we have to look for the DeclContext of the enum (but not for
           // the enum itself).
           if (auto enm =
-                clang::dyn_cast_or_null<clang::EnumDecl>(declContext)) {
+                  clang::dyn_cast_or_null<clang::EnumDecl>(declContext)) {
             if (!enm->isScoped()) {
               parentContext = getCanonicalDeclContext(
-                enm->getCanonicalDecl()->getDeclContext());
+                  enm->getCanonicalDecl()->getDeclContext());
             }
           }
           if (parentContext != currentContext) {
@@ -150,7 +151,7 @@ public:
             lookup(currentContext, state);
             for (const auto& via : state.via) {
               target = Cxx::XRefTarget::indirect(
-                db.fact<Cxx::XRefIndirectTarget>(via, target));
+                  db.fact<Cxx::XRefIndirectTarget>(via, target));
             }
           }
         }
@@ -159,26 +160,27 @@ public:
     return target;
   }
 
-private:
+ private:
   struct LookupState {
     /// The canonical decl we're looking for
-    const clang::NamedDecl *decl;
+    const clang::NamedDecl* decl;
 
     /// The canonical context of the decl
-    const clang::DeclContext *context;
+    const clang::DeclContext* context;
 
     /// The context of the parent enum decl if we are looking for an enumerator
-    const clang::DeclContext * FOLLY_NULLABLE parentContext;
+    const clang::DeclContext* FOLLY_NULLABLE parentContext;
 
     /// List of XRefVia populated by the lookup
     std::list<Cxx::XRefVia> via;
 
     /// Visited contexts populated by the lookup
-    folly::F14FastSet<const clang::DeclContext *> visited;
+    folly::F14FastSet<const clang::DeclContext*> visited;
   };
 
-  folly::Optional<const clang::DeclContext *> lookupIn(
-      const clang::DeclContext * context, LookupState& s) {
+  folly::Optional<const clang::DeclContext*> lookupIn(
+      const clang::DeclContext* context,
+      LookupState& s) {
     if (s.visited.find(context) == s.visited.end()) {
       s.visited.insert(context);
       if (context == s.context || context == s.parentContext) {
@@ -204,7 +206,7 @@ private:
             if (auto ctx = lookupIn(i->context, s)) {
               if (i->fact) {
                 s.via.insert(
-                  pos, Cxx::XRefVia::usingDirective(i->fact.value()));
+                    pos, Cxx::XRefVia::usingDirective(i->fact.value()));
               }
               return ctx;
             }
@@ -217,7 +219,7 @@ private:
     }
   }
 
-  void lookup(const clang::DeclContext *context, LookupState& s) {
+  void lookup(const clang::DeclContext* context, LookupState& s) {
     while (context) {
       if (s.visited.find(context) != s.visited.end()) {
         // We might have visited this context via a using directive so we still
@@ -240,11 +242,12 @@ private:
     }
   }
 
-public:
+ public:
   // Execute f in a new DeclContext
-  template<typename F>
-  inline
-  auto inContext(const clang::DeclContext * FOLLY_NULLABLE context, F&& f) {
+  template <typename F>
+  inline auto inContext(
+      const clang::DeclContext* FOLLY_NULLABLE context,
+      F&& f) {
     context = getCanonicalDeclContext(context);
     if (context) {
       std::swap(context, currentContext);
@@ -266,10 +269,10 @@ public:
   // Here, the xref to U won't go through a using declaration but the xref to T
   // will so we need to make sure the xref is computed in the DeclContext of
   // bar.
-  template<typename F>
-  inline
-  auto inNameContext(
-      const clang::NestedNameSpecifier * FOLLY_NULLABLE spec, F&& f) {
+  template <typename F>
+  inline auto inNameContext(
+      const clang::NestedNameSpecifier* FOLLY_NULLABLE spec,
+      F&& f) {
     // Consider:
     //
     // namespace foo { struct T { typedef int U; }; }
@@ -299,9 +302,8 @@ public:
   // function as this is the wrong context for the return type and for the
   // function's qualified name. So just remember the current function
   // and change the context when traversing the body (via maybeBody).
-  template<typename F>
-  inline
-  auto inFunction(const clang::FunctionDecl *fun, F&& f) {
+  template <typename F>
+  inline auto inFunction(const clang::FunctionDecl* fun, F&& f) {
     auto saved = currentFunction;
     currentFunction = fun;
     SCOPE_EXIT {
@@ -316,9 +318,8 @@ public:
   // the function decl:
   //
   // Foo::Foo() : bar([] { ... }) { ... }
-  template<typename F>
-  inline
-  auto maybeBody(const clang::Stmt *body, F&& f) {
+  template <typename F>
+  inline auto maybeBody(const clang::Stmt* body, F&& f) {
     if (currentFunction && body == currentFunction->getBody()) {
       return inContext(currentFunction, std::forward<F>(f));
     } else {
@@ -326,53 +327,54 @@ public:
     }
   }
 
-  const clang::DeclContext * FOLLY_NULLABLE getSpecifierContext(
-      const clang::NestedNameSpecifier * FOLLY_NULLABLE spec) {
+  const clang::DeclContext* FOLLY_NULLABLE
+  getSpecifierContext(const clang::NestedNameSpecifier* FOLLY_NULLABLE spec) {
     if (spec) {
       if (auto ns = spec->getAsNamespace()) {
         return ns;
       } else if (auto rec = spec->getAsRecordDecl()) {
         return rec;
-      } else if (spec->getKind()
-                  == clang::NestedNameSpecifier::SpecifierKind::Global) {
+      } else if (
+          spec->getKind() ==
+          clang::NestedNameSpecifier::SpecifierKind::Global) {
         return globalContext;
       }
     }
     return nullptr;
   }
 
-private:
-  static const clang::DeclContext * FOLLY_NULLABLE getCanonicalDeclContext(
-      const clang::DeclContext * FOLLY_NULLABLE ctx) {
+ private:
+  static const clang::DeclContext* FOLLY_NULLABLE
+  getCanonicalDeclContext(const clang::DeclContext* FOLLY_NULLABLE ctx) {
     if (ctx) {
       return clang::dyn_cast<clang::DeclContext>(
-        clang::dyn_cast<clang::Decl>(ctx)->getCanonicalDecl());
+          clang::dyn_cast<clang::Decl>(ctx)->getCanonicalDecl());
     } else {
       return nullptr;
     }
   }
 
-  const clang::DeclContext * const globalContext;
-  const clang::DeclContext *currentContext;
-  const clang::DeclContext * FOLLY_NULLABLE savedContext = nullptr;
-  const clang::FunctionDecl * FOLLY_NULLABLE currentFunction = nullptr;
+  const clang::DeclContext* const globalContext;
+  const clang::DeclContext* currentContext;
+  const clang::DeclContext* FOLLY_NULLABLE savedContext = nullptr;
+  const clang::FunctionDecl* FOLLY_NULLABLE currentFunction = nullptr;
   ClangDB& db;
   folly::F14FastMap<
-    std::pair<const clang::DeclContext *, const clang::NamedDecl *>,
-    std::pair<const clang::UsingDecl *, Fact<Cxx::UsingDeclaration>>>
+      std::pair<const clang::DeclContext*, const clang::NamedDecl*>,
+      std::pair<const clang::UsingDecl*, Fact<Cxx::UsingDeclaration>>>
       usingDecls;
 
   struct Forward {
     const clang::SourceLocation loc;
-    const clang::DeclContext *context;
+    const clang::DeclContext* context;
     folly::Optional<Fact<Cxx::UsingDirective>> fact;
   };
 
-  folly::F14FastMap<const clang::DeclContext *, std::vector<Forward>> forwards;
+  folly::F14FastMap<const clang::DeclContext*, std::vector<Forward>> forwards;
 };
 
 class DeclarationTargets {
-  public:
+ public:
   explicit DeclarationTargets(ClangDB& d) : db(d) {}
 
   template <typename F>
@@ -383,7 +385,7 @@ class DeclarationTargets {
         std::vector<Cxx::Declaration> decls;
         decls.reserve(refsInContext.size());
         for (const auto& [decl, _] : refsInContext) {
-            decls.push_back(decl);
+          decls.push_back(decl);
         }
         db.fact<Cxx::DeclarationTargets>(decl, std::move(decls));
       }
@@ -393,35 +395,35 @@ class DeclarationTargets {
   }
 
   void contextXRef(Cxx::Declaration target, ClangDB::SourceRange sort_id) {
-    refsInContext.insert({ target, sort_id });
+    refsInContext.insert({target, sort_id});
   }
 
-  private:
-    struct DeclRef {
-      Cxx::Declaration decl;
-      ClangDB::SourceRange sort_id;
+ private:
+  struct DeclRef {
+    Cxx::Declaration decl;
+    ClangDB::SourceRange sort_id;
 
-      bool operator<(const DeclRef& other) const {
-        return sort_id < other.sort_id;
-      }
-      bool operator==(const DeclRef& other) const {
-        return sort_id == other.sort_id;
-      }
-    };
+    bool operator<(const DeclRef& other) const {
+      return sort_id < other.sort_id;
+    }
+    bool operator==(const DeclRef& other) const {
+      return sort_id == other.sort_id;
+    }
+  };
 
-    ClangDB& db;
-    std::set<DeclRef> refsInContext;
+  ClangDB& db;
+  std::set<DeclRef> refsInContext;
 };
 
 struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   using Base = clang::RecursiveASTVisitor<ASTVisitor>;
 
   // Memoization of a function
-  template<
-    typename Key,
-    typename Value,
-    Value (ASTVisitor::*Compute)(Key),
-    Key (*Transform)(Key) = &identity<Key>>
+  template <
+      typename Key,
+      typename Value,
+      Value (ASTVisitor::*Compute)(Key),
+      Key (*Transform)(Key) = &identity<Key>>
   struct Memo {
     using key_type = Key;
     using value_type = Value;
@@ -444,7 +446,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   };
 
   // Memoization of a function which can fail to produce a result
-  template<typename Key, typename Value, typename Proj = folly::Identity>
+  template <typename Key, typename Value, typename Proj = folly::Identity>
   struct MemoOptional {
     using key_type = Key;
     using value_type = Value;
@@ -452,7 +454,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     explicit MemoOptional(const std::string& t, ASTVisitor& v, Proj p = {})
         : visitor(v), proj(p), tag(t) {}
 
-    template<typename K>
+    template <typename K>
     auto operator()(K key) {
       auto projected = proj(key);
       auto real_key = projected ? projected : key;
@@ -487,13 +489,12 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   // Obtain the FunctionName for a decl unless we choose to ignore it
   folly::Optional<Fact<Cxx::FunctionName>> functionName(
-      const clang::NamedDecl *decl) {
+      const clang::NamedDecl* decl) {
     auto name = decl->getDeclName();
     switch (name.getNameKind()) {
       case clang::DeclarationName::Identifier:
         if (auto ide = name.getAsIdentifierInfo()) {
-          return db.fact<Cxx::FunctionName>(
-            alt<0>(db.name(ide->getName())));
+          return db.fact<Cxx::FunctionName>(alt<0>(db.name(ide->getName())));
         } else {
           return folly::none;
         }
@@ -508,25 +509,21 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         return folly::none;
 
       case clang::DeclarationName::CXXOperatorName:
-        return db.fact<Cxx::FunctionName>(
-          alt<1>(name.getAsString()));
+        return db.fact<Cxx::FunctionName>(alt<1>(name.getAsString()));
 
       case clang::DeclarationName::CXXLiteralOperatorName:
-        return db.fact<Cxx::FunctionName>(
-          alt<2>(name.getAsString()));
+        return db.fact<Cxx::FunctionName>(alt<2>(name.getAsString()));
 
       case clang::DeclarationName::CXXConstructorName:
-        return db.fact<Cxx::FunctionName>(
-          alt<3>(std::make_tuple()));
+        return db.fact<Cxx::FunctionName>(alt<3>(std::make_tuple()));
 
       case clang::DeclarationName::CXXDestructorName:
-        return db.fact<Cxx::FunctionName>(
-          alt<4>(std::make_tuple()));
+        return db.fact<Cxx::FunctionName>(alt<4>(std::make_tuple()));
 
       case clang::DeclarationName::CXXConversionFunctionName: {
         auto cd = clang::dyn_cast<clang::CXXConversionDecl>(decl);
         return db.fact<Cxx::FunctionName>(
-          alt<5>(type(cd ? cd->getConversionType() : name.getCXXNameType())));
+            alt<5>(type(cd ? cd->getConversionType() : name.getCXXNameType())));
       }
 
       case clang::DeclarationName::CXXDeductionGuideName:
@@ -538,35 +535,30 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     folly::assume_unreachable();
   }
 
-
   /**********
    * Scopes *
    **********/
-
 
   // Scopes: global, namespace, class + access
   struct GlobalScope {};
 
   struct NamespaceScope {
-    const clang::NamespaceDecl *decl;
+    const clang::NamespaceDecl* decl;
     Fact<Cxx::NamespaceQName> fact;
   };
 
   struct ClassScope {
-    const clang::RecordDecl *decl;
+    const clang::RecordDecl* decl;
     Fact<Cxx::QName> fact;
   };
 
   struct LocalScope {
-    const clang::FunctionDecl *decl;
+    const clang::FunctionDecl* decl;
     Fact<Cxx::FunctionQName> fact;
   };
 
-  using Scope = std::variant<
-    GlobalScope,
-    NamespaceScope,
-    ClassScope,
-    LocalScope>;
+  using Scope =
+      std::variant<GlobalScope, NamespaceScope, ClassScope, LocalScope>;
 
   // Translate clang::AccessSpecifier to cxx.Access
   static Cxx::Access access(clang::AccessSpecifier spec) {
@@ -587,7 +579,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   // Obtain the scope for a DeclContext
-  Scope defineScope(const clang::DeclContext *ctx) {
+  Scope defineScope(const clang::DeclContext* ctx) {
     while (ctx) {
       if (clang::isa<clang::TranslationUnitDecl>(ctx)) {
         return GlobalScope{};
@@ -610,7 +602,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   // Obtain the parent scope of a Decl.
-  Scope parentScope(const clang::Decl *decl) {
+  Scope parentScope(const clang::Decl* decl) {
     return scopes(decl->getDeclContext());
   }
 
@@ -628,10 +620,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   // Obtain the cxx.Scope of a Decl and translate it to clang.Scope
-  Cxx::Scope parentScopeRepr(const clang::Decl *decl) {
+  Cxx::Scope parentScopeRepr(const clang::Decl* decl) {
     return scopeRepr(parentScope(decl), decl->getAccess());
   }
-
 
   struct DeclTraits {
     static bool isImplicit(const clang::Decl* decl) {
@@ -646,27 +637,27 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       return !(rd && rd->isLambda());
     }
 
-    template<typename T>
+    template <typename T>
     static bool isDefinition(const T* decl) {
       return DeclTraits::getDefinition(decl) == decl;
     }
 
-    static bool isDefinition(const clang::ObjCMethodDecl *decl) {
+    static bool isDefinition(const clang::ObjCMethodDecl* decl) {
       return decl->isThisDeclarationADefinition();
     }
 
-    template<typename T>
-    static const T *getDefinition(const T *decl) {
+    template <typename T>
+    static const T* getDefinition(const T* decl) {
       return decl->getDefinition();
     }
 
-    static const clang::NamespaceDecl * FOLLY_NULLABLE getDefinition(
-        const clang::NamespaceDecl *decl) {
+    static const clang::NamespaceDecl* FOLLY_NULLABLE
+    getDefinition(const clang::NamespaceDecl* decl) {
       return decl;
     }
 
-    static const clang::TypedefNameDecl * FOLLY_NULLABLE getDefinition(
-        const clang::TypedefNameDecl *) {
+    static const clang::TypedefNameDecl* FOLLY_NULLABLE
+    getDefinition(const clang::TypedefNameDecl*) {
       return nullptr;
     }
 
@@ -675,59 +666,59 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       return nullptr;
     }
 
-    static const clang::FieldDecl * FOLLY_NULLABLE getDefinition(
-        const clang::FieldDecl *) {
+    static const clang::FieldDecl* FOLLY_NULLABLE
+    getDefinition(const clang::FieldDecl*) {
       return nullptr;
     }
 
-    static const clang::ObjCCategoryDecl *getDefinition(
-        const clang::ObjCCategoryDecl *decl) {
-      return decl;    // TODO: is this right?
+    static const clang::ObjCCategoryDecl* getDefinition(
+        const clang::ObjCCategoryDecl* decl) {
+      return decl; // TODO: is this right?
     }
 
-    static const clang::ObjCImplementationDecl *getDefinition(
-        const clang::ObjCImplementationDecl *decl) {
-      return decl;    // TODO: is this right?
+    static const clang::ObjCImplementationDecl* getDefinition(
+        const clang::ObjCImplementationDecl* decl) {
+      return decl; // TODO: is this right?
     }
 
-    static const clang::ObjCCategoryImplDecl *getDefinition(
-        const clang::ObjCCategoryImplDecl *decl) {
-      return decl;    // TODO: is this right?
+    static const clang::ObjCCategoryImplDecl* getDefinition(
+        const clang::ObjCCategoryImplDecl* decl) {
+      return decl; // TODO: is this right?
     }
 
-    static const clang::ObjCMethodDecl * FOLLY_NULLABLE getDefinition(
-        const clang::ObjCMethodDecl *) {
+    static const clang::ObjCMethodDecl* FOLLY_NULLABLE
+    getDefinition(const clang::ObjCMethodDecl*) {
       return nullptr;
     }
 
-    static const clang::ObjCPropertyDecl * FOLLY_NULLABLE getDefinition(
-        const clang::ObjCPropertyDecl *) {
+    static const clang::ObjCPropertyDecl* FOLLY_NULLABLE
+    getDefinition(const clang::ObjCPropertyDecl*) {
       return nullptr;
     }
 
-    template<typename T>
-    static const T *getCanonicalDecl(const T *decl) {
+    template <typename T>
+    static const T* getCanonicalDecl(const T* decl) {
       return decl->getCanonicalDecl();
     }
 
-    static const clang::ObjCCategoryDecl *getCanonicalDecl(
-        const clang::ObjCCategoryDecl *decl) {
-      return decl;    // TODO: is this right?
+    static const clang::ObjCCategoryDecl* getCanonicalDecl(
+        const clang::ObjCCategoryDecl* decl) {
+      return decl; // TODO: is this right?
     }
 
-    static const clang::ObjCImplementationDecl *getCanonicalDecl(
-        const clang::ObjCImplementationDecl *decl) {
-      return decl;    // TODO: is this right?
+    static const clang::ObjCImplementationDecl* getCanonicalDecl(
+        const clang::ObjCImplementationDecl* decl) {
+      return decl; // TODO: is this right?
     }
 
-    static const clang::ObjCCategoryImplDecl *getCanonicalDecl(
-        const clang::ObjCCategoryImplDecl *decl) {
-      return decl;    // TODO: is this right?
+    static const clang::ObjCCategoryImplDecl* getCanonicalDecl(
+        const clang::ObjCCategoryImplDecl* decl) {
+      return decl; // TODO: is this right?
     }
 
-    static const clang::ObjCPropertyDecl *getCanonicalDecl(
-        const clang::ObjCPropertyDecl *decl) {
-      return decl;    // TODO: is this right?
+    static const clang::ObjCPropertyDecl* getCanonicalDecl(
+        const clang::ObjCPropertyDecl* decl) {
+      return decl; // TODO: is this right?
     }
 
     // Given an instantiated declaration, returns the corresponding templated
@@ -784,18 +775,15 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
 
    public:
-    template<typename T>
-    static constexpr bool canHaveComments(const T *) {
+    template <typename T>
+    static constexpr bool canHaveComments(const T*) {
       return true;
     }
-
   };
 
-  template<typename Memo, typename Decl>
-  static typename Memo::value_type representative(
-      Memo& memo,
-      const Decl *decl,
-      typename Memo::value_type me) {
+  template <typename Memo, typename Decl>
+  static typename Memo::value_type
+  representative(Memo& memo, const Decl* decl, typename Memo::value_type me) {
     auto defn = DeclTraits::getDefinition(decl);
     if (defn == decl) {
       return me;
@@ -820,32 +808,34 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     std::optional<Fact<Fbthrift::QualName>> qual_name;
     // none for exception type
     std::optional<Fbthrift::NamedKind> kind;
-  }; 
+  };
 
   class ThriftDecodingException : public std::runtime_error {
-  public:
-      explicit ThriftDecodingException(const std::string& message)
-          : std::runtime_error(message) {}
+   public:
+    explicit ThriftDecodingException(const std::string& message)
+        : std::runtime_error(message) {}
   };
 
   /** Generate Thrift facts from context and json, return new context */
-  static std::pair<std::optional<Fbthrift::XRefTarget>, std::optional<ThriftContext>>
-  genThriftFactsAux(
-    const ASTVisitor& visitor,
-    const folly::dynamic &thriftJson,
-    const std::optional<ThriftContext>& thrift_ctx_opt) {
-
+  static std::
+      pair<std::optional<Fbthrift::XRefTarget>, std::optional<ThriftContext>>
+      genThriftFactsAux(
+          const ASTVisitor& visitor,
+          const folly::dynamic& thriftJson,
+          const std::optional<ThriftContext>& thrift_ctx_opt) {
     if (thriftJson.find("field") != thriftJson.items().end()) {
-      // Field: { "field": ... } 
+      // Field: { "field": ... }
       auto field =
           visitor.db.fact<Fbthrift::Identifier>(thriftJson["field"].asString());
 
       if (!thrift_ctx_opt.has_value()) {
-        throw ThriftDecodingException("Expect a Thrift context when decoding a field");
+        throw ThriftDecodingException(
+            "Expect a Thrift context when decoding a field");
       }
       auto thrift_ctx = thrift_ctx_opt.value();
       if (!thrift_ctx.qual_name.has_value()) {
-        throw ThriftDecodingException("Expect a qual name in context when decoding a field");
+        throw ThriftDecodingException(
+            "Expect a qual name in context when decoding a field");
       }
       auto qual_name = thrift_ctx.qual_name.value();
 
@@ -853,10 +843,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       if (!thrift_ctx.kind.has_value()) {
         field_kind = Fbthrift::FieldKind::exception_;
       } else {
-          std::map<Fbthrift::NamedKind, Fbthrift::FieldKind> kind_map = {
+        std::map<Fbthrift::NamedKind, Fbthrift::FieldKind> kind_map = {
             {Fbthrift::NamedKind::struct_, Fbthrift::FieldKind::struct_},
-            {Fbthrift::NamedKind::union_, Fbthrift::FieldKind::union_}, };
-          field_kind = kind_map[thrift_ctx.kind.value()];
+            {Fbthrift::NamedKind::union_, Fbthrift::FieldKind::union_},
+        };
+        field_kind = kind_map[thrift_ctx.kind.value()];
       }
       Fact<Fbthrift::FieldDecl> field_decl =
           visitor.db.fact<Fbthrift::FieldDecl>(qual_name, field_kind, field);
@@ -864,7 +855,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
 
     if (thriftJson.find("constant") != thriftJson.items().end()) {
-      // Constant: { "constant": ... } 
+      // Constant: { "constant": ... }
       std::string thrift_constant = thriftJson["constant"].asString();
 
       if (!thrift_ctx_opt.has_value()) {
@@ -882,7 +873,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       return {Fbthrift::XRefTarget::constant(constant_), {}};
     }
 
-    if (thriftJson.find("file") == thriftJson.items().end()) { 
+    if (thriftJson.find("file") == thriftJson.items().end()) {
       throw ThriftDecodingException("Expect a file in Thrift json annotation");
     }
 
@@ -921,16 +912,20 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       // Type: {"file": ..., "name": ..., "kind": KIND }
       // returns "type" context
       std::string kind = thriftJson["kind"].asString();
-      if (thriftJson.find("name") == thriftJson.items().end()) { 
-        throw ThriftDecodingException("Expect a name in Thrift json annotation");
+      if (thriftJson.find("name") == thriftJson.items().end()) {
+        throw ThriftDecodingException(
+            "Expect a name in Thrift json annotation");
       }
       std::string name = thriftJson["name"].asString();
       Fact<Fbthrift::QualName> qual_name = visitor.db.fact<Fbthrift::QualName>(
           file_fact, visitor.db.fact<Fbthrift::Identifier>(name));
-      
+
       if (kind == "exception") {
-        auto exception_fact = visitor.db.fact<Fbthrift::ExceptionName>(qual_name);
-        return {Fbthrift::XRefTarget::exception_(exception_fact), ThriftContext{file_fact, qual_name, {}}};
+        auto exception_fact =
+            visitor.db.fact<Fbthrift::ExceptionName>(qual_name);
+        return {
+            Fbthrift::XRefTarget::exception_(exception_fact),
+            ThriftContext{file_fact, qual_name, {}}};
       }
       static const std::map<std::string, Fbthrift::NamedKind> kind_map = {
           {"struct", Fbthrift::NamedKind::struct_},
@@ -940,14 +935,16 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       Fbthrift::NamedKind named_kind = kind_map.at(kind);
       Fbthrift::NamedType named_type{qual_name, named_kind};
       auto named_decl = visitor.db.fact<Fbthrift::NamedDecl>(named_type);
-      return {Fbthrift::XRefTarget::named(named_decl), ThriftContext{file_fact, qual_name, named_kind}};
+      return {
+          Fbthrift::XRefTarget::named(named_decl),
+          ThriftContext{file_fact, qual_name, named_kind}};
     }
 
     // no declaration, just propagate the context
     return {{}, ThriftContext{file_fact, {}, {}}};
   }
 
-  /** Generate CxxToThrift facts from the cxx declaration fact 
+  /** Generate CxxToThrift facts from the cxx declaration fact
    * and json in declaration comment.
    *
    * Json annotations are of the form
@@ -955,35 +952,36 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
    *    with Kind \in {"union", "struct", "typedef", "exception"}
    * File: {"file": ... }
    * Function: {"file": ..., "service": ..., "function": ...}
-   * Field: { "field": ... } 
-   * Constant: { "constant": ... } 
+   * Field: { "field": ... }
+   * Constant: { "constant": ... }
    *
    * Throws on decoding errors. */
   template <typename Decl, typename ClangDecl>
   static void genThriftFacts(
-    ASTVisitor& visitor,
-    const ClangDecl *decl,
-    folly::Optional<Decl> &result,
-    const folly::dynamic &json) {
-
+      ASTVisitor& visitor,
+      const ClangDecl* decl,
+      folly::Optional<Decl>& result,
+      const folly::dynamic& json) {
     // To generate Thrift members declarations (enum values or field) and
     // constants, we also need the ThriftContext computed from the enclosing
     // declaration annotations
     std::optional<ThriftContext> thrift_ctx;
 
     // Get ThriftContext from parent decl if any
-    const clang::DeclContext *context = decl->getDeclContext();
+    const clang::DeclContext* context = decl->getDeclContext();
     if (context->isRecord()) {
-      const clang::CXXRecordDecl *recordDecl = clang::cast<clang::CXXRecordDecl>(context);
+      const clang::CXXRecordDecl* recordDecl =
+          clang::cast<clang::CXXRecordDecl>(context);
       if (recordDecl->getIdentifier()) {
-          std::string className = recordDecl->getNameAsString();
-          auto class_ = visitor.classDecls(recordDecl);
-          thrift_ctx = class_->thrift_ctx;
+        std::string className = recordDecl->getNameAsString();
+        auto class_ = visitor.classDecls(recordDecl);
+        thrift_ctx = class_->thrift_ctx;
       }
     } else if (context->isNamespace()) {
-        const clang::NamespaceDecl *ns = clang::cast<clang::NamespaceDecl>(context);
-        auto ns_ = visitor.namespaces(ns);
-        thrift_ctx = ns_->thrift_ctx;
+      const clang::NamespaceDecl* ns =
+          clang::cast<clang::NamespaceDecl>(context);
+      auto ns_ = visitor.namespaces(ns);
+      thrift_ctx = ns_->thrift_ctx;
     }
 
     auto [thrift_target_opt, thrift_ctx_res] =
@@ -995,13 +993,18 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         throw ThriftDecodingException("Expect a Thrift context from EnumDecl");
       }
       auto thrift_ctx_ = thrift_ctx_res.value();
-      if (!(thrift_ctx_.qual_name.has_value() && thrift_ctx_.kind.has_value())) {
-        throw ThriftDecodingException("Expect a Thrift context with qualname and kind from EnumDecl");
+      if (!(thrift_ctx_.qual_name.has_value() &&
+            thrift_ctx_.kind.has_value())) {
+        throw ThriftDecodingException(
+            "Expect a Thrift context with qualname and kind from EnumDecl");
       }
-      result->thrift_type = Fbthrift::NamedType{thrift_ctx_.qual_name.value(), thrift_ctx_.kind.value()};
-    } else if constexpr (std::is_same<Decl, ClassDecl>::value || std::is_same<Decl, NamespaceDecl>::value) {
+      result->thrift_type = Fbthrift::NamedType{
+          thrift_ctx_.qual_name.value(), thrift_ctx_.kind.value()};
+    } else if constexpr (
+        std::is_same<Decl, ClassDecl>::value ||
+        std::is_same<Decl, NamespaceDecl>::value) {
       result->thrift_ctx = thrift_ctx_res;
-    }  
+    }
 
     // For all type of decls, expect namespace, we should generate a thrift fact
     if constexpr (!std::is_same<Decl, NamespaceDecl>::value) {
@@ -1010,8 +1013,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
       auto thrift_target = thrift_target_opt.value();
       visitor.db.fact<Cxx::CxxToThrift>(
-          Cxx::XRefTarget::declaration(result->declaration()),
-          thrift_target);
+          Cxx::XRefTarget::declaration(result->declaration()), thrift_target);
     }
   }
 
@@ -1020,13 +1022,12 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     template <typename ClangDecl>
     static folly::Optional<Decl> compute(
         ASTVisitor& visitor,
-        const ClangDecl *decl) {
+        const ClangDecl* decl) {
       if (DeclTraits::isImplicit(decl)) {
         return folly::none;
       }
       auto range = visitor.db.srcRange(decl->getSourceRange());
-      folly::Optional<Decl> result =
-        Decl::declare(
+      folly::Optional<Decl> result = Decl::declare(
           visitor, decl, visitor.parentScopeRepr(decl), range.range);
       if (result) {
         visitor.db.declaration(range, result->declaration());
@@ -1050,32 +1051,34 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           visitor.db.fact<Cxx::DeclarationNameSpan>(
               result->declaration(), nameRange.file->fact, nameRange.span);
         }
-        if (DeclTraits::canHaveComments(decl)){
+        if (DeclTraits::canHaveComments(decl)) {
           if (auto comment =
-                decl->getASTContext().getRawCommentForDeclNoCache(decl)) {
+                  decl->getASTContext().getRawCommentForDeclNoCache(decl)) {
             auto crange = visitor.db.srcRange(comment->getSourceRange());
             visitor.db.fact<Cxx::DeclarationComment>(
-              result->declaration(),
-              crange.range.file,   // might be "<builtin>"
-              crange.span);
+                result->declaration(),
+                crange.range.file, // might be "<builtin>"
+                crange.span);
 
             std::string json_annotation;
-            // Some entities generated from thrift may have a json object as a comment.
-            // This object encodes the Glean fact of the generating entity
-            // We use it to generate CxxToThrift facts
-            auto comment_str = comment->getRawText(visitor.db.sourceManager()).str();
+            // Some entities generated from thrift may have a json object as a
+            // comment. This object encodes the Glean fact of the generating
+            // entity We use it to generate CxxToThrift facts
+            auto comment_str =
+                comment->getRawText(visitor.db.sourceManager()).str();
 
-            static const RE2 thrift_regex(
-              R"(Glean.*({.*}))"
-            );
-            if (RE2::PartialMatch(comment_str, thrift_regex, &json_annotation)) {
+            static const RE2 thrift_regex(R"(Glean.*({.*}))");
+            if (RE2::PartialMatch(
+                    comment_str, thrift_regex, &json_annotation)) {
               try {
-                auto json = folly::parseJson(json_annotation); 
+                auto json = folly::parseJson(json_annotation);
                 genThriftFacts(visitor, decl, result, json);
               } catch (const folly::json::parse_error& e) {
-                LOG(WARNING) << "Couldn't parse Thrift json annotation: " << comment_str; 
-              } catch (const ThriftDecodingException &e) {
-                LOG(WARNING) << "Thrift json decoding internal error: " << e.what(); 
+                LOG(WARNING)
+                    << "Couldn't parse Thrift json annotation: " << comment_str;
+              } catch (const ThriftDecodingException& e) {
+                LOG(WARNING)
+                    << "Thrift json decoding internal error: " << e.what();
               }
             };
           }
@@ -1085,8 +1088,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
   };
 
-  template<typename Memo, typename Decl>
-  void visitDeclaration(Memo& memo, const Decl *decl) {
+  template <typename Memo, typename Decl>
+  void visitDeclaration(Memo& memo, const Decl* decl) {
     if (auto mdecl = memo(decl)) {
       decl = mdecl->key;
       if (DeclTraits::isDefinition(decl)) {
@@ -1166,7 +1169,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           return folly::none;
         },
         [](const LocalScope&) {
-          LOG(ERROR) << "Inner scope is a function, should have been a namespace";
+          LOG(ERROR)
+              << "Inner scope is a function, should have been a namespace";
           return folly::none;
         });
   }
@@ -1182,7 +1186,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static folly::Optional<NamespaceDecl> declare(
         ASTVisitor& visitor,
-        const clang::NamespaceDecl *decl,
+        const clang::NamespaceDecl* decl,
         Cxx::Scope,
         Src::Range range) {
       folly::Optional<Fact<Cxx::Name>> name;
@@ -1191,23 +1195,20 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
 
       auto qname = visitor.db.fact<Cxx::NamespaceQName>(
-        maybe(name), maybe(visitor.parentNamespace(decl)));
+          maybe(name), maybe(visitor.parentNamespace(decl)));
 
-      return NamespaceDecl
-        { {}
-        , qname
-        , visitor.db.fact<Cxx::NamespaceDeclaration>(qname, range)
-        };
+      return NamespaceDecl{
+          {}, qname, visitor.db.fact<Cxx::NamespaceDeclaration>(qname, range)};
     }
 
-    void define(ASTVisitor& visitor, const clang::NamespaceDecl *d) const {
+    void define(ASTVisitor& visitor, const clang::NamespaceDecl* d) const {
       visitor.db.fact<Cxx::NamespaceDefinition>(
           decl, visitor.db.fact<Cxx::Declarations>(members(visitor, d)));
     }
   };
 
   // Clang namespace visitor
-  bool VisitNamespaceDecl(clang::NamespaceDecl *decl) {
+  bool VisitNamespaceDecl(clang::NamespaceDecl* decl) {
     usingTracker.addNamespace(decl);
     visitDeclaration(namespaces, decl);
     return true;
@@ -1217,16 +1218,15 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
    * Using declarations *
    **********************/
 
-  bool VisitUsingDecl(const clang::UsingDecl *decl) {
+  bool VisitUsingDecl(const clang::UsingDecl* decl) {
     if (auto name = functionName(decl)) {
       if (auto context =
-          usingTracker.getSpecifierContext(decl->getQualifier())) {
+              usingTracker.getSpecifierContext(decl->getQualifier())) {
         auto range = db.srcRange(decl->getSourceRange());
         auto fact = db.fact<Cxx::UsingDeclaration>(
-          db.fact<Cxx::FunctionQName>(
-            name.value(),
-            scopeRepr(scopes(context), decl->getAccess())),
-          range.range);
+            db.fact<Cxx::FunctionQName>(
+                name.value(), scopeRepr(scopes(context), decl->getAccess())),
+            range.range);
         db.declaration(range, Cxx::Declaration::usingDeclaration(fact));
         usingTracker.addUsingDecl(decl, fact);
       }
@@ -1242,16 +1242,14 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
    * Using directives *
    ********************/
 
-  bool VisitUsingDirectiveDecl(const clang::UsingDirectiveDecl *decl) {
+  bool VisitUsingDirectiveDecl(const clang::UsingDirectiveDecl* decl) {
     if (auto nominated = decl->getNominatedNamespace()) {
       xrefExpr(decl->getIdentLocation(), decl->getQualifier(), nominated);
     }
     if (auto ns = decl->getNominatedNamespaceAsWritten()) {
       auto range = db.srcRange(decl->getSourceRange());
       auto fact = db.fact<Cxx::UsingDirective>(
-          db.fact<Cxx::QName>(
-            db.name(ns->getName()),
-            parentScopeRepr(ns)),
+          db.fact<Cxx::QName>(db.name(ns->getName()), parentScopeRepr(ns)),
           range.range);
       db.declaration(range, Cxx::Declaration::usingDirective(fact));
       usingTracker.addUsingDirective(decl, fact);
@@ -1290,36 +1288,32 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static folly::Optional<EnumDecl> declare(
         ASTVisitor& visitor,
-        const clang::EnumDecl *decl,
+        const clang::EnumDecl* decl,
         Cxx::Scope scope,
         Src::Range range) {
-      auto qname = visitor.db.fact<Cxx::QName>(
-        visitor.db.name(decl->getName()), scope);
+      auto qname =
+          visitor.db.fact<Cxx::QName>(visitor.db.name(decl->getName()), scope);
 
       folly::Optional<Fact<Cxx::Type>> underlying;
       if (auto ty = decl->getIntegerTypeSourceInfo()) {
         underlying = visitor.type(ty->getType());
       }
 
-      return EnumDecl
-        { {}
-        , visitor.db.fact<Cxx::EnumDeclaration>(
-            qname,
-            decl->isScoped(),
-            maybe(underlying),
-            range)
-        };
+      return EnumDecl{
+          {},
+          visitor.db.fact<Cxx::EnumDeclaration>(
+              qname, decl->isScoped(), maybe(underlying), range)};
     }
 
-    void define(ASTVisitor& visitor, const clang::EnumDecl *d) const {
+    void define(ASTVisitor& visitor, const clang::EnumDecl* d) const {
       std::vector<Fact<Cxx::Enumerator>> enumerators;
       for (const auto& e : d->enumerators()) {
         enumerators.push_back(visitor.enumerator(decl, thrift_type, e));
       }
 
-      if (auto usr_hash = getUsrHash(d)){
-        visitor.db.fact<Cxx::USRToDeclaration>(usr_hash.value(),
-            Cxx::Declaration::enum_(decl));
+      if (auto usr_hash = getUsrHash(d)) {
+        visitor.db.fact<Cxx::USRToDeclaration>(
+            usr_hash.value(), Cxx::Declaration::enum_(decl));
       }
 
       visitor.db.fact<Cxx::EnumDefinition>(decl, enumerators);
@@ -1338,7 +1332,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static folly::Optional<EnumeratorDecl> compute(
         ASTVisitor& visitor,
-        const clang::EnumConstantDecl *decl) {
+        const clang::EnumConstantDecl* decl) {
       if (auto ty = clang::dyn_cast<clang::EnumDecl>(decl->getDeclContext())) {
         if (auto enm = visitor.enumDecls(ty)) {
           return EnumeratorDecl{
@@ -1349,11 +1343,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
   };
 
-  bool VisitEnumDecl(const clang::EnumDecl *decl) {
+  bool VisitEnumDecl(const clang::EnumDecl* decl) {
     visitDeclaration(enumDecls, decl);
     return true;
   }
-
 
   /****************
    * Type aliases *
@@ -1368,7 +1361,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static folly::Optional<TypeAliasDecl> declare(
         ASTVisitor& visitor,
-        const clang::TypedefNameDecl *decl,
+        const clang::TypedefNameDecl* decl,
         Cxx::Scope scope,
         Src::Range range) {
       folly::Optional<Cxx::TypeAliasKind> kind;
@@ -1379,22 +1372,18 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
       if (kind) {
         auto qname = visitor.db.fact<Cxx::QName>(
-          visitor.db.name(decl->getName()), scope);
+            visitor.db.name(decl->getName()), scope);
         auto type = visitor.type(decl->getUnderlyingType());
-        return TypeAliasDecl
-          { {}
-          , visitor.db.fact<Cxx::TypeAliasDeclaration>(
-              qname,
-              type,
-              kind.value(),
-              range)
-          };
+        return TypeAliasDecl{
+            {},
+            visitor.db.fact<Cxx::TypeAliasDeclaration>(
+                qname, type, kind.value(), range)};
       } else {
         return folly::none;
       }
     }
 
-    void define(ASTVisitor&, const clang::TypedefNameDecl *) const {}
+    void define(ASTVisitor&, const clang::TypedefNameDecl*) const {}
 
     struct GetTemplatableDecl {
       const clang::TypedefNameDecl* FOLLY_NULLABLE
@@ -1406,8 +1395,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           // If this is the pattern of a type alias template, find where it was
           // instantiated from.
           if (auto ct = ta->getDescribedAliasTemplate()) {
-            // If we hit a point where the user provided a specialization of this
-            // template, we're done looking.
+            // If we hit a point where the user provided a specialization of
+            // this template, we're done looking.
             while (auto next = ct->getInstantiatedFromMemberTemplate()) {
               ct = next;
             }
@@ -1421,7 +1410,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     };
   };
 
-  bool VisitTypedefNameDecl(const clang::TypedefNameDecl *decl) {
+  bool VisitTypedefNameDecl(const clang::TypedefNameDecl* decl) {
     visitDeclaration(typeAliasDecls, decl);
     return true;
   }
@@ -1462,10 +1451,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
     }
 
-    void define(ASTVisitor&, const clang::NamespaceAliasDecl *) const {}
+    void define(ASTVisitor&, const clang::NamespaceAliasDecl*) const {}
   };
 
-  bool VisitNamespaceAliasDecl(clang::NamespaceAliasDecl *decl) {
+  bool VisitNamespaceAliasDecl(clang::NamespaceAliasDecl* decl) {
     visitDeclaration(namespaceAliasDecls, decl);
     xrefExpr(
         decl->getTargetNameLoc(), decl->getQualifier(), decl->getNamespace());
@@ -1487,7 +1476,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static folly::Optional<ClassDecl> declare(
         ASTVisitor& visitor,
-        const clang::CXXRecordDecl *decl,
+        const clang::CXXRecordDecl* decl,
         Cxx::Scope scope,
         Src::Range range) {
       if (decl->isInjectedClassName()) {
@@ -1525,15 +1514,12 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
       if (kind) {
         auto qname = visitor.db.fact<Cxx::QName>(
-          visitor.db.name(decl->getName()), scope);
-        return ClassDecl
-          { {}
-          , qname
-          , visitor.db.fact<Cxx::RecordDeclaration>(
-              qname,
-              kind.value(),
-              range)
-          };
+            visitor.db.name(decl->getName()), scope);
+        return ClassDecl{
+            {},
+            qname,
+            visitor.db.fact<Cxx::RecordDeclaration>(
+                qname, kind.value(), range)};
       } else {
         return folly::none;
       }
@@ -1576,7 +1562,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       return nullptr;
     }
 
-    void define(ASTVisitor& visitor, const clang::CXXRecordDecl *d) const {
+    void define(ASTVisitor& visitor, const clang::CXXRecordDecl* d) const {
       std::vector<Cxx::RecordBase> bases;
       for (const auto& base : d->bases()) {
         if (const auto* record = getAsCXXRecordDecl(base.getType())) {
@@ -1589,9 +1575,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         }
       }
 
-      if (auto usr_hash = getUsrHash(d)){
-        visitor.db.fact<Cxx::USRToDeclaration>(usr_hash.value(),
-            Cxx::Declaration::record_(decl));
+      if (auto usr_hash = getUsrHash(d)) {
+        visitor.db.fact<Cxx::USRToDeclaration>(
+            usr_hash.value(), Cxx::Declaration::record_(decl));
       }
 
       visitor.db.fact<Cxx::RecordDefinition>(
@@ -1624,11 +1610,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         return nullptr;
       }
     };
-
   };
 
   // Clang record visitor
-  bool VisitCXXRecordDecl(const clang::CXXRecordDecl *decl) {
+  bool VisitCXXRecordDecl(const clang::CXXRecordDecl* decl) {
     visitDeclaration(classDecls, decl);
     return true;
   }
@@ -1643,7 +1628,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   Fact<Cxx::Signature> signature(
       const clang::QualType& result,
-      clang::ArrayRef<clang::ParmVarDecl *> parameters) {
+      clang::ArrayRef<clang::ParmVarDecl*> parameters) {
     std::vector<Cxx::Parameter> params;
     for (auto parm : parameters) {
       params.push_back({db.name(parm->getName()), type(parm->getType())});
@@ -1680,7 +1665,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static folly::Optional<FunDecl> declare(
         ASTVisitor& visitor,
-        const clang::FunctionDecl *decl,
+        const clang::FunctionDecl* decl,
         Cxx::Scope scope,
         Src::Range range) {
       // TODO: should we ignore deleted functions or have some info about them?
@@ -1694,11 +1679,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         if (auto mtd = clang::dyn_cast<clang::CXXMethodDecl>(decl)) {
           if (mtd->isInstance()) {
             method = Cxx::MethodSignature{
-              mtd->isVirtual(),
-              mtd->isConst(),
-              mtd->isVolatile(),
-              visitor.refQualifier(mtd->getRefQualifier())
-            };
+                mtd->isVirtual(),
+                mtd->isConst(),
+                mtd->isVolatile(),
+                visitor.refQualifier(mtd->getRefQualifier())};
           }
         }
 
@@ -1708,43 +1692,36 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         }
         auto qname = visitor.db.fact<Cxx::FunctionQName>(name.value(), scope);
         auto decl_fact = visitor.db.fact<Cxx::FunctionDeclaration>(
-          qname,
-          visitor.signature(decl->getReturnType(), decl->parameters()),
-          maybe(method),
-          range
-        );
+            qname,
+            visitor.signature(decl->getReturnType(), decl->parameters()),
+            maybe(method),
+            range);
 
         if (decl->hasAttrs()) {
           for (const auto attr : decl->getAttrs()) {
             visitor.db.fact<Cxx::FunctionAttribute>(
-              visitor.db.fact<Cxx::Attribute>(visitor.db.srcText(attr->getRange()).str()),
-              decl_fact
-            );
+                visitor.db.fact<Cxx::Attribute>(
+                    visitor.db.srcText(attr->getRange()).str()),
+                decl_fact);
           }
         }
-        return FunDecl{
-            {},
-            qname,
-            decl_fact,
-            method.has_value()};
+        return FunDecl{{}, qname, decl_fact, method.has_value()};
       } else {
         return folly::none;
       }
     }
 
-    void define(ASTVisitor& visitor, const clang::FunctionDecl *d) const {
-      visitor.db.fact<Cxx::FunctionDefinition>(
-        decl,
-        d->isInlineSpecified());
+    void define(ASTVisitor& visitor, const clang::FunctionDecl* d) const {
+      visitor.db.fact<Cxx::FunctionDefinition>(decl, d->isInlineSpecified());
 
-      if (auto usr_hash = getUsrHash(d)){
-        visitor.db.fact<Cxx::USRToDeclaration>(usr_hash.value(),
-            Cxx::Declaration::function_(decl));
+      if (auto usr_hash = getUsrHash(d)) {
+        visitor.db.fact<Cxx::USRToDeclaration>(
+            usr_hash.value(), Cxx::Declaration::function_(decl));
       }
 
       if (method) {
         if (auto mtd = clang::dyn_cast<clang::CXXMethodDecl>(d)) {
-          for (const auto *base : mtd->overridden_methods()) {
+          for (const auto* base : mtd->overridden_methods()) {
             if (auto cbase = visitor.funDecls(base)) {
               visitor.db.fact<Cxx::MethodOverrides>(decl, cbase->decl);
             }
@@ -1780,14 +1757,14 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
     };
 
-    static const clang::FunctionDecl * FOLLY_NULLABLE getSpecializedDecl(
-        const clang::FunctionDecl *decl) {
+    static const clang::FunctionDecl* FOLLY_NULLABLE
+    getSpecializedDecl(const clang::FunctionDecl* decl) {
       auto tpl = decl->getPrimaryTemplate();
       return tpl ? tpl->getTemplatedDecl() : nullptr;
     }
   };
 
-  bool VisitFunctionDecl(const clang::FunctionDecl *decl) {
+  bool VisitFunctionDecl(const clang::FunctionDecl* decl) {
     visitDeclaration(funDecls, decl);
     return true;
   }
@@ -1804,8 +1781,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       return Cxx::Declaration::variable(decl);
     }
 
-    static std::variant<std::monostate, Cxx::GlobalVariableKind, Cxx::LocalVariableKind> variableKind(
-        const clang::VarDecl *decl) {
+    static std::
+        variant<std::monostate, Cxx::GlobalVariableKind, Cxx::LocalVariableKind>
+        variableKind(const clang::VarDecl* decl) {
       if (decl->isLocalVarDeclOrParm()) {
         if (decl->isLocalVarDecl()) {
           return decl->isStaticLocal() ? Cxx::LocalVariableKind::StaticVariable
@@ -1818,18 +1796,24 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         return Cxx::GlobalVariableKind::StaticMember;
       }
       switch (decl->getStorageClass()) {
-        case clang::SC_None: return Cxx::GlobalVariableKind::SimpleVariable;
-        case clang::SC_Extern: return Cxx::GlobalVariableKind::SimpleVariable;
-        case clang::SC_Static: return Cxx::GlobalVariableKind::StaticVariable;
-        case clang::SC_PrivateExtern: return {};
-        case clang::SC_Auto: return {};
-        case clang::SC_Register: return {};
+        case clang::SC_None:
+          return Cxx::GlobalVariableKind::SimpleVariable;
+        case clang::SC_Extern:
+          return Cxx::GlobalVariableKind::SimpleVariable;
+        case clang::SC_Static:
+          return Cxx::GlobalVariableKind::StaticVariable;
+        case clang::SC_PrivateExtern:
+          return {};
+        case clang::SC_Auto:
+          return {};
+        case clang::SC_Register:
+          return {};
       }
       folly::assume_unreachable();
     }
 
     static Cxx::GlobalVariableAttribute globalAttribute(
-        const clang::VarDecl *decl) {
+        const clang::VarDecl* decl) {
       if (decl->isConstexpr()) {
         return Cxx::GlobalVariableAttribute::Constexpr;
       } else if (decl->isInline()) {
@@ -1840,7 +1824,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
 
     static Cxx::LocalVariableAttribute localAttribute(
-        const clang::VarDecl *decl) {
+        const clang::VarDecl* decl) {
       if (decl->isConstexpr()) {
         return Cxx::LocalVariableAttribute::Constexpr;
       } else {
@@ -1850,58 +1834,50 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static folly::Optional<VarDecl> declare(
         ASTVisitor& visitor,
-        const clang::VarDecl *decl,
+        const clang::VarDecl* decl,
         Cxx::Scope scope,
         Src::Range range) {
       return folly::variant_match<folly::Optional<VarDecl>>(
-        variableKind(decl),
-        [](std::monostate) {
-          return folly::none;
-        },
-        [&](Cxx::GlobalVariableKind kind) {
-          auto qname = visitor.db.fact<Cxx::QName>(
-            visitor.db.name(decl->getName()), scope);
+          variableKind(decl),
+          [](std::monostate) { return folly::none; },
+          [&](Cxx::GlobalVariableKind kind) {
+            auto qname = visitor.db.fact<Cxx::QName>(
+                visitor.db.name(decl->getName()), scope);
 
-          return VarDecl
-              { {}
-              , qname
-              , visitor.db.fact<Cxx::VariableDeclaration>(
-                  qname,
-                  visitor.type(decl->getType()),
-                  Cxx::VariableKind::global_(
-                    Cxx::GlobalVariable{
-                      kind,
-                      globalAttribute(decl),
-                      decl->isThisDeclarationADefinition()
-                        == clang::VarDecl::Definition
-                  }),
-                  range)
-              };
-        },
-        [&](Cxx::LocalVariableKind kind) {
-          auto qname = visitor.db.fact<Cxx::QName>(
-            visitor.db.name(decl->getName()), scope);
+            return VarDecl{
+                {},
+                qname,
+                visitor.db.fact<Cxx::VariableDeclaration>(
+                    qname,
+                    visitor.type(decl->getType()),
+                    Cxx::VariableKind::global_(Cxx::GlobalVariable{
+                        kind,
+                        globalAttribute(decl),
+                        decl->isThisDeclarationADefinition() ==
+                            clang::VarDecl::Definition}),
+                    range)};
+          },
+          [&](Cxx::LocalVariableKind kind) {
+            auto qname = visitor.db.fact<Cxx::QName>(
+                visitor.db.name(decl->getName()), scope);
 
-          return VarDecl
-              { {}
-              , qname
-              , visitor.db.fact<Cxx::VariableDeclaration>(
-                  qname,
-                  visitor.type(decl->getType()),
-                  Cxx::VariableKind::local(
-                    Cxx::LocalVariable{
-                      kind,
-                      localAttribute(decl),
-                  }),
-                  range)
-              };
-        }
-      );
+            return VarDecl{
+                {},
+                qname,
+                visitor.db.fact<Cxx::VariableDeclaration>(
+                    qname,
+                    visitor.type(decl->getType()),
+                    Cxx::VariableKind::local(Cxx::LocalVariable{
+                        kind,
+                        localAttribute(decl),
+                    }),
+                    range)};
+          });
     }
 
     static Cxx::VariableKind fieldKind(
         ASTVisitor& visitor,
-        const clang::FieldDecl *decl) {
+        const clang::FieldDecl* decl) {
       folly::Optional<uint64_t> bitsize;
       if (auto size_expr = decl->getBitWidth()) {
         // Consider the following code:
@@ -1912,41 +1888,38 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         // Clang segfaults if we call getBitWidthValue on it. So let's give it
         // size 0 for now - we should probably extend the schema eventually.
         bitsize = size_expr->isValueDependent()
-          ? 0
-          : decl->getBitWidthValue(visitor.astContext);
+            ? 0
+            : decl->getBitWidthValue(visitor.astContext);
       }
       if (auto ivar = clang::dyn_cast<clang::ObjCIvarDecl>(decl)) {
         return Cxx::VariableKind::ivar(
-          Cxx::ObjcIVar{ivar->getSynthesize(), maybe(bitsize)}
-        );
+            Cxx::ObjcIVar{ivar->getSynthesize(), maybe(bitsize)});
       } else {
         return Cxx::VariableKind::field(
-          Cxx::Field{decl->isMutable(), maybe(bitsize)}
-        );
+            Cxx::Field{decl->isMutable(), maybe(bitsize)});
       }
     }
 
     static folly::Optional<VarDecl> declare(
         ASTVisitor& visitor,
-        const clang::FieldDecl *decl,
+        const clang::FieldDecl* decl,
         Cxx::Scope scope,
         Src::Range range) {
-      auto qname = visitor.db.fact<Cxx::QName>(
-        visitor.db.name(decl->getName()), scope);
+      auto qname =
+          visitor.db.fact<Cxx::QName>(visitor.db.name(decl->getName()), scope);
 
-      return VarDecl
-        { {}
-        , qname
-        , visitor.db.fact<Cxx::VariableDeclaration>(
-            qname,
-            visitor.type(decl->getType()),
-            fieldKind(visitor, decl),
-            range)
-        };
+      return VarDecl{
+          {},
+          qname,
+          visitor.db.fact<Cxx::VariableDeclaration>(
+              qname,
+              visitor.type(decl->getType()),
+              fieldKind(visitor, decl),
+              range)};
     }
 
-    void define(ASTVisitor&, const clang::VarDecl *) const {}
-    void define(ASTVisitor&, const clang::FieldDecl *) const {}
+    void define(ASTVisitor&, const clang::VarDecl*) const {}
+    void define(ASTVisitor&, const clang::FieldDecl*) const {}
 
     struct GetTemplatableDecl {
       const clang::VarDecl* FOLLY_NULLABLE
@@ -1963,8 +1936,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
     };
 
-    static const clang::VarDecl * FOLLY_NULLABLE getSpecializedDecl(
-        const clang::VarDecl *decl) {
+    static const clang::VarDecl* FOLLY_NULLABLE
+    getSpecializedDecl(const clang::VarDecl* decl) {
       if (auto spec =
               clang::dyn_cast<clang::VarTemplateSpecializationDecl>(decl)) {
         auto tpl = spec->getSpecializedTemplate();
@@ -1974,7 +1947,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     }
   };
 
-  bool VisitVarDecl(const clang::VarDecl *decl) {
+  bool VisitVarDecl(const clang::VarDecl* decl) {
     // We check for implicitly instantiated variable declarations here due to a
     // bug in `RecursiveASTVisitor`. With `shouldVisitTemplateInstantions` set
     // to return `false`, `RecursiveASTVisitor` is supposed to skip all implicit
@@ -2003,19 +1976,18 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return true;
   }
 
-  bool VisitFieldDecl(const clang::FieldDecl *decl) {
+  bool VisitFieldDecl(const clang::FieldDecl* decl) {
     visitDeclaration(varDecls, decl);
     return true;
   }
-
 
   /*******************
    * ObjC containers *
    *******************/
 
   std::vector<Fact<Cxx::ObjcContainerDeclaration>> objcContainerProtocols(
-      const clang::ObjCContainerDecl *decl) {
-    const clang::ObjCProtocolList *list = nullptr;
+      const clang::ObjCContainerDecl* decl) {
+    const clang::ObjCProtocolList* list = nullptr;
     if (auto prot = clang::dyn_cast<clang::ObjCProtocolDecl>(decl)) {
       list = &prot->getReferencedProtocols();
     } else if (auto iface = clang::dyn_cast<clang::ObjCInterfaceDecl>(decl)) {
@@ -2043,7 +2015,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   Fact<Cxx::Declarations> objcContainerMembers(
-      const clang::ObjCContainerDecl *decl) {
+      const clang::ObjCContainerDecl* decl) {
     std::vector<Cxx::Declaration> members;
 
     for (auto member : decl->decls()) {
@@ -2064,7 +2036,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
     }
     return db.fact<Cxx::Declarations>(std::move(members));
-    }
+  }
 
   struct ObjcContainerDecl : Declare<ObjcContainerDecl> {
     Cxx::ObjcContainerId id;
@@ -2074,10 +2046,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       return Cxx::Declaration::objcContainer(decl);
     }
 
-    template<typename Decl, typename... Decls, typename ClangDecl>
+    template <typename Decl, typename... Decls, typename ClangDecl>
     static std::optional<ObjcContainerDecl> findIn(
         ASTVisitor& visitor,
-        const ClangDecl *decl) {
+        const ClangDecl* decl) {
       if (auto p = clang::dyn_cast<Decl>(decl)) {
         return visitor.objcContainerDecls(p);
       } else {
@@ -2085,38 +2057,37 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
     }
 
-    template<typename ClangDecl>
+    template <typename ClangDecl>
     static std::optional<ObjcContainerDecl> findIn(
         ASTVisitor&,
-        const ClangDecl *) {
+        const ClangDecl*) {
       return std::nullopt;
     }
 
-    template<typename ClangDecl>
+    template <typename ClangDecl>
     static std::optional<ObjcContainerDecl> find(
         ASTVisitor& visitor,
-        const ClangDecl * FOLLY_NULLABLE decl) {
+        const ClangDecl* FOLLY_NULLABLE decl) {
       if (decl) {
         return findIn<
-                clang::ObjCProtocolDecl,
-                clang::ObjCInterfaceDecl,
-                clang::ObjCCategoryDecl,
-                clang::ObjCImplementationDecl,
-                clang::ObjCCategoryImplDecl>(visitor, decl);
-        } else {
-          return std::nullopt;
-        }
+            clang::ObjCProtocolDecl,
+            clang::ObjCInterfaceDecl,
+            clang::ObjCCategoryDecl,
+            clang::ObjCImplementationDecl,
+            clang::ObjCCategoryImplDecl>(visitor, decl);
+      } else {
+        return std::nullopt;
+      }
     }
 
-    template<typename Decl>
+    template <typename Decl>
     static std::optional<Cxx::ObjcCategoryId> categoryId(
         ASTVisitor& visitor,
-        const Decl *decl) {
+        const Decl* decl) {
       if (auto iface = decl->getClassInterface()) {
         return Cxx::ObjcCategoryId{
-          visitor.db.name(iface->getName()),
-          visitor.db.name(decl->getName())
-        };
+            visitor.db.name(iface->getName()),
+            visitor.db.name(decl->getName())};
       } else {
         return std::nullopt;
       }
@@ -2124,24 +2095,23 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static folly::Optional<Cxx::ObjcContainerId> containerId(
         ASTVisitor& visitor,
-        const clang::ObjCProtocolDecl *decl) {
+        const clang::ObjCProtocolDecl* decl) {
       return Cxx::ObjcContainerId::protocol(visitor.db.name(decl->getName()));
     }
 
     static folly::Optional<Cxx::ObjcContainerId> containerId(
         ASTVisitor& visitor,
-        const clang::ObjCInterfaceDecl *decl) {
-      return Cxx::ObjcContainerId::interface_(
-        visitor.db.name(decl->getName()));
+        const clang::ObjCInterfaceDecl* decl) {
+      return Cxx::ObjcContainerId::interface_(visitor.db.name(decl->getName()));
     }
 
     static folly::Optional<Cxx::ObjcContainerId> containerId(
         ASTVisitor& visitor,
-        const clang::ObjCCategoryDecl *decl) {
+        const clang::ObjCCategoryDecl* decl) {
       if (decl->IsClassExtension()) {
         if (auto iface = decl->getClassInterface()) {
           return Cxx::ObjcContainerId::extensionInterface(
-            visitor.db.name(iface->getName()));
+              visitor.db.name(iface->getName()));
         } else {
           return folly::none;
         }
@@ -2154,10 +2124,10 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static folly::Optional<Cxx::ObjcContainerId> containerId(
         ASTVisitor& visitor,
-        const clang::ObjCImplementationDecl *decl) {
+        const clang::ObjCImplementationDecl* decl) {
       if (auto iface = decl->getClassInterface()) {
         return Cxx::ObjcContainerId::implementation(
-          visitor.db.name(iface->getName()));
+            visitor.db.name(iface->getName()));
       } else {
         return folly::none;
       }
@@ -2165,7 +2135,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static folly::Optional<Cxx::ObjcContainerId> containerId(
         ASTVisitor& visitor,
-        const clang::ObjCCategoryImplDecl *decl) {
+        const clang::ObjCCategoryImplDecl* decl) {
       if (auto id = categoryId(visitor, decl)) {
         return Cxx::ObjcContainerId::categoryImplementation(id.value());
       } else {
@@ -2173,19 +2143,18 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
     }
 
-    template<typename Decl>
+    template <typename Decl>
     static folly::Optional<ObjcContainerDecl> declare(
         ASTVisitor& visitor,
-        const Decl *decl,
+        const Decl* decl,
         Cxx::Scope,
         Src::Range range) {
-      if (folly::Optional<Cxx::ObjcContainerId> id
-            = ObjcContainerDecl::containerId(visitor, decl)) {
-        return ObjcContainerDecl
-          { {}
-          , id.value()
-          , visitor.db.fact<Cxx::ObjcContainerDeclaration>(id.value(), range)
-          };
+      if (folly::Optional<Cxx::ObjcContainerId> id =
+              ObjcContainerDecl::containerId(visitor, decl)) {
+        return ObjcContainerDecl{
+            {},
+            id.value(),
+            visitor.db.fact<Cxx::ObjcContainerDeclaration>(id.value(), range)};
       } else {
         return folly::none;
       }
@@ -2193,25 +2162,25 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static std::vector<ObjcContainerDecl> implements(
         ASTVisitor&,
-        const clang::ObjCProtocolDecl *) {
+        const clang::ObjCProtocolDecl*) {
       return {};
     }
 
     static std::vector<ObjcContainerDecl> implements(
         ASTVisitor&,
-        const clang::ObjCInterfaceDecl *) {
+        const clang::ObjCInterfaceDecl*) {
       return {};
     }
 
     static std::vector<ObjcContainerDecl> implements(
         ASTVisitor&,
-        const clang::ObjCCategoryDecl *) {
+        const clang::ObjCCategoryDecl*) {
       return {};
     }
 
     static std::vector<ObjcContainerDecl> implements(
         ASTVisitor& visitor,
-        const clang::ObjCImplementationDecl *decl) {
+        const clang::ObjCImplementationDecl* decl) {
       std::vector<ObjcContainerDecl> decls;
       if (auto iface = decl->getClassInterface()) {
         if (auto r = visitor.objcContainerDecls(iface)) {
@@ -2228,9 +2197,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static std::vector<ObjcContainerDecl> implements(
         ASTVisitor& visitor,
-        const clang::ObjCCategoryImplDecl *decl) {
+        const clang::ObjCCategoryImplDecl* decl) {
       std::vector<ObjcContainerDecl> decls;
-        if (auto cat = decl->getCategoryDecl()) {
+      if (auto cat = decl->getCategoryDecl()) {
         if (auto r = visitor.objcContainerDecls(cat)) {
           decls.push_back(r.value());
         }
@@ -2240,7 +2209,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static folly::Optional<ObjcContainerDecl> base(
         ASTVisitor&,
-        const clang::ObjCImplementationDecl *) {
+        const clang::ObjCImplementationDecl*) {
       return folly::none;
     }
 
@@ -2273,45 +2242,45 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       return folly::none;
     }
 
-    template<typename Decl>
-    void define(ASTVisitor& visitor, const Decl *d) {
+    template <typename Decl>
+    void define(ASTVisitor& visitor, const Decl* d) {
       visitor.db.fact<Cxx::ObjcContainerDefinition>(
-        decl,
-        visitor.objcContainerProtocols(d),
-        visitor.objcContainerMembers(d));
+          decl,
+          visitor.objcContainerProtocols(d),
+          visitor.objcContainerMembers(d));
 
       auto xs = implements(visitor, d);
       for (const auto& x : xs) {
         visitor.db.fact<Cxx::ObjcImplements>(decl, x.decl);
       }
 
-      if(auto bs = base(visitor, d)) {
+      if (auto bs = base(visitor, d)) {
         visitor.db.fact<Cxx::ObjcContainerBase>(decl, bs->decl);
       }
     }
   };
 
-  bool VisitObjCProtocolDecl(const clang::ObjCProtocolDecl *decl) {
+  bool VisitObjCProtocolDecl(const clang::ObjCProtocolDecl* decl) {
     visitDeclaration(objcContainerDecls, decl);
     return true;
   }
 
-  bool VisitObjCInterfaceDecl(const clang::ObjCInterfaceDecl *decl) {
+  bool VisitObjCInterfaceDecl(const clang::ObjCInterfaceDecl* decl) {
     visitDeclaration(objcContainerDecls, decl);
     return true;
   }
 
-  bool VisitObjCCategoryDecl(const clang::ObjCCategoryDecl *decl) {
+  bool VisitObjCCategoryDecl(const clang::ObjCCategoryDecl* decl) {
     visitDeclaration(objcContainerDecls, decl);
     return true;
   }
 
-  bool VisitObjCImplementationDecl(const clang::ObjCImplementationDecl *decl) {
+  bool VisitObjCImplementationDecl(const clang::ObjCImplementationDecl* decl) {
     visitDeclaration(objcContainerDecls, decl);
     return true;
   }
 
-  bool VisitObjCCategoryImplDecl(const clang::ObjCCategoryImplDecl *decl) {
+  bool VisitObjCCategoryImplDecl(const clang::ObjCCategoryImplDecl* decl) {
     visitDeclaration(objcContainerDecls, decl);
     return true;
   }
@@ -2364,11 +2333,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static folly::Optional<ObjcMethodDecl> declare(
         ASTVisitor& visitor,
-        const clang::ObjCMethodDecl *d,
+        const clang::ObjCMethodDecl* d,
         Cxx::Scope,
         Src::Range range) {
       if (auto container =
-            ObjcContainerDecl::find(visitor, d->getDeclContext())) {
+              ObjcContainerDecl::find(visitor, d->getDeclContext())) {
         auto fact = visitor.db.fact<Cxx::ObjcMethodDeclaration>(
             visitor.objcSelector(d->getSelector()).first,
             visitor.objcSelectorLocations(d),
@@ -2388,12 +2357,12 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
     }
 
-    void define(ASTVisitor& visitor, const clang::ObjCMethodDecl *) const {
+    void define(ASTVisitor& visitor, const clang::ObjCMethodDecl*) const {
       visitor.db.fact<Cxx::ObjcMethodDefinition>(decl);
     }
   };
 
-  bool VisitObjCMethodDecl(const clang::ObjCMethodDecl *decl) {
+  bool VisitObjCMethodDecl(const clang::ObjCMethodDecl* decl) {
     visitDeclaration(objcMethodDecls, decl);
     return true;
   }
@@ -2411,39 +2380,38 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
     static folly::Optional<ObjcPropertyDecl> declare(
         ASTVisitor& visitor,
-        const clang::ObjCPropertyDecl *d,
+        const clang::ObjCPropertyDecl* d,
         Cxx::Scope,
         Src::Range range) {
       if (auto container =
-            ObjcContainerDecl::find(visitor, d->getDeclContext())) {
-        return ObjcPropertyDecl
-          { {}
-          , visitor.db.fact<Cxx::ObjcPropertyDeclaration>(
-              visitor.db.name(d->getName()),
-              container->id,
-              visitor.type(d->getType()),
-              d->isInstanceProperty(),
-              d->isOptional(),
-              d->isReadOnly(),
-              d->isAtomic(),
-              range)
-          };
+              ObjcContainerDecl::find(visitor, d->getDeclContext())) {
+        return ObjcPropertyDecl{
+            {},
+            visitor.db.fact<Cxx::ObjcPropertyDeclaration>(
+                visitor.db.name(d->getName()),
+                container->id,
+                visitor.type(d->getType()),
+                d->isInstanceProperty(),
+                d->isOptional(),
+                d->isReadOnly(),
+                d->isAtomic(),
+                range)};
       } else {
         return folly::none;
       }
     }
 
-    void define(ASTVisitor&, const clang::ObjCPropertyDecl *) const {
+    void define(ASTVisitor&, const clang::ObjCPropertyDecl*) const {
       // TODO: complete
     }
   };
 
-  bool VisitObjCPropertyDecl(const clang::ObjCPropertyDecl *decl) {
+  bool VisitObjCPropertyDecl(const clang::ObjCPropertyDecl* decl) {
     visitDeclaration(objcPropertyDecls, decl);
     return true;
   }
 
-  bool VisitObjCPropertyImplDecl(const clang::ObjCPropertyImplDecl *decl) {
+  bool VisitObjCPropertyImplDecl(const clang::ObjCPropertyImplDecl* decl) {
     if (decl->getSourceRange().isValid()) {
       if (auto r = objcPropertyDecls(decl->getPropertyDecl())) {
         // TODO: remove?
@@ -2459,21 +2427,21 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         }
 
         db.fact<Cxx::ObjcPropertyImplementation>(
-          r->decl,
-          decl->getPropertyImplementation()
-            == clang::ObjCPropertyImplDecl::Synthesize
-            ? Cxx::ObjcPropertyKind::Synthesize
-            : Cxx::ObjcPropertyKind::Dynamic,
-          maybe(name),
-          db.srcRange(decl->getSourceRange()).range);
+            r->decl,
+            decl->getPropertyImplementation() ==
+                    clang::ObjCPropertyImplDecl::Synthesize
+                ? Cxx::ObjcPropertyKind::Synthesize
+                : Cxx::ObjcPropertyKind::Dynamic,
+            maybe(name),
+            db.srcRange(decl->getSourceRange()).range);
       }
     }
     return true;
   }
 
   struct XRef {
-    const clang::Decl *primary;
-    const clang::Decl *decl;
+    const clang::Decl* primary;
+    const clang::Decl* decl;
     folly::Optional<Cxx::Declaration> gleanDecl;
     folly::Optional<Cxx::XRefTarget> target;
 
@@ -2493,7 +2461,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         return {
             d,
             d,
-            representative(memo,d,*b).declaration(),
+            representative(memo, d, *b).declaration(),
             Cxx::XRefTarget::declaration(b->declaration())};
       } else {
         return unknown(d);
@@ -2505,9 +2473,8 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     if (DeclTraits::isImplicit(xref.decl)) {
       return;
     }
-    const auto raw = xref.target
-      ? xref.target.value()
-      : unknownTarget(xref.decl);
+    const auto raw =
+        xref.target ? xref.target.value() : unknownTarget(xref.decl);
     const auto wrapped = usingTracker.retarget(xref.primary, raw);
     auto sort_id = db.srcRange(xref.decl->getLocation());
     db.xref(range, wrapped, sort_id, raw == wrapped);
@@ -2620,7 +2587,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 
   void xrefObjCProtocolDecl(
       clang::SourceLocation loc,
-      const clang::ObjCProtocolDecl *decl) {
+      const clang::ObjCProtocolDecl* decl) {
     if (loc.isValid()) {
       xrefDecl(loc, decl);
     }
@@ -2648,14 +2615,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
 #endif
 
   void xrefTemplateName(clang::SourceLocation loc, clang::TemplateName name) {
-      xrefDecl(loc, name.getAsTemplateDecl());
+    xrefDecl(loc, name.getAsTemplateDecl());
   }
 
   bool VisitTemplateSpecializationTypeLoc(
       clang::TemplateSpecializationTypeLoc tloc) {
     xrefTemplateName(
-      tloc.getTemplateNameLoc(),
-      tloc.getTypePtr()->getTemplateName());
+        tloc.getTemplateNameLoc(), tloc.getTypePtr()->getTemplateName());
     return true;
   }
 
@@ -2674,8 +2640,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   bool TraverseElaboratedTypeLoc(clang::ElaboratedTypeLoc tloc) {
-    return usingTracker.inNameContext(tloc.getTypePtr()->getQualifier(),
-      [&] { return Base::TraverseElaboratedTypeLoc(tloc); });
+    return usingTracker.inNameContext(tloc.getTypePtr()->getQualifier(), [&] {
+      return Base::TraverseElaboratedTypeLoc(tloc);
+    });
   }
 
   bool TraverseTemplateArgumentLoc(const clang::TemplateArgumentLoc& arg) {
@@ -2698,16 +2665,18 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
           // those don't have source locations so we have to do it in the parent
           // nodes.
           usingTracker.inNameContext(
-            arg.getTemplateQualifierLoc().getNestedNameSpecifier(),
-            [&] { xrefTemplateName(
-              arg.getTemplateNameLoc(),
-              arg.getArgument().getAsTemplateOrTemplatePattern()); });
+              arg.getTemplateQualifierLoc().getNestedNameSpecifier(), [&] {
+                xrefTemplateName(
+                    arg.getTemplateNameLoc(),
+                    arg.getArgument().getAsTemplateOrTemplatePattern());
+              });
           break;
 
         default:
           break;
       }
-      return Base::TraverseTemplateArgumentLoc(arg); });
+      return Base::TraverseTemplateArgumentLoc(arg);
+    });
   }
 
   // TODO: It's not clear if/when this is used instead of
@@ -2721,25 +2690,24 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       unsigned num
 #endif
   ) {
-    return usingTracker.inNameContext(nullptr,
-      [&] {
+    return usingTracker.inNameContext(nullptr, [&] {
 #if LLVM_VERSION_MAJOR >= 17 || \
     (LLVM_VERSION_MAJOR >= 16 && defined(CAST_TARGET_REPO_FBANDROID))
-        return Base::TraverseTemplateArguments(args);
+      return Base::TraverseTemplateArguments(args);
 #else
         return Base::TraverseTemplateArguments(args, num);
 #endif
-        });
+    });
   }
 
-  bool TraverseDecl(clang::Decl *decl) {
-    clang::DeclContext *context = nullptr;
+  bool TraverseDecl(clang::Decl* decl) {
+    clang::DeclContext* context = nullptr;
 
     folly::Optional<Cxx::Declaration> gleanDecl;
     auto traverse = [&]() {
       if (gleanDecl) {
-        return declTargets.inDeclaration(*gleanDecl, [&] {
-          return Base::TraverseDecl(decl); });
+        return declTargets.inDeclaration(
+            *gleanDecl, [&] { return Base::TraverseDecl(decl); });
       } else {
         return Base::TraverseDecl(decl);
       }
@@ -2763,13 +2731,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         return usingTracker.inFunction(fun, traverse);
       }
 
-      struct GetGleanDecl : clang::DeclVisitor<
-                               GetGleanDecl,
-                               folly::Optional<Cxx::Declaration>> {
+      struct GetGleanDecl
+          : clang::
+                DeclVisitor<GetGleanDecl, folly::Optional<Cxx::Declaration>> {
         ASTVisitor& visitor_;
 
         explicit GetGleanDecl(ASTVisitor& v) : visitor_(v) {}
-        folly::Optional<Cxx::Declaration> VisitDecl(clang::Decl *d) {
+        folly::Optional<Cxx::Declaration> VisitDecl(clang::Decl* d) {
           return folly::none;
         }
         folly::Optional<Cxx::Declaration> VisitCXXRecordDecl(
@@ -2842,10 +2810,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return usingTracker.inContext(context, traverse);
   }
 
-  bool TraverseCompoundStmt(clang::CompoundStmt *stmt) {
+  bool TraverseCompoundStmt(clang::CompoundStmt* stmt) {
     return usingTracker.maybeBody(
-      stmt,
-      [&] { return Base::TraverseCompoundStmt(stmt) ; });
+        stmt, [&] { return Base::TraverseCompoundStmt(stmt); });
   }
 
   bool TraverseConstructorInitializer(clang::CXXCtorInitializer* init) {
@@ -2853,10 +2820,9 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return Base::TraverseConstructorInitializer(init);
   }
 
-  bool TraverseCoroutineBodyStmt(clang::CoroutineBodyStmt *stmt) {
+  bool TraverseCoroutineBodyStmt(clang::CoroutineBodyStmt* stmt) {
     return usingTracker.maybeBody(
-      stmt,
-      [&] { return Base::TraverseCoroutineBodyStmt(stmt); });
+        stmt, [&] { return Base::TraverseCoroutineBodyStmt(stmt); });
   }
 
   // This helper is used to traverse the implicit and explicit components of
@@ -2891,42 +2857,37 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   bool TraverseCoreturnStmt(clang::CoreturnStmt* stmt) {
-    return traverseImplicitAndExplicitCode([&] {
-      return Base::TraverseCoreturnStmt(stmt);
-    });
+    return traverseImplicitAndExplicitCode(
+        [&] { return Base::TraverseCoreturnStmt(stmt); });
   }
 
   bool TraverseCoawaitExpr(clang::CoawaitExpr* expr) {
-    return traverseImplicitAndExplicitCode([&] {
-      return Base::TraverseCoawaitExpr(expr);
-    });
+    return traverseImplicitAndExplicitCode(
+        [&] { return Base::TraverseCoawaitExpr(expr); });
   }
 
   bool TraverseDependentCoawaitExpr(clang::DependentCoawaitExpr* expr) {
-    return traverseImplicitAndExplicitCode([&] {
-      return Base::TraverseDependentCoawaitExpr(expr);
-    });
+    return traverseImplicitAndExplicitCode(
+        [&] { return Base::TraverseDependentCoawaitExpr(expr); });
   }
 
   bool TraverseCoyieldExpr(clang::CoyieldExpr* expr) {
-    return traverseImplicitAndExplicitCode([&] {
-      return Base::TraverseCoyieldExpr(expr);
+    return traverseImplicitAndExplicitCode(
+        [&] { return Base::TraverseCoyieldExpr(expr); });
+  }
+
+  bool TraverseLambdaExpr(clang::LambdaExpr* lambda) {
+    return usingTracker.inFunction(lambda->getCallOperator(), [&] {
+      return Base::TraverseLambdaExpr(lambda);
     });
   }
 
-  bool TraverseLambdaExpr(clang::LambdaExpr *lambda) {
-    return usingTracker.inFunction(
-      lambda->getCallOperator(),
-      [&] { return Base::TraverseLambdaExpr(lambda); });
-  }
-
-  bool TraverseParmVarDecl(clang::ParmVarDecl *decl) {
+  bool TraverseParmVarDecl(clang::ParmVarDecl* decl) {
     // Thankfully, ParmVarDecls seem to have the right context
-    if (auto *context = decl->getDeclContext()) {
+    if (auto* context = decl->getDeclContext()) {
       if (clang::isa<clang::FunctionDecl>(context)) {
         return usingTracker.inContext(
-          context,
-          [&] { return Base::TraverseParmVarDecl(decl); });
+            context, [&] { return Base::TraverseParmVarDecl(decl); });
       }
     }
     return Base::TraverseParmVarDecl(decl);
@@ -2935,22 +2896,20 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   // TODO: set the right context for constructor initialisers and exception
   // specs
 
-
   // NOTE: For some reason, RecursiveASTVisitor doesn't seem to call
   // VisitNestedNameSpecifierLoc
   bool TraverseNestedNameSpecifierLoc(clang::NestedNameSpecifierLoc loc) {
     auto spec = loc.getNestedNameSpecifier();
-    return usingTracker.inNameContext(spec ? spec->getPrefix() : nullptr,
-      [&] {
-        if (spec) {
-          if (auto ns = spec->getAsNamespace()) {
-            xrefDecl(loc.getLocalBeginLoc(), ns->getCanonicalDecl());
-          } else if (auto ns = spec->getAsNamespaceAlias()) {
-            xrefDecl(loc.getLocalBeginLoc(), ns->getCanonicalDecl());
-          }
+    return usingTracker.inNameContext(spec ? spec->getPrefix() : nullptr, [&] {
+      if (spec) {
+        if (auto ns = spec->getAsNamespace()) {
+          xrefDecl(loc.getLocalBeginLoc(), ns->getCanonicalDecl());
+        } else if (auto ns = spec->getAsNamespaceAlias()) {
+          xrefDecl(loc.getLocalBeginLoc(), ns->getCanonicalDecl());
         }
-        return Base::TraverseNestedNameSpecifierLoc(loc);
-      });
+      }
+      return Base::TraverseNestedNameSpecifierLoc(loc);
+    });
   }
 
   void xrefExpr(
@@ -2975,7 +2934,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return true;
   }
 
-  bool VisitOverloadExpr(const clang::OverloadExpr *expr) {
+  bool VisitOverloadExpr(const clang::OverloadExpr* expr) {
     const auto qualifier = expr->getQualifier();
     const auto range = expr->getNameInfo().getSourceRange();
     // For now, we xref all functions in the overload set:
@@ -2986,13 +2945,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     // template<class T> void g(T x) { f(x); } // will xref both A and B
     //
     // This is especially important for using decls.
-    for (const auto *decl : expr->decls()) {
+    for (const auto* decl : expr->decls()) {
       xrefExpr(range, qualifier, decl);
     }
     return true;
   }
 
-  bool VisitMemberExpr(const clang::MemberExpr *expr) {
+  bool VisitMemberExpr(const clang::MemberExpr* expr) {
     // getMemberNameInfo().getSourceRange() can return an invalid range if,
     // say, an implicit conversion operator is applied to the member.
     // If so, we use the full range of the expr as our range.
@@ -3005,20 +2964,19 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   bool VisitCXXDependentScopeMemberExpr(
-      const clang::CXXDependentScopeMemberExpr *expr) {
-    if (const auto *decl = expr->getFirstQualifierFoundInScope()) {
+      const clang::CXXDependentScopeMemberExpr* expr) {
+    if (const auto* decl = expr->getFirstQualifierFoundInScope()) {
       xrefTarget(
-        expr->getMemberNameInfo().getSourceRange(),
-        XRef::unknown(decl));
+          expr->getMemberNameInfo().getSourceRange(), XRef::unknown(decl));
     }
     return true;
   }
 
-  bool VisitObjCMessageExpr(const clang::ObjCMessageExpr *expr) {
+  bool VisitObjCMessageExpr(const clang::ObjCMessageExpr* expr) {
     if (expr->isImplicit()) {
       return true;
     }
-    if (const auto *decl = expr->getMethodDecl()) {
+    if (const auto* decl = expr->getMethodDecl()) {
       xrefDecl(expr->getSourceRange(), decl);
       auto d = objcMethodDecls(decl);
       for (unsigned int i = 0, n = expr->getNumSelectorLocs(); i < n; ++i) {
@@ -3030,7 +2988,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return true;
   }
 
-  bool VisitObjCPropertyRefExpr(const clang::ObjCPropertyRefExpr *expr) {
+  bool VisitObjCPropertyRefExpr(const clang::ObjCPropertyRefExpr* expr) {
     std::vector<const clang::NamedDecl*> decls;
     if (expr->isImplicitProperty()) {
       // Note things like x.foo += 5 generate xrefs to both getter and setter.
@@ -3054,7 +3012,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return true;
   }
 
-  bool VisitObjCIvarRefExpr(const clang::ObjCIvarRefExpr *expr) {
+  bool VisitObjCIvarRefExpr(const clang::ObjCIvarRefExpr* expr) {
     xrefDecl(expr->getLocation(), expr->getDecl());
     return true;
   }
@@ -3069,7 +3027,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     return true;
   }
 
-  bool VisitObjCProtocolExpr(const clang::ObjCProtocolExpr *expr) {
+  bool VisitObjCProtocolExpr(const clang::ObjCProtocolExpr* expr) {
     xrefObjCProtocolDecl(expr->getProtocolIdLoc(), expr->getProtocol());
     return true;
   }
@@ -3087,103 +3045,78 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
   }
 
   ASTVisitor(ClangDB* d, clang::ASTContext& ctx)
-    : db(*d)
-    , astContext(ctx)
-    , usingTracker(ctx.getTranslationUnitDecl(), *d)
-    , declTargets(*d)
-    , scopes(*this)
-    , namespaces("namespaces", *this)
-    , classDecls("classDecls", *this)
-    , enumDecls("enumDecls", *this)
-    , enumeratorDecls("enumeratorDecls", *this)
-    , typeAliasDecls("typeAliasDecls", *this)
-    , namespaceAliasDecls("namespaceAliasDecls", *this)
-    , funDecls("funDecls", *this)
-    , varDecls("varDecls", *this)
-    , objcContainerDecls("objcContainerDecls", *this)
-    , objcMethodDecls("objcMethodDecls", *this)
-    , objcPropertyDecls("objcPropertyDecls", *this)
-    {}
+      : db(*d),
+        astContext(ctx),
+        usingTracker(ctx.getTranslationUnitDecl(), *d),
+        declTargets(*d),
+        scopes(*this),
+        namespaces("namespaces", *this),
+        classDecls("classDecls", *this),
+        enumDecls("enumDecls", *this),
+        enumeratorDecls("enumeratorDecls", *this),
+        typeAliasDecls("typeAliasDecls", *this),
+        namespaceAliasDecls("namespaceAliasDecls", *this),
+        funDecls("funDecls", *this),
+        varDecls("varDecls", *this),
+        objcContainerDecls("objcContainerDecls", *this),
+        objcMethodDecls("objcMethodDecls", *this),
+        objcPropertyDecls("objcPropertyDecls", *this) {}
 
   ClangDB& db;
-  clang::ASTContext &astContext;
+  clang::ASTContext& astContext;
 
   UsingTracker usingTracker;
   DeclarationTargets declTargets;
   bool shouldVisitImplicitCode_ = false;
 
-  Memo<const clang::DeclContext *,
-       Scope,
-       &ASTVisitor::defineScope>
-    scopes;
+  Memo<const clang::DeclContext*, Scope, &ASTVisitor::defineScope> scopes;
+
+  MemoOptional<const clang::NamespaceDecl*, NamespaceDecl> namespaces;
 
   MemoOptional<
-      const clang::NamespaceDecl *,
-      NamespaceDecl>
-    namespaces;
-
-  MemoOptional<
-      const clang::CXXRecordDecl *,
+      const clang::CXXRecordDecl*,
       ClassDecl,
       ClassDecl::GetTemplatableDecl>
-    classDecls;
+      classDecls;
 
-  MemoOptional<
-      const clang::EnumDecl *,
-      EnumDecl,
-      EnumDecl::GetTemplatableDecl>
-    enumDecls;
+  MemoOptional<const clang::EnumDecl*, EnumDecl, EnumDecl::GetTemplatableDecl>
+      enumDecls;
 
-  MemoOptional<
-      const clang::EnumConstantDecl *,
-      EnumeratorDecl>
-    enumeratorDecls;
+  MemoOptional<const clang::EnumConstantDecl*, EnumeratorDecl> enumeratorDecls;
 
   MemoOptional<
       const clang::TypedefNameDecl*,
       TypeAliasDecl,
       TypeAliasDecl::GetTemplatableDecl>
-    typeAliasDecls;
+      typeAliasDecls;
+
+  MemoOptional<const clang::NamespaceAliasDecl*, NamespaceAliasDecl>
+      namespaceAliasDecls;
+
+  MemoOptional<const clang::FunctionDecl*, FunDecl, FunDecl::GetTemplatableDecl>
+      funDecls;
 
   MemoOptional<
-      const clang::NamespaceAliasDecl*,
-      NamespaceAliasDecl>
-    namespaceAliasDecls;
-
-  MemoOptional<
-      const clang::FunctionDecl *,
-      FunDecl,
-      FunDecl::GetTemplatableDecl>
-    funDecls;
-
-  MemoOptional<
-      const clang::DeclaratorDecl *,
+      const clang::DeclaratorDecl*,
       VarDecl,
       VarDecl::GetTemplatableDecl>
-    varDecls;
+      varDecls;
 
-  MemoOptional<
-      const clang::ObjCContainerDecl *,
-        ObjcContainerDecl>
-    objcContainerDecls;
+  MemoOptional<const clang::ObjCContainerDecl*, ObjcContainerDecl>
+      objcContainerDecls;
 
-  MemoOptional<
-      const clang::ObjCMethodDecl *,
-      ObjcMethodDecl>
-    objcMethodDecls;
+  MemoOptional<const clang::ObjCMethodDecl*, ObjcMethodDecl> objcMethodDecls;
 
-  MemoOptional<
-      const clang::ObjCPropertyDecl *,
-      ObjcPropertyDecl>
-    objcPropertyDecls;
-    };
+  MemoOptional<const clang::ObjCPropertyDecl*, ObjcPropertyDecl>
+      objcPropertyDecls;
+};
 
 // ASTConsumer uses ASTVisitor to traverse the Clang AST
 //
 struct ASTConsumer : public clang::ASTConsumer {
   explicit ASTConsumer(ClangDB* d) : db(d) {}
 
-  void HandleTranslationUnit (clang::ASTContext &ctx) override {
+  void HandleTranslationUnit(clang::ASTContext& ctx) override {
     // Clang is sometimes generating a bogus AST when there are
     // compilation errors (even for parts of the AST that should be
     // unrelated to the error) so this is a workaround.
@@ -3229,7 +3162,7 @@ struct ASTConsumer : public clang::ASTConsumer {
   ClangDB* db;
 };
 
-}
+} // namespace
 
 namespace facebook::glean::clangx {
 
@@ -3237,4 +3170,4 @@ std::unique_ptr<clang::ASTConsumer> newASTConsumer(ClangDB* db) {
   return std::make_unique<ASTConsumer>(db);
 }
 
-}
+} // namespace facebook::glean::clangx

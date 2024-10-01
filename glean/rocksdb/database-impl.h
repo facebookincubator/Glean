@@ -12,10 +12,10 @@
 
 #include "glean/rts/ownership/uset.h"
 
+#include "glean/rocksdb/container-impl.h"
 #include "glean/rocksdb/rocksdb.h"
 #include "glean/rocksdb/stats.h"
 #include "glean/rocksdb/util.h"
-#include "glean/rocksdb/container-impl.h"
 
 namespace facebook {
 namespace glean {
@@ -182,13 +182,15 @@ struct DatabaseImpl final : Database {
     // Lookup in the cache. Returns none if the cache is not enabled
     std::optional<rts::UsetId> getOwner(ContainerImpl& container, Id id);
 
-  private:
+   private:
     struct Page {
       std::vector<uint16_t> factIds;
       std::vector<rts::UsetId> setIds;
     };
     static rts::UsetId lookup(const Page& page, Id id);
-    static std::unique_ptr<Page> readPage(ContainerImpl& container, uint64_t prefix);
+    static std::unique_ptr<Page> readPage(
+        ContainerImpl& container,
+        uint64_t prefix);
 
     struct Cache {
       std::vector<rts::UsetId> index;
@@ -205,12 +207,10 @@ struct DatabaseImpl final : Database {
   FactOwnerCache factOwnerCache_;
 };
 
-extern const char *admin_names[];
+extern const char* admin_names[];
 
 template <typename T>
-folly::Optional<T> readAdminValue(
-    ContainerImpl& container_,
-    AdminId id) {
+folly::Optional<T> readAdminValue(ContainerImpl& container_, AdminId id) {
   container_.requireOpen();
   rocksdb::PinnableSlice val;
   binary::Output key;
@@ -235,7 +235,7 @@ folly::Optional<T> readAdminValue(
   };
 }
 
-}
-}
-}
+} // namespace impl
+} // namespace rocks
+} // namespace glean
 } // namespace facebook

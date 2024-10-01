@@ -25,12 +25,11 @@ std::filesystem::path subpath(
     std::filesystem::path p) {
   // This returns 'path' if it is absolute or if 'subdir' is empty and
   // 'subdir'/'path' otherwise.
-  return p.is_absolute() || !subdir
-    ? p
-    : std::filesystem::path(subdir.value()) / p;
+  return p.is_absolute() || !subdir ? p
+                                    : std::filesystem::path(subdir.value()) / p;
 }
 
-}
+} // namespace
 
 //
 // To get a good filename we need to deal with the cases below:
@@ -57,8 +56,7 @@ std::filesystem::path subpath(
 //
 
 std::optional<std::pair<Fact<Src::File>, std::filesystem::path>>
-ClangDB::fileFromEntry(
-    const clang::FileEntryRef& entry) {
+ClangDB::fileFromEntry(const clang::FileEntryRef& entry) {
   auto path = goodPath(root, subpath(subdir, entry.getName().str()));
   if (path.is_relative()) {
     path = followSymlinksInsideRoot(root, path);
@@ -124,9 +122,7 @@ ClangDB::fileFromEntry(
   return std::pair{file, std::move(path)};
 }
 
-void ClangDB::ppevent(
-    PrePPEvent event,
-    SourceRange range) {
+void ClangDB::ppevent(PrePPEvent event, SourceRange range) {
   if (range.file) {
     range.file->events.push_back(std::move(event));
   }
@@ -141,31 +137,30 @@ void ClangDB::include(
   const auto range = srcRange(full_range);
   const auto name_range = srcRange(inc.name);
   const auto include = fact<Pp::Include>(
-    file,
-    range.range,
-    Src::ByteSpan{
-      name_range.span.start,
-      name_range.span.length
-    });
+      file,
+      range.range,
+      Src::ByteSpan{name_range.span.start, name_range.span.length});
   ppevent(PreInclude{include, id}, range);
 }
 
 void ClangDB::enterFile(
-    clang::SourceLocation loc, folly::Optional<Include> inc) {
+    clang::SourceLocation loc,
+    folly::Optional<Include> inc) {
   auto id = sourceManager().getFileID(loc);
   if (auto r = physicalFile(id)) {
     auto& [file, path] = *r;
     file_data.push_back({id, std::move(path), file, {}, {}, {}, {}, {}});
     files.emplace(id, &file_data.back());
     if (inc && inc->entry != nullptr &&
-          sourceManager().getFileEntryForID(id) == inc->entry) {
+        sourceManager().getFileEntryForID(id) == inc->entry) {
       include(inc.value(), file, id);
     }
   }
 }
 
 void ClangDB::skipFile(
-    folly::Optional<Include> inc, const clang::FileEntryRef& entry) {
+    folly::Optional<Include> inc,
+    const clang::FileEntryRef& entry) {
   if (inc && inc->entry != nullptr && inc->entry == entry) {
     if (auto file = fileFromEntry(entry)) {
       include(inc.value(), file->first, folly::none);
@@ -208,9 +203,7 @@ void ClangDB::xref(
   };
   folly::variant_match(
       fullSrcRange(r),
-      [&](const SourceRange& range) {
-        file_xref(range, &CrossRef::spans);
-      },
+      [&](const SourceRange& range) { file_xref(range, &CrossRef::spans); },
       [&](const auto& range) {
         const auto& [expansion, spelling] = range;
         file_xref(expansion, &CrossRef::expansions);
@@ -264,10 +257,7 @@ clang::StringRef ClangDB::srcText(clang::SourceRange range) const {
 Src::Loc ClangDB::srcLoc(clang::SourceLocation loc) {
   auto range = srcRange(loc);
   return Src::Loc{
-    range.range.file,
-    range.range.lineBegin,
-    range.range.columnBegin
-  };
+      range.range.file, range.range.lineBegin, range.range.columnBegin};
 }
 
 ClangDB::FullSourceRange ClangDB::fullSrcRange(clang::SourceRange range) {
@@ -321,22 +311,17 @@ ClangDB::FullSourceRange ClangDB::fullSrcRange(clang::SourceRange range) {
   return result;
 }
 
-ClangDB::SourceRange ClangDB::immediateSrcRange(
-    clang::CharSourceRange range) {
+ClangDB::SourceRange ClangDB::immediateSrcRange(clang::CharSourceRange range) {
   const auto [file_id, begin_offset] =
-    sourceManager().getDecomposedLoc(range.getBegin());
+      sourceManager().getDecomposedLoc(range.getBegin());
 
-  auto end_loc =
-    range.isTokenRange()
-        // In token ranges, getEnd points to the first character of the last
-        // token so skip it.
+  auto end_loc = range.isTokenRange()
+      // In token ranges, getEnd points to the first character of the last
+      // token so skip it.
       ? clang::Lexer::getLocForEndOfToken(
-          range.getEnd(),
-          0,
-          sourceManager(),
-          compilerInstance.getLangOpts())
+            range.getEnd(), 0, sourceManager(), compilerInstance.getLangOpts())
 
-        // In char ranges, it already points past the end of the range.
+      // In char ranges, it already points past the end of the range.
       : range.getEnd();
 
   // TODO: What should we do if it's invalid?
@@ -354,20 +339,18 @@ ClangDB::SourceRange ClangDB::immediateSrcRange(
 
   const auto data = folly::get_default(files, file_id, nullptr);
   const unsigned last_char_offset =
-    end_offset > begin_offset ? end_offset - 1 : begin_offset;
+      end_offset > begin_offset ? end_offset - 1 : begin_offset;
   return SourceRange{
-    data,
-    Src::ByteSpan{begin_offset, end_offset - begin_offset},
-    Src::Range {
-      data ? data->fact : file(file_id),
-      // FIXME: This is quite expensive and not always used. We should do this
-      // on demand.
-      sourceManager().getLineNumber(file_id, begin_offset),
-      sourceManager().getColumnNumber(file_id, begin_offset),
-      sourceManager().getLineNumber(file_id, last_char_offset),
-      sourceManager().getColumnNumber(file_id, last_char_offset)
-    }
-  };
+      data,
+      Src::ByteSpan{begin_offset, end_offset - begin_offset},
+      Src::Range{
+          data ? data->fact : file(file_id),
+          // FIXME: This is quite expensive and not always used. We should do
+          // this on demand.
+          sourceManager().getLineNumber(file_id, begin_offset),
+          sourceManager().getColumnNumber(file_id, begin_offset),
+          sourceManager().getLineNumber(file_id, last_char_offset),
+          sourceManager().getColumnNumber(file_id, last_char_offset)}};
 }
 
 namespace {
@@ -432,17 +415,14 @@ std::vector<Cxx::FixedXRef> finishRefs(std::deque<ClangDB::CrossRef>&& v) {
   }
   return fixed;
 }
-}
+} // namespace
 
 void ClangDB::finish() {
   auto release = [](auto& x) { auto tmp = std::move(x); };
 
   const auto main_id = sourceManager().getMainFileID();
-  auto tunit = fact<Buck::TranslationUnit>(
-    file(main_id),
-    locator,
-    maybe(platform)
-  );
+  auto tunit =
+      fact<Buck::TranslationUnit>(file(main_id), locator, maybe(platform));
 
   std::vector<Fact<Cxx::FileXRefs>> tunitXRefs;
 
@@ -475,13 +455,9 @@ void ClangDB::finish() {
       }
       release(variable);
 
-      auto xmap = fact<Cxx::FileXRefMap>(
-        file.fact,
-        std::move(fixed),
-        std::move(froms));
-      auto fileXRefs = fact<Cxx::FileXRefs>(
-        xmap,
-        std::move(targets));
+      auto xmap =
+          fact<Cxx::FileXRefMap>(file.fact, std::move(fixed), std::move(froms));
+      auto fileXRefs = fact<Cxx::FileXRefs>(xmap, std::move(targets));
       tunitXRefs.push_back(fileXRefs);
     }
     release(xrefs);
@@ -495,9 +471,9 @@ void ClangDB::finish() {
           return x.first < y.first;
         });
     auto decl_trace = fact<Cxx::Declarations>(
-      folly::gen::from(decls)
-        | folly::gen::mapped([](const auto& x) { return x.second; })
-        | folly::gen::as<std::vector>());
+        folly::gen::from(decls) |
+        folly::gen::mapped([](const auto& x) { return x.second; }) |
+        folly::gen::as<std::vector>());
     release(decls);
 
     auto resolve = [&](const auto& x) {
@@ -510,10 +486,9 @@ void ClangDB::finish() {
           });
     };
     auto pp_trace = fact<Cxx::PPTrace>(
-      file.fact,
-      folly::gen::from(file.events)
-        | folly::gen::mapped(resolve)
-        | folly::gen::as<std::vector>());
+        file.fact,
+        folly::gen::from(file.events) | folly::gen::mapped(resolve) |
+            folly::gen::as<std::vector>());
     file.trace = fact<Cxx::Trace>(file.fact, decl_trace, pp_trace);
     file.include_tree = fact<Cxx::IncludeTree>(file.trace.value(), [&] {
       std::vector<Cxx::MaybeIncludeTree> trees;
@@ -549,5 +524,4 @@ void ClangDB::finish() {
   }
 }
 
-
-}
+} // namespace facebook::glean::clangx

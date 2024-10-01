@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include <folly/container/HeterogeneousAccess.h>
 #include <folly/Format.h>
 #include <folly/Hash.h>
+#include <folly/container/HeterogeneousAccess.h>
 
 namespace facebook {
 namespace glean {
@@ -19,7 +19,7 @@ namespace rts {
 const uint64_t FIRST_FREE_ID = 1024;
 const uint64_t INVALID_ID = 0;
 
-template<typename Tag>
+template <typename Tag>
 struct WordId {
   // We might use uint32_t for pids in the future
   using word_type = uint64_t;
@@ -71,7 +71,7 @@ struct WordId {
   }
 
   WordId operator+(word_type i) const {
-    return WordId(val+i);
+    return WordId(val + i);
   }
 
   WordId& operator+=(word_type i) {
@@ -90,7 +90,7 @@ struct WordId {
 
   WordId operator-(word_type i) const {
     assert(val > i);
-    return WordId(val-i);
+    return WordId(val - i);
   }
 
   WordId& operator-=(word_type i) {
@@ -131,15 +131,16 @@ struct WordId {
     return WordId(id);
   }
 
-private:
+ private:
   explicit constexpr WordId(word_type x) : val(x) {}
 
   word_type val = static_cast<word_type>(0);
 };
 
-template<typename Tag>
-inline
-typename WordId<Tag>::word_type distance(WordId<Tag> from, WordId<Tag> to) {
+template <typename Tag>
+inline typename WordId<Tag>::word_type distance(
+    WordId<Tag> from,
+    WordId<Tag> to) {
   assert(from <= to);
   return to.toWord() - from.toWord();
 }
@@ -156,7 +157,7 @@ using Id = WordId<Fid_tag>;
 
 namespace folly {
 
-template<typename T>
+template <typename T>
 struct FormatValue<facebook::glean::rts::WordId<T>> {
   facebook::glean::rts::WordId<T> id;
 
@@ -164,15 +165,16 @@ struct FormatValue<facebook::glean::rts::WordId<T>> {
 
   template <class Callback>
   void format(FormatArg& arg, Callback& cb) const {
-    return
-      FormatValue<typename facebook::glean::rts::WordId<T>::word_type>(
-        id.toWord()).format(arg, cb);
+    return FormatValue<typename facebook::glean::rts::WordId<T>::word_type>(
+               id.toWord())
+        .format(arg, cb);
   }
 };
 
-template<typename T>
+template <typename T>
 struct hasher<facebook::glean::rts::WordId<T>> {
-  using word_hasher = hasher<typename facebook::glean::rts::WordId<T>::word_type>;
+  using word_hasher =
+      hasher<typename facebook::glean::rts::WordId<T>::word_type>;
   using folly_is_avalanching = typename word_hasher::folly_is_avalanching;
 
   size_t operator()(facebook::glean::rts::WordId<T> id) const noexcept {
@@ -180,10 +182,10 @@ struct hasher<facebook::glean::rts::WordId<T>> {
   }
 };
 
-template<typename T>
+template <typename T>
 struct HeterogeneousAccessHash<facebook::glean::rts::WordId<T>>
     : hasher<facebook::glean::rts::WordId<T>> {
   using is_transparent = void;
 };
 
-}
+} // namespace folly

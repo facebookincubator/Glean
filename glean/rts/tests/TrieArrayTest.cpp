@@ -6,14 +6,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#include <boost/icl/interval_set.hpp>
 #include <gtest/gtest.h>
 #include <rapidcheck/gtest.h>
-#include <boost/icl/interval_set.hpp>
 
-#include <glean/rts/tests/arbitrary.h>
 #include <glean/rts/ownership.h>
 #include <glean/rts/ownership/triearray.h>
 #include <glean/rts/ownership/uset.h>
+#include <glean/rts/tests/arbitrary.h>
 
 using namespace ::testing;
 using namespace facebook::glean::rts;
@@ -121,7 +121,8 @@ TrieArray<Uset> createTrieFromData(const std::vector<UnitData>& data) {
               return entry.release();
             }
           } else {
-            VLOG(1) << folly::sformat("unit {} prev == nullptr, refs {}", d.unit, refs);
+            VLOG(1) << folly::sformat(
+                "unit {} prev == nullptr, refs {}", d.unit, refs);
             auto entry = std::make_unique<Uset>(SetU32(), refs);
             entry->exp.set.append(d.unit);
             return entry.release();
@@ -133,7 +134,7 @@ TrieArray<Uset> createTrieFromData(const std::vector<UnitData>& data) {
 
 void deleteTrie(TrieArray<Uset> utrie) {
   std::vector<Uset*> sets;
-  utrie.foreach([&](Uset *uset) {
+  utrie.foreach([&](Uset* uset) {
     if (!uset->link()) {
       sets.push_back(uset);
       uset->link(uset);
@@ -147,10 +148,7 @@ void deleteTrie(TrieArray<Uset> utrie) {
   }
 }
 
-RC_GTEST_PROP(
-    TrieArrayTest,
-    random,
-    (const Data& data)) {
+RC_GTEST_PROP(TrieArrayTest, random, (const Data& data)) {
   deleteTrie(createTrieFromData(data.data));
   RC_ASSERT(1);
 }

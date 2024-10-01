@@ -17,12 +17,12 @@ namespace rts {
 
 // Ownership data for all derived predicates in a batch.
 struct DefineOwnership {
-  DefineOwnership(Ownership *ownership, Id first_id) :
-    first_id_(first_id),
-    ownership_(ownership),
-    defines_(),
-    usets_(ownership->nextSetId()),
-    newSets_() {}
+  DefineOwnership(Ownership* ownership, Id first_id)
+      : first_id_(first_id),
+        ownership_(ownership),
+        defines_(),
+        usets_(ownership->nextSetId()),
+        newSets_() {}
 
   // record that a fact was derived from some other facts
   void derivedFrom(Pid pid, Id id, const std::set<UsetId>& deps);
@@ -43,12 +43,16 @@ struct DefineOwnership {
   };
 
   using const_iterator = std::map<Pid, PerPredicate>::const_iterator;
-  const_iterator begin() { return defines_.begin(); }
-  const_iterator end() { return defines_.end(); }
+  const_iterator begin() {
+    return defines_.begin();
+  }
+  const_iterator end() {
+    return defines_.end();
+  }
 
   // first fact Id in the current batch
   Id first_id_;
-  Ownership *ownership_;
+  Ownership* ownership_;
   std::map<Pid, PerPredicate> defines_;
 
   Usets usets_;
@@ -57,7 +61,6 @@ struct DefineOwnership {
   // the DB later.
   std::vector<Uset*> newSets_;
 };
-
 
 struct DerivedFactOwnership {
   folly::Range<const Id*> ids;
@@ -75,26 +78,25 @@ struct DerivedFactOwnershipIterator {
 // Compute ownership data for derived facts
 //
 std::unique_ptr<ComputedOwnership> computeDerivedOwnership(
-  Ownership& ownership,
-  Lookup* base,
-  DerivedFactOwnershipIterator *iter);
+    Ownership& ownership,
+    Lookup* base,
+    DerivedFactOwnershipIterator* iter);
 
 struct DerivedDependencyIterator {
-  virtual ~DerivedDependencyIterator () {}
-  virtual folly::Optional<std::pair<std::vector<Id>,std::vector<Id>>> get() = 0;
+  virtual ~DerivedDependencyIterator() {}
+  virtual folly::Optional<std::pair<std::vector<Id>, std::vector<Id>>>
+  get() = 0;
 };
 
 ///
 // Add ownership data for externally derived facts
 //
 void addDerived(
-  Lookup *lookup,
-  DefineOwnership *define,
-  Pid pid,
-  DerivedDependencyIterator* it
-);
+    Lookup* lookup,
+    DefineOwnership* define,
+    Pid pid,
+    DerivedDependencyIterator* it);
 
-
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

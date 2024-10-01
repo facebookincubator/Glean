@@ -8,9 +8,9 @@
 
 #include <csignal>
 #include <cstdlib>
+#include <filesystem>
 #include <iostream>
 #include <string>
-#include <filesystem>
 
 #include <clang/Basic/DiagnosticOptions.h>
 #include <clang/Frontend/CompilerInstance.h>
@@ -24,10 +24,10 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <folly/Conv.h>
-#include <folly/executors/GlobalExecutor.h>
 #include <folly/FileUtil.h>
-#include <folly/json/json.h>
 #include <folly/Range.h>
+#include <folly/executors/GlobalExecutor.h>
+#include <folly/json/json.h>
 
 #if GLEAN_FACEBOOK && !defined(_WIN32)
 #include "common/init/Init.h"
@@ -35,9 +35,9 @@
 #include <folly/init/Init.h>
 #endif
 
+#include "glean/cpp/filewriter.h"
 #include "glean/cpp/glean.h"
 #include "glean/cpp/sender.h"
-#include "glean/cpp/filewriter.h"
 #if GLEAN_FACEBOOK && !defined(_WIN32)
 #include "glean/cpp/thriftsender.h"
 #endif
@@ -50,8 +50,14 @@
 #include "glean/rts/binary.h"
 #include "glean/rts/inventory.h"
 
-DEFINE_string(service, "", "TIER or HOST:PORT of Glean write server. When specified the generated facts will be sent to that server. You MUST specify either --dump or --service, but not both.");
-DEFINE_string(dump, "", "PATH where generated facts will be dumped instead of sending them to the Glean write server. You MUST specify either --dump or --service, but not both.");
+DEFINE_string(
+    service,
+    "",
+    "TIER or HOST:PORT of Glean write server. When specified the generated facts will be sent to that server. You MUST specify either --dump or --service, but not both.");
+DEFINE_string(
+    dump,
+    "",
+    "PATH where generated facts will be dumped instead of sending them to the Glean write server. You MUST specify either --dump or --service, but not both.");
 DEFINE_string(work_file, "", "PATH to work file");
 DEFINE_string(task, "", "task id (for logging)");
 DEFINE_string(request, "", "request id (for logging)");
@@ -61,12 +67,19 @@ DEFINE_string(root, ".", "root repository PATH");
 DEFINE_string(blank_cell_name, "", "buck cell name output as nothing");
 DEFINE_string(cwd_subdir, "", "current working subdirectory under --root");
 DEFINE_string(target_subdir, "", "clang target subdirectory under --root");
-DEFINE_string(path_prefix, "",
-  "Path fragment to prefix src.File facts with");
-DEFINE_string(repo_name, "", "Glean database name (formely known as repo). Used in logging. Also when --service is specified, 'repo_name/repo_hash' identifies the glean DB to write to.");
-DEFINE_string(repo_hash, "", "Glean database instance (formely known as hash). Used in logging. Also when --service is specified, 'repo_name/repo_hash' identifies the glean DB to write to.");
-DEFINE_int32(max_comm_errors, 30,
-  "maximum number of consecutive communication errors");
+DEFINE_string(path_prefix, "", "Path fragment to prefix src.File facts with");
+DEFINE_string(
+    repo_name,
+    "",
+    "Glean database name (formely known as repo). Used in logging. Also when --service is specified, 'repo_name/repo_hash' identifies the glean DB to write to.");
+DEFINE_string(
+    repo_hash,
+    "",
+    "Glean database instance (formely known as hash). Used in logging. Also when --service is specified, 'repo_name/repo_hash' identifies the glean DB to write to.");
+DEFINE_int32(
+    max_comm_errors,
+    30,
+    "maximum number of consecutive communication errors");
 DEFINE_int32(stop_after, 0, "stop after N files");
 DEFINE_int32(max_rss, 0, "stop after RSS reaches this size (kB)");
 DEFINE_bool(dry_run, false, "don't send data");
@@ -112,7 +125,7 @@ namespace {
 using namespace facebook::glean;
 using namespace facebook::glean::clangx;
 
-#define LOG_CFG(level,config) LOG(level) << (config).log_pfx
+#define LOG_CFG(level, config) LOG(level) << (config).log_pfx
 
 struct Counters {
   using counter_t = interprocess::Counters::counter_t;
@@ -126,15 +139,15 @@ struct Counters {
       const auto end = spec.end();
       auto pos = spec.begin();
       while (pos != end) {
-        auto a = std::find(pos,end,'@');
+        auto a = std::find(pos, end, '@');
         if (a == end) {
           throw std::runtime_error("invalid --counter");
         }
-        auto b = a+1;
-        auto e = std::find(b,end,',');
-        auto index = folly::to<size_t>(std::string(b,e));
-        size = std::max(size, index+1);
-        names.emplace_back(std::string(pos,a), index);
+        auto b = a + 1;
+        auto e = std::find(b, end, ',');
+        auto index = folly::to<size_t>(std::string(b, e));
+        size = std::max(size, index + 1);
+        names.emplace_back(std::string(pos, a), index);
         pos = e;
         if (pos != end) {
           ++pos;
@@ -145,10 +158,10 @@ struct Counters {
     }
 
     const std::unordered_map<std::string, counter_t**> fields{
-      {"fact_buffer_size", &fact_buffer_size},
-      {"fact_cache_size", &fact_cache_size},
-      {"fact_cache_hits", &fact_cache_hits},
-      {"fact_cache_misses", &fact_cache_misses},
+        {"fact_buffer_size", &fact_buffer_size},
+        {"fact_cache_size", &fact_cache_size},
+        {"fact_cache_hits", &fact_cache_hits},
+        {"fact_cache_misses", &fact_cache_misses},
     };
 
     for (const auto& x : fields) {
@@ -172,10 +185,10 @@ struct Counters {
     }
   }
 
-  counter_t *fact_buffer_size;
-  counter_t *fact_cache_size;
-  counter_t *fact_cache_hits;
-  counter_t *fact_cache_misses;
+  counter_t* fact_buffer_size;
+  counter_t* fact_cache_size;
+  counter_t* fact_cache_hits;
+  counter_t* fact_cache_misses;
   std::unique_ptr<interprocess::Counters> counters;
   std::deque<std::atomic<uint64_t>> locals;
 };
@@ -187,8 +200,8 @@ struct Counters {
 // We replace directory="." in the CDB with directory="<cwd>", because
 // ClangTool::run() expects to be able to look up the absolute
 // path of the source file in the CDB.
-std::unique_ptr<clang::tooling::CompilationDatabase>
-loadCompilationDatabase(const std::string& dir) {
+std::unique_ptr<clang::tooling::CompilationDatabase> loadCompilationDatabase(
+    const std::string& dir) {
   std::string contents;
   if (!folly::readFile((dir + "/compile_commands.json").c_str(), contents)) {
     throw std::runtime_error(std::string("couldn't read ") + dir);
@@ -235,8 +248,8 @@ struct Config {
 
   Counters counters;
 
-  Config(int argc, char **argv) {
-    assert (argc > 0);
+  Config(int argc, char** argv) {
+    assert(argc > 0);
     root = std::filesystem::canonical(FLAGS_root);
     if (!FLAGS_cwd_subdir.empty()) {
       cwd_subdir = FLAGS_cwd_subdir;
@@ -249,7 +262,7 @@ struct Config {
     }
     log_pfx = folly::to<std::string>(FLAGS_worker_index) + ": ";
 
-    #if GLEAN_FACEBOOK && !defined(_WIN32)
+#if GLEAN_FACEBOOK && !defined(_WIN32)
     if (!FLAGS_service.empty()) {
       // Full logging if we are talking to a remote service
       should_log = true;
@@ -262,15 +275,14 @@ struct Config {
       }
 
       sender = thriftSender(
-        FLAGS_service,
-        FLAGS_repo_name,
-        FLAGS_repo_hash,
-        10,          // hardcode min_retry_delay for now
-        static_cast<size_t>(FLAGS_max_comm_errors)
-      );
+          FLAGS_service,
+          FLAGS_repo_name,
+          FLAGS_repo_hash,
+          10, // hardcode min_retry_delay for now
+          static_cast<size_t>(FLAGS_max_comm_errors));
     } else
-      #endif
-      if (!FLAGS_dump.empty()) {
+#endif
+        if (!FLAGS_dump.empty()) {
       // No logging when dumping to a file
       should_log = false;
       sender = fileWriter(FLAGS_dump);
@@ -287,7 +299,7 @@ struct Config {
       }
 
       schema = std::make_unique<DbSchema<SCHEMA>>(
-        rts::Inventory::deserialize(binary::byteRange(contents)));
+          rts::Inventory::deserialize(binary::byteRange(contents)));
     }
 
     diagnostics = diagnosticConsumer();
@@ -303,14 +315,14 @@ struct Config {
         folly::Optional<std::string> platform;
         if (!FLAGS_platform.empty()) {
           platform = FLAGS_platform;
-        } else if (auto *p = item.get_ptr("platform")) {
+        } else if (auto* p = item.get_ptr("platform")) {
           platform = p->getString();
         }
         sources.push_back(SourceFile{
-          item["target"].getString(),
-          std::move(platform),
-          item["dir"].getString(),
-          item["file"].getString()});
+            item["target"].getString(),
+            std::move(platform),
+            item["dir"].getString(),
+            item["file"].getString()});
       }
     }
 
@@ -327,7 +339,7 @@ struct Config {
       if (!FLAGS_platform.empty()) {
         platform = FLAGS_platform;
       }
-      for(const auto& file : cdb->getAllFiles()){
+      for (const auto& file : cdb->getAllFiles()) {
         sources.push_back(SourceFile{
             FLAGS_cdb_target.c_str(),
             platform,
@@ -338,16 +350,17 @@ struct Config {
     }
   }
 
-  ActionLogger logger(const std::string &name) {
-    return ActionLogger(name,
-                        FLAGS_task,
-                        FLAGS_request,
-                        FLAGS_repo_name,
-                        FLAGS_repo_hash,
-                        FLAGS_worker_index,
-                        FLAGS_origin,
-                        FLAGS_cwd_subdir,
-                        should_log);
+  ActionLogger logger(const std::string& name) {
+    return ActionLogger(
+        name,
+        FLAGS_task,
+        FLAGS_request,
+        FLAGS_repo_name,
+        FLAGS_repo_hash,
+        FLAGS_worker_index,
+        FLAGS_origin,
+        FLAGS_cwd_subdir,
+        should_log);
   }
 
   [[noreturn]] void fail(const std::string& msg) const {
@@ -371,11 +384,11 @@ struct Config {
 
 // A wrapper for a Clang compilation database
 class CDB {
-public:
+ public:
   // Load the compilation database for a particular source file if it is
   // different from the one loaded before. The pointer is valid until the
   // next call to load as long as the CDB object is alive.
-  const clang::tooling::CompilationDatabase *load(const SourceFile& source) {
+  const clang::tooling::CompilationDatabase* load(const SourceFile& source) {
     if (!cdb || dir != source.dir) {
       std::string err;
       dir = source.dir;
@@ -387,7 +400,7 @@ public:
     return cdb.get();
   }
 
-private:
+ private:
   std::unique_ptr<clang::tooling::CompilationDatabase> cdb;
   std::string dir;
 };
@@ -398,13 +411,11 @@ struct SourceIndexer {
   CDB cdb;
 
   explicit SourceIndexer(Config& cfg)
-    : config(cfg)
-    , batch(cfg.schema.get(), FLAGS_fact_cache)
-    {
-      blank_cell_name = (!FLAGS_blank_cell_name.empty())
+      : config(cfg), batch(cfg.schema.get(), FLAGS_fact_cache) {
+    blank_cell_name = (!FLAGS_blank_cell_name.empty())
         ? folly::Optional<std::string>(FLAGS_blank_cell_name)
         : folly::none;
-    }
+  }
 
   bool index(const SourceFile& source) {
     if (FLAGS_ownership) {
@@ -417,25 +428,23 @@ struct SourceIndexer {
     auto pcdb = cdb.load(source);
     auto cellLocator = locatorOf(source);
     ClangCfg cfg{
-      ClangDB::Env{
-        cellLocator.first,
-        cellLocator.second,
-        platformOf(source),
-        config.root,
-        config.target_subdir,
-        config.path_prefix,
-        batch,
-      },
-      config.diagnostics.get()
-    };
+        ClangDB::Env{
+            cellLocator.first,
+            cellLocator.second,
+            platformOf(source),
+            config.root,
+            config.target_subdir,
+            config.path_prefix,
+            batch,
+        },
+        config.diagnostics.get()};
     FrontendActionFactory factory(&cfg);
     clang::tooling::ClangTool tool(*pcdb, source.file);
     if (!FLAGS_clang_arguments.empty()) {
       clang::tooling::CommandLineArguments args;
       folly::split(" ", FLAGS_clang_arguments, args, true);
       if (!args.empty()) {
-        tool.appendArgumentsAdjuster(
-          clang::tooling::getInsertArgumentAdjuster(
+        tool.appendArgumentsAdjuster(clang::tooling::getInsertArgumentAdjuster(
             args, clang::tooling::ArgumentInsertPosition::END));
       }
     }
@@ -444,11 +453,10 @@ struct SourceIndexer {
       stripped.reserve(args.size());
       for (size_t i = 0; i < args.size(); ++i) {
         if (FLAGS_clang_no_pch && args[i] == "-include-pch") {
-          ++i;  // skip next argument
-        } else if (FLAGS_clang_no_pch
-                   && args[i] == "-include"
-                   && i+1 < args.size()
-                   && boost::ends_with(args[i+1],".pch")) {
+          ++i; // skip next argument
+        } else if (
+            FLAGS_clang_no_pch && args[i] == "-include" &&
+            i + 1 < args.size() && boost::ends_with(args[i + 1], ".pch")) {
           // headers included from the command line cause problems
           // because they won't be visible to tools exploring the
           // include graph via the cxx.Trace predicate. When used to
@@ -456,17 +464,17 @@ struct SourceIndexer {
           // optimisation only, so we strip them out when
           // --clang_no_pch is on.
           ++i;
-        } else if (!FLAGS_clang_resource_dir.empty()
-                    && args[i] == "-resource-dir") {
-          ++i;  // replace -resource-dir flag
+        } else if (
+            !FLAGS_clang_resource_dir.empty() && args[i] == "-resource-dir") {
+          ++i; // replace -resource-dir flag
           stripped.push_back("-resource-dir");
           stripped.push_back(FLAGS_clang_resource_dir);
         } else if (boost::starts_with(args[i], "--cc=")) {
           // skip this flag - llvm complains about it
-        } else if (FLAGS_clang_no_modules &&
-                   (args[i] == "-fmodules"
-                    || args[i] == "-fcxx-modules"
-                    || boost::starts_with(args[i], "-fmodule-name="))) {
+        } else if (
+            FLAGS_clang_no_modules &&
+            (args[i] == "-fmodules" || args[i] == "-fcxx-modules" ||
+             boost::starts_with(args[i], "-fmodule-name="))) {
           // skip these
         } else {
           stripped.push_back(args[i]);
@@ -481,26 +489,27 @@ struct SourceIndexer {
     return ok;
   }
 
-private:
+ private:
   folly::Optional<std::string> blank_cell_name;
 
-  std::pair<folly::Optional<std::string>, Fact<Buck::Locator>> locatorOf(const SourceFile& source) {
+  std::pair<folly::Optional<std::string>, Fact<Buck::Locator>> locatorOf(
+      const SourceFile& source) {
     // Parsing source.target as cell//path:name
     const auto slashes = source.target.find("//");
     const size_t cell_len = (slashes == std::string::npos) ? 0 : slashes;
-    const size_t path_start = (slashes == std::string::npos) ? 0 : slashes+2;
+    const size_t path_start = (slashes == std::string::npos) ? 0 : slashes + 2;
 
     const auto colon = source.target.find(':', path_start);
     const size_t path_len = (colon == std::string::npos)
-      ? source.target.size() - path_start
-      : colon - path_start;
+        ? source.target.size() - path_start
+        : colon - path_start;
     const size_t name_start = (colon == std::string::npos)
-      ? source.target.size()  // substr will return empty string for name
-      : colon+1;
+        ? source.target.size() // substr will return empty string for name
+        : colon + 1;
 
     folly::Optional<std::string> cell = (0 < cell_len)
-      ? folly::Optional<std::string>(source.target.substr(0, cell_len))
-      : folly::none;
+        ? folly::Optional<std::string>(source.target.substr(0, cell_len))
+        : folly::none;
 
     // Enforce policy that buck.Locator{subdir=nothing} means blank_cell_name
     if (cell == blank_cell_name) {
@@ -508,7 +517,7 @@ private:
     }
 
     auto repo_cell = cell;
-    #if GLEAN_FACEBOOK
+#if GLEAN_FACEBOOK
     // TODO make this more general
     // some source.targets are of the form fbsource//path:name.
     // Consequently, cell (and a locator subdir field) can be
@@ -516,17 +525,17 @@ private:
     if (cell == "fbsource") {
       repo_cell = folly::none;
     }
-    #endif
+#endif
 
-    return {repo_cell, batch.fact<Buck::Locator>(
-      maybe(cell),
-      source.target.substr(path_start, path_len),
-      source.target.substr(name_start)
-    )};
+    return {
+        repo_cell,
+        batch.fact<Buck::Locator>(
+            maybe(cell),
+            source.target.substr(path_start, path_len),
+            source.target.substr(name_start))};
   }
 
-  folly::Optional<Fact<Buck::Platform>> platformOf(
-      const SourceFile& file) {
+  folly::Optional<Fact<Buck::Platform>> platformOf(const SourceFile& file) {
     if (file.platform) {
       return batch.fact<Buck::Platform>(file.platform.value());
     } else {
@@ -536,13 +545,13 @@ private:
 
   struct ClangCfg {
     ClangDB::Env env;
-    GleanDiagnosticBuffer *diagnostics;
+    GleanDiagnosticBuffer* diagnostics;
   };
 
   // FrontendAction uses the ClangIndexer to plumb PPCallbacks and ASTConsumer
   struct FrontendAction : public clang::ASTFrontendAction {
     using Base = clang::ASTFrontendAction;
-    explicit FrontendAction(const ClangCfg *cfg) : config(cfg) {}
+    explicit FrontendAction(const ClangCfg* cfg) : config(cfg) {}
 
     bool PrepareToExecuteAction(clang::CompilerInstance& ci) override {
       if (config->diagnostics) {
@@ -562,35 +571,36 @@ private:
     }
 
     std::unique_ptr<clang::ASTConsumer> CreateASTConsumer(
-        clang::CompilerInstance&, clang::StringRef) override {
+        clang::CompilerInstance&,
+        clang::StringRef) override {
       CHECK(db);
       return facebook::glean::clangx::newASTConsumer(db.get());
     }
 
-    const ClangCfg *config;
+    const ClangCfg* config;
     std::unique_ptr<ClangDB> db;
   };
 
   struct FrontendActionFactory : public clang::tooling::FrontendActionFactory {
-    explicit FrontendActionFactory(const ClangCfg *cfg) : config(cfg) {}
+    explicit FrontendActionFactory(const ClangCfg* cfg) : config(cfg) {}
 
 #if LLVM_VERSION_MAJOR >= 11
     std::unique_ptr<clang::FrontendAction> create() override {
       return std::unique_ptr<clang::FrontendAction>(new FrontendAction(config));
     }
 #else
-    clang::FrontendAction *create() override {
+    clang::FrontendAction* create() override {
       return new FrontendAction(config);
     }
 #endif
 
-    const ClangCfg *config;
+    const ClangCfg* config;
   };
 };
 
-using stats_vec = std::vector<std::pair<size_t, const char *>>;
-const stats_vec counts = {{1000*1000, "m"}, {1000, "k"}};
-const stats_vec mems = {{1024*1024, "MB"}, {1024, "KB"}, {0, "B"}};
+using stats_vec = std::vector<std::pair<size_t, const char*>>;
+const stats_vec counts = {{1000 * 1000, "m"}, {1000, "k"}};
+const stats_vec mems = {{1024 * 1024, "MB"}, {1024, "KB"}, {0, "B"}};
 
 folly::fbstring showStat(const stats_vec& vec, size_t n) {
   for (const auto& p : vec) {
@@ -605,8 +615,8 @@ folly::fbstring showStat(const stats_vec& vec, size_t n) {
 }
 
 folly::fbstring showStats(const FactStats& stats) {
-  return
-    showStat(mems, stats.memory) + " (" + showStat(counts, stats.count) + ")";
+  return showStat(mems, stats.memory) + " (" + showStat(counts, stats.count) +
+      ")";
 }
 
 struct FatalLLVMError : std::runtime_error {
@@ -614,9 +624,9 @@ struct FatalLLVMError : std::runtime_error {
 };
 
 #if LLVM_VERSION_MAJOR > 13
-void handleLLVMError(void *, const char* reason, bool) {
+void handleLLVMError(void*, const char* reason, bool) {
 #else
-void handleLLVMError(void *, const std::string& reason, bool) {
+void handleLLVMError(void*, const std::string& reason, bool) {
 #endif
   throw FatalLLVMError(reason);
 }
@@ -639,9 +649,9 @@ int getSelfRSS() {
   return 0;
 }
 
-}
+} // namespace
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
 #if GLEAN_FACEBOOK && !defined(_WIN32)
   facebook::initFacebook(&argc, &argv);
 #else
@@ -649,12 +659,12 @@ int main(int argc, char **argv) {
 #endif
 
   std::signal(SIGTERM, [](int) {
-    #if GLEAN_FACEBOOK && !defined(_WIN32)
+#if GLEAN_FACEBOOK && !defined(_WIN32)
     LOG(CRITICAL)
-    #else
+#else
     LOG(ERROR)
-    #endif
-      << "worker " << FLAGS_worker_index << " received SIGTERM, exiting";
+#endif
+        << "worker " << FLAGS_worker_index << " received SIGTERM, exiting";
     _exit(1);
   });
 
@@ -666,44 +676,42 @@ int main(int argc, char **argv) {
   }
 
   const auto work_counter = FLAGS_work_file.empty()
-    ? worklist::serialCounter(0, config.sources.size())
-    : worklist::stealingCounter(
-        FLAGS_work_file, FLAGS_worker_index, FLAGS_worker_count);
+      ? worklist::serialCounter(0, config.sources.size())
+      : worklist::stealingCounter(
+            FLAGS_work_file, FLAGS_worker_index, FLAGS_worker_count);
 
   SourceIndexer indexer(config);
 
   llvm::install_fatal_error_handler(&handleLLVMError, nullptr);
 
   const size_t n = FLAGS_stop_after != 0
-    ? std::min(size_t(FLAGS_stop_after), config.sources.size())
-    : config.sources.size();
+      ? std::min(size_t(FLAGS_stop_after), config.sources.size())
+      : config.sources.size();
 
-  FactStats prev_stats = {0,0};
-  FactStats lifetime_stats = {0,0};
+  FactStats prev_stats = {0, 0};
+  FactStats lifetime_stats = {0, 0};
   uint32_t lifetime_files = 0;
 
   bool error_exit = false;
   bool memory_exit = false;
   int rss = 0;
-  for (auto next = work_counter->next();
-        next.has_value();
-        next = work_counter->next()) {
+  for (auto next = work_counter->next(); next.has_value();
+       next = work_counter->next()) {
     const auto i = next.value().start;
     auto errorGuard = folly::makeGuard([&] {
-      LOG_CFG(ERROR,config) << "error guard at "
-        << i+1 << "/" << next.value().end << " [" << n << "] "
-        << config.sources[i].file;
+      LOG_CFG(ERROR, config)
+          << "error guard at " << i + 1 << "/" << next.value().end << " [" << n
+          << "] " << config.sources[i].file;
     });
 
     if (FLAGS_log_every != 0 && (lifetime_files % FLAGS_log_every) == 0) {
-      LOG_CFG(INFO,config)
-        << i+1 << "/" << next.value().end << " [" << n << "] "
-        << config.sources[i].file;
+      LOG_CFG(INFO, config) << i + 1 << "/" << next.value().end << " [" << n
+                            << "] " << config.sources[i].file;
       if (FLAGS_fact_stats) {
-        LOG_CFG(INFO,config)
-          << "fact buffer: " << showStats(indexer.batch.bufferStats())
-          << " cache: " << showStats(indexer.batch.cacheStats().facts)
-          << " lifetime: " << showStats(lifetime_stats);
+        LOG_CFG(INFO, config)
+            << "fact buffer: " << showStats(indexer.batch.bufferStats())
+            << " cache: " << showStats(indexer.batch.cacheStats().facts)
+            << " lifetime: " << showStats(lifetime_stats);
       }
     }
 
@@ -711,20 +719,19 @@ int main(int argc, char **argv) {
     const auto buf_stats = indexer.batch.bufferStats();
     const auto cache_stats = indexer.batch.cacheStats();
     try {
-      bool ok = config
-        .logger("clang/index")
-        .log_index(source, buf_stats, cache_stats, [&]() {
-          return indexer.index(source);
-        });
+      bool ok = config.logger("clang/index")
+                    .log_index(source, buf_stats, cache_stats, [&]() {
+                      return indexer.index(source);
+                    });
       if (!ok && FLAGS_fail_on_error) {
         LOG(ERROR) << "compilation failed for " << source.file;
         error_exit = true;
       }
-    } catch(const FatalLLVMError& e) {
+    } catch (const FatalLLVMError& e) {
       // TODO: log this to Scuba if it turns out to happen a lot
       LOG(ERROR) << "fatal LLVM error in " << source.file << ": " << e.what();
       error_exit = true;
-    } catch(const std::exception& e) {
+    } catch (const std::exception& e) {
       LOG(ERROR) << "while indexing " << source.file << ": " << e.what();
       error_exit = FLAGS_fail_on_error;
     }
@@ -737,20 +744,21 @@ int main(int argc, char **argv) {
     config.counters.fact_cache_misses->store(cache_stats.misses);
     if (!FLAGS_dry_run) {
       const bool wait =
-        FLAGS_fact_buffer != 0 && buf_stats.memory >= FLAGS_fact_buffer;
+          FLAGS_fact_buffer != 0 && buf_stats.memory >= FLAGS_fact_buffer;
       const auto start = std::chrono::steady_clock::now();
       if (wait) {
-        LOG_CFG(INFO,config)
-          << "fact buffer size " << buf_stats.memory << ", waiting";
+        LOG_CFG(INFO, config)
+            << "fact buffer size " << buf_stats.memory << ", waiting";
       }
       config.logger(wait ? "clang/wait" : "clang/send").log([&]() {
         config.sender->rebaseAndSend(indexer.batch.base(), wait);
       });
       if (wait) {
         const auto wait_time = std::chrono::steady_clock::now() - start;
-        LOG_CFG(INFO,config)
-          << "rebaseAndSend wait time in milliseconds="
-          << std::chrono::duration_cast<std::chrono::milliseconds>(wait_time).count();
+        LOG_CFG(INFO, config)
+            << "rebaseAndSend wait time in milliseconds="
+            << std::chrono::duration_cast<std::chrono::milliseconds>(wait_time)
+                   .count();
       }
     }
     prev_stats = indexer.batch.bufferStats();
@@ -760,13 +768,11 @@ int main(int argc, char **argv) {
 
     errorGuard.dismiss();
 
-    if ((FLAGS_stop_after != 0 && lifetime_files >= FLAGS_stop_after)
-        || memory_exit
-        || error_exit) {
-      LOG_CFG(WARNING,config)
-        << "Exiting after "
-        << i+1 << "/" << next.value().end << " [" << n << "] "
-        << config.sources[i].file;
+    if ((FLAGS_stop_after != 0 && lifetime_files >= FLAGS_stop_after) ||
+        memory_exit || error_exit) {
+      LOG_CFG(WARNING, config)
+          << "Exiting after " << i + 1 << "/" << next.value().end << " [" << n
+          << "] " << config.sources[i].file;
       // we do not want the for loop to call work_counter->next()
       // because that will skip the next target for no good reason
       break;
@@ -774,7 +780,7 @@ int main(int argc, char **argv) {
   }
 
   if (!FLAGS_dry_run) {
-    LOG_CFG(INFO,config) << "flushing";
+    LOG_CFG(INFO, config) << "flushing";
     config.logger("clang/flush").log([&]() {
       config.sender->flush(indexer.batch.base());
     });
@@ -786,16 +792,14 @@ int main(int argc, char **argv) {
   config.counters.fact_cache_size->store(0);
 
   if (memory_exit) {
-    LOG_CFG(ERROR, config)
-      << "Exiting due to memory pressure, RSS was " << rss
-      << " kB, RSS after flushing is " << getSelfRSS()
-      << " kB, --max-rss is " << FLAGS_max_rss << " kB";
+    LOG_CFG(ERROR, config) << "Exiting due to memory pressure, RSS was " << rss
+                           << " kB, RSS after flushing is " << getSelfRSS()
+                           << " kB, --max-rss is " << FLAGS_max_rss << " kB";
   }
 
-  LOG_CFG(INFO,config)
-    << (error_exit || memory_exit ? "aborting" : "finished")
-    << ", lifetime files: " << lifetime_files
-    << " facts: " << showStats(lifetime_stats);
+  LOG_CFG(INFO, config) << (error_exit || memory_exit ? "aborting" : "finished")
+                        << ", lifetime files: " << lifetime_files
+                        << " facts: " << showStats(lifetime_stats);
 
   if (memory_exit) {
     return 147;

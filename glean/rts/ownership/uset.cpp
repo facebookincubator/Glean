@@ -13,7 +13,7 @@ namespace glean {
 namespace rts {
 
 SetExpr<Usets::MutableEliasFanoList> Uset::toEliasFano() {
-  return { exp.op, exp.set.toEliasFano() };
+  return {exp.op, exp.set.toEliasFano()};
 }
 
 std::vector<SetExpr<Usets::MutableEliasFanoList>> Usets::toEliasFano() {
@@ -27,6 +27,6 @@ std::vector<SetExpr<Usets::MutableEliasFanoList>> Usets::toEliasFano() {
   return sets;
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

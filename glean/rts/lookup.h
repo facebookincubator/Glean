@@ -10,8 +10,8 @@
 
 #include "glean/rts/fact.h"
 #include "glean/rts/id.h"
-#include "glean/rts/stats.h"
 #include "glean/rts/ownership/uset.h"
+#include "glean/rts/stats.h"
 
 #include <vector>
 
@@ -41,24 +41,21 @@ struct FactIterator {
   virtual std::optional<Id> upper_bound() = 0;
 
   static std::unique_ptr<FactIterator> merge(
-    std::unique_ptr<FactIterator> left,
-    std::unique_ptr<FactIterator> right,
-    size_t prefix_size
-  );
+      std::unique_ptr<FactIterator> left,
+      std::unique_ptr<FactIterator> right,
+      size_t prefix_size);
 
   static std::unique_ptr<FactIterator> append(
-    std::unique_ptr<FactIterator> left,
-    std::unique_ptr<FactIterator> right
-  );
+      std::unique_ptr<FactIterator> left,
+      std::unique_ptr<FactIterator> right);
 
   // Filter the facts of the underlying DB according to the provided
   // visibility function. It is the responsibility of the caller to
   // ensure that the resulting set of facts is valid (has no dangling
   // fact IDs).
   static std::unique_ptr<FactIterator> filter(
-    std::unique_ptr<FactIterator> base,
-    std::function<bool(Id id)> visible
-  );
+      std::unique_ptr<FactIterator> base,
+      std::function<bool(Id id)> visible);
 };
 
 /**
@@ -67,10 +64,15 @@ struct FactIterator {
  */
 struct EmptyIterator final : FactIterator {
   void next() override {}
-  Fact::Ref get(Demand) override { return Fact::Ref::invalid(); }
-  std::optional<Id> lower_bound() override { return std::nullopt; }
-  std::optional<Id> upper_bound() override { return std::nullopt; }
-
+  Fact::Ref get(Demand) override {
+    return Fact::Ref::invalid();
+  }
+  std::optional<Id> lower_bound() override {
+    return std::nullopt;
+  }
+  std::optional<Id> upper_bound() override {
+    return std::nullopt;
+  }
 };
 
 /**
@@ -90,8 +92,7 @@ struct Lookup {
   // Apply the function to the type, key and value of the fact with the given id
   // if it exists. Return value indicates whether the fact has been found.
   // If a type is supplied only facts with this type will be found.
-  virtual bool factById(
-    Id id, std::function<void(Pid, Fact::Clause)> f) = 0;
+  virtual bool factById(Id id, std::function<void(Pid, Fact::Clause)> f) = 0;
 
   /// Return a fact id such that no facts in the Enumerate have an id below it.
   /// There is no guarantee that a fact with this particular id exists but fact
@@ -110,8 +111,8 @@ struct Lookup {
   /// Passing `Id::invalid` for either means starting with the first/finishing
   /// with the last fact.
   virtual std::unique_ptr<FactIterator> enumerate(
-    Id from = Id::invalid(),
-    Id upto = Id::invalid()) = 0;
+      Id from = Id::invalid(),
+      Id upto = Id::invalid()) = 0;
 
   /// Return a FactIterator that enumerates all facts in descreasing order of
   /// their ids, starting from the first fact before 'from' and down to and
@@ -123,30 +124,26 @@ struct Lookup {
   /// returned by the iterator. This means that `enumerateBack(b,a)` produces
   /// exactly the same facts as `enumerate(a,b)`, just in reverse order.
   virtual std::unique_ptr<FactIterator> enumerateBack(
-    Id from = Id::invalid(),
-    Id downto = Id::invalid()) = 0;
+      Id from = Id::invalid(),
+      Id downto = Id::invalid()) = 0;
 
   // Obtain a  prefix iterator for the given predicate. The iterator covers keys
   // which begin with the first 'prefix_size' bytes of 'start', starting with
   // the first key not lexicographically less than 'start', and produces facts
   // in lexicographic order. In particular, setting 'prefix_size' to
   // 'start.size()' iterates over all keys with the prefix 'start'.
-  virtual std::unique_ptr<FactIterator> seek(
-    Pid type,
-    folly::ByteRange start,
-    size_t prefix_size
-  ) = 0;
+  virtual std::unique_ptr<FactIterator>
+  seek(Pid type, folly::ByteRange start, size_t prefix_size) = 0;
 
   // Perform a seek on a section of the Lookup.
   // Results will have Ids within the range [from, utpto).
   // Facts can reference Ids outside of the specified range.
   virtual std::unique_ptr<FactIterator> seekWithinSection(
-    Pid type,
-    folly::ByteRange start,
-    size_t prefix_size,
-    Id from,
-    Id to
-  ) = 0;
+      Pid type,
+      folly::ByteRange start,
+      size_t prefix_size,
+      Id from,
+      Id to) = 0;
 
   virtual UsetId getOwner(Id id) = 0;
 };
@@ -168,10 +165,16 @@ struct EmptyLookup final : Lookup {
     return false;
   }
 
-  Id startingId() const override { return Id::lowest(); }
-  Id firstFreeId() const override { return Id::lowest(); }
+  Id startingId() const override {
+    return Id::lowest();
+  }
+  Id firstFreeId() const override {
+    return Id::lowest();
+  }
 
-  Interval count(Pid) const override { return 0; }
+  Interval count(Pid) const override {
+    return 0;
+  }
 
   std::unique_ptr<FactIterator> enumerate(Id, Id) override {
     return std::make_unique<EmptyIterator>();
@@ -180,17 +183,18 @@ struct EmptyLookup final : Lookup {
     return std::make_unique<EmptyIterator>();
   }
 
-  std::unique_ptr<FactIterator> seek(Pid, folly::ByteRange, size_t) override
-  {
+  std::unique_ptr<FactIterator> seek(Pid, folly::ByteRange, size_t) override {
     return std::make_unique<EmptyIterator>();
   }
 
-  std::unique_ptr<FactIterator> seekWithinSection(
-      Pid, folly::ByteRange, size_t, Id, Id) override {
+  std::unique_ptr<FactIterator>
+  seekWithinSection(Pid, folly::ByteRange, size_t, Id, Id) override {
     return std::make_unique<EmptyIterator>();
   }
 
-  UsetId getOwner(Id) override { return INVALID_USET; }
+  UsetId getOwner(Id) override {
+    return INVALID_USET;
+  }
 
   static EmptyLookup& instance();
 };
@@ -201,9 +205,8 @@ struct EmptyLookup final : Lookup {
  *
  */
 struct Section : Lookup {
-  Section(Lookup *b, Id from, Id to)
-    : base_(b), low_boundary_(from), high_boundary_(to)
-    {}
+  Section(Lookup* b, Id from, Id to)
+      : base_(b), low_boundary_(from), high_boundary_(to) {}
 
   Id idByKey(Pid type, folly::ByteRange key) override {
     auto id = base()->idByKey(type, key);
@@ -219,11 +222,13 @@ struct Section : Lookup {
   }
 
   Id startingId() const override {
-    return std::max(lowBoundary(), std::min(highBoundary(), base()->startingId()));
+    return std::max(
+        lowBoundary(), std::min(highBoundary(), base()->startingId()));
   }
 
   Id firstFreeId() const override {
-    return std::max(lowBoundary(), std::min(highBoundary(), base()->firstFreeId()));
+    return std::max(
+        lowBoundary(), std::min(highBoundary(), base()->firstFreeId()));
   }
 
   Interval count(Pid pid) const override {
@@ -233,23 +238,21 @@ struct Section : Lookup {
   std::unique_ptr<FactIterator> enumerate(Id from, Id upto) override;
   std::unique_ptr<FactIterator> enumerateBack(Id from, Id downto) override;
 
-  std::unique_ptr<FactIterator> seek(
-    Pid type,
-    folly::ByteRange start,
-    size_t prefix_size) override;
+  std::unique_ptr<FactIterator>
+  seek(Pid type, folly::ByteRange start, size_t prefix_size) override;
 
   std::unique_ptr<FactIterator> seekWithinSection(
-    Pid type,
-    folly::ByteRange start,
-    size_t prefix_size,
-    Id from,
-    Id to) override;
+      Pid type,
+      folly::ByteRange start,
+      size_t prefix_size,
+      Id from,
+      Id to) override;
 
   UsetId getOwner(Id id) override {
     return isWithinBounds(id) ? base()->getOwner(id) : INVALID_USET;
   }
 
-  Lookup *base() const {
+  Lookup* base() const {
     return base_;
   }
 
@@ -265,8 +268,8 @@ struct Section : Lookup {
     return lowBoundary() <= id && id < highBoundary();
   }
 
-private:
-  Lookup *base_;
+ private:
+  Lookup* base_;
   Id low_boundary_;
   Id high_boundary_;
 };
@@ -277,8 +280,8 @@ private:
  * database.
  *
  */
-std::unique_ptr<Lookup> snapshot(Lookup *b, Id to);
+std::unique_ptr<Lookup> snapshot(Lookup* b, Id to);
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

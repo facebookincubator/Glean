@@ -8,10 +8,10 @@
 
 #pragma once
 
+#include <glog/logging.h>
 #include <variant>
 #include "glean/rts/binary.h"
 #include "glean/rts/id.h"
-#include <glog/logging.h>
 
 namespace facebook {
 namespace glean {
@@ -19,30 +19,44 @@ namespace rts {
 
 namespace serialize {
 
-inline void put(binary::Output& o, uint64_t i) { o.nat(i); }
-inline void put(binary::Output& o, uint32_t i) { o.nat(i); }
-inline void put(binary::Output& o, int32_t i) { o.nat(i); }
-inline void put(binary::Output& o, bool b) { o.fixed(uint8_t{b}); }
-inline void put(binary::Output& o, Id p) { put(o, p.toWord()); }
-inline void put(binary::Output& o, Pid p) { put(o, p.toWord()); }
-inline void put(binary::Output& o, const std::string &s) {
+inline void put(binary::Output& o, uint64_t i) {
+  o.nat(i);
+}
+inline void put(binary::Output& o, uint32_t i) {
+  o.nat(i);
+}
+inline void put(binary::Output& o, int32_t i) {
+  o.nat(i);
+}
+inline void put(binary::Output& o, bool b) {
+  o.fixed(uint8_t{b});
+}
+inline void put(binary::Output& o, Id p) {
+  put(o, p.toWord());
+}
+inline void put(binary::Output& o, Pid p) {
+  put(o, p.toWord());
+}
+inline void put(binary::Output& o, const std::string& s) {
   put(o, s.size());
   o.put(binary::byteRange(s));
 }
-inline void put(binary::Output& o, const binary::Output &out) {
-    put(o, out.size());
-    o.put(out.bytes());
+inline void put(binary::Output& o, const binary::Output& out) {
+  put(o, out.size());
+  o.put(out.bytes());
 }
 
 template <typename T>
-void put(binary::Output& o, const T* p) { put(o, *p); }
+void put(binary::Output& o, const T* p) {
+  put(o, *p);
+}
 
 // We can specify type-specific serialization by defining a static method
 //   T::put(binary::Output&, T&)
 // and then serializing a std::vector<T> or std::optional<T> will work.
 template <typename T>
 void put(binary::Output& o, const T& p) {
-    T::put(o,p);
+  T::put(o, p);
 }
 
 template <typename T>
@@ -88,14 +102,29 @@ void put(binary::Output& o, const std::shared_ptr<T>& s) {
   }
 }
 
-
-inline void get(binary::Input& i, uint64_t &r) { r = i.untrustedNat(); }
-inline void get(binary::Input& i, uint32_t &r) { r = i.untrustedNat(); }
-inline void get(binary::Input& i, int32_t &r) { r = i.untrustedNat(); }
-inline void get(binary::Input& i, bool &r) { r = i.byte(); }
-inline void get(binary::Input& i, Id &p) { uint64_t w; get(i, w); p = Id::fromWord(w); }
-inline void get(binary::Input& i, Pid &p) { uint64_t w; get(i, w); p = Pid::fromWord(w); }
-inline void get(binary::Input& i, std::string &s) {
+inline void get(binary::Input& i, uint64_t& r) {
+  r = i.untrustedNat();
+}
+inline void get(binary::Input& i, uint32_t& r) {
+  r = i.untrustedNat();
+}
+inline void get(binary::Input& i, int32_t& r) {
+  r = i.untrustedNat();
+}
+inline void get(binary::Input& i, bool& r) {
+  r = i.byte();
+}
+inline void get(binary::Input& i, Id& p) {
+  uint64_t w;
+  get(i, w);
+  p = Id::fromWord(w);
+}
+inline void get(binary::Input& i, Pid& p) {
+  uint64_t w;
+  get(i, w);
+  p = Pid::fromWord(w);
+}
+inline void get(binary::Input& i, std::string& s) {
   size_t n;
   get(i, n);
   auto r = i.bytes(n);
@@ -109,7 +138,7 @@ inline void get(binary::Input& i, binary::Output& out) {
 
 template <typename T>
 void get(binary::Input& i, T& p) {
-  T::get(i,p);
+  T::get(i, p);
 }
 
 template <typename T>
@@ -134,8 +163,8 @@ void get(binary::Input& i, std::vector<T>& vec, AsBytes) {
   std::copy(bytes.begin(), bytes.end(), reinterpret_cast<uint8_t*>(vec.data()));
 }
 
-template<typename T>
-void get(binary::Input& i, std::optional<T> &opt) {
+template <typename T>
+void get(binary::Input& i, std::optional<T>& opt) {
   auto x = i.byte();
   if (x) {
     T y;
@@ -164,8 +193,8 @@ namespace thriftcompact {
 using Nat = int64_t;
 using Binary = folly::ByteRange;
 using String = std::string;
-using List = std::vector<Nat>;  // TODO: generalise
-using Map = std::map<String, List>;  // TODO: generalise
+using List = std::vector<Nat>; // TODO: generalise
+using Map = std::map<String, List>; // TODO: generalise
 
 using Field = std::variant<Nat, Binary, Map>;
 using Object = std::vector<std::pair<uint32_t, Field>>;
@@ -178,11 +207,24 @@ enum Type : uint32_t {
   MapTy = 11,
 };
 
-template<typename T> static Type typeOf();
-template<> Type typeOf<Nat>() { return NatTy; }
-template<> Type typeOf<Binary>() { return BinaryTy; }
-template<> Type typeOf<String>() { return StringTy; }
-template<> Type typeOf<std::vector<Nat>>() { return ListTy; }
+template <typename T>
+static Type typeOf();
+template <>
+Type typeOf<Nat>() {
+  return NatTy;
+}
+template <>
+Type typeOf<Binary>() {
+  return BinaryTy;
+}
+template <>
+Type typeOf<String>() {
+  return StringTy;
+}
+template <>
+Type typeOf<std::vector<Nat>>() {
+  return ListTy;
+}
 
 inline void put(binary::Output& out, Nat x) {
   out.packed(folly::encodeZigZag(x));
@@ -198,7 +240,7 @@ inline void put(binary::Output& out, const String& s) {
   out.put(binary::byteRange(s));
 }
 
-template<typename T>
+template <typename T>
 void put(binary::Output& out, const std::vector<T>& v) {
   if (v.size() < 15) {
     out.fixed(uint8_t((v.size() << 4) | typeOf<T>()));

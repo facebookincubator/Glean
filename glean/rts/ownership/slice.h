@@ -26,8 +26,8 @@ namespace rts {
 // A Slice only makes sense in the context of a particular DB.
 //
 struct Slice {
-  explicit Slice(UsetId first, boost::dynamic_bitset<uint64_t> set) :
-      first_(first), set_(std::move(set)) {}
+  explicit Slice(UsetId first, boost::dynamic_bitset<uint64_t> set)
+      : first_(first), set_(std::move(set)) {}
 
   bool visible(UsetId uset) const {
     assert(
@@ -39,9 +39,15 @@ struct Slice {
     return usetid >= first() && usetid < end();
   }
 
-  UsetId first() const { return first_; }
-  UsetId end() const { return first_ + set_.size(); }
-  bool empty() const { return set_.empty(); }
+  UsetId first() const {
+    return first_;
+  }
+  UsetId end() const {
+    return first_ + set_.size();
+  }
+  bool empty() const {
+    return set_.empty();
+  }
 
   void serialize(binary::Output& o) const;
   static std::unique_ptr<Slice> deserialize(binary::Input& i);
@@ -51,12 +57,12 @@ struct Slice {
   const boost::dynamic_bitset<uint64_t> set_;
 };
 
-
 ///
 // A set of slices that can be treated as a single Slice
 //
 struct Slices {
-  explicit Slices(std::vector<const Slice*> slices) : slices_(std::move(slices)) {
+  explicit Slices(std::vector<const Slice*> slices)
+      : slices_(std::move(slices)) {
     UsetId first = 0, end = 0;
     for (auto slice : slices_) {
       if (first == 0 || slice->first() < first) {
@@ -81,18 +87,24 @@ struct Slices {
     return false;
   }
 
-  UsetId first() const { return first_; }
-  UsetId end() const { return end_; }
-  bool empty() const { return first_ == end_; }
+  UsetId first() const {
+    return first_;
+  }
+  UsetId end() const {
+    return end_;
+  }
+  bool empty() const {
+    return first_ == end_;
+  }
 
   bool inRange(UsetId usetid) const {
     return usetid >= first_ && usetid < end_;
   }
 
-  private:
-    UsetId first_;
-    UsetId end_;
-    const std::vector<const Slice*> slices_;
+ private:
+  UsetId first_;
+  UsetId end_;
+  const std::vector<const Slice*> slices_;
 };
 
 ///
@@ -112,12 +124,11 @@ std::unique_ptr<Slice> slice(
 // means it will probably be a Slices containing a Slice for
 // each Lookup in the stack.
 //
-template<typename Slice>
+template <typename Slice>
 struct Sliced : Lookup {
   ~Sliced() override {}
 
-  Sliced(Lookup *base, Slice slice)
-      : base_(base), slice_(std::move(slice)) {}
+  Sliced(Lookup* base, Slice slice) : base_(base), slice_(std::move(slice)) {}
 
   Id idByKey(Pid type, folly::ByteRange key) override {
     auto id = base_->idByKey(type, key);
@@ -132,9 +143,7 @@ struct Sliced : Lookup {
     return base_->typeById(id);
   }
 
-  bool factById(
-      Id id,
-      std::function<void(Pid, Fact::Clause)> f) override {
+  bool factById(Id id, std::function<void(Pid, Fact::Clause)> f) override {
     return base_->factById(id, std::move(f));
   }
 
@@ -151,35 +160,23 @@ struct Sliced : Lookup {
     return base_->count(pid);
   }
 
-  std::unique_ptr<FactIterator> enumerate(
-      Id from,
-      Id upto) override {
-    return FactIterator::filter(
-        base_->enumerate(from,upto),
-        [&](Id id) {
-          return slice_.visible(base_->getOwner(id));
-        });
+  std::unique_ptr<FactIterator> enumerate(Id from, Id upto) override {
+    return FactIterator::filter(base_->enumerate(from, upto), [&](Id id) {
+      return slice_.visible(base_->getOwner(id));
+    });
   }
 
-  std::unique_ptr<FactIterator> enumerateBack(
-      Id from,
-      Id downto) override {
-    return FactIterator::filter(
-        base_->enumerate(from,downto),
-        [&](Id id) {
-          return slice_.visible(base_->getOwner(id));
-        });
+  std::unique_ptr<FactIterator> enumerateBack(Id from, Id downto) override {
+    return FactIterator::filter(base_->enumerate(from, downto), [&](Id id) {
+      return slice_.visible(base_->getOwner(id));
+    });
   }
 
-  std::unique_ptr<FactIterator> seek(
-      Pid type,
-      folly::ByteRange start,
-      size_t prefix_size) override {
+  std::unique_ptr<FactIterator>
+  seek(Pid type, folly::ByteRange start, size_t prefix_size) override {
     return FactIterator::filter(
         base_->seek(type, start, prefix_size),
-        [&](Id id) {
-          return slice_.visible(base_->getOwner(id));
-        });
+        [&](Id id) { return slice_.visible(base_->getOwner(id)); });
   }
 
   std::unique_ptr<FactIterator> seekWithinSection(
@@ -190,9 +187,7 @@ struct Sliced : Lookup {
       Id to) override {
     return FactIterator::filter(
         base_->seekWithinSection(type, start, prefix_size, from, to),
-        [&](Id id) {
-          return slice_.visible(base_->getOwner(id));
-        });
+        [&](Id id) { return slice_.visible(base_->getOwner(id)); });
   }
 
   UsetId getOwner(Id id) override {
@@ -202,11 +197,10 @@ struct Sliced : Lookup {
   }
 
  private:
-  Lookup *base_;
+  Lookup* base_;
   Slice slice_;
 };
 
-
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

@@ -6,8 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include <algorithm>
 #include <boost/dynamic_bitset.hpp>
+#include <algorithm>
 
 #include "glean/rts/ownership/slice.h"
 #include "glean/rts/timer.h"
@@ -45,7 +45,8 @@ std::unique_ptr<Slice> slice(
       units.size());
 
   if (size == 0) {
-    return std::make_unique<Slice>(base.end(), boost::dynamic_bitset<uint64_t>());
+    return std::make_unique<Slice>(
+        base.end(), boost::dynamic_bitset<uint64_t>());
   }
 
   assert(base.empty() || first >= base.end());
@@ -91,12 +92,12 @@ std::unique_ptr<Slice> slice(
         }
       }
       if (reader.value() == unit) {
-        VLOG(5) << folly::sformat("emptyIntersection: {} in set",
-                                  reader.value());
+        VLOG(5) << folly::sformat(
+            "emptyIntersection: {} in set", reader.value());
         return false;
       }
-      VLOG(5) << folly::sformat("emptyIntersection: {} not in set",
-                                reader.value());
+      VLOG(5) << folly::sformat(
+          "emptyIntersection: {} not in set", reader.value());
     } while (reader.value() < first);
     return true;
   };
@@ -156,7 +157,8 @@ std::unique_ptr<Slice> slice(
         return true;
       }
       if (!base.visible(reader.value())) {
-        VLOG(5) << folly::sformat("andVisibleBase: invisible({})", reader.value());
+        VLOG(5) << folly::sformat(
+            "andVisibleBase: invisible({})", reader.value());
         return false;
       }
       VLOG(5) << folly::sformat("andVisibleBase: visible({})", reader.value());
@@ -193,49 +195,51 @@ std::unique_ptr<Slice> slice(
       case Or:
         if (exclude) {
           // invisible if all entries are excluded
-          visible = orVisibleBase(reader) || ! isSubset(reader) || orVisible(reader);
+          visible =
+              orVisibleBase(reader) || !isSubset(reader) || orVisible(reader);
         } else {
           // visible if any entry is included
-          visible = orVisibleBase(reader) || ! emptyIntersection(reader) || orVisible(reader);
+          visible = orVisibleBase(reader) || !emptyIntersection(reader) ||
+              orVisible(reader);
         }
         break;
 
       case And:
         if (exclude) {
           // visible if none of the entries are excluded
-          visible = andVisibleBase(reader) && emptyIntersection(reader) && andVisible(reader);
+          visible = andVisibleBase(reader) && emptyIntersection(reader) &&
+              andVisible(reader);
         } else {
           // visible if all entries are included
-          visible = andVisibleBase(reader) && isSubset(reader) && andVisible(reader);
+          visible =
+              andVisibleBase(reader) && isSubset(reader) && andVisible(reader);
         }
         break;
     }
     members[i - first] = visible;
-    VLOG(5) << "slice set: " << i << " " <<
-      (visible ? "visible" : "invisible");
+    VLOG(5) << "slice set: " << i << " " << (visible ? "visible" : "invisible");
   }
 
   return std::make_unique<Slice>(first, std::move(members));
 }
 
 void Slice::serialize(binary::Output& o) const {
-    serialize::put(o, first_);
-    std::vector<uint64_t> words(set_.num_blocks());
-    to_block_range(set_, words.begin());
-    serialize::put(o, words, serialize::AsBytes());
-  }
-
+  serialize::put(o, first_);
+  std::vector<uint64_t> words(set_.num_blocks());
+  to_block_range(set_, words.begin());
+  serialize::put(o, words, serialize::AsBytes());
+}
 
 std::unique_ptr<Slice> Slice::deserialize(binary::Input& i) {
   UsetId first;
   serialize::get(i, first);
   std::vector<uint64_t> words;
   serialize::get(i, words, serialize::AsBytes());
-  boost::dynamic_bitset<uint64_t> set(words.size()*64);
+  boost::dynamic_bitset<uint64_t> set(words.size() * 64);
   from_block_range(words.begin(), words.end(), set);
   return std::make_unique<Slice>(first, std::move(set));
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

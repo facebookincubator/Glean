@@ -9,12 +9,10 @@
 #include <folly/json/dynamic.h>
 #include <folly/json/json.h>
 
-namespace facebook::glean::cpp{
+namespace facebook::glean::cpp {
 
-folly::dynamic* parseJSONFacts(
-    const char* str,
-    int64_t len,
-    char** err) noexcept {
+folly::dynamic*
+parseJSONFacts(const char* str, int64_t len, char** err) noexcept {
   folly::json::serialization_opts opts;
 
   // folly's default recursion limit is 100, which is not enough for us.
@@ -39,4 +37,4 @@ folly::dynamic* parseJSONFacts(
   }
 }
 
-}
+} // namespace facebook::glean::cpp

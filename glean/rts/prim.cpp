@@ -6,11 +6,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include <vector>
 #include <utility>
+#include <vector>
 
-#include "glean/rts/prim.h"
 #include "glean/rts/binary.h"
+#include "glean/rts/prim.h"
 
 namespace facebook {
 namespace glean {
@@ -19,7 +19,8 @@ namespace rts {
 void relToAbsByteSpans(folly::ByteRange range, binary::Output& output) {
   auto input = binary::Input(range);
 
-  // Read the length of the given array of relative byte spans and write it to the output
+  // Read the length of the given array of relative byte spans and write it to
+  // the output
   const uint64_t length = input.packed<uint64_t>();
   output.packed(length);
 
@@ -57,6 +58,6 @@ void unpackByteSpans(folly::ByteRange range, binary::Output& output) {
     output.packed<uint64_t>(length);
   }
 }
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

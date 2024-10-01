@@ -36,6 +36,6 @@ inline void copyFacts(Store& store, Lookup& lookup) {
   }
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

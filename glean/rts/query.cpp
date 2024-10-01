@@ -6,8 +6,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include <chrono>
 #include <atomic>
+#include <chrono>
 
 #include <folly/Chrono.h>
 #include <folly/stop_watch.h>
@@ -16,7 +16,6 @@
 #include "glean/rts/query.h"
 #include "glean/rts/serialize.h"
 #include "glean/rts/set.h"
-
 
 namespace facebook {
 namespace glean {
@@ -32,10 +31,9 @@ using Clock = folly::chrono::coarse_steady_clock;
 
 // all queries started before the last interrupt will be aborted.
 std::atomic<std::chrono::time_point<Clock>> last_interrupt =
-  folly::chrono::coarse_steady_clock::time_point::min();
+    folly::chrono::coarse_steady_clock::time_point::min();
 
 struct QueryExecutor {
-
   // The following methods are all invoked from the compiled query
   // subroutine to access the DB and record results.
 
@@ -47,17 +45,15 @@ struct QueryExecutor {
   // key prefix. Returns a token that can be passed to next() to
   // fetch the next fact.
   //
-  IterToken seek(
-    Pid type,
-    const unsigned char *key_begin,
-    const unsigned char *key_end);
+  IterToken
+  seek(Pid type, const unsigned char* key_begin, const unsigned char* key_end);
 
   IterToken seekWithinSection(
-    Pid type,
-    const unsigned char *key_begin,
-    const unsigned char *key_end,
-    Id from,
-    Id upto);
+      Pid type,
+      const unsigned char* key_begin,
+      const unsigned char* key_end,
+      Id from,
+      Id upto);
 
   //
   // Returns the current seek token, so that the state can be reset in
@@ -78,13 +74,13 @@ struct QueryExecutor {
   // Fact::Ref next(IterToken token, FactIterator::Demand demand);
 
   void next(
-    uint64_t token,
-    uint64_t demand,
-    Reg<uint64_t> ok,
-    Reg<const unsigned char *> clause_begin,
-    Reg<const unsigned char *> key_end,
-    Reg<const unsigned char *> clause_end,
-    Reg<Id> id);
+      uint64_t token,
+      uint64_t demand,
+      Reg<uint64_t> ok,
+      Reg<const unsigned char*> clause_begin,
+      Reg<const unsigned char*> key_end,
+      Reg<const unsigned char*> clause_end,
+      Reg<Id> id);
 
   //
   // Look up a fact with id fid, and copy its key into kout and value
@@ -114,8 +110,8 @@ struct QueryExecutor {
   //
   size_t recordResult(
       Id id,
-      binary::Output *key,
-      binary::Output *val,
+      binary::Output* key,
+      binary::Output* val,
       Pid pid,
       bool rec);
 
@@ -124,8 +120,8 @@ struct QueryExecutor {
   //
   void resultWithPid(
       Id id,
-      binary::Output *key,
-      binary::Output *val,
+      binary::Output* key,
+      binary::Output* val,
       Pid pid,
       bool rec) {
     recordResult(id, key, val, pid, rec);
@@ -186,8 +182,7 @@ struct QueryExecutor {
   //
   // Done; collect and return the final results
   //
-  std::unique_ptr<QueryResults> finish(
-    folly::Optional<SerializedCont> cont);
+  std::unique_ptr<QueryResults> finish(folly::Optional<SerializedCont> cont);
 
   // ------------------------------------------------------------
   // Below here: query state
@@ -214,11 +209,11 @@ struct QueryExecutor {
     return last > start_time;
   }
 
-  Inventory &inventory;
-  Define &facts;
+  Inventory& inventory;
+  Define& facts;
   DefineOwnership* ownership;
-    // if null, don't compute ownership of derived facts
-  Subroutine &sub;
+  // if null, don't compute ownership of derived facts
+  Subroutine& sub;
   Pid pid;
   // expanding nested facts
   std::shared_ptr<Subroutine> traverse;
@@ -260,23 +255,26 @@ struct QueryExecutor {
   std::vector<WordSet> wordsets;
 };
 
-
 uint64_t QueryExecutor::seek(
     Pid type,
-    const unsigned char *key_begin,
-    const unsigned char *key_end) {
+    const unsigned char* key_begin,
+    const unsigned char* key_end) {
   const folly::ByteRange key(key_begin, key_end);
   auto token = iters.size();
   DVLOG(5) << "seek(" << type.toWord() << ") = " << token;
-  iters.emplace_back(Iter{facts.seek(type, key, key.size()),
-                          type, Id::invalid(), key.size(), true});
+  iters.emplace_back(Iter{
+      facts.seek(type, key, key.size()),
+      type,
+      Id::invalid(),
+      key.size(),
+      true});
   return static_cast<uint64_t>(token);
 };
 
 uint64_t QueryExecutor::seekWithinSection(
     Pid type,
-    const unsigned char *key_begin,
-    const unsigned char *key_end,
+    const unsigned char* key_begin,
+    const unsigned char* key_end,
     Id from,
     Id upto) {
   const folly::ByteRange key(key_begin, key_end);
@@ -287,11 +285,9 @@ uint64_t QueryExecutor::seekWithinSection(
       type,
       Id::invalid(),
       key.size(),
-      true
-  });
+      true});
   return static_cast<uint64_t>(token);
 };
-
 
 uint64_t QueryExecutor::currentSeek() {
   return iters.size();
@@ -304,14 +300,13 @@ void QueryExecutor::endSeek(uint64_t token) {
   }
 };
 
-
 void QueryExecutor::next(
     uint64_t token,
     uint64_t demand,
     Reg<uint64_t> ok,
-    Reg<const unsigned char *> clause_begin,
-    Reg<const unsigned char *> key_end,
-    Reg<const unsigned char *> clause_end,
+    Reg<const unsigned char*> clause_begin,
+    Reg<const unsigned char*> key_end,
+    Reg<const unsigned char*> clause_end,
     Reg<Id> id) {
   if (timeExpired()) {
     ok.set(2);
@@ -322,14 +317,14 @@ void QueryExecutor::next(
     return;
   }
 
-  assert(token == iters.size()-1);
+  assert(token == iters.size() - 1);
   if (iters[token].first) {
     iters[token].first = false;
   } else {
     iters[token].iter->next();
   }
-  auto res = iters[token].iter->get(demand != 0 ? FactIterator::KeyValue
-                                                : FactIterator::KeyOnly);
+  auto res = iters[token].iter->get(
+      demand != 0 ? FactIterator::KeyValue : FactIterator::KeyOnly);
   if (res) {
     iters[token].id = res.id;
     if (wantStats) {
@@ -337,7 +332,6 @@ void QueryExecutor::next(
     }
   }
   DVLOG(5) << "next(" << token << ") = " << (res ? res.id.toWord() : 0);
-
 
   if (!res) {
     ok.set(0);
@@ -350,7 +344,6 @@ void QueryExecutor::next(
   clause_end.set(res.clause.bytes().end());
   ok.set(1);
 };
-
 
 Pid QueryExecutor::lookupKeyValue(
     Id fid,
@@ -372,7 +365,6 @@ Pid QueryExecutor::lookupKeyValue(
   return pid;
 };
 
-
 Id QueryExecutor::newDerivedFact(
     Pid type,
     binary::Output* key,
@@ -382,8 +374,9 @@ Id QueryExecutor::newDerivedFact(
   if (id == Id::invalid()) {
     if (auto predicate = inventory.lookupPredicate(type)) {
       error(
-        "query for {} produced facts with identical keys "
-        "but different values", predicate->name);
+          "query for {} produced facts with identical keys "
+          "but different values",
+          predicate->name);
     } else {
       error("unknown pid: {}", type.toWord());
     }
@@ -453,11 +446,10 @@ void QueryExecutor::nestedFact(Id id, Pid pid) {
   }
 };
 
-
 size_t QueryExecutor::recordResult(
     Id id,
-    binary::Output *key,
-    binary::Output *val,
+    binary::Output* key,
+    binary::Output* val,
     Pid pid,
     bool rec) {
   assert(id != Id::invalid());
@@ -482,18 +474,15 @@ size_t QueryExecutor::recordResult(
       auto clause = Fact::Clause::from(bin.bytes(), key_size);
       if (traverse) {
         Predicate::runTraverse(
-          *traverse,
-          syscalls<&QueryExecutor::nestedFact>(*this),
-          clause);
-      ;
+            *traverse, syscalls<&QueryExecutor::nestedFact>(*this), clause);
+        ;
       } else {
         auto predicate = inventory.lookupPredicate(pid);
         if (!predicate) {
           error("unknown pid: {}", pid.toWord());
         }
         predicate->traverse(
-          syscalls<&QueryExecutor::nestedFact>(*this),
-          clause);
+            syscalls<&QueryExecutor::nestedFact>(*this), clause);
       }
     }
     while (nested_result_pending.size() > 0) {
@@ -501,8 +490,7 @@ size_t QueryExecutor::recordResult(
       nested_result_pending.pop_back();
       facts.factById(id, [&](Pid pid_, auto clause) {
         inventory.lookupPredicate(pid_)->traverse(
-          syscalls<&QueryExecutor::nestedFact>(*this),
-          clause);
+            syscalls<&QueryExecutor::nestedFact>(*this), clause);
         nested_result_ids.emplace_back(id.toWord());
         nested_result_pids.emplace_back(pid_.toWord());
         auto key = binary::mkString(clause.key());
@@ -521,14 +509,18 @@ QueryExecutor::SetToken QueryExecutor::newSet() {
   return sets.size() - 1;
 }
 
-void QueryExecutor::insertOutputSet(QueryExecutor::SetToken token, binary::Output* out) {
-  sets[token].insert(out->moveToFbString()); 
+void QueryExecutor::insertOutputSet(
+    QueryExecutor::SetToken token,
+    binary::Output* out) {
+  sets[token].insert(out->moveToFbString());
 }
 
-void QueryExecutor::setToArray(QueryExecutor::SetToken token, binary::Output* out) {
+void QueryExecutor::setToArray(
+    QueryExecutor::SetToken token,
+    binary::Output* out) {
   auto& s = sets[token];
   out->packed(s.size());
-  for(const auto &v : s) {
+  for (const auto& v : s) {
     out->bytes(v.data(), v.size());
   }
 }
@@ -537,19 +529,23 @@ void QueryExecutor::freeSet(QueryExecutor::SetToken token) {
   sets.erase(sets.begin() + token);
 }
 
-QueryExecutor::SetToken QueryExecutor::newWordSet() { 
+QueryExecutor::SetToken QueryExecutor::newWordSet() {
   wordsets.emplace_back(WordSet());
   return wordsets.size() - 1;
 }
 
-void QueryExecutor::insertWordSet(QueryExecutor::SetToken token, uint64_t value) {
+void QueryExecutor::insertWordSet(
+    QueryExecutor::SetToken token,
+    uint64_t value) {
   wordsets[token].insert(value);
 }
 
-void QueryExecutor::wordSetToArray(QueryExecutor::SetToken token, binary::Output* out) {
+void QueryExecutor::wordSetToArray(
+    QueryExecutor::SetToken token,
+    binary::Output* out) {
   auto& s = wordsets[token];
   out->packed(s.size());
-  for(const auto &v : s) {
+  for (const auto& v : s) {
     out->nat(v);
   }
 }
@@ -596,18 +592,18 @@ std::unique_ptr<QueryResults> executeQuery(
     bool wantStats,
     std::vector<QueryExecutor::Iter> iters,
     std::optional<Subroutine::Activation::State> restart) {
-  QueryExecutor q {
-    .inventory = inventory,
-    .facts = facts,
-    .ownership = ownership,
-    .sub = sub,
-    .pid = pid,
-    .traverse = traverse,
-    .depth = depth,
-    .expandPids = expandPids,
-    .wantStats = wantStats,
-    .iters = std::move(iters),
-    .sets = {},
+  QueryExecutor q{
+      .inventory = inventory,
+      .facts = facts,
+      .ownership = ownership,
+      .sub = sub,
+      .pid = pid,
+      .traverse = traverse,
+      .depth = depth,
+      .expandPids = expandPids,
+      .wantStats = wantStats,
+      .iters = std::move(iters),
+      .sets = {},
   };
 
   // coarse_steady_clock is around 1ms granularity which is enough for us.
@@ -630,48 +626,50 @@ std::unique_ptr<QueryResults> executeQuery(
   // WELL
 
   const auto context_ = syscalls<
-    &QueryExecutor::seek,
-    &QueryExecutor::seekWithinSection,
-    &QueryExecutor::currentSeek,
-    &QueryExecutor::endSeek,
-    &QueryExecutor::next,
-    &QueryExecutor::lookupKeyValue,
-    &QueryExecutor::result,
-    &QueryExecutor::resultWithPid,
-    &QueryExecutor::newDerivedFact,
-    &QueryExecutor::firstFreeId,
-    &QueryExecutor::newSet,
-    &QueryExecutor::insertOutputSet,
-    &QueryExecutor::setToArray,
-    &QueryExecutor::freeSet,
-    &QueryExecutor::newWordSet,
-    &QueryExecutor::insertWordSet,
-    &QueryExecutor::wordSetToArray,
-    &QueryExecutor::freeWordSet>(q);
+      &QueryExecutor::seek,
+      &QueryExecutor::seekWithinSection,
+      &QueryExecutor::currentSeek,
+      &QueryExecutor::endSeek,
+      &QueryExecutor::next,
+      &QueryExecutor::lookupKeyValue,
+      &QueryExecutor::result,
+      &QueryExecutor::resultWithPid,
+      &QueryExecutor::newDerivedFact,
+      &QueryExecutor::firstFreeId,
+      &QueryExecutor::newSet,
+      &QueryExecutor::insertOutputSet,
+      &QueryExecutor::setToArray,
+      &QueryExecutor::freeSet,
+      &QueryExecutor::newWordSet,
+      &QueryExecutor::insertWordSet,
+      &QueryExecutor::wordSetToArray,
+      &QueryExecutor::freeWordSet>(q);
 
   folly::Optional<SerializedCont> cont;
-  Subroutine::Activation::with(sub, context_.contextptr(), [&](Subroutine::Activation& activation) {
-    if (restart.has_value()) {
-      activation.resume(std::move(*restart));
-    } else {
-      activation.start();
-    }
+  Subroutine::Activation::with(
+      sub, context_.contextptr(), [&](Subroutine::Activation& activation) {
+        if (restart.has_value()) {
+          activation.resume(std::move(*restart));
+        } else {
+          activation.start();
+        }
 
-    auto args = activation.args();
-    args = std::copy(context_.handlers_begin(), context_.handlers_end(), args);
-    *args++ = 0; // unused
-    *args++ = reinterpret_cast<uint64_t>(max_results);
-    *args++ = reinterpret_cast<uint64_t>(max_bytes);
+        auto args = activation.args();
+        args =
+            std::copy(context_.handlers_begin(), context_.handlers_end(), args);
+        *args++ = 0; // unused
+        *args++ = reinterpret_cast<uint64_t>(max_results);
+        *args++ = reinterpret_cast<uint64_t>(max_bytes);
 
-    activation.execute();
-    if (activation.suspended()) {
-      cont = q.queryCont(activation);
-    }
-  });
+        activation.execute();
+        if (activation.suspended()) {
+          cont = q.queryCont(activation);
+        }
+      });
 
   return q.finish(std::move(cont));
 }
-}
+} // namespace
 
 void interruptRunningQueries() {
   last_interrupt = Clock::now();
@@ -689,16 +687,15 @@ std::unique_ptr<QueryResults> restartQuery(
     bool wantStats,
     void* serializedCont,
     uint64_t serializedContLen) {
-
-  binary::Input in { serializedCont, serializedContLen };
+  binary::Input in{serializedCont, serializedContLen};
 
   std::shared_ptr<Subroutine> traverse;
   Pid pid;
 
   struct DeserializeIter {
-    Define &facts;
+    Define& facts;
 
-    void get(binary::Input& in, QueryExecutor::Iter &result) {
+    void get(binary::Input& in, QueryExecutor::Iter& result) {
       std::unique_ptr<FactIterator> iter;
       Id id;
       Pid type;
@@ -716,14 +713,12 @@ std::unique_ptr<QueryResults> restartQuery(
         serialize::get(in, upper_bound);
 
         std::string keyBuf;
-        bool found = facts.factById(
-          id,
-          [&](auto pid, Fact::Clause clause) {
-            if (pid != type) {
-              error("restart iter fact has wrong type");
-            }
-            keyBuf = binary::mkString(clause.key());
-          });
+        bool found = facts.factById(id, [&](auto pid, Fact::Clause clause) {
+          if (pid != type) {
+            error("restart iter fact has wrong type");
+          }
+          keyBuf = binary::mkString(clause.key());
+        });
         if (!found) {
           error("restart iter fact not found");
         }
@@ -767,7 +762,7 @@ std::unique_ptr<QueryResults> restartQuery(
     }
   };
 
-  DeserializeIter di { facts };
+  DeserializeIter di{facts};
   auto iters = di.getIters(in);
 
   auto [sub, state] = Subroutine::Activation::get(in);
@@ -817,9 +812,10 @@ std::unique_ptr<QueryResults> executeQuery(
       depth,
       expandPids,
       wantStats,
-      {}, {});
+      {},
+      {});
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

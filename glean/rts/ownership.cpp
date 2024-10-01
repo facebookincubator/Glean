@@ -6,14 +6,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "glean/rts/lookup.h"
-#include "glean/rts/inventory.h"
 #include "glean/rts/ownership.h"
+#include "glean/rts/factset.h"
+#include "glean/rts/inventory.h"
+#include "glean/rts/lookup.h"
 #include "glean/rts/ownership/setu32.h"
 #include "glean/rts/ownership/triearray.h"
 #include "glean/rts/ownership/uset.h"
 #include "glean/rts/timer.h"
-#include "glean/rts/factset.h"
 
 #if __x86_64__ // AVX required
 #include <immintrin.h>
@@ -21,17 +21,16 @@
 #include "glean/rts/ownership/fallbackavx.h"
 #endif
 
+#include <folly/MPMCQueue.h>
 #include <folly/container/F14Map.h>
 #include <folly/container/F14Set.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/futures/Future.h>
-#include <folly/MPMCQueue.h>
 
 #include <algorithm>
 #include <initializer_list>
 #include <limits>
 #include <type_traits>
-
 
 namespace facebook {
 namespace glean {
@@ -63,9 +62,7 @@ FOLLY_NOINLINE std::unique_ptr<TrieArray<Uset>> fillOwnership(
     }
 
     void dump() {
-      VLOG(1)
-        << units << " units, "
-        << intervals << " intervals";
+      VLOG(1) << units << " units, " << intervals << " intervals";
     }
   };
 
@@ -75,7 +72,8 @@ FOLLY_NOINLINE std::unique_ptr<TrieArray<Uset>> fillOwnership(
     std::vector<OwnershipUnit::Ids> ids;
   };
 
-  using Queue = folly::MPMCQueue<folly::Optional<OwnershipUnitCopy>, std::atomic, false>;
+  using Queue =
+      folly::MPMCQueue<folly::Optional<OwnershipUnitCopy>, std::atomic, false>;
   Queue queue(100);
   auto executor = folly::getGlobalCPUExecutor();
 
@@ -94,32 +92,31 @@ FOLLY_NOINLINE std::unique_ptr<TrieArray<Uset>> fillOwnership(
   folly::Optional<OwnershipUnitCopy> d;
   for (queue.blockingRead(d); d; queue.blockingRead(d)) {
     const auto& data = d.value();
-    CHECK_GE(data.unit,last_unit);
+    CHECK_GE(data.unit, last_unit);
 
     utrie->insert(
-      data.ids.data(),
-      data.ids.data() + data.ids.size(),
-      [&](Uset * FOLLY_NULLABLE prev, uint32_t refs) {
-        if (prev != nullptr) {
-          if (prev->refs == refs) {
-            // Do an in-place append if possible (determined via reference
-            // count).
-            prev->exp.set.append(data.unit);
-            return prev;
+        data.ids.data(),
+        data.ids.data() + data.ids.size(),
+        [&](Uset* FOLLY_NULLABLE prev, uint32_t refs) {
+          if (prev != nullptr) {
+            if (prev->refs == refs) {
+              // Do an in-place append if possible (determined via reference
+              // count).
+              prev->exp.set.append(data.unit);
+              return prev;
+            } else {
+              auto entry = std::make_unique<Uset>(
+                  SetU32(prev->exp.set, SetU32::copy_capacity), refs);
+              entry->exp.set.append(data.unit);
+              prev->refs -= refs;
+              return entry.release();
+            }
           } else {
-            auto entry = std::make_unique<Uset>(
-                SetU32(prev->exp.set, SetU32::copy_capacity), refs);
+            auto entry = std::make_unique<Uset>(SetU32(), refs);
             entry->exp.set.append(data.unit);
-            prev->refs -= refs;
             return entry.release();
           }
-        } else {
-          auto entry = std::make_unique<Uset>(SetU32(), refs);
-          entry->exp.set.append(data.unit);
-          return entry.release();
-        }
-      }
-    );
+        });
 
     max_unit = std::max(data.unit, max_unit);
     stats.bump(max_unit, data.ids.size());
@@ -133,10 +130,11 @@ FOLLY_NOINLINE std::unique_ptr<TrieArray<Uset>> fillOwnership(
 }
 
 /** Move the sets from the trie to `Usets`. */
-FOLLY_NOINLINE Usets collectUsets(uint32_t firstUsetId, TrieArray<Uset>& utrie) {
+FOLLY_NOINLINE Usets
+collectUsets(uint32_t firstUsetId, TrieArray<Uset>& utrie) {
   Usets usets(firstUsetId);
   size_t visits = 0;
-  utrie.foreach([&](Uset *entry) -> Uset* {
+  utrie.foreach([&](Uset* entry) -> Uset* {
     ++visits;
 
     // entry->link() caches usets.add(entry) below
@@ -157,13 +155,9 @@ FOLLY_NOINLINE Usets collectUsets(uint32_t firstUsetId, TrieArray<Uset>& utrie) 
     }
   });
 
-  usets.foreach([](Uset *entry) {
-    entry->link(nullptr);
-  });
+  usets.foreach([](Uset* entry) { entry->link(nullptr); });
 
-  VLOG(1)
-    << visits << " visits, "
-    << usets.size() << " usets";
+  VLOG(1) << visits << " visits, " << usets.size() << " usets";
   return usets;
 }
 
@@ -180,7 +174,6 @@ FOLLY_NOINLINE void completeOwnership(
     const Inventory& inventory,
     Lookup& lookup,
     Lookup* base_lookup) {
-
   struct Stats {
     Usets& usets;
     size_t local_facts = 0;
@@ -197,7 +190,7 @@ FOLLY_NOINLINE void completeOwnership(
 
     void bumpOwned() {
       ++owned_facts;
-      if (owned_facts%1000000 == 0) {
+      if (owned_facts % 1000000 == 0) {
         dump();
       }
     }
@@ -220,9 +213,7 @@ FOLLY_NOINLINE void completeOwnership(
   Stats stats{usets};
 
   std::vector<Id> refs;
-  const auto tracker = syscall([&refs](Id id, Pid) {
-    refs.push_back(id);
-  });
+  const auto tracker = syscall([&refs](Id id, Pid) { refs.push_back(id); });
 
   if (facts.size() == 0) {
     return;
@@ -257,7 +248,7 @@ FOLLY_NOINLINE void completeOwnership(
       usets.promote(set);
 
       // Collect all references to facts
-      const auto *predicate = inventory.lookupPredicate(fact.type);
+      const auto* predicate = inventory.lookupPredicate(fact.type);
       assert(predicate);
       predicate->traverse(tracker, fact.clause);
 
@@ -266,14 +257,14 @@ FOLLY_NOINLINE void completeOwnership(
       // same set union multiple times.
       //
       // TODO: Try adding a fixed-size LRU (or LFU?) cache for set unions?
-      std::vector<Uset *> touched;
+      std::vector<Uset*> touched;
       for (const auto id : refs) {
         auto& me = owner(id);
         if (me == nullptr) {
           // The fact didn't have ownership info before, assign the set to it.
           me = set;
           usets.use(me, 1);
-        } else if (const auto added = static_cast<Uset *>(me->link())) {
+        } else if (const auto added = static_cast<Uset*>(me->link())) {
           // The fact did have ownership info and we've already computed the
           // union for that particular set.
           usets.use(added);
@@ -380,7 +371,7 @@ FOLLY_NOINLINE void completeOwnership(
     }
     base_lookup->factById(id, [&](Pid type, Fact::Clause clause) {
       stats.bumpBase();
-      processFact({id,type,clause});
+      processFact({id, type, clause});
       for (const auto ref : refs) {
         order.push(ref);
       }
@@ -390,7 +381,7 @@ FOLLY_NOINLINE void completeOwnership(
 
   stats.dump();
 }
-}
+} // namespace
 
 /* Note [stacked incremental DBs]
 
@@ -420,7 +411,7 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
     const Inventory& inventory,
     Lookup& lookup, // the current DB, *not* stacked
     Lookup* base_lookup, // the base DB stack, if this is a stack
-    OwnershipUnitIterator *iter) {
+    OwnershipUnitIterator* iter) {
   uint32_t firstUsetId;
   auto t = makeAutoTimer("computeOwnership");
   VLOG(1) << "computing ownership";
@@ -428,12 +419,12 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
   const auto min_id = lookup.startingId();
   const auto max_id = lookup.firstFreeId();
 
-  auto utrie = fillOwnership(iter,firstUsetId);
+  auto utrie = fillOwnership(iter, firstUsetId);
   t.log("fillOwnership");
-  auto usets = collectUsets(firstUsetId,*utrie);
+  auto usets = collectUsets(firstUsetId, *utrie);
   t.log("collectUsets");
-    // TODO: Should `completeOwnership` work with the trie rather than a
-    // flat vector?
+  // TODO: Should `completeOwnership` work with the trie rather than a
+  // flat vector?
 
   auto flattened = utrie->flatten(min_id.toWord(), max_id.toWord());
 
@@ -448,7 +439,7 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
       flattened.dense, flattened.sparse, usets, inventory, lookup, base_lookup);
   t.log("completeOwnership");
 
-  std::vector<std::pair<Id,UsetId>> factOwners;
+  std::vector<std::pair<Id, UsetId>> factOwners;
 
   // Collect fact ownership for facts in the base DB(s). This data is sparse,
   // but we currently store it as intervals in factOwners because that's the
@@ -458,10 +449,10 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
   //
   // TODO: use a more suitable representation for the sparse ownership
   std::vector<std::pair<uint64_t, Uset*>> order;
-  for (auto &pr : flattened.sparse) {
+  for (auto& pr : flattened.sparse) {
     order.push_back(pr);
   }
-  std::sort(order.begin(),order.end());
+  std::sort(order.begin(), order.end());
   Id prev = Id::lowest() - 1;
   UsetId current = INVALID_USET;
   for (auto& pr : order) {
@@ -492,16 +483,16 @@ std::unique_ptr<ComputedOwnership> computeOwnership(
       current = usetid;
     }
   }
-  // if dense didn't cover the whole Id range, add a final interval of INVALID_USET
-  if (id < max_id-1 && current != INVALID_USET) {
+  // if dense didn't cover the whole Id range, add a final interval of
+  // INVALID_USET
+  if (id < max_id - 1 && current != INVALID_USET) {
     factOwners.emplace_back(id, INVALID_USET);
   }
 
   return std::make_unique<ComputedOwnership>(
-      std::move(usets),
-      std::move(factOwners));
+      std::move(usets), std::move(factOwners));
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

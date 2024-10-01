@@ -14,8 +14,8 @@
 #ifndef UNW_LOCAL_ONLY
 #define UNW_LOCAL_ONLY
 #endif
-#include <libunwind.h>
 #include <folly/Demangle.h>
+#include <libunwind.h>
 
 namespace facebook {
 namespace glean {
@@ -29,16 +29,15 @@ namespace rts {
   std::vector<char> buffer(256);
   unw_context_t context;
   unw_cursor_t cursor;
-  if (unw_getcontext(&context) == 0
-        && unw_init_local(&cursor, &context) == 0) {
+  if (unw_getcontext(&context) == 0 && unw_init_local(&cursor, &context) == 0) {
     size_t n = 0;
 
     out << "\nStack trace:\n";
 
     do {
       unw_word_t dummy;
-      if (unw_get_proc_name(&cursor, buffer.data(), buffer.size(), &dummy)
-          != 0) {
+      if (unw_get_proc_name(&cursor, buffer.data(), buffer.size(), &dummy) !=
+          0) {
         break;
       }
       out << "  " << folly::demangle(buffer.data()) << '\n';
@@ -54,6 +53,6 @@ namespace rts {
   throw std::runtime_error(out.str());
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

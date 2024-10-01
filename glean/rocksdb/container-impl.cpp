@@ -12,8 +12,8 @@
 
 #include <rocksdb/filter_policy.h>
 #include <rocksdb/slice_transform.h>
-#include <rocksdb/table.h>
 #include <rocksdb/statistics.h>
+#include <rocksdb/table.h>
 
 #ifdef GLEAN_FACEBOOK
 #include "glean/facebook/rocksdb/rocksdb.h"
@@ -24,30 +24,36 @@ namespace glean {
 namespace rocks {
 namespace impl {
 
-std::vector<const Family *> Family::families;
+std::vector<const Family*> Family::families;
 
-const Family Family::admin("admin", [](auto& opts){
-  opts.OptimizeForPointLookup(10); });
-const Family Family::entities("entities", [](auto& opts){
+const Family Family::admin("admin", [](auto& opts) {
+  opts.OptimizeForPointLookup(10);
+});
+const Family Family::entities("entities", [](auto& opts) {
   // NOTE: Setting inplace_update_support=true leads to rocksdb assertion
   // failures when iteration backwards.
-  opts.inplace_update_support = false; });
+  opts.inplace_update_support = false;
+});
 const Family Family::keys("keys", [](auto& opts) {
   opts.prefix_extractor.reset(
-    rocksdb::NewFixedPrefixTransform(sizeof(Id::word_type))); });
+      rocksdb::NewFixedPrefixTransform(sizeof(Id::word_type)));
+});
 const Family Family::stats("stats", [](auto& opts) {
-  opts.OptimizeForPointLookup(10); });
+  opts.OptimizeForPointLookup(10);
+});
 const Family Family::meta("meta", [](auto&) {});
 
 // Maps a unit's name to its UnitId
 // ownershipUnits: String -> UnitId
 const Family Family::ownershipUnits("ownershipUnits", [](auto& opts) {
-  opts.OptimizeForPointLookup(10); });
+  opts.OptimizeForPointLookup(10);
+});
 
 // Translates UnitId to its name. Dual of ownershipUnits.
 // ownershipUnitIds: UnitId -> String
 const Family Family::ownershipUnitIds("ownershipUnitIds", [](auto& opts) {
-  opts.OptimizeForPointLookup(10); });
+  opts.OptimizeForPointLookup(10);
+});
 
 // Append-only log of non-derived facts' ownership information.
 // Describes a map from UnitId to list of facts.
@@ -60,17 +66,22 @@ const Family Family::ownershipRaw("ownershipRaw", [](auto&) {}, false);
 // Describes a (Map Pid (Map Fid UsetId))
 // The key contains a tuple of Pid and a monotonically incrementing counter.
 // ownershipDerivedRaw: (Pid, nat) -> ( [Fid], [UsetId] )
-const Family Family::ownershipDerivedRaw("ownershipDerivedRaw", [](auto& opts) {
-  opts.inplace_update_support = false; }, false);
+const Family Family::ownershipDerivedRaw(
+    "ownershipDerivedRaw",
+    [](auto& opts) { opts.inplace_update_support = false; },
+    false);
 
 // ownershipSets: UsetId -> (Operation, [UsetId])
-const Family Family::ownershipSets("ownershipSets", [](auto& opts){
-  opts.inplace_update_support = false; });
+const Family Family::ownershipSets("ownershipSets", [](auto& opts) {
+  opts.inplace_update_support = false;
+});
 
 // An interval map, mapping fact ids to UsetId.
 // factOwners: Fid -> UsetId
-const Family Family::factOwners("factOwners", [](auto& opts){
-  opts.inplace_update_support = false; }, false);
+const Family Family::factOwners(
+    "factOwners",
+    [](auto& opts) { opts.inplace_update_support = false; },
+    false);
 
 // Used to efficiently map fact ids to UsetIds
 // Contains:
@@ -78,7 +89,8 @@ const Family Family::factOwners("factOwners", [](auto& opts){
 // - A map from page prefix to a map from page suffix to UsetId
 //    prefix -> ([suffix], [UsetId])
 const Family Family::factOwnerPages("factOwnerPages", [](auto& opts) {
-  opts.OptimizeForPointLookup(10); });
+  opts.OptimizeForPointLookup(10);
+});
 
 #ifndef GLEAN_FACEBOOK
 namespace {
@@ -311,16 +323,17 @@ std::unique_ptr<Database> ContainerImpl::openDatabase(
 
 namespace {
 
-std::unique_ptr<rocksdb::BackupEngine> backupEngine(const std::string &path,
-                                                    bool sync = true) {
-  rocksdb::BackupEngine *p;
+std::unique_ptr<rocksdb::BackupEngine> backupEngine(
+    const std::string& path,
+    bool sync = true) {
+  rocksdb::BackupEngine* p;
   rocksdb::BackupEngineOptions opts{path};
   opts.sync = sync;
   opts.max_background_operations = 16;
   check(rocksdb::BackupEngine::Open(rocksdb::Env::Default(), opts, &p));
   return std::unique_ptr<rocksdb::BackupEngine>(p);
 }
-}
+} // namespace
 
 void ContainerImpl::backup(const std::string& path) {
   requireOpen();
@@ -332,9 +345,10 @@ void ContainerImpl::backup(const std::string& path) {
 } // namespace impl
 
 void restore(const std::string& target, const std::string& source) {
-  impl::check(impl::backupEngine(source)->RestoreDBFromLatestBackup(target, target));
+  impl::check(
+      impl::backupEngine(source)->RestoreDBFromLatestBackup(target, target));
 }
 
-}
-}
-}
+} // namespace rocks
+} // namespace glean
+} // namespace facebook

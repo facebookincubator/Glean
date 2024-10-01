@@ -19,7 +19,7 @@
 namespace std {
 
 // needed for CHECK_EQ
-template<typename T>
+template <typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& xs) {
   os << '[';
   bool first = true;
@@ -33,10 +33,9 @@ std::ostream& operator<<(std::ostream& os, const std::vector<T>& xs) {
   return os << ']';
 }
 
-}
+} // namespace std
 
 namespace facebook::glean::worklist {
-
 
 namespace {
 
@@ -53,7 +52,7 @@ struct StealingFile {
   }
 };
 
-}
+} // namespace
 
 std::ostream& operator<<(std::ostream& os, Counter::Value value) {
   return os << '{' << value.start << ',' << value.end << '}';
@@ -67,7 +66,7 @@ std::ostream& operator<<(std::ostream& os, folly::Optional<Counter::Value> x) {
   }
 }
 
-void checkAll(Counter *counter, Counter::Value value) {
+void checkAll(Counter* counter, Counter::Value value) {
   while (value.start != value.end) {
     CHECK_EQ(counter->next(), value);
     ++value.start;
@@ -77,16 +76,16 @@ void checkAll(Counter *counter, Counter::Value value) {
 TEST(WorklistTest, Singleton) {
   const auto start = 13;
   const auto end = 33;
-  StealingFile file({{start,end}});
+  StealingFile file({{start, end}});
 
   auto counter = stealingCounter(file.path(), 0, 1);
-  checkAll(counter.get(), {start,end});
+  checkAll(counter.get(), {start, end});
   auto r = counter->next();
   CHECK(!r);
 }
 
 TEST(WorklistTest, Steal1) {
-  std::vector<Counter::Value> values{{0,3},{3,7},{7,7},{7,10}};
+  std::vector<Counter::Value> values{{0, 3}, {3, 7}, {7, 7}, {7, 10}};
   std::vector<size_t> visits(values.back().end, 0);
 
   StealingFile file(values);
@@ -100,7 +99,8 @@ TEST(WorklistTest, Steal1) {
 }
 
 TEST(WorklistTest, Steal2) {
-  std::vector<Counter::Value> values{{0,30},{30,120},{120,121},{121,345}};
+  std::vector<Counter::Value> values{
+      {0, 30}, {30, 120}, {120, 121}, {121, 345}};
   const size_t len = values.back().end;
   auto atomic_visits = std::make_unique<std::atomic<size_t>[]>(len);
   for (auto i = 0; i < len; ++i) {
@@ -111,7 +111,7 @@ TEST(WorklistTest, Steal2) {
   std::vector<std::thread> threads;
   boost::barrier barrier(values.size());
   for (auto i = 0; i < values.size(); ++i) {
-    threads.emplace_back([&,i] {
+    threads.emplace_back([&, i] {
       auto counter = stealingCounter(file.path(), i, values.size());
       barrier.count_down_and_wait();
       while (auto r = counter->next()) {
@@ -131,4 +131,4 @@ TEST(WorklistTest, Steal2) {
   CHECK_EQ(visits, std::vector<size_t>(values.back().end, 1));
 }
 
-}
+} // namespace facebook::glean::worklist

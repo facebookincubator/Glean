@@ -26,23 +26,21 @@ struct Define : Lookup {
   /// The optional 'max_ref' parameter contains the max fact id referenced by
   /// the clause. This can be used for optimisations by some implementations.
   /// Not setting it or setting it to Id::invalid() is always safe.
-  virtual Id define(
-    Pid type,
-    Fact::Clause clause,
-    Id max_ref = Id::invalid()) = 0;
+  virtual Id
+  define(Pid type, Fact::Clause clause, Id max_ref = Id::invalid()) = 0;
 };
 
 /// Define all new facts in a batch, returning the resulting substitution. The
 /// facts are typechecked based on the inventory.
 Substitution defineBatch(
-  Define& define,
-  const Inventory& inventory,
-  Id first,
-  const Id * FOLLY_NULLABLE ids,   // nullptr if there are no named facts
-  size_t count,
-  folly::ByteRange batch,
-  bool trustRefs = false,
-  bool ignoreRedef = false);
-}
-}
-}
+    Define& define,
+    const Inventory& inventory,
+    Id first,
+    const Id* FOLLY_NULLABLE ids, // nullptr if there are no named facts
+    size_t count,
+    folly::ByteRange batch,
+    bool trustRefs = false,
+    bool ignoreRedef = false);
+} // namespace rts
+} // namespace glean
+} // namespace facebook

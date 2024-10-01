@@ -15,12 +15,11 @@ namespace glean {
 
 // A Sender which sends data synchronously via Thrift.
 std::unique_ptr<Sender> thriftSender(
-  const std::string& service,
-  const std::string& repo_name,
-  const std::string& repo_hash,
-  double min_retry_delay,
-  size_t max_errors
-);
+    const std::string& service,
+    const std::string& repo_name,
+    const std::string& repo_hash,
+    double min_retry_delay,
+    size_t max_errors);
 
 } // namespace glean
 } // namespace facebook

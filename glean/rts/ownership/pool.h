@@ -14,15 +14,15 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
-template<typename T>
+template <typename T>
 struct Pool {
   static_assert(std::is_trivially_destructible_v<T>, "invalid T");
-  std::vector<char *> pages;
+  std::vector<char*> pages;
   size_t page_size;
   size_t filled;
 
   Pool() noexcept {
-    page_size = folly::goodMallocSize(1000000)/sizeof(T);
+    page_size = folly::goodMallocSize(1000000) / sizeof(T);
     filled = page_size;
   }
 
@@ -50,9 +50,9 @@ struct Pool {
     filled = page_size;
   }
 
-  void *next() {
+  void* next() {
     if (filled == page_size) {
-      pages.push_back(static_cast<char *>(malloc(sizeof(T) * page_size)));
+      pages.push_back(static_cast<char*>(malloc(sizeof(T) * page_size)));
       filled = 0;
     }
     const auto p = pages.back() + filled * sizeof(T);
@@ -60,8 +60,8 @@ struct Pool {
     return p;
   }
 
-  template<typename... Args>
-  T *alloc(Args&&... args) {
+  template <typename... Args>
+  T* alloc(Args&&... args) {
     return new (next()) T(std::forward<Args>(args)...);
   }
 
@@ -70,6 +70,6 @@ struct Pool {
   }
 };
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

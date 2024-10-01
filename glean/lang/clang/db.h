@@ -15,8 +15,8 @@
 #include <clang/Tooling/Tooling.h>
 #include <llvm/Config/llvm-config.h>
 
-#include <folly/gen/Base.h>
 #include <folly/MapUtil.h>
+#include <folly/gen/Base.h>
 
 #include "glean/lang/clang/gleandiagnosticbuffer.h"
 #include "glean/schema/cpp/schema.h"
@@ -33,7 +33,6 @@ namespace Src = schema::Src;
 namespace Sys = schema::Sys;
 using SCHEMA = schema::SCHEMA;
 
-
 /**
  * A Clang AST batch
  *
@@ -43,7 +42,7 @@ using SCHEMA = schema::SCHEMA;
  */
 
 class ClangDB {
-public:
+ public:
   struct Env {
     // Buck cell of the file being indexed, relative to repo root
     folly::Optional<std::string> cell;
@@ -102,15 +101,17 @@ public:
   void IndexFailure(const clang::ASTContext& ctx) {
     std::string errorMsgs;
     if (diagnosticBuffer != nullptr) {
-        errorMsgs = fmt::format("{} error(s) occurred while indexing", diagnosticBuffer->getNumErrors());
-        auto it = diagnosticBuffer->err_begin();
-        auto end = diagnosticBuffer->err_end();
-        for ( ; it != end; ++it) {
-          errorMsgs.push_back('\n');
-          errorMsgs.append(it->first.printToString(sourceManager()));
-          errorMsgs.push_back(' ');
-          errorMsgs.append(it->second);
-        }
+      errorMsgs = fmt::format(
+          "{} error(s) occurred while indexing",
+          diagnosticBuffer->getNumErrors());
+      auto it = diagnosticBuffer->err_begin();
+      auto end = diagnosticBuffer->err_end();
+      for (; it != end; ++it) {
+        errorMsgs.push_back('\n');
+        errorMsgs.append(it->first.printToString(sourceManager()));
+        errorMsgs.push_back(' ');
+        errorMsgs.append(it->second);
+      }
     }
 
     batch.fact<Src::IndexFailure>(
@@ -136,7 +137,7 @@ public:
   struct Include {
     clang::SourceLocation hash;
     clang::CharSourceRange name;
-    const clang::FileEntry *entry;
+    const clang::FileEntry* entry;
   };
 
   struct PreInclude {
@@ -149,26 +150,26 @@ public:
   struct FileData;
 
   struct SourceRange {
-    FileData *file;
+    FileData* file;
     Src::ByteSpan span;
     Src::Range range;
 
     bool operator<(const SourceRange& y) const {
-        if (bool(file) != bool(y.file)) {
-          return bool(file) < bool(y.file);
-        }
-        return file && y.file && file->path != y.file->path
-            ? file->path < y.file->path
-            : span < y.span;
+      if (bool(file) != bool(y.file)) {
+        return bool(file) < bool(y.file);
       }
-      bool operator==(const SourceRange& y) const {
-        if ((!file && !y.file) ||
-            (file && y.file && file->path == y.file->path)) {
-          return span == y.span;
-        } else {
-          return false;
-        }
+      return file && y.file && file->path != y.file->path
+          ? file->path < y.file->path
+          : span < y.span;
+    }
+    bool operator==(const SourceRange& y) const {
+      if ((!file && !y.file) ||
+          (file && y.file && file->path == y.file->path)) {
+        return span == y.span;
+      } else {
+        return false;
       }
+    }
   };
 
   using FullSourceRange = std::variant<
@@ -208,13 +209,11 @@ public:
     folly::Optional<Fact<Cxx::IncludeTree>> include_tree;
   };
 
-  void ppevent(
-    PrePPEvent event,
-    SourceRange range);
+  void ppevent(PrePPEvent event, SourceRange range);
   void include(
-    const Include& inc,
-    Fact<Src::File> file,
-    folly::Optional<clang::FileID> id);
+      const Include& inc,
+      Fact<Src::File> file,
+      folly::Optional<clang::FileID> id);
   void enterFile(clang::SourceLocation loc, folly::Optional<Include> inc);
   void skipFile(folly::Optional<Include> inc, const clang::FileEntryRef& entry);
 
@@ -225,36 +224,35 @@ public:
   }
 
   void xref(
-    clang::SourceRange range,
-    Cxx::XRefTarget target,
-    CrossRef::SortID sort_id,
-    bool local);
+      clang::SourceRange range,
+      Cxx::XRefTarget target,
+      CrossRef::SortID sort_id,
+      bool local);
 
   // Locations
 
   Src::Loc srcLoc(clang::SourceLocation loc);
 
-  template<typename T>
+  template <typename T>
   SourceRange srcRange(T x) {
     return immediateSrcRange(sourceManager().getExpansionRange(x));
   }
 
   FullSourceRange fullSrcRange(clang::SourceRange range);
 
-public:
-
+ public:
   SourceRange immediateSrcRange(clang::CharSourceRange r);
 
   clang::StringRef srcText(clang::SourceRange range) const;
 
   void finish();
 
-  template<typename P, typename... Ts>
+  template <typename P, typename... Ts>
   Fact<P> fact(Ts&&... xs) {
     return batch.fact<P>(std::forward<Ts>(xs)...);
   }
 
-  template<typename P, typename Key, typename Value>
+  template <typename P, typename Key, typename Value>
   Fact<P> factV(Key&& key, Value&& value) {
     return batch.factV<P>(std::forward<Key>(key), std::forward<Value>(value));
   }
@@ -269,7 +267,7 @@ public:
 
   const folly::Optional<std::string> cell;
 
-private:
+ private:
   Fact<Buck::Locator> locator;
   folly::Optional<Fact<Buck::Platform>> platform;
   const std::filesystem::path root;
@@ -277,7 +275,7 @@ private:
   const folly::Optional<std::string> path_prefix;
   Batch<SCHEMA>& batch;
   clang::CompilerInstance& compilerInstance;
-  const GleanDiagnosticBuffer *diagnosticBuffer;
+  const GleanDiagnosticBuffer* diagnosticBuffer;
 
   struct HashFileID {
     size_t operator()(clang::FileID id) const {
@@ -286,7 +284,7 @@ private:
   };
 
   std::deque<FileData> file_data;
-  folly::F14FastMap<clang::FileID, FileData *, HashFileID> files;
+  folly::F14FastMap<clang::FileID, FileData*, HashFileID> files;
 
   /// returns the language processed by the compilerInstance
   Src::Language getLanguage() const {
@@ -310,4 +308,4 @@ private:
   }
 };
 
-}
+} // namespace facebook::glean::clangx

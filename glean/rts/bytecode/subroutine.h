@@ -21,7 +21,6 @@ namespace rts {
 
 /// A bytecode subroutine which can be execute via 'execute'.
 struct Subroutine {
-
   /// Instructions
   std::vector<uint64_t> code;
 
@@ -83,13 +82,16 @@ struct Subroutine {
     /// which needs to 'start' or 'restart' it, initialise its 'args' and then
     /// 'execute' it. Note that the Subroutine must remain alive throughout the
     /// lifetime of the activation.
-    template<typename F> static auto with(const Subroutine& sub, void *context, F&& f) {
+    template <typename F>
+    static auto with(const Subroutine& sub, void* context, F&& f) {
       alignas(Activation) unsigned char buf[byteSize(sub)];
       struct Guard {
-        Activation *ptr;
-        ~Guard() { ptr->~Activation(); }
+        Activation* ptr;
+        ~Guard() {
+          ptr->~Activation();
+        }
       };
-      Guard guard{new(buf) Activation(sub, context)};
+      Guard guard{new (buf) Activation(sub, context)};
       return std::forward<F>(f)(*guard.ptr);
     }
 
@@ -100,7 +102,7 @@ struct Subroutine {
 
     /// Set up the activation to restart execution from a previously suspended
     /// state.
-    template<typename Iter>
+    template <typename Iter>
     void restart(uint64_t entry, Iter locals_begin, Iter locals_end) {
       pc = sub.code.data() + entry;
       auto reg = frame() + sub.inputs - sub.outputs;
@@ -110,17 +112,17 @@ struct Subroutine {
       std::copy(locals_begin, locals_end, frame() + sub.inputs);
     }
 
-    using arg_insert_iterator = uint64_t *;
+    using arg_insert_iterator = uint64_t*;
 
     /// Get an inserter for supplying args to the subroutine
     arg_insert_iterator args() {
       return frame();
     }
 
-    using Outputs = folly::Range<binary::Output *>;
+    using Outputs = folly::Range<binary::Output*>;
 
     Outputs outputs() {
-      return {reinterpret_cast<binary::Output*>(this+1), sub.outputs};
+      return {reinterpret_cast<binary::Output*>(this + 1), sub.outputs};
     }
 
     binary::Output& output(size_t i) {
@@ -128,10 +130,10 @@ struct Subroutine {
     }
 
     /// Registers in which a subroutine returns its results
-    folly::Range<const uint64_t *> results() const {
-      return
-        { frame() + sub.inputs + sub.constants.size()
-        , frame() + sub.frameSize()};
+    folly::Range<const uint64_t*> results() const {
+      return {
+          frame() + sub.inputs + sub.constants.size(),
+          frame() + sub.frameSize()};
     }
 
     /// Execute the activation. If 'suspended' is true after the call, execution
@@ -184,10 +186,10 @@ struct Subroutine {
     }
 
    private:
-    explicit Activation(const Subroutine &sub, void *context)
+    explicit Activation(const Subroutine& sub, void* context)
         : sub(sub), context(context) {
       for (auto& output : outputs()) {
-        new(&output) binary::Output;
+        new (&output) binary::Output;
       }
     }
 
@@ -200,24 +202,23 @@ struct Subroutine {
     /// We place the outputs and then the frame right after the Activation
     /// object.
     static size_t byteSize(const Subroutine& sub) {
-      return sizeof(Activation)
-        + sub.outputs * sizeof(binary::Output)
-        + sub.frameSize() * sizeof(uint64_t);
+      return sizeof(Activation) + sub.outputs * sizeof(binary::Output) +
+          sub.frameSize() * sizeof(uint64_t);
     }
 
-    uint64_t *frame() {
-      return reinterpret_cast<uint64_t *>(outputs().end());
+    uint64_t* frame() {
+      return reinterpret_cast<uint64_t*>(outputs().end());
     }
 
-    const uint64_t *frame() const {
+    const uint64_t* frame() const {
       return const_cast<Activation*>(this)->frame();
     }
 
-    const Subroutine &sub;
-    void *context;
+    const Subroutine& sub;
+    void* context;
 
     // null if the activation has finished executing
-    const uint64_t * FOLLY_NULLABLE pc;
+    const uint64_t* FOLLY_NULLABLE pc;
   };
 
   bool operator==(const Subroutine& other) const;
@@ -230,6 +231,6 @@ struct Subroutine {
   size_t size() const;
 };
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

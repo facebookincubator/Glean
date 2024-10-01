@@ -21,12 +21,12 @@ using namespace facebook::glean::rts;
 namespace {
 
 struct dense_pid_int {
-  std::vector<std::pair<Pid,int>> value;
+  std::vector<std::pair<Pid, int>> value;
 
-  template<typename T>
+  template <typename T>
   T to() const {
     T xs;
-    for(auto [pid, n] : value) {
+    for (auto [pid, n] : value) {
       xs[pid] = n;
     }
     return xs;
@@ -36,8 +36,8 @@ struct dense_pid_int {
     return to<DenseMap<Pid, int>>();
   }
 
-  folly::F14FastMap<Pid,int,folly::Hash> hashMap() const {
-    return to<folly::F14FastMap<Pid,int,folly::Hash>>();
+  folly::F14FastMap<Pid, int, folly::Hash> hashMap() const {
+    return to<folly::F14FastMap<Pid, int, folly::Hash>>();
   }
 };
 
@@ -55,30 +55,29 @@ std::ostream& operator<<(std::ostream& out, const dense_pid_int& xs) {
   return out << ']';
 }
 
-}
+} // namespace
 
 namespace rc {
 
-template<>
+template <>
 struct Arbitrary<dense_pid_int> {
   static Gen<dense_pid_int> arbitrary() {
     return gen::map(
-      gen::arbitrary<std::vector<uint64_t>>(),
-      [](const std::vector<uint64_t>& xs) {
-        std::vector<std::pair<Pid, int>> ids;
-        ids.reserve(xs.size());
-        int k = 1;
-        for (auto x : xs) {
-          ids.push_back({Pid::lowest() + (x % 4096), k});
-          ++k;
-        }
-        return dense_pid_int{std::move(ids)};
-      }
-    );
+        gen::arbitrary<std::vector<uint64_t>>(),
+        [](const std::vector<uint64_t>& xs) {
+          std::vector<std::pair<Pid, int>> ids;
+          ids.reserve(xs.size());
+          int k = 1;
+          for (auto x : xs) {
+            ids.push_back({Pid::lowest() + (x % 4096), k});
+            ++k;
+          }
+          return dense_pid_int{std::move(ids)};
+        });
   }
 };
 
-}
+} // namespace rc
 
 namespace facebook {
 namespace glean {
@@ -87,10 +86,7 @@ namespace rts {
 template <class T>
 struct DenseMapTest : testing::Test {};
 
-RC_GTEST_PROP(
-    DenseMapTest,
-    construction,
-    (const dense_pid_int& ids)) {
+RC_GTEST_PROP(DenseMapTest, construction, (const dense_pid_int& ids)) {
   auto map = ids.denseMap();
   auto check = ids.hashMap();
   for (auto [pid, n] : map) {
@@ -105,10 +101,7 @@ RC_GTEST_PROP(
   }
 }
 
-RC_GTEST_PROP(
-    DenseMapTest,
-    bounds,
-    (const dense_pid_int& ids)) {
+RC_GTEST_PROP(DenseMapTest, bounds, (const dense_pid_int& ids)) {
   const auto map = ids.denseMap();
   if (!ids.value.empty()) {
     Pid minimum = ids.value[0].first;
@@ -128,12 +121,9 @@ RC_GTEST_PROP(
   }
 }
 
-RC_GTEST_PROP(
-    DenseMapTest,
-    beginEnd,
-    (const dense_pid_int& ids)) {
+RC_GTEST_PROP(DenseMapTest, beginEnd, (const dense_pid_int& ids)) {
   const auto map = ids.denseMap();
-  const auto check = ids.to<std::map<Pid,int>>();
+  const auto check = ids.to<std::map<Pid, int>>();
   if (ids.value.empty()) {
     RC_ASSERT(map.begin() == map.end());
     RC_ASSERT(check.empty());
@@ -153,10 +143,7 @@ RC_GTEST_PROP(
   }
 }
 
-RC_GTEST_PROP(
-    DenseMapTest,
-    lookup,
-    (const dense_pid_int& ids)) {
+RC_GTEST_PROP(DenseMapTest, lookup, (const dense_pid_int& ids)) {
   const auto map = ids.denseMap();
   for (auto i = map.begin(); i != map.end(); ++i) {
     if (i->second) {
@@ -167,10 +154,7 @@ RC_GTEST_PROP(
   }
 }
 
-RC_GTEST_PROP(
-    DenseMapTest,
-    get,
-    (const dense_pid_int& ids)) {
+RC_GTEST_PROP(DenseMapTest, get, (const dense_pid_int& ids)) {
   const auto map = ids.denseMap();
   for (auto [id, n] : map) {
     RC_ASSERT(map.get(id) == n);
@@ -180,8 +164,8 @@ RC_GTEST_PROP(
 RC_GTEST_PROP(
     DenseMapUnionWithTest,
     merge,
-    (const dense_pid_int& left, const dense_pid_int& right)){
-  auto combine = [](int& m, int n) { m = folly::Hash()(m,n); };
+    (const dense_pid_int& left, const dense_pid_int& right)) {
+  auto combine = [](int& m, int n) { m = folly::Hash()(m, n); };
   auto map = left.denseMap();
   map.merge(right.denseMap(), combine);
   auto check = left.hashMap();
@@ -206,6 +190,6 @@ RC_GTEST_PROP(
   }
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

@@ -30,25 +30,24 @@ inline void check(const rocksdb::Status& status) {
 
 inline folly::ByteRange byteRange(const rocksdb::Slice& slice) {
   return folly::ByteRange(
-    reinterpret_cast<const unsigned char *>(slice.data()), slice.size());
+      reinterpret_cast<const unsigned char*>(slice.data()), slice.size());
 }
 
 inline rocksdb::Slice slice(const folly::ByteRange& range) {
   return rocksdb::Slice(
-    reinterpret_cast<const char *>(range.data()), range.size());
+      reinterpret_cast<const char*>(range.data()), range.size());
 }
 
 inline rocksdb::Slice slice(binary::Output& output) {
   return slice(output.bytes());
 }
 
-template<typename T>
+template <typename T>
 inline rocksdb::Slice toSlice(const T& x) {
-  return rocksdb::Slice(
-    reinterpret_cast<const char *>(&x), sizeof(x));
+  return rocksdb::Slice(reinterpret_cast<const char*>(&x), sizeof(x));
 }
 
-template<typename T>
+template <typename T>
 inline T fromSlice(const rocksdb::Slice& slice) {
   assert(slice.size() == sizeof(T));
   T x;
@@ -60,7 +59,7 @@ inline binary::Input input(const rocksdb::Slice& slice) {
   return binary::Input(byteRange(slice));
 }
 
-}
-}
-}
+} // namespace impl
+} // namespace rocks
+} // namespace glean
 } // namespace facebook

@@ -17,8 +17,8 @@
 #else
 #include <common/hs/util/cpp/memory.h>
 #endif
-#include "glean/rts/id.h"
 #include "glean/rts/error.h"
+#include "glean/rts/id.h"
 #include "glean/rts/nat.h"
 #include "glean/rts/string.h"
 
@@ -62,18 +62,25 @@ std::vector<unsigned char> lexicographicallyNext(folly::ByteRange range);
 
 namespace detail {
 
-template<typename T, typename = void> struct word_traits;
+template <typename T, typename = void>
+struct word_traits;
 
-template<typename T>
-struct word_traits<T, typename std::enable_if_t<
-          std::is_integral<std::remove_const_t<T>>::value ||
-          std::is_enum<std::remove_const_t<T>>::value>> {
+template <typename T>
+struct word_traits<
+    T,
+    typename std::enable_if_t<
+        std::is_integral<std::remove_const_t<T>>::value ||
+        std::is_enum<std::remove_const_t<T>>::value>> {
   using word_type = T;
-  static T fromWord(word_type x) { return x; }
-  static word_type toWord(T x) { return x; }
+  static T fromWord(word_type x) {
+    return x;
+  }
+  static word_type toWord(T x) {
+    return x;
+  }
 };
 
-template<typename T>
+template <typename T>
 struct word_traits<rts::WordId<T>> {
   using word_type = typename rts::WordId<T>::word_type;
   static rts::WordId<T> fromWord(word_type x) {
@@ -84,7 +91,7 @@ struct word_traits<rts::WordId<T>> {
   }
 };
 
-}
+} // namespace detail
 
 struct Output;
 
@@ -142,7 +149,7 @@ struct Input {
     if (auto r = folly::tryDecodeVarint(temp)) {
       buf = temp;
       return detail::word_traits<T>::fromWord(
-        static_cast<typename detail::word_traits<T>::word_type>(r.value()));
+          static_cast<typename detail::word_traits<T>::word_type>(r.value()));
     } else {
       rts::error("invalid packed value");
     }
@@ -287,16 +294,16 @@ struct Output {
   struct RefMem {};
 
   /// Create a buffer that references an existing memory block
-  Output(void *data, size_t size, RefMem) {
+  Output(void* data, size_t size, RefMem) {
     assert(data != nullptr || size == 0);
 
     if (size == 0) {
       markEmpty();
     } else if (size <= SMALL_CAP) {
       small[0] = static_cast<unsigned char>(size) << TAG_BITS;
-      std::memcpy(small+1, data, size);
+      std::memcpy(small + 1, data, size);
     } else {
-      large.data = static_cast<unsigned char *>(data);
+      large.data = static_cast<unsigned char*>(data);
       large.size = (size << TAG_BITS) | LARGE_BIT;
       large.cap = size;
     }
@@ -328,9 +335,8 @@ struct Output {
   /// Return a pointer to the underlying memory. This is guaranteed to never
   /// be null, not even for empty buffers.
   const unsigned char* data() const noexcept {
-    return isSmall() ? small+1 : large.data;
+    return isSmall() ? small + 1 : large.data;
   }
-
 
   size_t capacity() const noexcept {
     return isSmall() ? SMALL_CAP : large.cap;
@@ -341,7 +347,7 @@ struct Output {
   void packed(T x) {
     auto p = alloc(folly::kMaxVarintLength64);
     auto n = folly::encodeVarint(
-      static_cast<uint64_t>(detail::word_traits<T>::toWord(x)), p);
+        static_cast<uint64_t>(detail::word_traits<T>::toWord(x)), p);
     use(n);
   }
 
@@ -385,7 +391,7 @@ struct Output {
     rts::reverseTrustedString(this->mutableData(), this->size());
   }
 
-  folly::ByteRange bytes() const & noexcept {
+  folly::ByteRange bytes() const& noexcept {
     return to<folly::ByteRange>();
   }
 
@@ -404,8 +410,9 @@ struct Output {
   folly::fbstring moveToFbString();
 
  private:
-  static_assert(folly::kIsLittleEndian,
-    "support for big endian in binary::Output not implemented");
+  static_assert(
+      folly::kIsLittleEndian,
+      "support for big endian in binary::Output not implemented");
 
   /// Number of tag bits in the respresentation
   static constexpr size_t TAG_BITS = 2;
@@ -436,7 +443,7 @@ struct Output {
   struct Large {
     size_t size;
     size_t cap;
-    unsigned char *data;
+    unsigned char* data;
   };
 
   /// Maximum capacity of a small buffer
@@ -445,7 +452,7 @@ struct Output {
   /// The actual representation
   union {
     Large large;
-    unsigned char small[SMALL_CAP+1];
+    unsigned char small[SMALL_CAP + 1];
   };
 
   /// Is this a small buffer
@@ -463,12 +470,12 @@ struct Output {
   }
 
   unsigned char* mutableData() noexcept {
-    return isSmall() ? small+1 : large.data;
+    return isSmall() ? small + 1 : large.data;
   }
 
   /// Return a pointer to enough space for n bytes. This reserves memory but
   /// doesn't increase the size - this can be done via 'use' afterwards.
-  unsigned char *alloc(size_t n) {
+  unsigned char* alloc(size_t n) {
     if (n > capacity() - size()) {
       realloc(n);
       assert(!isSmall());
@@ -500,17 +507,17 @@ struct Output {
 
   /// Grow the buffer size by at least n bytes, increase its size accordingly
   /// and return a pointer to the new memory.
-  unsigned char *grab(size_t n) {
+  unsigned char* grab(size_t n) {
     const auto p = alloc(n);
     use(n);
     return p;
   }
 
   /// Create a container
-  template<typename C> C to() const {
+  template <typename C>
+  C to() const {
     return C(data(), data() + size());
   }
-
 };
 
 } // namespace binary

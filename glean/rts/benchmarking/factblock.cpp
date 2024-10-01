@@ -27,11 +27,11 @@ FactBlock FactBlock::create(FactIterator& iter) {
   while (fact && fact.id == expected) {
     const auto offset = block.data.size();
     block.data.insert(
-      block.data.end(),
-      fact.clause.data,
-      fact.clause.data + fact.clause.size());
+        block.data.end(),
+        fact.clause.data,
+        fact.clause.data + fact.clause.size());
     block.refs.push_back(
-      Ref{fact.type, offset, fact.clause.key_size, fact.clause.value_size});
+        Ref{fact.type, offset, fact.clause.key_size, fact.clause.value_size});
     ++expected;
     iter.next();
     fact = iter.get();
@@ -45,8 +45,7 @@ bool FactBlock::defineEach(Define& def) const {
   const auto buf = data.data();
   for (const auto& ref : refs) {
     const auto k = def.define(
-      ref.type,
-      Fact::Clause{buf + ref.offset, ref.key_size, ref.value_size});
+        ref.type, Fact::Clause{buf + ref.offset, ref.key_size, ref.value_size});
     if (k != expected) {
       return false;
     }
@@ -70,9 +69,9 @@ bool FactBlock::lookupEachById(Lookup& lookup, bool compare) const {
   for (const auto& fact : *this) {
     const auto found = lookup.factById(fact.id, [&](auto type, auto clause) {
       if (type != fact.type || (!compare || clause.key() != fact.key())) {
-          result = false;
-        }
-      });
+        result = false;
+      }
+    });
     if (!found || !result) {
       return false;
     }
@@ -101,7 +100,7 @@ bool FactBlock::seekToEach(Lookup& lookup) const {
   return true;
 }
 
-}
-}
-}
-}
+} // namespace benchmarking
+} // namespace rts
+} // namespace glean
+} // namespace facebook

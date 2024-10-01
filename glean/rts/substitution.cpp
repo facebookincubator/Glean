@@ -16,19 +16,15 @@ namespace rts {
 using namespace boost::icl;
 
 Substitution::Substitution(Id first, size_t size)
-  : base(first)
-  , items(size, Id::invalid())
-  {}
+    : base(first), items(size, Id::invalid()) {}
 
 Substitution::Substitution(Id first, std::vector<Id> ids)
-  : base(first)
-  , items(std::move(ids))
-  {}
+    : base(first), items(std::move(ids)) {}
 
 Id Substitution::firstFreeId() const {
   if (!firstFreeId_) {
     const auto i = std::max_element(items.begin(), items.end());
-    firstFreeId_ = i != items.end() ? std::max(*i+1, finish()) : finish();
+    firstFreeId_ = i != items.end() ? std::max(*i + 1, finish()) : finish();
   }
   return firstFreeId_;
 }
@@ -78,7 +74,8 @@ std::vector<Id> Substitution::substIntervals(
   return results;
 }
 
-boost::icl::interval_set<Id> Substitution::substIntervals(const boost::icl::interval_set<Id>& intervals) const {
+boost::icl::interval_set<Id> Substitution::substIntervals(
+    const boost::icl::interval_set<Id>& intervals) const {
   boost::icl::interval_set<Id> result;
   for (auto ival : intervals) {
     if (ival.upper() < base) {
@@ -124,6 +121,6 @@ bool Substitution::sanityCheck(bool incomplete) const {
   return true;
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

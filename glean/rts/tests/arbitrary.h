@@ -10,33 +10,33 @@
 
 #include "glean/rts/id.h"
 
-#include <iostream>
 #include <rapidcheck.h>
+#include <iostream>
 
 namespace rc {
 
-template<typename T>
+template <typename T>
 struct Arbitrary<facebook::glean::rts::WordId<T>> {
   static Gen<facebook::glean::rts::WordId<T>> arbitrary() {
     return gen::map(
-      gen::inRange(
-        facebook::glean::rts::WordId<T>::lowest().toWord(),
-        typename facebook::glean::rts::WordId<T>::word_type(0xFFFF)),
-      facebook::glean::rts::WordId<T>::fromWord);
+        gen::inRange(
+            facebook::glean::rts::WordId<T>::lowest().toWord(),
+            typename facebook::glean::rts::WordId<T>::word_type(0xFFFF)),
+        facebook::glean::rts::WordId<T>::fromWord);
   }
 };
 
-}
+} // namespace rc
 
 namespace facebook {
 namespace glean {
-namespace rts{
+namespace rts {
 
-template<typename T>
+template <typename T>
 std::ostream& operator<<(std::ostream& out, WordId<T> id) {
   return out << '$' << id.toWord();
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

@@ -8,10 +8,10 @@
 
 #pragma once
 
+#include <folly/Range.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <utility>
-#include <folly/Range.h>
 
 // UTF-8 string representation
 //
@@ -47,7 +47,7 @@ std::pair<size_t, size_t> skipTrustedString(folly::ByteRange) noexcept;
 
 /// Demangle a trusted mangled string into a buffer and return its mangled size.
 /// The buffer must have enough space.
-size_t demangleTrustedString(folly::ByteRange, uint8_t *) noexcept;
+size_t demangleTrustedString(folly::ByteRange, uint8_t*) noexcept;
 
 /// Mangle a UTF-8 string into the Output.
 void mangleString(folly::ByteRange, binary::Output&);
@@ -55,8 +55,8 @@ void mangleString(folly::ByteRange, binary::Output&);
 /// Tolower a mangled string
 void toLowerTrustedString(folly::ByteRange, binary::Output&);
 
-void reverseTrustedString(unsigned char *p, size_t size);
+void reverseTrustedString(unsigned char* p, size_t size);
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

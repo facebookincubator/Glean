@@ -8,8 +8,8 @@
 
 #pragma once
 
-#include <vector>
 #include <folly/Optional.h>
+#include <vector>
 
 namespace facebook {
 namespace glean {
@@ -21,9 +21,9 @@ namespace rts {
 ///
 /// The interesting operations are operator[] (which dynamically grows the map
 /// to cover a particular key) and merge.
-template<typename Key, typename Value>
+template <typename Key, typename Value>
 class DenseMap {
-public:
+ public:
   using key_type = Key;
   using mapped_type = Value;
 
@@ -50,11 +50,11 @@ public:
     return start + data.size();
   }
 
-private:
-  template<typename Val, typename Base>
+ private:
+  template <typename Val, typename Base>
   struct Iter {
-    using value_type = std::pair<const key_type,Val>;
-    using reference = std::pair<const key_type,Val&>;
+    using value_type = std::pair<const key_type, Val>;
+    using reference = std::pair<const key_type, Val&>;
     using difference_type = std::ptrdiff_t;
     using iterator_category = std::forward_iterator_tag;
 
@@ -62,8 +62,7 @@ private:
 
     Iter() {}
     Iter(key_type k, base_iterator_type b, base_iterator_type end)
-      : key_(std::move(k)), base_(std::move(b)), end_(std::move(end))
-    {
+        : key_(std::move(k)), base_(std::move(b)), end_(std::move(end)) {
       // There is no need to advance to the first available key since we assume
       // that the first and the last one in data are always available
     }
@@ -87,7 +86,9 @@ private:
     }
 
     struct pointer {
-      const reference *operator->() const { return &ref; }
+      const reference* operator->() const {
+        return &ref;
+      }
       reference ref;
     };
 
@@ -110,10 +111,10 @@ private:
 
   using repr_type = std::vector<folly::Optional<mapped_type>>;
 
-public:
+ public:
   using iterator = Iter<mapped_type, typename repr_type::iterator>;
   using const_iterator =
-    Iter<const mapped_type, typename repr_type::const_iterator>;
+      Iter<const mapped_type, typename repr_type::const_iterator>;
 
   const_iterator begin() const {
     return const_iterator(start, data.begin(), data.end());
@@ -155,7 +156,7 @@ public:
   }
 
   mapped_type& operator[](key_type key) {
-    reserve(key, key+1);
+    reserve(key, key + 1);
     const auto i = key - start;
     if (!data[i].hasValue()) {
       data[i] = mapped_type();
@@ -174,7 +175,7 @@ public:
     return folly::none;
   }
 
-  mapped_type * FOLLY_NULLABLE lookup(key_type key) {
+  mapped_type* FOLLY_NULLABLE lookup(key_type key) {
     if (key >= start) {
       const auto i = key - start;
       if (i < data.size()) {
@@ -184,7 +185,7 @@ public:
     return nullptr;
   }
 
-  const mapped_type * FOLLY_NULLABLE lookup(key_type key) const {
+  const mapped_type* FOLLY_NULLABLE lookup(key_type key) const {
     if (key >= start) {
       const auto i = key - start;
       if (i < data.size()) {
@@ -195,15 +196,15 @@ public:
   }
 
   /// Merge two maps using a combining function of type void(Value&, Value)
-  template<typename F>
+  template <typename F>
   void merge(DenseMap other, F&& f) {
     if (!other.data.empty()) {
       if (data.empty()) {
         *this = std::move(other);
       } else {
         reserve(
-          std::min(start, other.start),
-          std::max(start + data.size(), other.start + other.data.size()));
+            std::min(start, other.start),
+            std::max(start + data.size(), other.start + other.data.size()));
         auto i = data.begin() + (other.start - start);
         for (auto&& x : other.data) {
           if (x.hasValue()) {
@@ -224,7 +225,7 @@ public:
     return data.capacity() * sizeof(data[0]);
   }
 
-private:
+ private:
   // invariants:
   //
   // !empty() => data.front.hasValue()
@@ -234,6 +235,6 @@ private:
   size_t count = 0;
 };
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

@@ -25,6 +25,6 @@ struct Validate {
 
 void validate(const Inventory& inventory, const Validate& val, Lookup& facts);
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

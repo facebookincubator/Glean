@@ -6,12 +6,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "glean/rts/binary.h"
 #include "glean/rts/validate.h"
+#include "glean/rts/binary.h"
 
-#include <vector>
 #include <future>
 #include <mutex>
+#include <vector>
 
 namespace facebook {
 namespace glean {
@@ -33,10 +33,10 @@ struct Fail {
   }
 };
 
-}
+} // namespace
 
 std::string predicateRefName(const Inventory& inventory, Pid type) {
-  const Predicate *pred = inventory.lookupPredicate(type);
+  const Predicate* pred = inventory.lookupPredicate(type);
   if (pred == nullptr) {
     return "invalid Pid";
   } else {
@@ -50,8 +50,7 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
   const auto starting_id = facts.startingId();
   const auto first_free = facts.firstFreeId();
 
-  const auto end_id =
-    val.limit < first_free - starting_id
+  const auto end_id = val.limit < first_free - starting_id
       ? starting_id + val.limit
       : first_free;
   size_t elems = distance(starting_id, end_id);
@@ -78,13 +77,13 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
 
     auto real_type = types.at(ix);
     if (type != real_type) {
-      fail("fact type mismatch. Expected {} to be of type {} (Pid {}) but got {} (Pid {}).",
+      fail(
+          "fact type mismatch. Expected {} to be of type {} (Pid {}) but got {} (Pid {}).",
           id,
           predicateRefName(inventory, type),
           type,
           predicateRefName(inventory, real_type),
-          real_type
-      );
+          real_type);
     }
 
     return id;
@@ -122,7 +121,7 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
       }
 
       if (val.typecheck) {
-        const auto *predicate = inventory.lookupPredicate(fact.type);
+        const auto* predicate = inventory.lookupPredicate(fact.type);
         if (predicate == nullptr) {
           fail("invalid predicate");
         }
@@ -130,11 +129,7 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
         binary::Output out;
         uint64_t key_size;
 
-        predicate->typecheck(
-          syscall(expect_type),
-          fact.clause,
-          out,
-          key_size);
+        predicate->typecheck(syscall(expect_type), fact.clause, out, key_size);
 
         if (fact.clause.bytes() != out.bytes()) {
           fail("invalid fact");
@@ -190,6 +185,6 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
   }
 }
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

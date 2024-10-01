@@ -8,9 +8,9 @@
 
 #pragma once
 
-#include <vector>
 #include <boost/icl/interval_set.hpp>
 #include <glog/logging.h>
+#include <vector>
 
 #include "glean/rts/id.h"
 
@@ -27,7 +27,7 @@ namespace rts {
  *
  */
 class Substitution {
-public:
+ public:
   Substitution(Id first, size_t size);
 
   Substitution(Id first, std::vector<Id> ids);
@@ -35,9 +35,7 @@ public:
   ~Substitution() = default;
 
   Id subst(Id id) const {
-    return id >= start() && id < finish()
-      ? items[distance(start(),id)]
-      : id;
+    return id >= start() && id < finish() ? items[distance(start(), id)] : id;
   }
 
   // Apply the Substitution to a set of fact ID ranges.
@@ -67,8 +65,8 @@ public:
   Id firstFreeId() const;
 
   static Substitution compose(
-    const Substitution& first,
-    const Substitution& second);
+      const Substitution& first,
+      const Substitution& second);
 
   bool operator==(const Substitution& other) const {
     return base == other.base && items == other.items;
@@ -78,13 +76,14 @@ public:
     return !(*this == other);
   }
 
-  void with(const std::function<void(Id base, const std::vector<Id>& items)>& fun) const {
+  void with(const std::function<void(Id base, const std::vector<Id>& items)>&
+                fun) const {
     fun(base, items);
   }
 
   bool sanityCheck(bool incomplete) const;
 
-private:
+ private:
   Id base;
   std::vector<Id> items;
   mutable Id firstFreeId_ = Id::invalid(); // lazy cached firstFreeId()
@@ -92,29 +91,32 @@ private:
 };
 
 class MutableSubstitution {
-  public:
+ public:
   MutableSubstitution(Id first, size_t size) : subst_(first, size) {}
-  MutableSubstitution(Id first, std::vector<Id> ids) : subst_(first, std::move(ids)) {}
+  MutableSubstitution(Id first, std::vector<Id> ids)
+      : subst_(first, std::move(ids)) {}
 
   void set(Id pos, Id id) {
     CHECK(pos >= subst_.start() && pos < subst_.finish());
-    subst_.items[distance(subst_.start(),pos)] = id;
+    subst_.items[distance(subst_.start(), pos)] = id;
   }
 
   void setAt(size_t index, Id id) {
     subst_.items[index] = id;
   }
 
-  Id subst(Id id) const { return subst_.subst(id); }
+  Id subst(Id id) const {
+    return subst_.subst(id);
+  }
 
   Substitution freeze() {
     return std::move(subst_);
   }
 
-  private:
-    Substitution subst_;
+ private:
+  Substitution subst_;
 };
 
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

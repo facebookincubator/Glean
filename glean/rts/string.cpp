@@ -6,14 +6,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include "glean/rts/binary.h"
-#include "glean/rts/error.h"
 #include "glean/rts/string.h"
+#include <glog/logging.h>
+#include <unicode/uchar.h>
+#include <unicode/utf8.h>
 #include <cassert>
 #include <cstring>
-#include <glog/logging.h>
-#include <unicode/utf8.h>
-#include <unicode/uchar.h>
+#include "glean/rts/binary.h"
+#include "glean/rts/error.h"
 
 namespace facebook {
 namespace glean {
@@ -33,19 +33,20 @@ namespace {
 /// abc\0\1def\0\1gh\0\0   chunk(p), chunk(q), chunk(r), last(s)
 /// p      q      r     s
 ///
-template<typename Chunk>
-FOLLY_ALWAYS_INLINE
-size_t untrustedChunks(folly::ByteRange range, Chunk&& chunk) {
-  const unsigned char * const p = range.data();
+template <typename Chunk>
+FOLLY_ALWAYS_INLINE size_t
+untrustedChunks(folly::ByteRange range, Chunk&& chunk) {
+  const unsigned char* const p = range.data();
   const size_t size = range.size();
 
   assert(p != nullptr);
 
   int i;
-  for (i = 0; i < size && p[i] > 0 && p[i] < 0x80; ++i) {}
-  if (i+1 < size && p[i] == 0 && p[i+1] == 0) {
+  for (i = 0; i < size && p[i] > 0 && p[i] < 0x80; ++i) {
+  }
+  if (i + 1 < size && p[i] == 0 && p[i + 1] == 0) {
     chunk(p, i);
-    return i+2;
+    return i + 2;
   }
 
   int k = 0;
@@ -58,11 +59,11 @@ size_t untrustedChunks(folly::ByteRange range, Chunk&& chunk) {
       if (i < size) {
         switch (p[i]) {
           case 0:
-            chunk(p+k, i-k-1);
-            return i+1;
+            chunk(p + k, i - k - 1);
+            return i + 1;
 
           case 1:
-            chunk(p+k, i-k);
+            chunk(p + k, i - k);
             ++i;
             k = i;
             break;
@@ -79,83 +80,74 @@ size_t untrustedChunks(folly::ByteRange range, Chunk&& chunk) {
   }
 }
 
-}
+} // namespace
 
 size_t validateUntrustedString(folly::ByteRange range) {
   return untrustedChunks(range, [](auto, auto) {});
 }
 
 size_t demangleUntrustedString(folly::ByteRange range, binary::Output& output) {
-  return untrustedChunks(
-    range,
-    [&](auto p, auto n) { output.bytes(p, n); }
-  );
+  return untrustedChunks(range, [&](auto p, auto n) { output.bytes(p, n); });
 }
 
 namespace {
 
-template<typename Chunk>
-FOLLY_ALWAYS_INLINE
-size_t trustedChunks(folly::ByteRange range, Chunk&& chunk) noexcept {
+template <typename Chunk>
+FOLLY_ALWAYS_INLINE size_t
+trustedChunks(folly::ByteRange range, Chunk&& chunk) noexcept {
   const auto end = range.end();
   auto p = range.begin();
   while (true) {
-    auto q = static_cast<const unsigned char *>(std::memchr(p, 0, end-p));
-    CHECK(q && q+1 < end);
+    auto q = static_cast<const unsigned char*>(std::memchr(p, 0, end - p));
+    CHECK(q && q + 1 < end);
     if (q[1] == 0) {
-      chunk(p, q-p);
+      chunk(p, q - p);
       return q - range.begin() + 2;
     } else {
-      chunk(p, q-p+1);
-      p = q+2;
+      chunk(p, q - p + 1);
+      p = q + 2;
     }
   }
 }
 
-}
+} // namespace
 
 std::pair<size_t, size_t> skipTrustedString(folly::ByteRange range) noexcept {
   size_t nuls = 0;
-  auto size = trustedChunks(
-    range,
-    [&](auto,auto) { ++nuls; }
-  );
-  assert (nuls > 0);
-  assert (size >= nuls*2);
+  auto size = trustedChunks(range, [&](auto, auto) { ++nuls; });
+  assert(nuls > 0);
+  assert(size >= nuls * 2);
   return std::make_pair(size, size - nuls - 1);
 }
 
-size_t demangleTrustedString(folly::ByteRange range, uint8_t *buffer) noexcept {
+size_t demangleTrustedString(folly::ByteRange range, uint8_t* buffer) noexcept {
   auto out = buffer;
-  trustedChunks(
-    range,
-    [&](auto p, auto n) {
-      std::memcpy(out, p, n);
-      out += n;
-    }
-  );
-  return out-buffer;
+  trustedChunks(range, [&](auto p, auto n) {
+    std::memcpy(out, p, n);
+    out += n;
+  });
+  return out - buffer;
 }
 
 void mangleString(folly::ByteRange range, binary::Output& output) {
   if (!range.empty()) {
     auto p = range.begin();
-    while (auto q = static_cast<const unsigned char *>(
-            std::memchr(p, 0, range.end()-p))) {
+    while (auto q = static_cast<const unsigned char*>(
+               std::memchr(p, 0, range.end() - p))) {
       ++q;
-      output.put({p,q});
+      output.put({p, q});
       output.fixed<uint8_t>(1);
       p = q;
     }
     output.put({p, range.end()});
   }
-  const unsigned char terminator[2] = {0,0};
+  const unsigned char terminator[2] = {0, 0};
   output.bytes(terminator, 2);
 }
 
 void toLowerTrustedString(folly::ByteRange range, binary::Output& output) {
   output.expect(range.size());
-  for (int32_t i = 0; i < range.size(); ) {
+  for (int32_t i = 0; i < range.size();) {
     unsigned char b = static_cast<unsigned char>(range[i]);
     if (b < 0x80) {
       // This will also ignore \0 and \1 in the mangled string
@@ -176,27 +168,26 @@ void toLowerTrustedString(folly::ByteRange range, binary::Output& output) {
   }
 }
 
-void reverseTrustedString(unsigned char *p, size_t size) {
+void reverseTrustedString(unsigned char* p, size_t size) {
   // Don't reverse the last two bytes, which are the terminators
   std::reverse(p, p + size - 2);
 
   // Fix non-ASCII characters
-  size-=2;
+  size -= 2;
   while (size > 0) {
-    auto* leadcharptr = &p[size-1];
+    auto* leadcharptr = &p[size - 1];
     auto nBytes = 1;
-    if((*leadcharptr & 0xe0) == 0xc0) {
+    if ((*leadcharptr & 0xe0) == 0xc0) {
       nBytes = 2;
     } else if ((*leadcharptr & 0xf0) == 0xe0) {
       nBytes = 3;
     } else if ((*leadcharptr & 0xf8) == 0xf0) {
       nBytes = 4;
-    } 
-    std::reverse(leadcharptr-nBytes+1, leadcharptr+1);
+    }
+    std::reverse(leadcharptr - nBytes + 1, leadcharptr + 1);
     size -= nBytes;
   }
-
 }
-}
-}
-}
+} // namespace rts
+} // namespace glean
+} // namespace facebook

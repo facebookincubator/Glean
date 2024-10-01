@@ -140,7 +140,9 @@ std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(DatabaseImpl& db) {
         // EliasFano needs to be able to read 8 bytes past the end of
         // the data, so we have to copy the bytes to add padding.
         bytes = hs::ffi::clone_array<uint8_t>(
-          reinterpret_cast<const uint8_t*>(iter->value().data()), iter->value().size(), 8);
+            reinterpret_cast<const uint8_t*>(iter->value().data()),
+            iter->value().size(),
+            8);
         binary::Input val(bytes.get(), bytes.size());
         exp.op = static_cast<SetOp>(val.trustedNat());
         exp.set = deserializeEliasFano(val);
@@ -192,7 +194,7 @@ std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(DatabaseImpl& db) {
   return std::make_unique<SetIterator>(first, size, std::move(iter));
 }
 
-}
+} // namespace
 
 std::unique_ptr<Usets> DatabaseImpl::loadOwnershipSets() {
   auto t = makeAutoTimer("loadOwnershipSets");
@@ -209,7 +211,11 @@ std::unique_ptr<Usets> DatabaseImpl::loadOwnershipSets() {
     // paranoia: check the set contents make sense
     set.foreach([first, size](UsetId id) {
       if (id >= first + size) {
-        rts::error("invalid ownershipSets: id out of range: {} {} {}", id, first, size);
+        rts::error(
+            "invalid ownershipSets: id out of range: {} {} {}",
+            id,
+            first,
+            size);
       }
     });
     auto p = usets->add(std::move(set), 0);
@@ -313,9 +319,9 @@ void DatabaseImpl::addOwnership(const std::vector<OwnershipSet>& ownership) {
   if (new_count > 0) {
     next_uset_id += new_count;
     check(batch.Put(
-      container_.family(Family::admin),
-      toSlice(AdminId::NEXT_UNIT_ID),
-      toSlice(next_uset_id)));
+        container_.family(Family::admin),
+        toSlice(AdminId::NEXT_UNIT_ID),
+        toSlice(next_uset_id)));
   }
 
   check(container_.db->Write(container_.writeOptions, &batch));
@@ -425,9 +431,9 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
 
     next_uset_id = ownership.sets_.getFirstId() + ownership.sets_.size();
     check(batch.Put(
-      container_.family(Family::admin),
-      toSlice(AdminId::NEXT_UNIT_ID),
-      toSlice(next_uset_id)));
+        container_.family(Family::admin),
+        toSlice(AdminId::NEXT_UNIT_ID),
+        toSlice(next_uset_id)));
 
     VLOG(1) << "storeOwnership: writing sets (" << ownership.sets_.size()
             << ")";
@@ -441,7 +447,8 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
   }
 
   CHECK(usets_->size() == 0 || usets_->getNextId() == next_uset_id);
-  // TODO: better not add new units after storing sets, we should fail if that happens
+  // TODO: better not add new units after storing sets, we should fail if that
+  // happens
 
   if (ownership.facts_.size() > 0) {
     auto t = makeAutoTimer("storeOwnership(facts)");
@@ -564,22 +571,25 @@ struct StoredOwnership : Ownership {
         owner_pages_size, num_owner_pages;
     auto& db = db_->container_.db;
     rocksdb::FlushOptions opts;
-    db->Flush(opts, {
+    db->Flush(
+        opts,
+        {db_->container_.family(Family::ownershipUnits),
+         db_->container_.family(Family::ownershipUnitIds),
+         db_->container_.family(Family::ownershipSets),
+         db_->container_.family(Family::factOwners),
+         db_->container_.family(Family::factOwnerPages)});
+    check(db->GetApproximateSizes(
         db_->container_.family(Family::ownershipUnits),
+        &range,
+        1,
+        &units_size));
+    check(db->GetApproximateSizes(
         db_->container_.family(Family::ownershipUnitIds),
-        db_->container_.family(Family::ownershipSets),
-        db_->container_.family(Family::factOwners),
-        db_->container_.family(Family::factOwnerPages)
-    });
+        &range,
+        1,
+        &unit_ids_size));
     check(db->GetApproximateSizes(
-              db_->container_.family(Family::ownershipUnits),
-              &range, 1, &units_size));
-    check(db->GetApproximateSizes(
-              db_->container_.family(Family::ownershipUnitIds),
-              &range, 1, &unit_ids_size));
-    check(db->GetApproximateSizes(
-              db_->container_.family(Family::ownershipSets),
-              &range, 1, &sets_size));
+        db_->container_.family(Family::ownershipSets), &range, 1, &sets_size));
     db->GetIntProperty(
         db_->container_.family(Family::factOwners),
         "rocksdb.estimate-num-keys",
@@ -591,7 +601,10 @@ struct StoredOwnership : Ownership {
         "rocksdb.estimate-num-keys",
         &num_owner_pages);
     check(db->GetApproximateSizes(
-        db_->container_.family(Family::factOwnerPages), &range, 1, &owner_pages_size));
+        db_->container_.family(Family::factOwnerPages),
+        &range,
+        1,
+        &owner_pages_size));
 
     OwnershipStats stats;
     stats.num_units = nextUnitId() - db_->first_unit_id; // accurate
@@ -612,7 +625,7 @@ struct StoredOwnership : Ownership {
   DatabaseImpl* db_;
 };
 
-}
+} // namespace
 
 std::unique_ptr<rts::Ownership> DatabaseImpl::getOwnership() {
   container_.requireOpen();
@@ -649,17 +662,17 @@ UsetId DatabaseImpl::getOwner(Id id) {
 }
 
 namespace {
-  // key in factOwnerPages where we store the index
-  static const std::string INDEX_KEY = "INDEX";
+// key in factOwnerPages where we store the index
+static const std::string INDEX_KEY = "INDEX";
 
-  // sentinel value in the index indicating that this prefix has a page in
-  // factOwnerPages
-  static const UsetId HAS_PAGE = SPECIAL_USET;
+// sentinel value in the index indicating that this prefix has a page in
+// factOwnerPages
+static const UsetId HAS_PAGE = SPECIAL_USET;
 
-  // Note: this constant affects the data in the DB, so it can't be changed.
-  static const size_t PAGE_BITS = 12;
-  static const uint64_t PAGE_MASK = (1<<PAGE_BITS) - 1;
-}
+// Note: this constant affects the data in the DB, so it can't be changed.
+static const size_t PAGE_BITS = 12;
+static const uint64_t PAGE_MASK = (1 << PAGE_BITS) - 1;
+} // namespace
 
 void DatabaseImpl::FactOwnerCache::enable(ContainerImpl& container) {
   auto cache = cache_.ulock();
@@ -687,10 +700,10 @@ void DatabaseImpl::FactOwnerCache::enable(ContainerImpl& container) {
   const UsetId* start = reinterpret_cast<const UsetId*>(val.data());
   std::copy(start, start + num, index.data());
   size_t size = index.size() * sizeof(UsetId);
-  Cache content {
-    .index = std::move(index),
-    .pages = {},
-    .size_ = size,
+  Cache content{
+      .index = std::move(index),
+      .pages = {},
+      .size_ = size,
   };
 
   VLOG(1) << folly::sformat("owner cache index: {} entries", num);
@@ -703,7 +716,6 @@ std::unique_ptr<DatabaseImpl::FactOwnerCache::Page>
 DatabaseImpl::FactOwnerCache::readPage(
     ContainerImpl& container,
     uint64_t prefix) {
-
   rocksdb::PinnableSlice val;
   auto s = container.db->Get(
       rocksdb::ReadOptions(),
@@ -817,8 +829,8 @@ std::optional<UsetId> DatabaseImpl::FactOwnerCache::getOwner(
       wcache->pages[prefix] = std::move(p);
     }
 
-    VLOG(2) << "new page(" << prefix << ") size = "
-            << folly::prettyPrint(size, folly::PRETTY_BYTES_IEC);
+    VLOG(2) << "new page(" << prefix
+            << ") size = " << folly::prettyPrint(size, folly::PRETTY_BYTES_IEC);
     page = wcache->pages[prefix].get();
   }
 
@@ -885,7 +897,7 @@ void DatabaseImpl::FactOwnerCache::prepare(ContainerImpl& container) {
     if (set == INVALID_USET && id > prev) {
       // track the number of orphaned facts
       orphaned += id - prev;
-      VLOG(2) << folly::sformat("orphaned fact(s) {}-{}", prev, id-1);
+      VLOG(2) << folly::sformat("orphaned fact(s) {}-{}", prev, id - 1);
     }
 
     binary::Input val(byteRange(iter->value()));
@@ -999,8 +1011,8 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
 
   for (const auto& [pid, pred] : def) {
     VLOG(1) << "addDefineOwnership: "
-            << pred.owners_.size() + pred.new_owners_.size() << " owners, for pid "
-            << pid.toWord();
+            << pred.owners_.size() + pred.new_owners_.size()
+            << " owners, for pid " << pid.toWord();
 
     // ownershipDerivedRaw :: (Pid,nat) -> vector<int64_t>
     //
@@ -1011,8 +1023,7 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
 
     binary::Output key;
     key.nat(pid.toWord());
-    const auto [it, _] =
-        ownership_derived_counters.insert({pid.toWord(), 0});
+    const auto [it, _] = ownership_derived_counters.insert({pid.toWord(), 0});
     key.nat(it->second++);
 
     rocksdb::WriteBatch batch;
@@ -1022,17 +1033,18 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
     val.bytes(
         pred.ids_.data(),
         pred.ids_.size() *
-            sizeof(std::remove_reference<decltype(pred.ids_)>::type::value_type));
+            sizeof(
+                std::remove_reference<decltype(pred.ids_)>::type::value_type));
     val.bytes(
         pred.new_ids_.data(),
         pred.new_ids_.size() *
-            sizeof(
-                std::remove_reference<decltype(pred.new_ids_)>::type::value_type));
+            sizeof(std::remove_reference<
+                   decltype(pred.new_ids_)>::type::value_type));
     val.bytes(
         pred.owners_.data(),
         pred.owners_.size() *
-            sizeof(
-                std::remove_reference<decltype(pred.owners_)>::type::value_type));
+            sizeof(std::remove_reference<
+                   decltype(pred.owners_)>::type::value_type));
     val.bytes(
         pred.new_owners_.data(),
         pred.new_owners_.size() *
@@ -1040,7 +1052,9 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
                    decltype(pred.new_owners_)>::type::value_type));
 
     check(batch.Put(
-        container_.family(Family::ownershipDerivedRaw), slice(key), slice(val)));
+        container_.family(Family::ownershipDerivedRaw),
+        slice(key),
+        slice(val)));
 
     check(container_.db->Write(container_.writeOptions, &batch));
 
@@ -1050,7 +1064,7 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
   }
 }
 
-}
-}
-}
+} // namespace impl
+} // namespace rocks
+} // namespace glean
 } // namespace facebook

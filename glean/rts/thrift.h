@@ -15,12 +15,8 @@
 extern "C" {
 #endif
 
-size_t glean_thrift_encode_zigzag(
-  int64_t value,
-  uint8_t *buffer);
-size_t glean_thrift_encode_varint(
-  uint64_t value,
-  uint8_t *buffer);
+size_t glean_thrift_encode_zigzag(int64_t value, uint8_t* buffer);
+size_t glean_thrift_encode_varint(uint64_t value, uint8_t* buffer);
 
 #ifdef __cplusplus
 }
