@@ -29,6 +29,7 @@ import Data.Dynamic
 import Data.IORef
 import Data.IntMap (IntMap)
 import Data.Proxy (Proxy(..))
+import Data.Set
 import Data.Text ( Text )
 import Data.Word ( Word64 )
 import Foreign.Ptr
@@ -188,6 +189,16 @@ instance Type a => Type (Maybe a) where
     (Decoder $ \_ -> decodeFail "maybe selector out of range")
     [pure Nothing, Just <$> decodeRtsValue]
   sourceType _ = Angle.MaybeTy (sourceType (Proxy @a))
+
+instance (Type a, Ord a) => Type (Set a) where
+  buildRtsValue b xs = liftIO $ do
+    -- TODO, we need to sort things properly
+    FFI.call $ RTS.glean_push_value_set b $ fromIntegral $ length xs
+    mapM_ (buildRtsValue b) xs
+  decodeRtsValue = Decoder $ \env@DecoderEnv{..} -> do
+    size <- FFI.ffiBuf buf $ RTS.glean_pop_value_set begin end
+    fromList <$> replicateM (fromIntegral size) (runDecoder decodeRtsValue env)
+  sourceType _ = Angle.SetTy (sourceType (Proxy @a))
 
 -- -----------------------------------------------------------------------------
 
