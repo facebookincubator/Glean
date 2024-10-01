@@ -425,6 +425,10 @@ const char *glean_push_value_array(
   Output *builder,
   size_t size
 );
+const char *glean_push_value_set(
+  Output *builder,
+  size_t size
+);
 const char *glean_push_value_selector(
   Output *builder,
   size_t selector
@@ -448,6 +452,10 @@ const char *glean_pop_value_nat(
   const void *end,
   uint64_t *nat);
 const char *glean_pop_value_array(
+  const void **start,
+  const void *end,
+  size_t *size);
+const char *glean_pop_value_set(
   const void **start,
   const void *end,
   size_t *size);

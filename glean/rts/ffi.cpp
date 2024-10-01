@@ -688,6 +688,12 @@ const char *glean_push_value_array(Output *builder, size_t size) {
   });
 }
 
+const char *glean_push_value_set(Output *builder, size_t size) {
+  return ffi::wrap([=]() {
+    builder->packed(size);
+  });
+}
+
 const char *glean_push_value_selector(
     Output *builder,
     size_t selector) {
@@ -733,6 +739,15 @@ const char *glean_pop_value_nat(
 }
 
 const char *glean_pop_value_array(
+    const void **start,
+    const void *end,
+    size_t *size) {
+  return pop_value(start, end, [=](binary::Input& input) {
+    *size = input.packed<size_t>();
+  });
+}
+
+const char *glean_pop_value_set(
     const void **start,
     const void *end,
     size_t *size) {

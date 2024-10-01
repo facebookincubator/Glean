@@ -21,13 +21,14 @@ module Glean.RTS (
   Decoder, DecodingException(..), withDecoder,
   dByte, dNat,
   dTrustedStringRef, dString,
-  dArray, dByteStringRef, dBytes,
+  dArray, dSet, dByteStringRef, dBytes,
   dSelector, dFact,
 
   glean_push_value_byte,
   glean_push_value_nat,
   glean_push_value_string,
   glean_push_value_array,
+  glean_push_value_set,
   glean_push_value_bytes,
   glean_push_value_selector,
   glean_push_value_fact,
@@ -38,6 +39,7 @@ module Glean.RTS (
   glean_pop_value_nat,
   glean_pop_value_string,
   glean_pop_value_array,
+  glean_pop_value_set,
   glean_pop_value_bytes,
   glean_pop_value_selector,
   glean_pop_value_fact,
@@ -80,7 +82,7 @@ encodeValue b (Array xs) = do
 encodeValue b (ByteArray xs) = encodeByteArray b xs
 encodeValue b (Tuple xs) = mapM_ (encodeValue b) xs
 encodeValue b (Set xs) = do
-  FFI.call $ glean_push_value_array b $ fromIntegral $ length xs
+  FFI.call $ glean_push_value_set b $ fromIntegral $ length xs
   mapM_ (encodeValue b) xs
 encodeValue b (Alt n x) = do
   FFI.call $ glean_push_value_selector b $ fromIntegral n
@@ -191,6 +193,9 @@ dNat = dffi glean_pop_value_nat
 dArray :: Decoder s -> ST s CSize
 dArray = dffi glean_pop_value_array
 
+dSet :: Decoder s -> ST s CSize
+dSet = dffi glean_pop_value_set
+
 -- | Obtain a fixed number of bytes from the 'Decoder'. The 'ByteStringRef'
 -- has the same lifetime as the 'Decoder'.
 dByteStringRef :: Decoder s -> CSize -> ST s ByteStringRef
@@ -257,7 +262,7 @@ decodeValue d ty = case ty of
     sel <- dSelector d
     Alt (fromIntegral sel) <$> decodeValue d (tys !! fromIntegral sel)
   SetRep elty -> do
-    size <- dArray d
+    size <- dSet d
     Set <$> replicateM (fromIntegral size) (decodeValue d elty)
   StringRep -> String <$> dString d
   PredicateRep _ -> Ref <$> dFact d
@@ -267,6 +272,8 @@ foreign import ccall unsafe glean_push_value_byte
 foreign import ccall unsafe glean_push_value_nat
   :: Builder -> Word64 -> IO CString
 foreign import ccall unsafe glean_push_value_array
+  :: Builder -> CSize -> IO CString
+foreign import ccall unsafe glean_push_value_set
   :: Builder -> CSize -> IO CString
 foreign import ccall unsafe glean_push_value_bytes
   :: Builder -> Ptr Word8 -> CSize -> IO CString
@@ -282,6 +289,8 @@ foreign import ccall unsafe glean_pop_value_byte
 foreign import ccall unsafe glean_pop_value_nat
   :: Ptr (Ptr ()) -> Ptr () -> Ptr Word64 -> IO CString
 foreign import ccall unsafe glean_pop_value_array
+  :: Ptr (Ptr ()) -> Ptr () -> Ptr CSize -> IO CString
+foreign import ccall unsafe glean_pop_value_set
   :: Ptr (Ptr ()) -> Ptr () -> Ptr CSize -> IO CString
 foreign import ccall unsafe glean_pop_value_bytes_ref
   :: Ptr (Ptr ()) -> Ptr () -> CSize -> Ptr (Ptr Word8) -> IO CString

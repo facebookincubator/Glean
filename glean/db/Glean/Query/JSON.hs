@@ -98,6 +98,15 @@ data Encoder = Encoder
     -- | Finish an array
   , encArrayEnd :: Enc
 
+    -- | Start a set
+  , encSetBegin :: Type -> Int -> Enc
+
+    -- | Separate two set elements
+  , encSetSep :: Enc
+
+    -- | Finish a set
+  , encSetEnd :: Enc
+
     -- | Start an object
   , encObjectBegin :: Enc
 
@@ -226,7 +235,26 @@ encode expanded Encoder{..} !d = enc
           Nothing ->
             enc_field Nothing (length fieldTys + 1) "UNKNOWN" (RecordTy []) d
         encObjectEnd
-      SetTy _ -> error "Set"
+      SetTy elty -> do
+        size <- liftST $ RTS.dSet d
+        case elty of
+          ByteTy{} -> do
+            ref <- liftST $ RTS.dByteStringRef d size
+            encBinary ref
+          _ -> do
+            encSetBegin elty $ fromIntegral size
+            case size of
+              0 -> return ()
+              1 -> enc elty
+              _ -> do
+                enc elty
+                let go 0 = return ()
+                    go n = do
+                      encSetSep
+                      enc elty
+                      go (n-1)
+                go (size-1)
+            encSetEnd
       NamedTy (ExpandedType _ ty) -> enc ty
       EnumeratedTy _ -> do
         x <- liftST $ RTS.dSelector d
@@ -298,6 +326,10 @@ jsonEncoder no_base64 = Encoder
   , encArrayBegin = \_ _ -> ascii '['
   , encArraySep = ascii ','
   , encArrayEnd = ascii ']'
+  -- Sets are encoded as ordered arrays.
+  , encSetBegin = \_ _ -> ascii '['
+  , encSetSep = ascii ','
+  , encSetEnd = ascii ']'
   , encObjectBegin = ascii '{'
   , encObjectSep = ascii ','
   , encObjectField = \_ _ !name _ _ enc -> do
@@ -352,17 +384,12 @@ compactEncoder = Encoder
         -- s might be NULL if the range is empty so check for that
         when (n /= 0) $ unsafeIOToST $ copyBytes p s $ fromIntegral n
         return (fromIntegral n)
-  , encArrayBegin = \typ n -> do
-      -- array types
-      let !ety = thriftType typ
-      if n < 15
-        -- small lengths are folded into the header byte
-        then Buffer.byte $ ((fromIntegral n .&. 0x0F) `shiftL` 4) .|. ety
-        else do
-          Buffer.byte $ 0xF0 .|. ety
-          Thrift.encodeVarint $ fromIntegral n
+  , encArrayBegin = encArray
   , encArraySep = return ()
   , encArrayEnd = return ()
+  , encSetBegin = encArray
+  , encSetSep = return ()
+  , encSetEnd = return ()
   , encObjectBegin = return ()
   , encObjectSep = return ()
   , encObjectField = \prev i _ typ d enc -> do
@@ -388,3 +415,12 @@ compactEncoder = Encoder
   where
     bool True = 1
     bool False = 2
+    encArray typ n = do
+      -- array types
+      let !ety = thriftType typ
+      if n < 15
+        -- small lengths are folded into the header byte
+        then Buffer.byte $ ((fromIntegral n .&. 0x0F) `shiftL` 4) .|. ety
+        else do
+          Buffer.byte $ 0xF0 .|. ety
+          Thrift.encodeVarint $ fromIntegral n
