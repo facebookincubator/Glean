@@ -333,6 +333,7 @@ reorderStmtGroup sc bound stmts =
     classify bound (FlatDisjunction alts@(_:_)) =
       maximum (map (classifyAlt bound) alts)
     classify _ (FlatStatement _ _ ArrayElementGenerator{}) = StmtPrefixMatch
+    classify _ (FlatStatement _ _ SetElementGenerator{}) = StmtPrefixMatch
     classify _ _ = StmtScan
 
     -- Approximate classification of disjunctions. To be more
@@ -527,6 +528,7 @@ reorderStmts stmts = iterate stmts []
 isResolvedFilter :: InScope -> FlatStatement -> Bool
 isResolvedFilter scope stmt = case stmt of
   FlatStatement _ _ ArrayElementGenerator{} -> False
+  FlatStatement _ _ SetElementGenerator{} -> False
     -- an ArrayElementGenerator is not O(1)
   _otherwise -> isReadyFilter scope stmt False
 
@@ -538,12 +540,16 @@ isUnresolved inScope stmt = case stmt of
   FlatDisjunction{} -> False -- don't know
   FlatStatement _ _ (ArrayElementGenerator _ arr) ->
     not (patIsBound inScope arr)
+  FlatStatement _ _ (SetElementGenerator _ arr) ->
+    not (patIsBound inScope arr)
   _otherwise -> not (isReadyFilter inScope stmt True)
 
 isCurrentlyUnresolved :: InScope -> FlatStatement -> Bool
 isCurrentlyUnresolved scope stmt = case stmt of
   FlatDisjunction{} -> False -- don't know
   FlatStatement _ _ (ArrayElementGenerator _ arr) ->
+    not (patIsBound scope arr)
+  FlatStatement _ _ (SetElementGenerator _ arr) ->
     not (patIsBound scope arr)
   _otherwise -> not (isReadyFilter scope stmt True)
 

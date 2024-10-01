@@ -448,6 +448,7 @@ unify _ _ = return False
 extend :: Var -> Generator -> U Bool
 -- These two generators don't tell us anything:
 extend _ ArrayElementGenerator{} = return True
+extend _ SetElementGenerator{} = return True
 extend _ PrimCall{} = return True
 -- TermGenerators get added to the substitution:
 extend var (TermGenerator t) = do
