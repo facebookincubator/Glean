@@ -193,7 +193,18 @@ skipTrusted input inputend ty = skip (repType ty)
         return alt
       end <- label
       return ()
-    SetRep _ -> error "Set"
+    SetRep eltTy ->
+      local $ \size -> do
+        inputNat input inputend size
+        case eltTy of
+          ByteRep -> inputBytes input inputend size
+          _ -> mdo
+            jumpIf0 size end
+            loop2 <- label
+            skip eltTy
+            decrAndJumpIfNot0 size loop2
+            end <- label
+            return ()
     StringRep -> inputSkipTrustedString input inputend
     PredicateRep _ -> inputSkipNat input inputend
 

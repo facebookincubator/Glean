@@ -501,8 +501,29 @@ compileStatements
           matches :: Term (Match e v) -> [Match e v]
           matches p = foldMap pure p
 
-      compile (CgAllStatement (Var _ _var _) _expr _stmts : _rest) =
-        error "Set"
+      compile (CgAllStatement (Var (Angle.SetTy ty) v _) expr stmts : rest)
+        | isWordTy ty = do
+        local $ \setReg -> do
+          let set = castRegister setReg
+          newWordSet set
+          compileStatements qtrans bounds regs stmts vars $
+            local $ \reg -> do
+              compileTermGen expr vars (Just reg) $
+                insertWordSet set (castRegister reg)
+          wordSetToArray set (castRegister (vars!v))
+          freeWordSet set
+        compile rest
+      compile (CgAllStatement (Var _ v _) expr stmts : rest) = do
+        local $ \setReg -> do
+          let set = castRegister setReg
+          newSet set
+          compileStatements qtrans bounds regs stmts vars $
+            output $ \out -> do
+              compileTermGen expr vars (Just out) $
+                insertOutputSet set out
+          setToArray set (castRegister (vars!v))
+          freeSet set
+        compile rest
       compile (CgNegation stmts : rest) = mdo
         singleResult (compileStatements qtrans bounds regs stmts vars) $
           jump fail
@@ -849,8 +870,8 @@ compileStatements
             return a
 
       compileGen (SetElementGenerator _ _) Nothing inner = inner
-      compileGen (SetElementGenerator _ _) (Just _reg) _inner =
-        error "TODO: set element generator"
+      compileGen (SetElementGenerator eltTy term) r@(Just _reg) inner =
+        compileGen (ArrayElementGenerator eltTy term) r inner
 
       -- derived fact where we don't bind the Fid: no need to store it
       compileGen DerivedFactGenerator{} Nothing inner = inner
@@ -1740,10 +1761,10 @@ generateQueryCode f = generate Optimised $
       callFun_0_1 newSet_ setToken
 
     insertOutputSet setToken outputPtr =
-      callFun_1_1 insertOutputSet_ setToken (castRegister outputPtr)
+      callFun_2_0 insertOutputSet_ setToken (castRegister outputPtr)
 
     setToArray setToken outputPtr =
-      callFun_1_1 setToArray_ setToken (castRegister outputPtr)
+      callFun_2_0 setToArray_ setToken (castRegister outputPtr)
 
     freeSet setToken =
       callFun_1_0 freeSet_ setToken
