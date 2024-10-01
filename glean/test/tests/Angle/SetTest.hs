@@ -8,6 +8,7 @@
 
 {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE TypeApplications #-}
 module Angle.SetTest (main) where
 
 import Control.Monad.Trans.Except
@@ -16,31 +17,37 @@ import Data.Default
 import Data.Text
 
 import Glean.Angle.Parser
-import Glean.Angle.Types
+import Glean.Angle.Types hiding (Nat)
 import Glean.Init
 import Glean.Query.Typecheck
 import Glean.Query.Flatten
+import Glean.Query.Thrift as Thrift
 import Glean.Schema.Resolve
 import Glean.Database.Schema.Types
+import Glean.Types
 
 import qualified Data.HashMap.Strict as HashMap
+import Data.Set
 
 import Test.HUnit
 import TestRunner
 import Util.String.Quasi
 import Glean.Database.Types
 
+import TestDB
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
-  [ TestLabel "set" setTest
+  [ TestLabel "set parse" setParseTest
+  , TestLabel "set semantics" setSemanticsTest
   ]
 
 -- First version to support sets
 v :: AngleVersion
 v = AngleVersion 9
 
-setTest :: Test
-setTest = TestList
+setParseTest :: Test
+setParseTest = TestList
     [ TestLabel "schema parses" $ TestCase $
         case parseSchemaWithVersion v
             [s|
@@ -103,3 +110,11 @@ setTest = TestList
                       <> unpack err
                 Right _ -> return ()
     ]
+
+setSemanticsTest :: Test
+setSemanticsTest = dbTestCase $ \env repo -> do
+  r <- runQuery_ env repo $ angleData @(Set Text) [s| all ("foo"|"bar") |]
+  assertEqual "two results in a set" r [fromList ["foo", "bar"]]
+
+  r <- runQuery_ env repo $ angleData @Nat [s| elements (all (1|2)) |]
+  assertEqual "two separate results" r [Nat 1, Nat 2]
