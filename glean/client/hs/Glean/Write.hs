@@ -34,6 +34,9 @@ import Util.String.Quasi
 
 import Glean.Types hiding (Value)
 import Glean.Schema.Util
+import System.FilePath (takeExtension)
+import qualified System.Process.ByteString as BS
+import System.Exit (ExitCode(ExitSuccess))
 
 $(mangle
   [s|
@@ -53,7 +56,12 @@ instance FromJSON ParseJsonFactBatchForWriteServer where
 
 fileToBatches :: FilePath -> IO [JsonFactBatch]
 fileToBatches file = do
-  bs <- B.readFile file
+  bs <- if takeExtension file == ".zst" then do
+    (exit, bs, err) <- BS.readProcessWithExitCode "zstd" [file,"-d","-c"] ""
+    when (exit /= ExitSuccess) $
+      throwIO $ ErrorCall $ file ++ ": " ++ show err
+    return bs
+    else B.readFile file
   r <- Foreign.CPP.Dynamic.callJSONParserFFI c_parseJsonFacts bs
   case r of
     Right val -> case Aeson.parse parseJSON val of

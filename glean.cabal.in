@@ -582,7 +582,8 @@ library client-hs
         glean:haxl-datasource,
         glean:stubs,
         prettyprinter-ansi-terminal,
-        thrift-haxl
+        thrift-haxl,
+        process-extras
 
 library client-hs-local
     import: fb-haskell, fb-cpp, deps

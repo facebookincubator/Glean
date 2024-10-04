@@ -67,7 +67,7 @@ fileArg :: Parser [FilePath]
 fileArg = many $ strArgument
   (  metavar "FILE..."
   <> help ("File(s) of facts to add to the DB. "
-  <> "You can specify the format of the file with --file-format")
+  <> "You can specify the format of the file with --file-format. ")
   )
 
 repoTimeOpt :: Parser UTCTime

@@ -112,7 +112,8 @@ fileFormatOpt defaultFormat = option (eitherReader parseFileFormat)
   <> value defaultFormat
   <> showDefault
   <> metavar "(json|binary)"
-  <> help "Format of the files with facts (see FILE for more details)"
+  <> help ("Format of the files with facts (see FILE for more details). "
+  <> "json also accepts zstd compressed json")
   )
   where
     parseFileFormat :: String -> Either String FileFormat

@@ -47,8 +47,8 @@ using this option, creation will fail if the current schema has
 a different definition for any predicate in the base DB schema;
 therefore predicates may only be added or removed relative to the base DB.
 * `FILE..`<br />
-File(s) of facts to write into the database (JSON). See [Writing data
-to Glean](./write.md).
+File(s) of facts to write into the database. Accepts JSON or compressed (zstd) JSONs.
+See [Writing data to Glean](./write.md).
 
 The schema for the new DB is given by:
 
@@ -74,8 +74,8 @@ Write facts to a database.
 * `--db NAME/INSTANCE` or `--db-name NAME --db-instance INSTANCE`<br />
 Specifies the name and instance of the database
 * `FILE..`<br />
-File(s) of facts to write into the database (JSON). See [Writing data
-to Glean](./write.md).
+File(s) of facts to write into the database. Accepts JSON or compressed (zstd) JSONs.
+See [Writing data to Glean](./write.md).
 * `--finish`<br />
 Also mark the DB as complete
 
