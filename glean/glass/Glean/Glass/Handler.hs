@@ -15,6 +15,7 @@ module Glean.Glass.Handler
   (
   -- * listing symbols by file
     documentSymbolListX
+  , documentSymbolListXSnapshot
   , documentSymbolIndex
 
   -- ** find references
@@ -164,11 +165,36 @@ documentSymbolListX env r opts = do
       (if useSnapshots
         then fetchSymbolsAndAttributes env
         else (\dbInfo req opts be _ mlang -> do
-                ((res, log), err) <-
-                  fetchSymbolsAndAttributesGlean env dbInfo req opts be mlang
+                ((res, log), err) <- fetchSymbolsAndAttributesGlean
+                  env dbInfo req opts be Nothing mlang
                 return ((res, Snapshot.Unrequested, log), err)
               )
       )
+      env r opts
+
+-- | Variation of documentSymbolListX
+-- Always use Glean (and not XDB snapshot backend).
+-- Possibly use a different backend o resolve xlang
+-- entities to their location.
+--
+-- Use case: constructing document symbols lists
+-- snapshots from local dbs, and resolving xlang
+-- entities location from global dbs not locally indexed.
+documentSymbolListXSnapshot
+  :: Glass.Env
+  -> DocumentSymbolsRequest
+  -> RequestOptions
+  -> Maybe (Some Glean.Backend, GleanDBInfo)
+  -> IO DocumentSymbolListXResult
+documentSymbolListXSnapshot env  r opts mGleanBe = do
+  fst3 <$>
+    runRepoFile
+      "documentSymbolListXSnapshot"
+      (\dbInfo req opts be _ mlang -> do
+          ((res, log), err) <- fetchSymbolsAndAttributesGlean
+            env dbInfo req opts be mGleanBe mlang
+          return ((res, Snapshot.Unrequested, log), err)
+          )
       env r opts
 
 -- | Same as documentSymbolList() but construct a line-indexed map for easy
@@ -695,12 +721,15 @@ fetchSymbolsAndAttributesGlean
   -> DocumentSymbolsRequest
   -> RequestOptions
   -> GleanBackend b
+  -> Maybe (Some Glean.Backend, GleanDBInfo)
   -> Maybe Language
   -> IO (
        (DocumentSymbolListXResult, QueryEachRepoLog),
        Maybe ErrorLogger
      )
-fetchSymbolsAndAttributesGlean env@Glass.Env{..} dbInfo req opts be mlang = do
+fetchSymbolsAndAttributesGlean
+  env@Glass.Env{tracer, gleanBackend}
+  dbInfo req opts be mOtherBackend mlang = do
   (res1, gLogs, elogs) <- traceSpan tracer "fetchDocumentSymbols" $
     fetchDocumentSymbols env file path mlimit
       (requestOptions_revision opts)
@@ -708,7 +737,9 @@ fetchSymbolsAndAttributesGlean env@Glass.Env{..} dbInfo req opts be mlang = do
       includeRefs includeXlangRefs
       (shouldFetchContentHash opts) be mlang dbInfo
 
-  res2 <- resolveIdlXrefs env res1 repo be dbInfo
+  let be = fromMaybe (gleanBackend, dbInfo) mOtherBackend
+
+  res2 <- resolveIdlXrefs env res1 repo be
 
   let res3 = toDocumentSymbolResult res2
   return ((res3, gLogs), elogs)
@@ -900,7 +931,7 @@ fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
 
     getFromGlean =
       Glass.withAllocationLimit env $
-        fetchSymbolsAndAttributesGlean env dbInfo req opts be mlang
+        fetchSymbolsAndAttributesGlean env dbInfo req opts be Nothing mlang
 
 xRefDataToRefEntitySymbol :: XRefData -> (Code.Entity, ReferenceRangeSymbolX)
 xRefDataToRefEntitySymbol XRefData{..} = (xrefEntity, xrefSymbol)
@@ -1028,33 +1059,36 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
           in (locationRange_repository, locationRange_filepath)
       )) xrefs
 
--- Idl xrefs needs db determination and range resolution
+-- | Idl xrefs needs db determination and range resolution
+--   possibly using a separate backend than the one computed
+--   from the origin query.
+--   Always choose latest db, as exactRevision can't usually be
+--   enforced for xlang refs
 resolveIdlXrefs
   :: Glean.Backend b
   => Glass.Env
   -> DocumentSymbols
   -> RepoName
-  -> GleanBackend b
-  -> GleanDBInfo
+  -> (b, GleanDBInfo)
   -> IO DocumentSymbols
-resolveIdlXrefs env docSyms@DocumentSymbols{..} scsrepo b dbInfo = do
+resolveIdlXrefs
+  env@Glass.Env{tracer, sourceControl, repoMapping}
+  docSyms@DocumentSymbols{..}
+  scsrepo
+  (gleanBackend, dbInfo) = do
   case (unresolvedXrefsIdl, srcFile) of
     ((ent, _) : _, Just srcFile) -> do
-      backendRunHaxl b env $ do
-        -- we assume all idl xrefs belong to the same db
-        let lang = entityLanguage ent
-        xrefsIdl <- case getLatestRepo
-          (Glass.repoMapping env) dbInfo scsrepo lang of
-            --  we look only in the first repo available, this assumes
-            --  the Idl repo comes first in the repomapping
-            Just idlRepo -> do
-              xrefs <- withRepo idlRepo $
-                resolveEntitiesRange scsrepo fst unresolvedXrefsIdl
-              withRepo idlRepo $
-                mapM (toReferenceSymbolIdl scsrepo srcFile offsets lang) xrefs
-            _ -> return []
-        let idlRefs = xRefDataToRefEntitySymbol <$> xrefsIdl
-        return $ docSyms  { refs = refs ++ idlRefs, unresolvedXrefsIdl = [] }
+       -- we assume all idl xrefs belong to the same db
+      let lang = entityLanguage ent
+      gleanDBs <- getGleanRepos tracer sourceControl repoMapping dbInfo
+        scsrepo (Just lang) ChooseLatest Nothing
+      let gleanBe = GleanBackend {gleanDBs, tracer, gleanBackend}
+      idlRefs <- backendRunHaxl gleanBe env $ do
+        xrefsIdl <- withRepo (snd (NonEmpty.head gleanDBs)) $ do
+          xrefs <- resolveEntitiesRange scsrepo fst unresolvedXrefsIdl
+          mapM (toReferenceSymbolIdl scsrepo srcFile offsets lang) xrefs
+        return $ xRefDataToRefEntitySymbol <$> xrefsIdl
+      return $ docSyms  { refs = refs ++ idlRefs, unresolvedXrefsIdl = [] }
     _ -> return docSyms
 
 -- | Wrapper for tracking symbol/entity pairs through processing

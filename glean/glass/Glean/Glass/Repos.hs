@@ -36,7 +36,6 @@ module Glean.Glass.Repos
   , getRepoHash
   , getRepoHashForLocation
   , getDBRevision
-  , getLatestRepo
   ) where
 
 import Control.Concurrent.Stream
@@ -545,13 +544,3 @@ getDBRevision scmRevs gleanDB repo =
   fromMaybe (getRepoHash gleanDB) $ do
     scmRepoToHash <- HashMap.lookup gleanDB scmRevs
     scmRevision <$> HashMap.lookup repo scmRepoToHash
-
-getLatestRepo
-  :: RepoMapping -> GleanDBInfo -> RepoName -> Language -> Maybe Glean.Repo
-getLatestRepo repoMapping dbInfo repoName lang =
-  let GleanDBInfo{
-      latestRepos = Glean.LatestRepos { latestRepos = repos }
-    } = dbInfo in
-  case fromSCSRepo repoMapping repoName (Just lang) of
-    [] -> Nothing
-    GleanDBName repo : _ -> Map.lookup repo repos

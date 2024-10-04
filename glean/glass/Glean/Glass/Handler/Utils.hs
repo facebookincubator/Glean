@@ -19,6 +19,7 @@ module Glean.Glass.Handler.Utils (
     -- * Utils for building handlers
     GleanBackend(..),
     backendRunHaxl,
+    getGleanRepos,
 
     revisionSpecifierError,
 
