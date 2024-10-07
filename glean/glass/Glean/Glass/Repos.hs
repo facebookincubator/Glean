@@ -36,6 +36,7 @@ module Glean.Glass.Repos
   , getRepoHash
   , getRepoHashForLocation
   , getDBRevision
+  , getLatestRepos
   ) where
 
 import Control.Concurrent.Stream
