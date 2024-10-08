@@ -222,6 +222,7 @@ data AngleTypeRepr
   | EnumeratedTEnum {alts::[Name], classname::Text}
   | BooleanTBool
   | ArrayTVec {inner::AngleTypeRepr}
+  | SetTSet {inner::AngleTypeRepr}
   | RecordTShape {fields::[(Text, AngleTypeRepr)]}
   | SumTShape {fields::[(Text, AngleTypeRepr)]}
   | PredicateTKeyValue {pref::PredicateRef, classname::Text}
@@ -274,7 +275,7 @@ angleTypeInnerReprFor (SumTy fields) =
   where
     f FieldDef{..} =
       (,) fieldDefName <$> angleTypeInnerReprFor fieldDefType
-angleTypeInnerReprFor (SetTy _ty) = error "Set"
+angleTypeInnerReprFor (SetTy ty) = SetTSet <$> angleTypeInnerReprFor ty
 angleTypeInnerReprFor (PredicateTy ref) = do
   ctx <- ask
   case lookupPredDefKeyValue ctx ref of

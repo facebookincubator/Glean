@@ -158,6 +158,14 @@ struct Repr_<std::vector<T>> {
   using Type = Array<Repr<T>>;
 };
 
+template <typename T>
+struct Set;
+
+template <typename T>
+struct Repr_<std::set<T>> {
+  using Type = Set<Repr<T>>;
+};
+
 template <typename... Ts>
 struct Tuple;
 using Unit = Tuple<>;

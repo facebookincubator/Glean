@@ -119,6 +119,7 @@ header here deps = Text.unlines $
   , "import qualified Data.ByteString"
   , "import qualified Data.Default"
   , "import qualified Data.Text"
+  , "import qualified Data.Set"
   , ""
     -- we should use qualified imports as far as possible to avoid
     -- clashing with Thrift-generated code

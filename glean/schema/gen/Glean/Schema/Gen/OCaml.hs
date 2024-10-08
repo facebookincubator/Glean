@@ -253,7 +253,9 @@ genOCamlType ns namePolicy t = case t of
   SumTy fields -> do
     f <- mapM (genField Sum) fields
     return $ "\n" <> Text.intercalate "\n" f
-  SetTy _ty -> error "Set"
+  SetTy ty -> do
+    t <- genOCamlType ns namePolicy ty
+    return $ t <> " list" -- Suboptimal but sets in OCaml is such a pain
   PredicateTy pred -> return $ predToModule ns pred namePolicy <> ".t"
   NamedTy tref -> return $ typeToModule ns tref namePolicy <> ".t"
   MaybeTy ty -> do
@@ -349,7 +351,10 @@ genOCamlToJson var ns namePolicy t = case t of
                         " -> JSON_Object [(\"", key, "\", ", genType, ")]"]
     fields <- mapM typeSumField fields
     return ("", "function\n" <> Text.unlines fields)
-  SetTy _ -> error "Set"
+  SetTy ty -> do
+    (_, code) <- genOCamlToJson "x" ns namePolicy ty
+    return (var, "JSON_Array (List.map ~f:(fun x -> " <> code  <> ") "
+       <> var <> ")")
   PredicateTy pred ->
     let moduleName = predToModule ns pred namePolicy in
         return (var, moduleName <> ".to_json " <> var)
