@@ -229,7 +229,13 @@ instance Apply FlatStatement where
     -- these were already unified by 'unify'
     FlatStatement ty <$> apply lhs <*> apply rhs
   apply (FlatAllStatement v e g) = do
-    FlatAllStatement v <$> apply e <*> apply g
+    t <- applyVar v
+    -- it must be a variable, because no other pattern matches a set.
+    v' <- case t of
+      Ref (MatchVar x) -> return x
+      Ref (MatchBind x) -> return x
+      _ -> error "apply: FlatAllStatement"
+    FlatAllStatement v' <$> apply e <*> apply g
   apply (FlatNegation stmts) = do
     -- assumptions arising inside the negation are not true outside of it.
     stmts' <- optStmtsEnclosed stmts
