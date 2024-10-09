@@ -27,8 +27,8 @@ makeIncremental
   -- ^ whether a predicate has facts in the section or not.
   -> CodegenQuery
   -> CodegenQuery
-makeIncremental hasFacts (QueryWithInfo (CgQuery h body) v t) =
- QueryWithInfo (CgQuery h (expandGenerators hasFacts body)) v t
+makeIncremental hasFacts (QueryWithInfo (CgQuery h body) v g t) =
+ QueryWithInfo (CgQuery h (expandGenerators hasFacts body)) v g t
 
 -- | Represents the output from expanding statements such that they will
 -- perform a combination of querying the base and incremental database.

@@ -111,7 +111,7 @@ typecheck dbSchema opts rtsType query = do
              [ "query has ambiguous type",
                indent 4 $ "type: " <> display opts retTy'
              ]
-  return (QueryWithInfo q tcNextVar ty)
+  return (QueryWithInfo q tcNextVar Nothing ty)
 
 -- | Typecheck the query for a derived predicate
 typecheckDeriving
@@ -169,7 +169,7 @@ typecheckDeriving tcEnv opts rtsType PredicateDetails{..} derivingInfo = do
           q <- zonkTcQuery (TcQuery predicateKeyType key' maybeVal' stmts' ord)
           nextVar <- gets tcNextVar
           return $ Derive deriveWhen $
-            QueryWithInfo q nextVar predicateKeyType
+            QueryWithInfo q nextVar Nothing predicateKeyType
   return d
 
 needsResult

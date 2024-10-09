@@ -47,6 +47,7 @@ type CodegenQuery = QueryWithInfo CgQuery
 data QueryWithInfo q = QueryWithInfo
   { qiQuery :: q
   , qiNumVars :: Int    -- ^ maximum index of any Var + 1
+  , qiGenerator :: Maybe Generator -- see Note [query result] in Flatten.hs
   , qiReturnType :: Type
   }
 

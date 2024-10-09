@@ -359,7 +359,7 @@ predicateGraph ignoreDerivations dbschema = Map.fromList
           typeDeps (predicateValueType details)
         derivationDeps
           | not ignoreDerivations
-          , Derive _ (QueryWithInfo query _ _) <- predicateDeriving details
+          , Derive _ (QueryWithInfo query _ _ _) <- predicateDeriving details
           = tcQueryDeps query
           | otherwise
           = mempty

@@ -124,11 +124,11 @@ as necessary (this includes binary::Output registers).
 -}
 
 -- | Find all variables that need to be bound to a binary::Output
-findOutputs :: CgQuery -> IntSet
-findOutputs q = findOutputsQuery q IntSet.empty
+findOutputs :: [CgStatement] -> IntSet
+findOutputs stmts = findOutputsStmts stmts IntSet.empty
   where
-  findOutputsQuery :: CgQuery -> IntSet -> IntSet
-  findOutputsQuery (CgQuery _ stmts) r = foldr findOutputsStmt r stmts
+  findOutputsStmts :: [CgStatement] -> IntSet -> IntSet
+  findOutputsStmts stmts r = foldr findOutputsStmt r stmts
 
   findOutputsStmt :: CgStatement -> IntSet -> IntSet
   findOutputsStmt (CgStatement lhs gen) r =
@@ -199,17 +199,26 @@ compileQuery
      -- malformed query can cause a crash.
   -> IO CompiledQuery
 
-compileQuery r qtrans bounds (QueryWithInfo query numVars ty) = do
+compileQuery r qtrans bounds (QueryWithInfo query numVars lookup ty) = do
   vlog 2 $ show (displayDefault query)
 
-  (idTerm, resultKey, resultValue, stmts) <- case query of
-    (CgQuery (Tuple [idTerm, resultKey, resultValue]) stmts) ->
-      return (idTerm, resultKey, resultValue, stmts)
-    _other -> throwIO $ BadQuery "unsupported query"
+  (idTerm, resultKey, resultValue, stmts) <- if
+    | Just gen@(FactGenerator _ keyTerm valTerm _) <- lookup,
+      CgQuery idTerm stmts <- query -> do
+        let lookup = CgStatement idTerm gen
+        let
+          unBind (Ref (MatchBind x)) = Ref (MatchVar x)
+          unBind (Ref (MatchWild (Angle.RecordTy []))) = Tuple []
+          unBind _ = error "unBind"
+        return (idTerm, unBind keyTerm, unBind valTerm, stmts <> [lookup])
+    | CgQuery (Tuple [idTerm, resultKey, resultValue]) stmts <- query ->
+        return (idTerm, resultKey, resultValue, stmts)
+    | otherwise ->
+        throwIO $ BadQuery "unsupported query"
 
   (Meta{..}, sub) <- generateQueryCode $ \ regs@QueryRegs{..} -> do
 
-    let outputVars = IntSet.toList $ findOutputs query
+    let outputVars = IntSet.toList $ findOutputs stmts
     output $ Many (length outputVars) $ \outputRegs -> do
     let
       outputRegAssocs :: [(Int, Register 'BinaryOutputPtr)]

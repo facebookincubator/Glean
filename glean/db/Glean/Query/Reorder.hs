@@ -147,10 +147,10 @@ reorder dbSchema QueryWithInfo{..} =
     vcat [pretty e, nest 2 $ vcat [ "in:", displayDefault qiQuery]]) qi
   where
     qi = do
-      (q, ReorderState{..}) <-
+      ((q,gen), ReorderState{..}) <-
         flip runStateT (initialReorderState qiNumVars dbSchema) $ do
           go qiQuery
-      return (QueryWithInfo q roNextVar qiReturnType)
+      return (QueryWithInfo q roNextVar gen qiReturnType)
 
     -- 1. replace all wildcards with fresh variables
     -- 2. reorder the statements
@@ -158,10 +158,10 @@ reorder dbSchema QueryWithInfo{..} =
     --    renumber variables (this leads to more efficient/smaller code)
     go query0 = do
       query <- reorderQuery query0
-      let used = varsUsed query
+      let used = varsUsed query <> foldMap vars qiGenerator
           varMap = IntMap.fromList (zip (IntSet.toList used) [0..])
       modify $ \s -> s { roNextVar = IntSet.size used }
-      return (reWildQuery varMap query)
+      return (reWildQuery varMap query, reWildGenerator varMap <$> qiGenerator)
 
 reorderQuery :: FlatQuery -> R CgQuery
 reorderQuery (FlatQuery pat _ stmts) =

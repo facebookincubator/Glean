@@ -973,7 +973,7 @@ derivationEdges
 derivationEdges preds =
   [ (query, ref, Set.toList (tcQueryDeps query))
   | (ref, details) <- HashMap.toList preds
-  , Derive _ (QueryWithInfo query _ _)  <- [predicateDeriving details]
+  , Derive _ (QueryWithInfo query _ _ _)  <- [predicateDeriving details]
   ]
 
 -- | Check that the type of a stored predicate doesn't refer to any

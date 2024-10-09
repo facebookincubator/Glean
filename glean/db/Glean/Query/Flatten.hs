@@ -53,11 +53,11 @@ flatten
   -> Except Text FlattenedQuery
 flatten rec dbSchema ver deriveStored QueryWithInfo{..} =
   fmap fst $ flip runStateT state $ do
-    (flattened, returnType) <- do
+    (flattened, maybeLookup, returnType) <- do
       flat <- flattenQuery qiQuery `catchError` flattenFailure
       captureKey ver dbSchema flat (case qiQuery of TcQuery ty _ _ _ _ -> ty)
     nextVar <- gets flNextVar
-    return $ QueryWithInfo flattened nextVar returnType
+    return $ QueryWithInfo flattened nextVar maybeLookup returnType
   where
       state = initialFlattenState rec dbSchema qiNumVars deriveStoredPred
 
@@ -505,7 +505,9 @@ twoTerms constr as bs =
   ]
 
 
--- | A bit of trickiness to handle capturing and returning the key and
+-- | Note [query result]
+--
+-- A bit of trickiness to handle capturing and returning the key and
 -- value. This avoids having to separately look up the fact later, and
 -- also means we can track the size of the output that we're returning
 -- in the compiled query.
@@ -514,39 +516,40 @@ twoTerms constr as bs =
 --
 -- > predicate ("x",_)
 --
--- the parser expands this to
+-- flattening expands this to
 --
--- > $result where $result = predicate ("x",_)
+-- > X where X = predicate ("x",_)
 --
 -- and here we expand this to
 --
--- > ($result, $key, ()) where $result = predicate $key @ ("x",_)
+-- > { X, K, () } where X = predicate K @ ("x",_)
 --
 -- and the query compiler compiles this to efficient bytecode to
 -- capture the key and return it.
 --
 -- Note that we might not be able to do this transformation if the
--- query isn't in the right form, so in that case we will add an
+-- query isn't in the right form, so in that case we need an
 -- explicit fact lookup, like
 --
---   $result = predicate $key
+--   X = predicate K
 --
--- as the final statement.
+-- BUT we have to do this lookup as the very last thing before
+-- returning the result, because the fact might be a derived fact
+-- produced by a DerivedFactGen, so it won't exist until after it has
+-- been produced. Therefore we can't just add this lookup statement to
+-- the query, because there's nothing preventing later phases from
+-- moving it too early.
 --
--- In the case of a derived predicate, we have a statement like
---
---   $result = pred<- K -> V
---
--- which we transform to
---
---   $result = pred<- $key -> $val where $key = K; $val = V
+-- So instead we defer the generation of this statement until code
+-- generation. The generator is kept in the field qiGenerator in the
+-- QueryWithInfo.
 
 captureKey
   :: Schema.AngleVersion
   -> DbSchema
   -> FlatQuery
   -> Type
-  -> F (FlatQuery, Type)
+  -> F (FlatQuery, Maybe Generator, Type)
 captureKey ver dbSchema
     (FlatQuery pat Nothing (FlatStatementGroup stmts ord)) ty
   | Angle.PredicateTy pidRef@(PidRef pid _) <- ty  = do
@@ -638,21 +641,20 @@ captureKey ver dbSchema
   case catMaybes captured of
     [(key, val)] ->
       return (FlatQuery (RTS.Tuple [pat, key, val]) Nothing
-        (FlatStatementGroup stmts' ord), returnTy)
+        (FlatStatementGroup stmts' ord), Nothing, returnTy)
     _ -> do
-      pat' <- case pat of
-        RTS.Ref MatchWild{} -> RTS.Ref . MatchVar <$> fresh ty
-        _other -> return pat
+      -- If we can't find the key/value now, we'll add a statement
+      --   X = pred K V
+      -- at the end right before codeGen. Here we produce the generator
+      -- for the statement.
       let
-        query = FlatQuery (RTS.Tuple [pat', RTS.Ref (MatchVar keyVar),
-          maybe (Tuple []) (RTS.Ref . MatchVar) maybeValVar]) Nothing
-        lookup = FlatStatement ty pat'
-          (FactGenerator pidRef
-            (Ref (MatchBind keyVar))
-            (Ref (maybe (MatchWild predicateValueType) MatchBind maybeValVar))
-            SeekOnAllFacts)
-        group = grouping (FlatStatementGroup stmts' ord)
-      return (query (FlatStatementGroup [group, lookup] Ordered), returnTy)
+        gen = FactGenerator pidRef
+          (Ref (MatchBind keyVar))
+          (Ref (maybe (MatchWild predicateValueType) MatchBind maybeValVar))
+          SeekOnAllFacts
+      return (FlatQuery pat Nothing (FlatStatementGroup stmts ord),
+        Just gen,
+        returnTy)
 
   | otherwise = do
   -- We have
@@ -694,6 +696,7 @@ captureKey ver dbSchema
     return
       ( FlatQuery result Nothing
           (FlatStatementGroup (stmts ++ [resultStmt1, resultStmt2]) ord)
+      , Nothing
       , retTy )
 
 captureKey _ _ (FlatQuery _ Just{} _) _ =

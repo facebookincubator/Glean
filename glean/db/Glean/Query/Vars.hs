@@ -20,6 +20,7 @@ module Glean.Query.Vars (
     freshWild,
     freshWildVars,
     reWild,
+    reWildGenerator,
     reWildQuery,
   ) where
 

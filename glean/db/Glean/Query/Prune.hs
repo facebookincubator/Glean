@@ -25,7 +25,6 @@ import Glean.Database.Schema.Types (PredicateDetails(..))
 import Glean.RTS.Types (PidRef(..), Type)
 import Glean.Angle.Types (PredicateId(..), DerivingInfo(..))
 import Glean.Query.Codegen.Types
-  (Match(..), QueryWithInfo(..), Typed(..), Var(..))
 import Glean.Query.Typecheck (tcQueryDeps)
 import Glean.Query.Typecheck.Types
   (TcPat, TcTerm(..), TcStatement(..), TcQuery(..), TypecheckedQuery)
@@ -104,8 +103,8 @@ topologicalSort derivations =
 -- - If one sequence is removed from a disjunction, all variables bound by it
 --   should also be bound by the other disjunction alternatives
 prune :: (PredicateId -> Bool) -> TypecheckedQuery -> Maybe TypecheckedQuery
-prune hasFacts (QueryWithInfo q _ t) = do
-  renumberVars t <$> pruneTcQuery q
+prune hasFacts (QueryWithInfo q _ gen t) = do
+  renumberVars gen t <$> pruneTcQuery q
   where
   pruneTcQuery :: TcQuery -> Maybe TcQuery
   pruneTcQuery (TcQuery ty keyPat mvalPat stmts ord) =
@@ -203,11 +202,11 @@ data S = S
 
 -- | After removing branches from the query we must now update
 -- variable names to ensure we use the smallest numbers possible.
-renumberVars :: Type -> TcQuery -> TypecheckedQuery
-renumberVars ty q =
+renumberVars :: Maybe Generator -> Type -> TcQuery -> TypecheckedQuery
+renumberVars gen ty q =
   let (newQuery, S varCount _) = runState (renameQuery q) (S 0 mempty)
   in
-  QueryWithInfo newQuery varCount ty
+  QueryWithInfo newQuery varCount gen ty
   where
   renameQuery :: TcQuery -> R TcQuery
   renameQuery (TcQuery ty key mval stmts ord) =
