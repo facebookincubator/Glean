@@ -29,17 +29,6 @@ import Compat.Prettyprinter hiding ((<>))
 
 import Glean.Query.BindOrder
 import Glean.Query.Codegen.Types
-  ( matchVar
-  , Var(..)
-  , Pat
-  , Match(..)
-  , CgStatement_(..)
-  , CgStatement
-  , Generator_(..)
-  , CgQuery(..)
-  , QueryWithInfo(..)
-  , SeekSection(..)
-  , CodegenQuery)
 import Glean.Display
 import Glean.Query.Flatten.Types
 import Glean.Query.Vars
@@ -319,7 +308,9 @@ reorderStmtGroup sc bound stmts =
       others = [ (bound, stmt) | (Nothing, bound, stmt) <- summaries ]
 
     classify :: VarSet -> FlatStatement -> StmtCost
-    classify bound (FlatStatement _ _ (FactGenerator _ key _ _)) =
+    classify bound (FlatStatement _ lhs (FactGenerator _ key _ _))
+      | Just (Var _ v _) <- isVar lhs, v `IntSet.member` bound = StmtPointMatch
+      | otherwise =
       case classifyPattern ((`IntSet.member` bound) . varId) key of
         PatternMatch _ Point -> StmtPointMatch
         PatternMatch PrefixFactId Scan -> StmtPrefixFactMatch

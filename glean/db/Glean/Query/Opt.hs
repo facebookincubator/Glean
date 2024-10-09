@@ -23,13 +23,6 @@ import qualified Glean.Angle.Types as Type
 import Glean.Angle.Types (FieldDef_(..))
 import Glean.Query.Flatten.Types
 import Glean.Query.Codegen.Types
-  ( matchVar
-  , Match(..)
-  , Var(..)
-  , Generator_(..)
-  , Pat
-  , Generator
-  , QueryWithInfo(..))
 import Glean.Query.Vars
 import Glean.RTS.Term
 import Glean.RTS.Types
@@ -500,11 +493,6 @@ extendGen var gen = do
           modify $ \s -> s { optGenerators =
             IntMap.insert (varId var') gen (optGenerators s) }
           return True
-
-isVar :: Pat -> Maybe Var
-isVar (Ref (MatchVar v)) = Just v
-isVar (Ref (MatchBind v)) = Just v
-isVar _ = Nothing
 
 data OptState = OptState
   { optNextVar :: !Int

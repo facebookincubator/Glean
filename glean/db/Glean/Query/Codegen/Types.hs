@@ -10,6 +10,7 @@
 module Glean.Query.Codegen.Types
   ( Match(..)
   , matchVar
+  , isVar
   , Var(..)
   , CodegenQuery
   , QueryWithInfo(..)
@@ -186,6 +187,10 @@ type Pat_ var = Term (Match () var)
 type Expr_ var = Term (Match () var)
 
 type Output = Typed (Register 'BinaryOutputPtr)
+
+isVar :: Pat -> Maybe Var
+isVar (Ref v) = matchVar v
+isVar _ = Nothing
 
 data Var = Var
   { varType :: Type
