@@ -413,7 +413,6 @@ inferExpr ctx pat = case pat of
     prettyErrorIn pat $ nest 4 $ vcat
       [ "can't infer the type of: " <> display opts pat
       , "try adding a type annotation like (" <> display opts pat <> " : T)"
-      , "or reverse the statement (Q = P instead of P = Q)"
       ]
 
 fieldSelect
