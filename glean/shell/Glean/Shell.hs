@@ -1001,13 +1001,16 @@ runUserQuery sQuery = do
      ]
      ++
      [ vcat $ "Facts searched:" :
-         [ pretty (printf "%40s : %d" (show (pretty ref)) count :: String)
+         [ pretty (printf "%40s : %d%s" (show (pretty ref)) count
+             (if ref `elem` scans then " (full scan)" else "" :: String)
+               :: String)
          | (pid, count) <- sortOn (Down . snd) $ Map.toList m
          , Just info <- [schemaInfo]
          , Just ref <- [Map.lookup pid (Thrift.schemaInfo_predicateIds info)] ]
      | stats == FullStats
      , Just stats <- [finalStats]
      , Just m <- [Thrift.userQueryStats_facts_searched stats]
+     , let scans = Thrift.userQueryStats_full_scans stats
      ]
      ++
      [ vcat $ if Thrift.userQueryStats_result_count stats < fromIntegral limit
