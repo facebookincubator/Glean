@@ -1481,6 +1481,7 @@
                 },
                 "pretty_comments": [],
                 "repo_hash": "testhash",
+                "signature": "value: TypeVar(\"THelperClass\", bound=\"HelperClass\")",
                 "sym": "test/py/lib.py/lib.HelperClass.value",
                 "sym_location": {
                     "filepath": "lib.py",
@@ -1493,7 +1494,15 @@
                     "repository": "test"
                 },
                 "sym_other_locations": [],
-                "type_xrefs": [],
+                "type_xrefs": [
+                    {
+                        "span": {
+                            "length": 5,
+                            "start": 0
+                        },
+                        "type": "test/py/lib.py/lib.HelperClass.value"
+                    }
+                ],
                 "visibility": 20
             },
             {
@@ -3271,6 +3280,13 @@
                 "symbol": "test/py/lib.py/lib.HelperClass.method"
             },
             {
+                "context": {
+                    "qname": {
+                        "container": "lib",
+                        "localName": "HelperClass"
+                    },
+                    "symbol": "test/py/lib.py/lib.HelperClass"
+                },
                 "kind": 10,
                 "language": 7,
                 "location": {

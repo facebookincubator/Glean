@@ -272,6 +272,42 @@
           "python": {
             "decl": {
               "variable": {
+                "key": { "name": { "key": "lib.HelperClass.instance_var" } }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass.instance_var",
+          "file": { "key": "lib.py" },
+          "location": { "span": { "start": 440, "length": 17 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 3,
+      "parent": {
+        "parent": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.HelperClass",
+          "file": { "key": "lib.py" },
+          "location": { "span": { "start": 351, "length": 451 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "variable": {
                 "key": {
                   "name": { "key": "lib.HelperClass.old_style_class_var" }
                 }
