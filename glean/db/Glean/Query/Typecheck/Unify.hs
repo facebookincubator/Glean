@@ -61,7 +61,9 @@ unify (NamedTy (ExpandedType _ t)) u = unify t u
 unify t (NamedTy (ExpandedType _ u)) = unify t u
 unify (MaybeTy t) (MaybeTy u) = unify t u
 unify (MaybeTy t) u@SumTy{} = unify (lowerMaybe t) u
+unify (MaybeTy t) u@HasTy{} = unify (lowerMaybe t) u
 unify t@SumTy{} (MaybeTy u) = unify t (lowerMaybe u)
+unify t@HasTy{} (MaybeTy u) = unify t (lowerMaybe u)
 unify (EnumeratedTy ns) (EnumeratedTy ms) | ns == ms = return ()
 unify (EnumeratedTy ns) u@SumTy{} = unify (lowerEnum ns) u
 unify t@SumTy{} (EnumeratedTy ns) = unify t (lowerEnum ns)
