@@ -191,7 +191,7 @@ reorderGroup g = do
       (stmts'',bound'') <- go bound' rest
       return (FlatDisjunction [g'] : stmts'', bound'')
     go bound (stmt : rest) = do
-      (stmts', bound') <- go (IntSet.union (vars stmt) bound) rest
+      (stmts', bound') <- go (IntSet.union (boundVars stmt) bound) rest
       return (stmt : stmts', bound')
 
     squash [] = []
