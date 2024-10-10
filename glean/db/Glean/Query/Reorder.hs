@@ -169,16 +169,21 @@ reorderGroup g = do
   let
     bound0 = IntMap.keysSet (allBound scope)
 
-    -- we'll call reorderStmtGroup on the (unordered) inner groups
-    -- first, and then flatten the group structure and do the final
-    -- reorderStmts pass on the whole flattened list.
+    -- we'll call reorderStmtGroup on the (unordered) group before
+    -- reordering any nested groups. There's a chicken/egg problem here:
+    --   - if we reorder the outer group first then we don't have an
+    --     accurate idea of the cost of the inner groups
+    --   - if we reorder the inner group first then we don't have an
+    --     accurate idea of the bound variables
+    -- but overall it seems like doing the outer group first gives
+    -- better results. Perhaps a multi-pass approach would be even better.
     group bound (FlatStatementGroup stmts ord) = do
-      (stmts',bound') <- go bound stmts
       let
         reordered = case ord of
-          Unordered -> reorderStmtGroup (isScope scope) bound stmts'
-          Ordered -> stmts'
-      return (FlatStatementGroup reordered ord, bound')
+          Unordered -> reorderStmtGroup (isScope scope) bound stmts
+          Ordered -> stmts
+      (stmts', bound') <- go bound reordered
+      return (FlatStatementGroup stmts' ord, bound')
 
     go bound [] = return ([], bound)
     go bound (FlatDisjunction [g] : rest) = do
