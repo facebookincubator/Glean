@@ -535,11 +535,10 @@ decl (Hack.Declaration_property_ prop@Hack.PropertyDeclaration{..}) = do
           (Angle.asPredicate $ Angle.factId $ Glean.getId prop)
       end
   def <- liftMaybe propertyDefinition_key
-  let type_ = Hack.propertyDefinition_key_type def
+  let type_ = typeInfoToType $ Hack.propertyDefinition_key_typeInfo def
   name <- liftMaybe $ Hack.name_key propertyDeclaration_key_name
   let container = containerKind propertyDeclaration_key_container
-  pure $ Property (modifiersForProperty def) container (Name name)
-   (toType type_)
+  pure $ Property (modifiersForProperty def) container (Name name) type_
 decl (Hack.Declaration_typeConst decl@Hack.TypeConstDeclaration{..}) = do
   Hack.TypeConstDeclaration_key{..} <- liftMaybe typeConstDeclaration_key
   hackTypeConstKind <- maybeT $ fetchData $
@@ -567,12 +566,13 @@ containerDecl :: Hack.ContainerDeclaration -> Glean.MaybeTRepoHaxl u w Decl
 containerDecl (Hack.ContainerDeclaration_enum_
       decl@Hack.EnumDeclaration{..}) = do
     Hack.EnumDeclaration_key{..} <- liftMaybe enumDeclaration_key
-    (enumBase,enumConstraint,isClass,moduleInfo) <- maybeT $
+    (enumBaseTypeInfo,enumConstraintTypeInfo,isClass,moduleInfo) <- maybeT $
       fetchDataRecursive $ angleEnumDefinition (Angle.factId (Glean.getId decl))
     let enumKind = if isClass then IsClass else Regular
-    let constraint =  case enumConstraint of
-          Nothing -> EnumBase (toType1 enumBase)
-          Just ty -> Constrained (toType1 enumBase) (toType1 ty)
+    let baseType = typeInfoToType enumBaseTypeInfo
+    let constraint =  case enumConstraintTypeInfo of
+          Nothing -> EnumBase baseType
+          Just ty -> Constrained baseType (typeInfoToType (Just ty))
     name <- qName enumDeclaration_key_name
     pure $ Enum (QualName name) enumKind constraint
       (toModuleVisibility moduleInfo)
@@ -698,8 +698,8 @@ relSpansToAbs byteSpans = snd $ List.foldl' f (0, []) byteSpans
 -- to absolute (Glass representation)
 -- If TypeInfo doesn't exist, returned type is overridden by provided
 -- default.
-toTypeAndXRefs :: Maybe Hack.Type -> Maybe Hack.TypeInfo -> (HackType, XRefs)
-toTypeAndXRefs type_ typeInfo = case typeInfo of
+toTypeAndXRefs :: Maybe Hack.TypeInfo -> (HackType, XRefs)
+toTypeAndXRefs typeInfo = case typeInfo of
   (Just (Hack.TypeInfo _ (Just (Hack.TypeInfo_key displayType hackXRefs _)))) ->
     let f (Hack.XRef declaration ranges) = case declaration of
           Hack.XRefTarget_declaration decl ->
@@ -708,14 +708,14 @@ toTypeAndXRefs type_ typeInfo = case typeInfo of
         xrefs = concat (mapMaybe f hackXRefs)
     in (toType $ Just displayType, xrefs)
 
-  _ -> (toType type_, [])
+  _ -> (toType Nothing, [])
 
 toSignature ::
   [Hack.TypeParameter] -> Hack.Signature -> Maybe Hack.ReadonlyKind -> Signature
 toSignature typeParams Hack.Signature{..} mbReadOnly = case signature_key of
   Nothing -> Signature NotReadOnly (ReturnType unknownType) [] [] Nothing []
-  Just (Hack.Signature_key retType params mctxs retTypeInfo) ->
-   let (type_, xrefs) = toTypeAndXRefs retType retTypeInfo
+  Just (Hack.Signature_key _ params mctxs retTypeInfo) ->
+   let (type_, xrefs) = toTypeAndXRefs retTypeInfo
        readOnly = case mbReadOnly of
          Just _ -> IsReadOnly
          Nothing -> NotReadOnly
@@ -731,9 +731,6 @@ toSignature typeParams Hack.Signature{..} mbReadOnly = case signature_key of
 toType :: Maybe Hack.Type -> HackType
 toType Nothing = HackType unknownType
 toType (Just (Hack.Type _ mkey)) = HackType $ fromMaybe unknownType mkey
-
-toType1 :: Hack.Type -> HackType
-toType1 (Hack.Type _ mkey) = HackType $ fromMaybe unknownType mkey
 
 toTypeParameter :: Hack.TypeParameter -> TypeParameter
 toTypeParameter
@@ -778,9 +775,16 @@ toReifyKind Hack.ReifyKind_SoftReified = SoftReified
 toReifyKind Hack.ReifyKind_Erased = Erased
 toReifyKind (Hack.ReifyKind__UNKNOWN _) = Erased
 
+typeInfoToType :: Maybe Hack.TypeInfo -> HackType
+typeInfoToType typeInfo =
+  toType $ case typeInfo of
+        (Just (Hack.TypeInfo _ (Just (Hack.TypeInfo_key displayType _ _)))) ->
+          Just displayType
+        _ -> Nothing
+
 toConstraint :: Hack.Constraint -> Constraint
-toConstraint (Hack.Constraint kind ty _typeInfo) =
-  Constraint (toConstraintKind kind) (toType $ Just ty)
+toConstraint (Hack.Constraint kind _ typeInfo) =
+  Constraint (toConstraintKind kind) (typeInfoToType typeInfo)
 
 toConstraintKind :: Hack.ConstraintKind -> ConstraintKind
 toConstraintKind Hack.ConstraintKind_Equal = Equal
@@ -790,8 +794,8 @@ toConstraintKind (Hack.ConstraintKind__UNKNOWN _) = Equal
 
 toParameter :: Hack.Parameter -> Parameter
 toParameter
-  (Hack.Parameter name mtype inout variadic mdefaultValue _ typeInfo readOnly) =
-  let (type_, xrefs) = toTypeAndXRefs mtype typeInfo
+  (Hack.Parameter name _ inout variadic mdefaultValue _ typeInfo readOnly) =
+  let (type_, xrefs) = toTypeAndXRefs typeInfo
   in Parameter
       (toName name)
       (HackType (unHackType type_))
@@ -876,15 +880,16 @@ angleTypeConstDefinition decl = var $ \typeConstKind ->
 -- hack enums: need to distinguish `enum T : Z` , or `enum class T : X as Y`
 angleEnumDefinition
   :: Angle Hack.EnumDeclaration
-  -> Angle (Hack.Type, Maybe Hack.Type, Bool, Maybe Hack.ModuleMembership)
-angleEnumDefinition decl = vars $ \(baseType :: Angle Hack.Type)
+  -> Angle (Maybe Hack.TypeInfo, Maybe Hack.TypeInfo, Bool,
+            Maybe Hack.ModuleMembership)
+angleEnumDefinition decl = vars $ \(baseType :: Angle (Maybe Hack.TypeInfo))
     asType isEnumClass modInfo ->
   tuple (baseType, asType, isEnumClass, modInfo ) `where_` [
     wild .= predicate @Hack.EnumDefinition (
       rec $
         field @"declaration" (Angle.asPredicate decl) $
-        field @"enumBase" (Angle.asPredicate baseType) $
-        field @"enumConstraint" asType $
+        field @"enumBaseTypeInfo" baseType $
+        field @"enumConstraintTypeInfo" asType $
         field @"isEnumClass" isEnumClass $
         field @"module_" modInfo
       end)
