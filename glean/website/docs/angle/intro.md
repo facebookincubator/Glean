@@ -15,15 +15,10 @@ return the names of all the member declarations defined in a
 JavaScript file `project/myfile.js`:
 
 ```
-N where
-  flow.FileDeclaration {
-    file = "project/myfile.js",
-    declaration = {
-      memberDecl = {
-        name = N
-      }
-    }
-  }
+D.declaration.memberDecl?.name
+  where
+    D : flow.FileDeclaration;
+    D.file = src.File "project/myfile.js"
 ```
 
 To learn about Angle, start with the [Guide](guide.md).

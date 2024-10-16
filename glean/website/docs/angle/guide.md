@@ -236,7 +236,7 @@ Methods with documentation:
 facts> example.Member { method = { doc = {  just = _ }}}
 ```
 
-## Or-patterns
+## Choice
 
 In a pattern we can express multiple alternatives by separating patterns with a vertical bar `|`.
 
@@ -256,29 +256,7 @@ facts> example.Has { has = { method = { name = "feed" }} | { variable = _ }}
 (results omitted)
 ```
 
-## If-patterns
-
-We can conditionally match patterns using `if then else`.
-
-Variables matched in the condition will be available in the `then` branch.
-
-Whilst an or-pattern will always evaluate both of its branches, the `else` branch of an if-pattern will
-never be evaluated if the condition succeeds at least once.
-
-For example, we could get all child classes if inheritance is being used in the codebase, or
-retrieve all classes if it isn't.
-```
-facts > if (example.Parent { child = X }) then X else example.Class _
-  { "id": 1025, "key": { "name": "Lizard", "line": 20 } }
-  { "id": 1026, "key": { "name": "Fish", "line": 30 } }
-  { "id": 1027, "key": { "name": "Goldfish", "line": 40 } }
-```
-
-Please note that if-patterns cannot be used in stored derived predicates. This
-is the case because they require the use of negation, which is disallowed in
-stored predicates.
-
-## More complex queries
+## Variables and more complex queries
 
 So far we’ve seen how to query for facts by matching patterns, including matching nested facts.  In this section we’ll see how to construct more complex queries that combine matching facts from multiple predicates.
 
@@ -372,6 +350,82 @@ C where
   example.Parent { child = { name = "Goldfish" }, parent = C } |
   example.Has { class_ = C, has = { method = { name = "feed" }}}
 ```
+
+## Dot syntax
+
+So far we've been extracting fields from records by writing patterns,
+but we can also extract fields from records using the traditional "dot
+syntax". For example, instead of
+
+```
+example.Parent { child = { name = "Fish" }}
+```
+
+we could write
+
+```
+example.Parent P where P.child.name = "Fish"
+```
+
+Here
+* `example.Parent P` selects facts of `example.Parent` and binds the key to the variable `P`
+* `P.child.name = "Fish"` is a constraint on the `name` field of the `child` field of `P`
+* the query returns all facts of `example.Parent` that satisfy the constraint
+
+Dot syntax tends to be more concise than patterns when there are
+deeply-nested records, because it avoids all the nested braces.
+
+### Dot syntax for union types
+
+Matching union types can also be achieved using dot syntax. For
+example, earlier we had
+
+```
+example.Has { has = { variable = { name = "fins" }}}
+```
+
+using dot syntax this would be
+
+```
+example.Has H where H.has.variable?.name = "fins"
+```
+
+Note that when selecting a union type we add a '?' suffix,
+as with `.variable?` in the example above. This makes it more obvious
+that we're doing something conditional: if `X.has` is not a
+`variable`, then `X.has.variable?` has no values.
+
+Selecting from union types works nicely with choice (`|`):
+
+```
+Name where
+  example.Has H;
+  Name = (H.has.variable?.name | H.has.method?.name)
+```
+
+returns all the names of variables and methods.
+
+## If-then-else
+
+We can conditionally match patterns using `if then else`.
+
+Variables matched in the condition will be available in the `then` branch.
+
+Whilst a choice will always evaluate both of its branches, the `else` branch of an if will
+never be evaluated if the condition succeeds at least once.
+
+For example, we could get all child classes if inheritance is being used in the codebase, or
+retrieve all classes if it isn't.
+```
+facts > if (example.Parent { child = X }) then X else example.Class _
+  { "id": 1025, "key": { "name": "Lizard", "line": 20 } }
+  { "id": 1026, "key": { "name": "Fish", "line": 30 } }
+  { "id": 1027, "key": { "name": "Goldfish", "line": 40 } }
+```
+
+Please note that `if` cannot be used in stored derived predicates. This
+is the case because they require the use of negation, which is disallowed in
+stored predicates.
 
 ## Arrays
 
