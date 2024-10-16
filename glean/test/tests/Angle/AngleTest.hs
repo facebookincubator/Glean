@@ -813,8 +813,7 @@ angleNegationTest modify = dbTestCase $ \env repo -> do
   -- negated queries do not bind variables to the parent scope
   r <- try $ runQuery_ env repo $ modify $ angleData @()
     [s|
-      !(A = glean.test.IsGlean "not-glean");
-      A;
+      A where !(A = glean.test.IsGlean "not-glean");
     |]
   print r
   assertBool "negation - scope" $
