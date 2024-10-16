@@ -59,7 +59,7 @@ facts> example.Parent { child = $1026 }
 { "id": 1029, "key": { "child": { "id": 1026 }, "parent": { "id": 1024 } } }
 ```
 
-Sometimes you might want to use multiple fact IDs in a query. Or-patterns come in handy here:
+Sometimes you might want to use multiple fact IDs in a query. Choice (`|`) comes in handy here:
 
 ```lang=angle
 facts> example.Parent { child = $1026 | $1027 }
