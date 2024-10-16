@@ -162,11 +162,11 @@ class CanLookup (Database s) => Storage s where
   prepareFactOwnerCache :: Database s -> IO ()
 
   -- | Determine the total capacity of the storage medium (e.g., disk size).
-  getTotalCapacity :: s -> IO Int
+  getTotalCapacity :: s -> IO (Maybe Int)
 
   -- | Determine the used capacity of the storage medium (e.g., how much of the
   -- disk is in use).
-  getUsedCapacity :: s -> IO Int
+  getUsedCapacity :: s -> IO (Maybe Int)
 
   -- | Determine the free capacity of the storage medium (e.g., how much of the
   -- disk is free).

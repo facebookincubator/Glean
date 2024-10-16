@@ -233,8 +233,18 @@ instance Storage RocksDB where
     unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
       invoke $ glean_rocksdb_prepare_fact_owner_cache db_ptr
 
-  getTotalCapacity = getDiskSize . rocksRoot
-  getUsedCapacity = getUsedDiskSpace . rocksRoot
+  getTotalCapacity rocksdb = do
+    exists <- doesDirectoryExist (rocksRoot rocksdb)
+    if exists
+      then Just <$> getDiskSize (rocksRoot rocksdb)
+      else return Nothing
+
+  getUsedCapacity rocksdb = do
+    exists <- doesDirectoryExist (rocksRoot rocksdb)
+    if exists
+      then Just <$> getUsedDiskSpace (rocksRoot rocksdb)
+      else return Nothing
+
   getFreeCapacity = getFreeDiskSpace . rocksRoot
 
   withScratchRoot rocks f = f $ rocksRoot rocks </> ".scratch"

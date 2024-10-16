@@ -8,6 +8,7 @@
 
 module Glean.Database.Env ( withDatabases ) where
 
+import Control.Applicative (liftA2)
 import Control.Concurrent
 import Control.Concurrent.Async (async, waitEither, withAsync)
 import Control.Exception.Safe
@@ -225,13 +226,16 @@ spawnThreads env@Env{..} = do
 
   -- Disk usage counters
   Warden.spawn_ envWarden $ doPeriodically (seconds 600) $ do
-
     diskSize <- Storage.getTotalCapacity envStorage
-    used <- Storage.getUsedCapacity envStorage
-    void $ setCounter "glean.db.disk.capacity_bytes" diskSize
-    void $ setCounter "glean.db.disk.used_bytes" used
-    void $
-      setCounter "glean.db.disk.used_percentage" (100 * used `div` diskSize)
+    diskUsed <- Storage.getUsedCapacity envStorage
+
+    whenJust diskSize $ \size ->
+        void $ setCounter "glean.db.disk.capacity_bytes" size
+    whenJust diskUsed $ \used ->
+        void $ setCounter "glean.db.disk.used_bytes" used
+    whenJust (liftA2 (,) diskSize diskUsed) $ \(size,used) ->
+        void $
+          setCounter "glean.db.disk.used_percentage" (100 * used `div` size)
 
 -- Todo: this needs a lot more work.
 -- * We shouldn't just cancel the janitor, we should let it finish the

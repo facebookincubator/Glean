@@ -97,10 +97,10 @@ instance Storage Memory where
   prepareFactOwnerCache _ = return ()
 
   -- TODO
-  getTotalCapacity _ = return maxBound
+  getTotalCapacity _ = return Nothing
 
   -- TODO
-  getUsedCapacity _ = return 0
+  getUsedCapacity _ = return Nothing
 
   -- TODO
   getFreeCapacity _ = return maxBound
