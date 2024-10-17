@@ -47,7 +47,6 @@ import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Compat.Prettyprinter hiding ((<>), enclose)
 import System.IO
-import TextShow
 
 import Glean.Angle.Types hiding (Type)
 import qualified Glean.Angle.Types as Schema
@@ -181,11 +180,8 @@ needsResult (SourceQuery (Just p) stmts ord) = return (p, stmts, ord)
 needsResult q@(SourceQuery Nothing stmts ord) = case reverse stmts of
   (SourceStatement (Variable s v) _ : _) ->
     return (Variable s v, stmts, ord)
-  [SourceStatement Wildcard{} rhs] ->
-    return (rhs, [], ord)
-  (SourceStatement (Wildcard s) rhs : rstmts) -> do
-    tmp <- freshVariable s
-    return (tmp, reverse (SourceStatement rhs tmp : rstmts), ord)
+  (SourceStatement Wildcard{} rhs : rstmts) ->
+    return (rhs, reverse rstmts, ord)
   (SourceStatement pat _ : _) ->
     prettyErrorIn pat =<< err
   _ ->
@@ -770,19 +766,6 @@ varOcc ctx span name ty = do
         state { tcFree = HashSet.delete name tcFree }
       addErrSpan span $ unify ty ty'
       return (Ref (MatchVar v))
-
-freshVariable :: IsSrcSpan s => s -> T (Pat' s)
-freshVariable s = do
-  state@TypecheckState{..} <- get
-  let !next = tcNextVar + 1
-      name = "Tmp__" <> showt tcNextVar
-  put state {
-    tcNextVar = next,
-    tcVisible = HashSet.insert name tcVisible }
-    -- setting tcVisible here is a bit of a hack, but it should be OK
-    -- as long as the fresh variable is used in the current scope and
-    -- not a nested scope.
-  return (Variable s name)
 
 freeVariablesAreErrors :: T ()
 freeVariablesAreErrors = do

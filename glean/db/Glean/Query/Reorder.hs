@@ -177,10 +177,13 @@ reorderGroup g = do
     --     accurate idea of the bound variables
     -- but overall it seems like doing the outer group first gives
     -- better results. Perhaps a multi-pass approach would be even better.
-    group bound (FlatStatementGroup ord float) = do
-      let reordered = reorderStmtGroup (isScope scope) bound ord float
-      (stmts,bound') <- go bound reordered
-      return (FlatStatementGroup stmts [], bound')
+    group bound (FlatStatementGroup stmts ord) = do
+      let
+        reordered = case ord of
+          Unordered -> reorderStmtGroup (isScope scope) bound stmts
+          Ordered -> stmts
+      (stmts', bound') <- go bound reordered
+      return (FlatStatementGroup stmts' ord, bound')
 
     go bound [] = return ([], bound)
     go bound (FlatDisjunction [g] : rest) = do
@@ -224,8 +227,7 @@ withScopeFor stmts act = do
     --  - in some but not all branches of a disjunction
     --  - in only one of 'else' or (condition + 'then') clauses of an if stmt
     scopeVars :: FlatStatementGroup -> VarSet
-    scopeVars (FlatStatementGroup ord float) =
-      foldMap stmtScope ord <> foldMap stmtScope float
+    scopeVars (FlatStatementGroup stmts _) = foldMap stmtScope stmts
       where
         stmtScope = \case
           FlatNegation{} -> mempty
@@ -280,27 +282,13 @@ data StmtCost
   | StmtUnresolved
   deriving (Bounded, Eq, Show, Ord)
 
-reorderStmtGroup
-  :: VarSet
-  -> VarSet
-  -> [FlatStatement]  -- these must remain in this order
-  -> [FlatStatement]  -- these can float anywhere
-  -> [FlatStatement]  -- final ordering
-reorderStmtGroup _ _ ordered [] = ordered
-reorderStmtGroup sc bound ordered floating =
+reorderStmtGroup :: VarSet -> VarSet -> [FlatStatement] -> [FlatStatement]
+reorderStmtGroup sc bound stmts =
   let
-    (lookups, others) = partitionStmts (map summarise floating)
-    ord = map summarise ordered
-    r = layout (IntSet.toList bound) bound lookups others ord
+    (lookups, others) = partitionStmts (map summarise stmts)
   in
-  trace (show (vcat [
-    "reorderStmtGroup: " <> pretty (show bound),
-    indent 2 (displayDefault (FlatStatementGroup ordered floating)),
-    "===>",
-    indent 2 (vcat (map displayDefault r)) ])) r
+  layout (IntSet.toList bound) bound lookups others
   where
-    trace _ x = x
-
     summarise :: FlatStatement -> (Maybe VarId, VarSet, FlatStatement)
     summarise stmt = case stmt of
       FlatStatement _ lhs rhs -> (maybeVar, bound, stmt)
@@ -338,168 +326,107 @@ reorderStmtGroup sc bound ordered floating =
       | isResolvedFilter inScope stmt = StmtFilter
       | isCurrentlyUnresolved inScope stmt = StmtUnresolved
       where inScope = mkInScopeForClassify sc bound
-    classify bound (FlatDisjunction alts@(_:tail)) =
-      -- we classify a disjunction as a prefix match even if the
-      -- individual brannches are O(1). In particular this means we
-      -- won't pull a disjunction out of order just because the
-      -- branches are filters, which can make things worse.
-      if not (null tail)
-        then max StmtPrefixMatch maxCost
-        else maxCost
-      where maxCost = maximum (map (classifyGroup bound) alts)
+    classify bound (FlatDisjunction alts@(_:_)) =
+      maximum (map (classifyAlt bound) alts)
     classify _ (FlatStatement _ _ ArrayElementGenerator{}) = StmtPrefixMatch
     classify _ (FlatStatement _ _ SetElementGenerator{}) = StmtPrefixMatch
-    classify bound (FlatNegation g) = classifyGroup bound g
     classify _ _ = StmtScan
 
-    -- Approximate classification of groups. To be more
+    -- Approximate classification of disjunctions. To be more
     -- accurate we would have to recursively reorder the
-    -- statements in the group. TODO: recursively reorder
+    -- statements in the disjunction. TODO: recursively reorder
     -- but only if there are no O(1) statements in the group.
-    -- We do attempt to reorder unresolved statements on the fly
-    -- here; this turned out to be necessary in some cases.
-    classifyGroup bound (FlatStatementGroup ord float) =
-      go bound (float <> ord) minBound []
+    classifyAlt bound (FlatStatementGroup stmts _) =
+      go bound stmts minBound
       where
-      go _ [] cost bad = if null bad then cost else StmtUnresolved
-      go bound (stmt : stmts) cost bad
-        | stmtCost == StmtUnresolved = go bound stmts cost (stmt : bad)
-        | otherwise = go bound' (stmts <> bad) (max cost stmtCost) []
-          where
-          stmtCost = classify bound stmt
-          bound' = boundVars stmt `IntSet.union` bound
+      go _ [] cost = cost
+      go bound (stmt : stmts) cost =
+        go (boundVars stmt `IntSet.union` bound) stmts (max cost cost')
+        where cost' = classify bound stmt
 
     layout
       :: [VarId]
       -> VarSet
       -> IntMap [(VarSet, FlatStatement)]
-      -> [(VarSet, FlatStatement)] -- floating
-      -> [(Maybe VarId, VarSet, FlatStatement)] -- ordered
+      -> [(VarSet, FlatStatement)]
       -> [FlatStatement]
-    layout [] _ lookups [] [] | IntMap.null lookups = []
-    layout (x:xs) bound lookups others ord =
+    layout _ _ lookups [] | IntMap.null lookups = []
+    layout (x:xs) bound lookups others =
       case IntMap.lookup x lookups of
-        Nothing -> layout xs (IntSet.insert x bound) lookups others ord
+        Nothing -> layout xs (IntSet.insert x bound) lookups others
         Just some ->
-          stmts <> layout (new <> xs) bound' lookups' others ord
+          stmts <> layout (new <> xs) bound' (IntMap.delete x lookups) others
           where
           (varss, stmts) = unzip some
           allVars = IntSet.unions varss
           new = filter (`IntSet.notMember` bound) (IntSet.toList allVars)
           bound' = IntSet.union allVars bound
-          lookups' = IntMap.delete x lookups
-    layout [] bound lookups others ord =
+    layout [] bound lookups others =
       let
+        trace _ x = x
+
         classified =
           [ (classify bound stmt, (Just var, vars, stmt))
           | (var, some) <- IntMap.toList lookups, (vars, stmt) <- some ] <>
           [ (classify bound stmt, (Nothing, vars, stmt))
           | (vars, stmt) <- others ]
 
-        classifiedOrd =
-          [ (classify bound stmt, (lkp, vars, stmt))
-          | (lkp, vars, stmt) <- ord ]
-
-        partitionByCost wanted stmts = (map snd yes, map snd no)
-          where
-          want (cost, _) = cost == wanted
-          !(yes,no) = partition want stmts
-
-        -- all statements with the desired cost
-        chooseAll wanted orElse
-          | null stmts = orElse
+        pick choose wanted orElse
+          | null found = orElse
           | otherwise =
-            chosen wanted (found <> foundOrd) rejected rejectedOrd $
-              stmts <> layout newBound bound lookups others rejectedOrd
+            trace (show $ vcat [
+              "pick: " <> pretty (show wanted),
+              nest 2 (dumpStmts found),
+              "rejected:",
+              nest 2 (dumpStmts rejected) ]) $
+            choose (map snd found) (map snd rejected)
           where
-          !(found, rejected) = partitionByCost wanted classified
-          !(foundOrd, rejectedOrd) = partitionByCost wanted classifiedOrd
-          !(_, varss, stmts) = unzip3 (found <> foundOrd)
-          newBound = concatMap IntSet.toList varss
-          !(lookups, others) = partitionStmts rejected
+          dumpStmts stmts =
+            vcat [ displayDefault stmt | (_, (_,_,stmt)) <- stmts ]
+          (found, rejected) = partition want classified
+            where want (cost, _) = cost == wanted
 
-        -- the "best" statement with the desired cost is one that
-        -- won't be made cheaper if we pick another statement
-        chooseBest wanted orElse = go found []
+        pickNext = case map snd classified of
+          [] -> error "pickNext"
+          ((_, vars, stmt):rest) -> chooseOne vars stmt rest
+
+        chooseAll found rejected =
+          stmts <> layout (concatMap IntSet.toList varss) bound lookups others
           where
-          !(found, rejected) = partitionByCost wanted classified
+          (_, varss, stmts) = unzip3 found
+          (lookups, others) = partitionStmts rejected
 
-          this vars stmt rest =
-            chosen wanted [(wanted,vars,stmt)] (rest <> rejected) ord $
-              chooseOne vars stmt (rest <> rejected)
+        chooseOne vars stmt rest =
+          stmt : layout (IntSet.toList vars) bound lookups others
+          where
+          (lookups, others) = partitionStmts rest
 
+        chooseBest found rejected = go found []
           -- pick a statement that isn't bound by some other statement
-          go [] _ = case findOrd wanted classifiedOrd of
-            Just ((_, vars, stmt), ord') ->
-              this vars stmt found ord'
-            Nothing -> case found of
-              [] -> orElse
-              (_, vars, stmt) : rest -> this vars stmt rest ord
+          where
+          this vars stmt rest = chooseOne vars stmt (rest <> rejected)
+
+          go [] _ = case found of
+            [] -> error "chooseBest"
+            ((_, vars, stmt) : rest) -> this vars stmt rest
           go ((Nothing, vars, stmt) : rest) other =
-            this vars stmt (rest <> other) ord
+            this vars stmt (rest <> other)
           go (info@(Just var, vars, stmt) : rest) other
-            | not (boundBySomething var) = this vars stmt (rest <> other) ord
+            | not (boundBySomething var) = this vars stmt (rest <> other)
             | otherwise = go rest (info : other)
 
-          boundBySomething v =
-            any boundBy (found <> rejected) || any boundBy ord
+          boundBySomething v = any boundBy (found <> rejected)
             where
             boundBy (Just v', _, _) | v == v' = False
             boundBy (_, vars, _) = v `IntSet.member` vars
 
-        -- just logging, for debugging
-        chosen wanted found rejected ord =
-          trace (show $ vcat [
-            "picked: " <> pretty (show wanted),
-            indent 2 (dumpStmts found),
-            "rejected:",
-            indent 2 (dumpStmts rejected),
-            "ord:",
-            indent 2 (dumpStmts ord)])
-          where
-          dumpStmts stmts =
-            vcat [ displayDefault stmt | (_,_,stmt) <- stmts ]
-
-        chooseOne vars stmt rest ord =
-          stmt : layout (IntSet.toList vars) bound lookups others ord
-          where
-          (lookups, others) = partitionStmts rest
-
-        chooseNext
-          | (_, vars, stmt) : rest <- map snd classified =
-            chooseOne vars stmt rest ord
-          | (_, vars, stmt) : rest <- ord =
-            chooseOne vars stmt [] rest
-          | otherwise =
-            error "chooseNext"
-
-        -- If there was no good floating statement to use, check if
-        -- the next ordered statement is good.
-        findOrd wanted ord = go ord
-          where
-          -- We allow skipping over unresolved statements in the
-          -- ordered list, because those will be reordered by the
-          -- later pass anyway.
-          go [] = Nothing
-          go ((cost, s@(_, _, stmt)) : more)
-            | cost == wanted =
-              trace ("findOrd selecting: " <> show cost <> ": " <>
-                show (displayDefault stmt)) $
-              Just (s, map snd more)
-            | cost == StmtUnresolved = case go more of
-              Just (picked, rest) -> Just (picked, s : rest)
-              Nothing -> Nothing
-            | otherwise =
-              trace ("findOrd ignoring: " <> show cost <> ": " <>
-                show (displayDefault stmt))
-              Nothing
       in
-      chooseAll StmtFilter $
-      chooseAll StmtPointMatch $
-      chooseBest StmtPrefixFactMatch $
-      chooseBest StmtPrefixMatch $
-      chooseBest StmtScan
-      chooseNext
+      pick chooseAll StmtFilter $
+      pick chooseAll StmtPointMatch $
+      pick chooseBest StmtPrefixFactMatch $
+      pick chooseBest StmtPrefixMatch $
+      pick chooseBest StmtScan
+      pickNext
       -- TODO: only classify Disjunction if there are no O(1) stmts
 
 {- Note [Reordering negations]
@@ -624,8 +551,7 @@ isCurrentlyUnresolved scope stmt = case stmt of
 
 isReadyFilter :: InScope -> FlatStatement -> Bool -> Bool
 isReadyFilter scope stmt notFilter = case stmt of
-  FlatDisjunction [FlatStatementGroup ord float] ->
-    all isReady ord && all isReady float
+  FlatDisjunction [FlatStatementGroup one _] -> all isReady one
     where isReady stmt = isReadyFilter scope stmt notFilter
     -- Don't hoist a disjunction with multiple alts, even if they're
     -- all resolved, because that might duplicate work.
@@ -635,12 +561,12 @@ isReadyFilter scope stmt notFilter = case stmt of
     all (patIsBound scope) args
   FlatStatement _ _ (DerivedFactGenerator _ key val) ->
     patIsBound scope key && patIsBound scope val
-  FlatNegation (FlatStatementGroup ord float) ->
+  FlatNegation (FlatStatementGroup stmts _) ->
     -- See Note [Reordering negations]
-    all isReady ord && all isReady float && hasAllNonLocalsBound
+    all isReady stmts && hasAllNonLocalsBound
     where
       isReady stmt = isReadyFilter scope stmt notFilter
-      appearInStmts = foldMap vars ord <> foldMap vars float
+      appearInStmts = foldMap vars stmts
       hasAllNonLocalsBound =
         IntSet.null $
         IntSet.filter (\var -> isInScope scope var && not (inScopeBound scope var))
@@ -880,11 +806,11 @@ toCgStatement stmt = case stmt of
     gen' <- fixVars IsExpr gen -- NB. do this first!
     lhs' <- fixVars IsPat lhs
     return [CgStatement lhs' gen']
-  FlatAllStatement v e g -> do
-    stmts <- reorderGroup g
-    e' <- fixVars IsExpr e
+  FlatAllStatement v e (FlatStatementGroup stmts _) -> do
     bindVar v
-    return [CgAllStatement v e' stmts]
+    stmts' <- mapM toCgStatement stmts
+    e' <- fixVars IsExpr e
+    return [CgAllStatement v e' (concat stmts')]
   FlatNegation stmts -> do
     stmts' <-
       withinNegation $

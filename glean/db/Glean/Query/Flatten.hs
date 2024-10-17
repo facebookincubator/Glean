@@ -71,17 +71,17 @@ flatten rec dbSchema ver deriveStored QueryWithInfo{..} =
 
 flattenQuery :: TcQuery -> F FlatQuery
 flattenQuery query = do
-  (group, head, maybeVal) <- flattenQuery' query
-  return (FlatQuery head maybeVal group)
+  (stmts', head', maybeVal) <- flattenQuery' query
+  return (FlatQuery head' maybeVal (flattenStmtGroups stmts'))
 
-flattenQuery' :: TcQuery -> F (FlatStatementGroup, Expr, Maybe Expr)
+flattenQuery' :: TcQuery -> F ([Statements], Expr, Maybe Expr)
 flattenQuery' (TcQuery ty head Nothing stmts ord) = do
-  (ords, floats) <- mapAndUnzipM flattenStatement stmts
+  stmts' <- mapM flattenStatement stmts
   pats <- flattenPattern head
   case pats of
-    [(stmts,head')] -> return $ case ord of
-      Ordered -> (mkGroup ords (stmts : floats), head', Nothing)
-      Unordered -> (mkGroup [] (stmts : ords <> floats), head', Nothing)
+    [(stmts,head')]
+      | Ordered <- ord -> return (stmts' ++ [stmts], head', Nothing)
+      | otherwise -> return ([mconcat stmts' <> stmts], head', Nothing)
     _many -> do -- TODO: ord
       -- If there are or-patterns on the LHS, then we have
       --    P1 | P2 | ... where stmts
@@ -90,104 +90,81 @@ flattenQuery' (TcQuery ty head Nothing stmts ord) = do
       v <- fresh ty
       let
         alts =
-          [ asGroup (stmts `thenStmt`
-              FlatStatement ty (Ref (MatchBind v)) (TermGenerator head))
+          [ flattenStmtGroups [stmts `thenStmt`
+              FlatStatement ty (Ref (MatchBind v)) (TermGenerator head)]
           | (stmts, head) <- pats ]
       return
         ( case ord of
-            Ordered -> mkGroup ords (oneStmt (FlatDisjunction alts) : floats)
+            Ordered ->
+              stmts' ++ [mempty `thenStmt` FlatDisjunction alts]
             Unordered ->
-              FlatStatementGroup
-                []
-                (FlatDisjunction alts : flattenStmts (mconcat (ords <> floats)))
+              [mconcat stmts' <> mempty `thenStmt` FlatDisjunction alts]
         , Ref (MatchVar v)
         , Nothing
         )
 flattenQuery' (TcQuery ty head (Just val) stmts _ord {- TODO -}) = do
-  (ords, floats) <- mapAndUnzipM flattenStatement stmts
+  stmts' <- mapM flattenStatement stmts
   pats <- flattenPattern head
   vals <- flattenPattern val
   case [ (stmtsp <> stmtsv, head, val)
        | (stmtsp, head) <- pats
        , (stmtsv, val) <- vals ] of
-    [(stmts, head', val)] ->
-      return (mkGroup ords (stmts : floats), head', Just val)
+    [(stmts, head', val)] -> return (stmts' ++ [stmts], head', Just val)
     many -> do
       -- As above, but we must handle the value too
       k <- fresh ty
       v <- fresh ty
       let
         alts =
-          [ asGroup (stmts `thenStmt`
-              FlatStatement ty lhsPair (TermGenerator (Tuple [head,val])))
+          [ flattenStmtGroups [stmts `thenStmt`
+              FlatStatement ty lhsPair (TermGenerator (Tuple [head,val]))]
           | (stmts, head, val) <- many ]
         lhsPair = Tuple [Ref (MatchBind k), Ref (MatchBind v)]
       return
-        ( mkGroup ords (oneStmt (FlatDisjunction alts) : floats)
+        ( stmts' ++ [mempty `thenStmt` FlatDisjunction alts]
         , Ref (MatchVar k)
         , Just (Ref (MatchVar v))
         )
 
-flattenStatement :: TcStatement -> F (Statements, Statements)
+flattenStatement :: TcStatement -> F Statements
 flattenStatement (TcStatement ty lhs rhs) = do
   rgens <- flattenSeqGenerators rhs
   lgens <- flattenSeqGenerators lhs
   mkStmt ty lgens rgens
 
--- | Here we decide whether an explicit statement is ordered or
--- unordered with respect to other statements in the group. Implicit
--- statements (e.g. those resulting from nested patterns) are always
--- unordered.
-addStmt
-  :: FlatStatement
-  -> (Statements, Statements)
-  -> (Statements, Statements)
-addStmt stmt@(FlatStatement _ _ TermGenerator{}) (here, float) =
-  (here, float `thenStmt` stmt)  -- filters are always unordered
-addStmt stmt (here, float) =
-  (here `thenStmt` stmt, float)
-
 mkStmt
   :: Type
-  -> [(Statements, Statements, Generator)]
-  -> [(Statements, Statements, Generator)]
-  -> F (Statements, Statements)
-mkStmt ty [(lhshere, lhsfloat, TermGenerator lhs)]
-    [(rhshere, rhsfloat, gen)] = do
-  return $ addStmt (FlatStatement ty lhs gen)
-    (lhshere <> rhshere, lhsfloat <> rhsfloat)
-mkStmt ty [(lhshere, lhsfloat, gen)]
-    [(rhshere, rhsfloat, TermGenerator rhs)] = do
-  return $ addStmt (FlatStatement ty rhs gen)
-    (lhshere <> rhshere, lhsfloat <> rhsfloat)
-mkStmt ty [(lhshere, lhsfloat, lgen)] [(rhshere, rhsfloat, rgen)] = do
+  -> [(Statements, Generator)]
+  -> [(Statements, Generator)]
+  -> F Statements
+mkStmt ty [(lhsstmts, TermGenerator lhs)] [(rhsstmts, gen)] = do
+  return $ lhsstmts <> rhsstmts `thenStmt` FlatStatement ty lhs gen
+mkStmt ty [(lhsstmts, gen)] [(rhsstmts, TermGenerator rhs)] = do
+  return $ lhsstmts <> rhsstmts `thenStmt` FlatStatement ty rhs gen
+mkStmt ty [(lhsstmts, lgen)] [(rhsstmts, rgen)] = do
+  v <- fresh ty
+  return $ lhsstmts <> rhsstmts
+    `thenStmt` FlatStatement ty (Ref (MatchBind v)) lgen
+    `thenStmt` FlatStatement ty (Ref (MatchBind v)) rgen
+mkStmt ty [(lhsstmts, gen)] many = do
   v <- fresh ty
   return $
-    addStmt (FlatStatement ty (Ref (MatchBind v)) lgen) $
-    addStmt (FlatStatement ty (Ref (MatchBind v)) rgen)
-      (lhshere <> rhshere, lhsfloat <> rhsfloat)
-mkStmt ty [(lhshere, lhsfloat, gen)] many = do
-  v <- fresh ty
-  return $
-    addStmt (FlatStatement ty (Ref (MatchBind v)) gen)
-      (lhshere
-       `thenStmt` disjunction
-            [ mkGroup
-                [rhshere]
-                [rhsfloat `thenStmt`
-                  FlatStatement ty (Ref (MatchBind v)) rhsgen ]
-            | (rhshere, rhsfloat, rhsgen) <- many
-            ]
-      , lhsfloat
-      )
+    lhsstmts `thenStmt`
+    FlatStatement ty (Ref (MatchBind v)) gen `thenStmt`
+    disjunction
+      [ flattenStmtGroups [
+          rhsstmts `thenStmt`
+            FlatStatement ty (Ref (MatchBind v)) rhsgen ]
+      | (rhsstmts, rhsgen) <- many
+      ]
 mkStmt ty many [one] = mkStmt ty [one] many
 mkStmt ty lhsmany rhsmany = do
   v <- fresh ty
-  (lhsord, lhsfloat) <- bind v lhsmany
-  (rhsord, rhsfloat) <- bind v rhsmany
-  return (lhsord <> rhsord, lhsfloat <> rhsfloat)
+  rhs <- bind v rhsmany
+  lhs <- bind v lhsmany
+  return (rhs <> lhs)
 
-flattenSeqGenerators :: TcPat -> F [(Statements, Statements, Generator)]
+flattenSeqGenerators :: TcPat -> F [(Statements, Generator)]
 flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
   TcOr left right -> do
     l <- flattenSeqGenerators left
@@ -199,64 +176,58 @@ flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
     sequence
       [ do
           (stmts, gen) <- flattenFactGen pid range kpat vpat
-          return (stmts, kstmts <> vstmts, gen)
+          return
+            ( kstmts <> vstmts <> floatGroup (flattenStmtGroups stmts),
+              gen )
       | (kstmts, kpat) <- kpats
       , (vstmts, vpat) <- vpats ]
   TcElementsOfArray pat -> do
     r <- flattenPattern pat
-    return [(mempty, stmts, ArrayElementGenerator ty pat') | (stmts,pat') <- r ]
+    return [(stmts, ArrayElementGenerator ty pat') | (stmts,pat') <- r ]
   TcElements pat -> do
     r <- flattenPattern pat
-    return [(mempty, stmts, SetElementGenerator ty pat') | (stmts,pat') <- r ]
+    return [(stmts, SetElementGenerator ty pat') | (stmts,pat') <- r ]
   TcQueryGen query -> do
-    (group, term, _) <- flattenQuery' query
-    return [(floatGroup group, mempty, TermGenerator term)]
+    (stmts, term, _) <- flattenQuery' query
+    return [(floatGroup (flattenStmtGroups stmts), TermGenerator term)]
   TcAll query -> do
-    (group, term, _) <- flattenQuery' query
+    (stmts, term, _) <- flattenQuery' query
     var <- fresh ty
     return
-      [ (Statements [FlatAllStatement var term group]
-      , mempty
-      , TermGenerator (Ref (MatchVar var)))]
+      [ (Statements [FlatAllStatement var term
+                        (flattenStmtGroups stmts)]
+        ,TermGenerator (Ref (MatchVar var)))]
   TcNegation stmts -> do
-    (ords, floats) <- mapAndUnzipM flattenStatement stmts
-    let neg = FlatNegation (mkGroup ords floats)
-    return [(oneStmt neg, mempty, TermGenerator $ Tuple [])]
+    stmts' <- flattenStmtGroups <$> mapM flattenStatement stmts
+    let neg = FlatNegation stmts'
+    return [(mempty `thenStmt` neg, TermGenerator $ Tuple [])]
   TcPrimCall op args -> do
-    r <- manyTerms (\args -> PrimCall op args ty) <$> mapM flattenPattern args
-    return [ (mempty, float, gen) | (float, gen) <- r ]
+    manyTerms (\args -> PrimCall op args ty) <$> mapM flattenPattern args
   TcIf (Typed condTy cond) then_ else_ -> do
-    (condOrd, condFloat) <- bindWild condTy =<< flattenSeqGenerators cond
+    condStmts <- bindWild condTy =<< flattenSeqGenerators cond
     var <- fresh ty
-    (thenOrd, thenFloat) <- bind var =<< flattenSeqGenerators then_
-    (elseOrd, elseFloat) <- bind var =<< flattenSeqGenerators else_
+    thenStmts <- bind var =<< flattenSeqGenerators then_
+    elseStmts <- bind var =<< flattenSeqGenerators else_
     let stmt = FlatConditional
-          (asGroup (condOrd <> condFloat))
-          (asGroup (thenOrd <> thenFloat))
-          (asGroup (elseOrd <> elseFloat))
-    return [(mempty `thenStmt` stmt, mempty,
-      TermGenerator $ Ref $ MatchVar var)]
+          (flattenStmtGroups [condStmts])
+          (flattenStmtGroups [thenStmts])
+          (flattenStmtGroups [elseStmts])
+    return [(mempty `thenStmt` stmt, TermGenerator $ Ref $ MatchVar var)]
   _other -> do
     r <- flattenPattern (Ref (MatchExt (Typed ty match)))
-    return $ [(mempty, stmts, TermGenerator pat) | (stmts, pat) <- r]
+    return $ [(stmts, TermGenerator pat) | (stmts, pat) <- r]
 flattenSeqGenerators pat = do
   r <- flattenPattern pat
-  return $ [(mempty, stmts, TermGenerator pat) | (stmts, pat) <- r]
+  return $ [(stmts, TermGenerator pat) | (stmts, pat) <- r]
 
-bindWild
-  :: Type
-  -> [(Statements, Statements, Generator)]
-  -> F (Statements, Statements)
+bindWild :: Type -> [(Statements, Generator)] -> F Statements
 bindWild ty stmts =
-  mkStmt ty stmts [(mempty, mempty, TermGenerator $ Ref $ MatchWild ty)]
+  mkStmt ty stmts [(mempty, TermGenerator $ Ref $ MatchWild ty)]
 
-bind
-  :: Var
-  -> [(Statements, Statements, Generator)]
-  -> F (Statements, Statements)
+bind :: Var -> [(Statements, Generator)] -> F Statements
 bind var gens = mkStmt
   (varType var)
-  [(mempty, mempty, TermGenerator (RTS.Ref (MatchBind var)))]
+  [(mempty, TermGenerator (RTS.Ref (MatchBind var)))]
   gens
 
 flattenFactGen
@@ -264,7 +235,7 @@ flattenFactGen
   -> SeekSection
   -> Pat
   -> Pat
-  -> F (Statements, Generator)
+  -> F ([Statements], Generator)
 flattenFactGen pidRef@(PidRef pid _) rng kpat vpat = do
   dbSchema <- gets flDbSchema
   deriveStored <- gets flDeriveStored
@@ -283,9 +254,9 @@ flattenFactGen pidRef@(PidRef pid _) rng kpat vpat = do
           | otherwise -> do
             calling predicateId factGen $ do
               query' <- expandDerivedPredicateCall details kpat vpat query
-              (group, key, maybeVal) <- flattenQuery' query'
+              (stmts, key, maybeVal) <- flattenQuery' query'
               let val = fromMaybe (Tuple []) maybeVal
-              return (floatGroup group, DerivedFactGenerator pidRef key val)
+              return (stmts, DerivedFactGenerator pidRef key val)
 
 calling
   :: Schema.PredicateId
@@ -388,9 +359,8 @@ flattenPattern pat = case pat of
   Ref (MatchExt (Typed ty _)) -> do
     gens <- flattenSeqGenerators pat
     v <- fresh ty
-    let gen = TermGenerator (RTS.Ref (MatchBind v))
-    (ord, float) <- mkStmt ty [(mempty, mempty, gen)] gens
-    return [(ord <> float, RTS.Ref (MatchVar v))]
+    stmts <- mkStmt ty [(mempty, TermGenerator (RTS.Ref (MatchBind v)))] gens
+    return [(stmts, RTS.Ref (MatchVar v))]
 
 {- Note [flattening TcOr]
 
@@ -470,9 +440,6 @@ thenStmt :: Statements -> FlatStatement -> Statements
 thenStmt ss s | irrelevant s = ss
 thenStmt (Statements ss) s = Statements (s : ss)
 
-oneStmt :: FlatStatement -> Statements
-oneStmt s = mempty `thenStmt` s
-
 -- | True for statements that cannot make any difference to the query.
 -- That is, statements that can neither fail nor bind any variables.
 irrelevant :: FlatStatement -> Bool
@@ -491,7 +458,9 @@ irrelevant _ = False
 -- between some statements, but allow the whole sequence to be
 -- reordered with respect to other statements around it.
 floatGroup :: FlatStatementGroup -> Statements
-floatGroup g = Statements [grouping g]
+floatGroup (FlatStatementGroup [] _) = Statements []
+floatGroup (FlatStatementGroup s Unordered) = Statements s
+floatGroup g@(FlatStatementGroup _ Ordered) = Statements [grouping g]
   -- Note: we nest groups by using FlatDisjunction with a single
   -- alternative. This is so that this set of groups may be reordered with
   -- respect to other statements/groups at the same level. For this to
@@ -502,23 +471,17 @@ flattenStmts :: Statements -> [FlatStatement]
 flattenStmts (Statements s) = reverse s
 
 disjunction :: [FlatStatementGroup] -> FlatStatement
-disjunction [FlatStatementGroup [x] []] = x
-disjunction [FlatStatementGroup [] [x]] = x
+disjunction [FlatStatementGroup [x] _] = x
 disjunction groups = FlatDisjunction groups
 
-mkGroup :: [Statements] -> [Statements] -> FlatStatementGroup
-mkGroup ords floats =
-  FlatStatementGroup (orderedGroups ords) (flattenStmts (mconcat floats))
+flattenStmtGroups :: [Statements] -> FlatStatementGroup
+flattenStmtGroups [one] = FlatStatementGroup (flattenStmts one) Unordered
+flattenStmtGroups stmtss =
+  FlatStatementGroup (mapMaybe (mkGroup . flattenStmts) stmtss) Ordered
   where
-  orderedGroups :: [Statements] -> [FlatStatement]
-  orderedGroups = mapMaybe (mkGroup . flattenStmts)
-
   mkGroup [] = Nothing
   mkGroup [one] = Just one
-  mkGroup more  = Just (FlatDisjunction [FlatStatementGroup [] more])
-
-asGroup :: Statements -> FlatStatementGroup
-asGroup one = FlatStatementGroup [] (flattenStmts one)
+  mkGroup more  = Just (FlatDisjunction [FlatStatementGroup more Unordered])
 
 singleTerm :: a -> F [(Statements, a)]
 singleTerm t = return [(mempty, t)]
@@ -588,7 +551,7 @@ captureKey
   -> Type
   -> F (FlatQuery, Maybe Generator, Type)
 captureKey ver dbSchema
-    (FlatQuery pat Nothing (FlatStatementGroup ord float)) ty
+    (FlatQuery pat Nothing (FlatStatementGroup stmts ord)) ty
   | Angle.PredicateTy pidRef@(PidRef pid _) <- ty  = do
   let
     -- look for $result = pred pat
@@ -659,31 +622,26 @@ captureKey ver dbSchema
     then return Nothing
     else Just <$> fresh predicateValueType
   let
-    (ord', capturedOrd, float', capturedFloat) =
+    (stmts', captured) =
       case pat of
         Ref (MatchVar (Var _ v _)) ->
-          let k :: [FlatStatement]
-                -> [(NonEmpty FlatStatement, Maybe (Pat, Pat))]
-              k = map (captureStmt v keyVar maybeValVar)
-              (ords, capturedOrd) = unzip (k ord)
-              (floats, capturedFloat) = unzip (k float)
+          let k :: [(NonEmpty FlatStatement, Maybe (Pat, Pat))]
+              k = map (captureStmt v keyVar maybeValVar) stmts
+              (stmtss, captured) = unzip k
 
               conc :: [NonEmpty FlatStatement] -> [FlatStatement]
               conc ((x :| xs) : ys) = x : (xs ++ concatMap NonEmpty.toList ys)
               conc [] = []
           in
-          (conc ords, capturedOrd, conc floats, capturedFloat)
-        _other -> (ord, [], float, [])
+          (conc stmtss, captured)
+        _other -> (stmts, [])
 
     returnTy = tupleSchema [ty, predicateKeyType, predicateValueType]
 
-  case (catMaybes capturedOrd, catMaybes capturedFloat) of
-    ([(key, val)], []) ->
+  case catMaybes captured of
+    [(key, val)] ->
       return (FlatQuery (RTS.Tuple [pat, key, val]) Nothing
-        (FlatStatementGroup ord' float'), Nothing, returnTy)
-    ([], [(key, val)]) ->
-      return (FlatQuery (RTS.Tuple [pat, key, val]) Nothing
-        (FlatStatementGroup ord' float'), Nothing, returnTy)
+        (FlatStatementGroup stmts' ord), Nothing, returnTy)
     _ -> do
       -- If we can't find the key/value now, we'll add a statement
       --   X = pred K V
@@ -694,7 +652,7 @@ captureKey ver dbSchema
           (Ref (MatchBind keyVar))
           (Ref (maybe (MatchWild predicateValueType) MatchBind maybeValVar))
           SeekOnAllFacts
-      return (FlatQuery pat Nothing (FlatStatementGroup ord float),
+      return (FlatQuery pat Nothing (FlatStatementGroup stmts ord),
         Just gen,
         returnTy)
 
@@ -737,7 +695,7 @@ captureKey ver dbSchema
 
     return
       ( FlatQuery result Nothing
-          (FlatStatementGroup ord (float ++ [resultStmt1, resultStmt2]))
+          (FlatStatementGroup (stmts ++ [resultStmt1, resultStmt2]) ord)
       , Nothing
       , retTy )
 
