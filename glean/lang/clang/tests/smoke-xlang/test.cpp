@@ -19,11 +19,11 @@ void thriftCaller() {
   SomeUnion request;
   SomeStruct response;
   SomeException e;
-  e.get_exception_field();
+  e.exception_field().value();
   request.set_union_field_1("foo");
   auto client = facebook::servicerouter::cpp2::getClientFactory().getSRClientUnique<SomeService>("dummy.tier");
   client->sync_someFunction(response, request);
-  response.get_struct_field_1();
+  response.struct_field_1().value();
   SomeEnum::EnumValue0;
   smoke_constants::SOME_CONST();
   smoke_constants::SOME_CONST_;
