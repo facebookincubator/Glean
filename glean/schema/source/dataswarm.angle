@@ -1,0 +1,55 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
+schema dataswarm.1 {
+    import builtin.1
+    import src.1
+
+    # records that a Dataswarm macro exists with a given globally unique name
+    predicate MacroDeclaration: {
+        # eg: di.my_pipeline.my_task
+        task_id: string,
+        # local name in the task
+        name: string
+    }
+
+    # records that a Hive table is created within a Dataswarm pipeline
+    predicate TableDeclaration: {
+        table_name: string,
+        table_namespace: string
+    }
+
+    # records that a subquery/CTE is declared within a SQL query
+    predicate SubqueryDeclaration: {
+        # eg: di.my_pipeline.my_task
+        task_id: string,
+        # local name in the SQL query
+        name: string
+    }
+
+    type Declaration = {
+        macro: MacroDeclaration |
+        table: TableDeclaration |
+        subquery: SubqueryDeclaration |
+    }
+
+    # a symbol declaration along with its unique location in the repo
+    predicate DeclarationLocation: {
+        declaration: Declaration,
+        file: src.File,
+        span: src.ByteSpan,
+    }
+
+    # a reference to another symbol (which may be declared in another file)
+    type XRef = {
+        target: Declaration,
+        # the place where the symbol is referenced
+        source: src.ByteSpan
+    }
+
+    # Collects all reference to names in a single file.
+    # There is only one fact of this predicate per source file in the repo.
+    predicate XRefsByFile: {
+        file: src.File,
+        xrefs: [XRef],
+    }
+}
