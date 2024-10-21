@@ -39,6 +39,7 @@ import GleanCLI.Types
 import GleanCLI.Common (dbOpts, fileFormatOpt, FileFormat (..))
 import Glean.Write (fileToBatches)
 import Glean.Write.JSON (buildJsonBatch)
+import System.Directory.Extra (listFiles)
 
 data MergeCommand = MergeCommand
   { mergeFiles :: [FilePath]
@@ -58,8 +59,8 @@ inventoryOpt = strOption $
 instance Plugin MergeCommand where
   parseCommand = commandParser "merge" (progDesc "Merge fact files") $ do
     mergeFiles <- many $ strArgument (
-      metavar "FILE" <>
-      help ("File of facts, either in json or binary format. "
+      metavar "PATH" <>
+      help ("File or directory of facts, either in json or binary format. "
        <> "For json format specify the database"))
     mergeFileSize <- option auto $
       long "max-file-size" <>
@@ -88,12 +89,19 @@ instance Plugin MergeCommand where
     createDirectoryIfMissing True mergeOutDir
     hSetBuffering stderr LineBuffering
     outputs <- newIORef []
-    stream 1 (merge fileFormat inventory dbSchema mergeFiles)
+    expandedMergeFiles <- mapM expandFile mergeFiles
+    stream 1 (merge fileFormat inventory dbSchema $ concat expandedMergeFiles)
       (writeToFile outputs)
       -- stream overlaps writing with reading
     files <- readIORef outputs
     L.putStrLn (Aeson.encode (Aeson.toJSON files))
     where
+      expandFile :: FilePath -> IO [FilePath]
+      expandFile file = do
+        isDirectory <- doesDirectoryExist file
+        if isDirectory
+          then listFiles file
+          else return [file]
       factSetSize :: FactSet -> IO Int
       factSetSize f = do
         c <- FactSet.factCount f
