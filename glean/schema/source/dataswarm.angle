@@ -52,4 +52,14 @@ schema dataswarm.1 {
         file: src.File,
         xrefs: [XRef],
     }
+
+    # derive a name predicate for each declaration (used by dataswarm.codemarkup)
+    predicate DeclarationName: {
+        declaration : Declaration,
+        name : string
+    }
+    {Decl, Name} where
+    Decl = (Declaration { macro = { name = Name } }) |
+        (Declaration { table = { table_name = Name } }) |
+        (Declaration { subquery = { name = Name } })
 }

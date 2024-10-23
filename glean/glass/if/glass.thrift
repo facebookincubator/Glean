@@ -509,6 +509,7 @@ enum Language {
   Kotlin = 15,
   CSharp = 16,
   GraphQL = 17,
+  Dataswarm = 18,
 }
 
 // Kinds of definitions. E.g. for jump-to-declaration or jump-to-definition

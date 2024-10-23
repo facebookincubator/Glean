@@ -1,0 +1,23 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
+schema codemarkup.dataswarm.1 {
+    import src.1
+    import code.24
+    import code.dataswarm.1
+    import codemarkup.types.1
+    import dataswarm.1
+
+    # derived predicate to find references in a file (to support Glass/Codehub integration)
+    predicate DataswarmFileEntityXRefLocations:
+    {
+        file: src.File,
+        xref: codemarkup.types.XRefLocation,
+        entity: code.dataswarm.Entity,
+    }
+    {File, {Location, { span = SrcSpan }}, { decl = Decl } } where
+    dataswarm.XRefsByFile { file = File, xrefs = XRefs };
+    dataswarm.XRef { target = Decl, source = SrcSpan } = XRefs[..];
+    dataswarm.DeclarationLocation { declaration = Decl, file = TargetFile, span = TargetSpan};
+    dataswarm.DeclarationName { declaration = Decl, name = DeclName};
+    Location = codemarkup.types.Location { DeclName, TargetFile, { span = TargetSpan }, nothing };
+}

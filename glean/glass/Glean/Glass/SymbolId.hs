@@ -180,6 +180,7 @@ shortCodeTable =
   [ (Language_Buck , "buck")
   , (Language_CSharp, "cs")
   , (Language_Cpp, "cpp")
+  , (Language_Dataswarm, "dataswarm")
   , (Language_Erlang , "erl")
   , (Language_Go , "go")
   , (Language_GraphQL, "graphql")
@@ -220,6 +221,7 @@ entityLanguage e = case e of
   Code.Entity_csharp{} -> Language_CSharp
   Code.Entity_cxx{} -> Language_Cpp
   Code.Entity_erlang{} -> Language_Erlang
+  Code.Entity_dataswarm{} -> Language_Dataswarm
   Code.Entity_fbthrift{} -> Language_Thrift
   Code.Entity_flow{} -> Language_JavaScript
   Code.Entity_graphql{} -> Language_GraphQL
@@ -250,6 +252,7 @@ languageToCodeLang l = case l of
   Language_Buck -> Just Code.Language_Buck
   Language_CSharp -> Just Code.Language_CSharp
   Language_Cpp -> Just Code.Language_Cpp
+  Language_Dataswarm -> Just Code.Language_Dataswarm
   Language_Erlang -> Just Code.Language_Erlang
   Language_Go -> Just Code.Language_Go
   Language_GraphQL -> Just Code.Language_GraphQL

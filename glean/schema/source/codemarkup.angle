@@ -6,6 +6,7 @@ import code.24
 import codemarkup.buck.2
 import codemarkup.csharp.1
 import codemarkup.cxx.4
+import codemarkup.dataswarm.1
 import codemarkup.erlang.2
 import codemarkup.fbthrift.1
 import codemarkup.flow.2
@@ -251,7 +252,9 @@ predicate FileEntityXRefLocations:
     (codemarkup.csharp.CSharpFileEntityXRefLocations { File, XRef, E };
      { csharp = E } = Entity) |
     (codemarkup.graphql.GraphQLFileEntityXRefLocations { File, XRef, E };
-     { graphql = E } = Entity);
+     { graphql = E } = Entity) |
+    (codemarkup.dataswarm.DataswarmFileEntityXRefLocations { File, XRef, E };
+     { dataswarm = E } = Entity);
 
 # Xrefs without the target location. This can be useful in cases
 # where we don't have a target location, but we don't need it. This

@@ -5,6 +5,7 @@ import src.1
 import code.buck.1
 import code.csharp.1
 import code.cxx.4
+import code.dataswarm.1
 import code.erlang.1
 import code.fbthrift.1
 import code.flow.2
@@ -36,6 +37,7 @@ type Entity =
     scip : code.scip.Entity |
     csharp : code.csharp.Entity |
     graphql : code.graphql.Entity |
+    dataswarm: code.dataswarm.Entity |
   }
 
 # language enum values for exactly the set of entity tags (including LSIF)
@@ -46,7 +48,7 @@ type Language =
   enum {
     Cpp | PreProcessor | Java | Haskell | Python | Hack | JavaScript | Rust |
     Thrift | Buck | Erlang | FSharp | Go | Kotlin | OCaml | Scala | Swift |
-    TypeScript | CSharp | GraphQL |
+    TypeScript | CSharp | GraphQL | Dataswarm |
   }
 
 # entity tag to language id
@@ -69,6 +71,7 @@ predicate EntityLanguage:
     ( { erlang = _ } = Entity; Erlang = Language ) |
     ( { csharp = _ } = Entity; CSharp = Language ) |
     ( { graphql = _ } = Entity; GraphQL = Language ) |
+    ( { dataswarm = _ } = Entity; Dataswarm = Language ) |
     ( { lsif = LSIF }  = Entity; EntityLanguageLSIF { LSIF, Language } ) |
     ( { scip = SCIP }  = Entity; EntityLanguageSCIP { SCIP, Language } );
 

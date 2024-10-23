@@ -632,6 +632,7 @@ library schema
         Glean.Schema.Code
         Glean.Schema.CodeCsharp
         Glean.Schema.CodeCxx
+        Glean.Schema.CodeDataswarm
         Glean.Schema.CodeErlang
         Glean.Schema.CodeGraphql
         Glean.Schema.CodeHack
@@ -643,6 +644,7 @@ library schema
         Glean.Schema.CodemarkupBuck
         Glean.Schema.CodemarkupCsharp
         Glean.Schema.CodemarkupCxx
+        Glean.Schema.CodemarkupDataswarm
         Glean.Schema.CodemarkupErlang
         Glean.Schema.CodemarkupFlow
         Glean.Schema.CodemarkupGraphql
@@ -660,6 +662,7 @@ library schema
         Glean.Schema.Csharp
         Glean.Schema.Cxx1
         Glean.Schema.Digest
+        Glean.Schema.Dataswarm
         Glean.Schema.Glass
         Glean.Schema.Erlang
         Glean.Schema.Flow
@@ -686,6 +689,7 @@ library schema
         Glean.Schema.CodeBuck.Types
         Glean.Schema.CodeCsharp.Types
         Glean.Schema.CodeCxx.Types
+        Glean.Schema.CodeDataswarm.Types
         Glean.Schema.CodeErlang.Types
         Glean.Schema.CodeFlow.Types
         Glean.Schema.CodeGraphql.Types
@@ -697,6 +701,7 @@ library schema
         Glean.Schema.CodemarkupBuck.Types
         Glean.Schema.CodemarkupCsharp.Types
         Glean.Schema.CodemarkupCxx.Types
+        Glean.Schema.CodemarkupDataswarm.Types
         Glean.Schema.CodemarkupErlang.Types
         Glean.Schema.CodemarkupFlow.Types
         Glean.Schema.CodemarkupGraphql.Types
@@ -716,6 +721,7 @@ library schema
         Glean.Schema.Code.Types
         Glean.Schema.Csharp.Types
         Glean.Schema.Cxx1.Types
+        Glean.Schema.Dataswarm.Types
         Glean.Schema.Digest.Types
         Glean.Schema.Erlang.Types
         Glean.Schema.Flow.Types

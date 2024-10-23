@@ -1,0 +1,11 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
+# For Glass integration
+schema code.dataswarm.1 {
+    import dataswarm.1
+
+    type Entity =
+    {
+        decl : dataswarm.Declaration
+    }
+}

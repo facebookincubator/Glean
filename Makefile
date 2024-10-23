@@ -154,6 +154,7 @@ SCHEMAS= \
 	code_buck \
 	code_csharp \
 	code_cxx \
+	code_dataswarm \
 	code_erlang \
 	code_fbthrift \
 	code_flow \
@@ -167,6 +168,7 @@ SCHEMAS= \
 	codemarkup_buck \
 	codemarkup_csharp \
 	codemarkup_cxx \
+	codemarkup_dataswarm \
 	codemarkup_erlang \
 	codemarkup_fbthrift \
 	codemarkup_flow \
@@ -185,6 +187,7 @@ SCHEMAS= \
 	code_scip \
 	csharp \
 	cxx1 \
+	dataswarm \
 	digest \
 	dyn \
 	erlang \
