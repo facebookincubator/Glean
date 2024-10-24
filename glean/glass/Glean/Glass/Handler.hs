@@ -714,6 +714,13 @@ symbolToAngleEntities lang toks = do
     Left err -> Left (logError (GlassExceptionReason_entityNotSupported err))
     Right results -> Right (results, searchErr)
 
+-- | Args that modify the shape of the output
+data ExtraSymbolOpts = ExtraSymbolOpts {
+  oIncludeRefs :: !Bool,  -- ^ include references?
+  oIncludeXlangRefs :: !Bool,  -- ^ include xlang references?
+  oLineRange :: Maybe [LineRange] -- ^ restrict to specifc range
+}
+
 fetchSymbolsAndAttributesGlean
   :: Glean.Backend b
   => Glass.Env
@@ -734,8 +741,8 @@ fetchSymbolsAndAttributesGlean
     fetchDocumentSymbols env file path mlimit
       (requestOptions_revision opts)
       (requestOptions_exact_revision opts)
-      includeRefs includeXlangRefs
-      (shouldFetchContentHash opts) be mlang dbInfo
+      withContentHash
+      ExtraSymbolOpts{..} be mlang dbInfo
 
   let be = fromMaybe (gleanBackend, dbInfo) mOtherBackend
 
@@ -747,8 +754,10 @@ fetchSymbolsAndAttributesGlean
     repo = documentSymbolsRequest_repository req
     path = documentSymbolsRequest_filepath req
     file = toFileReference repo path
-    includeRefs = documentSymbolsRequest_include_refs req
-    includeXlangRefs = case opts of
+    oIncludeRefs = documentSymbolsRequest_include_refs req
+    oLineRange = documentSymbolsRequest_range req
+    withContentHash = shouldFetchContentHash opts
+    oIncludeXlangRefs = case opts of
       RequestOptions { requestOptions_feature_flags = Just
         FeatureFlags { featureFlags_include_xlang_refs = Just True } } -> True
       _ -> False
@@ -945,16 +954,14 @@ fetchDocumentSymbols
   -> Maybe Int
   -> Maybe Revision
   -> Bool  -- ^ exact revision only?
-  -> Bool  -- ^ include references?
-  -> Bool  -- ^ include xlang references?
   -> Bool  -- ^ fetch file content hash?
+  -> ExtraSymbolOpts
   -> GleanBackend b
   -> Maybe Language
   -> GleanDBInfo
   -> IO (DocumentSymbols, QueryEachRepoLog, Maybe ErrorLogger)
 fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
-    repoPath mlimit wantedRevision
-    exactRevision includeRefs includeXlangRefs fetchContentHash
+    repoPath mlimit wantedRevision exactRevision fetchContentHash extraOpts
     b mlang dbInfo = do
   backendRunHaxl b env $ do
     --
@@ -993,8 +1000,10 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
 
         -- from Glean, fetch xrefs and defs in two batches
         (xrefs, defns, truncated) <- withRepo fileRepo $
-          documentSymbolsForLanguage mlimit mlang includeRefs includeXlangRefs
+          documentSymbolsForLanguage
+            mlimit mlang extraOpts
             fileId
+        -- todo this could be done in Glean in a single pass
         (kindMap, merr) <- withRepo fileRepo $
           documentSymbolKinds mlimit mlang fileId
 
@@ -1128,21 +1137,20 @@ type Defns = [(Code.Location,Code.Entity)]
 documentSymbolsForLanguage
   :: Maybe Int
   -> Maybe Language
-  -> Bool  -- ^ include references?
-  -> Bool -- ^ include xlang references
+  -> ExtraSymbolOpts
   -> Glean.IdOf Src.File
   -> Glean.RepoHaxl u w ([GenXRef], Defns, Bool)
 
 -- For Cpp, we need to do a bit of client-side processing
 documentSymbolsForLanguage
-  mlimit (Just Language_Cpp) includeRefs includeXlangRefs fileId =
-  Cxx.documentSymbolsForCxx mlimit includeRefs includeXlangRefs fileId
+  mlimit (Just Language_Cpp) opts fileId = Cxx.documentSymbolsForCxx
+    mlimit (oIncludeRefs opts) (oIncludeXlangRefs opts) fileId
 
 -- For everyone else, we just query the generic codemarkup predicates
-documentSymbolsForLanguage mlimit _ includeRefs includeXlangRefs fileId = do
-  (xrefs, trunc1) <- if includeRefs
+documentSymbolsForLanguage mlimit _ ExtraSymbolOpts{..} fileId = do
+  (xrefs, trunc1) <- if oIncludeRefs
     then searchRecursiveWithLimit mlimit $
-      Query.fileEntityXRefLocations fileId includeXlangRefs
+      Query.fileEntityXRefLocations fileId oIncludeXlangRefs
     else return ([], False)
   (defns, trunc2) <- searchRecursiveWithLimit mlimit $
     Query.fileEntityLocations fileId
@@ -1538,8 +1546,8 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
           parentRL = ((decl, file, rangespan, name), sym)
       parentRange <-
         locationRange_range <$> rangeSpanToLocationRange repoName file rangespan
-      (xrefs_, _, _) <-
-        documentSymbolsForLanguage Nothing (Just lang) True False
+      (xrefs_, _, _) <- documentSymbolsForLanguage Nothing (Just lang)
+          (ExtraSymbolOpts True False Nothing)
           (Glean.getId file)
       -- only consider non-Idl xrefs
       let xrefs = [x | PlainXRef x <- xrefs_]
