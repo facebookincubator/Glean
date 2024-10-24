@@ -120,7 +120,7 @@ angleErrorTests = dbTestCase $ \env repo -> do
   assertBool "angle - mismatched generator types" $
     case r of
       Left (BadQuery x) ->
-        "expected type: cxx1.Name" `Text.isInfixOf` x
+        "type error" `Text.isInfixOf` x
       _ -> False
 
   -- types of array elements don't match

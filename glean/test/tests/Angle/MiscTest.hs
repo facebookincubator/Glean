@@ -437,9 +437,10 @@ fullScansTest = TestList $
         (userQueryStats_full_scans stats)
   , TestLabel "multiple full scans" $ TestCase $ withTestDB [] $ \env repo -> do
       (_, Just stats) <- queryStats env repo $ angleData @Glean.Test.Edge
-        [s| glean.test.Edge { A, B } where
+        [s| E where
             A = glean.test.Node _;
             B = glean.test.Node _;
+            E = glean.test.Edge { A, B }
         |]
       assertEqual "full scans"
         [ PredicateRef "glean.test.Node" 6

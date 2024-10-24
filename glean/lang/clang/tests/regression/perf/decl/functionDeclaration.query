@@ -1,7 +1,8 @@
 # Should not iterate through all the cxx1.FunctionName facts
 query: |
   cxx1.FunctionDeclaration { name = FN };
-  { name = { name = N:string }} = FN;
+  { name = QN } = FN;
+  { name = N:string } = QN;
   N
 perf: true
 transform: [gensort, []]
