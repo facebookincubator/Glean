@@ -287,14 +287,14 @@ reorderStmtGroup
   -> [FlatStatement]  -- these can float anywhere
   -> [FlatStatement]  -- final ordering
 reorderStmtGroup _ _ ordered [] = ordered
-reorderStmtGroup sc bound ordered floating =
+reorderStmtGroup sc initBound ordered floating =
   let
     (lookups, others) = partitionStmts (map summarise floating)
     ord = map summarise ordered
-    r = layout (IntSet.toList bound) bound lookups others ord
+    r = layout (IntSet.toList initBound) initBound lookups others ord
   in
   trace (show (vcat [
-    "reorderStmtGroup: " <> pretty (show bound),
+    "reorderStmtGroup: " <> pretty (show initBound),
     indent 2 (displayDefault (FlatStatementGroup ordered floating)),
     "===>",
     indent 2 (vcat (map displayDefault r)) ])) r
@@ -324,7 +324,7 @@ reorderStmtGroup sc bound ordered floating =
         -- but gives better results than not reordering recursively at
         -- all.
         cost = classify bound $ FlatDisjunction
-          [ FlatStatementGroup (reorderStmtGroup sc bound ord float) []
+          [ FlatStatementGroup (reorderStmtGroup sc initBound ord float) []
           | FlatStatementGroup ord float <- groups ]
       FlatNegation{} ->  (Nothing, bound, Nothing, stmt)
       FlatConditional{} ->  (Nothing, bound, Nothing, stmt)
