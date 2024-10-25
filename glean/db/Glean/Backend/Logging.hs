@@ -193,7 +193,10 @@ runLogQuery cmd env repo Thrift.UserQuery{..} log = do
   runLogRepo cmd env repo $ mconcat
     [ log
     , Logger.SetQuery
-        (Text.decodeUtf8With Text.lenientDecode userQuery_query)
+        (Text.decodeUtf8With Text.lenientDecode $
+          if ByteString.length userQuery_query > 1024
+            then "[truncated] " <> ByteString.take 1024 userQuery_query
+            else userQuery_query)
     , Logger.SetPredicate userQuery_predicate
     , maybe mempty (Logger.SetPredicateVersion . fromIntegral)
         userQuery_predicate_version
