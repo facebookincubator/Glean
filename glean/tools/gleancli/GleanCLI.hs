@@ -38,12 +38,10 @@ import System.Exit (exitWith, ExitCode(..))
 import qualified Glean
 import Glean.Init
 import qualified Glean.LocalOrRemote as Glean
-import Glean.Database.Config (cfgSchemaSource, cfgSchemaId, cfgServerConfig)
+import Glean.Database.Config (cfgSchemaSource, cfgServerConfig)
 import qualified Glean.Database.Config as GleanDB
 import Glean.Database.Schema
-  (newDbSchema, readWriteContent, DbSchema (schemaInventory))
 import Glean.Database.Schema.Types
-  (SchemaSelector(SpecificSchemaId, LatestSchemaAll))
 import qualified Glean.Database.Work as Database
 import qualified Glean.RTS.Foreign.Inventory as Inventory
 import Glean.Schema.Util
@@ -630,16 +628,28 @@ instance Plugin SetPropertyCommand where
 
 data WriteSerializedInventoryCommand
   = WriteSerializedInventory
-      { writeSerializedInventoryRepo :: Maybe Repo
+      { writeSerializedInventoryFrom :: InventoryFrom
       , outputFile :: FilePath
       }
+
+data InventoryFrom
+  = FromDB Repo
+  | FromSchemaId SchemaId
+  | FromLatestSchema
 
 instance Plugin WriteSerializedInventoryCommand where
   serverConfigTransform _ = disableJanitor . disableAutoBackups
 
   parseCommand =
     commandParser "write-serialized-inventory" (progDesc desc) $ do
-      writeSerializedInventoryRepo <- optional dbOpts
+      let schemaId = SchemaId <$> textOption (
+            long "schema-id" <>
+            metavar "SCHEMA" <>
+            help "schema ID to create the inventory for")
+      writeSerializedInventoryFrom <-
+        (FromDB <$> dbOpts) <|>
+        (FromSchemaId <$> schemaId) <|>
+        pure FromLatestSchema
       outputFile <- strArgument (metavar "OUTPUT_FILE")
       return WriteSerializedInventory{..}
     where
@@ -647,20 +657,20 @@ instance Plugin WriteSerializedInventoryCommand where
              " or a DB"
 
   withService evb cfgAPI svc WriteSerializedInventory{..} = do
-    inventory <- case writeSerializedInventoryRepo of
-      Just repo ->
+    let
+      inventoryFromSchema selector = do
+        index <- ThriftSource.load cfgAPI $ cfgSchemaSource $ case svc of
+          Glean.Local cfg _ -> cfg
+          Glean.Remote{} -> def
+        dbSchema <- newDbSchema Nothing index selector readWriteContent def
+        return $ Inventory.serialize $ schemaInventory dbSchema
+
+    inventory <- case writeSerializedInventoryFrom of
+      FromDB repo ->
         Glean.withBackendWithDefaultOptions evb cfgAPI svc Nothing $ \backend ->
           Glean.serializeInventory backend repo
-      Nothing -> do
-        dbSchema <- case svc of
-          Glean.Local cfg _ -> do
-            index <- ThriftSource.load cfgAPI (cfgSchemaSource cfg)
-            let selector =
-                  maybe LatestSchemaAll SpecificSchemaId $ cfgSchemaId cfg
-            newDbSchema Nothing index selector readWriteContent def
-          Glean.Remote{} ->
-            throwIO $ userError "Please specify either a schema id or a db"
-        return $ Inventory.serialize $ schemaInventory dbSchema
+      FromSchemaId schemaId -> inventoryFromSchema (SpecificSchemaId schemaId)
+      FromLatestSchema -> inventoryFromSchema LatestSchemaAll
 
     withFile outputFile WriteMode $ \hdl -> do
       B.hPutStr hdl inventory

@@ -189,7 +189,7 @@ instance Show Config where
 instance Default Config where
   def = Config
     { cfgDataStore = fileDataStore "."
-    , cfgSchemaSource = ThriftSource.value (error "undefined schema")
+    , cfgSchemaSource = defaultSchemaSourceIndexConfig
     , cfgUpdateSchema = True
     , cfgSchemaDir = Nothing
     , cfgSchemaId = Nothing
@@ -426,8 +426,6 @@ options = do
   cfgDataStore <- dbRoot <|> dbTmp <|> dbMem <|> pure tmpDataStore
   ~(cfgSchemaDir, cfgSchemaSource) <- schemaSourceOption
   _ignored_for_backwards_compat <- switch (long "db-schema-override")
-  _cfgSchemaId <- fmap (fmap SchemaId) $ optional $ strOption
-    ( long "schema-id" <> hidden ) -- ignored for backwards compat
 
   cfgRecipeConfig <- recipesConfigThriftSource
   cfgServerConfig <-
