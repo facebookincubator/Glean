@@ -1,0 +1,23 @@
+[
+  "@generated",
+  {
+    "key": {
+      "declaration": {
+        "method": {
+          "key": {
+            "name": { "key": "bar" },
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "www/SourceClass.php" },
+      "span": { "start": 408, "length": 3 }
+    }
+  }
+]

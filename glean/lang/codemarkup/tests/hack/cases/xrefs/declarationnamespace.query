@@ -1,0 +1,33 @@
+query: |
+  hack.DeclarationLocation
+    {
+      declaration =  {
+          method = hack.MethodDeclaration.6 {
+            name="bar",
+            container = {
+              class_ = hack.ClassDeclaration.6 {
+                name = hack.QName.6 {
+                  name = "SourceClass",
+                  namespace_ = {nothing={}}
+                }
+              }
+            } | {
+              interface_ = hack.InterfaceDeclaration.6 {
+                name=hack.QName.6 {
+                  name = "SourceClass",
+                  namespace_={nothing={}}
+                }
+              }
+            } | {
+              trait = hack.TraitDeclaration.6 {
+                name = hack.QName.6 {
+                  name = "SourceClass",
+                  namespace_ = {nothing={}}
+                }
+              }
+            }
+          }
+        }
+  }
+perf: true
+transform: [gensort, []]
