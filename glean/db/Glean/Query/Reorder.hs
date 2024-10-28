@@ -501,13 +501,12 @@ reorderStmtGroup sc initBound ordered floating =
           -- later pass anyway.
           go [] = Nothing
           go ((cost, s@(_, _, _, stmt)) : more)
-            | cost == wanted =
+            | cost == wanted || wanted == StmtScan && cost == StmtUnresolved =
+              -- StmtUnresolved often turns into a StmtScan later when
+              -- we insert a generator for the unbound variable.
               trace ("findOrd selecting: " <> show cost <> ": " <>
                 show (displayDefault stmt)) $
               Just (s, map snd more)
-            | cost == StmtUnresolved = case go more of
-              Just (picked, rest) -> Just (picked, s : rest)
-              Nothing -> Nothing
             | otherwise =
               trace ("findOrd ignoring: " <> show cost <> ": " <>
                 show (displayDefault stmt))
