@@ -18,6 +18,7 @@ module Glean.Query.Flatten.Types
   , FlatStatementGroup(..)
   , Ordered(..)
   , grouping
+  , mkStatementGroup
   , singletonGroup
   , boundVars
   , boundVarsOf
@@ -115,6 +116,13 @@ grouping :: FlatStatementGroup -> FlatStatement
 grouping (FlatStatementGroup [one] []) = one
 grouping (FlatStatementGroup [] [one]) = one
 grouping group = FlatDisjunction [group]
+
+-- | Smart constructor for a FlatStatementGroup, as with "grouping"
+-- this flattens unnecessary nesting.
+mkStatementGroup :: [FlatStatement] -> [FlatStatement] -> FlatStatementGroup
+mkStatementGroup [FlatDisjunction [group]] [] = group
+mkStatementGroup [] [FlatDisjunction [group]] = group
+mkStatementGroup ord float = FlatStatementGroup ord float
 
 instance VarsOf FlatStatementGroup where
   varsOf w (FlatStatementGroup ord float) r =

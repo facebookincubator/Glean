@@ -97,7 +97,7 @@ flattenQuery' (TcQuery ty head Nothing stmts ord) = do
         ( case ord of
             Ordered -> mkGroup ords (oneStmt (FlatDisjunction alts) : floats)
             Unordered ->
-              FlatStatementGroup
+              mkStatementGroup
                 []
                 (FlatDisjunction alts : flattenStmts (mconcat (ords <> floats)))
         , Ref (MatchVar v)
@@ -508,17 +508,17 @@ disjunction groups = FlatDisjunction groups
 
 mkGroup :: [Statements] -> [Statements] -> FlatStatementGroup
 mkGroup ords floats =
-  FlatStatementGroup (orderedGroups ords) (flattenStmts (mconcat floats))
+  mkStatementGroup (orderedGroups ords) (flattenStmts (mconcat floats))
   where
   orderedGroups :: [Statements] -> [FlatStatement]
   orderedGroups = mapMaybe (mkGroup . flattenStmts)
 
   mkGroup [] = Nothing
   mkGroup [one] = Just one
-  mkGroup more  = Just (FlatDisjunction [FlatStatementGroup [] more])
+  mkGroup more  = Just (FlatDisjunction [mkStatementGroup [] more])
 
 asGroup :: Statements -> FlatStatementGroup
-asGroup one = FlatStatementGroup [] (flattenStmts one)
+asGroup one = mkStatementGroup [] (flattenStmts one)
 
 singleTerm :: a -> F [(Statements, a)]
 singleTerm t = return [(mempty, t)]
@@ -680,10 +680,10 @@ captureKey ver dbSchema
   case (catMaybes capturedOrd, catMaybes capturedFloat) of
     ([(key, val)], []) ->
       return (FlatQuery (RTS.Tuple [pat, key, val]) Nothing
-        (FlatStatementGroup ord' float'), Nothing, returnTy)
+        (mkStatementGroup ord' float'), Nothing, returnTy)
     ([], [(key, val)]) ->
       return (FlatQuery (RTS.Tuple [pat, key, val]) Nothing
-        (FlatStatementGroup ord' float'), Nothing, returnTy)
+        (mkStatementGroup ord' float'), Nothing, returnTy)
     _ -> do
       -- If we can't find the key/value now, we'll add a statement
       --   X = pred K V
@@ -694,7 +694,7 @@ captureKey ver dbSchema
           (Ref (MatchBind keyVar))
           (Ref (maybe (MatchWild predicateValueType) MatchBind maybeValVar))
           SeekOnAllFacts
-      return (FlatQuery pat Nothing (FlatStatementGroup ord float),
+      return (FlatQuery pat Nothing (mkStatementGroup ord float),
         Just gen,
         returnTy)
 
@@ -737,7 +737,7 @@ captureKey ver dbSchema
 
     return
       ( FlatQuery result Nothing
-          (FlatStatementGroup ord (float ++ [resultStmt1, resultStmt2]))
+          (mkStatementGroup ord (float ++ [resultStmt1, resultStmt2]))
       , Nothing
       , retTy )
 

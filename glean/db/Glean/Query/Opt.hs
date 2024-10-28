@@ -215,7 +215,7 @@ can leave unbound variables behind.  See optStmts and apply below.
 
 instance Apply FlatStatementGroup where
   apply (FlatStatementGroup ord float) =
-    FlatStatementGroup <$> mapM apply ord <*> mapM apply float
+    mkStatementGroup <$> mapM apply ord <*> mapM apply float
 
 instance Apply FlatStatement where
   apply (FlatStatement ty lhs rhs) = do
@@ -279,8 +279,8 @@ optStmts (FlatStatementGroup ord float) = do
   -- unify may fail, but apply may also leave behind a false statement:
   if notFalseOrd && notFalseFloat &&
      not (any isFalseStmt ord'' || any isFalseStmt float'')
-    then return (FlatStatementGroup ord'' float'')
-    else return (FlatStatementGroup (falseStmt : ord'' ) float'')
+    then return (mkStatementGroup ord'' float'')
+    else return (mkStatementGroup (falseStmt : ord'' ) float'')
 
 -- Look for the sentinel left by optStmts
 isFalseGroups :: FlatStatementGroup -> Bool
@@ -600,7 +600,7 @@ termScope pat r = foldr onMatch r pat
 --
 expandGroup :: FlatStatementGroup -> FlatStatementGroup
 expandGroup (FlatStatementGroup ord float) =
-  FlatStatementGroup (concatMap expandStmt ord) (concatMap expandStmt float)
+  mkStatementGroup (concatMap expandStmt ord) (concatMap expandStmt float)
 
 expandStmt :: FlatStatement -> [FlatStatement]
 expandStmt (FlatStatement stmtTy lhs (TermGenerator rhs)) =
@@ -737,7 +737,7 @@ filterGroup :: FlatStatementGroup -> U FlatStatementGroup
 filterGroup (FlatStatementGroup ord float) = do
   float' <- filterStmts float
   ord' <- filterStmts ord
-  return (FlatStatementGroup ord' float')
+  return (mkStatementGroup ord' float')
 
 filterStmts :: [FlatStatement] -> U [FlatStatement]
 filterStmts stmts = do
