@@ -1,0 +1,9 @@
+query:
+  X0 where
+    X1 = codemarkup.hack.HackFileEntityXRefLocations.2
+      {file="www/RefClass.php"};
+    codemarkup.hack.HackFileEntityXRefLocations.2
+      {entity={decl={method=hack.MethodDeclaration.6 {}}}}=X1;
+    X0=X1
+perf: true
+transform: [gensort, []]

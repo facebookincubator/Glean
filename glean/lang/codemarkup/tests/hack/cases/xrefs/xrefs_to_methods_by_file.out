@@ -1,0 +1,119 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "xref": {
+        "target": {
+          "name": "bazza",
+          "file": { "key": "www/RefClass.php" },
+          "location": { "span": { "start": 475, "length": 5 } }
+        },
+        "source": { "span": { "start": 888, "length": 5 } }
+      },
+      "entity": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "bazza" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "RefClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "xref": {
+        "target": {
+          "name": "foo",
+          "file": { "key": "www/RefClass.php" },
+          "location": { "span": { "start": 411, "length": 3 } }
+        },
+        "source": { "span": { "start": 846, "length": 3 } }
+      },
+      "entity": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "foo" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "RefClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "xref": {
+        "target": {
+          "name": "quux",
+          "file": { "key": "www/SourceTrait.php" },
+          "location": { "span": { "start": 264, "length": 4 } }
+        },
+        "source": { "span": { "start": 804, "length": 4 } }
+      },
+      "entity": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "quux" },
+              "container": {
+                "trait": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SourceTrait" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "xref": {
+        "target": {
+          "name": "superAdd",
+          "file": { "key": "www/SuperClass.php" },
+          "location": { "span": { "start": 288, "length": 8 } }
+        },
+        "source": { "span": { "start": 911, "length": 8 } }
+      },
+      "entity": {
+        "decl": {
+          "method": {
+            "key": {
+              "name": { "key": "superAdd" },
+              "container": {
+                "class_": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "SuperClass" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]
