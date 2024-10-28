@@ -599,7 +599,26 @@
                 "sym": "test/py/all.py/all.var2"
             }
         ],
-        "referenced_file_digests": {},
+        "digest": {
+            "hash": "82477ac56f4e03469d663fef3045c8b640e60d501048cf7a21ceddf7e57800cf",
+            "size": 548
+        },
+        "referenced_file_digests": {
+            "test": {
+                "all.py": {
+                    "hash": "82477ac56f4e03469d663fef3045c8b640e60d501048cf7a21ceddf7e57800cf",
+                    "size": 548
+                },
+                "big_lib/__init__.py": {
+                    "hash": "3ee2f6d05685eb7cb6828fb2996b0e67615aaa1b3efc1fb4368002b634dd8dd8",
+                    "size": 139
+                },
+                "lib.py": {
+                    "hash": "56a9331fd5b96016653178d7eb25c85c4678417ae596b9f46340084eddb888d9",
+                    "size": 434
+                }
+            }
+        },
         "references": [
             {
                 "attributes": [
