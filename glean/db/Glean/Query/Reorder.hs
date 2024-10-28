@@ -586,12 +586,16 @@ reorderStmts stmts = iterate stmts []
   choose _ [one] = ("only", (one, []))
   choose scope stmts = fromMaybe (error "choose") $
     firstResolved <|>
+    firstLookup <|>
     firstNotUnresolved <|>
     firstNotUnresolvedLenient <|>
     fallback
     where
       firstResolved = ("resolved",) <$>
         find (isResolvedFilter (ifBoundOnly scope) . fst) stmts'
+
+      firstLookup = ("lookup",) <$>
+        find (isLookup (ifBoundOnly scope) . fst) stmts'
 
       -- try to find a statement that's already resolved without
       -- adding any missing generators, and then try again allowing
@@ -664,6 +668,11 @@ isReadyFilter scope stmt notFilter = case stmt of
         IntSet.filter (\var -> isInScope scope var && not (inScopeBound scope var))
         appearInStmts
   _ -> notFilter
+
+isLookup :: InScope -> FlatStatement -> Bool
+isLookup scope (FlatStatement _ lhs FactGenerator{})
+  | Just (Var _ v _) <- isVar lhs, inScopeBound scope v = True
+isLookup _ _ = False
 
 data InScope = InScope
   { unboundPredicates :: Bool
