@@ -1,6 +1,9 @@
 {
   "@generated": null,
-  "lsif.DefinitionKind.2": 28,
-  "lsif.DefinitionMoniker.2": 28,
-  "lsif.Reference.2": 28
+  "facts_searched": {
+    "lsif.DefinitionKind.2": 28,
+    "lsif.DefinitionMoniker.2": 28,
+    "lsif.Reference.2": 28
+  },
+  "full_scans": [ "lsif.Reference.2" ]
 }

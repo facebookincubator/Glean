@@ -1,8 +1,11 @@
 {
   "@generated": null,
-  "cxx1.DeclarationNameSpan.5": 20,
-  "cxx1.FunctionDefinition.5": 4,
-  "cxx1.NamespaceDefinition.5": 2,
-  "cxx1.RecordDefinition.5": 2,
-  "cxx1.Trace.5": 3
+  "facts_searched": {
+    "cxx1.DeclarationNameSpan.5": 20,
+    "cxx1.FunctionDefinition.5": 4,
+    "cxx1.NamespaceDefinition.5": 2,
+    "cxx1.RecordDefinition.5": 2,
+    "cxx1.Trace.5": 3
+  },
+  "full_scans": [ "cxx1.Trace.5" ]
 }

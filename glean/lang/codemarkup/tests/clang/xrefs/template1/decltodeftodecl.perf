@@ -1,6 +1,9 @@
 {
   "@generated": null,
-  "cxx1.DeclarationNameSpan.5": 12,
-  "cxx1.RecordDefinition.5": 5,
-  "cxx1.Trace.5": 1
+  "facts_searched": {
+    "cxx1.DeclarationNameSpan.5": 12,
+    "cxx1.RecordDefinition.5": 5,
+    "cxx1.Trace.5": 1
+  },
+  "full_scans": [ "cxx1.Trace.5" ]
 }

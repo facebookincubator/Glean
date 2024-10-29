@@ -1,9 +1,12 @@
 {
   "@generated": null,
-  "cxx1.FunctionDeclaration.5": 2,
-  "cxx1.FunctionName.5": 2,
-  "cxx1.FunctionQName.5": 2,
-  "cxx1.Name.5": 3,
-  "cxx1.NamespaceQName.5": 2,
-  "src.File.1": 1
+  "facts_searched": {
+    "cxx1.FunctionDeclaration.5": 2,
+    "cxx1.FunctionName.5": 2,
+    "cxx1.FunctionQName.5": 2,
+    "cxx1.Name.5": 3,
+    "cxx1.NamespaceQName.5": 2,
+    "src.File.1": 1
+  },
+  "full_scans": [ ]
 }

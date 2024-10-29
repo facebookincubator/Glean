@@ -1,6 +1,9 @@
 {
   "@generated": null,
-  "python.Contains.4": 30,
-  "python.DeclarationDefinition.4": 56,
-  "python.DeclarationLocation.4": 56
+  "facts_searched": {
+    "python.Contains.4": 30,
+    "python.DeclarationDefinition.4": 56,
+    "python.DeclarationLocation.4": 56
+  },
+  "full_scans": [ "python.Contains.4" ]
 }

@@ -1,8 +1,17 @@
 {
   "@generated": null,
-  "cxx1.DeclToFamily.5": 4,
-  "cxx1.FunctionDeclaration.5": 5,
-  "cxx1.RecordDeclaration.5": 8,
-  "cxx1.RecordDefinition.5": 6,
-  "cxx1.VariableDeclaration.5": 9
+  "facts_searched": {
+    "cxx1.DeclToFamily.5": 4,
+    "cxx1.FunctionDeclaration.5": 5,
+    "cxx1.RecordDeclaration.5": 8,
+    "cxx1.RecordDefinition.5": 6,
+    "cxx1.VariableDeclaration.5": 9
+  },
+  "full_scans": [
+    "cxx1.EnumDeclaration.5",
+    "cxx1.FunctionDeclaration.5",
+    "cxx1.RecordDeclaration.5",
+    "cxx1.TypeAliasDeclaration.5",
+    "cxx1.VariableDeclaration.5"
+  ]
 }

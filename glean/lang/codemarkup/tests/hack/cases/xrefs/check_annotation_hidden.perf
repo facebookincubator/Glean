@@ -1,15 +1,29 @@
 {
   "@generated": null,
-  "hack.ClassDefinition.6": 13,
-  "hack.EnumDefinition.6": 5,
-  "hack.FunctionDefinition.6": 4,
-  "hack.InterfaceDefinition.6": 6,
-  "hack.MethodDefinition.6": 26,
-  "hack.ModuleDefinition.6": 1,
-  "hack.Name.6": 1,
-  "hack.PropertyDefinition.6": 3,
-  "hack.TraitDefinition.6": 4,
-  "hack.TypeConstDefinition.6": 1,
-  "hack.TypedefDefinition.6": 1,
-  "hack.UserAttribute.6": 64
+  "facts_searched": {
+    "hack.ClassDefinition.6": 13,
+    "hack.EnumDefinition.6": 5,
+    "hack.FunctionDefinition.6": 4,
+    "hack.InterfaceDefinition.6": 6,
+    "hack.MethodDefinition.6": 26,
+    "hack.ModuleDefinition.6": 1,
+    "hack.Name.6": 1,
+    "hack.PropertyDefinition.6": 3,
+    "hack.TraitDefinition.6": 4,
+    "hack.TypeConstDefinition.6": 1,
+    "hack.TypedefDefinition.6": 1,
+    "hack.UserAttribute.6": 64
+  },
+  "full_scans": [
+    "hack.ClassDefinition.6",
+    "hack.EnumDefinition.6",
+    "hack.FunctionDefinition.6",
+    "hack.InterfaceDefinition.6",
+    "hack.MethodDefinition.6",
+    "hack.ModuleDefinition.6",
+    "hack.PropertyDefinition.6",
+    "hack.TraitDefinition.6",
+    "hack.TypeConstDefinition.6",
+    "hack.TypedefDefinition.6"
+  ]
 }

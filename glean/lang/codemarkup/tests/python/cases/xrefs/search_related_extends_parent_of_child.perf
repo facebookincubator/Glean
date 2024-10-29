@@ -1,8 +1,11 @@
 {
   "@generated": null,
-  "python.ClassDeclaration.4": 2,
-  "python.ClassDefinition.4": 7,
-  "python.DeclarationDefinition.4": 6,
-  "python.DeclarationLocation.4": 7,
-  "python.ImportStatementByAsName.4": 1
+  "facts_searched": {
+    "python.ClassDeclaration.4": 2,
+    "python.ClassDefinition.4": 7,
+    "python.DeclarationDefinition.4": 6,
+    "python.DeclarationLocation.4": 7,
+    "python.ImportStatementByAsName.4": 1
+  },
+  "full_scans": [ "python.ClassDefinition.4" ]
 }

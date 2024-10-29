@@ -1,7 +1,10 @@
 {
   "@generated": null,
-  "fbthrift.DeclarationNameSpan.1": 150,
-  "fbthrift.DeclarationUses.1": 87,
-  "fbthrift.File.1": 2,
-  "fbthrift.FileDeclaration.1": 150
+  "facts_searched": {
+    "fbthrift.DeclarationNameSpan.1": 150,
+    "fbthrift.DeclarationUses.1": 87,
+    "fbthrift.File.1": 2,
+    "fbthrift.FileDeclaration.1": 150
+  },
+  "full_scans": [ "fbthrift.File.1" ]
 }

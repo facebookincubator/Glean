@@ -1,6 +1,9 @@
 {
   "@generated": null,
-  "hack.DeclarationSpan.6": 6,
-  "hack.InterfaceDefinition.6": 6,
-  "hack.TraitDefinition.6": 4
+  "facts_searched": {
+    "hack.DeclarationSpan.6": 6,
+    "hack.InterfaceDefinition.6": 6,
+    "hack.TraitDefinition.6": 4
+  },
+  "full_scans": [ "hack.InterfaceDefinition.6", "hack.TraitDefinition.6" ]
 }

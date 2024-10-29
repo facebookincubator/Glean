@@ -1,7 +1,10 @@
 {
   "@generated": null,
-  "fbthrift.DeclarationNameSpan.1": 1,
-  "fbthrift.NameLowerCase.1": 1,
-  "fbthrift.SearchByName.1": 1,
-  "fbthrift.ServiceName.1": 1
+  "facts_searched": {
+    "fbthrift.DeclarationNameSpan.1": 1,
+    "fbthrift.NameLowerCase.1": 1,
+    "fbthrift.SearchByName.1": 1,
+    "fbthrift.ServiceName.1": 1
+  },
+  "full_scans": [ ]
 }

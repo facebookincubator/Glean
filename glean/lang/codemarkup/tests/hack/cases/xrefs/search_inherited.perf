@@ -1,11 +1,18 @@
 {
   "@generated": null,
-  "hack.ClassDefinition.6": 4,
-  "hack.ContainerParent.6": 11,
-  "hack.InterfaceDefinition.6": 3,
-  "hack.MethodDefinition.6": 5,
-  "hack.MethodOverrides.6": 5,
-  "hack.Name.6": 16,
-  "hack.TraitDefinition.6": 3,
-  "hack.UserAttribute.6": 15
+  "facts_searched": {
+    "hack.ClassDefinition.6": 4,
+    "hack.ContainerParent.6": 11,
+    "hack.InterfaceDefinition.6": 3,
+    "hack.MethodDefinition.6": 5,
+    "hack.MethodOverrides.6": 5,
+    "hack.Name.6": 16,
+    "hack.TraitDefinition.6": 3,
+    "hack.UserAttribute.6": 15
+  },
+  "full_scans": [
+    "hack.ContainerParent.6",
+    "hack.EnumDeclaration.6",
+    "hack.MethodOverrides.6"
+  ]
 }

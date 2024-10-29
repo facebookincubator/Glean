@@ -1,5 +1,8 @@
 {
   "@generated": null,
-  "cxx1.FunctionDeclaration.5": 1,
-  "cxx1.FunctionDefinition.5": 1
+  "facts_searched": {
+    "cxx1.FunctionDeclaration.5": 1,
+    "cxx1.FunctionDefinition.5": 1
+  },
+  "full_scans": [ "cxx1.FunctionDeclaration.5", "cxx1.FunctionDefinition.5" ]
 }

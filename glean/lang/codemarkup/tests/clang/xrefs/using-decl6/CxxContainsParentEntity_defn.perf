@@ -1,11 +1,23 @@
 {
   "@generated": null,
-  "cxx1.EnumDeclaration.5": 1,
-  "cxx1.EnumDefinition.5": 1,
-  "cxx1.FunctionDeclaration.5": 2,
-  "cxx1.FunctionDefinition.5": 2,
-  "cxx1.RecordDeclaration.5": 1,
-  "cxx1.RecordDefinition.5": 1,
-  "cxx1.UsingDeclaration.5": 1,
-  "cxx1.VariableDeclaration.5": 1
+  "facts_searched": {
+    "cxx1.EnumDeclaration.5": 1,
+    "cxx1.EnumDefinition.5": 1,
+    "cxx1.FunctionDeclaration.5": 2,
+    "cxx1.FunctionDefinition.5": 2,
+    "cxx1.RecordDeclaration.5": 1,
+    "cxx1.RecordDefinition.5": 1,
+    "cxx1.UsingDeclaration.5": 1,
+    "cxx1.VariableDeclaration.5": 1
+  },
+  "full_scans": [
+    "cxx1.EnumDeclaration.5",
+    "cxx1.EnumDefinition.5",
+    "cxx1.FunctionDeclaration.5",
+    "cxx1.FunctionDefinition.5",
+    "cxx1.RecordDeclaration.5",
+    "cxx1.RecordDefinition.5",
+    "cxx1.UsingDeclaration.5",
+    "cxx1.VariableDeclaration.5"
+  ]
 }

@@ -1,8 +1,11 @@
 {
   "@generated": null,
-  "python.ClassDefinition.4": 7,
-  "python.DeclarationLocation.4": 51,
-  "python.FunctionDefinition.4": 26,
-  "python.Name.4": 15,
-  "python.VariableDefinition.4": 2
+  "facts_searched": {
+    "python.ClassDefinition.4": 7,
+    "python.DeclarationLocation.4": 51,
+    "python.FunctionDefinition.4": 26,
+    "python.Name.4": 15,
+    "python.VariableDefinition.4": 2
+  },
+  "full_scans": [ "python.DeclarationLocation.4" ]
 }

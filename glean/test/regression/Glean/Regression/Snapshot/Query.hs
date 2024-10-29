@@ -94,14 +94,12 @@ runQuery backend repo xforms qfile = do
             res <- liftIO $ Glean.userQuery backend repo $ mkQuery k cont
             let facts = Thrift.userQueryResults_facts res
                 remaining = subtract (length facts) <$> k
-                stats = Thrift.userQueryResults_stats res >>=
-                  Thrift.userQueryStats_facts_searched
-                perf' = Map.unionWith (+) perf $ fromMaybe Map.empty stats
+                perf' = perf <> Thrift.userQueryResults_stats res
             if isJust cont && maybe True (>0) remaining
               then collect (facts ++ acc) perf' remaining cont
               else return (facts ++ acc, perf')
 
-      (facts, perf) <- collect [] Map.empty queryMaxResults Nothing
+      (facts, perf) <- collect [] Nothing queryMaxResults Nothing
 
       let generatedTag = '@':"generated"
 
@@ -109,13 +107,21 @@ runQuery backend repo xforms qfile = do
         then do
           Thrift.SchemaInfo{..} <- Glean.getSchemaInfo backend (Just repo)
             def { Thrift.getSchemaInfo_omit_source = True }
-          return $ Just $ show $ pretty $ JSON.JSObject $ JSON.toJSObject $
-            (generatedTag, JSON.JSNull) :
-            sortBy (comparing fst)
-              [ (show (pretty pred), JSON.JSRational False (fromIntegral n))
-              | (pid,n) <- Map.toList perf
-              , Just pred <- [Map.lookup pid schemaInfo_predicateIds]
-              ]
+          return $ Just $ show $ pretty $ JSON.JSObject $ JSON.toJSObject
+            [ (generatedTag, JSON.JSNull)
+            , ("facts_searched", JSON.JSObject $ JSON.toJSObject $
+              sortBy (comparing fst)
+                [ (show (pretty pred), JSON.JSRational False (fromIntegral n))
+                | Just facts <- [Thrift.userQueryStats_facts_searched =<< perf]
+                , (pid,n) <- Map.toList facts
+                , Just pred <- [Map.lookup pid schemaInfo_predicateIds]
+                ])
+            , ("full_scans", JSON.JSArray $ sort $
+                [ JSON.JSString $ JSON.toJSString $ show (pretty pred)
+                | Just scans <- [Thrift.userQueryStats_full_scans <$> perf]
+                , pred <- scans
+                ])
+            ]
         else
           return Nothing
 

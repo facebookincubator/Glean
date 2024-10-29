@@ -1,7 +1,14 @@
 {
   "@generated": null,
-  "cxx1.DeclarationNameSpan.5": 80,
-  "cxx1.FunctionDeclaration.5": 80,
-  "cxx1.NamespaceDeclaration.5": 10,
-  "cxx1.VariableDeclaration.5": 220
+  "facts_searched": {
+    "cxx1.DeclarationNameSpan.5": 80,
+    "cxx1.FunctionDeclaration.5": 80,
+    "cxx1.NamespaceDeclaration.5": 10,
+    "cxx1.VariableDeclaration.5": 220
+  },
+  "full_scans": [
+    "cxx1.FunctionDeclaration.5",
+    "cxx1.NamespaceDeclaration.5",
+    "cxx1.VariableDeclaration.5"
+  ]
 }

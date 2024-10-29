@@ -1,7 +1,10 @@
 {
   "@generated": null,
-  "cxx1.DeclByName.5": 45,
-  "cxx1.Enumerator.5": 3,
-  "cxx1.FunctionName.5": 9,
-  "cxx1.QName.5": 9
+  "facts_searched": {
+    "cxx1.DeclByName.5": 45,
+    "cxx1.Enumerator.5": 3,
+    "cxx1.FunctionName.5": 9,
+    "cxx1.QName.5": 9
+  },
+  "full_scans": [ "cxx1.DeclByName.5" ]
 }

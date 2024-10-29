@@ -1,5 +1,8 @@
 {
   "@generated": null,
-  "python.ClassDefinition.4": 7,
-  "python.FunctionDefinition.4": 13
+  "facts_searched": {
+    "python.ClassDefinition.4": 7,
+    "python.FunctionDefinition.4": 13
+  },
+  "full_scans": [ "python.ClassDefinition.4", "python.FunctionDefinition.4" ]
 }

@@ -1,6 +1,9 @@
 {
   "@generated": null,
-  "cxx1.FunctionDeclaration.5": 38,
-  "cxx1.FunctionQName.5": 24,
-  "cxx1.UsingDeclaration.5": 2
+  "facts_searched": {
+    "cxx1.FunctionDeclaration.5": 38,
+    "cxx1.FunctionQName.5": 24,
+    "cxx1.UsingDeclaration.5": 2
+  },
+  "full_scans": [ "cxx1.FunctionQName.5" ]
 }

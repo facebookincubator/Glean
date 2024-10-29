@@ -1,9 +1,12 @@
 {
   "@generated": null,
-  "python.ClassDeclaration.4": 6,
-  "python.ContainingTopLevelDeclaration.4": 28,
-  "python.DeclarationLocation.4": 51,
-  "python.FunctionDeclaration.4": 5,
-  "python.ImportStatementByAsName.4": 2,
-  "python.VariableDeclaration.4": 1
+  "facts_searched": {
+    "python.ClassDeclaration.4": 6,
+    "python.ContainingTopLevelDeclaration.4": 28,
+    "python.DeclarationLocation.4": 51,
+    "python.FunctionDeclaration.4": 5,
+    "python.ImportStatementByAsName.4": 2,
+    "python.VariableDeclaration.4": 1
+  },
+  "full_scans": [ "python.DeclarationLocation.4" ]
 }

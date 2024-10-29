@@ -1,9 +1,19 @@
 {
   "@generated": null,
-  "cxx1.FunctionDeclaration.5": 5,
-  "cxx1.FunctionDefinition.5": 2,
-  "cxx1.RecordDeclaration.5": 3,
-  "cxx1.RecordDefinition.5": 3,
-  "cxx1.UsingDeclaration.5": 2,
-  "cxx1.VariableDeclaration.5": 9
+  "facts_searched": {
+    "cxx1.FunctionDeclaration.5": 5,
+    "cxx1.FunctionDefinition.5": 2,
+    "cxx1.RecordDeclaration.5": 3,
+    "cxx1.RecordDefinition.5": 3,
+    "cxx1.UsingDeclaration.5": 2,
+    "cxx1.VariableDeclaration.5": 9
+  },
+  "full_scans": [
+    "cxx1.FunctionDeclaration.5",
+    "cxx1.FunctionDefinition.5",
+    "cxx1.RecordDeclaration.5",
+    "cxx1.RecordDefinition.5",
+    "cxx1.UsingDeclaration.5",
+    "cxx1.VariableDeclaration.5"
+  ]
 }

@@ -1,7 +1,14 @@
 {
   "@generated": null,
-  "cxx1.DeclarationSources.5": 7,
-  "cxx1.FunctionDefinition.5": 4,
-  "cxx1.RecordDefinition.5": 2,
-  "cxx1.VariableDeclaration.5": 4
+  "facts_searched": {
+    "cxx1.DeclarationSources.5": 7,
+    "cxx1.FunctionDefinition.5": 4,
+    "cxx1.RecordDefinition.5": 2,
+    "cxx1.VariableDeclaration.5": 4
+  },
+  "full_scans": [
+    "cxx1.FunctionDefinition.5",
+    "cxx1.RecordDefinition.5",
+    "cxx1.VariableDeclaration.5"
+  ]
 }

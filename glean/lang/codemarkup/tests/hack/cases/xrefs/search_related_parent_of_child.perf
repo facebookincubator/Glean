@@ -1,6 +1,13 @@
 {
   "@generated": null,
-  "hack.ContainerParent.6": 11,
-  "hack.DeclarationSpan.6": 31,
-  "hack.MethodOverrides.6": 5
+  "facts_searched": {
+    "hack.ContainerParent.6": 11,
+    "hack.DeclarationSpan.6": 31,
+    "hack.MethodOverrides.6": 5
+  },
+  "full_scans": [
+    "hack.ContainerParent.6",
+    "hack.EnumDeclaration.6",
+    "hack.MethodOverrides.6"
+  ]
 }

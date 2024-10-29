@@ -1,9 +1,12 @@
 {
   "@generated": null,
-  "fbthrift.DeclarationNameSpan.1": 36,
-  "fbthrift.ExceptionName.1": 1,
-  "fbthrift.Identifier.1": 131,
-  "fbthrift.NamedDecl.1": 32,
-  "fbthrift.SearchByName.1": 35,
-  "fbthrift.ServiceName.1": 3
+  "facts_searched": {
+    "fbthrift.DeclarationNameSpan.1": 36,
+    "fbthrift.ExceptionName.1": 1,
+    "fbthrift.Identifier.1": 131,
+    "fbthrift.NamedDecl.1": 32,
+    "fbthrift.SearchByName.1": 35,
+    "fbthrift.ServiceName.1": 3
+  },
+  "full_scans": [ "fbthrift.Identifier.1" ]
 }

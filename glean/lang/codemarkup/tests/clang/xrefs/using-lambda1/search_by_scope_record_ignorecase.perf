@@ -1,6 +1,9 @@
 {
   "@generated": null,
-  "cxx1.DeclByName.5": 21,
-  "cxx1.FunctionName.5": 18,
-  "cxx1.QName.5": 14
+  "facts_searched": {
+    "cxx1.DeclByName.5": 21,
+    "cxx1.FunctionName.5": 18,
+    "cxx1.QName.5": 14
+  },
+  "full_scans": [ "cxx1.DeclByName.5" ]
 }

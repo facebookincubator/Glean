@@ -1,11 +1,21 @@
 {
   "@generated": null,
-  "hack.ClassDefinition.6": 13,
-  "hack.DeclarationSpan.6": 113,
-  "hack.EnumDefinition.6": 5,
-  "hack.InterfaceDefinition.6": 6,
-  "hack.ModuleChild.6": 7,
-  "hack.NamespaceDeclaration.6": 4,
-  "hack.NamespaceMember.6": 5,
-  "hack.TraitDefinition.6": 4
+  "facts_searched": {
+    "hack.ClassDefinition.6": 13,
+    "hack.DeclarationSpan.6": 113,
+    "hack.EnumDefinition.6": 5,
+    "hack.InterfaceDefinition.6": 6,
+    "hack.ModuleChild.6": 7,
+    "hack.NamespaceDeclaration.6": 4,
+    "hack.NamespaceMember.6": 5,
+    "hack.TraitDefinition.6": 4
+  },
+  "full_scans": [
+    "hack.ClassDefinition.6",
+    "hack.EnumDefinition.6",
+    "hack.InterfaceDefinition.6",
+    "hack.ModuleChild.6",
+    "hack.NamespaceMember.6",
+    "hack.TraitDefinition.6"
+  ]
 }

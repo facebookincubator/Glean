@@ -1,10 +1,21 @@
 {
   "@generated": null,
-  "cxx1.FunctionDeclaration.5": 7,
-  "cxx1.FunctionDefinition.5": 3,
-  "cxx1.RecordDeclaration.5": 8,
-  "cxx1.RecordDefinition.5": 8,
-  "cxx1.UsingDeclaration.5": 2,
-  "cxx1.UsingDirective.5": 3,
-  "cxx1.VariableDeclaration.5": 21
+  "facts_searched": {
+    "cxx1.FunctionDeclaration.5": 7,
+    "cxx1.FunctionDefinition.5": 3,
+    "cxx1.RecordDeclaration.5": 8,
+    "cxx1.RecordDefinition.5": 8,
+    "cxx1.UsingDeclaration.5": 2,
+    "cxx1.UsingDirective.5": 3,
+    "cxx1.VariableDeclaration.5": 21
+  },
+  "full_scans": [
+    "cxx1.FunctionDeclaration.5",
+    "cxx1.FunctionDefinition.5",
+    "cxx1.RecordDeclaration.5",
+    "cxx1.RecordDefinition.5",
+    "cxx1.UsingDeclaration.5",
+    "cxx1.UsingDirective.5",
+    "cxx1.VariableDeclaration.5"
+  ]
 }

@@ -1,13 +1,16 @@
 {
   "@generated": null,
-  "python.ClassDeclaration.4": 11,
-  "python.DeclarationDefinition.4": 15,
-  "python.DeclarationLocation.4": 26,
-  "python.DeclarationsByFile.4": 9,
-  "python.FunctionDeclaration.4": 4,
-  "python.ImportStatementByAsName.4": 11,
-  "python.Module.4": 2,
-  "python.VariableDeclaration.4": 4,
-  "python.XRefsViaNameByFile.4": 1,
-  "src.File.1": 1
+  "facts_searched": {
+    "python.ClassDeclaration.4": 11,
+    "python.DeclarationDefinition.4": 15,
+    "python.DeclarationLocation.4": 26,
+    "python.DeclarationsByFile.4": 9,
+    "python.FunctionDeclaration.4": 4,
+    "python.ImportStatementByAsName.4": 11,
+    "python.Module.4": 2,
+    "python.VariableDeclaration.4": 4,
+    "python.XRefsViaNameByFile.4": 1,
+    "src.File.1": 1
+  },
+  "full_scans": [ ]
 }

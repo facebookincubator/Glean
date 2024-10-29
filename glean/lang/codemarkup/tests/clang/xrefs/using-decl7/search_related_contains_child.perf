@@ -1,1 +1,9 @@
-{ "@generated": null }
+{
+  "@generated": null,
+  "facts_searched": { },
+  "full_scans": [
+    "cxx1.FunctionDeclaration.5",
+    "cxx1.NamespaceDeclaration.5",
+    "cxx1.VariableDeclaration.5"
+  ]
+}

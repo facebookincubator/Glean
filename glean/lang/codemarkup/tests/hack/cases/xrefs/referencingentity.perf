@@ -1,10 +1,13 @@
 {
   "@generated": null,
-  "hack.DeclarationLocation.6": 10,
-  "hack.DeclarationSpan.6": 43,
-  "hack.FileDeclarations.6": 5,
-  "hack.FunctionDeclaration.6": 1,
-  "hack.Name.6": 1,
-  "hack.QName.6": 1,
-  "hack.TargetUses.6": 2
+  "facts_searched": {
+    "hack.DeclarationLocation.6": 10,
+    "hack.DeclarationSpan.6": 43,
+    "hack.FileDeclarations.6": 5,
+    "hack.FunctionDeclaration.6": 1,
+    "hack.Name.6": 1,
+    "hack.QName.6": 1,
+    "hack.TargetUses.6": 2
+  },
+  "full_scans": [ ]
 }

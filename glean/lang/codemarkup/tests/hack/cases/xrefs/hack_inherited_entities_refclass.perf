@@ -1,11 +1,14 @@
 {
   "@generated": null,
-  "hack.ClassDeclaration.6": 1,
-  "hack.ClassDefinition.6": 5,
-  "hack.DeclarationSpan.6": 16,
-  "hack.InheritedMembers.6": 1,
-  "hack.Name.6": 9,
-  "hack.QName.6": 1,
-  "hack.TraitDefinition.6": 3,
-  "hack.UserAttribute.6": 8
+  "facts_searched": {
+    "hack.ClassDeclaration.6": 1,
+    "hack.ClassDefinition.6": 5,
+    "hack.DeclarationSpan.6": 16,
+    "hack.InheritedMembers.6": 1,
+    "hack.Name.6": 9,
+    "hack.QName.6": 1,
+    "hack.TraitDefinition.6": 3,
+    "hack.UserAttribute.6": 8
+  },
+  "full_scans": [ ]
 }

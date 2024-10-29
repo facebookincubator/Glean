@@ -1,12 +1,15 @@
 {
   "@generated": null,
-  "flow.Declaration.3": 105,
-  "flow.DeclarationInfo.3": 4,
-  "flow.ImportDeclaration.3": 36,
-  "flow.MemberDeclaration.3": 18,
-  "flow.ModuleContains.3": 7,
-  "flow.ModuleNameLowerCase.3": 336,
-  "flow.NameLowerCase.3": 28,
-  "flow.TypeDeclaration.3": 30,
-  "flow.TypeImportDeclaration.3": 12
+  "facts_searched": {
+    "flow.Declaration.3": 105,
+    "flow.DeclarationInfo.3": 4,
+    "flow.ImportDeclaration.3": 36,
+    "flow.MemberDeclaration.3": 18,
+    "flow.ModuleContains.3": 7,
+    "flow.ModuleNameLowerCase.3": 336,
+    "flow.NameLowerCase.3": 28,
+    "flow.TypeDeclaration.3": 30,
+    "flow.TypeImportDeclaration.3": 12
+  },
+  "full_scans": [ "flow.ModuleNameLowerCase.3" ]
 }

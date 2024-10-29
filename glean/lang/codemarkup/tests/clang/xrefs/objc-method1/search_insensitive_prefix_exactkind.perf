@@ -1,11 +1,14 @@
 {
   "@generated": null,
-  "cxx1.DeclByName.5": 3,
-  "cxx1.DeclarationNameSpan.5": 4,
-  "cxx1.ObjcContainerDeclaration.5": 1,
-  "cxx1.ObjcContainerDefinition.5": 1,
-  "cxx1.ObjcMethodDeclaration.5": 1,
-  "cxx1.ObjcMethodDeclarationName.5": 1,
-  "cxx1.QName.5": 2,
-  "cxx1.VariableDeclaration.5": 2
+  "facts_searched": {
+    "cxx1.DeclByName.5": 3,
+    "cxx1.DeclarationNameSpan.5": 4,
+    "cxx1.ObjcContainerDeclaration.5": 1,
+    "cxx1.ObjcContainerDefinition.5": 1,
+    "cxx1.ObjcMethodDeclaration.5": 1,
+    "cxx1.ObjcMethodDeclarationName.5": 1,
+    "cxx1.QName.5": 2,
+    "cxx1.VariableDeclaration.5": 2
+  },
+  "full_scans": [ ]
 }

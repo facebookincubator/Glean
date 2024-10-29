@@ -1,6 +1,9 @@
 {
   "@generated": null,
-  "cxx1.DeclToFamily.5": 14,
-  "cxx1.Declarations.5": 4,
-  "cxx1.TargetUses.5": 26
+  "facts_searched": {
+    "cxx1.DeclToFamily.5": 14,
+    "cxx1.Declarations.5": 4,
+    "cxx1.TargetUses.5": 26
+  },
+  "full_scans": [ "cxx1.Declarations.5" ]
 }
