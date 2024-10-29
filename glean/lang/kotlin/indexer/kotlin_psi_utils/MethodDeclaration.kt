@@ -8,8 +8,8 @@
 
 package glean.lang.kotlin.indexer.kotlin_psi_utils
 
-import com.intellij.psi.PsiElement
 import glean.lang.kotlin.predicates.MethodDeclarationPredicate
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.descriptors.FunctionDescriptor
 import org.jetbrains.kotlin.psi.KtClass
 import org.jetbrains.kotlin.psi.KtNamedFunction

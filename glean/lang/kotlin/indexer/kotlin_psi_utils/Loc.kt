@@ -8,11 +8,11 @@
 
 package glean.lang.kotlin.indexer.kotlin_psi_utils
 
-import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiFile
 import glean.lang.kotlin.predicates.FilePredicate
 import glean.lang.kotlin.predicates.LocPredicate
 import glean.lang.kotlin.predicates.SpanPredicate
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
+import org.jetbrains.kotlin.com.intellij.psi.PsiFile
 import org.jetbrains.kotlin.diagnostics.PsiDiagnosticUtils
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffset

@@ -8,8 +8,8 @@
 
 package glean.lang.kotlin.indexer.kotlin_psi_utils
 
-import com.intellij.psi.PsiElement
 import glean.lang.kotlin.predicates.DeclarationLocationPredicate
+import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 
 fun buildFileLocation(element: PsiElement): DeclarationLocationPredicate? {
   return if (element.containingFile.viewProvider.document == null) {
