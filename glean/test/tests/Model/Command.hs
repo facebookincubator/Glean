@@ -10,13 +10,15 @@ module Model.Command where
 
 import Data.Containers.ListUtils (nubOrd)
 import Data.Int (Int64)
-import Data.Text (pack)
+import Data.Text (pack, Text)
 import qualified Glean.Database.Storage as Storage
 import Glean.Internal.Types (Completeness (..), Meta (..))
 import Glean.Types (
   DatabaseComplete (..),
+  Dependencies (..),
   PosixEpochTime (PosixEpochTime),
   Repo (Repo, repo_hash, repo_name),
+  Stacked (..)
  )
 import Model.Model (ShardId, numberOfShards)
 import Test.QuickCheck (
@@ -82,8 +84,14 @@ instance Arbitrary ShardingAssignmentChange where
       , ShardRemoved . showt <$> choose (0, numberOfShards)
       ]
 
+defDependency :: Text -> Text -> Dependencies
+defDependency name hash = Dependencies_stacked $ Stacked name hash Nothing
+
 defMeta :: Meta
-defMeta =
+defMeta = defMetaWithDependency Nothing
+
+defMetaWithDependency :: Maybe Dependencies -> Meta
+defMetaWithDependency dependencies =
   Meta
     { metaVersion = Storage.currentVersion
     , metaCreated = PosixEpochTime 0
@@ -95,7 +103,7 @@ defMeta =
             }
     , metaBackup = Nothing
     , metaProperties = mempty
-    , metaDependencies = Nothing
+    , metaDependencies = dependencies
     , metaCompletePredicates = mempty
     , metaAxiomComplete = False
     , metaRepoHashTime = Nothing

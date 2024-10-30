@@ -117,7 +117,7 @@ import qualified Glean.ServerConfig.Types as ServerTypes
 import Glean.Test.Mock (Mock, augment, call, implement, reimplement)
 import Glean.Types (
   Database (Database),
-  DatabaseStatus (DatabaseStatus_Restoring),
+  DatabaseStatus (DatabaseStatus_Restoring, DatabaseStatus_Complete),
   ListDatabasesResult (listDatabasesResult_databases),
   PosixEpochTime,
   Repo (Repo),
@@ -141,7 +141,9 @@ import Model.Command (
   Command (..),
   ShardingAssignmentChange (ShardAdded, ShardRemoved),
   commandType,
+  defDependency,
   defMeta,
+  defMetaWithDependency,
   fixCreationTimes,
   good,
   insertTimeLapses,
@@ -194,6 +196,8 @@ main = do
               , TestLabel "Mock site" $ TestCase mockSiteTest
               , TestLabel "Backup restore" $ TestCase backupRestoreTest
               , TestLabel "Open DB" $ TestCase openTest
+              , TestLabel "Backup restore dependency"
+                $ TestCase backupRestoreDependencyTest
               ]
         ]
 
@@ -532,3 +536,37 @@ openTest = withSystemTempDirectory "backupdir" $ \backupDir -> do
       Env{..} -> do
         openDBs <- readTVarIO envActive
         HM.keys openDBs @?= [r]
+
+backupRestoreDependencyTest :: IO ()
+backupRestoreDependencyTest =
+  withSystemTempDirectory "backupdir" $ \backupDir -> do
+    dbConf <- dbConfig
+    withTEnv backupDir (dbConf backupDir) $ \TEnv {..} -> do
+      let
+        r1 = Repo "repo" "1"
+        r2 = Repo "repo" "2"
+        d2 = Repo "dep_repo" "2"
+        m1 = defMetaWithDependency $ Just $ defDependency "dep_repo" "1"
+        m2 = defMetaWithDependency $ Just $ defDependency "dep_repo" "2"
+      w1 <- mutateSystem tEnv (NewRemoteDB r1 m1)
+      w2 <- mutateSystem tEnv (NewRemoteDB r2 m2)
+      w3 <- mutateSystem tEnv (NewRemoteDB d2 defMeta)
+      w4 <- mutateSystem tEnv (ShardingAssignmentChange $ ShardAdded "1")
+      w5 <- mutateSystem tEnv (ShardingAssignmentChange $ ShardAdded "2")
+
+      runDatabaseJanitor (mockedEnv tEnv)
+      w6 <- wait $ w1 <> w2 <> w3 <> w4 <> w5
+      w7 <- mutateSystem tEnv DBDownloaded
+      w8 <- mutateSystem tEnv DBDownloaded
+      waitAll $ w6 <> w7 <> w8
+      dbs2 <-
+        listDatabasesResult_databases
+          <$> listDatabases (mockedEnv tEnv) def
+      logInfo $ show dbs2
+      dbs <-
+        filter hereDBs . listDatabasesResult_databases
+          <$> listDatabases (mockedEnv tEnv) def
+      map database_repo dbs @?= [d2, r2]
+    where
+      hereDBs Glean.Types.Database {..} =
+        database_status == DatabaseStatus_Complete

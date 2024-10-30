@@ -184,7 +184,7 @@ computeRetentionSet
   -> DbIndex
   -> m [Item]
 computeRetentionSet config_retention config_restore
-    time isAvailableM DbIndex{..} =
+    time isAvailableM dbIndex@DbIndex{..} =
   transitiveClosureBy itemRepo (catMaybes . depsRestored) <$>
     concatMapM allRetention byRepoName
   where
@@ -200,7 +200,8 @@ computeRetentionSet config_retention config_restore
     allRetention (repo, dbs) = do
       let policies = repoRetention config_retention repo
       uniqBy (comparing itemRepo) . concat <$>
-        mapM (\pol -> dbRetentionForRepo pol time isAvailableM dbs) policies
+        mapM (\pol ->
+          dbRetentionForRepo pol time isAvailableM dbs dbIndex) policies
 
 
 -- | The target set of DBs we want usable on the disk. This is a set of
@@ -211,8 +212,9 @@ dbRetentionForRepo
   -> UTCTime
   -> (Item -> m Bool)
   -> NonEmpty Item
+  -> DbIndex
   -> m [Item]
-dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs = do
+dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs dbIndex = do
   let
     -- retention policy parameters
     retainAtLeast' = fromIntegral $ fromMaybe 0 retention_retain_at_least
@@ -238,6 +240,7 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs = do
       completenessStatus itemMeta == DatabaseStatus_Complete
     isOlderThan secs Item{..} = dbAge t itemMeta >= secs
     isAvailable = isLocal |||> isAvailableM
+    hasDependencies = not . missingDependencies dbIndex
 
     -- all DBs with the required properties, sorted by most recent first
     sorted =
@@ -254,7 +257,7 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs = do
     -- ensure we have retain_at_least DBs from the available set
   atLeast <- takeFilterM
     retainAtLeast
-    (isComplete &&&> isAvailable)
+    (isComplete &&& hasDependencies &&&> isAvailable)
     -- bound the search since isAvailable is expensive
     -- this matters only for tier bootstraps where all DBs are unavailable
     (take (retainAtLeast*10) sorted)
@@ -263,6 +266,9 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs = do
   let atMost = maybe id take retainAtMost (filter (not . delete) sorted)
 
   return $ uniqBy (comparing itemRepo) (atLeast ++ atMost)
+
+missingDependencies :: DbIndex -> Item -> Bool
+missingDependencies dbIndex item = any isNothing (dependencies dbIndex item)
 
 hasProperties :: HashMap.HashMap Text Text -> Item -> Bool
 hasProperties req Item{..} = all has (HashMap.toList req)
