@@ -31,6 +31,7 @@ module Glean.Query.Thrift.Internal
   , showUserQueryStats
   , displayQuery
   , decodeResults
+  , justCheck
   ) where
 
 import Control.Exception
@@ -214,6 +215,12 @@ store (Query q) = Query q'
   where
   q' = q { userQuery_options = Just (fromMaybe def (userQuery_options q))
     { userQueryOptions_store_derived_facts = True } }
+
+justCheck :: Query a -> Query a
+justCheck (Query q) = Query q'
+  where
+  q' = q { userQuery_options = Just (fromMaybe def (userQuery_options q))
+  { userQueryOptions_just_check = True } }
 
 reportUserQueryStats :: Thrift.UserQueryStats -> IO ()
 reportUserQueryStats stats =

@@ -46,6 +46,7 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "limitBytes" limitTest
   , TestLabel "fullScans" fullScansTest
   , TestLabel "newold" $ newOldTest id
+  , TestLabel "justCheck" justCheckTest
   ]
 
 newOldTest :: (forall a . Query a -> Query a) -> Test
@@ -420,6 +421,22 @@ limitTest = dbTestCase $ \env repo -> do
   (results, truncated) <- runQuery env repo $ limitBytes 40 $ recursive $
     Angle.query $ predicate @Glean.Test.Edge wild
   assertBool "limitBytes" (length results == 2 && truncated)
+
+justCheckTest :: Test
+justCheckTest = dbTestCase $ \env repo -> do
+  results <- runQuery_ env repo $ justCheck $ Angle.query $
+    predicate @Cxx.Name wild
+  assertEqual "just check" 0 (length results)
+
+  results <- try $ runQuery_ env repo $ justCheck $ angleData @Text
+    [s|
+      Cxx1.Name X
+    |]
+  assertBool "just check - bad query" $
+    case results of
+      Left (BadQuery _) -> True
+      _ -> False
+
 
 fullScansTest :: Test
 fullScansTest = TestList $

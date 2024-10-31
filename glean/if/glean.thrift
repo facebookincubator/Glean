@@ -510,6 +510,9 @@ struct UserQueryOptions {
   // A more fine-grained alternative to recursive = true. Only
   // fields of a predicate in the list will be fetched.
   14: list<SourcePredicate> expand_predicates;
+
+  // if true, the query will be compiled, but no facts will be retrieved
+  15: bool just_check = false;
 }
 
 struct QueryDebugOptions {

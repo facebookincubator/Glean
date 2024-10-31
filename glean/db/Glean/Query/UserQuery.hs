@@ -93,6 +93,7 @@ import Glean.Schema.Util
 import Glean.Util.Observed as Observed
 import Glean.Query.Typecheck
 import Glean.Bytecode.SysCalls (userQuerySysCalls)
+import Glean.Types (UserQueryCont)
 
 -- NOTE: We keep the public interface monomorphic, at least for now.
 
@@ -599,7 +600,6 @@ userQueryWrites env odb config bounds lookup repo pred q = do
     minus = Map.unionWith (-)
     hasFacts pid m = maybe False (> 0) $ Map.lookup pid m
 
-
 userQueryImpl
   :: Database.Env
   -> OpenDB s
@@ -619,7 +619,7 @@ userQueryImpl
   bounds
   lookup
   repo
-  Thrift.UserQuery{..} = do
+  query@Thrift.UserQuery{..} = do
     let opts = fromMaybe def userQuery_options
 
     case Thrift.userQueryOptions_syntax opts of
@@ -628,22 +628,25 @@ userQueryImpl
         "query syntax not supported: " <> Text.pack (show other)
 
     let
-      schema@DbSchema{..} = odbSchema odb
-      opts = fromMaybe def userQuery_options
+      schema = odbSchema odb
       stored = Thrift.userQueryOptions_store_derived_facts opts
       debug = Thrift.userQueryOptions_debug opts
 
     schemaVersion <-
       schemaVersionForQuery schema config userQuery_schema_id
-    trans <- transformationsForQuery schema schemaVersion
 
-    (returnType, compileTime, irDiag, cont) <-
+    compileInfo <-
       case Thrift.userQueryOptions_continuation opts of
         Just ucont
           | Just retTy <- Thrift.userQueryCont_returnType ucont -> do
           (compileTime, _, returnType) <-
             timeIt $ compileType schema schemaVersion retTy
-          return (returnType, compileTime, [], Right ucont)
+          return CompileInfo {
+            returnType = returnType,
+            compileTime = compileTime,
+            irDiag = [],
+            cont = Right ucont
+          }
 
         -- This is either a new query or the continuation of a query
         -- that returns a temporary predicate.
@@ -666,9 +669,54 @@ userQueryImpl
               Just c -> Right c
               Nothing -> Left query
 
-          return (ty, compileTime, irDiag, cont)
+          return CompileInfo {
+            returnType = ty,
+            compileTime = compileTime,
+            irDiag = irDiag,
+            cont = cont
+          }
 
+    if Thrift.userQueryOptions_just_check opts then do
+      return emptyResult
+    else do
+      runQuery env odb config  bounds lookup repo compileInfo query
+
+data CompileInfo = CompileInfo {
+  returnType :: Type,
+  compileTime :: Double,
+  irDiag :: [Text],
+  cont :: Either CodegenQuery UserQueryCont
+}
+
+runQuery
+  :: Database.Env
+  -> OpenDB s
+  -> ServerConfig.Config
+  -> Boundaries
+  -> Lookup
+  -> Thrift.Repo
+  -> CompileInfo
+  -> Thrift.UserQuery
+  -> IO (Results Stats Thrift.Fact)
+runQuery
+  env
+  odb
+  config
+  bounds
+  lookup
+  repo
+  CompileInfo{..}
+  Thrift.UserQuery{..} = do
     vlog 2 $ "return type: " <> show (displayDefault returnType)
+
+    let
+      schema@DbSchema{..} = odbSchema odb
+      opts = fromMaybe def userQuery_options
+      stored = Thrift.userQueryOptions_store_derived_facts opts
+
+    schemaVersion <-
+        schemaVersionForQuery schema config userQuery_schema_id
+    trans <- transformationsForQuery schema schemaVersion
 
     details@PredicateDetails{..} <- case returnType of
       Angle.PredicateTy (PidRef pid _) ->
@@ -745,6 +793,7 @@ userQueryImpl
 
         Left query -> do
           let
+            debug = Thrift.userQueryOptions_debug opts
             bytecodeDiag sub =
               [ "bytecode:\n" <> Text.unlines
                 (disassemble "Query" userQuerySysCalls $ compiledQuerySub sub)
@@ -802,8 +851,8 @@ userQueryImpl
           }
 
     return $ if Thrift.userQueryOptions_omit_results opts
-       then withoutFacts results
-       else results
+      then withoutFacts results
+      else results
 
 transformationsForQuery
   :: DbSchema
@@ -942,6 +991,27 @@ mkQueryRuntimeOptions
         | not (null expandPids) -> ExpandPartial expandPids
         | otherwise -> ResultsOnly
     }
+
+emptyResult :: Results Stats fact
+emptyResult = Results {
+    resFacts = mempty
+  , resPredicate = Nothing
+  , resNestedFacts = mempty
+  , resCont = Nothing
+  , resStats = Stats {
+      statFactCount = 0
+    , statResultCount = 0
+    , statFullScans = []
+    }
+  , resDiags = []
+  , resWriteHandle = Nothing
+  , resFactsSearched = Nothing
+  , resType = Nothing
+  , resBytecodeSize = Nothing
+  , resCompileTime = Nothing
+  , resCodegenTime = Nothing
+  , resExecutionTime = Nothing
+  }
 
 
 {- Note [Writing derived facts]
