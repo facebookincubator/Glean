@@ -10,7 +10,6 @@ module PublishShardsTest (main) where
 
 import Control.Concurrent.Async
 import Util.STM
-import Data.Default
 import Data.Foldable (toList)
 import Data.Time
 import DatabaseJanitorTest (
@@ -19,11 +18,9 @@ import DatabaseJanitorTest (
   serverConfig,
   withTest,
  )
-import Glean.Database.Config (parseSchemaDir, schemaSourceDir)
 import Glean.Database.Env
-import Glean.Database.Schema (newDbSchema, readWriteContent)
 import Glean.Database.Schema.Types (
-  SchemaSelector (LatestSchemaAll),
+  DbSchema,
  )
 import Glean.Init (withUnitTest)
 import Glean.Internal.Types
@@ -64,14 +61,12 @@ runTest term test = do
                   then retry
                   else return $ toList repos
 
-setupCloudDBs :: FilePath -> IO ()
-setupCloudDBs _ = return ()
+setupCloudDBs :: FilePath -> DbSchema -> IO ()
+setupCloudDBs _ _ = return ()
 
-setupFakeDBs :: FilePath -> IO ()
-setupFakeDBs dbdir = do
+setupFakeDBs :: FilePath -> DbSchema -> IO ()
+setupFakeDBs dbdir schema = do
   now <- getCurrentTime
-  schema <- parseSchemaDir schemaSourceDir
-  schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent def
   -- populate a dir with various DBs
   makeFakeDB schema dbdir incompleteRepo now incomplete id
   makeFakeDB schema dbdir completeRepo now complete id

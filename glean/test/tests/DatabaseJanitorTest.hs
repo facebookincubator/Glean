@@ -76,8 +76,8 @@ import Glean.Database.Backup.Mock
 
 
 withTest
-  :: (FilePath -> IO ())
-  -> (FilePath -> IO ())
+  :: (FilePath -> DbSchema -> IO ())
+  -> (FilePath -> DbSchema -> IO ())
   -> (EventBaseDataplane -> NullConfigProvider -> FilePath -> FilePath
        -> IO ())
   -> IO ()
@@ -86,8 +86,10 @@ withTest setup setupBackup action =
   withConfigProvider defaultConfigOptions $ \cfgAPI ->
   withSystemTempDirectory "glean-dbtest" $ \dbdir -> do
   withSystemTempDirectory "glean-dbtest-backup" $ \backupdir -> do
-    setup dbdir
-    setupBackup backupdir
+    schema <- parseSchemaDir schemaSourceDir
+    schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent def
+    setup dbdir schema
+    setupBackup backupdir schema
     action evb cfgAPI dbdir backupdir
 
 broken :: UTCTime -> Completeness
@@ -100,12 +102,10 @@ complete size =
 repo0001 :: Repo
 repo0001 = Repo "test" "0001"
 
-setupBasicDBs :: FilePath -> IO ()
-setupBasicDBs dbdir = do
+setupBasicDBs :: FilePath -> DbSchema -> IO ()
+setupBasicDBs dbdir schema = do
   now <- getCurrentTime
   let age t = addUTCTime (negate (fromIntegral (timeSpanInSeconds t))) now
-  schema <- parseSchemaDir schemaSourceDir
-  schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent def
   -- populate a dir with various DBs
   makeFakeDB schema dbdir repo0001 (age (days 0)) (complete 1)
     (props [("bool","yes")])
@@ -120,12 +120,10 @@ setupBasicDBs dbdir = do
   makeFakeDB schema dbdir (Repo "test2" "0006") (age (days 6)) (complete 6) id
 
 
-setupBasicCloudDBs :: FilePath -> IO ()
-setupBasicCloudDBs backupDir = do
+setupBasicCloudDBs :: FilePath -> DbSchema -> IO ()
+setupBasicCloudDBs backupDir schema = do
   now <- getCurrentTime
   let age t = addUTCTime (negate (fromIntegral (timeSpanInSeconds t))) now
-  schema <- parseSchemaDir schemaSourceDir
-  schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent def
   makeFakeCloudDB schema backupDir (Repo "test" "0008")
     (age(days 8)) (complete 8) id
   makeFakeCloudDB schema backupDir (Repo "test2" "0009")
@@ -143,17 +141,24 @@ setupBasicCloudDBs backupDir = do
   makeFakeCloudDB schema backupDir (Repo "test" "0015")
     (age(days 7)) (complete 7) (stacked (Stacked "test2" "0013" Nothing))
 
+setupBasicCloudDBsWithMissingDependencyOne :: FilePath -> DbSchema -> IO ()
+setupBasicCloudDBsWithMissingDependencyOne backupDir schema = do
+  setupBasicCloudDBs backupDir schema
+  dbtime <- getCurrentTime
+  makeFakeCloudDB schema backupDir (Repo "test" "0016") dbtime
+    (complete 8) (stacked (Stacked "missing" "0001" Nothing))
+
 withFakeDBs
   :: (EventBaseDataplane -> NullConfigProvider -> FilePath -> FilePath
        -> IO ())
   -> IO ()
-withFakeDBs action = withTest setupBasicDBs (const $ pure ()) action
+withFakeDBs action = withTest setupBasicDBs (\_ _ -> pure ()) action
 
 withFakeCloudDBs
   :: (EventBaseDataplane -> NullConfigProvider -> FilePath -> FilePath
        -> IO ())
   -> IO ()
-withFakeCloudDBs = withTest (const $ pure ()) setupBasicCloudDBs
+withFakeCloudDBs = withTest (\_ _ -> pure ()) setupBasicCloudDBs
 
 stacked :: Stacked -> Meta -> Meta
 stacked st meta = meta { metaDependencies = Just (Thrift.Dependencies_stacked st) }
@@ -895,6 +900,31 @@ stuckTest = TestCase $ withFakeCloudDBs $ \evb cfgAPI dbdir backupdir -> do
       JanitorStuck -> True
       _ -> False
 
+retentionCheckMissingDepsTest :: Test
+retentionCheckMissingDepsTest = TestCase $
+  withTest (\_ _ -> pure ()) setupBasicCloudDBsWithMissingDependencyOne
+     $ \evb cfgAPI dbdir backupdir -> do
+    let cfg = dbConfig dbdir $ (serverConfig backupdir)
+          { config_retention = def
+            { databaseRetentionPolicy_default_retention = def
+              { retention_retain_at_least = Just 1,
+                retention_retain_at_most = Just 1
+              }
+            },
+            config_restore = def
+            { databaseRestorePolicy_enabled = True
+            }
+          }
+
+    withDatabases evb cfg cfgAPI $ \env -> do
+      runDatabaseJanitor env
+      dbs <- listDBs env
+      let repos = map database_repo dbs
+      --- 0014 is the newest test2 db
+      --- 0016 is the newest test db, but it's missing dependency
+      --- so restoring next available test db 0015 and it's dependency 0013
+      assertEqual "after" [ "0013", "0014","0015"] (map repo_hash repos)
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "deleteOldDBs" deleteOldDBsTest
@@ -919,4 +949,5 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "requiredPropsTest" requiredPropsTest
   , TestLabel "retentionRestoreDepsTest" retentionRestoreDepsTest
   , TestLabel "multiRetentionTest" multiRetentionTest
+  , TestLabel "retentionCheckMissingDepsTest" retentionCheckMissingDepsTest
   ]
