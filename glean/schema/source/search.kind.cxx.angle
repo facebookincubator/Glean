@@ -68,4 +68,15 @@ predicate SearchUnion :
     cxx1.RecordDeclarationUnion { NameStr, Scope, Decl };
     { decl = { record_ = Decl }} = Entity
 
+# keyed by QName, so we risk redundantly enumerating all matching QNames
+predicate SearchEnum :
+  {
+    name: string,
+    scope: cxx1.Scope,
+    entity: code.cxx.Entity
+  }
+  { NameStr, Scope, Entity } where
+    cxx1.EnumDeclarationByName { NameStr, Scope, Decl };
+    { decl = { enum_ = Decl }} = Entity
+
 }

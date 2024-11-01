@@ -1,0 +1,63 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "E",
+      "scope": { "namespace_": { "key": { "name": { "key": "N1" } } } },
+      "entity": {
+        "decl": {
+          "enum_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "E" },
+                  "scope": {
+                    "namespace_": { "key": { "name": { "key": "N1" } } }
+                  }
+                }
+              },
+              "isScoped": false,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 15,
+                "columnBegin": 1,
+                "lineEnd": 15,
+                "columnEnd": 21
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "F",
+      "scope": { "namespace_": { "key": { "name": { "key": "N1" } } } },
+      "entity": {
+        "decl": {
+          "enum_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "F" },
+                  "scope": {
+                    "namespace_": { "key": { "name": { "key": "N1" } } }
+                  }
+                }
+              },
+              "isScoped": true,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 16,
+                "columnBegin": 1,
+                "lineEnd": 16,
+                "columnEnd": 27
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

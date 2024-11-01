@@ -161,6 +161,15 @@ predicate EnumDeclaration :
     source : src.Range,
   }
 
+# Re-index left-keyed by cxx1.Name fact to avoid QName scans
+predicate EnumDeclarationByName :
+  { name : string,
+    scope : Scope,
+    decl : EnumDeclaration
+  } stored { NameStr, Scope, Decl } where
+    Name = cxx1.Name NameStr;
+    EnumDeclaration { name = { Name, Scope } } = Decl
+
 # C++ method ref qualifier
 type RefQualifier = enum { None_ | LValue | RValue }
 

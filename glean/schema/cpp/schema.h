@@ -3793,6 +3793,8 @@ struct Scope;
 
 struct DeclarationScope;
 
+struct EnumDeclarationByName;
+
 struct FunctionQName;
 
 struct QName;
@@ -3828,6 +3830,8 @@ namespace Kind {
 namespace Cxx {
 
 struct SearchClass;
+
+struct SearchEnum;
 
 struct SearchNamespace;
 
@@ -27441,6 +27445,16 @@ struct DeclarationScope : Predicate<std::tuple<Declaration, Scope>> {
   }
 }; // struct DeclarationScope
 
+struct EnumDeclarationByName : Predicate<std::tuple<std::string, Scope, Fact<EnumDeclaration>>> {
+  static const char* GLEAN_name() {
+    return "cxx1.EnumDeclarationByName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 5;
+  }
+}; // struct EnumDeclarationByName
+
 struct FunctionQName : Predicate<std::tuple<Fact<FunctionName>, Scope>> {
   static const char* GLEAN_name() {
     return "cxx1.FunctionQName";
@@ -27556,6 +27570,16 @@ struct SearchClass : Predicate<std::tuple<std::string, facebook::glean::cpp::sch
      return 1;
   }
 }; // struct SearchClass
+
+struct SearchEnum : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Cxx1::Scope, facebook::glean::cpp::schema::Code::Cxx::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.kind.cxx.SearchEnum";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct SearchEnum
 
 struct SearchNamespace : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Cxx1::Scope, facebook::glean::cpp::schema::Code::Cxx::Entity>> {
   static const char* GLEAN_name() {
@@ -28628,7 +28652,7 @@ struct ArgumentValue : Predicate<boost::variant<Alt<0, std::string>, Alt<1, std:
 
 struct SCHEMA {
   template<typename P> struct index;
-  static constexpr size_t count = 1252;
+  static constexpr size_t count = 1254;
   template<size_t i> struct predicate;
 };
 
@@ -29802,88 +29826,90 @@ template<> struct SCHEMA::index<facebook::glean::cpp::schema::Code::Quality::Iss
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::FunctionName> { static constexpr size_t value = 1167; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclaration> { static constexpr size_t value = 1168; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::DeclarationScope> { static constexpr size_t value = 1169; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::FunctionQName> { static constexpr size_t value = 1170; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::QName> { static constexpr size_t value = 1171; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclarationClass> { static constexpr size_t value = 1172; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclarationStruct> { static constexpr size_t value = 1173; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclarationUnion> { static constexpr size_t value = 1174; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::CxxSearchByNameAndScopeFact> { static constexpr size_t value = 1175; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Cxx::QueryToScopeCase> { static constexpr size_t value = 1176; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Cxx::SearchByNameAndScope> { static constexpr size_t value = 1177; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Cxx::SearchByScope> { static constexpr size_t value = 1178; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchClass> { static constexpr size_t value = 1179; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchNamespace> { static constexpr size_t value = 1180; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchStruct> { static constexpr size_t value = 1181; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchUnion> { static constexpr size_t value = 1182; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupDeclaration> { static constexpr size_t value = 1183; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupDefinition> { static constexpr size_t value = 1184; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupEnumerator> { static constexpr size_t value = 1185; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDeclaration> { static constexpr size_t value = 1186; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDefinition> { static constexpr size_t value = 1187; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDeclaration> { static constexpr size_t value = 1188; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDefinition> { static constexpr size_t value = 1189; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDeclaration> { static constexpr size_t value = 1190; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDefinition> { static constexpr size_t value = 1191; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Fbthrift::FunctionSpecification> { static constexpr size_t value = 1192; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buckuses::UsesOfTargetHeader> { static constexpr size_t value = 1193; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buckuses::UsesOfTarget> { static constexpr size_t value = 1194; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::Oncall> { static constexpr size_t value = 1195; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::ModeType> { static constexpr size_t value = 1196; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::TargetModes> { static constexpr size_t value = 1197; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::LocatorOncall> { static constexpr size_t value = 1198; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::FileOncall> { static constexpr size_t value = 1199; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Type> { static constexpr size_t value = 1200; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TranslationUnit> { static constexpr size_t value = 1201; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetUses> { static constexpr size_t value = 1202; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetSourcesBaseModule> { static constexpr size_t value = 1203; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetSources> { static constexpr size_t value = 1204; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetOuts> { static constexpr size_t value = 1205; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetOut> { static constexpr size_t value = 1206; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetMode> { static constexpr size_t value = 1207; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetLocation> { static constexpr size_t value = 1208; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetLinkWhole> { static constexpr size_t value = 1209; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetIndexerName> { static constexpr size_t value = 1210; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetIndexer> { static constexpr size_t value = 1211; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetHash> { static constexpr size_t value = 1212; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetCall> { static constexpr size_t value = 1213; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetByType> { static constexpr size_t value = 1214; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetAttribute> { static constexpr size_t value = 1215; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Target> { static constexpr size_t value = 1216; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::SourceFileLocation> { static constexpr size_t value = 1217; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::SearchByLocalName> { static constexpr size_t value = 1218; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::RuleKey> { static constexpr size_t value = 1219; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Platform> { static constexpr size_t value = 1220; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Owner> { static constexpr size_t value = 1221; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::OutsTarget> { static constexpr size_t value = 1222; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::OutputLabel> { static constexpr size_t value = 1223; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::OutTarget> { static constexpr size_t value = 1224; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocatorWithLabel> { static constexpr size_t value = 1225; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocatorReverseDeps> { static constexpr size_t value = 1226; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocatorReverseDep> { static constexpr size_t value = 1227; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Locator> { static constexpr size_t value = 1228; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocalNameLowerCase> { static constexpr size_t value = 1229; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocalName> { static constexpr size_t value = 1230; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Labels> { static constexpr size_t value = 1231; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Label> { static constexpr size_t value = 1232; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::IndexerName> { static constexpr size_t value = 1233; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileXRefs> { static constexpr size_t value = 1234; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileToTarget> { static constexpr size_t value = 1235; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileTarget> { static constexpr size_t value = 1236; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileResolved> { static constexpr size_t value = 1237; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileEntity> { static constexpr size_t value = 1238; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileDefinition> { static constexpr size_t value = 1239; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::File> { static constexpr size_t value = 1240; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FailureSources> { static constexpr size_t value = 1241; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::IndexFailureX> { static constexpr size_t value = 1242; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::DestinationUses> { static constexpr size_t value = 1243; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetDependencies> { static constexpr size_t value = 1244; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::DefinitionLocation> { static constexpr size_t value = 1245; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Definition> { static constexpr size_t value = 1246; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Consumer> { static constexpr size_t value = 1247; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::CallArgument> { static constexpr size_t value = 1248; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::AttributeName> { static constexpr size_t value = 1249; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::AttributeValue> { static constexpr size_t value = 1250; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::ArgumentValue> { static constexpr size_t value = 1251; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::EnumDeclarationByName> { static constexpr size_t value = 1170; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::FunctionQName> { static constexpr size_t value = 1171; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::QName> { static constexpr size_t value = 1172; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclarationClass> { static constexpr size_t value = 1173; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclarationStruct> { static constexpr size_t value = 1174; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclarationUnion> { static constexpr size_t value = 1175; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::CxxSearchByNameAndScopeFact> { static constexpr size_t value = 1176; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Cxx::QueryToScopeCase> { static constexpr size_t value = 1177; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Cxx::SearchByNameAndScope> { static constexpr size_t value = 1178; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Cxx::SearchByScope> { static constexpr size_t value = 1179; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchClass> { static constexpr size_t value = 1180; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchEnum> { static constexpr size_t value = 1181; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchNamespace> { static constexpr size_t value = 1182; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchStruct> { static constexpr size_t value = 1183; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchUnion> { static constexpr size_t value = 1184; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupDeclaration> { static constexpr size_t value = 1185; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupDefinition> { static constexpr size_t value = 1186; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupEnumerator> { static constexpr size_t value = 1187; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDeclaration> { static constexpr size_t value = 1188; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDefinition> { static constexpr size_t value = 1189; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDeclaration> { static constexpr size_t value = 1190; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDefinition> { static constexpr size_t value = 1191; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDeclaration> { static constexpr size_t value = 1192; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDefinition> { static constexpr size_t value = 1193; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Fbthrift::FunctionSpecification> { static constexpr size_t value = 1194; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buckuses::UsesOfTargetHeader> { static constexpr size_t value = 1195; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buckuses::UsesOfTarget> { static constexpr size_t value = 1196; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::Oncall> { static constexpr size_t value = 1197; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::ModeType> { static constexpr size_t value = 1198; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::TargetModes> { static constexpr size_t value = 1199; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::LocatorOncall> { static constexpr size_t value = 1200; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::FileOncall> { static constexpr size_t value = 1201; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Type> { static constexpr size_t value = 1202; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TranslationUnit> { static constexpr size_t value = 1203; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetUses> { static constexpr size_t value = 1204; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetSourcesBaseModule> { static constexpr size_t value = 1205; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetSources> { static constexpr size_t value = 1206; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetOuts> { static constexpr size_t value = 1207; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetOut> { static constexpr size_t value = 1208; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetMode> { static constexpr size_t value = 1209; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetLocation> { static constexpr size_t value = 1210; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetLinkWhole> { static constexpr size_t value = 1211; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetIndexerName> { static constexpr size_t value = 1212; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetIndexer> { static constexpr size_t value = 1213; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetHash> { static constexpr size_t value = 1214; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetCall> { static constexpr size_t value = 1215; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetByType> { static constexpr size_t value = 1216; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetAttribute> { static constexpr size_t value = 1217; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Target> { static constexpr size_t value = 1218; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::SourceFileLocation> { static constexpr size_t value = 1219; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::SearchByLocalName> { static constexpr size_t value = 1220; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::RuleKey> { static constexpr size_t value = 1221; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Platform> { static constexpr size_t value = 1222; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Owner> { static constexpr size_t value = 1223; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::OutsTarget> { static constexpr size_t value = 1224; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::OutputLabel> { static constexpr size_t value = 1225; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::OutTarget> { static constexpr size_t value = 1226; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocatorWithLabel> { static constexpr size_t value = 1227; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocatorReverseDeps> { static constexpr size_t value = 1228; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocatorReverseDep> { static constexpr size_t value = 1229; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Locator> { static constexpr size_t value = 1230; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocalNameLowerCase> { static constexpr size_t value = 1231; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocalName> { static constexpr size_t value = 1232; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Labels> { static constexpr size_t value = 1233; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Label> { static constexpr size_t value = 1234; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::IndexerName> { static constexpr size_t value = 1235; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileXRefs> { static constexpr size_t value = 1236; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileToTarget> { static constexpr size_t value = 1237; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileTarget> { static constexpr size_t value = 1238; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileResolved> { static constexpr size_t value = 1239; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileEntity> { static constexpr size_t value = 1240; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileDefinition> { static constexpr size_t value = 1241; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::File> { static constexpr size_t value = 1242; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FailureSources> { static constexpr size_t value = 1243; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::IndexFailureX> { static constexpr size_t value = 1244; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::DestinationUses> { static constexpr size_t value = 1245; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetDependencies> { static constexpr size_t value = 1246; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::DefinitionLocation> { static constexpr size_t value = 1247; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Definition> { static constexpr size_t value = 1248; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Consumer> { static constexpr size_t value = 1249; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::CallArgument> { static constexpr size_t value = 1250; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::AttributeName> { static constexpr size_t value = 1251; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::AttributeValue> { static constexpr size_t value = 1252; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::ArgumentValue> { static constexpr size_t value = 1253; };
 
 template<> struct SCHEMA::predicate<0> { using type = facebook::glean::cpp::schema::Testinfra::TestId; };
 template<> struct SCHEMA::predicate<1> { using type = facebook::glean::cpp::schema::Testinfra::TaggedAssembly; };
@@ -31055,88 +31081,90 @@ template<> struct SCHEMA::predicate<1166> { using type = facebook::glean::cpp::s
 template<> struct SCHEMA::predicate<1167> { using type = facebook::glean::cpp::schema::Cxx1::FunctionName; };
 template<> struct SCHEMA::predicate<1168> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclaration; };
 template<> struct SCHEMA::predicate<1169> { using type = facebook::glean::cpp::schema::Cxx1::DeclarationScope; };
-template<> struct SCHEMA::predicate<1170> { using type = facebook::glean::cpp::schema::Cxx1::FunctionQName; };
-template<> struct SCHEMA::predicate<1171> { using type = facebook::glean::cpp::schema::Cxx1::QName; };
-template<> struct SCHEMA::predicate<1172> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclarationClass; };
-template<> struct SCHEMA::predicate<1173> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclarationStruct; };
-template<> struct SCHEMA::predicate<1174> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclarationUnion; };
-template<> struct SCHEMA::predicate<1175> { using type = facebook::glean::cpp::schema::Search::Code::CxxSearchByNameAndScopeFact; };
-template<> struct SCHEMA::predicate<1176> { using type = facebook::glean::cpp::schema::Search::Cxx::QueryToScopeCase; };
-template<> struct SCHEMA::predicate<1177> { using type = facebook::glean::cpp::schema::Search::Cxx::SearchByNameAndScope; };
-template<> struct SCHEMA::predicate<1178> { using type = facebook::glean::cpp::schema::Search::Cxx::SearchByScope; };
-template<> struct SCHEMA::predicate<1179> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchClass; };
-template<> struct SCHEMA::predicate<1180> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchNamespace; };
-template<> struct SCHEMA::predicate<1181> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchStruct; };
-template<> struct SCHEMA::predicate<1182> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchUnion; };
-template<> struct SCHEMA::predicate<1183> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupDeclaration; };
-template<> struct SCHEMA::predicate<1184> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupDefinition; };
-template<> struct SCHEMA::predicate<1185> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupEnumerator; };
-template<> struct SCHEMA::predicate<1186> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDeclaration; };
-template<> struct SCHEMA::predicate<1187> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDefinition; };
-template<> struct SCHEMA::predicate<1188> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDeclaration; };
-template<> struct SCHEMA::predicate<1189> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDefinition; };
-template<> struct SCHEMA::predicate<1190> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDeclaration; };
-template<> struct SCHEMA::predicate<1191> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDefinition; };
-template<> struct SCHEMA::predicate<1192> { using type = facebook::glean::cpp::schema::Fbthrift::FunctionSpecification; };
-template<> struct SCHEMA::predicate<1193> { using type = facebook::glean::cpp::schema::Buckuses::UsesOfTargetHeader; };
-template<> struct SCHEMA::predicate<1194> { using type = facebook::glean::cpp::schema::Buckuses::UsesOfTarget; };
-template<> struct SCHEMA::predicate<1195> { using type = facebook::glean::cpp::schema::Buck::Meta::Oncall; };
-template<> struct SCHEMA::predicate<1196> { using type = facebook::glean::cpp::schema::Buck::Meta::ModeType; };
-template<> struct SCHEMA::predicate<1197> { using type = facebook::glean::cpp::schema::Buck::Meta::TargetModes; };
-template<> struct SCHEMA::predicate<1198> { using type = facebook::glean::cpp::schema::Buck::Meta::LocatorOncall; };
-template<> struct SCHEMA::predicate<1199> { using type = facebook::glean::cpp::schema::Buck::Meta::FileOncall; };
-template<> struct SCHEMA::predicate<1200> { using type = facebook::glean::cpp::schema::Buck::Type; };
-template<> struct SCHEMA::predicate<1201> { using type = facebook::glean::cpp::schema::Buck::TranslationUnit; };
-template<> struct SCHEMA::predicate<1202> { using type = facebook::glean::cpp::schema::Buck::TargetUses; };
-template<> struct SCHEMA::predicate<1203> { using type = facebook::glean::cpp::schema::Buck::TargetSourcesBaseModule; };
-template<> struct SCHEMA::predicate<1204> { using type = facebook::glean::cpp::schema::Buck::TargetSources; };
-template<> struct SCHEMA::predicate<1205> { using type = facebook::glean::cpp::schema::Buck::TargetOuts; };
-template<> struct SCHEMA::predicate<1206> { using type = facebook::glean::cpp::schema::Buck::TargetOut; };
-template<> struct SCHEMA::predicate<1207> { using type = facebook::glean::cpp::schema::Buck::TargetMode; };
-template<> struct SCHEMA::predicate<1208> { using type = facebook::glean::cpp::schema::Buck::TargetLocation; };
-template<> struct SCHEMA::predicate<1209> { using type = facebook::glean::cpp::schema::Buck::TargetLinkWhole; };
-template<> struct SCHEMA::predicate<1210> { using type = facebook::glean::cpp::schema::Buck::TargetIndexerName; };
-template<> struct SCHEMA::predicate<1211> { using type = facebook::glean::cpp::schema::Buck::TargetIndexer; };
-template<> struct SCHEMA::predicate<1212> { using type = facebook::glean::cpp::schema::Buck::TargetHash; };
-template<> struct SCHEMA::predicate<1213> { using type = facebook::glean::cpp::schema::Buck::TargetCall; };
-template<> struct SCHEMA::predicate<1214> { using type = facebook::glean::cpp::schema::Buck::TargetByType; };
-template<> struct SCHEMA::predicate<1215> { using type = facebook::glean::cpp::schema::Buck::TargetAttribute; };
-template<> struct SCHEMA::predicate<1216> { using type = facebook::glean::cpp::schema::Buck::Target; };
-template<> struct SCHEMA::predicate<1217> { using type = facebook::glean::cpp::schema::Buck::SourceFileLocation; };
-template<> struct SCHEMA::predicate<1218> { using type = facebook::glean::cpp::schema::Buck::SearchByLocalName; };
-template<> struct SCHEMA::predicate<1219> { using type = facebook::glean::cpp::schema::Buck::RuleKey; };
-template<> struct SCHEMA::predicate<1220> { using type = facebook::glean::cpp::schema::Buck::Platform; };
-template<> struct SCHEMA::predicate<1221> { using type = facebook::glean::cpp::schema::Buck::Owner; };
-template<> struct SCHEMA::predicate<1222> { using type = facebook::glean::cpp::schema::Buck::OutsTarget; };
-template<> struct SCHEMA::predicate<1223> { using type = facebook::glean::cpp::schema::Buck::OutputLabel; };
-template<> struct SCHEMA::predicate<1224> { using type = facebook::glean::cpp::schema::Buck::OutTarget; };
-template<> struct SCHEMA::predicate<1225> { using type = facebook::glean::cpp::schema::Buck::LocatorWithLabel; };
-template<> struct SCHEMA::predicate<1226> { using type = facebook::glean::cpp::schema::Buck::LocatorReverseDeps; };
-template<> struct SCHEMA::predicate<1227> { using type = facebook::glean::cpp::schema::Buck::LocatorReverseDep; };
-template<> struct SCHEMA::predicate<1228> { using type = facebook::glean::cpp::schema::Buck::Locator; };
-template<> struct SCHEMA::predicate<1229> { using type = facebook::glean::cpp::schema::Buck::LocalNameLowerCase; };
-template<> struct SCHEMA::predicate<1230> { using type = facebook::glean::cpp::schema::Buck::LocalName; };
-template<> struct SCHEMA::predicate<1231> { using type = facebook::glean::cpp::schema::Buck::Labels; };
-template<> struct SCHEMA::predicate<1232> { using type = facebook::glean::cpp::schema::Buck::Label; };
-template<> struct SCHEMA::predicate<1233> { using type = facebook::glean::cpp::schema::Buck::IndexerName; };
-template<> struct SCHEMA::predicate<1234> { using type = facebook::glean::cpp::schema::Buck::FileXRefs; };
-template<> struct SCHEMA::predicate<1235> { using type = facebook::glean::cpp::schema::Buck::FileToTarget; };
-template<> struct SCHEMA::predicate<1236> { using type = facebook::glean::cpp::schema::Buck::FileTarget; };
-template<> struct SCHEMA::predicate<1237> { using type = facebook::glean::cpp::schema::Buck::FileResolved; };
-template<> struct SCHEMA::predicate<1238> { using type = facebook::glean::cpp::schema::Buck::FileEntity; };
-template<> struct SCHEMA::predicate<1239> { using type = facebook::glean::cpp::schema::Buck::FileDefinition; };
-template<> struct SCHEMA::predicate<1240> { using type = facebook::glean::cpp::schema::Buck::File; };
-template<> struct SCHEMA::predicate<1241> { using type = facebook::glean::cpp::schema::Buck::FailureSources; };
-template<> struct SCHEMA::predicate<1242> { using type = facebook::glean::cpp::schema::Buck::IndexFailureX; };
-template<> struct SCHEMA::predicate<1243> { using type = facebook::glean::cpp::schema::Buck::DestinationUses; };
-template<> struct SCHEMA::predicate<1244> { using type = facebook::glean::cpp::schema::Buck::TargetDependencies; };
-template<> struct SCHEMA::predicate<1245> { using type = facebook::glean::cpp::schema::Buck::DefinitionLocation; };
-template<> struct SCHEMA::predicate<1246> { using type = facebook::glean::cpp::schema::Buck::Definition; };
-template<> struct SCHEMA::predicate<1247> { using type = facebook::glean::cpp::schema::Buck::Consumer; };
-template<> struct SCHEMA::predicate<1248> { using type = facebook::glean::cpp::schema::Buck::CallArgument; };
-template<> struct SCHEMA::predicate<1249> { using type = facebook::glean::cpp::schema::Buck::AttributeName; };
-template<> struct SCHEMA::predicate<1250> { using type = facebook::glean::cpp::schema::Buck::AttributeValue; };
-template<> struct SCHEMA::predicate<1251> { using type = facebook::glean::cpp::schema::Buck::ArgumentValue; };
+template<> struct SCHEMA::predicate<1170> { using type = facebook::glean::cpp::schema::Cxx1::EnumDeclarationByName; };
+template<> struct SCHEMA::predicate<1171> { using type = facebook::glean::cpp::schema::Cxx1::FunctionQName; };
+template<> struct SCHEMA::predicate<1172> { using type = facebook::glean::cpp::schema::Cxx1::QName; };
+template<> struct SCHEMA::predicate<1173> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclarationClass; };
+template<> struct SCHEMA::predicate<1174> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclarationStruct; };
+template<> struct SCHEMA::predicate<1175> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclarationUnion; };
+template<> struct SCHEMA::predicate<1176> { using type = facebook::glean::cpp::schema::Search::Code::CxxSearchByNameAndScopeFact; };
+template<> struct SCHEMA::predicate<1177> { using type = facebook::glean::cpp::schema::Search::Cxx::QueryToScopeCase; };
+template<> struct SCHEMA::predicate<1178> { using type = facebook::glean::cpp::schema::Search::Cxx::SearchByNameAndScope; };
+template<> struct SCHEMA::predicate<1179> { using type = facebook::glean::cpp::schema::Search::Cxx::SearchByScope; };
+template<> struct SCHEMA::predicate<1180> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchClass; };
+template<> struct SCHEMA::predicate<1181> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchEnum; };
+template<> struct SCHEMA::predicate<1182> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchNamespace; };
+template<> struct SCHEMA::predicate<1183> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchStruct; };
+template<> struct SCHEMA::predicate<1184> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchUnion; };
+template<> struct SCHEMA::predicate<1185> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupDeclaration; };
+template<> struct SCHEMA::predicate<1186> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupDefinition; };
+template<> struct SCHEMA::predicate<1187> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupEnumerator; };
+template<> struct SCHEMA::predicate<1188> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDeclaration; };
+template<> struct SCHEMA::predicate<1189> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDefinition; };
+template<> struct SCHEMA::predicate<1190> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDeclaration; };
+template<> struct SCHEMA::predicate<1191> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDefinition; };
+template<> struct SCHEMA::predicate<1192> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDeclaration; };
+template<> struct SCHEMA::predicate<1193> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDefinition; };
+template<> struct SCHEMA::predicate<1194> { using type = facebook::glean::cpp::schema::Fbthrift::FunctionSpecification; };
+template<> struct SCHEMA::predicate<1195> { using type = facebook::glean::cpp::schema::Buckuses::UsesOfTargetHeader; };
+template<> struct SCHEMA::predicate<1196> { using type = facebook::glean::cpp::schema::Buckuses::UsesOfTarget; };
+template<> struct SCHEMA::predicate<1197> { using type = facebook::glean::cpp::schema::Buck::Meta::Oncall; };
+template<> struct SCHEMA::predicate<1198> { using type = facebook::glean::cpp::schema::Buck::Meta::ModeType; };
+template<> struct SCHEMA::predicate<1199> { using type = facebook::glean::cpp::schema::Buck::Meta::TargetModes; };
+template<> struct SCHEMA::predicate<1200> { using type = facebook::glean::cpp::schema::Buck::Meta::LocatorOncall; };
+template<> struct SCHEMA::predicate<1201> { using type = facebook::glean::cpp::schema::Buck::Meta::FileOncall; };
+template<> struct SCHEMA::predicate<1202> { using type = facebook::glean::cpp::schema::Buck::Type; };
+template<> struct SCHEMA::predicate<1203> { using type = facebook::glean::cpp::schema::Buck::TranslationUnit; };
+template<> struct SCHEMA::predicate<1204> { using type = facebook::glean::cpp::schema::Buck::TargetUses; };
+template<> struct SCHEMA::predicate<1205> { using type = facebook::glean::cpp::schema::Buck::TargetSourcesBaseModule; };
+template<> struct SCHEMA::predicate<1206> { using type = facebook::glean::cpp::schema::Buck::TargetSources; };
+template<> struct SCHEMA::predicate<1207> { using type = facebook::glean::cpp::schema::Buck::TargetOuts; };
+template<> struct SCHEMA::predicate<1208> { using type = facebook::glean::cpp::schema::Buck::TargetOut; };
+template<> struct SCHEMA::predicate<1209> { using type = facebook::glean::cpp::schema::Buck::TargetMode; };
+template<> struct SCHEMA::predicate<1210> { using type = facebook::glean::cpp::schema::Buck::TargetLocation; };
+template<> struct SCHEMA::predicate<1211> { using type = facebook::glean::cpp::schema::Buck::TargetLinkWhole; };
+template<> struct SCHEMA::predicate<1212> { using type = facebook::glean::cpp::schema::Buck::TargetIndexerName; };
+template<> struct SCHEMA::predicate<1213> { using type = facebook::glean::cpp::schema::Buck::TargetIndexer; };
+template<> struct SCHEMA::predicate<1214> { using type = facebook::glean::cpp::schema::Buck::TargetHash; };
+template<> struct SCHEMA::predicate<1215> { using type = facebook::glean::cpp::schema::Buck::TargetCall; };
+template<> struct SCHEMA::predicate<1216> { using type = facebook::glean::cpp::schema::Buck::TargetByType; };
+template<> struct SCHEMA::predicate<1217> { using type = facebook::glean::cpp::schema::Buck::TargetAttribute; };
+template<> struct SCHEMA::predicate<1218> { using type = facebook::glean::cpp::schema::Buck::Target; };
+template<> struct SCHEMA::predicate<1219> { using type = facebook::glean::cpp::schema::Buck::SourceFileLocation; };
+template<> struct SCHEMA::predicate<1220> { using type = facebook::glean::cpp::schema::Buck::SearchByLocalName; };
+template<> struct SCHEMA::predicate<1221> { using type = facebook::glean::cpp::schema::Buck::RuleKey; };
+template<> struct SCHEMA::predicate<1222> { using type = facebook::glean::cpp::schema::Buck::Platform; };
+template<> struct SCHEMA::predicate<1223> { using type = facebook::glean::cpp::schema::Buck::Owner; };
+template<> struct SCHEMA::predicate<1224> { using type = facebook::glean::cpp::schema::Buck::OutsTarget; };
+template<> struct SCHEMA::predicate<1225> { using type = facebook::glean::cpp::schema::Buck::OutputLabel; };
+template<> struct SCHEMA::predicate<1226> { using type = facebook::glean::cpp::schema::Buck::OutTarget; };
+template<> struct SCHEMA::predicate<1227> { using type = facebook::glean::cpp::schema::Buck::LocatorWithLabel; };
+template<> struct SCHEMA::predicate<1228> { using type = facebook::glean::cpp::schema::Buck::LocatorReverseDeps; };
+template<> struct SCHEMA::predicate<1229> { using type = facebook::glean::cpp::schema::Buck::LocatorReverseDep; };
+template<> struct SCHEMA::predicate<1230> { using type = facebook::glean::cpp::schema::Buck::Locator; };
+template<> struct SCHEMA::predicate<1231> { using type = facebook::glean::cpp::schema::Buck::LocalNameLowerCase; };
+template<> struct SCHEMA::predicate<1232> { using type = facebook::glean::cpp::schema::Buck::LocalName; };
+template<> struct SCHEMA::predicate<1233> { using type = facebook::glean::cpp::schema::Buck::Labels; };
+template<> struct SCHEMA::predicate<1234> { using type = facebook::glean::cpp::schema::Buck::Label; };
+template<> struct SCHEMA::predicate<1235> { using type = facebook::glean::cpp::schema::Buck::IndexerName; };
+template<> struct SCHEMA::predicate<1236> { using type = facebook::glean::cpp::schema::Buck::FileXRefs; };
+template<> struct SCHEMA::predicate<1237> { using type = facebook::glean::cpp::schema::Buck::FileToTarget; };
+template<> struct SCHEMA::predicate<1238> { using type = facebook::glean::cpp::schema::Buck::FileTarget; };
+template<> struct SCHEMA::predicate<1239> { using type = facebook::glean::cpp::schema::Buck::FileResolved; };
+template<> struct SCHEMA::predicate<1240> { using type = facebook::glean::cpp::schema::Buck::FileEntity; };
+template<> struct SCHEMA::predicate<1241> { using type = facebook::glean::cpp::schema::Buck::FileDefinition; };
+template<> struct SCHEMA::predicate<1242> { using type = facebook::glean::cpp::schema::Buck::File; };
+template<> struct SCHEMA::predicate<1243> { using type = facebook::glean::cpp::schema::Buck::FailureSources; };
+template<> struct SCHEMA::predicate<1244> { using type = facebook::glean::cpp::schema::Buck::IndexFailureX; };
+template<> struct SCHEMA::predicate<1245> { using type = facebook::glean::cpp::schema::Buck::DestinationUses; };
+template<> struct SCHEMA::predicate<1246> { using type = facebook::glean::cpp::schema::Buck::TargetDependencies; };
+template<> struct SCHEMA::predicate<1247> { using type = facebook::glean::cpp::schema::Buck::DefinitionLocation; };
+template<> struct SCHEMA::predicate<1248> { using type = facebook::glean::cpp::schema::Buck::Definition; };
+template<> struct SCHEMA::predicate<1249> { using type = facebook::glean::cpp::schema::Buck::Consumer; };
+template<> struct SCHEMA::predicate<1250> { using type = facebook::glean::cpp::schema::Buck::CallArgument; };
+template<> struct SCHEMA::predicate<1251> { using type = facebook::glean::cpp::schema::Buck::AttributeName; };
+template<> struct SCHEMA::predicate<1252> { using type = facebook::glean::cpp::schema::Buck::AttributeValue; };
+template<> struct SCHEMA::predicate<1253> { using type = facebook::glean::cpp::schema::Buck::ArgumentValue; };
 
 
 } // namespace schema

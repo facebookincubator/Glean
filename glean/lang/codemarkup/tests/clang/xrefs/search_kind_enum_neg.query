@@ -1,0 +1,3 @@
+query: search.kind.cxx.SearchEnum { name = "DoesNotExist" }
+perf: true
+transform: [gensort, []]
