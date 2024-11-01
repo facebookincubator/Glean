@@ -523,9 +523,10 @@ predicate SearchByLocalName:
     name : LocalName,
     decl : XRefDestination
   }
-  stored { buck.LocalName NameStr, Decl } where
+  stored { L, Decl } where
     ( LDecl = buck.Locator { name = NameStr }; { locator = LDecl } = Decl) |
-    ( DDecl = buck.Definition { name = NameStr }; { definition = DDecl } = Decl)
+    ( DDecl = buck.Definition { name = NameStr }; { definition = DDecl } = Decl);
+    L = buck.LocalName NameStr
 
 } # end schema buck.4
 
