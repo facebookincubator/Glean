@@ -543,7 +543,8 @@ doAngleStmt (Command name arg) = doCmd name arg
 doAngleStmt (FactRef fid) = userFact fid >> return False
 doAngleStmt (Pattern query) = do
   q <- fromAngleQuery query
-  runUserQuery q
+  pager_on <- pager <$> getState
+  runUserQuery q { sqContinue = pager_on }
   return False
 
 fromAngleQuery :: AngleQuery -> Eval SchemaQuery
@@ -973,12 +974,13 @@ mkUserQuery
 
 runUserQuery :: SchemaQuery -> Eval ()
 runUserQuery sQuery = do
-  ShellState{..} <- getState
+  state@ShellState{..} <- getState
   query <- mkUserQuery sQuery
 
   C.handle (C.throwM . asBadQuery (sqQuery sQuery)) $ do
 
-  (finalStats, finalResults) <- withQueryPages query (Nothing,def) $
+  (finalStats, finalResults) <-
+    withQueryPages query (Nothing,def) $
     \(prevStats,_) results@Thrift.UserQueryResults{..} -> do
 
     when (not (null userQueryResults_diagnostics)) $ output $ vcat $
@@ -1003,11 +1005,18 @@ runUserQuery sQuery = do
         | otherwise = def { Thrift.userQueryStats_result_count =
             fromIntegral (length userQueryResults_facts) }
 
-    return
-      ((Just (maybe stats (<> stats) prevStats), results),
-        sqContinue sQuery)
+      timeout = Thrift.userQueryStats_result_count stats < fromIntegral limit
 
-  output $ vcat $
+    return
+      ((prevStats <> Just stats, results), sqContinue sQuery && not timeout)
+
+  statsSummary state finalStats finalResults
+  Eval $ State.modify $ \s -> s {
+    lastSchemaQuery = Just sQuery {
+      sqCont = Thrift.userQueryResults_continuation finalResults }}
+
+  where
+  statsSummary ShellState{..} finalStats finalResults = output $ vcat $
      [ "" ]
      ++
      [ case finalStats of
@@ -1054,10 +1063,6 @@ runUserQuery sQuery = do
      | isJust (Thrift.userQueryResults_continuation finalResults)
      , Just stats <- [finalStats]
      ]
-
-  Eval $ State.modify $ \s -> s {
-    lastSchemaQuery = Just sQuery {
-      sqCont = Thrift.userQueryResults_continuation finalResults }}
 
 -- | A line from the user (or entry on the command line) may end in a backslash
 -- and be a 'Cont' continued line, otherwise it is a 'Whole' line, see 'endBS'
