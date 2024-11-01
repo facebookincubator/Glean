@@ -212,6 +212,7 @@ SCHEMAS= \
 	search_buck \
 	search_hack \
 	search_java \
+	search_kind_cxx \
 	search_hs \
 	search_pp \
 	src \

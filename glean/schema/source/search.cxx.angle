@@ -87,8 +87,14 @@ predicate SearchByNameAndScope :
         { recordWithAccess = { record = QN, access = Public }} = Scope
       );
       Entity = code.cxx.Entity { enumerator = E };
-    ) | (
-      ( NSQName = cxx1.NamespaceQName { name = { just = N },
+    ) |
+      #
+      # After the stored fact is available, replace with:
+      # cxx1.Name NameStr = N;
+      # search.kind.cxx.SearchNamespace { NameStr, Scope, Entity }
+      #
+     (
+            ( NSQName = cxx1.NamespaceQName { name = { just = N },
           parent = { just = Parent } };
         { namespace_ = Parent } = Scope;
         NS = cxx1.NamespaceDeclaration { name = NSQName };

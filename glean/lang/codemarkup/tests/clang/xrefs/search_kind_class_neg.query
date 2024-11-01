@@ -1,0 +1,3 @@
+query: search.kind.cxx.SearchClass { name = "DoesNotExist" }
+perf: true
+transform: [gensort, []]

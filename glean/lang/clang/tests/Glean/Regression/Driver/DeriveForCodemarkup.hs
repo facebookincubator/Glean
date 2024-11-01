@@ -31,4 +31,8 @@ codemarkupDerivePasses =
   ,DeriveGeneric "cxx1.DeclarationToUSR"
   ,DeriveGeneric "cxx1.RecordDerived"
   ,DeriveGeneric "cxx1.ThriftToCxx"
+  ,DeriveGeneric "cxx1.NamespaceDeclarationByName"
+  ,DeriveGeneric "cxx1.RecordDeclarationClass"
+  ,DeriveGeneric "cxx1.RecordDeclarationStruct"
+  ,DeriveGeneric "cxx1.RecordDeclarationUnion"
   ]

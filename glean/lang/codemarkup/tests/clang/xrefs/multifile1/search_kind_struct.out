@@ -1,0 +1,63 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "T",
+      "scope": { "namespace_": { "key": { "name": { "key": "A" } } } },
+      "entity": {
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "T" },
+                  "scope": {
+                    "namespace_": { "key": { "name": { "key": "A" } } }
+                  }
+                }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 12,
+                "columnBegin": 1,
+                "lineEnd": 12,
+                "columnEnd": 11
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "T",
+      "scope": { "namespace_": { "key": { "name": { "key": "B" } } } },
+      "entity": {
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "T" },
+                  "scope": {
+                    "namespace_": { "key": { "name": { "key": "B" } } }
+                  }
+                }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 1,
+                "lineEnd": 21,
+                "columnEnd": 11
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,3 @@
+query: search.kind.cxx.SearchNamespace{ name = "S" }
+perf: true
+transform: [gensort, []]

@@ -1,0 +1,87 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "",
+      "scope": {
+        "local": {
+          "key": {
+            "name": { "key": { "name": { "key": "g" } } },
+            "scope": { "global_": { } }
+          }
+        }
+      },
+      "entity": {
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "g" } } },
+                        "scope": { "global_": { } }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": { "class_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 16,
+                "columnBegin": 14,
+                "lineEnd": 16,
+                "columnEnd": 14
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "",
+      "scope": {
+        "local": {
+          "key": {
+            "name": { "key": { "name": { "key": "h" } } },
+            "scope": { "global_": { } }
+          }
+        }
+      },
+      "entity": {
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "h" } } },
+                        "scope": { "global_": { } }
+                      }
+                    }
+                  }
+                }
+              },
+              "kind": { "class_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 24,
+                "columnBegin": 14,
+                "lineEnd": 24,
+                "columnEnd": 14
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

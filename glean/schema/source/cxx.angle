@@ -94,6 +94,16 @@ predicate NamespaceDeclaration :
     source : src.Range,
   }
 
+# For search, index just those with non-empty namespace local names
+predicate NamespaceDeclarationByName :
+  {
+    name : string,
+    parent: maybe NamespaceQName,
+    decl : NamespaceDeclaration
+  } stored { NameStr, Parent, Decl } where
+    Name = cxx1.Name NameStr;
+    NamespaceDeclaration { name = { { just = Name }, Parent } } = Decl
+
 # C++ record kind - struct/class/union
 type RecordKind =
    {
@@ -109,6 +119,38 @@ predicate RecordDeclaration :
     kind : RecordKind,
     source : src.Range,
   }
+
+# Derived predicates to distinguish records by kind, to avoid enumerating all
+# records when searching. We flatten the QName so that the Name key is left most,
+# avoiding the need to enumerate QNames to find things.
+predicate RecordDeclarationStruct :
+  {
+    name : string,
+    scope: Scope,
+    decl : RecordDeclaration
+  } stored { NameStr, Scope, Decl } where
+    Name = cxx1.Name NameStr;
+    RecordDeclaration { name = { Name, Scope }, kind = { struct_ = _ } } = Decl
+
+# Derived
+predicate RecordDeclarationClass :
+  {
+    name : string,
+    scope: Scope,
+    decl : RecordDeclaration
+  } stored { NameStr, Scope, Decl } where
+    Name = cxx1.Name NameStr;
+    RecordDeclaration { name = { Name, Scope }, kind = { class_ = _ } } = Decl
+
+# Derived
+predicate RecordDeclarationUnion :
+  {
+    name : string,
+    scope: Scope,
+    decl : RecordDeclaration
+  } stored { NameStr, Scope, Decl } where
+    Name = cxx1.Name NameStr;
+    RecordDeclaration { name = { Name, Scope }, kind = { union_ = _ } } = Decl
 
 # Enum declaration
 predicate EnumDeclaration :

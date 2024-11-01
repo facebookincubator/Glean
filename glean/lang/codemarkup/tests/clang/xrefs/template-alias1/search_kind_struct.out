@@ -1,0 +1,28 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "S",
+      "scope": { "global_": { } },
+      "entity": {
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": { "name": { "key": "S" }, "scope": { "global_": { } } }
+              },
+              "kind": { "struct_": { } },
+              "source": {
+                "file": { "key": "main.cpp" },
+                "lineBegin": 10,
+                "columnBegin": 1,
+                "lineEnd": 10,
+                "columnEnd": 11
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

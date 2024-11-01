@@ -1,0 +1,3 @@
+query: search.kind.cxx.SearchUnion { name = "DoesNotExist" }
+perf: true
+transform: [gensort, []]
