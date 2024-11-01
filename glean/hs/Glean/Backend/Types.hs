@@ -19,6 +19,8 @@ module Glean.Backend.Types
   , loadPredicates
   , databases
   , localDatabases
+  , create
+  , finish
   , fillDatabase
   , finalize
   , completePredicates
@@ -45,10 +47,10 @@ import Control.Exception
 import Control.Monad
 import Data.Bits
 import Data.Default
-import Data.Either
 import Data.Hashable
 import qualified Data.HashMap.Strict as HashMap
 import Data.Map (Map)
+import Data.Maybe
 import Data.Monoid
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -249,31 +251,56 @@ fillDatabase
     -- ^ Caller-supplied action to write data into the DB.
   -> IO b
 fillDatabase env repo handle maybeDeps ifexists action =
-  tryBracket create finish (const action)
-  where
-  create = do
-    r <- kickOffDatabase env def
-      { kickOff_repo = repo
-      , kickOff_fill = Just $ KickOffFill_writeHandle handle
-      , kickOff_properties = HashMap.fromList $
-          [ ("glean.schema_id", id)
-          | Just (SchemaId id) <- [schemaId env]
-          ]
-      , kickOff_dependencies = maybeDeps
-      }
-    when (kickOffResponse_alreadyExists r) ifexists
+  tryBracket
+    (do
+      exists <- create env repo handle maybeDeps
+      when exists ifexists
+    )
+    (\_ ex -> do
+      let failure = case ex of Left e -> Just (showt e); _ -> Nothing
+      finish env repo handle failure
+    )
+    (const action)
 
-  finish _ e = do
-    workFinished env WorkFinished
-      { workFinished_work = def
-          { work_repo = repo
-          , work_handle = handle
-          }
-      , workFinished_outcome = case e of
-          Left ex -> Outcome_failure (Failure (showt ex))
-          Right _ -> Outcome_success def
-      }
-    when (isRight e) $ finalize env repo
+-- | Create a database. The schema ID is set from the Backend.
+create
+  :: Backend a
+  => a
+  -> Repo
+  -> Text -- ^ A handle, can be anything
+  -> Maybe Dependencies
+  -> IO Bool  -- ^ Returns 'True' if the DB already existed
+create backend repo handle maybeDeps = do
+  r <- kickOffDatabase backend def
+    { kickOff_repo = repo
+    , kickOff_fill = Just $ KickOffFill_writeHandle handle
+    , kickOff_properties = HashMap.fromList $
+        [ ("glean.schema_id", id)
+        | Just (SchemaId id) <- [schemaId backend]
+        ]
+    , kickOff_dependencies = maybeDeps
+    }
+  return (kickOffResponse_alreadyExists r)
+
+-- | Finish a DB created with 'create'
+finish
+  :: Backend a
+  => a
+  -> Repo
+  -> Text -- ^ The handle passed to 'create'
+  -> Maybe Text  -- ^ @Just e@ => failed with message e
+  -> IO ()
+finish backend repo handle failure = do
+  workFinished backend WorkFinished
+    { workFinished_work = def
+        { work_repo = repo
+        , work_handle = handle
+        }
+    , workFinished_outcome = case failure of
+        Just ex -> Outcome_failure (Failure ex)
+        Nothing -> Outcome_success def
+    }
+  when (isNothing failure) $ finalize backend repo
 
 -- | Wait for a database to finish finalizing and enter the "complete"
 -- state after all writing has finished. Before the database is

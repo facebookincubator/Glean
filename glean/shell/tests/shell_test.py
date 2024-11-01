@@ -236,6 +236,25 @@ class GleanShellLoad(GleanShellTest):
         self.assertIn("expr/1", output)
 
 
+class GleanShellCreate(GleanShellTest):
+    def test(self):
+        prompt = "tmp>"
+        self.shellCommand(":create", prompt=prompt)
+        output = self.shellCommand(":db", prompt=prompt)
+        self.assertIn("tmp", output)
+
+        output = self.shellCommand(":stat", prompt=prompt)
+        self.assertIsNotNone(re.search("0 facts", output))
+
+        prompt = "test>"
+        self.shellCommand(":create test/0", prompt=prompt)
+        output = self.shellCommand(":db", prompt=prompt)
+        self.assertIn("test/0", output)
+
+        output = self.shellCommand(":stat", prompt=prompt)
+        self.assertIsNotNone(re.search("0 facts", output))
+
+
 class GleanShellLoadBroken(GleanShellTest):
     def test(self):
         self.shellCommand(":load glean/shell/tests/error.glean")

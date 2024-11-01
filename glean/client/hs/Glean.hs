@@ -160,6 +160,8 @@ module Glean
 
   -- * Writing
   , fillDatabase
+  , create
+  , finish
   , finalize
   , completePredicates
   , CompletePredicates(..)

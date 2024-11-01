@@ -21,7 +21,8 @@
     :schema [predicate|type]                    Show schema for the given predicate or type
     :edit                                       Edit a query in an external editor. Set the EDITOR environment variable to choose an editor
     :limit <n>                                  Set limit on the number of query results
-    :load (<file> | <db>/<hash> <file> ...)     Create a DB from file(s) of JSON facts
+    :load [<file> | <db>/<hash> <file> ...]     Create a DB from file(s) of JSON facts
+    :create [<db>/<hash>]                       Create an empty DB
     :timeout off|<n>                            Set the query time budget
     :expand off|on|<predicate>...               Recursively expand nested facts in the response
     :pager off|on                               Enable/disable result paging

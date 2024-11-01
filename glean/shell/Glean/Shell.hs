@@ -454,8 +454,10 @@ helptext = vcat
             <> "Set the EDITOR environment variable to choose an editor")
       , ("limit <n>",
             "Set limit on the number of query results")
-      , ("load (<file> | <db>/<hash> <file> ...)",
+      , ("load [<file> | <db>/<hash> <file> ...]",
             "Create a DB from file(s) of JSON facts")
+      , ("create [<db>/<hash>]",
+            "Create an empty DB")
       , ("timeout off|<n>",
             "Set the query time budget")
       , ("expand off|on|<predicate>...",
@@ -598,6 +600,7 @@ commands =
   , Cmd "list-all" completeDatabaseName $ const . displayDatabases True False
   , Cmd "dump" Haskeline.noCompletion $ \str _ -> dumpCmd str
   , Cmd "load" Haskeline.completeFilename $ \str _ -> loadCmd str
+  , Cmd "create" Haskeline.noCompletion $ \str _ -> createCmd str
   , Cmd "more" Haskeline.noCompletion $ const $ const moreCmd
   , Cmd "database" completeDatabases $ const . dbCmd
   , Cmd "db" completeDatabaseName $ const . dbCmd
@@ -703,9 +706,31 @@ loadCmd str
     load repo [file]
     setRepo repo
 
+  -- no files: behave like :new
+  | [] <- args = createCmd str
+
   | otherwise
   = liftIO $ throwIO $ ErrorCall
       "syntax:  :load (<file> | <db>/<hash> <file> ...)"
+  where
+    args = Data.List.words str
+
+createCmd :: String -> Eval ()
+createCmd str
+  | [db] <- args
+  , Just repo <- Glean.parseRepo db = do
+    create repo
+    setRepo repo
+
+  | [] <- args = do
+    let name = "tmp"
+    hash <- pickHash name
+    let repo = Thrift.Repo name hash
+    create repo
+    setRepo repo
+
+  | otherwise =
+     liftIO $ throwIO $ ErrorCall "syntax:  :create [<db>/<hash>]"
   where
     args = Data.List.words str
 

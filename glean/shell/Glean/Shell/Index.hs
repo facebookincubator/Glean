@@ -10,6 +10,7 @@ module Glean.Shell.Index
   ( indexCmd
   , pickHash
   , load
+  , create
   ) where
 
 import Options.Applicative as OptParse
@@ -30,7 +31,7 @@ import System.FilePath
 import System.IO.Temp
 import TextShow
 
-import Glean
+import qualified Glean
 import Glean.Shell.Types
 import Glean.Util.Some
 import Glean.Write
@@ -59,7 +60,7 @@ indexCmd str = do
     let repo = Glean.Repo name hash
     withBackend $ \backend -> do
       let exists = throwIO (ErrorCall (show repo <> ": already exists"))
-      liftIO $ fillDatabase backend repo "" Nothing exists $
+      liftIO $ Glean.fillDatabase backend repo "" Nothing exists $
         runIndexer (Some backend) repo
           IndexerParams {
             indexerRoot = root,
@@ -76,7 +77,7 @@ withSystemTempDirectory' str action = Eval $ do
 
 pickHash :: Text -> Eval Text
 pickHash name = withBackend $ \be -> do
-  r <- liftIO $ listDatabases be def
+  r <- liftIO $ Glean.listDatabases be def
   let
     hashes =
       [ repo_hash
@@ -90,10 +91,16 @@ pickHash name = withBackend $ \be -> do
 load :: Glean.Repo -> [FilePath] -> Eval ()
 load repo files = withBackend $ \be ->  liftIO $ do
   let onExisting  = throwIO $ ErrorCall "database already exists"
-  void $ fillDatabase be repo "" Nothing onExisting $ forM_ files $ \file -> do
-    r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
-    val <- either (throwIO  . ErrorCall . Text.unpack) return r
-    batches <- case Aeson.parse parseJsonFactBatches val of
-      Error str -> throwIO $ ErrorCall str
-      Aeson.Success x -> return x
-    Glean.sendJsonBatch be repo batches Nothing
+  void $ Glean.fillDatabase be repo "" Nothing onExisting $
+    forM_ files $ \file -> do
+      r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
+      val <- either (throwIO  . ErrorCall . Text.unpack) return r
+      batches <- case Aeson.parse parseJsonFactBatches val of
+        Error str -> throwIO $ ErrorCall str
+        Aeson.Success x -> return x
+      Glean.sendJsonBatch be repo batches Nothing
+
+create :: Glean.Repo -> Eval ()
+create repo = withBackend $ \be ->  liftIO $ do
+  exists <- Glean.create be repo "" Nothing
+  when exists $ throwIO $ ErrorCall "database already exists"

@@ -108,7 +108,13 @@ variable to choose an editor.
 Set limit on the number of query results. If there are more results
 than the limit, then you can type `:more` to fetch the next `N`
 results.
-* `:timeout off|MILLISECONDS`<br />
+* `:load [<file> | <db>/<hash> <file> ...]` <br />
+Create a new DB, loading facts from the given file(s).
+  * `<file>` is a file of facts in JSON format
+  * `<db>/<hash>` optionally the name of the DB to create
+* `:create [<db>/<hash>]` <br />
+Create a new empty DB.
+  * `<db>/<hash>` optionally the name of the DB to create
 Set the query time budget. If the time limit expires, the results so
 far are returned, and you can type `:more` to see more results.
 * `:expand off|on`<br />
