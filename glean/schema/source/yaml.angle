@@ -1,0 +1,18 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
+schema yaml.1 {
+    import builtin.1
+    import src.1
+    import python.4
+
+    type XRefViaName = {
+        target: python.Name,
+        source: src.ByteSpan,
+    }
+
+    # There is only one fact of this predicate per source file in the repo.
+    predicate XRefsByFile: {
+        file: src.File,
+        xrefs: [XRefViaName],
+    }
+}
