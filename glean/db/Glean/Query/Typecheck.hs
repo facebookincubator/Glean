@@ -90,7 +90,7 @@ typecheck dbSchema opts rtsType query = do
     let state = initialTypecheckState tcEnv opts rtsType TcModeQuery in
     withExceptT (Text.pack . show) $ flip runStateT state $ do
       modify $ \s -> s { tcVisible = varsQuery query mempty }
-      q@(TcQuery retTy _ _ _ _) <- inferQuery ContextExpr query
+      q@(TcQuery retTy _ _ _ _) <- inferQuery ContextPat query
         <* freeVariablesAreErrors <* unboundVariablesAreErrors
       subst <- gets tcSubst
       whenDebug $ liftIO $ hPutStrLn stderr $ show $
@@ -152,7 +152,7 @@ typecheckDeriving tcEnv opts rtsType PredicateDetails{..} derivingInfo = do
                 in
                 (key, Just (App span val xs))
               _other -> (head, Nothing)
-          key' <- typecheckPattern ContextExpr predicateKeyType key
+          key' <- typecheckPattern ContextPat predicateKeyType key
           maybeVal' <- case maybeVal of
             Nothing
               | eqType (tcOptAngleVersion opts) unit predicateValueType ->
@@ -161,7 +161,7 @@ typecheckDeriving tcEnv opts rtsType PredicateDetails{..} derivingInfo = do
                 [ "a functional predicate must return a value,"
                 , "i.e. the query should have the form 'X -> Y where .." ]
             Just val -> Just <$>
-              typecheckPattern ContextExpr predicateValueType val
+              typecheckPattern ContextPat predicateValueType val
           stmts' <- mapM typecheckStatement stmts
           freeVariablesAreErrors
           unboundVariablesAreErrors
@@ -228,7 +228,7 @@ typecheckQuery
   -> T TcQuery
 typecheckQuery ctx ty q = do
   (head,stmts,ord) <- needsResult q
-  head' <- typecheckPattern ctx  ty head
+  head' <- typecheckPattern ctx ty head
   stmts' <- mapM typecheckStatement stmts
   return (TcQuery ty head' Nothing stmts' ord)
 
@@ -309,7 +309,7 @@ inferExpr ctx pat = case pat of
   Prim span primOp args -> do
     (primArgTys, retTy) <- primOpType primOp
     checkPrimOpArgs span args primArgTys
-    args' <- zipWithM (typecheckPattern ctx) primArgTys args
+    args' <- zipWithM (typecheckPattern ContextExpr) primArgTys args
     return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))),
       retTy)
   Clause _ pred pat range -> tcFactGenerator pred pat range
@@ -545,7 +545,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
   (ty, Prim span primOp args) -> do
     (primArgTys, retTy) <- primOpType primOp
     checkPrimOpArgs span args primArgTys
-    args' <- zipWithM (typecheckPattern ctx) primArgTys args
+    args' <- zipWithM (typecheckPattern ContextExpr) primArgTys args
     inPat pat $ unify ty retTy
     return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))))
   (PredicateTy (PidRef _ ref), Clause _ ref' arg range) ->
@@ -808,7 +808,6 @@ unboundVariablesAreErrors_ uses binds = do
           hsep (punctuate "," (map pretty badGuys))
       , "All variables must occur at least once in a context that will bind"
       , "the variable to a value; i.e., *not*"
-      , "  * the head of a derived predicate"
       , "  * the argument of a primitive"
       , "  * the array in an array generator Arr[..]"
       , "A variable that is bound in just one side of '|'"

@@ -724,7 +724,7 @@ angleIfThenElse modify = dbTestCase $ \env repo -> do
     [Nat 1] r
 
   r <- try $ runQuery_ env repo $ angleData @Nat
-    "if (A = 1) then A else A"
+    "if (A = 1) then A else A+1"
   print r
   assertBool
     "if statement - variables bound in condition are not available in 'else' branch" $
@@ -734,7 +734,7 @@ angleIfThenElse modify = dbTestCase $ \env repo -> do
 
   r <- try $ runQuery_ env repo $ angleData @Nat
     [s|
-      A where if (A = 1) then A else 2;
+      A+1 where if (A = 1) then A else 2;
     |]
   print r
   assertBool
@@ -745,7 +745,7 @@ angleIfThenElse modify = dbTestCase $ \env repo -> do
 
   r <- try $ runQuery_ env repo $ angleData @Nat
     [s|
-      A where if 1 then (A = 1) else 2;
+      A+1 where if 1 then (A = 1) else 2;
     |]
   print r
   assertBool
@@ -756,7 +756,7 @@ angleIfThenElse modify = dbTestCase $ \env repo -> do
 
   r <- try $ runQuery_ env repo $ angleData @Nat
     [s|
-      A where if never : {} then 1 else (A = 1) ;
+      A+1 where if never : {} then 1 else (A = 1) ;
     |]
   print r
   assertBool
@@ -813,7 +813,7 @@ angleNegationTest modify = dbTestCase $ \env repo -> do
   -- negated queries do not bind variables to the parent scope
   r <- try $ runQuery_ env repo $ modify $ angleData @()
     [s|
-      A where !(A = glean.test.IsGlean "not-glean");
+      A+1 where !(A = 0);
     |]
   print r
   assertBool "negation - scope" $

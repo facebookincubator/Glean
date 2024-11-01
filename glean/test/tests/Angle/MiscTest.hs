@@ -90,7 +90,7 @@ scopingTest = dbTestCase $ \env repo -> do
     |]
   print r
   assertBool "angle - scoping 2" $ case r of
-    Left e@BadQuery{} -> "not bound anywhere: N" `isInfixOf` show e
+    Left e@BadQuery{} -> "cannot resolve" `isInfixOf` show e
     _ -> False
 
   -- it's OK to not bind the variable in every branch of | if it is
