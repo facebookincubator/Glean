@@ -348,6 +348,14 @@ inline void outputValue(Output<Array<Byte>> o, const folly::fbstring& s) {
   outputValue(o, binary::byteRange(s));
 }
 
+template <typename T, typename U>
+inline void outputValue(Output<Set<T>> o, const std::set<U>& xs) {
+  o.output.packed(xs.size());
+  for (const auto& x : xs) {
+    outputValue(unsafeAs<T>(o), x);
+  }
+}
+
 namespace detail {
 
 template <size_t i, typename U>
