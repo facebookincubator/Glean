@@ -11,6 +11,8 @@
 #include <folly/FBString.h>
 #include <set>
 
+#include "glean/rts/binary.h"
+
 namespace facebook {
 namespace glean {
 namespace rts {
@@ -26,6 +28,34 @@ struct CmpSet {
 using BytestringSet = std::set<folly::fbstring, CmpSet>;
 
 using WordSet = std::set<uint64_t>;
+
+struct SetOps {
+  using SetToken = uint64_t;
+
+  SetToken newSet();
+
+  void insertOutputSet(SetToken token, binary::Output* out);
+
+  void setToArray(SetToken token, binary::Output* out);
+
+  void freeSet(SetToken token);
+
+  SetToken newWordSet();
+
+  void insertWordSet(SetToken token, uint64_t out);
+
+  void insertBytesWordSet(
+      SetToken token,
+      const unsigned char* start,
+      const unsigned char* end);
+
+  void wordSetToArray(SetToken token, binary::Output* out);
+
+  void freeWordSet(SetToken token);
+
+  std::vector<BytestringSet> sets = {};
+  std::vector<WordSet> wordsets = {};
+};
 
 } // namespace rts
 } // namespace glean

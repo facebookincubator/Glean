@@ -37,7 +37,7 @@ Substitution defineBatch(
   binary::Input input(batch);
 
   Id max_ref;
-  const auto rename = syscall([&](Id id, Pid type) {
+  auto rename = Predicate::Rename([&](Id id, Pid type) {
     const auto real_id = subst.subst(folly::get_default(idmap, id, id));
     // If this is a trusted batch, the previous run (deduplication) should
     // have already performed the validation. Don't call typeById().

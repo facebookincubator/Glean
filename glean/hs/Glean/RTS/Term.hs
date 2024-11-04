@@ -45,7 +45,7 @@ data Term ref
   | Alt {-# UNPACK #-} !Word64 (Term ref)
   | String {-# UNPACK #-} !ByteString -- utf8-encoded
   | Ref ref
-  deriving(Eq, Generic, Show, Functor, Foldable, Traversable)
+  deriving(Eq, Ord, Generic, Show, Functor, Foldable, Traversable)
 
 instance Hashable ref => Hashable (Term ref)
 

@@ -234,7 +234,7 @@ const char* glean_diff(
 
       bool has_missing_reference = false;
       bool has_invalid_reference = false;
-      const auto substitute = syscall([&](Id id, Pid) {
+      auto substitute = Predicate::Rename([&](Id id, Pid) {
         if (has_invalid_reference || has_missing_reference) {
           return Id::invalid();
         }

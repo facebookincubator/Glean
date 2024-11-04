@@ -63,7 +63,7 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
   Fail fail;
 
   // thread-safe type cache check
-  const auto expect_type([&](Id id, Pid type) {
+  auto expect_type = Predicate::Rename([&](Id id, Pid type) {
     if (id < starting_id || id >= end_id) {
       fail("id {} out of range, expecting id of type {}", id, type);
     }
@@ -85,7 +85,6 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
           predicateRefName(inventory, real_type),
           real_type);
     }
-
     return id;
   });
 
@@ -129,7 +128,8 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
         binary::Output out;
         uint64_t key_size;
 
-        predicate->typecheck(syscall(expect_type), fact.clause, out, key_size);
+        auto rename = Predicate::Rename(expect_type);
+        predicate->typecheck(rename, fact.clause, out, key_size);
 
         if (fact.clause.bytes() != out.bytes()) {
           fail("invalid fact");
@@ -145,7 +145,7 @@ void validate(const Inventory& inventory, const Validate& val, Lookup& facts) {
 
       allowed_id = fact.id + 1;
 
-      expect_type(fact.id, fact.type);
+      expect_type.rename(fact.id, fact.type);
     }
   });
 

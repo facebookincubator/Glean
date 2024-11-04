@@ -63,6 +63,8 @@ diff env DiffOptions{..} one two =
   let (lowestPid, pidSubst) = pidMappings two_schema one_schema
       inventoryMismatch = byPredId one_schema /= byPredId two_schema
 
+  putStrLn $ "Inventory mismatch: " <> show inventoryMismatch
+
   when (inventoryMismatch && not opt_allowDifferentSchemas) $
     error "Databases use different schemas"
 

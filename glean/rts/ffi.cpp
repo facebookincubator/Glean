@@ -832,9 +832,10 @@ const char* glean_invoke_typechecker(
   return ffi::wrap([=] {
     binary::Output out;
     uint64_t dummy;
+    auto rename = Predicate::Rename([](Id id, Pid) { return id; });
     Predicate::runTypecheck(
         *typechecker->value,
-        syscall([](Id id, Pid) { return id; }),
+        rename,
         Fact::Clause::fromKey(
             {static_cast<const unsigned char*>(input), input_size}),
         out,

@@ -12,10 +12,7 @@
 #include "glean/rts/bytecode/syscall.h"
 #include "glean/rts/fact.h"
 #include "glean/rts/id.h"
-#include "glean/rts/lookup.h"
-#include "glean/rts/substitution.h"
-
-#include <vector>
+#include "glean/rts/set.h"
 
 namespace facebook {
 namespace glean {
@@ -33,14 +30,25 @@ struct Predicate {
   std::string name;
   int32_t version;
 
-  template <typename Context>
-  using Rename = SysCalls<Context, SysCall<Id, Pid, Reg<Id>>>;
+  // This adds an indirection to the rename call, which is not ideal.
+  template <typename F>
+  struct Rename : SetOps {
+    explicit Rename(F&& rename_fun) : rename_fun(rename_fun) {}
+
+    Id rename(Id id, Pid type) const {
+      return rename_fun(id, type);
+    }
+
+    F rename_fun;
+  };
+
   template <typename Context>
   using Descend = SysCalls<Context, SysCall<Id, Pid>>;
 
   /// Typechecker for clauses. It should take the following arguments:
   ///
   /// std::function<Id(Id id, Id type)> - fact substitution
+  /// Set syscalls
   /// const void * - begin of clause/key
   /// const void * - end of key/begin of value
   /// const void * - end of clause/value
@@ -62,18 +70,18 @@ struct Predicate {
     return !(*this == other);
   }
 
-  template <typename Context>
+  template <typename F>
   void typecheck(
-      const Rename<Context>& rename,
+      Rename<F>& rename,
       Fact::Clause clause,
       binary::Output& output,
       uint64_t& key_size) const {
     runTypecheck(*typechecker, rename, clause, output, key_size);
   }
 
-  template <typename Context>
+  template <typename F>
   void substitute(
-      const Rename<Context>& rename,
+      Rename<F>& rename,
       Fact::Clause clause,
       binary::Output& output,
       uint64_t& key_size) const {
@@ -82,20 +90,37 @@ struct Predicate {
     typecheck(rename, clause, output, key_size);
   }
 
-  template <typename Context>
+  template <typename F>
   static void runTypecheck(
       const Subroutine& sub,
-      const Rename<Context>& rename,
+      Rename<F>& rename,
       Fact::Clause clause,
       binary::Output& output,
       uint64_t& key_size) {
+    const auto context_ = syscalls<
+        &Rename<F>::rename,
+        &Rename<F>::newSet,
+        &Rename<F>::insertOutputSet,
+        &Rename<F>::setToArray,
+        &Rename<F>::freeSet,
+        &Rename<F>::newWordSet,
+        &Rename<F>::insertBytesWordSet,
+        &Rename<F>::wordSetToArray,
+        &Rename<F>::freeWordSet>(rename);
+
     Subroutine::Activation::with(
-        sub, rename.contextptr(), [&](auto& activation) {
-          activation.run(
-              {*rename.handlers_begin(),
-               reinterpret_cast<uint64_t>(clause.data),
-               reinterpret_cast<uint64_t>(clause.data + clause.key_size),
-               reinterpret_cast<uint64_t>(clause.data + clause.size())});
+        sub, context_.contextptr(), [&](auto& activation) {
+          activation.start();
+          auto args = activation.args();
+          args = std::copy(
+              context_.handlers_begin(), context_.handlers_end(), args);
+          *args++ = reinterpret_cast<uint64_t>(clause.data);
+          *args++ = reinterpret_cast<uint64_t>(clause.data + clause.key_size);
+          *args++ = reinterpret_cast<uint64_t>(clause.data + clause.size());
+
+          activation.execute();
+          assert(!activation.suspended());
+
           output = std::move(activation.output(0));
           key_size = activation.results()[0];
         });

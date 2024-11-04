@@ -307,10 +307,10 @@ FactSet::Serialized FactSet::serializeReorder(
 
 namespace {
 
-template <typename Context>
+template <typename F>
 std::pair<binary::Output, size_t> substituteFact(
     const Inventory& inventory,
-    const Predicate::Rename<Context>& substitute,
+    Predicate::Rename<F>& substitute,
     Fact::Ref fact) {
   auto predicate = inventory.lookupPredicate(fact.type);
   CHECK_NOTNULL(predicate);
@@ -349,8 +349,8 @@ std::pair<FactSet, Substitution> FactSet::rebase(
     const Substitution& subst,
     Store& global) const {
   const auto new_start = subst.firstFreeId();
-  const auto substitute =
-      syscall([&subst](Id id, Pid) { return subst.subst(id); });
+  auto substitute =
+      Predicate::Rename([&subst](Id id, Pid) { return subst.subst(id); });
 
   const auto split = lower_bound(subst.finish());
 
@@ -373,8 +373,8 @@ std::pair<FactSet, Substitution> FactSet::rebase(
   });
   MutableSubstitution localSubst(subst.start(), rebase_ids);
 
-  const auto substituteLocal =
-      syscall([&localSubst](Id id, Pid) { return localSubst.subst(id); });
+  auto substituteLocal = Predicate::Rename(
+      [&localSubst](Id id, Pid) { return localSubst.subst(id); });
 
   FactSet local(new_start);
   for (auto fact : folly::range(split, end())) {

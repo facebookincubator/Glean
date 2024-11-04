@@ -80,6 +80,7 @@ diffTest = TestList
           settings = [setStore]
           facts' = take 1000 facts
           new = (PredicateRef "x.A" 1, bs [i|{ "key": "A" }|])
+      mapM_ print facts'
       one <- withSchema settings schema1 $ \env -> create env "one" facts'
       two <- withSchema settings schema2 $ \env -> create env "two" (new : facts')
       r   <- withSchema settings schema2 $ \env -> diff env opts one two

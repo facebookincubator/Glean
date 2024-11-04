@@ -33,7 +33,7 @@ using Clock = folly::chrono::coarse_steady_clock;
 std::atomic<std::chrono::time_point<Clock>> last_interrupt =
     folly::chrono::coarse_steady_clock::time_point::min();
 
-struct QueryExecutor {
+struct QueryExecutor : SetOps {
   // The following methods are all invoked from the compiled query
   // subroutine to access the DB and record results.
 
@@ -126,25 +126,6 @@ struct QueryExecutor {
       bool rec) {
     recordResult(id, key, val, pid, rec);
   }
-
-  // An index into the vector of sets
-  using SetToken = uint64_t;
-
-  SetToken newSet();
-
-  void insertOutputSet(SetToken token, binary::Output* out);
-
-  void setToArray(SetToken token, binary::Output* out);
-
-  void freeSet(SetToken token);
-
-  SetToken newWordSet();
-
-  void insertWordSet(SetToken token, uint64_t out);
-
-  void wordSetToArray(SetToken token, binary::Output* out);
-
-  void freeWordSet(SetToken token);
 
   //
   // First free id of the underlying Define.
@@ -251,8 +232,6 @@ struct QueryExecutor {
   };
 
   std::vector<Iter> iters;
-  std::vector<BytestringSet> sets;
-  std::vector<WordSet> wordsets;
 };
 
 uint64_t QueryExecutor::seek(
@@ -504,56 +483,6 @@ size_t QueryExecutor::recordResult(
   return bytes;
 };
 
-QueryExecutor::SetToken QueryExecutor::newSet() {
-  sets.emplace_back(BytestringSet());
-  return sets.size() - 1;
-}
-
-void QueryExecutor::insertOutputSet(
-    QueryExecutor::SetToken token,
-    binary::Output* out) {
-  sets[token].insert(out->moveToFbString());
-}
-
-void QueryExecutor::setToArray(
-    QueryExecutor::SetToken token,
-    binary::Output* out) {
-  auto& s = sets[token];
-  out->packed(s.size());
-  for (const auto& v : s) {
-    out->bytes(v.data(), v.size());
-  }
-}
-
-void QueryExecutor::freeSet(QueryExecutor::SetToken token) {
-  sets.erase(sets.begin() + token);
-}
-
-QueryExecutor::SetToken QueryExecutor::newWordSet() {
-  wordsets.emplace_back(WordSet());
-  return wordsets.size() - 1;
-}
-
-void QueryExecutor::insertWordSet(
-    QueryExecutor::SetToken token,
-    uint64_t value) {
-  wordsets[token].insert(value);
-}
-
-void QueryExecutor::wordSetToArray(
-    QueryExecutor::SetToken token,
-    binary::Output* out) {
-  auto& s = wordsets[token];
-  out->packed(s.size());
-  for (const auto& v : s) {
-    out->nat(v);
-  }
-}
-
-void QueryExecutor::freeWordSet(QueryExecutor::SetToken token) {
-  wordsets.erase(wordsets.begin() + token);
-}
-
 std::unique_ptr<QueryResults> QueryExecutor::finish(
     folly::Optional<SerializedCont> cont) {
   auto res = std::make_unique<QueryResults>();
@@ -603,7 +532,6 @@ std::unique_ptr<QueryResults> executeQuery(
       .expandPids = expandPids,
       .wantStats = wantStats,
       .iters = std::move(iters),
-      .sets = {},
   };
 
   // coarse_steady_clock is around 1ms granularity which is enough for us.

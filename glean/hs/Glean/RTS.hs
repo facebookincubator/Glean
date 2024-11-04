@@ -45,6 +45,7 @@ module Glean.RTS (
   glean_pop_value_fact,
 ) where
 
+import Data.List
 import Data.Word
 import Foreign.C.String
 import Foreign.C.Types
@@ -263,7 +264,7 @@ decodeValue d ty = case ty of
     Alt (fromIntegral sel) <$> decodeValue d (tys !! fromIntegral sel)
   SetRep elty -> do
     size <- dSet d
-    Set <$> replicateM (fromIntegral size) (decodeValue d elty)
+    Set . sort <$> replicateM (fromIntegral size) (decodeValue d elty)
   StringRep -> String <$> dString d
   PredicateRep _ -> Ref <$> dFact d
 
