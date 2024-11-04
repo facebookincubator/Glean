@@ -324,6 +324,12 @@ writeJsonFact
       when (n > 0) $ forM_ [0 .. n-1] $ \i -> do
         x <- lift $ J.index arr i
         jsonToTerm b ty x
+    (SetTy ty, J.Array set) -> do
+      let !n = J.size set
+      lift $ invoke $ glean_push_value_set b $ fromIntegral n
+      when (n > 0) $ forM_ [0 .. n-1] $ \i -> do
+        x <- lift $ J.index set i
+        jsonToTerm b ty x
     (RecordTy fields, J.Object obj) -> do
       let
         doField !n (FieldDef name ty) = do
@@ -389,6 +395,7 @@ writeJsonFact
     NatTy -> invoke $ glean_push_value_nat b 0
     StringTy -> invoke $ glean_push_value_string b nullPtr 0
     ArrayTy{} -> invoke $ glean_push_value_array b 0
+    SetTy{} -> invoke $ glean_push_value_set b 0
     RecordTy fields ->
       mapM_ (defaultValue b json) [(nm, ty) | FieldDef nm ty <- fields ]
     SumTy (FieldDef _ ty : _) -> do
@@ -426,6 +433,7 @@ writeJsonFact
   expecting StringTy = "string"
   expecting (ArrayTy ByteTy) = "string"
   expecting ArrayTy{} = "[..]"
+  expecting SetTy{} = "set"
   expecting (RecordTy fields) =
     "{..} (allowed fields: " <> allowed fields <> ")"
   expecting (SumTy fields) =

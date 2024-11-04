@@ -348,12 +348,14 @@ jsonEncoder no_base64 = Encoder
 type ThriftType = Word8
 
 -- | Compute the Thrift type for a 'Type'
+-- See https://github.com/apache/thrift/blob/master/doc/specs/thrift-compact-protocol.md#struct-encoding
 thriftType :: Type -> ThriftType
 thriftType ByteTy{} = 3
 thriftType NatTy{} = 6
 thriftType StringTy{} = 8
 thriftType (ArrayTy ByteTy{}) = 8
 thriftType ArrayTy{} = 9
+thriftType SetTy{} = 10
 thriftType RecordTy{} = 12
 thriftType SumTy{} = 12
 thriftType (NamedTy (ExpandedType _ ty)) = thriftType ty
