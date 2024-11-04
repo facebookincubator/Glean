@@ -618,15 +618,15 @@ type Query_ p t = SourceQuery_ SrcSpan p t
 
 data SourceEvolves_ s = SourceEvolves
   { evolvesSpan :: s
-  , evolvesNew :: Name
-  , evolvesOld :: Name
+  , evolvesNew :: SourceRef
+  , evolvesOld :: SourceRef
   }
   deriving (Eq)
 
 -- | A 'schema' declaration
 data SourceSchema_ s = SourceSchema
-  { schemaName :: Name
-  , schemaInherits :: [Name]
+  { schemaName :: SourceRef
+  , schemaInherits :: [SourceRef]
   , schemaDecls :: [SourceDecl_ s]
   }
   deriving (Eq)
@@ -639,7 +639,7 @@ data SourceSchemas_ s = SourceSchemas
   deriving (Eq)
 
 data SourceDecl_ s
-  = SourceImport Name
+  = SourceImport SourceRef
   | SourcePredicate (SourcePredicateDef' s)
   | SourceType SourceTypeDef
   | SourceDeriving SourceRef (SourceDerivingInfo' s)
@@ -665,12 +665,14 @@ newtype AngleVersion = AngleVersion Int
 --   - added set constructs
 -- version 9:
 --   - added dot syntax
+-- version 10:
+--   - optional versions in `import`, `evolves`, inheritance
 
 latestSupportedAngleVersion :: AngleVersion
 latestSupportedAngleVersion = AngleVersion 5
 
 latestAngleVersion :: AngleVersion
-latestAngleVersion = AngleVersion 9
+latestAngleVersion = AngleVersion 10
 
 -- -----------------------------------------------------------------------------
 -- Pretty-printing
@@ -699,8 +701,8 @@ instance Display TypeId where
       PredicateWithoutHash -> pretty name
 
 instance Display (SourceEvolves_ s) where
-  display _ (SourceEvolves _ new old) =
-    "schema " <> pretty new <> " evolves " <> pretty old
+  display opts (SourceEvolves _ new old) =
+    "schema " <> display opts new <> " evolves " <> display opts old
 
 instance (Display pref, Display tref) => Display (Type_ pref tref) where
   display _ ByteTy = "byte"
@@ -775,17 +777,17 @@ instance Display SourceSchemas where
 
 instance Display SourceSchema where
   display opts SourceSchema{..} = vcat
-    [ "schema" <+> pretty schemaName <>
+    [ "schema" <+> display opts schemaName <>
         case schemaInherits of
           [] -> mempty
-          _ -> " : " <> hcat (punctuate "," (map pretty schemaInherits))
+          _ -> " : " <> hcat (punctuate "," (map (display opts) schemaInherits))
         <> " {"
     , vcat (map (display opts) schemaDecls)
     , "}"
     ]
 
 instance Display SourceDecl where
-  display _ (SourceImport name) = "import " <> pretty name
+  display opts (SourceImport name) = "import " <> display opts name
   display opts (SourcePredicate def) = display opts def
   display opts (SourceType def) = display opts def
   display opts (SourceDeriving ref der) =

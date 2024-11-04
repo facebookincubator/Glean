@@ -28,6 +28,7 @@ module Glean.Schema.Gen.Main
 
 import Control.Exception
 import Control.Monad
+import Control.Monad.Except
 import Data.Bifoldable (bifoldMap)
 import qualified Data.ByteString.Char8 as BC
 import Data.Default
@@ -66,6 +67,7 @@ import Glean.Database.Schema.Types
 import Glean.Display
 import qualified Glean.Internal.Types as Internal
 import Glean.RTS.Types (PidRef(..), ExpandedType(..))
+import Glean.Schema.Resolve (resolveSchemaRefs)
 import Glean.Schema.Util (showRef)
 import Glean.Schema.Gen.Thrift
 import Glean.Schema.Gen.Cpp ( genSchemaCpp )
@@ -233,6 +235,7 @@ main = do
     return (str, schema, dbschema)
 
   let ProcessedSchema sourceSchemas resolved _ = schema
+
   reportTime "checking schema roundtrip" $ do
     let pp = show (displayDefault sourceSchemas)
     case parseSchema (BC.pack pp) of
@@ -241,6 +244,9 @@ main = do
       Right schemasRoundTrip ->
         when (rmLocSchemas sourceSchemas /= rmLocSchemas schemasRoundTrip) $
           throwIO $ ErrorCall "schema did not roundtrip successfully"
+
+  refsResolved <- either (die 1 . Text.unpack) return $
+    runExcept $ resolveSchemaRefs sourceSchemas
 
   let
     -- We have to ensure the types and predicates exported by each
@@ -257,7 +263,7 @@ main = do
           deps :: [ResolvedSchemaRef]
           deps =
             [ s
-            | Just v <- [toVertex (showSchemaRef (schemaRef schema))]
+            | Just v <- [toVertex (schemaSrcRef (schemaRef schema))]
             , (_, n, _) <- reachableFrom v
             , Just s <- [HashMap.lookup n schemaMap]
             ]
@@ -265,20 +271,19 @@ main = do
           preds = HashMap.unions (map resolvedSchemaPredicates deps)
       ]
 
+    schemaSrcRef (SchemaRef n v) = SourceRef n (Just v)
+
     (depGraph, fromVertex, toVertex) = graphFromEdges edges
 
     reachableFrom v = map fromVertex $
       concatMap Tree.flatten (dfs depGraph [v])
 
-    schemaDependencies SourceSchema{..} =
-      schemaInherits ++ [ name | SourceImport name <- schemaDecls ]
-
     edges =
       [ (schema, schemaName schema, schemaDependencies schema)
-      | schema <- srcSchemas sourceSchemas ]
+      | schema <- srcSchemas refsResolved ]
 
     schemaMap = HashMap.fromList
-      [ (showSchemaRef (schemaRef s), s) | s <- schemasResolved resolved ]
+      [ (schemaSrcRef (schemaRef s), s) | s <- schemasResolved resolved ]
 
     findVersion v = listToMaybe
       [ s | s@ResolvedSchema{..} <- allSchemas
@@ -307,7 +312,7 @@ main = do
       return $ withPath <$> allSchemas
 
   case actOptions of
-    Left opts -> graph opts dbschema sourceSchemas [ v | (v,_,_,_) <- versions ]
+    Left opts -> graph opts dbschema refsResolved [ v | (v,_,_,_) <- versions ]
     Right opts -> do
       forM_ (source opts) $ \f -> BC.writeFile f src
       forM_ (updateIndex opts) (doUpdateIndex src schema)
@@ -339,10 +344,12 @@ graph opts dbschema sourceSchemas versions =
 
 schemaGraph :: SourceSchemas -> Map Text [Text]
 schemaGraph sourceSchemas = Map.fromList
-  [ (schemaName s, dependencies s) | s <- srcSchemas sourceSchemas ]
-  where
-    dependencies SourceSchema{..} =
-      schemaInherits ++ [ name | SourceImport name <- schemaDecls ]
+  [ (showRef (schemaName s), map showRef (schemaDependencies s))
+  | s <- srcSchemas sourceSchemas ]
+
+schemaDependencies :: SourceSchema -> [SourceRef]
+schemaDependencies SourceSchema{..} =
+  schemaInherits ++ [ name | SourceImport name <- schemaDecls ]
 
 predicateGraph :: Bool -> DbSchema -> Map Text [Text]
 predicateGraph ignoreDerivations dbschema = Map.fromList

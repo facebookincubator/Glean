@@ -16,6 +16,7 @@ module Glean.Schema.Resolve
   , resolveSchema
   , runResolve
   , resolveQuery
+  , resolveSchemaRefs
   ) where
 
 import Control.Monad.Reader
@@ -127,35 +128,39 @@ parseAndResolveSchemaCached cache str = do
 -- references and checking for validity.
 --
 resolveSchema :: SourceSchemas -> Either Text ResolvedSchemas
-resolveSchema SourceSchemas{..} = runExcept $ do
-  checkAngleVersion srcAngleVersion
+resolveSchema schemas = runExcept $ do
+  checkAngleVersion (srcAngleVersion schemas)
+
+  SourceSchemas{..} <- resolveSchemaRefs schemas
+
   let
     -- dependency analysis: we want to process schemas in dependency
     -- order, and detect cycles in evolves declarations.
-    sccs = stronglyConnComp $
-      edges (\s -> schemaDependencies s <> schemaEvolves s)
+    sccs = stronglyConnComp
+      [ (schema, schemaName schema, out schema)
+      | schema <- srcSchemas ]
+
+    out s = schemaDependencies s <> evolvesOf (schemaName s)
 
     schemaDependencies SourceSchema{..} =
       schemaInherits ++ [ name | SourceImport name <- schemaDecls ]
 
-    schemaEvolves SourceSchema{..} =
-      HashMap.lookupDefault [] schemaName evolves
-
-    edges outNames =
-      [ (schema, schemaName schema, outNames schema)
-      | schema <- srcSchemas ]
-
     evolves = HashMap.fromListWith (++)
-      [ (new, [old]) | SourceEvolves _ new old <- srcEvolves ]
+      [ (new, [old])
+      | SourceEvolves _ new old <- srcEvolves
+      ]
+
+    evolvesOf name = HashMap.lookupDefault [] name evolves
 
     resolveSchemas env [] = return env
     resolveSchemas env (AcyclicSCC one : rest) = do
       let schemaEvolves = HashMap.lookupDefault [] (schemaName one) evolves
-      resolved <- resolveOneSchema env srcAngleVersion schemaEvolves one
+      resolved <- resolveOneSchema env srcAngleVersion
+        schemaEvolves one
       resolveSchemas (HashMap.insert (schemaName one) resolved env) rest
     resolveSchemas _ (CyclicSCC some : _) = throwError $
       "cycle in schema definitions between: " <>
-        Text.intercalate ", " (map schemaName some)
+        Text.intercalate ", " (map (showRef . schemaName) some)
 
   -- Resolve all the references in each individual schema
   finalEnv <- resolveSchemas HashMap.empty sccs
@@ -183,29 +188,83 @@ resolveSchema SourceSchemas{..} = runExcept $ do
     , schemasResolved = resolved
     }
 
-type Environment = HashMap Name ResolvedSchemaRef
+
+resolveSchemaRefs :: SourceSchemas -> Except Text SourceSchemas
+resolveSchemaRefs SourceSchemas{..} = do
+  let
+     unqualMap
+       | srcAngleVersion >= AngleVersion 10 =
+         HashMap.fromListWith (<>)
+           [ (SourceRef name Nothing, HashSet.singleton ref)
+           | SourceSchema{..} <- srcSchemas
+           , let ref@(SourceRef name _) = schemaName
+           ]
+       | otherwise = HashMap.empty
+
+     refMap = unqualMap <> HashMap.fromList
+       [ (schemaName, HashSet.singleton schemaName)
+       | SourceSchema{..} <- srcSchemas
+       ]
+
+     schemaByName ref =
+       case HashMap.lookup ref refMap of
+         Nothing -> unknown
+         Just s -> case HashSet.toList s of
+           [one] -> return one
+           names -> throwError $
+             "ambiguous schema " <> showRef ref <>
+             ", could be one of " <> Text.intercalate ", " (map showRef names)
+       where
+       unknown = throwError $ "unknown schema: " <> showRef ref
+
+     resolveDecl (SourceImport r) = SourceImport <$> schemaByName r
+     resolveDecl decl = return decl
+
+     resolveEvolve (SourceEvolves l n o) =
+       SourceEvolves l <$> schemaByName n <*> schemaByName o
+
+     resolveSchema SourceSchema{..} = do
+       inherits <- mapM schemaByName schemaInherits
+       decls <- mapM resolveDecl schemaDecls
+       return SourceSchema
+         { schemaName = schemaName
+         , schemaInherits = inherits
+         , schemaDecls = decls
+         }
+
+  schemas <- traverse resolveSchema srcSchemas
+  evolves <- traverse resolveEvolve srcEvolves
+
+  return SourceSchemas
+    { srcAngleVersion = srcAngleVersion
+    , srcSchemas = schemas
+    , srcEvolves = evolves
+    }
+
+type Environment = HashMap SourceRef ResolvedSchemaRef
 
 resolveOneSchema
   :: Environment
   -> AngleVersion
-  -> [Name]
+  -> [SourceRef]
   -> SourceSchema
   -> Except Text ResolvedSchemaRef
 
 resolveOneSchema env angleVersion evolves SourceSchema{..} =
-  flip catchError (\e -> throwError $ "In " <> schemaName <> ":\n  " <> e) $ do
+  let inSchema e = throwError $ "In " <> showRef schemaName <> ":\n  " <> e in
+  flip catchError inSchema $ do
   let
-    SourceRef namespace maybeVer = parseRef schemaName
+    SourceRef namespace maybeVer = schemaName
 
     schemaByName name = case HashMap.lookup name env of
-      Nothing -> throwError $ "unknown schema: " <> name
-      Just schema -> return schema
+      Nothing -> throwError $ "unknown schema: " <> showRef name
+      Just one -> return one
 
   checkNameSpace namespace
 
   -- Version of this schema
   version <- case maybeVer of
-    Nothing -> throwError $ "missing version: " <> schemaName
+    Nothing -> throwError $ "missing version: " <> showRef schemaName
     Just v -> return v
 
   -- All the schemas we're inheriting from

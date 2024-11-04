@@ -19,6 +19,7 @@ import Data.List
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Text (Text, pack)
+import qualified Data.Text as Text
 import System.Directory
 import System.FilePath
 import System.IO.Temp
@@ -1029,6 +1030,74 @@ stackedDeps :: Thrift.Repo -> Thrift.Dependencies
 stackedDeps (Thrift.Repo name hash) =
   Thrift.Dependencies_stacked $ Thrift.Stacked name hash Nothing
 
+schemaUnversionedImports :: Test
+schemaUnversionedImports = TestCase $ do
+  let
+    schema =
+      [s|
+        schema a.1 {}
+        schema b.1 {}
+        schema c.1 {}
+        schema d.1 : a { import b }
+        schema d evolves c
+
+        schema all.1 : a, b, c, d {}
+      |]
+
+  withSchema latestAngleVersion schema $ \r ->
+    assertBool "schemaUnversionedImports 1" $
+      case r of
+        Right{} -> True
+        _ -> False
+
+  let
+    schema =
+      [s|
+        schema a.1 {}
+        schema a.2 {}
+        schema b.1 : a {}
+
+        schema all.1 : a.1, a.2, b.1 {}
+      |]
+
+  let expectAmbiguous r =
+        case r of
+          Left e | Just (ThriftSource.ThriftSourceException err)
+              <- fromException e ->
+            "ambiguous schema" `Text.isInfixOf` err
+          _ -> False
+
+  withSchema latestAngleVersion schema $
+    assertBool "schemaUnversionedImports 2" . expectAmbiguous
+
+  let
+    schema =
+      [s|
+        schema a.1 {}
+        schema a.2 {}
+        schema b.1 { import a }
+
+        schema all.1 : a.1, a.2, b.1 {}
+      |]
+
+  withSchema latestAngleVersion schema $
+    assertBool "schemaUnversionedImports 3" . expectAmbiguous
+
+  let
+    schema =
+      [s|
+        schema a.1 {}
+        schema a.2 {}
+        schema b.1 {}
+        schema b evolves a
+
+        schema all.1 : a.1, a.2, b {}
+      |]
+
+  withSchema latestAngleVersion schema $
+    assertBool "schemaUnversionedImports 4" . expectAmbiguous
+
+
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList $
   [ TestLabel "mergeSchemaTest" mergeSchemaTest
@@ -1046,4 +1115,5 @@ main = withUnitTest $ testRunner $ TestList $
   , TestLabel "schemaUnversioned" schemaUnversioned
   , TestLabel "stackedSchemaTest" stackedSchemaTest
   , TestLabel "stackedSchemaUpdateTest" stackedSchemaUpdateTest
+  , TestLabel "schemaUnversionedImports" schemaUnversionedImports
   ] ++ schemaNegation

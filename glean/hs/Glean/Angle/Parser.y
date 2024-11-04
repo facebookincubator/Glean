@@ -238,7 +238,7 @@ schemadef
   : 'schema' qname inherit '{' list(schemadecl) '}'
     { Schema.SourceSchema (lval $2) $3 (concat $5) }
 
-inherit :: { [Name] }
+inherit :: { [SourceRef] }
 inherit
   : ':' seplist_(qname, ',')  { map lval $2 }
   | {- empty -}  { [] }
@@ -274,7 +274,7 @@ derivewhen
 
 derivedecl :: { Schema.SourceDecl }
 derivedecl
-  : 'derive' qname deriving  { Schema.SourceDeriving (parseRef (lval $2)) $3 }
+  : 'derive' qname deriving  { Schema.SourceDeriving (lval $2) $3 }
 
 optval :: { Schema.SourceType }
 optval
@@ -292,7 +292,7 @@ type
   | '{' seplist2_(fielddef, '|')  '}'       { L (s $1 $3)  $ Schema.SumTy $2 }
   | 'set' type                              { L (s $1 $2)  $ Schema.SetTy (lval $2) }
   | 'enum' '{' seplist_(fieldname, '|') '}' { L (s $1 $4)  $ Schema.EnumeratedTy $3 }
-  | qname                                    { L (sspan $1) $ Schema.PredicateTy (parseRef $ lval $1) }
+  | qname                                    { L (sspan $1) $ Schema.PredicateTy (lval $1) }
      -- resolved to typedef/predicate later
   | 'maybe' type                            { L (s $1 $2)  $ Schema.MaybeTy (lval $2) }
   | 'bool'                                  { L (sspan $1) $ Schema.BooleanTy }
@@ -333,11 +333,11 @@ typedef
         , typeDefType = lval $4 }
     }
 
-qname :: { Located Schema.Name }
+qname :: { Located SourceRef }
 qname
-  : uident { $1 }
-  | qident { $1 }
-  | lident { $1 } -- probably shouldn't be allowed
+  : uident { fmap parseRef $1 }
+  | qident { fmap parseRef $1 }
+  | lident { fmap parseRef $1 } -- probably shouldn't be allowed
 
 -- -----------------------------------------------------------------------------
 -- Utils
