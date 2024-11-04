@@ -97,6 +97,7 @@ genTargets slashVn info =
     , "  thrift_srcs = { \"" <> namespace <> ".thrift\" : [] },"
     , "  deps = [" <> Text.intercalate ","
       ( "\"//glean/if:glean\"" : depTargets ) <>
+      ", \"//thrift/annotation:rust\"" <>
       ", \"//thrift/annotation:thrift\"],"
     , "  hs2_deps = ["
     , "    \"//glean/hs:angle\","
@@ -225,7 +226,8 @@ genNamespace slashVn namespaces version
     , "// \x40generated"
     , "// @" <> "nolint"
     , ""
-    , "include \"glean/if/glean.thrift\"" ] ++
+    , "include \"glean/if/glean.thrift\""
+    , "include \"thrift/annotation/rust.thrift\""] ++
     [ "include \"" <> thriftDir slashVn <> "/" <> underscored dep
         <> ".thrift\""
     | dep <- deps ] ++
@@ -425,6 +427,7 @@ genPred here PredicateDef{..} = do
         , "version=" <> showt (predicateRef_version predicateDefRef)  <> ";"
         ]
       , "}"
+      , "@rust.Ord"
       ]
 
     -- Predicate types can be recursive so those need to be refs in C++.
@@ -504,10 +507,13 @@ genType here TypeDef{..} = addExtraDecls $ do
          tyName <- withFieldHint nm (thriftTy here ty)
          return $ makeField structOrUnion ix nm tyName
       let
-        define | null fields = allowReservedIdentifierAnnotation name
+        define | null fields =
+          "@rust.Ord\n" <>
+          allowReservedIdentifierAnnotation name
           <> "struct " <> name <> " {}"
                | otherwise = myUnlines $ concat
-          [ [ allowReservedIdentifierAnnotation name
+          [ [ "@rust.Ord\n"
+            <> allowReservedIdentifierAnnotation name
             <> structOrUnion <> " " <> name <> " {" ]
           , indentLines (fieldTexts ++ extraFields)
           , [ "}" ]

@@ -253,6 +253,7 @@ library thrift-annotation
     exposed-modules:
         Cpp.Types
         Hack.Types
+        Rust.Types
         Scope.Types
         Thrift.Types
 
