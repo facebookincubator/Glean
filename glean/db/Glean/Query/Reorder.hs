@@ -369,6 +369,7 @@ reorderStmtGroup sc initBound ordered floating =
     classify _ (FlatStatement _ _ ArrayElementGenerator{}) = StmtPrefixMatch
     classify _ (FlatStatement _ _ SetElementGenerator{}) = StmtPrefixMatch
     classify bound (FlatNegation g) = classifyGroup bound g
+    classify bound (FlatAllStatement _ _ stmts) = classifyGroup bound stmts
     classify _ _ = StmtScan
 
     -- Approximate classification of groups. To be more

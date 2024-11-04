@@ -191,7 +191,10 @@ reWildStatement used (CgStatement lhs rhs) =
   CgStatement (reWild used lhs) (reWildGenerator used rhs)
 reWildStatement used s@(CgAllStatement (Var ty n x) expr stmts) =
   case IntMap.lookup n used of
-    Nothing -> error $ "reWildStatement: " <> show (displayVerbose s)
+    Nothing -> error $
+      "reWildStatement: var " <> show n <>
+      " not in scope in " <> show (displayVerbose s) <>
+      "\nVarMap: " <> show used
     Just new ->
       CgAllStatement
         (Var ty new x) (reWild used expr)
