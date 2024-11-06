@@ -16,6 +16,7 @@ import Control.Concurrent.MVar
 import Control.Exception
 import Control.Monad
 import System.IO
+import System.IO.Error
 import System.Process
 
 -- | Spawn a pager (currently hard-coded as `less` with some flags) and pass its
@@ -32,7 +33,12 @@ withPager action = mask $ \restore -> do
       restore $ do
         r <- waitEitherCatch async_action async_pager
         case r of
-          Left (Left exc) -> throwIO exc
+          Left (Left exc)
+            | Just e <- fromException exc, isResourceVanishedError e ->
+              -- action got a "Broken pipe" error because the user
+              -- quit the pager; ignore it
+              return Nothing
+            | otherwise -> throwIO exc
           Left (Right x) -> do
             void $ wait async_pager
             return $ Just x
