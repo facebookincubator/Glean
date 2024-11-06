@@ -7954,7 +7954,7 @@ struct QualifiedName : Predicate<std::string> {
   }
 }; // struct QualifiedName
 
-struct Domain : Predicate<boost::variant<Alt<0, Fact<SymbolId>>, Alt<1, Fact<ServiceId>>, Alt<2, std::tuple<Fact<SymbolId>, Fact<ServiceId>>>, Alt<3, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, Fact<QualifiedName>>>, Alt<4, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, Fact<QualifiedName>, Fact<ServiceId>>>>> {
+struct Domain : Predicate<boost::variant<Alt<0, Fact<SymbolId>>, Alt<1, Fact<ServiceId>>, Alt<2, std::tuple<Fact<SymbolId>, Fact<ServiceId>>>, Alt<3, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, Fact<QualifiedName>>>, Alt<4, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, Fact<QualifiedName>, Fact<ServiceId>>>, Alt<5, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, uint64_t, Fact<QualifiedName>>>, Alt<6, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, uint64_t, Fact<QualifiedName>, Fact<ServiceId>>>>> {
   static const char* GLEAN_name() {
     return "perf.Domain";
   }
