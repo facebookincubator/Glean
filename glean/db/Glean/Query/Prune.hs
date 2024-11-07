@@ -24,6 +24,7 @@ import Data.IntMap.Strict (IntMap)
 import Glean.Database.Schema.Types (PredicateDetails(..))
 import Glean.RTS.Types (PidRef(..), Type)
 import Glean.Angle.Types (PredicateId(..), DerivingInfo(..))
+import qualified Glean.Angle.Types as Angle
 import Glean.Query.Codegen.Types
 import Glean.Query.Typecheck (tcQueryDeps)
 import Glean.Query.Typecheck.Types
@@ -181,8 +182,11 @@ prune hasFacts (QueryWithInfo q _ gen t) = do
             , pa
             , pb
             ]
-        TcDeref ty' valTy p ->
-          Ref . MatchExt . Typed ty . TcDeref ty' valTy <$> prunePat p
+        TcDeref ty' valTy p
+          | Angle.PredicateTy (PidRef _ predId) <- ty', not $ hasFacts predId ->
+            Nothing
+          | otherwise ->
+            Ref . MatchExt . Typed ty . TcDeref ty' valTy <$> prunePat p
         TcFieldSelect (Typed ty' p) f -> do
           p' <- prunePat p
           return $ Ref $ MatchExt $ Typed ty $ TcFieldSelect (Typed ty' p') f
