@@ -20,6 +20,7 @@ import Data.Default
 import Data.Either
 import Data.Foldable
 import qualified Data.Set as Set
+import Data.Text (Text)
 import qualified Data.HashMap.Strict as HashMap
 import Data.List ((\\))
 import qualified Data.List as List
@@ -50,6 +51,7 @@ import Glean.Query.Typecheck (tcQueryDeps)
 import Glean.Query.Codegen (Boundaries)
 import Glean.Query.Codegen.Types
 import Glean.RTS.Foreign.Lookup (Lookup)
+import Glean.RTS.Types (derefType)
 import Glean.Schema.Types
 import Glean.Schema.Util
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -100,7 +102,8 @@ deriveStoredImpl env@Env{..} log repo req@Thrift.DerivePredicateQuery{..} = do
   let sourceRef = SourceRef
         derivePredicateQuery_predicate
         derivePredicateQuery_predicate_version
-  details <- getPredicate env repo odbSchema sourceRef
+  schemaVersion <- getSchemaVersion env repo odbSchema
+  details <- getPredicate odbSchema schemaVersion sourceRef
   let pred = predicateId details
       ref = predicateRef details
   handle <- UUID.toText <$> UUID.nextRandom
@@ -175,25 +178,43 @@ deriveStoredImpl env@Env{..} log repo req@Thrift.DerivePredicateQuery{..} = do
           throwSTM $ Thrift.IncompleteDependencies $
             map (predicateRef . getPredicateDetails schema) incomplete
 
-getPredicate
-  :: Env
-  -> Thrift.Repo
-  -> DbSchema
-  -> SourceRef
-  -> IO PredicateDetails
-getPredicate env repo schema ref = do
+-- We default to resolving the predicate using the schema
+-- version stored in the glean.schema_id property of the
+-- DB. This is important because the client is often just "glean
+-- derive foo.Predicate" and it doesn't want or need to know
+-- what schema version to use. Letting the DB decide is the
+-- right thing.
+getSchemaVersion :: Env -> Thrift.Repo -> DbSchema -> IO SchemaSelector
+getSchemaVersion env repo schema = do
   config <- Observed.get (envServerConfig env)
   schemaId <- getDbSchemaVersion env repo
-  schemaVersion <- UserQuery.schemaVersionForQuery schema config schemaId
-      -- we default to resolving this predicate using the schema
-      -- version stored in the glean.schema_id property of the
-      -- DB. This is important because the client is often just "glean
-      -- derive foo.Predicate" and it doesn't want or need to know
-      -- what schema version to use. Letting the DB decide is the
-      -- right thing.
+  UserQuery.schemaVersionForQuery schema config schemaId
+
+getPredicate
+  :: DbSchema
+  -> SchemaSelector
+  -> SourceRef
+  -> IO PredicateDetails
+getPredicate schema schemaVersion ref = do
   case lookupSourceRef ref schemaVersion schema of
     ResolvesTo (RefPred pred)
-      | Just details <- lookupPredicateId pred schema -> return details
+      | Just details <- lookupPredicateId pred schema ->
+        return details
+    _ -> throwIO $ Thrift.UnknownPredicate $ Just $ sourceRefName ref
+
+getPredicateOrType
+  :: DbSchema
+  -> SchemaSelector
+  -> SourceRef
+  -> IO (Either PredicateDetails TypeDetails)
+getPredicateOrType schema schemaVersion ref = do
+  case lookupSourceRef ref schemaVersion schema of
+    ResolvesTo (RefPred pred)
+      | Just details <- lookupPredicateId pred schema ->
+        return (Left details)
+    ResolvesTo (RefType ty)
+      | Just details <- lookupTypeId ty schema ->
+        return (Right details)
     _ -> throwIO $ Thrift.UnknownPredicate $ Just $ sourceRefName ref
 
 overDerivation
@@ -319,16 +340,14 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
       -> ParallelDerivation
       -> IO ()
     parallelDerivation odb bounds lookup ParallelDerivation{..} = do
-      outerPred <- getPredicate env repo (odbSchema odb)
+      schemaVersion <- getSchemaVersion env repo (odbSchema odb)
+      predOrType <- getPredicateOrType (odbSchema odb) schemaVersion
         (parseRef parallelDerivation_outer_predicate)
 
       -- find the number of facts of outer_predicate
       stats <- withOpenDatabaseStack env repo $ \Database.OpenDB{..} ->
         Storage.predicateStats odbHandle
       let
-        statsFor pred =
-          maybe 0 predicateStats_count . List.lookup (predicatePid pred)
-        numFacts = sum $ map (statsFor outerPred) stats
 
       -- figure out what our batch size is going to be
       numCapabilities <- getNumCapabilities
@@ -343,16 +362,29 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
         -- don't make huge queries
         maxBatchSize = 10000
 
-        batchSize =
-          min maxBatchSize $
-          max (fromMaybe 0 parallelDerivation_min_batch_size) $
-          numFacts `quot` fromIntegral jobs
-
-      -- producer will get batches of outer_predicate facts, worker
-      -- will derive for each batch.
       let
-        producer :: ([Id] -> IO ()) -> IO ()
-        producer enqueue = loop (outerQuery outerPred batchSize)
+        -- For an enum type, create a separate job for each enum value
+        producerType ty enqueue =
+          case derefType (typeType ty) of
+            EnumeratedTy names ->
+              forM_ names $ \name -> enqueue [ name <> ":" <> typeName ]
+            _other -> throwIO $ ErrorCall $
+              "not an enumerated type: " <> Text.unpack typeName
+          where
+          typeName = showRef (typeIdRef (typeId ty))
+
+        workerType :: [Text] -> IO ()
+        workerType things =
+          deriveQuery odb bounds lookup
+            (query (outer <> parallelDerivation_inner_query))
+          where
+          outer = "X = (" <> Text.intercalate "|" things <> ");"
+
+        -- producer will get batches of outer_predicate facts, worker
+        -- will derive for each batch.
+        producerPred :: PredicateDetails -> ([Id] -> IO ()) -> IO ()
+        producerPred outerPred enqueue =
+          loop (outerQuery batchSize)
           where
           loop q = do
             results <- UserQuery.userQuery env repo q
@@ -364,8 +396,28 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
               Nothing -> return ()
               Just cont -> loop (q `withCont` cont)
 
-        worker :: [Id] -> IO ()
-        worker fids =
+          outerQuery batchSize = def
+            { userQuery_query = Text.encodeUtf8 $
+                allFacts (predicateRef outerPred)
+            , userQuery_encodings = [UserQueryEncoding_bin def]
+            , userQuery_options = Just def
+              { userQueryOptions_syntax = QuerySyntax_ANGLE
+              , userQueryOptions_max_results = Just batchSize
+              }
+            }
+
+          batchSize =
+            min maxBatchSize $
+            max (fromMaybe 0 parallelDerivation_min_batch_size) $
+            numFacts `quot` fromIntegral jobs
+
+          numFacts = sum $ map (statsFor outerPred) stats
+
+          statsFor pred =
+            maybe 0 predicateStats_count . List.lookup (predicatePid pred)
+
+        workerPred :: [Id] -> IO ()
+        workerPred fids =
           deriveQuery odb bounds lookup
             (query (outer <> parallelDerivation_inner_query))
           where
@@ -375,18 +427,11 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
             "] : [" <> parallelDerivation_outer_predicate <> "])[..];"
           showFact i = "$" <> showt i
 
-      stream parallelism producer worker
+      case predOrType of
+        Left pred -> stream parallelism (producerPred pred) workerPred
+        Right ty -> stream parallelism (producerType ty) workerType
 
     allFacts ref = showRef ref <> " _"
-
-    outerQuery pred batchSize = def
-      { userQuery_query = Text.encodeUtf8 $ allFacts (predicateRef pred)
-      , userQuery_encodings = [UserQueryEncoding_bin def]
-      , userQuery_options = Just def
-        { userQueryOptions_syntax = QuerySyntax_ANGLE
-        , userQueryOptions_max_results = Just batchSize
-        }
-      }
 
     query q = def
       { userQuery_predicate = derivePredicateQuery_predicate
