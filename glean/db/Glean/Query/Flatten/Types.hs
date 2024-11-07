@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE DeriveFunctor, DeriveTraversable #-}
 module Glean.Query.Flatten.Types
   ( F
   , initialFlattenState
@@ -17,11 +18,13 @@ module Glean.Query.Flatten.Types
   , falseStmt
   , FlatStatementGroup(..)
   , Ordered(..)
+  , unOrdered
   , grouping
   , mkStatementGroup
   , singletonGroup
   , boundVars
   , boundVarsOf
+  , boundVarsOfOrdStmt
   , boundVarsOfGen
   , freshWildStmt
   , freshWildGen
@@ -34,7 +37,7 @@ import qualified Data.IntSet as IntSet
 import Data.Text (Text)
 import Compat.Prettyprinter hiding ((<>))
 
-import Glean.Angle.Types ( PredicateId, Ordered(..) )
+import Glean.Angle.Types ( PredicateId )
 import Glean.Query.Codegen.Types
 import Glean.Database.Schema
 import Glean.Database.Types (EnableRecursion(..))
@@ -58,33 +61,39 @@ type FlatQuery = FlatQuery_ Pat
 -- groups will be retained.  In other words: we don't change the order
 -- of statements you write, but we'll try to optimise the order of
 -- matches in a nested match.
-data FlatStatementGroup =
-  FlatStatementGroup
-    [FlatStatement] -- ordered
-    [FlatStatement] -- floating
+newtype FlatStatementGroup = FlatStatementGroup [Ordered FlatStatement]
   deriving Show
 
+data Ordered s
+  = Ordered s
+  | Floating s
+  deriving (Show, Functor, Foldable, Traversable)
+
+unOrdered :: Ordered s -> s
+unOrdered (Ordered s) = s
+unOrdered (Floating s) = s
+
 singletonGroup :: FlatStatement -> FlatStatementGroup
-singletonGroup s = FlatStatementGroup [] [s]
+singletonGroup s = FlatStatementGroup [Floating s]
 
 instance Display pat => Display (FlatQuery_ pat) where
-  display opts (FlatQuery key maybeVal g@(FlatStatementGroup ord float)) =
-    case (ord,float) of
-      ([],[]) -> head
+  display opts (FlatQuery key maybeVal g@(FlatStatementGroup stmts)) =
+    case stmts of
+      [] -> head
       _ -> hang 2 (sep [head <+> "where", display opts g])
     where
     head = display opts key <>
       maybe mempty (\val -> " -> " <> display opts val) maybeVal
 
 instance Display FlatStatementGroup where
-  display opts (FlatStatementGroup ord float)
-    | null ord = pfloat
-    | null float = pord
-    | otherwise = vcat [pord, pfloat]
+  display opts (FlatStatementGroup stmts)
+    = sep [hang 2 (sep ["[", p stmts]), "]"]
     where
-    pord = sep [hang 2 (sep ["[", p ord]), "]"]
-    pfloat = sep [hang 2 (sep ["{", p float]), "}"]
     p stmts = sep (punctuate ";" (map (display opts) stmts))
+
+instance Display (Ordered FlatStatement) where
+  display opts (Ordered s) = display opts s
+  display opts (Floating s) = "~" <+> display opts s
 
 data FlatStatement
   = FlatStatement Type Pat Generator
@@ -113,20 +122,21 @@ data FlatStatement
 -- | Smart constructor for a subgroup of statements, ensures we don't
 -- create unnecessary nested singleton groups.
 grouping :: FlatStatementGroup -> FlatStatement
-grouping (FlatStatementGroup [one] []) = one
-grouping (FlatStatementGroup [] [one]) = one
+grouping (FlatStatementGroup [one]) = unOrdered one
 grouping group = FlatDisjunction [group]
 
 -- | Smart constructor for a FlatStatementGroup, as with "grouping"
 -- this flattens unnecessary nesting.
-mkStatementGroup :: [FlatStatement] -> [FlatStatement] -> FlatStatementGroup
-mkStatementGroup [FlatDisjunction [group]] [] = group
-mkStatementGroup [] [FlatDisjunction [group]] = group
-mkStatementGroup ord float = FlatStatementGroup ord float
+mkStatementGroup :: [Ordered FlatStatement] -> FlatStatementGroup
+mkStatementGroup [Ordered (FlatDisjunction [group])] = group
+mkStatementGroup [Floating (FlatDisjunction [group])] = group
+mkStatementGroup ord = FlatStatementGroup ord
 
 instance VarsOf FlatStatementGroup where
-  varsOf w (FlatStatementGroup ord float) r =
-    foldr (varsOf w) (foldr (varsOf w) r ord) float
+  varsOf w (FlatStatementGroup stmts) r = foldr (varsOf w) r stmts
+
+instance VarsOf (Ordered FlatStatement) where
+  varsOf w = varsOf w . unOrdered
 
 instance VarsOf FlatStatement where
   varsOf w s r = case s of
@@ -168,10 +178,8 @@ freshWildGroup
   :: (Monad m, Fresh m)
   => FlatStatementGroup
   -> m FlatStatementGroup
-freshWildGroup (FlatStatementGroup ord float) =
-  FlatStatementGroup
-    <$> mapM freshWildStmt ord
-    <*> mapM freshWildStmt float
+freshWildGroup (FlatStatementGroup ord) =
+  FlatStatementGroup <$> mapM (mapM freshWildStmt) ord
 
 freshWildGen :: (Monad m, Fresh m) => Generator -> m Generator
 freshWildGen gen = case gen of
@@ -215,8 +223,11 @@ boundVarsOf (FlatConditional cond then_ else_) r =
     varsElse = boundVarsOfGroup else_ r
 
 boundVarsOfGroup :: FlatStatementGroup -> VarSet -> VarSet
-boundVarsOfGroup (FlatStatementGroup ord float) r =
-  foldr boundVarsOf (foldr boundVarsOf r ord) float
+boundVarsOfGroup (FlatStatementGroup ord) r =
+  foldr boundVarsOfOrdStmt r ord
+
+boundVarsOfOrdStmt :: Ordered FlatStatement -> VarSet -> VarSet
+boundVarsOfOrdStmt s = boundVarsOf (unOrdered s)
 
 boundVarsOfGen :: Generator -> VarSet -> VarSet
 boundVarsOfGen DerivedFactGenerator{} r = r

@@ -214,8 +214,8 @@ can leave unbound variables behind.  See optStmts and apply below.
 -}
 
 instance Apply FlatStatementGroup where
-  apply (FlatStatementGroup ord float) =
-    mkStatementGroup <$> mapM apply ord <*> mapM apply float
+  apply (FlatStatementGroup stmts) =
+    mkStatementGroup <$> mapM (mapM apply) stmts
 
 instance Apply FlatStatement where
   apply (FlatStatement ty lhs rhs) = do
@@ -269,29 +269,28 @@ optStmtsEnclosed stmts = enclose stmts $ optStmts stmts
 -- any statements at this stage, because we have to be careful not to
 -- leave any variables unbound.
 optStmts :: FlatStatementGroup -> U FlatStatementGroup
-optStmts (FlatStatementGroup ord float) = do
-  notFalseOrd <- and <$> mapM unifyStmt ord
-  notFalseFloat <- and <$> mapM unifyStmt float
-  ord' <- concatMap expandStmt <$> mapM apply ord
-  float' <- concatMap expandStmt <$> mapM apply float
-  float'' <- filterStmts float'
-  ord'' <- filterStmts ord'
+optStmts (FlatStatementGroup ord) = do
+  notFalse <- and <$> mapM unifyOrdStmt ord
+  ord' <- concatMap (mapM expandStmt) <$> mapM (mapM apply) ord
+  ord'' <- filterOrdStmts ord'
   -- unify may fail, but apply may also leave behind a false statement:
-  if notFalseOrd && notFalseFloat &&
-     not (any isFalseStmt ord'' || any isFalseStmt float'')
-    then return (mkStatementGroup ord'' float'')
-    else return (mkStatementGroup (falseStmt : ord'' ) float'')
+  if notFalse && not (any isFalseOrdStmt ord'')
+    then return (mkStatementGroup ord'')
+    else return (mkStatementGroup (Ordered falseStmt : ord'' ))
 
 -- Look for the sentinel left by optStmts
 isFalseGroups :: FlatStatementGroup -> Bool
-isFalseGroups (FlatStatementGroup (s : _) _) = isFalseStmt s
-isFalseGroups (FlatStatementGroup [] _) = False
+isFalseGroups (FlatStatementGroup (s : _)) = isFalseOrdStmt s
+isFalseGroups (FlatStatementGroup []) = False
+
+isFalseOrdStmt :: Ordered FlatStatement -> Bool
+isFalseOrdStmt = isFalseStmt . unOrdered
 
 isFalseStmt :: FlatStatement -> Bool
-isFalseStmt (FlatNegation (FlatStatementGroup [] [])) = True
+isFalseStmt (FlatNegation (FlatStatementGroup [])) = True
 isFalseStmt (FlatDisjunction []) = True
-isFalseStmt (FlatDisjunction [FlatStatementGroup ord float]) =
-  any isFalseStmt ord || any isFalseStmt float
+isFalseStmt (FlatDisjunction [FlatStatementGroup ord]) =
+  any isFalseOrdStmt ord
 isFalseStmt _ = False
 
 instance Apply Pat where
@@ -334,11 +333,10 @@ applyVar var@(Var _ v _) = do
 --
 -- Does not add substitutions or new variables to the parent scope.
 enclose :: FlatStatementGroup -> U a -> U a
-enclose (FlatStatementGroup ord float) u = do
+enclose (FlatStatementGroup ord) u = do
   state0 <- get
   -- set the outer scope to be the current scope
-  let scope = foldr stmtScope
-        (foldr stmtScope (optCurrentScope state0) float) ord
+  let scope = foldr ordStmtScope (optCurrentScope state0) ord
   modify $ \s ->
     s { optCurrentScope = scope, optOuterScope = optCurrentScope state0 }
   a <- u
@@ -349,6 +347,9 @@ enclose (FlatStatementGroup ord float) u = do
       , optOuterScope = optOuterScope state0
       , optSeen = optSeen state0 }
   return a
+
+unifyOrdStmt :: Ordered FlatStatement -> U Bool
+unifyOrdStmt = unifyStmt . unOrdered
 
 unifyStmt :: FlatStatement -> U Bool
 unifyStmt (FlatStatement _ lhs rhs)
@@ -365,10 +366,9 @@ unifyStmt (FlatStatement _ lhs rhs)
 unifyStmt FlatAllStatement{} = return True
 unifyStmt FlatNegation{} = return True
   -- ignore negations for now. We will recurse into it later
-unifyStmt (FlatDisjunction [FlatStatementGroup ord float]) = do
-  as <- mapM unifyStmt ord
-  bs <- mapM unifyStmt float
-  return $ and as && and bs
+unifyStmt (FlatDisjunction [FlatStatementGroup ord]) = do
+  as <- mapM unifyOrdStmt ord
+  return $ and as
   -- singleton FlatDisjunction is used for grouping, we must retain
   -- it, but not treat it as a disjunction.
 unifyStmt FlatDisjunction{} = return True
@@ -538,19 +538,22 @@ type Subst = IntMap Pat
 -- visible outside it. Variables that are local to one of these subterms
 -- may be safely unified.
 queryScope :: FlatQuery -> VarSet
-queryScope (FlatQuery key maybeVal (FlatStatementGroup ord float)) =
-  foldr termScope (foldr stmtScope (foldr stmtScope s float) ord) maybeVal
+queryScope (FlatQuery key maybeVal (FlatStatementGroup ord)) =
+  foldr termScope (foldr ordStmtScope s ord) maybeVal
   where
     s = termScope key IntSet.empty
 
+ordStmtScope :: Ordered FlatStatement -> VarSet -> VarSet
+ordStmtScope = stmtScope . unOrdered
+
 stmtScope :: FlatStatement -> VarSet -> VarSet
 stmtScope (FlatStatement _ lhs rhs) r = termScope lhs (genScope rhs r)
-stmtScope (FlatAllStatement v e (FlatStatementGroup ord float)) r =
+stmtScope (FlatAllStatement v e (FlatStatementGroup ord)) r =
   addToCurrentScope v $! termScope e $!
-    foldr stmtScope (foldr stmtScope r float) ord
+    foldr ordStmtScope r ord
 stmtScope (FlatNegation _) r = r
-stmtScope (FlatDisjunction [FlatStatementGroup ord float]) r =
-  foldr stmtScope (foldr stmtScope r float) ord
+stmtScope (FlatDisjunction [FlatStatementGroup ord]) r =
+  foldr ordStmtScope r ord
 stmtScope FlatDisjunction{} r = r
   -- contents of or-patterns are not part of the "current scope"
 stmtScope FlatConditional{} r = r
@@ -599,8 +602,8 @@ termScope pat r = foldr onMatch r pat
 -- variables.
 --
 expandGroup :: FlatStatementGroup -> FlatStatementGroup
-expandGroup (FlatStatementGroup ord float) =
-  mkStatementGroup (concatMap expandStmt ord) (concatMap expandStmt float)
+expandGroup (FlatStatementGroup ord) =
+  mkStatementGroup (concatMap (mapM expandStmt) ord)
 
 expandStmt :: FlatStatement -> [FlatStatement]
 expandStmt (FlatStatement stmtTy lhs (TermGenerator rhs)) =
@@ -651,7 +654,7 @@ expandStmt s@(FlatNegation _) = [s]
   -- constrain the scope of the substitutions arising from inside the negation.
 expandStmt (FlatDisjunction [stmts]) =
   case expandGroup stmts of
-    FlatStatementGroup [] [] -> []
+    FlatStatementGroup [] -> []
     xs -> [grouping xs]
   -- non-singleton disjunctions are handled by apply, which will
   -- expand the stmts via optStmts.
@@ -734,15 +737,13 @@ filterStmt stmt = case stmt of
     return (FlatConditional cond' then' else')
 
 filterGroup :: FlatStatementGroup -> U FlatStatementGroup
-filterGroup (FlatStatementGroup ord float) = do
-  float' <- filterStmts float
-  ord' <- filterStmts ord
-  return (mkStatementGroup ord' float')
+filterGroup (FlatStatementGroup ord) =
+  mkStatementGroup <$> filterOrdStmts ord
 
-filterStmts :: [FlatStatement] -> U [FlatStatement]
-filterStmts stmts = do
-  filtered <- filterM notDuplicateStmt stmts
-  mapM filterStmt filtered
+filterOrdStmts :: [Ordered FlatStatement] -> U [Ordered FlatStatement]
+filterOrdStmts stmts = do
+  filtered <- filterM (notDuplicateStmt . unOrdered) stmts
+  mapM (mapM filterStmt) filtered
 
 filterGroupEnclosed :: FlatStatementGroup -> U FlatStatementGroup
 filterGroupEnclosed = encloseSeen . filterGroup

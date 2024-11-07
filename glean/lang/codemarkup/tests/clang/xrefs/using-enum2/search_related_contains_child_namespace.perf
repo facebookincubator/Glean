@@ -2,13 +2,14 @@
   "@generated": null,
   "facts_searched": {
     "cxx1.DeclarationNameSpan.5": 8,
-    "cxx1.EnumDeclaration.5": 10,
+    "cxx1.EnumDeclaration.5": 2,
     "cxx1.FunctionDeclaration.5": 10,
-    "cxx1.NamespaceDeclaration.5": 10
+    "cxx1.NamespaceDeclaration.5": 10,
+    "cxx1.QName.5": 20
   },
   "full_scans": [
-    "cxx1.EnumDeclaration.5",
     "cxx1.FunctionDeclaration.5",
-    "cxx1.NamespaceDeclaration.5"
+    "cxx1.NamespaceDeclaration.5",
+    "cxx1.QName.5"
   ]
 }

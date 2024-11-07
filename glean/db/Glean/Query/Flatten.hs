@@ -80,8 +80,8 @@ flattenQuery' (TcQuery ty head Nothing stmts ord) = do
   pats <- flattenPattern head
   case pats of
     [(stmts,head')] -> return $ case ord of
-      Ordered -> (mkGroup ords (stmts : floats), head', Nothing)
-      Unordered -> (mkGroup [] (stmts : ords <> floats), head', Nothing)
+      Angle.Ordered -> (mkGroup ords (stmts : floats), head', Nothing)
+      Angle.Unordered -> (mkGroup [] (stmts : ords <> floats), head', Nothing)
     _many -> do -- TODO: ord
       -- If there are or-patterns on the LHS, then we have
       --    P1 | P2 | ... where stmts
@@ -95,11 +95,12 @@ flattenQuery' (TcQuery ty head Nothing stmts ord) = do
           | (stmts, head) <- pats ]
       return
         ( case ord of
-            Ordered -> mkGroup ords (oneStmt (FlatDisjunction alts) : floats)
-            Unordered ->
+            Angle.Ordered ->
+              mkGroup ords (oneStmt (FlatDisjunction alts) : floats)
+            Angle.Unordered ->
               mkStatementGroup
-                []
-                (FlatDisjunction alts : flattenStmts (mconcat (ords <> floats)))
+                (Floating (FlatDisjunction alts) :
+                  flattenStmts (mconcat (ords <> floats)))
         , Ref (MatchVar v)
         , Nothing
         )
@@ -498,27 +499,28 @@ floatGroup g = Statements [grouping g]
   -- work, we have to retain this grouping until the Reorder phase, so
   -- the optimiser must not flatten it away.
 
-flattenStmts :: Statements -> [FlatStatement]
-flattenStmts (Statements s) = reverse s
+flattenStmts :: Statements -> [Ordered FlatStatement]
+flattenStmts (Statements s) = map Floating (reverse s)
 
 disjunction :: [FlatStatementGroup] -> FlatStatement
-disjunction [FlatStatementGroup [x] []] = x
-disjunction [FlatStatementGroup [] [x]] = x
+disjunction [FlatStatementGroup [x]] = unOrdered x
 disjunction groups = FlatDisjunction groups
 
 mkGroup :: [Statements] -> [Statements] -> FlatStatementGroup
 mkGroup ords floats =
-  mkStatementGroup (orderedGroups ords) (flattenStmts (mconcat floats))
+  mkStatementGroup $
+    flattenStmts (mconcat floats) <>
+    map Ordered (orderedGroups ords)
   where
   orderedGroups :: [Statements] -> [FlatStatement]
   orderedGroups = mapMaybe (mkGroup . flattenStmts)
 
   mkGroup [] = Nothing
-  mkGroup [one] = Just one
-  mkGroup more  = Just (FlatDisjunction [mkStatementGroup [] more])
+  mkGroup [Floating one] = Just one
+  mkGroup more  = Just (FlatDisjunction [mkStatementGroup more])
 
 asGroup :: Statements -> FlatStatementGroup
-asGroup one = mkStatementGroup [] (flattenStmts one)
+asGroup one = mkStatementGroup (flattenStmts one)
 
 singleTerm :: a -> F [(Statements, a)]
 singleTerm t = return [(mempty, t)]
@@ -588,9 +590,16 @@ captureKey
   -> Type
   -> F (FlatQuery, Maybe Generator, Type)
 captureKey ver dbSchema
-    (FlatQuery pat Nothing (FlatStatementGroup ord float)) ty
+    (FlatQuery pat Nothing (FlatStatementGroup ord)) ty
   | Angle.PredicateTy pidRef@(PidRef pid _) <- ty  = do
   let
+    captureOrdStmt fidVar keyVar maybeValVar (Ordered s) =
+      (Ordered <$> stmts, pats)
+      where (stmts, pats) = captureStmt fidVar keyVar maybeValVar s
+    captureOrdStmt fidVar keyVar maybeValVar (Floating s) =
+      (Floating <$> stmts, pats)
+      where (stmts, pats) = captureStmt fidVar keyVar maybeValVar s
+
     -- look for $result = pred pat
     -- replace it with  $result = pred ($key @ pat)
     captureStmt
@@ -659,31 +668,28 @@ captureKey ver dbSchema
     then return Nothing
     else Just <$> fresh predicateValueType
   let
-    (ord', capturedOrd, float', capturedFloat) =
+    (ord', capturedOrd) =
       case pat of
         Ref (MatchVar (Var _ v _)) ->
-          let k :: [FlatStatement]
-                -> [(NonEmpty FlatStatement, Maybe (Pat, Pat))]
-              k = map (captureStmt v keyVar maybeValVar)
+          let k :: [Ordered FlatStatement]
+                -> [(NonEmpty (Ordered FlatStatement), Maybe (Pat, Pat))]
+              k = map (captureOrdStmt v keyVar maybeValVar)
               (ords, capturedOrd) = unzip (k ord)
-              (floats, capturedFloat) = unzip (k float)
 
-              conc :: [NonEmpty FlatStatement] -> [FlatStatement]
+              conc :: [NonEmpty (Ordered FlatStatement)] ->
+                [Ordered FlatStatement]
               conc ((x :| xs) : ys) = x : (xs ++ concatMap NonEmpty.toList ys)
               conc [] = []
           in
-          (conc ords, capturedOrd, conc floats, capturedFloat)
-        _other -> (ord, [], float, [])
+          (conc ords, capturedOrd)
+        _other -> (ord, [])
 
     returnTy = tupleSchema [ty, predicateKeyType, predicateValueType]
 
-  case (catMaybes capturedOrd, catMaybes capturedFloat) of
-    ([(key, val)], []) ->
+  case catMaybes capturedOrd of
+    [(key, val)] ->
       return (FlatQuery (RTS.Tuple [pat, key, val]) Nothing
-        (mkStatementGroup ord' float'), Nothing, returnTy)
-    ([], [(key, val)]) ->
-      return (FlatQuery (RTS.Tuple [pat, key, val]) Nothing
-        (mkStatementGroup ord' float'), Nothing, returnTy)
+        (mkStatementGroup ord'), Nothing, returnTy)
     _ -> do
       -- If we can't find the key/value now, we'll add a statement
       --   X = pred K V
@@ -694,7 +700,7 @@ captureKey ver dbSchema
           (Ref (MatchBind keyVar))
           (Ref (maybe (MatchWild predicateValueType) MatchBind maybeValVar))
           SeekOnAllFacts
-      return (FlatQuery pat Nothing (mkStatementGroup ord float),
+      return (FlatQuery pat Nothing (mkStatementGroup ord),
         Just gen,
         returnTy)
 
@@ -737,7 +743,7 @@ captureKey ver dbSchema
 
     return
       ( FlatQuery result Nothing
-          (mkStatementGroup ord (float ++ [resultStmt1, resultStmt2]))
+          (mkStatementGroup (Floating resultStmt1 : Floating resultStmt2 : ord))
       , Nothing
       , retTy )
 
