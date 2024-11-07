@@ -813,9 +813,13 @@ runQuery
               return (results, diags, sz, codegenTime, fullScans)
 
     -- If we're storing derived facts, queue them for writing and
-    -- return the handle.
+    -- return the handle. We allow querying for stored derived
+    -- predicates with stored=True on a read-only DB; this is used
+    -- by the regression testing framework to test derived predicates.
     maybeWriteHandle <-
-      if stored
+      if stored && (
+          isJust (odbWriting odb) ||
+          Thrift.userQueryOptions_omit_results opts)
         then writeDerivedFacts env repo nextId derived defineOwners
           queryResultsFacts
         else return Nothing

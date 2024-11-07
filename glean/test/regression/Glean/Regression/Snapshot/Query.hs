@@ -49,6 +49,7 @@ data Query = Query
     -- ^ Also gather performance results, compare against test.perf
   , queryMaxResults :: Maybe Int
   , queryTransforms :: TQ
+  , queryDerive :: Bool
   }
 
 instance Aeson.FromJSON Query where
@@ -58,6 +59,7 @@ instance Aeson.FromJSON Query where
     queryPerf <- v Aeson..:! "perf" Aeson..!= False
     queryMaxResults <- v Aeson..:! "max_results"
     queryTransforms <- v Aeson..:! "transform" Aeson..!= TQ []
+    queryDerive <- v Aeson..:! "derive" Aeson..!= False
     return Query{..}
 
 runQuery
@@ -87,6 +89,7 @@ runQuery backend repo xforms qfile = do
                 , Thrift.userQueryOptions_max_results = fromIntegral <$> k
                 , Thrift.userQueryOptions_continuation = cont
                 , Thrift.userQueryOptions_collect_facts_searched = queryPerf
+                , Thrift.userQueryOptions_store_derived_facts = queryDerive
                 }
             }
 
