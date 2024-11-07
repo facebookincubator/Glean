@@ -236,9 +236,8 @@ predicate PythonSearchByScope:
     entity: code.Entity,
   }
   { NameStr, Query, Entity } where
-    LocalName = python.LocalName NameStr;
     Insensitive = false;
-    PythonSearchByScopeWithName { LocalName, Insensitive, Query, Entity }
+    PythonSearchByScopeWithName { NameStr, Insensitive, Query, Entity }
 
 predicate PythonSearchByLowerCaseScope:
   {
@@ -247,24 +246,25 @@ predicate PythonSearchByLowerCaseScope:
     entity: code.Entity,
   }
   { NameStr, Query, Entity} where
-    python.LocalNameLowerCase { NameStr, LocalName };
+    python.LocalNameLowerCase { NameStr, python.LocalName Name };
     Insensitive = true;
-    PythonSearchByScopeWithName { LocalName, Insensitive, Query, Entity }
+    PythonSearchByScopeWithName { Name, Insensitive, Query, Entity }
 
 # Private: search by scope anchored on a local_name fact
 predicate PythonSearchByScopeWithName:
   {
-    name: python.LocalName,
+    name: string,
     insensitive : bool,
     scope: [string],
     entity: code.Entity,
   }
-  { LocalName, Insensitive, Scope, { python = { decl = Decl }}} where
-    LocalName = python.LocalName NameStr;
+  { NameStr, Insensitive, Scope, Entity } where
     search.python.QueryToScopeCase { Scope, Insensitive, MSName };
-    SName = python.SName { python.Name NameStr, MSName };
+    Name = python.Name NameStr; # tickle the optimizer to do this second
+    SName = python.SName { Name, MSName };
     python.DeclarationWithSName { SName, Decl };
     python.NonImportDeclaration Decl;
+    { python = { decl = Decl } } = Entity;
 
 predicate FlowSearchByName:
   {

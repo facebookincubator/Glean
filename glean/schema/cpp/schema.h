@@ -26905,7 +26905,7 @@ struct PythonSearchByScope : Predicate<std::tuple<std::string, std::vector<std::
   }
 }; // struct PythonSearchByScope
 
-struct PythonSearchByScopeWithName : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Python::LocalName>, bool, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity>> {
+struct PythonSearchByScopeWithName : Predicate<std::tuple<std::string, bool, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity>> {
   static const char* GLEAN_name() {
     return "search.code.PythonSearchByScopeWithName";
   }
