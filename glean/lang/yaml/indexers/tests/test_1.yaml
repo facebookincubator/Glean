@@ -1,0 +1,18 @@
+# _target_: glean.lang.yaml.indexers.yaml_indexer.IndexingResult
+defaults:
+  - _self_
+  - audio_backbone: transformer_12layers
+indexing_result:
+  _target_: glean.lang.yaml.indexers.yaml_indexer.IndexingResult
+  input: file_name
+parsed_doc_node:
+  _target_: lex.hydra.hydra_ls.parsed_doc.ParsedDocNode
+  val: 1
+  start:
+    _target_: language_server.py.lsp_types.Position
+    line: 2
+    character: 3
+  end:
+    _target_: language_server.py.lsp_types.Position
+    line: 4
+    character: 5

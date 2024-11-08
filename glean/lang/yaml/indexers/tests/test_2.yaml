@@ -1,0 +1,8 @@
+constants:
+  nfeatures: 2048
+
+torchx_event:
+  _target_: torchx.runner.events.api.TorchxEvent
+  session: a_session
+  scheduler: mast
+  api: an_api
