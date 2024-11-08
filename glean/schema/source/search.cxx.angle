@@ -3,6 +3,7 @@
 schema search.cxx.5 {
 import cxx1.5
 import code.cxx.4
+import search.kind.cxx.1
 
 # Declarations with no scope
 predicate GlobalDeclarationWithName :
@@ -87,26 +88,9 @@ predicate SearchByNameAndScope :
         { recordWithAccess = { record = QN, access = Public }} = Scope
       );
       Entity = code.cxx.Entity { enumerator = E };
-    ) |
-      #
-      # After the stored fact is available, replace with:
-      # cxx1.Name NameStr = N;
-      # search.kind.cxx.SearchNamespace { NameStr, Scope, Entity }
-      #
-     (
-            ( NSQName = cxx1.NamespaceQName { name = { just = N },
-          parent = { just = Parent } };
-        { namespace_ = Parent } = Scope;
-        NS = cxx1.NamespaceDeclaration { name = NSQName };
-        { decl = { namespace_ = NS } } = Entity;
-      # or re-interpret the null case (global_ as a namespace root)
-      # to find namespaces at the top level (e.g. "folly")
-      ) | (
-        NSQName = cxx1.NamespaceQName { name = { just = N }, parent = nothing };
-        { global_ = {} } = Scope;
-        NS = cxx1.NamespaceDeclaration { name = NSQName };
-        { decl = { namespace_ = NS } } = Entity;
-      )
+    ) | (
+      cxx1.Name NameStr = N;
+      search.kind.cxx.SearchNamespace { NameStr, Scope, Entity }
     )
 
 predicate SearchByScope :
