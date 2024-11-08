@@ -125,4 +125,14 @@ predicate SearchTypeAlias :
     cxx1.TypeAliasDeclarationByName { NameStr, Scope, Decl };
     { decl = { typeAlias = Decl } } = Entity
 
+# subset of ObjC containers that are interfaces
+predicate SearchObjcInterface :
+  {
+    name: string,
+    entity: code.cxx.Entity
+  }
+  { NameStr, Entity } where
+    cxx1.ObjcContainerDeclarationInterface { NameStr, Decl };
+    { decl = { objcContainer = Decl } } = Entity
+
 }

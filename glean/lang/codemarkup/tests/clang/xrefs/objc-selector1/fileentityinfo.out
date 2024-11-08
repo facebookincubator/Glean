@@ -276,5 +276,73 @@
       },
       "info": { "kind": 13, "isAbstract": false }
     }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "objcContainer": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "id": { "interface_": { "key": "J" } },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 11,
+                      "columnEnd": 4
+                    }
+                  }
+                },
+                "protocols": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "objcMethod": {
+                        "key": {
+                          "selector": { "key": [ "checkSelector" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 13 }
+                            }
+                          ],
+                          "container": { "interface_": { "key": "J" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "void" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "selector" },
+                                  "type": { "key": "SEL" }
+                                }
+                              ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.m" },
+                            "lineBegin": 10,
+                            "columnBegin": 1,
+                            "lineEnd": 10,
+                            "columnEnd": 36
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 12, "isAbstract": false }
+    }
   }
 ]

@@ -116,5 +116,68 @@
       },
       "info": { "kind": 13, "isAbstract": false }
     }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "objcContainer": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "id": { "interface_": { "key": "I" } },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 4
+                    }
+                  }
+                },
+                "protocols": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "objcMethod": {
+                        "key": {
+                          "selector": { "key": [ "foo" ] },
+                          "locations": [
+                            {
+                              "file": { "key": "test.m" },
+                              "span": { "start": 242, "length": 3 }
+                            }
+                          ],
+                          "container": { "interface_": { "key": "I" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "isInstance": false,
+                          "isOptional": false,
+                          "isAccessor": false,
+                          "source": {
+                            "file": { "key": "test.m" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 11
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 12, "isAbstract": false }
+    }
   }
 ]

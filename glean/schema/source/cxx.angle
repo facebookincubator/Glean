@@ -233,6 +233,19 @@ predicate ObjcContainerDeclaration :
     source : src.Range,
   }
 
+# searching for ObjcContainers. We need to split these up by kind
+predicate ObjcContainerDeclarationInterface :
+  {
+    name: string,
+    decl: ObjcContainerDeclaration
+  } stored { NameStr, Decl } where
+    cxx1.ObjcContainerDeclaration { id = ObjcId } = Decl;
+    ObjcId =
+      { interface_ = Name } |
+      { categoryInterface = { className = Name } } |
+      { extensionInterface = Name };
+    cxx1.Name NameStr = Name
+
 # Objective C selector
 #
 # T166420010: This is not fully correct. Specifically, ObjC selectors

@@ -39,4 +39,5 @@ codemarkupDerivePasses =
   ,DeriveGeneric "cxx1.FunctionDeclarationByName"
   ,DeriveGeneric "cxx1.VariableDeclarationNonLocalByName"
   ,DeriveGeneric "cxx1.TypeAliasDeclarationByName"
+  ,DeriveGeneric "cxx1.ObjcContainerDeclarationInterface"
   ]

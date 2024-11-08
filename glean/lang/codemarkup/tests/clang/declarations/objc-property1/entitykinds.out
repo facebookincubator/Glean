@@ -3,6 +3,25 @@
   {
     "key": {
       "decl": {
+        "objcContainer": {
+          "key": {
+            "id": { "interface_": { "key": "A" } },
+            "source": {
+              "file": { "key": "test.m" },
+              "lineBegin": 9,
+              "columnBegin": 1,
+              "lineEnd": 15,
+              "columnEnd": 4
+            }
+          }
+        }
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "decl": {
         "objcMethod": {
           "key": {
             "selector": { "key": [ "i" ] },

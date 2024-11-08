@@ -223,6 +223,60 @@
       "entity": {
         "cxx": {
           "defn": {
+            "objcContainer": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "id": { "interface_": { "key": "Bar" } },
+                    "source": {
+                      "file": { "key": "test.mm" },
+                      "lineBegin": 19,
+                      "columnBegin": 1,
+                      "lineEnd": 23,
+                      "columnEnd": 4
+                    }
+                  }
+                },
+                "protocols": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "ivar": { "synthesize": false } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 20,
+                            "columnBegin": 3,
+                            "lineEnd": 20,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 12, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "entity": {
+        "cxx": {
+          "defn": {
             "objcMethod": {
               "key": {
                 "key": {

@@ -2,6 +2,61 @@
   "@generated",
   {
     "key": {
+      "name": "Bar",
+      "language": 0,
+      "kinds": 12,
+      "entity": {
+        "cxx": {
+          "defn": {
+            "objcContainer": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "id": { "interface_": { "key": "Bar" } },
+                    "source": {
+                      "file": { "key": "test.mm" },
+                      "lineBegin": 19,
+                      "columnBegin": 1,
+                      "lineEnd": 23,
+                      "columnEnd": 4
+                    }
+                  }
+                },
+                "protocols": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "foo" },
+                              "scope": { "global_": { } }
+                            }
+                          },
+                          "type": { "key": "id<Foo>" },
+                          "kind": { "ivar": { "synthesize": false } },
+                          "source": {
+                            "file": { "key": "test.mm" },
+                            "lineBegin": 20,
+                            "columnBegin": 3,
+                            "lineEnd": 20,
+                            "columnEnd": 13
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": "foo",
       "language": 0,
       "kinds": 14,

@@ -1,5 +1,8 @@
 {
   "@generated": null,
   "facts_searched": { },
-  "full_scans": [ "cxx1.VariableDeclarationNonLocalByName.5" ]
+  "full_scans": [
+    "cxx1.ObjcContainerDeclarationInterface.5",
+    "cxx1.VariableDeclarationNonLocalByName.5"
+  ]
 }

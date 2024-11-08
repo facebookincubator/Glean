@@ -482,8 +482,13 @@ predicate CxxDeclKind:
       ({ typeAlias = _ } = Decl; Type = Kind ) | # typedef or using
       ({ usingDeclaration = _ } = Decl; Namespace = Kind ) |
       ({ variable = _ } = Decl; Variable = Kind ) |
-      # TODO: objc containers, using directives
-      ({ record_ = R } = Decl;
+      # TODO: more objc containers, using directives
+      ({ objcContainer = { id = ObjcId } } = Decl;
+        ({ interface_ = _ } |
+        { categoryInterface = _ } |
+        { extensionInterface = _ }) = ObjcId; Interface = Kind;
+      ) | (
+        { record_ = R } = Decl;
         ({ kind = { struct_ = _ } } = R; Struct = Kind ) |
         ({ kind = { class_ = _ } } = R; Class_ = Kind ) |
         ({ kind = { union_ = _ } } = R; Union = Kind )

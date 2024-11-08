@@ -13,6 +13,8 @@ predicate GlobalDeclarationWithName :
   }
   { N, D }
   where
+  # todo: replace by ObjcContainerDeclarationByName using the name lookup
+  # (then remove entirely)
   D =
     (
       cxx1.Declaration

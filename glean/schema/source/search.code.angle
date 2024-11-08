@@ -599,6 +599,10 @@ predicate CxxSearchByNameKindAndScopeFact:
     ) | (
       Type = Kind; # type alias or using decl is a "Type" kind
       search.kind.cxx.SearchTypeAlias { NameStr, Scope, Ent };
+    ) | (
+      Interface = Kind;
+      { global_ = {} } = Scope; # objc containers have global scope
+      search.kind.cxx.SearchObjcInterface { NameStr, Ent };
     );
     CxxPreferDefinitions { Ent, OutEnt };
     { cxx = OutEnt } = Entity;
