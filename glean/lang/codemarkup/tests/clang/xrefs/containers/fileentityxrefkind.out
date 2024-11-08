@@ -31,9 +31,9 @@
                 "kind": { "local": { "kind": 2, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 25,
                   "columnBegin": 24,
-                  "lineEnd": 21,
+                  "lineEnd": 25,
                   "columnEnd": 28
                 }
               }
@@ -75,9 +75,9 @@
                 "kind": { "local": { "kind": 2, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 25,
                   "columnBegin": 31,
-                  "lineEnd": 21,
+                  "lineEnd": 25,
                   "columnEnd": 35
                 }
               }

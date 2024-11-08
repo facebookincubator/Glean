@@ -2,11 +2,13 @@
   "@generated": null,
   "facts_searched": {
     "cxx1.RecordDeclarationStruct.5": 5,
-    "cxx1.RecordDefinition.5": 5
+    "cxx1.RecordDefinition.5": 5,
+    "cxx1.VariableDeclarationNonLocalByName.5": 7
   },
   "full_scans": [
     "cxx1.RecordDeclarationClass.5",
     "cxx1.RecordDeclarationStruct.5",
-    "cxx1.RecordDeclarationUnion.5"
+    "cxx1.RecordDeclarationUnion.5",
+    "cxx1.VariableDeclarationNonLocalByName.5"
   ]
 }

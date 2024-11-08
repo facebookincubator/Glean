@@ -78,6 +78,7 @@ predicate SearchByNameAndScope :
       Entity = code.cxx.Entity { decl = Decl };
       { global_ = {} } = Scope;
     ) | (
+      # This can be optimized with SearchEnumerator, once those facts are live
       E = cxx1.Enumerator { name = N, enumeration = T };
       { name = QN, isScoped = Scoped } = T;
       (

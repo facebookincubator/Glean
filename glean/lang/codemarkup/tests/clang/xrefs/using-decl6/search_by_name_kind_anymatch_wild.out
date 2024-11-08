@@ -427,5 +427,41 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "name": "x",
+      "language": 0,
+      "kinds": 14,
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N3" } } }
+                    }
+                  }
+                },
+                "type": { "key": "N2::Bar<Foo>" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 0, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 20,
+                  "columnBegin": 1,
+                  "lineEnd": 20,
+                  "columnEnd": 14
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 ]

@@ -16,7 +16,7 @@
                       "file": { "key": "test.cpp" },
                       "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 26,
+                      "lineEnd": 31,
                       "columnEnd": 1
                     }
                   }
@@ -72,6 +72,56 @@
                       }
                     },
                     {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "this_is_a_typedef" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "foo" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": 0,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 19,
+                            "columnBegin": 1,
+                            "lineEnd": 19,
+                            "columnEnd": 29
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Ptr" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "foo" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int *" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 1,
+                            "lineEnd": 21,
+                            "columnEnd": 16
+                          }
+                        }
+                      }
+                    },
+                    {
                       "enum_": {
                         "key": {
                           "name": {
@@ -87,9 +137,9 @@
                           "isScoped": false,
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 19,
+                            "lineBegin": 23,
                             "columnBegin": 1,
-                            "lineEnd": 19,
+                            "lineEnd": 23,
                             "columnEnd": 24
                           }
                         }
@@ -129,9 +179,9 @@
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 21,
+                            "lineBegin": 25,
                             "columnBegin": 1,
-                            "lineEnd": 24,
+                            "lineEnd": 29,
                             "columnEnd": 1
                           }
                         }
@@ -152,7 +202,7 @@
             "file": { "key": "test.cpp" },
             "lineBegin": 9,
             "columnBegin": 1,
-            "lineEnd": 26,
+            "lineEnd": 31,
             "columnEnd": 1
           }
         },

@@ -2,6 +2,38 @@
   "@generated",
   {
     "key": {
+      "name": "foo",
+      "language": 0,
+      "kinds": 14,
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "type": { "key": "id<Foo>" },
+                "kind": { "ivar": { "synthesize": false } },
+                "source": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 20,
+                  "columnBegin": 3,
+                  "lineEnd": 20,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": "setFoo",
       "language": 0,
       "kinds": 13,

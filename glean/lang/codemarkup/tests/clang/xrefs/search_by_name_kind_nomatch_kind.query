@@ -1,0 +1,3 @@
+query: search.code.SearchByNameKindAndLanguage { name = "this_is_a_typedef", language = Cpp, kinds = { just = Class_ } }
+perf: true
+transform: [gensort, []]

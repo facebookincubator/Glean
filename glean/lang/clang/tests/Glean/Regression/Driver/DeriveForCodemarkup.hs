@@ -37,4 +37,6 @@ codemarkupDerivePasses =
   ,DeriveGeneric "cxx1.RecordDeclarationUnion"
   ,DeriveGeneric "cxx1.EnumDeclarationByName"
   ,DeriveGeneric "cxx1.FunctionDeclarationByName"
+  ,DeriveGeneric "cxx1.VariableDeclarationNonLocalByName"
+  ,DeriveGeneric "cxx1.TypeAliasDeclarationByName"
   ]

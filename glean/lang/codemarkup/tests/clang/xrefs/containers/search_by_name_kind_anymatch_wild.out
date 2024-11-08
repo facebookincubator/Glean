@@ -23,9 +23,9 @@
                     "isScoped": false,
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 19,
+                      "lineBegin": 23,
                       "columnBegin": 1,
-                      "lineEnd": 19,
+                      "lineEnd": 23,
                       "columnEnd": 24
                     }
                   }
@@ -49,18 +49,18 @@
                           "isScoped": false,
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 19,
+                            "lineBegin": 23,
                             "columnBegin": 1,
-                            "lineEnd": 19,
+                            "lineEnd": 23,
                             "columnEnd": 24
                           }
                         }
                       },
                       "source": {
                         "file": { "key": "test.cpp" },
-                        "lineBegin": 19,
+                        "lineBegin": 23,
                         "columnBegin": 10,
-                        "lineEnd": 19,
+                        "lineEnd": 23,
                         "columnEnd": 12
                       }
                     }
@@ -83,18 +83,18 @@
                           "isScoped": false,
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 19,
+                            "lineBegin": 23,
                             "columnBegin": 1,
-                            "lineEnd": 19,
+                            "lineEnd": 23,
                             "columnEnd": 24
                           }
                         }
                       },
                       "source": {
                         "file": { "key": "test.cpp" },
-                        "lineBegin": 19,
+                        "lineBegin": 23,
                         "columnBegin": 15,
-                        "lineEnd": 19,
+                        "lineEnd": 23,
                         "columnEnd": 17
                       }
                     }
@@ -117,23 +117,57 @@
                           "isScoped": false,
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 19,
+                            "lineBegin": 23,
                             "columnBegin": 1,
-                            "lineEnd": 19,
+                            "lineEnd": 23,
                             "columnEnd": 24
                           }
                         }
                       },
                       "source": {
                         "file": { "key": "test.cpp" },
-                        "lineBegin": 19,
+                        "lineBegin": 23,
                         "columnBegin": 20,
-                        "lineEnd": 19,
+                        "lineEnd": 23,
                         "columnEnd": 22
                       }
                     }
                   }
                 ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "Ptr",
+      "language": 0,
+      "kinds": 1,
+      "entity": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Ptr" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "foo" } } }
+                    }
+                  }
+                },
+                "type": { "key": "int *" },
+                "kind": 1,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 1,
+                  "lineEnd": 21,
+                  "columnEnd": 16
+                }
               }
             }
           }
@@ -332,6 +366,52 @@
   },
   {
     "key": {
+      "name": "c",
+      "language": 0,
+      "kinds": 14,
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "c" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "U" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "foo" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "double" },
+                "kind": { "field": { "mutable_": false } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 16,
+                  "columnBegin": 5,
+                  "lineEnd": 16,
+                  "columnEnd": 12
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": "foo",
       "language": 0,
       "kinds": 5,
@@ -347,7 +427,7 @@
                       "file": { "key": "test.cpp" },
                       "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 26,
+                      "lineEnd": 31,
                       "columnEnd": 1
                     }
                   }
@@ -403,6 +483,56 @@
                       }
                     },
                     {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "this_is_a_typedef" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "foo" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": 0,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 19,
+                            "columnBegin": 1,
+                            "lineEnd": 19,
+                            "columnEnd": 29
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "typeAlias": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Ptr" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "foo" } }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int *" },
+                          "kind": 1,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 1,
+                            "lineEnd": 21,
+                            "columnEnd": 16
+                          }
+                        }
+                      }
+                    },
+                    {
                       "enum_": {
                         "key": {
                           "name": {
@@ -418,9 +548,9 @@
                           "isScoped": false,
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 19,
+                            "lineBegin": 23,
                             "columnBegin": 1,
-                            "lineEnd": 19,
+                            "lineEnd": 23,
                             "columnEnd": 24
                           }
                         }
@@ -460,15 +590,107 @@
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 21,
+                            "lineBegin": 25,
                             "columnBegin": 1,
-                            "lineEnd": 24,
+                            "lineEnd": 29,
                             "columnEnd": 1
                           }
                         }
                       }
                     }
                   ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "n",
+      "language": 0,
+      "kinds": 14,
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "n" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "S" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "foo" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "field": { "mutable_": false } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 12,
+                  "lineEnd": 11,
+                  "columnEnd": 16
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "n",
+      "language": 0,
+      "kinds": 14,
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "n" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "U" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "foo" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 0
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "field": { "mutable_": false } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 15,
+                  "columnBegin": 5,
+                  "lineEnd": 15,
+                  "columnEnd": 9
                 }
               }
             }
@@ -510,14 +732,48 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 21,
+                      "lineBegin": 25,
                       "columnBegin": 1,
-                      "lineEnd": 24,
+                      "lineEnd": 29,
                       "columnEnd": 1
                     }
                   }
                 },
                 "isInline": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "this_is_a_typedef",
+      "language": 0,
+      "kinds": 1,
+      "entity": {
+        "cxx": {
+          "decl": {
+            "typeAlias": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "this_is_a_typedef" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "foo" } } }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": 0,
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 19,
+                  "columnBegin": 1,
+                  "lineEnd": 19,
+                  "columnEnd": 29
+                }
               }
             }
           }

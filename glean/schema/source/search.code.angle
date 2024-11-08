@@ -590,6 +590,15 @@ predicate CxxSearchByNameKindAndScopeFact:
     ) | (
       Function = Kind;
       search.kind.cxx.SearchFunction { NameStr, Scope, Ent };
+    ) | (
+      Variable = Kind;
+      search.kind.cxx.SearchVariable { NameStr, Scope, Ent };
+    ) | (
+      Enumerator = Kind;
+      search.kind.cxx.SearchEnumerator { NameStr, Scope, Ent };
+    ) | (
+      Type = Kind; # type alias or using decl is a "Type" kind
+      search.kind.cxx.SearchTypeAlias { NameStr, Scope, Ent };
     );
     CxxPreferDefinitions { Ent, OutEnt };
     { cxx = OutEnt } = Entity;

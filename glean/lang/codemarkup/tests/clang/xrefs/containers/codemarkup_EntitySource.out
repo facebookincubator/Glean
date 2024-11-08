@@ -30,9 +30,9 @@
                 "kind": { "local": { "kind": 2, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 25,
                   "columnBegin": 24,
-                  "lineEnd": 21,
+                  "lineEnd": 25,
                   "columnEnd": 28
                 }
               }
@@ -66,9 +66,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 25,
                   "columnBegin": 1,
-                  "lineEnd": 24,
+                  "lineEnd": 29,
                   "columnEnd": 1
                 }
               }
@@ -108,9 +108,9 @@
                 "kind": { "local": { "kind": 2, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 25,
                   "columnBegin": 31,
-                  "lineEnd": 21,
+                  "lineEnd": 25,
                   "columnEnd": 35
                 }
               }
@@ -144,9 +144,9 @@
                 },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 25,
                   "columnBegin": 1,
-                  "lineEnd": 24,
+                  "lineEnd": 29,
                   "columnEnd": 1
                 }
               }

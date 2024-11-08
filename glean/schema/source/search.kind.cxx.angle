@@ -90,5 +90,39 @@ predicate SearchFunction :
     { name = { scope = Scope } } = Decl; # filter by scope term
     { decl = { function_ = Decl } } = Entity
 
+predicate SearchVariable :
+  {
+    name: string,
+    scope: cxx1.Scope,
+    entity: code.cxx.Entity
+  }
+  { NameStr, Scope, Entity } where
+    cxx1.VariableDeclarationNonLocalByName { NameStr, Scope, Decl };
+    { decl = { variable = Decl } } = Entity
+
+predicate SearchEnumerator :
+  {
+    name: string,
+    scope: cxx1.Scope,
+    entity: code.cxx.Entity
+  }
+  { NameStr, Scope, Entity } where
+    cxx1.EnumeratorByName { NameStr, Decl };
+    { enumeration = T } = Decl;
+    { name = QName, isScoped = Scoped } = T;
+    if ( false = Scoped )
+    then ( { scope = Scope } = QName)
+    else ( { recordWithAccess = { record = QName, access = Public }} = Scope);
+    { enumerator = Decl } = Entity
+
+predicate SearchTypeAlias :
+  {
+    name: string,
+    scope: cxx1.Scope,
+    entity: code.cxx.Entity
+  }
+  { NameStr, Scope, Entity } where
+    cxx1.TypeAliasDeclarationByName { NameStr, Scope, Decl };
+    { decl = { typeAlias = Decl } } = Entity
 
 }

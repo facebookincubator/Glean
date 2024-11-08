@@ -10,18 +10,18 @@
           "location": {
             "range": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 21,
+              "lineBegin": 25,
               "columnBegin": 24,
-              "lineEnd": 21,
+              "lineEnd": 25,
               "columnEnd": 28
             }
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 353, "length": 1 }
+            "span": { "start": 404, "length": 1 }
           }
         },
-        "source": { "span": { "start": 376, "length": 1 } }
+        "source": { "span": { "start": 445, "length": 1 } }
       },
       "entity": {
         "cxx": {
@@ -51,9 +51,9 @@
                 "kind": { "local": { "kind": 2, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 25,
                   "columnBegin": 24,
-                  "lineEnd": 21,
+                  "lineEnd": 25,
                   "columnEnd": 28
                 }
               }
@@ -73,18 +73,18 @@
           "location": {
             "range": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 21,
+              "lineBegin": 25,
               "columnBegin": 24,
-              "lineEnd": 21,
+              "lineEnd": 25,
               "columnEnd": 28
             }
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 353, "length": 1 }
+            "span": { "start": 404, "length": 1 }
           }
         },
-        "source": { "span": { "start": 380, "length": 1 } }
+        "source": { "span": { "start": 463, "length": 1 } }
       },
       "entity": {
         "cxx": {
@@ -114,9 +114,72 @@
                 "kind": { "local": { "kind": 2, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 25,
                   "columnBegin": 24,
-                  "lineEnd": 21,
+                  "lineEnd": 25,
+                  "columnEnd": 28
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "a",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 25,
+              "columnBegin": 24,
+              "lineEnd": 25,
+              "columnEnd": 28
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 404, "length": 1 }
+          }
+        },
+        "source": { "span": { "start": 467, "length": 1 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "a" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "this_is_a_function" } }
+                          },
+                          "scope": {
+                            "namespace_": {
+                              "key": { "name": { "key": "foo" } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 25,
+                  "columnBegin": 24,
+                  "lineEnd": 25,
                   "columnEnd": 28
                 }
               }
@@ -136,18 +199,18 @@
           "location": {
             "range": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 21,
+              "lineBegin": 25,
               "columnBegin": 31,
-              "lineEnd": 21,
+              "lineEnd": 25,
               "columnEnd": 35
             }
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 360, "length": 1 }
+            "span": { "start": 411, "length": 1 }
           }
         },
-        "source": { "span": { "start": 378, "length": 1 } }
+        "source": { "span": { "start": 449, "length": 1 } }
       },
       "entity": {
         "cxx": {
@@ -177,9 +240,9 @@
                 "kind": { "local": { "kind": 2, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 25,
                   "columnBegin": 31,
-                  "lineEnd": 21,
+                  "lineEnd": 25,
                   "columnEnd": 35
                 }
               }
@@ -199,18 +262,18 @@
           "location": {
             "range": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 21,
+              "lineBegin": 25,
               "columnBegin": 31,
-              "lineEnd": 21,
+              "lineEnd": 25,
               "columnEnd": 35
             }
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 360, "length": 1 }
+            "span": { "start": 411, "length": 1 }
           }
         },
-        "source": { "span": { "start": 382, "length": 1 } }
+        "source": { "span": { "start": 465, "length": 1 } }
       },
       "entity": {
         "cxx": {
@@ -240,9 +303,72 @@
                 "kind": { "local": { "kind": 2, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 25,
                   "columnBegin": 31,
-                  "lineEnd": 21,
+                  "lineEnd": 25,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "xref": {
+        "target": {
+          "name": "b",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 25,
+              "columnBegin": 31,
+              "lineEnd": 25,
+              "columnEnd": 35
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 411, "length": 1 }
+          }
+        },
+        "source": { "span": { "start": 469, "length": 1 } }
+      },
+      "entity": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "b" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "this_is_a_function" } }
+                          },
+                          "scope": {
+                            "namespace_": {
+                              "key": { "name": { "key": "foo" } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 25,
+                  "columnBegin": 31,
+                  "lineEnd": 25,
                   "columnEnd": 35
                 }
               }

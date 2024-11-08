@@ -30,9 +30,9 @@
                 "kind": { "local": { "kind": 2, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 25,
                   "columnBegin": 24,
-                  "lineEnd": 21,
+                  "lineEnd": 25,
                   "columnEnd": 28
                 }
               }
@@ -41,7 +41,7 @@
         }
       },
       "file": { "key": "test.cpp" },
-      "range": { "span": { "start": 376, "length": 1 } }
+      "range": { "span": { "start": 445, "length": 1 } }
     }
   },
   {
@@ -74,9 +74,9 @@
                 "kind": { "local": { "kind": 2, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 25,
                   "columnBegin": 24,
-                  "lineEnd": 21,
+                  "lineEnd": 25,
                   "columnEnd": 28
                 }
               }
@@ -85,7 +85,51 @@
         }
       },
       "file": { "key": "test.cpp" },
-      "range": { "span": { "start": 380, "length": 1 } }
+      "range": { "span": { "start": 463, "length": 1 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "a" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "this_is_a_function" } }
+                          },
+                          "scope": {
+                            "namespace_": {
+                              "key": { "name": { "key": "foo" } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 25,
+                  "columnBegin": 24,
+                  "lineEnd": 25,
+                  "columnEnd": 28
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 467, "length": 1 } }
     }
   },
   {
@@ -118,9 +162,9 @@
                 "kind": { "local": { "kind": 2, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 25,
                   "columnBegin": 31,
-                  "lineEnd": 21,
+                  "lineEnd": 25,
                   "columnEnd": 35
                 }
               }
@@ -129,7 +173,7 @@
         }
       },
       "file": { "key": "test.cpp" },
-      "range": { "span": { "start": 378, "length": 1 } }
+      "range": { "span": { "start": 449, "length": 1 } }
     }
   },
   {
@@ -162,9 +206,9 @@
                 "kind": { "local": { "kind": 2, "attribute": 0 } },
                 "source": {
                   "file": { "key": "test.cpp" },
-                  "lineBegin": 21,
+                  "lineBegin": 25,
                   "columnBegin": 31,
-                  "lineEnd": 21,
+                  "lineEnd": 25,
                   "columnEnd": 35
                 }
               }
@@ -173,7 +217,51 @@
         }
       },
       "file": { "key": "test.cpp" },
-      "range": { "span": { "start": 382, "length": 1 } }
+      "range": { "span": { "start": 465, "length": 1 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "b" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "this_is_a_function" } }
+                          },
+                          "scope": {
+                            "namespace_": {
+                              "key": { "name": { "key": "foo" } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 25,
+                  "columnBegin": 31,
+                  "lineEnd": 25,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 469, "length": 1 } }
     }
   }
 ]

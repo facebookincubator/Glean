@@ -314,5 +314,77 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "name": "x",
+      "language": 0,
+      "kinds": 14,
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "x" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N4" } } }
+                    }
+                  }
+                },
+                "type": { "key": "N1::T1" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 0, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 34,
+                  "columnBegin": 1,
+                  "lineEnd": 34,
+                  "columnEnd": 4
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "y",
+      "language": 0,
+      "kinds": 14,
+      "entity": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "y" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N4" } } }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": {
+                  "global_": { "kind": 0, "attribute": 0, "definition": true }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 35,
+                  "columnBegin": 1,
+                  "lineEnd": 35,
+                  "columnEnd": 12
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 ]

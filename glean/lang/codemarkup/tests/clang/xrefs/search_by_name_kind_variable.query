@@ -1,0 +1,3 @@
+query: search.code.SearchByNameKindAndLanguage { name = "this_is_a_variable", language = Cpp, kinds = { just = Variable } }
+perf: true
+transform: [gensort, []]

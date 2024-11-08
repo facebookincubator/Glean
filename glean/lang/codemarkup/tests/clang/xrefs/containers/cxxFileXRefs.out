@@ -36,9 +36,9 @@
                       "kind": { "local": { "kind": 2, "attribute": 0 } },
                       "source": {
                         "file": { "key": "test.cpp" },
-                        "lineBegin": 21,
+                        "lineBegin": 25,
                         "columnBegin": 24,
-                        "lineEnd": 21,
+                        "lineEnd": 25,
                         "columnEnd": 28
                       }
                     }
@@ -46,7 +46,7 @@
                 }
               },
               "from": {
-                "spans": [ { "length": 1, "offsets": [ 376, 4 ] } ],
+                "spans": [ { "length": 1, "offsets": [ 445, 18, 4 ] } ],
                 "expansions": [ ],
                 "spellings": [ ]
               }
@@ -81,9 +81,9 @@
                       "kind": { "local": { "kind": 2, "attribute": 0 } },
                       "source": {
                         "file": { "key": "test.cpp" },
-                        "lineBegin": 21,
+                        "lineBegin": 25,
                         "columnBegin": 31,
-                        "lineEnd": 21,
+                        "lineEnd": 25,
                         "columnEnd": 35
                       }
                     }
@@ -91,7 +91,7 @@
                 }
               },
               "from": {
-                "spans": [ { "length": 1, "offsets": [ 378, 4 ] } ],
+                "spans": [ { "length": 1, "offsets": [ 449, 16, 4 ] } ],
                 "expansions": [ ],
                 "spellings": [ ]
               }

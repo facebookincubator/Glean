@@ -315,6 +315,14 @@ predicate Enumerator :
     source : src.Range,
   }
 
+# Search enumerators by name
+predicate EnumeratorByName :
+  {
+    name: string,
+    decl: cxx1.Enumerator
+  } stored { NameStr, Decl } where
+    cxx1.Enumerator { name = cxx1.Name NameStr } = Decl
+
 # Enum definition
 predicate EnumDefinition :
   {
@@ -482,6 +490,15 @@ predicate TypeAliasDeclaration :
     source : src.Range,
   }
 
+# type alias search by name
+predicate TypeAliasDeclarationByName :
+  {
+    name : string,
+    scope : Scope,
+    decl : cxx1.TypeAliasDeclaration
+  } stored { NameStr, Scope, Decl } where
+    cxx1.TypeAliasDeclaration { name = { cxx1.Name NameStr, Scope } } = Decl
+
 type NamespaceTarget =
   {
     namespace_ : NamespaceDeclaration |
@@ -586,6 +603,16 @@ predicate VariableDeclaration :
     kind : VariableKind,
     source : src.Range,
   }
+
+# Variable search by name. Let's not include locals since they're too numerous
+predicate VariableDeclarationNonLocalByName :
+  {
+    name : string,
+    scope: Scope,
+    decl : VariableDeclaration
+  } stored { NameStr, Decl.name.scope, Decl } where
+    Decl.name.name = cxx1.Name NameStr;
+    Decl.kind.global_? | Decl.kind.field? | Decl.kind.ivar?;
 
 # Sum type of all declarations
 type Declaration =

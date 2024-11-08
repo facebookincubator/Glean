@@ -16,10 +16,15 @@ union U
     double c;
 };
 
+typedef int this_is_a_typedef;
+
+using Ptr = int*;
+
 enum E { e_a, e_b, e_c };
 
 int this_is_a_function(int a, int b)
 {
+    int this_is_a_variable = a + b;
     return a>b?a:b;
 }
 
