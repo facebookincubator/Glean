@@ -1,0 +1,3 @@
+query: search.code.SearchByNameKindAndLanguage { name = "DoesNotExit", language = Cpp, kinds = { just = Enum_ | Struct | Union } }
+perf: true
+transform: [gensort, []]

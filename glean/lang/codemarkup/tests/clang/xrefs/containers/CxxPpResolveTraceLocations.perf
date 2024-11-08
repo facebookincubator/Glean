@@ -1,0 +1,11 @@
+{
+  "@generated": null,
+  "facts_searched": {
+    "cxx1.DeclarationNameSpan.5": 7,
+    "cxx1.EnumDefinition.5": 2,
+    "cxx1.NamespaceDefinition.5": 1,
+    "cxx1.RecordDefinition.5": 2,
+    "cxx1.Trace.5": 1
+  },
+  "full_scans": [ "codemarkup.pp.PpResolveTraceLocation.3", "cxx1.Trace.5" ]
+}

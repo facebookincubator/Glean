@@ -1,0 +1,42 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "S",
+      "language": 0,
+      "kinds": 24,
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "S" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    },
+                    "kind": { "struct_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 11,
+                      "columnEnd": 11
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": { "key": [ ] }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,33 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "E",
+      "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } },
+      "entity": {
+        "decl": {
+          "enum_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "E" },
+                  "scope": {
+                    "namespace_": { "key": { "name": { "key": "foo" } } }
+                  }
+                }
+              },
+              "isScoped": false,
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 19,
+                "columnBegin": 1,
+                "lineEnd": 19,
+                "columnEnd": 24
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

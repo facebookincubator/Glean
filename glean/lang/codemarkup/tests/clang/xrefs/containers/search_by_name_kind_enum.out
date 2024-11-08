@@ -1,0 +1,144 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "E",
+      "language": 0,
+      "kinds": 11,
+      "entity": {
+        "cxx": {
+          "defn": {
+            "enum_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "E" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    },
+                    "isScoped": false,
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 19,
+                      "columnBegin": 1,
+                      "lineEnd": 19,
+                      "columnEnd": 24
+                    }
+                  }
+                },
+                "enumerators": [
+                  {
+                    "key": {
+                      "name": { "key": "e_a" },
+                      "enumeration": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "E" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "foo" } }
+                                }
+                              }
+                            }
+                          },
+                          "isScoped": false,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 19,
+                            "columnBegin": 1,
+                            "lineEnd": 19,
+                            "columnEnd": 24
+                          }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 10,
+                        "lineEnd": 19,
+                        "columnEnd": 12
+                      }
+                    }
+                  },
+                  {
+                    "key": {
+                      "name": { "key": "e_b" },
+                      "enumeration": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "E" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "foo" } }
+                                }
+                              }
+                            }
+                          },
+                          "isScoped": false,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 19,
+                            "columnBegin": 1,
+                            "lineEnd": 19,
+                            "columnEnd": 24
+                          }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 15,
+                        "lineEnd": 19,
+                        "columnEnd": 17
+                      }
+                    }
+                  },
+                  {
+                    "key": {
+                      "name": { "key": "e_c" },
+                      "enumeration": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "E" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "foo" } }
+                                }
+                              }
+                            }
+                          },
+                          "isScoped": false,
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 19,
+                            "columnBegin": 1,
+                            "lineEnd": 19,
+                            "columnEnd": 24
+                          }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 20,
+                        "lineEnd": 19,
+                        "columnEnd": 22
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

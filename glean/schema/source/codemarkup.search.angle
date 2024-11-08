@@ -54,10 +54,6 @@ predicate SearchByScope:
       search.code.SearchByLowerCaseScope { Name, Scope, Language, Entity });
     EntityLocationAndKind { Entity, Location, Kind };
 
-#
-# Internal helpers
-#
-
 # Symbol kind of entity, where kind is optional.
 predicate EntityLocationAndKind:
   {

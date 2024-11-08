@@ -1,0 +1,3 @@
+query: search.code.SearchByNameKindAndLanguage { name = "foo", language = Cpp, kinds = { just = Namespace } }
+perf: true
+transform: [gensort, []]

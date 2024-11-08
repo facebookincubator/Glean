@@ -1,0 +1,15 @@
+{
+  "@generated": null,
+  "facts_searched": {
+    "cxx1.NamespaceDeclarationByName.5": 1,
+    "cxx1.NamespaceDefinition.5": 1,
+    "cxx1.RecordDeclarationStruct.5": 2,
+    "cxx1.RecordDefinition.5": 2
+  },
+  "full_scans": [
+    "cxx1.NamespaceDeclarationByName.5",
+    "cxx1.RecordDeclarationClass.5",
+    "cxx1.RecordDeclarationStruct.5",
+    "cxx1.RecordDeclarationUnion.5"
+  ]
+}

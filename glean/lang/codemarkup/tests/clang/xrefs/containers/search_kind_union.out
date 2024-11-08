@@ -1,0 +1,33 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "U",
+      "scope": { "namespace_": { "key": { "name": { "key": "foo" } } } },
+      "entity": {
+        "decl": {
+          "record_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "U" },
+                  "scope": {
+                    "namespace_": { "key": { "name": { "key": "foo" } } }
+                  }
+                }
+              },
+              "kind": { "union_": { } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 13,
+                "columnBegin": 1,
+                "lineEnd": 17,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

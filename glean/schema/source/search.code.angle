@@ -1,15 +1,18 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema search.code.16 {
+
+import buck.4
 import code.24
 import code.cxx.4
 import code.hack.4
 import code.java.5
 import code.python.1
-import buck.4
+import codemarkup.types.1
 import csharp.1
 import cxx1.5
 import erlang.1
+import fbthrift.1
 import flow.3
 import graphql.3
 import hack.6
@@ -24,9 +27,9 @@ import search.flow.1
 import search.hack.7
 import search.hs.9
 import search.java.1
+import search.kind.cxx.1
 import search.kotlin.1
 import search.python.1
-import fbthrift.1
 
 #
 # public API
@@ -77,6 +80,18 @@ predicate SearchByLowerCaseNameAndLanguage:
     ( CSharp = Language; CSharpSearchByLowerCaseName { Name, Entity } ) |
     ( GraphQL = Language; GraphQLSearchByLowerCaseName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
+
+# Kind-optimized search.
+predicate SearchByNameKindAndLanguage:
+  {
+    name: string,
+    language: code.Language,
+    kinds: maybe codemarkup.types.SymbolKind, # `nothing` indicates unknown kind
+    entity: code.Entity
+  }
+  { NameStr, Language, Kinds, Entity } where
+    Cpp = Language;
+    CxxSearchByNameKindAndScopeFact { NameStr, _, Kinds, Entity };
 
 # scoped search (experimental!)
 
@@ -541,16 +556,55 @@ predicate CxxSearchByNameAndScopeFact:
     scope : cxx1.Scope,
     entity : code.Entity
   }
-  { Name, Scope, { cxx = DefnE }} where
+  { Name, Scope, Entity } where
     search.cxx.SearchByNameAndScope { Name, Scope, Ent };
-    if ({ decl = Decl } = Ent)
+    CxxPreferDefinitions{ Ent, OutEnt };
+    { cxx = OutEnt } = Entity;
+
+# with a bare string name and a known scope, search by kind
+predicate CxxSearchByNameKindAndScopeFact:
+  {
+    name: string,
+    scope : cxx1.Scope,
+    kinds: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity
+  }
+  { NameStr, Scope, Kinds, Entity } where
+    # n.b no un-kinded entities in C++, so we ignore the `nothing` case
+    { just = Kind } = Kinds;
+    (
+      Namespace = Kind;
+      search.kind.cxx.SearchNamespace { NameStr, Scope, Ent };
+    ) | (
+      Class_ = Kind;
+      search.kind.cxx.SearchClass { NameStr, Scope, Ent };
+    ) | (
+      Struct = Kind;
+      search.kind.cxx.SearchStruct { NameStr, Scope, Ent };
+    ) | (
+      Union = Kind;
+      search.kind.cxx.SearchUnion { NameStr, Scope, Ent };
+    ) | (
+      Enum_ = Kind;
+      search.kind.cxx.SearchEnum { NameStr, Scope, Ent };
+    );
+    CxxPreferDefinitions { Ent, OutEnt };
+    { cxx = OutEnt } = Entity;
+
+# Helper for C++ to prefer definitions over declaration spam
+predicate CxxPreferDefinitions:
+  { from: code.cxx.Entity
+  , to : code.cxx.Entity
+  }
+  { InEnt, OutEnt } where
+    if ({ decl = Decl } = InEnt)
       then (
         # avoid returning all members of decl families
         if (search.cxx.DeclIsDefn { Decl, Defn })
-          then ({ defn = Defn } = DefnE)
-          else ({ decl = Decl } = DefnE)
+          then ({ defn = Defn } = OutEnt)
+          else ({ decl = Decl } = OutEnt)
         )
-      else ( Ent = DefnE );
+      else ( InEnt = OutEnt ); # already a defn (or enumerator)
 
 predicate PpSearchByName:
   {
