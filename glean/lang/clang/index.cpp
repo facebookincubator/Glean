@@ -38,9 +38,6 @@
 #include "glean/cpp/filewriter.h"
 #include "glean/cpp/glean.h"
 #include "glean/cpp/sender.h"
-#if GLEAN_FACEBOOK && !defined(_WIN32)
-#include "glean/cpp/thriftsender.h"
-#endif
 #include "glean/interprocess/cpp/counters.h"
 #include "glean/interprocess/cpp/worklist.h"
 #include "glean/lang/clang/action.h"
@@ -51,13 +48,9 @@
 #include "glean/rts/inventory.h"
 
 DEFINE_string(
-    service,
-    "",
-    "TIER or HOST:PORT of Glean write server. When specified the generated facts will be sent to that server. You MUST specify either --dump or --service, but not both.");
-DEFINE_string(
     dump,
     "",
-    "PATH where generated facts will be dumped instead of sending them to the Glean write server. You MUST specify either --dump or --service, but not both.");
+    "PATH where generated facts will be dumped instead of sending them to the Glean write server. You MUST specify --dump.");
 DEFINE_string(work_file, "", "PATH to work file");
 DEFINE_string(task, "", "task id (for logging)");
 DEFINE_string(request, "", "request id (for logging)");
@@ -71,11 +64,11 @@ DEFINE_string(path_prefix, "", "Path fragment to prefix src.File facts with");
 DEFINE_string(
     repo_name,
     "",
-    "Glean database name (formely known as repo). Used in logging. Also when --service is specified, 'repo_name/repo_hash' identifies the glean DB to write to.");
+    "Glean database name (formely known as repo). Used in logging.");
 DEFINE_string(
     repo_hash,
     "",
-    "Glean database instance (formely known as hash). Used in logging. Also when --service is specified, 'repo_name/repo_hash' identifies the glean DB to write to.");
+    "Glean database instance (formely known as hash). Used in logging.");
 DEFINE_int32(
     max_comm_errors,
     30,
@@ -262,32 +255,12 @@ struct Config {
     }
     log_pfx = folly::to<std::string>(FLAGS_worker_index) + ": ";
 
-#if GLEAN_FACEBOOK && !defined(_WIN32)
-    if (!FLAGS_service.empty()) {
-      // Full logging if we are talking to a remote service
-      should_log = true;
-
-      if (FLAGS_repo_name.empty()) {
-        fail("missing repo_name");
-      }
-      if (FLAGS_repo_hash.empty()) {
-        fail("missing repo_hash");
-      }
-
-      sender = thriftSender(
-          FLAGS_service,
-          FLAGS_repo_name,
-          FLAGS_repo_hash,
-          10, // hardcode min_retry_delay for now
-          static_cast<size_t>(FLAGS_max_comm_errors));
-    } else
-#endif
-        if (!FLAGS_dump.empty()) {
-      // No logging when dumping to a file
+    if (!FLAGS_dump.empty()) {
+      // logging is historical, we always dump to a file now
       should_log = false;
       sender = fileWriter(FLAGS_dump);
     } else if (!FLAGS_print_sources_count) {
-      fail("missing --service or --dump");
+      fail("missing --dump");
     }
 
     if (FLAGS_inventory.empty()) {
