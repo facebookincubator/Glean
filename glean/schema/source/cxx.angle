@@ -191,6 +191,16 @@ predicate FunctionDeclaration :
     source : src.Range,
   }
 
+# Search: functions with real names only, to restrict to scope use the FQName
+predicate FunctionDeclarationByName :
+  {
+    name: string,
+    decl: FunctionDeclaration
+  } stored { NameStr, Decl } where
+    FName = cxx1.FunctionName { name = cxx1.Name NameStr };
+    FQName = cxx1.FunctionQName { name = FName };
+    Decl = cxx1.FunctionDeclaration { name = FQName };
+
 # C++ method override
 predicate MethodOverrides :
   {

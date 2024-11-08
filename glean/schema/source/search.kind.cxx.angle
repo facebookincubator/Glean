@@ -79,4 +79,16 @@ predicate SearchEnum :
     cxx1.EnumDeclarationByName { NameStr, Scope, Decl };
     { decl = { enum_ = Decl }} = Entity
 
+predicate SearchFunction :
+  {
+    name: string,
+    scope: cxx1.Scope,
+    entity: code.cxx.Entity
+  }
+  { NameStr, Scope, Entity } where
+    cxx1.FunctionDeclarationByName { NameStr, Decl };
+    { name = { scope = Scope } } = Decl; # filter by scope term
+    { decl = { function_ = Decl } } = Entity
+
+
 }

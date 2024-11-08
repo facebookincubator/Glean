@@ -2,13 +2,16 @@
   "@generated": null,
   "facts_searched": {
     "cxx1.EnumDefinition.5": 1,
+    "cxx1.FunctionDefinition.5": 1,
     "cxx1.NamespaceDefinition.5": 1,
-    "cxx1.RecordDefinition.5": 2,
-    "cxx1.VariableDeclaration.5": 3
+    "cxx1.RecordDefinition.5": 4,
+    "cxx1.VariableDeclaration.5": 5
   },
   "full_scans": [
     "cxx1.EnumDefinition.5",
+    "cxx1.FunctionDefinition.5",
     "cxx1.NamespaceDefinition.5",
+    "cxx1.RecordDefinition.5",
     "cxx1.RecordDefinition.5",
     "cxx1.VariableDeclaration.5"
   ]

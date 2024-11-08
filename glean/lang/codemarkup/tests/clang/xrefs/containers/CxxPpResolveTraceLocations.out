@@ -375,6 +375,124 @@
   {
     "key": {
       "tuplefield0": {
+        "name": "a",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 21,
+            "columnBegin": 24,
+            "lineEnd": 21,
+            "columnEnd": 28
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 353, "length": 1 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "a" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "this_is_a_function" } }
+                          },
+                          "scope": {
+                            "namespace_": {
+                              "key": { "name": { "key": "foo" } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 24,
+                  "lineEnd": 21,
+                  "columnEnd": 28
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "b",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 21,
+            "columnBegin": 31,
+            "lineEnd": 21,
+            "columnEnd": 35
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 360, "length": 1 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "b" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "this_is_a_function" } }
+                          },
+                          "scope": {
+                            "namespace_": {
+                              "key": { "name": { "key": "foo" } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 31,
+                  "lineEnd": 21,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
         "name": "c",
         "file": { "key": "test.cpp" },
         "location": {
@@ -601,7 +719,7 @@
             "file": { "key": "test.cpp" },
             "lineBegin": 9,
             "columnBegin": 1,
-            "lineEnd": 21,
+            "lineEnd": 26,
             "columnEnd": 1
           }
         },
@@ -622,7 +740,7 @@
                       "file": { "key": "test.cpp" },
                       "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 21,
+                      "lineEnd": 26,
                       "columnEnd": 1
                     }
                   }
@@ -697,6 +815,48 @@
                             "columnBegin": 1,
                             "lineEnd": 19,
                             "columnEnd": 24
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "this_is_a_function" }
+                                }
+                              },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "foo" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "a" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "b" },
+                                  "type": { "key": "int" }
+                                }
+                              ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 1,
+                            "lineEnd": 24,
+                            "columnEnd": 1
                           }
                         }
                       }
@@ -823,6 +983,68 @@
                   "lineEnd": 15,
                   "columnEnd": 9
                 }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": {
+        "name": "this_is_a_function",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 21,
+            "columnBegin": 1,
+            "lineEnd": 24,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 330, "length": 18 }
+        }
+      },
+      "tuplefield1": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "this_is_a_function" } }
+                        },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "int" },
+                        "parameters": [
+                          { "name": { "key": "a" }, "type": { "key": "int" } },
+                          { "name": { "key": "b" }, "type": { "key": "int" } }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 21,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
               }
             }
           }

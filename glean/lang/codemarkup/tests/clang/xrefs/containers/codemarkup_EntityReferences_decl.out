@@ -1,1 +1,179 @@
-[ "@generated" ]
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "a" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "this_is_a_function" } }
+                          },
+                          "scope": {
+                            "namespace_": {
+                              "key": { "name": { "key": "foo" } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 24,
+                  "lineEnd": 21,
+                  "columnEnd": 28
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 376, "length": 1 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "a" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "this_is_a_function" } }
+                          },
+                          "scope": {
+                            "namespace_": {
+                              "key": { "name": { "key": "foo" } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 24,
+                  "lineEnd": 21,
+                  "columnEnd": 28
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 380, "length": 1 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "b" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "this_is_a_function" } }
+                          },
+                          "scope": {
+                            "namespace_": {
+                              "key": { "name": { "key": "foo" } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 31,
+                  "lineEnd": 21,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 378, "length": 1 } }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "b" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "this_is_a_function" } }
+                          },
+                          "scope": {
+                            "namespace_": {
+                              "key": { "name": { "key": "foo" } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 31,
+                  "lineEnd": 21,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "test.cpp" },
+      "range": { "span": { "start": 382, "length": 1 } }
+    }
+  }
+]

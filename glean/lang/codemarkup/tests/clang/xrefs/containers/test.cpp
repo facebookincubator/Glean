@@ -18,4 +18,9 @@ union U
 
 enum E { e_a, e_b, e_c };
 
+int this_is_a_function(int a, int b)
+{
+    return a>b?a:b;
+}
+
 }

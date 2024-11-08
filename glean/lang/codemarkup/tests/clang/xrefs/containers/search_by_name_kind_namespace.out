@@ -17,7 +17,7 @@
                       "file": { "key": "test.cpp" },
                       "lineBegin": 9,
                       "columnBegin": 1,
-                      "lineEnd": 21,
+                      "lineEnd": 26,
                       "columnEnd": 1
                     }
                   }
@@ -92,6 +92,48 @@
                             "columnBegin": 1,
                             "lineEnd": 19,
                             "columnEnd": 24
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "this_is_a_function" }
+                                }
+                              },
+                              "scope": {
+                                "namespace_": {
+                                  "key": { "name": { "key": "foo" } }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [
+                                {
+                                  "name": { "key": "a" },
+                                  "type": { "key": "int" }
+                                },
+                                {
+                                  "name": { "key": "b" },
+                                  "type": { "key": "int" }
+                                }
+                              ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 1,
+                            "lineEnd": 24,
+                            "columnEnd": 1
                           }
                         }
                       }

@@ -1,1 +1,647 @@
-[ "@generated" ]
+[
+  "@generated",
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "this_is_a_function" }
+                                      }
+                                    },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": { "name": { "key": "foo" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 24,
+                            "lineEnd": 21,
+                            "columnEnd": 28
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 1, "offsets": [ 376, 4 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "b" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "this_is_a_function" }
+                                      }
+                                    },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": { "name": { "key": "foo" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 31,
+                            "lineEnd": 21,
+                            "columnEnd": 35
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 1, "offsets": [ 378, 4 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
+              ],
+              "froms": [ ]
+            }
+          },
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "a",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 21,
+              "columnBegin": 24,
+              "lineEnd": 21,
+              "columnEnd": 28
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 353, "length": 1 }
+          }
+        },
+        "source": { "span": { "start": 376, "length": 1 } }
+      },
+      "entity": {
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "a" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "this_is_a_function" } }
+                        },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "type": { "key": "int" },
+              "kind": { "local": { "kind": 2, "attribute": 0 } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 24,
+                "lineEnd": 21,
+                "columnEnd": 28
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "this_is_a_function" }
+                                      }
+                                    },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": { "name": { "key": "foo" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 24,
+                            "lineEnd": 21,
+                            "columnEnd": 28
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 1, "offsets": [ 376, 4 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "b" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "this_is_a_function" }
+                                      }
+                                    },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": { "name": { "key": "foo" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 31,
+                            "lineEnd": 21,
+                            "columnEnd": 35
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 1, "offsets": [ 378, 4 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
+              ],
+              "froms": [ ]
+            }
+          },
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "a",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 21,
+              "columnBegin": 24,
+              "lineEnd": 21,
+              "columnEnd": 28
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 353, "length": 1 }
+          }
+        },
+        "source": { "span": { "start": 380, "length": 1 } }
+      },
+      "entity": {
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "a" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "this_is_a_function" } }
+                        },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "type": { "key": "int" },
+              "kind": { "local": { "kind": 2, "attribute": 0 } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 24,
+                "lineEnd": 21,
+                "columnEnd": 28
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "this_is_a_function" }
+                                      }
+                                    },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": { "name": { "key": "foo" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 24,
+                            "lineEnd": 21,
+                            "columnEnd": 28
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 1, "offsets": [ 376, 4 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "b" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "this_is_a_function" }
+                                      }
+                                    },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": { "name": { "key": "foo" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 31,
+                            "lineEnd": 21,
+                            "columnEnd": 35
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 1, "offsets": [ 378, 4 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
+              ],
+              "froms": [ ]
+            }
+          },
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "b",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 21,
+              "columnBegin": 31,
+              "lineEnd": 21,
+              "columnEnd": 35
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 360, "length": 1 }
+          }
+        },
+        "source": { "span": { "start": 378, "length": 1 } }
+      },
+      "entity": {
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "b" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "this_is_a_function" } }
+                        },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "type": { "key": "int" },
+              "kind": { "local": { "kind": 2, "attribute": 0 } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 31,
+                "lineEnd": 21,
+                "columnEnd": 35
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "trace": {
+        "key": {
+          "xmap": {
+            "key": {
+              "file": { "key": "test.cpp" },
+              "fixed": [
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "a" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "this_is_a_function" }
+                                      }
+                                    },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": { "name": { "key": "foo" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 24,
+                            "lineEnd": 21,
+                            "columnEnd": 28
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 1, "offsets": [ 376, 4 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                },
+                {
+                  "target": {
+                    "declaration": {
+                      "variable": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "b" },
+                              "scope": {
+                                "local": {
+                                  "key": {
+                                    "name": {
+                                      "key": {
+                                        "name": { "key": "this_is_a_function" }
+                                      }
+                                    },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": { "name": { "key": "foo" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "type": { "key": "int" },
+                          "kind": { "local": { "kind": 2, "attribute": 0 } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 21,
+                            "columnBegin": 31,
+                            "lineEnd": 21,
+                            "columnEnd": 35
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "from": {
+                    "spans": [ { "length": 1, "offsets": [ 378, 4 ] } ],
+                    "expansions": [ ],
+                    "spellings": [ ]
+                  }
+                }
+              ],
+              "froms": [ ]
+            }
+          },
+          "targets": [ ]
+        }
+      },
+      "xref": {
+        "target": {
+          "name": "b",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 21,
+              "columnBegin": 31,
+              "lineEnd": 21,
+              "columnEnd": 35
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 360, "length": 1 }
+          }
+        },
+        "source": { "span": { "start": 382, "length": 1 } }
+      },
+      "entity": {
+        "decl": {
+          "variable": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "b" },
+                  "scope": {
+                    "local": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "this_is_a_function" } }
+                        },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "type": { "key": "int" },
+              "kind": { "local": { "kind": 2, "attribute": 0 } },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 21,
+                "columnBegin": 31,
+                "lineEnd": 21,
+                "columnEnd": 35
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

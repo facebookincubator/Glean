@@ -3,6 +3,8 @@
   "facts_searched": {
     "cxx1.EnumDeclarationByName.5": 2,
     "cxx1.EnumDefinition.5": 2,
+    "cxx1.FunctionDeclarationByName.5": 4,
+    "cxx1.FunctionDefinition.5": 2,
     "cxx1.NamespaceDeclarationByName.5": 2,
     "cxx1.NamespaceDefinition.5": 2,
     "cxx1.RecordDeclarationStruct.5": 2,
@@ -10,6 +12,7 @@
   },
   "full_scans": [
     "cxx1.EnumDeclarationByName.5",
+    "cxx1.FunctionDeclarationByName.5",
     "cxx1.NamespaceDeclarationByName.5",
     "cxx1.RecordDeclarationClass.5",
     "cxx1.RecordDeclarationStruct.5",

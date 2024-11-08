@@ -1,11 +1,16 @@
 {
   "@generated": null,
   "facts_searched": {
-    "cxx1.DeclarationNameSpan.5": 6,
+    "cxx1.DeclarationNameSpan.5": 8,
     "cxx1.EnumDeclaration.5": 1,
+    "cxx1.FunctionDeclaration.5": 1,
     "cxx1.NamespaceDeclaration.5": 1,
-    "cxx1.QName.5": 6,
+    "cxx1.QName.5": 8,
     "cxx1.RecordDeclaration.5": 2
   },
-  "full_scans": [ "cxx1.NamespaceDeclaration.5", "cxx1.QName.5" ]
+  "full_scans": [
+    "cxx1.FunctionDeclaration.5",
+    "cxx1.NamespaceDeclaration.5",
+    "cxx1.QName.5"
+  ]
 }

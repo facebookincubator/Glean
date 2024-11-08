@@ -1,1 +1,159 @@
-[ "@generated" ]
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "a" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "this_is_a_function" } }
+                          },
+                          "scope": {
+                            "namespace_": {
+                              "key": { "name": { "key": "foo" } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 24,
+                  "lineEnd": 21,
+                  "columnEnd": 28
+                }
+              }
+            }
+          }
+        }
+      },
+      "source": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": { "name": { "key": "this_is_a_function" } }
+                    },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "foo" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "int" },
+                    "parameters": [
+                      { "name": { "key": "a" }, "type": { "key": "int" } },
+                      { "name": { "key": "b" }, "type": { "key": "int" } }
+                    ]
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 1,
+                  "lineEnd": 24,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "cxx": {
+          "defn": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "b" },
+                    "scope": {
+                      "local": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "this_is_a_function" } }
+                          },
+                          "scope": {
+                            "namespace_": {
+                              "key": { "name": { "key": "foo" } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "type": { "key": "int" },
+                "kind": { "local": { "kind": 2, "attribute": 0 } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 31,
+                  "lineEnd": 21,
+                  "columnEnd": 35
+                }
+              }
+            }
+          }
+        }
+      },
+      "source": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": { "name": { "key": "this_is_a_function" } }
+                    },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "foo" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "int" },
+                    "parameters": [
+                      { "name": { "key": "a" }, "type": { "key": "int" } },
+                      { "name": { "key": "b" }, "type": { "key": "int" } }
+                    ]
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 1,
+                  "lineEnd": 24,
+                  "columnEnd": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

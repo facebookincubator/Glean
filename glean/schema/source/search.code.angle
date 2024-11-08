@@ -587,6 +587,9 @@ predicate CxxSearchByNameKindAndScopeFact:
     ) | (
       Enum_ = Kind;
       search.kind.cxx.SearchEnum { NameStr, Scope, Ent };
+    ) | (
+      Function = Kind;
+      search.kind.cxx.SearchFunction { NameStr, Scope, Ent };
     );
     CxxPreferDefinitions { Ent, OutEnt };
     { cxx = OutEnt } = Entity;
