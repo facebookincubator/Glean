@@ -1,0 +1,2 @@
+query: codemarkup.search.SearchByName { searchcase = Sensitive, language = Cpp }
+transform: [gensort, []]

@@ -95,7 +95,7 @@
             "span": { "start": 450, "length": 3 }
           }
         },
-        "source": { "span": { "start": 503, "length": 3 } }
+        "source": { "span": { "start": 506, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -169,7 +169,7 @@
             "span": { "start": 450, "length": 3 }
           }
         },
-        "source": { "span": { "start": 556, "length": 3 } }
+        "source": { "span": { "start": 559, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -243,7 +243,7 @@
             "span": { "start": 450, "length": 3 }
           }
         },
-        "source": { "span": { "start": 744, "length": 3 } }
+        "source": { "span": { "start": 747, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -317,7 +317,7 @@
             "span": { "start": 450, "length": 3 }
           }
         },
-        "source": { "span": { "start": 762, "length": 3 } }
+        "source": { "span": { "start": 768, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -391,7 +391,7 @@
             "span": { "start": 450, "length": 3 }
           }
         },
-        "source": { "span": { "start": 1195, "length": 3 } }
+        "source": { "span": { "start": 1201, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -465,7 +465,7 @@
             "span": { "start": 435, "length": 3 }
           }
         },
-        "source": { "span": { "start": 498, "length": 3 } }
+        "source": { "span": { "start": 501, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -544,7 +544,9 @@
                         "key": {
                           "name": {
                             "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
+                              "name": {
+                                "key": { "name": { "key": "funfoo" } }
+                              },
                               "scope": {
                                 "recordWithAccess": {
                                   "record": {
@@ -593,7 +595,7 @@
                             "lineBegin": 23,
                             "columnBegin": 3,
                             "lineEnd": 23,
-                            "columnEnd": 19
+                            "columnEnd": 22
                           }
                         }
                       }
@@ -687,7 +689,7 @@
             "span": { "start": 435, "length": 3 }
           }
         },
-        "source": { "span": { "start": 551, "length": 3 } }
+        "source": { "span": { "start": 554, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -766,7 +768,9 @@
                         "key": {
                           "name": {
                             "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
+                              "name": {
+                                "key": { "name": { "key": "funfoo" } }
+                              },
                               "scope": {
                                 "recordWithAccess": {
                                   "record": {
@@ -815,7 +819,7 @@
                             "lineBegin": 23,
                             "columnBegin": 3,
                             "lineEnd": 23,
-                            "columnEnd": 19
+                            "columnEnd": 22
                           }
                         }
                       }
@@ -909,7 +913,7 @@
             "span": { "start": 435, "length": 3 }
           }
         },
-        "source": { "span": { "start": 581, "length": 3 } }
+        "source": { "span": { "start": 584, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -988,7 +992,9 @@
                         "key": {
                           "name": {
                             "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
+                              "name": {
+                                "key": { "name": { "key": "funfoo" } }
+                              },
                               "scope": {
                                 "recordWithAccess": {
                                   "record": {
@@ -1037,7 +1043,7 @@
                             "lineBegin": 23,
                             "columnBegin": 3,
                             "lineEnd": 23,
-                            "columnEnd": 19
+                            "columnEnd": 22
                           }
                         }
                       }
@@ -1131,7 +1137,7 @@
             "span": { "start": 435, "length": 3 }
           }
         },
-        "source": { "span": { "start": 757, "length": 3 } }
+        "source": { "span": { "start": 763, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -1210,7 +1216,9 @@
                         "key": {
                           "name": {
                             "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
+                              "name": {
+                                "key": { "name": { "key": "funfoo" } }
+                              },
                               "scope": {
                                 "recordWithAccess": {
                                   "record": {
@@ -1259,7 +1267,7 @@
                             "lineBegin": 23,
                             "columnBegin": 3,
                             "lineEnd": 23,
-                            "columnEnd": 19
+                            "columnEnd": 22
                           }
                         }
                       }
@@ -1353,7 +1361,7 @@
             "span": { "start": 435, "length": 3 }
           }
         },
-        "source": { "span": { "start": 833, "length": 3 } }
+        "source": { "span": { "start": 839, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -1432,7 +1440,9 @@
                         "key": {
                           "name": {
                             "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
+                              "name": {
+                                "key": { "name": { "key": "funfoo" } }
+                              },
                               "scope": {
                                 "recordWithAccess": {
                                   "record": {
@@ -1481,7 +1491,7 @@
                             "lineBegin": 23,
                             "columnBegin": 3,
                             "lineEnd": 23,
-                            "columnEnd": 19
+                            "columnEnd": 22
                           }
                         }
                       }
@@ -1575,7 +1585,7 @@
             "span": { "start": 435, "length": 3 }
           }
         },
-        "source": { "span": { "start": 1051, "length": 3 } }
+        "source": { "span": { "start": 1057, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -1654,7 +1664,9 @@
                         "key": {
                           "name": {
                             "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
+                              "name": {
+                                "key": { "name": { "key": "funfoo" } }
+                              },
                               "scope": {
                                 "recordWithAccess": {
                                   "record": {
@@ -1703,7 +1715,7 @@
                             "lineBegin": 23,
                             "columnBegin": 3,
                             "lineEnd": 23,
-                            "columnEnd": 19
+                            "columnEnd": 22
                           }
                         }
                       }
@@ -1797,7 +1809,7 @@
             "span": { "start": 435, "length": 3 }
           }
         },
-        "source": { "span": { "start": 1190, "length": 3 } }
+        "source": { "span": { "start": 1196, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -1876,7 +1888,9 @@
                         "key": {
                           "name": {
                             "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
+                              "name": {
+                                "key": { "name": { "key": "funfoo" } }
+                              },
                               "scope": {
                                 "recordWithAccess": {
                                   "record": {
@@ -1925,7 +1939,7 @@
                             "lineBegin": 23,
                             "columnBegin": 3,
                             "lineEnd": 23,
-                            "columnEnd": 19
+                            "columnEnd": 22
                           }
                         }
                       }
@@ -2019,7 +2033,7 @@
             "span": { "start": 435, "length": 3 }
           }
         },
-        "source": { "span": { "start": 1271, "length": 3 } }
+        "source": { "span": { "start": 1277, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -2098,7 +2112,9 @@
                         "key": {
                           "name": {
                             "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
+                              "name": {
+                                "key": { "name": { "key": "funfoo" } }
+                              },
                               "scope": {
                                 "recordWithAccess": {
                                   "record": {
@@ -2147,7 +2163,7 @@
                             "lineBegin": 23,
                             "columnBegin": 3,
                             "lineEnd": 23,
-                            "columnEnd": 19
+                            "columnEnd": 22
                           }
                         }
                       }
@@ -2238,10 +2254,10 @@
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 600, "length": 2 }
+            "span": { "start": 603, "length": 2 }
           }
         },
-        "source": { "span": { "start": 709, "length": 2 } }
+        "source": { "span": { "start": 712, "length": 2 } }
       },
       "entity": {
         "cxx": {
@@ -2316,7 +2332,7 @@
             "span": { "start": 231, "length": 2 }
           }
         },
-        "source": { "span": { "start": 639, "length": 2 } }
+        "source": { "span": { "start": 642, "length": 2 } }
       },
       "entity": {
         "cxx": {
@@ -2386,7 +2402,7 @@
             "span": { "start": 231, "length": 2 }
           }
         },
-        "source": { "span": { "start": 1171, "length": 2 } }
+        "source": { "span": { "start": 1177, "length": 2 } }
       },
       "entity": {
         "cxx": {
@@ -2456,7 +2472,7 @@
             "span": { "start": 247, "length": 2 }
           }
         },
-        "source": { "span": { "start": 577, "length": 2 } }
+        "source": { "span": { "start": 580, "length": 2 } }
       },
       "entity": {
         "cxx": {
@@ -2667,7 +2683,7 @@
             "span": { "start": 247, "length": 2 }
           }
         },
-        "source": { "span": { "start": 1175, "length": 2 } }
+        "source": { "span": { "start": 1181, "length": 2 } }
       },
       "entity": {
         "cxx": {
@@ -3075,7 +3091,7 @@
             "span": { "start": 260, "length": 3 }
           }
         },
-        "source": { "span": { "start": 520, "length": 3 } }
+        "source": { "span": { "start": 523, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -3137,7 +3153,7 @@
             "span": { "start": 260, "length": 3 }
           }
         },
-        "source": { "span": { "start": 771, "length": 3 } }
+        "source": { "span": { "start": 777, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -3199,7 +3215,7 @@
             "span": { "start": 260, "length": 3 }
           }
         },
-        "source": { "span": { "start": 975, "length": 3 } }
+        "source": { "span": { "start": 981, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -3261,7 +3277,7 @@
             "span": { "start": 260, "length": 3 }
           }
         },
-        "source": { "span": { "start": 989, "length": 3 } }
+        "source": { "span": { "start": 995, "length": 3 } }
       },
       "entity": {
         "cxx": {
@@ -3323,7 +3339,7 @@
             "span": { "start": 260, "length": 3 }
           }
         },
-        "source": { "span": { "start": 1209, "length": 3 } }
+        "source": { "span": { "start": 1215, "length": 3 } }
       },
       "entity": {
         "cxx": {

@@ -28,11 +28,17 @@ predicate SearchByName:
     language: code.Language # optional language filter, could be wild
   }
   { SearchCase, Name, Entity, Location, Kind, Language } where
-    (Sensitive = SearchCase;
-      search.code.SearchByNameAndLanguage { Name, Language, Entity }) |
-    (Insensitive = SearchCase;
-      search.code.SearchByLowerCaseNameAndLanguage { Name, Language, Entity });
-    EntityLocationAndKind { Entity, Location, Kind };
+    if (Insensitive = SearchCase) # default to case sensitive if not provided
+    then (
+      search.code.SearchByLowerCaseNameAndLanguage { Name, Language, Entity };
+      EntityLocationAndKind { Entity, Location, Kind }
+    ) else ( # case sensitive, either kinded or not
+      ( search.code.SearchByNameKindAndLanguage { Name, Language, Kind, Entity };
+        codemarkup.EntityLocation { Entity, Location }
+      ) | (
+        search.code.SearchByNameAndLanguage { Name, Language, Entity };
+        EntityLocationAndKind { Entity, Location, Kind } )
+    );
 
 #
 # search by name and scope, with language and kind filters.

@@ -6,187 +6,6 @@
       "name": "foo",
       "entity": {
         "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "foo" } } },
-                    "scope": {
-                      "recordWithAccess": {
-                        "record": {
-                          "key": {
-                            "name": { "key": "Foo" },
-                            "scope": {
-                              "namespace_": {
-                                "key": {
-                                  "name": { "key": "N2" },
-                                  "parent": {
-                                    "key": { "name": { "key": "N1" } }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "access": 0
-                      }
-                    }
-                  }
-                },
-                "signature": {
-                  "key": {
-                    "returns": { "key": "N1::N2::Foo::Bar" },
-                    "parameters": [
-                      {
-                        "name": { "key": "" },
-                        "type": { "key": "N1::N2::Foo" }
-                      },
-                      {
-                        "name": { "key": "" },
-                        "type": { "key": "N1::N2::Foo::Bar" }
-                      }
-                    ]
-                  }
-                },
-                "method": {
-                  "isVirtual": false,
-                  "isConst": false,
-                  "isVolatile": false,
-                  "refQualifier": 0
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 23,
-                  "columnBegin": 3,
-                  "lineEnd": 23,
-                  "columnEnd": 19
-                }
-              }
-            }
-          }
-        }
-      },
-      "location": {
-        "name": "foo",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 23,
-            "columnBegin": 3,
-            "lineEnd": 23,
-            "columnEnd": 19
-          }
-        },
-        "destination": {
-          "file": { "key": "test.cpp" },
-          "span": { "start": 494, "length": 3 }
-        }
-      },
-      "kind": 7,
-      "language": 0
-    }
-  },
-  {
-    "key": {
-      "searchcase": 1,
-      "name": "foo",
-      "entity": {
-        "cxx": {
-          "defn": {
-            "function_": {
-              "key": {
-                "declaration": {
-                  "key": {
-                    "name": {
-                      "key": {
-                        "name": { "key": { "name": { "key": "foo" } } },
-                        "scope": {
-                          "recordWithAccess": {
-                            "record": {
-                              "key": {
-                                "name": { "key": "Foo" },
-                                "scope": {
-                                  "namespace_": {
-                                    "key": {
-                                      "name": { "key": "N2" },
-                                      "parent": {
-                                        "key": { "name": { "key": "N1" } }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            },
-                            "access": 0
-                          }
-                        }
-                      }
-                    },
-                    "signature": {
-                      "key": {
-                        "returns": { "key": "Foo::Bar" },
-                        "parameters": [
-                          {
-                            "name": { "key": "" },
-                            "type": { "key": "N1::N2::Foo" }
-                          },
-                          {
-                            "name": { "key": "" },
-                            "type": { "key": "N1::N2::Foo::Bar" }
-                          }
-                        ]
-                      }
-                    },
-                    "method": {
-                      "isVirtual": false,
-                      "isConst": false,
-                      "isVolatile": false,
-                      "refQualifier": 0
-                    },
-                    "source": {
-                      "file": { "key": "test.cpp" },
-                      "lineBegin": 40,
-                      "columnBegin": 1,
-                      "lineEnd": 46,
-                      "columnEnd": 1
-                    }
-                  }
-                },
-                "isInline": false
-              }
-            }
-          }
-        }
-      },
-      "location": {
-        "name": "foo",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 40,
-            "columnBegin": 1,
-            "lineEnd": 46,
-            "columnEnd": 1
-          }
-        },
-        "destination": {
-          "file": { "key": "test.cpp" },
-          "span": { "start": 753, "length": 3 }
-        }
-      },
-      "kind": 7,
-      "language": 0
-    }
-  },
-  {
-    "key": {
-      "searchcase": 1,
-      "name": "foo",
-      "entity": {
-        "cxx": {
           "defn": {
             "record_": {
               "key": {
@@ -262,7 +81,9 @@
                         "key": {
                           "name": {
                             "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
+                              "name": {
+                                "key": { "name": { "key": "funfoo" } }
+                              },
                               "scope": {
                                 "recordWithAccess": {
                                   "record": {
@@ -311,7 +132,7 @@
                             "lineBegin": 23,
                             "columnBegin": 3,
                             "lineEnd": 23,
-                            "columnEnd": 19
+                            "columnEnd": 22
                           }
                         }
                       }

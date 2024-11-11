@@ -36,7 +36,7 @@
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 600, "length": 2 }
+            "span": { "start": 603, "length": 2 }
           }
         }
       },
@@ -81,7 +81,7 @@
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 612, "length": 3 }
+            "span": { "start": 615, "length": 3 }
           }
         }
       },
@@ -193,7 +193,7 @@
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 540, "length": 10 }
+            "span": { "start": 543, "length": 10 }
           }
         }
       },
@@ -305,7 +305,7 @@
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 1179, "length": 10 }
+            "span": { "start": 1185, "length": 10 }
           }
         }
       },

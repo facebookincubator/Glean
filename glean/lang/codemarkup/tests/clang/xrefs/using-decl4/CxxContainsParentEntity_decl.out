@@ -134,7 +134,7 @@
                       "key": {
                         "name": {
                           "key": {
-                            "name": { "key": { "name": { "key": "foo" } } },
+                            "name": { "key": { "name": { "key": "funfoo" } } },
                             "scope": {
                               "recordWithAccess": {
                                 "record": {
@@ -183,7 +183,7 @@
                           "lineBegin": 23,
                           "columnBegin": 3,
                           "lineEnd": 23,
-                          "columnEnd": 19
+                          "columnEnd": 22
                         }
                       }
                     }
@@ -263,7 +263,7 @@
             "key": {
               "name": {
                 "key": {
-                  "name": { "key": { "name": { "key": "foo" } } },
+                  "name": { "key": { "name": { "key": "funfoo" } } },
                   "scope": {
                     "recordWithAccess": {
                       "record": {
@@ -307,7 +307,7 @@
                 "lineBegin": 23,
                 "columnBegin": 3,
                 "lineEnd": 23,
-                "columnEnd": 19
+                "columnEnd": 22
               }
             }
           }
@@ -389,7 +389,7 @@
                       "key": {
                         "name": {
                           "key": {
-                            "name": { "key": { "name": { "key": "foo" } } },
+                            "name": { "key": { "name": { "key": "funfoo" } } },
                             "scope": {
                               "recordWithAccess": {
                                 "record": {
@@ -438,7 +438,7 @@
                           "lineBegin": 23,
                           "columnBegin": 3,
                           "lineEnd": 23,
-                          "columnEnd": 19
+                          "columnEnd": 22
                         }
                       }
                     }
@@ -627,7 +627,7 @@
                       "key": {
                         "name": {
                           "key": {
-                            "name": { "key": { "name": { "key": "foo" } } },
+                            "name": { "key": { "name": { "key": "funfoo" } } },
                             "scope": {
                               "recordWithAccess": {
                                 "record": {
@@ -676,7 +676,7 @@
                           "lineBegin": 23,
                           "columnBegin": 3,
                           "lineEnd": 23,
-                          "columnEnd": 19
+                          "columnEnd": 22
                         }
                       }
                     }

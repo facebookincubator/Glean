@@ -1,0 +1,115 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "g",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "g" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "a.h" },
+                      "lineBegin": 12,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "g",
+        "file": { "key": "a.h" },
+        "location": {
+          "range": {
+            "file": { "key": "a.h" },
+            "lineBegin": 12,
+            "columnBegin": 1,
+            "lineEnd": 13,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "a.h" },
+          "span": { "start": 353, "length": 1 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "main",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "main" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 14,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "main",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 11,
+            "columnBegin": 1,
+            "lineEnd": 14,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 241, "length": 4 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
+  }
+]

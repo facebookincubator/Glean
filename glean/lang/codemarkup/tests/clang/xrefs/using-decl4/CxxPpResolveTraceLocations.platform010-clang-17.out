@@ -9,14 +9,14 @@
           "range": {
             "file": { "key": "test.cpp" },
             "lineBegin": 23,
-            "columnBegin": 11,
+            "columnBegin": 14,
             "lineEnd": 23,
-            "columnEnd": 13
+            "columnEnd": 16
           }
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 501, "length": 1 }
+          "span": { "start": 504, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -30,7 +30,7 @@
                     "scope": {
                       "local": {
                         "key": {
-                          "name": { "key": { "name": { "key": "foo" } } },
+                          "name": { "key": { "name": { "key": "funfoo" } } },
                           "scope": {
                             "recordWithAccess": {
                               "record": {
@@ -61,9 +61,9 @@
                 "source": {
                   "file": { "key": "test.cpp" },
                   "lineBegin": 23,
-                  "columnBegin": 11,
+                  "columnBegin": 14,
                   "lineEnd": 23,
-                  "columnEnd": 13
+                  "columnEnd": 16
                 }
               }
             }
@@ -81,14 +81,14 @@
           "range": {
             "file": { "key": "test.cpp" },
             "lineBegin": 23,
-            "columnBegin": 16,
+            "columnBegin": 19,
             "lineEnd": 23,
-            "columnEnd": 18
+            "columnEnd": 21
           }
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 506, "length": 1 }
+          "span": { "start": 509, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -102,7 +102,7 @@
                     "scope": {
                       "local": {
                         "key": {
-                          "name": { "key": { "name": { "key": "foo" } } },
+                          "name": { "key": { "name": { "key": "funfoo" } } },
                           "scope": {
                             "recordWithAccess": {
                               "record": {
@@ -133,9 +133,9 @@
                 "source": {
                   "file": { "key": "test.cpp" },
                   "lineBegin": 23,
-                  "columnBegin": 16,
+                  "columnBegin": 19,
                   "lineEnd": 23,
-                  "columnEnd": 18
+                  "columnEnd": 21
                 }
               }
             }
@@ -160,7 +160,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 523, "length": 1 }
+          "span": { "start": 526, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -232,7 +232,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 528, "length": 1 }
+          "span": { "start": 531, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -304,7 +304,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 559, "length": 1 }
+          "span": { "start": 562, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -366,7 +366,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 564, "length": 1 }
+          "span": { "start": 567, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -421,14 +421,14 @@
           "range": {
             "file": { "key": "test.cpp" },
             "lineBegin": 40,
-            "columnBegin": 19,
+            "columnBegin": 22,
             "lineEnd": 40,
-            "columnEnd": 21
+            "columnEnd": 24
           }
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 760, "length": 1 }
+          "span": { "start": 766, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -442,7 +442,7 @@
                     "scope": {
                       "local": {
                         "key": {
-                          "name": { "key": { "name": { "key": "foo" } } },
+                          "name": { "key": { "name": { "key": "funfoo" } } },
                           "scope": {
                             "recordWithAccess": {
                               "record": {
@@ -473,9 +473,9 @@
                 "source": {
                   "file": { "key": "test.cpp" },
                   "lineBegin": 40,
-                  "columnBegin": 19,
+                  "columnBegin": 22,
                   "lineEnd": 40,
-                  "columnEnd": 21
+                  "columnEnd": 24
                 }
               }
             }
@@ -493,14 +493,14 @@
           "range": {
             "file": { "key": "test.cpp" },
             "lineBegin": 40,
-            "columnBegin": 24,
+            "columnBegin": 27,
             "lineEnd": 40,
-            "columnEnd": 26
+            "columnEnd": 29
           }
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 765, "length": 1 }
+          "span": { "start": 771, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -514,7 +514,7 @@
                     "scope": {
                       "local": {
                         "key": {
-                          "name": { "key": { "name": { "key": "foo" } } },
+                          "name": { "key": { "name": { "key": "funfoo" } } },
                           "scope": {
                             "recordWithAccess": {
                               "record": {
@@ -545,9 +545,9 @@
                 "source": {
                   "file": { "key": "test.cpp" },
                   "lineBegin": 40,
-                  "columnBegin": 24,
+                  "columnBegin": 27,
                   "lineEnd": 40,
-                  "columnEnd": 26
+                  "columnEnd": 29
                 }
               }
             }
@@ -572,7 +572,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 978, "length": 1 }
+          "span": { "start": 984, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -644,7 +644,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 983, "length": 1 }
+          "span": { "start": 989, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -716,7 +716,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 1198, "length": 1 }
+          "span": { "start": 1204, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -778,7 +778,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 1203, "length": 1 }
+          "span": { "start": 1209, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -990,7 +990,9 @@
                         "key": {
                           "name": {
                             "key": {
-                              "name": { "key": { "name": { "key": "foo" } } },
+                              "name": {
+                                "key": { "name": { "key": "funfoo" } }
+                              },
                               "scope": {
                                 "recordWithAccess": {
                                   "record": {
@@ -1039,7 +1041,7 @@
                             "lineBegin": 23,
                             "columnBegin": 3,
                             "lineEnd": 23,
-                            "columnEnd": 19
+                            "columnEnd": 22
                           }
                         }
                       }
@@ -1175,7 +1177,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 600, "length": 2 }
+          "span": { "start": 603, "length": 2 }
         }
       },
       "tuplefield1": {
@@ -2010,7 +2012,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 612, "length": 3 }
+          "span": { "start": 615, "length": 3 }
         }
       },
       "tuplefield1": {
@@ -2063,7 +2065,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 516, "length": 3 }
+          "span": { "start": 519, "length": 3 }
         }
       },
       "tuplefield1": {
@@ -2147,7 +2149,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 971, "length": 3 }
+          "span": { "start": 977, "length": 3 }
         }
       },
       "tuplefield1": {
@@ -2282,7 +2284,7 @@
   {
     "key": {
       "tuplefield0": {
-        "name": "foo",
+        "name": "funfoo",
         "file": { "key": "test.cpp" },
         "location": {
           "range": {
@@ -2290,12 +2292,12 @@
             "lineBegin": 23,
             "columnBegin": 3,
             "lineEnd": 23,
-            "columnEnd": 19
+            "columnEnd": 22
           }
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 494, "length": 3 }
+          "span": { "start": 494, "length": 6 }
         }
       },
       "tuplefield1": {
@@ -2305,7 +2307,7 @@
               "key": {
                 "name": {
                   "key": {
-                    "name": { "key": { "name": { "key": "foo" } } },
+                    "name": { "key": { "name": { "key": "funfoo" } } },
                     "scope": {
                       "recordWithAccess": {
                         "record": {
@@ -2354,7 +2356,7 @@
                   "lineBegin": 23,
                   "columnBegin": 3,
                   "lineEnd": 23,
-                  "columnEnd": 19
+                  "columnEnd": 22
                 }
               }
             }
@@ -2366,7 +2368,7 @@
   {
     "key": {
       "tuplefield0": {
-        "name": "foo",
+        "name": "funfoo",
         "file": { "key": "test.cpp" },
         "location": {
           "range": {
@@ -2379,7 +2381,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 753, "length": 3 }
+          "span": { "start": 756, "length": 6 }
         }
       },
       "tuplefield1": {
@@ -2391,7 +2393,7 @@
                   "key": {
                     "name": {
                       "key": {
-                        "name": { "key": { "name": { "key": "foo" } } },
+                        "name": { "key": { "name": { "key": "funfoo" } } },
                         "scope": {
                           "recordWithAccess": {
                             "record": {
@@ -2468,7 +2470,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 540, "length": 10 }
+          "span": { "start": 543, "length": 10 }
         }
       },
       "tuplefield1": {
@@ -2534,7 +2536,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 1179, "length": 10 }
+          "span": { "start": 1185, "length": 10 }
         }
       },
       "tuplefield1": {
@@ -2605,7 +2607,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 775, "length": 1 }
+          "span": { "start": 781, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -2619,7 +2621,7 @@
                     "scope": {
                       "local": {
                         "key": {
-                          "name": { "key": { "name": { "key": "foo" } } },
+                          "name": { "key": { "name": { "key": "funfoo" } } },
                           "scope": {
                             "recordWithAccess": {
                               "record": {
@@ -2677,7 +2679,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 993, "length": 1 }
+          "span": { "start": 999, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -2749,7 +2751,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 1213, "length": 1 }
+          "span": { "start": 1219, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -2811,7 +2813,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 801, "length": 1 }
+          "span": { "start": 807, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -2825,7 +2827,7 @@
                     "scope": {
                       "local": {
                         "key": {
-                          "name": { "key": { "name": { "key": "foo" } } },
+                          "name": { "key": { "name": { "key": "funfoo" } } },
                           "scope": {
                             "recordWithAccess": {
                               "record": {
@@ -2883,7 +2885,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 1019, "length": 1 }
+          "span": { "start": 1025, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -2955,7 +2957,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 1239, "length": 1 }
+          "span": { "start": 1245, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -3017,7 +3019,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 837, "length": 1 }
+          "span": { "start": 843, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -3031,7 +3033,7 @@
                     "scope": {
                       "local": {
                         "key": {
-                          "name": { "key": { "name": { "key": "foo" } } },
+                          "name": { "key": { "name": { "key": "funfoo" } } },
                           "scope": {
                             "recordWithAccess": {
                               "record": {
@@ -3089,7 +3091,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 1055, "length": 1 }
+          "span": { "start": 1061, "length": 1 }
         }
       },
       "tuplefield1": {
@@ -3161,7 +3163,7 @@
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 1275, "length": 1 }
+          "span": { "start": 1281, "length": 1 }
         }
       },
       "tuplefield1": {

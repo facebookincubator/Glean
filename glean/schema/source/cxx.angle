@@ -167,8 +167,8 @@ predicate EnumDeclarationByName :
     scope : Scope,
     decl : EnumDeclaration
   } stored { NameStr, Scope, Decl } where
+    EnumDeclaration { name = { Name, Scope } } = Decl;
     Name = cxx1.Name NameStr;
-    EnumDeclaration { name = { Name, Scope } } = Decl
 
 # C++ method ref qualifier
 type RefQualifier = enum { None_ | LValue | RValue }

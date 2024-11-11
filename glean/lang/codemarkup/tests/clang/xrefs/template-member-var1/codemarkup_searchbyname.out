@@ -2,8 +2,8 @@
   "@generated",
   {
     "key": {
+      "searchcase": 0,
       "name": "A",
-      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -147,13 +147,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "A",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 11,
+            "columnBegin": 22,
+            "lineEnd": 15,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 296, "length": 1 }
+        }
+      },
+      "kind": 24,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "A",
-      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -297,13 +316,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "A",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 17,
+            "columnBegin": 1,
+            "lineEnd": 21,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 398, "length": 1 }
+        }
+      },
+      "kind": 24,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "X",
-      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -333,13 +371,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "X",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 34,
+            "lineEnd": 9,
+            "columnEnd": 44
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 261, "length": 1 }
+        }
+      },
+      "kind": 24,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "bar",
-      "language": 0,
       "entity": {
         "cxx": {
           "decl": {
@@ -376,13 +433,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "bar",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 13,
+            "columnBegin": 3,
+            "lineEnd": 13,
+            "columnEnd": 14
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 329, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "bar",
-      "language": 0,
       "entity": {
         "cxx": {
           "decl": {
@@ -419,13 +495,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "bar",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 13,
+            "columnBegin": 3,
+            "lineEnd": 37,
+            "columnEnd": 19
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 759, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "bar",
-      "language": 0,
       "entity": {
         "cxx": {
           "decl": {
@@ -462,13 +557,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "bar",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 36,
+            "columnBegin": 1,
+            "lineEnd": 37,
+            "columnEnd": 19
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 759, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "bar",
-      "language": 0,
       "entity": {
         "cxx": {
           "decl": {
@@ -505,13 +619,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "bar",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 19,
+            "columnBegin": 3,
+            "lineEnd": 19,
+            "columnEnd": 16
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 438, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "bar",
-      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -548,13 +681,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "bar",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 33,
+            "columnBegin": 1,
+            "lineEnd": 33,
+            "columnEnd": 32
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 666, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "bar",
-      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -591,13 +743,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "bar",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 40,
+            "columnBegin": 1,
+            "lineEnd": 40,
+            "columnEnd": 15
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 794, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "baz",
-      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -628,19 +799,38 @@
                   "lineBegin": 28,
                   "columnBegin": 1,
                   "lineEnd": 30,
-                  "columnEnd": 21
+                  "columnEnd": 17
                 }
               }
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "baz",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 28,
+            "columnBegin": 1,
+            "lineEnd": 30,
+            "columnEnd": 17
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 591, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "baz",
-      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -677,13 +867,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "baz",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 34,
+            "columnBegin": 1,
+            "lineEnd": 34,
+            "columnEnd": 58
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 726, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "baz",
-      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -714,19 +923,38 @@
                   "lineBegin": 28,
                   "columnBegin": 1,
                   "lineEnd": 30,
-                  "columnEnd": 21
+                  "columnEnd": 17
                 }
               }
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "baz",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 28,
+            "columnBegin": 1,
+            "lineEnd": 30,
+            "columnEnd": 17
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 591, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "baz",
-      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -757,19 +985,38 @@
                   "lineBegin": 28,
                   "columnBegin": 1,
                   "lineEnd": 30,
-                  "columnEnd": 21
+                  "columnEnd": 17
                 }
               }
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "baz",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 28,
+            "columnBegin": 1,
+            "lineEnd": 30,
+            "columnEnd": 17
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 591, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "baz",
-      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -806,13 +1053,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "baz",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 41,
+            "columnBegin": 22,
+            "lineEnd": 41,
+            "columnEnd": 41
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 837, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "f",
-      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -843,13 +1109,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "f",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 43,
+            "columnBegin": 1,
+            "lineEnd": 61,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 848, "length": 1 }
+        }
+      },
+      "kind": 13,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "foo",
-      "language": 0,
       "entity": {
         "cxx": {
           "decl": {
@@ -886,13 +1171,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 12,
+            "columnBegin": 3,
+            "lineEnd": 12,
+            "columnEnd": 16
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 313, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "foo",
-      "language": 0,
       "entity": {
         "cxx": {
           "decl": {
@@ -929,13 +1233,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 18,
+            "columnBegin": 3,
+            "lineEnd": 18,
+            "columnEnd": 16
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 420, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "foo",
-      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -972,13 +1295,32 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 32,
+            "columnBegin": 1,
+            "lineEnd": 32,
+            "columnEnd": 34
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 632, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "foo",
-      "language": 0,
       "entity": {
         "cxx": {
           "defn": {
@@ -1015,7 +1357,26 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 39,
+            "columnBegin": 1,
+            "lineEnd": 39,
+            "columnEnd": 15
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 777, "length": 3 }
+        }
+      },
+      "kind": 14,
+      "language": 0
     }
   }
 ]

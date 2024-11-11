@@ -131,7 +131,7 @@
               "key": {
                 "name": {
                   "key": {
-                    "name": { "key": { "name": { "key": "foo" } } },
+                    "name": { "key": { "name": { "key": "funfoo" } } },
                     "scope": {
                       "recordWithAccess": {
                         "record": {
@@ -193,7 +193,7 @@
           "key": {
             "name": {
               "key": {
-                "name": { "key": { "name": { "key": "foo" } } },
+                "name": { "key": { "name": { "key": "funfoo" } } },
                 "scope": {
                   "recordWithAccess": {
                     "record": {
@@ -1007,7 +1007,7 @@
                     "key": {
                       "name": {
                         "key": {
-                          "name": { "key": { "name": { "key": "foo" } } },
+                          "name": { "key": { "name": { "key": "funfoo" } } },
                           "scope": {
                             "recordWithAccess": {
                               "record": {
@@ -1056,7 +1056,7 @@
                         "lineBegin": 23,
                         "columnBegin": 3,
                         "lineEnd": 23,
-                        "columnEnd": 19
+                        "columnEnd": 22
                       }
                     }
                   }
@@ -1749,7 +1749,7 @@
                 "scope": {
                   "local": {
                     "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
+                      "name": { "key": { "name": { "key": "funfoo" } } },
                       "scope": {
                         "recordWithAccess": {
                           "record": {
@@ -1780,9 +1780,9 @@
             "source": {
               "file": { "key": "test.cpp" },
               "lineBegin": 23,
-              "columnBegin": 11,
+              "columnBegin": 14,
               "lineEnd": 23,
-              "columnEnd": 13
+              "columnEnd": 16
             }
           }
         }
@@ -1796,7 +1796,7 @@
                 "scope": {
                   "local": {
                     "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
+                      "name": { "key": { "name": { "key": "funfoo" } } },
                       "scope": {
                         "recordWithAccess": {
                           "record": {
@@ -1827,9 +1827,9 @@
             "source": {
               "file": { "key": "test.cpp" },
               "lineBegin": 23,
-              "columnBegin": 11,
+              "columnBegin": 14,
               "lineEnd": 23,
-              "columnEnd": 13
+              "columnEnd": 16
             }
           }
         }
@@ -1847,7 +1847,7 @@
                 "scope": {
                   "local": {
                     "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
+                      "name": { "key": { "name": { "key": "funfoo" } } },
                       "scope": {
                         "recordWithAccess": {
                           "record": {
@@ -1878,8 +1878,106 @@
             "source": {
               "file": { "key": "test.cpp" },
               "lineBegin": 40,
-              "columnBegin": 19,
+              "columnBegin": 22,
               "lineEnd": 40,
+              "columnEnd": 24
+            }
+          }
+        }
+      },
+      "base": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "funfoo" } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": {
+                                    "name": { "key": "N2" },
+                                    "parent": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "N1::N2::Foo" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 40,
+              "columnBegin": 22,
+              "lineEnd": 40,
+              "columnEnd": 24
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "variable": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "" },
+                "scope": {
+                  "local": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "funfoo" } } },
+                      "scope": {
+                        "recordWithAccess": {
+                          "record": {
+                            "key": {
+                              "name": { "key": "Foo" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": {
+                                    "name": { "key": "N2" },
+                                    "parent": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "access": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "type": { "key": "N1::N2::Foo::Bar" },
+            "kind": { "local": { "kind": 2, "attribute": 0 } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 23,
+              "columnBegin": 19,
+              "lineEnd": 23,
               "columnEnd": 21
             }
           }
@@ -1894,7 +1992,7 @@
                 "scope": {
                   "local": {
                     "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
+                      "name": { "key": { "name": { "key": "funfoo" } } },
                       "scope": {
                         "recordWithAccess": {
                           "record": {
@@ -1920,13 +2018,13 @@
                 }
               }
             },
-            "type": { "key": "N1::N2::Foo" },
+            "type": { "key": "N1::N2::Foo::Bar" },
             "kind": { "local": { "kind": 2, "attribute": 0 } },
             "source": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 40,
+              "lineBegin": 23,
               "columnBegin": 19,
-              "lineEnd": 40,
+              "lineEnd": 23,
               "columnEnd": 21
             }
           }
@@ -1945,105 +2043,7 @@
                 "scope": {
                   "local": {
                     "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "Foo" },
-                              "scope": {
-                                "namespace_": {
-                                  "key": {
-                                    "name": { "key": "N2" },
-                                    "parent": {
-                                      "key": { "name": { "key": "N1" } }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "type": { "key": "N1::N2::Foo::Bar" },
-            "kind": { "local": { "kind": 2, "attribute": 0 } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 23,
-              "columnBegin": 16,
-              "lineEnd": 23,
-              "columnEnd": 18
-            }
-          }
-        }
-      },
-      "base": {
-        "variable": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "" },
-                "scope": {
-                  "local": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
-                      "scope": {
-                        "recordWithAccess": {
-                          "record": {
-                            "key": {
-                              "name": { "key": "Foo" },
-                              "scope": {
-                                "namespace_": {
-                                  "key": {
-                                    "name": { "key": "N2" },
-                                    "parent": {
-                                      "key": { "name": { "key": "N1" } }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "access": 0
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "type": { "key": "N1::N2::Foo::Bar" },
-            "kind": { "local": { "kind": 2, "attribute": 0 } },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 23,
-              "columnBegin": 16,
-              "lineEnd": 23,
-              "columnEnd": 18
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "target": {
-        "variable": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": "" },
-                "scope": {
-                  "local": {
-                    "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
+                      "name": { "key": { "name": { "key": "funfoo" } } },
                       "scope": {
                         "recordWithAccess": {
                           "record": {
@@ -2074,9 +2074,9 @@
             "source": {
               "file": { "key": "test.cpp" },
               "lineBegin": 40,
-              "columnBegin": 24,
+              "columnBegin": 27,
               "lineEnd": 40,
-              "columnEnd": 26
+              "columnEnd": 29
             }
           }
         }
@@ -2090,7 +2090,7 @@
                 "scope": {
                   "local": {
                     "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
+                      "name": { "key": { "name": { "key": "funfoo" } } },
                       "scope": {
                         "recordWithAccess": {
                           "record": {
@@ -2121,9 +2121,9 @@
             "source": {
               "file": { "key": "test.cpp" },
               "lineBegin": 40,
-              "columnBegin": 24,
+              "columnBegin": 27,
               "lineEnd": 40,
-              "columnEnd": 26
+              "columnEnd": 29
             }
           }
         }
@@ -2535,7 +2535,7 @@
                 "scope": {
                   "local": {
                     "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
+                      "name": { "key": { "name": { "key": "funfoo" } } },
                       "scope": {
                         "recordWithAccess": {
                           "record": {
@@ -2582,7 +2582,7 @@
                 "scope": {
                   "local": {
                     "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
+                      "name": { "key": { "name": { "key": "funfoo" } } },
                       "scope": {
                         "recordWithAccess": {
                           "record": {
@@ -2805,7 +2805,7 @@
                 "scope": {
                   "local": {
                     "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
+                      "name": { "key": { "name": { "key": "funfoo" } } },
                       "scope": {
                         "recordWithAccess": {
                           "record": {
@@ -2852,7 +2852,7 @@
                 "scope": {
                   "local": {
                     "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
+                      "name": { "key": { "name": { "key": "funfoo" } } },
                       "scope": {
                         "recordWithAccess": {
                           "record": {
@@ -3075,7 +3075,7 @@
                 "scope": {
                   "local": {
                     "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
+                      "name": { "key": { "name": { "key": "funfoo" } } },
                       "scope": {
                         "recordWithAccess": {
                           "record": {
@@ -3122,7 +3122,7 @@
                 "scope": {
                   "local": {
                     "key": {
-                      "name": { "key": { "name": { "key": "foo" } } },
+                      "name": { "key": { "name": { "key": "funfoo" } } },
                       "scope": {
                         "recordWithAccess": {
                           "record": {

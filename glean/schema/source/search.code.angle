@@ -36,6 +36,8 @@ import search.python.1
 #
 
 # global symbol search with language constraint
+# migrate these to kind-based search so that the union of them covers each
+# language once
 predicate SearchByNameAndLanguage:
   {
     name: string,
@@ -48,7 +50,8 @@ predicate SearchByNameAndLanguage:
     ( JavaScript = Language; FlowSearchByName { Name, Entity } ) |
     ( Java = Language; JavaSearchByName { Name, Entity } ) |
     ( Kotlin = Language; KotlinSearchByName { Name, Entity } ) |
-    ( Cpp = Language; CxxSearchByName { Name, Entity } ) |
+  # see SearchByNameKindAndLanguage
+  #  ( Cpp = Language; CxxSearchByName { Name, Entity } ) |
     ( PreProcessor = Language; PpSearchByName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByName { Name, Entity } ) |

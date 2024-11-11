@@ -2,11 +2,8 @@
   "@generated": null,
   "facts_searched": {
     "cxx1.DeclarationNameSpan.5": 4,
-    "cxx1.FunctionDeclaration.5": 4,
-    "cxx1.FunctionDefinition.5": 4,
-    "cxx1.FunctionName.5": 1,
-    "cxx1.FunctionQName.5": 4,
-    "cxx1.Name.5": 1
+    "cxx1.FunctionDeclarationByName.5": 4,
+    "cxx1.FunctionDefinition.5": 4
   },
   "full_scans": [ ]
 }

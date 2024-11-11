@@ -20,7 +20,7 @@ using namespace N4;
 
 struct Foo {
   struct Bar {}; // visible to Foo definitions
-  Bar foo(Foo, Bar);
+  Bar funfoo(Foo, Bar);
   void bar(XXX, YYY);
 };
 
@@ -37,7 +37,7 @@ namespace M1 { struct ZZZ {}; }
 using namespace N1; // brings Foo into scope via the using decl in N1
 using namespace M1; // brings ZZZ into scope
 
-Foo::Bar Foo::foo(Foo, Bar) {
+Foo::Bar Foo::funfoo(Foo, Bar) {
   XXX x; // visible in N2
   YYY y; // visible in N2 via using
   Foo z; // visible in Foo, shouldn't go through any using decls
