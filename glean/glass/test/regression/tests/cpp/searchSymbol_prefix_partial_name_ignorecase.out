@@ -142,29 +142,6 @@
                 "symbol": "test/cpp//foo/foo/.f//.decl"
             },
             {
-                "kind": 15,
-                "language": 1,
-                "location": {
-                    "filepath": "test.cpp",
-                    "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 23,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    },
-                    "repository": "test"
-                },
-                "name": "four",
-                "qname": {
-                    "container": "foo::foo",
-                    "localName": "four"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/cpp//foo/foo/four/.decl"
-            },
-            {
                 "kind": 14,
                 "language": 1,
                 "location": {
@@ -186,29 +163,6 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//foo/fooFn/.f/int"
-            },
-            {
-                "kind": 15,
-                "language": 1,
-                "location": {
-                    "filepath": "test.cpp",
-                    "range": {
-                        "columnBegin": 11,
-                        "columnEnd": 19,
-                        "lineBegin": 45,
-                        "lineEnd": 45
-                    },
-                    "repository": "test"
-                },
-                "name": "fooI",
-                "qname": {
-                    "container": "foo::fooFn",
-                    "localName": "fooI"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/cpp//foo/fooFn/fooI/.decl"
             },
             {
                 "kind": 30,

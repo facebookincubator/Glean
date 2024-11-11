@@ -11,6 +11,59 @@
                     "range": {
                         "columnBegin": 1,
                         "columnEnd": 2,
+                        "lineBegin": 210,
+                        "lineEnd": 212
+                    },
+                    "repository": "test"
+                },
+                "name": "bar",
+                "qname": {
+                    "container": "N1::N2::Bar",
+                    "localName": "bar(N1::N2::N3::Foo)"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "N1::N2",
+                        "localName": "Bar"
+                    },
+                    "symbol": "test/cpp//N1/N2/Bar"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 193,
+                        "lineEnd": 193
+                    },
+                    "repository": "test"
+                },
+                "name": "bar",
+                "qname": {
+                    "container": "N1::N2::Bar",
+                    "localName": "bar(N1::N2::N3::Foo)"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo/.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
                         "lineBegin": 206,
                         "lineEnd": 208
                     },
@@ -48,6 +101,246 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo/.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 17,
+                        "lineBegin": 140,
+                        "lineEnd": 140
+                    },
+                    "repository": "test"
+                },
+                "name": "bozzo",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "bozzo"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/bozzo/.f//.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 30,
+                        "lineBegin": 142,
+                        "lineEnd": 142
+                    },
+                    "repository": "test"
+                },
+                "name": "getDouble",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "getDouble() const&"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/getDouble/.f//const,lvalue/.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 143,
+                        "lineEnd": 143
+                    },
+                    "repository": "test"
+                },
+                "name": "getDouble",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "getDouble() &"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/getDouble/.f//lvalue/.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 144,
+                        "lineEnd": 144
+                    },
+                    "repository": "test"
+                },
+                "name": "getDouble",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "getDouble() &&"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/getDouble/.f//rvalue/.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 29,
+                        "lineBegin": 148,
+                        "lineEnd": 148
+                    },
+                    "repository": "test"
+                },
+                "name": "thango",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "thango(int, Q::QQ &&) &&"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/thango/.f/int,Q::QQ+%26%26/rvalue/.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 28,
+                        "lineBegin": 147,
+                        "lineEnd": 147
+                    },
+                    "repository": "test"
+                },
+                "name": "thango",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "thango(int, Q::QQ &) &"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/thango/.f/int,Q::QQ+%26/lvalue/.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 38,
+                        "lineBegin": 146,
+                        "lineEnd": 146
+                    },
+                    "repository": "test"
+                },
+                "name": "thango",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "thango(int, const Q::QQ &) const&"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/thango/.f/int,const+Q::QQ+%26/const,lvalue/.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 43,
+                        "lineBegin": 150,
+                        "lineEnd": 150
+                    },
+                    "repository": "test"
+                },
+                "name": "thingo",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "thingo(pear<int, char>, Q::QQ &&) const"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/thingo/.f/pear%3Cint%20+char%3E,Q::QQ+%26%26/const/.decl"
             },
             {
                 "kind": 14,

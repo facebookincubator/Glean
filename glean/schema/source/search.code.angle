@@ -74,7 +74,8 @@ predicate SearchByLowerCaseNameAndLanguage:
     ( JavaScript = Language; FlowSearchByLowerCaseName { Name, Entity } ) |
     ( Java = Language; JavaSearchByLowerCaseName { Name, Entity } ) |
     ( Kotlin = Language; KotlinSearchByLowerCaseName { Name, Entity } ) |
-    ( Cpp = Language; CxxSearchByLowerCaseName { Name, Entity } ) |
+ # See SearchByLowerCaseNameKindAndLanguage
+ #  ( Cpp = Language; CxxSearchByLowerCaseName { Name, Entity } ) |
     ( PreProcessor = Language; PpSearchByLowerCaseName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByLowerCaseName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByLowerCaseName { Name, Entity } ) |
@@ -95,6 +96,18 @@ predicate SearchByNameKindAndLanguage:
   { NameStr, Language, Kinds, Entity } where
     Cpp = Language;
     CxxSearchByNameKindAndScopeFact { NameStr, _, Kinds, Entity };
+
+# Kind-optimized search, case insensitive.
+predicate SearchByLowerCaseNameKindAndLanguage:
+  {
+    name: string,
+    language: code.Language,
+    kinds: maybe codemarkup.types.SymbolKind, # `nothing` indicates unknown kind
+    entity: code.Entity
+  }
+  { NameStr, Language, Kinds, Entity } where
+    Cpp = Language;
+    CxxSearchByLowerCaseNameKindAndScopeFact { NameStr, _, Kinds, Entity };
 
 # scoped search (experimental!)
 
@@ -609,6 +622,18 @@ predicate CxxSearchByNameKindAndScopeFact:
     );
     CxxPreferDefinitions { Ent, OutEnt };
     { cxx = OutEnt } = Entity;
+
+# lower case form. names are normalized through cxx1.DeclByName
+predicate CxxSearchByLowerCaseNameKindAndScopeFact:
+  {
+    name: string,
+    scope : cxx1.Scope,
+    kinds: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity
+  }
+  { NameStr, Scope, Kinds, Entity } where
+    cxx1.NameLowerCase { NameStr, NameNormal };
+    CxxSearchByNameKindAndScopeFact { NameNormal, Scope, Kinds, Entity }
 
 # Helper for C++ to prefer definitions over declaration spam
 predicate CxxPreferDefinitions:

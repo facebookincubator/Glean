@@ -30,12 +30,16 @@ predicate SearchByName:
   { SearchCase, Name, Entity, Location, Kind, Language } where
     if (Insensitive = SearchCase) # default to case sensitive if not provided
     then (
-      search.code.SearchByLowerCaseNameAndLanguage { Name, Language, Entity };
-      EntityLocationAndKind { Entity, Location, Kind }
+      ( search.code.SearchByLowerCaseNameKindAndLanguage { Name, Language, Kind, Entity };
+        codemarkup.EntityLocation { Entity, Location }
+      ) | ( # old form
+        search.code.SearchByLowerCaseNameAndLanguage { Name, Language, Entity };
+        EntityLocationAndKind { Entity, Location, Kind }
+      )
     ) else ( # case sensitive, either kinded or not
       ( search.code.SearchByNameKindAndLanguage { Name, Language, Kind, Entity };
         codemarkup.EntityLocation { Entity, Location }
-      ) | (
+      ) | ( # old form
         search.code.SearchByNameAndLanguage { Name, Language, Entity };
         EntityLocationAndKind { Entity, Location, Kind } )
     );
