@@ -2,11 +2,12 @@
 
 package com.facebook.glean.predicates;
 
+import com.facebook.thrift.payload.ThriftSerializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class Predicate<T> {
+public abstract class Predicate<T extends ThriftSerializable> {
 
   private final String name;
 

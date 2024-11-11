@@ -2,11 +2,12 @@
 
 package com.facebook.glean.predicates;
 
+import com.facebook.thrift.payload.ThriftSerializable;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class SetPredicate<T> extends Predicate<T> {
+public class SetPredicate<T extends ThriftSerializable> extends Predicate<T> {
 
   protected Map<Integer, T> facts = new ConcurrentHashMap<>();
 
