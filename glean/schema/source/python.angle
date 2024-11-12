@@ -497,9 +497,10 @@ predicate SearchByLocalName:
     name : LocalName,
     decl : Declaration
   }
-  stored { python.LocalName NameStr , Decl } where
+  stored { LocalName, Decl } where
     python.DeclarationWithName { Name, Decl };
     python.NameToSName Name -> { local_name = python.Name NameStr };
+    LocalName = python.LocalName NameStr
 
 # Mapping between declarations and their **immediate** containers.
 # - a module is the container for everything declared at module level and submodules
