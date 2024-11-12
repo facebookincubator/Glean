@@ -525,14 +525,15 @@ toScopeTokens str = go (splitOnAny delimiters str)
 --
 codeSearchByName :: SearchQ Direct -> Angle CodeSearch.SearchByName
 codeSearchByName SearchQ{..} =
-  vars $ \p (k :: Angle (Maybe Code.SymbolKind)) ->
+  vars $ \p langs (k :: Angle (Maybe Code.SymbolKind)) ->
     p `where_` [
+      langs .= sig languagePat,
       p .= predicate @CodeSearch.SearchByName (
         rec $
           field @"name" nameQ $ -- may be prefix
           field @"searchcase" caseQ $
           field @"kind" k $ -- specific kinds only
-          field @"language" languagePat -- optional language filters
+          field @"language" langs -- optional language filters
         end),
       k .= sig kindPat
     ]
@@ -545,9 +546,9 @@ codeSearchByName SearchQ{..} =
 --
 codeSearchByScope :: SearchQ Direct -> Angle CodeSearch.SearchByScope
 codeSearchByScope SearchQ{..} =
-  vars $ \p (k :: Angle (Maybe Code.SymbolKind)) ->
+  vars $ \p langs (k :: Angle (Maybe Code.SymbolKind)) ->
     p `where_` [
-      k .= sig kindPat,
+      langs .= sig languagePat,
       p .= predicate @CodeSearch.SearchByScope (
         rec $
           field @"name" nameQ $
@@ -555,7 +556,8 @@ codeSearchByScope SearchQ{..} =
           field @"searchcase" caseQ $
           field @"kind" k $ -- specific kinds only
           field @"language" languagePat -- optional language filters
-        end)
+        end),
+      k .= sig kindPat
     ]
   where
     scopePat = fromMaybe (array []) (scopeTerm scopeQ) -- Nothing ==global scope
@@ -580,18 +582,19 @@ codeSearchByInheritedScope SearchQ{..} = (scopeQ, queryFn)
       let
         scopePat = fromMaybe (array []) (toScopeSetQuery caseTerm scopeTerm)
       in
-        vars $ \p (s :: Angle [Text]) ->
+        vars $ \p langs k (s :: Angle [Text]) ->
           p `where_` [
             s .= scopePat,
+            langs .= sig languagePat,
             p .= predicate @CodeSearch.SearchByScope (
               rec $
                 field @"name" nameQ $
                 field @"scope" s $
                 field @"searchcase" caseQ $
-                field @"kind" kindPat $ -- specific kinds only
-                field @"language" languagePat -- optional language filters
-              end
-            )
+                field @"kind" k $ -- specific kinds only
+                field @"language" langs -- optional language filters
+              end),
+            k .= sig kindPat
           ]
 
 -- | Scope terms expanded into set of names, then compiled to disjoint query
