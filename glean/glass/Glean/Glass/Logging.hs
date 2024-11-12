@@ -42,7 +42,7 @@ import qualified Logger.GleanGlass as Logger
 import Glean ( Repo(..) )
 import Glean.Glass.Base ( GleanDBName )
 import Glean.Glass.Types
-import Glean.Glass.Query (FeelingLuckyResult(..), RepoSearchResult)
+import Glean.Glass.NameSearch (FeelingLuckyResult(..), RepoSearchResult)
 import Glean.Glass.SnapshotBackend ( SnapshotStatus(..) )
 
 instance ActionLog GleanGlassLogger where

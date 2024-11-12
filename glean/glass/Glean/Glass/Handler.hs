@@ -91,11 +91,13 @@ import Glean.Glass.RepoMapping ( supportsCxxDeclarationSources )
 import Glean.Glass.Search.Class ( ResultLocation )
 import qualified Glean.Glass.Env as Glass
 import qualified Glean.Glass.Query as Query
-import Glean.Glass.Query (
+import Glean.Glass.NameSearch (
     SearchCase(..), SearchType(..),
     SearchScope(..), SearchMode(..),
-    SingleSymbol, FeelingLuckyResult(..),
-    QueryExpr(..)
+    SearchQuery(..), SingleSymbol, FeelingLuckyResult(..),
+    QueryExpr(..), RepoSearchResult, SymbolSearchData(..),
+    toSearchResult, ToSearchResult(..), AngleSearch(..), srEntity,
+    buildLuckyContainerQuery, buildSearchQuery
   )
 import qualified Glean.Glass.Query.Cxx as Cxx
 import Glean.Glass.XRefs
@@ -333,14 +335,14 @@ searchSymbol
       (Set.elems languageSet)
     sFeelingLucky =
       if symbolSearchOptions_feelingLucky then FeelingLucky else Normal
-    querySpec = Query.SearchQuery{..}
-    searchQs = Query.buildSearchQuery sFeelingLucky querySpec
+    querySpec = SearchQuery{..}
+    searchQs = buildSearchQuery sFeelingLucky querySpec
 
     -- run the same query across more than one glean db
     searchSymbolsIn
       :: RepoName
       -> Set GleanDBName
-      -> IO (Query.RepoSearchResult, Maybe ErrorLogger)
+      -> IO (RepoSearchResult, Maybe ErrorLogger)
     searchSymbolsIn repo dbs = Glass.withAllocationLimit env $
       case nonEmpty (Set.toList dbs) of
         Nothing -> pure ([], Nothing)
@@ -380,15 +382,15 @@ symbolIdOrder = symbolResult_symbol . fst
 
 -- Run a specific Query.AngleSearch query, with optional time boxing
 runSearch
-  :: Query.SearchQuery
+  :: SearchQuery
   -> RepoName
   -> ScmRevisions
   -> Maybe Int
   -> Bool
   -> Text
-  -> Query.AngleSearch
+  -> AngleSearch
   -> RepoHaxl u w [(SymbolResult, Maybe SymbolDescription)]
-runSearch querySpec repo scmRevs mlimit terse sString (Query.Search query) = do
+runSearch querySpec repo scmRevs mlimit terse sString (Search query) = do
   (ctx,names) <- case query of
     Complete q -> (Nothing,) <$> searchWithTimeLimit mlimit queryTimeLimit q
     InheritedScope sCase term searchFn -> do
@@ -407,9 +409,9 @@ runSearch querySpec repo scmRevs mlimit terse sString (Query.Search query) = do
 -- our later search, and we can generate a link to it later.
 luckyParentSearch
   :: Int
-  -> Query.SearchQuery
+  -> SearchQuery
   -> NonEmpty Text
-  -> RepoHaxl u w (Maybe Query.SymbolSearchData, [NonEmpty Text])
+  -> RepoHaxl u w (Maybe SymbolSearchData, [NonEmpty Text])
 luckyParentSearch queryTimeLimit querySpec term = do
     parentSet <- mapM (runLuckyParentSearch queryTimeLimit) parentQs
     case findUnique parentSet of
@@ -417,12 +419,12 @@ luckyParentSearch queryTimeLimit querySpec term = do
         parents <- uniq . map Search.parentEntity <$>
           Search.searchRecursiveEntities maxInheritedDepth
             RelationDirection_Parent RelationType_Extends
-              (Query.srEntity baseEntity)
+              (srEntity baseEntity)
         xs <- forM parents $ fmap flattenScope . eThrow <=< toQualifiedName
         return (Just baseEntity, xs)
       _ -> pure (Nothing, []) -- not sufficiently unique. can't proceed
   where
-    parentQs = Query.buildLuckyContainerQuery querySpec term
+    parentQs = buildLuckyContainerQuery querySpec term
     maxInheritedDepth = 1000
 
     -- this isn't the full scope (i.e. nested container parents) , but 2 levels
@@ -430,26 +432,25 @@ luckyParentSearch queryTimeLimit querySpec term = do
       "" -> unName (qualifiedName_localName qn) :| []
       parent -> parent :| [unName (qualifiedName_localName qn)]
 
-runLuckyParentSearch
-  :: Int -> Query.AngleSearch -> RepoHaxl u w [Query.SymbolSearchData]
-runLuckyParentSearch timeLimit (Query.Search query) = do
+runLuckyParentSearch :: Int -> AngleSearch -> RepoHaxl u w [SymbolSearchData]
+runLuckyParentSearch timeLimit (Search query) = do
   result <- case query of
     Complete q -> searchWithTimeLimit (Just 2) timeLimit q
     InheritedScope{} -> return [] -- no inner recursion please
-  mapM Query.toSearchResult result
+  mapM toSearchResult result
 
 -- n.b. we need the RepoName (i.e. "fbsource" to construct symbol ids)
 processSymbolResult
-  :: Query.ToSearchResult a
+  :: ToSearchResult a
   => Bool
   -> Text
   -> RepoName
   -> ScmRevisions
-  -> Maybe Query.SymbolSearchData
+  -> Maybe SymbolSearchData
   -> a
   -> RepoHaxl u w (SymbolResult, Maybe SymbolDescription)
 processSymbolResult terse sString repo scmRevs mContext result = do
-  Query.SymbolSearchData{..} <- Query.toSearchResult result
+  SymbolSearchData{..} <- toSearchResult result
   let Code.Location{..} = srLocation
   symbolResult_location <- rangeSpanToLocationRange
     repo location_file location_location
@@ -492,8 +493,8 @@ atomicKinds = Set.fromList
 
 -- | A little bit of processing for the related symbol context
 processContext
-  :: RepoName -> Query.SymbolSearchData -> Glean.RepoHaxl u w SymbolContext
-processContext repo Query.SymbolSearchData{..} = do
+  :: RepoName -> SymbolSearchData -> Glean.RepoHaxl u w SymbolContext
+processContext repo SymbolSearchData{..} = do
   let Code.Location{..} = srLocation
   path <- GleanPath <$> Glean.keyOf location_file
   symbolContext_symbol <- toSymbolId (fromGleanPath repo path) srEntity
@@ -511,7 +512,7 @@ joinSearchResults
   :: Maybe Int
   -> Bool
   -> Bool
-  -> [Query.RepoSearchResult]
+  -> [RepoSearchResult]
   -> SymbolSearchResult
 joinSearchResults mlimit terse sorted xs = SymbolSearchResult syms $
     if terse then [] else catMaybes descs
@@ -578,7 +579,7 @@ data MaybeResult a
 
 -- | Sort the results of one query set
 sortResults
-  :: Query.RepoSearchResult
+  :: RepoSearchResult
   -> [[(SymbolResult, Maybe SymbolDescription)]]
 sortResults xs = map (List.sortOn relevance) (groupSortOn features xs)
   where

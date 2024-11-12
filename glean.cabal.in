@@ -1202,6 +1202,7 @@ library glass-lib
         Glean.Glass.Handler.Utils
         Glean.Glass.Logging
         Glean.Glass.Main
+        Glean.Glass.NameSearch
         Glean.Glass.Neighborhood
         Glean.Glass.Options
         Glean.Glass.Path
