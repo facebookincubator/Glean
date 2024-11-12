@@ -519,31 +519,6 @@ predicate CSharpSearchByLowerCaseName:
     csharp.SearchByName { Name, Defn };
     { csharp = { decl = Defn } } = Entity
 
-predicate CxxSearchByName:
-  {
-    name: string,
-    entity: code.Entity,
-  }
-  { NameStr, Entity } where
-    Name = cxx1.Name NameStr;
-    CxxSearchByNameAndScopeFact { name = Name, entity = Entity };
-
-predicate CxxSearchByLowerCaseName:
-  {
-    name: string,
-    entity: code.Entity,
-  }
-  { NameStr, Entity } where
-  cxx1.DeclByName { name_lowercase = NameStr, ident = Id };
-  (
-    { name = Name } = Id;
-    CxxSearchByNameAndScopeFact { name = Name, entity = Entity };
-  ) | (
-    { selector = Sel } = Id;
-    search.cxx.SearchBySelector { Sel, Ent };
-    { cxx = Ent } = Entity;
-  )
-
 predicate CxxSearchByScope:
   {
     name: string,
