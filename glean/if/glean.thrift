@@ -522,6 +522,9 @@ struct QueryDebugOptions {
 
   // dump the compiled bytecode for the query
   2: bool bytecode = false;
+
+  // check if the predicates in query has facts in db
+  3: bool pred_has_facts = false;
 }
 
 # Encode results using Glean's internal binary representation

@@ -79,7 +79,7 @@ typecheck
   -> TcOpts
   -> ToRtsType
   -> Query' s
-  -> ExceptT Text IO TypecheckedQuery
+  -> ExceptT Text IO (TypecheckedQuery, [TcPred])
 typecheck dbSchema opts rtsType query = do
   let
     tcEnv = TcEnv
@@ -112,7 +112,7 @@ typecheck dbSchema opts rtsType query = do
              [ "query has ambiguous type",
                indent 4 $ "type: " <> display opts retTy'
              ]
-  return (QueryWithInfo q tcNextVar Nothing ty)
+  return (QueryWithInfo q tcNextVar Nothing ty, tcPreds)
 
 -- | Typecheck the query for a derived predicate
 typecheckDeriving
@@ -312,7 +312,7 @@ inferExpr ctx pat = case pat of
     args' <- zipWithM (typecheckPattern ContextExpr) primArgTys args
     return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))),
       retTy)
-  Clause _ _ pred pat range -> tcFactGenerator pred pat range
+  Clause _ prSpan pred pat range -> tcFactGenerator pred pat range (Just prSpan)
   OrPattern _ a b -> do
     ((a', ty), b') <-
       disjunction
@@ -548,9 +548,9 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     args' <- zipWithM (typecheckPattern ContextExpr) primArgTys args
     inPat pat $ unify ty retTy
     return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))))
-  (PredicateTy (PidRef _ ref), Clause _ _ ref' arg range) ->
+  (PredicateTy (PidRef _ ref), Clause _ spanPred ref' arg range) ->
     if ref == ref'
-      then fst <$> tcFactGenerator ref arg range
+      then fst <$> tcFactGenerator ref arg range (Just spanPred)
       else patTypeError pat typ
       -- Note: we don't automatically fall back to matching against
       -- the key type here, unlike in other cases where the expected
@@ -652,7 +652,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
   -- A match on a predicate type with a pattern that is not a wildcard
   -- or a variable does a nested match on the key of the predicate:
   (PredicateTy (PidRef _ ref), pat) | not (isVar pat) ->
-    fst <$> tcFactGenerator ref pat SeekOnAllFacts
+    fst <$> tcFactGenerator ref pat SeekOnAllFacts Nothing
   (ty@(SetTy elemTy), All _ query) -> do
     arg <- typecheckPattern ctx elemTy query
     let q = TcQuery elemTy arg Nothing [] Unordered
@@ -676,8 +676,9 @@ tcFactGenerator
   => PredicateId
   -> Pat' s
   -> SeekSection
+  -> Maybe s
   -> T (TcPat, Type)
-tcFactGenerator ref pat range = do
+tcFactGenerator ref pat range predSpan = do
   TcEnv{..} <- gets tcEnv
   PredicateDetails{..} <- case HashMap.lookup ref tcEnvPredicates of
     Nothing -> prettyErrorIn pat $ "tcFactGenerator: " <> displayDefault ref
@@ -691,8 +692,15 @@ tcFactGenerator ref pat range = do
       kpat' <- typecheckPattern ContextPat predicateKeyType pat
       return (kpat', mkWild predicateValueType)
   let
-    pidRef = (PidRef predicatePid ref)
+    pidRef = PidRef predicatePid ref
     ty = PredicateTy pidRef
+
+  case predSpan of
+    Just span -> do
+      modify $ \s -> s {
+        tcPreds = (pidRef,Some span):tcPreds s
+      }
+    Nothing -> return ()
   return
     ( Ref (MatchExt (Typed ty (TcFactGen pidRef kpat' vpat' range)))
     , ty)

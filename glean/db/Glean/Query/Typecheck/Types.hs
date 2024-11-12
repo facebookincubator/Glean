@@ -11,6 +11,7 @@ module Glean.Query.Typecheck.Types
   , TcQuery(..)
   , TcStatement(..)
   , TcPat
+  , TcPred
   , TcTerm(..)
   , lookupField
   ) where
@@ -24,6 +25,7 @@ import Glean.Angle.Types hiding (Type)
 import Glean.Display
 import Glean.RTS.Types as RTS
 import Glean.RTS.Term as RTS
+import Glean.Util.Some
 
 -- | The typechecking phase turns 'ParsedPat' (source-level terms) into
 -- 'TcPat' (representational terms), but it doesn't flatten nested
@@ -49,6 +51,7 @@ instance Display TcStatement where
   display opts (TcStatement _ lhs rhs) = displayStatement opts lhs rhs
 
 type TcPat = Term (Match (Typed TcTerm) Var)
+type TcPred = (PidRef,Some IsSrcSpan)
 
 data TcTerm
   = TcOr TcPat TcPat

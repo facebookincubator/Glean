@@ -103,6 +103,8 @@ data TypecheckState = TypecheckState
   , tcVars :: IntMap Var
   , tcSubst :: IntMap Type
   , tcPromote :: [(Type, Type, Some IsSrcSpan)]
+  , tcPreds :: [TcPred]
+  -- ^ predicate identifiers in query, used for diagnostics
   }
 
 data TcOpts = TcOpts
@@ -140,6 +142,7 @@ initialTypecheckState tcEnv TcOpts{..} rtsType mode = TypecheckState
   , tcSubst = IntMap.empty
   , tcVars = IntMap.empty
   , tcPromote = []
+  , tcPreds = []
   }
 
 getPredicateDetails :: PredicateId -> T PredicateDetails

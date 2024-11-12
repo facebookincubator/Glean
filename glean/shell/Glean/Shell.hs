@@ -824,6 +824,7 @@ debugCmd str = case words (strip str) of
       { debug = Thrift.QueryDebugOptions
         { queryDebugOptions_ir = True
         , queryDebugOptions_bytecode = True
+        , queryDebugOptions_pred_has_facts = False
         }
       }
   [word] | Just onoff <- irFlag word -> Eval $ State.modify $ \s -> s

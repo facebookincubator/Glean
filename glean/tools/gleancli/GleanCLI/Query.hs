@@ -166,6 +166,7 @@ instance Plugin QueryCommand where
                     Nothing -> QueryDebugOptions
                       { queryDebugOptions_bytecode = debugBytecode
                       , queryDebugOptions_ir = debugIr
+                      , queryDebugOptions_pred_has_facts = False
                       }
                     Just _ -> def
                 }

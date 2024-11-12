@@ -98,7 +98,7 @@ setParseTest = TestList
                 let scope = addTmpPredicate HashMap.empty
                 resolved <- liftEither $ runExcept $
                   runResolve v scope (resolveQuery parsed)
-                typechecked <-
+                (typechecked, _) <-
                   typecheck undefined (defaultTcOpts def v) undefined resolved
                 liftEither $ runExcept $
                   flatten DisableRecursion undefined v  False typechecked
