@@ -312,7 +312,7 @@ inferExpr ctx pat = case pat of
     args' <- zipWithM (typecheckPattern ContextExpr) primArgTys args
     return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))),
       retTy)
-  Clause _ pred pat range -> tcFactGenerator pred pat range
+  Clause _ _ pred pat range -> tcFactGenerator pred pat range
   OrPattern _ a b -> do
     ((a', ty), b') <-
       disjunction
@@ -548,7 +548,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     args' <- zipWithM (typecheckPattern ContextExpr) primArgTys args
     inPat pat $ unify ty retTy
     return (RTS.Ref (MatchExt (Typed retTy (TcPrimCall primOp args'))))
-  (PredicateTy (PidRef _ ref), Clause _ ref' arg range) ->
+  (PredicateTy (PidRef _ ref), Clause _ _ ref' arg range) ->
     if ref == ref'
       then fst <$> tcFactGenerator ref arg range
       else patTypeError pat typ
@@ -966,7 +966,7 @@ varsPat pat r = case pat of
   Wildcard{} -> r
   FactId{} -> r
   Never{} -> r
-  Clause _ _ p _ -> varsPat p r
+  Clause _ _ _ p _ -> varsPat p r
   Prim _ _ ps -> foldr varsPat r ps
   FieldSelect _ p _ _ -> varsPat p r
   Enum{} -> r

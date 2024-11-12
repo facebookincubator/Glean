@@ -734,7 +734,7 @@ resolvePat pat = case pat of
               | otherwise -> (SeekOnAllFacts, txt)
         res <- resolveTypeOrPred svar txt'
         case res of
-          RefPred ref -> return (Clause s ref arg' range)
+          RefPred ref -> return (Clause s svar ref arg' range)
           RefType ref
             | SeekOnAllFacts <- range ->
               return (TypeSignature s arg' (NamedTy ref))

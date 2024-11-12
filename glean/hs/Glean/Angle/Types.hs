@@ -231,7 +231,7 @@ data SourcePat_ s p t
 
   -- The following forms are introduced by the resolver, and replace
   -- the Variable and App forms produced by the parser.
-  | Clause s p (SourcePat_ s p t) SeekSection
+  | Clause s s p (SourcePat_ s p t) SeekSection
   | Prim s PrimOp [SourcePat_ s p t]
  deriving (Eq, Show, Generic)
 
@@ -284,7 +284,7 @@ instance Bifunctor (SourcePat_ s) where
     IfPattern s a b c -> IfPattern s (bimap f g a) (bimap f g b) (bimap f g c)
     FieldSelect s pat field q -> FieldSelect s (bimap f g pat) field q
     Enum s f -> Enum s f
-    Clause s p pat rng -> Clause s (f p) (bimap f g pat) rng
+    Clause sPat sPred p pat rng -> Clause sPat sPred (f p) (bimap f g pat) rng
     Prim s p pats -> Prim s p (fmap (bimap f g) pats)
 
 instance Bifoldable (SourcePat_ s) where
@@ -314,7 +314,7 @@ instance Bifoldable (SourcePat_ s) where
     IfPattern _ a b c -> bifoldMap f g a <> bifoldMap f g b <> bifoldMap f g c
     FieldSelect _ pat _ _ -> bifoldMap f g pat
     Enum _ _ -> mempty
-    Clause _ p pat _ -> f p <> bifoldMap f g pat
+    Clause _ _ p pat _ -> f p <> bifoldMap f g pat
     Prim _ _ pats -> foldMap (bifoldMap f g) pats
 
 data Field s p t = Field FieldName (SourcePat_ s p t)
@@ -374,7 +374,7 @@ sourcePatSpan = \case
   Never s -> s
   FieldSelect s _ _ _ -> s
   Enum s _ -> s
-  Clause s _ _ _ -> s
+  Clause s _ _ _ _ -> s
   Prim s _ _ -> s
 
 -- -----------------------------------------------------------------------------
@@ -887,7 +887,7 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
   display opts (TypeSignature _ p t) =
     displayAtom opts p <+> ":" <+> display opts t
   display _ (Never _) = "never"
-  display opts (Clause _ p pat rng) =
+  display opts (Clause _ _ p pat rng) =
     display opts p <> prng <+> displayAtom opts pat
     where prng = case rng of
             SeekOnBase -> "#old"
@@ -1022,7 +1022,7 @@ rmLocPat = \case
   NestedQuery _ query -> NestedQuery () $ rmLocQuery query
   FactId _ x y -> FactId () x y
   TypeSignature _ x t -> TypeSignature () (rmLocPat x) t
-  Clause _ x y rng -> Clause () x (rmLocPat y) rng
+  Clause _ _ x y rng -> Clause () () x (rmLocPat y) rng
   Prim _ p ps -> Prim () p (rmLocPat <$> ps)
   FieldSelect _ pat field q -> FieldSelect () (rmLocPat pat) field q
   Enum _ f -> Enum () f
