@@ -34,7 +34,7 @@ class AtomicPredicateStats {
   const PredicateStats& unprotected() const;
 
  private:
-  class Impl;
+  struct Impl;
   std::unique_ptr<Impl> impl;
 };
 

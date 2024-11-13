@@ -14,7 +14,7 @@
 
 #ifdef __cplusplus
 template <typename T>
-struct HsArray;
+class HsArray;
 #endif
 
 #ifdef __cplusplus

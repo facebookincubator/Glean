@@ -109,7 +109,7 @@ using FastSetBy = folly::F14FastSet<
  * first inserted.
  *
  */
-class FactSet final : public Define {
+struct FactSet final : public Define {
  private:
   class Facts final {
    public:

@@ -17,8 +17,8 @@
 #include "glean/rts/store.h"
 
 namespace rocksdb {
-struct Cache;
-struct Iterator;
+class Cache;
+class Iterator;
 } // namespace rocksdb
 
 namespace facebook {

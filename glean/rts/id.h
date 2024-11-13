@@ -158,7 +158,8 @@ using Id = WordId<Fid_tag>;
 namespace folly {
 
 template <typename T>
-struct FormatValue<facebook::glean::rts::WordId<T>> {
+class FormatValue<facebook::glean::rts::WordId<T>> {
+ public:
   facebook::glean::rts::WordId<T> id;
 
   explicit FormatValue(facebook::glean::rts::WordId<T> i) : id(i) {}

@@ -50,7 +50,7 @@ namespace rts {
 ///       get rid of the key even though it's not needed. We'll see how much
 ///       of a problem this is.
 /// TODO: We want to share one capacity between all db caches.
-class LookupCache {
+struct LookupCache {
  public:
   // A Stats object can be shared between different caches which will accumulate
   // their statistics into it.

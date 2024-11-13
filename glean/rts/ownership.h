@@ -113,7 +113,7 @@ struct OwnershipUnitIterator {
   virtual folly::Optional<OwnershipUnit> get() = 0;
 };
 
-class Inventory;
+struct Inventory;
 struct Lookup;
 
 /**

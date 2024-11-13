@@ -148,7 +148,7 @@ struct Predicate {
 };
 
 /// Information about predicates in an open DB.
-class Inventory {
+struct Inventory {
  public:
   Inventory();
 

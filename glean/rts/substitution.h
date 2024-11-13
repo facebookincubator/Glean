@@ -26,7 +26,7 @@ namespace rts {
  * mapped to themselves.
  *
  */
-class Substitution {
+struct Substitution {
  public:
   Substitution(Id first, size_t size);
 
