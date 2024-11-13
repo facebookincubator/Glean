@@ -44,7 +44,7 @@ module Glean.Glass.Utils (
   , liftMaybe
   , maybeT
 
-) where
+  ,translateDocumentSymbolListXResult) where
 
 import Control.Monad.Catch ( throwM )
 import Data.Maybe (fromMaybe)
@@ -67,10 +67,11 @@ import Util.Text (slice)
 import qualified Glean.Haxl.Repos as Glean
 import Glean.Haxl.Repos (RepoHaxl, ReposHaxl)
 
+import qualified Glean.Glass.Types as Types
 import Glean.Glass.Types (
     mAXIMUM_SYMBOLS_QUERY_LIMIT,
     mAXIMUM_QUERY_TIME_LIMIT,
-    ServerException(..)
+    ServerException(..), Path (Path), RepoName
   )
 
 type QueryType q =
@@ -202,3 +203,32 @@ eThrow (Left err) = throwM $ ServerException err
 
 fst4 :: (a,b,c,d) -> a
 fst4 (x,_,_,_) = x
+
+
+-- replace locationRange and revision in DocumentSymbolListXResult
+--  oldRepo -> newRepo
+--  path -> prefixPath <> path
+--  revision -> newRev (if provided)
+translateDocumentSymbolListXResult
+ :: RepoName
+ -> RepoName
+ -> Text
+ -> Maybe Types.Revision
+ -> Types.DocumentSymbolListXResult
+ -> Types.DocumentSymbolListXResult
+translateDocumentSymbolListXResult oldRepo newRepo prefixPath newRev result =
+  let defaultRev = Types.documentSymbolListXResult_revision result in
+  let references' =
+        translateRef <$> Types.documentSymbolListXResult_references result in
+  result{
+        Types.documentSymbolListXResult_revision = fromMaybe defaultRev newRev,
+        Types.documentSymbolListXResult_references = references'}
+  where
+    translateRef ref =
+      let t = translateLocationRange $ Types.referenceRangeSymbolX_target ref in
+      ref{Types.referenceRangeSymbolX_target = t}
+    translateLocationRange ref@(Types.LocationRange repo path range) =
+      if repo == oldRepo then
+          Types.LocationRange  newRepo (translatePath path) range
+        else ref
+    translatePath (Path path) = Path (prefixPath <> path)

@@ -12,6 +12,8 @@ module Glean.Glass.RepoMapping
   , gleanRequiredIndices
   , allGleanRepos
   , supportsCxxDeclarationSources
+  , mirrorConfig
+  , Mirror(Mirror)
   ) where
 
 import Data.Set (Set)
@@ -20,6 +22,7 @@ import qualified Data.Map.Strict as Map
 
 import Glean.Glass.Base ( GleanDBName(..), RepoMapping(..) )
 import Glean.Glass.Types ( Language(..), RepoName(..) )
+import Data.Text(Text)
 
 getRepoMapping :: IO RepoMapping
 getRepoMapping = return RepoMapping
@@ -64,3 +67,13 @@ gleanRequiredIndices = Set.empty
 
 supportsCxxDeclarationSources :: GleanDBName -> Bool
 supportsCxxDeclarationSources = const True
+
+-- Some repos can be mirrored
+data Mirror = Mirror
+  { mirrorRepo :: RepoName
+  , mirrorPath :: Text
+  , sourceRepo :: RepoName
+  }
+
+mirrorConfig :: [Mirror]
+mirrorConfig = []
