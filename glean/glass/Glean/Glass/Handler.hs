@@ -42,13 +42,13 @@ import Control.Monad.Catch ( throwM, try )
 import Data.Bifunctor (second)
 import Data.Either.Extra (eitherToMaybe)
 import Data.Hashable
-import Data.List as List ( sortOn )
+import Data.List as List ( sortOn, find )
 import Data.List.Extra ( nubOrd, nubOrdOn, groupOn, groupSortOn )
 import Data.List.NonEmpty (NonEmpty(..), nonEmpty)
 import qualified Data.List.NonEmpty as NonEmpty
 import Data.Maybe
 import Data.Ord ( comparing )
-import Data.Text ( Text )
+import Data.Text ( Text, isPrefixOf )
 import Data.Tuple.Extra ( fst3 )
 import qualified Data.Set as Set
 import Data.Set ( Set )
@@ -87,7 +87,9 @@ import Glean.Glass.SymbolId
 import Glean.Glass.SymbolSig ( toSymbolSignatureText )
 import Glean.Glass.Pretty.Cxx as Cxx (Qualified(..))
 import Glean.Glass.Types
-import Glean.Glass.RepoMapping ( supportsCxxDeclarationSources )
+import Glean.Glass.RepoMapping (
+   supportsCxxDeclarationSources, mirrorConfig, Mirror(Mirror)
+  )
 import Glean.Glass.Search.Class ( ResultLocation )
 import qualified Glean.Glass.Env as Glass
 import qualified Glean.Glass.Query as Query
@@ -126,6 +128,7 @@ import Glean.Glass.SymbolKind (findSymbolKind)
 import Glean.Glass.Env (Env' (tracer, sourceControl, useSnapshotsForSymbolsList))
 import Glean.Glass.SourceControl
 import Glean.Glass.Tracing (traceSpan)
+import qualified Glean.Glass.Utils as Utils
 
 -- | Runner for methods that are keyed by a file path
 runRepoFile
@@ -722,6 +725,20 @@ data ExtraSymbolOpts = ExtraSymbolOpts {
   oLineRange :: Maybe [LineRange] -- ^ restrict to specifc range
 }
 
+translateMirroredRepoListXResult
+  :: DocumentSymbolsRequest
+  -> DocumentSymbolListXResult
+  -> DocumentSymbolListXResult
+translateMirroredRepoListXResult
+  (DocumentSymbolsRequest repository (Path filepath) _ _) res =
+  let isReqInMirror (Mirror mirrorRepo prefix _) =
+        repository == mirrorRepo && isPrefixOf prefix filepath in
+  let maybeMirror = find isReqInMirror mirrorConfig in
+  case maybeMirror of
+    Just (Mirror mirror prefix origin) ->
+      Utils.translateDocumentSymbolListXResult origin mirror prefix Nothing res
+    _ -> res
+
 fetchSymbolsAndAttributesGlean
   :: Glean.Backend b
   => Glass.Env
@@ -750,7 +767,8 @@ fetchSymbolsAndAttributesGlean
   res2 <- resolveIdlXrefs env res1 repo be
 
   let res3 = toDocumentSymbolResult res2
-  return ((res3, gLogs), elogs)
+  let res4 = translateMirroredRepoListXResult req res3
+  return ((res4, gLogs), elogs)
   where
     repo = documentSymbolsRequest_repository req
     path = documentSymbolsRequest_filepath req
