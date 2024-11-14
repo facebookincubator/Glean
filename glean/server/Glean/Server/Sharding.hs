@@ -68,7 +68,7 @@ shardManagerConfig ::
   Observed ServerConfig.Config ->
   (SomeShardManager -> IO b) ->
   IO b
-shardManagerConfig _mbPort catalog smCfgServerConfig callback = do
+shardManagerConfig _mbPort _catalog smCfgServerConfig callback = do
   config <- Observed.get smCfgServerConfig
   case ServerConfig.config_sharding config of
     ServerConfig.ShardingPolicy_no_shards {} ->
@@ -109,7 +109,7 @@ shardManagerConfig _mbPort catalog smCfgServerConfig callback = do
             , defaultDomainName = shardManagerPolicy_default_domain_id
             }
           getMostRecent =
-            Set.fromList . map itemRepo <$> Catalog.listMostRecent catalog
+            Set.fromList . map itemRepo <$> Catalog.listMostRecent _catalog
 
       withShardManagerForMostRecent
         smCliArgs
