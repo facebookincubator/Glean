@@ -373,59 +373,6 @@
   {
     "key": {
       "searchcase": 0,
-      "name": "f1",
-      "entity": {
-        "cxx": {
-          "decl": {
-            "function_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": { "name": { "key": "f1" } } },
-                    "scope": {
-                      "namespace_": { "key": { "name": { "key": "N1" } } }
-                    }
-                  }
-                },
-                "signature": {
-                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
-                },
-                "source": {
-                  "file": { "key": "test.cpp" },
-                  "lineBegin": 11,
-                  "columnBegin": 1,
-                  "lineEnd": 11,
-                  "columnEnd": 8
-                }
-              }
-            }
-          }
-        }
-      },
-      "location": {
-        "name": "f1",
-        "file": { "key": "test.cpp" },
-        "location": {
-          "range": {
-            "file": { "key": "test.cpp" },
-            "lineBegin": 11,
-            "columnBegin": 1,
-            "lineEnd": 11,
-            "columnEnd": 8
-          }
-        },
-        "destination": {
-          "file": { "key": "test.cpp" },
-          "span": { "start": 241, "length": 2 }
-        }
-      },
-      "kind": 13,
-      "language": 0
-    }
-  },
-  {
-    "key": {
-      "searchcase": 0,
       "name": "x",
       "entity": {
         "cxx": {

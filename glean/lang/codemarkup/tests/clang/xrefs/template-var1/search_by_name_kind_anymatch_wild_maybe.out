@@ -101,43 +101,5 @@
         }
       }
     }
-  },
-  {
-    "key": {
-      "name": "h",
-      "language": 0,
-      "kinds": 13,
-      "entity": {
-        "cxx": {
-          "defn": {
-            "function_": {
-              "key": {
-                "declaration": {
-                  "key": {
-                    "name": {
-                      "key": {
-                        "name": { "key": { "name": { "key": "h" } } },
-                        "scope": { "global_": { } }
-                      }
-                    },
-                    "signature": {
-                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
-                    },
-                    "source": {
-                      "file": { "key": "test.cpp" },
-                      "lineBegin": 14,
-                      "columnBegin": 1,
-                      "lineEnd": 19,
-                      "columnEnd": 1
-                    }
-                  }
-                },
-                "isInline": false
-              }
-            }
-          }
-        }
-      }
-    }
   }
 ]

@@ -1,10 +1,6 @@
 {
   "@generated": null,
-  "facts_searched": {
-    "cxx1.FunctionDeclarationByName.5": 1,
-    "cxx1.FunctionDefinition.5": 1,
-    "cxx1.TypeAliasDeclarationByName.5": 1
-  },
+  "facts_searched": { "cxx1.TypeAliasDeclarationByName.5": 1 },
   "full_scans": [
     "cxx1.FunctionDeclarationByName.5",
     "cxx1.TypeAliasDeclarationByName.5"
