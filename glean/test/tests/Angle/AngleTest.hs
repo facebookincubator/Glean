@@ -42,6 +42,7 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "angleIfThenElse" $ angleIfThenElse id
   , TestLabel "angleIfThenElse/page" $ angleIfThenElse (limit 1)
   , TestLabel "angleTypeTest" angleTypeTest
+  , TestLabel "angleSet" angleSetTest
   ]
 
 ignorePredK :: Glean.Test.KitchenSink -> Glean.Test.KitchenSink
@@ -979,3 +980,10 @@ angleTypeTest = dbTestCase $ \env repo -> do
     |]
   print r
   assertEqual "angle - inference 6" 1 (length r)
+
+angleSetTest :: Test
+angleSetTest = dbTestCase $ \env repo -> do
+  r <- runQuery_ env repo $ angleData @Glean.Test.Predicate
+    [s| glean.test.Predicate { set_of_string = all ("bepa" | "apa") } |]
+  print r
+  assertEqual "angle - set matching" 2 (length r)

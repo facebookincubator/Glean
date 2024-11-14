@@ -15,6 +15,7 @@ module TestData
   ) where
 
 import Data.Default
+import qualified Data.Set as Set
 
 import Glean.Typed
 import Glean.Types
@@ -42,6 +43,8 @@ kitchenSink1 = def
   , Glean.Test.kitchenSink_maybe_ = Just def
   , Glean.Test.kitchenSink_bool_ = True
   , Glean.Test.kitchenSink_string_ = "Hello\0world!\0"
+  , Glean.Test.kitchenSink_set_of_nat = Set.fromList [toNat 1, toNat 2]
+  , Glean.Test.kitchenSink_set_of_string = Set.fromList ["apa", "bepa"]
   }
 
 mkTestFacts :: NewFact m => (m () -> m ()) -> (m () -> m ()) -> m ()
@@ -92,8 +95,8 @@ mkTestFacts first second = do
   kitchenSink2Fact0b <- makeFact @Glean.Test.Predicate kitchenSink2Term0b
 
   let
-    -- refers to kitchenSink2Fact0 through the sum_ field and the
-    -- array_of_pred field
+    -- refers to kitchenSink2Fact0 through the sum_ field, the
+    -- array_of_pred field and the set_of_pred field.
     kitchenSink2Term1 = def
       { Glean.Test.kitchenSink_pred = sysBlobFact2
       , Glean.Test.kitchenSink_sum_ =
@@ -104,6 +107,7 @@ mkTestFacts first second = do
       , Glean.Test.kitchenSink_named_sum_ = Glean.Test.Sum_wed True
       , Glean.Test.kitchenSink_named_record_ = rec
       , Glean.Test.kitchenSink_maybe_ = Nothing
+      , Glean.Test.kitchenSink_set_of_pred = Set.fromList [kitchenSink2Fact0]
       }
 
     kitchenSink2Term1b = kitchenSink2Term1

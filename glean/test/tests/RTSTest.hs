@@ -48,6 +48,7 @@ instance Arbitrary Type where
     , pure T.NatTy
     , pure T.StringTy
     , T.ArrayTy <$> arbitrary
+    , T.SetTy <$> arbitrary
     , T.RecordTy . fields <$> children 0
     , T.SumTy . fields <$> children 1
     , T.PredicateTy <$> arbitrary
@@ -65,6 +66,22 @@ instance Arbitrary Type where
       fields tys =
         [ T.FieldDef (Text.pack $ 'x' : show (i :: Int)) ty
           | (i,ty) <- zip [0..] tys ]
+  shrink (T.ArrayTy ty) = ty : [T.ArrayTy sty | sty <- shrink ty]
+  shrink (T.SetTy ty) = ty : [T.SetTy sty | sty <- shrink ty]
+  shrink (T.RecordTy fields) = [ ty | T.FieldDef _ ty <- fields ] ++
+    (T.RecordTy <$> shrinkList shrinkField fields)
+  shrink (T.SumTy fields) = (T.SumTy <$>
+    filter (not . null) (shrinkList shrinkField fields)) ++
+    [ ty | T.FieldDef _ ty <- fields ]
+  shrink (T.EnumeratedTy enums) = T.EnumeratedTy <$>
+    filter (not . null) (shrinkList (const []) enums)
+  shrink (T.MaybeTy ty) = ty : (T.MaybeTy <$> shrink ty)
+  shrink _ = []
+
+shrinkField
+  :: Arbitrary (T.Type_ pref tref)
+  => T.FieldDef_ pref tref -> [T.FieldDef_ pref tref]
+shrinkField (T.FieldDef name ty) = T.FieldDef name <$> shrink ty
 
 valueFor :: Type -> Gen Value
 valueFor T.ByteTy = Byte <$> arbitrary
@@ -82,7 +99,7 @@ valueFor (T.SumTy fields) = do
   Alt i <$> valueFor (T.fieldDefType field)
 valueFor (T.SetTy ty) = fmap Set $ sized $ \n -> do
       k <- choose (0,n)
-      nub <$> vectorOf k (resize (n `div` k) $ valueFor ty)
+      nub . sort <$> vectorOf k (resize (n `div` k) $ valueFor ty)
 valueFor T.PredicateTy{} = Ref <$> arbitrary
 valueFor (T.NamedTy (ExpandedType _ ty)) = valueFor ty
 valueFor (T.MaybeTy ty) = do
@@ -112,8 +129,10 @@ main = withUnitTest $ testRunner $ TestList
       forAll arbitrary $ \ty ->
       forAll (valueFor ty) $ \val -> prop_roundtripValue ty val
 
-  , TestLabel "value typecheck" $ TestCase $ assertProperty "mismatch" $
-      forAll arbitrary $ \ty ->
+  , TestLabel "value typecheck" $ TestCase $
+    assertPropertyWithArgs "mismatch" stdArgs{ maxSuccess = 1000 } $
+      forAllShrink arbitrary shrink $ \ty ->
+      collect ty $
       forAll (valueFor ty) $ \val -> prop_typecheckValue ty val
 
     -- test strings more thoroughly as they are quite complicated

@@ -209,6 +209,9 @@ type KitchenSink =
     array2_of_nat : [ArrayNat],
     array2_of_bool : [ArrayBool],
     array2_of_string : [ArrayString],
+    set_of_nat : set nat,
+    set_of_string : set string,
+    set_of_pred : set Predicate,
    }
 
 predicate Predicate : KitchenSink
@@ -276,4 +279,3 @@ predicate Qux : string
 predicate FooToFoo : Foo -> Foo
 
 }
-
