@@ -376,6 +376,12 @@ canEvolve types compatible new old = go new old
     go StringTy StringTy = Nothing
     go BooleanTy BooleanTy = Nothing
     go (ArrayTy new) (ArrayTy old) = go new old
+    go (SetTy new) (SetTy old)
+      | new == old = Nothing
+      | otherwise = Just $ Text.pack $
+        "types inside sets cannot evolve. Type changed from " <>
+        show (displayDefault (SetTy old))
+        <> " to " <> show (displayDefault new)
     go (PredicateTy new) (PredicateTy old)
       | not (compatible new old) = Just
           $ "type changed from " <> showRef old
@@ -421,6 +427,7 @@ canEvolve types compatible new old = go new old
           BooleanTy -> True
           ByteTy -> True
           ArrayTy _ -> True
+          SetTy _ -> True
           RecordTy fields -> all (hasDefault . fieldDefType) fields
           EnumeratedTy{} -> True
           SumTy (first : _) -> hasDefault (fieldDefType first)

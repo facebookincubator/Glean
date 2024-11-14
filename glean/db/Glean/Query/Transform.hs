@@ -483,7 +483,8 @@ transformTerm inner defaultForType src dst = go src dst
             (recurse discard)
             a
           _ -> error $ "expected Array, got " <> show term
-
+    go (SetTy from) (SetTy to)
+      | from == to = Nothing
     go (RecordTy from) (RecordTy to) =
       let transformations = transformationsFor from to
           sameFieldCount = length from == length to
