@@ -2,7 +2,7 @@
 
 schema code.kotlin.1 {
 
-import kotlin.alpha.2
+import kotlin.alpha
 
 type Entity =
   {

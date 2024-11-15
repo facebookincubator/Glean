@@ -2,9 +2,9 @@
 
 schema codemarkup.haskell.2 {
 
-import src.1
-import code.hs.2
-import codemarkup.types.1
+import src
+import code.hs
+import codemarkup.types
 import hs.2
 
 #

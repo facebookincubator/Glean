@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema code.lsif.2 {
-import lsif.2
+import lsif
 
 type Entity =
   {

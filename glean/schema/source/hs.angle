@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema hs.1 {
-import src.1
+import src
 
 # Identifies a package, e.g. 'base-4.11.1.0'
 predicate PackageId : string
@@ -108,7 +108,7 @@ predicate ClassInstance :
 }
 
 schema hs.2: hs.1 {
-import src.1
+import src
 
 predicate Definition :
   {

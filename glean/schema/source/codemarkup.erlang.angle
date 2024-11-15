@@ -1,10 +1,10 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema codemarkup.erlang.2 {
-import src.1
-import code.erlang.1
-import codemarkup.types.1
-import erlang.1
+import src
+import code.erlang
+import codemarkup.types
+import erlang
 
 #
 # Resolving locations to entities

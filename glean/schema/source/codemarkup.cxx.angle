@@ -1,11 +1,11 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema codemarkup.cxx.4 {
-import src.1
-import code.cxx.4
-import codemarkup.types.1
-import cxx1.5
-import fbthrift.1
+import src
+import code.cxx
+import codemarkup.types
+import cxx1
+import fbthrift
 import code.24
 
 # Resolving locations to entities

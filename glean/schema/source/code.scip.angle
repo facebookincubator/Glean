@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema code.scip.1 {
-import scip.1
+import scip
 
 type Entity =
   {

@@ -3,33 +3,33 @@
 schema search.code.16 {
 
 import buck.4
-import code.24
-import code.cxx.4
-import code.hack.4
-import code.java.5
-import code.python.1
-import codemarkup.types.1
-import csharp.1
-import cxx1.5
-import erlang.1
-import fbthrift.1
-import flow.3
-import graphql.3
-import hack.6
+import code
+import code.cxx
+import code.hack
+import code.java
+import code.python
+import codemarkup.types
+import csharp
+import cxx1
+import erlang
+import fbthrift
+import flow
+import graphql
+import hack
 import hs.2
-import javakotlin.alpha.1
-import lsif.2
-import pp1.1
-import python.4
-import search.cxx.5
-import search.erlang.4
-import search.flow.1
-import search.hack.7
-import search.hs.9
-import search.java.1
-import search.kind.cxx.1
-import search.kotlin.1
-import search.python.1
+import javakotlin.alpha
+import lsif
+import pp1
+import python
+import search.cxx
+import search.erlang
+import search.flow
+import search.hack
+import search.hs
+import search.java
+import search.kind.cxx
+import search.kotlin
+import search.python
 
 #
 # public API

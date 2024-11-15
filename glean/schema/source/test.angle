@@ -8,9 +8,9 @@ predicate Predicate : string
 }
 
 schema glean.test.6 : glean.test.0 {
-import sys.1
-import code.cxx.4   # for Entity
-import pp1.1        # for Entity
+import sys
+import code.cxx   # for Entity
+import pp1        # for Entity
 
 # Named enumerated type for testing
 type Enum_ = enum { red | green | blue }

@@ -4,7 +4,7 @@
 # usages or references of symbols that can't be inferred via static analysis.
 schema dyn.6 {
 import code.24
-import src.1
+import src
 
 type Usage = enum {
     # The entity was provably unused

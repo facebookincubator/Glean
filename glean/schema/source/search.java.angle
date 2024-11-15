@@ -2,8 +2,8 @@
 
 schema search.java.1 {
 
-import javakotlin.alpha.1
-import java.alpha.1
+import javakotlin.alpha
+import java.alpha
 
 # SearchByName can be used to search for symbols in any context (wildcard
 # context).

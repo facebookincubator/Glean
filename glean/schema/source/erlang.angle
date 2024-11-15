@@ -3,7 +3,7 @@
 # much of this schema is cargo-culted from ./python.angle
 
 schema erlang.1 {
-import src.1
+import src
 
 # Collects all reference to names in a single file.
 # There is only one fact of this predicate per source file in the repo.

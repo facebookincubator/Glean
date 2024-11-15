@@ -2,7 +2,7 @@
 
 schema digest.1 {
 
-import src.1
+import src
 
 # type of CAS digest keys
 type Digest = {

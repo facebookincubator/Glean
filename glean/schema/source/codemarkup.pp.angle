@@ -1,11 +1,11 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema codemarkup.pp.3 {
-import src.1
-import code.pp.1
-import codemarkup.types.1
-import cxx1.5
-import pp1.1
+import src
+import code.pp
+import codemarkup.types
+import cxx1
+import pp1
 
 #
 # Finding entities' locations

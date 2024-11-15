@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema search.hack.7 {
-import hack.6
+import hack
 
 # SearchByName can be used to search for symbols in any context (wildcard
 # context).

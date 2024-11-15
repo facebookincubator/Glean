@@ -1,8 +1,8 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema buck.1 {
-import sys.1
-import src.1
+import sys
+import src
 
 # Targets in buck
 predicate Target :
@@ -78,7 +78,7 @@ predicate RuleKey :
 }
 
 schema buck.2 : buck.1 {
-import src.1
+import src
 
 # Buck target
 predicate Target :
@@ -154,7 +154,7 @@ predicate Owner.1 :
 } # end schema buck.2
 
 schema buck.3 : buck.2 {
-import src.1
+import src
 
 # Named output use OutputLabel as the key, the 'baz' in the form:
 # //foo:bar[baz]

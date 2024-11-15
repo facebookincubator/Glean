@@ -6,7 +6,7 @@
 #
 schema javakotlin.alpha.1 {
 
-import src.1
+import src
 
 predicate Name : string
 

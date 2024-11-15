@@ -3,9 +3,9 @@
 schema codemarkup.search.1 {
 
 import code.24
-import codemarkup.30
-import codemarkup.types.1
-import search.code.16
+import codemarkup
+import codemarkup.types
+import search.code
 
 #
 # Public API

@@ -2,10 +2,10 @@
 
 schema codemarkup.csharp.1 {
 
-import src.1
-import code.csharp.1
-import codemarkup.types.1
-import csharp.1
+import src
+import code.csharp
+import codemarkup.types
+import csharp
 
 #
 # Resolving locations to entities

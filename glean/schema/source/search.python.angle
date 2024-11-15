@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema search.python.1 {
-import python.4
+import python
 
 #
 # Generating SNames from an array of string fragments

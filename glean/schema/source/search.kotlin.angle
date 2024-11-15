@@ -2,8 +2,8 @@
 
 schema search.kotlin.1 {
 
-import javakotlin.alpha.1
-import kotlin.alpha.2
+import javakotlin.alpha
+import kotlin.alpha
 
 # SearchByQName can be used to search for symbols in any context
 predicate SearchByQName:

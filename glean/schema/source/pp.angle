@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema pp1.1 {
-import src.1
+import src
 
 # Preprocessor #include occurences. Each occurence of a #include
 # Note that there may be many such facts for a given src.File

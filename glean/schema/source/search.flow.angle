@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema search.flow.1 {
-import flow.3
+import flow
 
 #
 # Various sorts of Flow scopes

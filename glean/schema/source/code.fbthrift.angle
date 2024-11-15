@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema code.fbthrift.1 {
-import fbthrift.1
+import fbthrift
 
 type Entity =
   {

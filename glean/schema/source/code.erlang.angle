@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema code.erlang.1 {
-import erlang.1
+import erlang
 
 type Entity =
   {

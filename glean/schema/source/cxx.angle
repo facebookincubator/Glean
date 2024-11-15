@@ -3,9 +3,9 @@
 schema cxx1.5 {
 import buck.4
 import builtin.1
-import pp1.1
-import src.1
-import fbthrift.1
+import pp1
+import src
+import fbthrift
 
 # A name (identifier)
 predicate Name : string

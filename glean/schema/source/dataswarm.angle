@@ -2,7 +2,7 @@
 
 schema dataswarm.1 {
     import builtin.1
-    import src.1
+    import src
 
     # records that a Dataswarm macro exists with a given globally unique name
     predicate MacroDeclaration: {

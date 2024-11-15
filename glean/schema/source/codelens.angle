@@ -2,7 +2,7 @@
 
 schema codelens.1 {
 
-import src.1
+import src
 
 # This schema powers the Meta-internal "codelens" implementation shared across clients like VSCode
 # and CodeHub. It closely follows the LSP specification from Microsoft, with slight deviations to

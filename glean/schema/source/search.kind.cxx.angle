@@ -2,8 +2,8 @@
 
 schema search.kind.cxx.1 {
 
-import cxx1.5
-import code.cxx.4
+import cxx1
+import code.cxx
 
 #
 # Kind-partitioned name tables

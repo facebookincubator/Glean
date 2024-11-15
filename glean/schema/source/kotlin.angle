@@ -2,8 +2,8 @@
 
 # common predicates between java and kotlin used for interopobility
 schema kotlin.alpha.2 {
-  import javakotlin.alpha.1
-  import src.1
+  import javakotlin.alpha
+  import src
 
 predicate DeclarationLocation :
   {

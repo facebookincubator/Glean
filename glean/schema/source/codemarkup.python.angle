@@ -1,11 +1,11 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema codemarkup.python.2 {
-import src.1
+import src
 import code.24
-import code.python.1
-import codemarkup.types.1
-import python.4
+import code.python
+import codemarkup.types
+import python
 
 # Resolving locations to entities
 

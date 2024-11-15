@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema code.flow.2 {
-import flow.3
+import flow
 
 type Entity =
   {

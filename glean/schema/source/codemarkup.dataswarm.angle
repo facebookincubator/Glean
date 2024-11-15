@@ -1,11 +1,11 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema codemarkup.dataswarm.1 {
-    import src.1
+    import src
     import code.24
-    import code.dataswarm.1
-    import codemarkup.types.1
-    import dataswarm.1
+    import code.dataswarm
+    import codemarkup.types
+    import dataswarm
 
     # derived predicate to find references in a file (to support Glass/Codehub integration)
     predicate DataswarmFileEntityXRefLocations:

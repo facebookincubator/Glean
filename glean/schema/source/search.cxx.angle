@@ -1,9 +1,9 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema search.cxx.5 {
-import cxx1.5
-import code.cxx.4
-import search.kind.cxx.1
+import cxx1
+import code.cxx
+import search.kind.cxx
 
 # Declarations with no scope
 predicate GlobalDeclarationWithName :

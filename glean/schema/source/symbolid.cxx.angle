@@ -1,10 +1,10 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema symbolid.cxx.1 {
-import src.1
-import code.cxx.4
-import codemarkup.types.1
-import cxx1.5
+import src
+import code.cxx
+import codemarkup.types
+import cxx1
 
 # Decoding C++ symbolids to entities is challenging
 #

@@ -1,24 +1,24 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema code.24 {
-import src.1
-import code.buck.1
-import code.csharp.1
-import code.cxx.4
-import code.dataswarm.1
-import code.erlang.1
-import code.fbthrift.1
-import code.flow.2
-import code.graphql.1
-import code.hack.4
-import code.hs.2
-import code.java.5
-import code.kotlin.1
-import code.lsif.2
-import code.pp.1
-import code.python.1
+import src
+import code.buck
+import code.csharp
+import code.cxx
+import code.dataswarm
+import code.erlang
+import code.fbthrift
+import code.flow
+import code.graphql
+import code.hack
+import code.hs
+import code.java
+import code.kotlin
+import code.lsif
+import code.pp
+import code.python
 import code.scip.1
-import codemarkup.types.1
+import codemarkup.types
 
 type Entity =
   {

@@ -1,10 +1,10 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema codemarkup.lsif.3 {
-import src.1
-import code.lsif.2
-import codemarkup.types.1
-import lsif.2
+import src
+import code.lsif
+import codemarkup.types
+import lsif
 import lsif.types.1
 
 #

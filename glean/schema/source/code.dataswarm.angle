@@ -2,7 +2,7 @@
 
 # For Glass integration
 schema code.dataswarm.1 {
-    import dataswarm.1
+    import dataswarm
 
     type Entity =
     {

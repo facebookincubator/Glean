@@ -2,11 +2,11 @@
 
 schema symbolid.kotlin.1 {
 
-import src.1
-import code.kotlin.1
-import codemarkup.types.1
-import kotlin.alpha.2
-import javakotlin.alpha.1
+import src
+import code.kotlin
+import codemarkup.types
+import kotlin.alpha
+import javakotlin.alpha
 
 # You can find everything other than methods and ctors via a qname alone
 predicate LookupDeclaration:

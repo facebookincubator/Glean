@@ -2,7 +2,7 @@
 
 schema scip.1 {
 
-import src.1
+import src
 import lsif.types.1
 
 # scip.proto:ProtocolVersion

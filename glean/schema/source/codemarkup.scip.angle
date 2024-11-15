@@ -1,10 +1,10 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema codemarkup.scip.1 {
-import src.1
+import src
 import code.scip.1
-import codemarkup.types.1
-import scip.1
+import codemarkup.types
+import scip
 import lsif.types.1
 
 #

@@ -1,12 +1,12 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema codemarkup.hack.2 {
-import src.1
+import src
 import code.24
-import code.hack.4
-import hack.6
-import codemarkup.types.1
-import fbthrift.1
+import code.hack
+import hack
+import codemarkup.types
+import fbthrift
 
 predicate HackResolveLocation:
   {

@@ -2,7 +2,7 @@
 
 # Schema to store GenCode information for a file
 schema gencode.1 {
-import src.1
+import src
 
 type GenCodeVariant = enum {
   # File containing generated code entirely

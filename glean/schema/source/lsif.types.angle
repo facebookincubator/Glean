@@ -2,7 +2,7 @@
 
 schema lsif.types.1 {
 
-import src.1
+import src
 
 # Indexer tool metadata
 type ToolInfo =

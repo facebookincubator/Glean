@@ -2,10 +2,10 @@
 
 schema codemarkup.fbthrift.1 {
 
-import code.fbthrift.1
-import codemarkup.types.1
-import src.1
-import fbthrift.1
+import code.fbthrift
+import codemarkup.types
+import src
+import fbthrift
 
 #
 # Resolving locations to entities

@@ -2,8 +2,8 @@
 
 schema yaml.1 {
     import builtin.1
-    import src.1
-    import python.4
+    import src
+    import python
 
     type XRefViaName = {
         target: python.Name,

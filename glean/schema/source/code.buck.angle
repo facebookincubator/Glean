@@ -2,7 +2,7 @@
 
 schema code.buck.1 {
 import buck.4
-import src.1
+import src
 
 type Entity =
   {

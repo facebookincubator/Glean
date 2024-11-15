@@ -2,7 +2,7 @@
 
 schema code.csharp.1 {
 
-import csharp.1
+import csharp
 
 type Entity =
   {

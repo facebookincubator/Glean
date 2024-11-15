@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema flow.3 {
-import src.1
+import src
 
 predicate Module: {
   file: src.File |

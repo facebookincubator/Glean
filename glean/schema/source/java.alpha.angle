@@ -6,8 +6,8 @@
 # Intentionally a breaking change from java.6
 #
 schema java.alpha.1 {
-  import src.1
-  import javakotlin.alpha.1
+  import src
+  import javakotlin.alpha
 
 type Modifier =
   enum {

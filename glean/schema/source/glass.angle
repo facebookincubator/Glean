@@ -2,9 +2,9 @@
 
 schema glass.1 {
 
-import src.1
-import digest.1
-import codemarkup.30
+import src
+import digest
+import codemarkup
 
 # Everything we need to initialize a file info for querying in Glass
 type FileMetadata = {

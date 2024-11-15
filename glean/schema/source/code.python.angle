@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema code.python.1 {
-import python.4
+import python
 
 type Entity =
   {

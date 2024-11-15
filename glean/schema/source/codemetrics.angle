@@ -2,12 +2,12 @@
 
 schema codemetrics.1 {
 
-import cxx1.5
+import cxx1
 import code.24
-import code.cxx.4
-import code.hack.4
-import codemarkup.hack.2
-import hack.6
+import code.cxx
+import code.hack
+import codemarkup.hack
+import hack
 
 #
 # 'target' is referenced in the definition of 'source'

@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema buck.4 {
-import src.1
+import src
 
 # A target locator (subdir//path:name), subdir can be empty
 # 'subdir' is actually a buck cell name.

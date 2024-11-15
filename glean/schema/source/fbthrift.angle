@@ -2,7 +2,7 @@
 
 schema fbthrift.1 {
 import builtin.1
-import src.1
+import src
 
 # Primitives
 

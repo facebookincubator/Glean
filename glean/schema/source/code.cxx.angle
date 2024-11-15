@@ -1,7 +1,7 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema code.cxx.4 {
-import cxx1.5
+import cxx1
 
 type Entity =
   {

@@ -1,8 +1,8 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema search.erlang.4 {
-  import code.erlang.1
-  import erlang.1
+  import code.erlang
+  import erlang
 
   predicate SearchByName:
     {
