@@ -228,7 +228,8 @@ instance Apply FlatStatement where
       Ref (MatchVar x) -> return x
       Ref (MatchBind x) -> return x
       _ -> error "apply: FlatAllStatement"
-    FlatAllStatement v' <$> apply e <*> apply g
+    g' <- optStmts g
+    FlatAllStatement v' <$> apply e <*> apply g'
   apply (FlatNegation stmts) = do
     -- assumptions arising inside the negation are not true outside of it.
     stmts' <- optStmtsEnclosed stmts
