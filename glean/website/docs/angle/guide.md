@@ -179,7 +179,6 @@ predicate Member :
     method : { name : string, doc : maybe string } |
     variable : { name : string }
   }
-}
 ```
 
 The predicate `Has` maps a `Class` to a `Member` (with a `public_` or `private_` annotation), and a `Member` is either `method` or `variable`, with some associated data. Note that a `Class` might have more than one `Member`, which is fine: there can be multiple `Has` facts for a given `Class`.
