@@ -701,6 +701,54 @@
   },
   {
     "key": {
+      "name": "this_is_a_function",
+      "language": 0,
+      "kinds": 13,
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "this_is_a_function" } }
+                        },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "int" },
+                        "parameters": [
+                          { "name": { "key": "a" }, "type": { "key": "int" } },
+                          { "name": { "key": "b" }, "type": { "key": "int" } }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 25,
+                      "columnBegin": 1,
+                      "lineEnd": 29,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": "this_is_a_typedef",
       "language": 0,
       "kinds": 1,

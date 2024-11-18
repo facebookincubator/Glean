@@ -282,6 +282,41 @@
   },
   {
     "key": {
+      "name": "f1",
+      "language": 0,
+      "kinds": 13,
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "f1" } } },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "N1" } } }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 8
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "name": "x",
       "language": 0,
       "kinds": 14,

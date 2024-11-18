@@ -846,6 +846,72 @@
   {
     "key": {
       "searchcase": 0,
+      "name": "this_is_a_function",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "this_is_a_function" } }
+                        },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "int" },
+                        "parameters": [
+                          { "name": { "key": "a" }, "type": { "key": "int" } },
+                          { "name": { "key": "b" }, "type": { "key": "int" } }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 25,
+                      "columnBegin": 1,
+                      "lineEnd": 29,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "this_is_a_function",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 25,
+            "columnBegin": 1,
+            "lineEnd": 29,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 381, "length": 18 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
       "name": "this_is_a_typedef",
       "entity": {
         "cxx": {

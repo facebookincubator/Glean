@@ -1,1 +1,144 @@
-[ "@generated" ]
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo" } } },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "N2" },
+                          "parent": { "key": { "name": { "key": "N1" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": {
+                      "key": "N1::N2::N3::Foo (*)(N1::N2::N3::Foo)"
+                    },
+                    "parameters": [
+                      {
+                        "name": { "key": "x" },
+                        "type": { "key": "N1::N2::N3::Foo" }
+                      }
+                    ]
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 20,
+                  "columnBegin": 1,
+                  "lineEnd": 20,
+                  "columnEnd": 24
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 20,
+            "columnBegin": 1,
+            "lineEnd": 20,
+            "columnEnd": 24
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 417, "length": 3 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foo" } } },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "N2" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": {
+                          "key": "N1::N2::N3::Foo (*)(N1::N2::N3::Foo)"
+                        },
+                        "parameters": [
+                          {
+                            "name": { "key": "x" },
+                            "type": { "key": "N1::N2::N3::Foo" }
+                          }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 37,
+                      "columnBegin": 1,
+                      "lineEnd": 39,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 37,
+            "columnBegin": 1,
+            "lineEnd": 39,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 682, "length": 3 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
+  }
+]

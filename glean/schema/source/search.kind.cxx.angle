@@ -86,8 +86,7 @@ predicate SearchFunction :
     entity: code.cxx.Entity
   }
   { NameStr, Scope, Entity } where
-    cxx1.FunctionDeclarationByName { NameStr, Decl };
-    { name = { scope = Scope } } = Decl; # filter by scope term
+    cxx1.FunctionDeclarationByNameScope { NameStr, Scope, Decl };
     { decl = { function_ = Decl } } = Entity
 
 predicate SearchVariable :

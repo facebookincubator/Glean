@@ -291,5 +291,68 @@
       "kind": 24,
       "language": 0
     }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foo" } } },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "N21" },
+                              "parent": { "key": { "name": { "key": "N2" } } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 22,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 22,
+            "columnBegin": 1,
+            "lineEnd": 24,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 326, "length": 3 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
   }
 ]

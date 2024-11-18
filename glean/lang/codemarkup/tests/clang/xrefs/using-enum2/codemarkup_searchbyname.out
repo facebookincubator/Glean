@@ -940,5 +940,68 @@
       "kind": 11,
       "language": 0
     }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foo" } } },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "O1" },
+                              "parent": { "key": { "name": { "key": "N1" } } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 28,
+                      "columnBegin": 1,
+                      "lineEnd": 28,
+                      "columnEnd": 18
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 28,
+            "columnBegin": 1,
+            "lineEnd": 28,
+            "columnEnd": 18
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 441, "length": 3 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
   }
 ]

@@ -2,7 +2,9 @@
   "@generated": null,
   "facts_searched": {
     "cxx1.DeclByName.5": 2,
-    "cxx1.DeclarationNameSpan.5": 1,
+    "cxx1.DeclarationNameSpan.5": 3,
+    "cxx1.FunctionDeclarationByNameScope.5": 2,
+    "cxx1.FunctionDefinition.5": 1,
     "cxx1.RecordDeclarationStruct.5": 1,
     "cxx1.RecordDefinition.5": 1
   },

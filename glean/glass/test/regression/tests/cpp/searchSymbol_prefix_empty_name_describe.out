@@ -392,6 +392,107 @@
                     "hasMoreChildren": false,
                     "hasMoreParents": false
                 },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 210,
+                        "lineEnd": 212
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "N1::N2::Bar",
+                    "localName": "bar(N1::N2::N3::Foo)"
+                },
+                "native_sym": {
+                    "sym": "0CE87878B7F7296D"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 210,
+                        "lineEnd": 212
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 193,
+                        "lineEnd": 193
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "N1::N2::Bar",
+                    "localName": "bar(N1::N2::N3::Foo)"
+                },
+                "native_sym": {
+                    "sym": "0CE87878B7F7296D"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 193,
+                        "lineEnd": 193
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
                 "kind": 6,
                 "language": 1,
                 "location": {
@@ -468,6 +569,105 @@
                         "columnEnd": 29,
                         "lineBegin": 182,
                         "lineEnd": 182
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 206,
+                        "lineEnd": 208
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "N1::N2",
+                    "localName": "foo(N1::N2::N3::Foo)"
+                },
+                "native_sym": {
+                    "sym": "8FEA0280EF98C62B"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 206,
+                        "lineEnd": 208
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 189,
+                        "lineEnd": 189
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "N1::N2",
+                    "localName": "foo(N1::N2::N3::Foo)"
+                },
+                "native_sym": {
+                    "sym": "8FEA0280EF98C62B"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 189,
+                        "lineEnd": 189
                     },
                     "repository": "test"
                 },
@@ -612,6 +812,445 @@
                         "columnEnd": 4,
                         "lineBegin": 138,
                         "lineEnd": 153
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 17,
+                        "lineBegin": 140,
+                        "lineEnd": 140
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "Q::QQ",
+                    "localName": "bozzo"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//Q/QQ/bozzo/.f//.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 17,
+                        "lineBegin": 140,
+                        "lineEnd": 140
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 30,
+                        "lineBegin": 142,
+                        "lineEnd": 142
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [
+                    6
+                ],
+                "name": {
+                    "container": "Q::QQ",
+                    "localName": "getDouble() const&"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//Q/QQ/getDouble/.f//const,lvalue/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 30,
+                        "lineBegin": 142,
+                        "lineEnd": 142
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 143,
+                        "lineEnd": 143
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "Q::QQ",
+                    "localName": "getDouble() &"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//Q/QQ/getDouble/.f//lvalue/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 143,
+                        "lineEnd": 143
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 144,
+                        "lineEnd": 144
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "Q::QQ",
+                    "localName": "getDouble() &&"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//Q/QQ/getDouble/.f//rvalue/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 144,
+                        "lineEnd": 144
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 29,
+                        "lineBegin": 148,
+                        "lineEnd": 148
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "Q::QQ",
+                    "localName": "thango(int, Q::QQ &&) &&"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//Q/QQ/thango/.f/int,Q::QQ+%26%26/rvalue/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 29,
+                        "lineBegin": 148,
+                        "lineEnd": 148
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 28,
+                        "lineBegin": 147,
+                        "lineEnd": 147
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "Q::QQ",
+                    "localName": "thango(int, Q::QQ &) &"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//Q/QQ/thango/.f/int,Q::QQ+%26/lvalue/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 28,
+                        "lineBegin": 147,
+                        "lineEnd": 147
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 38,
+                        "lineBegin": 146,
+                        "lineEnd": 146
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [
+                    6
+                ],
+                "name": {
+                    "container": "Q::QQ",
+                    "localName": "thango(int, const Q::QQ &) const&"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//Q/QQ/thango/.f/int,const+Q::QQ+%26/const,lvalue/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 38,
+                        "lineBegin": 146,
+                        "lineEnd": 146
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 43,
+                        "lineBegin": 150,
+                        "lineEnd": 150
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [
+                    6
+                ],
+                "name": {
+                    "container": "Q::QQ",
+                    "localName": "thingo(pear<int, char>, Q::QQ &&) const"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//Q/QQ/thingo/.f/pear%3Cint%20+char%3E,Q::QQ+%26%26/const/.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 43,
+                        "lineBegin": 150,
+                        "lineEnd": 150
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": [],
+                "visibility": 20
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 136,
+                        "lineEnd": 136
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "Q",
+                    "localName": "bozzo"
+                },
+                "native_sym": {
+                    "sym": "63C2D5C1168C3B1E"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//Q/bozzo/.f/",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 136,
+                        "lineEnd": 136
                     },
                     "repository": "test"
                 },
@@ -1326,6 +1965,261 @@
                         "columnEnd": 29,
                         "lineBegin": 36,
                         "lineEnd": 36
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 41,
+                        "lineEnd": 41
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "foo::bar",
+                    "localName": "g"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//foo/bar/g/.f//.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 41,
+                        "lineEnd": 41
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "foo",
+                    "localName": "f"
+                },
+                "pretty_comments": [
+                    {
+                        "location": {
+                            "filepath": "test.cpp",
+                            "range": {
+                                "columnBegin": 1,
+                                "columnEnd": 4,
+                                "lineBegin": 18,
+                                "lineEnd": 20
+                            },
+                            "repository": "test"
+                        }
+                    }
+                ],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//foo/f/.f//.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 24,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "foo",
+                    "localName": "foo"
+                },
+                "native_sym": {
+                    "sym": "679BA3377BCEEEAA"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//foo/foo/.f/",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 24,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "annotations": [],
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 11,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "foo",
+                    "localName": "foo"
+                },
+                "native_sym": {
+                    "sym": "679BA3377BCEEEAA"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//foo/foo/.f//.decl",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 11,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "sym_other_locations": [],
+                "type_xrefs": []
+            },
+            {
+                "contains_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "extends_relation": {
+                    "firstChild": "nondeterministic",
+                    "firstParent": "nondeterministic",
+                    "hasMoreChildren": false,
+                    "hasMoreParents": false
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 45,
+                        "lineEnd": 47
+                    },
+                    "repository": "test"
+                },
+                "modifiers": [],
+                "name": {
+                    "container": "foo",
+                    "localName": "fooFn(int)"
+                },
+                "native_sym": {
+                    "sym": "229289F3B2374F63"
+                },
+                "pretty_comments": [],
+                "repo_hash": "testhash",
+                "sym": "test/cpp//foo/fooFn/.f/int",
+                "sym_location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 45,
+                        "lineEnd": 47
                     },
                     "repository": "test"
                 },
@@ -2520,6 +3414,59 @@
                 "symbol": "test/cpp//N1/N2/Bar"
             },
             {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 210,
+                        "lineEnd": 212
+                    },
+                    "repository": "test"
+                },
+                "name": "bar",
+                "qname": {
+                    "container": "N1::N2::Bar",
+                    "localName": "bar(N1::N2::N3::Foo)"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "N1::N2",
+                        "localName": "Bar"
+                    },
+                    "symbol": "test/cpp//N1/N2/Bar"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 193,
+                        "lineEnd": 193
+                    },
+                    "repository": "test"
+                },
+                "name": "bar",
+                "qname": {
+                    "container": "N1::N2::Bar",
+                    "localName": "bar(N1::N2::N3::Foo)"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//N1/N2/Bar/bar/.f/N1::N2::N3::Foo/.decl"
+            },
+            {
                 "kind": 6,
                 "language": 1,
                 "location": {
@@ -2564,6 +3511,52 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//N1/N2/N3/Foo"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 206,
+                        "lineEnd": 208
+                    },
+                    "repository": "test"
+                },
+                "name": "foo",
+                "qname": {
+                    "container": "N1::N2",
+                    "localName": "foo(N1::N2::N3::Foo)"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 25,
+                        "lineBegin": 189,
+                        "lineEnd": 189
+                    },
+                    "repository": "test"
+                },
+                "name": "foo",
+                "qname": {
+                    "container": "N1::N2",
+                    "localName": "foo(N1::N2::N3::Foo)"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//N1/N2/foo/.f/N1::N2::N3::Foo/.decl"
             },
             {
                 "kind": 6,
@@ -2633,6 +3626,269 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//Q/QQ"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 17,
+                        "lineBegin": 140,
+                        "lineEnd": 140
+                    },
+                    "repository": "test"
+                },
+                "name": "bozzo",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "bozzo"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/bozzo/.f//.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 30,
+                        "lineBegin": 142,
+                        "lineEnd": 142
+                    },
+                    "repository": "test"
+                },
+                "name": "getDouble",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "getDouble() const&"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/getDouble/.f//const,lvalue/.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 143,
+                        "lineEnd": 143
+                    },
+                    "repository": "test"
+                },
+                "name": "getDouble",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "getDouble() &"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/getDouble/.f//lvalue/.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 26,
+                        "lineBegin": 144,
+                        "lineEnd": 144
+                    },
+                    "repository": "test"
+                },
+                "name": "getDouble",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "getDouble() &&"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/getDouble/.f//rvalue/.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 29,
+                        "lineBegin": 148,
+                        "lineEnd": 148
+                    },
+                    "repository": "test"
+                },
+                "name": "thango",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "thango(int, Q::QQ &&) &&"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/thango/.f/int,Q::QQ+%26%26/rvalue/.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 28,
+                        "lineBegin": 147,
+                        "lineEnd": 147
+                    },
+                    "repository": "test"
+                },
+                "name": "thango",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "thango(int, Q::QQ &) &"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/thango/.f/int,Q::QQ+%26/lvalue/.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 38,
+                        "lineBegin": 146,
+                        "lineEnd": 146
+                    },
+                    "repository": "test"
+                },
+                "name": "thango",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "thango(int, const Q::QQ &) const&"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/thango/.f/int,const+Q::QQ+%26/const,lvalue/.decl"
+            },
+            {
+                "context": {
+                    "qname": {
+                        "container": "Q",
+                        "localName": "QQ"
+                    },
+                    "symbol": "test/cpp//Q/QQ"
+                },
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 5,
+                        "columnEnd": 43,
+                        "lineBegin": 150,
+                        "lineEnd": 150
+                    },
+                    "repository": "test"
+                },
+                "name": "thingo",
+                "qname": {
+                    "container": "Q::QQ",
+                    "localName": "thingo(pear<int, char>, Q::QQ &&) const"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/QQ/thingo/.f/pear%3Cint%20+char%3E,Q::QQ+%26%26/const/.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 3,
+                        "columnEnd": 27,
+                        "lineBegin": 136,
+                        "lineEnd": 136
+                    },
+                    "repository": "test"
+                },
+                "name": "bozzo",
+                "qname": {
+                    "container": "Q",
+                    "localName": "bozzo"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//Q/bozzo/.f/"
             },
             {
                 "kind": 6,
@@ -3006,6 +4262,121 @@
                     "exactness": 2
                 },
                 "symbol": "test/cpp//foo/bar/UsingDeclShort/.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 41,
+                        "lineEnd": 41
+                    },
+                    "repository": "test"
+                },
+                "name": "g",
+                "qname": {
+                    "container": "foo::bar",
+                    "localName": "g"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//foo/bar/g/.f//.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 9,
+                        "lineBegin": 21,
+                        "lineEnd": 21
+                    },
+                    "repository": "test"
+                },
+                "name": "f",
+                "qname": {
+                    "container": "foo",
+                    "localName": "f"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//foo/f/.f//.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 24,
+                        "lineEnd": 27
+                    },
+                    "repository": "test"
+                },
+                "name": "foo",
+                "qname": {
+                    "container": "foo",
+                    "localName": "foo"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//foo/foo/.f/"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 11,
+                        "lineBegin": 31,
+                        "lineEnd": 31
+                    },
+                    "repository": "test"
+                },
+                "name": "foo",
+                "qname": {
+                    "container": "foo",
+                    "localName": "foo"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//foo/foo/.f//.decl"
+            },
+            {
+                "kind": 14,
+                "language": 1,
+                "location": {
+                    "filepath": "test.cpp",
+                    "range": {
+                        "columnBegin": 1,
+                        "columnEnd": 2,
+                        "lineBegin": 45,
+                        "lineEnd": 47
+                    },
+                    "repository": "test"
+                },
+                "name": "fooFn",
+                "qname": {
+                    "container": "foo",
+                    "localName": "fooFn(int)"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/cpp//foo/fooFn/.f/int"
             },
             {
                 "kind": 14,

@@ -312,6 +312,195 @@
   {
     "key": {
       "searchcase": 0,
+      "name": "bar",
+      "entity": {
+        "cxx": {
+          "decl": {
+            "function_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "bar" } } },
+                    "scope": { "global_": { } }
+                  }
+                },
+                "signature": {
+                  "key": {
+                    "returns": { "key": "void" },
+                    "parameters": [
+                      { "name": { "key": "" }, "type": { "key": "int" } }
+                    ]
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 15,
+                  "columnBegin": 1,
+                  "lineEnd": 15,
+                  "columnEnd": 13
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "bar",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 15,
+            "columnBegin": 1,
+            "lineEnd": 15,
+            "columnEnd": 13
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 325, "length": 3 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "baz",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "baz" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          { "name": { "key": "x" }, "type": { "key": "Foo" } }
+                        ]
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 27,
+                      "columnBegin": 1,
+                      "lineEnd": 31,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "baz",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 27,
+            "columnBegin": 1,
+            "lineEnd": 31,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 428, "length": 3 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "foo",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foo" } } },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Foo" },
+                                "scope": { "global_": { } }
+                              }
+                            },
+                            "access": 0
+                          }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "method": {
+                      "isVirtual": false,
+                      "isConst": false,
+                      "isVolatile": false,
+                      "refQualifier": 0
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 20,
+                      "columnBegin": 3,
+                      "lineEnd": 24,
+                      "columnEnd": 3
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 20,
+            "columnBegin": 3,
+            "lineEnd": 24,
+            "columnEnd": 3
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 368, "length": 3 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
       "name": "ptr",
       "entity": {
         "cxx": {

@@ -1,1 +1,59 @@
-[ "@generated" ]
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 1,
+      "name": "foobar",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foobar",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 16,
+            "columnBegin": 1,
+            "lineEnd": 16,
+            "columnEnd": 16
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 370, "length": 6 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
+  }
+]
