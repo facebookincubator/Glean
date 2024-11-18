@@ -28,7 +28,7 @@ predicate SearchByName:
     language: code.Language # optional language filter, could be wild
   }
   { SearchCase, Name, Entity, Location, Kind, Language } where
-    if (Insensitive = SearchCase) # default to case sensitive if not provided
+    if (Insensitive = SearchCase)
     then (
       ( search.code.SearchByLowerCaseNameKindAndLanguage { Name, Language, Kind, Entity };
         codemarkup.EntityLocation { Entity, Location }
@@ -58,13 +58,25 @@ predicate SearchByScope:
     language: code.Language
   }
   { SearchCase, Name, Scope, Entity, Location, Kind, Language } where
-    (Sensitive = SearchCase;
-      search.code.SearchByScope { Name, Scope, Language, Entity }) |
-    (Insensitive = SearchCase;
-      search.code.SearchByLowerCaseScope { Name, Scope, Language, Entity });
-    EntityLocationAndKind { Entity, Location, Kind };
+    if (Insensitive = SearchCase)
+    then (
+      ( search.code.SearchByLowerCaseScopeAndKind { Name, Scope, Language, Kind, Entity };
+        codemarkup.EntityLocation { Entity, Location }
+      ) | ( # old form
+        search.code.SearchByLowerCaseScope { Name, Scope, Language, Entity };
+        EntityLocationAndKind { Entity, Location, Kind }
+      )
+    ) else (
+      ( search.code.SearchByScopeAndKind { Name, Scope, Language, Kind, Entity };
+        codemarkup.EntityLocation { Entity, Location }
+      ) | ( # old form
+        search.code.SearchByScope { Name, Scope, Language, Entity };
+        EntityLocationAndKind { Entity, Location, Kind };
+      )
+    );
 
 # Symbol kind of entity, where kind is optional.
+# We can avoid this post-query filter with kind-optimized lookups
 predicate EntityLocationAndKind:
   {
     entity: code.Entity,

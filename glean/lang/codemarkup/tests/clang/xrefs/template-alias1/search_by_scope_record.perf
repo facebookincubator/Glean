@@ -1,1 +1,11 @@
-{ "@generated": null, "facts_searched": { }, "full_scans": [ "cxx1.Name.5" ] }
+{
+  "@generated": null,
+  "facts_searched": { },
+  "full_scans": [
+    "cxx1.RecordDeclarationClass.5",
+    "cxx1.RecordDeclarationStruct.5",
+    "cxx1.RecordDeclarationUnion.5",
+    "cxx1.TypeAliasDeclarationByName.5",
+    "cxx1.VariableDeclarationNonLocalByName.5"
+  ]
+}

@@ -1,5 +1,11 @@
 {
   "@generated": null,
-  "facts_searched": { "cxx1.DeclByName.5": 9 },
-  "full_scans": [ "cxx1.DeclByName.5" ]
+  "facts_searched": { },
+  "full_scans": [
+    "cxx1.DeclByName.5",
+    "cxx1.EnumDeclarationByName.5",
+    "cxx1.EnumeratorByName.5",
+    "cxx1.FunctionDeclarationByNameScope.5",
+    "cxx1.NamespaceDeclarationByName.5"
+  ]
 }

@@ -1,10 +1,18 @@
 {
   "@generated": null,
   "facts_searched": {
-    "cxx1.FunctionName.5": 18,
-    "cxx1.Name.5": 56,
+    "cxx1.FunctionDeclarationByNameScope.5": 21,
+    "cxx1.Name.5": 2,
     "cxx1.NamespaceDeclarationByName.5": 15,
-    "cxx1.QName.5": 1
+    "cxx1.QName.5": 1,
+    "cxx1.RecordDeclarationStruct.5": 15
   },
-  "full_scans": [ "cxx1.Name.5" ]
+  "full_scans": [
+    "cxx1.FunctionDeclarationByNameScope.5",
+    "cxx1.NamespaceDeclarationByName.5",
+    "cxx1.RecordDeclarationClass.5",
+    "cxx1.RecordDeclarationStruct.5",
+    "cxx1.RecordDeclarationUnion.5",
+    "cxx1.VariableDeclarationNonLocalByName.5"
+  ]
 }

@@ -2,6 +2,7 @@
   "@generated",
   {
     "key": {
+      "searchcase": 0,
       "name": "bar",
       "scope": [ "foo" ],
       "entity": {
@@ -157,7 +158,26 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "bar",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 33,
+            "columnBegin": 1,
+            "lineEnd": 43,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 545, "length": 3 }
+        }
+      },
+      "kind": 5,
+      "language": 0
     }
   }
 ]

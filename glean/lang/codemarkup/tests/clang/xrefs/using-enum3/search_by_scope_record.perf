@@ -1,1 +1,10 @@
-{ "@generated": null, "facts_searched": { }, "full_scans": [ "cxx1.Name.5" ] }
+{
+  "@generated": null,
+  "facts_searched": { },
+  "full_scans": [
+    "cxx1.EnumDeclarationByName.5",
+    "cxx1.EnumeratorByName.5",
+    "cxx1.FunctionDeclarationByNameScope.5",
+    "cxx1.NamespaceDeclarationByName.5"
+  ]
+}

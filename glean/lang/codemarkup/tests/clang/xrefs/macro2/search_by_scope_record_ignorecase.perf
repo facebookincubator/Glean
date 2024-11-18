@@ -1,1 +1,5 @@
-{ "@generated": null, "facts_searched": { }, "full_scans": [ "cxx1.Name.5" ] }
+{
+  "@generated": null,
+  "facts_searched": { },
+  "full_scans": [ "cxx1.DeclByName.5", "cxx1.FunctionDeclarationByNameScope.5" ]
+}

@@ -45,13 +45,12 @@ predicate SearchByNameAndLanguage:
     entity: code.Entity,
   }
   { Name, Language, Entity } where
+  # see SearchByNameKindAndLanguage for C++
     ( Hack = Language; HackSearchByName { Name, Entity } ) |
     ( Python = Language; PythonSearchByName { Name, Entity } ) |
     ( JavaScript = Language; FlowSearchByName { Name, Entity } ) |
     ( Java = Language; JavaSearchByName { Name, Entity } ) |
     ( Kotlin = Language; KotlinSearchByName { Name, Entity } ) |
-  # see SearchByNameKindAndLanguage
-  #  ( Cpp = Language; CxxSearchByName { Name, Entity } ) |
     ( PreProcessor = Language; PpSearchByName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByName { Name, Entity } ) |
@@ -69,13 +68,12 @@ predicate SearchByLowerCaseNameAndLanguage:
     entity: code.Entity,
   }
   { Name, Language, Entity } where
+ # See SearchByLowerCaseNameKindAndLanguage
     ( Hack = Language; HackSearchByLowerCaseName { Name, Entity } ) |
     ( Python = Language; PythonSearchByLowerCaseName { Name, Entity } ) |
     ( JavaScript = Language; FlowSearchByLowerCaseName { Name, Entity } ) |
     ( Java = Language; JavaSearchByLowerCaseName { Name, Entity } ) |
     ( Kotlin = Language; KotlinSearchByLowerCaseName { Name, Entity } ) |
- # See SearchByLowerCaseNameKindAndLanguage
- #  ( Cpp = Language; CxxSearchByLowerCaseName { Name, Entity } ) |
     ( PreProcessor = Language; PpSearchByLowerCaseName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByLowerCaseName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByLowerCaseName { Name, Entity } ) |
@@ -109,7 +107,7 @@ predicate SearchByLowerCaseNameKindAndLanguage:
     Cpp = Language;
     CxxSearchByLowerCaseNameKindAndScopeFact { NameStr, _, Kinds, Entity };
 
-# scoped search (experimental!)
+# scoped search
 
 predicate SearchByScope:
   {
@@ -119,7 +117,7 @@ predicate SearchByScope:
     entity: code.Entity,
   }
   { Name, Scope, Language, Entity } where
-    ( Cpp = Language; CxxSearchByScope { Name, Scope, Entity } ) |
+# See SearchByScopeAndKind for C++
     ( Hack = Language; HackSearchByScope { Name, Scope, Entity } ) |
     ( Python = Language; PythonSearchByScope { Name, Scope, Entity } ) |
     ( JavaScript = Language; FlowSearchByScope { Name, Scope, Entity } ) |
@@ -136,13 +134,39 @@ predicate SearchByLowerCaseScope:
     entity: code.Entity,
   }
   { Name, Scope, Language, Entity } where
-    ( Cpp = Language; CxxSearchByLowerCaseScope { Name, Scope, Entity } ) |
+# See SearchByLowerCaseScopeAndKind for C++
     ( Hack = Language; HackSearchByLowerCaseScope { Name, Scope, Entity } ) |
     ( Python = Language; PythonSearchByLowerCaseScope { Name, Scope, Entity }) |
     ( JavaScript = Language; FlowSearchByLowerCaseScope { Name, Scope, Entity})|
     ( Java = Language; JavaSearchByLowerCaseScope { Name, Scope, Entity}) |
     ( Kotlin = Language; KotlinSearchByLowerCaseScope { Name, Scope, Entity});
     code.EntityLanguage { Entity, Language };
+
+# name and scope search, kind-optimized
+predicate SearchByScopeAndKind:
+  {
+    name: string,
+    scope: [string],
+    language: code.Language,
+    kinds: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity,
+  }
+  { Name, Scope, Language, Kinds, Entity } where
+    Cpp = Language;
+    CxxSearchByScopeAndKind { Name, Scope, Kinds, Entity };
+
+# lower case by scope
+predicate SearchByLowerCaseScopeAndKind:
+  {
+    name: string,
+    scope: [string],
+    language: code.Language,
+    kinds: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity,
+  }
+  { Name, Scope, Language, Kinds, Entity } where
+    Cpp = Language;
+    CxxSearchByLowerCaseScopeAndKind { Name, Scope, Kinds, Entity }
 
 #
 # Language-specific identifier search
@@ -519,38 +543,27 @@ predicate CSharpSearchByLowerCaseName:
     csharp.SearchByName { Name, Defn };
     { csharp = { decl = Defn } } = Entity
 
-predicate CxxSearchByScope:
+predicate CxxSearchByScopeAndKind:
   {
     name: string,
     scope: [string],
+    kinds: maybe codemarkup.types.SymbolKind,
     entity: code.Entity,
   }
-  { NameStr, Query, Entity } where
+  { NameStr, Query, Kinds, Entity } where
     search.cxx.QueryToScopeCase { Query, false, Scope };
-    Name = cxx1.Name NameStr;
-    CxxSearchByNameAndScopeFact { Name, Scope, Entity }
+    CxxSearchByNameKindAndScopeFact { NameStr, Scope, Kinds, Entity }
 
-predicate CxxSearchByLowerCaseScope:
+predicate CxxSearchByLowerCaseScopeAndKind:
   {
     name: string,
     scope: [string],
+    kinds: maybe codemarkup.types.SymbolKind,
     entity: code.Entity,
   }
-  { NameStr, Query, Entity } where
-    cxx1.DeclByName { name_lowercase = NameStr, ident = { name = Name } };
+  { NameStr, Query, Kinds, Entity } where
     search.cxx.QueryToScopeCase { Query, true, Scope };
-    CxxSearchByNameAndScopeFact { Name, Scope, Entity };
-
-predicate CxxSearchByNameAndScopeFact:
-  {
-    name: cxx1.Name,
-    scope : cxx1.Scope,
-    entity : code.Entity
-  }
-  { Name, Scope, Entity } where
-    search.cxx.SearchByNameAndScope { Name, Scope, Ent };
-    CxxPreferDefinitions{ Ent, OutEnt };
-    { cxx = OutEnt } = Entity;
+    CxxSearchByLowerCaseNameKindAndScopeFact { NameStr, Scope, Kinds, Entity };
 
 # with a bare string name and a known scope, search by kind
 predicate CxxSearchByNameKindAndScopeFact:

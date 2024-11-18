@@ -2,6 +2,7 @@
   "@generated",
   {
     "key": {
+      "searchcase": 0,
       "name": "IN1",
       "scope": [ "N1" ],
       "entity": {
@@ -60,7 +61,26 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "IN1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 10,
+            "columnBegin": 3,
+            "lineEnd": 12,
+            "columnEnd": 3
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 248, "length": 3 }
+        }
+      },
+      "kind": 5,
+      "language": 0
     }
   }
 ]

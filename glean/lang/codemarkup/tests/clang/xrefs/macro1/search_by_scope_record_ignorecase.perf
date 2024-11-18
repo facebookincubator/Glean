@@ -1,5 +1,13 @@
 {
   "@generated": null,
-  "facts_searched": { "cxx1.DeclByName.5": 34 },
-  "full_scans": [ "cxx1.DeclByName.5" ]
+  "facts_searched": { "cxx1.DeclByName.5": 2 },
+  "full_scans": [
+    "cxx1.DeclByName.5",
+    "cxx1.FunctionDeclarationByNameScope.5",
+    "cxx1.NamespaceDeclarationByName.5",
+    "cxx1.RecordDeclarationClass.5",
+    "cxx1.RecordDeclarationStruct.5",
+    "cxx1.RecordDeclarationUnion.5",
+    "cxx1.VariableDeclarationNonLocalByName.5"
+  ]
 }
