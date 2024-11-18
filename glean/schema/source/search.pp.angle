@@ -1,19 +1,6 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
-schema search.pp.1 {
-import pp1
-
-predicate SearchByName :
-  {
-    name : string,
-    entity : pp1.Define,
-  }
-  { Str, Entity }
-  where
-  Entity = pp1.Define { macro = pp1.Macro Str }
-}
-
-schema search.pp.2 : search.pp.1 {
+schema search.pp.2 {
 import pp1
 
 predicate SearchByName :
