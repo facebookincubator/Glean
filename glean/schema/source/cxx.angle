@@ -94,16 +94,6 @@ predicate NamespaceDeclaration :
     source : src.Range,
   }
 
-# For search, index just those with non-empty namespace local names
-predicate NamespaceDeclarationByName :
-  {
-    name : string,
-    parent: maybe NamespaceQName,
-    decl : NamespaceDeclaration
-  } stored { NameStr, Parent, Decl } where
-    Name = cxx1.Name NameStr;
-    NamespaceDeclaration { name = { { just = Name }, Parent } } = Decl
-
 # C++ record kind - struct/class/union
 type RecordKind =
    {
@@ -120,38 +110,6 @@ predicate RecordDeclaration :
     source : src.Range,
   }
 
-# Derived predicates to distinguish records by kind, to avoid enumerating all
-# records when searching. We flatten the QName so that the Name key is left most,
-# avoiding the need to enumerate QNames to find things.
-predicate RecordDeclarationStruct :
-  {
-    name : string,
-    scope: Scope,
-    decl : RecordDeclaration
-  } stored { NameStr, Scope, Decl } where
-    Name = cxx1.Name NameStr;
-    RecordDeclaration { name = { Name, Scope }, kind = { struct_ = _ } } = Decl
-
-# Derived
-predicate RecordDeclarationClass :
-  {
-    name : string,
-    scope: Scope,
-    decl : RecordDeclaration
-  } stored { NameStr, Scope, Decl } where
-    Name = cxx1.Name NameStr;
-    RecordDeclaration { name = { Name, Scope }, kind = { class_ = _ } } = Decl
-
-# Derived
-predicate RecordDeclarationUnion :
-  {
-    name : string,
-    scope: Scope,
-    decl : RecordDeclaration
-  } stored { NameStr, Scope, Decl } where
-    Name = cxx1.Name NameStr;
-    RecordDeclaration { name = { Name, Scope }, kind = { union_ = _ } } = Decl
-
 # Enum declaration
 predicate EnumDeclaration :
   {
@@ -160,15 +118,6 @@ predicate EnumDeclaration :
     type : maybe Type,
     source : src.Range,
   }
-
-# Re-index left-keyed by cxx1.Name fact to avoid QName scans
-predicate EnumDeclarationByName :
-  { name : string,
-    scope : Scope,
-    decl : EnumDeclaration
-  } stored { NameStr, Scope, Decl } where
-    EnumDeclaration { name = { Name, Scope } } = Decl;
-    Name = cxx1.Name NameStr;
 
 # C++ method ref qualifier
 type RefQualifier = enum { None_ | LValue | RValue }
@@ -190,29 +139,6 @@ predicate FunctionDeclaration :
     method : maybe MethodSignature,
     source : src.Range,
   }
-
-# Search: functions with real names only, to restrict to scope use the FQName
-# (deprecated: removed once FunctionDeclarationByNameScope is derived)
-predicate FunctionDeclarationByName :
-  {
-    name: string,
-    decl: FunctionDeclaration
-  } stored { NameStr, Decl } where
-    FName = cxx1.FunctionName { name = cxx1.Name NameStr };
-    FQName = cxx1.FunctionQName { name = FName };
-    Decl = cxx1.FunctionDeclaration { name = FQName };
-
-# Search: functions with real names only, to restrict to scope use the FQName
-predicate FunctionDeclarationByNameScope :
-  {
-    name: string,
-    scope: Scope,
-    decl: FunctionDeclaration
-  } stored { NameStr, Scope, Decl } where
-    FName = FunctionName { name = Name };
-    FQName = FunctionQName { name = FName, scope = Scope };
-    cxx1.Name NameStr = Name;
-    cxx1.FunctionDeclaration { name = FQName } = Decl;
 
 # C++ method override
 predicate MethodOverrides :
@@ -245,19 +171,6 @@ predicate ObjcContainerDeclaration :
     id : ObjcContainerId,
     source : src.Range,
   }
-
-# searching for ObjcContainers. We need to split these up by kind
-predicate ObjcContainerDeclarationInterface :
-  {
-    name: string,
-    decl: ObjcContainerDeclaration
-  } stored { NameStr, Decl } where
-    cxx1.ObjcContainerDeclaration { id = ObjcId } = Decl;
-    ObjcId =
-      { interface_ = Name } |
-      { categoryInterface = { className = Name } } |
-      { extensionInterface = Name };
-    cxx1.Name NameStr = Name
 
 # Objective C selector
 #
@@ -340,14 +253,6 @@ predicate Enumerator :
     enumeration : EnumDeclaration,   # TODO: qname?
     source : src.Range,
   }
-
-# Search enumerators by name
-predicate EnumeratorByName :
-  {
-    name: string,
-    decl: cxx1.Enumerator
-  } stored { NameStr, Decl } where
-    cxx1.Enumerator { name = cxx1.Name NameStr } = Decl
 
 # Enum definition
 predicate EnumDefinition :
@@ -516,15 +421,6 @@ predicate TypeAliasDeclaration :
     source : src.Range,
   }
 
-# type alias search by name
-predicate TypeAliasDeclarationByName :
-  {
-    name : string,
-    scope : Scope,
-    decl : cxx1.TypeAliasDeclaration
-  } stored { NameStr, Scope, Decl } where
-    cxx1.TypeAliasDeclaration { name = { cxx1.Name NameStr, Scope } } = Decl
-
 type NamespaceTarget =
   {
     namespace_ : NamespaceDeclaration |
@@ -629,16 +525,6 @@ predicate VariableDeclaration :
     kind : VariableKind,
     source : src.Range,
   }
-
-# Variable search by name. Let's not include locals since they're too numerous
-predicate VariableDeclarationNonLocalByName :
-  {
-    name : string,
-    scope: Scope,
-    decl : VariableDeclaration
-  } stored { NameStr, Decl.name.scope, Decl } where
-    Decl.name.name = cxx1.Name NameStr;
-    Decl.kind.global_? | Decl.kind.field? | Decl.kind.ivar?;
 
 # Sum type of all declarations
 type Declaration =
@@ -1007,34 +893,138 @@ predicate MethodOverridden :
   where
     cxx1.MethodOverrides{derived = Derived, base = Base}
 
-# This is a derived predicate to support searching for declarations by
-# case-insensitive name prefix, to support things like autocomplete.
 #
-# Earlier idea that didn't work so well:
+# Searching for declarations by name. One per kind
 #
-#  [
-#    ("name_lowercase", string),
-#    ("decl", declaration),
-#  ]
+
+# For search, index just those with non-empty namespace local names
+predicate NamespaceDeclarationByName :
+  {
+    name : string,
+    parent: maybe NamespaceQName,
+    decl : NamespaceDeclaration
+  } stored { NameStr, Parent, Decl } where
+    Name = cxx1.Name NameStr;
+    NamespaceDeclaration { name = { { just = Name }, Parent } } = Decl
+
+# Derived predicates to distinguish records by kind, to avoid enumerating all
+# records when searching. We flatten the QName so that the Name key is left most,
+# avoiding the need to enumerate QNames to find things.
+predicate RecordDeclarationStruct :
+  {
+    name : string,
+    scope: Scope,
+    decl : RecordDeclaration
+  } stored { NameStr, Scope, Decl } where
+    Name = cxx1.Name NameStr;
+    RecordDeclaration { name = { Name, Scope }, kind = { struct_ = _ } } = Decl
+
+# Derived
+predicate RecordDeclarationClass :
+  {
+    name : string,
+    scope: Scope,
+    decl : RecordDeclaration
+  } stored { NameStr, Scope, Decl } where
+    Name = cxx1.Name NameStr;
+    RecordDeclaration { name = { Name, Scope }, kind = { class_ = _ } } = Decl
+
+# Derived
+predicate RecordDeclarationUnion :
+  {
+    name : string,
+    scope: Scope,
+    decl : RecordDeclaration
+  } stored { NameStr, Scope, Decl } where
+    Name = cxx1.Name NameStr;
+    RecordDeclaration { name = { Name, Scope }, kind = { union_ = _ } } = Decl
+
+# Re-index left-keyed by cxx1.Name fact to avoid QName scans
+predicate EnumDeclarationByName :
+  { name : string,
+    scope : Scope,
+    decl : EnumDeclaration
+  } stored { NameStr, Scope, Decl } where
+    EnumDeclaration { name = { Name, Scope } } = Decl;
+    Name = cxx1.Name NameStr;
+
+# Search: functions with real names only, to restrict to scope use the FQName
+# (deprecated: removed once FunctionDeclarationByNameScope is derived)
+predicate FunctionDeclarationByName :
+  {
+    name: string,
+    decl: FunctionDeclaration
+  } stored { NameStr, Decl } where
+    FName = cxx1.FunctionName { name = cxx1.Name NameStr };
+    FQName = cxx1.FunctionQName { name = FName };
+    Decl = cxx1.FunctionDeclaration { name = FQName };
+
+# Search: functions with real names only, to restrict to scope use the FQName
+predicate FunctionDeclarationByNameScope :
+  {
+    name: string,
+    scope: Scope,
+    decl: FunctionDeclaration
+  } stored { NameStr, Scope, Decl } where
+    FName = FunctionName { name = Name };
+    FQName = FunctionQName { name = FName, scope = Scope };
+    cxx1.Name NameStr = Name;
+    cxx1.FunctionDeclaration { name = FQName } = Decl;
+
+# searching for ObjcContainers. We need to split these up by kind
+predicate ObjcContainerDeclarationInterface :
+  {
+    name: string,
+    decl: ObjcContainerDeclaration
+  } stored { NameStr, Decl } where
+    cxx1.ObjcContainerDeclaration { id = ObjcId } = Decl;
+    ObjcId =
+      { interface_ = Name } |
+      { categoryInterface = { className = Name } } |
+      { extensionInterface = Name };
+    cxx1.Name NameStr = Name
+
+# Search enumerators by name
+predicate EnumeratorByName :
+  {
+    name: string,
+    decl: cxx1.Enumerator
+  } stored { NameStr, Decl } where
+    cxx1.Enumerator { name = cxx1.Name NameStr } = Decl
+
+# type alias search by name
+predicate TypeAliasDeclarationByName :
+  {
+    name : string,
+    scope : Scope,
+    decl : cxx1.TypeAliasDeclaration
+  } stored { NameStr, Scope, Decl } where
+    cxx1.TypeAliasDeclaration { name = { cxx1.Name NameStr, Scope } } = Decl
+
+# Variable search by name. Let's not include locals since they're too numerous
+predicate VariableDeclarationNonLocalByName :
+  {
+    name : string,
+    scope: Scope,
+    decl : VariableDeclaration
+  } stored { NameStr, Decl.name.scope, Decl } where
+    Decl.name.name = cxx1.Name NameStr;
+    Decl.kind.global_? | Decl.kind.field? | Decl.kind.ivar?;
+
 #
-# doesn't work because we get lots of facts with the same
-# name. e.g. "facebook" has tons of namespace declarations. This would
-# make it hard to do autocomplete, because there would be too many
-# duplicate results for a prefix.  Also it generated too much data.
-# We might try ("decl", [declaration]), but this would require
-# keeping all the declarations in memory when we derive, and might also
-# generate some very large facts for common names.
+# Searching for declarations by case-insensitive name or prefix
+# We have tried a few things here:
+#   lowercase name to decl
+#   lowercase name to kind and upper name
 #
-#  {
-#    name_lowercase : string,
-#    kind : DeclKind,
-#    name : Name,
-#  }
+# We want to use kind-partitioned tables so that kind-filtered searches work well,
+# leading to the current design with one predicate per kind
+
+
+
 #
-# Solves the problem of duplicate results - now there's only one fact
-# for each decl kind.  Getting from a prefix to decls will be a 2-step
-# process - first query cxx1.DeclByName by prefix, and then query
-# the appropriate decl predicates by name.
+# Deprecated DeclIdent / DeclByName / NameLowerCase without kinds
+#
 
 # Declarations indexed by case-insensitive name
 type DeclIdent =

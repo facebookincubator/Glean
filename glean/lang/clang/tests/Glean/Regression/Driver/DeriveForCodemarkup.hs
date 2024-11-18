@@ -31,6 +31,7 @@ codemarkupDerivePasses =
   ,DeriveGeneric "cxx1.DeclarationToUSR"
   ,DeriveGeneric "cxx1.RecordDerived"
   ,DeriveGeneric "cxx1.ThriftToCxx"
+  -- name search
   ,DeriveGeneric "cxx1.NamespaceDeclarationByName"
   ,DeriveGeneric "cxx1.RecordDeclarationClass"
   ,DeriveGeneric "cxx1.RecordDeclarationStruct"
@@ -40,4 +41,6 @@ codemarkupDerivePasses =
   ,DeriveGeneric "cxx1.VariableDeclarationNonLocalByName"
   ,DeriveGeneric "cxx1.TypeAliasDeclarationByName"
   ,DeriveGeneric "cxx1.ObjcContainerDeclarationInterface"
+  -- lowercase name search
+  ,DeriveGeneric "pp1.DefineLowerCase"
   ]
