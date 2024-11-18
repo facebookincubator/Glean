@@ -278,4 +278,7 @@ predicate Qux : string
 
 predicate FooToFoo : Foo -> Foo
 
+# To test predicates without facts
+predicate EmptyPred : string
+
 }

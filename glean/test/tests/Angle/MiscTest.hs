@@ -47,6 +47,7 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "fullScans" fullScansTest
   , TestLabel "newold" $ newOldTest id
   , TestLabel "justCheck" justCheckTest
+  , TestLabel "warnDiag" warnDiagTest
   ]
 
 newOldTest :: (forall a . Query a -> Query a) -> Test
@@ -62,6 +63,20 @@ newOldTest modify = TestCase $ withStackedTestDB [] $ \env repo -> do
   assertEqual "angle - old facts"
     [ "abba", "anonymous", "azimuth", "blubber", "book", "foo" ]
     results
+
+warnDiagTest :: Test
+warnDiagTest = dbTestCase $ \env repo -> do
+  let (Query q1) = dbgPredHasFacts $ Angle.query $
+        predicate @Glean.Test.EmptyPred wild
+      (Query q2) = Angle.query $ predicate @Cxx.Name wild
+
+  r <- userQuery env repo q1
+  assertEqual "predicate has no facts" 1 $ length $ getWarns r
+  r <- userQuery env repo q2
+  assertEqual "predicate has facts" 0 $ length $ getWarns r
+
+  where getWarns r = filter (\d -> "Warning" `isPrefixOf` Text.unpack d)
+             $ userQueryResults_diagnostics r
 
 scopingTest :: Test
 scopingTest = dbTestCase $ \env repo -> do
