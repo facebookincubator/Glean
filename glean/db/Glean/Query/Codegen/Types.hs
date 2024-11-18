@@ -328,7 +328,10 @@ instance Display CgStatement where
       hang 2 $ sep [display opts pat <+> "=", display opts gen]
     CgAllStatement var expr stmts ->
       hang 2 $ sep [display opts var <+> "="
-                   ,display opts (CgQuery expr stmts)]
+                   ,"all ("
+                   ,display opts (CgQuery expr stmts)
+                   ,")"
+                   ]
     CgNegation stmts -> "!" <> doStmts stmts
     CgDisjunction stmtss -> sep (punctuate " |" (map doStmts stmtss))
     CgConditional cond then_ else_ -> sep
