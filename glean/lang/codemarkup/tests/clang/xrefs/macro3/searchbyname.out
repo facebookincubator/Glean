@@ -2,8 +2,8 @@
   "@generated",
   {
     "key": {
+      "searchcase": 0,
       "name": "MACRO_1",
-      "language": 1,
       "entity": {
         "pp": {
           "define": {
@@ -19,13 +19,28 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "MACRO_1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 12,
+            "columnBegin": 9,
+            "lineEnd": 12,
+            "columnEnd": 15
+          }
+        }
+      },
+      "kind": 29,
+      "language": 1
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "MACRO_2",
-      "language": 1,
       "entity": {
         "pp": {
           "define": {
@@ -41,13 +56,28 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "MACRO_2",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 13,
+            "columnBegin": 9,
+            "lineEnd": 13,
+            "columnEnd": 15
+          }
+        }
+      },
+      "kind": 29,
+      "language": 1
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "MACRO_3",
-      "language": 1,
       "entity": {
         "pp": {
           "define": {
@@ -63,13 +93,28 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "MACRO_3",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 14,
+            "columnBegin": 9,
+            "lineEnd": 14,
+            "columnEnd": 15
+          }
+        }
+      },
+      "kind": 29,
+      "language": 1
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "NESTED_PASTE",
-      "language": 1,
       "entity": {
         "pp": {
           "define": {
@@ -85,13 +130,28 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "NESTED_PASTE",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 10,
+            "columnBegin": 9,
+            "lineEnd": 10,
+            "columnEnd": 20
+          }
+        }
+      },
+      "kind": 29,
+      "language": 1
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "PASTE",
-      "language": 1,
       "entity": {
         "pp": {
           "define": {
@@ -107,7 +167,134 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "PASTE",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 13
+          }
+        }
+      },
+      "kind": 29,
+      "language": 1
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "f",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "f" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 18,
+                      "columnBegin": 1,
+                      "lineEnd": 24,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "f",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 18,
+            "columnBegin": 1,
+            "lineEnd": 24,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 388, "length": 1 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "foobar",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "foobar" } } },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "void" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 16,
+                      "columnBegin": 1,
+                      "lineEnd": 16,
+                      "columnEnd": 16
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foobar",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 16,
+            "columnBegin": 1,
+            "lineEnd": 16,
+            "columnEnd": 16
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 370, "length": 6 }
+        }
+      },
+      "kind": 13,
+      "language": 0
     }
   }
 ]

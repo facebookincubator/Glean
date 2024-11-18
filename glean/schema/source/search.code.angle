@@ -45,13 +45,12 @@ predicate SearchByNameAndLanguage:
     entity: code.Entity,
   }
   { Name, Language, Entity } where
-  # see SearchByNameKindAndLanguage for C++
+  # see SearchByNameKindAndLanguage for C++, PreProcessor
     ( Hack = Language; HackSearchByName { Name, Entity } ) |
     ( Python = Language; PythonSearchByName { Name, Entity } ) |
     ( JavaScript = Language; FlowSearchByName { Name, Entity } ) |
     ( Java = Language; JavaSearchByName { Name, Entity } ) |
     ( Kotlin = Language; KotlinSearchByName { Name, Entity } ) |
-    ( PreProcessor = Language; PpSearchByName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByName { Name, Entity } ) |
     ( Thrift = Language; ThriftSearchByName { Name, Entity } ) |
@@ -74,7 +73,6 @@ predicate SearchByLowerCaseNameAndLanguage:
     ( JavaScript = Language; FlowSearchByLowerCaseName { Name, Entity } ) |
     ( Java = Language; JavaSearchByLowerCaseName { Name, Entity } ) |
     ( Kotlin = Language; KotlinSearchByLowerCaseName { Name, Entity } ) |
-    ( PreProcessor = Language; PpSearchByLowerCaseName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByLowerCaseName { Name, Entity } ) |
     ( Erlang = Language; ErlangSearchByLowerCaseName { Name, Entity } ) |
     ( Thrift = Language; ThriftSearchByLowerCaseName { Name, Entity } ) |
@@ -92,8 +90,12 @@ predicate SearchByNameKindAndLanguage:
     entity: code.Entity
   }
   { NameStr, Language, Kinds, Entity } where
-    Cpp = Language;
-    CxxSearchByNameKindAndScopeFact { NameStr, _, Kinds, Entity };
+    ( Cpp = Language;
+      CxxSearchByNameKindAndScopeFact { NameStr, _, Kinds, Entity }
+    ) | (
+      PreProcessor = Language;
+      PpSearchByNameKind { NameStr, Kinds, Entity }
+    )
 
 # Kind-optimized search, case insensitive.
 predicate SearchByLowerCaseNameKindAndLanguage:
@@ -104,8 +106,12 @@ predicate SearchByLowerCaseNameKindAndLanguage:
     entity: code.Entity
   }
   { NameStr, Language, Kinds, Entity } where
-    Cpp = Language;
-    CxxSearchByLowerCaseNameKindAndScopeFact { NameStr, _, Kinds, Entity };
+    ( Cpp = Language;
+      CxxSearchByLowerCaseNameKindAndScopeFact { NameStr, _, Kinds, Entity }
+    ) | (
+      PreProcessor = Language;
+      PpSearchByLowerCaseNameKind { NameStr, Kinds, Entity }
+    )
 
 # scoped search
 
@@ -638,23 +644,27 @@ predicate CxxPreferDefinitions:
         )
       else ( InEnt = OutEnt ); # already a defn (or enumerator)
 
-predicate PpSearchByName:
+predicate PpSearchByNameKind:
   {
     name: string,
+    kinds: maybe codemarkup.types.SymbolKind,
     entity: code.Entity
   }
-  { NameStr, Entity } where
-    Macro = pp1.Macro NameStr;
+  { NameStr, Kinds, Entity } where
+    { just = Macro } = Kinds; # this avoids unnecessary #define searches
+    pp1.Macro NameStr = Macro;
     PpSearchByMacroFact { macro = Macro, entity = Entity };
 
 # n.b. this reuses the stored, derived lower case pp1.Macro in cxx1.DeclByName
-predicate PpSearchByLowerCaseName:
+predicate PpSearchByLowerCaseNameKind:
   {
     name: string,
+    kinds: maybe codemarkup.types.SymbolKind,
     entity: code.Entity
   }
-  { NameStr, Entity } where
-    cxx1.DeclByName { name_lowercase = NameStr, ident = { macro = Macro } };
+  { NameStr, Kinds, Entity } where
+    { just = Macro } = Kinds; # this avoids unnecessary #define searches
+    cxx1.DeclByName { name_lowercase = NameStr, ident = { macro = Macro } }; # asserts it is a Macro
     PpSearchByMacroFact { macro = Macro, entity = Entity };
 
 predicate PpSearchByMacroFact:

@@ -3711,11 +3711,11 @@ struct LsifSearchByLowerCaseName;
 
 struct LsifSearchByName;
 
-struct PpSearchByLowerCaseName;
+struct PpSearchByLowerCaseNameKind;
 
 struct PpSearchByMacroFact;
 
-struct PpSearchByName;
+struct PpSearchByNameKind;
 
 struct PythonSearchByLocalNameFact;
 
@@ -26924,15 +26924,15 @@ struct LsifSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp
   }
 }; // struct LsifSearchByName
 
-struct PpSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+struct PpSearchByLowerCaseNameKind : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
   static const char* GLEAN_name() {
-    return "search.code.PpSearchByLowerCaseName";
+    return "search.code.PpSearchByLowerCaseNameKind";
   }
 
   static constexpr size_t GLEAN_version() {
      return 16;
   }
-}; // struct PpSearchByLowerCaseName
+}; // struct PpSearchByLowerCaseNameKind
 
 struct PpSearchByMacroFact : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Pp1::Macro>, facebook::glean::cpp::schema::Code::Entity>> {
   static const char* GLEAN_name() {
@@ -26944,15 +26944,15 @@ struct PpSearchByMacroFact : Predicate<std::tuple<Fact<facebook::glean::cpp::sch
   }
 }; // struct PpSearchByMacroFact
 
-struct PpSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+struct PpSearchByNameKind : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
   static const char* GLEAN_name() {
-    return "search.code.PpSearchByName";
+    return "search.code.PpSearchByNameKind";
   }
 
   static constexpr size_t GLEAN_version() {
      return 16;
   }
-}; // struct PpSearchByName
+}; // struct PpSearchByNameKind
 
 struct PythonSearchByLocalNameFact : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Python::LocalName>, facebook::glean::cpp::schema::Code::Entity>> {
   static const char* GLEAN_name() {
@@ -30103,9 +30103,9 @@ template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::Kotl
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::KotlinSearchByScopeWithName> { static constexpr size_t value = 1145; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::LsifSearchByLowerCaseName> { static constexpr size_t value = 1146; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::LsifSearchByName> { static constexpr size_t value = 1147; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PpSearchByLowerCaseName> { static constexpr size_t value = 1148; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PpSearchByLowerCaseNameKind> { static constexpr size_t value = 1148; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PpSearchByMacroFact> { static constexpr size_t value = 1149; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PpSearchByName> { static constexpr size_t value = 1150; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PpSearchByNameKind> { static constexpr size_t value = 1150; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PythonSearchByLocalNameFact> { static constexpr size_t value = 1151; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PythonSearchByLowerCaseName> { static constexpr size_t value = 1152; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PythonSearchByLowerCaseScope> { static constexpr size_t value = 1153; };
@@ -31376,9 +31376,9 @@ template<> struct SCHEMA::predicate<1144> { using type = facebook::glean::cpp::s
 template<> struct SCHEMA::predicate<1145> { using type = facebook::glean::cpp::schema::Search::Code::KotlinSearchByScopeWithName; };
 template<> struct SCHEMA::predicate<1146> { using type = facebook::glean::cpp::schema::Search::Code::LsifSearchByLowerCaseName; };
 template<> struct SCHEMA::predicate<1147> { using type = facebook::glean::cpp::schema::Search::Code::LsifSearchByName; };
-template<> struct SCHEMA::predicate<1148> { using type = facebook::glean::cpp::schema::Search::Code::PpSearchByLowerCaseName; };
+template<> struct SCHEMA::predicate<1148> { using type = facebook::glean::cpp::schema::Search::Code::PpSearchByLowerCaseNameKind; };
 template<> struct SCHEMA::predicate<1149> { using type = facebook::glean::cpp::schema::Search::Code::PpSearchByMacroFact; };
-template<> struct SCHEMA::predicate<1150> { using type = facebook::glean::cpp::schema::Search::Code::PpSearchByName; };
+template<> struct SCHEMA::predicate<1150> { using type = facebook::glean::cpp::schema::Search::Code::PpSearchByNameKind; };
 template<> struct SCHEMA::predicate<1151> { using type = facebook::glean::cpp::schema::Search::Code::PythonSearchByLocalNameFact; };
 template<> struct SCHEMA::predicate<1152> { using type = facebook::glean::cpp::schema::Search::Code::PythonSearchByLowerCaseName; };
 template<> struct SCHEMA::predicate<1153> { using type = facebook::glean::cpp::schema::Search::Code::PythonSearchByLowerCaseScope; };

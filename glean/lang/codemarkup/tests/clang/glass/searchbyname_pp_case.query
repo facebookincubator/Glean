@@ -1,2 +1,2 @@
-query: search.code.SearchByNameAndLanguage { language = PreProcessor }
+query: codemarkup.search.SearchByName { language = PreProcessor, searchcase = Sensitive }
 transform: [gensort, []]

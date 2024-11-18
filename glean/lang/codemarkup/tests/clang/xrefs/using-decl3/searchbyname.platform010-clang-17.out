@@ -737,7 +737,7 @@
                               }
                             }
                           },
-                          "type": { "key": "W<double>::Type" },
+                          "type": { "key": "N1::W<double>::Type" },
                           "kind": {
                             "global_": {
                               "kind": 0,
@@ -1928,7 +1928,7 @@
                     }
                   }
                 },
-                "type": { "key": "W<double>::Type" },
+                "type": { "key": "N1::W<double>::Type" },
                 "kind": {
                   "global_": { "kind": 0, "attribute": 0, "definition": true }
                 },

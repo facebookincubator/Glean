@@ -1,1 +1,100 @@
-[ "@generated" ]
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "I",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "objcContainer": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "id": { "interface_": { "key": "I" } },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 9,
+                      "columnBegin": 1,
+                      "lineEnd": 13,
+                      "columnEnd": 4
+                    }
+                  }
+                },
+                "protocols": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "objcProperty": {
+                        "key": {
+                          "name": { "key": "i" },
+                          "container": { "interface_": { "key": "I" } },
+                          "type": { "key": "int" },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isReadOnly": true,
+                          "isAtomic": true,
+                          "source": {
+                            "file": { "key": "test.m" },
+                            "lineBegin": 11,
+                            "columnBegin": 1,
+                            "lineEnd": 11,
+                            "columnEnd": 26
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "objcMethod": {
+                        "key": {
+                          "selector": { "key": [ "i" ] },
+                          "locations": [ ],
+                          "container": { "interface_": { "key": "I" } },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "isInstance": true,
+                          "isOptional": false,
+                          "isAccessor": true,
+                          "source": {
+                            "file": { "key": "test.m" },
+                            "lineBegin": 11,
+                            "columnBegin": 26,
+                            "lineEnd": 11,
+                            "columnEnd": 26
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "I",
+        "file": { "key": "test.m" },
+        "location": {
+          "range": {
+            "file": { "key": "test.m" },
+            "lineBegin": 9,
+            "columnBegin": 1,
+            "lineEnd": 13,
+            "columnEnd": 4
+          }
+        },
+        "destination": {
+          "file": { "key": "test.m" },
+          "span": { "start": 232, "length": 1 }
+        }
+      },
+      "kind": 12,
+      "language": 0
+    }
+  }
+]

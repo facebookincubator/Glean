@@ -2,8 +2,8 @@
   "@generated",
   {
     "key": {
+      "searchcase": 0,
       "name": "A",
-      "language": 1,
       "entity": {
         "pp": {
           "define": {
@@ -19,13 +19,28 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "A",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 92,
+            "columnBegin": 9,
+            "lineEnd": 92,
+            "columnEnd": 9
+          }
+        }
+      },
+      "kind": 29,
+      "language": 1
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "B",
-      "language": 1,
       "entity": {
         "pp": {
           "define": {
@@ -41,13 +56,28 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "B",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 93,
+            "columnBegin": 9,
+            "lineEnd": 93,
+            "columnEnd": 9
+          }
+        }
+      },
+      "kind": 29,
+      "language": 1
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "C",
-      "language": 1,
       "entity": {
         "pp": {
           "define": {
@@ -63,13 +93,28 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "C",
+        "file": { "key": "test.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test.h" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 9
+          }
+        }
+      },
+      "kind": 29,
+      "language": 1
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "D",
-      "language": 1,
       "entity": {
         "pp": {
           "define": {
@@ -85,13 +130,28 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "D",
+        "file": { "key": "test2.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test2.h" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 9
+          }
+        }
+      },
+      "kind": 29,
+      "language": 1
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "D",
-      "language": 1,
       "entity": {
         "pp": {
           "define": {
@@ -107,13 +167,28 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "D",
+        "file": { "key": "test3.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test3.h" },
+            "lineBegin": 9,
+            "columnBegin": 9,
+            "lineEnd": 9,
+            "columnEnd": 9
+          }
+        }
+      },
+      "kind": 29,
+      "language": 1
     }
   },
   {
     "key": {
+      "searchcase": 0,
       "name": "FOO",
-      "language": 1,
       "entity": {
         "pp": {
           "define": {
@@ -129,7 +204,22 @@
             }
           }
         }
-      }
+      },
+      "location": {
+        "name": "FOO",
+        "file": { "key": "test2.h" },
+        "location": {
+          "range": {
+            "file": { "key": "test2.h" },
+            "lineBegin": 10,
+            "columnBegin": 9,
+            "lineEnd": 10,
+            "columnEnd": 11
+          }
+        }
+      },
+      "kind": 29,
+      "language": 1
     }
   }
 ]

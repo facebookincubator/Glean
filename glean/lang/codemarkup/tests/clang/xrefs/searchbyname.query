@@ -1,2 +1,2 @@
-query: search.code.SearchByNameAndLanguage _
+query: codemarkup.search.SearchByName { searchcase = Sensitive }
 transform: [gensort, []]
