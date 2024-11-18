@@ -32,6 +32,7 @@ module Glean.Haxl
   , limit
   , trySyncHaxl
   , getFirstResult
+  , HaxlWrite
     -- * re-export
   , initGlobalState
   ) where
