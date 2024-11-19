@@ -254,8 +254,16 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs dbIndex = do
       (ifSet deleteIncompleteIfOlder $ \secs ->
         (not . isComplete) &&& isOlderThan secs)
 
-    -- ensure we have retain_at_least DBs from the available set
-  atLeast <- takeFilterM
+    -- implements retain_at_least
+    atLeast =
+      take retainAtLeast $
+      filter (isComplete &&& hasDependencies) sorted
+
+  -- Ensure we have retain_at_least DBs available somewhere.  This
+  -- prevents us deleting an older DB before the newer one has been
+  -- restored. The isAvailable check ensures that we don't keep an old
+  -- DB on this server when the newer one is on another server.
+  atLeastAvailable <- takeFilterM
     retainAtLeast
     (isComplete &&& hasDependencies &&&> isAvailable)
     -- bound the search since isAvailable is expensive
@@ -265,7 +273,8 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs dbIndex = do
     -- delete DBs according to the deletion policy, and keep retain_at_most
   let atMost = maybe id take retainAtMost (filter (not . delete) sorted)
 
-  return $ uniqBy (comparing itemRepo) (atLeast ++ atMost)
+  return $ uniqBy (comparing itemRepo) $
+    atLeast ++ atLeastAvailable ++ atMost
 
 missingDependencies :: DbIndex -> Item -> Bool
 missingDependencies dbIndex item = any isNothing (dependencies dbIndex item)

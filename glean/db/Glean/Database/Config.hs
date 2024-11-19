@@ -158,7 +158,7 @@ data Config = Config
   , cfgEnableRecursion :: Bool
     -- ^ Enable experimental support for recursion
   , cfgFilterAvailableDBs :: [Repo] -> IO [Repo]
-    -- ^ Filter out DBs not currently available in the server tier
+    -- ^ Filter out DBs not currently available on some other server
   , cfgTracer :: Tracer GleanTrace
   , cfgDebug :: DebugFlags
   }
@@ -203,7 +203,7 @@ instance Default Config where
     , cfgDatabaseLogger = Some NullGleanDatabaseLogger
     , cfgBackupBackends = HashMap.fromList [("mock", Backup.Mock.mock)]
     , cfgEnableRecursion = False
-    , cfgFilterAvailableDBs = return
+    , cfgFilterAvailableDBs = const $ return []
     , cfgTracer = mempty
     , cfgDebug = def
     }
@@ -447,7 +447,7 @@ options = do
     , cfgServerLogger = cfgServerLogger def
     , cfgDatabaseLogger = cfgDatabaseLogger def
     , cfgBackupBackends = cfgBackupBackends def
-    , cfgFilterAvailableDBs = return
+    , cfgFilterAvailableDBs = const $ return []
     , cfgTracer = mempty
     , cfgSchemaId = Nothing
     , .. }
