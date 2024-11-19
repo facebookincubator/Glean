@@ -724,7 +724,8 @@ encloseSeen inner = do
 filterStmt :: FlatStatement -> U FlatStatement
 filterStmt stmt = case stmt of
   FlatStatement{} -> return stmt
-  FlatAllStatement{} -> return stmt
+  FlatAllStatement v e stmts ->
+    FlatAllStatement v e <$> filterGroup stmts
   FlatNegation stmts -> FlatNegation <$> filterGroupEnclosed stmts
   FlatDisjunction [stmts] -> grouping <$> filterGroup stmts
   FlatDisjunction stmtss ->
