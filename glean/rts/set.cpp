@@ -62,7 +62,7 @@ void SetOps::wordSetToArray(SetOps::SetToken token, binary::Output* out) {
   auto& s = wordsets[token];
   out->packed(s.size());
   for (const auto& v : s) {
-    out->nat(v);
+    out->packed(v);
   }
 }
 

@@ -43,7 +43,8 @@ kitchenSink1 = def
   , Glean.Test.kitchenSink_maybe_ = Just def
   , Glean.Test.kitchenSink_bool_ = True
   , Glean.Test.kitchenSink_string_ = "Hello\0world!\0"
-  , Glean.Test.kitchenSink_set_of_nat = Set.fromList [toNat 1, toNat 2]
+  , Glean.Test.kitchenSink_set_of_nat =
+      Set.fromList [toNat 1, toNat 2, toNat 65535]
   , Glean.Test.kitchenSink_set_of_string = Set.fromList ["apa", "bepa"]
   }
 

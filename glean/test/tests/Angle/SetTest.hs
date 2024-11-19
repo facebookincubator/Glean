@@ -118,3 +118,6 @@ setSemanticsTest = dbTestCase $ \env repo -> do
 
   r <- runQuery_ env repo $ angleData @Nat [s| elements (all (1|2)) |]
   assertEqual "two separate results" r [Nat 1, Nat 2]
+
+  r <- runQuery_ env repo $ angleData @Nat [s| elements (all 65535) |]
+  assertEqual "big nat" r [Nat 65535]
