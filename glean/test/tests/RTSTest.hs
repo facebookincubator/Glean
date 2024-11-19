@@ -114,6 +114,21 @@ valueFor T.BooleanTy = do
 valueFor T.TyVar{} = error "valueFor: TyVar"
 valueFor T.HasTy{} = error "valueFor: HasTy"
 
+shrinkValue :: Value -> [Value]
+shrinkValue (Byte b) = Byte <$>
+  [ b `div` 2 | b >= 2] ++
+  [ (b `div` 2) + 1 | b >= 4 ]++
+  [ b - 1 | b >= 1 ]
+shrinkValue (Nat n) = Nat <$>
+  [ n `div` 2 | n >= 2] ++
+  [ (n `div` 2) + 1 | n >= 4 ] ++
+  [ n - 1 | n >= 1 ]
+shrinkValue (Set es) = Set <$> shrinkList shrinkValue es
+shrinkValue (Alt n e) = Alt n <$> shrinkValue e
+shrinkValue (Tuple es) = Tuple <$> shrinkList shrinkValue es
+shrinkValue (Array es) = Array <$> shrinkList shrinkValue es
+shrinkValue _ = []
+
 prop_roundtripValue :: Type -> Value -> Property
 prop_roundtripValue ty val = val === toValue (repType ty) (fromValue val)
 
@@ -133,7 +148,8 @@ main = withUnitTest $ testRunner $ TestList
     assertPropertyWithArgs "mismatch" stdArgs{ maxSuccess = 1000 } $
       forAllShrink arbitrary shrink $ \ty ->
       collect ty $
-      forAll (valueFor ty) $ \val -> prop_typecheckValue ty val
+      forAllShrink (valueFor ty) shrinkValue $ \val ->
+      prop_typecheckValue ty val
 
     -- test strings more thoroughly as they are quite complicated
   , TestLabel "string typecheck" $ TestCase $ assertProperty "mismatch" $
