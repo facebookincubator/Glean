@@ -1,0 +1,40 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "VAR",
+      "entity": {
+        "pp": {
+          "define": {
+            "key": {
+              "macro": { "key": "VAR" },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 11,
+                "columnBegin": 9,
+                "lineEnd": 11,
+                "columnEnd": 11
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "VAR",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 11,
+            "columnBegin": 9,
+            "lineEnd": 11,
+            "columnEnd": 11
+          }
+        }
+      },
+      "kind": 29,
+      "language": 1
+    }
+  }
+]

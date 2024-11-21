@@ -1,0 +1,2 @@
+query: codemarkup.search.SearchByName { language = PreProcessor, searchcase = Insensitive, name = "var", kind = { just = Class_ } }
+transform: [gensort, []]

@@ -650,10 +650,10 @@ predicate PpSearchByNameKind:
     kinds: maybe codemarkup.types.SymbolKind,
     entity: code.Entity
   }
-  { NameStr, Kinds, Entity } where
+  { NameStr, Kinds, { pp = { define = Define } } } where
     { just = Macro } = Kinds; # this avoids unnecessary #define searches
     pp1.Macro NameStr = Macro;
-    PpSearchByMacroFact { macro = Macro, entity = Entity };
+    pp1.Define { macro = Macro } = Define
 
 # n.b. this reuses the stored, derived lower case pp1.Macro in cxx1.DeclByName
 predicate PpSearchByLowerCaseNameKind:
@@ -662,18 +662,9 @@ predicate PpSearchByLowerCaseNameKind:
     kinds: maybe codemarkup.types.SymbolKind,
     entity: code.Entity
   }
-  { NameStr, Kinds, Entity } where
+  { NameStr, Kinds, { pp = { define = Define } } } where
     { just = Macro } = Kinds; # this avoids unnecessary #define searches
-    cxx1.DeclByName { name_lowercase = NameStr, ident = { macro = Macro } }; # asserts it is a Macro
-    PpSearchByMacroFact { macro = Macro, entity = Entity };
-
-predicate PpSearchByMacroFact:
-  {
-    macro: pp1.Macro,
-    entity : code.Entity
-  }
-  { Macro, { pp = { define = Defn } } } where
-    Defn = pp1.Define { macro = Macro }
+    pp1.DefineLowerCase { NameStr, Define }
 
 predicate ThriftSearchByName:
   {
