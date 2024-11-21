@@ -503,6 +503,177 @@
   {
     "key": {
       "searchcase": 0,
+      "name": "e_a",
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "e_a" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "E" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "foo" } } }
+                      }
+                    }
+                  },
+                  "isScoped": false,
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 23,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 24
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 23,
+                "columnBegin": 10,
+                "lineEnd": 23,
+                "columnEnd": 12
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "e_a",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 23,
+            "columnBegin": 10,
+            "lineEnd": 23,
+            "columnEnd": 12
+          }
+        }
+      },
+      "kind": 23,
+      "language": 0
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "e_b",
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "e_b" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "E" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "foo" } } }
+                      }
+                    }
+                  },
+                  "isScoped": false,
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 23,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 24
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 23,
+                "columnBegin": 15,
+                "lineEnd": 23,
+                "columnEnd": 17
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "e_b",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 23,
+            "columnBegin": 15,
+            "lineEnd": 23,
+            "columnEnd": 17
+          }
+        }
+      },
+      "kind": 23,
+      "language": 0
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "e_c",
+      "entity": {
+        "cxx": {
+          "enumerator": {
+            "key": {
+              "name": { "key": "e_c" },
+              "enumeration": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "E" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "foo" } } }
+                      }
+                    }
+                  },
+                  "isScoped": false,
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 23,
+                    "columnBegin": 1,
+                    "lineEnd": 23,
+                    "columnEnd": 24
+                  }
+                }
+              },
+              "source": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 23,
+                "columnBegin": 20,
+                "lineEnd": 23,
+                "columnEnd": 22
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "e_c",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 23,
+            "columnBegin": 20,
+            "lineEnd": 23,
+            "columnEnd": 22
+          }
+        }
+      },
+      "kind": 23,
+      "language": 0
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
       "name": "foo",
       "entity": {
         "cxx": {

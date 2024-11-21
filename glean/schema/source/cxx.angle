@@ -907,6 +907,13 @@ predicate NamespaceDeclarationByName :
     Name = cxx1.Name NameStr;
     NamespaceDeclaration { name = { { just = Name }, Parent } } = Decl
 
+predicate NamespaceLowerCase :
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    NamespaceQName { name = { just = Name NameStr }}
+
 # Derived predicates to distinguish records by kind, to avoid enumerating all
 # records when searching. We flatten the QName so that the Name key is left most,
 # avoiding the need to enumerate QNames to find things.
@@ -919,6 +926,13 @@ predicate RecordDeclarationStruct :
     Name = cxx1.Name NameStr;
     RecordDeclaration { name = { Name, Scope }, kind = { struct_ = _ } } = Decl
 
+predicate RecordStructLowerCase :
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    RecordDeclaration { name = { name = Name NameStr }, kind = { struct_ = _ } };
+
 # Derived
 predicate RecordDeclarationClass :
   {
@@ -928,6 +942,13 @@ predicate RecordDeclarationClass :
   } stored { NameStr, Scope, Decl } where
     Name = cxx1.Name NameStr;
     RecordDeclaration { name = { Name, Scope }, kind = { class_ = _ } } = Decl
+
+predicate RecordClassLowerCase :
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    RecordDeclaration { name = { name = Name NameStr }, kind = { class_ = _ } };
 
 # Derived
 predicate RecordDeclarationUnion :
@@ -939,6 +960,13 @@ predicate RecordDeclarationUnion :
     Name = cxx1.Name NameStr;
     RecordDeclaration { name = { Name, Scope }, kind = { union_ = _ } } = Decl
 
+predicate RecordUnionLowerCase :
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    RecordDeclaration { name = { name = Name NameStr }, kind = { union_ = _ } };
+
 # Re-index left-keyed by cxx1.Name fact to avoid QName scans
 predicate EnumDeclarationByName :
   { name : string,
@@ -947,6 +975,13 @@ predicate EnumDeclarationByName :
   } stored { NameStr, Scope, Decl } where
     EnumDeclaration { name = { Name, Scope } } = Decl;
     Name = cxx1.Name NameStr;
+
+predicate EnumLowerCase :
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    EnumDeclaration { name = { name = Name NameStr } };
 
 # Search: functions with real names only, to restrict to scope use the FQName
 predicate FunctionDeclarationByNameScope :
@@ -959,6 +994,15 @@ predicate FunctionDeclarationByNameScope :
     FQName = FunctionQName { name = FName, scope = Scope };
     cxx1.Name NameStr = Name;
     cxx1.FunctionDeclaration { name = FQName } = Decl;
+
+predicate FunctionLowerCase :
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    FunctionDeclaration { name = FQName };
+    FQName = FunctionQName { name = FName };
+    FName = FunctionName { name = Name NameStr }
 
 # searching for ObjcContainers. We need to split these up by kind
 predicate ObjcContainerDeclarationInterface :
@@ -973,6 +1017,18 @@ predicate ObjcContainerDeclarationInterface :
       { extensionInterface = Name };
     cxx1.Name NameStr = Name
 
+predicate ObjcContainerInterfaceLowerCase :
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    cxx1.ObjcContainerDeclaration { id = ObjcId };
+    ObjcId =
+      { interface_ = Name } |
+      { categoryInterface = { className = Name } } |
+      { extensionInterface = Name };
+    cxx1.Name NameStr = Name
+
 # Search enumerators by name
 predicate EnumeratorByName :
   {
@@ -980,6 +1036,13 @@ predicate EnumeratorByName :
     decl: cxx1.Enumerator
   } stored { NameStr, Decl } where
     cxx1.Enumerator { name = cxx1.Name NameStr } = Decl
+
+predicate EnumeratorLowerCase :
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    Enumerator { name = cxx1.Name NameStr }
 
 # type alias search by name
 predicate TypeAliasDeclarationByName :
@@ -989,6 +1052,13 @@ predicate TypeAliasDeclarationByName :
     decl : cxx1.TypeAliasDeclaration
   } stored { NameStr, Scope, Decl } where
     cxx1.TypeAliasDeclaration { name = { cxx1.Name NameStr, Scope } } = Decl
+
+predicate TypeAliasLowerCase :
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    TypeAliasDeclaration { name = { name = Name NameStr } }
 
 # Variable search by name. Let's not include locals since they're too numerous
 predicate VariableDeclarationNonLocalByName :
@@ -1000,6 +1070,15 @@ predicate VariableDeclarationNonLocalByName :
     Decl.name.name = cxx1.Name NameStr;
     Decl.kind.global_? | Decl.kind.field? | Decl.kind.ivar?;
 
+predicate VariableLowerCase :
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    VariableDeclaration { name = QName, kind = Kind };
+    Kind.global_? | Kind.field? | Kind.ivar?;
+    QName.name = Name NameStr;
+
 #
 # Searching for declarations by case-insensitive name or prefix
 # We have tried a few things here:
@@ -1008,8 +1087,6 @@ predicate VariableDeclarationNonLocalByName :
 #
 # We want to use kind-partitioned tables so that kind-filtered searches work well,
 # leading to the current design with one predicate per kind
-
-
 
 #
 # Deprecated DeclIdent / DeclByName / NameLowerCase without kinds
