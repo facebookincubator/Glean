@@ -949,17 +949,6 @@ predicate EnumDeclarationByName :
     Name = cxx1.Name NameStr;
 
 # Search: functions with real names only, to restrict to scope use the FQName
-# (deprecated: removed once FunctionDeclarationByNameScope is derived)
-predicate FunctionDeclarationByName :
-  {
-    name: string,
-    decl: FunctionDeclaration
-  } stored { NameStr, Decl } where
-    FName = cxx1.FunctionName { name = cxx1.Name NameStr };
-    FQName = cxx1.FunctionQName { name = FName };
-    Decl = cxx1.FunctionDeclaration { name = FQName };
-
-# Search: functions with real names only, to restrict to scope use the FQName
 predicate FunctionDeclarationByNameScope :
   {
     name: string,
