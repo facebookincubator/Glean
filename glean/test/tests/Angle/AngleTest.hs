@@ -85,11 +85,11 @@ angleTest modify = dbTestCase $ \env repo -> do
        glean.test.Predicate { named_sum_ = { tue = 37 } }
     |]
   print results
-  assertBool "angle - glean.test.Predicate 1" $
-    case results of
-      [Glean.Test.Predicate{Glean.Test.predicate_key = Just k}] ->
-        ignorePredK k == ignorePredK kitchenSink1
-      _ -> False
+  case results of
+    [Glean.Test.Predicate{Glean.Test.predicate_key = Just k}] ->
+      assertEqual "angle - glean.test.Predicate 1"
+        (ignorePredK kitchenSink1) (ignorePredK k)
+    _ -> assertBool "angle - glean.test.Predicate 1" False
 
   -- match all results (two)
   results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate

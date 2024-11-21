@@ -14,7 +14,6 @@ import qualified Data.ByteString.Base16 as Hex
 import qualified Data.ByteString.Char8 as ByteString
 import Data.Default
 import Data.IntMap.Strict (IntMap)
-import qualified Data.Set as Set
 import Foreign.C.String
 import Foreign.C.Types
 import Foreign.Ptr
@@ -90,11 +89,11 @@ kitchenSink = KitchenSink
   , kitchenSink_array2_of_string =
       [ [ "a", "bc", "def" ] ]
   , kitchenSink_set_of_nat =
-      Set.fromList [ Nat 1, Nat 3 ]
+      [ Nat 1, Nat 3 ]
   , kitchenSink_set_of_string =
-      Set.fromList [ "foo", "bar" ]
+      [ "foo", "bar" ]
   , kitchenSink_set_of_pred =
-      Set.fromList [ Glean.Test.Predicate 5432 Nothing ]
+      [ Glean.Test.Predicate 5432 Nothing ]
   }
 
 data E = E

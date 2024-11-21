@@ -119,7 +119,6 @@ header here deps = Text.unlines $
   , "import qualified Data.ByteString"
   , "import qualified Data.Default"
   , "import qualified Data.Text"
-  , "import qualified Data.Set"
   , ""
     -- we should use qualified imports as far as possible to avoid
     -- clashing with Thrift-generated code
@@ -246,7 +245,7 @@ haskellTy_ withId genSub here t = case t of
   SumTy{} -> shareTypeDef genSub here t
   SetTy tInner -> do
     inner <- haskellTy_ PredName genSub here tInner
-    return $ "Data.Set.Set " <> inner
+    return $ "[" <> inner <> "]"
   MaybeTy ty -> do
     inner <- haskellTy_ PredName genSub here ty
     return (optionalize inner)

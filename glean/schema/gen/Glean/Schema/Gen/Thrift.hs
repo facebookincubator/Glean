@@ -321,7 +321,7 @@ thriftTy here t = case t of
   SumTy{} -> shareTypeDef here t
   SetTy ty -> do
     inner <- thriftTy here ty
-    return $ "set<" <> inner <> ">"
+    return $ "list<" <> inner <> ">"
   MaybeTy tInner -> do
     inner <- thriftTy here tInner
     return (optionalize inner)
