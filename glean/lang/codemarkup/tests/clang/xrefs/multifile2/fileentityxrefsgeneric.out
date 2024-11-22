@@ -1,0 +1,236 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "a.h" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "T",
+              "file": { "key": "a.h" },
+              "location": {
+                "range": {
+                  "file": { "key": "a.h" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 9,
+                  "columnEnd": 11
+                }
+              },
+              "destination": {
+                "file": { "key": "a.h" },
+                "span": { "start": 228, "length": 1 }
+              }
+            },
+            "source": { "span": { "start": 261, "length": 1 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "record_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "T" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "kind": { "struct_": { } },
+                        "source": {
+                          "file": { "key": "a.h" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 9,
+                          "columnEnd": 11
+                        }
+                      }
+                    },
+                    "bases": [ ],
+                    "members": { "key": [ ] }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "a.h" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "f",
+              "file": { "key": "a.h" },
+              "location": {
+                "range": {
+                  "file": { "key": "a.h" },
+                  "lineBegin": 10,
+                  "columnBegin": 1,
+                  "lineEnd": 10,
+                  "columnEnd": 11
+                }
+              },
+              "destination": {
+                "file": { "key": "a.h" },
+                "span": { "start": 239, "length": 1 }
+              }
+            },
+            "source": { "span": { "start": 268, "length": 1 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "function_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "f" } } },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "void" },
+                            "parameters": [ ]
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "a.h" },
+                          "lineBegin": 10,
+                          "columnBegin": 1,
+                          "lineEnd": 10,
+                          "columnEnd": 11
+                        }
+                      }
+                    },
+                    "isInline": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "b.h" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "R",
+              "file": { "key": "b.h" },
+              "location": {
+                "range": {
+                  "file": { "key": "b.h" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 9,
+                  "columnEnd": 11
+                }
+              },
+              "destination": {
+                "file": { "key": "b.h" },
+                "span": { "start": 228, "length": 1 }
+              }
+            },
+            "source": { "span": { "start": 248, "length": 1 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "record_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "R" },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "kind": { "struct_": { } },
+                        "source": {
+                          "file": { "key": "b.h" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 9,
+                          "columnEnd": 11
+                        }
+                      }
+                    },
+                    "bases": [ ],
+                    "members": { "key": [ ] }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "a.h",
+              "file": { "key": "a.h" },
+              "location": { "span": { "start": 0, "length": 0 } }
+            },
+            "source": {
+              "range": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 9,
+                "columnBegin": 1,
+                "lineEnd": 9,
+                "columnEnd": 14
+              }
+            }
+          },
+          "entity": { "pp": { "include_": { "key": "a.h" } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "b.h",
+              "file": { "key": "b.h" },
+              "location": { "span": { "start": 0, "length": 0 } }
+            },
+            "source": {
+              "range": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 10,
+                "columnBegin": 1,
+                "lineEnd": 10,
+                "columnEnd": 14
+              }
+            }
+          },
+          "entity": { "pp": { "include_": { "key": "b.h" } } }
+        }
+      }
+    }
+  }
+]

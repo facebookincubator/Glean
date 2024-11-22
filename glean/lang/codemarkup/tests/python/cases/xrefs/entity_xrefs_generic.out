@@ -1,0 +1,538 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 6, "start": 392 } },
+            "target": {
+              "file": { "key": "lib.py" },
+              "location": { "span": { "length": 451, "start": 351 } },
+              "name": "lib.HelperClass"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 11, "start": 297 } },
+            "target": {
+              "file": { "key": "lib.py" },
+              "location": { "span": { "length": 451, "start": 351 } },
+              "name": "lib.HelperClass"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 11, "start": 468 } },
+            "target": {
+              "file": { "key": "lib.py" },
+              "location": { "span": { "length": 451, "start": 351 } },
+              "name": "lib.HelperClass"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "cls": { "key": { "name": { "key": "lib.HelperClass" } } }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 11, "start": 509 } },
+            "target": {
+              "file": { "key": "lib.py" },
+              "location": { "span": { "length": 451, "start": 351 } },
+              "name": "lib.HelperClass"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "func": { "key": { "name": { "key": "big_lib.big_func" } } }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 8, "start": 245 } },
+            "target": {
+              "file": { "key": "big_lib/__init__.py" },
+              "location": { "span": { "length": 140, "start": 261 } },
+              "name": "big_lib.big_func"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "func": { "key": { "name": { "key": "big_lib.big_func" } } }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 8, "start": 362 } },
+            "target": {
+              "file": { "key": "big_lib/__init__.py" },
+              "location": { "span": { "length": 140, "start": 261 } },
+              "name": "big_lib.big_func"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "func": { "key": { "name": { "key": "lib.helper_func" } } }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 11, "start": 284 } },
+            "target": {
+              "file": { "key": "lib.py" },
+              "location": { "span": { "length": 43, "start": 805 } },
+              "name": "lib.helper_func"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "func": { "key": { "name": { "key": "lib.helper_func" } } }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 11, "start": 344 } },
+            "target": {
+              "file": { "key": "lib.py" },
+              "location": { "span": { "length": 43, "start": 805 } },
+              "name": "lib.helper_func"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": { "func": { "key": { "name": { "key": "main.f" } } } }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 1, "start": 577 } },
+            "target": {
+              "file": { "key": "main.py" },
+              "location": { "span": { "length": 107, "start": 321 } },
+              "name": "main.f"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "imp": {
+                  "key": {
+                    "as_name": { "key": "lib.func" },
+                    "from_name": { "key": "big_lib.big_func" }
+                  }
+                }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 4, "start": 278 } },
+            "target": {
+              "file": { "key": "lib.py" },
+              "location": { "span": { "length": 8, "start": 317 } },
+              "name": "big_lib.big_func"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "imp": {
+                  "key": {
+                    "as_name": { "key": "lib.func" },
+                    "from_name": { "key": "big_lib.big_func" }
+                  }
+                }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 4, "start": 377 } },
+            "target": {
+              "file": { "key": "lib.py" },
+              "location": { "span": { "length": 8, "start": 317 } },
+              "name": "big_lib.big_func"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "imp": {
+                  "key": {
+                    "as_name": { "key": "main.Helper" },
+                    "from_name": { "key": "lib.HelperClass" }
+                  }
+                }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 6, "start": 392 } },
+            "target": {
+              "file": { "key": "main.py" },
+              "location": { "span": { "length": 11, "start": 297 } },
+              "name": "lib.HelperClass"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "imp": {
+                  "key": {
+                    "as_name": { "key": "main.OtherHelper" },
+                    "from_name": { "key": "lib.HelperClass" }
+                  }
+                }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 11, "start": 509 } },
+            "target": {
+              "file": { "key": "main.py" },
+              "location": { "span": { "length": 11, "start": 468 } },
+              "name": "lib.HelperClass"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "imp": {
+                  "key": {
+                    "as_name": { "key": "main.big_func" },
+                    "from_name": { "key": "big_lib.big_func" }
+                  }
+                }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 8, "start": 362 } },
+            "target": {
+              "file": { "key": "main.py" },
+              "location": { "span": { "length": 8, "start": 245 } },
+              "name": "big_lib.big_func"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "imp": {
+                  "key": {
+                    "as_name": { "key": "main.func" },
+                    "from_name": { "key": "lib.func" }
+                  }
+                }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 4, "start": 377 } },
+            "target": {
+              "file": { "key": "main.py" },
+              "location": { "span": { "length": 4, "start": 278 } },
+              "name": "lib.func"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "imp": {
+                  "key": {
+                    "as_name": { "key": "main.helper_func" },
+                    "from_name": { "key": "lib.helper_func" }
+                  }
+                }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 11, "start": 344 } },
+            "target": {
+              "file": { "key": "main.py" },
+              "location": { "span": { "length": 11, "start": 284 } },
+              "name": "lib.helper_func"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 7, "start": 230 } },
+            "target": {
+              "file": { "key": "big_lib/__init__.py" },
+              "location": { "span": { "length": 518, "start": 0 } },
+              "name": "big_lib"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 3, "start": 267 } },
+            "target": {
+              "file": { "key": "lib.py" },
+              "location": { "span": { "length": 1026, "start": 0 } },
+              "name": "lib"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 3, "start": 457 } },
+            "target": {
+              "file": { "key": "lib.py" },
+              "location": { "span": { "length": 1026, "start": 0 } },
+              "name": "lib"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "variable": {
+                  "key": { "name": { "key": "main.f.<locals>.c" } }
+                }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 1, "start": 405 } },
+            "target": {
+              "file": { "key": "main.py" },
+              "location": { "span": { "length": 12, "start": 388 } },
+              "name": "main.f.<locals>.c"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "main.py" },
+      "genEntity": {
+        "plainEntity": {
+          "entity": {
+            "python": {
+              "decl": {
+                "variable": {
+                  "key": { "name": { "key": "main.f.<locals>.c" } }
+                }
+              }
+            }
+          },
+          "xref": {
+            "source": { "span": { "length": 1, "start": 427 } },
+            "target": {
+              "file": { "key": "main.py" },
+              "location": { "span": { "length": 12, "start": 388 } },
+              "name": "main.f.<locals>.c"
+            }
+          }
+        }
+      }
+    }
+  }
+]

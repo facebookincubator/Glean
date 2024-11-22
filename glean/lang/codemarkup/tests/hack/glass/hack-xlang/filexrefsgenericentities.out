@@ -1,0 +1,1165 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "CountOnlyMode",
+              "file": { "key": "www/test_types.php" },
+              "location": { "span": { "start": 216, "length": 13 } }
+            },
+            "source": { "span": { "start": 1080, "length": 13 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "enum_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "CountOnlyMode" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "Disabled",
+              "file": { "key": "www/test_types.php" },
+              "location": { "span": { "start": 239, "length": 8 } }
+            },
+            "source": { "span": { "start": 1095, "length": 8 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "enumerator": {
+                  "key": {
+                    "name": { "key": "Disabled" },
+                    "enumeration": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "CountOnlyMode" } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "ENGINE_STRMATCH",
+              "file": { "key": "www/test_constants.php" },
+              "location": { "span": { "start": 299, "length": 15 } }
+            },
+            "source": { "span": { "start": 1160, "length": 15 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "classConst": {
+                  "key": {
+                    "name": { "key": "ENGINE_STRMATCH" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "test_CONSTANTS" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "GetCardRequest",
+              "file": { "key": "www/test_types.php" },
+              "location": { "span": { "start": 9945, "length": 14 } }
+            },
+            "source": { "span": { "start": 853, "length": 14 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "GetCardRequest" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "GetNavigationException",
+              "file": { "key": "www/test_types.php" },
+              "location": { "span": { "start": 7945, "length": 22 } }
+            },
+            "source": { "span": { "start": 492, "length": 22 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "GetNavigationException" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "GetNavigationRequest",
+              "file": { "key": "www/test_types.php" },
+              "location": { "span": { "start": 4086, "length": 20 } }
+            },
+            "source": { "span": { "start": 380, "length": 20 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "GetNavigationRequest" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "TestServiceAsyncClient",
+              "file": { "key": "www/TestService.php" },
+              "location": { "span": { "start": 2297, "length": 22 } }
+            },
+            "source": { "span": { "start": 335, "length": 22 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "TestServiceAsyncClient" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "TestServiceAsyncClient",
+              "file": { "key": "www/TestService.php" },
+              "location": { "span": { "start": 2297, "length": 22 } }
+            },
+            "source": { "span": { "start": 808, "length": 22 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "TestServiceAsyncClient" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "__construct",
+              "file": { "key": "www/test_types.php" },
+              "location": { "span": { "start": 4645, "length": 11 } }
+            },
+            "source": { "span": { "start": 380, "length": 20 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "method": {
+                  "key": {
+                    "name": { "key": "__construct" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "GetNavigationRequest" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "__construct",
+              "file": { "key": "www/test_types.php" },
+              "location": { "span": { "start": 8549, "length": 11 } }
+            },
+            "source": { "span": { "start": 492, "length": 22 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "method": {
+                  "key": {
+                    "name": { "key": "__construct" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "GetNavigationException" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "__construct",
+              "file": { "key": "www/test_types.php" },
+              "location": { "span": { "start": 10726, "length": 11 } }
+            },
+            "source": { "span": { "start": 853, "length": 14 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "method": {
+                  "key": {
+                    "name": { "key": "__construct" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "GetCardRequest" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "card",
+              "file": { "key": "www/test_types.php" },
+              "location": { "span": { "start": 13089, "length": 5 } }
+            },
+            "source": { "span": { "start": 990, "length": 4 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "property_": {
+                  "key": {
+                    "name": { "key": "card" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "GetCardResponse" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "get_static_card",
+              "file": { "key": "www/test_types.php" },
+              "location": { "span": { "start": 2778, "length": 15 } }
+            },
+            "source": { "span": { "start": 1194, "length": 15 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "method": {
+                  "key": {
+                    "name": { "key": "get_static_card" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "ResponseCard" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "identifier",
+              "file": { "key": "www/test_types.php" },
+              "location": { "span": { "start": 4613, "length": 11 } }
+            },
+            "source": { "span": { "start": 435, "length": 10 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "property_": {
+                  "key": {
+                    "name": { "key": "identifier" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "GetNavigationRequest" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "message_detail",
+              "file": { "key": "www/test_types.php" },
+              "location": { "span": { "start": 8513, "length": 15 } }
+            },
+            "source": { "span": { "start": 554, "length": 14 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "property_": {
+                  "key": {
+                    "name": { "key": "message_detail" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "GetNavigationException" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "static_card",
+              "file": { "key": "www/test_types.php" },
+              "location": { "span": { "start": 1558, "length": 12 } }
+            },
+            "source": { "span": { "start": 1036, "length": 11 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "property_": {
+                  "key": {
+                    "name": { "key": "static_card" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "ResponseCard" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "tab_group",
+              "file": { "key": "www/test_types.php" },
+              "location": { "span": { "start": 6541, "length": 10 } }
+            },
+            "source": { "span": { "start": 711, "length": 9 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "property_": {
+                  "key": {
+                    "name": { "key": "tab_group" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "GetNavigationResponse" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "test_CONSTANTS",
+              "file": { "key": "www/test_constants.php" },
+              "location": { "span": { "start": 166, "length": 14 } }
+            },
+            "source": { "span": { "start": 1144, "length": 14 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "test_CONSTANTS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "thrift1",
+              "file": { "key": "www/TestService.php" },
+              "location": { "span": { "start": 2627, "length": 7 } }
+            },
+            "source": { "span": { "start": 635, "length": 7 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "method": {
+                  "key": {
+                    "name": { "key": "thrift1" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "TestServiceAsyncClient" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "thrift2",
+              "file": { "key": "www/TestService.php" },
+              "location": { "span": { "start": 3493, "length": 7 } }
+            },
+            "source": { "span": { "start": 919, "length": 7 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "method": {
+                  "key": {
+                    "name": { "key": "thrift2" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "TestServiceAsyncClient" }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "xlangEntity": {
+          "source": { "span": { "start": 380, "length": 20 } },
+          "entity": {
+            "lang": 8,
+            "file": { "key": "www/test.thrift" },
+            "entity": {
+              "fbthrift": {
+                "decl": {
+                  "named": {
+                    "key": {
+                      "name": {
+                        "name": {
+                          "key": {
+                            "file": { "key": { "key": "www/test.thrift" } },
+                            "name": { "key": "GetNavigationRequest" }
+                          }
+                        },
+                        "kind": 2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "xlangEntity": {
+          "source": { "span": { "start": 435, "length": 10 } },
+          "entity": {
+            "lang": 8,
+            "file": { "key": "www/test.thrift" },
+            "entity": {
+              "fbthrift": {
+                "decl": {
+                  "field": {
+                    "key": {
+                      "qname": {
+                        "key": {
+                          "file": { "key": { "key": "www/test.thrift" } },
+                          "name": { "key": "GetNavigationRequest" }
+                        }
+                      },
+                      "kind": 0,
+                      "name": { "key": "identifier" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "xlangEntity": {
+          "source": { "span": { "start": 492, "length": 22 } },
+          "entity": {
+            "lang": 8,
+            "file": { "key": "www/test.thrift" },
+            "entity": {
+              "fbthrift": {
+                "decl": {
+                  "exception_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "file": { "key": { "key": "www/test.thrift" } },
+                          "name": { "key": "GetNavigationException" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "xlangEntity": {
+          "source": { "span": { "start": 554, "length": 14 } },
+          "entity": {
+            "lang": 8,
+            "file": { "key": "www/test.thrift" },
+            "entity": {
+              "fbthrift": {
+                "decl": {
+                  "field": {
+                    "key": {
+                      "qname": {
+                        "key": {
+                          "file": { "key": { "key": "www/test.thrift" } },
+                          "name": { "key": "GetNavigationException" }
+                        }
+                      },
+                      "kind": 2,
+                      "name": { "key": "message_detail" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "xlangEntity": {
+          "source": { "span": { "start": 635, "length": 7 } },
+          "entity": {
+            "lang": 8,
+            "file": { "key": "www/test.thrift" },
+            "entity": {
+              "fbthrift": {
+                "decl": {
+                  "function_": {
+                    "key": {
+                      "service_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "file": { "key": { "key": "www/test.thrift" } },
+                              "name": { "key": "TestService" }
+                            }
+                          }
+                        }
+                      },
+                      "name": { "key": "thrift1" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "xlangEntity": {
+          "source": { "span": { "start": 711, "length": 9 } },
+          "entity": {
+            "lang": 8,
+            "file": { "key": "www/test.thrift" },
+            "entity": {
+              "fbthrift": {
+                "decl": {
+                  "field": {
+                    "key": {
+                      "qname": {
+                        "key": {
+                          "file": { "key": { "key": "www/test.thrift" } },
+                          "name": { "key": "GetNavigationResponse" }
+                        }
+                      },
+                      "kind": 0,
+                      "name": { "key": "tab_group" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "xlangEntity": {
+          "source": { "span": { "start": 853, "length": 14 } },
+          "entity": {
+            "lang": 8,
+            "file": { "key": "www/test.thrift" },
+            "entity": {
+              "fbthrift": {
+                "decl": {
+                  "named": {
+                    "key": {
+                      "name": {
+                        "name": {
+                          "key": {
+                            "file": { "key": { "key": "www/test.thrift" } },
+                            "name": { "key": "GetCardRequest" }
+                          }
+                        },
+                        "kind": 2
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "xlangEntity": {
+          "source": { "span": { "start": 919, "length": 7 } },
+          "entity": {
+            "lang": 8,
+            "file": { "key": "www/test.thrift" },
+            "entity": {
+              "fbthrift": {
+                "decl": {
+                  "function_": {
+                    "key": {
+                      "service_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "file": { "key": { "key": "www/test.thrift" } },
+                              "name": { "key": "TestService" }
+                            }
+                          }
+                        }
+                      },
+                      "name": { "key": "thrift2" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "xlangEntity": {
+          "source": { "span": { "start": 990, "length": 4 } },
+          "entity": {
+            "lang": 8,
+            "file": { "key": "www/test.thrift" },
+            "entity": {
+              "fbthrift": {
+                "decl": {
+                  "field": {
+                    "key": {
+                      "qname": {
+                        "key": {
+                          "file": { "key": { "key": "www/test.thrift" } },
+                          "name": { "key": "GetCardResponse" }
+                        }
+                      },
+                      "kind": 0,
+                      "name": { "key": "card" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "xlangEntity": {
+          "source": { "span": { "start": 1036, "length": 11 } },
+          "entity": {
+            "lang": 8,
+            "file": { "key": "www/test.thrift" },
+            "entity": {
+              "fbthrift": {
+                "decl": {
+                  "field": {
+                    "key": {
+                      "qname": {
+                        "key": {
+                          "file": { "key": { "key": "www/test.thrift" } },
+                          "name": { "key": "ResponseCard" }
+                        }
+                      },
+                      "kind": 1,
+                      "name": { "key": "static_card" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "xlangEntity": {
+          "source": { "span": { "start": 1080, "length": 13 } },
+          "entity": {
+            "lang": 8,
+            "file": { "key": "www/test.thrift" },
+            "entity": {
+              "fbthrift": {
+                "decl": {
+                  "named": {
+                    "key": {
+                      "name": {
+                        "name": {
+                          "key": {
+                            "file": { "key": { "key": "www/test.thrift" } },
+                            "name": { "key": "CountOnlyMode" }
+                          }
+                        },
+                        "kind": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "xlangEntity": {
+          "source": { "span": { "start": 1095, "length": 8 } },
+          "entity": {
+            "lang": 8,
+            "file": { "key": "www/test.thrift" },
+            "entity": {
+              "fbthrift": {
+                "decl": {
+                  "enumValue": {
+                    "key": {
+                      "enum_": {
+                        "name": {
+                          "key": {
+                            "file": { "key": { "key": "www/test.thrift" } },
+                            "name": { "key": "CountOnlyMode" }
+                          }
+                        },
+                        "kind": 1
+                      },
+                      "name": { "key": "Disabled" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "xlangEntity": {
+          "source": { "span": { "start": 1160, "length": 15 } },
+          "entity": {
+            "lang": 8,
+            "file": { "key": "www/test.thrift" },
+            "entity": {
+              "fbthrift": {
+                "decl": {
+                  "constant": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "file": { "key": { "key": "www/test.thrift" } },
+                          "name": { "key": "ENGINE_STRMATCH" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/test.php" },
+      "genEntity": {
+        "xlangEntity": {
+          "source": { "span": { "start": 1194, "length": 15 } },
+          "entity": {
+            "lang": 8,
+            "file": { "key": "www/test.thrift" },
+            "entity": {
+              "fbthrift": {
+                "decl": {
+                  "field": {
+                    "key": {
+                      "qname": {
+                        "key": {
+                          "file": { "key": { "key": "www/test.thrift" } },
+                          "name": { "key": "ResponseCard" }
+                        }
+                      },
+                      "kind": 1,
+                      "name": { "key": "static_card" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

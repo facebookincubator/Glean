@@ -1,0 +1,3 @@
+query: codemarkup.FileXRefsGenericEntities { file = "www/test.php" }
+perf: true
+transform: [gensort, []]

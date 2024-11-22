@@ -1,0 +1,223 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "J",
+              "file": { "key": "test.m" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 4
+                }
+              },
+              "destination": {
+                "file": { "key": "test.m" },
+                "span": { "start": 232, "length": 1 }
+              }
+            },
+            "source": { "span": { "start": 325, "length": 1 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "objcContainer": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "id": { "interface_": { "key": "J" } },
+                        "source": {
+                          "file": { "key": "test.m" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 11,
+                          "columnEnd": 4
+                        }
+                      }
+                    },
+                    "protocols": [ ],
+                    "members": {
+                      "key": [
+                        {
+                          "objcMethod": {
+                            "key": {
+                              "selector": { "key": [ "checkSelector" ] },
+                              "locations": [
+                                {
+                                  "file": { "key": "test.m" },
+                                  "span": { "start": 242, "length": 13 }
+                                }
+                              ],
+                              "container": { "interface_": { "key": "J" } },
+                              "signature": {
+                                "key": {
+                                  "returns": { "key": "void" },
+                                  "parameters": [
+                                    {
+                                      "name": { "key": "selector" },
+                                      "type": { "key": "SEL" }
+                                    }
+                                  ]
+                                }
+                              },
+                              "isInstance": true,
+                              "isOptional": false,
+                              "isAccessor": false,
+                              "source": {
+                                "file": { "key": "test.m" },
+                                "lineBegin": 10,
+                                "columnBegin": 1,
+                                "lineEnd": 10,
+                                "columnEnd": 36
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "checkSelector:",
+              "file": { "key": "test.m" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 10,
+                  "columnBegin": 1,
+                  "lineEnd": 10,
+                  "columnEnd": 36
+                }
+              },
+              "destination": {
+                "file": { "key": "test.m" },
+                "span": { "start": 242, "length": 13 }
+              }
+            },
+            "source": { "span": { "start": 394, "length": 32 } }
+          },
+          "entity": {
+            "cxx": {
+              "decl": {
+                "objcMethod": {
+                  "key": {
+                    "selector": { "key": [ "checkSelector" ] },
+                    "locations": [
+                      {
+                        "file": { "key": "test.m" },
+                        "span": { "start": 242, "length": 13 }
+                      }
+                    ],
+                    "container": { "interface_": { "key": "J" } },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          {
+                            "name": { "key": "selector" },
+                            "type": { "key": "SEL" }
+                          }
+                        ]
+                      }
+                    },
+                    "isInstance": true,
+                    "isOptional": false,
+                    "isAccessor": false,
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 10,
+                      "columnBegin": 1,
+                      "lineEnd": 10,
+                      "columnEnd": 36
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.m" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "s",
+              "file": { "key": "test.m" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.m" },
+                  "lineBegin": 18,
+                  "columnBegin": 11,
+                  "lineEnd": 18,
+                  "columnEnd": 14
+                }
+              },
+              "destination": {
+                "file": { "key": "test.m" },
+                "span": { "start": 328, "length": 1 }
+              }
+            },
+            "source": { "span": { "start": 395, "length": 1 } }
+          },
+          "entity": {
+            "cxx": {
+              "decl": {
+                "variable": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "s" },
+                        "scope": {
+                          "local": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "call" } } },
+                              "scope": { "global_": { } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "type": { "key": "J *" },
+                    "kind": { "local": { "kind": 2, "attribute": 0 } },
+                    "source": {
+                      "file": { "key": "test.m" },
+                      "lineBegin": 18,
+                      "columnBegin": 11,
+                      "lineEnd": 18,
+                      "columnEnd": 14
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

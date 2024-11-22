@@ -201,9 +201,9 @@ predicate EntityLocation:
     (codemarkup.graphql.GraphQLEntityLocation { E, Location };
      { graphql = E } = Entity);
 
-# Maps a (generated) entity to its defining IDL.
-# By joining with FileEntityXRefLocations, we can get
-# generate xrefs to idl entities.
+# Maps a generated entity to its source definition (typically an IDL).
+# By joining with FileEntityXRefLocations, we can generate xlang xrefs
+# to idl entities.
 predicate EntityIdl:
   {
     entity: code.Entity,
@@ -214,6 +214,56 @@ predicate EntityIdl:
      { hack = E } = Entity) |
     (codemarkup.cxx.CxxEntityIdl { E, IdlEntity };
      { cxx = E } = Entity)
+
+# generic entities are either
+#  - plainEntity: regular entities within the same db as the source file
+#  - xlang entities for which target location may not be known (need to be
+#    resolved client side)
+type GenericEntity = {
+  plainEntity: { xref: codemarkup.types.XRefLocation, entity : code.Entity } |
+  xlangEntity: { source : codemarkup.types.RangeSpan, entity : code.IdlEntity }
+}
+
+# Finding xrefs to a generic entities
+predicate FileXRefsGenericEntities: {
+    file: src.File,
+    genEntity: GenericEntity
+} { File, GenEntity } where
+  (codemarkup.hack.HackFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { hack = E } } } = GenEntity ) |
+  (codemarkup.hack.HackFileEntityXRefLocations { File, { source = Source }, E };
+   codemarkup.hack.HackEntityIdl { E, IdlEntity };
+   { xlangEntity = { source = Source, entity = IdlEntity } } = GenEntity ) |
+  (codemarkup.flow.FlowFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { flow = E } } } = GenEntity ) |
+  (codemarkup.python.PythonFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { python = E } } } = GenEntity ) |
+  (codemarkup.cxx.CxxFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { cxx = E } } }  = GenEntity ) |
+  (codemarkup.pp.PpFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { pp = E } } } = GenEntity ) |
+  (codemarkup.haskell.HaskellFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { hs = E } } } = GenEntity ) |
+  (codemarkup.buck.BuckFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { buck = E } } } = GenEntity) |
+  (codemarkup.fbthrift.ThriftFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { fbthrift = E } } } = GenEntity) |
+  (codemarkup.erlang.ErlangFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { erlang = E } } } = GenEntity) |
+  (codemarkup.lsif.LsifFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { lsif = E } } } = GenEntity) |
+  (codemarkup.scip.ScipFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { scip = E } } } = GenEntity) |
+  (codemarkup.java.JavalFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { java = E } } } = GenEntity) |
+  (codemarkup.kotlin.KotlinFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { kotlin = E } } } = GenEntity) |
+  (codemarkup.csharp.CSharpFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { csharp = E } } } = GenEntity) |
+  (codemarkup.graphql.GraphQLFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { graphql = E } } } = GenEntity) |
+  (codemarkup.dataswarm.DataswarmFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { dataswarm = E } } } = GenEntity);
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:

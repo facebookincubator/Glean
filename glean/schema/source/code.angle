@@ -126,8 +126,8 @@ type CallArgument =
 
 # An IdlEntity typically represents an entity defined in
 # a different db than the one the codemarkup predicates
-# evaluate against. We attach it to a generated entity
-# using codemarkup.EntityIdl.
+# evaluate against. The name "IdlEntity" is badly chosen,
+# since it's more general then just an idl (e.g. thrift) entity
 #
 # Example: a thrift declaration defined in fbsource.fbthrift, while
 # the codemarkup predicates evaluate on fbsource

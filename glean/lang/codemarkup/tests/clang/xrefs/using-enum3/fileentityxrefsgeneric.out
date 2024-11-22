@@ -1,0 +1,2077 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "A",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 10,
+                  "lineEnd": 11,
+                  "columnEnd": 10
+                }
+              }
+            },
+            "source": { "span": { "start": 513, "length": 1 } }
+          },
+          "entity": {
+            "cxx": {
+              "enumerator": {
+                "key": {
+                  "name": { "key": "A" },
+                  "enumeration": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "E" },
+                          "scope": {
+                            "namespace_": { "key": { "name": { "key": "N1" } } }
+                          }
+                        }
+                      },
+                      "isScoped": false,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 11,
+                        "columnBegin": 1,
+                        "lineEnd": 11,
+                        "columnEnd": 18
+                      }
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 11,
+                    "columnBegin": 10,
+                    "lineEnd": 11,
+                    "columnEnd": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "A",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 10,
+                  "lineEnd": 11,
+                  "columnEnd": 10
+                }
+              }
+            },
+            "source": { "span": { "start": 594, "length": 1 } }
+          },
+          "entity": {
+            "cxx": {
+              "enumerator": {
+                "key": {
+                  "name": { "key": "A" },
+                  "enumeration": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "E" },
+                          "scope": {
+                            "namespace_": { "key": { "name": { "key": "N1" } } }
+                          }
+                        }
+                      },
+                      "isScoped": false,
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 11,
+                        "columnBegin": 1,
+                        "lineEnd": 11,
+                        "columnEnd": 18
+                      }
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 11,
+                    "columnBegin": 10,
+                    "lineEnd": 11,
+                    "columnEnd": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "E",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 18
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 242, "length": 1 }
+              }
+            },
+            "source": { "span": { "start": 307, "length": 1 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "enum_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "E" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N1" } }
+                              }
+                            }
+                          }
+                        },
+                        "isScoped": false,
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 11,
+                          "columnBegin": 1,
+                          "lineEnd": 11,
+                          "columnEnd": 18
+                        }
+                      }
+                    },
+                    "enumerators": [
+                      {
+                        "key": {
+                          "name": { "key": "A" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 10,
+                            "lineEnd": 11,
+                            "columnEnd": 10
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": { "key": "B" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 13,
+                            "lineEnd": 11,
+                            "columnEnd": 13
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": { "key": "C" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 16,
+                            "lineEnd": 11,
+                            "columnEnd": 16
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "E",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 18
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 242, "length": 1 }
+              }
+            },
+            "source": { "span": { "start": 400, "length": 1 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "enum_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "E" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N1" } }
+                              }
+                            }
+                          }
+                        },
+                        "isScoped": false,
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 11,
+                          "columnBegin": 1,
+                          "lineEnd": 11,
+                          "columnEnd": 18
+                        }
+                      }
+                    },
+                    "enumerators": [
+                      {
+                        "key": {
+                          "name": { "key": "A" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 10,
+                            "lineEnd": 11,
+                            "columnEnd": 10
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": { "key": "B" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 13,
+                            "lineEnd": 11,
+                            "columnEnd": 13
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": { "key": "C" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 16,
+                            "lineEnd": 11,
+                            "columnEnd": 16
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "E",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 18
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 242, "length": 1 }
+              }
+            },
+            "source": { "span": { "start": 526, "length": 1 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "enum_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "E" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N1" } }
+                              }
+                            }
+                          }
+                        },
+                        "isScoped": false,
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 11,
+                          "columnBegin": 1,
+                          "lineEnd": 11,
+                          "columnEnd": 18
+                        }
+                      }
+                    },
+                    "enumerators": [
+                      {
+                        "key": {
+                          "name": { "key": "A" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 10,
+                            "lineEnd": 11,
+                            "columnEnd": 10
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": { "key": "B" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 13,
+                            "lineEnd": 11,
+                            "columnEnd": 13
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": { "key": "C" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 16,
+                            "lineEnd": 11,
+                            "columnEnd": 16
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "E",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 18
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 242, "length": 1 }
+              }
+            },
+            "source": { "span": { "start": 581, "length": 1 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "enum_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "E" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N1" } }
+                              }
+                            }
+                          }
+                        },
+                        "isScoped": false,
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 11,
+                          "columnBegin": 1,
+                          "lineEnd": 11,
+                          "columnEnd": 18
+                        }
+                      }
+                    },
+                    "enumerators": [
+                      {
+                        "key": {
+                          "name": { "key": "A" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 10,
+                            "lineEnd": 11,
+                            "columnEnd": 10
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": { "key": "B" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 13,
+                            "lineEnd": 11,
+                            "columnEnd": 13
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": { "key": "C" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 16,
+                            "lineEnd": 11,
+                            "columnEnd": 16
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "E",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 18
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 242, "length": 1 }
+              }
+            },
+            "source": { "span": { "start": 670, "length": 1 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "enum_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "E" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N1" } }
+                              }
+                            }
+                          }
+                        },
+                        "isScoped": false,
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 11,
+                          "columnBegin": 1,
+                          "lineEnd": 11,
+                          "columnEnd": 18
+                        }
+                      }
+                    },
+                    "enumerators": [
+                      {
+                        "key": {
+                          "name": { "key": "A" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 10,
+                            "lineEnd": 11,
+                            "columnEnd": 10
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": { "key": "B" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 13,
+                            "lineEnd": 11,
+                            "columnEnd": 13
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": { "key": "C" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 16,
+                            "lineEnd": 11,
+                            "columnEnd": 16
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "E",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 18
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 242, "length": 1 }
+              }
+            },
+            "source": { "span": { "start": 725, "length": 1 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "enum_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "E" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "N1" } }
+                              }
+                            }
+                          }
+                        },
+                        "isScoped": false,
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 11,
+                          "columnBegin": 1,
+                          "lineEnd": 11,
+                          "columnEnd": 18
+                        }
+                      }
+                    },
+                    "enumerators": [
+                      {
+                        "key": {
+                          "name": { "key": "A" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 10,
+                            "lineEnd": 11,
+                            "columnEnd": 10
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": { "key": "B" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 13,
+                            "lineEnd": 11,
+                            "columnEnd": 13
+                          }
+                        }
+                      },
+                      {
+                        "key": {
+                          "name": { "key": "C" },
+                          "enumeration": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 11,
+                            "columnBegin": 16,
+                            "lineEnd": 11,
+                            "columnEnd": 16
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "N1",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 1
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 231, "length": 2 }
+              }
+            },
+            "source": { "span": { "start": 293, "length": 2 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "namespace_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "N1" } } },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 13,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "members": {
+                      "key": [
+                        {
+                          "enum_": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "N1",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 1
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 231, "length": 2 }
+              }
+            },
+            "source": { "span": { "start": 303, "length": 2 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "namespace_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "N1" } } },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 13,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "members": {
+                      "key": [
+                        {
+                          "enum_": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "N1",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 1
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 231, "length": 2 }
+              }
+            },
+            "source": { "span": { "start": 396, "length": 2 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "namespace_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "N1" } } },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 13,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "members": {
+                      "key": [
+                        {
+                          "enum_": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "N1",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 1
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 231, "length": 2 }
+              }
+            },
+            "source": { "span": { "start": 419, "length": 2 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "namespace_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "N1" } } },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 13,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "members": {
+                      "key": [
+                        {
+                          "enum_": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "N1",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 1
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 231, "length": 2 }
+              }
+            },
+            "source": { "span": { "start": 509, "length": 2 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "namespace_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "N1" } } },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 13,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "members": {
+                      "key": [
+                        {
+                          "enum_": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "N1",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 1
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 231, "length": 2 }
+              }
+            },
+            "source": { "span": { "start": 522, "length": 2 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "namespace_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "N1" } } },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 13,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "members": {
+                      "key": [
+                        {
+                          "enum_": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "N1",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 1
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 231, "length": 2 }
+              }
+            },
+            "source": { "span": { "start": 577, "length": 2 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "namespace_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "N1" } } },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 13,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "members": {
+                      "key": [
+                        {
+                          "enum_": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "N1",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 1
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 231, "length": 2 }
+              }
+            },
+            "source": { "span": { "start": 590, "length": 2 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "namespace_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "N1" } } },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 13,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "members": {
+                      "key": [
+                        {
+                          "enum_": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "N1",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 1
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 231, "length": 2 }
+              }
+            },
+            "source": { "span": { "start": 666, "length": 2 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "namespace_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "N1" } } },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 13,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "members": {
+                      "key": [
+                        {
+                          "enum_": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "N1",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 1
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 231, "length": 2 }
+              }
+            },
+            "source": { "span": { "start": 721, "length": 2 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "namespace_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "N1" } } },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 13,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "members": {
+                      "key": [
+                        {
+                          "enum_": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "E" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N1" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "isScoped": false,
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 18
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "N21",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 15,
+                  "columnBegin": 1,
+                  "lineEnd": 24,
+                  "columnEnd": 1
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 271, "length": 3 }
+              }
+            },
+            "source": { "span": { "start": 655, "length": 3 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "namespace_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "N21" } } },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 15,
+                          "columnBegin": 1,
+                          "lineEnd": 24,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "members": {
+                      "key": [
+                        {
+                          "function_": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": {
+                                    "key": { "name": { "key": "foo" } }
+                                  },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N21" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "signature": {
+                                "key": {
+                                  "returns": { "key": "void" },
+                                  "parameters": [ ]
+                                }
+                              },
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 20,
+                                "columnBegin": 1,
+                                "lineEnd": 22,
+                                "columnEnd": 1
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "N22",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 26,
+                  "columnBegin": 1,
+                  "lineEnd": 35,
+                  "columnEnd": 1
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 383, "length": 3 }
+              }
+            },
+            "source": { "span": { "start": 744, "length": 3 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "namespace_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "N22" } } },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 26,
+                          "columnBegin": 1,
+                          "lineEnd": 35,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "members": {
+                      "key": [
+                        {
+                          "function_": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": {
+                                    "key": { "name": { "key": "foo" } }
+                                  },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "N22" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "signature": {
+                                "key": {
+                                  "returns": { "key": "void" },
+                                  "parameters": [ ]
+                                }
+                              },
+                              "source": {
+                                "file": { "key": "test.cpp" },
+                                "lineBegin": 31,
+                                "columnBegin": 1,
+                                "lineEnd": 33,
+                                "columnEnd": 1
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

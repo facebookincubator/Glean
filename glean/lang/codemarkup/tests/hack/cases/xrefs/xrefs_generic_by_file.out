@@ -1,0 +1,852 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "BAZ",
+              "file": { "key": "www/SourceClass.php" },
+              "location": { "span": { "start": 332, "length": 3 } }
+            },
+            "source": { "span": { "start": 740, "length": 3 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "classConst": {
+                  "key": {
+                    "name": { "key": "BAZ" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "SourceClass" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "Center",
+              "file": { "key": "www/TopLevel.php" },
+              "location": { "span": { "start": 380, "length": 6 } }
+            },
+            "source": { "span": { "start": 987, "length": 6 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "enumerator": {
+                  "key": {
+                    "name": { "key": "Center" },
+                    "enumeration": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "Position" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "JAZZ",
+              "file": { "key": "www/RefClass.php" },
+              "location": { "span": { "start": 347, "length": 4 } }
+            },
+            "source": { "span": { "start": 768, "length": 4 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "classConst": {
+                  "key": {
+                    "name": { "key": "JAZZ" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "RefClass" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "Position",
+              "file": { "key": "www/TopLevel.php" },
+              "location": { "span": { "start": 305, "length": 8 } }
+            },
+            "source": { "span": { "start": 821, "length": 8 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "enum_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Position" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "Position",
+              "file": { "key": "www/TopLevel.php" },
+              "location": { "span": { "start": 305, "length": 8 } }
+            },
+            "source": { "span": { "start": 977, "length": 8 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "enum_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "Position" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "Right",
+              "file": { "key": "www/TopLevel.php" },
+              "location": { "span": { "start": 367, "length": 5 } }
+            },
+            "source": { "span": { "start": 831, "length": 5 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "enumerator": {
+                  "key": {
+                    "name": { "key": "Right" },
+                    "enumeration": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "Position" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "SourceClass",
+              "file": { "key": "www/SourceClass.php" },
+              "location": { "span": { "start": 286, "length": 11 } }
+            },
+            "source": { "span": { "start": 249, "length": 11 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "SourceClass",
+              "file": { "key": "www/SourceClass.php" },
+              "location": { "span": { "start": 286, "length": 11 } }
+            },
+            "source": { "span": { "start": 639, "length": 11 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "SourceClass",
+              "file": { "key": "www/SourceClass.php" },
+              "location": { "span": { "start": 286, "length": 11 } }
+            },
+            "source": { "span": { "start": 687, "length": 11 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "SourceClass",
+              "file": { "key": "www/SourceClass.php" },
+              "location": { "span": { "start": 286, "length": 11 } }
+            },
+            "source": { "span": { "start": 727, "length": 11 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "SourceClass",
+              "file": { "key": "www/SourceClass.php" },
+              "location": { "span": { "start": 286, "length": 11 } }
+            },
+            "source": { "span": { "start": 898, "length": 11 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "SourceInterface",
+              "file": { "key": "www/SourceInterface.php" },
+              "location": { "span": { "start": 236, "length": 15 } }
+            },
+            "source": { "span": { "start": 272, "length": 15 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "interface_": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "SourceInterface" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "SourceSecretTrait",
+              "file": { "key": "www/SourceTrait.php" },
+              "location": { "span": { "start": 483, "length": 17 } }
+            },
+            "source": { "span": { "start": 315, "length": 17 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "trait": {
+                    "key": {
+                      "name": {
+                        "key": { "name": { "key": "SourceSecretTrait" } }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "SourceTrait",
+              "file": { "key": "www/SourceTrait.php" },
+              "location": { "span": { "start": 232, "length": 11 } }
+            },
+            "source": { "span": { "start": 296, "length": 11 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "container": {
+                  "trait": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceTrait" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "T",
+              "file": { "key": "www/SourceClass.php" },
+              "location": { "span": { "start": 355, "length": 1 } }
+            },
+            "source": { "span": { "start": 652, "length": 1 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "typeConst": {
+                  "key": {
+                    "name": { "key": "T" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "SourceClass" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "WALDO",
+              "file": { "key": "www/TopLevel.php" },
+              "location": { "span": { "start": 236, "length": 5 } }
+            },
+            "source": { "span": { "start": 445, "length": 5 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "globalConst": {
+                  "key": { "name": { "key": { "name": { "key": "WALDO" } } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "WALDO",
+              "file": { "key": "www/TopLevel.php" },
+              "location": { "span": { "start": 236, "length": 5 } }
+            },
+            "source": { "span": { "start": 775, "length": 5 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "globalConst": {
+                  "key": { "name": { "key": { "name": { "key": "WALDO" } } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "bazza",
+              "file": { "key": "www/RefClass.php" },
+              "location": { "span": { "start": 475, "length": 5 } }
+            },
+            "source": { "span": { "start": 888, "length": 5 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "method": {
+                  "key": {
+                    "name": { "key": "bazza" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "RefClass" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "corge",
+              "file": { "key": "www/TopLevel.php" },
+              "location": { "span": { "start": 258, "length": 5 } }
+            },
+            "source": { "span": { "start": 435, "length": 5 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "function_": {
+                  "key": { "name": { "key": { "name": { "key": "corge" } } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "corge",
+              "file": { "key": "www/TopLevel.php" },
+              "location": { "span": { "start": 258, "length": 5 } }
+            },
+            "source": { "span": { "start": 506, "length": 5 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "function_": {
+                  "key": { "name": { "key": { "name": { "key": "corge" } } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "corge",
+              "file": { "key": "www/TopLevel.php" },
+              "location": { "span": { "start": 258, "length": 5 } }
+            },
+            "source": { "span": { "start": 717, "length": 5 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "function_": {
+                  "key": { "name": { "key": { "name": { "key": "corge" } } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "corge",
+              "file": { "key": "www/TopLevel.php" },
+              "location": { "span": { "start": 258, "length": 5 } }
+            },
+            "source": { "span": { "start": 997, "length": 5 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "function_": {
+                  "key": { "name": { "key": { "name": { "key": "corge" } } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "daz",
+              "file": { "key": "www/SourceClass.php" },
+              "location": { "span": { "start": 378, "length": 4 } }
+            },
+            "source": { "span": { "start": 755, "length": 3 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "property_": {
+                  "key": {
+                    "name": { "key": "daz" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "SourceClass" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "foo",
+              "file": { "key": "www/RefClass.php" },
+              "location": { "span": { "start": 411, "length": 3 } }
+            },
+            "source": { "span": { "start": 846, "length": 3 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "method": {
+                  "key": {
+                    "name": { "key": "foo" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "RefClass" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "quux",
+              "file": { "key": "www/SourceTrait.php" },
+              "location": { "span": { "start": 264, "length": 4 } }
+            },
+            "source": { "span": { "start": 804, "length": 4 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "method": {
+                  "key": {
+                    "name": { "key": "quux" },
+                    "container": {
+                      "trait": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "SourceTrait" } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "raz",
+              "file": { "key": "www/RefClass.php" },
+              "location": { "span": { "start": 373, "length": 4 } }
+            },
+            "source": { "span": { "start": 875, "length": 3 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "property_": {
+                  "key": {
+                    "name": { "key": "raz" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "RefClass" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "superAdd",
+              "file": { "key": "www/SuperClass.php" },
+              "location": { "span": { "start": 288, "length": 8 } }
+            },
+            "source": { "span": { "start": 911, "length": 8 } }
+          },
+          "entity": {
+            "hack": {
+              "decl": {
+                "method": {
+                  "key": {
+                    "name": { "key": "superAdd" },
+                    "container": {
+                      "class_": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "SuperClass" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

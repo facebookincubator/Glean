@@ -1,0 +1,3 @@
+query: codemarkup.FileXRefsGenericEntities { file = _ }
+transform: [normord, []]
+perf: true

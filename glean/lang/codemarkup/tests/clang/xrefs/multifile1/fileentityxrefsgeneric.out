@@ -1,0 +1,55 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "a.h",
+              "file": { "key": "a.h" },
+              "location": { "span": { "start": 0, "length": 0 } }
+            },
+            "source": {
+              "range": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 14,
+                "columnBegin": 1,
+                "lineEnd": 14,
+                "columnEnd": 14
+              }
+            }
+          },
+          "entity": { "pp": { "include_": { "key": "a.h" } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "a.h",
+              "file": { "key": "a.h" },
+              "location": { "span": { "start": 0, "length": 0 } }
+            },
+            "source": {
+              "range": {
+                "file": { "key": "test.cpp" },
+                "lineBegin": 23,
+                "columnBegin": 1,
+                "lineEnd": 23,
+                "columnEnd": 14
+              }
+            }
+          },
+          "entity": { "pp": { "include_": { "key": "a.h" } } }
+        }
+      }
+    }
+  }
+]

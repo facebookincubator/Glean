@@ -1,0 +1,227 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "A.a",
+              "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
+              "location": { "span": { "start": 281, "length": 1 } }
+            },
+            "source": { "span": { "start": 228, "length": 1 } }
+          },
+          "entity": {
+            "hs": {
+              "definition": {
+                "key": {
+                  "name": { "key": "A.a" },
+                  "source": {
+                    "file": {
+                      "key": "fbcode/glean/lang/haskell/tests/code/A.hs"
+                    },
+                    "span": { "start": 281, "length": 1 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "A.a",
+              "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
+              "location": { "span": { "start": 281, "length": 1 } }
+            },
+            "source": { "span": { "start": 269, "length": 1 } }
+          },
+          "entity": {
+            "hs": {
+              "definition": {
+                "key": {
+                  "name": { "key": "A.a" },
+                  "source": {
+                    "file": {
+                      "key": "fbcode/glean/lang/haskell/tests/code/A.hs"
+                    },
+                    "span": { "start": 281, "length": 1 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "A.a",
+              "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
+              "location": { "span": { "start": 281, "length": 1 } }
+            },
+            "source": { "span": { "start": 281, "length": 1 } }
+          },
+          "entity": {
+            "hs": {
+              "definition": {
+                "key": {
+                  "name": { "key": "A.a" },
+                  "source": {
+                    "file": {
+                      "key": "fbcode/glean/lang/haskell/tests/code/A.hs"
+                    },
+                    "span": { "start": 281, "length": 1 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "A.a",
+              "file": { "key": "fbcode/glean/lang/haskell/tests/code/A.hs" },
+              "location": { "span": { "start": 281, "length": 1 } }
+            },
+            "source": { "span": { "start": 306, "length": 1 } }
+          },
+          "entity": {
+            "hs": {
+              "definition": {
+                "key": {
+                  "name": { "key": "A.a" },
+                  "source": {
+                    "file": {
+                      "key": "fbcode/glean/lang/haskell/tests/code/A.hs"
+                    },
+                    "span": { "start": 281, "length": 1 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "B.b",
+              "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
+              "location": { "span": { "start": 284, "length": 1 } }
+            },
+            "source": { "span": { "start": 228, "length": 1 } }
+          },
+          "entity": {
+            "hs": {
+              "definition": {
+                "key": {
+                  "name": { "key": "B.b" },
+                  "source": {
+                    "file": {
+                      "key": "fbcode/glean/lang/haskell/tests/code/B.hs"
+                    },
+                    "span": { "start": 284, "length": 1 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "B.b",
+              "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
+              "location": { "span": { "start": 284, "length": 1 } }
+            },
+            "source": { "span": { "start": 273, "length": 1 } }
+          },
+          "entity": {
+            "hs": {
+              "definition": {
+                "key": {
+                  "name": { "key": "B.b" },
+                  "source": {
+                    "file": {
+                      "key": "fbcode/glean/lang/haskell/tests/code/B.hs"
+                    },
+                    "span": { "start": 284, "length": 1 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "B.b",
+              "file": { "key": "fbcode/glean/lang/haskell/tests/code/B.hs" },
+              "location": { "span": { "start": 284, "length": 1 } }
+            },
+            "source": { "span": { "start": 284, "length": 1 } }
+          },
+          "entity": {
+            "hs": {
+              "definition": {
+                "key": {
+                  "name": { "key": "B.b" },
+                  "source": {
+                    "file": {
+                      "key": "fbcode/glean/lang/haskell/tests/code/B.hs"
+                    },
+                    "span": { "start": 284, "length": 1 }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

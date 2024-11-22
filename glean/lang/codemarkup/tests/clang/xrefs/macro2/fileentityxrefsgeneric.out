@@ -1,0 +1,170 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "BLAH",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 9,
+                  "lineEnd": 9,
+                  "columnEnd": 12
+                }
+              }
+            },
+            "source": { "span": { "start": 481, "length": 4 } }
+          },
+          "entity": {
+            "pp": {
+              "define": {
+                "key": {
+                  "macro": { "key": "BLAH" },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 9,
+                    "lineEnd": 9,
+                    "columnEnd": 12
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "one",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 16,
+                  "columnBegin": 1,
+                  "lineEnd": 18,
+                  "columnEnd": 1
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 406, "length": 3 }
+              }
+            },
+            "source": { "span": { "start": 495, "length": 3 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "function_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "one" } } },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "int" },
+                            "parameters": [ ]
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 16,
+                          "columnBegin": 1,
+                          "lineEnd": 18,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "isInline": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "two",
+              "file": { "key": "test.cpp" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 20,
+                  "columnBegin": 1,
+                  "lineEnd": 22,
+                  "columnEnd": 1
+                }
+              },
+              "destination": {
+                "file": { "key": "test.cpp" },
+                "span": { "start": 435, "length": 3 }
+              }
+            },
+            "source": { "span": { "start": 510, "length": 3 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "function_": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": { "name": { "key": "two" } } },
+                            "scope": { "global_": { } }
+                          }
+                        },
+                        "signature": {
+                          "key": {
+                            "returns": { "key": "int" },
+                            "parameters": [ ]
+                          }
+                        },
+                        "source": {
+                          "file": { "key": "test.cpp" },
+                          "lineBegin": 20,
+                          "columnBegin": 1,
+                          "lineEnd": 22,
+                          "columnEnd": 1
+                        }
+                      }
+                    },
+                    "isInline": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

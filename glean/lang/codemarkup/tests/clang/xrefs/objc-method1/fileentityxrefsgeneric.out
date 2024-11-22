@@ -1,0 +1,464 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "Foo",
+              "file": { "key": "test.mm" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 4
+                }
+              },
+              "destination": {
+                "file": { "key": "test.mm" },
+                "span": { "start": 231, "length": 3 }
+              }
+            },
+            "source": { "span": { "start": 301, "length": 3 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "objcContainer": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "id": { "protocol": { "key": "Foo" } },
+                        "source": {
+                          "file": { "key": "test.mm" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 13,
+                          "columnEnd": 4
+                        }
+                      }
+                    },
+                    "protocols": [ ],
+                    "members": {
+                      "key": [
+                        {
+                          "objcMethod": {
+                            "key": {
+                              "selector": { "key": [ "setInt", "setDouble" ] },
+                              "locations": [
+                                {
+                                  "file": { "key": "test.mm" },
+                                  "span": { "start": 244, "length": 6 }
+                                },
+                                {
+                                  "file": { "key": "test.mm" },
+                                  "span": { "start": 258, "length": 9 }
+                                }
+                              ],
+                              "container": { "protocol": { "key": "Foo" } },
+                              "signature": {
+                                "key": {
+                                  "returns": { "key": "void" },
+                                  "parameters": [
+                                    {
+                                      "name": { "key": "x" },
+                                      "type": { "key": "int" }
+                                    },
+                                    {
+                                      "name": { "key": "y" },
+                                      "type": { "key": "double" }
+                                    }
+                                  ]
+                                }
+                              },
+                              "isInstance": true,
+                              "isOptional": false,
+                              "isAccessor": false,
+                              "source": {
+                                "file": { "key": "test.mm" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 42
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "Foo",
+              "file": { "key": "test.mm" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 13,
+                  "columnEnd": 4
+                }
+              },
+              "destination": {
+                "file": { "key": "test.mm" },
+                "span": { "start": 231, "length": 3 }
+              }
+            },
+            "source": { "span": { "start": 372, "length": 3 } }
+          },
+          "entity": {
+            "cxx": {
+              "defn": {
+                "objcContainer": {
+                  "key": {
+                    "declaration": {
+                      "key": {
+                        "id": { "protocol": { "key": "Foo" } },
+                        "source": {
+                          "file": { "key": "test.mm" },
+                          "lineBegin": 9,
+                          "columnBegin": 1,
+                          "lineEnd": 13,
+                          "columnEnd": 4
+                        }
+                      }
+                    },
+                    "protocols": [ ],
+                    "members": {
+                      "key": [
+                        {
+                          "objcMethod": {
+                            "key": {
+                              "selector": { "key": [ "setInt", "setDouble" ] },
+                              "locations": [
+                                {
+                                  "file": { "key": "test.mm" },
+                                  "span": { "start": 244, "length": 6 }
+                                },
+                                {
+                                  "file": { "key": "test.mm" },
+                                  "span": { "start": 258, "length": 9 }
+                                }
+                              ],
+                              "container": { "protocol": { "key": "Foo" } },
+                              "signature": {
+                                "key": {
+                                  "returns": { "key": "void" },
+                                  "parameters": [
+                                    {
+                                      "name": { "key": "x" },
+                                      "type": { "key": "int" }
+                                    },
+                                    {
+                                      "name": { "key": "y" },
+                                      "type": { "key": "double" }
+                                    }
+                                  ]
+                                }
+                              },
+                              "isInstance": true,
+                              "isOptional": false,
+                              "isAccessor": false,
+                              "source": {
+                                "file": { "key": "test.mm" },
+                                "lineBegin": 11,
+                                "columnBegin": 1,
+                                "lineEnd": 11,
+                                "columnEnd": 42
+                              }
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "foo",
+              "file": { "key": "test.mm" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 15,
+                  "columnBegin": 13,
+                  "lineEnd": 15,
+                  "columnEnd": 23
+                }
+              },
+              "destination": {
+                "file": { "key": "test.mm" },
+                "span": { "start": 306, "length": 3 }
+              }
+            },
+            "source": { "span": { "start": 316, "length": 3 } }
+          },
+          "entity": {
+            "cxx": {
+              "decl": {
+                "variable": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "foo" },
+                        "scope": {
+                          "local": {
+                            "key": {
+                              "name": {
+                                "key": { "name": { "key": "setFoo" } }
+                              },
+                              "scope": { "global_": { } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "type": { "key": "id<Foo>" },
+                    "kind": { "local": { "kind": 2, "attribute": 0 } },
+                    "source": {
+                      "file": { "key": "test.mm" },
+                      "lineBegin": 15,
+                      "columnBegin": 13,
+                      "lineEnd": 15,
+                      "columnEnd": 23
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "foo",
+              "file": { "key": "test.mm" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 20,
+                  "columnBegin": 3,
+                  "lineEnd": 20,
+                  "columnEnd": 13
+                }
+              },
+              "destination": {
+                "file": { "key": "test.mm" },
+                "span": { "start": 377, "length": 3 }
+              }
+            },
+            "source": { "span": { "start": 452, "length": 3 } }
+          },
+          "entity": {
+            "cxx": {
+              "decl": {
+                "variable": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "foo" },
+                        "scope": { "global_": { } }
+                      }
+                    },
+                    "type": { "key": "id<Foo>" },
+                    "kind": { "ivar": { "synthesize": false } },
+                    "source": {
+                      "file": { "key": "test.mm" },
+                      "lineBegin": 20,
+                      "columnBegin": 3,
+                      "lineEnd": 20,
+                      "columnEnd": 13
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "setInt:setDouble:",
+              "file": { "key": "test.mm" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 42
+                }
+              },
+              "destination": {
+                "file": { "key": "test.mm" },
+                "span": { "start": 244, "length": 6 }
+              }
+            },
+            "source": { "span": { "start": 315, "length": 30 } }
+          },
+          "entity": {
+            "cxx": {
+              "decl": {
+                "objcMethod": {
+                  "key": {
+                    "selector": { "key": [ "setInt", "setDouble" ] },
+                    "locations": [
+                      {
+                        "file": { "key": "test.mm" },
+                        "span": { "start": 244, "length": 6 }
+                      },
+                      {
+                        "file": { "key": "test.mm" },
+                        "span": { "start": 258, "length": 9 }
+                      }
+                    ],
+                    "container": { "protocol": { "key": "Foo" } },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          { "name": { "key": "x" }, "type": { "key": "int" } },
+                          {
+                            "name": { "key": "y" },
+                            "type": { "key": "double" }
+                          }
+                        ]
+                      }
+                    },
+                    "isInstance": true,
+                    "isOptional": false,
+                    "isAccessor": false,
+                    "source": {
+                      "file": { "key": "test.mm" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 11,
+                      "columnEnd": 42
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.mm" },
+      "genEntity": {
+        "plainEntity": {
+          "xref": {
+            "target": {
+              "name": "setInt:setDouble:",
+              "file": { "key": "test.mm" },
+              "location": {
+                "range": {
+                  "file": { "key": "test.mm" },
+                  "lineBegin": 11,
+                  "columnBegin": 1,
+                  "lineEnd": 11,
+                  "columnEnd": 42
+                }
+              },
+              "destination": {
+                "file": { "key": "test.mm" },
+                "span": { "start": 244, "length": 6 }
+              }
+            },
+            "source": { "span": { "start": 451, "length": 30 } }
+          },
+          "entity": {
+            "cxx": {
+              "decl": {
+                "objcMethod": {
+                  "key": {
+                    "selector": { "key": [ "setInt", "setDouble" ] },
+                    "locations": [
+                      {
+                        "file": { "key": "test.mm" },
+                        "span": { "start": 244, "length": 6 }
+                      },
+                      {
+                        "file": { "key": "test.mm" },
+                        "span": { "start": 258, "length": 9 }
+                      }
+                    ],
+                    "container": { "protocol": { "key": "Foo" } },
+                    "signature": {
+                      "key": {
+                        "returns": { "key": "void" },
+                        "parameters": [
+                          { "name": { "key": "x" }, "type": { "key": "int" } },
+                          {
+                            "name": { "key": "y" },
+                            "type": { "key": "double" }
+                          }
+                        ]
+                      }
+                    },
+                    "isInstance": true,
+                    "isOptional": false,
+                    "isAccessor": false,
+                    "source": {
+                      "file": { "key": "test.mm" },
+                      "lineBegin": 11,
+                      "columnBegin": 1,
+                      "lineEnd": 11,
+                      "columnEnd": 42
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]
