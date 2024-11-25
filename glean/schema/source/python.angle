@@ -473,6 +473,77 @@ predicate ImportStarsByFile:
   ImportStarLocation { ImportStarStatement, File, Span };
 
 #
+# Even more efficient searching, names and scopes
+# We have to do a bit of work to get dotted names in to searchable prefix form
+#
+# This duplicates some of the work in ClassBySName since we can't rely on
+# constructing SNames in search being cheap
+#
+predicate SearchClassByName:
+  {
+    name: string,
+    parent: maybe SName,
+    decl : ClassDeclaration
+  } stored { NameStr, Parent, Decl } where
+    ClassDeclaration { name = N } = Decl;
+    NameToSName N -> { Name NameStr, Parent }
+
+predicate SearchModuleByName:
+  {
+    name: string,
+    parent: maybe SName,
+    decl: Module
+  } stored  { NameStr, Parent, Decl } where
+    Module { name = N } = Decl;
+    NameToSName N -> { Name NameStr, Parent }
+
+# free or local functions are those functions not contained by a class
+predicate SearchFunctionByName:
+  {
+    name: string,
+    parent: maybe SName,
+    decl : FunctionDeclaration
+  } stored { NameStr, Parent, Decl } where
+    FunctionDeclaration { name = N } = Decl;
+    ContainingTopLevelDeclaration { { func = Decl }, Container };
+    ( { module = _ } | { func = _ } ) = Container; # check container for kind "function"
+    NameToSName N -> { Name NameStr, Parent }
+
+# class-contained function declarations are "methods"
+predicate SearchMethodByName:
+  {
+    name: string,
+    parent: maybe SName,
+    decl : FunctionDeclaration
+  } stored { NameStr, Parent, Decl } where
+    FunctionDeclaration { name = N } = Decl;
+    ContainingTopLevelDeclaration { { func = Decl }, { cls = _ } };
+    NameToSName N -> { Name NameStr, Parent }
+
+# similar to functions, variables can be distinguished by kind using the parent
+predicate SearchFieldByName:
+  {
+    name: string,
+    parent: maybe SName,
+    decl: VariableDeclaration
+  } stored { NameStr, Parent, Decl } where
+    VariableDeclaration { name = N } = Decl;
+    ContainingTopLevelDeclaration { { variable = Decl }, { cls = _ } };
+    NameToSName N -> { Name NameStr, Parent }
+
+# similar to functions, variables can be distinguished by kind using the parent
+predicate SearchVariableByName:
+  {
+    name: string,
+    parent: maybe SName,
+    decl: VariableDeclaration
+  } stored { NameStr, Parent, Decl } where
+    VariableDeclaration { name = N } = Decl;
+    ContainingTopLevelDeclaration { { variable = Decl }, Container };
+    ( { module = _ } | { func = _ } ) = Container; # check container for kind "function"
+    NameToSName N -> { Name NameStr, Parent }
+
+#
 # Efficient searching
 #
 

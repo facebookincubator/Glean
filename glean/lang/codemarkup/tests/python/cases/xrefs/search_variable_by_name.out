@@ -1,0 +1,48 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "__all__",
+      "parent": { "key": { "local_name": { "key": "all" } } },
+      "decl": { "key": { "name": { "key": "all.__all__" } } }
+    }
+  },
+  {
+    "key": {
+      "name": "__all__",
+      "parent": { "key": { "local_name": { "key": "big_lib" } } },
+      "decl": { "key": { "name": { "key": "big_lib.__all__" } } }
+    }
+  },
+  {
+    "key": {
+      "name": "big_var",
+      "parent": { "key": { "local_name": { "key": "big_lib" } } },
+      "decl": { "key": { "name": { "key": "big_lib.big_var" } } }
+    }
+  },
+  {
+    "key": {
+      "name": "c",
+      "parent": {
+        "key": {
+          "local_name": { "key": "<locals>" },
+          "parent": {
+            "key": {
+              "local_name": { "key": "f" },
+              "parent": { "key": { "local_name": { "key": "main" } } }
+            }
+          }
+        }
+      },
+      "decl": { "key": { "name": { "key": "main.f.<locals>.c" } } }
+    }
+  },
+  {
+    "key": {
+      "name": "var",
+      "parent": { "key": { "local_name": { "key": "all" } } },
+      "decl": { "key": { "name": { "key": "all.var" } } }
+    }
+  }
+]

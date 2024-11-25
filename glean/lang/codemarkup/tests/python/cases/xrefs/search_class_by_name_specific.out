@@ -1,0 +1,22 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "BaseClass",
+      "parent": {
+        "key": {
+          "local_name": { "key": "_inner" },
+          "parent": { "key": { "local_name": { "key": "big_lib" } } }
+        }
+      },
+      "decl": { "key": { "name": { "key": "big_lib._inner.BaseClass" } } }
+    }
+  },
+  {
+    "key": {
+      "name": "BaseClass",
+      "parent": { "key": { "local_name": { "key": "big_lib" } } },
+      "decl": { "key": { "name": { "key": "big_lib.BaseClass" } } }
+    }
+  }
+]

@@ -1,0 +1,28 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "_inner",
+      "parent": { "key": { "local_name": { "key": "big_lib" } } },
+      "decl": { "key": { "name": { "key": "big_lib._inner" } } }
+    }
+  },
+  { "key": { "name": "all", "decl": { "key": { "name": { "key": "all" } } } } },
+  {
+    "key": {
+      "name": "big_lib",
+      "decl": { "key": { "name": { "key": "big_lib" } } }
+    }
+  },
+  { "key": { "name": "lib", "decl": { "key": { "name": { "key": "lib" } } } } },
+  {
+    "key": { "name": "main", "decl": { "key": { "name": { "key": "main" } } } }
+  },
+  {
+    "key": {
+      "name": "relative",
+      "parent": { "key": { "local_name": { "key": "big_lib" } } },
+      "decl": { "key": { "name": { "key": "big_lib.relative" } } }
+    }
+  }
+]
