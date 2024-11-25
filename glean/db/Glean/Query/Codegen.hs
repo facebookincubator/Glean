@@ -35,7 +35,7 @@ import Foreign.Ptr hiding (WordPtr)
 import System.IO.Unsafe
 
 import qualified Util.FFI as FFI
-import Util.Log
+import qualified Util.Log as StringLog
 import qualified Util.Log.Text as TextLog
 import Glean.Query.Transform
   ( skipTrusted
@@ -200,7 +200,7 @@ compileQuery
   -> IO CompiledQuery
 
 compileQuery r qtrans bounds (QueryWithInfo query numVars lookup ty) = do
-  vlog 2 $ show (displayDefault query)
+  StringLog.vlog 2 $ show (displayDefault query)
 
   (idTerm, resultKey, resultValue, stmts) <- if
     | Just gen@(FactGenerator _ keyTerm valTerm _) <- lookup,

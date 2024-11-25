@@ -27,12 +27,14 @@ module Glean.RTS.Bytecode.Code
   , callSite
   , calledFrom
   , fullScan
+  , vlog
   ) where
 
 import Control.Exception (assert)
 import Control.Monad
 import Control.Monad.Fix (MonadFix(..))
 import Control.Monad.ST (ST, runST)
+import Control.Monad.Trans
 import qualified Control.Monad.Trans.State.Strict as S
 import Data.Bits
 import Data.ByteString (ByteString)
@@ -51,6 +53,8 @@ import qualified Data.Vector.Primitive as VP
 import qualified Data.Vector.Primitive.Mutable as VPM
 import qualified Data.Vector.Storable as VS
 import Data.Word (Word64)
+import GHC.Stack
+import qualified Util.Log as Log
 
 import Glean.Bytecode.Types
 import Glean.RTS.Types (Pid)
@@ -108,7 +112,7 @@ data CodeS = CodeS
   }
 
 -- | Code gen monad
-newtype Code a = Code { runCode :: S.State CodeS a }
+newtype Code a = Code { runCode :: S.StateT CodeS IO a }
   deriving(Functor, Applicative, Monad, MonadFix)
 
 -- | Things that generate code of the form
@@ -249,11 +253,10 @@ newtype Meta = Meta
 generate
   :: (CodeGen RegSupply cg, CodeResult cg ~ ())
   => Optimised -> cg -> IO (Meta, Subroutine t)
-generate opt cg =
+generate opt cg = do
   let (gen, sup) = S.runState (genCode cg) $ regSupply $ register Input 0
       !nextInput = peekSupply sup
-  in
-  case S.runState (runCode gen) CodeS
+  ((), CodeS{..}) <- S.runStateT (runCode gen) CodeS
         { csLabel = Label 0
         , csInsns = []
         , csBlocks = []
@@ -266,52 +269,44 @@ generate opt cg =
         , csMaxLocal = register Local 0
         , csNextOutput = castRegister nextInput
         , csMaxOutputs = castRegister nextInput
-        , csFullScans = mempty } of
-    ((), CodeS{..}) -> do
+        , csFullScans = mempty }
       -- sanity check
-      when (not $ null csInsns) $ fail "unterminated basic block"
-      let -- output registers go after input registers
-          finalInputSize = registerIndex csMaxOutputs
-          constantsSize = registerIndex csNextConstant
-
-          get_label pc label =
-            let addr = offsets VP.! fromLabel label
-            in assert (addr /= maxBound) $ addr - pc
-
-          get_reg :: forall ty . Register ty -> Word64
-          get_reg r = case registerSegment r of
-            Input -> assert (n < finalInputSize) n
-            Constant -> assert (n < constantsSize) (n + finalInputSize)
-            Local -> n + finalInputSize + constantsSize
-            where
-              !n = registerIndex r
-
-          optimise = case opt of
-            Optimised -> shortcut
-            Unoptimised -> id
-
-          (insns, offsets) = layout $ optimise CFG
-            { cfgBlocks = V.fromListN (fromLabel csLabel) $ reverse csBlocks
-            , cfgEntry = Label 0
-            }
-
-          code = concat $ snd $ mapAccumL
-            (\offset insn ->
-              let !next = offset + insnSize insn
-              in
-              (next, insnWords get_reg (get_label next) insn))
-            0
-            insns
-
-          meta = Meta csFullScans
-
-      (meta,) <$> subroutine
-        (VS.fromListN (length code) code)
-        finalInputSize
-        (finalInputSize - registerIndex nextInput)
-        (registerIndex csMaxLocal + constantsSize)
-        (reverse csConstants)
-        (map fst $ sortBy (comparing snd) $ HashMap.toList csLiterals)
+  when (not $ null csInsns) $ fail "unterminated basic block"
+  let -- output registers go after input registers
+      finalInputSize = registerIndex csMaxOutputs
+      constantsSize = registerIndex csNextConstant
+      get_label pc label =
+        let addr = offsets VP.! fromLabel label
+        in assert (addr /= maxBound) $ addr - pc
+      get_reg :: forall ty . Register ty -> Word64
+      get_reg r = case registerSegment r of
+        Input -> assert (n < finalInputSize) n
+        Constant -> assert (n < constantsSize) (n + finalInputSize)
+        Local -> n + finalInputSize + constantsSize
+        where
+          !n = registerIndex r
+      optimise = case opt of
+        Optimised -> shortcut
+        Unoptimised -> id
+      (insns, offsets) = layout $ optimise CFG
+        { cfgBlocks = V.fromListN (fromLabel csLabel) $ reverse csBlocks
+        , cfgEntry = Label 0
+        }
+      code = concat $ snd $ mapAccumL
+        (\offset insn ->
+          let !next = offset + insnSize insn
+          in
+          (next, insnWords get_reg (get_label next) insn))
+        0
+        insns
+      meta = Meta csFullScans
+  (meta,) <$> subroutine
+    (VS.fromListN (length code) code)
+    finalInputSize
+    (finalInputSize - registerIndex nextInput)
+    (registerIndex csMaxLocal + constantsSize)
+    (reverse csConstants)
+    (map fst $ sortBy (comparing snd) $ HashMap.toList csLiterals)
 
 
 -- | Control flow graph
@@ -493,3 +488,8 @@ issue insn = Code $ S.modify' $ \s@CodeS{..} -> s { csInsns = insn : csInsns }
 -- | Issue an instruction which always modifies the program counter
 issueEndBlock :: Insn -> Code ()
 issueEndBlock = newBlock . Just
+
+-- | Make some noise during code generation. Helpful for debugging.
+--
+vlog :: HasCallStack => String -> Code ()
+vlog msg = Code $ lift (Log.vlog 2 msg)
