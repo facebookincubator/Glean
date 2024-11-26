@@ -764,7 +764,7 @@ fetchSymbolsAndAttributesGlean
 
   let be = fromMaybe (gleanBackend, dbInfo) mOtherBackend
 
-  res2 <- resolveIdlXrefs env res1 repo be
+  res2 <- resolveXlangXrefs env res1 repo be
 
   let res3 = toDocumentSymbolResult res2
   let res4 = translateMirroredRepoListXResult req res3
@@ -1057,9 +1057,9 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
 
         let digest = toDigest <$> fileDigest
 
-        -- only handle IdlEntities with known entity
-        let unresolvedXrefsIdl = [ (ent, rangeSpan) |
-              IdlXRef (rangeSpan, Code.IdlEntity {
+        -- only handle XlangEntities with known entity
+        let unresolvedXrefsXlang = [ (ent, rangeSpan) |
+              XlangXRef (rangeSpan, Code.IdlEntity {
                 idlEntity_entity = Just ent }) <- xrefs ]
 
         let (refs, defs) = Attributes.extendAttributes
@@ -1087,36 +1087,36 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
           in (locationRange_repository, locationRange_filepath)
       )) xrefs
 
--- | Idl xrefs needs db determination and range resolution
+-- | Xlang xrefs needs db determination and range resolution
 --   possibly using a separate backend than the one computed
 --   from the origin query.
 --   Always choose latest db, as exactRevision can't usually be
 --   enforced for xlang refs
-resolveIdlXrefs
+resolveXlangXrefs
   :: Glean.Backend b
   => Glass.Env
   -> DocumentSymbols
   -> RepoName
   -> (b, GleanDBInfo)
   -> IO DocumentSymbols
-resolveIdlXrefs
+resolveXlangXrefs
   env@Glass.Env{tracer, sourceControl, repoMapping}
   docSyms@DocumentSymbols{..}
   scsrepo
   (gleanBackend, dbInfo) = do
-  case (unresolvedXrefsIdl, srcFile) of
+  case (unresolvedXrefsXlang, srcFile) of
     ((ent, _) : _, Just srcFile) -> do
-       -- we assume all idl xrefs belong to the same db
+       -- we assume all xlang xrefs belong to the same db
       let lang = entityLanguage ent
       gleanDBs <- getGleanRepos tracer sourceControl repoMapping dbInfo
         scsrepo (Just lang) ChooseLatest Nothing
       let gleanBe = GleanBackend {gleanDBs, tracer, gleanBackend}
-      idlRefs <- backendRunHaxl gleanBe env $ do
-        xrefsIdl <- withRepo (snd (NonEmpty.head gleanDBs)) $ do
-          xrefs <- resolveEntitiesRange scsrepo fst unresolvedXrefsIdl
-          mapM (toReferenceSymbolIdl scsrepo srcFile offsets lang) xrefs
-        return $ xRefDataToRefEntitySymbol <$> xrefsIdl
-      return $ docSyms  { refs = refs ++ idlRefs, unresolvedXrefsIdl = [] }
+      xlangRefs <- backendRunHaxl gleanBe env $ do
+        xrefsXlang <- withRepo (snd (NonEmpty.head gleanDBs)) $ do
+          xrefs <- resolveEntitiesRange scsrepo fst unresolvedXrefsXlang
+          mapM (toReferenceSymbolXlang scsrepo srcFile offsets lang) xrefs
+        return $ xRefDataToRefEntitySymbol <$> xrefsXlang
+      return $ docSyms  { refs = refs ++ xlangRefs, unresolvedXrefsXlang = [] }
     _ -> return docSyms
 
 -- | Wrapper for tracking symbol/entity pairs through processing
@@ -1128,7 +1128,7 @@ data DocumentSymbols = DocumentSymbols
   , truncated :: !Bool
   , digest :: Maybe FileDigest
   , xref_digests :: Map.Map Text FileDigestMap
-  , unresolvedXrefsIdl :: [(Code.Entity, Code.RangeSpan)]
+  , unresolvedXrefsXlang :: [(Code.Entity, Code.RangeSpan)]
   , srcFile :: Maybe Src.File
   , offsets :: Maybe Range.LineOffsets
   }
@@ -1303,16 +1303,16 @@ toReferenceSymbolPlain
     toReferenceSymbolGen repoName file srcOffsets xRefLocation_source
       location_file xrefEntity xrefRange location_destination Nothing
 
--- | Convert idl entity to normal format
+-- | Convert xlang entity to normal format
 --   adapter to toReferenceSymbolGen
-toReferenceSymbolIdl
+toReferenceSymbolXlang
   :: RepoName
   -> Src.File
   -> Maybe Range.LineOffsets
   -> Language
   -> ((Code.Entity, Code.RangeSpan), (Src.File, LocationRange))
   -> Glean.RepoHaxl u w XRefData
-toReferenceSymbolIdl
+toReferenceSymbolXlang
   repoName file srcOffsets lang
   ((xrefEntity, rangeSpanSrc), (idlFile, xrefRange)) = do
     toReferenceSymbolGen repoName file srcOffsets rangeSpanSrc idlFile

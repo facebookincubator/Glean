@@ -39,13 +39,13 @@ import qualified Glean.Schema.Src.Types as Src
 import Data.Maybe (catMaybes)
 
 type XRef = (Code.XRefLocation, Code.Entity)
-type IdlXRef = (Code.RangeSpan, Code.IdlEntity)
-data GenXRef = PlainXRef XRef | IdlXRef IdlXRef
+type XlangXRef = (Code.RangeSpan, Code.IdlEntity)
+data GenXRef = PlainXRef XRef | XlangXRef XlangXRef
 
 buildGenXRefs :: Code.GenericEntity -> Maybe GenXRef
 buildGenXRefs genEntity = case genEntity of
   Code.GenericEntity_xlangEntity (Code.GenericEntity_xlangEntity_ source entity)
-    -> Just $ IdlXRef (source, entity)
+    -> Just $ XlangXRef (source, entity)
   Code.GenericEntity_plainEntity (Code.GenericEntity_plainEntity_ xref entity)
     -> Just $ PlainXRef (xref, entity)
   Code.GenericEntity_EMPTY -> Nothing
@@ -58,7 +58,8 @@ extractIdlXRefs
 extractIdlXRefs entityIdlMap xRefs =
   let pred (loc, ent) = case Map.lookup ent entityIdlMap of
         Just idl ->
-          [PlainXRef (loc, ent), IdlXRef (Code.xRefLocation_source loc, idl)]
+          [PlainXRef (loc, ent),
+            XlangXRef (Code.xRefLocation_source loc, idl)]
         _ -> [PlainXRef (loc, ent)] in
   concatMap pred xRefs
 
@@ -86,8 +87,8 @@ entityIdlCxxMap mlimit xrefId = do
             end)
           ]
 
--- fetch from Glean the entity-idl map and returns
--- an idl extractor which extract the idl xrefs from
+-- For C++, fetch from Glean the "generated entity -> idl entity" map
+-- and returns an idl extractor which extracts the idl xrefs from
 -- the regular ones. Also propagate the "trunc" status.
 fetchCxxIdlXRefs :: Maybe Int
   -> Glean.IdOf Cxx.FileXRefs
