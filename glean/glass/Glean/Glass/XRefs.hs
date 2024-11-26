@@ -13,7 +13,7 @@ module Glean.Glass.XRefs
     GenXRef(..),
     XRef,
     resolveEntitiesRange,
-    splitXRefs,
+    buildGenXRefs,
     fetchCxxIdlXRefs
   ) where
 
@@ -31,10 +31,10 @@ import Glean.Glass.Range ( rangeSpanToLocationRange )
 import Glean.Glass.Utils
 import Glean.Glass.Types ( LocationRange, RepoName(..) )
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
+import qualified Glean.Schema.Codemarkup.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.CodemarkupCxx.Types as Code
-import qualified Glean.Schema.Codemarkup.Types as Code
 import qualified Glean.Schema.Src.Types as Src
 import Data.Maybe (catMaybes)
 
@@ -42,15 +42,15 @@ type XRef = (Code.XRefLocation, Code.Entity)
 type IdlXRef = (Code.RangeSpan, Code.IdlEntity)
 data GenXRef = PlainXRef XRef | IdlXRef IdlXRef
 
-type EntityIdlMap = Map Code.Entity Code.IdlEntity
+buildGenXRefs :: Code.GenericEntity -> Maybe GenXRef
+buildGenXRefs genEntity = case genEntity of
+  Code.GenericEntity_xlangEntity (Code.GenericEntity_xlangEntity_ source entity)
+    -> Just $ IdlXRef (source, entity)
+  Code.GenericEntity_plainEntity (Code.GenericEntity_plainEntity_ xref entity)
+    -> Just $ PlainXRef (xref, entity)
+  Code.GenericEntity_EMPTY -> Nothing
 
--- | Split xrefs (target ent + optional idl ent) into plain and idl entities
-splitXRefs
-  :: [(Code.XRefLocation, Code.Entity, Maybe Code.IdlEntity)] -> [GenXRef]
-splitXRefs xrefs = concat
-  [ PlainXRef (loc, ent) :
-    [IdlXRef (Code.xRefLocation_source loc, idl) | Just idl <- [mb_idl]]
-  | (loc, ent, mb_idl) <- xrefs]
+type EntityIdlMap = Map Code.Entity Code.IdlEntity
 
 -- | extract idl xrefs from the regular ones
 extractIdlXRefs

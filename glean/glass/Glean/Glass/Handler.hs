@@ -103,7 +103,7 @@ import Glean.Glass.NameSearch (
   )
 import qualified Glean.Glass.Query.Cxx as Cxx
 import Glean.Glass.XRefs
-  ( GenXRef(..), XRef, resolveEntitiesRange, splitXRefs )
+  ( GenXRef(..), XRef, resolveEntitiesRange, buildGenXRefs )
 import Glean.Glass.SymbolMap ( toSymbolIndex )
 import Glean.Glass.Search as Search
     ( CodeEntityLocation(..),
@@ -1169,11 +1169,11 @@ documentSymbolsForLanguage
 documentSymbolsForLanguage mlimit _ ExtraSymbolOpts{..} fileId = do
   (xrefs, trunc1) <- if oIncludeRefs
     then searchRecursiveWithLimit mlimit $
-      Query.fileEntityXRefLocations fileId oIncludeXlangRefs
+      Query.fileEntityXRefsGenEntities fileId oIncludeXlangRefs
     else return ([], False)
   (defns, trunc2) <- searchRecursiveWithLimit mlimit $
     Query.fileEntityLocations fileId
-  return (splitXRefs xrefs, defns, trunc1 || trunc2)
+  return (mapMaybe buildGenXRefs xrefs, defns, trunc1 || trunc2)
 
 -- And build a line-indexed map of symbols, resolved to spans
 -- With extra attributes loaded from any associated attr db

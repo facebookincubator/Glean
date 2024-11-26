@@ -17,7 +17,7 @@ module Glean.Glass.Query
 
   -- * Working with XRefs
   , fileEntityLocations
-  , fileEntityXRefLocations
+  , fileEntityXRefsGenEntities
 
   -- * Finding refernces to declarations
   , findReferenceRangeSpan
@@ -116,55 +116,19 @@ fileEntityLocations fileid =
         end)
       ]
 
--- | Find xrefs from this file, and their associated entities
---   and idl entities
---
--- > www> src.File "www/flib/intern/glean/Glean.php"
--- > { "id": 2688993, "key": "www/flib/intern/glean/Glean.php" }
---
--- > www> {X, E, MI} where
--- > codemarkup.FileEntityXRefLocations {file = $2688993, xref = X, entity = E};
--- >  MI = if (codemarkup.EntityIdl { E, I }) then ({ just = I }) else (nothing)
---
-fileEntityXRefLocations
-  :: Glean.IdOf Src.File
-  -> Bool
-  -> Angle (Code.XRefLocation, Code.Entity, Maybe Code.IdlEntity)
-fileEntityXRefLocations fileid True =
-  vars $ \(xref :: Angle Code.XRefLocation)
-          (entity :: Angle Code.Entity)
-          (mIdlEntity :: Angle (Maybe Code.IdlEntity))
-          (idlEntity :: Angle Code.IdlEntity) ->
-    tuple (xref,entity,mIdlEntity) `where_` [
-      stmt $ predicate @Code.FileEntityXRefLocations (
+-- | Find all "generic" xrefs from this file, regular and xlang
+fileEntityXRefsGenEntities
+ :: Glean.IdOf Src.File
+ -> Bool
+ -> Angle Code.GenericEntity
+fileEntityXRefsGenEntities fileid includeXRefs =
+   vars $ \(genEntity :: Angle Code.GenericEntity) ->
+    genEntity `where_` (
+      stmt (predicate @Code.FileXRefsGenericEntities (
         rec $
           field @"file" (asPredicate (factId fileid)) $
-          field @"xref" xref $
-          field @"entity" entity
-        end),
-      mIdlEntity .=
-        if_ (predicate @Code.EntityIdl (
-          rec $
-            field @"entity" entity $
-            field @"idlEntity" idlEntity
-          end))
-        (just idlEntity)
-        nothing
-    ]
-
-fileEntityXRefLocations fileid False =
-   vars $ \(xref :: Angle Code.XRefLocation)
-          (entity :: Angle Code.Entity)
-          (mIdlEntity :: Angle (Maybe Code.IdlEntity)) ->
-    tuple (xref,entity,mIdlEntity) `where_` [
-      stmt $ predicate @Code.FileEntityXRefLocations (
-        rec $
-          field @"file" (asPredicate (factId fileid)) $
-          field @"xref" xref $
-          field @"entity" entity
-        end),
-        nothing .= mIdlEntity
-    ]
+          field @"genEntity" genEntity
+        end)) : [genEntity .= alt @"plainEntity" wild | not includeXRefs])
 
 -- | Entity-based find-references returning native range or bytespan
 findReferenceRangeSpan
