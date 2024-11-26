@@ -201,20 +201,6 @@ predicate EntityLocation:
     (codemarkup.graphql.GraphQLEntityLocation { E, Location };
      { graphql = E } = Entity);
 
-# Maps a generated entity to its source definition (typically an IDL).
-# By joining with FileEntityXRefLocations, we can generate xlang xrefs
-# to idl entities.
-predicate EntityIdl:
-  {
-    entity: code.Entity,
-    idlEntity: code.IdlEntity,
-  }
-  { Entity, IdlEntity } where
-    (codemarkup.hack.HackEntityIdl { E, IdlEntity };
-     { hack = E } = Entity) |
-    (codemarkup.cxx.CxxEntityIdl { E, IdlEntity };
-     { cxx = E } = Entity)
-
 # generic entities are either
 #  - plainEntity: regular entities within the same db as the source file
 #  - xlang entities for which target location may not be known (need to be
@@ -224,7 +210,9 @@ type GenericEntity = {
   xlangEntity: { source : codemarkup.types.RangeSpan, entity : code.IdlEntity }
 }
 
-# Finding xrefs to a generic entities
+# Finding xrefs to generic entities. Same thing as
+# FileEntityXRefLocations, but allows references to cross-language entities
+# for which we can't compute # the target span directly (see code.IdlEntity)
 predicate FileXRefsGenericEntities: {
     file: src.File,
     genEntity: GenericEntity

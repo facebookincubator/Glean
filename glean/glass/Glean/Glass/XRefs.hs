@@ -42,6 +42,8 @@ type XRef = (Code.XRefLocation, Code.Entity)
 type XlangXRef = (Code.RangeSpan, Code.IdlEntity)
 data GenXRef = PlainXRef XRef | XlangXRef XlangXRef
 
+-- Turn a Codemarkup "genericEntity" (plain or xlang) into
+-- the corresponding Glass datastructure
 buildGenXRefs :: Code.GenericEntity -> Maybe GenXRef
 buildGenXRefs genEntity = case genEntity of
   Code.GenericEntity_xlangEntity (Code.GenericEntity_xlangEntity_ source entity)
@@ -50,85 +52,10 @@ buildGenXRefs genEntity = case genEntity of
     -> Just $ PlainXRef (xref, entity)
   Code.GenericEntity_EMPTY -> Nothing
 
-type EntityIdlMap = Map Code.Entity Code.IdlEntity
-
--- | extract idl xrefs from the regular ones
-extractIdlXRefs
-  :: EntityIdlMap -> [(Code.XRefLocation, Code.Entity)] -> [GenXRef]
-extractIdlXRefs entityIdlMap xRefs =
-  let pred (loc, ent) = case Map.lookup ent entityIdlMap of
-        Just idl ->
-          [PlainXRef (loc, ent),
-            XlangXRef (Code.xRefLocation_source loc, idl)]
-        _ -> [PlainXRef (loc, ent)] in
-  concatMap pred xRefs
-
-entityIdlCxxMap
-  :: Maybe Int
-  -> Glean.IdOf Cxx.FileXRefs
-  -> Glean.RepoHaxl u w (EntityIdlMap, Bool)
-entityIdlCxxMap mlimit xrefId = do
-  (rows, truncated) <- searchRecursiveWithLimit mlimit
-    (cxxFileEntityIdl xrefId)
-  return (Map.fromList rows, truncated)
-  where
-    cxxFileEntityIdl
-      :: Glean.IdOf Cxx.FileXRefs
-      -> Angle (Code.Entity, Code.IdlEntity)
-    cxxFileEntityIdl xrefId =
-      vars $ \(ent :: Angle Code.Entity)
-          (idl :: Angle Code.IdlEntity) ->
-        tuple (ent, idl) `where_` [
-          wild .= predicate @Code.CxxFileEntityIdl (
-            rec $
-              field @"trace" (asPredicate (factId xrefId)) $
-              field @"ent" ent $
-              field @"idlEnt" idl
-            end)
-          ]
-
--- For C++, fetch from Glean the "generated entity -> idl entity" map
--- and returns an idl extractor which extracts the idl xrefs from
--- the regular ones. Also propagate the "trunc" status.
-fetchCxxIdlXRefs :: Maybe Int
-  -> Glean.IdOf Cxx.FileXRefs
-  -> Glean.RepoHaxl u w
-    (([XRef], Bool) -> ([GenXRef], Bool))
-fetchCxxIdlXRefs mlimit xrefId =
-  do
-    (map, trunc) <- entityIdlCxxMap mlimit xrefId
-    return $ Data.Bifunctor.bimap (extractIdlXRefs map)(trunc ||)
-
-fetchEntityLocation
- :: [Code.Entity]
- -> Glean.RepoHaxl u w [(Code.Entity, Code.Location)]
-fetchEntityLocation ents = do
-  -- careful to not rely on fact ids in this query
-  let angleEntities = toAngleFull <$> ents
-  case angleEntities of
-    [] -> return []
-    hd : tl ->
-      fst <$> searchRecursiveWithLimit Nothing (declarationLocation (hd :| tl))
-  where
-    declarationLocation
-      :: NonEmpty (Angle Code.Entity)
-      -> Angle (Code.Entity, Code.Location)
-    declarationLocation (hd :| tl) =
-      let or_ents = foldl' (.|) hd tl in
-      vars $ \ent loc ->
-        tuple (ent, loc) `where_` [
-          or_ents .= ent,
-          wild .= predicate @Code.EntityLocation (
-            rec $
-              field @"entity" ent $
-              field @"location" loc
-            end)
-          ]
-
 -- | Annotate a list of items keyed by an entity, with the
 --  LocationRange/File for that entity. This can't be done
 --  in Codemarkup for xlang entities as the entity facts
---  and ent EntityLocation facts may live in different dbs.
+--  and EntityLocation facts may live in different dbs.
 resolveEntitiesRange
  :: RepoName
  -> (a -> Code.Entity)
@@ -156,3 +83,79 @@ resolveEntitiesRange repo key xrefs = do
             range <- rangeSpanToLocationRange reponame file
               (Code.location_location loc)
             return (ent, (file, range))
+
+      fetchEntityLocation ::
+        [Code.Entity] -> Glean.RepoHaxl u w [(Code.Entity, Code.Location)]
+      fetchEntityLocation ents = do
+        -- careful to not rely on fact ids in this query
+        let angleEntities = toAngleFull <$> ents
+        case angleEntities of
+          [] -> return []
+          hd : tl -> fst <$>
+            searchRecursiveWithLimit Nothing (declarationLocation (hd :| tl))
+        where
+          declarationLocation
+            :: NonEmpty (Angle Code.Entity)
+            -> Angle (Code.Entity, Code.Location)
+          declarationLocation (hd :| tl) =
+            let or_ents = foldl' (.|) hd tl in
+            vars $ \ent loc ->
+              tuple (ent, loc) `where_` [
+                or_ents .= ent,
+                wild .= predicate @Code.EntityLocation (
+                  rec $
+                    field @"entity" ent $
+                    field @"location" loc
+                  end)
+                ]
+
+--  Cxx has a specific logic: The only supported xlang xrefs are "IDL" based,
+--  and rely on a mapping "generated entity -> idl entity"
+type EntityIdlMap = Map Code.Entity Code.IdlEntity
+
+-- For Cxx, fetch from Glean the "generated entity -> idl entity" map
+-- and returns an idl extractor which extracts the idl xrefs from
+-- the regular ones. Also propagate the "trunc" status.
+fetchCxxIdlXRefs :: Maybe Int
+  -> Glean.IdOf Cxx.FileXRefs
+  -> Glean.RepoHaxl u w
+    (([XRef], Bool) -> ([GenXRef], Bool))
+fetchCxxIdlXRefs mlimit xrefId =
+  do
+    (map, trunc) <- entityIdlCxxMap mlimit xrefId
+    return $ Data.Bifunctor.bimap (extractIdlXRefs map)(trunc ||)
+  where
+    entityIdlCxxMap
+      :: Maybe Int
+      -> Glean.IdOf Cxx.FileXRefs
+      -> Glean.RepoHaxl u w (EntityIdlMap, Bool)
+    entityIdlCxxMap mlimit xrefId = do
+      (rows, truncated) <- searchRecursiveWithLimit mlimit
+        (cxxFileEntityIdl xrefId)
+      return (Map.fromList rows, truncated)
+      where
+        cxxFileEntityIdl
+          :: Glean.IdOf Cxx.FileXRefs
+          -> Angle (Code.Entity, Code.IdlEntity)
+        cxxFileEntityIdl xrefId =
+          vars $ \(ent :: Angle Code.Entity)
+              (idl :: Angle Code.IdlEntity) ->
+            tuple (ent, idl) `where_` [
+              wild .= predicate @Code.CxxFileEntityIdl (
+                rec $
+                  field @"trace" (asPredicate (factId xrefId)) $
+                  field @"ent" ent $
+                  field @"idlEnt" idl
+                end)
+              ]
+
+    -- | extract idl xrefs from the regular ones
+    extractIdlXRefs
+      :: EntityIdlMap -> [(Code.XRefLocation, Code.Entity)] -> [GenXRef]
+    extractIdlXRefs entityIdlMap xRefs =
+      let pred (loc, ent) = case Map.lookup ent entityIdlMap of
+            Just idl ->
+              [PlainXRef (loc, ent),
+                XlangXRef (Code.xRefLocation_source loc, idl)]
+            _ -> [PlainXRef (loc, ent)] in
+      concatMap pred xRefs

@@ -124,20 +124,20 @@ type CallArgument =
   , argument : maybe Argument
   }
 
-# An IdlEntity typically represents an entity defined in
-# a different db than the one the codemarkup predicates
-# evaluate against. The name "IdlEntity" is badly chosen,
-# since it's more general then just an idl (e.g. thrift) entity
+# An IdlEntity is used to represent xrefs to
+# cross-language/cross-dbs entities. Location for these
+# entities is usually defined in a different db than
+# the one containing the source spans.
 #
-# Example: a thrift declaration defined in fbsource.fbthrift, while
-# the codemarkup predicates evaluate on fbsource
+# Example: a thrift declaration defined in a Thrift db, while
+# but referred to in a C++ db.
 #
-# location and entity are optional as we may not able to generate
-# them from the referring db. We need at least the source file
-# to provide some minimal navigation. Location is a range,
-# since we won't have src.FileLines for idl files
+# "IdlEntity" is a misnomer (initially only IDL like thrift
+# were supported)
 #
-# Also see doc of `codemarkup.EntityIdl`.
+# location and entity are optional in case we're unable to
+# generate them from the referring db but still want to
+# produce some type of navigation info (jump to target file)
 #
 type IdlEntity =
   { lang : Language

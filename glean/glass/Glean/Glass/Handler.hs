@@ -1255,7 +1255,7 @@ data XRefData = XRefData
   , xrefFile :: {-# UNPACK #-}!(Glean.IdOf Src.File)
   }
 
--- | Convert an Idl/Plain xref to a normal format
+-- | Convert an Xlang/Plain xref to a normal format
 --   (includes attribute, source/target spans, symbol id)
 toReferenceSymbolGen
   :: RepoName
@@ -1314,8 +1314,8 @@ toReferenceSymbolXlang
   -> Glean.RepoHaxl u w XRefData
 toReferenceSymbolXlang
   repoName file srcOffsets lang
-  ((xrefEntity, rangeSpanSrc), (idlFile, xrefRange)) = do
-    toReferenceSymbolGen repoName file srcOffsets rangeSpanSrc idlFile
+  ((xrefEntity, rangeSpanSrc), (xlangFile, xrefRange)) = do
+    toReferenceSymbolGen repoName file srcOffsets rangeSpanSrc xlangFile
       xrefEntity xrefRange Nothing (Just lang)
 
 -- | Building a resolved definition symbol is just taking a direct xref to it,
@@ -1355,7 +1355,7 @@ getStaticAttributes
   :: Code.Entity
   -> RepoName
   -> SymbolId
-  -> Maybe Language  -- Idl language
+  -> Maybe Language  -- Xlang language
   -> Glean.RepoHaxl u w AttributeList
 getStaticAttributes e repo sym mLang = memo $ do
   mLocalName <- toSymbolLocalName e
@@ -1568,7 +1568,7 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
       (xrefs_, _, _) <- documentSymbolsForLanguage Nothing (Just lang)
           (ExtraSymbolOpts True False Nothing)
           (Glean.getId file)
-      -- only consider non-Idl xrefs
+      -- only consider non-xlang xrefs
       let xrefs = [x | PlainXRef x <- xrefs_]
       xrefsRanges <- forM xrefs $ \(Code.XRefLocation{..}, entity) -> do
         gleanPath <- GleanPath <$>
