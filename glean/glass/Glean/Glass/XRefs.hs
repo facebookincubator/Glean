@@ -22,6 +22,7 @@ import qualified Data.Map as Map
 import Data.Bifunctor ( bimap, Bifunctor (first) )
 import Data.List ( foldl' )
 import Data.List.NonEmpty
+import Util.List ( uniq )
 
 import qualified Glean
 import Glean.Angle
@@ -62,7 +63,7 @@ resolveEntitiesRange
  -> [a]
  -> Glean.RepoHaxl u w [(a, (Src.File, LocationRange))]
 resolveEntitiesRange repo key xrefs = do
-    let entsToResolve = key <$> xrefs
+    let entsToResolve = uniq $ key <$> xrefs
     entsRange <- entityLocRange repo entsToResolve
     -- normalize fact ids so we can compare entities from
     -- different dbs
