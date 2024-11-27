@@ -1,0 +1,24 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "some.foo.Foo.meth" } } }
+          }
+        }
+      },
+      "kind": 7,
+      "language": 4,
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 42, "start": 125 } },
+        "name": "some.foo.Foo.meth"
+      },
+      "name": "meth",
+      "scope": [ "Foo", "foo", "some" ],
+      "searchcase": 0
+    }
+  }
+]
