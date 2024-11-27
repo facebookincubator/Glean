@@ -1,0 +1,23 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "AbstractClass",
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.AbstractClass",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 945, "length": 80 } }
+      },
+      "kind": 6,
+      "language": 4
+    }
+  }
+]

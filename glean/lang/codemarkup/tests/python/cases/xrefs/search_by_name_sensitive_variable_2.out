@@ -1,0 +1,23 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "big_var",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
+          }
+        }
+      },
+      "location": {
+        "name": "big_lib.big_var",
+        "file": { "key": "big_lib/__init__.py" },
+        "location": { "span": { "start": 247, "length": 11 } }
+      },
+      "kind": 14,
+      "language": 4
+    }
+  }
+]

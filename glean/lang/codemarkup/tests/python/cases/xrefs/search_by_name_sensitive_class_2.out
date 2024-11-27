@@ -1,0 +1,43 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "BaseClass",
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "big_lib.BaseClass" } } }
+          }
+        }
+      },
+      "location": {
+        "name": "big_lib._inner.BaseClass",
+        "file": { "key": "big_lib/_inner.py" },
+        "location": { "span": { "start": 226, "length": 25 } }
+      },
+      "kind": 6,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "BaseClass",
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "big_lib._inner.BaseClass" } } }
+          }
+        }
+      },
+      "location": {
+        "name": "big_lib._inner.BaseClass",
+        "file": { "key": "big_lib/_inner.py" },
+        "location": { "span": { "start": 226, "length": 25 } }
+      },
+      "kind": 6,
+      "language": 4
+    }
+  }
+]

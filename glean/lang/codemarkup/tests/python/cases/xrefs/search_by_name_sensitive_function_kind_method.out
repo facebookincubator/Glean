@@ -1,0 +1,153 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "__private_method",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.__private_method" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass.__private_method",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 759, "length": 43 } }
+      },
+      "kind": 7,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "_protected_method",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass._protected_method" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass._protected_method",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 709, "length": 44 } }
+      },
+      "kind": 7,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "abstract_method",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.AbstractClass.abstract_method" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.AbstractClass.abstract_method",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 995, "length": 30 } }
+      },
+      "kind": 7,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "class_method",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.class_method" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass.class_method",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 533, "length": 43 } }
+      },
+      "kind": 7,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "method",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass.method",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 463, "length": 47 } }
+      },
+      "kind": 7,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "prop",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.HelperClass.prop" } } }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass.prop",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 672, "length": 31 } }
+      },
+      "kind": 7,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "static_method",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.static_method" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass.static_method",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 600, "length": 41 } }
+      },
+      "kind": 7,
+      "language": 4
+    }
+  }
+]

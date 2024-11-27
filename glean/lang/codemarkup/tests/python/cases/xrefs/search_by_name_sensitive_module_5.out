@@ -1,0 +1,21 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "lib",
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
+        }
+      },
+      "location": {
+        "name": "lib",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 0, "length": 1026 } }
+      },
+      "kind": 4,
+      "language": 4
+    }
+  }
+]

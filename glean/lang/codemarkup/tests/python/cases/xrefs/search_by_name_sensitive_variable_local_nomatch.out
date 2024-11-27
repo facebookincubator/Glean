@@ -1,0 +1,23 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "c",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
+          }
+        }
+      },
+      "location": {
+        "name": "main.f.<locals>.c",
+        "file": { "key": "main.py" },
+        "location": { "span": { "start": 388, "length": 12 } }
+      },
+      "kind": 14,
+      "language": 4
+    }
+  }
+]

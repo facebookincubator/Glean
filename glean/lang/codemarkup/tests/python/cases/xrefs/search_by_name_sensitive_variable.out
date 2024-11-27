@@ -1,0 +1,43 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "__all__",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "all.__all__" } } }
+          }
+        }
+      },
+      "location": {
+        "name": "all.__all__",
+        "file": { "key": "all.py" },
+        "location": { "span": { "start": 424, "length": 80 } }
+      },
+      "kind": 14,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "__all__",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "big_lib.__all__" } } }
+          }
+        }
+      },
+      "location": {
+        "name": "big_lib.__all__",
+        "file": { "key": "big_lib/__init__.py" },
+        "location": { "span": { "start": 457, "length": 60 } }
+      },
+      "kind": 14,
+      "language": 4
+    }
+  }
+]

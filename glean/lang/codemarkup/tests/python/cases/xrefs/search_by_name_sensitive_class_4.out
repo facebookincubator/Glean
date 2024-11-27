@@ -1,0 +1,21 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "Child",
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+        }
+      },
+      "location": {
+        "name": "lib.Child",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 903, "length": 39 } }
+      },
+      "kind": 6,
+      "language": 4
+    }
+  }
+]

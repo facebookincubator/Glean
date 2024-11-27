@@ -1,0 +1,71 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "class_var",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "lib.HelperClass.class_var" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass.class_var",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 403, "length": 32 } }
+      },
+      "kind": 9,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "instance_var",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "lib.HelperClass.instance_var" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass.instance_var",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 440, "length": 17 } }
+      },
+      "kind": 9,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "old_style_class_var",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "lib.HelperClass.old_style_class_var" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass.old_style_class_var",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 374, "length": 23 } }
+      },
+      "kind": 9,
+      "language": 4
+    }
+  }
+]

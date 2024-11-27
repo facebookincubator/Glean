@@ -1,0 +1,23 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "_inner",
+      "entity": {
+        "python": {
+          "decl": {
+            "module": { "key": { "name": { "key": "big_lib._inner" } } }
+          }
+        }
+      },
+      "location": {
+        "name": "big_lib._inner",
+        "file": { "key": "big_lib/_inner.py" },
+        "location": { "span": { "start": 0, "length": 252 } }
+      },
+      "kind": 4,
+      "language": 4
+    }
+  }
+]
