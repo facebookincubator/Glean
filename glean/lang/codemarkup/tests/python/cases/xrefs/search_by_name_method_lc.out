@@ -1,0 +1,17 @@
+[
+  "@generated",
+  {
+    "key": { "name_lowercase": "__private_method", "name": "__private_method" }
+  },
+  {
+    "key": {
+      "name_lowercase": "_protected_method",
+      "name": "_protected_method"
+    }
+  },
+  { "key": { "name_lowercase": "abstract_method", "name": "abstract_method" } },
+  { "key": { "name_lowercase": "class_method", "name": "class_method" } },
+  { "key": { "name_lowercase": "method", "name": "method" } },
+  { "key": { "name_lowercase": "prop", "name": "prop" } },
+  { "key": { "name_lowercase": "static_method", "name": "static_method" } }
+]

@@ -488,6 +488,14 @@ predicate SearchClassByName:
     ClassDeclaration { name = N } = Decl;
     NameToSName N -> { Name NameStr, Parent }
 
+predicate SearchClassByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    ClassDeclaration { name = N };
+    NameToSName N -> { local_name = Name NameStr }
+
 predicate SearchModuleByName:
   {
     name: string,
@@ -496,6 +504,14 @@ predicate SearchModuleByName:
   } stored  { NameStr, Parent, Decl } where
     Module { name = N } = Decl;
     NameToSName N -> { Name NameStr, Parent }
+
+predicate SearchModuleByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    Module { name = N };
+    NameToSName N -> { local_name = Name NameStr }
 
 # free or local functions are those functions not contained by a class
 predicate SearchFunctionByName:
@@ -509,6 +525,16 @@ predicate SearchFunctionByName:
     ( { module = _ } | { func = _ } ) = Container; # check container for kind "function"
     NameToSName N -> { Name NameStr, Parent }
 
+predicate SearchFunctionByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    FunctionDeclaration { name = N } = Decl;
+    ContainingTopLevelDeclaration { { func = Decl }, Container };
+    ( { module = _ } | { func = _ } ) = Container;
+    NameToSName N -> { local_name = Name NameStr }
+
 # class-contained function declarations are "methods"
 predicate SearchMethodByName:
   {
@@ -519,6 +545,15 @@ predicate SearchMethodByName:
     FunctionDeclaration { name = N } = Decl;
     ContainingTopLevelDeclaration { { func = Decl }, { cls = _ } };
     NameToSName N -> { Name NameStr, Parent }
+
+predicate SearchMethodByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    FunctionDeclaration { name = N } = Decl;
+    ContainingTopLevelDeclaration { { func = Decl }, { cls = _ } };
+    NameToSName N -> { local_name = Name NameStr }
 
 # similar to functions, variables can be distinguished by kind using the parent
 predicate SearchFieldByName:
@@ -531,6 +566,15 @@ predicate SearchFieldByName:
     ContainingTopLevelDeclaration { { variable = Decl }, { cls = _ } };
     NameToSName N -> { Name NameStr, Parent }
 
+predicate SearchFieldByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    VariableDeclaration { name = N } = Decl;
+    ContainingTopLevelDeclaration { { variable = Decl }, { cls = _ } };
+    NameToSName N -> { local_name = Name NameStr }
+
 # similar to functions, variables can be distinguished by kind using the parent
 predicate SearchVariableByName:
   {
@@ -542,6 +586,15 @@ predicate SearchVariableByName:
     ContainingTopLevelDeclaration { { variable = Decl }, Container };
     { module = _ } = Container; # exclude local variables, whose parent is a function, from search
     NameToSName N -> { Name NameStr, Parent }
+
+predicate SearchVariableByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    VariableDeclaration { name = N } = Decl;
+    ContainingTopLevelDeclaration { { variable = Decl }, { module = _ } };
+    NameToSName N -> { local_name = Name NameStr }
 
 #
 # Efficient searching
