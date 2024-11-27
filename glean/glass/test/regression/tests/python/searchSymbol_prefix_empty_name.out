@@ -142,36 +142,6 @@
             {
                 "context": {
                     "qname": {
-                        "container": "all",
-                        "localName": "fn"
-                    },
-                    "symbol": "test/py/all.py/all.fn"
-                },
-                "kind": 15,
-                "language": 7,
-                "location": {
-                    "filepath": "all.py",
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 41,
-                        "lineBegin": 20,
-                        "lineEnd": 20
-                    },
-                    "repository": "test"
-                },
-                "name": "all.fn.<locals>.local_var",
-                "qname": {
-                    "container": "all.fn.<locals>",
-                    "localName": "local_var"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/py/all.py/all.fn.%3Clocals%3E.local_var"
-            },
-            {
-                "context": {
-                    "qname": {
                         "container": "",
                         "localName": "all"
                     },
@@ -311,36 +281,6 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/as.py/as.fn"
-            },
-            {
-                "context": {
-                    "qname": {
-                        "container": "as",
-                        "localName": "fn"
-                    },
-                    "symbol": "test/py/as.py/as.fn"
-                },
-                "kind": 15,
-                "language": 7,
-                "location": {
-                    "filepath": "as.py",
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 45,
-                        "lineBegin": 15,
-                        "lineEnd": 15
-                    },
-                    "repository": "test"
-                },
-                "name": "as.fn.<locals>.local_var",
-                "qname": {
-                    "container": "as.fn.<locals>",
-                    "localName": "local_var"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/py/as.py/as.fn.%3Clocals%3E.local_var"
             },
             {
                 "context": {
@@ -820,36 +760,6 @@
             {
                 "context": {
                     "qname": {
-                        "container": "main",
-                        "localName": "f"
-                    },
-                    "symbol": "test/py/main.py/main.f"
-                },
-                "kind": 15,
-                "language": 7,
-                "location": {
-                    "filepath": "main.py",
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 17,
-                        "lineBegin": 13,
-                        "lineEnd": 13
-                    },
-                    "repository": "test"
-                },
-                "name": "main.f.<locals>.c",
-                "qname": {
-                    "container": "main.f.<locals>",
-                    "localName": "c"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/py/main.py/main.f.%3Clocals%3E.c"
-            },
-            {
-                "context": {
-                    "qname": {
                         "container": "",
                         "localName": "main"
                     },
@@ -1192,96 +1102,6 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/shadow.py/shadow.shadow_func"
-            },
-            {
-                "context": {
-                    "qname": {
-                        "container": "shadow",
-                        "localName": "shadow_func"
-                    },
-                    "symbol": "test/py/shadow.py/shadow.shadow_func"
-                },
-                "kind": 15,
-                "language": 7,
-                "location": {
-                    "filepath": "shadow.py",
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 24,
-                        "lineBegin": 17,
-                        "lineEnd": 17
-                    },
-                    "repository": "test"
-                },
-                "name": "shadow.shadow_func.<locals>.big_func",
-                "qname": {
-                    "container": "shadow.shadow_func.<locals>",
-                    "localName": "big_func"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.big_func"
-            },
-            {
-                "context": {
-                    "qname": {
-                        "container": "shadow",
-                        "localName": "shadow_func"
-                    },
-                    "symbol": "test/py/shadow.py/shadow.shadow_func"
-                },
-                "kind": 15,
-                "language": 7,
-                "location": {
-                    "filepath": "shadow.py",
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 26,
-                        "lineBegin": 19,
-                        "lineEnd": 19
-                    },
-                    "repository": "test"
-                },
-                "name": "shadow.shadow_func.<locals>.local_var",
-                "qname": {
-                    "container": "shadow.shadow_func.<locals>",
-                    "localName": "local_var"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.local_var"
-            },
-            {
-                "context": {
-                    "qname": {
-                        "container": "shadow",
-                        "localName": "shadow_func"
-                    },
-                    "symbol": "test/py/shadow.py/shadow.shadow_func"
-                },
-                "kind": 15,
-                "language": 7,
-                "location": {
-                    "filepath": "shadow.py",
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 24,
-                        "lineBegin": 18,
-                        "lineEnd": 18
-                    },
-                    "repository": "test"
-                },
-                "name": "shadow.shadow_func.<locals>.other_var",
-                "qname": {
-                    "container": "shadow.shadow_func.<locals>",
-                    "localName": "other_var"
-                },
-                "score": {
-                    "exactness": 2
-                },
-                "symbol": "test/py/shadow.py/shadow.shadow_func.%3Clocals%3E.other_var"
             }
         ]
     }

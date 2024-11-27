@@ -540,7 +540,7 @@ predicate SearchVariableByName:
   } stored { NameStr, Parent, Decl } where
     VariableDeclaration { name = N } = Decl;
     ContainingTopLevelDeclaration { { variable = Decl }, Container };
-    ( { module = _ } | { func = _ } ) = Container; # check container for kind "function"
+    { module = _ } = Container; # exclude local variables, whose parent is a function, from search
     NameToSName N -> { Name NameStr, Parent }
 
 #

@@ -23,23 +23,6 @@
   },
   {
     "key": {
-      "name": "c",
-      "parent": {
-        "key": {
-          "local_name": { "key": "<locals>" },
-          "parent": {
-            "key": {
-              "local_name": { "key": "f" },
-              "parent": { "key": { "local_name": { "key": "main" } } }
-            }
-          }
-        }
-      },
-      "decl": { "key": { "name": { "key": "main.f.<locals>.c" } } }
-    }
-  },
-  {
-    "key": {
       "name": "var",
       "parent": { "key": { "local_name": { "key": "all" } } },
       "decl": { "key": { "name": { "key": "all.var" } } }
