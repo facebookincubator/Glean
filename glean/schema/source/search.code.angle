@@ -45,9 +45,8 @@ predicate SearchByNameAndLanguage:
     entity: code.Entity,
   }
   { Name, Language, Entity } where
-  # see SearchByNameKindAndLanguage for C++, PreProcessor
+  # see SearchByNameKindAndLanguage for C++, PreProcessor, Python
     ( Hack = Language; HackSearchByName { Name, Entity } ) |
-    ( Python = Language; PythonSearchByName { Name, Entity } ) |
     ( JavaScript = Language; FlowSearchByName { Name, Entity } ) |
     ( Java = Language; JavaSearchByName { Name, Entity } ) |
     ( Kotlin = Language; KotlinSearchByName { Name, Entity } ) |
@@ -95,6 +94,9 @@ predicate SearchByNameKindAndLanguage:
     ) | (
       PreProcessor = Language;
       PpSearchByNameKind { NameStr, Kinds, Entity }
+    ) | (
+      Python = Language;
+      PythonSearchByNameKindAndScopeFact { NameStr, _, Kinds, Entity }
     )
 
 # Kind-optimized search, case insensitive.
@@ -326,6 +328,44 @@ predicate PythonSearchByScopeWithName:
     python.DeclarationWithSName { SName, Decl };
     python.NonImportDeclaration Decl;
     { python = { decl = Decl } } = Entity;
+
+# with a bare string name and a known scope, search by kind
+predicate PythonSearchByNameKindAndScopeFact:
+  {
+    name: string,
+    scope: maybe python.SName,
+    kinds: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity
+  }
+  { NameStr, Scope, Kinds, Entity } where
+    # n.b no un-kinded entities in Python, so we ignore the `nothing` case
+    { just = Kind } = Kinds;
+    (
+      Class_ = Kind;
+      python.SearchClassByName { NameStr, Scope, CDecl };
+      { cls = CDecl } = Decl
+    ) | (
+      Module = Kind;
+      python.SearchModuleByName { NameStr, Scope, MDecl };
+      { module = MDecl } = Decl
+    ) | (
+      Function = Kind;
+      python.SearchFunctionByName { NameStr, Scope, FDecl };
+      { func = FDecl } = Decl
+    ) | (
+      Method = Kind;
+      python.SearchMethodByName { NameStr, Scope, MDecl };
+      { func = MDecl } = Decl
+    ) | (
+      Field = Kind;
+      python.SearchFieldByName { NameStr, Scope, FDecl };
+      { variable = FDecl } = Decl
+    ) | (
+      Variable = Kind;
+      python.SearchVariableByName { NameStr, Scope, VDecl };
+      { variable = VDecl } = Decl
+    );
+    { python = { decl = Decl } } = Entity
 
 predicate FlowSearchByName:
   {
