@@ -127,7 +127,6 @@ predicate SearchByScope:
   { Name, Scope, Language, Entity } where
 # See SearchByScopeAndKind for C++
     ( Hack = Language; HackSearchByScope { Name, Scope, Entity } ) |
-    ( Python = Language; PythonSearchByScope { Name, Scope, Entity } ) |
     ( JavaScript = Language; FlowSearchByScope { Name, Scope, Entity } ) |
     ( Java = Language; JavaSearchByScope { Name, Scope, Entity } ) |
     ( Kotlin = Language; KotlinSearchByScope { Name, Scope, Entity } );
@@ -160,8 +159,12 @@ predicate SearchByScopeAndKind:
     entity: code.Entity,
   }
   { Name, Scope, Language, Kinds, Entity } where
-    Cpp = Language;
-    CxxSearchByScopeAndKind { Name, Scope, Kinds, Entity };
+    ( Cpp = Language;
+      CxxSearchByScopeAndKind { Name, Scope, Kinds, Entity };
+    ) | (
+      Python = Language;
+      PythonSearchByScopeAndKind { Name, Scope, Kinds, Entity };
+    )
 
 # lower case by scope
 predicate SearchByLowerCaseScopeAndKind:
@@ -292,15 +295,17 @@ predicate PythonSearchByLocalNameFact:
     python.SearchByLocalName { LocalName, Decl };
     python.NonImportDeclaration Decl;
 
-predicate PythonSearchByScope:
+predicate PythonSearchByScopeAndKind:
   {
     name: string,
     scope: [string],
+    kinds: maybe codemarkup.types.SymbolKind,
     entity: code.Entity,
   }
-  { NameStr, Query, Entity } where
+  { NameStr, Scope, Kinds, Entity } where
     Insensitive = false;
-    PythonSearchByScopeWithName { NameStr, Insensitive, Query, Entity }
+    search.python.QueryToScopeCase { Scope, Insensitive, MSName };
+    PythonSearchByNameKindAndScopeFact { NameStr, MSName, Kinds, Entity }
 
 predicate PythonSearchByLowerCaseScope:
   {

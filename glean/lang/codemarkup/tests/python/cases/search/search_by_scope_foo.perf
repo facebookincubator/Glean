@@ -1,14 +1,12 @@
 {
   "@generated": null,
   "facts_searched": {
-    "python.ContainingTopLevelDeclaration.4": 1,
     "python.DeclarationDefinition.4": 1,
     "python.DeclarationLocation.4": 1,
-    "python.FunctionDeclaration.4": 1,
     "python.LocalName.4": 2,
-    "python.Name.4": 3,
-    "python.SName.4": 3,
-    "python.SNameToName.4": 1
+    "python.Name.4": 2,
+    "python.SName.4": 2,
+    "python.SearchFunctionByName.4": 1
   },
   "full_scans": [ ]
 }
