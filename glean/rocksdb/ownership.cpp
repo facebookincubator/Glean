@@ -139,11 +139,12 @@ std::unique_ptr<rts::OwnershipSetIterator> getSetIterator(DatabaseImpl& db) {
         auto usetid = key.trustedNat();
         // EliasFano needs to be able to read 8 bytes past the end of
         // the data, so we have to copy the bytes to add padding.
+        const size_t pad = 8;
         bytes = hs::ffi::clone_array<uint8_t>(
             reinterpret_cast<const uint8_t*>(iter->value().data()),
             iter->value().size(),
-            8);
-        binary::Input val(bytes.get(), bytes.size());
+            pad);
+        binary::Input val(bytes.get(), iter->value().size());
         exp.op = static_cast<SetOp>(val.trustedNat());
         exp.set = deserializeEliasFano(val);
         return std::pair<uint32_t, SetExpr<const OwnerSet*>>(
