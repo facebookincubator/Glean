@@ -51,6 +51,8 @@ struct SetOps {
 
   void wordSetToArray(SetToken token, binary::Output* out);
 
+  void byteSetToByteArray(SetToken token, binary::Output* out);
+
   void freeWordSet(SetToken token);
 
   std::vector<BytestringSet> sets = {};

@@ -571,6 +571,7 @@ std::unique_ptr<QueryResults> executeQuery(
       &QueryExecutor::newWordSet,
       &QueryExecutor::insertWordSet,
       &QueryExecutor::wordSetToArray,
+      &QueryExecutor::byteSetToByteArray,
       &QueryExecutor::freeWordSet>(q);
 
   folly::Optional<SerializedCont> cont;

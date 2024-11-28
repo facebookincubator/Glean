@@ -66,6 +66,14 @@ void SetOps::wordSetToArray(SetOps::SetToken token, binary::Output* out) {
   }
 }
 
+void SetOps::byteSetToByteArray(SetOps::SetToken token, binary::Output* out) {
+  auto& s = wordsets[token];
+  out->packed(s.size());
+  for (const auto& v : s) {
+    out->fixed<uint8_t>(v);
+  }
+}
+
 void SetOps::freeWordSet(SetOps::SetToken token) {
   wordsets.erase(wordsets.begin() + token);
 }

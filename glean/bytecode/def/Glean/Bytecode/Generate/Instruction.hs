@@ -85,7 +85,7 @@ data Usage
 --
 -- BUMP THIS WHENEVER YOU CHANGE THE BYTECODE EVEN IF YOU JUST ADD INSTRUCTIONS
 version :: Int
-version = 12
+version = 13
 
 -- | Lowest bytecode version supported by the current engine.
 --
@@ -93,7 +93,7 @@ version = 12
 -- TO THE END OF THE LIST (in which case the new engine can still execute
 -- old bytecode)
 lowestSupportedVersion :: Int
-lowestSupportedVersion = 12
+lowestSupportedVersion = 13
 
 -- | Definitions of all bytecode instructions
 instructions :: [Insn]

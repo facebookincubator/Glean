@@ -84,7 +84,7 @@ typecheck syscalls@SysCalls{..} input inputend out = tc
         move input ptr
         inputBytes input inputend size
         insertBytesWordSet set ptr input
-        wordSetToArray set out
+        byteSetToByteArray set out
         freeWordSet set
       return ()
     tc (SetTy elty) = local $ \size -> do
@@ -172,6 +172,11 @@ data SysCalls = SysCalls {
     -> Register 'BinaryOutputPtr -- (output) array
     -> Code ()
 
+  , byteSetToByteArray
+    :: Register 'Word -- set token
+    -> Register 'BinaryOutputPtr -- (output) array
+    -> Code ()
+
   , freeWordSet
     :: Register 'Word -- set token (invalid after this call)
     -> Code ()
@@ -204,7 +209,8 @@ checkSignature key_ty val_ty =
   fmap snd $ generate Optimised $
     \rename_
       newSet_ insertOutputSet_ setToArray_ freeSet_
-      newWordSet_ insertBytesWordSet_ wordSetToArray_ freeWordSet_
+      newWordSet_ insertBytesWordSet_ wordSetToArray_
+      byteSetToByteArray_ freeWordSet_
       clause_begin key_end clause_end -> output $ \out -> do
     let syscalls = SysCalls
           { rename = \id pid reg ->
@@ -221,6 +227,8 @@ checkSignature key_ty val_ty =
               insertBytesWordSet_ set (castRegister start) (castRegister end)
           , wordSetToArray = \set arr ->
               callFun_1_1 wordSetToArray_ set (castRegister arr)
+          , byteSetToByteArray = \set arr ->
+              callFun_1_1 byteSetToByteArray_ set (castRegister arr)
           , freeWordSet = callFun_1_0 freeWordSet_
           }
     -- We return the key size in the first local register

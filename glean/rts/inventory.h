@@ -106,6 +106,7 @@ struct Predicate {
         &Rename<F>::newWordSet,
         &Rename<F>::insertBytesWordSet,
         &Rename<F>::wordSetToArray,
+        &Rename<F>::byteSetToByteArray,
         &Rename<F>::freeWordSet>(rename);
 
     Subroutine::Activation::with(

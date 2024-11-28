@@ -17,11 +17,16 @@ userQuerySysCalls :: [String]
 userQuerySysCalls =
   ["seek","seekWithinSection","currentSeek", "endSeek"
   ,"next", "lookupKeyValue", "result", "resultWithPid"
-  , "newDerivedFact", "firstFreeId"
-  , "newSet", "insertOutputSet", "setToArray", "freeSet"
-  , "newWordSet", "insertWordSet", "wordSetToArray", "freeWordSet"]
+  ,"newDerivedFact", "firstFreeId"
+  ,"newSet", "insertOutputSet", "setToArray", "freeSet"
+  ,"newWordSet", "insertWordSet", "wordSetToArray", "byteSetToArray"
+  ,"freeWordSet"]
 
 -- This list has to sync up with the list in Glean.RTS.Typecheck or
 -- the wrong name will be printed
 typecheckSysCalls :: [String]
-typecheckSysCalls = ["rename"]
+typecheckSysCalls =
+  ["rename", "newSet", "insertOutputSet", "setToArray", "freeSet"
+  ,"newWordSet_", "insertBytesWordSet_", "wordSetToArray_"
+  ,"byteSetToByteArray_", "freeWordSet_"
+  ]
