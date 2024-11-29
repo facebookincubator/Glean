@@ -29,7 +29,6 @@ import Glean.Angle as Angle
 
 import qualified Glean.Glass.Utils as Utils
 import Glean.Glass.Attributes.Class
-    ( ToAttributes(..), SymbolIdentifier(Entity) )
 import Glean.Glass.Types as Glass
     ( SymbolKind(..), Attribute(Attribute_aInteger), Attributes(Attributes) )
 
@@ -47,22 +46,23 @@ type EntityKindLabel = (Code.Entity, Code.SymbolKind)
 
 instance ToAttributes SymbolKindAttr where
   type AttrRep SymbolKindAttr = EntityKindLabel
-  type AttrOut SymbolKindAttr = Code.SymbolKind
 
-  -- We want to recursively load the entity for key lookup
-  searchBy _ q = fmap fst <$> Utils.searchRecursiveWithLimit q
+  queryForFile _ lim fileId =
+    fst <$> Utils.searchRecursiveWithLimit lim q
+    where
+    -- We actually make two queries!
+    q = fileEntityKinds fileId .| fileEntityXRefKinds fileId
 
-  -- We actually make two queries!
-  queryFileAttributes _ = \fileId ->
-    fileEntityKinds fileId .| fileEntityXRefKinds fileId
-
-  fromAngleType _ (entity, kind) = Just (Entity entity, kind)
-
-  toAttributes _ kind = Attributes $ Map.singleton "symbolKind"
-    (Attribute_aInteger (fromIntegral
-      (fromThriftEnum $ symbolKindToSymbolKind kind)))
-
-  fromSymbolId _ _sym entity = Entity entity
+  augmentSymbols _ kinds refs defs =
+    extendAttributes (\_ ent -> ent) attrMap refs defs
+    where
+      attrMap = Map.fromList
+        [ (entity, toAttributes kind)
+        | (entity, kind) <- kinds
+        ]
+      toAttributes kind = Attributes $ Map.singleton "symbolKind"
+        (Attribute_aInteger (fromIntegral
+          (fromThriftEnum $ symbolKindToSymbolKind kind)))
 
 fileEntityKinds :: Glean.IdOf Src.File -> Angle.Angle EntityKindLabel
 fileEntityKinds fileId =

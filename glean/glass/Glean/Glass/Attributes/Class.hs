@@ -13,84 +13,89 @@
 {-# OPTIONS_GHC -Wno-star-is-type #-}
 module Glean.Glass.Attributes.Class
   ( ToAttributes(..)
-  , SymbolIdentifier(..)
-
-  -- * Generic methods
-  , toAttrMap
+  , RefEntitySymbol
+  , DefEntitySymbol
+  , extendAttributes
+  , attrListToMap
+  , attrMapToList
   ) where
 
-import Data.Text ( Text )
-import Data.Maybe ( mapMaybe )
-import qualified Data.Map.Strict as Map
+import qualified Data.Map as Map
 
 import qualified Glean
-import qualified Glean.Angle as Angle
 import qualified Glean.Haxl.Repos as Glean
 
-import Glean.Glass.Types ( Attributes, SymbolId )
-import Glean.Glass.Utils ( QueryType )
+import Glean.Glass.Types
 import qualified Glean.Schema.Src.Types as Src ( File )
 import qualified Glean.Schema.Code.Types as Code
-
--- | Key for identifying the 'entity' the attribute is associated with
--- For 3rd party dbs, this is something that can be derived from a SymbolId
---
--- Otherwise, we expect a code.Entity value to compare for equality
---
-data SymbolIdentifier
-   = Identifier Text -- convertible to symbol ids for matching
-   | Entity Code.Entity -- actual entity value
-  deriving (Eq, Ord, Show)
 
 -- | Class for querying attributes and converting them to thrift
 class ToAttributes key where
 
   type AttrRep key :: *
-  type AttrOut key :: *
 
-  -- | Search method (recursive, data, with limit ...)
-  searchBy
-    :: QueryType (AttrRep key)
-    => key
+  -- | Fetch the data for this attribute type for a file
+  queryForFile
+    :: key
     -> Maybe Int
-    -> Angle.Angle (AttrRep key)
+    -> Glean.IdOf Src.File
     -> Glean.RepoHaxl u w [AttrRep key]
 
-  -- | Register a query function for this attribute type
-  queryFileAttributes
-    :: QueryType (AttrRep key)
-    => key -> Glean.IdOf Src.File -> Angle.Angle (AttrRep key)
+  -- | Add attributes to symbols
+  augmentSymbols
+    :: key
+    -> [AttrRep key]
+    -> [RefEntitySymbol]
+    -> [DefEntitySymbol]
+    -> ([RefEntitySymbol], [DefEntitySymbol])
 
-  -- | Convert raw Angle type to a higher level type
-  fromAngleType
-    :: key -> AttrRep key -> Maybe (SymbolIdentifier, AttrOut key)
+type RefEntitySymbol = (Code.Entity, ReferenceRangeSymbolX)
+type DefEntitySymbol = (Code.Entity, DefinitionSymbolX)
 
-  -- | Translate higher level type to Attributes bag
-  toAttributes
-    :: key -> AttrOut key -> Attributes
+-- | Given some definitions, combine their attributes from any additional
+-- ones in the attribute maps. Helper for implementing augmentSymbols.
+extendAttributes
+  :: Ord k
+  => (SymbolId -> Code.Entity -> k)
+  -> Map.Map k Attributes
+  -> [RefEntitySymbol]
+  -> [DefEntitySymbol]
+  -> ([RefEntitySymbol], [DefEntitySymbol])
+extendAttributes keyFn attrMap theRefs theDefs = (refs, defs)
+  where
+    defs = map (uncurry extendDef) theDefs
+    refs = map (uncurry extendRef) theRefs
 
-  -- | How to match the attribute key against a correspoonding symbol or entity
-  -- This is a pass through value for entities, or a text conversion on SymbolId
-  -- to the 3rd party symbol format
-  fromSymbolId
-    :: key -> SymbolId -> Code.Entity -> SymbolIdentifier
+    extend symId entity def = case Map.lookup (keyFn symId entity) attrMap of
+      Nothing -> def
+      Just attr -> attrMapToList attr `combineList` def
 
--- | Convert query result into attribute bag
-convertAttributes
-  :: ToAttributes key
-  => key -> AttrRep key -> Maybe (SymbolIdentifier, Attributes)
-convertAttributes key rep = case fromAngleType key rep of
-  Nothing -> Nothing
-  Just (ident, row) -> Just (ident, toAttributes key row)
+    extendRef entity ref@ReferenceRangeSymbolX{..} = (entity,) $
+        ref { referenceRangeSymbolX_attributes = attrs }
+      where
+        attrs = extend referenceRangeSymbolX_sym entity
+          referenceRangeSymbolX_attributes
 
--- | Process raw data into attributes map keyed by eq/ord on symbol identifiers
--- This is used for 'joins', i.e. lookup by converted id to find values.
---
--- If the attribute type requires entities, the values in the map will be
--- entities If the attribute type requires something else, fromSymbolId will
--- generate that
---
-toAttrMap
-  :: ToAttributes key
-  => key -> [AttrRep key] -> Map.Map SymbolIdentifier Attributes
-toAttrMap key dat = Map.fromList $ mapMaybe (convertAttributes key) dat
+    extendDef entity def@DefinitionSymbolX{..} = (entity,) $
+        def { definitionSymbolX_attributes = attrs }
+      where
+        attrs = extend definitionSymbolX_sym entity
+          definitionSymbolX_attributes
+
+-- | Combining attributes as lists
+combineList :: AttributeList -> AttributeList -> AttributeList
+combineList (AttributeList a) (AttributeList b) = AttributeList (a <> b)
+
+-- | Convert between attribute bag representations
+attrMapToList :: Attributes -> AttributeList
+attrMapToList (Attributes attrMap) = AttributeList $
+    map pair $ Map.toList attrMap
+  where
+    pair (k,v) = KeyedAttribute k v
+
+-- | Convert attribute list to map keyed by attr key
+attrListToMap :: AttributeList -> Attributes
+attrListToMap (AttributeList elems) = Attributes $
+    Map.fromList $ map unpair elems
+  where
+    unpair (KeyedAttribute k v) = (k,v)

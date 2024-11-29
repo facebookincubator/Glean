@@ -191,7 +191,7 @@ documentSymbolListXSnapshot
   -> RequestOptions
   -> Maybe (Some Glean.Backend, GleanDBInfo)
   -> IO DocumentSymbolListXResult
-documentSymbolListXSnapshot env  r opts mGleanBe = do
+documentSymbolListXSnapshot env r opts mGleanBe = do
   fst3 <$>
     runRepoFile
       "documentSymbolListXSnapshot"
@@ -1023,7 +1023,7 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
             mlimit mlang extraOpts
             fileId
         -- todo this could be done in Glean in a single pass
-        (kindMap, merr) <- withRepo fileRepo $
+        (kinds, merr) <- withRepo fileRepo $
           documentSymbolKinds mlimit mlang fileId
 
         let revision = getDBRevision (scmRevisions dbInfo) fileRepo scsrepo
@@ -1062,9 +1062,9 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
               XlangXRef (rangeSpan, Code.IdlEntity {
                 idlEntity_entity = Just ent }) <- xrefs ]
 
-        let (refs, defs) = Attributes.extendAttributes
-              (Attributes.fromSymbolId Attributes.SymbolKindAttr)
-              kindMap
+        let (refs, defs) = Attributes.augmentSymbols
+              Attributes.SymbolKindAttr
+              kinds
               (xRefDataToRefEntitySymbol <$> refsPlain)
               defs1
 
@@ -1218,7 +1218,7 @@ documentSymbolKinds
   -> Maybe Language
   -> Glean.IdOf Src.File
   -> Glean.RepoHaxl u w
-     (Map.Map Attributes.SymbolIdentifier Attributes, Maybe ErrorLogger)
+     ([Attributes.AttrRep Attributes.SymbolKindAttr], Maybe ErrorLogger)
 
 -- It's not sound to key for all entities in file in C++ , due to traces
 -- So we can't use the generic a attribute technique
@@ -1235,10 +1235,9 @@ searchFileAttributes
   -> Maybe Int
   -> Glean.IdOf Src.File
   -> Glean.RepoHaxl u w
-    (Map.Map Attributes.SymbolIdentifier Attributes, Maybe ErrorLogger)
+    ([Attributes.AttrRep key], Maybe ErrorLogger)
 searchFileAttributes key mlimit fileId = do
-  eraw <- try $ Attributes.searchBy key mlimit $
-                Attributes.queryFileAttributes key fileId
+  eraw <- try $ Attributes.queryForFile key mlimit fileId
   repo <- Glean.haxlRepo
   case eraw of
     Left (err::SomeException) -- logic errors or transient errors
@@ -1247,7 +1246,7 @@ searchFileAttributes key mlimit fileId = do
         Just (logError (GlassExceptionReason_attributesError $ textShow err)
               <> logError repo))
     Right raw
-      -> return (Attributes.toAttrMap key raw, Nothing)
+      -> return (raw, Nothing)
 
 data XRefData = XRefData
   { xrefEntity :: !Code.Entity
