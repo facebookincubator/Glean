@@ -13,6 +13,10 @@
 
 #include <gtest/gtest.h>
 
+#include <rapidcheck.h>
+#include <rapidcheck/gtest.h>
+
+using namespace facebook::glean;
 using namespace facebook::glean::rts;
 
 namespace {
@@ -303,4 +307,21 @@ TEST(OwnershipTest, SliceTest) {
   checkVisibility(ownership, firstUsetId, numSets, {0, 2}, false);
   checkVisibility(ownership, firstUsetId, numSets, {0, 1, 2}, true);
   checkVisibility(ownership, firstUsetId, numSets, {0, 1, 2}, false);
+}
+
+struct SetSerializationTest : testing::Test {};
+
+RC_GTEST_PROP(SetSerializationTest, testSerialization, ()) {
+  const auto set = *rc::gen::nonEmpty(rc::gen::arbitrary<std::set<uint32_t>>());
+  SetU32 a = SetU32::from(set);
+  MutableOwnerSet b = a.toEliasFano();
+  binary::Output o;
+  serializeEliasFano(o, b);
+  auto size = o.size();
+  o.expect(8);
+  binary::Input i(o.data(), size);
+  OwnerSet c = deserializeEliasFano(i);
+  SetU32 d = SetU32::fromEliasFano(c);
+  b.free();
+  RC_ASSERT(set == SetU32::to(d));
 }

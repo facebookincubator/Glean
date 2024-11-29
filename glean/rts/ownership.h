@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "glean/rts/binary.h"
 #include "glean/rts/id.h"
 #include "glean/rts/ownership/uset.h"
 
@@ -22,6 +23,13 @@ using UnitId = uint32_t;
 
 using MutableOwnerSet = folly::compression::MutableEliasFanoCompressedList;
 using OwnerSet = folly::compression::EliasFanoCompressedList;
+
+void serializeEliasFano(binary::Output& out, const OwnerSet& set);
+
+/// Deserialize an OwnerSet from a binary::Input. Note that the
+// OwnerSet points to the contents of the binary::Input, so that
+// must remain alive as long as the OwnerSet is needed.
+OwnerSet deserializeEliasFano(binary::Input& in);
 
 struct OwnershipSetIterator {
   virtual ~OwnershipSetIterator() {}

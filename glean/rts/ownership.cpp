@@ -36,6 +36,37 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
+void serializeEliasFano(binary::Output& out, const OwnerSet& set) {
+  out.nat(set.size);
+  out.nat(set.numLowerBits);
+  out.nat(set.upperSizeBytes);
+  out.nat(set.skipPointers - set.data.begin());
+  out.nat(set.forwardPointers - set.data.begin());
+  out.nat(set.lower - set.data.begin());
+  out.nat(set.upper - set.data.begin());
+  out.put(set.data);
+}
+
+/// Deserialize an OwnerSet from a binary::Input. Note that the
+// OwnerSet points to the contents of the binary::Input, so that
+// must remain alive as long as the OwnerSet is needed.
+OwnerSet deserializeEliasFano(binary::Input& in) {
+  OwnerSet set;
+  set.size = in.trustedNat();
+  set.numLowerBits = in.trustedNat();
+  set.upperSizeBytes = in.trustedNat();
+  auto skipPointers = in.trustedNat();
+  auto forwardPointers = in.trustedNat();
+  auto lower = in.trustedNat();
+  auto upper = in.trustedNat();
+  set.data = in.bytes();
+  set.skipPointers = set.data.begin() + skipPointers;
+  set.forwardPointers = set.data.begin() + forwardPointers;
+  set.lower = set.data.begin() + lower;
+  set.upper = set.data.begin() + upper;
+  return set;
+}
+
 namespace {
 
 /**

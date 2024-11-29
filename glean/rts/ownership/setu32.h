@@ -516,6 +516,12 @@ class SetU32 {
     }
   }
 
+  static std::set<uint32_t> to(const SetU32& set) {
+    std::set<uint32_t> out;
+    set.foreach([&](uint32_t elt) { out.insert(elt); });
+    return out;
+  }
+
   using MutableEliasFanoList =
       folly::compression::MutableEliasFanoCompressedList;
   using EliasFanoList = folly::compression::EliasFanoCompressedList;
