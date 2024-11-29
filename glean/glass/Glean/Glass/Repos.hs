@@ -14,6 +14,7 @@ module Glean.Glass.Repos
   -- * Types
   Language(..)
   , GleanDBName(..)
+  , GleanDBAttrName(..)
   , GleanDBInfo(..)
   , ScmRevisions
   , ScmRevisionInfo(..)
@@ -21,6 +22,7 @@ module Glean.Glass.Repos
   -- * Mappings
   , fromSCSRepo
   , filetype
+  , attrDBsForRepo
 
   -- * Operation on a pool of latest repos
   , withLatestRepos
@@ -110,6 +112,11 @@ toRepoName RepoMapping{..} repo =
     Nothing -> Nothing
   where
     repoName = RepoName repo
+
+-- | Additional metadata about files and methods in attribute dbs
+attrDBsForRepo :: RepoMapping -> RepoName -> [GleanDBAttrName]
+attrDBsForRepo RepoMapping{..} repo =
+  Map.findWithDefault [] repo gleanAttrIndices
 
 -- | Expand generic string search request parameters into a set of candidate
 -- GleanDBs, grouped by logical SCM repo or corpus.

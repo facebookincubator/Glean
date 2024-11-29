@@ -15,6 +15,7 @@ module Glean.Glass.Handler.Utils (
 
     -- * deprecated handler wrappers
     withGleanDBs,
+    getLatestAttrDBs,
 
     -- * Utils for building handlers
     GleanBackend(..),
@@ -28,6 +29,7 @@ module Glean.Glass.Handler.Utils (
   ) where
 
 import Control.Exception
+import Control.Monad
 import Control.Monad.Catch ( throwM )
 import Data.Either
 import qualified Data.HashMap.Strict as HashMap
@@ -311,3 +313,21 @@ withGleanDBs method env@Glass.Env{..} opts req repo dbNames fn = do
   dbs <- getSpecificGleanDBs tracer sourceControl dbInfo (dbChooser repo opts) dbNames
   fmap fst $ withLog method env opts req $
     (,dbs) <$> fn dbs dbInfo
+
+-- | Get glean db for an attribute type
+getLatestAttrDBs
+  :: GlassTracer
+  -> Some SourceControl
+  -> RepoMapping
+  -> GleanDBInfo
+  -> RepoName
+  -> RequestOptions
+  -> IO [(Glean.Repo, GleanDBAttrName)]
+getLatestAttrDBs tracer scm repoMapping dbInfo repo opts =
+  fmap catMaybes $ forM (attrDBsForRepo repoMapping repo) $
+    \attrDBName -> do
+      dbs <- chooseGleanDBs tracer scm dbInfo (dbChooser repo opts)
+        [gleanAttrDBName attrDBName]
+      return $ case dbs of
+        [] -> Nothing
+        db:_ -> Just (snd db, attrDBName)

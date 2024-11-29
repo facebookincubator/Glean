@@ -656,7 +656,7 @@ data MatchType
 data FileReference =
   FileReference {
     _repoName :: !RepoName,
-    _theGleanPath :: !GleanPath
+    theGleanPath :: !GleanPath
   }
 
 toFileReference :: RepoName -> Path -> FileReference
@@ -762,13 +762,16 @@ fetchSymbolsAndAttributesGlean
       withContentHash
       ExtraSymbolOpts{..} be mlang dbInfo
 
+  res2 <- traceSpan tracer "addDynamicAttributes" $
+    addDynamicAttributes env dbInfo repo opts
+      file mlimit be res1
+
   let be = fromMaybe (gleanBackend, dbInfo) mOtherBackend
+  res3 <- resolveXlangXrefs env res2 repo be
 
-  res2 <- resolveXlangXrefs env res1 repo be
-
-  let res3 = toDocumentSymbolResult res2
-  let res4 = translateMirroredRepoListXResult req res3
-  return ((res4, gLogs), elogs)
+  let res4 = toDocumentSymbolResult res3
+  let res5 = translateMirroredRepoListXResult req res4
+  return ((res5, gLogs), elogs)
   where
     repo = documentSymbolsRequest_repository req
     path = documentSymbolsRequest_filepath req
@@ -1230,7 +1233,7 @@ documentSymbolKinds mlimit _ fileId =
   searchFileAttributes Attributes.SymbolKindAttr mlimit fileId
 
 searchFileAttributes
-  :: (QueryType (Attributes.AttrRep key), Attributes.ToAttributes key)
+  :: Attributes.ToAttributes key
   => key
   -> Maybe Int
   -> Glean.IdOf Src.File
@@ -1635,3 +1638,78 @@ searchFirstEntity lang toks = do
     None t -> throwM (ServerException t)
     One e -> return e
     Many { initial = e } -> return e
+
+-- -----------------------------------------------------------------------------
+-- Attributes
+
+--
+-- | Check if this db / lang pair has additional dynamic attributes
+-- and add them if so
+--
+addDynamicAttributes
+  :: Glean.Backend b
+  => Glass.Env
+  -> GleanDBInfo
+  -> RepoName
+  -> RequestOptions
+  -> FileReference
+  -> Maybe Int
+  -> GleanBackend b
+  -> DocumentSymbols
+  -> IO DocumentSymbols
+addDynamicAttributes env dbInfo repo opts repofile mlimit be syms = do
+  -- combine additional dynamic attributes
+  mattrs <- getSymbolAttributes env
+    dbInfo repo opts repofile mlimit be
+  return $ extend mattrs syms
+  where
+    extend [] syms = syms
+    extend (augment : xs) syms =
+      let (refs',defs') = augment (refs syms) (defs syms)
+      in extend xs $ syms { refs = refs' , defs = defs' }
+
+type Augment =
+   [Attributes.RefEntitySymbol] ->
+   [Attributes.DefEntitySymbol] ->
+   ([Attributes.RefEntitySymbol], [Attributes.DefEntitySymbol])
+
+-- Work out if we have extra attribute dbs and then run the queries
+getSymbolAttributes
+  :: Glean.Backend b
+  => Glass.Env
+  -> GleanDBInfo
+  -> RepoName
+  -> RequestOptions
+  -> FileReference
+  -> Maybe Int
+  -> GleanBackend b
+  -> IO [Augment]
+getSymbolAttributes env dbInfo repo opts repofile mlimit
+    be@GleanBackend{..} = do
+  mAttrDBs <-
+    getLatestAttrDBs tracer (sourceControl env) (Glass.repoMapping env)
+      dbInfo repo opts
+  backendRunHaxl be env $ do
+    forM mAttrDBs $
+      \(attrDB, (GleanDBAttrName _ attrKey){- existential key -}) ->
+        withRepo attrDB $ do
+          (attrs,_merr2) <- genericFetchFileAttributes attrKey
+            (theGleanPath repofile) mlimit
+          return (Attributes.augmentSymbols attrKey attrs)
+
+-- | External (non-local db) Attributes of symbols. Just Hack only for now
+genericFetchFileAttributes
+  :: Attributes.ToAttributes key
+  => key
+  -> GleanPath
+  -> Maybe Int
+  -> RepoHaxl u w ([Attributes.AttrRep key], Maybe ErrorLogger)
+
+genericFetchFileAttributes key path mlimit = do
+  efile <- getFile path
+  repo <- Glean.haxlRepo
+  case efile of
+    Left err ->
+      return (mempty, Just (logError err <> logError repo))
+    Right fileId -> do
+      searchFileAttributes key mlimit (Glean.getId fileId)

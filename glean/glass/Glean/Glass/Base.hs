@@ -10,6 +10,7 @@ module Glean.Glass.Base
   ( GleanDBName(..)
   , GleanPath(..)
   , SymbolRepoPath(..)
+  , GleanDBAttrName(..)
   , RepoMapping(..)
   ) where
 
@@ -18,6 +19,7 @@ import qualified Data.Map as Map
 import Data.String
 import Data.Text (Text)
 
+import Glean.Glass.Attributes.Class as Attributes
 import qualified Glean.Glass.Types as Glass
 
 -- | Type of glean dbs
@@ -42,7 +44,15 @@ data SymbolRepoPath = SymbolRepoPath
   }
   deriving (Show, Eq)
 
-newtype RepoMapping = RepoMapping
+-- | A little existential type key for attributes
+data GleanDBAttrName =
+  forall attr . (Attributes.ToAttributes attr) =>
+  GleanDBAttrName {
+    gleanAttrDBName :: GleanDBName,
+    attributeKey :: attr
+  }
+
+data RepoMapping = RepoMapping
   { gleanIndices :: Map.Map Glass.RepoName [(GleanDBName, Glass.Language)]
     -- ^ Glean indexes and the language they index. This should be in a config
     --
@@ -54,4 +64,10 @@ newtype RepoMapping = RepoMapping
     --
     -- If you add/remove a db, consider if it needs to be present in
     -- gleanRequiredIndices as well
+
+  , gleanAttrIndices :: Map.Map Glass.RepoName [GleanDBAttrName]
+    -- ^ Map of source db to attr db names & attribute key types
+    --
+    -- This pairs attribute Glean dbs with a key type to index the ToAttribute
+    -- class, that in turns knowns how to query and marshal the attributes
   }
