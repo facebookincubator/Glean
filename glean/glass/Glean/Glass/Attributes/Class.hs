@@ -10,7 +10,7 @@
 {-# LANGUAGE ConstraintKinds #-}
 -- Copyright 2004-present Facebook. All Rights Reserved.
 
-{-# OPTIONS_GHC -Wno-star-is-type #-}
+{-# OPTIONS_GHC -Wno-star-is-type -Wno-orphans #-}
 module Glean.Glass.Attributes.Class
   ( ToAttributes(..)
   , RefEntitySymbol
@@ -68,7 +68,7 @@ extendAttributes keyFn attrMap theRefs theDefs = (refs, defs)
 
     extend symId entity def = case Map.lookup (keyFn symId entity) attrMap of
       Nothing -> def
-      Just attr -> attrMapToList attr `combineList` def
+      Just attr -> attrMapToList attr <> def
 
     extendRef entity ref@ReferenceRangeSymbolX{..} = (entity,) $
         ref { referenceRangeSymbolX_attributes = attrs }
@@ -82,9 +82,8 @@ extendAttributes keyFn attrMap theRefs theDefs = (refs, defs)
         attrs = extend definitionSymbolX_sym entity
           definitionSymbolX_attributes
 
--- | Combining attributes as lists
-combineList :: AttributeList -> AttributeList -> AttributeList
-combineList (AttributeList a) (AttributeList b) = AttributeList (a <> b)
+instance Prelude.Semigroup AttributeList where
+  AttributeList a <> AttributeList b = AttributeList (a <> b)
 
 -- | Convert between attribute bag representations
 attrMapToList :: Attributes -> AttributeList
