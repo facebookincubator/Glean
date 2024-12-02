@@ -57,10 +57,22 @@ indexer = Indexer {
             , "flow.FileDeclaration"
             , "flow.FlowEntityImportUses"
             , "flow.FlowTypeEntityImportUses"
-            , "flow.NameLowerCase"
             , "flow.ModuleContains"
             , "flow.ModuleComments"
+
+              -- deprecated, to replace:
+            , "flow.NameLowerCase"
+              -- possibly deprecated
             , "flow.ModuleNameLowerCase"
+
+            -- new search predicates
+            , "flow.SearchDeclarationByName"
+            , "flow.SearchDeclarationByLowerCaseName"
+            , "flow.SearchMemberDeclarationByName"
+            , "flow.SearchMemberDeclarationByLowerCaseName"
+            , "flow.SearchTypeDeclarationByName"
+            , "flow.SearchTypeDeclarationByLowerCaseName"
+            , "flow.SearchModuleByLowerCaseName"
             ]
         }
     indexerRun externalIndexer ext

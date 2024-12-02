@@ -1,0 +1,20 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "b",
+      "parent": { "key": { "file": { "key": "test/imports.js" } } },
+      "decl": {
+        "key": {
+          "name": { "key": "b" },
+          "loc": {
+            "key": {
+              "module": { "key": { "file": { "key": "test/imports.js" } } },
+              "span": { "start": 240, "length": 1 }
+            }
+          }
+        }
+      }
+    }
+  }
+]

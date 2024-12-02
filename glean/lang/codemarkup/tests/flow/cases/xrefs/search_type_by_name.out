@@ -1,0 +1,39 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "C",
+      "parent": { "key": { "file": { "key": "test/es_exports.js.flow" } } },
+      "decl": {
+        "key": {
+          "name": { "key": "C" },
+          "loc": {
+            "key": {
+              "module": {
+                "key": { "file": { "key": "test/es_exports.js.flow" } }
+              },
+              "span": { "start": 632, "length": 1 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "C",
+      "parent": { "key": { "file": { "key": "test/imports.js" } } },
+      "decl": {
+        "key": {
+          "name": { "key": "C" },
+          "loc": {
+            "key": {
+              "module": { "key": { "file": { "key": "test/imports.js" } } },
+              "span": { "start": 799, "length": 1 }
+            }
+          }
+        }
+      }
+    }
+  }
+]

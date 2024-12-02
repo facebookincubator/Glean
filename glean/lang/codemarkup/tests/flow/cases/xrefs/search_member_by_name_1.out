@@ -1,0 +1,22 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "bar",
+      "parent": { "key": { "file": { "key": "test/es_exports.js.flow" } } },
+      "decl": {
+        "key": {
+          "name": { "key": "bar" },
+          "loc": {
+            "key": {
+              "module": {
+                "key": { "file": { "key": "test/es_exports.js.flow" } }
+              },
+              "span": { "start": 324, "length": 3 }
+            }
+          }
+        }
+      }
+    }
+  }
+]

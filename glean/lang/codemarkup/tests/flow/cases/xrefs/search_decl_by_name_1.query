@@ -1,0 +1,3 @@
+query: flow.SearchDeclarationByName { name = "CazClass" }
+perf: True
+transform: [gensort, []]

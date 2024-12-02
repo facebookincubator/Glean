@@ -1,0 +1,39 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "foo",
+      "parent": { "key": { "file": { "key": "test/es_exports.js.flow" } } },
+      "decl": {
+        "key": {
+          "name": { "key": "foo" },
+          "loc": {
+            "key": {
+              "module": {
+                "key": { "file": { "key": "test/es_exports.js.flow" } }
+              },
+              "span": { "start": 268, "length": 3 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "foo",
+      "parent": { "key": { "file": { "key": "test/imports.js" } } },
+      "decl": {
+        "key": {
+          "name": { "key": "foo" },
+          "loc": {
+            "key": {
+              "module": { "key": { "file": { "key": "test/imports.js" } } },
+              "span": { "start": 285, "length": 3 }
+            }
+          }
+        }
+      }
+    }
+  }
+]

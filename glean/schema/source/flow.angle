@@ -273,6 +273,76 @@ type SomeDeclaration = {
   typeDecl : TypeDeclaration |
 }
 
+#
+# Modern search, avoid the overly wide flow.Name type and use kinds
+# and rather than filtering on module container after the fact, include scope in
+# search
+#
+
+# local declarations (that are not import declarations, but we can't specify that here?)
+predicate SearchDeclarationByName:
+  {
+    name: string,
+    parent: Module, # there's always a module but it might be noSource or builtin
+    decl: Declaration
+  } stored { NameStr, Parent, Decl } where
+    Declaration { name = Name NameStr, loc = { module = Parent } } = Decl;
+    # would need a non-import table to avoid the negation
+    # !flow.ImportDeclaration { declaration = Decl }
+
+predicate SearchDeclarationByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    Declaration { name = Name NameStr }
+
+# member declarations
+predicate SearchMemberDeclarationByName:
+  {
+    name: string,
+    parent: Module,
+    decl: MemberDeclaration
+  } stored { NameStr, Parent, Decl } where
+    MemberDeclaration { name = Name NameStr, loc = { module = Parent } } = Decl;
+
+predicate SearchMemberDeclarationByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    MemberDeclaration { name = Name NameStr }
+
+# type declarations (that are not type import declarations, should be removed)
+predicate SearchTypeDeclarationByName:
+  {
+    name: string,
+    parent: Module,
+    decl: TypeDeclaration
+  } stored { NameStr, Parent, Decl } where
+    TypeDeclaration { name = Name NameStr, loc = { module = Parent } } = Decl;
+
+predicate SearchTypeDeclarationByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    TypeDeclaration { name = Name NameStr }
+
+# see flow.SearchByModuleName for module name sensitive case, not stored.
+
+predicate SearchModuleByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string,
+  } stored { prim.toLower NameStr, NameStr } where
+    (
+      Module { string_ = NameStr } | Module { lib = NameStr }
+    ) | (
+      Module { file = F } ; FileOfStringModule { F, NameStr }
+    )
+
+# deprecated
 # Search for decl by strings, precisely
 predicate SearchByName :
   {

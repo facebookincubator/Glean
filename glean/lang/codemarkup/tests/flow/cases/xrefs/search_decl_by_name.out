@@ -1,0 +1,39 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "BazClass",
+      "parent": { "key": { "file": { "key": "test/es_exports.js.flow" } } },
+      "decl": {
+        "key": {
+          "name": { "key": "BazClass" },
+          "loc": {
+            "key": {
+              "module": {
+                "key": { "file": { "key": "test/es_exports.js.flow" } }
+              },
+              "span": { "start": 381, "length": 8 }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "BazClass",
+      "parent": { "key": { "file": { "key": "test/imports.js" } } },
+      "decl": {
+        "key": {
+          "name": { "key": "BazClass" },
+          "loc": {
+            "key": {
+              "module": { "key": { "file": { "key": "test/imports.js" } } },
+              "span": { "start": 295, "length": 8 }
+            }
+          }
+        }
+      }
+    }
+  }
+]

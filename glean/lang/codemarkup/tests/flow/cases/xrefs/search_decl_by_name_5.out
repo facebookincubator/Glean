@@ -1,0 +1,20 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "bar",
+      "parent": { "key": { "file": { "key": "test/imports.js" } } },
+      "decl": {
+        "key": {
+          "name": { "key": "bar" },
+          "loc": {
+            "key": {
+              "module": { "key": { "file": { "key": "test/imports.js" } } },
+              "span": { "start": 290, "length": 3 }
+            }
+          }
+        }
+      }
+    }
+  }
+]
