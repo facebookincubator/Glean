@@ -51,7 +51,8 @@ import Glean.Glass.RepoMapping -- site-specific
 import qualified Glean.Glass.Env as Glass
 import Glean.Glass.Repos (withLatestRepos)
 import qualified Glean.Glass.Options as Glass
-import qualified Glean.Glass.Handler as Handler
+import qualified Glean.Glass.Handler.Documents as Handler
+import qualified Glean.Glass.Handler.Symbols as Handler
 import Glean.Glass.GlassService.Service ( GlassServiceCommand(..) )
 
 import Glean.Glass.Types

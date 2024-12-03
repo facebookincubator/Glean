@@ -53,7 +53,8 @@ import Glean.Util.Some ( Some(..) )
 import Glean.Regression.Test
 import qualified Glean.Indexer as Glean
 
-import qualified Glean.Glass.Handler as Glass
+import qualified Glean.Glass.Handler.Documents as Glass
+import qualified Glean.Glass.Handler.Symbols as Glass
 import qualified Glean.Glass.Handler.Cxx as Glass
 import Glean.Glass.Types as Glass
 import Glean.Glass.Env as Glass ( Env )

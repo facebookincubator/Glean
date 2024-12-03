@@ -26,6 +26,10 @@ module Glean.Glass.Handler.Utils (
 
     firstOrErrors,
     allOrError,
+
+    -- * Utils for computing defs and xrefs in a document
+    documentSymbolsForLanguage,
+    ExtraSymbolOpts(..)
   ) where
 
 import Control.Exception
@@ -55,8 +59,14 @@ import Glean.Glass.SourceControl
 import Glean.Glass.SymbolId
 import Glean.Glass.Tracing
 import Glean.Glass.Types
-
+import qualified Glean.Glass.Query as Query
+import qualified Glean.Glass.Query.Cxx as Cxx
 import qualified Glean.Glass.Env as Glass
+import Glean.Glass.XRefs ( GenXRef(..), buildGenXRefs )
+import qualified Glean.Schema.Src.Types as Src
+import qualified Glean.Schema.Code.Types as Code
+import qualified Glean.Schema.CodemarkupTypes.Types as Code
+import qualified Glean.Glass.Utils as Utils
 
 -- | The DBs we've chosen for this request
 type ChosenDBs = NonEmpty (GleanDBName, Glean.Repo)
@@ -331,3 +341,35 @@ getLatestAttrDBs tracer scm repoMapping dbInfo repo opts =
       return $ case dbs of
         [] -> Nothing
         db:_ -> Just (snd db, attrDBName)
+
+-- | Args that modify the shape of the output
+data ExtraSymbolOpts = ExtraSymbolOpts {
+  oIncludeRefs :: !Bool,  -- ^ include references?
+  oIncludeXlangRefs :: !Bool,  -- ^ include xlang references?
+  oLineRange :: Maybe [LineRange] -- ^ restrict to specifc range
+}
+
+type Defns = [(Code.Location,Code.Entity)]
+
+-- | Which fileEntityLocations and fileEntityXRefLocation implementations to use
+documentSymbolsForLanguage
+  :: Maybe Int
+  -> Maybe Language
+  -> ExtraSymbolOpts
+  -> Glean.IdOf Src.File
+  -> Glean.RepoHaxl u w ([GenXRef], Defns, Bool)
+
+-- For Cpp, we need to do a bit of client-side processing
+documentSymbolsForLanguage
+  mlimit (Just Language_Cpp) opts fileId = Cxx.documentSymbolsForCxx
+    mlimit (oIncludeRefs opts) (oIncludeXlangRefs opts) fileId
+
+-- For everyone else, we just query the generic codemarkup predicates
+documentSymbolsForLanguage mlimit _ ExtraSymbolOpts{..} fileId = do
+  (xrefs, trunc1) <- if oIncludeRefs
+    then Utils.searchRecursiveWithLimit mlimit $
+      Query.fileEntityXRefsGenEntities fileId oIncludeXlangRefs
+    else return ([], False)
+  (defns, trunc2) <- Utils.searchRecursiveWithLimit mlimit $
+    Query.fileEntityLocations fileId
+  return (mapMaybe buildGenXRefs xrefs, defns, trunc1 || trunc2)

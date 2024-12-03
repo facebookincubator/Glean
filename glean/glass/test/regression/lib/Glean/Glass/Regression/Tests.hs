@@ -28,7 +28,8 @@ import Glean
 import Glean.LocalOrRemote
 import Glean.Util.Some
 
-import Glean.Glass.Handler
+import Glean.Glass.Handler.Documents
+import Glean.Glass.Handler.Symbols
 import Glean.Glass.Types as Glass
 
 import Glean.Glass.Regression.Util

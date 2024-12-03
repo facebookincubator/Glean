@@ -32,7 +32,7 @@ import Util.IO ( readFileUTF8Text )
 
 import Glean.Glass.Types
 import qualified Glean.Glass.Env as Glass
-import qualified Glean.Glass.Handler as Handle
+import qualified Glean.Glass.Handler.Symbols as Handle
 import qualified Glean.Glass.Main as Glass
 import qualified Glean.Glass.Options as Glass
 import Glean.Glass.Tracing (GlassTrace)

@@ -41,7 +41,7 @@ import Glean.Glass.Types (
   GlassException (..),
  )
 import qualified Glean.Glass.Env as Glass hiding (Config(..))
-import qualified Glean.Glass.Handler as Glass
+import qualified Glean.Glass.Handler.Documents as Glass
 import qualified Glean.Glass.Regression.Util as Glass
 import Glean.Glass.SourceControl
 import qualified Glean.Glass.Types as Glass
