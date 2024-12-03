@@ -1,11 +1,10 @@
 {
   "@generated": null,
   "facts_searched": {
-    "python.ContainingTopLevelDeclaration.4": 1,
     "python.DeclarationDefinition.4": 1,
     "python.DeclarationLocation.4": 1,
-    "python.LocalNameLowerCase.4": 1,
-    "python.SearchByLocalName.4": 1
+    "python.SearchMethodByLowerCaseName.4": 1,
+    "python.SearchMethodByName.4": 1
   },
   "full_scans": [ ]
 }

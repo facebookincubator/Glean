@@ -68,7 +68,6 @@ predicate SearchByLowerCaseNameAndLanguage:
   { Name, Language, Entity } where
  # See SearchByLowerCaseNameKindAndLanguage
     ( Hack = Language; HackSearchByLowerCaseName { Name, Entity } ) |
-    ( Python = Language; PythonSearchByLowerCaseName { Name, Entity } ) |
     ( JavaScript = Language; FlowSearchByLowerCaseName { Name, Entity } ) |
     ( Java = Language; JavaSearchByLowerCaseName { Name, Entity } ) |
     ( Kotlin = Language; KotlinSearchByLowerCaseName { Name, Entity } ) |
@@ -113,6 +112,9 @@ predicate SearchByLowerCaseNameKindAndLanguage:
     ) | (
       PreProcessor = Language;
       PpSearchByLowerCaseNameKind { NameStr, Kinds, Entity }
+    ) | (
+      Python = Language;
+      PythonSearchByLowerCaseNameKindAndScopeFact { NameStr, _, Kinds, Entity }
     )
 
 # scoped search
@@ -267,34 +269,6 @@ predicate HackSearchByScopeWithName:
         search.hack.SearchInContext { Name, ScopeName, ScopeNamespace, Decl }
       );
 
-predicate PythonSearchByName:
-  {
-    name: string,
-    entity: code.Entity,
-  }
-  { NameStr, Entity } where
-    LocalName = python.LocalName NameStr;
-    PythonSearchByLocalNameFact { LocalName, Entity }
-
-predicate PythonSearchByLowerCaseName:
-  {
-    name: string,
-    entity: code.Entity,
-  }
-  { NameStr, Entity } where
-    python.LocalNameLowerCase { NameStr, LocalName };
-    PythonSearchByLocalNameFact { LocalName, Entity }
-
-# helper to avoid repeatedly doing string search
-predicate PythonSearchByLocalNameFact:
-  {
-    name: python.LocalName,
-    entity: code.Entity,
-  }
-  { LocalName, { python = { decl = Decl }}} where
-    python.SearchByLocalName { LocalName, Decl };
-    python.NonImportDeclaration Decl;
-
 predicate PythonSearchByScopeAndKind:
   {
     name: string,
@@ -334,6 +308,17 @@ predicate PythonSearchByScopeWithName:
     python.NonImportDeclaration Decl;
     { python = { decl = Decl } } = Entity;
 
+predicate PythonSearchByLowerCaseNameKindAndScopeFact:
+  {
+    name: string,
+    scope: maybe python.SName,
+    kinds: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity
+  }
+  { NameStr, Scope, Kinds, Entity } where
+    PythonNameLowerCase { NameStr, Kinds, Name };
+    PythonSearchByNameKindAndScopeFact { Name, Scope, Kinds, Entity }
+
 # with a bare string name and a known scope, search by kind
 predicate PythonSearchByNameKindAndScopeFact:
   {
@@ -371,6 +356,35 @@ predicate PythonSearchByNameKindAndScopeFact:
       { variable = VDecl } = Decl
     );
     { python = { decl = Decl } } = Entity
+
+# Maps lower-case strings to normal Names, for case-insensitive search
+predicate PythonNameLowerCase :
+  {
+    nameLowercase : string,
+    kinds: maybe codemarkup.types.SymbolKind,
+    name : string,
+  }
+  { NameLower, Kinds, Name } where
+    { just = Kind } = Kinds;
+    ( Class_ = Kind;
+      python.SearchClassByLowerCaseName { NameLower, Name }
+    ) | (
+      Module = Kind;
+      python.SearchModuleByLowerCaseName { NameLower, Name }
+    ) | (
+      Function = Kind;
+      python.SearchFunctionByLowerCaseName { NameLower, Name }
+    ) | (
+      Method = Kind;
+      python.SearchMethodByLowerCaseName { NameLower, Name };
+    ) | (
+      Field = Kind;
+      python.SearchFieldByLowerCaseName { NameLower, Name }
+    ) | (
+      Variable = Kind;
+      python.SearchVariableByLowerCaseName { NameLower, Name }
+    );
+
 
 predicate FlowSearchByName:
   {
