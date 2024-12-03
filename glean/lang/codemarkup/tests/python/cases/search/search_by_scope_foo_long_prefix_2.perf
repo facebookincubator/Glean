@@ -3,10 +3,11 @@
   "facts_searched": {
     "python.DeclarationDefinition.4": 1,
     "python.DeclarationLocation.4": 1,
-    "python.LocalName.4": 2,
-    "python.Name.4": 2,
-    "python.SName.4": 2,
-    "python.SearchMethodByName.4": 1
+    "python.Name.4": 1,
+    "python.SName.4": 1,
+    "python.SearchClassByName.4": 1,
+    "python.SearchMethodByName.4": 1,
+    "python.SearchModuleByName.4": 1
   },
   "full_scans": [ ]
 }

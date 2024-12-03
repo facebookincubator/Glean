@@ -162,12 +162,22 @@ predicate PythonNameCase:
   }
   { Insensitive, NameStr, Name } where
     ( true = Insensitive;
-      python.LocalNameLowerCase { NameStr, python.LocalName LocalNameStr };
-      python.Name LocalNameStr = Name
+      # we only need to know if it is in one of these. please short circuit
+      if ( python.SearchClassByLowerCaseName { NameStr, LocalNameStr } )
+      then ( LocalNameStr )
+      else if ( python.SearchModuleByLowerCaseName { NameStr, LocalNameStr } )
+      then ( LocalNameStr )
+      else if ( python.SearchFunctionByLowerCaseName { NameStr, LocalNameStr } )
+      then ( LocalNameStr )
+      else ( never: string );
+      Name = python.Name LocalNameStr
     ) | (
       false = Insensitive;
-      python.LocalName NameStr; # check quickly
-      python.Name NameStr = Name
+      # double negation to check for existence
+      !(!(python.SearchClassByName { name = NameStr } |
+           python.SearchModuleByName { name = NameStr } |
+            python.SearchFunctionByName { name = NameStr } ));
+      Name = python.Name NameStr
     )
 
 }

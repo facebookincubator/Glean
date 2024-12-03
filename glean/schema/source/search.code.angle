@@ -145,7 +145,6 @@ predicate SearchByLowerCaseScope:
   { Name, Scope, Language, Entity } where
 # See SearchByLowerCaseScopeAndKind for C++
     ( Hack = Language; HackSearchByLowerCaseScope { Name, Scope, Entity } ) |
-    ( Python = Language; PythonSearchByLowerCaseScope { Name, Scope, Entity }) |
     ( JavaScript = Language; FlowSearchByLowerCaseScope { Name, Scope, Entity})|
     ( Java = Language; JavaSearchByLowerCaseScope { Name, Scope, Entity}) |
     ( Kotlin = Language; KotlinSearchByLowerCaseScope { Name, Scope, Entity});
@@ -178,8 +177,13 @@ predicate SearchByLowerCaseScopeAndKind:
     entity: code.Entity,
   }
   { Name, Scope, Language, Kinds, Entity } where
-    Cpp = Language;
-    CxxSearchByLowerCaseScopeAndKind { Name, Scope, Kinds, Entity }
+    (
+      Cpp = Language;
+      CxxSearchByLowerCaseScopeAndKind { Name, Scope, Kinds, Entity }
+    ) | (
+      Python = Language;
+      PythonSearchByLowerCaseScopeAndKind { Name, Scope, Kinds, Entity };
+    )
 
 #
 # Language-specific identifier search
@@ -281,32 +285,17 @@ predicate PythonSearchByScopeAndKind:
     search.python.QueryToScopeCase { Scope, Insensitive, MSName };
     PythonSearchByNameKindAndScopeFact { NameStr, MSName, Kinds, Entity }
 
-predicate PythonSearchByLowerCaseScope:
+predicate PythonSearchByLowerCaseScopeAndKind:
   {
     name: string,
     scope: [string],
+    kinds: maybe codemarkup.types.SymbolKind,
     entity: code.Entity,
   }
-  { NameStr, Query, Entity} where
-    python.LocalNameLowerCase { NameStr, python.LocalName Name };
+  { NameStr, Scope, Kinds, Entity } where
     Insensitive = true;
-    PythonSearchByScopeWithName { Name, Insensitive, Query, Entity }
-
-# Private: search by scope anchored on a local_name fact
-predicate PythonSearchByScopeWithName:
-  {
-    name: string,
-    insensitive : bool,
-    scope: [string],
-    entity: code.Entity,
-  }
-  { NameStr, Insensitive, Scope, Entity } where
     search.python.QueryToScopeCase { Scope, Insensitive, MSName };
-    Name = python.Name NameStr; # tickle the optimizer to do this second
-    SName = python.SName { Name, MSName };
-    python.DeclarationWithSName { SName, Decl };
-    python.NonImportDeclaration Decl;
-    { python = { decl = Decl } } = Entity;
+    PythonSearchByLowerCaseNameKindAndScopeFact { NameStr, MSName, Kinds, Entity }
 
 predicate PythonSearchByLowerCaseNameKindAndScopeFact:
   {
