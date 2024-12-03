@@ -51,10 +51,12 @@ import Data.Default
 import Data.Either
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Monoid as Monoid
 import Data.Text as Text (Text)
 import qualified Data.Text.Encoding as Text
 import qualified Data.UUID as UUID
 import qualified Data.UUID.V4 as UUID
+import qualified Data.Vector.Storable as VS
 import System.Clock
 import System.Timeout
 
@@ -289,6 +291,7 @@ enqueueBatch env ComputedBatch{..} ownership = do
   -- server restarts/crashes
   handle <- UUID.toText <$> UUID.nextRandom
 
+  let size = batchSize computedBatch_batch
   r <- try $ enqueueWrite env computedBatch_repo size $ pure $
         (writeContentFromBatch computedBatch_batch) {
           writeOwnership= ownership
@@ -300,6 +303,18 @@ enqueueBatch env ComputedBatch{..} ownership = do
     Right write -> do
      when computedBatch_remember $ rememberWrite env handle write
      return $ Thrift.SendResponse_handle handle
+
+batchSize :: Thrift.Batch -> Int
+batchSize Thrift.Batch{..} =
+  ByteString.length batch_facts +
+  Monoid.getSum (foldMap (Monoid.Sum . storableSize) batch_owned) +
+  Monoid.getSum (foldMap (Monoid.Sum . depsSize) batch_dependencies)
+  where
+  storableSize = snd . VS.unsafeToForeignPtr0
+  depsSize deps = sum
+    [ storableSize f + storableSize d
+    | FactDependencies f d <- deps
+    ]
 
 enqueueJsonBatch
   :: Env

@@ -198,8 +198,8 @@ struct Fact {
 }
 
 struct FactDependencies {
-  1: list_Id_1857 facts;
-  2: list_Id_1857 dependencies;
+  1: listOfIds facts;
+  2: listOfIds dependencies;
 }
 
 // A collection of facts which can be written to a database.
@@ -228,7 +228,7 @@ struct Batch {
   //   - all elements are unique
   //   - ids are reasonably dense (writing the batch to the db will use a
   //     data structure of size O(max id - firstId))
-  4: optional list_i64_7948 ids;
+  4: optional list_i64 ids;
 
   // (optional for now)
   //
@@ -242,7 +242,7 @@ struct Batch {
   //
   // Units do not need to be declared beforehand; a Unit exists if
   // it is the owner of at least one fact.
-  5: map_UnitName_listOfIds_7119 owned;
+  5: map_UnitName_listOfIds owned;
 
   // Specifies explicit dependencies of derived facts per predicate.
   //
@@ -257,7 +257,7 @@ struct Batch {
 
 struct Subst {
   1: Id firstId;
-  2: list_i64_7948 ids;
+  2: list_i64 ids;
 }
 
 struct Error {
@@ -1294,13 +1294,10 @@ struct PredicateAnnotation {
 
 // The following were automatically generated and may benefit from renaming.
 typedef list<Fact> (hs.type = "Vector") list_Fact_2137
-typedef list<Id> (hs.type = "VectorStorable") list_Id_1857
 typedef list<Id> (hs.type = "Vector") list_Id_2029
 typedef list<ParcelState> (hs.type = "Vector") list_ParcelState_7430
-typedef list<i64> (hs.type = "VectorStorable") list_i64_7948
+typedef list<i64> (hs.type = "VectorStorable") list_i64
 typedef map<Id, list<FactDependencies>> (
   hs.type = "HashMap",
 ) map_Id_list_FactDependencies_964
-typedef map<UnitName, listOfIds> (
-  hs.type = "HashMap",
-) map_UnitName_listOfIds_7119
+typedef map<UnitName, listOfIds> (hs.type = "HashMap") map_UnitName_listOfIds
