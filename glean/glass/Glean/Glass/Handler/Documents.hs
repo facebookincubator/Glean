@@ -175,16 +175,19 @@ toFileReference :: RepoName -> Path -> FileReference
 toFileReference repo path =
   FileReference repo (toGleanPath $ SymbolRepoPath repo path)
 
+repoPathToMirror :: RepoName -> Path -> Maybe Mirror
+repoPathToMirror repository (Path filepath) =
+  let isReqInMirror (Mirror mirrorRepo prefix _) =
+        repository == mirrorRepo && isPrefixOf prefix filepath in
+  find isReqInMirror mirrorConfig
+
 translateMirroredRepoListXResult
   :: DocumentSymbolsRequest
   -> DocumentSymbolListXResult
   -> DocumentSymbolListXResult
 translateMirroredRepoListXResult
-  (DocumentSymbolsRequest repository (Path filepath) _ _) res =
-  let isReqInMirror (Mirror mirrorRepo prefix _) =
-        repository == mirrorRepo && isPrefixOf prefix filepath in
-  let maybeMirror = find isReqInMirror mirrorConfig in
-  case maybeMirror of
+  (DocumentSymbolsRequest repository path _ _) res =
+  case repoPathToMirror repository path of
     Just (Mirror mirror prefix origin) ->
       Utils.translateDocumentSymbolListXResult origin mirror prefix Nothing res
     _ -> res
@@ -217,7 +220,7 @@ fetchSymbolsAndAttributesGlean
       file mlimit be res1
 
   let be = fromMaybe (gleanBackend, dbInfo) mOtherBackend
-  res3 <- resolveXlangXrefs env res2 repo be
+  res3 <- resolveXlangXrefs env path res2 repo be
 
   let res4 = toDocumentSymbolResult res3
   let res5 = translateMirroredRepoListXResult req res4
@@ -548,26 +551,34 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
 resolveXlangXrefs
   :: Glean.Backend b
   => Glass.Env
+  -> Path
   -> DocumentSymbols
   -> RepoName
   -> (b, GleanDBInfo)
   -> IO DocumentSymbols
 resolveXlangXrefs
   env@Glass.Env{tracer, sourceControl, repoMapping}
+  path
   docSyms@DocumentSymbols{..}
   scsrepo
   (gleanBackend, dbInfo) = do
   case (unresolvedXrefsXlang, srcFile) of
     ((ent, _) : _, Just srcFile) -> do
        -- we assume all xlang xrefs belong to the same db
+       -- we pick the xlang dbs based on target lang and
+       -- repo. Corner case: the document is in a mirror repo,
+       -- use to origin repo to determine xlang db
       let lang = entityLanguage ent
+          targetRepo = case repoPathToMirror scsrepo path of
+              Just (Mirror _mirror _prefix origin) -> origin
+              Nothing -> scsrepo
       gleanDBs <- getGleanRepos tracer sourceControl repoMapping dbInfo
-        scsrepo (Just lang) ChooseLatest Nothing
+        targetRepo (Just lang) ChooseLatest Nothing
       let gleanBe = GleanBackend {gleanDBs, tracer, gleanBackend}
       xlangRefs <- backendRunHaxl gleanBe env $ do
         xrefsXlang <- withRepo (snd (NonEmpty.head gleanDBs)) $ do
-          xrefs <- resolveEntitiesRange scsrepo fst unresolvedXrefsXlang
-          mapM (toReferenceSymbolXlang scsrepo srcFile offsets lang) xrefs
+          xrefs <- resolveEntitiesRange targetRepo fst unresolvedXrefsXlang
+          mapM (toReferenceSymbolXlang targetRepo srcFile offsets lang) xrefs
         return $ xRefDataToRefEntitySymbol <$> xrefsXlang
       return $ docSyms  { refs = refs ++ xlangRefs, unresolvedXrefsXlang = [] }
     _ -> return docSyms
