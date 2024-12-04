@@ -528,14 +528,14 @@ codeSearchByName SearchQ{..} =
   vars $ \p langs (k :: Angle (Maybe Code.SymbolKind)) ->
     p `where_` [
       langs .= sig languagePat,
+      k .= sig kindPat,
       p .= predicate @CodeSearch.SearchByName (
         rec $
           field @"name" nameQ $ -- may be prefix
           field @"searchcase" caseQ $
           field @"kind" k $ -- specific kinds only
           field @"language" langs -- optional language filters
-        end),
-      k .= sig kindPat
+        end)
     ]
   where
     kindPat = maybe wild just mKindQ
@@ -549,6 +549,7 @@ codeSearchByScope SearchQ{..} =
   vars $ \p langs (k :: Angle (Maybe Code.SymbolKind)) ->
     p `where_` [
       langs .= sig languagePat,
+      k .= sig kindPat,
       p .= predicate @CodeSearch.SearchByScope (
         rec $
           field @"name" nameQ $
@@ -556,8 +557,7 @@ codeSearchByScope SearchQ{..} =
           field @"searchcase" caseQ $
           field @"kind" k $ -- specific kinds only
           field @"language" languagePat -- optional language filters
-        end),
-      k .= sig kindPat
+        end)
     ]
   where
     scopePat = fromMaybe (array []) (scopeTerm scopeQ) -- Nothing ==global scope
@@ -586,6 +586,7 @@ codeSearchByInheritedScope SearchQ{..} = (scopeQ, queryFn)
           p `where_` [
             s .= scopePat,
             langs .= sig languagePat,
+            k .= sig kindPat,
             p .= predicate @CodeSearch.SearchByScope (
               rec $
                 field @"name" nameQ $
@@ -593,8 +594,7 @@ codeSearchByInheritedScope SearchQ{..} = (scopeQ, queryFn)
                 field @"searchcase" caseQ $
                 field @"kind" k $ -- specific kinds only
                 field @"language" langs -- optional language filters
-              end),
-            k .= sig kindPat
+              end)
           ]
 
 -- | Scope terms expanded into set of names, then compiled to disjoint query

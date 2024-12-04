@@ -1,0 +1,24 @@
+query: |
+  X0 where
+  X0 : codemarkup.search.SearchByName.1;
+  X1 : code.Language.24;
+  X2 : maybe codemarkup.types.SymbolKind.1;
+  X1 =
+  JavaScript : code.Language.24;
+  X2 =
+  {
+  just = Namespace |
+  (Class_ |
+  (Trait |
+  (Interface |
+  Module)))
+  } : maybe codemarkup.types.SymbolKind.1;
+  X0 =
+  codemarkup.search.SearchByName.1 {
+  language = X1,
+  kind = X2,
+  searchcase = Sensitive,
+  name = "set"
+  }
+perf: true
+transform: [normord, []]
