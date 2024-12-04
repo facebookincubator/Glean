@@ -3723,7 +3723,7 @@ struct FlowSearchByLowerCaseName;
 
 struct FlowSearchByLowerCaseScope;
 
-struct FlowSearchByName;
+struct FlowSearchByNameKindAndScopeFact;
 
 struct FlowSearchByNameWithFact;
 
@@ -27115,15 +27115,15 @@ struct FlowSearchByLowerCaseScope : Predicate<std::tuple<std::string, std::vecto
   }
 }; // struct FlowSearchByLowerCaseScope
 
-struct FlowSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+struct FlowSearchByNameKindAndScopeFact : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<facebook::glean::cpp::schema::Flow::Module>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
   static const char* GLEAN_name() {
-    return "search.code.FlowSearchByName";
+    return "search.code.FlowSearchByNameKindAndScopeFact";
   }
 
   static constexpr size_t GLEAN_version() {
      return 16;
   }
-}; // struct FlowSearchByName
+}; // struct FlowSearchByNameKindAndScopeFact
 
 struct FlowSearchByNameWithFact : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Flow::Name>, facebook::glean::cpp::schema::Code::Entity>> {
   static const char* GLEAN_name() {
@@ -30544,7 +30544,7 @@ template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::Erla
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FbthriftSearchByNameFact> { static constexpr size_t value = 1145; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByLowerCaseName> { static constexpr size_t value = 1146; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByLowerCaseScope> { static constexpr size_t value = 1147; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByName> { static constexpr size_t value = 1148; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByNameKindAndScopeFact> { static constexpr size_t value = 1148; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByNameWithFact> { static constexpr size_t value = 1149; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByScope> { static constexpr size_t value = 1150; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByScopeWithName> { static constexpr size_t value = 1151; };
@@ -31842,7 +31842,7 @@ template<> struct SCHEMA::predicate<1144> { using type = facebook::glean::cpp::s
 template<> struct SCHEMA::predicate<1145> { using type = facebook::glean::cpp::schema::Search::Code::FbthriftSearchByNameFact; };
 template<> struct SCHEMA::predicate<1146> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByLowerCaseName; };
 template<> struct SCHEMA::predicate<1147> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByLowerCaseScope; };
-template<> struct SCHEMA::predicate<1148> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByName; };
+template<> struct SCHEMA::predicate<1148> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByNameKindAndScopeFact; };
 template<> struct SCHEMA::predicate<1149> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByNameWithFact; };
 template<> struct SCHEMA::predicate<1150> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByScope; };
 template<> struct SCHEMA::predicate<1151> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByScopeWithName; };

@@ -47,7 +47,6 @@ predicate SearchByNameAndLanguage:
   { Name, Language, Entity } where
   # see SearchByNameKindAndLanguage for C++, PreProcessor, Python
     ( Hack = Language; HackSearchByName { Name, Entity } ) |
-    ( JavaScript = Language; FlowSearchByName { Name, Entity } ) |
     ( Java = Language; JavaSearchByName { Name, Entity } ) |
     ( Kotlin = Language; KotlinSearchByName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByName { Name, Entity } ) |
@@ -96,6 +95,9 @@ predicate SearchByNameKindAndLanguage:
     ) | (
       Python = Language;
       PythonSearchByNameKindAndScopeFact { NameStr, _, Kinds, Entity }
+    ) | (
+      JavaScript = Language;
+      FlowSearchByNameKindAndScopeFact { NameStr, _, Kinds, Entity }
     )
 
 # Kind-optimized search, case insensitive.
@@ -346,7 +348,6 @@ predicate PythonSearchByNameKindAndScopeFact:
     );
     { python = { decl = Decl } } = Entity
 
-# Maps lower-case strings to normal Names, for case-insensitive search
 predicate PythonNameLowerCase :
   {
     nameLowercase : string,
@@ -374,19 +375,6 @@ predicate PythonNameLowerCase :
       python.SearchVariableByLowerCaseName { NameLower, Name }
     );
 
-
-predicate FlowSearchByName:
-  {
-    name: string,
-    entity: code.Entity,
-  }
-  { NameStr, Entity } where
-    ( Name = flow.Name NameStr;
-      FlowSearchByNameWithFact { Name, Entity }
-    ) | (
-      flow.SearchByModuleName { NameStr, Mod };
-      { flow = { module_ = Mod } } = Entity
-    )
 
 predicate FlowSearchByLowerCaseName:
   {
@@ -450,6 +438,48 @@ predicate FlowSearchByScopeWithName:
     search.flow.FlowSearchByNameNonImport { Name, Decl };
     flow.ModuleContains { Module, Decl }; # filter on membership
     { flow = { decl = Decl } } = Entity;
+
+
+# with a bare string name and a known scope, search by kind
+predicate FlowSearchByNameKindAndScopeFact:
+  {
+    name: string,
+    scope: maybe flow.Module,
+    kinds: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity
+  }
+  { NameStr, MScope, Kinds, Entity } where
+    # n.b no un-kinded entities in Flow, so we ignore the `nothing` case
+    # the kinds are a bit inaccurate (i.e. no classes, all values are objects)
+    { just = Kind } = Kinds;
+    (
+      { just = Scope } = MScope; # nothing would imply these are global
+      (
+        Object_ = Kind;
+        flow.SearchDeclarationByName { NameStr, Scope, ODecl };
+        # we need to carefully remove import occurences as they're spammy
+        !flow.ImportDeclaration { declaration = ODecl };
+        { localDecl = ODecl } = Decl;
+      ) | (
+        Property = Kind;
+        flow.SearchMemberDeclarationByName { NameStr, Scope, MDecl };
+        { memberDecl = MDecl } = Decl
+      ) | (
+        Type = Kind;
+        flow.SearchTypeDeclarationByName { NameStr, Scope, TDecl };
+        # and filter out forms of type import declarations
+        !flow.TypeImportDeclaration { typeDeclaration = TDecl };
+        !(search.flow.TypeDeclarationAsDeclaration { TDecl, DeclImport };
+            flow.ImportDeclaration { declaration = DeclImport });
+        { typeDecl = TDecl } = Decl
+      );
+      { flow = { decl = Decl } } = Entity
+    ) | (
+      Module = Kind;
+      nothing = MScope; # check its not scoped
+      flow.SearchByModuleName { NameStr, Mod };
+      { flow = { module_ = Mod } } = Entity
+    )
 
 predicate JavaSearchByName:
   {
