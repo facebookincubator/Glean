@@ -1,0 +1,3 @@
+query: D where codemarkup.search.SearchByName { name = "a", entity = D }
+perf: true
+transform: [normord, []]

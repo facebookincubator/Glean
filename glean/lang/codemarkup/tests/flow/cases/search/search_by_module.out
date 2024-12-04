@@ -1,0 +1,27 @@
+[
+  "@generated",
+  {
+    "key": {
+      "flow": {
+        "decl": {
+          "localDecl": {
+            "key": {
+              "loc": {
+                "key": {
+                  "module": { "key": { "file": { "key": "test/a.js" } } },
+                  "span": { "length": 1, "start": 225 }
+                }
+              },
+              "name": { "key": "a" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "flow": { "module_": { "key": { "file": { "key": "test/a.js" } } } }
+    }
+  }
+]

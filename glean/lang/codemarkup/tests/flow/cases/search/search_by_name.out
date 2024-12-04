@@ -1,0 +1,35 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "flow": {
+          "decl": {
+            "memberDecl": {
+              "key": {
+                "loc": {
+                  "key": {
+                    "module": {
+                      "key": { "file": { "key": "test/exports.js" } }
+                    },
+                    "span": { "length": 5, "start": 106 }
+                  }
+                },
+                "name": { "key": "prop1" }
+              }
+            }
+          }
+        }
+      },
+      "kind": 8,
+      "language": 6,
+      "location": {
+        "file": { "key": "test/exports.js" },
+        "location": { "span": { "length": 14, "start": 106 } },
+        "name": "prop1"
+      },
+      "name": "prop1",
+      "searchcase": 0
+    }
+  }
+]
