@@ -67,7 +67,6 @@ predicate SearchByLowerCaseNameAndLanguage:
   { Name, Language, Entity } where
  # See SearchByLowerCaseNameKindAndLanguage
     ( Hack = Language; HackSearchByLowerCaseName { Name, Entity } ) |
-    ( JavaScript = Language; FlowSearchByLowerCaseName { Name, Entity } ) |
     ( Java = Language; JavaSearchByLowerCaseName { Name, Entity } ) |
     ( Kotlin = Language; KotlinSearchByLowerCaseName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByLowerCaseName { Name, Entity } ) |
@@ -117,6 +116,9 @@ predicate SearchByLowerCaseNameKindAndLanguage:
     ) | (
       Python = Language;
       PythonSearchByLowerCaseNameKindAndScopeFact { NameStr, _, Kinds, Entity }
+    ) | (
+      JavaScript = Language;
+      FlowSearchByLowerCaseNameKindAndScopeFact { NameStr, _, Kinds, Entity }
     )
 
 # scoped search
@@ -375,33 +377,6 @@ predicate PythonNameLowerCase :
       python.SearchVariableByLowerCaseName { NameLower, Name }
     );
 
-
-predicate FlowSearchByLowerCaseName:
-  {
-    name: string,
-    entity: code.Entity,
-  }
-  { NameStr, Entity } where
-    ( flow.NameLowerCase { NameStr, Name };
-      FlowSearchByNameWithFact { Name, Entity }
-    ) | (
-      flow.ModuleNameLowerCase { NameStr, Mod };
-      { flow = { module_ = Mod } } = Entity
-    )
-
-# helper to share Name fact in the lower case scenario
-#
-# Similar to C++ and Python, we don't include import declarations
-# in search results, as they are too noisy
-#
-predicate FlowSearchByNameWithFact:
-  {
-    name: flow.Name,
-    entity: code.Entity
-  }
-  { Name, { flow = { decl = Decl } } } where
-    search.flow.FlowSearchByNameNonImport { Name, Decl };
-
 # Flow scope search: just parent module -> decl pairs for now
 predicate FlowSearchByScope:
   {
@@ -439,6 +414,16 @@ predicate FlowSearchByScopeWithName:
     flow.ModuleContains { Module, Decl }; # filter on membership
     { flow = { decl = Decl } } = Entity;
 
+predicate FlowSearchByLowerCaseNameKindAndScopeFact:
+  {
+    name: string,
+    scope: maybe flow.Module,
+    kinds: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity
+  }
+  { NameStr, Scope, Kinds, Entity } where
+    FlowNameLowerCase { NameStr, Kinds, Name };
+    FlowSearchByNameKindAndScopeFact { Name, Scope, Kinds, Entity }
 
 # with a bare string name and a known scope, search by kind
 predicate FlowSearchByNameKindAndScopeFact:
@@ -479,6 +464,28 @@ predicate FlowSearchByNameKindAndScopeFact:
       nothing = MScope; # check its not scoped
       flow.SearchByModuleName { NameStr, Mod };
       { flow = { module_ = Mod } } = Entity
+    )
+
+# Maps lower-case strings to normal Names, for case-insensitive search
+predicate FlowNameLowerCase :
+  {
+    nameLowercase : string,
+    kinds: maybe codemarkup.types.SymbolKind,
+    name : string,
+  }
+  { NameStr, Kinds, Name } where
+    { just = Kind } = Kinds;
+    ( Object_ = Kind;
+      flow.SearchDeclarationByLowerCaseName { NameStr, Name }
+    ) | (
+      Property = Kind;
+      flow.SearchMemberDeclarationByLowerCaseName { NameStr, Name }
+    ) | (
+      Type = Kind;
+      flow.SearchTypeDeclarationByLowerCaseName { NameStr, Name }
+    ) | (
+      Module = Kind;
+      flow.SearchModuleByLowerCaseName { NameStr, Name }
     )
 
 predicate JavaSearchByName:

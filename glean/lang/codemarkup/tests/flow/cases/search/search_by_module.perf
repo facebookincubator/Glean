@@ -1,10 +1,12 @@
 {
   "@generated": null,
   "facts_searched": {
-    "flow.Declaration.3": 1,
     "flow.DeclarationInfo.3": 2,
-    "flow.ModuleNameLowerCase.3": 1,
-    "flow.NameLowerCase.3": 1
+    "flow.Module.3": 1,
+    "flow.SearchDeclarationByLowerCaseName.3": 1,
+    "flow.SearchDeclarationByName.3": 1,
+    "flow.SearchModuleByLowerCaseName.3": 1,
+    "flow.StringToFileModule.3": 1
   },
   "full_scans": [ ]
 }
