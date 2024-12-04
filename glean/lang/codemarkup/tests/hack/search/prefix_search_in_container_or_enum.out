@@ -1,0 +1,59 @@
+[
+  "@generated",
+  {
+    "key": {
+      "classConst": {
+        "key": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "SourceClass" } } } }
+            }
+          },
+          "name": { "key": "BAZ" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "method": {
+        "key": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "SourceClass" } } } }
+            }
+          },
+          "name": { "key": "bar" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "property_": {
+        "key": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "SourceClass" } } } }
+            }
+          },
+          "name": { "key": "daz" }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "typeConst": {
+        "key": {
+          "container": {
+            "class_": {
+              "key": { "name": { "key": { "name": { "key": "SourceClass" } } } }
+            }
+          },
+          "name": { "key": "T" }
+        }
+      }
+    }
+  }
+]

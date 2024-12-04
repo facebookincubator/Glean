@@ -1,0 +1,3 @@
+query: search.code.SearchByScope { name = "JAZZ", scope = ["SourceInterface"] }
+transform: [normord, []]
+perf: true

@@ -1,0 +1,28 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "typeConst": {
+              "key": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SourceClass" } } }
+                    }
+                  }
+                },
+                "name": { "key": "T" }
+              }
+            }
+          }
+        }
+      },
+      "language": 5,
+      "name": "T",
+      "scope": [ "SourceClass" ]
+    }
+  }
+]

@@ -1,0 +1,28 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                },
+                "name": { "key": "JAZZ" }
+              }
+            }
+          }
+        }
+      },
+      "language": 5,
+      "name": "JAZZ",
+      "scope": [ "RefClass" ]
+    }
+  }
+]

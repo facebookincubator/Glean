@@ -1,0 +1,26 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "Position" } } }
+                  }
+                },
+                "name": { "key": "Top" }
+              }
+            }
+          }
+        }
+      },
+      "language": 5,
+      "name": "Top",
+      "scope": [ "Position" ]
+    }
+  }
+]

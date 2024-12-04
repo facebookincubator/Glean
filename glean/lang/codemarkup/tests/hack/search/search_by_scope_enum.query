@@ -1,0 +1,3 @@
+query: search.code.SearchByScope { name = "Top", scope = ["Position"] }
+transform: [normord, []]
+perf: true

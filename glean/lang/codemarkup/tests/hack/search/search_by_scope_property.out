@@ -1,0 +1,28 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "RefClass" } } }
+                    }
+                  }
+                },
+                "name": { "key": "raz" }
+              }
+            }
+          }
+        }
+      },
+      "language": 5,
+      "name": "raz",
+      "scope": [ "RefClass" ]
+    }
+  }
+]

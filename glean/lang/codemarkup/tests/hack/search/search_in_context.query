@@ -1,0 +1,3 @@
+query: search.hack.SearchInContext { name = "BAZ", contextName = "SourceClass" }
+transform: [normord, []]
+perf: true

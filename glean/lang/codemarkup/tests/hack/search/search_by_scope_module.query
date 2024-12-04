@@ -1,0 +1,3 @@
+query: search.code.SearchByScope { name = "glean.test", scope = [] }
+transform: [normord, []]
+perf: true

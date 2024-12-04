@@ -1,0 +1,28 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "SuperClass" } } }
+                    }
+                  }
+                },
+                "name": { "key": "BAZ" }
+              }
+            }
+          }
+        }
+      },
+      "language": 5,
+      "name": "BAZ",
+      "scope": [ "SuperClass" ]
+    }
+  }
+]

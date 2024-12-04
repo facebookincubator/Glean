@@ -1,0 +1,77 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "container": {
+          "class_": {
+            "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+          }
+        }
+      },
+      "name": { "key": "RefClass" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "container": {
+          "class_": {
+            "key": { "name": { "key": { "name": { "key": "SourceClass" } } } }
+          }
+        }
+      },
+      "name": { "key": "SourceClass" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "container": {
+          "class_": {
+            "key": { "name": { "key": { "name": { "key": "SuperClass" } } } }
+          }
+        }
+      },
+      "name": { "key": "SuperClass" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "container": {
+          "enum_": {
+            "key": { "name": { "key": { "name": { "key": "Position" } } } }
+          }
+        }
+      },
+      "name": { "key": "Position" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "container": {
+          "interface_": {
+            "key": {
+              "name": { "key": { "name": { "key": "SourceInterface" } } }
+            }
+          }
+        }
+      },
+      "name": { "key": "SourceInterface" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "container": {
+          "trait": {
+            "key": { "name": { "key": { "name": { "key": "SourceTrait" } } } }
+          }
+        }
+      },
+      "name": { "key": "SourceTrait" }
+    }
+  }
+]

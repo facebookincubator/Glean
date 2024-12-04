@@ -1,0 +1,3 @@
+query: search.code.SearchByScope { name = "BAZ", scope = ["SuperClass"] }
+transform: [normord, []]
+perf: true

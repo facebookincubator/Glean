@@ -1,0 +1,3 @@
+query: search.hack.SearchTypeInNamespace _
+transform: [normord, []]
+perf: true

@@ -1,0 +1,3 @@
+query: search.hack.SearchInContext { name = "Right", contextName = "Position" }
+transform: [normord, []]
+perf: true

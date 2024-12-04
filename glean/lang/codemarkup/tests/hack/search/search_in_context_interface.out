@@ -1,0 +1,23 @@
+[
+  "@generated",
+  {
+    "key": {
+      "contextName": { "key": "SourceInterface" },
+      "decl": {
+        "method": {
+          "key": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceInterface" } } }
+                }
+              }
+            },
+            "name": { "key": "foo" }
+          }
+        }
+      },
+      "name": { "key": "foo" }
+    }
+  }
+]

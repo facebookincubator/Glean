@@ -1,0 +1,3 @@
+query: search.code.SearchByScope { name = "foo", scope = ["SourceInterface"] }
+transform: [normord, []]
+perf: true

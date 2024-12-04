@@ -1,0 +1,3 @@
+query: search.hack.SearchInContext { name = "foo", contextName = "SourceInterface" }
+transform: [normord, []]
+perf: true

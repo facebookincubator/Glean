@@ -1,0 +1,3 @@
+query: search.code.SearchByScope { name = "bar", scope = ["RefClass"] }
+transform: [normord, []]
+perf: true

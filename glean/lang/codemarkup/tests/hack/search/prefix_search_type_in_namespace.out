@@ -1,0 +1,77 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": "toplevel",
+      "tuplefield1": {
+        "container": {
+          "class_": {
+            "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "toplevel",
+      "tuplefield1": {
+        "container": {
+          "class_": {
+            "key": { "name": { "key": { "name": { "key": "SourceClass" } } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "toplevel",
+      "tuplefield1": {
+        "container": {
+          "class_": {
+            "key": { "name": { "key": { "name": { "key": "SuperClass" } } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "toplevel",
+      "tuplefield1": {
+        "container": {
+          "enum_": {
+            "key": { "name": { "key": { "name": { "key": "Position" } } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "toplevel",
+      "tuplefield1": {
+        "container": {
+          "interface_": {
+            "key": {
+              "name": { "key": { "name": { "key": "SourceInterface" } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": "toplevel",
+      "tuplefield1": {
+        "container": {
+          "trait": {
+            "key": { "name": { "key": { "name": { "key": "SourceTrait" } } } }
+          }
+        }
+      }
+    }
+  }
+]

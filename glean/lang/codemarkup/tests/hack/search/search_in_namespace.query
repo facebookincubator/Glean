@@ -1,0 +1,6 @@
+query: |
+  {N, D} where
+  (search.hack.SearchInNamespace { name = "bar", namespace_ = nothing, decl = D }; N = "toplevel") |
+  (search.hack.SearchInNamespace { name = "bar", namespace_ = { just = { name = "SourceClass", parent = nothing }}, decl = D}; N = "SourceClass" )
+transform: [normord, []]
+perf: true
