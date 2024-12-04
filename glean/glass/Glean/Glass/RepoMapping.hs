@@ -27,11 +27,13 @@ import Data.Text(Text)
 getRepoMapping :: IO RepoMapping
 getRepoMapping = return RepoMapping
   { gleanIndices = gleanIndices_
+  , gleanAttrIndices = Map.empty
   }
 
 fixedRepoMapping :: RepoMapping
 fixedRepoMapping = RepoMapping
   { gleanIndices = gleanIndices_
+  , gleanAttrIndices = Map.empty
   }
 
 -- example: the open source react repo.
