@@ -440,11 +440,12 @@ SetU32::merge(SetU32& result, const SetU32& left, const SetU32& right) {
   }
 }
 
-SetU32::MutableEliasFanoList SetU32::toEliasFano() {
-  auto upperBound = this->upper();
+SetU32::MutableEliasFanoList SetU32::toEliasFano(uint32_t upperBound) const {
+  auto max = this->upper();
+  // upperBound is a check only, to catch garbage before we store it
+  CHECK_LT(max, upperBound);
   size_t size = this->size();
-  folly::compression::EliasFanoEncoder<uint32_t, uint32_t> encoder(
-      size, upperBound);
+  folly::compression::EliasFanoEncoder<uint32_t, uint32_t> encoder(size, max);
 
   VLOG(5) << "upper=" << upperBound << ", size=" << size;
   foreach([&](uint32_t elt) { encoder.add(elt); });

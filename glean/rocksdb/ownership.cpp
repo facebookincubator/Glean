@@ -386,7 +386,9 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
     auto t = makeAutoTimer("storeOwnership(sets)");
     rocksdb::WriteBatch batch;
 
-    auto serialized = ownership.sets_.toEliasFano();
+    auto upper = ownership.sets_.getFirstId() + ownership.sets_.size();
+
+    auto serialized = ownership.sets_.toEliasFano(upper);
     uint32_t id = ownership.sets_.getFirstId();
     CHECK_GE(id, next_uset_id);
 
@@ -399,7 +401,7 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
       id++;
     }
 
-    next_uset_id = ownership.sets_.getFirstId() + ownership.sets_.size();
+    next_uset_id = upper;
     check(batch.Put(
         container_.family(Family::admin),
         toSlice(AdminId::NEXT_UNIT_ID),
@@ -949,7 +951,7 @@ void DatabaseImpl::addDefineOwnership(DefineOwnership& def) {
         usets_->promote(p);
         assert(next_uset_id == p->id);
         next_uset_id++;
-        auto ownerset = p->toEliasFano();
+        auto ownerset = p->toEliasFano(next_uset_id);
         putOwnerSet(container_, batch, p->id, ownerset.op, ownerset.set);
         ownerset.set.free();
         numNewSets++;

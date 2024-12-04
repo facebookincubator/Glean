@@ -117,7 +117,7 @@ struct Uset {
   };
 
   using MutableEliasFanoList = SetU32::MutableEliasFanoList;
-  SetExpr<MutableEliasFanoList> toEliasFano();
+  SetExpr<MutableEliasFanoList> toEliasFano(UsetId max) const;
 };
 
 /**
@@ -280,7 +280,7 @@ struct Usets {
   }
 
   using MutableEliasFanoList = SetU32::MutableEliasFanoList;
-  std::vector<SetExpr<MutableEliasFanoList>> toEliasFano();
+  std::vector<SetExpr<MutableEliasFanoList>> toEliasFano(UsetId max);
 
  private:
   folly::F14FastSet<Uset*, Uset::Hash, Uset::Eq> usets;

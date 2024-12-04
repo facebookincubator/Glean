@@ -287,7 +287,7 @@ TEST(OwnershipTest, SliceTest) {
 
   auto usets = buildExampleSets(units);
   auto firstUsetId = usets.getFirstId();
-  auto sets = usets.toEliasFano();
+  auto sets = usets.toEliasFano(usets.getFirstId() + usets.size());
   uint32_t numSets = usets.statistics().promoted;
 
   // One fact with each different set
@@ -314,7 +314,7 @@ struct SetSerializationTest : testing::Test {};
 RC_GTEST_PROP(SetSerializationTest, testSerialization, ()) {
   const auto set = *rc::gen::nonEmpty(rc::gen::arbitrary<std::set<uint32_t>>());
   SetU32 a = SetU32::from(set);
-  MutableOwnerSet b = a.toEliasFano();
+  MutableOwnerSet b = a.toEliasFano(a.upper() + 1);
   binary::Output o;
   serializeEliasFano(o, b);
   auto size = o.size();

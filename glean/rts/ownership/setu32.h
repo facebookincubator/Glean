@@ -525,7 +525,7 @@ class SetU32 {
   using MutableEliasFanoList =
       folly::compression::MutableEliasFanoCompressedList;
   using EliasFanoList = folly::compression::EliasFanoCompressedList;
-  MutableEliasFanoList toEliasFano();
+  MutableEliasFanoList toEliasFano(uint32_t upper) const;
   static SetU32 fromEliasFano(const EliasFanoList& list);
 
   static void dump(SetU32&);
