@@ -133,7 +133,6 @@ predicate SearchByScope:
   { Name, Scope, Language, Entity } where
 # See SearchByScopeAndKind for C++
     ( Hack = Language; HackSearchByScope { Name, Scope, Entity } ) |
-    ( JavaScript = Language; FlowSearchByScope { Name, Scope, Entity } ) |
     ( Java = Language; JavaSearchByScope { Name, Scope, Entity } ) |
     ( Kotlin = Language; KotlinSearchByScope { Name, Scope, Entity } );
     code.EntityLanguage { Entity, Language };
@@ -149,7 +148,6 @@ predicate SearchByLowerCaseScope:
   { Name, Scope, Language, Entity } where
 # See SearchByLowerCaseScopeAndKind for C++
     ( Hack = Language; HackSearchByLowerCaseScope { Name, Scope, Entity } ) |
-    ( JavaScript = Language; FlowSearchByLowerCaseScope { Name, Scope, Entity})|
     ( Java = Language; JavaSearchByLowerCaseScope { Name, Scope, Entity}) |
     ( Kotlin = Language; KotlinSearchByLowerCaseScope { Name, Scope, Entity});
     code.EntityLanguage { Entity, Language };
@@ -169,6 +167,9 @@ predicate SearchByScopeAndKind:
     ) | (
       Python = Language;
       PythonSearchByScopeAndKind { Name, Scope, Kinds, Entity };
+    ) | (
+      JavaScript = Language;
+      FlowSearchByScopeAndKind { Name, Scope, Kinds, Entity };
     )
 
 # lower case by scope
@@ -187,6 +188,9 @@ predicate SearchByLowerCaseScopeAndKind:
     ) | (
       Python = Language;
       PythonSearchByLowerCaseScopeAndKind { Name, Scope, Kinds, Entity };
+    ) | (
+      JavaScript = Language;
+      FlowSearchByLowerCaseScopeAndKind { Name, Scope, Kinds, Entity }
     )
 
 #
@@ -377,42 +381,29 @@ predicate PythonNameLowerCase :
       python.SearchVariableByLowerCaseName { NameLower, Name }
     );
 
-# Flow scope search: just parent module -> decl pairs for now
-predicate FlowSearchByScope:
+predicate FlowSearchByScopeAndKind:
   {
     name: string,
     scope: [string],
+    kinds: maybe codemarkup.types.SymbolKind,
     entity: code.Entity,
   }
-  { NameStr, Query, Entity } where
-    Name = flow.Name NameStr;
+  { NameStr, Query, Kinds, Entity } where
     Insensitive = false;
-    FlowSearchByScopeWithName { Name, Insensitive, Query, Entity }
+    search.flow.QueryToScopeCase { Query, Insensitive, Scope };
+    FlowSearchByNameKindAndScopeFact { NameStr, Scope, Kinds, Entity }
 
-predicate FlowSearchByLowerCaseScope:
+predicate FlowSearchByLowerCaseScopeAndKind:
   {
     name: string,
     scope: [string],
+    kinds: maybe codemarkup.types.SymbolKind,
     entity: code.Entity,
   }
-  { NameStr, Query, Entity } where
-    flow.NameLowerCase { NameStr, Name };
+  { NameStr, Query, Kinds, Entity } where
     Insensitive = true;
-    FlowSearchByScopeWithName { Name, Insensitive, Query, Entity }
-
-predicate FlowSearchByScopeWithName:
-  {
-    name: flow.Name,
-    insensitive : bool,
-    scope: [string],
-    entity: code.Entity,
-  }
-  { Name, Insensitive, Query, Entity } where
     search.flow.QueryToScopeCase { Query, Insensitive, Scope };
-    { just = Module } = Scope; # every decl is contained in something?
-    search.flow.FlowSearchByNameNonImport { Name, Decl };
-    flow.ModuleContains { Module, Decl }; # filter on membership
-    { flow = { decl = Decl } } = Entity;
+    FlowSearchByLowerCaseNameKindAndScopeFact { NameStr, Scope, Kinds, Entity };
 
 predicate FlowSearchByLowerCaseNameKindAndScopeFact:
   {

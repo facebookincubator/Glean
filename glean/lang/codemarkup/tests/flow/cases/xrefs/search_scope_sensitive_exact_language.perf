@@ -1,15 +1,14 @@
 {
   "@generated": null,
   "facts_searched": {
-    "flow.Declaration.3": 105,
-    "flow.DeclarationInfo.3": 4,
-    "flow.ImportDeclaration.3": 36,
-    "flow.MemberDeclaration.3": 18,
-    "flow.ModuleContains.3": 7,
-    "flow.ModuleNameLowerCase.3": 336,
-    "flow.NameLowerCase.3": 28,
-    "flow.TypeDeclaration.3": 30,
-    "flow.TypeImportDeclaration.3": 12
+    "flow.Module.3": 6,
+    "flow.ModuleNameLowerCase.3": 12,
+    "flow.SearchDeclarationByLowerCaseName.3": 92,
+    "flow.SearchMemberDeclarationByLowerCaseName.3": 24,
+    "flow.SearchMemberDeclarationByName.3": 1,
+    "flow.SearchModuleByLowerCaseName.3": 24,
+    "flow.SearchTypeDeclarationByLowerCaseName.3": 28,
+    "flow.StringToFileModule.3": 4
   },
   "full_scans": [ "flow.ModuleNameLowerCase.3", "src.File.1" ]
 }
