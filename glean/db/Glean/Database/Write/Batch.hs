@@ -232,6 +232,7 @@ reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
               doCommit
                 `finally`
               do atomically $ writeTVar (wrCommit writing) Nothing
+                 withMutex (wrLock writing) $ const $ release facts
 
       new_next_id <- Lookup.firstFreeId facts
       atomicWriteIORef (wrNextId writing) new_next_id
