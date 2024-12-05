@@ -145,6 +145,12 @@ struct DocumentSymbolsRequest {
 
   // include references?
   4: bool include_refs = true;
+
+  // include cross-languages references? they will be identified by an
+  // attribute "crossLanguage" in the result. Target location
+  // resolved using latest version of target db. This may add latency
+  // to the query. includes_refs must be set to true.
+  5: bool include_xlang_refs = false;
 }
 
 // response types

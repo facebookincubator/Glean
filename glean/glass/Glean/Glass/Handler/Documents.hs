@@ -186,7 +186,7 @@ translateMirroredRepoListXResult
   -> DocumentSymbolListXResult
   -> DocumentSymbolListXResult
 translateMirroredRepoListXResult
-  (DocumentSymbolsRequest repository path _ _) res =
+  (DocumentSymbolsRequest repository path _ _ _) res =
   case repoPathToMirror repository path of
     Just (Mirror mirror prefix origin) ->
       Utils.translateDocumentSymbolListXResult origin mirror prefix Nothing res
@@ -235,7 +235,7 @@ fetchSymbolsAndAttributesGlean
     oIncludeXlangRefs = case opts of
       RequestOptions { requestOptions_feature_flags = Just
         FeatureFlags { featureFlags_include_xlang_refs = Just True } } -> True
-      _ -> False
+      _ -> documentSymbolsRequest_include_xlang_refs req
 
     mlimit = Just (fromIntegral (fromMaybe mAXIMUM_SYMBOLS_QUERY_LIMIT
       (requestOptions_limit opts)))
