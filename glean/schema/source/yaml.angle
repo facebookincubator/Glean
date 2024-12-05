@@ -8,6 +8,7 @@ schema yaml.1 {
     type XRefViaName = {
         target: python.Name,
         source: src.ByteSpan,
+        decl: maybe python.Declaration,
     }
 
     # There is only one fact of this predicate per source file in the repo.
