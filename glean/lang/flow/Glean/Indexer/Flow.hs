@@ -60,8 +60,6 @@ indexer = Indexer {
             , "flow.ModuleContains"
             , "flow.ModuleComments"
 
-              -- deprecated, to replace:
-            , "flow.NameLowerCase"
               -- possibly deprecated
             , "flow.ModuleNameLowerCase"
 
