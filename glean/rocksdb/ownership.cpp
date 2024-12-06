@@ -446,6 +446,9 @@ void DatabaseImpl::storeOwnership(ComputedOwnership& ownership) {
       auto usetid = ownership.facts_[i].second;
       EncodedNat key(id.toWord());
       if (usetid != INVALID_USET || !hasOwner(key)) {
+        if (usetid != INVALID_USET) {
+          CHECK_LT(usetid, next_uset_id);
+        }
         // This is an interval map, and we might be writing multiple sparse sets
         // of intervals where the gaps are indicated by INVALID_USET. Therefore
         // don't overwrite an existing owner with INVALID_USET.
