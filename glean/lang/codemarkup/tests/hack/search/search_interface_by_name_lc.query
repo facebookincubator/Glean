@@ -1,0 +1,3 @@
+query: hack.SearchInterfaceByLowerCaseName { name_lowercase = "sourceinterface" }
+transform: [normord, []]
+perf: true

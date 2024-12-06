@@ -18,18 +18,6 @@
       "tuplefield1": {
         "container": {
           "class_": {
-            "key": { "name": { "key": { "name": { "key": "SourceClass" } } } }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "tuplefield0": "toplevel",
-      "tuplefield1": {
-        "container": {
-          "class_": {
             "key": { "name": { "key": { "name": { "key": "SuperClass" } } } }
           }
         }

@@ -5,6 +5,26 @@
       "decl": {
         "container": {
           "class_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Awaitable" },
+                  "namespace_": { "key": { "name": { "key": "HH" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "name": { "key": "Awaitable" },
+      "namespace_": { "key": { "name": { "key": "HH" } } }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "container": {
+          "class_": {
             "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
           }
         }
@@ -17,11 +37,19 @@
       "decl": {
         "container": {
           "class_": {
-            "key": { "name": { "key": { "name": { "key": "SourceClass" } } } }
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "SourceClass" },
+                  "namespace_": { "key": { "name": { "key": "NS" } } }
+                }
+              }
+            }
           }
         }
       },
-      "name": { "key": "SourceClass" }
+      "name": { "key": "SourceClass" },
+      "namespace_": { "key": { "name": { "key": "NS" } } }
     }
   },
   {
@@ -34,6 +62,26 @@
         }
       },
       "name": { "key": "SuperClass" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "container": {
+          "class_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "SuperClass" },
+                  "namespace_": { "key": { "name": { "key": "NS" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "name": { "key": "SuperClass" },
+      "namespace_": { "key": { "name": { "key": "NS" } } }
     }
   },
   {
@@ -72,6 +120,24 @@
         }
       },
       "name": { "key": "SourceTrait" }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "typedef_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "TopTierFnType" },
+                "namespace_": { "key": { "name": { "key": "NS" } } }
+              }
+            }
+          }
+        }
+      },
+      "name": { "key": "TopTierFnType" },
+      "namespace_": { "key": { "name": { "key": "NS" } } }
     }
   }
 ]

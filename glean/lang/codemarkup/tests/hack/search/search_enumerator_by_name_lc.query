@@ -1,0 +1,3 @@
+query: hack.SearchEnumeratorByLowerCaseName { name_lowercase = "top" }
+transform: [normord, []]
+perf: true

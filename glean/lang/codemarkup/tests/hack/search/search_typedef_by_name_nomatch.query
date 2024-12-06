@@ -1,0 +1,3 @@
+query: hack.SearchTypedefByName { name = "does not match" }
+transform: [normord, []]
+perf: true

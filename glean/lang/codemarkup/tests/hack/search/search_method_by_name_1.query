@@ -1,0 +1,3 @@
+query: hack.SearchMethodByName { name = "foo" }
+transform: [normord, []]
+perf: true

@@ -1,0 +1,3 @@
+query: hack.SearchFunctionByName { name = "corge" }
+transform: [normord, []]
+perf: true

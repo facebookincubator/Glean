@@ -1,0 +1,3 @@
+query: hack.SearchInterfaceByName { name = _ }
+transform: [normord, []]
+perf: true

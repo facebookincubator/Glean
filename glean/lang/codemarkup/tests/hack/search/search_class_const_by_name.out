@@ -1,0 +1,53 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "classConst": {
+          "key": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "SourceClass" },
+                      "namespace_": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
+                }
+              }
+            },
+            "name": { "key": "BAZ" }
+          }
+        }
+      },
+      "name": "BAZ",
+      "parent": {
+        "key": {
+          "name": { "key": "SourceClass" },
+          "namespace_": { "key": { "name": { "key": "NS" } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "classConst": {
+          "key": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SuperClass" } } }
+                }
+              }
+            },
+            "name": { "key": "BAZ" }
+          }
+        }
+      },
+      "name": "BAZ",
+      "parent": { "key": { "name": { "key": "SuperClass" } } }
+    }
+  }
+]

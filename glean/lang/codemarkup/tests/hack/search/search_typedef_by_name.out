@@ -1,0 +1,21 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "typedef_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "TopTierFnType" },
+                "namespace_": { "key": { "name": { "key": "NS" } } }
+              }
+            }
+          }
+        }
+      },
+      "name": "TopTierFnType",
+      "parent": { "key": { "name": { "key": "NS" } } }
+    }
+  }
+]

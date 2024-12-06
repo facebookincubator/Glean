@@ -1,0 +1,3 @@
+query: hack.SearchClassConstByName { name = "BAZ" }
+transform: [normord, []]
+perf: true

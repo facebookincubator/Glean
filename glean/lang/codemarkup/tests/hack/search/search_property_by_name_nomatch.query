@@ -1,0 +1,3 @@
+query: hack.SearchPropertyByLowerCaseName { name = "does not match" }
+transform: [normord, []]
+perf: true

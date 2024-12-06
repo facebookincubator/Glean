@@ -1,0 +1,3 @@
+query: hack.SearchModuleByName { name = _ }
+transform: [normord, []]
+perf: true

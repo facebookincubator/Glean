@@ -1,0 +1,83 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "enumerator": {
+          "key": {
+            "enumeration": {
+              "key": { "name": { "key": { "name": { "key": "Position" } } } }
+            },
+            "name": { "key": "Bottom" }
+          }
+        }
+      },
+      "name": "Bottom",
+      "parent": { "key": { "name": { "key": "Position" } } }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "enumerator": {
+          "key": {
+            "enumeration": {
+              "key": { "name": { "key": { "name": { "key": "Position" } } } }
+            },
+            "name": { "key": "Center" }
+          }
+        }
+      },
+      "name": "Center",
+      "parent": { "key": { "name": { "key": "Position" } } }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "enumerator": {
+          "key": {
+            "enumeration": {
+              "key": { "name": { "key": { "name": { "key": "Position" } } } }
+            },
+            "name": { "key": "Left" }
+          }
+        }
+      },
+      "name": "Left",
+      "parent": { "key": { "name": { "key": "Position" } } }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "enumerator": {
+          "key": {
+            "enumeration": {
+              "key": { "name": { "key": { "name": { "key": "Position" } } } }
+            },
+            "name": { "key": "Right" }
+          }
+        }
+      },
+      "name": "Right",
+      "parent": { "key": { "name": { "key": "Position" } } }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "enumerator": {
+          "key": {
+            "enumeration": {
+              "key": { "name": { "key": { "name": { "key": "Position" } } } }
+            },
+            "name": { "key": "Top" }
+          }
+        }
+      },
+      "name": "Top",
+      "parent": { "key": { "name": { "key": "Position" } } }
+    }
+  }
+]

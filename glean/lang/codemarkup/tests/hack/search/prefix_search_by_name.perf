@@ -2,7 +2,7 @@
   "@generated": null,
   "facts_searched": {
     "hack.ClassConstDeclaration.6": 4,
-    "hack.ClassDeclaration.6": 3,
+    "hack.ClassDeclaration.6": 5,
     "hack.EnumDeclaration.6": 1,
     "hack.Enumerator.6": 5,
     "hack.FunctionDeclaration.6": 1,
@@ -10,11 +10,14 @@
     "hack.InterfaceDeclaration.6": 1,
     "hack.MethodDeclaration.6": 7,
     "hack.ModuleDeclaration.6": 1,
-    "hack.Name.6": 29,
+    "hack.Name.6": 33,
+    "hack.NamespaceDeclaration.6": 1,
+    "hack.NamespaceQName.6": 5,
     "hack.PropertyDeclaration.6": 2,
-    "hack.QName.6": 8,
+    "hack.QName.6": 11,
     "hack.TraitDeclaration.6": 1,
-    "hack.TypeConstDeclaration.6": 1
+    "hack.TypeConstDeclaration.6": 1,
+    "hack.TypedefDeclaration.6": 1
   },
   "full_scans": [ ]
 }

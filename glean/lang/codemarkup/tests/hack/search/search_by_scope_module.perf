@@ -1,5 +1,9 @@
 {
   "@generated": null,
-  "facts_searched": { "hack.ModuleDeclaration.6": 1, "hack.Name.6": 1 },
+  "facts_searched": {
+    "hack.ModuleDeclaration.6": 1,
+    "hack.Name.6": 2,
+    "hack.NamespaceQName.6": 1
+  },
   "full_scans": [ ]
 }

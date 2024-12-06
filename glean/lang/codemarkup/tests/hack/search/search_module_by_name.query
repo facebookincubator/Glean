@@ -1,0 +1,3 @@
+query: hack.SearchClassByName { name = _ }
+transform: [normord, []]
+perf: true

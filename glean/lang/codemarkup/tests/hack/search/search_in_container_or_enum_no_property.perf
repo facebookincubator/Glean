@@ -1,10 +1,5 @@
 {
   "@generated": null,
-  "facts_searched": {
-    "hack.ClassDeclaration.6": 1,
-    "hack.ClassDefinition.6": 1,
-    "hack.Name.6": 1,
-    "hack.QName.6": 3
-  },
+  "facts_searched": { "hack.Name.6": 1 },
   "full_scans": [ "hack.Enumerator.6" ]
 }

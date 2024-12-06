@@ -50,7 +50,7 @@ indexer = Indexer {
             , "${JSON_BATCH_DIR}"
             ] <> hhConfig,
           extDerivePredicates =
-            [ "hack.NameLowerCase"
+            [ "hack.NameLowerCase" -- retire me
             , "hack.AttributeToDefinition"
             , "hack.AttributeHasParameter"
             , "hack.NamespaceMember"
@@ -61,6 +61,35 @@ indexer = Indexer {
             , "hack.TargetUses"
             , "hack.AttributeToDeclaration"
             , "hack.ThriftToHack"
+            -- new search predicates replacing hack.NameLowerCase
+            , "hack.SearchClassConstByName"
+            , "hack.SearchClassConstByLowerCaseName"
+            , "hack.SearchEnumeratorByName"
+            , "hack.SearchEnumeratorByLowerCaseName"
+            , "hack.SearchMethodByName"
+            , "hack.SearchMethodByLowerCaseName"
+            , "hack.SearchPropertyByName"
+            , "hack.SearchPropertyByLowerCaseName"
+            , "hack.SearchTypeConstByName"
+            , "hack.SearchTypeConstByLowerCaseName"
+            , "hack.SearchModuleByName"
+            , "hack.SearchModuleByLowerCaseName"
+            , "hack.SearchClassByName"
+            , "hack.SearchClassByLowerCaseName"
+            , "hack.SearchInterfaceByName"
+            , "hack.SearchInterfaceByLowerCaseName"
+            , "hack.SearchTraitByName"
+            , "hack.SearchTraitByLowerCaseName"
+            , "hack.SearchEnumByName"
+            , "hack.SearchEnumByLowerCaseName"
+            , "hack.SearchFunctionByName"
+            , "hack.SearchFunctionByLowerCaseName"
+            , "hack.SearchGlobalConstByName"
+            , "hack.SearchGlobalConstByLowerCaseName"
+            , "hack.SearchTypedefByName"
+            , "hack.SearchTypedefByLowerCaseName"
+            , "hack.SearchNamespaceByName"
+            , "hack.SearchNamespaceByLowerCaseName"
             ]
         }
 

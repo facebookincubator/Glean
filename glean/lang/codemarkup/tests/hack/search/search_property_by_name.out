@@ -1,0 +1,21 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "property_": {
+          "key": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            },
+            "name": { "key": "raz" }
+          }
+        }
+      },
+      "name": "raz",
+      "parent": { "key": { "name": { "key": "RefClass" } } }
+    }
+  }
+]

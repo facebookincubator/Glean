@@ -1,0 +1,3 @@
+query: hack.SearchModuleByLowerCaseName { name = "does not match" }
+transform: [normord, []]
+perf: true

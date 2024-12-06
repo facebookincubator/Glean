@@ -1,0 +1,3 @@
+query: hack.SearchClassConstByLowerCaseName { name_lowercase = "baz" }
+transform: [normord, []]
+perf: true

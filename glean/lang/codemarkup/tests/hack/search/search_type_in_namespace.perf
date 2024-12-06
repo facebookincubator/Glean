@@ -1,11 +1,12 @@
 {
   "@generated": null,
   "facts_searched": {
-    "hack.ClassDeclaration.6": 3,
+    "hack.ClassDeclaration.6": 5,
     "hack.EnumDeclaration.6": 1,
     "hack.InterfaceDeclaration.6": 1,
-    "hack.QName.6": 8,
-    "hack.TraitDeclaration.6": 1
+    "hack.QName.6": 11,
+    "hack.TraitDeclaration.6": 1,
+    "hack.TypedefDeclaration.6": 1
   },
   "full_scans": [ "hack.QName.6" ]
 }

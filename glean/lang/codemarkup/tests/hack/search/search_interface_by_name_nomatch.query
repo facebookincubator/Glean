@@ -1,0 +1,3 @@
+query: hack.SearchInterfaceByLowerCaseName { name = "does not match" }
+transform: [normord, []]
+perf: true

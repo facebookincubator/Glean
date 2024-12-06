@@ -1,0 +1,3 @@
+query: hack.SearchClassConstByName _
+transform: [normord, []]
+perf: true

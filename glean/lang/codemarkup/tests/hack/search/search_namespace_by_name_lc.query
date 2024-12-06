@@ -1,0 +1,3 @@
+query: hack.SearchNamespaceByLowerCaseName { name_lowercase = "ns" }
+transform: [normord, []]
+perf: true

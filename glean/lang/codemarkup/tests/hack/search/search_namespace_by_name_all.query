@@ -1,0 +1,3 @@
+query: hack.SearchNamespaceByName { name = _ }
+transform: [normord, []]
+perf: true

@@ -1,0 +1,147 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "method": {
+          "key": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            },
+            "name": { "key": "bar" }
+          }
+        }
+      },
+      "name": "bar",
+      "parent": { "key": { "name": { "key": "RefClass" } } }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "method": {
+          "key": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            },
+            "name": { "key": "bazza" }
+          }
+        }
+      },
+      "name": "bazza",
+      "parent": { "key": { "name": { "key": "RefClass" } } }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "method": {
+          "key": {
+            "container": {
+              "class_": {
+                "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+              }
+            },
+            "name": { "key": "foo" }
+          }
+        }
+      },
+      "name": "foo",
+      "parent": { "key": { "name": { "key": "RefClass" } } }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "method": {
+          "key": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "SourceClass" },
+                      "namespace_": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
+                }
+              }
+            },
+            "name": { "key": "bar" }
+          }
+        }
+      },
+      "name": "bar",
+      "parent": {
+        "key": {
+          "name": { "key": "SourceClass" },
+          "namespace_": { "key": { "name": { "key": "NS" } } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "method": {
+          "key": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SuperClass" } } }
+                }
+              }
+            },
+            "name": { "key": "superAdd" }
+          }
+        }
+      },
+      "name": "superAdd",
+      "parent": { "key": { "name": { "key": "SuperClass" } } }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "method": {
+          "key": {
+            "container": {
+              "interface_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceInterface" } } }
+                }
+              }
+            },
+            "name": { "key": "foo" }
+          }
+        }
+      },
+      "name": "foo",
+      "parent": { "key": { "name": { "key": "SourceInterface" } } }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "method": {
+          "key": {
+            "container": {
+              "trait": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceTrait" } } }
+                }
+              }
+            },
+            "name": { "key": "quux" }
+          }
+        }
+      },
+      "name": "quux",
+      "parent": { "key": { "name": { "key": "SourceTrait" } } }
+    }
+  }
+]

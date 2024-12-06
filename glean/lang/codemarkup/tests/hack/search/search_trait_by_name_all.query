@@ -1,0 +1,3 @@
+query: hack.SearchTraitByName { name = _ }
+transform: [normord, []]
+perf: true

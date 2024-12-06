@@ -3,13 +3,19 @@
   {
     "key": {
       "contextName": { "key": "SourceClass" },
+      "contextNamespace": { "key": { "name": { "key": "NS" } } },
       "decl": {
         "classConst": {
           "key": {
             "container": {
               "class_": {
                 "key": {
-                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                  "name": {
+                    "key": {
+                      "name": { "key": "SourceClass" },
+                      "namespace_": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
                 }
               }
             },

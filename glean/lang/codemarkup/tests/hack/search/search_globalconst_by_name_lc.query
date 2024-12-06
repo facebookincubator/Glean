@@ -1,0 +1,3 @@
+query: hack.SearchGlobalConstByLowerCaseName { name_lowercase = "waldo" }
+transform: [normord, []]
+perf: true

@@ -1,0 +1,87 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": {
+        "container": {
+          "class_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "Awaitable" },
+                  "namespace_": { "key": { "name": { "key": "HH" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "name": "Awaitable",
+      "parent": { "key": { "name": { "key": "HH" } } }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "container": {
+          "class_": {
+            "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
+          }
+        }
+      },
+      "name": "RefClass"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "container": {
+          "class_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "SourceClass" },
+                  "namespace_": { "key": { "name": { "key": "NS" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "name": "SourceClass",
+      "parent": { "key": { "name": { "key": "NS" } } }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "container": {
+          "class_": {
+            "key": { "name": { "key": { "name": { "key": "SuperClass" } } } }
+          }
+        }
+      },
+      "name": "SuperClass"
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "container": {
+          "class_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "SuperClass" },
+                  "namespace_": { "key": { "name": { "key": "NS" } } }
+                }
+              }
+            }
+          }
+        }
+      },
+      "name": "SuperClass",
+      "parent": { "key": { "name": { "key": "NS" } } }
+    }
+  }
+]

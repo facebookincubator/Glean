@@ -852,4 +852,255 @@ predicate ThriftToHack:
   stored { To, From }
     where hack.HackToThrift { From, To }
 
-}
+#
+# kind-oriented search. We have one table for string to decl for each kind,
+# and one table of lowercase name to normal name for each kind. the keys to the
+# decl form are always the local namestr and parent scope.
+#
+# no more searching through all hack.Name facts.
+#
+
+predicate SearchClassConstByName:
+  {
+    name: string,
+    parent: QName, # parent container
+    decl: hack.Declaration
+  } stored { NameStr, Parent, Decl } where
+    D = hack.ClassConstDeclaration { Name NameStr, C };
+    ContainerDeclarationQName C -> Parent;
+    { classConst = D } = Decl
+
+predicate SearchClassConstByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    hack.ClassConstDeclaration { name = Name NameStr }
+
+predicate SearchEnumeratorByName:
+  {
+    name: string,
+    parent: QName, # parent container
+    decl: hack.Declaration
+  } stored { NameStr, Parent, Decl } where
+    D = hack.Enumerator { Name NameStr, { name = Parent } };
+    { enumerator = D } = Decl
+
+predicate SearchEnumeratorByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    hack.Enumerator { name = Name NameStr }
+
+predicate SearchMethodByName:
+  {
+    name: string,
+    parent: QName, # parent container
+    decl: hack.Declaration
+  } stored { NameStr, Parent, Decl } where
+    D = hack.MethodDeclaration { Name NameStr, C };
+    ContainerDeclarationQName C -> Parent;
+    { method = D } = Decl
+
+predicate SearchMethodByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    hack.MethodDeclaration { name = Name NameStr }
+
+predicate SearchPropertyByName:
+  {
+    name: string,
+    parent: QName, # parent container
+    decl: hack.Declaration
+  } stored { NameStr, Parent, Decl } where
+    D = hack.PropertyDeclaration { Name NameStr, C };
+    ContainerDeclarationQName C -> Parent;
+    { property_ = D } = Decl
+
+predicate SearchPropertyByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    hack.PropertyDeclaration { name = Name NameStr }
+
+predicate SearchTypeConstByName:
+  {
+    name: string,
+    parent: QName, # parent container
+    decl: hack.Declaration
+  } stored { NameStr, Parent, Decl } where
+    D = hack.TypeConstDeclaration { Name NameStr, C };
+    ContainerDeclarationQName C -> Parent;
+    { typeConst = D } = Decl
+
+predicate SearchTypeConstByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    hack.TypeConstDeclaration { name = Name NameStr }
+
+predicate SearchModuleByName:
+  {
+    name: string,
+    decl: hack.Declaration
+  } stored { NameStr, Decl } where
+    D = hack.ModuleDeclaration { name = Name NameStr };
+    { module = D } = Decl
+
+predicate SearchModuleByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    hack.ModuleDeclaration { name = Name NameStr }
+
+predicate SearchClassByName:
+  {
+    name: string,
+    parent: maybe NamespaceQName,
+    decl: hack.Declaration
+  } stored { NameStr, Parent, Decl } where
+    D = hack.ClassDeclaration { name = QName };
+    { Name NameStr, Parent } = QName;
+    { container = { class_ = D } } = Decl
+
+predicate SearchClassByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    hack.ClassDeclaration { name = QName };
+    { name = Name NameStr } = QName
+
+predicate SearchInterfaceByName:
+  {
+    name: string,
+    parent: maybe NamespaceQName,
+    decl: hack.Declaration
+  } stored { NameStr, Parent, Decl } where
+    D = hack.InterfaceDeclaration { name = QName };
+    { Name NameStr, Parent } = QName;
+    { container = { interface_ = D } } = Decl
+
+predicate SearchInterfaceByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    hack.InterfaceDeclaration { name = QName };
+    { name = Name NameStr } = QName
+
+predicate SearchTraitByName:
+  {
+    name: string,
+    parent: maybe NamespaceQName,
+    decl: hack.Declaration
+  } stored { NameStr, Parent, Decl } where
+    D = hack.TraitDeclaration { name = QName };
+    { Name NameStr, Parent } = QName;
+    { container = { trait = D } } = Decl
+
+predicate SearchTraitByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    hack.TraitDeclaration { name = QName };
+    { name = Name NameStr } = QName
+
+predicate SearchEnumByName:
+  {
+    name: string,
+    parent: maybe NamespaceQName,
+    decl: hack.Declaration
+  } stored { NameStr, Parent, Decl } where
+    D = hack.EnumDeclaration { name = QName };
+    { Name NameStr, Parent } = QName;
+    { container = { enum_ = D } } = Decl
+
+predicate SearchEnumByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    hack.EnumDeclaration { name = QName };
+    { name = Name NameStr } = QName
+
+predicate SearchFunctionByName:
+  {
+    name: string,
+    parent: maybe NamespaceQName,
+    decl: hack.Declaration
+  } stored { NameStr, Parent, Decl } where
+    D = hack.FunctionDeclaration { name = QName };
+    { Name NameStr, Parent } = QName;
+    { function_ = D } = Decl
+
+predicate SearchFunctionByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    hack.FunctionDeclaration { name = QName };
+    { name = Name NameStr } = QName
+
+predicate SearchGlobalConstByName:
+  {
+    name: string,
+    parent: maybe NamespaceQName,
+    decl: hack.Declaration
+  } stored { NameStr, Parent, Decl } where
+    D = hack.GlobalConstDeclaration { name = QName };
+    { Name NameStr, Parent } = QName;
+    { globalConst = D } = Decl
+
+predicate SearchGlobalConstByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    hack.GlobalConstDeclaration { name = QName };
+    { name = Name NameStr } = QName
+
+predicate SearchTypedefByName:
+  {
+    name: string,
+    parent: maybe NamespaceQName,
+    decl: hack.Declaration
+  } stored { NameStr, Parent, Decl } where
+    D = hack.TypedefDeclaration { name = QName };
+    { Name NameStr, Parent } = QName;
+    { typedef_ = D } = Decl
+
+predicate SearchTypedefByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    hack.TypedefDeclaration { name = QName };
+    { name = Name NameStr } = QName
+
+predicate SearchNamespaceByName:
+  {
+    name: string,
+    parent: maybe NamespaceQName,
+    decl: hack.Declaration
+  } stored { NameStr, Parent, Decl } where
+    D = hack.NamespaceDeclaration { name = NSQName };
+    { Name NameStr, Parent } = NSQName;
+    { namespace_ = D } = Decl
+
+predicate SearchNamespaceByLowerCaseName:
+  {
+    name_lowercase: string,
+    name: string
+  } stored { prim.toLower NameStr, NameStr } where
+    hack.NamespaceDeclaration { name = NSQName };
+    { name = Name NameStr } = NSQName
+
+} # end hack.angle

@@ -29,7 +29,12 @@
               "container": {
                 "class_": {
                   "key": {
-                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "SourceClass" },
+                        "namespace_": { "key": { "name": { "key": "NS" } } }
+                      }
+                    }
                   }
                 }
               },
@@ -86,6 +91,26 @@
         "decl": {
           "container": {
             "class_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "Awaitable" },
+                    "namespace_": { "key": { "name": { "key": "HH" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "container": {
+            "class_": {
               "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
             }
           }
@@ -99,7 +124,14 @@
         "decl": {
           "container": {
             "class_": {
-              "key": { "name": { "key": { "name": { "key": "SourceClass" } } } }
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "SourceClass" },
+                    "namespace_": { "key": { "name": { "key": "NS" } } }
+                  }
+                }
+              }
             }
           }
         }
@@ -113,6 +145,26 @@
           "container": {
             "class_": {
               "key": { "name": { "key": { "name": { "key": "SuperClass" } } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "container": {
+            "class_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "SuperClass" },
+                    "namespace_": { "key": { "name": { "key": "NS" } } }
+                  }
+                }
+              }
             }
           }
         }
@@ -331,7 +383,12 @@
               "container": {
                 "class_": {
                   "key": {
-                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "SourceClass" },
+                        "namespace_": { "key": { "name": { "key": "NS" } } }
+                      }
+                    }
                   }
                 }
               },
@@ -413,6 +470,17 @@
     "key": {
       "hack": {
         "decl": {
+          "namespace_": {
+            "key": { "name": { "key": { "name": { "key": "NS" } } } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
           "property_": {
             "key": {
               "container": {
@@ -438,7 +506,12 @@
               "container": {
                 "class_": {
                   "key": {
-                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "SourceClass" },
+                        "namespace_": { "key": { "name": { "key": "NS" } } }
+                      }
+                    }
                   }
                 }
               },
@@ -458,11 +531,34 @@
               "container": {
                 "class_": {
                   "key": {
-                    "name": { "key": { "name": { "key": "SourceClass" } } }
+                    "name": {
+                      "key": {
+                        "name": { "key": "SourceClass" },
+                        "namespace_": { "key": { "name": { "key": "NS" } } }
+                      }
+                    }
                   }
                 }
               },
               "name": { "key": "T" }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "hack": {
+        "decl": {
+          "typedef_": {
+            "key": {
+              "name": {
+                "key": {
+                  "name": { "key": "TopTierFnType" },
+                  "namespace_": { "key": { "name": { "key": "NS" } } }
+                }
+              }
             }
           }
         }

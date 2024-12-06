@@ -1,0 +1,3 @@
+query: hack.SearchTypedefByName { name = "TopTierFnType" }
+transform: [normord, []]
+perf: true

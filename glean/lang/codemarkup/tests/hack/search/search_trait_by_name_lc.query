@@ -1,0 +1,3 @@
+query: hack.SearchTraitByLowerCaseName { name_lowercase = "sourcetrait" }
+transform: [normord, []]
+perf: true

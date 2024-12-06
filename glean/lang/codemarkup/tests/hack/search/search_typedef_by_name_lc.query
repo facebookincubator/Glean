@@ -1,0 +1,3 @@
+query: hack.SearchTypedefByLowerCaseName { name_lowercase = "toptierfntype" }
+transform: [normord, []]
+perf: true
