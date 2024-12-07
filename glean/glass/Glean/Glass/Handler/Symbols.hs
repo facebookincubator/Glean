@@ -84,8 +84,7 @@ import Glean.Glass.NameSearch (
     toSearchResult, ToSearchResult(..), AngleSearch(..), srEntity,
     buildLuckyContainerQuery, buildSearchQuery
   )
-import Glean.Glass.XRefs
-  ( GenXRef(..) )
+import Glean.Glass.XRefs ( GenXRef(..) )
 import Glean.Glass.Search as Search
     ( CodeEntityLocation(..),
       SearchEntity(..),
@@ -633,41 +632,64 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
       backendRunHaxl GleanBackend{..} env $ do
         entity <- searchFirstEntity lang toks
         withRepo (entityRepo entity) $ do
-          (entityPairs, merr) <- case searchRelatedRequest_relatedBy of
-            RelationType_Calls ->
-              searchRelatedCalls repo searchRelatedRequest_relation entity lang
+          (symPairs, desc, merr) <- case searchRelatedRequest_relatedBy of
+            RelationType_Calls -> do
+              (entityPairs, merr) <-
+                searchRelatedCalls
+                  repo searchRelatedRequest_relation entity lang
+              desc <- descriptions repo entityPairs dbInfo
+              let symPairs = symbolIdPairs entityPairs
+              return (symPairs, desc, merr)
+            RelationType_Generates -> do
+              (symPairs, merr) <-
+                searchRelatedGenerate
+                  repo searchRelatedRequest_relation entity lang
+              return (symPairs, Map.empty, merr)
             _ -> do
-              relatedLocatedEntities <-
-                      Search.searchRelatedEntities limit
-                        Search.ShowAll
-                        searchRecursively
-                        searchRelatedRequest_relation
-                        searchRelatedRequest_relatedBy
-                        (fst4 (decl entity))
-                        repo
-              return ((,Nothing) <$> relatedLocatedEntities, Nothing)
-
-          descriptions <- if searchRelatedRequest_detailedResults
-            then do
-              let uniqSymIds = uniqBy (comparing snd) $ concat
-                    [ [ e1, e2 ]
-                    | (Search.RelatedLocatedEntities e1 e2, _) <- entityPairs ]
-              let scmRevs = scmRevisions dbInfo
-              descs <- mapM (mkDescribe repo scmRevs) uniqSymIds
-                -- carefully in parallel!
-              pure $ Map.fromAscList descs
-            else pure mempty
-
-          let symbolIdPairs =
-                map (\(Search.RelatedLocatedEntities{..}, ranges) ->
-                  RelatedSymbols (snd parentRL) (snd childRL) ranges
-                ) entityPairs
+              (entityPairs, merr) <- do
+                relatedLocatedEntities <-
+                        Search.searchRelatedEntities limit
+                          Search.ShowAll
+                          searchRecursively
+                          searchRelatedRequest_relation
+                          searchRelatedRequest_relatedBy
+                          (fst4 (decl entity))
+                          repo
+                return ((,Nothing) <$> relatedLocatedEntities, Nothing)
+              desc <- descriptions repo entityPairs dbInfo
+              let symPairs = symbolIdPairs entityPairs
+              return (symPairs, desc, merr)
           let result = SearchRelatedResult
-                { searchRelatedResult_edges = symbolIdPairs
-                , searchRelatedResult_symbolDetails = descriptions
+                { searchRelatedResult_edges = symPairs
+                , searchRelatedResult_symbolDetails = desc
                 }
           pure (result, merr)
+
   where
+    symbolIdPairs
+      :: [(RelatedLocatedEntities, Maybe [LocationRange])] -> [RelatedSymbols]
+    symbolIdPairs entityPairs =
+      map (\(Search.RelatedLocatedEntities{..}, ranges) ->
+        RelatedSymbols (snd parentRL) (snd childRL) ranges
+      ) entityPairs
+
+    descriptions
+      :: RepoName
+      -> [(RelatedLocatedEntities, Maybe [LocationRange])]
+      -> GleanDBInfo
+      -> RepoHaxl u w (Map.Map Text SymbolDescription)
+    descriptions repo entityPairs dbInfo =
+     if searchRelatedRequest_detailedResults
+        then do
+          let uniqSymIds = uniqBy (comparing snd) $ concat
+                [ [ e1, e2 ]
+                | (Search.RelatedLocatedEntities e1 e2, _) <- entityPairs ]
+          let scmRevs = scmRevisions dbInfo
+          descs <- mapM (mkDescribe repo scmRevs) uniqSymIds
+            -- carefully in parallel!
+          pure $ Map.fromAscList descs
+        else pure mempty
+
     -- building map of sym id -> descriptions, by first occurence
     mkDescribe repo scmRevs e@(_,SymbolId rawSymId) = (rawSymId,) <$>
       describe repo scmRevs e
@@ -694,6 +716,34 @@ searchRelated env@Glass.Env{..} sym opts@RequestOptions{..}
         NonEmpty.filter (supportsCxxDeclarationSources . fst)
       | otherwise
       = id
+
+    searchRelatedGenerate
+      :: RepoName
+      -> RelationDirection
+      -> SearchEntity (ResultLocation Code.Entity)
+      -> Language
+      -> RepoHaxl u w
+          ([RelatedSymbols], Maybe ErrorLogger)
+    searchRelatedGenerate repoName RelationDirection_Parent child _ = do
+      let SearchEntity{decl = (decl, _file, _rangespan, _name)} = child
+      case entityToAngle decl of
+        Left err -> do
+          repo <- Glean.haxlRepo
+          return
+            ([], Just (logError (GlassExceptionReason_entityNotSupported err)
+                    <> logError repo)
+            )
+        Right query -> do
+          results <- searchWithLimit Nothing $
+            Query.generatedEntityToIdlEntity query
+          idlDef <- forM results $ \(entity, file) -> do
+            gleanPath <- GleanPath <$> Glean.keyOf file
+            parentSymbol <- toSymbolId (fromGleanPath repoName gleanPath) entity
+            return  $ RelatedSymbols parentSymbol sym Nothing
+          return (idlDef, Nothing)
+
+    -- TODO implement RelationDirection_Child
+    searchRelatedGenerate _ _ _ _ = return ([], Nothing)
 
     -- Implements Call hierarchy (check LSP spec)
     searchRelatedCalls

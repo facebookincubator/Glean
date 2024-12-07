@@ -598,6 +598,7 @@ enum RelationType {
   RequireImplements = 4,
   RequireExtends = 5,
   RequireClass = 6,
+  Generates = 7,
 }
 
 enum RelationDirection {

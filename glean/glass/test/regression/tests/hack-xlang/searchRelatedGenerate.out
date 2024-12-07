@@ -1,0 +1,12 @@
+[
+    "@generated",
+    {
+        "edges": [
+            {
+                "child": "test-xlang/php/ResponseCard/:prop/static_card",
+                "parent": "test-xlang/thrift/www/test.thrift/ResponseCard/static_card"
+            }
+        ],
+        "symbolDetails": {}
+    }
+]

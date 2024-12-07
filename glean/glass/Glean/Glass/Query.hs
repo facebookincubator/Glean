@@ -26,6 +26,9 @@ module Glean.Glass.Query
   , findReferenceEntities
   , findReferenceEntitiesFast
 
+  -- * Finding source definitions for generated entities
+  , generatedEntityToIdlEntity
+
   -- * offsets and conversions to lines
   , fileLines
 
@@ -144,6 +147,23 @@ findReferenceRangeSpan ent =
           field @"range" rangespan
         end
       )
+    ]
+
+generatedEntityToIdlEntity
+  :: Angle Code.Entity
+  -> Angle (Code.Entity, Src.File)
+generatedEntityToIdlEntity entity =
+  vars $ \(idlEntity :: Angle Code.Entity) (file :: Angle Src.File) ->
+    tuple (idlEntity, file) `where_` [
+      wild .=
+        predicate @Code.GeneratedEntityToIdlEntity (
+          rec $
+            field @"entity" entity $
+            field @"idlEntity" (rec $
+                field @"entity" (just idlEntity) $
+                field @"file" (asPredicate file)
+              end)
+          end)
     ]
 
 -- | Entity-based find-references for call hierarchy.
