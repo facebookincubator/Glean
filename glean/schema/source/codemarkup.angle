@@ -7,6 +7,7 @@ import codemarkup.buck
 import codemarkup.csharp
 import codemarkup.cxx
 import codemarkup.dataswarm
+import codemarkup.yaml
 import codemarkup.erlang
 import codemarkup.fbthrift
 import codemarkup.flow
@@ -263,7 +264,9 @@ predicate FileXRefsGenericEntities: {
   (codemarkup.graphql.GraphQLFileEntityXRefLocations { File, XRef, E };
   { plainEntity = { xref = XRef, entity = { graphql = E } } } = GenEntity) |
   (codemarkup.dataswarm.DataswarmFileEntityXRefLocations { File, XRef, E };
-  { plainEntity = { xref = XRef, entity = { dataswarm = E } } } = GenEntity);
+  { plainEntity = { xref = XRef, entity = { dataswarm = E } } } = GenEntity) |
+  (codemarkup.yaml.YamlFileEntityXLangXRefLocations { File, Source, E };
+  { xlangEntity = { source = Source, entity = E } } = GenEntity);
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:

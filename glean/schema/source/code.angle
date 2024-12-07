@@ -48,7 +48,7 @@ type Language =
   enum {
     Cpp | PreProcessor | Java | Haskell | Python | Hack | JavaScript | Rust |
     Thrift | Buck | Erlang | FSharp | Go | Kotlin | OCaml | Scala | Swift |
-    TypeScript | CSharp | GraphQL | Dataswarm |
+    TypeScript | CSharp | GraphQL | Dataswarm | Yaml |
   }
 
 # entity tag to language id

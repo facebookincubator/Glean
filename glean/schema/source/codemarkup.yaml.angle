@@ -1,0 +1,25 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
+schema codemarkup.yaml.1 {
+    import src
+    import code.24
+    import codemarkup.types
+    import yaml
+    import python
+
+    # derived predicate to find references in a file (to support Glass/Codehub integration)
+    predicate YamlFileEntityXLangXRefLocations:
+    {
+        file: src.File,
+        source : codemarkup.types.RangeSpan,
+        entity : code.IdlEntity,
+    }
+    {
+        File,
+        { span = S },
+        IdlEntity
+    } where
+    IdlEntity = { lang = Python, file = File, entity = { just = { python = { decl = D } } }, range = nothing } : code.IdlEntity;
+    yaml.XRefsByFile { file = File, xrefs = XRefs };
+    yaml.XRefViaName { source = S , decl = { just = D } } = XRefs[..];
+}
