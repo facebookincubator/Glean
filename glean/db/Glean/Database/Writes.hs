@@ -38,6 +38,8 @@ module Glean.Database.Writes
   , reapWrites
   , writerThread
   , deleteWriteQueues
+  , batchOwnedSize
+  , batchDependenciesSize
   ) where
 
 import Control.Concurrent
@@ -307,14 +309,23 @@ enqueueBatch env ComputedBatch{..} ownership = do
 batchSize :: Thrift.Batch -> Int
 batchSize Thrift.Batch{..} =
   ByteString.length batch_facts +
-  Monoid.getSum (foldMap (Monoid.Sum . storableSize) batch_owned) +
-  Monoid.getSum (foldMap (Monoid.Sum . depsSize) batch_dependencies)
+  batchOwnedSize batch_owned +
+  batchDependenciesSize batch_dependencies
+
+batchOwnedSize :: HashMap UnitName ListOfIds -> Int
+batchOwnedSize = Monoid.getSum . foldMap (Monoid.Sum . storableSize)
+
+batchDependenciesSize :: HashMap Id [FactDependencies] -> Int
+batchDependenciesSize deps =
+  Monoid.getSum (foldMap (Monoid.Sum . depsSize) deps)
   where
-  storableSize = snd . VS.unsafeToForeignPtr0
   depsSize deps = sum
     [ storableSize f + storableSize d
     | FactDependencies f d <- deps
     ]
+
+storableSize :: VS.Storable a => VS.Vector a -> Int
+storableSize = snd . VS.unsafeToForeignPtr0
 
 enqueueJsonBatch
   :: Env

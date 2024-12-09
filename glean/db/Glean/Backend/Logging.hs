@@ -29,6 +29,7 @@ import Glean.Backend.Local ()
 import Glean.Logger.Server as Logger
 import qualified Glean.Database.List as Database
 import qualified Glean.Database.Types as Database
+import Glean.Database.Writes (batchOwnedSize, batchDependenciesSize)
 import Glean.Logger
 import qualified Glean.Types as Thrift
 import Util.Time
@@ -142,7 +143,7 @@ instance Backend LoggingBackend where
       deleteDatabase env repo
   enqueueBatch (LoggingBackend env) cbatch =
     loggingAction
-      (runLogRepo "enqueueBatch" env (Thrift.computedBatch_repo cbatch))
+      (runLogEnqueueBatch "enqueueBatch" env cbatch)
       (const mempty) $
         enqueueBatch env cbatch
   enqueueJsonBatch (LoggingBackend env) repo batch =
@@ -231,6 +232,23 @@ runLogQueryBatch cmd env repo Thrift.UserQueryBatch{..} log =
         userQueryBatch_schema_id
     , maybe mempty logQueryOptions userQueryBatch_options
     , maybe mempty logQueryClientInfo userQueryBatch_client_info
+    ]
+
+runLogEnqueueBatch
+  :: Text
+  -> Database.Env
+  -> Thrift.ComputedBatch
+  -> GleanServerLog
+  -> IO ()
+runLogEnqueueBatch cmd env Thrift.ComputedBatch{..} log =
+  let !Thrift.Batch{..} = computedBatch_batch in
+  runLogRepo cmd env computedBatch_repo $ mconcat
+    [ log
+    , Logger.SetBatchFactsSize $ ByteString.length batch_facts
+    , Logger.SetBatchFactsCount $ fromIntegral $
+        Thrift.batch_count computedBatch_batch
+    , Logger.SetBatchOwnedSize $ batchOwnedSize batch_owned
+    , Logger.SetBatchDependenciesSize $ batchDependenciesSize batch_dependencies
     ]
 
 logQueryOptions :: Thrift.UserQueryOptions -> GleanServerLog

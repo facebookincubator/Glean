@@ -51,6 +51,10 @@ data GleanServerLog
   | SetRequestContinuationSize Int
   | SetResponseContinuationSize Int
   | SetSchemaId Text
+  | SetBatchFactsSize Int
+  | SetBatchFactsCount Int
+  | SetBatchOwnedSize Int
+  | SetBatchDependenciesSize Int
 
 instance Semigroup GleanServerLog where
   a <> b = GleanServerLogAnd a b
