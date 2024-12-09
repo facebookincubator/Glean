@@ -904,7 +904,8 @@ predicate EntityModuleName:
 predicate IndexedFile: src.File
    File where
     codemarkup.cxx.CxxDataAvailable File |
-    codemarkup.EntityDataAvailable File
+    codemarkup.EntityDataAvailable File |
+    codemarkup.yaml.YamlDataAvailable File
 
 # Identifies files with indexed entities.
 # You should not use this, instead use codemarkup.IndexedFile

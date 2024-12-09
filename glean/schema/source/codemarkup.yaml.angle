@@ -22,4 +22,8 @@ schema codemarkup.yaml.1 {
     IdlEntity = { lang = Python, file = File, entity = { just = { python = { decl = D } } }, range = nothing } : code.IdlEntity;
     yaml.XRefsByFile { file = File, xrefs = XRefs };
     yaml.XRefViaName { source = S , decl = { just = D } } = XRefs[..];
+
+    predicate YamlDataAvailable : src.File
+    F where
+        src.File _ = F
 }
