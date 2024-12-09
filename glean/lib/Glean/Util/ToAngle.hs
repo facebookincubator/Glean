@@ -586,6 +586,37 @@ instance ToAngle Fbthrift.XRefTarget where
   toAngle (Fbthrift.XRefTarget_field x) = alt @"field" (mkKey x)
   toAngle Fbthrift.XRefTarget_EMPTY = error "unknown Entity"
 
+-- Python
+
+instance ToAngleFull Py.Declaration where
+  toAngleFull (Py.Declaration_cls (Py.ClassDeclaration _  (Just k))) =
+    alt @"cls" (toAngleFull k)
+  toAngleFull Py.Declaration_EMPTY = error "unknown Entity"
+  toAngleFull _ = error "Not implemented"
+
+instance ToAngleFull Py.ClassDeclaration_key where
+  toAngleFull (Py.ClassDeclaration_key ((Py.Name _ (Just k))) _bases) = rec $
+    field @"name" (string k)
+    end
+  toAngleFull _ = error "Not fully resolved"
+
+instance Normalize Py.Name where
+  normalize (Py.Name _ (Just k)) = Py.Name 0 (Just k)
+  normalize _ = error "Not fully resolved"
+
+instance Normalize Py.Declaration where
+  normalize (Py.Declaration_cls cls) = Py.Declaration_cls $ normalize cls
+  normalize _ = error "Not implemented"
+
+instance Normalize Py.ClassDeclaration where
+  normalize (Py.ClassDeclaration _ (Just k)) =
+    Py.ClassDeclaration 0 (Just (normalize k))
+  normalize _ = error "Not fully resolved"
+
+instance Normalize Py.ClassDeclaration_key where
+  normalize (Py.ClassDeclaration_key name _base) =
+    Py.ClassDeclaration_key (normalize name) (Just [])
+
 -- Java
 
 instance ToAngle Java.Declaration where
@@ -653,10 +684,14 @@ instance ToAngleFull Code.Entity where
     toAngleFull entity = case entity of
       Code.Entity_fbthrift (Fbthrift.Entity_decl x) ->
         alt @"fbthrift" (alt @"decl" (toAngleFull x))
-      _ -> error "Only thrift entities are expected"
+      Code.Entity_python (Py.Entity_decl x) ->
+        alt @"python" (alt @"decl" (toAngleFull x))
+      _ -> error "Only thrift or python entities are expected"
 
 instance Normalize Code.Entity where
     normalize entity = case entity of
       Code.Entity_fbthrift (Fbthrift.Entity_decl x) ->
         Code.Entity_fbthrift (Fbthrift.Entity_decl (normalize x))
-      _ -> error "Only thrift entities are expected"
+      Code.Entity_python (Py.Entity_decl x) ->
+        Code.Entity_python (Py.Entity_decl (normalize x))
+      _ -> error "Only thrift or python entities are expected"

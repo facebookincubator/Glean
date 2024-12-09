@@ -822,6 +822,8 @@ getStaticAttributes e repo sym mLang = memo $ do
       Attribute_aInteger (fromIntegral $ fromThriftEnum kind))
     asLang Language_Thrift = Just ("crossLanguage",
       Attribute_aString "thrift")
+    asLang Language_Python = Just ("crossLanguage",
+      Attribute_aString "python")
     asLang _ = Nothing
 
     -- memoizing getStaticAttributes can save a lot of work because a

@@ -261,6 +261,8 @@ filetype (Path file)
   | is ".cs"  = Just Language_CSharp
   | is ".graphql"  = Just Language_GraphQL
 
+  | is ".yaml"  = Just Language_Yaml
+
   | otherwise = Nothing
 
   where

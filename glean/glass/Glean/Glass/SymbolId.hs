@@ -267,6 +267,7 @@ languageToCodeLang l = case l of
   Language_Rust -> Just Code.Language_Rust
   Language_Thrift -> Just Code.Language_Thrift
   Language_TypeScript -> Just Code.Language_TypeScript
+  Language_Yaml -> Just Code.Language_Yaml
   Language__UNKNOWN{} -> Nothing
 
 -- | Search queries for C++ should always imply the PreProcessor too

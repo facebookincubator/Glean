@@ -516,6 +516,7 @@ enum Language {
   CSharp = 16,
   GraphQL = 17,
   Dataswarm = 18,
+  Yaml = 19,
 }
 
 // Kinds of definitions. E.g. for jump-to-declaration or jump-to-definition
