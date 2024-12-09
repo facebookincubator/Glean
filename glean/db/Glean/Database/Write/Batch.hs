@@ -50,7 +50,7 @@ import Glean.RTS.Foreign.Ownership as Ownership
 import Glean.RTS.Foreign.Stacked (stacked)
 import Glean.RTS.Foreign.Subst (Subst)
 import qualified Glean.RTS.Foreign.Subst as Subst
-import Glean.RTS.Types (Pid(..))
+import Glean.RTS.Types (Pid(..), Fid)
 import Glean.Types (Repo)
 import qualified Glean.Types as Thrift
 import Glean.Util.Metric
@@ -80,15 +80,15 @@ syncWriteContentDatabase env repo content = do
 makeDefineOwnership
   :: Env
   -> Repo
+  -> Fid
   -> HashMap Int64 [Thrift.FactDependencies]
   -> IO (Maybe DefineOwnership)
-makeDefineOwnership env repo deps
+makeDefineOwnership env repo nextId deps
   | HashMap.null deps = return Nothing
   | otherwise = do
   readDatabase env repo $ \odb lookup -> do
   maybeOwnership <- readTVarIO (odbOwnership odb)
   forM maybeOwnership $ \ownership -> do
-    nextId <- Lookup.firstFreeId lookup
     define <- Ownership.newDefineOwnership ownership nextId
     forM_ (HashMap.toList deps) $ \(pid, ownerMap) ->
       Ownership.addDerivedOwners lookup define (Pid pid) ownerMap
@@ -202,7 +202,7 @@ reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
                   Ownership.substDefineOwnership owners subst
                   return $ Just owners
                | not $ HashMap.null deps ->
-                  makeDefineOwnership env repo deps
+                  makeDefineOwnership env repo next_id deps
                | otherwise -> return Nothing
           forM_ derivedOwners $ \ownBatch ->
             Storage.addDefineOwnership odbHandle ownBatch
