@@ -28,6 +28,7 @@ import qualified Glean.Indexer.Hack as Hack
 import qualified Glean.Indexer.Buck as Buck
 import qualified Glean.Indexer.Fbthrift as Fbthrift
 import qualified Glean.Indexer.Python as Python
+import qualified Glean.Indexer.Yaml as Yaml
 #endif
 import qualified Glean.Indexer.Go as Go
 import qualified Glean.Indexer.JavaLsif as JavaLsif
@@ -52,6 +53,7 @@ indexers =
   , SomeIndexer Buck.indexer
   , SomeIndexer Fbthrift.indexer
   , SomeIndexer Python.indexer
+  , SomeIndexer Yaml.indexer
 #endif
   , SomeIndexer Hs.indexer
   , SomeIndexer Go.indexer
