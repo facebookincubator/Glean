@@ -511,7 +511,7 @@ class BatchBase {
 
   struct Owned {
     std::string unit;
-    boost::icl::interval_set<Id> facts;
+    rts::closed_interval_set<Id> facts;
     Id start;
     Id finish;
   };

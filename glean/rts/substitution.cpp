@@ -13,8 +13,6 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
-using namespace boost::icl;
-
 Substitution::Substitution(Id first, size_t size)
     : base(first), items(size, Id::invalid()) {}
 
@@ -32,7 +30,7 @@ Id Substitution::firstFreeId() const {
 std::vector<Id> Substitution::substIntervals(
     const std::vector<Id>& intervals) const {
   CHECK_EQ(intervals.size() % 2, 0);
-  boost::icl::interval_set<Id, std::less, closed_interval<Id>> is;
+  closed_interval_set<Id> is;
 
   auto add = [&](Id start, Id end) {
     if (end >= finish()) {
@@ -74,9 +72,9 @@ std::vector<Id> Substitution::substIntervals(
   return results;
 }
 
-boost::icl::interval_set<Id> Substitution::substIntervals(
-    const boost::icl::interval_set<Id>& intervals) const {
-  boost::icl::interval_set<Id> result;
+closed_interval_set<Id> Substitution::substIntervals(
+    const closed_interval_set<Id>& intervals) const {
+  closed_interval_set<Id> result;
   for (auto ival : intervals) {
     if (ival.upper() < base) {
       result.add(ival);

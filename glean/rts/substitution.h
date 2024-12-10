@@ -18,6 +18,10 @@ namespace facebook {
 namespace glean {
 namespace rts {
 
+template <typename T>
+using closed_interval_set =
+    boost::icl::interval_set<T, std::less, boost::icl::closed_interval<T>>;
+
 /**
  * Substitutions for blocks of consecutive Ids.
  *
@@ -51,8 +55,8 @@ struct Substitution {
 
   // This is just like substIntervals but returns a boost::icl::interval_set<Id>
   // instead of a std::vector<Id>.
-  boost::icl::interval_set<Id> substIntervals(
-      const boost::icl::interval_set<Id>& intervals) const;
+  closed_interval_set<Id> substIntervals(
+      const closed_interval_set<Id>& intervals) const;
 
   Id start() const {
     return base;
