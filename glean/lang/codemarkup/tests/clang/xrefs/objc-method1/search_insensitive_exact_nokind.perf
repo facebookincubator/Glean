@@ -1,9 +1,9 @@
 {
   "@generated": null,
   "facts_searched": {
-    "cxx1.DeclByName.5": 2,
     "cxx1.DeclarationNameSpan.5": 1,
-    "cxx1.VariableDeclarationNonLocalByName.5": 1
+    "cxx1.VariableDeclarationNonLocalByName.5": 1,
+    "cxx1.VariableLowerCase.5": 1
   },
   "full_scans": [ ]
 }

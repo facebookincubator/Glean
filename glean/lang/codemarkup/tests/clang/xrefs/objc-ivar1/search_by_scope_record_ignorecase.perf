@@ -2,8 +2,9 @@
   "@generated": null,
   "facts_searched": { },
   "full_scans": [
-    "cxx1.DeclByName.5",
     "cxx1.ObjcContainerDeclarationInterface.5",
-    "cxx1.VariableDeclarationNonLocalByName.5"
+    "cxx1.ObjcContainerInterfaceLowerCase.5",
+    "cxx1.VariableDeclarationNonLocalByName.5",
+    "cxx1.VariableLowerCase.5"
   ]
 }

@@ -2,8 +2,9 @@
   "@generated": null,
   "facts_searched": { },
   "full_scans": [
-    "cxx1.DeclByName.5",
     "cxx1.FunctionDeclarationByNameScope.5",
-    "cxx1.VariableDeclarationNonLocalByName.5"
+    "cxx1.FunctionLowerCase.5",
+    "cxx1.VariableDeclarationNonLocalByName.5",
+    "cxx1.VariableLowerCase.5"
   ]
 }

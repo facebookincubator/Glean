@@ -1,5 +1,8 @@
 {
   "@generated": null,
   "facts_searched": { },
-  "full_scans": [ "cxx1.DeclByName.5", "cxx1.NamespaceDeclarationByName.5" ]
+  "full_scans": [
+    "cxx1.NamespaceDeclarationByName.5",
+    "cxx1.NamespaceLowerCase.5"
+  ]
 }

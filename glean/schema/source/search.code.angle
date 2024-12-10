@@ -647,6 +647,46 @@ predicate CxxSearchByLowerCaseScopeAndKind:
     search.cxx.QueryToScopeCase { Query, true, Scope };
     CxxSearchByLowerCaseNameKindAndScopeFact { NameStr, Scope, Kinds, Entity };
 
+# Maps lower-case strings to normal Names, for case-insensitive search
+predicate CxxNameLowerCase :
+  {
+    nameLowercase : string,
+    kinds: maybe codemarkup.types.SymbolKind,
+    name : string,
+  }
+  { NameLower, Kinds, Name } where
+    { just = Kind } = Kinds;
+    ( Namespace = Kind;
+      cxx1.NamespaceLowerCase { NameLower, Name }
+    ) | (
+      Class_ = Kind;
+      cxx1.RecordClassLowerCase { NameLower, Name }
+    ) | (
+      Struct = Kind;
+      cxx1.RecordStructLowerCase { NameLower, Name }
+    ) | (
+      Union = Kind;
+      cxx1.RecordUnionLowerCase { NameLower, Name }
+    ) | (
+      Enum_ = Kind;
+      cxx1.EnumLowerCase { NameLower, Name }
+    ) | (
+      Function = Kind;
+      cxx1.FunctionLowerCase { NameLower, Name }
+    ) | (
+      Variable = Kind;
+      cxx1.VariableLowerCase { NameLower, Name };
+    ) | (
+      Enumerator = Kind;
+      cxx1.EnumeratorLowerCase { NameLower, Name };
+    ) | (
+      Type = Kind;
+      cxx1.TypeAliasLowerCase { NameLower, Name };
+    ) | (
+      Interface = Kind;
+      cxx1.ObjcContainerInterfaceLowerCase { NameLower, Name };
+    );
+
 # with a bare string name and a known scope, search by kind
 predicate CxxSearchByNameKindAndScopeFact:
   {
@@ -693,7 +733,7 @@ predicate CxxSearchByNameKindAndScopeFact:
     CxxPreferDefinitions { Ent, OutEnt };
     { cxx = OutEnt } = Entity;
 
-# lower case form. names are normalized through cxx1.DeclByName
+# lower case form
 predicate CxxSearchByLowerCaseNameKindAndScopeFact:
   {
     name: string,
@@ -702,8 +742,8 @@ predicate CxxSearchByLowerCaseNameKindAndScopeFact:
     entity: code.Entity
   }
   { NameStr, Scope, Kinds, Entity } where
-    cxx1.NameLowerCase { NameStr, NameNormal };
-    CxxSearchByNameKindAndScopeFact { NameNormal, Scope, Kinds, Entity }
+    CxxNameLowerCase { NameStr, Kinds, Name };
+    CxxSearchByNameKindAndScopeFact { Name, Scope, Kinds, Entity }
 
 # Helper for C++ to prefer definitions over declaration spam
 predicate CxxPreferDefinitions:
@@ -731,7 +771,6 @@ predicate PpSearchByNameKind:
     pp1.Macro NameStr = Macro;
     pp1.Define { macro = Macro } = Define
 
-# n.b. this reuses the stored, derived lower case pp1.Macro in cxx1.DeclByName
 predicate PpSearchByLowerCaseNameKind:
   {
     name: string,

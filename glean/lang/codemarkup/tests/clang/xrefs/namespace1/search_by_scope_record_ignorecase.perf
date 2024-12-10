@@ -1,21 +1,29 @@
 {
   "@generated": null,
   "facts_searched": {
-    "cxx1.DeclByName.5": 11,
+    "cxx1.DeclByName.5": 2,
     "cxx1.DeclarationNameSpan.5": 2,
     "cxx1.FunctionDeclarationByNameScope.5": 1,
+    "cxx1.FunctionLowerCase.5": 3,
     "cxx1.NamespaceDeclarationByName.5": 2,
+    "cxx1.NamespaceLowerCase.5": 2,
     "cxx1.NamespaceQName.5": 1,
     "cxx1.RecordDeclarationStruct.5": 1,
-    "cxx1.RecordDefinition.5": 1
+    "cxx1.RecordDefinition.5": 1,
+    "cxx1.RecordStructLowerCase.5": 2
   },
   "full_scans": [
-    "cxx1.DeclByName.5",
     "cxx1.FunctionDeclarationByNameScope.5",
+    "cxx1.FunctionLowerCase.5",
     "cxx1.NamespaceDeclarationByName.5",
+    "cxx1.NamespaceLowerCase.5",
+    "cxx1.RecordClassLowerCase.5",
     "cxx1.RecordDeclarationClass.5",
     "cxx1.RecordDeclarationStruct.5",
     "cxx1.RecordDeclarationUnion.5",
-    "cxx1.VariableDeclarationNonLocalByName.5"
+    "cxx1.RecordStructLowerCase.5",
+    "cxx1.RecordUnionLowerCase.5",
+    "cxx1.VariableDeclarationNonLocalByName.5",
+    "cxx1.VariableLowerCase.5"
   ]
 }

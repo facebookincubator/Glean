@@ -1,12 +1,13 @@
 {
   "@generated": null,
   "facts_searched": {
-    "cxx1.DeclByName.5": 2,
     "cxx1.DeclarationNameSpan.5": 3,
     "cxx1.FunctionDeclarationByNameScope.5": 2,
     "cxx1.FunctionDefinition.5": 2,
+    "cxx1.FunctionLowerCase.5": 1,
     "cxx1.RecordDeclarationStruct.5": 1,
-    "cxx1.RecordDefinition.5": 1
+    "cxx1.RecordDefinition.5": 1,
+    "cxx1.RecordStructLowerCase.5": 1
   },
   "full_scans": [ ]
 }

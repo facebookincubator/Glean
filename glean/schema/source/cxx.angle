@@ -1100,17 +1100,6 @@ type DeclIdent =
     selector : ObjcSelector |
   }
 
-# Maps lower-case strings to normal Names, for case-insensitive search
-# Relies on coverage of DeclByName matching search.kind.*. TODO verify this
-predicate NameLowerCase :
-  {
-    nameLowercase : string,
-    name : string, # to feed kind search
-  }
-  { NameLower, NameNormal } where
-    DeclByName { name_lowercase = NameLower,
-      ident = { name = cxx1.Name NameNormal } }
-
 # Search for declaration kind and identifiers by lower case
 predicate DeclByName :
   {

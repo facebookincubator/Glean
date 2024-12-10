@@ -1,12 +1,22 @@
 {
   "@generated": null,
-  "facts_searched": { "cxx1.DeclByName.5": 19, "cxx1.QName.5": 1 },
+  "facts_searched": {
+    "cxx1.DeclByName.5": 1,
+    "cxx1.FunctionLowerCase.5": 3,
+    "cxx1.QName.5": 1,
+    "cxx1.RecordStructLowerCase.5": 6,
+    "cxx1.VariableLowerCase.5": 9
+  },
   "full_scans": [
-    "cxx1.DeclByName.5",
     "cxx1.FunctionDeclarationByNameScope.5",
+    "cxx1.FunctionLowerCase.5",
+    "cxx1.RecordClassLowerCase.5",
     "cxx1.RecordDeclarationClass.5",
     "cxx1.RecordDeclarationStruct.5",
     "cxx1.RecordDeclarationUnion.5",
-    "cxx1.VariableDeclarationNonLocalByName.5"
+    "cxx1.RecordStructLowerCase.5",
+    "cxx1.RecordUnionLowerCase.5",
+    "cxx1.VariableDeclarationNonLocalByName.5",
+    "cxx1.VariableLowerCase.5"
   ]
 }
