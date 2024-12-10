@@ -1,8 +1,0 @@
-query: cxx1.DeclByName _
-derive: true
-perf: true
-transform:
-  - sort
-  - - [key,name_lowercase]
-    - [key,kind]
-    - [key,ident,macro,key]

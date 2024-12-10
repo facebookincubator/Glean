@@ -26,8 +26,7 @@ main = testDeriver codemarkupDerivePasses
 codemarkupDerivePasses :: [DerivePass]
 codemarkupDerivePasses =
   Lib.allManualPasses ++
-  [DeriveGeneric "cxx1.DeclByName"
-  ,DeriveGeneric "cxx1.FunctionDeclAttribute"
+  [DeriveGeneric "cxx1.FunctionDeclAttribute"
   ,DeriveGeneric "cxx1.DeclarationToUSR"
   ,DeriveGeneric "cxx1.RecordDerived"
   ,DeriveGeneric "cxx1.ThriftToCxx"

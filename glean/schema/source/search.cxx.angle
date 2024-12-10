@@ -141,23 +141,6 @@ predicate EntityUses :
 # segments
 #
 
-# Helper to lookup cxx1.Name based on case sensitivity param
-# allows us to convert scope to lowercase search on the fly
-predicate CxxNameCase:
-  {
-    insensitive: bool,
-    namestr: string,
-    name: cxx1.Name
-  }
-  { Insensitive, NameStr, Name } where
-  ( true = Insensitive;
-    cxx1.DeclByName { name_lowercase = NameStr, ident = Ident };
-    { name = Name } = Ident # filtering to cxx1.Name only
-  ) | (
-    false = Insensitive;
-    Name = cxx1.Name NameStr
-  )
-
 # Compile search query tuples into scope facts
 predicate QueryToScopeCase :
   {
