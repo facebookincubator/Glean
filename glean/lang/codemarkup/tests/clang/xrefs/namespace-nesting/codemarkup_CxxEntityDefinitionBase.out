@@ -1,0 +1,2692 @@
+[
+  "@generated",
+  {
+    "key": {
+      "target": {
+        "function_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "fooB" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "ClassB" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "NsA" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 2
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 26,
+                  "columnBegin": 18,
+                  "lineEnd": 26,
+                  "columnEnd": 41
+                }
+              }
+            },
+            "isInline": false
+          }
+        }
+      },
+      "base": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "fooB" } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "ClassB" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "NsA" } } }
+                        }
+                      }
+                    },
+                    "access": 2
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "int" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 26,
+              "columnBegin": 18,
+              "lineEnd": 26,
+              "columnEnd": 41
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "function_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "fooC" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "ClassC" },
+                            "scope": {
+                              "recordWithAccess": {
+                                "record": {
+                                  "key": {
+                                    "name": { "key": "ClassB" },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": { "name": { "key": "NsA" } }
+                                      }
+                                    }
+                                  }
+                                },
+                                "access": 2
+                              }
+                            }
+                          }
+                        },
+                        "access": 2
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 29,
+                  "columnBegin": 7,
+                  "lineEnd": 29,
+                  "columnEnd": 30
+                }
+              }
+            },
+            "isInline": false
+          }
+        }
+      },
+      "base": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "fooC" } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "ClassC" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "ClassB" },
+                                "scope": {
+                                  "namespace_": {
+                                    "key": { "name": { "key": "NsA" } }
+                                  }
+                                }
+                              }
+                            },
+                            "access": 2
+                          }
+                        }
+                      }
+                    },
+                    "access": 2
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "int" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 29,
+              "columnBegin": 7,
+              "lineEnd": 29,
+              "columnEnd": 30
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "function_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "fooCInBinB" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "classCinNSB" },
+                            "scope": {
+                              "recordWithAccess": {
+                                "record": {
+                                  "key": {
+                                    "name": { "key": "classBinNSB" },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": {
+                                          "name": { "key": "NsB" },
+                                          "parent": {
+                                            "key": { "name": { "key": "NsA" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "access": 2
+                              }
+                            }
+                          }
+                        },
+                        "access": 2
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 21,
+                  "columnBegin": 9,
+                  "lineEnd": 21,
+                  "columnEnd": 39
+                }
+              }
+            },
+            "isInline": false
+          }
+        }
+      },
+      "base": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "fooCInBinB" } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "classCinNSB" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "classBinNSB" },
+                                "scope": {
+                                  "namespace_": {
+                                    "key": {
+                                      "name": { "key": "NsB" },
+                                      "parent": {
+                                        "key": { "name": { "key": "NsA" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "access": 2
+                          }
+                        }
+                      }
+                    },
+                    "access": 2
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "int" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 21,
+              "columnBegin": 9,
+              "lineEnd": 21,
+              "columnEnd": 39
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "function_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "fooD" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "D" },
+                            "scope": {
+                              "recordWithAccess": {
+                                "record": {
+                                  "key": {
+                                    "name": { "key": "ClassC" },
+                                    "scope": {
+                                      "recordWithAccess": {
+                                        "record": {
+                                          "key": {
+                                            "name": { "key": "ClassB" },
+                                            "scope": {
+                                              "namespace_": {
+                                                "key": {
+                                                  "name": { "key": "NsA" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "access": 2
+                                      }
+                                    }
+                                  }
+                                },
+                                "access": 2
+                              }
+                            }
+                          }
+                        },
+                        "access": 2
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 32,
+                  "columnBegin": 9,
+                  "lineEnd": 32,
+                  "columnEnd": 32
+                }
+              }
+            },
+            "isInline": false
+          }
+        }
+      },
+      "base": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "fooD" } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "D" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "ClassC" },
+                                "scope": {
+                                  "recordWithAccess": {
+                                    "record": {
+                                      "key": {
+                                        "name": { "key": "ClassB" },
+                                        "scope": {
+                                          "namespace_": {
+                                            "key": { "name": { "key": "NsA" } }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "access": 2
+                                  }
+                                }
+                              }
+                            },
+                            "access": 2
+                          }
+                        }
+                      }
+                    },
+                    "access": 2
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "int" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 32,
+              "columnBegin": 9,
+              "lineEnd": 32,
+              "columnEnd": 32
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "function_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "fooFun" } } },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "NsD" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "NsC" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "NsB" },
+                                  "parent": {
+                                    "key": { "name": { "key": "NsA" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 14,
+                  "columnBegin": 9,
+                  "lineEnd": 16,
+                  "columnEnd": 9
+                }
+              }
+            },
+            "isInline": false
+          }
+        }
+      },
+      "base": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "fooFun" } } },
+                "scope": {
+                  "namespace_": {
+                    "key": {
+                      "name": { "key": "NsD" },
+                      "parent": {
+                        "key": {
+                          "name": { "key": "NsC" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "NsB" },
+                              "parent": { "key": { "name": { "key": "NsA" } } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "int" }, "parameters": [ ] }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 14,
+              "columnBegin": 9,
+              "lineEnd": 16,
+              "columnEnd": 9
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "function_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "foo_in_a_class" } } },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "A_Class" },
+                            "scope": {
+                              "namespace_": {
+                                "key": {
+                                  "name": { "key": "B_NS" },
+                                  "parent": {
+                                    "key": {
+                                      "name": { "key": "C_NS" },
+                                      "parent": {
+                                        "key": { "name": { "key": "D_NS" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 2
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 44,
+                  "columnBegin": 9,
+                  "lineEnd": 44,
+                  "columnEnd": 42
+                }
+              }
+            },
+            "isInline": false
+          }
+        }
+      },
+      "base": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "foo_in_a_class" } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "A_Class" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "B_NS" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "C_NS" },
+                                  "parent": {
+                                    "key": { "name": { "key": "D_NS" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "access": 2
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "int" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 44,
+              "columnBegin": 9,
+              "lineEnd": 44,
+              "columnEnd": 42
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "function_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": {
+                      "key": { "name": { "key": "foo_in_a_class_1" } }
+                    },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "A_Class_1" },
+                            "scope": {
+                              "recordWithAccess": {
+                                "record": {
+                                  "key": {
+                                    "name": { "key": "B_Class_1" },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": {
+                                          "name": { "key": "C1_NS" },
+                                          "parent": {
+                                            "key": {
+                                              "name": { "key": "D1_NS" }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "access": 2
+                              }
+                            }
+                          }
+                        },
+                        "access": 2
+                      }
+                    }
+                  }
+                },
+                "signature": {
+                  "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                },
+                "method": {
+                  "isVirtual": false,
+                  "isConst": false,
+                  "isVolatile": false,
+                  "refQualifier": 0
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 54,
+                  "columnBegin": 9,
+                  "lineEnd": 54,
+                  "columnEnd": 44
+                }
+              }
+            },
+            "isInline": false
+          }
+        }
+      },
+      "base": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "name": { "key": "foo_in_a_class_1" } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "A_Class_1" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "B_Class_1" },
+                                "scope": {
+                                  "namespace_": {
+                                    "key": {
+                                      "name": { "key": "C1_NS" },
+                                      "parent": {
+                                        "key": { "name": { "key": "D1_NS" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "access": 2
+                          }
+                        }
+                      }
+                    },
+                    "access": 2
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "int" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 54,
+              "columnBegin": 9,
+              "lineEnd": 54,
+              "columnEnd": 44
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "namespace_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "B_NS" },
+                    "parent": {
+                      "key": {
+                        "name": { "key": "C_NS" },
+                        "parent": { "key": { "name": { "key": "D_NS" } } }
+                      }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 42,
+                  "columnBegin": 5,
+                  "lineEnd": 46,
+                  "columnEnd": 5
+                }
+              }
+            },
+            "members": {
+              "key": [
+                {
+                  "record_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "A_Class" },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "name": { "key": "B_NS" },
+                                "parent": {
+                                  "key": {
+                                    "name": { "key": "C_NS" },
+                                    "parent": {
+                                      "key": { "name": { "key": "D_NS" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "kind": { "class_": { } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 43,
+                        "columnBegin": 7,
+                        "lineEnd": 45,
+                        "columnEnd": 7
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "namespace_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "B_NS" },
+                "parent": {
+                  "key": {
+                    "name": { "key": "C_NS" },
+                    "parent": { "key": { "name": { "key": "D_NS" } } }
+                  }
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 42,
+              "columnBegin": 5,
+              "lineEnd": 46,
+              "columnEnd": 5
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "namespace_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "C1_NS" },
+                    "parent": { "key": { "name": { "key": "D1_NS" } } }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 51,
+                  "columnBegin": 3,
+                  "lineEnd": 57,
+                  "columnEnd": 3
+                }
+              }
+            },
+            "members": {
+              "key": [
+                {
+                  "record_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "B_Class_1" },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "name": { "key": "C1_NS" },
+                                "parent": {
+                                  "key": { "name": { "key": "D1_NS" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "kind": { "class_": { } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 52,
+                        "columnBegin": 5,
+                        "lineEnd": 56,
+                        "columnEnd": 5
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "namespace_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "C1_NS" },
+                "parent": { "key": { "name": { "key": "D1_NS" } } }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 51,
+              "columnBegin": 3,
+              "lineEnd": 57,
+              "columnEnd": 3
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "namespace_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "C_NS" },
+                    "parent": { "key": { "name": { "key": "D_NS" } } }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 41,
+                  "columnBegin": 3,
+                  "lineEnd": 47,
+                  "columnEnd": 3
+                }
+              }
+            },
+            "members": {
+              "key": [
+                {
+                  "namespace_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "B_NS" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "C_NS" },
+                              "parent": { "key": { "name": { "key": "D_NS" } } }
+                            }
+                          }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 42,
+                        "columnBegin": 5,
+                        "lineEnd": 46,
+                        "columnEnd": 5
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "namespace_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "C_NS" },
+                "parent": { "key": { "name": { "key": "D_NS" } } }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 41,
+              "columnBegin": 3,
+              "lineEnd": 47,
+              "columnEnd": 3
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "namespace_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": { "key": { "name": { "key": "D1_NS" } } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 50,
+                  "columnBegin": 1,
+                  "lineEnd": 58,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "members": {
+              "key": [
+                {
+                  "namespace_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "C1_NS" },
+                          "parent": { "key": { "name": { "key": "D1_NS" } } }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 51,
+                        "columnBegin": 3,
+                        "lineEnd": 57,
+                        "columnEnd": 3
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "namespace_": {
+          "key": {
+            "name": { "key": { "name": { "key": "D1_NS" } } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 50,
+              "columnBegin": 1,
+              "lineEnd": 58,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "namespace_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": { "key": { "name": { "key": "D_NS" } } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 40,
+                  "columnBegin": 1,
+                  "lineEnd": 48,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "members": {
+              "key": [
+                {
+                  "namespace_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "C_NS" },
+                          "parent": { "key": { "name": { "key": "D_NS" } } }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 41,
+                        "columnBegin": 3,
+                        "lineEnd": 47,
+                        "columnEnd": 3
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "namespace_": {
+          "key": {
+            "name": { "key": { "name": { "key": "D_NS" } } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 40,
+              "columnBegin": 1,
+              "lineEnd": 48,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "namespace_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": { "key": { "name": { "key": "NsA" } } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 9,
+                  "columnBegin": 1,
+                  "lineEnd": 38,
+                  "columnEnd": 1
+                }
+              }
+            },
+            "members": {
+              "key": [
+                {
+                  "namespace_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "NsB" },
+                          "parent": { "key": { "name": { "key": "NsA" } } }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 11,
+                        "columnBegin": 3,
+                        "lineEnd": 24,
+                        "columnEnd": 3
+                      }
+                    }
+                  }
+                },
+                {
+                  "record_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "ClassB" },
+                          "scope": {
+                            "namespace_": {
+                              "key": { "name": { "key": "NsA" } }
+                            }
+                          }
+                        }
+                      },
+                      "kind": { "class_": { } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 26,
+                        "columnBegin": 3,
+                        "lineEnd": 36,
+                        "columnEnd": 3
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "namespace_": {
+          "key": {
+            "name": { "key": { "name": { "key": "NsA" } } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 1,
+              "lineEnd": 38,
+              "columnEnd": 1
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "namespace_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "NsB" },
+                    "parent": { "key": { "name": { "key": "NsA" } } }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 11,
+                  "columnBegin": 3,
+                  "lineEnd": 24,
+                  "columnEnd": 3
+                }
+              }
+            },
+            "members": {
+              "key": [
+                {
+                  "namespace_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "NsC" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "NsB" },
+                              "parent": { "key": { "name": { "key": "NsA" } } }
+                            }
+                          }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 12,
+                        "columnBegin": 5,
+                        "lineEnd": 18,
+                        "columnEnd": 5
+                      }
+                    }
+                  }
+                },
+                {
+                  "record_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "classBinNSB" },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "name": { "key": "NsB" },
+                                "parent": {
+                                  "key": { "name": { "key": "NsA" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "kind": { "class_": { } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 19,
+                        "columnBegin": 5,
+                        "lineEnd": 23,
+                        "columnEnd": 5
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "namespace_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "NsB" },
+                "parent": { "key": { "name": { "key": "NsA" } } }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 11,
+              "columnBegin": 3,
+              "lineEnd": 24,
+              "columnEnd": 3
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "namespace_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "NsC" },
+                    "parent": {
+                      "key": {
+                        "name": { "key": "NsB" },
+                        "parent": { "key": { "name": { "key": "NsA" } } }
+                      }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 12,
+                  "columnBegin": 5,
+                  "lineEnd": 18,
+                  "columnEnd": 5
+                }
+              }
+            },
+            "members": {
+              "key": [
+                {
+                  "namespace_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "NsD" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "NsC" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "NsB" },
+                                  "parent": {
+                                    "key": { "name": { "key": "NsA" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 13,
+                        "columnBegin": 7,
+                        "lineEnd": 17,
+                        "columnEnd": 7
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "namespace_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "NsC" },
+                "parent": {
+                  "key": {
+                    "name": { "key": "NsB" },
+                    "parent": { "key": { "name": { "key": "NsA" } } }
+                  }
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 12,
+              "columnBegin": 5,
+              "lineEnd": 18,
+              "columnEnd": 5
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "namespace_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "NsD" },
+                    "parent": {
+                      "key": {
+                        "name": { "key": "NsC" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "NsB" },
+                            "parent": { "key": { "name": { "key": "NsA" } } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 13,
+                  "columnBegin": 7,
+                  "lineEnd": 17,
+                  "columnEnd": 7
+                }
+              }
+            },
+            "members": {
+              "key": [
+                {
+                  "function_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "fooFun" } } },
+                          "scope": {
+                            "namespace_": {
+                              "key": {
+                                "name": { "key": "NsD" },
+                                "parent": {
+                                  "key": {
+                                    "name": { "key": "NsC" },
+                                    "parent": {
+                                      "key": {
+                                        "name": { "key": "NsB" },
+                                        "parent": {
+                                          "key": { "name": { "key": "NsA" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [ ]
+                        }
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 14,
+                        "columnBegin": 9,
+                        "lineEnd": 16,
+                        "columnEnd": 9
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "namespace_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "NsD" },
+                "parent": {
+                  "key": {
+                    "name": { "key": "NsC" },
+                    "parent": {
+                      "key": {
+                        "name": { "key": "NsB" },
+                        "parent": { "key": { "name": { "key": "NsA" } } }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 7,
+              "lineEnd": 17,
+              "columnEnd": 7
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "record_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "A_Class" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "B_NS" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "C_NS" },
+                              "parent": { "key": { "name": { "key": "D_NS" } } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 43,
+                  "columnBegin": 7,
+                  "lineEnd": 45,
+                  "columnEnd": 7
+                }
+              }
+            },
+            "bases": [ ],
+            "members": {
+              "key": [
+                {
+                  "function_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "foo_in_a_class" } }
+                          },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "A_Class" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": {
+                                        "name": { "key": "B_NS" },
+                                        "parent": {
+                                          "key": {
+                                            "name": { "key": "C_NS" },
+                                            "parent": {
+                                              "key": {
+                                                "name": { "key": "D_NS" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 2
+                            }
+                          }
+                        }
+                      },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [ ]
+                        }
+                      },
+                      "method": {
+                        "isVirtual": false,
+                        "isConst": false,
+                        "isVolatile": false,
+                        "refQualifier": 0
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 44,
+                        "columnBegin": 9,
+                        "lineEnd": 44,
+                        "columnEnd": 42
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "A_Class" },
+                "scope": {
+                  "namespace_": {
+                    "key": {
+                      "name": { "key": "B_NS" },
+                      "parent": {
+                        "key": {
+                          "name": { "key": "C_NS" },
+                          "parent": { "key": { "name": { "key": "D_NS" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "kind": { "class_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 43,
+              "columnBegin": 7,
+              "lineEnd": 45,
+              "columnEnd": 7
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "record_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "A_Class_1" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "B_Class_1" },
+                            "scope": {
+                              "namespace_": {
+                                "key": {
+                                  "name": { "key": "C1_NS" },
+                                  "parent": {
+                                    "key": { "name": { "key": "D1_NS" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 2
+                      }
+                    }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 53,
+                  "columnBegin": 7,
+                  "lineEnd": 55,
+                  "columnEnd": 7
+                }
+              }
+            },
+            "bases": [ ],
+            "members": {
+              "key": [
+                {
+                  "function_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "foo_in_a_class_1" } }
+                          },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "A_Class_1" },
+                                  "scope": {
+                                    "recordWithAccess": {
+                                      "record": {
+                                        "key": {
+                                          "name": { "key": "B_Class_1" },
+                                          "scope": {
+                                            "namespace_": {
+                                              "key": {
+                                                "name": { "key": "C1_NS" },
+                                                "parent": {
+                                                  "key": {
+                                                    "name": { "key": "D1_NS" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "access": 2
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 2
+                            }
+                          }
+                        }
+                      },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [ ]
+                        }
+                      },
+                      "method": {
+                        "isVirtual": false,
+                        "isConst": false,
+                        "isVolatile": false,
+                        "refQualifier": 0
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 54,
+                        "columnBegin": 9,
+                        "lineEnd": 54,
+                        "columnEnd": 44
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "A_Class_1" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "B_Class_1" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "C1_NS" },
+                              "parent": {
+                                "key": { "name": { "key": "D1_NS" } }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "access": 2
+                  }
+                }
+              }
+            },
+            "kind": { "class_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 53,
+              "columnBegin": 7,
+              "lineEnd": 55,
+              "columnEnd": 7
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "record_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "B_Class_1" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "C1_NS" },
+                          "parent": { "key": { "name": { "key": "D1_NS" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 52,
+                  "columnBegin": 5,
+                  "lineEnd": 56,
+                  "columnEnd": 5
+                }
+              }
+            },
+            "bases": [ ],
+            "members": {
+              "key": [
+                {
+                  "record_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "A_Class_1" },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "B_Class_1" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": {
+                                        "name": { "key": "C1_NS" },
+                                        "parent": {
+                                          "key": { "name": { "key": "D1_NS" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 2
+                            }
+                          }
+                        }
+                      },
+                      "kind": { "class_": { } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 53,
+                        "columnBegin": 7,
+                        "lineEnd": 55,
+                        "columnEnd": 7
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "B_Class_1" },
+                "scope": {
+                  "namespace_": {
+                    "key": {
+                      "name": { "key": "C1_NS" },
+                      "parent": { "key": { "name": { "key": "D1_NS" } } }
+                    }
+                  }
+                }
+              }
+            },
+            "kind": { "class_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 52,
+              "columnBegin": 5,
+              "lineEnd": 56,
+              "columnEnd": 5
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "record_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "ClassB" },
+                    "scope": {
+                      "namespace_": { "key": { "name": { "key": "NsA" } } }
+                    }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 26,
+                  "columnBegin": 3,
+                  "lineEnd": 36,
+                  "columnEnd": 3
+                }
+              }
+            },
+            "bases": [ ],
+            "members": {
+              "key": [
+                {
+                  "function_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "fooB" } } },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "ClassB" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "NsA" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 2
+                            }
+                          }
+                        }
+                      },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [ ]
+                        }
+                      },
+                      "method": {
+                        "isVirtual": false,
+                        "isConst": false,
+                        "isVolatile": false,
+                        "refQualifier": 0
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 26,
+                        "columnBegin": 18,
+                        "lineEnd": 26,
+                        "columnEnd": 41
+                      }
+                    }
+                  }
+                },
+                {
+                  "record_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "ClassC" },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "ClassB" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": { "name": { "key": "NsA" } }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 2
+                            }
+                          }
+                        }
+                      },
+                      "kind": { "class_": { } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 28,
+                        "columnBegin": 5,
+                        "lineEnd": 34,
+                        "columnEnd": 5
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "ClassB" },
+                "scope": {
+                  "namespace_": { "key": { "name": { "key": "NsA" } } }
+                }
+              }
+            },
+            "kind": { "class_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 26,
+              "columnBegin": 3,
+              "lineEnd": 36,
+              "columnEnd": 3
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "record_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "ClassC" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "ClassB" },
+                            "scope": {
+                              "namespace_": {
+                                "key": { "name": { "key": "NsA" } }
+                              }
+                            }
+                          }
+                        },
+                        "access": 2
+                      }
+                    }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 28,
+                  "columnBegin": 5,
+                  "lineEnd": 34,
+                  "columnEnd": 5
+                }
+              }
+            },
+            "bases": [ ],
+            "members": {
+              "key": [
+                {
+                  "function_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "fooC" } } },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "ClassC" },
+                                  "scope": {
+                                    "recordWithAccess": {
+                                      "record": {
+                                        "key": {
+                                          "name": { "key": "ClassB" },
+                                          "scope": {
+                                            "namespace_": {
+                                              "key": {
+                                                "name": { "key": "NsA" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "access": 2
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 2
+                            }
+                          }
+                        }
+                      },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [ ]
+                        }
+                      },
+                      "method": {
+                        "isVirtual": false,
+                        "isConst": false,
+                        "isVolatile": false,
+                        "refQualifier": 0
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 29,
+                        "columnBegin": 7,
+                        "lineEnd": 29,
+                        "columnEnd": 30
+                      }
+                    }
+                  }
+                },
+                {
+                  "record_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "D" },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "ClassC" },
+                                  "scope": {
+                                    "recordWithAccess": {
+                                      "record": {
+                                        "key": {
+                                          "name": { "key": "ClassB" },
+                                          "scope": {
+                                            "namespace_": {
+                                              "key": {
+                                                "name": { "key": "NsA" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "access": 2
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 2
+                            }
+                          }
+                        }
+                      },
+                      "kind": { "class_": { } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 31,
+                        "columnBegin": 7,
+                        "lineEnd": 33,
+                        "columnEnd": 7
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "ClassC" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "ClassB" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "NsA" } } }
+                        }
+                      }
+                    },
+                    "access": 2
+                  }
+                }
+              }
+            },
+            "kind": { "class_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 28,
+              "columnBegin": 5,
+              "lineEnd": 34,
+              "columnEnd": 5
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "record_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "D" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "ClassC" },
+                            "scope": {
+                              "recordWithAccess": {
+                                "record": {
+                                  "key": {
+                                    "name": { "key": "ClassB" },
+                                    "scope": {
+                                      "namespace_": {
+                                        "key": { "name": { "key": "NsA" } }
+                                      }
+                                    }
+                                  }
+                                },
+                                "access": 2
+                              }
+                            }
+                          }
+                        },
+                        "access": 2
+                      }
+                    }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 31,
+                  "columnBegin": 7,
+                  "lineEnd": 33,
+                  "columnEnd": 7
+                }
+              }
+            },
+            "bases": [ ],
+            "members": {
+              "key": [
+                {
+                  "function_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": { "name": { "key": "fooD" } } },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "D" },
+                                  "scope": {
+                                    "recordWithAccess": {
+                                      "record": {
+                                        "key": {
+                                          "name": { "key": "ClassC" },
+                                          "scope": {
+                                            "recordWithAccess": {
+                                              "record": {
+                                                "key": {
+                                                  "name": { "key": "ClassB" },
+                                                  "scope": {
+                                                    "namespace_": {
+                                                      "key": {
+                                                        "name": { "key": "NsA" }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "access": 2
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "access": 2
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 2
+                            }
+                          }
+                        }
+                      },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [ ]
+                        }
+                      },
+                      "method": {
+                        "isVirtual": false,
+                        "isConst": false,
+                        "isVolatile": false,
+                        "refQualifier": 0
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 32,
+                        "columnBegin": 9,
+                        "lineEnd": 32,
+                        "columnEnd": 32
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "D" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "ClassC" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "ClassB" },
+                                "scope": {
+                                  "namespace_": {
+                                    "key": { "name": { "key": "NsA" } }
+                                  }
+                                }
+                              }
+                            },
+                            "access": 2
+                          }
+                        }
+                      }
+                    },
+                    "access": 2
+                  }
+                }
+              }
+            },
+            "kind": { "class_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 31,
+              "columnBegin": 7,
+              "lineEnd": 33,
+              "columnEnd": 7
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "record_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "classBinNSB" },
+                    "scope": {
+                      "namespace_": {
+                        "key": {
+                          "name": { "key": "NsB" },
+                          "parent": { "key": { "name": { "key": "NsA" } } }
+                        }
+                      }
+                    }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 19,
+                  "columnBegin": 5,
+                  "lineEnd": 23,
+                  "columnEnd": 5
+                }
+              }
+            },
+            "bases": [ ],
+            "members": {
+              "key": [
+                {
+                  "record_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "classCinNSB" },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "classBinNSB" },
+                                  "scope": {
+                                    "namespace_": {
+                                      "key": {
+                                        "name": { "key": "NsB" },
+                                        "parent": {
+                                          "key": { "name": { "key": "NsA" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 2
+                            }
+                          }
+                        }
+                      },
+                      "kind": { "class_": { } },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 20,
+                        "columnBegin": 7,
+                        "lineEnd": 22,
+                        "columnEnd": 7
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "classBinNSB" },
+                "scope": {
+                  "namespace_": {
+                    "key": {
+                      "name": { "key": "NsB" },
+                      "parent": { "key": { "name": { "key": "NsA" } } }
+                    }
+                  }
+                }
+              }
+            },
+            "kind": { "class_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 19,
+              "columnBegin": 5,
+              "lineEnd": 23,
+              "columnEnd": 5
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "record_": {
+          "key": {
+            "declaration": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "classCinNSB" },
+                    "scope": {
+                      "recordWithAccess": {
+                        "record": {
+                          "key": {
+                            "name": { "key": "classBinNSB" },
+                            "scope": {
+                              "namespace_": {
+                                "key": {
+                                  "name": { "key": "NsB" },
+                                  "parent": {
+                                    "key": { "name": { "key": "NsA" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "access": 2
+                      }
+                    }
+                  }
+                },
+                "kind": { "class_": { } },
+                "source": {
+                  "file": { "key": "test.cpp" },
+                  "lineBegin": 20,
+                  "columnBegin": 7,
+                  "lineEnd": 22,
+                  "columnEnd": 7
+                }
+              }
+            },
+            "bases": [ ],
+            "members": {
+              "key": [
+                {
+                  "function_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": {
+                            "key": { "name": { "key": "fooCInBinB" } }
+                          },
+                          "scope": {
+                            "recordWithAccess": {
+                              "record": {
+                                "key": {
+                                  "name": { "key": "classCinNSB" },
+                                  "scope": {
+                                    "recordWithAccess": {
+                                      "record": {
+                                        "key": {
+                                          "name": { "key": "classBinNSB" },
+                                          "scope": {
+                                            "namespace_": {
+                                              "key": {
+                                                "name": { "key": "NsB" },
+                                                "parent": {
+                                                  "key": {
+                                                    "name": { "key": "NsA" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "access": 2
+                                    }
+                                  }
+                                }
+                              },
+                              "access": 2
+                            }
+                          }
+                        }
+                      },
+                      "signature": {
+                        "key": {
+                          "returns": { "key": "int" },
+                          "parameters": [ ]
+                        }
+                      },
+                      "method": {
+                        "isVirtual": false,
+                        "isConst": false,
+                        "isVolatile": false,
+                        "refQualifier": 0
+                      },
+                      "source": {
+                        "file": { "key": "test.cpp" },
+                        "lineBegin": 21,
+                        "columnBegin": 9,
+                        "lineEnd": 21,
+                        "columnEnd": 39
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "base": {
+        "record_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": "classCinNSB" },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "classBinNSB" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "NsB" },
+                              "parent": { "key": { "name": { "key": "NsA" } } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "access": 2
+                  }
+                }
+              }
+            },
+            "kind": { "class_": { } },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 20,
+              "columnBegin": 7,
+              "lineEnd": 22,
+              "columnEnd": 7
+            }
+          }
+        }
+      }
+    }
+  }
+]

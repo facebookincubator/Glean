@@ -1,0 +1,519 @@
+[
+  "@generated",
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "cxx": {
+            "decl": {
+              "namespace_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "B_NS" },
+                      "parent": {
+                        "key": {
+                          "name": { "key": "C_NS" },
+                          "parent": { "key": { "name": { "key": "D_NS" } } }
+                        }
+                      }
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 42,
+                    "columnBegin": 5,
+                    "lineEnd": 46,
+                    "columnEnd": 5
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "B_NS",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 42,
+              "columnBegin": 5,
+              "lineEnd": 46,
+              "columnEnd": 5
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 696, "length": 4 }
+          }
+        }
+      },
+      "child": {
+        "child": {
+          "cxx": {
+            "decl": {
+              "record_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "A_Class" },
+                      "scope": {
+                        "namespace_": {
+                          "key": {
+                            "name": { "key": "B_NS" },
+                            "parent": {
+                              "key": {
+                                "name": { "key": "C_NS" },
+                                "parent": {
+                                  "key": { "name": { "key": "D_NS" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "kind": { "class_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 43,
+                    "columnBegin": 7,
+                    "lineEnd": 45,
+                    "columnEnd": 7
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "A_Class",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 43,
+              "columnBegin": 7,
+              "lineEnd": 45,
+              "columnEnd": 7
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 715, "length": 7 }
+          }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "cxx": {
+            "decl": {
+              "namespace_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "C1_NS" },
+                      "parent": { "key": { "name": { "key": "D1_NS" } } }
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 51,
+                    "columnBegin": 3,
+                    "lineEnd": 57,
+                    "columnEnd": 3
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "C1_NS",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 51,
+              "columnBegin": 3,
+              "lineEnd": 57,
+              "columnEnd": 3
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 820, "length": 5 }
+          }
+        }
+      },
+      "child": {
+        "child": {
+          "cxx": {
+            "decl": {
+              "record_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "B_Class_1" },
+                      "scope": {
+                        "namespace_": {
+                          "key": {
+                            "name": { "key": "C1_NS" },
+                            "parent": { "key": { "name": { "key": "D1_NS" } } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "kind": { "class_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 52,
+                    "columnBegin": 5,
+                    "lineEnd": 56,
+                    "columnEnd": 5
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "B_Class_1",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 52,
+              "columnBegin": 5,
+              "lineEnd": 56,
+              "columnEnd": 5
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 838, "length": 9 }
+          }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "cxx": {
+            "decl": {
+              "namespace_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "NsA" } } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 9,
+                    "columnBegin": 1,
+                    "lineEnd": 38,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "NsA",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 9,
+              "columnBegin": 1,
+              "lineEnd": 38,
+              "columnEnd": 1
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 231, "length": 3 }
+          }
+        }
+      },
+      "child": {
+        "child": {
+          "cxx": {
+            "decl": {
+              "record_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "ClassB" },
+                      "scope": {
+                        "namespace_": { "key": { "name": { "key": "NsA" } } }
+                      }
+                    }
+                  },
+                  "kind": { "class_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 26,
+                    "columnBegin": 3,
+                    "lineEnd": 36,
+                    "columnEnd": 3
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "ClassB",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 26,
+              "columnBegin": 3,
+              "lineEnd": 36,
+              "columnEnd": 3
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 484, "length": 6 }
+          }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "cxx": {
+            "decl": {
+              "namespace_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "NsB" },
+                      "parent": { "key": { "name": { "key": "NsA" } } }
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 11,
+                    "columnBegin": 3,
+                    "lineEnd": 24,
+                    "columnEnd": 3
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "NsB",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 11,
+              "columnBegin": 3,
+              "lineEnd": 24,
+              "columnEnd": 3
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 250, "length": 3 }
+          }
+        }
+      },
+      "child": {
+        "child": {
+          "cxx": {
+            "decl": {
+              "record_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "classBinNSB" },
+                      "scope": {
+                        "namespace_": {
+                          "key": {
+                            "name": { "key": "NsB" },
+                            "parent": { "key": { "name": { "key": "NsA" } } }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "kind": { "class_": { } },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 19,
+                    "columnBegin": 5,
+                    "lineEnd": 23,
+                    "columnEnd": 5
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "classBinNSB",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 19,
+              "columnBegin": 5,
+              "lineEnd": 23,
+              "columnEnd": 5
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 375, "length": 11 }
+          }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 2,
+      "parent": {
+        "parent": {
+          "cxx": {
+            "decl": {
+              "namespace_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "NsD" },
+                      "parent": {
+                        "key": {
+                          "name": { "key": "NsC" },
+                          "parent": {
+                            "key": {
+                              "name": { "key": "NsB" },
+                              "parent": { "key": { "name": { "key": "NsA" } } }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 13,
+                    "columnBegin": 7,
+                    "lineEnd": 17,
+                    "columnEnd": 7
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "NsD",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 13,
+              "columnBegin": 7,
+              "lineEnd": 17,
+              "columnEnd": 7
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 292, "length": 3 }
+          }
+        }
+      },
+      "child": {
+        "child": {
+          "cxx": {
+            "decl": {
+              "function_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": { "name": { "key": "fooFun" } } },
+                      "scope": {
+                        "namespace_": {
+                          "key": {
+                            "name": { "key": "NsD" },
+                            "parent": {
+                              "key": {
+                                "name": { "key": "NsC" },
+                                "parent": {
+                                  "key": {
+                                    "name": { "key": "NsB" },
+                                    "parent": {
+                                      "key": { "name": { "key": "NsA" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "signature": {
+                    "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                  },
+                  "source": {
+                    "file": { "key": "test.cpp" },
+                    "lineBegin": 14,
+                    "columnBegin": 9,
+                    "lineEnd": 16,
+                    "columnEnd": 9
+                  }
+                }
+              }
+            }
+          }
+        },
+        "location": {
+          "name": "fooFun",
+          "file": { "key": "test.cpp" },
+          "location": {
+            "range": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 14,
+              "columnBegin": 9,
+              "lineEnd": 16,
+              "columnEnd": 9
+            }
+          },
+          "destination": {
+            "file": { "key": "test.cpp" },
+            "span": { "start": 310, "length": 6 }
+          }
+        }
+      },
+      "style": 0
+    }
+  }
+]

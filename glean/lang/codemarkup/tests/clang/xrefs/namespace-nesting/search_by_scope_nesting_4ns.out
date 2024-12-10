@@ -1,0 +1,120 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "NsD",
+      "scope": [ "NsA", "NsB", "NsC" ],
+      "entity": {
+        "cxx": {
+          "defn": {
+            "namespace_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "NsD" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "NsC" },
+                            "parent": {
+                              "key": {
+                                "name": { "key": "NsB" },
+                                "parent": {
+                                  "key": { "name": { "key": "NsA" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 13,
+                      "columnBegin": 7,
+                      "lineEnd": 17,
+                      "columnEnd": 7
+                    }
+                  }
+                },
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": { "name": { "key": "fooFun" } }
+                              },
+                              "scope": {
+                                "namespace_": {
+                                  "key": {
+                                    "name": { "key": "NsD" },
+                                    "parent": {
+                                      "key": {
+                                        "name": { "key": "NsC" },
+                                        "parent": {
+                                          "key": {
+                                            "name": { "key": "NsB" },
+                                            "parent": {
+                                              "key": {
+                                                "name": { "key": "NsA" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 14,
+                            "columnBegin": 9,
+                            "lineEnd": 16,
+                            "columnEnd": 9
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "NsD",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 13,
+            "columnBegin": 7,
+            "lineEnd": 17,
+            "columnEnd": 7
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 292, "length": 3 }
+        }
+      },
+      "kind": 5,
+      "language": 0
+    }
+  }
+]

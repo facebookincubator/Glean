@@ -1,0 +1,79 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "fooFun",
+      "scope": [ "NsA", "NsB", "NsC", "NsD" ],
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "fooFun" } } },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "NsD" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "NsC" },
+                                  "parent": {
+                                    "key": {
+                                      "name": { "key": "NsB" },
+                                      "parent": {
+                                        "key": { "name": { "key": "NsA" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 14,
+                      "columnBegin": 9,
+                      "lineEnd": 16,
+                      "columnEnd": 9
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "fooFun",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 14,
+            "columnBegin": 9,
+            "lineEnd": 16,
+            "columnEnd": 9
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 310, "length": 6 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
+  }
+]

@@ -1,0 +1,110 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "classBinNSB",
+      "scope": [ "NsA", "NsB" ],
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "classBinNSB" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "NsB" },
+                              "parent": { "key": { "name": { "key": "NsA" } } }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "kind": { "class_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 19,
+                      "columnBegin": 5,
+                      "lineEnd": 23,
+                      "columnEnd": 5
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "classCinNSB" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "classBinNSB" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "NsB" },
+                                            "parent": {
+                                              "key": {
+                                                "name": { "key": "NsA" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 2
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "class_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 20,
+                            "columnBegin": 7,
+                            "lineEnd": 22,
+                            "columnEnd": 7
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "classBinNSB",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 19,
+            "columnBegin": 5,
+            "lineEnd": 23,
+            "columnEnd": 5
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 375, "length": 11 }
+        }
+      },
+      "kind": 6,
+      "language": 0
+    }
+  }
+]

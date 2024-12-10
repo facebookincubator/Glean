@@ -1,0 +1,3 @@
+query: codemarkup.search.SearchByScope { searchcase = Sensitive, name = "NsD", scope = ["NsA","NsB","NsC"], language = Cpp, kind = { just = Namespace } }
+perf: true
+transform: [gensort, []]

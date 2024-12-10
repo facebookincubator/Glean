@@ -175,11 +175,15 @@ predicate QueryToScopeCase :
     # struct/record scope
     ) | (
       QueryToQNameCase { Query, Case, QName };
-      { recordWithAccess = { record = QName,
+      { recordWithAccess = { record = QName, # this is tricky as its a subset of all qnames
           access = Public | Protected | Private } } # avoid wild card bind error
     ) = Scope;
 
-# compile to generic scoped qname
+# compile to generic scoped qname _to slot into cxx1.Scope { recordWithAccess _ } only
+# the problem is cxx1.Scope is a type that just lets any cxx1.QName inhabit it, but
+# actually quite restricted. It's always namespace* . record* (once you hit a
+# namsspace scope, its can't be inside a record again)
+# terminal node is often global_{}
 predicate QueryToQNameCase:
   {
     query : [string],
@@ -192,50 +196,100 @@ predicate QueryToQNameCase:
       cxx1.QName { name = "", scope = { global_ = {} } } ) |
     # one tuple
     ( [A] = Query;
-      CxxNameCase { Case, A, AName };
+      CxxRecordCase { Case, A, AName };
       { name = AName } ) |
-    # two tuple. we branch back to scope cases
+    # two tuple. parent might be either record or namespace
     ( [B,A] = Query;
-      CxxNameCase { Case, A, AName };
-      CxxNameCase { Case, B, BName };
-      { name = AName, scope =
-        { namespace_ = { name = { just = BName } } } |
-        { recordWithAccess = { record = { name = BName } } }
-      } ) |
+      CxxRecordCase { Case, A, AName };
+      ( CxxNamespaceCase { Case, B, BNameNS };
+        { name = AName, scope =
+          { namespace_ = { name = { just = BNameNS } } } }
+      ) | (
+        CxxRecordCase { Case, A, BNameR };
+        { name = AName, scope =
+          { recordWithAccess = { record = { name = BNameR } } } }
+      )
+    ) |
     # three tuple
     ( [C,B,A] = Query;
-      CxxNameCase { Case, A, AName };
-      CxxNameCase { Case, B, BName };
-      CxxNameCase { Case, C, CName };
-      { name = AName, scope =
-        { namespace_ = { name = { just = BName },
-          parent = { just = { name = { just = CName } } } } } |
-        { recordWithAccess = { record = { name = BName,
-          scope = { namespace_ = { name = { just = CName } } } |
-                  { recordWithAccess = { record = { name = CName } } }
-        } } }
-      } ) |
-    # four tuple sigh. e.g. 4 records deep , or two records in two namespaces
+      CxxRecordCase { Case, A, AName };
+      # simple case, `B` is a ns, `C` must be too
+      ( CxxNamespaceCase { Case, B, BNameNS };
+        CxxNamespaceCase { Case, C, CNameNS };
+        { name = AName,
+          scope = { namespace_ = {
+            name = { just = BNameNS },
+            parent = { just = { name = { just = CNameNS } } }
+          } } }
+      # or `B is a record, then ( C is ns or record )
+      ) | (
+        CxxRecordCase { Case, B, BNameR };
+        ( CxxNamespaceCase { Case, C, CNameNS };
+          { name = AName, scope =
+              { recordWithAccess = { record = { name = BNameR,
+                scope = { namespace_ = { name = { just = CNameNS } } } } }
+              }
+          }
+        ) | (
+          CxxRecordCase { Case, C, CNameR };
+          { name = AName, scope =
+              { recordWithAccess = { record = { name = BNameR,
+                scope = { recordWithAccess = { record = { name = CNameR } } } } }
+              }
+          }
+        )
+      )
+    ) |
+    # four tuple. e.g. 4, 3, 2 or 1 records under 0 - 3 namespaces
     ( [D,C,B,A] = Query;
-      CxxNameCase { Case, A, AName };
-      CxxNameCase { Case, B, BName };
-      CxxNameCase { Case, C, CName };
-      CxxNameCase { Case, D, DName };
-      { name = AName, scope =
-        { namespace_ = { name = { just = BName },
-          parent = { just = { name = { just = CName },
-            parent = { just = { name = { just = DName } }  }
-           } } } } |
-        { recordWithAccess = { record = { name = BName,
-          scope = { namespace_ = { name = { just = CName },
-            parent = { just = { name = { just = DName } } }
-           } } |
-          { recordWithAccess = { record = { name = CName,
-          scope = { namespace_ = { name = { just = DName } } } |
-            { recordWithAccess = { record = { name = DName } } }
-           } } }
-        } } }
-      }
+      CxxRecordCase { Case, A, AName };
+      # simplest case, `B` is a ns, `C` and `D` must be too
+      ( CxxNamespaceCase { Case, B, BNameNS };
+        CxxNamespaceCase { Case, C, CNameNS };
+        CxxNamespaceCase { Case, D, DNameNS };
+        { name = AName,
+          scope = { namespace_ = { name = { just = BNameNS },
+            parent = { just = { name = { just = CNameNS },
+              parent = { just = { name = { just = DNameNS } } }
+          } } } }
+        }
+      # or `B` is a record
+      ) | (
+        # case 1: C (and thus D) are namespaces
+        CxxRecordCase { Case, B, BNameR };
+        ( CxxNamespaceCase { Case, C, CNameNS };
+          CxxNamespaceCase { Case, D, DNameNS };
+          { name = AName, scope =
+            { recordWithAccess = { record = { name = BNameR,
+              scope = { namespace_ = { name = { just = CNameNS },
+                parent = { just = { name = { just = DNameNS } } } }
+              } } }
+            }
+          }
+        ) | (
+        # case 2: C is a record and D is a namespaces
+          CxxRecordCase { Case, C, CNameR };
+          CxxNamespaceCase { Case, D, DNameNS };
+          { name = AName, scope =
+            { recordWithAccess = { record = { name = BNameR,
+              scope = { recordWithAccess = { record = { name = CNameR,
+                scope = { namespace_ = { name = { just = DNameNS } } }
+              } } }
+            } } }
+          }
+        ) | (
+        # case 3: C is a record and D is record
+          CxxRecordCase { Case, C, CNameR };
+          CxxRecordCase { Case, D, DNameR };
+          { name = AName, scope =
+            { recordWithAccess = { record = { name = BNameR,
+              scope = { recordWithAccess = { record = { name = CNameR,
+                scope = { recordWithAccess = { record = { name = DNameR } } }
+              } } }
+            } } }
+          }
+        )
+      )
     ) = QName;
 
 # compile to namespace qname, case aware
@@ -338,5 +392,23 @@ predicate CxxNamespaceCase:
       Name = cxx1.Name NameStr
     )
 
+# Or if its a record-scoped thing it has to be in one of the Record declaration names
+
+predicate CxxRecordCase:
+  {
+    insensitive: bool,
+    namestr: string,
+    name: cxx1.Name,
+  }
+  { Insensitive, NameStr, Name } where
+    ( true = Insensitive;
+      cxx1.RecordStructLowerCase { NameStr, NameNormal } |
+       cxx1.RecordClassLowerCase { NameStr, NameNormal } |
+        cxx1.RecordUnionLowerCase { NameStr, NameNormal };
+      Name = cxx1.Name NameNormal
+    ) | (
+      false = Insensitive;
+      Name = cxx1.Name NameStr
+    )
 
 }

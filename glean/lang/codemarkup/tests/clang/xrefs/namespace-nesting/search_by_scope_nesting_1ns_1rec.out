@@ -1,0 +1,143 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "ClassB",
+      "scope": [ "NsA" ],
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "ClassB" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "NsA" } } }
+                        }
+                      }
+                    },
+                    "kind": { "class_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 26,
+                      "columnBegin": 3,
+                      "lineEnd": 36,
+                      "columnEnd": 3
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": { "name": { "key": "fooB" } } },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "ClassB" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "NsA" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 2
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 26,
+                            "columnBegin": 18,
+                            "lineEnd": 26,
+                            "columnEnd": 41
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "ClassC" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "ClassB" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": { "name": { "key": "NsA" } }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 2
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "class_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 28,
+                            "columnBegin": 5,
+                            "lineEnd": 34,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "ClassB",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 26,
+            "columnBegin": 3,
+            "lineEnd": 36,
+            "columnEnd": 3
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 484, "length": 6 }
+        }
+      },
+      "kind": 6,
+      "language": 0
+    }
+  }
+]

@@ -1,0 +1,80 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "fooB",
+      "scope": [ "NsA", "ClassB" ],
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": { "name": { "key": "fooB" } } },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "ClassB" },
+                                "scope": {
+                                  "namespace_": {
+                                    "key": { "name": { "key": "NsA" } }
+                                  }
+                                }
+                              }
+                            },
+                            "access": 2
+                          }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                    },
+                    "method": {
+                      "isVirtual": false,
+                      "isConst": false,
+                      "isVolatile": false,
+                      "refQualifier": 0
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 26,
+                      "columnBegin": 18,
+                      "lineEnd": 26,
+                      "columnEnd": 41
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "fooB",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 26,
+            "columnBegin": 18,
+            "lineEnd": 26,
+            "columnEnd": 41
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 497, "length": 4 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
+  }
+]
