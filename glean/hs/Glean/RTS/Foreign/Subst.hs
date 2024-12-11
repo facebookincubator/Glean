@@ -121,21 +121,21 @@ foreign import ccall unsafe glean_subst_compose
   -> Ptr (Ptr Subst)
   -> IO CString
 
-foreign import ccall unsafe glean_serialize_subst
+foreign import ccall safe glean_serialize_subst
   :: Ptr Subst
   -> Ptr Fid
   -> Ptr CSize
   -> Ptr (Ptr Int64)
   -> IO CString
 
-foreign import ccall unsafe glean_subst_deserialize
+foreign import ccall safe glean_subst_deserialize
   :: Fid
   -> CSize
   -> Ptr Int64
   -> Ptr (Ptr Subst)
   -> IO CString
 
-foreign import ccall unsafe glean_subst_intervals
+foreign import ccall safe glean_subst_intervals
   :: Ptr Subst
   -> Ptr Fid
   -> CSize
@@ -149,7 +149,7 @@ foreign import ccall unsafe glean_subst_subst
   -> Ptr Fid
   -> IO CString
 
-foreign import ccall unsafe glean_subst_vector
+foreign import ccall safe glean_subst_vector
   :: Ptr Subst
   -> Ptr Fid
   -> CSize
