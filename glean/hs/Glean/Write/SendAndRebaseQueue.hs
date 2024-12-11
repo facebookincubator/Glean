@@ -14,7 +14,6 @@ module Glean.Write.SendAndRebaseQueue
   ) where
 
 import Control.Concurrent
-import Control.DeepSeq
 import Control.Exception
 import Control.Monad
 import qualified Data.ByteString as BS
@@ -251,8 +250,8 @@ rebase inventory batch cache base = do
         { trustRefs = True
         , ignoreRedef = True  -- see Note [redefinition]
         }
-      let owned = substOwnership subst $
-            FactOwnership $ Thrift.batch_owned batch
+      owned <- substOwnership subst $
+        FactOwnership $ Thrift.batch_owned batch
       return (factSet, owned)
 
 {- Note [redefinition]
@@ -325,8 +324,7 @@ senderRebaseAndFlush wait srq sender = do
           bracket (deserialize thriftSubst) release $ \subst -> do
             (newBase, newSubst) <-
               FactSet.rebase (srqInventory srq) subst (srqFacts srq) base
-            let newOwned = map (substOwnership newSubst) owned
-            _ <- evaluate (force (map ownershipUnits newOwned))
+            newOwned <- mapM (substOwnership newSubst) owned
             return (newBase, newOwned)
       -- "Commit throughput" will be write throughput to the server
       start <- readTVarIO (sSent sender)

@@ -11,6 +11,7 @@ module Glean.RTS.Foreign.Subst
   , empty
   , serialize
   , substIntervals
+  , unsafeSubstIntervalsAndRelease
   , subst
   , substVector
   , deserialize
@@ -69,8 +70,8 @@ subst subst old = unsafePerformIO $
   mask_ $ invoke $ glean_subst_subst subst_ptr old
 
 -- | Apply the given subsitution to all the Fids in the vector
-substVector :: Subst -> VS.Vector Fid -> VS.Vector Fid
-substVector subst vec = unsafePerformIO $
+substVector :: Subst -> VS.Vector Fid -> IO (VS.Vector Fid)
+substVector subst vec =
   with subst $ \subst_ptr ->
   VS.unsafeWith vec $ \vec_ptr -> mask_ $ do
     (outs_ptr, outs_size) <- invoke $ glean_subst_vector
@@ -80,8 +81,8 @@ substVector subst vec = unsafePerformIO $
     unsafeMallocedVector outs_ptr outs_size
 
 -- | Apply the given substitution to the intervals
-substIntervals :: Subst -> VS.Vector Fid -> VS.Vector Fid
-substIntervals subst ins = unsafePerformIO $
+substIntervals :: Subst -> VS.Vector Fid -> IO (VS.Vector Fid)
+substIntervals subst ins =
   with subst $ \subst_ptr ->
   VS.unsafeWith ins $ \ins_ptr -> mask_ $ do
     (outs_ptr, outs_size) <- invoke $ glean_subst_intervals
@@ -89,6 +90,16 @@ substIntervals subst ins = unsafePerformIO $
       ins_ptr
       (fromIntegral $ VS.length ins)
     unsafeMallocedVector outs_ptr outs_size
+
+-- | Like 'substIntervals', but also releases the input vector
+-- immediately, rather than waiting for the GC to run. The input
+-- vector must never be used again.
+unsafeSubstIntervalsAndRelease :: Subst -> VS.Vector Fid -> IO (VS.Vector Fid)
+unsafeSubstIntervalsAndRelease subst ins = do
+  new <- substIntervals subst ins
+  let !(fp, _) = VS.unsafeToForeignPtr0 ins
+  finalizeForeignPtr fp
+  return new
 
 deserialize :: Thrift.Subst -> IO Subst
 deserialize Thrift.Subst{..} =

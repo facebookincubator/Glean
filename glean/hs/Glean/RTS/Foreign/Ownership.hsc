@@ -347,9 +347,10 @@ newtype FactOwnership = FactOwnership
      -- ^ exactly the same as Batch.owned in glean.thrift
   }
 
-substOwnership :: Subst -> FactOwnership -> FactOwnership
-substOwnership subst (FactOwnership owned) =
-  FactOwnership (fmap (coerce $ substIntervals subst) owned)
+substOwnership :: Subst -> FactOwnership -> IO FactOwnership
+substOwnership subst (FactOwnership owned) = do
+  owned' <- traverse (coerce $ unsafeSubstIntervalsAndRelease subst) owned
+  return (FactOwnership owned')
 
 unionOwnership :: [FactOwnership] -> FactOwnership
 unionOwnership =

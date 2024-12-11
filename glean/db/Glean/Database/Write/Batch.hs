@@ -13,7 +13,6 @@ module Glean.Database.Write.Batch
   , writeContentFromBatch
   ) where
 
-import Control.DeepSeq (force)
 import Control.Exception
 import Control.Monad.Extra
 import Control.Trace (traceMsg)
@@ -25,7 +24,6 @@ import Data.Default
 import Data.Int (Int64)
 import Data.IORef
 import Data.Maybe
-import qualified Data.Vector.Storable as Vector
 import Data.Word
 
 import Util.Control.Exception
@@ -159,7 +157,7 @@ reallyWriteBatch
   -> Maybe DefineOwnership
   -> IO (IO Subst)
 reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
-    batch maybeOwn = do
+    batch@Thrift.Batch{..} maybeOwn = do
   let !real_size = batchSize batch
   Stats.tick (envStats env) Stats.mutatorThroughput original_size
     $ Stats.tick (envStats env)
@@ -192,11 +190,10 @@ reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
 
       let
         commitOwnership = do
-          Storage.addOwnership odbHandle $
-            coerce (Subst.substIntervals subst) <$>
-              Thrift.batch_owned batch
-          let deps = substDependencies subst
-                <$> Thrift.batch_dependencies batch
+          owned <- mapM (coerce Subst.unsafeSubstIntervalsAndRelease subst)
+            batch_owned
+          Storage.addOwnership odbHandle owned
+          deps <- mapM (substDependencies subst) batch_dependencies
           derivedOwners <-
             if | Just owners <- maybeOwn -> do
                   Ownership.substDefineOwnership owners subst
@@ -250,7 +247,8 @@ deDupBatch
   -> Thrift.Batch
   -> Maybe DefineOwnership
   -> IO Subst
-deDupBatch env repo odb lookup writing original_size batch maybeOwn =
+deDupBatch env repo odb lookup writing original_size
+    batch@Thrift.Batch{..} maybeOwn =
   logExceptions (\s -> inRepo repo $ "dedup error: " ++ s) $ do
     next_id <- do
       r <- readTVarIO (wrCommit writing)
@@ -287,10 +285,9 @@ deDupBatch env repo odb lookup writing original_size batch maybeOwn =
     case maybe_deduped_batch of
       Nothing -> return dsubst
       Just deduped_batch -> do
-        let !is = force $ coerce Subst.substIntervals dsubst
-              <$> Thrift.batch_owned batch
-            !deps = force $ substDependencies dsubst
-              <$> Thrift.batch_dependencies batch
+        is <- mapM (coerce Subst.unsafeSubstIntervalsAndRelease dsubst)
+          batch_owned
+        deps <- mapM (substDependencies dsubst) batch_dependencies
         forM_ maybeOwn $ \ownBatch ->
           Ownership.substDefineOwnership ownBatch dsubst
         -- And now write it do the DB, deduplicating again
@@ -315,15 +312,13 @@ withLookupCache Writing{..} lookup f = do
 substDependencies
  :: Subst
  -> [Thrift.FactDependencies]
- -> [Thrift.FactDependencies]
-substDependencies subst dmap = map substFD dmap
+ -> IO [Thrift.FactDependencies]
+substDependencies subst dmap = mapM substFD dmap
   where
-  substFD (Thrift.FactDependencies facts deps) =
-    Thrift.FactDependencies facts' deps'
-    where
-    !facts' = under (Subst.substVector subst) facts
-    !deps' = under (Subst.substVector subst) deps
-    under f = Vector.unsafeCast . f . Vector.unsafeCast
+  substFD (Thrift.FactDependencies facts deps) = do
+    Thrift.FactDependencies
+      <$> coerce (Subst.substVector subst) facts
+      <*> coerce (Subst.substVector subst) deps
 
 batchSize :: Thrift.Batch -> Word64
 batchSize = fromIntegral . BS.length . Thrift.batch_facts
