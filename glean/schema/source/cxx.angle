@@ -818,22 +818,21 @@ predicate DeclarationScope :
   }
   { Decl, Scope } where
     # these share FunctionQName scopes
-    ( { function_ = { name = FQN }} |
-      { usingDeclaration = { name = FQN }} = Decl;
-      { scope = Scope } = FQN
+    ( FQN = Decl.function_?.name | Decl.usingDeclaration?.name;
+      Scope = FQN.scope
     # vanilla QName scopes
     ) | (
-      { record_ = { name = QN } } |
-      { variable = { name = QN } } |
-      { typeAlias = { name = QN } } |
-      { enum_ = { name = QN } } |
-      { usingDirective = { name = QN } } = Decl;
-      { scope = Scope } = QN
+      QN =
+         Decl.record_?.name |
+         Decl.variable?.name |
+         Decl.typeAlias?.name |
+         Decl.enum_?.name |
+         Decl.usingDirective?.name;
+      Scope = QN.scope
     # NamespaceQName scopes
     ) | (
-      { namespace_ = { name = NQN } } |
-      { namespaceAlias = { name = NQN } } = Decl;
-      Scope = cxx1.Scope { namespace_ = NQN }
+      NQN = Decl.namespace_?.name | Decl.namespaceAlias?.name;
+      Scope.namespace_? = NQN
     )
 
 # src.Range of an arbitrary Declaration.
