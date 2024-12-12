@@ -267,36 +267,6 @@ predicate SearchInContainerOrEnum :
       ( SearchInEnum { N, ParentName, ParentNamespace, D}; D)
     )
 
-# SearchInContext can be used to search for symbols with a non-empty context.
-#
-# - in container Vec\sort or GleanGlass::genGleanGlassClient
-# - in enum (e.g. SRLocality::REGION)
-# - in namespace (e.g. Vec\sort , or Dict\fb\append)
-#
-# SearchInContext can find classConst, method, property_, and typeConst in
-# ContainerDeclaration, find enumerator in EnumDeclaration,
-# and find the other declaration kinds in a non-empty
-# NamespaceQName.
-#
-# Thus the contextName may be a class, interface, trait,
-# enum, or namespace.
-#
-# This is complementary to SearchForGlobal and SearchByName.
-predicate SearchInContext :
-  {
-    name : hack.Name,
-    contextName : hack.Name,
-    contextNamespace : maybe hack.NamespaceQName,
-    decl : hack.Declaration
-  }
-  { N, ParentName, ParentNamespace, Decl } where
-    Decl =
-      # container or enum via parent QName
-      (SearchInContainerOrEnum { N, ParentName, ParentNamespace, D }; D)
-    | # member of namespace
-      (NS = hack.NamespaceQName { ParentName, ParentNamespace };
-      SearchNamespacedDecl { N, { just = NS }, D}; D )
-
 #
 # Generating qnames and namespace qnames. We don't have recursion but we'd
 # like to compile the namespace tokens into a recursive QName type so we unroll

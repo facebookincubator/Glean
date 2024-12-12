@@ -1,3 +1,3 @@
-query: D where search.code.SearchByNameAndLanguage { name = "foo", entity = D }
+query: D where codemarkup.search.SearchByName { name = "foo", language = Hack, searchcase = Sensitive, entity = D }
 transform: [normord, []]
 perf: true

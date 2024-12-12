@@ -1,5 +1,8 @@
 {
   "@generated": null,
-  "facts_searched": { "hack.MethodDeclaration.6": 2, "hack.Name.6": 1 },
+  "facts_searched": {
+    "hack.DeclarationSpan.6": 2,
+    "hack.SearchMethodByName.6": 2
+  },
   "full_scans": [ ]
 }

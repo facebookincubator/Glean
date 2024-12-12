@@ -20,9 +20,16 @@
           }
         }
       },
+      "kind": 7,
       "language": 5,
+      "location": {
+        "file": { "key": "www/SourceTrait.php" },
+        "location": { "span": { "length": 58, "start": 102 } },
+        "name": "quux"
+      },
       "name": "quux",
-      "scope": [ "SourceTrait" ]
+      "scope": [ "SourceTrait" ],
+      "searchcase": 0
     }
   }
 ]

@@ -1,0 +1,236 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "BAZ",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 339, "length": 18 } },
+        "destination": {
+          "file": { "key": "www/SourceClass.php" },
+          "span": { "start": 349, "length": 3 }
+        }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "classConst": {
+              "key": {
+                "name": { "key": "BAZ" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "SourceClass" },
+                          "namespace_": { "key": { "name": { "key": "NS" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "NS",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 237, "length": 2 } },
+        "destination": {
+          "file": { "key": "www/SourceClass.php" },
+          "span": { "start": 237, "length": 2 }
+        }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "namespace_": {
+              "key": { "name": { "key": { "name": { "key": "NS" } } } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "SourceClass",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 297, "length": 279 } },
+        "destination": {
+          "file": { "key": "www/SourceClass.php" },
+          "span": { "start": 303, "length": 11 }
+        }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": {
+                    "key": {
+                      "name": { "key": "SourceClass" },
+                      "namespace_": { "key": { "name": { "key": "NS" } } }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "T",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 361, "length": 19 } },
+        "destination": {
+          "file": { "key": "www/SourceClass.php" },
+          "span": { "start": 372, "length": 1 }
+        }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "typeConst": {
+              "key": {
+                "name": { "key": "T" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "SourceClass" },
+                          "namespace_": { "key": { "name": { "key": "NS" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "TopTierFnType",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 242, "length": 53 } },
+        "destination": {
+          "file": { "key": "www/SourceClass.php" },
+          "span": { "start": 247, "length": 13 }
+        }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "typedef_": {
+              "key": {
+                "name": {
+                  "key": {
+                    "name": { "key": "TopTierFnType" },
+                    "namespace_": { "key": { "name": { "key": "NS" } } }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "bar",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 503, "length": 71 } },
+        "destination": {
+          "file": { "key": "www/SourceClass.php" },
+          "span": { "start": 519, "length": 3 }
+        }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "method": {
+              "key": {
+                "name": { "key": "bar" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "SourceClass" },
+                          "namespace_": { "key": { "name": { "key": "NS" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/SourceClass.php" },
+      "location": {
+        "name": "daz",
+        "file": { "key": "www/SourceClass.php" },
+        "location": { "span": { "start": 489, "length": 9 } },
+        "destination": {
+          "file": { "key": "www/SourceClass.php" },
+          "span": { "start": 489, "length": 4 }
+        }
+      },
+      "entity": {
+        "hack": {
+          "decl": {
+            "property_": {
+              "key": {
+                "name": { "key": "daz" },
+                "container": {
+                  "class_": {
+                    "key": {
+                      "name": {
+                        "key": {
+                          "name": { "key": "SourceClass" },
+                          "namespace_": { "key": { "name": { "key": "NS" } } }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

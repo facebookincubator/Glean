@@ -1,11 +1,11 @@
 {
   "@generated": null,
   "facts_searched": {
-    "hack.InterfaceDeclaration.6": 1,
-    "hack.InterfaceDefinition.6": 1,
-    "hack.Name.6": 3,
+    "hack.DeclarationSpan.6": 1,
+    "hack.Name.6": 2,
     "hack.NamespaceQName.6": 1,
-    "hack.QName.6": 3
+    "hack.QName.6": 5,
+    "hack.SearchClassConstByName.6": 1
   },
   "full_scans": [ ]
 }

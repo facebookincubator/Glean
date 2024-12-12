@@ -22,9 +22,16 @@
           }
         }
       },
+      "kind": 15,
       "language": 5,
+      "location": {
+        "file": { "key": "www/SourceInterface.php" },
+        "location": { "span": { "length": 24, "start": 111 } },
+        "name": "JAZZ"
+      },
       "name": "JAZZ",
-      "scope": [ "SourceInterface" ]
+      "scope": [ "SourceInterface" ],
+      "searchcase": 0
     }
   }
 ]

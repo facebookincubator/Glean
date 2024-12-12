@@ -2,18 +2,32 @@
   "@generated",
   {
     "key": {
-      "contextName": { "key": "Position" },
-      "decl": {
-        "enumerator": {
-          "key": {
-            "enumeration": {
-              "key": { "name": { "key": { "name": { "key": "Position" } } } }
-            },
-            "name": { "key": "Right" }
+      "entity": {
+        "hack": {
+          "decl": {
+            "enumerator": {
+              "key": {
+                "enumeration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "Position" } } }
+                  }
+                },
+                "name": { "key": "Right" }
+              }
+            }
           }
         }
       },
-      "name": { "key": "Right" }
+      "kind": 9,
+      "language": 5,
+      "location": {
+        "file": { "key": "www/TopLevel.php" },
+        "location": { "span": { "length": 5, "start": 221 } },
+        "name": "Right"
+      },
+      "name": "Right",
+      "scope": [ "Position" ],
+      "searchcase": 0
     }
   }
 ]

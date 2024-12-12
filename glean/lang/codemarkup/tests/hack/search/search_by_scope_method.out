@@ -20,9 +20,16 @@
           }
         }
       },
+      "kind": 7,
       "language": 5,
+      "location": {
+        "file": { "key": "www/RefClass.php" },
+        "location": { "span": { "length": 390, "start": 331 } },
+        "name": "bar"
+      },
       "name": "bar",
-      "scope": [ "RefClass" ]
+      "scope": [ "RefClass" ],
+      "searchcase": 0
     }
   }
 ]

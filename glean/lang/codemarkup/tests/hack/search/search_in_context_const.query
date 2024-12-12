@@ -1,3 +1,3 @@
-query: search.hack.SearchInContext { name = "BAZ", contextName = "SourceClass" }
+query: codemarkup.search.SearchByScope { name = "BAZ", scope = ["SourceClass"], language = Hack, searchcase = Sensitive }
 transform: [normord, []]
 perf: true

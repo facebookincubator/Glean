@@ -91,26 +91,6 @@
         "decl": {
           "container": {
             "class_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "Awaitable" },
-                    "namespace_": { "key": { "name": { "key": "HH" } } }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "hack": {
-        "decl": {
-          "container": {
-            "class_": {
               "key": { "name": { "key": { "name": { "key": "RefClass" } } } }
             }
           }
@@ -145,26 +125,6 @@
           "container": {
             "class_": {
               "key": { "name": { "key": { "name": { "key": "SuperClass" } } } }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "hack": {
-        "decl": {
-          "container": {
-            "class_": {
-              "key": {
-                "name": {
-                  "key": {
-                    "name": { "key": "SuperClass" },
-                    "namespace_": { "key": { "name": { "key": "NS" } } }
-                  }
-                }
-              }
             }
           }
         }

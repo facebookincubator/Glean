@@ -7,9 +7,16 @@
           "decl": { "module": { "key": { "name": { "key": "glean.test" } } } }
         }
       },
+      "kind": 4,
       "language": 5,
+      "location": {
+        "file": { "key": "www/BaseModule.php" },
+        "location": { "span": { "length": 25, "start": 80 } },
+        "name": "glean.test"
+      },
       "name": "glean.test",
-      "scope": [ ]
+      "scope": [ ],
+      "searchcase": 0
     }
   }
 ]

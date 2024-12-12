@@ -45,8 +45,7 @@ predicate SearchByNameAndLanguage:
     entity: code.Entity,
   }
   { Name, Language, Entity } where
-  # see SearchByNameKindAndLanguage for C++, PreProcessor, Python
-    ( Hack = Language; HackSearchByName { Name, Entity } ) |
+  # see SearchByNameKindAndLanguage for C++, PreProcessor, Python, Hack
     ( Java = Language; JavaSearchByName { Name, Entity } ) |
     ( Kotlin = Language; KotlinSearchByName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByName { Name, Entity } ) |
@@ -66,7 +65,6 @@ predicate SearchByLowerCaseNameAndLanguage:
   }
   { Name, Language, Entity } where
  # See SearchByLowerCaseNameKindAndLanguage
-    ( Hack = Language; HackSearchByLowerCaseName { Name, Entity } ) |
     ( Java = Language; JavaSearchByLowerCaseName { Name, Entity } ) |
     ( Kotlin = Language; KotlinSearchByLowerCaseName { Name, Entity } ) |
     ( Haskell = Language; HsSearchByLowerCaseName { Name, Entity } ) |
@@ -97,6 +95,9 @@ predicate SearchByNameKindAndLanguage:
     ) | (
       JavaScript = Language;
       FlowSearchByNameKindAndScopeFact { NameStr, _, Kinds, Entity }
+    ) | (
+      Hack = Language;
+      HackSearchByNameAndKind { NameStr, Kinds, Entity }
     )
 
 # Kind-optimized search, case insensitive.
@@ -119,6 +120,9 @@ predicate SearchByLowerCaseNameKindAndLanguage:
     ) | (
       JavaScript = Language;
       FlowSearchByLowerCaseNameKindAndScopeFact { NameStr, _, Kinds, Entity }
+    ) | (
+      Hack = Language;
+      HackSearchByLowerCaseNameAndKind { NameStr, Kinds, Entity }
     )
 
 # scoped search
@@ -132,7 +136,6 @@ predicate SearchByScope:
   }
   { Name, Scope, Language, Entity } where
 # See SearchByScopeAndKind for C++
-    ( Hack = Language; HackSearchByScope { Name, Scope, Entity } ) |
     ( Java = Language; JavaSearchByScope { Name, Scope, Entity } ) |
     ( Kotlin = Language; KotlinSearchByScope { Name, Scope, Entity } );
     code.EntityLanguage { Entity, Language };
@@ -147,7 +150,6 @@ predicate SearchByLowerCaseScope:
   }
   { Name, Scope, Language, Entity } where
 # See SearchByLowerCaseScopeAndKind for C++
-    ( Hack = Language; HackSearchByLowerCaseScope { Name, Scope, Entity } ) |
     ( Java = Language; JavaSearchByLowerCaseScope { Name, Scope, Entity}) |
     ( Kotlin = Language; KotlinSearchByLowerCaseScope { Name, Scope, Entity});
     code.EntityLanguage { Entity, Language };
@@ -170,6 +172,9 @@ predicate SearchByScopeAndKind:
     ) | (
       JavaScript = Language;
       FlowSearchByScopeAndKind { Name, Scope, Kinds, Entity };
+    ) | (
+      Hack = Language;
+      HackSearchByScopeAndKind { Name, Scope, Kinds, Entity }
     )
 
 # lower case by scope
@@ -191,95 +196,229 @@ predicate SearchByLowerCaseScopeAndKind:
     ) | (
       JavaScript = Language;
       FlowSearchByLowerCaseScopeAndKind { Name, Scope, Kinds, Entity }
+    ) | (
+      Hack = Language;
+      HackSearchByLowerCaseScopeAndKind { Name, Scope, Kinds, Entity }
     )
 
 #
 # Language-specific identifier search
 #
 
-predicate HackSearchByName:
-  {
-    name: string,
-    entity: code.Entity,
-  }
-  { NameStr, Entity } where
-    Name = hack.Name NameStr;
-    HackSearchByNameWithName { Name, Entity };
-
-predicate HackSearchByLowerCaseName:
-  {
-    name: string,
-    entity: code.Entity,
-  }
-  { Name, Entity } where
-    hack.NameLowerCase { Name, NameCase };
-    HackSearchByNameWithName { NameCase, Entity };
-
-# Helper to reuse the Name fact found previously
-predicate HackSearchByNameWithName:
-  {
-    name : hack.Name,
-    entity : code.Entity
-  }
-  { Name, { hack = { decl = Decl }}} where
-    search.hack.SearchByName { name = Name, decl = Decl };
-
-predicate HackSearchByScope:
+predicate HackSearchByScopeAndKind:
   {
     name: string,
     scope: [string],
+    kinds: maybe codemarkup.types.SymbolKind,
     entity: code.Entity,
   }
-  { NameStr, Query, Entity } where
-    Name = hack.Name NameStr;
+  { NameStr, Query, Kinds, Entity } where
     Insensitive = false;
-    HackSearchByScopeWithName { Name, Insensitive, Query, Entity }
+    HackSearchByScopeWithNameKinds { NameStr, Insensitive, Query, Kinds, Entity }
 
-predicate HackSearchByLowerCaseScope:
+predicate HackSearchByLowerCaseScopeAndKind:
   {
     name: string,
     scope: [string],
+    kinds: maybe codemarkup.types.SymbolKind,
     entity: code.Entity,
   }
-  { NameStr, Query, Entity} where
-    hack.NameLowerCase { NameStr, Name };
+  { NameStr, Query, Kinds, Entity} where
+    HackNameLowerCase { NameStr, Kinds, Name };
     Insensitive = true;
-    HackSearchByScopeWithName { Name, Insensitive, Query, Entity }
+    HackSearchByScopeWithNameKinds { Name, Insensitive, Query, Kinds, Entity }
 
-# private helper to share name facts between the calsl
 #
 # by always using the matched namespace we make prevent scope wildcards
 # e.g. C\count won't match Test\C\count
 # we could try to interpret prefix mode this way though
 #
-predicate HackSearchByScopeWithName:
+predicate HackSearchByScopeWithNameKinds:
   {
-    name: hack.Name,
-    insenstive : bool,
+    name: string,
+    insensitive : bool,
     scope: [string],
+    kinds: maybe codemarkup.types.SymbolKind,
     entity: code.Entity,
   }
-  { Name, Insensitive, Scope, { hack = { decl = Decl }}} where
+  { NameStr, Insensitive, Scope, Kinds, Entity } where
     if ( [] = Scope; true | false = Insensitive )
       then (
-        ( # exactly global declarations
-          search.hack.SearchInNamespace { Name, nothing, Decl }
+        ( # exactly and specifically global declarations
+          # these will get ranked higher by glass
+          HackSearchByNameKindWithNamespace { NameStr, nothing, Kinds, Entity }
         ) | (
           # or global namespace alias children ("FlibSL\Vec" or "C" work)
-          hack.GlobalNamespaceAlias { Name, NSQName };
-          NSDecl = hack.NamespaceDeclaration { name = NSQName };
-          { namespace_ = NSDecl } = Decl
+          { just = Namespace } = Kinds;
+          hack.GlobalNamespaceAlias { hack.Name NameStr, NSQName };
+          hack.NamespaceDeclaration { name = NSQName } = NSDecl;
+          { hack = { decl = { namespace_ = NSDecl } } } = Entity
         ) | (
-          # or children of auto-imported namespaces (just HH for now)
-          search.hack.HackInAutoImportedNamespace { Name, HHNSQName };
-          search.hack.SearchInNamespace { Name, HHNSQName, Decl }
+          { just = Module } = Kinds;
+          hack.SearchModuleByName { NameStr, Decl };
+          { hack = { decl = Decl } } = Entity
+        ) | (
+          # and check if NameStr is something in HH (i.e. auto-imported). Equiv
+          # to having the HH namespace as parent. And specifically not another
+          # namespace under HH. Has to be direct child of HH
+          HH = hack.NamespaceQName { name = hack.Name "HH", parent = nothing };
+          HackSearchByNameKindWithNamespace { NameStr, { just = HH }, Kinds, Entity }
         )
       )
       else (
         # search within specific context
-        search.hack.QueryToScopeCase { Scope, Insensitive, ScopeName, ScopeNamespace };
-        search.hack.SearchInContext { Name, ScopeName, ScopeNamespace, Decl }
+        search.hack.QueryToScopeCase { Scope, Insensitive, ScopeName, ScopeNS };
+        HackSearchByNameKindWithQName { NameStr, ScopeName, ScopeNS, Kinds, Entity } |
+          HackSearchByNameKindWithNamespace { NameStr, { just = { ScopeName, ScopeNS } }, Kinds, Entity };
       );
+
+#
+# string-based search
+#
+
+predicate HackSearchByNameAndKind:
+  {
+    name: string,
+    kinds: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity,
+  }
+  { NameStr, Kinds, Entity } where
+    HackSearchByNameKindWithQName { NameStr, _, _, Kinds, Entity } |
+    HackSearchByNameKindWithNamespace { NameStr, _, Kinds, Entity } |
+      # module is special as it has no scope term ever
+      ( { just = Module } = Kinds;
+        hack.SearchModuleByName { NameStr, Decl };
+        { hack = { decl = Decl } } = Entity )
+
+predicate HackSearchByLowerCaseNameAndKind:
+  {
+    name: string,
+    kinds: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity,
+  }
+  { NameStr, Kinds, Entity } where
+    HackNameLowerCase { NameStr, Kinds, Name };
+    HackSearchByNameAndKind { Name, Kinds, Entity }
+
+# arity-2 scope. Those that require a parent and an optional namespace. i.e. at
+# least one non-empty scope term or all empty
+predicate HackSearchByNameKindWithQName:
+  {
+    name: string,
+    scope : hack.Name,
+    scopeNamespace : maybe hack.NamespaceQName,
+    kinds: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity,
+  }
+  { NameStr, Scope, ScopeNS, Kinds, Entity } where
+    { just = Kind } = Kinds;
+    (
+      Method = Kind;
+      hack.SearchMethodByName { NameStr, { Scope, ScopeNS }, Decl }
+    ) | (
+      Property = Kind;
+      hack.SearchPropertyByName { NameStr, { Scope, ScopeNS }, Decl }
+    ) | (
+      Field = Kind;
+      hack.SearchEnumeratorByName { NameStr, { Scope, ScopeNS }, Decl }
+    ) | (
+      Constant = Kind;
+      hack.SearchClassConstByName { NameStr, { Scope, ScopeNS }, Decl }
+    ) | (
+      Type = Kind;
+      hack.SearchTypeConstByName { NameStr, { Scope, ScopeNS }, Decl }
+    );
+    { hack = { decl = Decl } } = Entity
+
+# arity-1 scope: those that require a maybe namespace scope term
+#
+# With namespace_ of nothing, this searches for top-level declarations (global
+# items without a context)
+#
+predicate HackSearchByNameKindWithNamespace:
+  {
+    name: string,
+    scope: maybe hack.NamespaceQName,
+    kinds: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity
+  }
+  { NameStr, Scope, Kinds, Entity } where
+    { just = Kind } = Kinds;
+    (
+      Class_ = Kind;
+      hack.SearchClassByName { NameStr, Scope, Decl }
+    ) | (
+      Interface = Kind;
+      hack.SearchInterfaceByName { NameStr, Scope, Decl }
+    ) | (
+      Trait = Kind;
+      hack.SearchTraitByName { NameStr, Scope, Decl }
+    ) | (
+      Enum_ = Kind;
+      hack.SearchEnumByName { NameStr, Scope, Decl }
+    ) | (
+      Namespace = Kind;
+      hack.SearchNamespaceByName { NameStr, Scope, Decl }
+    ) | (
+      Function = Kind;
+      hack.SearchFunctionByName { NameStr, Scope, Decl }
+    ) | (
+      Constant = Kind;
+      hack.SearchGlobalConstByName { NameStr, Scope, Decl }
+    ) | (
+      Type = Kind;
+      hack.SearchTypedefByName { NameStr, Scope, Decl }
+    );
+    { hack = { decl = Decl } } = Entity
+
+predicate HackNameLowerCase :
+  {
+    nameLowercase : string,
+    kinds: maybe codemarkup.types.SymbolKind,
+    name : string,
+  }
+  { NameStr, Kinds, Name } where
+    { just = Kind } = Kinds;
+    (
+      Class_ = Kind;
+      hack.SearchClassByLowerCaseName { NameStr, Name }
+    ) | (
+      Interface = Kind;
+      hack.SearchInterfaceByLowerCaseName { NameStr, Name }
+    ) | (
+      Trait = Kind;
+      hack.SearchTraitByLowerCaseName { NameStr, Name }
+    ) | (
+      Enum_ = Kind;
+      hack.SearchEnumByLowerCaseName { NameStr, Name }
+    ) | (
+      Namespace = Kind;
+      hack.SearchNamespaceByLowerCaseName { NameStr, Name }
+    ) | (
+      Function = Kind;
+      hack.SearchFunctionByLowerCaseName { NameStr, Name }
+    ) | (
+      Method = Kind;
+      hack.SearchMethodByLowerCaseName { NameStr, Name }
+    ) | (
+      Constant = Kind;
+      hack.SearchClassConstByLowerCaseName { NameStr, Name } |
+        hack.SearchGlobalConstByLowerCaseName { NameStr, Name }
+    ) | (
+      Property = Kind;
+      hack.SearchPropertyByLowerCaseName { NameStr, Name }
+    ) | (
+      Field = Kind;
+      hack.SearchEnumeratorByLowerCaseName { NameStr, Name }
+    ) | (
+      Type = Kind;
+      hack.SearchTypeConstByLowerCaseName { NameStr, Name } |
+        hack.SearchTypedefByLowerCaseName { NameStr, Name }
+    ) | (
+      Module = Kind;
+      hack.SearchModuleByLowerCaseName { NameStr, Name }
+    );
+
 
 predicate PythonSearchByScopeAndKind:
   {

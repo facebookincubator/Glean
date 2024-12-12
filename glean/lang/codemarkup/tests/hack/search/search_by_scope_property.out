@@ -20,9 +20,16 @@
           }
         }
       },
+      "kind": 8,
       "language": 5,
+      "location": {
+        "file": { "key": "www/RefClass.php" },
+        "location": { "span": { "length": 10, "start": 182 } },
+        "name": "raz"
+      },
       "name": "raz",
-      "scope": [ "RefClass" ]
+      "scope": [ "RefClass" ],
+      "searchcase": 0
     }
   }
 ]

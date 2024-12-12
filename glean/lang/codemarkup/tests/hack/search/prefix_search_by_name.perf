@@ -1,23 +1,21 @@
 {
   "@generated": null,
   "facts_searched": {
-    "hack.ClassConstDeclaration.6": 4,
-    "hack.ClassDeclaration.6": 5,
-    "hack.EnumDeclaration.6": 1,
-    "hack.Enumerator.6": 5,
-    "hack.FunctionDeclaration.6": 1,
-    "hack.GlobalConstDeclaration.6": 1,
-    "hack.InterfaceDeclaration.6": 1,
-    "hack.MethodDeclaration.6": 7,
-    "hack.ModuleDeclaration.6": 1,
-    "hack.Name.6": 33,
-    "hack.NamespaceDeclaration.6": 1,
-    "hack.NamespaceQName.6": 5,
-    "hack.PropertyDeclaration.6": 2,
-    "hack.QName.6": 11,
-    "hack.TraitDeclaration.6": 1,
-    "hack.TypeConstDeclaration.6": 1,
-    "hack.TypedefDeclaration.6": 1
+    "hack.DeclarationSpan.6": 30,
+    "hack.SearchClassByName.6": 5,
+    "hack.SearchClassConstByName.6": 4,
+    "hack.SearchEnumByName.6": 1,
+    "hack.SearchEnumeratorByName.6": 5,
+    "hack.SearchFunctionByName.6": 1,
+    "hack.SearchGlobalConstByName.6": 1,
+    "hack.SearchInterfaceByName.6": 1,
+    "hack.SearchMethodByName.6": 7,
+    "hack.SearchModuleByName.6": 1,
+    "hack.SearchNamespaceByName.6": 1,
+    "hack.SearchPropertyByName.6": 2,
+    "hack.SearchTraitByName.6": 1,
+    "hack.SearchTypeConstByName.6": 1,
+    "hack.SearchTypedefByName.6": 1
   },
   "full_scans": [ ]
 }

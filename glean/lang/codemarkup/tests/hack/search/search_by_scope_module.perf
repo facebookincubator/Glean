@@ -1,9 +1,10 @@
 {
   "@generated": null,
   "facts_searched": {
-    "hack.ModuleDeclaration.6": 1,
+    "hack.DeclarationSpan.6": 1,
     "hack.Name.6": 2,
-    "hack.NamespaceQName.6": 1
+    "hack.NamespaceQName.6": 1,
+    "hack.SearchModuleByName.6": 1
   },
   "full_scans": [ ]
 }

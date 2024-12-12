@@ -18,9 +18,16 @@
           }
         }
       },
+      "kind": 9,
       "language": 5,
+      "location": {
+        "file": { "key": "www/TopLevel.php" },
+        "location": { "span": { "length": 3, "start": 184 } },
+        "name": "Top"
+      },
       "name": "Top",
-      "scope": [ "Position" ]
+      "scope": [ "Position" ],
+      "searchcase": 0
     }
   }
 ]

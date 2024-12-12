@@ -20,9 +20,16 @@
           }
         }
       },
+      "kind": 15,
       "language": 5,
+      "location": {
+        "file": { "key": "www/RefClass.php" },
+        "location": { "span": { "length": 20, "start": 146 } },
+        "name": "JAZZ"
+      },
       "name": "JAZZ",
-      "scope": [ "RefClass" ]
+      "scope": [ "RefClass" ],
+      "searchcase": 0
     }
   }
 ]
