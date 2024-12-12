@@ -619,40 +619,69 @@ predicate DeclarationNamespace :
     namespace_ : hack.NamespaceQName
   }
   { Decl, NS } where
-  Decl =
-    hack.Declaration { container = { class_ = { name = { namespace_ = { just = NS }}}}} |
-    hack.Declaration { container = { enum_ = { name = { namespace_ = { just = NS }}}}} |
-    hack.Declaration { container = { interface_ = { name = { namespace_ = { just = NS }}}}} |
-    hack.Declaration { container = { trait = { name = { namespace_ = { just = NS }}}}} |
-    hack.Declaration { function_ = { name = { namespace_ = { just = NS }}}} |
-    hack.Declaration { globalConst = { name = { namespace_ = { just = NS }}}} |
-    hack.Declaration { namespace_ = { name = { parent = { just = NS }}}} |
-    hack.Declaration { typedef_ = { name = { namespace_ = { just = NS }}}}
+    Decl : hack.Declaration;
+    (
+      Decl.container?.class_?.name.namespace_.just? = NS
+    ) | (
+      Decl.container?.enum_?.name.namespace_.just? = NS
+    ) | (
+      Decl.container?.interface_?.name.namespace_.just? = NS
+    ) | (
+      Decl.container?.trait?.name.namespace_.just? = NS
+    ) | (
+      Decl.function_?.name.namespace_.just? = NS
+    ) | (
+      Decl.globalConst?.name.namespace_.just? = NS
+    ) | (
+      Decl.namespace_?.name.parent.just? = NS
+    ) | (
+      Decl.typedef_?.name.namespace_.just? = NS
+    )
 
 # Base name for a declaration (no namespace or container prefix)
 predicate DeclarationName : Declaration -> Name
   D -> N where
-    ({ classConst = { name = N }}) |
-    ({ container = { class_ = { name = { name = N }}}}) |
-    ({ container = { enum_ = { name = { name = N }}}}) |
-    ({ container = { interface_ = { name = { name = N }}}}) |
-    ({ container = { trait = { name = { name = N }}}}) |
-    ({ enumerator = { name = N }}) |
-    ({ function_ = { name = { name = N }}}) |
-    ({ globalConst = { name = { name = N }}}) |
-    ({ namespace_ = { name = { name = N }}}) |
-    ({ method = { name = N }}) |
-    ({ property_ = { name = N }}) |
-    ({ typeConst = { name = N }}) |
-    ({ module = { name = N }}) |
-    ({ typedef_ = { name = { name = N }}}) = D
+    (
+      D.classConst?.name = N
+    ) | (
+      D.container?.class_?.name.name = N
+    ) | (
+      D.container?.enum_?.name.name = N
+    ) | (
+      D.container?.interface_?.name.name = N
+    ) | (
+      D.container?.trait?.name.name = N
+    ) | (
+      D.enumerator?.name = N
+    ) | (
+      D.function_?.name.name = N
+    ) | (
+      D.globalConst?.name.name = N
+    ) | (
+      D.namespace_?.name.name = N
+    ) | (
+      D.method?.name = N
+    ) | (
+      D.property_?.name = N
+    ) | (
+      D.typeConst?.name = N
+    ) | (
+      D.module?.name = N
+    ) | (
+      D.typedef_?.name.name = N
+    )
 
 predicate ContainerDeclarationQName : ContainerDeclaration -> QName
   D -> QName where
-      ({ class_ = { name = QName } } = D) |
-      ({ enum_ = { name = QName } } = D) |
-      ({ interface_ = { name = QName } } = D) |
-      ({ trait = { name = QName } } = D)
+    (
+      D.class_?.name = QName
+    ) | (
+      D.enum_?.name = QName
+    ) | (
+      D.interface_?.name = QName
+    ) | (
+      D.trait?.name = QName
+    )
 
 # Container that a given container directly inherits from
 # (via extends, implements, use)
