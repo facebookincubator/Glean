@@ -243,10 +243,8 @@ zonkTcPat p = case p of
       (_, TyVar{}) -> error "zonkMatch: tyvar"
       (PredicateTy (PidRef _ ref), PredicateTy (PidRef _ ref'))
         | ref == ref' -> return e'
-      (_other, PredicateTy (PidRef _ ref)) -> do
-        PredicateDetails{..} <- getPredicateDetails ref
-        return (Ref (MatchExt (Typed ty'
-          (TcDeref inner' predicateValueType e'))))
+      (_other, PredicateTy{}) -> do
+        return (Ref (MatchExt (Typed ty' (TcDeref inner' e'))))
       _ ->
         return e'
   Ref (MatchExt (Typed ty (TcStructPat fs))) -> do
@@ -313,8 +311,8 @@ zonkTcTerm t = case t of
       <$> (Typed <$> zonkType ty <*> zonkTcPat cond)
       <*> zonkTcPat th
       <*> zonkTcPat el
-  TcDeref ty valTy p ->
-    TcDeref <$> zonkType ty <*> zonkType valTy <*> zonkTcPat p
+  TcDeref ty p ->
+    TcDeref <$> zonkType ty <*> zonkTcPat p
   TcFieldSelect (Typed ty p) f ->
     TcFieldSelect
       <$> (Typed <$> zonkType ty <*> zonkTcPat p)

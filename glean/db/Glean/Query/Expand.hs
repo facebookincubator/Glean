@@ -113,8 +113,8 @@ instantiateWithFreshVariables query numVars = do
       (Typed ty $ instantiatePat base cond)
       (instantiatePat base then_)
       (instantiatePat base else_)
-  instantiateTcTerm base (TcDeref ty valTy pat) =
-    TcDeref ty valTy (instantiatePat base pat)
+  instantiateTcTerm base (TcDeref ty pat) =
+    TcDeref ty (instantiatePat base pat)
   instantiateTcTerm base (TcFieldSelect (Typed ty pat) field) =
     TcFieldSelect (Typed ty (instantiatePat base pat)) field
   instantiateTcTerm base (TcAltSelect (Typed ty pat) field) =

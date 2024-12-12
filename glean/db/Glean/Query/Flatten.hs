@@ -343,14 +343,16 @@ flattenPattern pat = case pat of
     return (as ++ bs)
 
   --  *(pat : P) ==> X where pat = P X
-  Ref (MatchExt (Typed keyTy (TcDeref ty valTy pat))) -> do
+  Ref (MatchExt (Typed keyTy (TcDeref ty pat))) -> do
     r <- flattenPattern pat
-    ref <- case ty of
+    ref@(PidRef _ pred)  <- case ty of
       Angle.PredicateTy ref -> return ref
       _other -> throwError "TcDeref: not a predicate"
+    PredicateDetails{..} <- getPredicateDetails pred
     forM r $ \(stmts, p) -> do
       v <- Ref . MatchVar <$> fresh keyTy
-      let gen = FactGenerator ref v (Ref (MatchWild valTy)) SeekOnAllFacts
+      let valPat = Ref (MatchWild predicateValueType)
+          gen = FactGenerator ref v valPat SeekOnAllFacts
       return (stmts `thenStmt` FlatStatement ty p gen, v)
 
   -- pat.field ==> X where { field = X } = pat

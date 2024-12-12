@@ -439,7 +439,7 @@ fieldSelect src ty pat fieldName recordOrSum = do
       PredicateDetails{..} <- case HashMap.lookup ref tcEnvPredicates of
         Nothing -> prettyErrorIn src $ "fieldSelect: " <> displayDefault ref
         Just details -> return details
-      let deref = TcDeref ty predicateValueType pat
+      let deref = TcDeref ty pat
       fieldSelect src predicateKeyType
         (Ref (MatchExt (Typed predicateKeyType deref)))
         fieldName recordOrSum
@@ -1022,7 +1022,7 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
       TcNegation stmts -> foldMap overStatement stmts
       TcPrimCall _ xs -> foldMap overPat xs
       TcIf (Typed _ x) y z -> foldMap overPat [x, y, z]
-      TcDeref _ _ p -> overPat p
+      TcDeref _ p -> overPat p
       TcFieldSelect (Typed _ p) _ -> overPat p
       TcAltSelect (Typed _ p) _ -> overPat p
       TcPromote _ p -> overPat p
@@ -1080,7 +1080,7 @@ tcTermUsesNegation = \case
   TcPrimCall _ xs -> firstJust tcPatUsesNegation xs
   -- one can replicate negation using if statements
   TcIf{} -> Just IfStatement
-  TcDeref _ _ p -> tcPatUsesNegation p
+  TcDeref _ p -> tcPatUsesNegation p
   TcFieldSelect (Typed _ p) _ -> tcPatUsesNegation p
   TcAltSelect (Typed _ p) _ -> tcPatUsesNegation p
   TcPromote _ p -> tcPatUsesNegation p

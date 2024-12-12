@@ -182,11 +182,11 @@ prune hasFacts (QueryWithInfo q _ gen t) = do
             , pa
             , pb
             ]
-        TcDeref ty' valTy p
+        TcDeref ty' p
           | Angle.PredicateTy (PidRef _ predId) <- ty', not $ hasFacts predId ->
             Nothing
           | otherwise ->
-            Ref . MatchExt . Typed ty . TcDeref ty' valTy <$> prunePat p
+            Ref . MatchExt . Typed ty . TcDeref ty' <$> prunePat p
         TcFieldSelect (Typed ty' p) f -> do
           p' <- prunePat p
           return $ Ref $ MatchExt $ Typed ty $ TcFieldSelect (Typed ty' p') f
@@ -243,7 +243,7 @@ renumberVars gen ty q =
     TcPrimCall op xs -> TcPrimCall op <$> traverse renamePat xs
     TcIf cond then_ else_ ->
       TcIf <$> traverse renamePat cond <*> renamePat then_ <*> renamePat else_
-    TcDeref ty valTy p -> TcDeref ty valTy <$> renamePat p
+    TcDeref ty p -> TcDeref ty <$> renamePat p
     TcFieldSelect (Typed ty p) f -> do
       p' <- renamePat p
       return $ TcFieldSelect (Typed ty p') f

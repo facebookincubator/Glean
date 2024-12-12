@@ -10,6 +10,7 @@
 module Glean.Query.Flatten.Types
   ( F
   , initialFlattenState
+  , getPredicateDetails
   , FlattenState(..)
   , FlattenedQuery
   , FlatQuery_(..)
@@ -40,6 +41,7 @@ import Compat.Prettyprinter hiding ((<>))
 import Glean.Angle.Types ( PredicateId )
 import Glean.Query.Codegen.Types
 import Glean.Database.Schema
+import Glean.Database.Schema.Types
 import Glean.Database.Types (EnableRecursion(..))
 import Glean.Display
 import Glean.RTS.Types as RTS
@@ -266,6 +268,13 @@ data FlattenState = FlattenState
     -- until we have support for recursion).
   , flRecursion :: EnableRecursion
   }
+
+getPredicateDetails :: PredicateId -> F PredicateDetails
+getPredicateDetails pred = do
+  dbSchema <- gets flDbSchema
+  case lookupPredicateId pred dbSchema of
+    Nothing -> error $ "predicateKeyTYpe: " <> show (displayDefault pred)
+    Just d -> return d
 
 initialFlattenState
   :: EnableRecursion

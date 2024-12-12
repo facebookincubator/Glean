@@ -63,11 +63,11 @@ data TcTerm
   | TcNegation [TcStatement]
   | TcPrimCall PrimOp [TcPat]
   | TcIf { cond :: Typed TcPat, then_ :: TcPat, else_ :: TcPat }
-  | TcDeref Type Type TcPat
     -- pat* : if pat has predicate type, evaluates to the key(s). We
     -- don't expose this at the source level except via
     -- field-selection, e.g. X.a will dereference X before
     -- selecting the field 'a' if X has predicate type.
+  | TcDeref Type TcPat
   | TcFieldSelect (Typed TcPat) FieldName
   | TcAltSelect (Typed TcPat) FieldName
   | TcPromote Type TcPat
@@ -83,7 +83,7 @@ data TcTerm
 
 instance Display TcTerm where
   display opts (TcOr a b) = display opts a <+> "|" <+> display opts b
-  display opts (TcDeref _ _ pat) = displayAtom opts pat <> "*"
+  display opts (TcDeref _ pat) = displayAtom opts pat <> ".*"
   display opts (TcFieldSelect (Typed _ pat) field) =
     displayAtom opts pat <> "." <> pretty field
   display opts (TcAltSelect pat field) =
