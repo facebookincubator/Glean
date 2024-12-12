@@ -1,0 +1,573 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "some.foo.Foo" } } } }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 57, "start": 245 } },
+        "name": "some.foo.Foo"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "some.foo.In1" } } } }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 916, "start": 350 } },
+        "name": "some.foo.In1"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "some.foo.In1.In2" } } }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 858, "start": 365 } },
+        "name": "some.foo.In1.In2"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "some.foo.In1.In2.In3" } } }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 788, "start": 384 } },
+        "name": "some.foo.In1.In2.In3"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "some.foo.In1.In2.In3.In4" } } }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 706, "start": 407 } },
+        "name": "some.foo.In1.In2.In3.In4"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": {
+              "key": { "name": { "key": "some.foo.In1.In2.In3.In4.In5" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 612, "start": 434 } },
+        "name": "some.foo.In1.In2.In3.In4.In5"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": {
+              "key": { "name": { "key": "some.foo.In1.In2.In3.In4.In5.In6" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 506, "start": 465 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.In6"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": {
+              "key": {
+                "name": { "key": "some.foo.In1.In2.In3.In4.In5.In6.In7" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 388, "start": 500 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.In6.In7"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": {
+              "key": {
+                "name": { "key": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 258, "start": 539 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": {
+              "key": {
+                "name": {
+                  "key": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8.In9"
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 116, "start": 582 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8.In9"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "some.lib.b.SomeClass" } } }
+          }
+        }
+      },
+      "file": { "key": "some/lib/b.py" },
+      "location": {
+        "file": { "key": "some/lib/b.py" },
+        "location": { "span": { "length": 67, "start": 75 } },
+        "name": "some.lib.b.SomeClass"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "some.foo.Foo.meth" } } }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 42, "start": 260 } },
+        "name": "some.foo.Foo.meth"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": {
+                "name": {
+                  "key": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8.In9.meth_9"
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 69, "start": 629 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8.In9.meth_9"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": {
+                "name": {
+                  "key": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8.meth_8"
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 65, "start": 732 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8.meth_8"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": {
+                "name": { "key": "some.foo.In1.In2.In3.In4.In5.In6.In7.meth_7" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 61, "start": 827 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.In6.In7.meth_7"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": {
+                "name": { "key": "some.foo.In1.In2.In3.In4.In5.In6.meth_6" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 57, "start": 914 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.In6.meth_6"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": {
+                "name": { "key": "some.foo.In1.In2.In3.In4.In5.meth_5" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 53, "start": 993 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.meth_5"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "some.foo.In1.In2.In3.In4.meth_4" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 49, "start": 1064 } },
+        "name": "some.foo.In1.In2.In3.In4.meth_4"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "some.foo.In1.In2.In3.meth_3" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 45, "start": 1127 } },
+        "name": "some.foo.In1.In2.In3.meth_3"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "some.foo.In1.In2.meth_2" } } }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 41, "start": 1182 } },
+        "name": "some.foo.In1.In2.meth_2"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "some.foo.In1.meth_1" } } }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 37, "start": 1229 } },
+        "name": "some.foo.In1.meth_1"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "func": { "key": { "name": { "key": "some.foo.foo" } } } }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 28, "start": 305 } },
+        "name": "some.foo.foo"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "some.lib.a.some_func" } } }
+          }
+        }
+      },
+      "file": { "key": "some/lib/a.py" },
+      "location": {
+        "file": { "key": "some/lib/a.py" },
+        "location": { "span": { "length": 35, "start": 75 } },
+        "name": "some.lib.a.some_func"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "some.lib.b.SomeClass.foo" } } }
+          }
+        }
+      },
+      "file": { "key": "some/lib/b.py" },
+      "location": {
+        "file": { "key": "some/lib/b.py" },
+        "location": { "span": { "length": 27, "start": 96 } },
+        "name": "some.lib.b.SomeClass.foo"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "imp": {
+              "key": {
+                "as_name": { "key": "some.foo.a" },
+                "from_name": { "key": "some.lib.a" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 1, "start": 241 } },
+        "name": "some.foo.a"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "some.foo" } } } }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 1267, "start": 0 } },
+        "name": "some.foo"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "some.lib.a" } } } }
+        }
+      },
+      "file": { "key": "some/lib/a.py" },
+      "location": {
+        "file": { "key": "some/lib/a.py" },
+        "location": { "span": { "length": 111, "start": 0 } },
+        "name": "some.lib.a"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "some.lib.b" } } } }
+        }
+      },
+      "file": { "key": "some/lib/b.py" },
+      "location": {
+        "file": { "key": "some/lib/b.py" },
+        "location": { "span": { "length": 143, "start": 0 } },
+        "name": "some.lib.b"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "some.foo.foo.<locals>.local_var" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 13, "start": 320 } },
+        "name": "some.foo.foo.<locals>.local_var"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "some.foo.foo_var" } } }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 11, "start": 336 } },
+        "name": "some.foo.foo_var"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "some.lib.b.SomeClass.class_var" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/lib/b.py" },
+      "location": {
+        "file": { "key": "some/lib/b.py" },
+        "location": { "span": { "length": 13, "start": 129 } },
+        "name": "some.lib.b.SomeClass.class_var"
+      }
+    }
+  }
+]

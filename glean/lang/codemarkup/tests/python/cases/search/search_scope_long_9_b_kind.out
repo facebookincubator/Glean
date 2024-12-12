@@ -1,0 +1,40 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": {
+                "name": {
+                  "key": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8.In9.meth_9"
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 7,
+      "language": 4,
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 69, "start": 629 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8.In9.meth_9"
+      },
+      "name": "meth_9",
+      "scope": [
+        "In1",
+        "In2",
+        "In3",
+        "In4",
+        "In5",
+        "In6",
+        "In7",
+        "In8",
+        "In9"
+      ],
+      "searchcase": 0
+    }
+  }
+]

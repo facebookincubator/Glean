@@ -16,64 +16,81 @@ predicate QueryToScopeCase:
     scopeName : maybe python.SName,
   }
   { Query, Case, SName } where
-     ( [] = Query; true | false = Case;
-       SName = nothing : maybe python.SName) |
+    if ( [] = Query )
+    then (
+      true | false = Case;
+      SName = nothing : maybe python.SName
      # one tuple
-     ( [A] = Query;
+    ) else if ( [A] = Query )
+    then (
        PythonNameCase { Case, A, AName };
-       { just = python.SName { local_name = AName } } = SName) |
+       SN = { local_name = AName };
+       { just = SN } = SName
      # two tuple
-     ( [B,A] = Query;
+    ) else if ( [B,A] = Query )
+    then (
        PythonNameCase { Case, A, AName };
        PythonNameCase { Case, B, BName };
-       { just = python.SName { AName, {
-         just = python.SName { local_name = BName }} }} = SName ) |
+       SN_B = { local_name = BName };
+       SN_A = { AName, { just = SN_B } };
+       { just = SN_A } = SName
      # three tuple
-     ( [C,B,A] = Query;
+    ) else if ( [C,B,A] = Query )
+    then (
        PythonNameCase { Case, A, AName };
        PythonNameCase { Case, B, BName };
        PythonNameCase { Case, C, CName };
-       { just = python.SName { AName, {
-         just = python.SName { BName, {
-         just = python.SName { local_name = CName }} }} }} = SName ) |
+       SN_C = { local_name = CName };
+       SN_B = { BName, { just = SN_C } };
+       SN_A = { AName, { just = SN_B } };
+       { just = SN_A } = SName
      # four tuple
-     ( [D,C,B,A] = Query;
+    ) else if ( [D,C,B,A] = Query )
+    then (
        PythonNameCase { Case, A, AName };
        PythonNameCase { Case, B, BName };
        PythonNameCase { Case, C, CName };
        PythonNameCase { Case, D, DName };
-       { just = python.SName { AName, {
-         just = python.SName { BName, {
-         just = python.SName { CName, {
-         just = python.SName { local_name = DName }} }} }} }} = SName ) |
+       SN_D = { local_name = DName };
+       SN_C = { CName, { just = SN_D } };
+       SN_B = { BName, { just = SN_C } };
+       SN_A = { AName, { just = SN_B } };
+       { just = SN_A } = SName
      # five tuple, are there any? yes there are many
-     ( [E,D,C,B,A] = Query;
+     ) else if ( [E,D,C,B,A] = Query )
+     then (
        PythonNameCase { Case, A, AName };
        PythonNameCase { Case, B, BName };
        PythonNameCase { Case, C, CName };
        PythonNameCase { Case, D, DName };
        PythonNameCase { Case, E, EName };
-       { just = python.SName { AName, {
-         just = python.SName { BName, {
-         just = python.SName { CName, {
-         just = python.SName { DName, {
-         just = python.SName { local_name = EName }} }} }} }} }} = SName ) |
+       # nb. quite sensitive to ordering. we want to do the outermost first
+       SN_E = { local_name = EName };
+       SN_D = { DName, { just = SN_E } };
+       SN_C = { CName, { just = SN_D } };
+       SN_B = { BName, { just = SN_C } };
+       SN_A = { AName, { just = SN_B } };
+       { just = SN_A } = SName
       # six tuple
-     ( [F,E,D,C,B,A] = Query;
+      ) else if ( [F,E,D,C,B,A] = Query )
+      then (
        PythonNameCase { Case, A, AName };
        PythonNameCase { Case, B, BName };
        PythonNameCase { Case, C, CName };
        PythonNameCase { Case, D, DName };
        PythonNameCase { Case, E, EName };
        PythonNameCase { Case, F, FName };
-       { just = python.SName { AName, {
-         just = python.SName { BName, {
-         just = python.SName { CName, {
-         just = python.SName { DName, {
-         just = python.SName { EName, {
-         just = python.SName { local_name = FName }} }} }} }} }} }} = SName ) |
+       SN_F = { local_name = FName };
+       SN_E = { EName, { just = SN_F } };
+       SN_D = { DName, { just = SN_E } };
+       SN_C = { CName, { just = SN_D } };
+       SN_B = { BName, { just = SN_C } };
+       SN_A = { AName, { just = SN_B } };
+       { just = SN_A } = SName
+
      # seven tuple
-     ( [G,F,E,D,C,B,A] = Query;
+      ) else if ( [G,F,E,D,C,B,A] = Query )
+      then (
        PythonNameCase { Case, A, AName };
        PythonNameCase { Case, B, BName };
        PythonNameCase { Case, C, CName };
@@ -81,16 +98,17 @@ predicate QueryToScopeCase:
        PythonNameCase { Case, E, EName };
        PythonNameCase { Case, F, FName };
        PythonNameCase { Case, G, GName };
-       { just = python.SName { AName, {
-         just = python.SName { BName, {
-         just = python.SName { CName, {
-         just = python.SName { DName, {
-         just = python.SName { EName, {
-         just = python.SName { FName, {
-         just = python.SName { local_name = GName
-          }} }} }} }} }} }} }} = SName ) |
+       SN_G = { local_name = GName };
+       SN_F = { FName, { just = SN_G } };
+       SN_E = { EName, { just = SN_F } };
+       SN_D = { DName, { just = SN_E } };
+       SN_C = { CName, { just = SN_D } };
+       SN_B = { BName, { just = SN_C } };
+       SN_A = { AName, { just = SN_B } };
+       { just = SN_A } = SName
      # eight tuple
-     ( [H,G,F,E,D,C,B,A] = Query;
+      ) else if ( [H,G,F,E,D,C,B,A] = Query )
+      then (
        PythonNameCase { Case, A, AName };
        PythonNameCase { Case, B, BName };
        PythonNameCase { Case, C, CName };
@@ -99,17 +117,18 @@ predicate QueryToScopeCase:
        PythonNameCase { Case, F, FName };
        PythonNameCase { Case, G, GName };
        PythonNameCase { Case, H, HName };
-       { just = python.SName { AName, {
-         just = python.SName { BName, {
-         just = python.SName { CName, {
-         just = python.SName { DName, {
-         just = python.SName { EName, {
-         just = python.SName { FName, {
-         just = python.SName { GName, {
-         just = python.SName { local_name = HName
-          }} }} }} }} }} }} }} }} = SName) |
+       SN_H = { local_name = HName };
+       SN_G = { GName, { just = SN_H } };
+       SN_F = { FName, { just = SN_G } };
+       SN_E = { EName, { just = SN_F } };
+       SN_D = { DName, { just = SN_E } };
+       SN_C = { CName, { just = SN_D } };
+       SN_B = { BName, { just = SN_C } };
+       SN_A = { AName, { just = SN_B } };
+       { just = SN_A } = SName
      # nine tuple
-     ( [I,H,G,F,E,D,C,B,A] = Query;
+      ) else if ( [I,H,G,F,E,D,C,B,A] = Query )
+      then (
        PythonNameCase { Case, A, AName };
        PythonNameCase { Case, B, BName };
        PythonNameCase { Case, C, CName };
@@ -119,18 +138,19 @@ predicate QueryToScopeCase:
        PythonNameCase { Case, G, GName };
        PythonNameCase { Case, H, HName };
        PythonNameCase { Case, I, IName };
-       { just = python.SName { AName, {
-         just = python.SName { BName, {
-         just = python.SName { CName, {
-         just = python.SName { DName, {
-         just = python.SName { EName, {
-         just = python.SName { FName, {
-         just = python.SName { GName, {
-         just = python.SName { HName, {
-         just = python.SName { local_name = IName
-           }} }} }} }} }} }} }} }} }} = SName ) |
+       SN_I = { local_name = IName };
+       SN_H = { HName, { just = SN_I } };
+       SN_G = { GName, { just = SN_H } };
+       SN_F = { FName, { just = SN_G } };
+       SN_E = { EName, { just = SN_F } };
+       SN_D = { DName, { just = SN_E } };
+       SN_C = { CName, { just = SN_D } };
+       SN_B = { BName, { just = SN_C } };
+       SN_A = { AName, { just = SN_B } };
+       { just = SN_A } = SName
      # ten tuple
-     ( [J,I,H,G,F,E,D,C,B,A] = Query;
+      ) else if ( [J,I,H,G,F,E,D,C,B,A] = Query )
+      then (
        PythonNameCase { Case, A, AName };
        PythonNameCase { Case, B, BName };
        PythonNameCase { Case, C, CName };
@@ -141,17 +161,19 @@ predicate QueryToScopeCase:
        PythonNameCase { Case, H, HName };
        PythonNameCase { Case, I, IName };
        PythonNameCase { Case, J, JName };
-       { just = python.SName { AName, {
-         just = python.SName { BName, {
-         just = python.SName { CName, {
-         just = python.SName { DName, {
-         just = python.SName { EName, {
-         just = python.SName { FName, {
-         just = python.SName { GName, {
-         just = python.SName { HName, {
-         just = python.SName { IName, {
-         just = python.SName { local_name = JName
-          }} }} }} }} }} }} }} }} }} }} = SName );
+       SN_J = { local_name = JName };
+       SN_I = { IName, { just = SN_J } };
+       SN_H = { HName, { just = SN_I } };
+       SN_G = { GName, { just = SN_H } };
+       SN_F = { FName, { just = SN_G } };
+       SN_E = { EName, { just = SN_F } };
+       SN_D = { DName, { just = SN_E } };
+       SN_C = { CName, { just = SN_D } };
+       SN_B = { BName, { just = SN_C } };
+       SN_A = { AName, { just = SN_B } };
+       { just = SN_A } = SName
+      ) else
+       ( SName = never : maybe python.SName )
 
 # Helper to lookup python.Name based on case sensitivity
 predicate PythonNameCase:

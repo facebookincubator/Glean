@@ -1,0 +1,30 @@
+[
+  "@generated",
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": {
+              "key": {
+                "name": {
+                  "key": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8.In9"
+                }
+              }
+            }
+          }
+        }
+      },
+      "kind": 6,
+      "language": 4,
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 116, "start": 582 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8.In9"
+      },
+      "name": "In9",
+      "scope": [ "In8" ],
+      "searchcase": 0
+    }
+  }
+]

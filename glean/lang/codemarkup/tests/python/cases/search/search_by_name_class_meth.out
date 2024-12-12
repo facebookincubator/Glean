@@ -13,7 +13,7 @@
       "language": 4,
       "location": {
         "file": { "key": "some/foo.py" },
-        "location": { "span": { "length": 42, "start": 125 } },
+        "location": { "span": { "length": 42, "start": 260 } },
         "name": "some.foo.Foo.meth"
       },
       "name": "meth",
