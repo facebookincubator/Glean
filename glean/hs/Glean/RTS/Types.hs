@@ -130,6 +130,7 @@ repType (EnumeratedTy names) = repType (lowerEnum names)
 repType BooleanTy = repType lowerBool
 repType TyVar{} = error "repType: TyVar"
 repType HasTy{} = error "repType: HasTy"
+repType HasKey{} = error "repType: HasKey"
 
 sumLike :: Type -> Maybe [Glean.RTS.Types.FieldDef]
 sumLike (SumTy fs) = Just fs

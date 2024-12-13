@@ -261,6 +261,7 @@ haskellTy_ withId genSub here t = case t of
   EnumeratedTy _ -> shareTypeDef genSub here t
   TyVar{} -> error "haskellTy_: TyVar"
   HasTy{} -> error "haskellTy_: HasTy"
+  HasKey{} -> error "haskellTy_: HasKey"
 
 
 genPredicate :: ResolvedPredicateDef -> M [Text]

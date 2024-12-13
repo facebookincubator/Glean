@@ -112,6 +112,7 @@ tokens :-
   ";"           { basicToken T_Semi }
   "_"           { basicToken T_Underscore }
   "$"           { basicToken T_Dollar }
+  ".*"          { basicToken T_DotStar }
 
   -- dot-syntax was introduced in version 9
   "." @lident / { ifVersion 9 }
@@ -199,6 +200,7 @@ data TokenType
   | T_Dollar
   | T_Select Strict.ByteString
   | T_SelectAlt Strict.ByteString
+  | T_DotStar
   | T_EOF
   deriving Show
 

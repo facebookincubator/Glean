@@ -227,6 +227,7 @@ data SourcePat_ s p t
       , else_ :: SourcePat_ s p t
       }
   | FieldSelect s (SourcePat_ s p t) FieldName RecordOrSum
+  | Deref s (SourcePat_ s p t)
   | Enum s Text
 
   -- The following forms are introduced by the resolver, and replace
@@ -283,6 +284,7 @@ instance Bifunctor (SourcePat_ s) where
     Never s -> Never s
     IfPattern s a b c -> IfPattern s (bimap f g a) (bimap f g b) (bimap f g c)
     FieldSelect s pat field q -> FieldSelect s (bimap f g pat) field q
+    Deref s pat -> Deref s (bimap f g pat)
     Enum s f -> Enum s f
     Clause sPat sPred p pat rng -> Clause sPat sPred (f p) (bimap f g pat) rng
     Prim s p pats -> Prim s p (fmap (bimap f g) pats)
@@ -313,6 +315,7 @@ instance Bifoldable (SourcePat_ s) where
     Never{} -> mempty
     IfPattern _ a b c -> bifoldMap f g a <> bifoldMap f g b <> bifoldMap f g c
     FieldSelect _ pat _ _ -> bifoldMap f g pat
+    Deref _ pat -> bifoldMap f g pat
     Enum _ _ -> mempty
     Clause _ _ p pat _ -> f p <> bifoldMap f g pat
     Prim _ _ pats -> foldMap (bifoldMap f g) pats
@@ -373,6 +376,7 @@ sourcePatSpan = \case
   TypeSignature s _ _ -> s
   Never s -> s
   FieldSelect s _ _ _ -> s
+  Deref s _ -> s
   Enum s _ -> s
   Clause s _ _ _ _ -> s
   Prim s _ _ -> s
@@ -416,7 +420,10 @@ data Type_ pref tref
     --     Just Record -> type must be a record
     --     Just Sum -> type must be a sum type
     --     Nothing -> type can be either a RecordTy or a SumTy
-    --   can be
+  | HasKey (Type_ pref tref) {-# UNPACK #-}!Int
+    -- HasKey K X
+    --   A type variable X that is constrained to be a predicate
+    --   type with key K
   deriving (Eq, Show, Functor, Foldable, Generic)
 
 data RecordOrSum = Record | Sum
@@ -442,6 +449,7 @@ instance Bifunctor Type_ where
     BooleanTy -> BooleanTy
     TyVar x -> TyVar x
     HasTy m r x -> HasTy (bimap f g <$> m) r x
+    HasKey ty x -> HasKey (bimap f g ty) x
 
 instance Bifoldable Type_ where
   bifoldr f g r = \case
@@ -459,6 +467,7 @@ instance Bifoldable Type_ where
     BooleanTy -> r
     TyVar _ -> r
     HasTy m _ _ -> foldr (flip $ bifoldr f g) r m
+    HasKey ty _ -> bifoldr f g r ty
 
 {- Note [Types]
 
@@ -738,7 +747,8 @@ instance (Display pref, Display tref) => Display (Type_ pref tref) where
       , "T" <> pretty x, "}" ]
     where
     doField (n, ty) = pretty n <> " : " <> display opts ty
-
+  display opts (HasKey ty x) =
+    "T" <> pretty x <> parens (display opts ty)
   displayAtom opts t = case t of
     MaybeTy{} -> parens $ display opts t
     EnumeratedTy{} -> parens $ display opts t
@@ -900,6 +910,8 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
       case q of
         Sum -> "?"
         Record -> mempty
+  display opts (Deref _ pat) =
+    displayAtom opts pat <> ".*"
   display _ (Enum _ f) = pretty f
 
   displayAtom opts pat = case pat of
@@ -928,6 +940,7 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
     Clause{} -> parens $ display opts pat
     Prim{} -> parens $ display opts pat
     FieldSelect{} -> display opts pat
+    Deref{} -> display opts pat
     Enum _ _ -> display opts pat
 
 instance (Display p, Display t) => Display (SourceQuery_ s p t) where
@@ -1025,6 +1038,7 @@ rmLocPat = \case
   Clause _ _ x y rng -> Clause () () x (rmLocPat y) rng
   Prim _ p ps -> Prim () p (rmLocPat <$> ps)
   FieldSelect _ pat field q -> FieldSelect () (rmLocPat pat) field q
+  Deref _ pat -> Deref () (rmLocPat pat)
   Enum _ f -> Enum () f
 
 rmLocField :: Field s p t -> Field () p t
@@ -1064,6 +1078,7 @@ instance Describe (SourcePat_ s p t) where
     Clause {} -> "a clause"
     Prim {} -> "a primitive function"
     FieldSelect{} -> "a record field"
+    Deref{} -> "a dereference"
     Enum{} -> "an enum value"
 
 instance Describe SrcSpan where

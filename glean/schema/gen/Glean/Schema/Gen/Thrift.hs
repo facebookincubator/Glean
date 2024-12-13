@@ -333,6 +333,7 @@ thriftTy here t = case t of
   EnumeratedTy _ -> shareTypeDef here t
   TyVar{} -> error "thriftTy: TyVar"
   HasTy{} -> error "thriftTy: HasTy"
+  HasKey{} -> error "thriftTy: HasKey"
 
 mkField :: [Text] -> Text -> Int -> Name -> Text -> Text
 mkField annots structOrUnion i p t =

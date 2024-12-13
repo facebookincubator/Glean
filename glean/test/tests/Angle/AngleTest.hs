@@ -671,6 +671,24 @@ angleDotTest = dbTestCase $ \env repo -> do
       Left (BadQuery x) -> "type error" `Text.isInfixOf` x
       _ -> False
 
+  r <- runQuery_ env repo $ angleData @Nat
+    "X.*.sum_.c?.*.nat where X : glean.test.Predicate"
+  print r
+  assertEqual "deref 1" 2 (length r)
+
+  r <- runQuery_ env repo $ angleData @Text
+    "X.* where X = glean.test.IsGlean _"
+  print r
+  assertEqual "deref 2" 1 (length r)
+
+  r <- try $ runQuery_ env repo $ angleData @Text "3.*"
+  print r
+  assertBool "deref error 1" $
+    case r of
+      Left (BadQuery x) -> "type error" `Text.isInfixOf` x
+      _ -> False
+
+
 -- if statements
 angleIfThenElse :: (forall a . Query a -> Query a) -> Test
 angleIfThenElse modify = dbTestCase $ \env repo -> do

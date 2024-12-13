@@ -113,6 +113,7 @@ valueFor T.BooleanTy = do
   return $ Alt i $ Tuple []
 valueFor T.TyVar{} = error "valueFor: TyVar"
 valueFor T.HasTy{} = error "valueFor: HasTy"
+valueFor T.HasKey{} = error "valueFor: HasKey"
 
 shrinkValue :: Value -> [Value]
 shrinkValue (Byte b) = Byte <$>

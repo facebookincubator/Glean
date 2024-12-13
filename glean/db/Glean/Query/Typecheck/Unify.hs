@@ -73,7 +73,19 @@ unify (TyVar x) (TyVar y) | x == y = return ()
 unify (TyVar x) t = extend x t
 unify t (TyVar x) = extend x t
 
-unify a@(HasTy fa ra x) b@(HasTy fb rb y) = do
+{- Unifying HasTy
+
+   When a (HasTy f r x) is created, the type variable x is unbound.
+   Unification with this HasTy records the new information by binding
+   x; the new information might be another HasTy with more fields (and
+   an unbound type variable), or it might be a RecordTy / SumTy.
+
+   Therefore during typechecking a HasTy turns into a chain of
+   increasingly larger HasTys culminating in a RecordTy / SumTy.
+-}
+unify a@(HasTy fa ra x) b@(HasTy fb rb y)
+  | x == y = return ()
+  | otherwise = do
   rec <- case (ra,rb) of
     (Just x, Just y) | x /= y -> unifyError a b
     (Nothing, _) -> return rb
@@ -110,6 +122,18 @@ unify a@(HasTy m _ x) b@(SumTy fs) = do
 
 unify a@RecordTy{} b@HasTy{} = unify b a
 unify a@SumTy{} b@HasTy{} = unify b a
+
+unify (HasKey keyTy x) predTy@(PredicateTy (PidRef _ ref)) = do
+  PredicateDetails{..} <- getPredicateDetails ref
+  unify predicateKeyType keyTy
+  extend x predTy
+unify (HasKey a x) (HasKey b y)
+  | x == y = return ()
+  | otherwise = do
+  unify a b
+  extend x (HasKey a y)
+  extend y (HasKey a x)
+unify a@PredicateTy{} b@HasKey{} = unify b a
 
 unify a b = unifyError a b
 
@@ -175,6 +199,11 @@ apply_ lookup t = go t
         Nothing -> return t
         Just u -> go u
     HasTy _ _ x -> do
+      m <- lookup x
+      case m of
+        Nothing -> return t
+        Just u -> go u
+    HasKey _ x -> do
       m <- lookup x
       case m of
         Nothing -> return t

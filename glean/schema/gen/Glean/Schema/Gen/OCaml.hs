@@ -266,6 +266,7 @@ genOCamlType ns namePolicy t = case t of
   BooleanTy -> return "bool"
   TyVar{} -> error "genOCamlType: TyVar"
   HasTy{} -> error "genOCamlType: HasTy"
+  HasKey{} -> error "genOCamlType: HasKey"
   where
     genField fieldKind field = do
       ty <- genOCamlTypeFromField field ns namePolicy (fieldDefType field)
@@ -375,6 +376,7 @@ genOCamlToJson var ns namePolicy t = case t of
   BooleanTy -> return (var, "JSON_Bool " <> var)
   TyVar{} -> error "genOCamlToJson: TyVar"
   HasTy{} -> error "genOCamlToJson: HasTy"
+  HasKey{} -> error "genOCamlToJson: HasKey"
 
 genOCamlToJsonFromField
   :: FieldDef_ PredicateRef TypeRef -> GenVars -> NameSpaces -> NamePolicy

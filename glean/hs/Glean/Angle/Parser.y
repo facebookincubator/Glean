@@ -77,6 +77,7 @@ import Glean.Angle.Types as Schema
   '+'           { L _ (Token _ T_Plus) }
   '_'           { L _ (Token _ T_Underscore) }
   '$'           { L _ (Token _ T_Dollar) }
+  '.*'          { L _ (Token _ T_DotStar) }
 
   SELECT_       { L _ (Token _ (T_Select _)) }
   SELECTALT_    { L _ (Token _ (T_SelectAlt _)) }
@@ -157,6 +158,7 @@ select :: { SourcePat }
 select
   : select SELECT { FieldSelect (s $1 $2) $1 (lval $2) Record }
   | select SELECTALT { FieldSelect (s $1 $2) $1 (lval $2) Sum }
+  | select '.*' { Deref (s $1 $2) $1 }
   | apat  { $1 }
 
 apat :: { SourcePat }

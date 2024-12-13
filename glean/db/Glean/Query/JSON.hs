@@ -275,6 +275,7 @@ encode expanded Encoder{..} !d = enc
             encObjectEnd
       TyVar{} -> error "JSON.encode: TyVar"
       HasTy{} -> error "JSON.encode: HasTy"
+      HasKey{} -> error "JSON.encode: HasKey"
 
     {-# INLINE enc_field #-}
     enc_field prev i name ty d = do

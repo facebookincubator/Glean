@@ -379,6 +379,19 @@ inferExpr ctx pat = case pat of
     (p', ty) <- inferExpr ctx p
     fieldSelect pat ty p' field sum
 
+  Deref _ p -> do
+    (p', predTy) <- inferExpr ctx p
+    ty <- case predTy of
+      PredicateTy (PidRef _ ref)  -> do
+        PredicateDetails{..} <- getPredicateDetails ref
+        return predicateKeyType
+      _ -> do
+        y <- freshTyVarInt
+        keyTy <- freshTyVar
+        unify predTy (HasKey keyTy y)
+        return keyTy
+    return (Ref (MatchExt (Typed ty (TcDeref predTy p'))), ty)
+
   Enum _ "true" -> promote (sourcePatSpan pat) trueVal BooleanTy
   Enum _ "false" -> promote (sourcePatSpan pat) falseVal BooleanTy
 
@@ -643,16 +656,11 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     f <- promoteTo (sourcePatSpan pat) sigty' ty
     return (f e')
 
-  (ty, FieldSelect _ p field sum) -> do
-    (p', recTy) <- inferExpr ctx p
-    (pat', fieldTy) <- fieldSelect pat recTy p' field sum
-    inPat pat $ unify ty fieldTy
-    return pat'
-
-  -- A match on a predicate type with a pattern that is not a wildcard
-  -- or a variable does a nested match on the key of the predicate:
-  (PredicateTy (PidRef _ ref), pat) | not (isVar pat) ->
+  -- A match on a predicate type with a pattern that is not a wildcard,
+  -- variable, field selector or dereference matches the key.
+  (PredicateTy (PidRef _ ref), pat) | matchesKey pat ->
     fst <$> tcFactGenerator ref pat SeekOnAllFacts Nothing
+
   (ty@(SetTy elemTy), All _ query) -> do
     arg <- typecheckPattern ctx elemTy query
     let q = TcQuery elemTy arg Nothing [] Unordered
@@ -705,10 +713,12 @@ tcFactGenerator ref pat range predSpan = do
     ( Ref (MatchExt (Typed ty (TcFactGen pidRef kpat' vpat' range)))
     , ty)
 
-isVar :: IsSrcSpan s => Pat' s -> Bool
-isVar Wildcard{} = True
-isVar Variable{} = True
-isVar _ = False
+matchesKey :: IsSrcSpan s => Pat' s -> Bool
+matchesKey Wildcard{} = False
+matchesKey Variable{} = False
+matchesKey FieldSelect{} = False
+matchesKey Deref{} = False
+matchesKey _ = True
 
 -- | Fact Id patterns (#1234 or #pred 1234) are only allowed in
 -- queries, not in derived predicates, because they potentially allow
@@ -977,6 +987,7 @@ varsPat pat r = case pat of
   Clause _ _ _ p _ -> varsPat p r
   Prim _ _ ps -> foldr varsPat r ps
   FieldSelect _ p _ _ -> varsPat p r
+  Deref _ p -> varsPat p r
   Enum{} -> r
 
 varsQuery :: IsSrcSpan s => Query' s -> VarSet -> VarSet

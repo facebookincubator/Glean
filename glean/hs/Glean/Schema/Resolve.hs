@@ -753,6 +753,7 @@ resolvePat pat = case pat of
   FieldSelect s pat field q ->
     (\p -> FieldSelect s p field q)
       <$> resolvePat pat
+  Deref s pat -> Deref s <$> resolvePat pat
   Enum s n -> return (Enum s n)
   Clause{} -> internal
   Prim{} -> internal

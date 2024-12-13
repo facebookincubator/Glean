@@ -292,6 +292,7 @@ reprTy here t = case t of
   EnumeratedTy elts -> return $ "Enum<" <> showt (length elts) <> ">"
   TyVar{} -> error "reprTy: TyVar"
   HasTy{} -> error "reprTy: HasTy"
+  HasKey{} -> error "reprTy: HasKey"
 
 shareTypeDef :: NameSpaces -> ResolvedType -> CppGen Text
 shareTypeDef here t = do
@@ -345,6 +346,7 @@ valueTy here t = case t of
       Nothing -> return (cppNameIn here name)
   TyVar{} -> error "valueTy: TyVar"
   HasTy{} -> error "valueTy: HasTy"
+  HasKey{} -> error "valueTy: HasKey"
 
 
 -- ----------------------------------------------------------------------------
