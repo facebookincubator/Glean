@@ -2,474 +2,694 @@
   "@generated",
   {
     "key": {
-      "name": { "key": "ABC" },
-      "decl": { "cls": { "key": { "name": { "key": "abc.ABC" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "ABC" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "abc.ABC" },
-            "as_name": { "key": "lib.ABC" }
+      "searchcase": 0,
+      "name": "AbstractClass",
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
           }
         }
-      }
+      },
+      "location": {
+        "name": "lib.AbstractClass",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 945, "length": 80 } }
+      },
+      "kind": 6,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "AbstractClass" },
-      "decl": { "cls": { "key": { "name": { "key": "lib.AbstractClass" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "BaseClass" },
-      "decl": { "cls": { "key": { "name": { "key": "big_lib.BaseClass" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "BaseClass" },
-      "decl": {
-        "cls": { "key": { "name": { "key": "big_lib._inner.BaseClass" } } }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "BaseClass" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "big_lib.BaseClass" },
-            "as_name": { "key": "all.BaseClass" }
+      "searchcase": 0,
+      "name": "BaseClass",
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "big_lib.BaseClass" } } }
           }
         }
-      }
+      },
+      "location": {
+        "name": "big_lib._inner.BaseClass",
+        "file": { "key": "big_lib/_inner.py" },
+        "location": { "span": { "start": 226, "length": 25 } }
+      },
+      "kind": 6,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "BaseClass" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "big_lib._inner.BaseClass" },
-            "as_name": { "key": "big_lib.BaseClass" }
+      "searchcase": 0,
+      "name": "BaseClass",
+      "entity": {
+        "python": {
+          "decl": {
+            "cls": { "key": { "name": { "key": "big_lib._inner.BaseClass" } } }
           }
         }
-      }
+      },
+      "location": {
+        "name": "big_lib._inner.BaseClass",
+        "file": { "key": "big_lib/_inner.py" },
+        "location": { "span": { "start": 226, "length": 25 } }
+      },
+      "kind": 6,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "Child" },
-      "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+      "searchcase": 0,
+      "name": "Child",
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Child" } } } }
+        }
+      },
+      "location": {
+        "name": "lib.Child",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 903, "length": 39 } }
+      },
+      "kind": 6,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "ClassVar" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "typing.ClassVar" },
-            "as_name": { "key": "lib.ClassVar" }
+      "searchcase": 0,
+      "name": "HelperClass",
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 351, "length": 451 } }
+      },
+      "kind": 6,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "LocalClass",
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } }
+        }
+      },
+      "location": {
+        "name": "all.LocalClass",
+        "file": { "key": "all.py" },
+        "location": { "span": { "start": 384, "length": 37 } }
+      },
+      "kind": 6,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "Parent1",
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
+        }
+      },
+      "location": {
+        "name": "lib.Parent1",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 851, "length": 23 } }
+      },
+      "kind": 6,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "Parent2",
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
+        }
+      },
+      "location": {
+        "name": "lib.Parent2",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 877, "length": 23 } }
+      },
+      "kind": 6,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "__all__",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "all.__all__" } } }
           }
         }
-      }
+      },
+      "location": {
+        "name": "all.__all__",
+        "file": { "key": "all.py" },
+        "location": { "span": { "start": 424, "length": 80 } }
+      },
+      "kind": 14,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "Helper" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "lib.HelperClass" },
-            "as_name": { "key": "all.Helper" }
+      "searchcase": 0,
+      "name": "__all__",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "big_lib.__all__" } } }
           }
         }
-      }
+      },
+      "location": {
+        "name": "big_lib.__all__",
+        "file": { "key": "big_lib/__init__.py" },
+        "location": { "span": { "start": 457, "length": 60 } }
+      },
+      "kind": 14,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "Helper" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "lib.HelperClass" },
-            "as_name": { "key": "main.Helper" }
+      "searchcase": 0,
+      "name": "__private_method",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.__private_method" } }
+            }
           }
         }
-      }
+      },
+      "location": {
+        "name": "lib.HelperClass.__private_method",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 759, "length": 43 } }
+      },
+      "kind": 7,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "HelperClass" },
-      "decl": { "cls": { "key": { "name": { "key": "lib.HelperClass" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "LocalClass" },
-      "decl": { "cls": { "key": { "name": { "key": "all.LocalClass" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "OtherHelper" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "lib.HelperClass" },
-            "as_name": { "key": "main.OtherHelper" }
+      "searchcase": 0,
+      "name": "_inner",
+      "entity": {
+        "python": {
+          "decl": {
+            "module": { "key": { "name": { "key": "big_lib._inner" } } }
           }
         }
-      }
+      },
+      "location": {
+        "name": "big_lib._inner",
+        "file": { "key": "big_lib/_inner.py" },
+        "location": { "span": { "start": 0, "length": 252 } }
+      },
+      "kind": 4,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "Parent1" },
-      "decl": { "cls": { "key": { "name": { "key": "lib.Parent1" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "Parent2" },
-      "decl": { "cls": { "key": { "name": { "key": "lib.Parent2" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "__all__" },
-      "decl": { "variable": { "key": { "name": { "key": "all.__all__" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "__all__" },
-      "decl": {
-        "variable": { "key": { "name": { "key": "big_lib.__all__" } } }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "__private_method" },
-      "decl": {
-        "func": {
-          "key": { "name": { "key": "lib.HelperClass.__private_method" } }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "_inner" },
-      "decl": { "module": { "key": { "name": { "key": "big_lib._inner" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "_protected_method" },
-      "decl": {
-        "func": {
-          "key": { "name": { "key": "lib.HelperClass._protected_method" } }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "abstract_method" },
-      "decl": {
-        "func": {
-          "key": { "name": { "key": "lib.AbstractClass.abstract_method" } }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "abstractmethod" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "abc.abstractmethod" },
-            "as_name": { "key": "lib.abstractmethod" }
+      "searchcase": 0,
+      "name": "_protected_method",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass._protected_method" } }
+            }
           }
         }
-      }
+      },
+      "location": {
+        "name": "lib.HelperClass._protected_method",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 709, "length": 44 } }
+      },
+      "kind": 7,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "all" },
-      "decl": { "module": { "key": { "name": { "key": "all" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "big_func" },
-      "decl": { "func": { "key": { "name": { "key": "big_lib.big_func" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "big_func" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "big_lib.big_func" },
-            "as_name": { "key": "all.big_func" }
+      "searchcase": 0,
+      "name": "abstract_method",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.AbstractClass.abstract_method" } }
+            }
           }
         }
-      }
+      },
+      "location": {
+        "name": "lib.AbstractClass.abstract_method",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 995, "length": 30 } }
+      },
+      "kind": 7,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "big_func" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "big_lib.big_func" },
-            "as_name": { "key": "big_lib.relative.big_func" }
+      "searchcase": 0,
+      "name": "all",
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "all" } } } }
+        }
+      },
+      "location": {
+        "name": "all",
+        "file": { "key": "all.py" },
+        "location": { "span": { "start": 0, "length": 505 } }
+      },
+      "kind": 4,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "big_func",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "big_lib.big_func" } } }
           }
         }
-      }
+      },
+      "location": {
+        "name": "big_lib.big_func",
+        "file": { "key": "big_lib/__init__.py" },
+        "location": { "span": { "start": 261, "length": 140 } }
+      },
+      "kind": 13,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "big_func" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "big_lib.big_func" },
-            "as_name": { "key": "main.big_func" }
+      "searchcase": 0,
+      "name": "big_lib",
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
+        }
+      },
+      "location": {
+        "name": "big_lib",
+        "file": { "key": "big_lib/__init__.py" },
+        "location": { "span": { "start": 0, "length": 518 } }
+      },
+      "kind": 4,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "big_var",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
           }
         }
-      }
+      },
+      "location": {
+        "name": "big_lib.big_var",
+        "file": { "key": "big_lib/__init__.py" },
+        "location": { "span": { "start": 247, "length": 11 } }
+      },
+      "kind": 14,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "big_lib" },
-      "decl": { "module": { "key": { "name": { "key": "big_lib" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "big_var" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "big_lib.big_var" },
-            "as_name": { "key": "all.big_var" }
+      "searchcase": 0,
+      "name": "class_method",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.class_method" } }
+            }
           }
         }
-      }
+      },
+      "location": {
+        "name": "lib.HelperClass.class_method",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 533, "length": 43 } }
+      },
+      "kind": 7,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "big_var" },
-      "decl": {
-        "variable": { "key": { "name": { "key": "big_lib.big_var" } } }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "c" },
-      "decl": {
-        "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "class_method" },
-      "decl": {
-        "func": { "key": { "name": { "key": "lib.HelperClass.class_method" } } }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "class_var" },
-      "decl": {
-        "variable": {
-          "key": { "name": { "key": "lib.HelperClass.class_var" } }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "f" },
-      "decl": { "func": { "key": { "name": { "key": "main.f" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "final" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "typing.final" },
-            "as_name": { "key": "lib.final" }
+      "searchcase": 0,
+      "name": "class_var",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "lib.HelperClass.class_var" } }
+            }
           }
         }
-      }
+      },
+      "location": {
+        "name": "lib.HelperClass.class_var",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 403, "length": 32 } }
+      },
+      "kind": 9,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "fn" },
-      "decl": { "func": { "key": { "name": { "key": "all.fn" } } } }
+      "searchcase": 0,
+      "name": "f",
+      "entity": {
+        "python": {
+          "decl": { "func": { "key": { "name": { "key": "main.f" } } } }
+        }
+      },
+      "location": {
+        "name": "main.f",
+        "file": { "key": "main.py" },
+        "location": { "span": { "start": 321, "length": 107 } }
+      },
+      "kind": 13,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "func" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "big_lib.big_func" },
-            "as_name": { "key": "lib.func" }
+      "searchcase": 0,
+      "name": "fn",
+      "entity": {
+        "python": {
+          "decl": { "func": { "key": { "name": { "key": "all.fn" } } } }
+        }
+      },
+      "location": {
+        "name": "all.fn",
+        "file": { "key": "all.py" },
+        "location": { "span": { "start": 309, "length": 72 } }
+      },
+      "kind": 13,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "func_sleep",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "big_lib.func_sleep" } } }
           }
         }
-      }
+      },
+      "location": {
+        "name": "big_lib.func_sleep",
+        "file": { "key": "big_lib/__init__.py" },
+        "location": { "span": { "start": 418, "length": 36 } }
+      },
+      "kind": 13,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "func" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "lib.func" },
-            "as_name": { "key": "main.func" }
+      "searchcase": 0,
+      "name": "g",
+      "entity": {
+        "python": {
+          "decl": { "func": { "key": { "name": { "key": "main.g" } } } }
+        }
+      },
+      "location": {
+        "name": "main.g",
+        "file": { "key": "main.py" },
+        "location": { "span": { "start": 431, "length": 112 } }
+      },
+      "kind": 13,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "h",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "main.g.<locals>.h" } } }
           }
         }
-      }
+      },
+      "location": {
+        "name": "main.g.<locals>.h",
+        "file": { "key": "main.py" },
+        "location": { "span": { "start": 500, "length": 43 } }
+      },
+      "kind": 13,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "func_sleep" },
-      "decl": { "func": { "key": { "name": { "key": "big_lib.func_sleep" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "g" },
-      "decl": { "func": { "key": { "name": { "key": "main.g" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "h" },
-      "decl": { "func": { "key": { "name": { "key": "main.g.<locals>.h" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "helper_func" },
-      "decl": { "func": { "key": { "name": { "key": "lib.helper_func" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "helper_func" },
-      "decl": {
-        "imp": {
-          "key": {
-            "from_name": { "key": "lib.helper_func" },
-            "as_name": { "key": "main.helper_func" }
+      "searchcase": 0,
+      "name": "helper_func",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.helper_func" } } }
           }
         }
-      }
+      },
+      "location": {
+        "name": "lib.helper_func",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 805, "length": 43 } }
+      },
+      "kind": 13,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "instance_var" },
-      "decl": {
-        "variable": {
-          "key": { "name": { "key": "lib.HelperClass.instance_var" } }
+      "searchcase": 0,
+      "name": "instance_var",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "lib.HelperClass.instance_var" } }
+            }
+          }
         }
-      }
+      },
+      "location": {
+        "name": "lib.HelperClass.instance_var",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 440, "length": 17 } }
+      },
+      "kind": 9,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "lib" },
-      "decl": { "module": { "key": { "name": { "key": "lib" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "main" },
-      "decl": { "module": { "key": { "name": { "key": "main" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "method" },
-      "decl": {
-        "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "old_style_class_var" },
-      "decl": {
-        "variable": {
-          "key": { "name": { "key": "lib.HelperClass.old_style_class_var" } }
+      "searchcase": 0,
+      "name": "lib",
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "lib" } } } }
         }
-      }
+      },
+      "location": {
+        "name": "lib",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 0, "length": 1026 } }
+      },
+      "kind": 4,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "prop" },
-      "decl": {
-        "func": { "key": { "name": { "key": "lib.HelperClass.prop" } } }
-      }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "relative" },
-      "decl": { "module": { "key": { "name": { "key": "big_lib.relative" } } } }
-    }
-  },
-  {
-    "key": {
-      "name": { "key": "static_method" },
-      "decl": {
-        "func": {
-          "key": { "name": { "key": "lib.HelperClass.static_method" } }
+      "searchcase": 0,
+      "name": "main",
+      "entity": {
+        "python": {
+          "decl": { "module": { "key": { "name": { "key": "main" } } } }
         }
-      }
+      },
+      "location": {
+        "name": "main",
+        "file": { "key": "main.py" },
+        "location": { "span": { "start": 0, "length": 581 } }
+      },
+      "kind": 4,
+      "language": 4
     }
   },
   {
     "key": {
-      "name": { "key": "var" },
-      "decl": { "variable": { "key": { "name": { "key": "all.var" } } } }
+      "searchcase": 0,
+      "name": "method",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.HelperClass.method" } } }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass.method",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 463, "length": 47 } }
+      },
+      "kind": 7,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "old_style_class_var",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "lib.HelperClass.old_style_class_var" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass.old_style_class_var",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 374, "length": 23 } }
+      },
+      "kind": 9,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "prop",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": { "key": { "name": { "key": "lib.HelperClass.prop" } } }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass.prop",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 672, "length": 31 } }
+      },
+      "kind": 7,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "relative",
+      "entity": {
+        "python": {
+          "decl": {
+            "module": { "key": { "name": { "key": "big_lib.relative" } } }
+          }
+        }
+      },
+      "location": {
+        "name": "big_lib.relative",
+        "file": { "key": "big_lib/relative.py" },
+        "location": { "span": { "start": 0, "length": 260 } }
+      },
+      "kind": 4,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "static_method",
+      "entity": {
+        "python": {
+          "decl": {
+            "func": {
+              "key": { "name": { "key": "lib.HelperClass.static_method" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass.static_method",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 600, "length": 41 } }
+      },
+      "kind": 7,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "var",
+      "entity": {
+        "python": {
+          "decl": { "variable": { "key": { "name": { "key": "all.var" } } } }
+        }
+      },
+      "location": {
+        "name": "all.var",
+        "file": { "key": "all.py" },
+        "location": { "span": { "start": 297, "length": 9 } }
+      },
+      "kind": 14,
+      "language": 4
     }
   }
 ]

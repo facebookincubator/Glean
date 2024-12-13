@@ -596,36 +596,6 @@ predicate SearchVariableByLowerCaseName:
     ContainingTopLevelDeclaration { { variable = Decl }, { module = _ } };
     NameToSName N -> { local_name = Name NameStr }
 
-#
-# Efficient searching
-#
-
-# A set of just valid local names for declarations
-# this massively filters down the python.Name table to the local name subset
-predicate LocalName: string
-  stored NameStr where
-    python.DeclarationWithName { name = Name };
-    python.NameToSName Name -> { local_name = python.Name NameStr };
-
-# Pair the lower case normalized form with the case sensitive form
-predicate LocalNameLowerCase:
-  {
-    lowercase : string,
-    name : LocalName,
-  }
-  stored { prim.toLower NameStr, Name } where Name = python.LocalName NameStr
-
-# And just the declarations we need
-predicate SearchByLocalName:
-  {
-    name : LocalName,
-    decl : Declaration
-  }
-  stored { LocalName, Decl } where
-    python.DeclarationWithName { Name, Decl };
-    python.NameToSName Name -> { local_name = python.Name NameStr };
-    LocalName = python.LocalName NameStr
-
 # Mapping between declarations and their **immediate** containers.
 # - a module is the container for everything declared at module level and submodules
 # - a class is the container for its methods, variables and inner classes
