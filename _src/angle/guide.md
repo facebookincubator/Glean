@@ -404,6 +404,19 @@ Name where
 
 returns all the names of variables and methods.
 
+### Extracting the key of a fact
+
+It's sometimes useful to be able to extract the key of a fact. If we
+have a variable `X` of some predicate type, then we can extract the
+key of `X` with `X.*`. If `X` has type `P` and `P` is a predicate with
+key type `K`, then `X.*` has type `K`.
+
+Usually we don't need to extract the key explicitly because Angle does
+it automatically. For example if `X : example.Class`, then `X.name` is
+shorthand for `X.*.name`. But sometimes we just want the key without
+selecting a field, or perhaps the key isn't a record. In those cases,
+`X.*` can be useful.
+
 ## If-then-else
 
 We can conditionally match patterns using `if then else`.
