@@ -659,7 +659,7 @@ userQueryImpl
               (envDebug env)
 
           predDiag <- if Thrift.queryDebugOptions_pred_has_facts debug then
-              getPredDiags env repo preds
+              getPredDiags env repo schema preds
               else return []
           let
             irDiag =
@@ -694,17 +694,26 @@ data CompileInfo = CompileInfo {
 getPredDiags
   :: Database.Env
   -> Thrift.Repo
+  -> DbSchema
   -> [TcPred]
   -> IO [Text]
-getPredDiags env repo preds = do
+getPredDiags env repo schema preds = do
   predStats <- PredicateStats.predicateStats env repo StackedDbOpts.IncludeBase
-  predsMissing <- filterM (\p -> do not <$> tcPredExist p predStats) preds
+  let predsMissing = filter (\p -> not (tcPredExist p predStats)) preds
   return $ map warnDiag predsMissing
     where
       tcPredExist (PidRef pid _, _) predStats =
-        case Map.lookup (fromPid pid) predStats of
-          Just stat -> return $ Thrift.predicateStats_count stat > 0
-          Nothing -> return False
+        derived schema pid || hasFacts predStats pid
+      -- we assume derived predicates "exist" since we won't find any facts
+      derived schema pid = case lookupPid pid schema of
+        Just details -> case predicateDeriving details of
+          Derive DeriveOnDemand _ -> True
+          Derive DeriveIfEmpty _ -> True
+          _ -> False
+        Nothing -> error "Unknown Pid in getPredDiags"
+      hasFacts predStats pid = case Map.lookup (fromPid pid) predStats of
+        Just stat -> Thrift.predicateStats_count stat > 0
+        Nothing -> False
       warnDiag :: TcPred -> Text
       warnDiag (PidRef _ (PredicateId predRef _), Some span) = Text.pack $
         "Warning: "
