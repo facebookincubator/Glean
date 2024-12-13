@@ -591,8 +591,43 @@ instance ToAngle Fbthrift.XRefTarget where
 instance ToAngleFull Py.Declaration where
   toAngleFull (Py.Declaration_cls (Py.ClassDeclaration _  (Just k))) =
     alt @"cls" (toAngleFull k)
+  toAngleFull (Py.Declaration_func (Py.FunctionDeclaration _  (Just k))) =
+    alt @"func" (toAngleFull k)
+  toAngleFull (Py.Declaration_module (Py.Module _  (Just k))) =
+    alt @"module" (toAngleFull k)
+  toAngleFull (Py.Declaration_variable (Py.VariableDeclaration _  (Just k))) =
+    alt @"variable" (toAngleFull k)
+  toAngleFull (Py.Declaration_imp (Py.ImportStatement _  (Just k))) =
+    alt @"imp" (toAngleFull k)
   toAngleFull Py.Declaration_EMPTY = error "unknown Entity"
-  toAngleFull _ = error "Not implemented"
+  toAngleFull _  = error "Not fully resolved"
+
+instance ToAngleFull Py.ImportStatement_key where
+  toAngleFull
+   (Py.ImportStatement_key
+     (Py.Name _ (Just from)) (Py.Name _ (Just as))) = rec $
+       field @"from_name" (string from) $
+       field @"as_name" (string as)
+    end
+  toAngleFull _ = error "Not fully resolved"
+
+instance ToAngleFull Py.Module_key where
+  toAngleFull (Py.Module_key ((Py.Name _ (Just k)))) = rec $
+    field @"name" (string k)
+    end
+  toAngleFull _ = error "Not fully resolved"
+
+instance ToAngleFull Py.FunctionDeclaration_key where
+  toAngleFull (Py.FunctionDeclaration_key ((Py.Name _ (Just k)))) = rec $
+    field @"name" (string k)
+    end
+  toAngleFull _ = error "Not fully resolved"
+
+instance ToAngleFull Py.VariableDeclaration_key where
+  toAngleFull (Py.VariableDeclaration_key ((Py.Name _ (Just k)))) = rec $
+    field @"name" (string k)
+    end
+  toAngleFull _ = error "Not fully resolved"
 
 instance ToAngleFull Py.ClassDeclaration_key where
   toAngleFull (Py.ClassDeclaration_key ((Py.Name _ (Just k))) _bases) = rec $
@@ -606,7 +641,20 @@ instance Normalize Py.Name where
 
 instance Normalize Py.Declaration where
   normalize (Py.Declaration_cls cls) = Py.Declaration_cls $ normalize cls
-  normalize _ = error "Not implemented"
+  normalize (Py.Declaration_func f) = Py.Declaration_func $ normalize f
+  normalize (Py.Declaration_variable v) = Py.Declaration_variable $ normalize v
+  normalize (Py.Declaration_module m) = Py.Declaration_module $ normalize m
+  normalize (Py.Declaration_imp i) = Py.Declaration_imp $ normalize i
+  normalize Py.Declaration_EMPTY = error "unknown entity"
+
+instance Normalize Py.ImportStatement where
+  normalize (Py.ImportStatement _ (Just k)) =
+    Py.ImportStatement 0 (Just (normalize k))
+  normalize _ = error "Not fully resolved"
+
+instance Normalize Py.ImportStatement_key where
+  normalize (Py.ImportStatement_key f a) =
+    Py.ImportStatement_key (normalize f) (normalize a)
 
 instance Normalize Py.ClassDeclaration where
   normalize (Py.ClassDeclaration _ (Just k)) =
@@ -616,6 +664,34 @@ instance Normalize Py.ClassDeclaration where
 instance Normalize Py.ClassDeclaration_key where
   normalize (Py.ClassDeclaration_key name _base) =
     Py.ClassDeclaration_key (normalize name) (Just [])
+
+instance Normalize Py.VariableDeclaration where
+  normalize (Py.VariableDeclaration _ (Just k)) =
+    Py.VariableDeclaration 0 (Just (normalize k))
+  normalize _ = error "Not fully resolved"
+
+instance Normalize Py.VariableDeclaration_key where
+  normalize (Py.VariableDeclaration_key name) =
+    Py.VariableDeclaration_key (normalize name)
+
+instance Normalize Py.FunctionDeclaration where
+  normalize (Py.FunctionDeclaration _ (Just k)) =
+    Py.FunctionDeclaration 0 (Just (normalize k))
+  normalize _ = error "Not fully resolved"
+
+instance Normalize Py.FunctionDeclaration_key where
+  normalize (Py.FunctionDeclaration_key name) =
+    Py.FunctionDeclaration_key (normalize name)
+
+instance Normalize Py.Module where
+  normalize (Py.Module _ (Just k)) =
+    Py.Module 0 (Just (normalize k))
+  normalize _ = error "Not fully resolved"
+
+instance Normalize Py.Module_key where
+  normalize (Py.Module_key name) =
+    Py.Module_key (normalize name)
+
 
 -- Java
 
