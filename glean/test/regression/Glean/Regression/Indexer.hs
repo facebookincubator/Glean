@@ -13,6 +13,7 @@ module Glean.Regression.Indexer
 
 import Control.Exception
 import qualified Data.IntMap as IntMap
+import Data.Maybe
 import System.FilePath
 
 import Glean.Database.Config
@@ -33,7 +34,9 @@ withTestBackend
 withTestBackend test action =
   withTestEnv settings (\env -> setSchema env >>= action . Some)
   where
-  settings = [ setRoot $ testOutput test </> "db" ]
+  settings = [ setRoot $ testOutput test </> "db" ] <>
+    map (setSchemaSource . schemaSourceFilesFromDir)
+      (maybeToList (testSchema test))
   setSchema env = case testSchemaVersion test of
     Nothing -> return env
     Just ver -> do

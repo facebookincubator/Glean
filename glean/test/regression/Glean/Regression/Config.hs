@@ -26,4 +26,6 @@ data TestConfig = TestConfig
       -- multiple ways, e.g. for different platforms.
   , testSchemaVersion :: Maybe Int
       -- ^ version of 'all' schema to use in test DB
+  , testSchema :: Maybe FilePath
+      -- ^ Directory containing the schema files
   } deriving (Show)

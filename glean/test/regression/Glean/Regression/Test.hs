@@ -76,6 +76,7 @@ createTestConfig repo group outDir cfg =
       , testRoot = cfgRoot cfg
       , testProjectRoot = cfgProjectRoot cfg
       , testGroup = group
+      , testSchema = cfgSchema cfg
       , testSchemaVersion = cfgSchemaVersion cfg
       }
 
