@@ -29,6 +29,8 @@ data Config = Config
     -- ^ parent path of *.query results
   , cfgReplace :: Maybe FilePath
     -- ^ when True overwrite golden *.out with query result
+  , cfgSchema :: Maybe FilePath
+    -- ^ Schema directory
   , cfgSchemaVersion :: Maybe Int
     -- ^ version of 'all' schema to use
   , cfgTests :: [String]
@@ -56,6 +58,9 @@ optionsWith other = O.info (O.helper <*> ((,) <$> parser <*> other)) O.fullDesc
       replaceAll <- O.switch $
         O.long "replace-all" <>
         O.help "Generate (overwrite) all golden *.out files instead of testing"
+      cfgSchema <- O.optional $ O.strOption $
+        O.long "schema" <>
+        O.help "Directory containing schema source files"
       cfgSchemaVersion <- O.optional $ O.option O.auto $
         O.long "schema-version" <> O.metavar "INT" <>
         O.help "version of 'all' schema to use for unversioned queries"

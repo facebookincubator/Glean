@@ -146,6 +146,7 @@ executeTest cfg driver driverOpts base_group group diff subdir =
         , testRoot = cfgRoot cfg </> subdir
         , testProjectRoot = cfgProjectRoot cfg
         , testGroup = group
+        , testSchema = cfgSchema cfg
         , testSchemaVersion = cfgSchemaVersion cfg
         }
   createDirectoryIfMissing True $ testOutput test
