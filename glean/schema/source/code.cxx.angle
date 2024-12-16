@@ -49,44 +49,36 @@ predicate DeclToDef :
   {Decl, Def}
   where
   cxx1.DeclFamilyOf { Decl, FamDecl };
-  Def =
-    (
-      Definition{record_ = { declaration = DD} }
-      where
-      {record_ = _} = Decl;
-      {record_ = DD} = FamDecl
-    ) | (
-      Definition{function_ = {declaration = DD}}
-      where
-      {function_ = _} = Decl;
-      {function_ = DD} = FamDecl;
-    ) | (
-      Definition{enum_ = {declaration = DD}}
-      where
-      {enum_ = _} = Decl;
-      {enum_ = DD} = FamDecl;
-    ) | (
-      Definition{objcMethod = cxx1.ObjcMethodDefinition DD}
-      where
-      {objcMethod = _} = Decl;
-      {objcMethod = DD} = FamDecl;
-    ) | (
-      Definition{objcContainer = {declaration = DD}}
-      where
-      {objcContainer = _} = Decl;
-      {objcContainer = DD} = FamDecl;
-    ) | (
-      Definition{namespace_ = {declaration = DD}}
-      where
-      {namespace_ = _} = Decl;
-      {namespace_ = DD} = FamDecl;
-    ) | (
-      Definition{variable = DD}
-      where
-      {variable = _} = Decl;
-      {variable = DD} = FamDecl;
-      DD = cxx1.VariableDeclaration {kind = {global_ = {definition = true}}}
-    )
+  (
+    Decl.record_?;
+    FamDecl.record_? = DD;
+    Def.record_?.declaration = DD;
+  ) | (
+    Decl.function_?;
+    FamDecl.function_? = DD;
+    Def.function_?.declaration = DD;
+  ) | (
+    Decl.enum_?;
+    FamDecl.enum_? = DD;
+    Def.enum_?.declaration = DD;
+  ) | (
+    Decl.objcMethod?;
+    FamDecl.objcMethod? = DD;
+    Def.objcMethod? = cxx1.ObjcMethodDefinition DD;
+  ) | (
+    Decl.objcContainer?;
+    FamDecl.objcContainer? = DD;
+    Def.objcContainer?.declaration = DD;
+  ) | (
+    Decl.namespace_?;
+    FamDecl.namespace_? = DD;
+    Def.namespace_?.declaration = DD;
+  ) | (
+    Decl.variable?;
+    FamDecl.variable? = DD;
+    Def.variable? = DD;
+    DD.kind.global_?.definition = true;
+  )
 
 type Annotations =
   {
