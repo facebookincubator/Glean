@@ -3,35 +3,6 @@
 schema search.cxx.5 {
 import cxx1
 import code.cxx
-import search.kind.cxx
-
-# Declarations with no scope
-predicate GlobalDeclarationWithName :
-  {
-    name : cxx1.Name,
-    decl : cxx1.Declaration,
-  }
-  { N, D }
-  where
-  # todo: replace by ObjcContainerDeclarationByName using the name lookup
-  # (then remove entirely)
-  D =
-    (
-      cxx1.Declaration
-        {
-          objcContainer =
-            {
-              id =
-                { protocol = N } |
-                { interface_ = N } |
-                { categoryInterface = { className = N } } |
-                { extensionInterface = N } |
-                { implementation = N } |
-                { categoryImplementation = { className = N } }
-            }
-        }
-    ) |
-    (cxx1.Declaration { objcProperty = { name = N }})
 
 # Find direct definition entities for various declaration types
 predicate DeclIsDefn :
@@ -56,83 +27,6 @@ predicate DeclIsDefn :
      { objcMethod = cxx1.ObjcMethodDefinition D } = Defn ) |
     ({ objcContainer = D } = Decl;
      { objcContainer = cxx1.ObjcContainerDefinition { declaration = D }} = Defn)
-
-predicate SearchByNameAndScope :
-  {
-    name : cxx1.Name,
-    scope : cxx1.Scope,
-    entity : code.cxx.Entity,
-  }
-  {N, Scope, Entity} where
-    ( # Several things use QName, so share the query for it
-      Q = cxx1.QName { name = N, scope = Scope };
-      Entity =
-        code.cxx.Entity { decl = { record_ = { name = Q }}}  |
-        code.cxx.Entity { decl = { variable = { name = Q }}} |
-        code.cxx.Entity { decl = { typeAlias = { name = Q }}} |
-        code.cxx.Entity { decl = { enum_ = { name = Q }}};
-    ) | (
-      D = cxx1.FunctionDeclaration
-        { name = { name = { name = N }, scope = Scope } };
-      Entity = code.cxx.Entity { decl = { function_ = D } }
-    ) | (
-      GlobalDeclarationWithName { N, Decl };
-      Entity = code.cxx.Entity { decl = Decl };
-      { global_ = {} } = Scope;
-    ) | (
-      # This can be optimized with SearchEnumerator, once those facts are live
-      E = cxx1.Enumerator { name = N, enumeration = T };
-      { name = QN, isScoped = Scoped } = T;
-      (
-        false = Scoped;
-        { scope = Scope } = QN
-      ) | (
-        true = Scoped;
-        { recordWithAccess = { record = QN, access = Public }} = Scope
-      );
-      Entity = code.cxx.Entity { enumerator = E };
-    ) | (
-      cxx1.Name NameStr = N;
-      search.kind.cxx.SearchNamespace { NameStr, Scope, Entity }
-    )
-
-predicate SearchByScope :
-  {
-    scope : cxx1.Scope,
-    entity : code.cxx.Entity,
-  }
-  {Scope, Entity} where
-    (
-        {namespace_= QName } = Scope;
-        NS = cxx1.NamespaceDeclaration { name = QName };
-        Entity = code.cxx.Entity { decl = { namespace_ = NS } };
-    )
-
-predicate SearchBySelector :
-  {
-    selector : cxx1.ObjcSelector,
-    entity : code.cxx.Entity,
-  }
-  { Selector, Ent } where
-  Ent = code.cxx.Entity { decl = { objcMethod = { selector = Selector }}}
-
-# Easy way to query for TargetUses for an Entity. Note this doesn't
-# handle the `defn` alternative of `code.cxx.Entity`, but the
-# call site of this predicate ('Glean.Search.Search') always uses it
-# with declarations and not definitions.
-predicate EntityUses :
-  {
-    entity : code.cxx.Entity,
-    uses : cxx1.TargetUses
-  }
-  { E, U } where
-    (
-      code.cxx.Entity { decl = D } = E;
-      U = cxx1.TargetUses { target = { declaration = D } }
-    ) | (
-      code.cxx.Entity { enumerator = En } = E;
-      U = cxx1.TargetUses { target = { enumerator = En } }
-    )
 
 #
 # Generating scope values for queries

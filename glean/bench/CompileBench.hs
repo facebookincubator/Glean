@@ -173,9 +173,9 @@ benchLargeDerivations =
   bench env repo queries
   where
     queries =
-      [ ("code.cxx.SearchByNameAndScope"
+      [ ("codemarkup.search.earchByScope"
         , getq $ angleData @Code.Cxx.Entity $
-          "E where search.cxx.SearchByNameAndScope { \"malloc\", global_, E }"
+        "codemarkup.search.SearchByScope { name = \"malloc\", scope = [], searchcase = Sensitive, kind = { just = Function }, entity = E }"
         )
       , ("codemarkup.EntityUses"
         , getq $ angleData @Codemarkup.EntityUses $

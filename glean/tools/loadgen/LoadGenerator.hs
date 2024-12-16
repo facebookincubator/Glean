@@ -30,7 +30,7 @@ For example
 
 $ loadgen \
     --service localhost:25052 \
-    --query 'search.cxx.SearchByNameAndScope { name = "SemiFuture" }' \
+    --query 'codemarkup.search.SearchByName { name = "SemiFuture", searchcase = Sensitive }' \
     --time 30 \
     --concurrent 200 \
     --repo fbsource/849a42650945d0220710a8875816aa59525fb348

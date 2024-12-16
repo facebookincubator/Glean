@@ -51,7 +51,7 @@ main = benchmarkMain $ \run -> withBenchDB 10000 $ \env repo -> do
     -- spot regressions in the compiler pipeline.
     compile :: Query Code.Cxx.Entity
     compile = angleData @Code.Cxx.Entity $
-      "E where search.cxx.SearchByNameAndScope { \"malloc\", global_, E }"
+      "E where codemarkup.search.SearchByScope { name = \"malloc\", scope = [], searchcase = Sensitive, kind = { just = Function }, entity = E }"
 
     compile2 :: Query Codemarkup.EntityUses
     compile2 = angleData @Codemarkup.EntityUses $

@@ -25,15 +25,14 @@ The shell provides a few facilities to help with this.
 Turning on query profiling allows you to see how many facts of each predicate are being searched by your query. For example:
 
 ```
-fbsource> search.cxx.SearchByNameAndScope { name = "Future" }
+fbsource> codemarkup.search.SearchByName { name = "Future", searchcase = Sensitive }
 ...
 Facts searched:
-                cxx1.RecordDeclaration.1 : 103
-             cxx1.TypeAliasDeclaration.2 : 11
-                            cxx1.QName.1 : 8
-              cxx1.VariableDeclaration.2 : 7
-                  cxx1.EnumDeclaration.1 : 7
-                             cxx1.Name.1 : 1
+              cxx1.DeclarationNameSpan.5 : 100
+           cxx1.RecordDeclarationClass.5 : 78
+                 cxx1.RecordDefinition.5 : 19
+       cxx1.NamespaceDeclarationByName.5 : 13
+              cxx1.NamespaceDefinition.5 : 13
 ```
 
 If your query is expensive, then likely you will see some large numbers next to one or more predicates. This is a sign that you probably want to reorder the statements in your query, or lift out some nested queries into statements so that you can control the ordering more precisely.
