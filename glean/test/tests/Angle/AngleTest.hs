@@ -999,6 +999,21 @@ angleTypeTest = dbTestCase $ \env repo -> do
   print r
   assertEqual "angle - inference 6" 1 (length r)
 
+  -- default unbound hasTy
+  r <- runQuery_ env repo $ angleData @Text
+    [s|
+      "ok" where {} = {}
+    |]
+  print r
+  assertEqual "angle - inference 7" 1 (length r)
+
+  r <- runQuery_ env repo $ angleData @Text
+    [s|
+      "ok" where {a=2} = Y; Y.a?=2
+    |]
+  print r
+  assertEqual "angle - inference 8" 1 (length r)
+
 angleSetTest :: Test
 angleSetTest = dbTestCase $ \env repo -> do
   r <- runQuery_ env repo $ angleData @Glean.Test.Predicate
