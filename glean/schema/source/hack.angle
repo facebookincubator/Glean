@@ -734,23 +734,38 @@ predicate ModuleParent:
     decl: hack.Declaration,
     module: hack.ModuleDeclaration
   }
-  { Decl, Module } where
-    ( { function_ = FunDecl } = Decl;
-      hack.FunctionDefinition { declaration = FunDecl, module_ = M } ) |
-    ( { typedef_ = TyDecl } = Decl;
-      hack.TypedefDefinition { declaration = TyDecl, module_ = M }
+  { Decl, M.just?.declaration } where
+    (
+      hack.FunctionDefinition D;
+      Decl.function_? = D.declaration;
+      M = D.module_;
     ) | (
-      { container = Container } = Decl;
-      ( { class_ = CDecl } = Container;
-        hack.ClassDefinition { declaration = CDecl, module_ = M } ) |
-      ( { enum_ = CDecl } = Container;
-        hack.EnumDefinition { declaration = CDecl, module_ = M } ) |
-      ( { interface_ = CDecl } = Container;
-        hack.InterfaceDefinition { declaration = CDecl, module_ = M } ) |
-      ( { trait = CDecl } = Container;
-        hack.TraitDefinition { declaration = CDecl, module_ = M } )
-    );
-    { just = { Module, _ } } = M
+      hack.TypedefDefinition D;
+      Decl.typedef_? = D.declaration;
+      M = D.module_;
+    ) | (
+      Decl.container? = Container;
+      ( Container.class_? = CDecl;
+        hack.ClassDefinition D;
+        D.declaration = CDecl;
+        D.module_ = M;
+      ) | (
+        Container.enum_? = CDecl;
+        hack.EnumDefinition D;
+        D.declaration = CDecl;
+        D.module_ = M;
+      ) | (
+        Container.interface_? = CDecl;
+        hack.InterfaceDefinition I;
+        I.declaration = CDecl;
+        I.module_ = M;
+      ) | (
+        Container.trait? = CDecl;
+        hack.TraitDefinition T;
+        T.declaration = CDecl;
+        T.module_ = M;
+      )
+    )
 
 # derive children decls that are members of a parent module
 predicate ModuleChild:
@@ -796,8 +811,7 @@ predicate AttributeToDeclaration :
   }
   stored
   { Attr, Decl, File } where
-    { name = Name } = Attr;
-    { container = { class_ = { name = { name = Name } } } } = Decl;
+    Attr.name = Decl.container?.class_?.name.name;
     DeclarationLocation { declaration = Decl, file = File };
 
     # TODO qname for attributes aren't filled by the indexer yet
