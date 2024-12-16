@@ -160,11 +160,12 @@ struct Stacked<Define> final : StackedBase<Define> {
         //       similar). This means that there is no need to check against the
         //       value stored in the database as that must be empty, too.
         if (clause.value_size != 0) {
-          assert(base->factById(id, [&](auto, auto found) {
+          bool found = base->factById(id, [&](auto, auto found) {
             if (clause.value() != found.value()) {
               id = Id::invalid();
             }
-          }));
+          });
+          assert(found);
         }
         return id;
       }
