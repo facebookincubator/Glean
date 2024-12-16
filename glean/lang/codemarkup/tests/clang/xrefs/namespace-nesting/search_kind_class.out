@@ -10,7 +10,22 @@
             "parent": {
               "key": {
                 "name": { "key": "C_NS" },
-                "parent": { "key": { "name": { "key": "D_NS" } } }
+                "parent": {
+                  "key": {
+                    "name": { "key": "D_NS" },
+                    "parent": {
+                      "key": {
+                        "name": { "key": "E_NS" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "F_NS" },
+                            "parent": { "key": { "name": { "key": "G_NS" } } }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -30,7 +45,24 @@
                         "parent": {
                           "key": {
                             "name": { "key": "C_NS" },
-                            "parent": { "key": { "name": { "key": "D_NS" } } }
+                            "parent": {
+                              "key": {
+                                "name": { "key": "D_NS" },
+                                "parent": {
+                                  "key": {
+                                    "name": { "key": "E_NS" },
+                                    "parent": {
+                                      "key": {
+                                        "name": { "key": "F_NS" },
+                                        "parent": {
+                                          "key": { "name": { "key": "G_NS" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
                           }
                         }
                       }
@@ -41,10 +73,10 @@
               "kind": { "class_": { } },
               "source": {
                 "file": { "key": "test.cpp" },
-                "lineBegin": 43,
-                "columnBegin": 7,
-                "lineEnd": 45,
-                "columnEnd": 7
+                "lineBegin": 46,
+                "columnBegin": 13,
+                "lineEnd": 48,
+                "columnEnd": 13
               }
             }
           }
@@ -105,9 +137,9 @@
               "kind": { "class_": { } },
               "source": {
                 "file": { "key": "test.cpp" },
-                "lineBegin": 53,
+                "lineBegin": 59,
                 "columnBegin": 7,
-                "lineEnd": 55,
+                "lineEnd": 61,
                 "columnEnd": 7
               }
             }
@@ -147,9 +179,9 @@
               "kind": { "class_": { } },
               "source": {
                 "file": { "key": "test.cpp" },
-                "lineBegin": 52,
+                "lineBegin": 58,
                 "columnBegin": 5,
-                "lineEnd": 56,
+                "lineEnd": 62,
                 "columnEnd": 5
               }
             }

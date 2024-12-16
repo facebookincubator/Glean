@@ -3,8 +3,8 @@
   {
     "key": {
       "searchcase": 0,
-      "name": "foo_in_a_class_1",
-      "scope": [ "D1_NS", "C1_NS", "B_Class_1", "A_Class_1" ],
+      "name": "foo_in_a_class",
+      "scope": [ "B_NS", "A_Class" ],
       "entity": {
         "cxx": {
           "defn": {
@@ -15,33 +15,45 @@
                     "name": {
                       "key": {
                         "name": {
-                          "key": { "name": { "key": "foo_in_a_class_1" } }
+                          "key": { "name": { "key": "foo_in_a_class" } }
                         },
                         "scope": {
                           "recordWithAccess": {
                             "record": {
                               "key": {
-                                "name": { "key": "A_Class_1" },
+                                "name": { "key": "A_Class" },
                                 "scope": {
-                                  "recordWithAccess": {
-                                    "record": {
-                                      "key": {
-                                        "name": { "key": "B_Class_1" },
-                                        "scope": {
-                                          "namespace_": {
+                                  "namespace_": {
+                                    "key": {
+                                      "name": { "key": "B_NS" },
+                                      "parent": {
+                                        "key": {
+                                          "name": { "key": "C_NS" },
+                                          "parent": {
                                             "key": {
-                                              "name": { "key": "C1_NS" },
+                                              "name": { "key": "D_NS" },
                                               "parent": {
                                                 "key": {
-                                                  "name": { "key": "D1_NS" }
+                                                  "name": { "key": "E_NS" },
+                                                  "parent": {
+                                                    "key": {
+                                                      "name": { "key": "F_NS" },
+                                                      "parent": {
+                                                        "key": {
+                                                          "name": {
+                                                            "key": "G_NS"
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
                                                 }
                                               }
                                             }
                                           }
                                         }
                                       }
-                                    },
-                                    "access": 2
+                                    }
                                   }
                                 }
                               }
@@ -62,10 +74,10 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 60,
-                      "columnBegin": 9,
-                      "lineEnd": 60,
-                      "columnEnd": 44
+                      "lineBegin": 47,
+                      "columnBegin": 15,
+                      "lineEnd": 47,
+                      "columnEnd": 48
                     }
                   }
                 },
@@ -76,20 +88,20 @@
         }
       },
       "location": {
-        "name": "foo_in_a_class_1",
+        "name": "foo_in_a_class",
         "file": { "key": "test.cpp" },
         "location": {
           "range": {
             "file": { "key": "test.cpp" },
-            "lineBegin": 60,
-            "columnBegin": 9,
-            "lineEnd": 60,
-            "columnEnd": 44
+            "lineBegin": 47,
+            "columnBegin": 15,
+            "lineEnd": 47,
+            "columnEnd": 48
           }
         },
         "destination": {
           "file": { "key": "test.cpp" },
-          "span": { "start": 1009, "length": 16 }
+          "span": { "start": 824, "length": 14 }
         }
       },
       "kind": 13,

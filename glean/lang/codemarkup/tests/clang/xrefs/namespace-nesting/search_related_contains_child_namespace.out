@@ -15,17 +15,34 @@
                       "parent": {
                         "key": {
                           "name": { "key": "C_NS" },
-                          "parent": { "key": { "name": { "key": "D_NS" } } }
+                          "parent": {
+                            "key": {
+                              "name": { "key": "D_NS" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "E_NS" },
+                                  "parent": {
+                                    "key": {
+                                      "name": { "key": "F_NS" },
+                                      "parent": {
+                                        "key": { "name": { "key": "G_NS" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 42,
-                    "columnBegin": 5,
-                    "lineEnd": 46,
-                    "columnEnd": 5
+                    "lineBegin": 45,
+                    "columnBegin": 11,
+                    "lineEnd": 49,
+                    "columnEnd": 11
                   }
                 }
               }
@@ -38,15 +55,15 @@
           "location": {
             "range": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 42,
-              "columnBegin": 5,
-              "lineEnd": 46,
-              "columnEnd": 5
+              "lineBegin": 45,
+              "columnBegin": 11,
+              "lineEnd": 49,
+              "columnEnd": 11
             }
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 696, "length": 4 }
+            "span": { "start": 771, "length": 4 }
           }
         }
       },
@@ -67,7 +84,24 @@
                               "key": {
                                 "name": { "key": "C_NS" },
                                 "parent": {
-                                  "key": { "name": { "key": "D_NS" } }
+                                  "key": {
+                                    "name": { "key": "D_NS" },
+                                    "parent": {
+                                      "key": {
+                                        "name": { "key": "E_NS" },
+                                        "parent": {
+                                          "key": {
+                                            "name": { "key": "F_NS" },
+                                            "parent": {
+                                              "key": {
+                                                "name": { "key": "G_NS" }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
                                 }
                               }
                             }
@@ -79,10 +113,10 @@
                   "kind": { "class_": { } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 43,
-                    "columnBegin": 7,
-                    "lineEnd": 45,
-                    "columnEnd": 7
+                    "lineBegin": 46,
+                    "columnBegin": 13,
+                    "lineEnd": 48,
+                    "columnEnd": 13
                   }
                 }
               }
@@ -95,15 +129,15 @@
           "location": {
             "range": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 43,
-              "columnBegin": 7,
-              "lineEnd": 45,
-              "columnEnd": 7
+              "lineBegin": 46,
+              "columnBegin": 13,
+              "lineEnd": 48,
+              "columnEnd": 13
             }
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 715, "length": 7 }
+            "span": { "start": 796, "length": 7 }
           }
         }
       },
@@ -127,9 +161,9 @@
                   },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 51,
+                    "lineBegin": 57,
                     "columnBegin": 3,
-                    "lineEnd": 57,
+                    "lineEnd": 63,
                     "columnEnd": 3
                   }
                 }
@@ -143,15 +177,15 @@
           "location": {
             "range": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 51,
+              "lineBegin": 57,
               "columnBegin": 3,
-              "lineEnd": 57,
+              "lineEnd": 63,
               "columnEnd": 3
             }
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 820, "length": 5 }
+            "span": { "start": 943, "length": 5 }
           }
         }
       },
@@ -177,9 +211,9 @@
                   "kind": { "class_": { } },
                   "source": {
                     "file": { "key": "test.cpp" },
-                    "lineBegin": 52,
+                    "lineBegin": 58,
                     "columnBegin": 5,
-                    "lineEnd": 56,
+                    "lineEnd": 62,
                     "columnEnd": 5
                   }
                 }
@@ -193,15 +227,15 @@
           "location": {
             "range": {
               "file": { "key": "test.cpp" },
-              "lineBegin": 52,
+              "lineBegin": 58,
               "columnBegin": 5,
-              "lineEnd": 56,
+              "lineEnd": 62,
               "columnEnd": 5
             }
           },
           "destination": {
             "file": { "key": "test.cpp" },
-            "span": { "start": 838, "length": 9 }
+            "span": { "start": 961, "length": 9 }
           }
         }
       },

@@ -178,63 +178,71 @@ predicate QueryToNSQNameCase:
   }
   { Query, Case, NSQName } where
     # zero tuple
-    ( [] = Query; true | false = Case; { nothing, nothing } ) |
+    if ( [] = Query )
+    then ( true | false = Case; { nothing, nothing } = NSQName )
     # one tuple
-    ( [A] = Query;
+    else if ( [A] = Query )
+    then (
       CxxNamespaceCase { Case, A, AName };
-      { name = { just = AName }}) | # n.b. parent wild
+      { name = { just = AName }} = NSQName) # n.b. parent wild
     # two tuple
-    ( [B,A] = Query;
+    else if ( [B,A] = Query )
+    then (
       CxxNamespaceCase { Case, A, AName };
       CxxNamespaceCase { Case, B, BName };
-      { name = { just = AName },
-        parent = { just = { name = { just = BName } } } } ) |
+      B_Par = { name = { just = BName } };
+      { { just = AName }, { just = B_Par } } = NSQName )
     # three tuple
-    ( [C,B,A] = Query;
+    else if ( [C,B,A] = Query )
+    then (
       CxxNamespaceCase { Case, A, AName };
       CxxNamespaceCase { Case, B, BName };
       CxxNamespaceCase { Case, C, CName };
-      { name = { just = AName },
-        parent = { just = { name = { just = BName },
-        parent = { just = { name = { just = CName } }}}}} ) |
+      C_Par = { name = { just = CName } };
+      B_Par = { { just = BName }, { just = C_Par } };
+      { { just = AName }, { just = B_Par } } = NSQName )
     # four tuple
-    ( [D,C,B,A] = Query;
+    else if ( [D,C,B,A] = Query )
+    then (
       CxxNamespaceCase { Case, A, AName };
       CxxNamespaceCase { Case, B, BName };
       CxxNamespaceCase { Case, C, CName };
       CxxNamespaceCase { Case, D, DName };
-      { name = { just = AName },
-        parent = { just = { name = { just = BName },
-        parent = { just = { name = { just = CName },
-        parent = { just = { name = { just = DName } }}}}}}} ) |
+      D_Par = { name = { just = DName } };
+      C_Par = { { just = CName }, { just = D_Par } };
+      B_Par = { { just = BName }, { just = C_Par } };
+      { { just = AName }, { just = B_Par } } = NSQName )
     # five tuple
-    ( [E,D,C,B,A] = Query;
+    else if ( [E,D,C,B,A] = Query )
+    then (
       CxxNamespaceCase { Case, A, AName };
       CxxNamespaceCase { Case, B, BName };
       CxxNamespaceCase { Case, C, CName };
       CxxNamespaceCase { Case, D, DName };
       CxxNamespaceCase { Case, E, EName };
-      { name = { just = AName },
-        parent = { just = { name = { just = BName },
-        parent = { just = { name = { just = CName },
-        parent = { just = { name = { just = DName },
-        parent = { just = { name = { just = EName } }}}}}}}}} ) |
+      E_Par = { name = { just = EName } };
+      D_Par = { { just = DName }, { just = E_Par } };
+      C_Par = { { just = CName }, { just = D_Par } };
+      B_Par = { { just = BName }, { just = C_Par } };
+      { { just = AName }, { just = B_Par } } = NSQName )
     # six tuple
-     ( [F,E,D,C,B,A] = Query;
+    else if ( [F,E,D,C,B,A] = Query )
+    then (
       CxxNamespaceCase { Case, A, AName };
       CxxNamespaceCase { Case, B, BName };
       CxxNamespaceCase { Case, C, CName };
       CxxNamespaceCase { Case, D, DName };
       CxxNamespaceCase { Case, E, EName };
       CxxNamespaceCase { Case, F, FName };
-      { name = { just = AName },
-        parent = { just = { name = { just = BName },
-        parent = { just = { name = { just = CName },
-        parent = { just = { name = { just = DName },
-        parent = { just = { name = { just = EName },
-        parent = { just = { name = { just = FName } }}}}}}}}}}} ) |
-    # seven for real
-     ( [G,F,E,D,C,B,A] = Query;
+      F_Par = { name = { just = FName } };
+      E_Par = { { just = EName }, { just = F_Par } };
+      D_Par = { { just = DName }, { just = E_Par } };
+      C_Par = { { just = CName }, { just = D_Par } };
+      B_Par = { { just = BName }, { just = C_Par } };
+      { { just = AName }, { just = B_Par } } = NSQName )
+    # seven
+    else if ( [G,F,E,D,C,B,A] = Query )
+    then (
       CxxNamespaceCase { Case, A, AName };
       CxxNamespaceCase { Case, B, BName };
       CxxNamespaceCase { Case, C, CName };
@@ -242,14 +250,15 @@ predicate QueryToNSQNameCase:
       CxxNamespaceCase { Case, E, EName };
       CxxNamespaceCase { Case, F, FName };
       CxxNamespaceCase { Case, G, GName };
-      { name = { just = AName },
-        parent = { just = { name = { just = BName },
-        parent = { just = { name = { just = CName },
-        parent = { just = { name = { just = DName },
-        parent = { just = { name = { just = EName },
-        parent = { just = { name = { just = FName },
-        parent = { just = { name = { just = GName } }}}}}}}}}}}}}
-    ) = NSQName;
+      G_Par = { name = { just = GName } };
+      F_Par = { { just = FName }, { just = G_Par } };
+      E_Par = { { just = EName }, { just = F_Par } };
+      D_Par = { { just = DName }, { just = E_Par } };
+      C_Par = { { just = CName }, { just = D_Par } };
+      B_Par = { { just = BName }, { just = C_Par } };
+      { { just = AName }, { just = B_Par } } = NSQName )
+    else
+      ( never = NSQName )
 
 # Instead of searching cxx1.Name, use the fact we know we're building NamespaceQName
 # to directly look up each element and its parents

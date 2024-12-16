@@ -23,7 +23,24 @@
                                 "key": {
                                   "name": { "key": "C_NS" },
                                   "parent": {
-                                    "key": { "name": { "key": "D_NS" } }
+                                    "key": {
+                                      "name": { "key": "D_NS" },
+                                      "parent": {
+                                        "key": {
+                                          "name": { "key": "E_NS" },
+                                          "parent": {
+                                            "key": {
+                                              "name": { "key": "F_NS" },
+                                              "parent": {
+                                                "key": {
+                                                  "name": { "key": "G_NS" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
                                   }
                                 }
                               }
@@ -35,10 +52,10 @@
                     "kind": { "class_": { } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 43,
-                      "columnBegin": 7,
-                      "lineEnd": 45,
-                      "columnEnd": 7
+                      "lineBegin": 46,
+                      "columnBegin": 13,
+                      "lineEnd": 48,
+                      "columnEnd": 13
                     }
                   }
                 },
@@ -67,7 +84,28 @@
                                                 "name": { "key": "C_NS" },
                                                 "parent": {
                                                   "key": {
-                                                    "name": { "key": "D_NS" }
+                                                    "name": { "key": "D_NS" },
+                                                    "parent": {
+                                                      "key": {
+                                                        "name": {
+                                                          "key": "E_NS"
+                                                        },
+                                                        "parent": {
+                                                          "key": {
+                                                            "name": {
+                                                              "key": "F_NS"
+                                                            },
+                                                            "parent": {
+                                                              "key": {
+                                                                "name": {
+                                                                  "key": "G_NS"
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
                                                   }
                                                 }
                                               }
@@ -96,10 +134,10 @@
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 44,
-                            "columnBegin": 9,
-                            "lineEnd": 44,
-                            "columnEnd": 42
+                            "lineBegin": 47,
+                            "columnBegin": 15,
+                            "lineEnd": 47,
+                            "columnEnd": 48
                           }
                         }
                       }
@@ -153,9 +191,9 @@
                     "kind": { "class_": { } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 53,
+                      "lineBegin": 59,
                       "columnBegin": 7,
-                      "lineEnd": 55,
+                      "lineEnd": 61,
                       "columnEnd": 7
                     }
                   }
@@ -221,9 +259,9 @@
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 54,
+                            "lineBegin": 60,
                             "columnBegin": 9,
-                            "lineEnd": 54,
+                            "lineEnd": 60,
                             "columnEnd": 44
                           }
                         }
@@ -268,9 +306,9 @@
                     "kind": { "class_": { } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 52,
+                      "lineBegin": 58,
                       "columnBegin": 5,
-                      "lineEnd": 56,
+                      "lineEnd": 62,
                       "columnEnd": 5
                     }
                   }
@@ -311,9 +349,9 @@
                           "kind": { "class_": { } },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 53,
+                            "lineBegin": 59,
                             "columnBegin": 7,
-                            "lineEnd": 55,
+                            "lineEnd": 61,
                             "columnEnd": 7
                           }
                         }
@@ -346,17 +384,34 @@
                         "parent": {
                           "key": {
                             "name": { "key": "C_NS" },
-                            "parent": { "key": { "name": { "key": "D_NS" } } }
+                            "parent": {
+                              "key": {
+                                "name": { "key": "D_NS" },
+                                "parent": {
+                                  "key": {
+                                    "name": { "key": "E_NS" },
+                                    "parent": {
+                                      "key": {
+                                        "name": { "key": "F_NS" },
+                                        "parent": {
+                                          "key": { "name": { "key": "G_NS" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
                           }
                         }
                       }
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 42,
-                      "columnBegin": 5,
-                      "lineEnd": 46,
-                      "columnEnd": 5
+                      "lineBegin": 45,
+                      "columnBegin": 11,
+                      "lineEnd": 49,
+                      "columnEnd": 11
                     }
                   }
                 },
@@ -376,7 +431,26 @@
                                       "key": {
                                         "name": { "key": "C_NS" },
                                         "parent": {
-                                          "key": { "name": { "key": "D_NS" } }
+                                          "key": {
+                                            "name": { "key": "D_NS" },
+                                            "parent": {
+                                              "key": {
+                                                "name": { "key": "E_NS" },
+                                                "parent": {
+                                                  "key": {
+                                                    "name": { "key": "F_NS" },
+                                                    "parent": {
+                                                      "key": {
+                                                        "name": {
+                                                          "key": "G_NS"
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
                                         }
                                       }
                                     }
@@ -388,10 +462,10 @@
                           "kind": { "class_": { } },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 43,
-                            "columnBegin": 7,
-                            "lineEnd": 45,
-                            "columnEnd": 7
+                            "lineBegin": 46,
+                            "columnBegin": 13,
+                            "lineEnd": 48,
+                            "columnEnd": 13
                           }
                         }
                       }
@@ -425,9 +499,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 51,
+                      "lineBegin": 57,
                       "columnBegin": 3,
-                      "lineEnd": 57,
+                      "lineEnd": 63,
                       "columnEnd": 3
                     }
                   }
@@ -455,9 +529,9 @@
                           "kind": { "class_": { } },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 52,
+                            "lineBegin": 58,
                             "columnBegin": 5,
-                            "lineEnd": 56,
+                            "lineEnd": 62,
                             "columnEnd": 5
                           }
                         }
@@ -487,15 +561,32 @@
                     "name": {
                       "key": {
                         "name": { "key": "C_NS" },
-                        "parent": { "key": { "name": { "key": "D_NS" } } }
+                        "parent": {
+                          "key": {
+                            "name": { "key": "D_NS" },
+                            "parent": {
+                              "key": {
+                                "name": { "key": "E_NS" },
+                                "parent": {
+                                  "key": {
+                                    "name": { "key": "F_NS" },
+                                    "parent": {
+                                      "key": { "name": { "key": "G_NS" } }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 41,
-                      "columnBegin": 3,
-                      "lineEnd": 47,
-                      "columnEnd": 3
+                      "lineBegin": 44,
+                      "columnBegin": 9,
+                      "lineEnd": 50,
+                      "columnEnd": 9
                     }
                   }
                 },
@@ -511,7 +602,24 @@
                                 "key": {
                                   "name": { "key": "C_NS" },
                                   "parent": {
-                                    "key": { "name": { "key": "D_NS" } }
+                                    "key": {
+                                      "name": { "key": "D_NS" },
+                                      "parent": {
+                                        "key": {
+                                          "name": { "key": "E_NS" },
+                                          "parent": {
+                                            "key": {
+                                              "name": { "key": "F_NS" },
+                                              "parent": {
+                                                "key": {
+                                                  "name": { "key": "G_NS" }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
                                   }
                                 }
                               }
@@ -519,10 +627,10 @@
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 42,
-                            "columnBegin": 5,
-                            "lineEnd": 46,
-                            "columnEnd": 5
+                            "lineBegin": 45,
+                            "columnBegin": 11,
+                            "lineEnd": 49,
+                            "columnEnd": 11
                           }
                         }
                       }
@@ -964,9 +1072,9 @@
                     "name": { "key": { "name": { "key": "D1_NS" } } },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 50,
+                      "lineBegin": 56,
                       "columnBegin": 1,
-                      "lineEnd": 58,
+                      "lineEnd": 64,
                       "columnEnd": 1
                     }
                   }
@@ -986,9 +1094,9 @@
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
-                            "lineBegin": 51,
+                            "lineBegin": 57,
                             "columnBegin": 3,
-                            "lineEnd": 57,
+                            "lineEnd": 63,
                             "columnEnd": 3
                           }
                         }
@@ -1015,13 +1123,30 @@
               "key": {
                 "declaration": {
                   "key": {
-                    "name": { "key": { "name": { "key": "D_NS" } } },
+                    "name": {
+                      "key": {
+                        "name": { "key": "D_NS" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "E_NS" },
+                            "parent": {
+                              "key": {
+                                "name": { "key": "F_NS" },
+                                "parent": {
+                                  "key": { "name": { "key": "G_NS" } }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 40,
-                      "columnBegin": 1,
-                      "lineEnd": 48,
-                      "columnEnd": 1
+                      "lineBegin": 43,
+                      "columnBegin": 7,
+                      "lineEnd": 51,
+                      "columnEnd": 7
                     }
                   }
                 },
@@ -1033,14 +1158,221 @@
                           "name": {
                             "key": {
                               "name": { "key": "C_NS" },
-                              "parent": { "key": { "name": { "key": "D_NS" } } }
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "D_NS" },
+                                  "parent": {
+                                    "key": {
+                                      "name": { "key": "E_NS" },
+                                      "parent": {
+                                        "key": {
+                                          "name": { "key": "F_NS" },
+                                          "parent": {
+                                            "key": { "name": { "key": "G_NS" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 44,
+                            "columnBegin": 9,
+                            "lineEnd": 50,
+                            "columnEnd": 9
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "E_NS",
+      "language": 0,
+      "kinds": 5,
+      "entity": {
+        "cxx": {
+          "defn": {
+            "namespace_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "E_NS" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "F_NS" },
+                            "parent": { "key": { "name": { "key": "G_NS" } } }
+                          }
+                        }
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 42,
+                      "columnBegin": 5,
+                      "lineEnd": 52,
+                      "columnEnd": 5
+                    }
+                  }
+                },
+                "members": {
+                  "key": [
+                    {
+                      "namespace_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "D_NS" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "E_NS" },
+                                  "parent": {
+                                    "key": {
+                                      "name": { "key": "F_NS" },
+                                      "parent": {
+                                        "key": { "name": { "key": "G_NS" } }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 43,
+                            "columnBegin": 7,
+                            "lineEnd": 51,
+                            "columnEnd": 7
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "F_NS",
+      "language": 0,
+      "kinds": 5,
+      "entity": {
+        "cxx": {
+          "defn": {
+            "namespace_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "F_NS" },
+                        "parent": { "key": { "name": { "key": "G_NS" } } }
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 41,
+                      "columnBegin": 3,
+                      "lineEnd": 53,
+                      "columnEnd": 3
+                    }
+                  }
+                },
+                "members": {
+                  "key": [
+                    {
+                      "namespace_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "E_NS" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "F_NS" },
+                                  "parent": {
+                                    "key": { "name": { "key": "G_NS" } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 42,
+                            "columnBegin": 5,
+                            "lineEnd": 52,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "name": "G_NS",
+      "language": 0,
+      "kinds": 5,
+      "entity": {
+        "cxx": {
+          "defn": {
+            "namespace_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "G_NS" } } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 40,
+                      "columnBegin": 1,
+                      "lineEnd": 54,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "members": {
+                  "key": [
+                    {
+                      "namespace_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "F_NS" },
+                              "parent": { "key": { "name": { "key": "G_NS" } } }
                             }
                           },
                           "source": {
                             "file": { "key": "test.cpp" },
                             "lineBegin": 41,
                             "columnBegin": 3,
-                            "lineEnd": 47,
+                            "lineEnd": 53,
                             "columnEnd": 3
                           }
                         }
@@ -1975,7 +2307,26 @@
                                         "key": {
                                           "name": { "key": "C_NS" },
                                           "parent": {
-                                            "key": { "name": { "key": "D_NS" } }
+                                            "key": {
+                                              "name": { "key": "D_NS" },
+                                              "parent": {
+                                                "key": {
+                                                  "name": { "key": "E_NS" },
+                                                  "parent": {
+                                                    "key": {
+                                                      "name": { "key": "F_NS" },
+                                                      "parent": {
+                                                        "key": {
+                                                          "name": {
+                                                            "key": "G_NS"
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
                                           }
                                         }
                                       }
@@ -2000,10 +2351,10 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 44,
-                      "columnBegin": 9,
-                      "lineEnd": 44,
-                      "columnEnd": 42
+                      "lineBegin": 47,
+                      "columnBegin": 15,
+                      "lineEnd": 47,
+                      "columnEnd": 48
                     }
                   }
                 },
@@ -2077,9 +2428,9 @@
                     },
                     "source": {
                       "file": { "key": "test.cpp" },
-                      "lineBegin": 54,
+                      "lineBegin": 60,
                       "columnBegin": 9,
-                      "lineEnd": 54,
+                      "lineEnd": 60,
                       "columnEnd": 44
                     }
                   }

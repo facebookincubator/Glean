@@ -37,12 +37,18 @@ namespace NsA {
 
 }
 
-namespace D_NS {
-  namespace C_NS {
-    namespace B_NS {
-      class A_Class {
-        int foo_in_a_class() { return 1; }
-      };
+namespace G_NS {
+  namespace F_NS {
+    namespace E_NS {
+      namespace D_NS {
+        namespace C_NS {
+          namespace B_NS {
+            class A_Class {
+              int foo_in_a_class() { return 1; }
+            };
+          }
+        }
+      }
     }
   }
 }
