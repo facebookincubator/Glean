@@ -219,35 +219,6 @@
 
 
 
-  $ query "A\n  where\n\n\n\n\n\n A = {\n what = "what"\n }"
-  [>] A (re)
-   where
-  
-  
-  
-  
-  
-   A = {
-   what = what
-   }
-  variable A has unknown type
-      try adding a type signature, like: A : T
-  [1]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Recursive expansion is on by default
   $ "$GLEAN" --service "::1:$PORT" --minloglevel 10 shell --db "$DB" ":limit 1" "example.Parent _" | head -n -4
   [>] :limit 1 (re)

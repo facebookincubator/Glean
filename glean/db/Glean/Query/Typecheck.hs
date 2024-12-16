@@ -92,6 +92,7 @@ typecheck dbSchema opts rtsType query = do
       modify $ \s -> s { tcVisible = varsQuery query mempty }
       q@(TcQuery retTy _ _ _ _) <- inferQuery ContextPat query
         <* freeVariablesAreErrors <* unboundVariablesAreErrors
+      resolvePromote
       subst <- gets tcSubst
       whenDebug $ liftIO $ hPutStrLn stderr $ show $
         vcat [
@@ -101,7 +102,6 @@ typecheck dbSchema opts rtsType query = do
             ]),
           "query: " <> displayDefault q
         ]
-      resolvePromote
       zonkVars
       zonkTcQuery q
         `catchError` \_ -> do

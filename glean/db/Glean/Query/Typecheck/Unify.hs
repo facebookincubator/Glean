@@ -161,70 +161,96 @@ extend x t = do
 
 apply :: Type -> T Type
 apply t = do
-  subst <- gets tcSubst
-  apply_ (\x -> return (IntMap.lookup x subst)) t
+  let unbound _ = return Nothing
+      unboundHas _ _ _ = return Nothing
+  apply_ unbound unboundHas t
 
 zonkType :: Type -> T Type
 zonkType t = do
-  subst <- gets tcSubst
   opts <- gets tcDisplayOpts
-  let lookup x = case IntMap.lookup x subst of
-        Nothing -> prettyError $ "ambiguous type: " <>
-          display opts (TyVar x :: Type)
-        Just u -> return (Just u)
-  apply_ lookup t
+  let unbound x = prettyError $
+        "ambiguous type: " <> display opts (TyVar x :: Type)
+  apply_ unbound resolveHas t
 
-apply_ :: (Int -> T (Maybe Type)) -> Type -> T Type
-apply_ lookup t = go t
+-- resolve unbound HasTy to a record. Otherwise a query like
+--   { a = 3 }
+-- will be ambiguous.
+resolveHas :: Int -> Map.Map Name Type -> Maybe RecordOrSum -> T (Maybe Type)
+resolveHas _ fieldmap mr = case mr of
+  Nothing -> rec
+  Just Record -> rec
+  Just Sum -> sum
   where
-  go t = case t of
-    ByteTy -> return t
-    NatTy -> return t
-    StringTy -> return t
-    ArrayTy t -> ArrayTy <$> go t
-    RecordTy fs ->
-      fmap RecordTy $ forM fs $ \(FieldDef n t) ->
-        FieldDef n <$> go t
-    SumTy fs ->
-      fmap SumTy $ forM fs $ \(FieldDef n t) ->
-        FieldDef n <$> go t
-    PredicateTy{} -> return t
-    NamedTy{} -> return t
-    MaybeTy t -> MaybeTy <$> go t
-    EnumeratedTy{} -> return t
-    BooleanTy -> return t
-    TyVar x -> do
-      m <- lookup x
-      case m of
-        Nothing -> return t
-        Just u -> go u
-    HasTy _ _ x -> do
-      m <- lookup x
-      case m of
-        Nothing -> return t
-        Just u -> go u
-    HasKey _ x -> do
-      m <- lookup x
-      case m of
-        Nothing -> return t
-        Just u -> go u
-    SetTy t -> SetTy <$> go t
+  rec = return $ Just $ RecordTy fields
+  sum = return $ Just $ SumTy fields
+  fields = [ FieldDef name ty | (name,ty) <- Map.toList fieldmap ]
+
+apply_
+  :: (Int -> T (Maybe Type))
+     -- ^ unbound regular tyvar
+  -> (Int -> Map.Map Name Type -> Maybe RecordOrSum -> T (Maybe Type))
+     -- ^ unbound HasTy tyvar
+  -> Type
+  -> T Type
+apply_ unbound unboundHas t = do
+  subst <- gets tcSubst
+  go_ subst t
+  where
+  go_ subst t = go t
+    where
+    lookup x = case IntMap.lookup x subst of
+      Nothing -> unbound x
+      Just ty -> return (Just ty)
+
+    lookupHas x f r = case IntMap.lookup x subst of
+      Nothing -> unboundHas x f r
+      Just ty -> return (Just ty)
+
+    go t = case t of
+      ByteTy -> return t
+      NatTy -> return t
+      StringTy -> return t
+      ArrayTy t -> ArrayTy <$> go t
+      RecordTy fs ->
+        fmap RecordTy $ forM fs $ \(FieldDef n t) ->
+          FieldDef n <$> go t
+      SumTy fs ->
+        fmap SumTy $ forM fs $ \(FieldDef n t) ->
+          FieldDef n <$> go t
+      PredicateTy{} -> return t
+      NamedTy{} -> return t
+      MaybeTy t -> MaybeTy <$> go t
+      EnumeratedTy{} -> return t
+      BooleanTy -> return t
+      TyVar x -> do
+        m <- lookup x
+        case m of
+          Nothing -> return t
+          Just u -> go u
+      HasTy f r x -> do
+        m <- lookupHas x f r
+        case m of
+          Nothing -> return t
+          Just u -> go u
+      HasKey _ x -> do
+        m <- lookup x
+        case m of
+          Nothing -> return t
+          Just u -> go u
+      SetTy t -> SetTy <$> go t
 
 zonkVars :: T ()
 zonkVars = do
   vars <- gets tcVars
-  subst <- gets tcSubst
   zonked <- forM vars $ \Var{..} -> do
     let
-      lookup x = case IntMap.lookup x subst of
-        Nothing  -> prettyError $ vcat
+      unbound _ = prettyError $ vcat
           [ "variable " <> pretty var <>
             " has unknown type"
           , "    try adding a type signature, like: " <> pretty var <> " : T"
           ]
           where var = fromMaybe (Text.pack ('_':show varId)) varOrigName
-        Just u -> return (Just u)
-    t <- apply_ lookup varType
+    t <- apply_ unbound resolveHas varType
     return (Var { varType = t, ..})
   modify $ \s -> s { tcVars = zonked }
 
