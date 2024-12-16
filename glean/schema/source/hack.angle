@@ -691,75 +691,33 @@ predicate ContainerParent :
     parent : hack.ContainerDeclaration,
   }
   stored
-  { Child, Parent } where { Child, Parent } =
+  { Child, Parent } where
     (
-      {
-        hack.ContainerDeclaration { class_ = ChildDecl },
-        hack.ContainerDeclaration { class_ = ParentDecl }
-      }
-    where
-      hack.ClassDefinition
-      {
-        declaration = ChildDecl,
-        extends_ = { just = ParentDecl },
-      }
-    ) |
-    (
-      {
-        hack.ContainerDeclaration { trait = ChildDecl },
-        hack.ContainerDeclaration { trait = ParentDecl }
-      }
-    where
-      hack.TraitDefinition { declaration = ChildDecl, uses = Uses };
-      ParentDecl = Uses[..]
-    ) |
-    (
-      {
-        hack.ContainerDeclaration { class_ = ChildDecl },
-        hack.ContainerDeclaration { trait = ParentDecl }
-      }
-    where
-      hack.ClassDefinition { declaration = ChildDecl, uses = Uses };
-      ParentDecl = Uses[..]
-    ) |
-    (
-      {
-        hack.ContainerDeclaration { interface_ = ChildDecl },
-        hack.ContainerDeclaration { interface_ = ParentDecl }
-      }
-    where
-      hack.InterfaceDefinition  {
-        declaration = ChildDecl,
-        extends_ = Extends,
-      };
-      ParentDecl = Extends[..]
-    ) |
-    (
-      {
-        hack.ContainerDeclaration { class_ = ChildDecl },
-        hack.ContainerDeclaration { interface_ = ParentDecl }
-      }
-    where
-      hack.ClassDefinition { declaration = ChildDecl, implements_ = Impls };
-      ParentDecl = Impls[..]
-    ) |
-    (
-      {
-        hack.ContainerDeclaration { trait = ChildDecl },
-        hack.ContainerDeclaration { interface_ = ParentDecl }
-      }
-    where
-      hack.TraitDefinition { declaration = ChildDecl, implements_ = Impls };
-      ParentDecl = Impls[..]
-    ) |
-    (
-      {
-        hack.ContainerDeclaration { enum_ = ChildDecl },
-        hack.ContainerDeclaration { enum_ = ParentDecl }
-      }
-    where
-      hack.EnumDefinition { declaration = ChildDecl, includes = Includes };
-      ParentDecl = Includes[..]
+      hack.ClassDefinition C;
+      C.declaration = Child.class_?;
+      (
+        C.extends_.just? = Parent.class_?;
+      ) | (
+        C.uses[..] = Parent.trait?;
+      ) | (
+        C.implements_[..] = Parent.interface_?;
+      )
+    ) | (
+      hack.TraitDefinition T;
+      T.declaration = Child.trait?;
+      (
+        T.uses[..] = Parent.trait?;
+      ) | (
+        T.implements_[..] = Parent.interface_?;
+      )
+    ) | (
+      hack.InterfaceDefinition I;
+      I.declaration = Child.interface_?;
+      I.extends_[..] = Parent.interface_?;
+    ) | (
+      hack.EnumDefinition E;
+      E.declaration = Child.enum_?;
+      E.includes[..] = Parent.enum_?;
     )
 
 predicate ContainerChild:
