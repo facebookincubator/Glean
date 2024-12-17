@@ -269,7 +269,7 @@ struct SeekIterator final : rts::FactIterator {
   Fact::Ref get(Demand demand) override {
     if (iter_->Valid()) {
       auto key = input(iter_->key());
-      auto ty = key.fixed<Pid>();
+      [[maybe_unused]] auto ty = key.fixed<Pid>();
       assert(ty == type_);
       auto value = input(iter_->value());
       auto id = value.fixed<Id>();
@@ -278,7 +278,7 @@ struct SeekIterator final : rts::FactIterator {
       if (demand == KeyOnly) {
         return Fact::Ref{id, type_, Fact::Clause::fromKey(key.bytes())};
       } else {
-        auto found = db_->lookupById(id, slice_);
+        [[maybe_unused]] auto found = db_->lookupById(id, slice_);
         assert(found);
         return decomposeFact(id, slice_);
       }
