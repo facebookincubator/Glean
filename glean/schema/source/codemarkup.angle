@@ -905,6 +905,8 @@ predicate IndexedFile: src.File
    File where
     codemarkup.cxx.CxxDataAvailable File |
     codemarkup.EntityDataAvailable File |
+    # All Yaml files are indexable, even though they don't
+    # contain entities
     codemarkup.yaml.YamlDataAvailable File
 
 # Identifies files with indexed entities.

@@ -24,6 +24,6 @@ schema codemarkup.yaml.1 {
     yaml.XRefViaName { source = S , decl = { just = D } } = XRefs[..];
 
     predicate YamlDataAvailable : src.File
-    F where
-        src.File _ = F
+      F where yaml.XRefsByFile {file = F}
+
 }
