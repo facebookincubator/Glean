@@ -275,5 +275,85 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "xref": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:git."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 51,
+                "columnBegin": 20,
+                "lineEnd": 51,
+                "columnEnd": 22
+              }
+            }
+          }
+        }
+      },
+      "target": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:git."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 46,
+                "columnBegin": 53,
+                "lineEnd": 46,
+                "columnEnd": 55
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "xref": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:repoDir."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 51,
+                "columnBegin": 11,
+                "lineEnd": 51,
+                "columnEnd": 17
+              }
+            }
+          }
+        }
+      },
+      "target": {
+        "key": {
+          "symbol": {
+            "key": "scip-typescript npm . . `example.ts`/createTempRepo().typeLiteral10:repoDir."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 46,
+                "columnBegin": 36,
+                "lineEnd": 46,
+                "columnEnd": 42
+              }
+            }
+          }
+        }
+      }
+    }
   }
 ]
