@@ -274,38 +274,6 @@
   },
   {
     "key": {
-      "symbol": { "key": "scip-typescript npm . . `example.ts`/git0:" },
-      "location": {
-        "key": {
-          "file": { "key": "example.ts" },
-          "range": {
-            "lineBegin": 51,
-            "columnBegin": 20,
-            "lineEnd": 51,
-            "columnEnd": 22
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "scip-typescript npm . . `example.ts`/repoDir0:" },
-      "location": {
-        "key": {
-          "file": { "key": "example.ts" },
-          "range": {
-            "lineBegin": 51,
-            "columnBegin": 11,
-            "lineEnd": 51,
-            "columnEnd": 17
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/silent0:" },
       "location": {
         "key": {

@@ -632,76 +632,6 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "`example.ts`/git0:"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": ""
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "```ts\n(property) git: Git\n```"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 13
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 20,
-                    "columnEnd": 23,
-                    "lineBegin": 51,
-                    "lineEnd": 51
-                },
-                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2Fgit0:"
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "`example.ts`/repoDir0:"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": ""
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "```ts\n(property) repoDir: any\n```"
-                        },
-                        "key": "symbolSignature"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 13
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 11,
-                    "columnEnd": 18,
-                    "lineBegin": 51,
-                    "lineEnd": 51
-                },
-                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FrepoDir0:"
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
                             "aString": "`example.ts`/silent0:"
                         },
                         "key": "symbolName"
@@ -1229,6 +1159,108 @@
                         "columnEnd": 26,
                         "lineBegin": 15,
                         "lineEnd": 15
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/createTempRepo().typeLiteral10:git."
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) git: Git\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 23,
+                    "lineBegin": 51,
+                    "lineEnd": 51
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FcreateTempRepo%28%29.typeLiteral10:git.",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 53,
+                        "columnEnd": 56,
+                        "lineBegin": 46,
+                        "lineEnd": 46
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "`example.ts`/createTempRepo().typeLiteral10:repoDir."
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```ts\n(property) repoDir: string\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 13
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 11,
+                    "columnEnd": 18,
+                    "lineBegin": 51,
+                    "lineEnd": 51
+                },
+                "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FcreateTempRepo%28%29.typeLiteral10:repoDir.",
+                "target": {
+                    "filepath": "example.ts",
+                    "range": {
+                        "columnBegin": 36,
+                        "columnEnd": 43,
+                        "lineBegin": 46,
+                        "lineEnd": 46
                     },
                     "repository": "test"
                 }
