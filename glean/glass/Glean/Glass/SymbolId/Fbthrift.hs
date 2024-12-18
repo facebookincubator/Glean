@@ -74,7 +74,7 @@ instance Symbol Thrift.Constant_key where
     toSymbolPredicate qualname
 
 instance Symbol Thrift.ServiceName where
-  toSymbol (Thrift.ServiceName _ key) = toSymbol key
+  toSymbol = toSymbolPredicate
 
 instance Symbol Thrift.ServiceName_key where
   toSymbol (Thrift.ServiceName_key qualname) =
