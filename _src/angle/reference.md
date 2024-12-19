@@ -169,6 +169,10 @@ Angle supports a few primitive operations. The argument(s) to a primitive operat
 
 > Equal to the number of elements in its array argument
 
+&nbsp;&nbsp;`prim.size` (A : set _) : nat
+
+> Equal to the number of elements in the set
+
 &nbsp;&nbsp;*term* `>` *term* <br />
 &nbsp;&nbsp;*term* `>=` *term* <br />
 &nbsp;&nbsp;*term* `<` *term* <br />
