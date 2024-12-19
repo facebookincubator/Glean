@@ -106,35 +106,35 @@ There are several tradeoffs here:
 * **Incrementality**
   * These two alternatives are equivalent with respect to incrementality.
 
-## Using arrays
+## Using arrays, sets or separate facts
 
 If you're choosing between arrays and separate facts, then consider:
 
 * Arrays are ordered lists, whereas facts are just sets. If the order
   of your items is important - because you're representing something
   that has an order, such as function arguments - then an array is the
-  right choice.  (someday Glean might have a "set" type, but it
-  currently doesn't).
+  right choice.
 
-* Conversely, if the order is *not* important, then using an array is
+* Conversely, if the order is *not* important, then sets are the natural
+  choice. Using an array is
   a poor choice because you will be forced to choose an order when
   generating your data. If you don't have a deterministic way to pick
   the order, then your data representation is non-deterministic which
   leads to spurious differences in things like test outputs, which can
   be annoying.
 
-* Arrays are much more compact than multiple facts. There can be a
+* Arrays and sets are much more compact than multiple facts. There can be a
   huge difference in storage overhead; it's worth measuring this for
   your schema.
 
-* When a client fetches an array as part of the result of a query,
-  they will get the whole array. If your array is large, that may be a
+* When a client fetches an array or a set as part of the result of a query,
+  they will get the whole array/set. If it is large, that may be a
   lot of data to send over the wire, and it might even result in an
   allocation limit error on the server, preventing the client from
   fetching the data at all. Facts tend to support incremental querying
-  better compared with arrays.
+  better compared with arrays and sets.
 
-* Facts with large arrays are also slower to search through in a query
+* Facts with large arrays/sets are also slower to search through in a query
   than smaller facts.
 
 ## Increase sharing
@@ -142,6 +142,9 @@ If you're choosing between arrays and separate facts, then consider:
 If there is duplication in the data stored in our facts, we can often
 extract the common data into a predicate to increase sharing. One
 example of this was described in [What is the difference between a predicate and a type?](schema/syntax.md#what-is-the-difference-between-a-predicate-and-a-type).
+
+Choosing to use sets instead of arrays can increase sharing because sets have
+a canonical representation.
 
 ## How to experiment with schema design
 

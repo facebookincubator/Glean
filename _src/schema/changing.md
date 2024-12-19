@@ -16,6 +16,7 @@ only be changed in **compatible** ways. This means:
 * Adding or removing a field from a record, if the field has a **defaultable** type (see [Default values](#default-values))
 * Adding or removing an alternative from a sum type
 * Adding or removing a predicate or type declaration
+* Changing a list to a set or vice versa
 
 An example of an *incompatible* change would be changing the type of a
 field, for example from `nat` to `bool`.
@@ -61,6 +62,7 @@ following table:
 | <code>byte</code> | <code>0</code> |
 | <code>string</code> |  <code>""</code> |
 | <code>[T]</code> | <code>[]</code> |
+| <code> set T</code> | the empty set |
 | <code>{ field₁ : T₁, ..., fieldₙ : Tₙ }</code> | <code>{ field₁ = default(T₁), ..., fieldₙ = default(Tₙ) }</code> |
 | <code>{ field₁ : T₁ &#124; ... &#124; fieldₙ : Tₙ }</code> | <code>{ field₁ = default(T₁) }</code> |
 | <code>bool</code> | <code>false</code> |
