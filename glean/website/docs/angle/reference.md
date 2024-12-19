@@ -180,3 +180,16 @@ Angle supports a few primitive operations. The argument(s) to a primitive operat
 &nbsp;&nbsp;*term* `!=` *term*
 
 > Standard comparison between two terms of any type. It has a value of `{}` if the comparison succeeds, otherwise it fails in the same way as a predicate match fails if there are no facts that match the pattern.
+
+&nbsp;&nbsp;`zip` (A : [a]) (B : [b]) : [{a,b}]
+
+> Takes two arrays and zips them together pairwise into a new array of tuples.
+If the arrays have different length, the result has the same length as the shorter input array.
+
+&nbsp;&nbsp;`concat` (A : [a]) (B : [a]) : [a]
+
+> Concatenates two arrays together
+
+&nbsp;&nbsp;`reverse` (S : string) : string
+
+> Reverses a string
