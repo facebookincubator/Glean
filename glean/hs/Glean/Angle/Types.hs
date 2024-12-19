@@ -338,6 +338,7 @@ data PrimOp
   | PrimOpZip
   | PrimOpConcat
   | PrimOpReverse
+  | PrimOpSize
   | PrimOpRelToAbsByteSpans
   | PrimOpUnpackByteSpans
   | PrimOpGtNat
@@ -676,12 +677,14 @@ newtype AngleVersion = AngleVersion Int
 --   - added dot syntax
 -- version 10:
 --   - optional versions in `import`, `evolves`, inheritance
+-- version 11:
+--   - size primop
 
 latestSupportedAngleVersion :: AngleVersion
 latestSupportedAngleVersion = AngleVersion 5
 
 latestAngleVersion :: AngleVersion
-latestAngleVersion = AngleVersion 10
+latestAngleVersion = AngleVersion 11
 
 -- -----------------------------------------------------------------------------
 -- Pretty-printing
@@ -971,6 +974,7 @@ instance Display PrimOp where
   display _ PrimOpZip = "prim.zip"
   display _ PrimOpConcat = "prim.concat"
   display _ PrimOpReverse = "prim.reverse"
+  display _ PrimOpSize = "prim.size"
   display _ PrimOpRelToAbsByteSpans = "prim.relToAbsByteSpans"
   display _ PrimOpUnpackByteSpans = "prim.unpackByteSpans"
   display _ PrimOpGtNat = "prim.gtNat"

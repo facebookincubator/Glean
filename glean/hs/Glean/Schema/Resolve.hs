@@ -801,6 +801,7 @@ primitives = HashMap.fromList
   , ("prim.zip", PrimOpZip)
   , ("prim.concat", PrimOpConcat)
   , ("prim.reverse", PrimOpReverse)
+  , ("prim.size", PrimOpSize)
   , ("prim.gtNat", PrimOpGtNat)
   , ("prim.geNat", PrimOpGeNat)
   , ("prim.ltNat", PrimOpLtNat)

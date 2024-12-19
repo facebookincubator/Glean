@@ -928,6 +928,9 @@ primOpType op = case op of
     x <- freshTyVar
     return ([ArrayTy x, ArrayTy x], ArrayTy x)
   PrimOpReverse -> return  ([StringTy], StringTy)
+  PrimOpSize -> do
+    x <- freshTyVar
+    return ([SetTy x], NatTy)
   PrimOpRelToAbsByteSpans ->
     -- prim.relToAbsByteSpans takes an array of pairs as input and
     -- returns an array of pairs as output

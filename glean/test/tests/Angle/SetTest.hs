@@ -121,3 +121,6 @@ setSemanticsTest = dbTestCase $ \env repo -> do
 
   r <- runQuery_ env repo $ angleData @Nat [s| elements (all 65535) |]
   assertEqual "big nat" r [Nat 65535]
+
+  r <- runQuery_ env repo $ angleData @Nat [s| prim.size (all (1 | 2 | 3))|]
+  assertEqual "size" r [Nat 3]

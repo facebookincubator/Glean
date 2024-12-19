@@ -742,6 +742,12 @@ compileStatements
             getOutput array ptr end
             inputNat ptr end reg
           inner
+      compileGen (PrimCall PrimOpSize [arg] _) (Just reg) inner =
+        withTerm vars arg $ \set -> do
+          local $ \ptr end -> do
+            getOutput set ptr end
+            inputNat ptr end reg
+          inner
       compileGen (PrimCall PrimOpZip [arg1,arg2]
                     (Angle.ArrayTy (Angle.RecordTy fields)))
                   (Just reg) inner
