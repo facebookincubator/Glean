@@ -37,6 +37,7 @@ The relationship between schema types and Thrift/JSON is given by the following 
 | `bool` | `bool` | `true` or `false` |
 | `[byte]` | `binary` | base-64 encoded string <sup>*1</sup> |
 | `[T]` | `list<T>` |  [...] |
+| `set T` | `list<T>` | [...] |
 |`{`<br/>&nbsp;&nbsp;`f₁ : T₁,`<br/>&nbsp;&nbsp`...,`<br/>&nbsp;&nbsp;`fₙ : Tₙ`<br/>`}` | `struct Foo {`<br/>&nbsp;&nbsp;`1: T₁ f₁;`<br/>&nbsp;&nbsp;`...`<br/>&nbsp;&nbsp;`n: Tₙ fₙ;`<br/>`}` |  `{`<br/>&nbsp;&nbsp;`"f₁" : q₁,`<br/>&nbsp;&nbsp;`...`<br/>&nbsp;&nbsp;`"fₙ" : qₙ`<br/>`}` |
 | `{`<br/>&nbsp;&nbsp;`f₁ : T₁ `<code>&vert;</code><br/>&nbsp;&nbsp;`... `<code>&vert;</code><br/>&nbsp;&nbsp;`fₙ : Tₙ`<br/>`}` | `union Foo {`<br/>&nbsp;&nbsp;`1: T₁ f₁;`<br/>&nbsp;&nbsp;`...`<br/>&nbsp;&nbsp;`n: Tₙ fₙ;`<br/>`}` |  `{ "f" : t }`<br/>for one of the fields `f₁`..`fₙ` |
 | `maybe T` | In a record field:<br/> `optional T f` | `f : t`<br/> if the value is present |
