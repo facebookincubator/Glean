@@ -233,9 +233,6 @@ buildTerm output vars term = go term
       outputNatImm (fromIntegral (length vs)) output
       mapM_ go vs
     Tuple fields -> mapM_ go fields
-    Set vs -> do
-      outputNatImm (fromIntegral (length vs)) output
-      mapM_ go vs
     Alt n term -> do outputNatImm n output; go term
     Ref (MatchFid f) -> outputNatImm (fromIntegral (fromFid f)) output
     Ref (MatchPrefix str rest) -> do

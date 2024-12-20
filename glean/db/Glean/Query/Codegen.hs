@@ -1312,10 +1312,6 @@ preProcessPat pat = unsafePerformIO $
       ByteArray bs -> do
         b <- builder
         lift $ encodeByteArray b bs
-      Set terms -> do
-        b <- builder
-        lift $ FFI.call $ glean_push_value_set b $ fromIntegral $ length terms
-        mapM_ build terms
 
 -- | True if the prefix of this query is empty
 emptyPrefix :: [QueryChunk var] -> Bool

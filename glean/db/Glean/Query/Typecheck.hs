@@ -1064,7 +1064,6 @@ tcPatUsesNegation = \case
   RTS.Array xs -> firstJust tcPatUsesNegation xs
   RTS.ByteArray _ -> Nothing
   RTS.Tuple xs -> firstJust tcPatUsesNegation xs
-  RTS.Set xs -> firstJust tcPatUsesNegation xs
   RTS.Alt _ t -> tcPatUsesNegation t
   RTS.String _ -> Nothing
   RTS.Ref match -> matchUsesNegation match

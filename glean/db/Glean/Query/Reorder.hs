@@ -770,7 +770,6 @@ classifyPattern bound t = go PrefixEmpty t end
     Array xs -> termSeq pref xs r
     ByteArray{} -> fixed pref r
     Tuple xs -> termSeq pref xs r
-    Set xs -> termSeq pref xs r
     Alt _ t -> fixed pref (\pref -> go pref t r)
     String{} -> fixed pref r
     Ref m -> case m of

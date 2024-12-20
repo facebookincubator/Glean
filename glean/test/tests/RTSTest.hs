@@ -97,7 +97,7 @@ valueFor (T.RecordTy fields) =
 valueFor (T.SumTy fields) = do
   (i, field) <- elements $ zip [0..] fields
   Alt i <$> valueFor (T.fieldDefType field)
-valueFor (T.SetTy ty) = fmap Set $ sized $ \n -> do
+valueFor (T.SetTy ty) = fmap Array $ sized $ \n -> do
       k <- choose (0,n)
       nub . sort <$> vectorOf k (resize (n `div` k) $ valueFor ty)
 valueFor T.PredicateTy{} = Ref <$> arbitrary
@@ -124,7 +124,6 @@ shrinkValue (Nat n) = Nat <$>
   [ n `div` 2 | n >= 2] ++
   [ (n `div` 2) + 1 | n >= 4 ] ++
   [ n - 1 | n >= 1 ]
-shrinkValue (Set es) = Set <$> shrinkList shrinkValue es
 shrinkValue (Alt n e) = Alt n <$> shrinkValue e
 shrinkValue (Tuple es) = Tuple <$> shrinkList shrinkValue es
 shrinkValue (Array es) = Array <$> shrinkList shrinkValue es

@@ -78,7 +78,6 @@ instance VarsOf m => VarsOf (Term m) where
     Tuple xs -> varsOf w xs r
     Array xs -> varsOf w xs r
     Alt _ x -> varsOf w x r
-    Set xs -> varsOf w xs r
 
 instance VarsOf (Match () Var) where
   varsOf w m r = case m of

@@ -45,7 +45,6 @@ module Glean.RTS (
   glean_pop_value_fact,
 ) where
 
-import Data.List
 import Data.Word
 import Foreign.C.String
 import Foreign.C.Types
@@ -63,6 +62,7 @@ import qualified Data.ByteString.Unsafe as BS
 import System.IO.Unsafe (unsafePerformIO)
 
 import qualified Util.FFI as FFI
+import Util.List (uniq)
 
 import qualified Glean.FFI as FFI
 import Glean.RTS.Builder
@@ -82,9 +82,6 @@ encodeValue b (Array xs) = do
   mapM_ (encodeValue b) xs
 encodeValue b (ByteArray xs) = encodeByteArray b xs
 encodeValue b (Tuple xs) = mapM_ (encodeValue b) xs
-encodeValue b (Set xs) = do
-  FFI.call $ glean_push_value_set b $ fromIntegral $ length xs
-  mapM_ (encodeValue b) xs
 encodeValue b (Alt n x) = do
   FFI.call $ glean_push_value_selector b $ fromIntegral n
   encodeValue b x
@@ -264,7 +261,7 @@ decodeValue d ty = case ty of
     Alt (fromIntegral sel) <$> decodeValue d (tys !! fromIntegral sel)
   SetRep elty -> do
     size <- dSet d
-    Set . sort <$> replicateM (fromIntegral size) (decodeValue d elty)
+    Array . uniq <$> replicateM (fromIntegral size) (decodeValue d elty)
   StringRep -> String <$> dString d
   PredicateRep _ -> Ref <$> dFact d
 

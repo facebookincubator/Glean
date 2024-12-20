@@ -284,7 +284,6 @@ zonkTcPat p = case p of
   RTS.Tuple ts -> RTS.Tuple <$> mapM zonkTcPat ts
   RTS.Alt n t -> RTS.Alt n <$> zonkTcPat t
   RTS.String{} -> return p
-  RTS.Set terms -> RTS.Set <$> mapM zonkTcPat terms
   Ref (MatchExt (Typed ty (TcPromote inner e))) -> do
     ty' <- zonkType ty
     inner' <- zonkType inner
