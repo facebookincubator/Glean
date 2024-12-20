@@ -59,6 +59,7 @@ import qualified Data.Text.Encoding as Text
 import qualified Data.UUID as UUID
 import qualified Data.UUID.V4 as UUID
 import qualified Data.Vector.Storable as VS
+import Foreign.Storable
 import System.Clock
 import System.Timeout
 
@@ -324,8 +325,8 @@ batchDependenciesSize deps =
     | FactDependencies f d <- deps
     ]
 
-storableSize :: VS.Storable a => VS.Vector a -> Int
-storableSize = snd . VS.unsafeToForeignPtr0
+storableSize :: forall a . VS.Storable a => VS.Vector a -> Int
+storableSize = (sizeOf (undefined :: a) *) . snd . VS.unsafeToForeignPtr0
 
 enqueueJsonBatch
   :: Env
