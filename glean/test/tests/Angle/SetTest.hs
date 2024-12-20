@@ -112,15 +112,17 @@ setParseTest = TestList
     ]
 
 setSemanticsTest :: Test
-setSemanticsTest = dbTestCase $ \env repo -> do
-  r <- runQuery_ env repo $ angleData @(Set Text) [s| all ("foo"|"bar") |]
-  assertEqual "two results in a set" r [fromList ["foo", "bar"]]
-
-  r <- runQuery_ env repo $ angleData @Nat [s| elements (all (1|2)) |]
-  assertEqual "two separate results" r [Nat 1, Nat 2]
-
-  r <- runQuery_ env repo $ angleData @Nat [s| elements (all 65535) |]
-  assertEqual "big nat" r [Nat 65535]
-
-  r <- runQuery_ env repo $ angleData @Nat [s| prim.size (all (1 | 2 | 3))|]
-  assertEqual "size" r [Nat 3]
+setSemanticsTest = TestList
+  [ TestLabel "all of two strings" $ dbTestCase $ \env repo -> do
+      r <- runQuery_ env repo $ angleData @(Set Text) [s| all ("foo"|"bar") |]
+      assertEqual "two results in a set" r [fromList ["foo", "bar"]]
+  , TestLabel "all of two nats" $ dbTestCase $ \env repo -> do
+      r <- runQuery_ env repo $ angleData @Nat [s| elements (all (1|2)) |]
+      assertEqual "two separate results" r [Nat 1, Nat 2]
+  , TestLabel "all of big number" $ dbTestCase $ \env repo -> do
+      r <- runQuery_ env repo $ angleData @Nat [s| elements (all 65535) |]
+      assertEqual "big nat" r [Nat 65535]
+  , TestLabel "size of a set" $ dbTestCase $ \env repo -> do
+      r <- runQuery_ env repo $ angleData @Nat [s| prim.size (all (1|2|3))|]
+      assertEqual "size" r [Nat 3]
+  ]
