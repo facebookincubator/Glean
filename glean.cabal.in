@@ -404,6 +404,7 @@ library core
         Glean.RTS.Foreign.Subst
         Glean.RTS.Foreign.Thrift
         Glean.RTS.Foreign.Typecheck
+        Glean.RTS.Set
         Glean.RTS.Term
         Glean.RTS.Traverse
         Glean.RTS.Typecheck

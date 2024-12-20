@@ -6,6 +6,8 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE MultiWayIf #-}
+
 module Glean.Write.JSON
   ( buildJsonBatch
   , syncWriteJsonBatch
@@ -44,6 +46,7 @@ import Glean.Display
 import qualified Glean.FFI as FFI
 import Glean.RTS as RTS
 import Glean.RTS.Builder
+import Glean.RTS.Set
 import Glean.RTS.Constants
 import qualified Glean.RTS.Foreign.JSON as J
 import Glean.RTS.Foreign.Subst as Subst (empty)
@@ -324,12 +327,38 @@ writeJsonFact
       when (n > 0) $ forM_ [0 .. n-1] $ \i -> do
         x <- lift $ J.index arr i
         jsonToTerm b ty x
-    (SetTy ty, J.Array set) -> do
-      let !n = J.size set
-      lift $ invoke $ glean_push_value_set b $ fromIntegral n
-      when (n > 0) $ forM_ [0 .. n-1] $ \i -> do
-        x <- lift $ J.index set i
-        jsonToTerm b ty x
+    (SetTy byteTy, J.String (J.ByteStringRef p n))
+      | ByteTy == repType byteTy -> if
+        | sendJsonBatchOptions_no_base64_binary ->
+          withWordRtsSet $ \rtsset ->
+            lift $ do
+            insertBytesRtsSet rtsset p n
+            buildWordSetBytes rtsset b
+        | otherwise -> lift $ do
+            bytes <- decodeBase64 <$>
+              BS.unsafePackCStringLen (castPtr p, fromIntegral n)
+            FFI.unsafeWithBytes bytes $ \ptr len ->
+              withWordRtsSet $ \rtsset -> do
+                insertBytesRtsSet rtsset (castPtr ptr) len
+                buildWordSetBytes rtsset b
+    (SetTy natTy, J.Array set)
+      | NatTy == repType natTy ->
+      withWordRtsSet $ \rtsset -> do
+        let !n = J.size set
+        forM_ [0 .. n-1] $ \i -> do
+          J.Int n <- lift $ J.index set i
+          lift $ insertWordRtsSet rtsset n
+        lift $ buildWordSet rtsset b
+    (SetTy ty, J.Array set) ->
+      withBuilder $ \tb ->
+      withRtsSet $ \rtsset -> do
+        let !n = J.size set
+        forM_ [0 .. n-1] $ \i -> do
+          x <- lift $ J.index set i
+          jsonToTerm tb ty x
+          lift $ insertBuilder rtsset tb
+          lift $ resetBuilder tb
+        lift $ buildSet rtsset b
     (RecordTy fields, J.Object obj) -> do
       let
         doField !n (FieldDef name ty) = do
@@ -385,6 +414,12 @@ writeJsonFact
     (BooleanTy, J.Bool True) ->
       lift $ invoke $ glean_push_value_selector b 1
     _otherwise -> termError typ v
+
+  -- Remove named types so that we can match on the underlying
+  -- representation of the type
+  repType :: Type -> Type
+  repType (NamedTy (ExpandedType _ ty)) = ty
+  repType ty = ty
 
   -- Thrift might omit fields from the output if they have the
   -- default value, so we have to reconstruct the default value

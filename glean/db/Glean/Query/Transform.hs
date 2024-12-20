@@ -46,6 +46,7 @@ import Data.Word (Word64)
 import Glean.Angle.Types (Type_(..), FieldDef_(..), Name)
 import Glean.Bytecode.Types (Ty(..))
 import Glean.Schema.Util (lowerEnum, lowerMaybe, showRef)
+import Glean.Query.Codegen.QueryRegs
 import Glean.Query.Codegen.Types
   ( Match(..)
   , Var(..)
@@ -219,22 +220,22 @@ buildTerm
   -> Vector (Register 'Word)
   -> Term (Match () Var)
   -> Code ()
-buildTerm output vars term = go term
+buildTerm out vars term = go term
   where
   go term = case term of
-    Byte b -> outputByteImm (fromIntegral b) output
-    Nat n -> outputNatImm n output
+    Byte b -> outputByteImm (fromIntegral b) out
+    Nat n -> outputNatImm n out
     String s ->
       local $ \ptr end -> do
         -- NOTE: We assume that the string has been validated during parsing.
         loadLiteral (RTS.mangleString s) ptr end
-        outputBytes ptr end output
+        outputBytes ptr end out
     Array vs -> do
-      outputNatImm (fromIntegral (length vs)) output
+      outputNatImm (fromIntegral (length vs)) out
       mapM_ go vs
     Tuple fields -> mapM_ go fields
-    Alt n term -> do outputNatImm n output; go term
-    Ref (MatchFid f) -> outputNatImm (fromIntegral (fromFid f)) output
+    Alt n term -> do outputNatImm n out; go term
+    Ref (MatchFid f) -> outputNatImm (fromIntegral (fromFid f)) out
     Ref (MatchPrefix str rest) -> do
       local $ \ptr end -> do
         let
@@ -242,14 +243,14 @@ buildTerm output vars term = go term
           withoutTerminator =
             ByteString.take (ByteString.length mangled - 2) mangled
         loadLiteral withoutTerminator ptr end
-        outputBytes ptr end output
+        outputBytes ptr end out
       go rest
     Ref (MatchVar (Var ty var _))
-      | isWordTy ty -> outputNat (vars ! var) output
+      | isWordTy ty -> outputNat (vars ! var) out
       | otherwise ->
         local $ \ptr end -> do
           getOutput (castRegister (vars ! var)) ptr end
-          outputBytes ptr end output
+          outputBytes ptr end out
     Ref (MatchArrayPrefix _ _ all) -> go all
     other -> error $ "buildTerm: " <> show other
 
@@ -317,9 +318,10 @@ transformExpression :: Type -> Type -> Maybe (Value -> Value)
 transformExpression from to =
   case transformTerm inner defaultValue from to of
     Nothing -> Nothing
-    Just f -> Just $ \ta -> f discard ta id
+    Just f -> Just $ \ta ->
+      f (error "QueryRegs are never used in transformExpression") discard ta id
   where
-    inner _ _ _ _ a f = f a
+    inner _ _ _ _ _ a f = f a
     discard _ _ = return ()
 
 type Matcher = Match TransformAndBind Output
@@ -331,21 +333,22 @@ transformPattern
   :: forall a. Type
   -> Type
   -> Maybe
-        (  (Type -> Term Matcher -> Code ())
+        (  QueryRegs
+        -> (Type -> Term Matcher -> Code ())
         -> Term Matcher
         -> (Term Matcher -> Code a)
         -> Code a
         )
 transformPattern from to = do
   f <- transformTerm transformMatch defaultForType from to
-  return $ \discard term ->
+  return $ \qr discard term ->
     let
         discard' :: Type -> Term Matcher -> Cont (Code a) ()
         discard' a b = cont $ \r -> do
           () <- discard a b
           r ()
     in
-    runCont (f discard' term)
+    runCont (f qr discard' term)
   where
     defaultForType ty = Ref (MatchWild ty)
 
@@ -355,13 +358,14 @@ transformPattern from to = do
 -- NB. Type compatibility is not checked. Assumes that a transformation is
 -- possible and required.
 transformMatch
-  :: (Type -> Matcher -> Cont (Code x) ())  -- ^ handle discarded record fields
+  :: QueryRegs
+  -> (Type -> Matcher -> Cont (Code x) ())  -- ^ handle discarded record fields
   -> Type
   -> Type
   -> (Term Matcher -> Cont (Code x) (Term Matcher))
   -> Matcher
   -> Cont (Code x) Matcher
-transformMatch discard from to overTerm match = case match of
+transformMatch syscalls discard from to overTerm match = case match of
   MatchWild _ -> return $ MatchWild to
   MatchNever _ -> return $ MatchNever to
   MatchFid fid -> return $ MatchFid fid
@@ -369,7 +373,7 @@ transformMatch discard from to overTerm match = case match of
   -- If we get to this case it means that this conversion is required,
   MatchBind out -> return $ MatchExt $ TransformAndBind to out
   MatchVar (Typed _ var) ->
-    case transformBytes' discard' from to of
+    case transformBytes' syscalls discard' from to of
       Nothing -> return $ MatchVar $ Typed to var
       Just transform ->
         cont $ \r ->
@@ -403,7 +407,8 @@ transformMatch discard from to overTerm match = case match of
     run m = void $ runCont m (\() -> return undefined)
 
 type TransformTerm m a b
-  = (Type -> Term a -> m ())   -- ^ discard term
+  = QueryRegs
+  -> (Type -> Term a -> m ())   -- ^ discard term
   -> Term a                    -- ^ source term
   -> m (Term b)
 
@@ -414,7 +419,8 @@ type TransformTerm m a b
 -- differently so we take those handling functions as input.
 transformTerm
   :: forall a b m. (Coercible a b, Show a, Show b, Monad m)
-  => ( (Type -> a -> m ())       --  discard inner value
+  => ( QueryRegs
+    -> (Type -> a -> m ())       --  discard inner value
     -> Type                      --  from type
     -> Type                      --  to type
     -> (Term a -> m (Term b))    --  handle inner terms
@@ -440,12 +446,15 @@ transformTerm inner defaultForType src dst = go src dst
     transformationsFor from to =
       Map.intersectionWith trans fromFields toFields
       where
+        trans :: (Word64, Type)
+              -> (Word64, Type)
+              -> Maybe (Word64, TransformTerm m a b)
         trans (ixFrom, defFrom) (ixTo, defTo) =
           case go defFrom defTo of
             -- fields are identical
             Nothing | ixTo == ixFrom -> Nothing
             -- field order changed
-            Nothing -> Just (ixTo, const id')
+            Nothing -> Just (ixTo, \_ _ -> id')
             -- field content changed
             Just f -> Just (ixTo, f)
 
@@ -470,18 +479,28 @@ transformTerm inner defaultForType src dst = go src dst
       go (lowerEnum from) (lowerEnum to)
     go (ArrayTy from) (ArrayTy to) = do
       f <- go from to
-      return $ fix $ \recurse discard term ->
+      return $ fix $ \recurse qr discard term ->
         case term of
-          Array vs -> Array <$> traverse (f discard) vs
-          Ref a -> Ref <$> inner
+          Array vs -> Array <$> traverse (f qr discard) vs
+          Ref a -> Ref <$> inner qr
             (\ty val -> discard ty (Ref val))
             (ArrayTy from)
             (ArrayTy to)
-            (recurse discard)
+            (recurse qr discard)
             a
           _ -> error $ "expected Array, got " <> show term
-    go (SetTy from) (SetTy to)
-      | from == to = Nothing
+    go (SetTy from) (SetTy to) = do
+      f <- go from to
+      return $ fix $ \recurse qr discard term ->
+        case term of
+          Array vs -> Array <$> traverse (f qr discard) vs
+          Ref a -> Ref <$> inner qr
+            (\ty val -> discard ty (Ref val))
+            (SetTy from)
+            (SetTy to)
+            (recurse qr discard)
+            a
+          _ -> error $ "expected Array, got " <> show term
     go (RecordTy from) (RecordTy to) =
       let transformations = transformationsFor from to
           sameFieldCount = length from == length to
@@ -491,14 +510,15 @@ transformTerm inner defaultForType src dst = go src dst
       in
       if noChange
       then Nothing
-      else Just $ fix $ \recurse discard term -> case term of
+      else Just $ fix $ \recurse qr discard term -> case term of
         Tuple contents -> do
           contents' <- sequence
             [ case Map.lookup name transMap of
                 -- 'to' field doesn't exist in 'from'
                 Nothing -> return $ defaultForType ty
                 Just (content, Nothing) -> id' content
-                Just (content, Just (_, transform)) -> transform discard content
+                Just (content, Just (_, transform)) ->
+                  transform qr discard content
             | FieldDef name ty <- to
             ]
 
@@ -512,11 +532,11 @@ transformTerm inner defaultForType src dst = go src dst
           where
             transMap = Map.intersectionWith (,) contentsByName transformations
             contentsByName = Map.fromList $ zip (names from) contents
-        Ref a -> Ref <$> inner
-          (\ty -> discard ty . Ref)
+        Ref a -> Ref <$> inner qr
+          (\ty val -> discard ty (Ref val))
           (RecordTy from)
           (RecordTy to)
-          (recurse discard)
+          (recurse qr discard)
           a
         _ -> error $ "expected Tuple, got " <> show term
 
@@ -534,21 +554,46 @@ transformTerm inner defaultForType src dst = go src dst
       in
       if noChange
         then Nothing
-        else Just $ fix $ \recurse discard term -> case term of
+        else Just $ fix $ \recurse qr discard term -> case term of
           Alt n content -> case Map.lookup n transformationsByIx of
             -- alternative in 'from' doesn't exist in 'to'
             Nothing -> return unknown
             Just Nothing -> id' term
             Just (Just (n', transform)) -> do
-              content' <- transform discard content
+              content' <- transform qr discard content
               return (Alt n' content')
-          Ref a -> Ref <$> inner
+          Ref a -> Ref <$> inner qr
             (\ty -> discard ty . Ref)
             (SumTy from)
             (SumTy to)
-            (recurse discard)
+            (recurse qr discard)
             a
           _ -> error $ "expected Alt, got " <> show term
+    go (ArrayTy from) (SetTy to) = do
+      f <- go from to
+      return $ fix $ \recurse qr discard term ->
+        case term of
+          Array vs -> Array <$> traverse (f qr discard) vs
+          Ref a -> Ref <$> inner qr
+            (\ty val -> discard ty (Ref val))
+            (ArrayTy from)
+            (SetTy to)
+            (recurse qr discard)
+            a
+          _ -> error $ "expected Array, got " <> show term
+    go (SetTy from) (ArrayTy to) = do
+      f <- go from to
+      return $ fix $ \recurse qr discard term ->
+        case term of
+          Array vs -> Array <$> traverse (f qr discard) vs
+          Ref a -> Ref <$> inner qr
+            (\ty val -> discard ty (Ref val))
+            (SetTy from)
+            (ArrayTy to)
+            (recurse qr discard)
+            a
+          _ -> error $ "expected Array, got " <> show term
+
     go from to =
       error $ "invalid type conversion: "
         <> show from <> " to " <> show to
@@ -572,19 +617,21 @@ defaultValue ty = case derefType ty of
 -- The transformation function will always leave the start pointer of `Bytes` at
 -- the end of the transformed input.
 transformBytes
-  :: Type
+  :: QueryRegs
+  -> Type
   -> Type
   -> Maybe (Bytes -> Register 'BinaryOutputPtr -> Code ())
-transformBytes = transformBytes' ignoreDiscarded
+transformBytes syscalls = transformBytes' syscalls ignoreDiscarded
   where
     ignoreDiscarded _ _ = return ()
 
 transformBytes'
-  :: (Type -> Bytes -> Code ()) -- handle discarded record fields
+  :: QueryRegs
+  -> (Type -> Bytes -> Code ()) -- handle discarded record fields
   -> Type
   -> Type
   -> Maybe (Bytes -> Register 'BinaryOutputPtr -> Code ())
-transformBytes' discard src dst =
+transformBytes' QueryRegs{..} discard src dst =
   case go src dst of
     Left _ -> Nothing
     Right transform -> Just $ \bytes out -> transform out bytes
@@ -618,6 +665,25 @@ transformBytes' discard src dst =
           decrAndJumpIfNot0 size loop
           finish <- label
           return ()
+  go (SetTy from) (SetTy to) =
+    case go from to of
+      Left _ -> Left $ copy (SetTy to)
+      Right trans -> Right $ \out (Bytes start end) ->
+        local $ \size -> do
+        inputNat start end size
+        local $ \set -> mdo
+          jumpIf0 size finish
+          newSet set
+          loop <- label
+          output $ \tempOut -> do
+            resetOutput tempOut
+            trans tempOut (Bytes start end)
+            insertOutputSet set tempOut
+            decrAndJumpIfNot0 size loop
+          finish <- label
+          setToArray set out
+          freeSet set
+        return ()
   go (SumTy from) (SumTy to)
     | sameOrder && sameTypes = Left $ copy (SumTy to)
     | otherwise = Right $ \out (Bytes start end) -> mdo
@@ -714,6 +780,42 @@ transformBytes' discard src dst =
                   let fieldBytes = Bytes fieldStart end
                       saved' = Map.insert nameFrom (fieldBytes, tyFrom) saved
                   step saved' restFrom to'
+  go (ArrayTy from) (SetTy to) =
+    let trans =
+          case go from to of
+            Left copy -> copy
+            Right trans -> trans
+    in Right $ \out (Bytes start end) ->
+      local $ \size -> do
+        inputNat start end size
+        local $ \set -> mdo
+          jumpIf0 size finish
+          newSet set
+          loop <- label
+          output $ \tempOut -> do
+            resetOutput tempOut
+            trans tempOut (Bytes start end)
+            insertOutputSet set tempOut
+            decrAndJumpIfNot0 size loop
+          finish <- label
+          setToArray set out
+          freeSet set
+        return ()
+  go (SetTy from) (ArrayTy to) =
+    let trans =
+          case go from to of
+            Left copy -> copy
+            Right trans -> trans
+    in Right $ \out (Bytes start end) ->
+      local $ \size -> mdo
+        inputNat start end size
+        outputNat size out
+        jumpIf0 size finish
+        loop <- label
+        trans out (Bytes start end)
+        decrAndJumpIfNot0 size loop
+        finish <- label
+        return ()
   go from to = error $ "invalid type conversion: "
     <> show from <> " to " <> show to
 

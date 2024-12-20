@@ -57,6 +57,7 @@ import Glean.Angle.Hash
 import Glean.Angle.Types as Schema hiding (Type, FieldDef)
 import qualified Glean.Angle.Types as Schema
 import Glean.Bytecode.Types
+import Glean.Query.Codegen.QueryRegs
 import Glean.Query.Codegen.Types (Match, Output, TransformAndBind)
 import Glean.Database.Schema.ComputeIds
 import Glean.Query.Typecheck.Types
@@ -125,12 +126,14 @@ data PredicateTransformation = PredicateTransformation
     -- of the requested predicate.
 
   , transformKeyPattern :: forall a
-    . Maybe ( (Type -> Term (Match TransformAndBind Output) -> Code ())
+    . Maybe ( QueryRegs
+            -> (Type -> Term (Match TransformAndBind Output) -> Code ())
             -> Term (Match TransformAndBind Output)
             -> (Term (Match TransformAndBind Output) -> Code a)
             -> Code a)
   , transformValuePattern :: forall a
-    . Maybe (  (Type -> Term (Match TransformAndBind Output) -> Code ())
+    . Maybe (  QueryRegs
+            -> (Type -> Term (Match TransformAndBind Output) -> Code ())
             -> Term (Match TransformAndBind Output)
             -> (Term (Match TransformAndBind Output) -> Code a)
             -> Code a)

@@ -238,7 +238,7 @@ compileQuery r qtrans bounds (QueryWithInfo query numVars lookup ty) = do
     output $ \resultKeyOutput resultValueOutput ->
       let
         code :: forall a. Code a -> Code a
-        code = compileStatements qtrans bounds regs stmts vars
+        code = compileStatements regs qtrans bounds regs stmts vars
 
         queryStmts :: forall a. Code a -> Code a
         queryStmts = case r of
@@ -391,14 +391,15 @@ cmpWordPat vars pat = case pat of
 -- | Compare a value in an output register with a pattern. If the
 -- pattern matches, fall through, otherwise jump to the given label.
 cmpOutputPat
-  :: Register 'BinaryOutputPtr          -- ^ register containing the value
+  :: QueryRegs
+  -> Register 'BinaryOutputPtr          -- ^ register containing the value
   -> [QueryChunk Output]                -- ^ pattern to match against
   -> Label                              -- ^ jump here on match failure
   -> Code ()
-cmpOutputPat reg pat fail =
+cmpOutputPat syscalls reg pat fail =
   local $ \ptr begin -> do
     getOutput reg begin ptr
-    matchPat (Bytes begin ptr) fail pat
+    matchPat syscalls (Bytes begin ptr) fail pat
 
 compileTermGen
   :: Expr
@@ -425,7 +426,8 @@ compileTermGen term vars maybeReg andThen = do
 
 compileStatements
   :: forall a
-  .  QueryTransformations
+  .  QueryRegs
+  -> QueryTransformations
   -> Boundaries
   -> QueryRegs
   -> [CgStatement]
@@ -434,6 +436,7 @@ compileStatements
                                 -- the result is constructed.
   -> Code a
 compileStatements
+  syscalls
   qtrans
   bounds
   regs@QueryRegs{..}
@@ -448,7 +451,7 @@ compileStatements
         local $ \failed innerRet -> mdo
           let
             compileBranch stmts =
-              compileStatements qtrans bounds regs stmts vars $ mdo
+              compileStatements syscalls qtrans bounds regs stmts vars $ mdo
                 site <- callSite
                 loadLabel ret innerRet
                 jump doInner
@@ -457,10 +460,11 @@ compileStatements
 
           -- if
           loadConst 1 failed
-          thenSite <- compileStatements qtrans bounds regs cond vars $ do
+          thenSite <- compileStatements syscalls qtrans bounds regs cond vars $
+            do
           -- then
-            loadConst 0 failed
-            compileBranch then_
+              loadConst 0 failed
+              compileBranch then_
           -- else
           jumpIf0 failed done
           elseSite <- compileBranch else_
@@ -516,7 +520,7 @@ compileStatements
         local $ \setReg -> do
           let set = castRegister setReg
           newWordSet set
-          compileStatements qtrans bounds regs stmts vars $
+          compileStatements syscalls qtrans bounds regs stmts vars $
             local $ \reg -> do
               compileTermGen expr vars (Just reg) $
                 insertWordSet set (castRegister reg)
@@ -527,7 +531,7 @@ compileStatements
         local $ \setReg -> do
           let set = castRegister setReg
           newSet set
-          compileStatements qtrans bounds regs stmts vars $
+          compileStatements syscalls qtrans bounds regs stmts vars $
             output $ \out -> do
               compileTermGen expr vars (Just out) $
                 insertOutputSet set out
@@ -535,8 +539,8 @@ compileStatements
           freeSet set
         compile rest
       compile (CgNegation stmts : rest) = mdo
-        singleResult (compileStatements qtrans bounds regs stmts vars) $
-          jump fail
+        singleResult (compileStatements syscalls qtrans bounds regs stmts vars)
+          (jump fail)
         a <- compile rest
         fail <- label
         return a
@@ -565,7 +569,7 @@ compileStatements
       compile (CgDisjunction stmtss : rest) =
         local $ \innerRet -> mdo
         sites <- forM stmtss $ \stmts -> do
-          compileStatements qtrans bounds regs stmts vars $ mdo
+          compileStatements syscalls qtrans bounds regs stmts vars $ mdo
             site <- callSite
             loadLabel ret_ innerRet
             jump doInner
@@ -609,7 +613,7 @@ compileStatements
                   cont out (\_ -> return ())
               | otherwise =
                   output $ \reg ->
-                  cont reg (\fail -> cmpOutputPat reg chunks fail)
+                  cont reg (\fail -> cmpOutputPat syscalls reg chunks fail)
 
             mtrans :: Maybe PredicateTransformation
             mtrans = lookupTransformation pid qtrans
@@ -617,11 +621,15 @@ compileStatements
             -- The pid we expect to retrieve from the database
             PidRef expected _ = maybe pref tAvailable mtrans
             noTrans _ v f = f v
-            transKeyPat = fromMaybe noTrans $ transformKeyPattern =<< mtrans
-            transValPat = fromMaybe noTrans $ transformValuePattern =<< mtrans
+            transKeyPat = fromMaybe noTrans $
+              (transformKeyPattern =<< mtrans) <*> Just syscalls
+            transValPat = fromMaybe noTrans $
+              (transformValuePattern =<< mtrans) <*> Just syscalls
           a <-
-            transKeyPat (matchDef fail) (inlineVars vars kpat) $ \kpat' -> do
-            transValPat (matchDef fail) (inlineVars vars vpat) $ \vpat' -> do
+            transKeyPat (matchDef syscalls fail) (inlineVars vars kpat) $
+                \kpat' ->
+            transValPat (matchDef syscalls fail) (inlineVars vars vpat) $
+                \vpat' -> do
               patOutput (preProcessPat kpat') $ \kout kcmp -> do
               patOutput (preProcessPat vpat') $ \vout vcmp -> do
                 reg <- load fail
@@ -652,7 +660,8 @@ compileStatements
 
               filterPat reg pat fail
                 | Just cmp <- maybeWordFilter = cmp reg fail
-                | otherwise = cmpOutputPat (castRegister reg) chunks fail
+                | otherwise =
+                    cmpOutputPat syscalls (castRegister reg) chunks fail
                 where chunks = preProcessPat $ inlineVars vars pat
           in
           outReg $ \reg ->
@@ -714,7 +723,7 @@ compileStatements
             cmp (castRegister q') ok
           Nothing ->
             withTerm vars q $ \q' ->
-            cmpOutputPat q' (preProcessPat $ inlineVars vars p) ok
+            cmpOutputPat syscalls q' (preProcessPat $ inlineVars vars p) ok
         jump fail
         ok <- label
         whenJust maybeReg (resetOutput . castRegister)
@@ -947,21 +956,22 @@ compileStatements
 
 -- | Match term against the default value for its type
 matchDef
-  :: Label
+  :: QueryRegs
+  -> Label
   -> Type
   -> Term (Match TransformAndBind Output)
   -> Code ()
-matchDef fail ty pat =
+matchDef syscalls fail ty pat =
   output $ \out -> do
   resetOutput out
   buildTerm out mempty (defaultValue ty)
   local $ \start end -> do
   getOutput out start end
-  matchPat (Bytes start end) fail (preProcessPat pat)
+  matchPat syscalls (Bytes start end) fail (preProcessPat pat)
 
 compileFactGenerator
   :: forall a
-  .  Maybe PredicateTransformation
+  . Maybe PredicateTransformation
   -> Boundaries
   -> QueryRegs
   -> Vector (Register 'Word)    -- ^ registers for variables
@@ -972,10 +982,10 @@ compileFactGenerator
   -> Maybe (Register 'Word)
   -> Code a
   -> Code a
-compileFactGenerator mtrans bounds QueryRegs{..}
+compileFactGenerator mtrans bounds qregs@QueryRegs{..}
     vars pid kpat vpat section maybeReg inner = mdo
   let etrans = maybe (Left pid) Right mtrans
-  withPatterns etrans vars kpat vpat $
+  withPatterns qregs etrans vars kpat vpat $
     \availablePid isPointQuery prefix matchKey matchValue -> do
 
   typ <- constant $ fromIntegral $ fromPid availablePid
@@ -1043,7 +1053,8 @@ compileFactGenerator mtrans bounds QueryRegs{..}
 -- If the transformation determines that the modified pattern will never match
 -- the callback code will be skipped at runtime.
 withPatterns
-  :: Either Pid PredicateTransformation
+  :: QueryRegs
+  -> Either Pid PredicateTransformation
   -> Vector (Register 'Word)    -- ^ registers for variables
   -> Pat                        -- ^ key pattern
   -> Pat                        -- ^ value pattern
@@ -1055,16 +1066,16 @@ withPatterns
       -> Code a
     )
   -> Code a
-withPatterns etrans vars kpat vpat act = mdo
+withPatterns syscalls etrans vars kpat vpat act = mdo
   a <-
-    transKeyPat (matchDef fail) (inlineVars vars kpat) $ \kpat' -> do
-    transValPat (matchDef fail) (inlineVars vars vpat) $ \vpat' -> do
+    transKeyPat (matchDef syscalls fail) (inlineVars vars kpat) $ \kpat' -> do
+    transValPat (matchDef syscalls fail) (inlineVars vars vpat) $ \vpat' -> do
     let kchunks = preProcessPat kpat'
         vchunks = preProcessPat vpat'
     when (emptyPrefix kchunks) (fullScan pid)
     withPrefix kchunks $ \isPointQuery prefix remaining -> do
-    let matchKey bytes fail = matchPat bytes fail remaining
-        matchVal bytes fail = matchPat bytes fail vchunks
+    let matchKey bytes fail = matchPat syscalls bytes fail remaining
+        matchVal bytes fail = matchPat syscalls bytes fail vchunks
         needs_value = not (all isWild vchunks)
     act pid isPointQuery prefix matchKey
       (if needs_value then Just matchVal else Nothing)
@@ -1075,8 +1086,8 @@ withPatterns etrans vars kpat vpat act = mdo
       Right PredicateTransformation{..} ->
         let PidRef pid _ = tAvailable in
         ( pid
-        , fromMaybe noTrans transformKeyPattern
-        , fromMaybe noTrans transformValuePattern
+        , fromMaybe noTrans (transformKeyPattern <*> Just syscalls)
+        , fromMaybe noTrans (transformValuePattern <*> Just syscalls)
         )
       Left pid ->
         ( pid
@@ -1446,8 +1457,8 @@ recursive QueryRegs{..} before after andThen =
 -- | check that a value matches a pattern, and bind variables as
 -- necessary. The pattern is assumed to cover the *whole* of the
 -- input.
-matchPat :: Bytes -> Label -> [QueryChunk Output] -> Code ()
-matchPat (Bytes input inputend) fail chunks = match True chunks
+matchPat :: QueryRegs -> Bytes -> Label -> [QueryChunk Output] -> Code ()
+matchPat syscalls (Bytes input inputend) fail chunks = match True chunks
   where
   match
     :: Bool -- ^ whether the query chunks match until the end of the input.
@@ -1536,7 +1547,7 @@ matchPat (Bytes input inputend) fail chunks = match True chunks
               match tillEnd rest
 
       QueryTransformAndBind from (Typed to out) ->
-        case transformBytes from to of
+        case transformBytes syscalls from to of
           Nothing -> match tillEnd (QueryBind (Typed to out) : rest)
           Just transform -> do
             let bytes = Bytes input inputend

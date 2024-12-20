@@ -42,6 +42,7 @@ import qualified Glean.Schema.Util as Angle
 import qualified Glean.FFI as FFI
 import qualified Glean.RTS as RTS
 import qualified Glean.RTS.Builder as RTS
+import Glean.RTS.Set
 import Glean.Typed.Build
 import Glean.Typed.Id
 import Glean.Types as Thrift
@@ -190,11 +191,37 @@ instance Type a => Type (Maybe a) where
     [pure Nothing, Just <$> decodeRtsValue]
   sourceType _ = Angle.MaybeTy (sourceType (Proxy @a))
 
-instance (Type a, Ord a) => Type (Set a) where
-  buildRtsValue b xs = liftIO $ do
-    -- TODO, we need to sort things properly
-    FFI.call $ RTS.glean_push_value_set b $ fromIntegral $ length xs
-    mapM_ (buildRtsValue b) xs
+instance {-# OVERLAPPING #-} Type (Set Byte) where
+  buildRtsValue b xs =
+    withWordRtsSet $ \set -> do
+      forM_ xs $ \x ->
+        insertWordRtsSet set (unByte x)
+      buildWordSetBytes set b
+  decodeRtsValue = Decoder $ \env@DecoderEnv{..} -> do
+    size <- FFI.ffiBuf buf $ RTS.glean_pop_value_set begin end
+    fromList <$> replicateM (fromIntegral size) (runDecoder decodeRtsValue env)
+  sourceType _ = Angle.SetTy Angle.ByteTy
+
+instance {-# OVERLAPPING #-} Type (Set Nat) where
+  buildRtsValue b xs =
+    withWordRtsSet $ \set -> do
+      forM_ xs $ \x -> do
+        insertWordRtsSet set (unNat x)
+      buildWordSet set b
+  decodeRtsValue = Decoder $ \env@DecoderEnv{..} -> do
+    size <- FFI.ffiBuf buf $ RTS.glean_pop_value_set begin end
+    fromList <$> replicateM (fromIntegral size) (runDecoder decodeRtsValue env)
+  sourceType _ = Angle.SetTy Angle.NatTy
+
+instance {-# OVERLAPPABLE #-} (Type a, Ord a) => Type (Set a) where
+  buildRtsValue b xs = liftIO $
+    withRtsSet $ \set -> do
+      RTS.withBuilder $ \tb ->
+        forM_ xs $ \x -> do
+          buildRtsValue tb x
+          insertBuilder set tb
+          RTS.resetBuilder tb
+      buildSet set b
   decodeRtsValue = Decoder $ \env@DecoderEnv{..} -> do
     size <- FFI.ffiBuf buf $ RTS.glean_pop_value_set begin end
     fromList <$> replicateM (fromIntegral size) (runDecoder decodeRtsValue env)

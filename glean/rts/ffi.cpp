@@ -572,6 +572,66 @@ const char* glean_factset_append(FactSet* target, FactSet* source) {
   return ffi::wrap([=] { target->append(std::move(*source)); });
 }
 
+const char* glean_rtsset_new(BytestringSet** set) {
+  return ffi::wrap([=] { *set = new BytestringSet(); });
+}
+
+const char* glean_rtsset_insert(BytestringSet* set, Output* out) {
+  return ffi::wrap([=] { set->insert(out->moveToFbString()); });
+}
+
+const char* glean_rtsset_build(BytestringSet* set, Output* out) {
+  return ffi::wrap([=] {
+    out->packed(set->size());
+    for (const auto& v : *set) {
+      out->bytes(v.data(), v.size());
+    }
+  });
+}
+
+void glean_rtsset_free(BytestringSet* set) {
+  return ffi::free_(set);
+}
+
+const char* glean_wordrtsset_new(WordSet** set) {
+  return ffi::wrap([=] { *set = new WordSet(); });
+}
+
+const char* glean_wordrtsset_insert(WordSet* set, uint64_t value) {
+  return ffi::wrap([=] { set->insert(value); });
+}
+
+const char*
+glean_wordrtsset_insert_bytes(WordSet* set, const uint8_t* data, size_t size) {
+  return ffi::wrap([=] {
+    for (auto i = 0; i < size; i++) {
+      set->insert(data[i]);
+    }
+  });
+}
+
+const char* glean_wordrtsset_build(WordSet* set, Output* out) {
+  return ffi::wrap([=] {
+    out->packed(set->size());
+    for (const auto& v : *set) {
+      out->packed(v);
+    }
+  });
+}
+
+const char* glean_wordrtsset_build_bytes(WordSet* set, Output* out) {
+  return ffi::wrap([=] {
+    out->packed(set->size());
+    for (const auto& v : *set) {
+      out->fixed<uint8_t>(v);
+    }
+  });
+}
+
+void glean_wordrtsset_free(WordSet* set) {
+  return ffi::free_(set);
+}
+
 const char*
 glean_stacked_lookup_new(Lookup* base, Lookup* added, Lookup** stacked) {
   return ffi::wrap([=] { *stacked = new Stacked<Lookup>(base, added); });

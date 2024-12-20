@@ -376,12 +376,7 @@ canEvolve types compatible new old = go new old
     go StringTy StringTy = Nothing
     go BooleanTy BooleanTy = Nothing
     go (ArrayTy new) (ArrayTy old) = go new old
-    go (SetTy new) (SetTy old)
-      | new == old = Nothing
-      | otherwise = Just $ Text.pack $
-        "types inside sets cannot evolve. Type changed from " <>
-        show (displayDefault (SetTy old))
-        <> " to " <> show (displayDefault new)
+    go (SetTy new) (SetTy old) = go new old
     go (PredicateTy new) (PredicateTy old)
       | not (compatible new old) = Just
           $ "type changed from " <> showRef old
@@ -395,6 +390,8 @@ canEvolve types compatible new old = go new old
         unitOpt name = FieldDef name (RecordTy [])
     go (SumTy new) (SumTy old) = compareFieldList Option new old
     go (RecordTy new) (RecordTy old) = compareFieldList FieldOpt new old
+    go (SetTy new) (ArrayTy old) = go new old
+    go (ArrayTy new) (SetTy old) = go new old
     go new old = Just $ Text.pack $
       "type changed from " <>
         show (displayDefault old) <> " to " <>
@@ -454,7 +451,6 @@ canEvolve types compatible new old = go new old
               , "For backward and forward compatibility, predicate evolutions"
                 <> " require that all new fields are non-predicate types"
               ]
-
 
     plural s [_] = showOpt s
     plural s _ = showOpt s <> "s"
