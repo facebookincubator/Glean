@@ -1,2 +1,2 @@
 action: documentSymbolListX
-args: {"include_refs":true,"filepath":"test.cpp","repository":"test-xlang"}
+args: {"include_xlang_refs":true,"include_refs":true,"filepath":"test.cpp","repository":"test-xlang"}
