@@ -2,10 +2,10 @@
 
 schema codemarkup.scip.1 {
 import src
-import code.scip.1
+import code.scip
 import codemarkup.types
 import scip
-import lsif.types.1
+import lsif.types
 
 #
 # Resolving locations to entities
@@ -107,4 +107,14 @@ predicate LsifKindToKind:
     ( TypeParameter = Lsif; TypeParameter = Kind );
     # no Unknown, and can't distinguish Union, Macro or Trait
 
+predicate ScipEntityDocumentation:
+  {
+    entity : code.scip.Entity,
+    documentation : scip.Documentation,
+  }
+  { Entity, Docs } where
+    scip.EntityDefinition { Entity, Defn };
+    scip.DefinitionDocumentation { Defn, Docs }
+
 }
+
