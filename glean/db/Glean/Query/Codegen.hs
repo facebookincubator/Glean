@@ -220,7 +220,7 @@ compileQuery r qtrans bounds (QueryWithInfo query numVars lookup ty) = do
   (Meta{..}, sub) <- generateQueryCode $ \ regs@QueryRegs{..} -> do
 
     let outputVars = IntSet.toList $ findOutputs stmts
-    output $ Many (length outputVars) $ \outputRegs -> do
+    outputUninitialized $ Many (length outputVars) $ \outputRegs -> do
     let
       outputRegAssocs :: [(Int, Register 'BinaryOutputPtr)]
       outputRegAssocs = zip outputVars outputRegs
@@ -235,7 +235,7 @@ compileQuery r qtrans bounds (QueryWithInfo query numVars lookup ty) = do
                  // (localRegAssocs ++ coerce outputRegAssocs)
 
     -- resultKeyReg/resultValueReg is where we build up result values
-    output $ \resultKeyOutput resultValueOutput ->
+    outputUninitialized $ \resultKeyOutput resultValueOutput ->
       let
         code :: forall a. Code a -> Code a
         code = compileStatements regs qtrans bounds regs stmts vars
@@ -532,7 +532,7 @@ compileStatements
           let set = castRegister setReg
           newSet set
           compileStatements syscalls qtrans bounds regs stmts vars $
-            output $ \out -> do
+            outputUninitialized $ \out -> do
               compileTermGen expr vars (Just out) $
                 insertOutputSet set out
           setToArray set (castRegister (vars!v))
@@ -653,7 +653,7 @@ compileStatements
         (pat, gen) ->
           let outReg
                 | Just{} <- maybeWordFilter = local
-                | otherwise = \f -> output $ \r ->
+                | otherwise = \f -> outputUninitialized $ \r ->
                     f $ castRegister (r :: Register 'BinaryOutputPtr)
 
               maybeWordFilter = cmpWordPat vars pat
@@ -925,7 +925,6 @@ compileStatements
               newDerivedFact rpid out size resultReg
           | otherwise ->
             output $ \out -> do
-              resetOutput out
               buildTerm out vars key
               getOutputSize out size
               buildTerm out vars val
@@ -963,7 +962,6 @@ matchDef
   -> Code ()
 matchDef syscalls fail ty pat =
   output $ \out -> do
-  resetOutput out
   buildTerm out mempty (defaultValue ty)
   local $ \start end -> do
   getOutput out start end
@@ -1340,7 +1338,6 @@ buildPrefix
   -> Code a
 buildPrefix chunks cont =
   output $ \out -> do
-    resetOutput out
     go out cont chunks
   where
   go out cont [] = cont out []
@@ -1395,7 +1392,6 @@ withTerm vars (Ref (MatchVar (Var ty v _))) action
   | not (isWordTy ty) = action (castRegister (vars ! v))
 withTerm vars term action = do
   output $ \reg -> do
-    resetOutput reg
     buildTerm reg vars term
     action reg
 
@@ -1586,7 +1582,7 @@ compileQueryFacts facts = do
       | FactQuery{..} <- facts ]
     finishBuilder builder
   (Meta{..}, sub) <- generateQueryCode $ \ QueryRegs{..} ->
-    output $ \kout vout -> local $ \fid pid rec_ ptr end -> do
+    outputUninitialized $ \kout vout -> local $ \fid pid rec_ ptr end -> do
       loadLiteral input ptr end
       local $ inputNat ptr end -- ignore the size
       loop <- label

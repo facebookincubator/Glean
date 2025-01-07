@@ -22,6 +22,7 @@ module Glean.RTS.Bytecode.Code
   , constant
   , local
   , output
+  , outputUninitialized
   , generate
   , castRegister
   , callSite
@@ -174,12 +175,17 @@ newtype OutputSupply = OutputSupply RegSupply
 -- | Declare registers of type @Register 'BinaryOutputPtr@.  The registers
 -- are inputs to the subroutine. Use 'resetOutput' to reset the byte array
 -- stored in these registers to empty.
-output :: CodeGen OutputSupply cg => cg -> Code (CodeResult cg)
-output = runLocal
+outputUninitialized :: CodeGen OutputSupply cg => cg -> Code (CodeResult cg)
+outputUninitialized = runLocal
   (OutputSupply . regSupply)
   csNextOutput
   (\r s -> s { csNextOutput = r })
   (\r s -> s { csMaxOutputs = max (csMaxOutputs s) r })
+
+output :: (Register 'BinaryOutputPtr -> Code a) -> Code a
+output f = outputUninitialized $ \out -> do
+  issue $ ResetOutput out
+  f out
 
 runLocal
   :: (Supply r s, CodeGen s cg)

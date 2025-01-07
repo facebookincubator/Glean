@@ -94,7 +94,6 @@ typecheck syscalls@SysCalls{..} input inputend out = tc
         jumpIf0 size end
         loop <- label
         output $ \tempOut -> do
-          resetOutput tempOut
           typecheck syscalls input inputend tempOut elty
           insertOutputSet set tempOut
           decrAndJumpIfNot0 size loop

@@ -380,7 +380,6 @@ transformMatch syscalls discard from to overTerm match = case match of
           output $ \result -> do
           local $ \start end -> do
             getOutput var start end
-            resetOutput result
             transform (Bytes start end) result
           r $ MatchVar $ Typed to result
   MatchAnd left right -> do
@@ -400,7 +399,6 @@ transformMatch syscalls discard from to overTerm match = case match of
     discard' :: Type -> Bytes -> Code ()
     discard' ty (Bytes start end) = do
       output $ \out -> do
-        resetOutput out
         outputBytes start end out
         run $ discard ty (MatchVar $ Typed ty out)
     run :: forall x. Cont (Code x) () -> Code ()
@@ -676,7 +674,6 @@ transformBytes' QueryRegs{..} discard src dst =
           newSet set
           loop <- label
           output $ \tempOut -> do
-            resetOutput tempOut
             trans tempOut (Bytes start end)
             insertOutputSet set tempOut
             decrAndJumpIfNot0 size loop
@@ -793,7 +790,6 @@ transformBytes' QueryRegs{..} discard src dst =
           newSet set
           loop <- label
           output $ \tempOut -> do
-            resetOutput tempOut
             trans tempOut (Bytes start end)
             insertOutputSet set tempOut
             decrAndJumpIfNot0 size loop
