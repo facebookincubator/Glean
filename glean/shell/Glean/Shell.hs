@@ -617,7 +617,7 @@ commands =
   , Cmd "timeout" Haskeline.noCompletion $ \str _ -> timeoutCmd str
   , Cmd "expand" (completeWords (pure ["on", "off"])) $ \str _ -> expandCmd str
   , Cmd "pager" (completeWords (pure ["on", "off"])) $ \str _ -> pagerCmd str
-  , Cmd "count" Haskeline.noCompletion $ \str _ -> countCmd str
+  , Cmd "count" (completeWords availablePredicates) $ \str _ -> countCmd str
   , Cmd "!restore" Haskeline.noCompletion $ const . restoreDatabase
   , Cmd "!kickoff" Haskeline.noCompletion $ const . kickOff
   , Cmd "!delete" completeDatabases $ const . deleteDatabase
