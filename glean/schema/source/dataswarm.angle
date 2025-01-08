@@ -26,10 +26,28 @@ schema dataswarm.1 {
         name: string
     }
 
+    # records that a column is declared in the SELECT clause of a SQL subquery/CTE
+    predicate SubqueryColumnDeclaration: {
+        # eg: di.my_pipeline.my_task
+        task_id: string,
+        subquery_name: string,
+        # this is the aliased column name, eg "bar" in "SELECT foo AS bar"
+        column_name: string
+    }
+
+    # records that a column is declared in the top-level SELECT clause of a Dataswarm SQL operator
+    predicate TableColumnDeclaration: {
+        table_name: string,
+        table_namespace: string,
+        column_name: string
+    }
+
     type Declaration = {
         macro: MacroDeclaration |
         table: TableDeclaration |
         subquery: SubqueryDeclaration |
+        table_column: TableColumnDeclaration |
+        subquery_column: SubqueryColumnDeclaration |
     }
 
     # a symbol declaration along with its unique location in the repo
@@ -61,5 +79,7 @@ schema dataswarm.1 {
     {Decl, Name} where
     Decl = (Declaration { macro = { name = Name } }) |
         (Declaration { table = { table_name = Name } }) |
-        (Declaration { subquery = { name = Name } })
+        (Declaration { subquery = { name = Name } }) |
+        (Declaration { table_column = { column_name = Name } }) |
+        (Declaration { subquery_column = { column_name = Name } })
 }
