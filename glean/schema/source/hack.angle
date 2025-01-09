@@ -498,7 +498,7 @@ type XRef =
 predicate FileXRefs :
   {
     file : src.File,
-    xrefs : [XRef],
+    xrefs : set XRef,
   }
 
 # Context-free information about an expression argument
@@ -541,7 +541,7 @@ predicate TargetUses :
   stored
   { T, File, Uses } where
   hack.FileXRefs { file = File, xrefs = XRefs };
-  hack.XRef { target = T, ranges = Uses } = XRefs[..]
+  hack.XRef { target = T, ranges = Uses } = elements XRefs
 
 # A version of 'TargetUses' with the bytespans converted from relative to
 # absolute offset format for convenience.

@@ -41,7 +41,7 @@ predicate HackFileEntityXRefLocations:
   }
   { File, { Location, { span = Src } }, { decl = D } } where
     hack.FileXRefs { file = File, xrefs = XRefs };
-    hack.XRef { target = { declaration = D }, ranges = Uses } = XRefs[..];
+    hack.XRef { target = { declaration = D }, ranges = Uses } = elements XRefs;
     hack.DeclarationName D -> (hack.Name TargetName);
     hack.DeclarationLocation { declaration = D, file = TargetFile, span = TargetSpan };
     Location = codemarkup.types.Location { TargetName, TargetFile, { span = TargetSpan }, nothing };
@@ -56,7 +56,7 @@ predicate HackFileEntityXRefSpans:
   }
   { File, Src, { decl = D } } where
     hack.FileXRefs { file = File, xrefs = XRefs };
-    hack.XRef { target = { declaration = D }, ranges = Uses } = XRefs[..];
+    hack.XRef { target = { declaration = D }, ranges = Uses } = elements XRefs;
     Sources = prim.relToAbsByteSpans Uses;
     Src = Sources[..]
 
@@ -889,13 +889,13 @@ predicate ConvertCalleeForFileCall :
    { occurrence = {method = {name = N} } } = O;
    hack.FileXRefs { File, XRefs };
    # Look for resolved occurrences with the same method name in the call
-   { target = {declaration = D }, ranges = Uses } = XRefs[..];
+   { target = {declaration = D }, ranges = Uses } = elements XRefs;
    { method = { name = N } } = D;
    Sources = prim.relToAbsByteSpans Uses;
    S = Sources[..];
    src.ByteSpanContains { Span, S };
    # Match them with the unresolved occurrence
-   { target = O, ranges = OUses } = XRefs[..];
+   { target = O, ranges = OUses } = elements XRefs;
    OSources = prim.relToAbsByteSpans OUses;
    S = OSources[..];
    { just = { hack = { decl = D } } } = CodeCallee ) |

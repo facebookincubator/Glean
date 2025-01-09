@@ -13292,7 +13292,7 @@ struct XRef {
   }
 }; // struct XRef
 
-struct FileXRefs : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, std::vector<XRef>>> {
+struct FileXRefs : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, std::set<XRef>>> {
   static const char* GLEAN_name() {
     return "hack.FileXRefs";
   }
