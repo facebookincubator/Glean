@@ -197,6 +197,9 @@ data Results stats fact = Results
 
     -- | Query execution time after compilation, for logging, in nanoseconds
   , resExecutionTime :: Maybe Word64
+
+  -- | Size of query results, for logging
+  , resResultBytes :: Maybe Int64
   }
 
 class Encoding e where
@@ -482,6 +485,7 @@ userQueryFactsImpl
         , resCompileTime = Nothing
         , resCodegenTime = Nothing
         , resExecutionTime = Nothing
+        , resResultBytes = Nothing
         }
 
   return $ if Thrift.userQueryOptions_omit_results opts
@@ -889,6 +893,7 @@ runQuery
           , resCompileTime = Just compileTime
           , resCodegenTime = Just codegenTime
           , resExecutionTime = Just queryResultsElapsedNs
+          , resResultBytes = Just queryResultsResultBytes
           }
 
     return $ if Thrift.userQueryOptions_omit_results opts
@@ -1052,6 +1057,7 @@ emptyResult = Results {
   , resCompileTime = Nothing
   , resCodegenTime = Nothing
   , resExecutionTime = Nothing
+  , resResultBytes = Nothing
   }
 
 
@@ -1210,6 +1216,8 @@ withStats io = do
         , Thrift.userQueryStats_execute_time_ns =
             fromIntegral <$> resExecutionTime res
         , Thrift.userQueryStats_full_scans = statFullScans $ resStats res
+        , Thrift.userQueryStats_result_bytes =
+            fromIntegral <$> resResultBytes res
         }
   return res{ resStats = stats }
 

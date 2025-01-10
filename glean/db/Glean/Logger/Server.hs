@@ -45,6 +45,7 @@ data GleanServerLog
   | SetBytecodeSize Int
   | SetCompileTimeUs Int
   | SetExecuteTimeUs Int
+  | SetQueryResultBytes Int
   | SetClientUnixname Text
   | SetClientApplication Text
   | SetClientName Text

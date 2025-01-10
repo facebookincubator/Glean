@@ -51,6 +51,7 @@ instance Prelude.Semigroup UserQueryStats where
       , userQueryStats_result_count = result_count1
       , userQueryStats_codegen_time_ns = codegen_time_ns1
       , userQueryStats_full_scans = full_scans1
+      , userQueryStats_result_bytes = result_bytes1
       }
     UserQueryStats
       { userQueryStats_num_facts = num_facts2
@@ -63,6 +64,7 @@ instance Prelude.Semigroup UserQueryStats where
       , userQueryStats_result_count = result_count2
       , userQueryStats_codegen_time_ns = codegen_time_ns2
       , userQueryStats_full_scans = full_scans2
+      , userQueryStats_result_bytes = result_bytes2
       }
     = UserQueryStats
       { userQueryStats_num_facts = num_facts1 Prelude.+ num_facts2
@@ -84,6 +86,8 @@ instance Prelude.Semigroup UserQueryStats where
           fMaybe (Prelude.+) codegen_time_ns1 codegen_time_ns2
       , userQueryStats_full_scans =
           List.nub (full_scans1 <> full_scans2)
+      , userQueryStats_result_bytes =
+          fMaybe (Prelude.+) result_bytes1 result_bytes2
       }
       where
       fMaybe _ Prelude.Nothing a = a

@@ -72,6 +72,7 @@ data QueryResults = QueryResults
   , queryResultsStats :: Maybe (Map Int64 Int64)
   , queryResultsElapsedNs :: Word64
   , queryResultsCont :: Maybe ByteString
+  , queryResultsResultBytes :: Int64
   }
 
 data CompiledQuery = CompiledQuery
@@ -227,6 +228,7 @@ unpackResults wantStats maybePid (Results p) = do
       else return Nothing
   elapsed_ns <- (# peek facebook::glean::rts::QueryResults, elapsed_ns) p
   cont <- (# peek facebook::glean::rts::QueryResults, continuation) p
+  result_bytes <- (# peek facebook::glean::rts::QueryResults, result_bytes) p
 
   return QueryResults
     { queryResultsFacts = resultFacts
@@ -238,6 +240,7 @@ unpackResults wantStats maybePid (Results p) = do
         if ByteString.length contBytes == 0
           then Nothing
           else Just contBytes
+    , queryResultsResultBytes = result_bytes
     }
 
 interruptRunningQueries :: IO ()

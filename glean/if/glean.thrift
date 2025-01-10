@@ -767,7 +767,9 @@ struct UserQueryStats {
   10: optional i64 codegen_time_ns;
   // time to generate bytecode for the query
   11: list<PredicateRef> full_scans = [];
-// whether the query performs full predicate scans
+  // whether the query performs full predicate scans
+  12: optional i64 result_bytes;
+// query results size in bytes
 }
 
 # Results in Glean's internal binary representation

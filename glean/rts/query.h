@@ -36,6 +36,7 @@ struct QueryResults {
   HsMap<uint64_t, uint64_t> stats;
   uint64_t elapsed_ns;
   HsString continuation;
+  uint64_t result_bytes;
 };
 
 enum class Depth { ResultsOnly, ExpandRecursive, ExpandPartial };

@@ -321,6 +321,8 @@ logQueryStats Thrift.UserQueryStats{..} = mconcat
       userQueryStats_compile_time_ns
   , maybe mempty (Logger.SetExecuteTimeUs . fromIntegral . (`quot` 1000))
       userQueryStats_execute_time_ns
+  , maybe mempty (Logger.SetQueryResultBytes . fromIntegral)
+      userQueryStats_result_bytes
   ]
 
 runLogDerivePredicate

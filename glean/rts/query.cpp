@@ -219,6 +219,7 @@ struct QueryExecutor : SetOps {
   // query stats
   folly::F14FastMap<uint64_t, uint64_t> stats;
   bool wantStats;
+  uint64_t result_bytes;
 
   // iterators
   struct Iter {
@@ -494,6 +495,7 @@ std::unique_ptr<QueryResults> QueryExecutor::finish(
   res->nested_fact_pids = std::move(nested_result_pids);
   res->nested_fact_keys = std::move(nested_result_keys);
   res->nested_fact_values = std::move(nested_result_values);
+  res->result_bytes = std::move(result_bytes);
 
   if (cont.hasValue()) {
     res->continuation = cont->string();
@@ -588,12 +590,15 @@ std::unique_ptr<QueryResults> executeQuery(
             std::copy(context_.handlers_begin(), context_.handlers_end(), args);
         *args++ = 0; // unused
         *args++ = reinterpret_cast<uint64_t>(max_results);
+        uint64_t* max_bytes_p = args;
         *args++ = reinterpret_cast<uint64_t>(max_bytes);
 
         activation.execute();
         if (activation.suspended()) {
           cont = q.queryCont(activation);
         }
+
+        q.result_bytes = max_bytes - *max_bytes_p;
       });
 
   return q.finish(std::move(cont));
