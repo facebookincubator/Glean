@@ -612,7 +612,7 @@ compileStatements
                   -- bind into the output directly
                   cont out (\_ -> return ())
               | otherwise =
-                  output $ \reg ->
+                  outputUninitialized $ \reg ->
                   cont reg (\fail -> cmpOutputPat syscalls reg chunks fail)
 
             mtrans :: Maybe PredicateTransformation
