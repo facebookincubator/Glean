@@ -51,6 +51,7 @@ std::unique_ptr<QueryResults> executeQuery(
     folly::Optional<uint64_t> maxResults,
     folly::Optional<uint64_t> maxBytes,
     folly::Optional<uint64_t> maxTime,
+    folly::Optional<uint64_t> maxSetSize,
     Depth depth,
     std::unordered_set<Pid, folly::hasher<Pid>>& expandPids,
     bool wantStats);
@@ -62,6 +63,7 @@ std::unique_ptr<QueryResults> restartQuery(
     folly::Optional<uint64_t> maxResults,
     folly::Optional<uint64_t> maxBytes,
     folly::Optional<uint64_t> maxTime,
+    folly::Optional<uint64_t> maxSetSize,
     Depth depth,
     std::unordered_set<Pid, folly::hasher<Pid>>& expandPids,
     bool wantStats,

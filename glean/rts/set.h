@@ -32,6 +32,9 @@ using WordSet = std::set<uint64_t>;
 struct SetOps {
   using SetToken = uint64_t;
 
+  explicit SetOps(uint64_t max_set_size = UINT64_MAX)
+      : max_set_size(max_set_size) {}
+
   SetToken newSet();
 
   void insertOutputSet(SetToken token, binary::Output* out);
@@ -57,6 +60,9 @@ struct SetOps {
 
   std::vector<BytestringSet> sets = {};
   std::vector<WordSet> wordsets = {};
+  std::vector<uint64_t> set_sizes = {};
+  std::vector<uint64_t> wordset_sizes = {};
+  uint64_t max_set_size = UINT64_MAX;
 };
 
 } // namespace rts

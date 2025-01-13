@@ -1030,6 +1030,7 @@ mkQueryRuntimeOptions
         <|> config_default_max_bytes -- from ServerConfig
     , queryMaxTimeMs = userQueryOptions_max_time_ms
         <|> config_default_max_time_ms -- from ServerConfig
+    , queryMaxSetSize = config_max_set_size_bytes
     , queryWantStats = userQueryOptions_collect_facts_searched
     , queryDepth = if
         | userQueryOptions_recursive && not userQueryOptions_omit_results ->

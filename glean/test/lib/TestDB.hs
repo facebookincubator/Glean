@@ -6,10 +6,9 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-{-# LANGUAGE TypeApplications #-}
 module TestDB (
   withTestDB, withWritableTestDB, withStackedTestDB,
-  dbTestCase, dbTestCaseWritable, createTestDB
+  dbTestCase, dbTestCaseWritable, dbTestCaseSettings, createTestDB
 ) where
 
 import Data.Default
@@ -63,9 +62,10 @@ withStackedTestDB settings action = withTestEnv settings $ \env -> do
     repo1 = Thrift.Repo "dbtest-repo" "1"
     repo2 = Thrift.Repo "dbtest-repo" "2"
 
-testCases :: (Env -> Thrift.Repo -> IO ()) -> Test
-testCases action = TestList
-  [ TestLabel (label1 ++ label2) $ TestCase $ with settings action
+testCases :: [Setting] -> (Env -> Thrift.Repo -> IO ()) -> Test
+testCases testCaseSettings action = TestList
+  [ TestLabel (label1 ++ label2) $
+    TestCase $ with (settings <> testCaseSettings) action
     | (label1, with) <-
         [ ("", withWritableTestDB)
         , ("stacked/", withStackedTestDB) ]
@@ -79,10 +79,13 @@ testCases action = TestList
   ]
 
 dbTestCase :: (Env -> Thrift.Repo -> IO ()) -> Test
-dbTestCase = testCases . afterComplete
+dbTestCase = testCases [] . afterComplete
 
 dbTestCaseWritable :: (Env -> Thrift.Repo -> IO ()) -> Test
-dbTestCaseWritable = testCases
+dbTestCaseWritable = testCases []
+
+dbTestCaseSettings :: [Setting] -> (Env -> Thrift.Repo -> IO ()) -> Test
+dbTestCaseSettings settings action = testCases settings (afterComplete action)
 
 writeTestDB :: Env -> Thrift.Repo -> (forall m. NewFact m => m ()) -> IO ()
 writeTestDB env repo facts = do

@@ -228,6 +228,7 @@ const char* glean_query_execute_compiled(
     uint64_t max_results,
     uint64_t max_bytes,
     uint64_t max_time_ms,
+    uint64_t max_set_size,
     uint64_t depth,
     uint64_t* expand_pids,
     uint64_t num_expand_pids,
@@ -253,6 +254,8 @@ const char* glean_query_execute_compiled(
             max_bytes == 0 ? folly::none : folly::Optional<uint64_t>(max_bytes),
             max_time_ms == 0 ? folly::none
                              : folly::Optional<uint64_t>(max_time_ms),
+            max_set_size == 0 ? folly::none
+                              : folly::Optional<uint64_t>(max_set_size),
             static_cast<Depth>(depth),
             expandPids,
             want_stats)
@@ -269,6 +272,7 @@ const char* glean_query_restart_compiled(
     uint64_t max_results,
     uint64_t max_bytes,
     uint64_t max_time_ms,
+    uint64_t max_set_size,
     uint64_t depth,
     uint64_t* expand_pids,
     uint64_t num_expand_pids,
@@ -291,6 +295,8 @@ const char* glean_query_restart_compiled(
             max_bytes == 0 ? folly::none : folly::Optional<uint64_t>(max_bytes),
             max_time_ms == 0 ? folly::none
                              : folly::Optional<uint64_t>(max_time_ms),
+            max_set_size == 0 ? folly::none
+                              : folly::Optional<uint64_t>(max_set_size),
             static_cast<Depth>(depth),
             expandPids,
             want_stats,

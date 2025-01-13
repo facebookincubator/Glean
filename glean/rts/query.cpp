@@ -40,6 +40,41 @@ struct QueryExecutor : SetOps {
   // A live fact iterator
   using IterToken = uint64_t;
 
+  // iterators
+  struct Iter {
+    std::unique_ptr<rts::FactIterator> iter;
+    // remember the type and current key so that we can capture the
+    // state of this iterator for a continuation.
+    Pid type;
+    Id id;
+    size_t prefix_size;
+    bool first;
+  };
+
+  QueryExecutor(
+      Inventory& inventory,
+      Define& facts,
+      DefineOwnership* ownership,
+      Subroutine& sub,
+      Pid pid,
+      std::shared_ptr<Subroutine> traverse,
+      Depth depth,
+      std::unordered_set<Pid, folly::hasher<Pid>>& expandPids,
+      bool wantStats,
+      std::vector<Iter> iters,
+      uint64_t max_set_size)
+      : SetOps(max_set_size),
+        inventory(inventory),
+        facts(facts),
+        ownership(ownership),
+        sub(sub),
+        pid(pid),
+        traverse(traverse),
+        depth(depth),
+        expandPids(expandPids),
+        wantStats(wantStats),
+        iters(std::move(iters)) {}
+
   //
   // Initiate a traversal of facts for a particular predicate and
   // key prefix. Returns a token that can be passed to next() to
@@ -220,17 +255,6 @@ struct QueryExecutor : SetOps {
   folly::F14FastMap<uint64_t, uint64_t> stats;
   bool wantStats;
   uint64_t result_bytes;
-
-  // iterators
-  struct Iter {
-    std::unique_ptr<rts::FactIterator> iter;
-    // remember the type and current key so that we can capture the
-    // state of this iterator for a continuation.
-    Pid type;
-    Id id;
-    size_t prefix_size;
-    bool first;
-  };
 
   std::vector<Iter> iters;
 };
@@ -518,23 +542,24 @@ std::unique_ptr<QueryResults> executeQuery(
     folly::Optional<uint64_t> maxResults,
     folly::Optional<uint64_t> maxBytes,
     folly::Optional<uint64_t> maxTime,
+    folly::Optional<uint64_t> maxSetSize,
     Depth depth,
     std::unordered_set<Pid, folly::hasher<Pid>>& expandPids,
     bool wantStats,
     std::vector<QueryExecutor::Iter> iters,
     std::optional<Subroutine::Activation::State> restart) {
-  QueryExecutor q{
-      .inventory = inventory,
-      .facts = facts,
-      .ownership = ownership,
-      .sub = sub,
-      .pid = pid,
-      .traverse = traverse,
-      .depth = depth,
-      .expandPids = expandPids,
-      .wantStats = wantStats,
-      .iters = std::move(iters),
-  };
+  QueryExecutor q(
+      inventory,
+      facts,
+      ownership,
+      sub,
+      pid,
+      traverse,
+      depth,
+      expandPids,
+      wantStats,
+      std::move(iters),
+      maxSetSize ? *maxSetSize : UINT64_MAX);
 
   // coarse_steady_clock is around 1ms granularity which is enough for us.
   q.timeout = Clock::now();
@@ -616,6 +641,7 @@ std::unique_ptr<QueryResults> restartQuery(
     folly::Optional<uint64_t> maxResults,
     folly::Optional<uint64_t> maxBytes,
     folly::Optional<uint64_t> maxTime,
+    folly::Optional<uint64_t> maxSetSize,
     Depth depth,
     std::unordered_set<Pid, folly::hasher<Pid>>& expandPids,
     bool wantStats,
@@ -713,6 +739,7 @@ std::unique_ptr<QueryResults> restartQuery(
       maxResults,
       maxBytes,
       maxTime,
+      maxSetSize,
       depth,
       expandPids,
       wantStats,
@@ -730,6 +757,7 @@ std::unique_ptr<QueryResults> executeQuery(
     folly::Optional<uint64_t> maxResults,
     folly::Optional<uint64_t> maxBytes,
     folly::Optional<uint64_t> maxTime,
+    folly::Optional<uint64_t> maxSetSize,
     Depth depth,
     std::unordered_set<Pid, folly::hasher<Pid>>& expandPids,
     bool wantStats) {
@@ -743,6 +771,7 @@ std::unique_ptr<QueryResults> executeQuery(
       maxResults,
       maxBytes,
       maxTime,
+      maxSetSize,
       depth,
       expandPids,
       wantStats,

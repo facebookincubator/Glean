@@ -18,6 +18,7 @@ module Glean.Database.Test
   , setMemoryStorage
   , setDBVersion
   , setCompactOnCompletion
+  , setMaxSetSize
   , withTestEnv
   , kickOffTestDB
   , waitUntilComplete
@@ -29,6 +30,7 @@ module Glean.Database.Test
 import Util.STM
 import Data.Default
 import Data.Functor
+import Data.Int
 import Data.List (foldl')
 import Data.Map (Map)
 import qualified Data.Map as Map
@@ -97,6 +99,11 @@ setCompactOnCompletion :: Setting
 setCompactOnCompletion cfg = cfg
   { cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
       { ServerConfig.config_compact_on_completion = True } }
+
+setMaxSetSize :: Int64 -> Setting
+setMaxSetSize i cfg = cfg
+  { cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
+      { ServerConfig.config_max_set_size_bytes = Just i } }
 
 withTestEnv
   :: [Setting]

@@ -62,6 +62,7 @@ data QueryRuntimeOptions = QueryRuntimeOptions
   { queryMaxResults :: Maybe Int64
   , queryMaxBytes :: Maybe Int64
   , queryMaxTimeMs :: Maybe Int64
+  , queryMaxSetSize :: Maybe Int64
   , queryDepth :: Depth
   , queryWantStats :: Bool
   }
@@ -106,6 +107,7 @@ executeCompiled inventory ownership facts
     maxr = fromIntegral (fromMaybe 0 queryMaxResults)
     maxb = fromIntegral (fromMaybe 0 queryMaxBytes)
     maxt = fromIntegral (fromMaybe 0 queryMaxTimeMs)
+    maxs = fromIntegral (fromMaybe 0 queryMaxSetSize)
     withTraversal = case compiledQueryResultTraversal of
        Nothing -> ($ nullPtr)
        Just sub -> with sub
@@ -123,6 +125,7 @@ executeCompiled inventory ownership facts
       maxr
       maxb
       maxt
+      maxs
       depth
       expand_pids
       num_expand_pids
@@ -149,6 +152,7 @@ restartCompiled inventory ownership facts pid
     maxr = fromIntegral (fromMaybe 0 queryMaxResults)
     maxb = fromIntegral (fromMaybe 0 queryMaxBytes)
     maxt = fromIntegral (fromMaybe 0 queryMaxTimeMs)
+    maxs = fromIntegral (fromMaybe 0 queryMaxSetSize)
   in
   withDepth queryDepth $ \(depth, expand_pids, num_expand_pids) ->
   using
@@ -161,6 +165,7 @@ restartCompiled inventory ownership facts pid
       maxr
       maxb
       maxt
+      maxs
       depth
       expand_pids
       num_expand_pids
@@ -268,6 +273,7 @@ foreign import ccall safe glean_query_execute_compiled
   -> Word64 -- max_results
   -> Word64 -- max_bytes
   -> Word64 -- max_time_ms
+  -> Word64 -- max_set_size
   -> Word64 -- depth
   -> Ptr Word64 -- expand_pids
   -> Word64 -- num_expand_pids
@@ -284,6 +290,7 @@ foreign import ccall safe glean_query_restart_compiled
   -> Word64 -- max_results
   -> Word64 -- max_bytes
   -> Word64 -- max_time_ms
+  -> Word64 -- max_set_size
   -> Word64 -- depth
   -> Ptr Word64 -- expand_pids
   -> Word64 -- num_expand_pids

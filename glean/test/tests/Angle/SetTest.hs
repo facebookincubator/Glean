@@ -11,6 +11,7 @@
 {-# LANGUAGE TypeApplications #-}
 module Angle.SetTest (main) where
 
+import Control.Exception hiding (assert)
 import Control.Monad.Trans.Except
 import Control.Monad.Except
 import Data.Default
@@ -24,6 +25,8 @@ import Glean.Query.Flatten
 import Glean.Query.Thrift as Thrift
 import Glean.Schema.Resolve
 import Glean.Database.Schema.Types
+import Glean.Database.Test
+import Glean.Database.Types
 import Glean.Types
 
 import qualified Data.HashMap.Strict as HashMap
@@ -32,7 +35,7 @@ import Data.Set
 import Test.HUnit
 import TestRunner
 import Util.String.Quasi
-import Glean.Database.Types
+import Util.FFI
 
 import TestDB
 
@@ -40,6 +43,7 @@ main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [ TestLabel "set parse" setParseTest
   , TestLabel "set semantics" setSemanticsTest
+  , TestLabel "set limit" setLimitTest
   ]
 
 -- First version to support sets
@@ -126,3 +130,20 @@ setSemanticsTest = TestList
       r <- runQuery_ env repo $ angleData @Nat [s| prim.size (all (1|2|3))|]
       assertEqual "size" r [Nat 3]
   ]
+
+setLimitTest :: Test
+setLimitTest =
+  TestLabel "Fail when exceeding limit" $
+    dbTestCaseSettings [setMaxSetSize 8] $ \env repo -> do
+      r <- try (runQuery_ env repo $ angleData @(Set Nat) [s| all (1|2) |])
+        :: IO (Either FFIError [Set Nat])
+      case r of
+        Left ffiExc -> do
+          -- Remove the stack trace and just check the actual error
+          let runtimeMsg = Prelude.take 71 (ffiErrorMessage ffiExc)
+          assertEqual "Exception " runtimeMsg errMsg
+        Right _ -> assert False
+
+errMsg :: String
+errMsg =
+  "Set size limit exceeded for nat set. Set token: 0. Max size: 8. Size: 9"
