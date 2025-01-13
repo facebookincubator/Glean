@@ -495,7 +495,7 @@ std::unique_ptr<QueryResults> QueryExecutor::finish(
   res->nested_fact_pids = std::move(nested_result_pids);
   res->nested_fact_keys = std::move(nested_result_keys);
   res->nested_fact_values = std::move(nested_result_values);
-  res->result_bytes = std::move(result_bytes);
+  res->result_bytes = result_bytes;
 
   if (cont.hasValue()) {
     res->continuation = cont->string();
