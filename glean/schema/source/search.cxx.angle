@@ -82,7 +82,7 @@ predicate QueryToQNameCase:
         { name = AName, scope =
           { namespace_ = { name = { just = BNameNS } } } }
       ) | (
-        CxxRecordCase { Case, A, BNameR };
+        CxxRecordCase { Case, B, BNameR };
         { name = AName, scope =
           { recordWithAccess = { record = { name = BNameR } } } }
       )
