@@ -629,5 +629,221 @@
       "kind": 13,
       "language": 0
     }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "foo_in_a_class_1_depth_5",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "foo_in_a_class_1_depth_5" }
+                          }
+                        },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Class_1" },
+                                "scope": {
+                                  "recordWithAccess": {
+                                    "record": {
+                                      "key": {
+                                        "name": { "key": "Class_2" },
+                                        "scope": {
+                                          "namespace_": {
+                                            "key": {
+                                              "name": { "key": "NS_3" },
+                                              "parent": {
+                                                "key": {
+                                                  "name": { "key": "NS_4" },
+                                                  "parent": {
+                                                    "key": {
+                                                      "name": { "key": "NS_5" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "access": 2
+                                  }
+                                }
+                              }
+                            },
+                            "access": 2
+                          }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                    },
+                    "method": {
+                      "isVirtual": false,
+                      "isConst": false,
+                      "isVolatile": false,
+                      "refQualifier": 0
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 70,
+                      "columnBegin": 11,
+                      "lineEnd": 70,
+                      "columnEnd": 54
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo_in_a_class_1_depth_5",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 70,
+            "columnBegin": 11,
+            "lineEnd": 70,
+            "columnEnd": 54
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1181, "length": 24 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "foo_in_a_class_depth_6",
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "foo_in_a_class_depth_6" } }
+                        },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Class_1" },
+                                "scope": {
+                                  "recordWithAccess": {
+                                    "record": {
+                                      "key": {
+                                        "name": { "key": "Class_2" },
+                                        "scope": {
+                                          "recordWithAccess": {
+                                            "record": {
+                                              "key": {
+                                                "name": { "key": "Class_3" },
+                                                "scope": {
+                                                  "namespace_": {
+                                                    "key": {
+                                                      "name": { "key": "NS_4" },
+                                                      "parent": {
+                                                        "key": {
+                                                          "name": {
+                                                            "key": "NS_5"
+                                                          },
+                                                          "parent": {
+                                                            "key": {
+                                                              "name": {
+                                                                "key": "NS_6"
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            },
+                                            "access": 2
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "access": 2
+                                  }
+                                }
+                              }
+                            },
+                            "access": 2
+                          }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                    },
+                    "method": {
+                      "isVirtual": false,
+                      "isConst": false,
+                      "isVolatile": false,
+                      "refQualifier": 0
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 82,
+                      "columnBegin": 13,
+                      "lineEnd": 82,
+                      "columnEnd": 54
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "foo_in_a_class_depth_6",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 82,
+            "columnBegin": 13,
+            "lineEnd": 82,
+            "columnEnd": 54
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1399, "length": 22 }
+        }
+      },
+      "kind": 13,
+      "language": 0
+    }
   }
 ]

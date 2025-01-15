@@ -62,3 +62,27 @@ namespace D1_NS {
     };
   }
 }
+namespace NS_5 {
+  namespace NS_4 {
+    namespace NS_3 {
+      class Class_2 {
+        class Class_1 {
+          int foo_in_a_class_1_depth_5() { return 1; }
+        };
+      };
+    }
+  }
+}
+namespace NS_6 {
+  namespace NS_5 {
+    namespace NS_4 {
+      class Class_3 {
+        class Class_2 {
+          class Class_1 {
+            int foo_in_a_class_depth_6() { return 1; }
+          };
+        };
+      };
+    }
+  }
+}

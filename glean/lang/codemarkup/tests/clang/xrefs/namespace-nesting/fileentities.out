@@ -1046,6 +1046,709 @@
     "key": {
       "file": { "key": "test.cpp" },
       "location": {
+        "name": "Class_1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 69,
+            "columnBegin": 9,
+            "lineEnd": 71,
+            "columnEnd": 9
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1157, "length": 7 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Class_1" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Class_2" },
+                                "scope": {
+                                  "namespace_": {
+                                    "key": {
+                                      "name": { "key": "NS_3" },
+                                      "parent": {
+                                        "key": {
+                                          "name": { "key": "NS_4" },
+                                          "parent": {
+                                            "key": { "name": { "key": "NS_5" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "access": 2
+                          }
+                        }
+                      }
+                    },
+                    "kind": { "class_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 69,
+                      "columnBegin": 9,
+                      "lineEnd": 71,
+                      "columnEnd": 9
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "foo_in_a_class_1_depth_5" }
+                                }
+                              },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Class_1" },
+                                      "scope": {
+                                        "recordWithAccess": {
+                                          "record": {
+                                            "key": {
+                                              "name": { "key": "Class_2" },
+                                              "scope": {
+                                                "namespace_": {
+                                                  "key": {
+                                                    "name": { "key": "NS_3" },
+                                                    "parent": {
+                                                      "key": {
+                                                        "name": {
+                                                          "key": "NS_4"
+                                                        },
+                                                        "parent": {
+                                                          "key": {
+                                                            "name": {
+                                                              "key": "NS_5"
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "access": 2
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 2
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 70,
+                            "columnBegin": 11,
+                            "lineEnd": 70,
+                            "columnEnd": 54
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "Class_1",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 81,
+            "columnBegin": 11,
+            "lineEnd": 83,
+            "columnEnd": 11
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1373, "length": 7 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Class_1" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Class_2" },
+                                "scope": {
+                                  "recordWithAccess": {
+                                    "record": {
+                                      "key": {
+                                        "name": { "key": "Class_3" },
+                                        "scope": {
+                                          "namespace_": {
+                                            "key": {
+                                              "name": { "key": "NS_4" },
+                                              "parent": {
+                                                "key": {
+                                                  "name": { "key": "NS_5" },
+                                                  "parent": {
+                                                    "key": {
+                                                      "name": { "key": "NS_6" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "access": 2
+                                  }
+                                }
+                              }
+                            },
+                            "access": 2
+                          }
+                        }
+                      }
+                    },
+                    "kind": { "class_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 81,
+                      "columnBegin": 11,
+                      "lineEnd": 83,
+                      "columnEnd": 11
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "function_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": {
+                                "key": {
+                                  "name": { "key": "foo_in_a_class_depth_6" }
+                                }
+                              },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Class_1" },
+                                      "scope": {
+                                        "recordWithAccess": {
+                                          "record": {
+                                            "key": {
+                                              "name": { "key": "Class_2" },
+                                              "scope": {
+                                                "recordWithAccess": {
+                                                  "record": {
+                                                    "key": {
+                                                      "name": {
+                                                        "key": "Class_3"
+                                                      },
+                                                      "scope": {
+                                                        "namespace_": {
+                                                          "key": {
+                                                            "name": {
+                                                              "key": "NS_4"
+                                                            },
+                                                            "parent": {
+                                                              "key": {
+                                                                "name": {
+                                                                  "key": "NS_5"
+                                                                },
+                                                                "parent": {
+                                                                  "key": {
+                                                                    "name": {
+                                                                      "key": "NS_6"
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                  "access": 2
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "access": 2
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 2
+                                }
+                              }
+                            }
+                          },
+                          "signature": {
+                            "key": {
+                              "returns": { "key": "int" },
+                              "parameters": [ ]
+                            }
+                          },
+                          "method": {
+                            "isVirtual": false,
+                            "isConst": false,
+                            "isVolatile": false,
+                            "refQualifier": 0
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 82,
+                            "columnBegin": 13,
+                            "lineEnd": 82,
+                            "columnEnd": 54
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "Class_2",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 68,
+            "columnBegin": 7,
+            "lineEnd": 72,
+            "columnEnd": 7
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1133, "length": 7 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Class_2" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "NS_3" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "NS_4" },
+                                  "parent": {
+                                    "key": { "name": { "key": "NS_5" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "kind": { "class_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 68,
+                      "columnBegin": 7,
+                      "lineEnd": 72,
+                      "columnEnd": 7
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Class_1" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Class_2" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "NS_3" },
+                                            "parent": {
+                                              "key": {
+                                                "name": { "key": "NS_4" },
+                                                "parent": {
+                                                  "key": {
+                                                    "name": { "key": "NS_5" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 2
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "class_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 69,
+                            "columnBegin": 9,
+                            "lineEnd": 71,
+                            "columnEnd": 9
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "Class_2",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 80,
+            "columnBegin": 9,
+            "lineEnd": 84,
+            "columnEnd": 9
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1347, "length": 7 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Class_2" },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Class_3" },
+                                "scope": {
+                                  "namespace_": {
+                                    "key": {
+                                      "name": { "key": "NS_4" },
+                                      "parent": {
+                                        "key": {
+                                          "name": { "key": "NS_5" },
+                                          "parent": {
+                                            "key": { "name": { "key": "NS_6" } }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "access": 2
+                          }
+                        }
+                      }
+                    },
+                    "kind": { "class_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 80,
+                      "columnBegin": 9,
+                      "lineEnd": 84,
+                      "columnEnd": 9
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Class_1" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Class_2" },
+                                      "scope": {
+                                        "recordWithAccess": {
+                                          "record": {
+                                            "key": {
+                                              "name": { "key": "Class_3" },
+                                              "scope": {
+                                                "namespace_": {
+                                                  "key": {
+                                                    "name": { "key": "NS_4" },
+                                                    "parent": {
+                                                      "key": {
+                                                        "name": {
+                                                          "key": "NS_5"
+                                                        },
+                                                        "parent": {
+                                                          "key": {
+                                                            "name": {
+                                                              "key": "NS_6"
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "access": 2
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 2
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "class_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 81,
+                            "columnBegin": 11,
+                            "lineEnd": 83,
+                            "columnEnd": 11
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "Class_3",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 79,
+            "columnBegin": 7,
+            "lineEnd": 85,
+            "columnEnd": 7
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1323, "length": 7 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "record_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "Class_3" },
+                        "scope": {
+                          "namespace_": {
+                            "key": {
+                              "name": { "key": "NS_4" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "NS_5" },
+                                  "parent": {
+                                    "key": { "name": { "key": "NS_6" } }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "kind": { "class_": { } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 79,
+                      "columnBegin": 7,
+                      "lineEnd": 85,
+                      "columnEnd": 7
+                    }
+                  }
+                },
+                "bases": [ ],
+                "members": {
+                  "key": [
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Class_2" },
+                              "scope": {
+                                "recordWithAccess": {
+                                  "record": {
+                                    "key": {
+                                      "name": { "key": "Class_3" },
+                                      "scope": {
+                                        "namespace_": {
+                                          "key": {
+                                            "name": { "key": "NS_4" },
+                                            "parent": {
+                                              "key": {
+                                                "name": { "key": "NS_5" },
+                                                "parent": {
+                                                  "key": {
+                                                    "name": { "key": "NS_6" }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "access": 2
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "class_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 80,
+                            "columnBegin": 9,
+                            "lineEnd": 84,
+                            "columnEnd": 9
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
         "name": "D",
         "file": { "key": "test.cpp" },
         "location": {
@@ -1583,6 +2286,482 @@
                             "lineBegin": 41,
                             "columnBegin": 3,
                             "lineEnd": 53,
+                            "columnEnd": 3
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "NS_3",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 67,
+            "columnBegin": 5,
+            "lineEnd": 73,
+            "columnEnd": 5
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1114, "length": 4 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "namespace_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "NS_3" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "NS_4" },
+                            "parent": { "key": { "name": { "key": "NS_5" } } }
+                          }
+                        }
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 67,
+                      "columnBegin": 5,
+                      "lineEnd": 73,
+                      "columnEnd": 5
+                    }
+                  }
+                },
+                "members": {
+                  "key": [
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Class_2" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": {
+                                    "name": { "key": "NS_3" },
+                                    "parent": {
+                                      "key": {
+                                        "name": { "key": "NS_4" },
+                                        "parent": {
+                                          "key": { "name": { "key": "NS_5" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "class_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 68,
+                            "columnBegin": 7,
+                            "lineEnd": 72,
+                            "columnEnd": 7
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "NS_4",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 66,
+            "columnBegin": 3,
+            "lineEnd": 74,
+            "columnEnd": 3
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1093, "length": 4 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "namespace_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "NS_4" },
+                        "parent": { "key": { "name": { "key": "NS_5" } } }
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 66,
+                      "columnBegin": 3,
+                      "lineEnd": 74,
+                      "columnEnd": 3
+                    }
+                  }
+                },
+                "members": {
+                  "key": [
+                    {
+                      "namespace_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "NS_3" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "NS_4" },
+                                  "parent": {
+                                    "key": { "name": { "key": "NS_5" } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 67,
+                            "columnBegin": 5,
+                            "lineEnd": 73,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "NS_4",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 78,
+            "columnBegin": 5,
+            "lineEnd": 86,
+            "columnEnd": 5
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1304, "length": 4 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "namespace_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "NS_4" },
+                        "parent": {
+                          "key": {
+                            "name": { "key": "NS_5" },
+                            "parent": { "key": { "name": { "key": "NS_6" } } }
+                          }
+                        }
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 78,
+                      "columnBegin": 5,
+                      "lineEnd": 86,
+                      "columnEnd": 5
+                    }
+                  }
+                },
+                "members": {
+                  "key": [
+                    {
+                      "record_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "Class_3" },
+                              "scope": {
+                                "namespace_": {
+                                  "key": {
+                                    "name": { "key": "NS_4" },
+                                    "parent": {
+                                      "key": {
+                                        "name": { "key": "NS_5" },
+                                        "parent": {
+                                          "key": { "name": { "key": "NS_6" } }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "kind": { "class_": { } },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 79,
+                            "columnBegin": 7,
+                            "lineEnd": 85,
+                            "columnEnd": 7
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "NS_5",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 65,
+            "columnBegin": 1,
+            "lineEnd": 75,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1074, "length": 4 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "namespace_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "NS_5" } } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 65,
+                      "columnBegin": 1,
+                      "lineEnd": 75,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "members": {
+                  "key": [
+                    {
+                      "namespace_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "NS_4" },
+                              "parent": { "key": { "name": { "key": "NS_5" } } }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 66,
+                            "columnBegin": 3,
+                            "lineEnd": 74,
+                            "columnEnd": 3
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "NS_5",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 77,
+            "columnBegin": 3,
+            "lineEnd": 87,
+            "columnEnd": 3
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1283, "length": 4 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "namespace_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": { "key": "NS_5" },
+                        "parent": { "key": { "name": { "key": "NS_6" } } }
+                      }
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 77,
+                      "columnBegin": 3,
+                      "lineEnd": 87,
+                      "columnEnd": 3
+                    }
+                  }
+                },
+                "members": {
+                  "key": [
+                    {
+                      "namespace_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "NS_4" },
+                              "parent": {
+                                "key": {
+                                  "name": { "key": "NS_5" },
+                                  "parent": {
+                                    "key": { "name": { "key": "NS_6" } }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 78,
+                            "columnBegin": 5,
+                            "lineEnd": 86,
+                            "columnEnd": 5
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "NS_6",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 76,
+            "columnBegin": 1,
+            "lineEnd": 88,
+            "columnEnd": 1
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1264, "length": 4 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "namespace_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": { "key": { "name": { "key": "NS_6" } } },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 76,
+                      "columnBegin": 1,
+                      "lineEnd": 88,
+                      "columnEnd": 1
+                    }
+                  }
+                },
+                "members": {
+                  "key": [
+                    {
+                      "namespace_": {
+                        "key": {
+                          "name": {
+                            "key": {
+                              "name": { "key": "NS_5" },
+                              "parent": { "key": { "name": { "key": "NS_6" } } }
+                            }
+                          },
+                          "source": {
+                            "file": { "key": "test.cpp" },
+                            "lineBegin": 77,
+                            "columnBegin": 3,
+                            "lineEnd": 87,
                             "columnEnd": 3
                           }
                         }
@@ -2837,6 +4016,216 @@
                       "columnBegin": 9,
                       "lineEnd": 60,
                       "columnEnd": 44
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "foo_in_a_class_1_depth_5",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 70,
+            "columnBegin": 11,
+            "lineEnd": 70,
+            "columnEnd": 54
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1181, "length": 24 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": {
+                          "key": {
+                            "name": { "key": "foo_in_a_class_1_depth_5" }
+                          }
+                        },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Class_1" },
+                                "scope": {
+                                  "recordWithAccess": {
+                                    "record": {
+                                      "key": {
+                                        "name": { "key": "Class_2" },
+                                        "scope": {
+                                          "namespace_": {
+                                            "key": {
+                                              "name": { "key": "NS_3" },
+                                              "parent": {
+                                                "key": {
+                                                  "name": { "key": "NS_4" },
+                                                  "parent": {
+                                                    "key": {
+                                                      "name": { "key": "NS_5" }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "access": 2
+                                  }
+                                }
+                              }
+                            },
+                            "access": 2
+                          }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                    },
+                    "method": {
+                      "isVirtual": false,
+                      "isConst": false,
+                      "isVolatile": false,
+                      "refQualifier": 0
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 70,
+                      "columnBegin": 11,
+                      "lineEnd": 70,
+                      "columnEnd": 54
+                    }
+                  }
+                },
+                "isInline": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "test.cpp" },
+      "location": {
+        "name": "foo_in_a_class_depth_6",
+        "file": { "key": "test.cpp" },
+        "location": {
+          "range": {
+            "file": { "key": "test.cpp" },
+            "lineBegin": 82,
+            "columnBegin": 13,
+            "lineEnd": 82,
+            "columnEnd": 54
+          }
+        },
+        "destination": {
+          "file": { "key": "test.cpp" },
+          "span": { "start": 1399, "length": 22 }
+        }
+      },
+      "entity": {
+        "cxx": {
+          "defn": {
+            "function_": {
+              "key": {
+                "declaration": {
+                  "key": {
+                    "name": {
+                      "key": {
+                        "name": {
+                          "key": { "name": { "key": "foo_in_a_class_depth_6" } }
+                        },
+                        "scope": {
+                          "recordWithAccess": {
+                            "record": {
+                              "key": {
+                                "name": { "key": "Class_1" },
+                                "scope": {
+                                  "recordWithAccess": {
+                                    "record": {
+                                      "key": {
+                                        "name": { "key": "Class_2" },
+                                        "scope": {
+                                          "recordWithAccess": {
+                                            "record": {
+                                              "key": {
+                                                "name": { "key": "Class_3" },
+                                                "scope": {
+                                                  "namespace_": {
+                                                    "key": {
+                                                      "name": { "key": "NS_4" },
+                                                      "parent": {
+                                                        "key": {
+                                                          "name": {
+                                                            "key": "NS_5"
+                                                          },
+                                                          "parent": {
+                                                            "key": {
+                                                              "name": {
+                                                                "key": "NS_6"
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            },
+                                            "access": 2
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "access": 2
+                                  }
+                                }
+                              }
+                            },
+                            "access": 2
+                          }
+                        }
+                      }
+                    },
+                    "signature": {
+                      "key": { "returns": { "key": "int" }, "parameters": [ ] }
+                    },
+                    "method": {
+                      "isVirtual": false,
+                      "isConst": false,
+                      "isVolatile": false,
+                      "refQualifier": 0
+                    },
+                    "source": {
+                      "file": { "key": "test.cpp" },
+                      "lineBegin": 82,
+                      "columnBegin": 13,
+                      "lineEnd": 82,
+                      "columnEnd": 54
                     }
                   }
                 },

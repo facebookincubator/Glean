@@ -167,6 +167,64 @@ predicate QueryToQNameCase:
           }
         )
       )
+    ) | (
+      # five tuple. we give up on expanding this and allow the outer term `E` to be a namespace only
+      [E,D,C,B,A] = Query;
+      CxxRecordCase { Case, A, AName };
+      # simplest case, `B` is a ns, `C` and `D` must be too
+      ( CxxNamespaceCase { Case, B, BNameNS };
+        CxxNamespaceCase { Case, C, CNameNS };
+        CxxNamespaceCase { Case, D, DNameNS };
+        CxxNamespaceCase { Case, E, ENameNS };
+        { name = AName,
+          scope = { namespace_ = { name = { just = BNameNS },
+            parent = { just = { name = { just = CNameNS },
+              parent = { just = { name = { just = DNameNS },
+                parent = { just = { name = { just = ENameNS } } } } }
+          } } } }
+        }
+      # or `B` is a record
+      ) | (
+        # case 1: C (and thus D and E) are namespaces
+        CxxRecordCase { Case, B, BNameR };
+        ( CxxNamespaceCase { Case, C, CNameNS };
+          CxxNamespaceCase { Case, D, DNameNS };
+          CxxNamespaceCase { Case, E, ENameNS };
+          { name = AName, scope =
+            { recordWithAccess = { record = { name = BNameR,
+              scope = { namespace_ = { name = { just = CNameNS },
+                parent = { just = { name = { just = DNameNS },
+                  parent = { just = { name = { just = ENameNS } } }
+              } } } }
+            } }
+          } }
+        ) | (
+        # case 2: C is a record and D and E are namespaces
+          CxxRecordCase { Case, C, CNameR };
+          CxxNamespaceCase { Case, D, DNameNS };
+          CxxNamespaceCase { Case, E, ENameNS };
+          { name = AName, scope =
+            { recordWithAccess = { record = { name = BNameR,
+              scope = { recordWithAccess = { record = { name = CNameR,
+                scope = { namespace_ = { name = { just = DNameNS } } }
+              } } }
+            } } }
+          }
+        ) | (
+        # case 3: C is a record and D is record, and E is a namespace
+          CxxRecordCase { Case, C, CNameR };
+          CxxRecordCase { Case, D, DNameR };
+          CxxNamespaceCase { Case, E, ENameNS };
+          { name = AName, scope =
+            { recordWithAccess = { record = { name = BNameR,
+              scope = { recordWithAccess = { record = { name = CNameR,
+                scope = { recordWithAccess = { record = { name = DNameR,
+                  scope = { namespace_ = { name = { just = ENameNS } } } } } }
+              } } }
+            } } }
+          }
+        )
+      )
     ) = QName;
 
 # compile to namespace qname, case aware

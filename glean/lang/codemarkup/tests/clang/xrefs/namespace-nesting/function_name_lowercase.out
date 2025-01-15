@@ -4,6 +4,18 @@
   {
     "key": { "name_lowercase": "foo_in_a_class_1", "name": "foo_in_a_class_1" }
   },
+  {
+    "key": {
+      "name_lowercase": "foo_in_a_class_1_depth_5",
+      "name": "foo_in_a_class_1_depth_5"
+    }
+  },
+  {
+    "key": {
+      "name_lowercase": "foo_in_a_class_depth_6",
+      "name": "foo_in_a_class_depth_6"
+    }
+  },
   { "key": { "name_lowercase": "foob", "name": "fooB" } },
   { "key": { "name_lowercase": "fooc", "name": "fooC" } },
   { "key": { "name_lowercase": "foocinbinb", "name": "fooCInBinB" } },
