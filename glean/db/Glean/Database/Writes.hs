@@ -32,7 +32,6 @@
 module Glean.Database.Writes
   ( enqueueBatch
   , enqueueJsonBatch
-  , enqueueJsonBatchByteString
   , enqueueCheckpoint
   , pollBatch
   , reapWrites
@@ -48,7 +47,6 @@ import Control.Monad
 import Control.Monad.Extra (whenM)
 import Control.Trace (traceMsg)
 import qualified Data.ByteString as ByteString
-import Data.ByteString (ByteString)
 import Data.Default
 import Data.Either
 import Data.HashMap.Strict (HashMap)
@@ -343,32 +341,6 @@ enqueueJsonBatch env repo batch = do
   handle <- UUID.toText <$> UUID.nextRandom
   write <- enqueueWrite env repo size $ writeJsonBatch env repo batch
   when (sendJsonBatch_remember batch) $ rememberWrite env handle write
-  return $ def { sendJsonBatchResponse_handle = handle }
-
--- | Version of enqueueJsonBatch where the facts are ByteStrings. This
--- is to avoid unnecessary ByteString->Text->ByteString conversion
--- when reading from Scribe.
---
--- TODO: this could go away if we could get Thrift to use ByteString
--- as the representation for string, then we could just use
--- enqueueJsonBatch.
---
-enqueueJsonBatchByteString
-  :: Env
-  -> Repo
-  -> PredicateRef
-  -> [ByteString] -- ^ facts
-  -> SendJsonBatchOptions
-  -> Bool -- ^ remember?
-  -> IO Thrift.SendJsonBatchResponse
-enqueueJsonBatchByteString env repo pred facts opts remember = do
-  let
-    size = sum (map ByteString.length facts)
-  traceMsg (envTracer env) (GleanTraceEnqueue repo EnqueueJsonBatchBS size) $ do
-  handle <- UUID.toText <$> UUID.nextRandom
-  write <- enqueueWrite env repo size $
-    writeJsonBatchByteString env repo pred facts opts
-  when remember $ rememberWrite env handle write
   return $ def { sendJsonBatchResponse_handle = handle }
 
 pollBatch :: Env -> Handle -> IO FinishResponse

@@ -12,7 +12,6 @@ module Glean.Write.JSON
   ( buildJsonBatch
   , syncWriteJsonBatch
   , writeJsonBatch
-  , writeJsonBatchByteString
   ) where
 
 import Control.Exception hiding (catch, throw)
@@ -98,19 +97,6 @@ buildJsonBatch dbSchema opts batches =
     forM_ batches $ \JsonFactBatch{..} ->
       writeFacts dbSchema (fromMaybe def opts) builders
         jsonFactBatch_predicate jsonFactBatch_facts jsonFactBatch_unit
-
-writeJsonBatchByteString
-  :: Env
-  -> Repo
-  -> PredicateRef
-  -> [ByteString] -- ^ facts
-  -> SendJsonBatchOptions
-  -> IO WriteContent
-writeJsonBatchByteString env repo pred facts opts = do
-  dbSchema <- withOpenDatabase env repo (return . Database.odbSchema)
-  emptySubst $ withFactBuilder $ \builder ->
-      writeFacts dbSchema opts builder pred facts Nothing{-TODO-}
-
 
 writeFacts
   :: DbSchema
