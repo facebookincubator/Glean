@@ -54,10 +54,12 @@ writeJsonBatchTest = TestCase $ withEmptyTestDB [] $ \env repo -> do
       ]
     options = Just SendJsonBatchOptions
       { sendJsonBatchOptions_no_base64_binary = True
+      , sendJsonBatchOptions_schema_id = Nothing
       }
 
     options' = Just SendJsonBatchOptions
       { sendJsonBatchOptions_no_base64_binary = False
+      , sendJsonBatchOptions_schema_id = Nothing
       }
 
   _ <- syncWriteJsonBatch env repo batches options

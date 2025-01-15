@@ -51,6 +51,7 @@ import Data.Default
 import Data.Either
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
+import qualified Data.Map as Map
 import qualified Data.Monoid as Monoid
 import Data.Text as Text (Text)
 import qualified Data.Text.Encoding as Text
@@ -60,6 +61,7 @@ import qualified Data.Vector.Storable as VS
 import Foreign.Storable
 import System.Clock
 import System.Timeout
+import Text.Printf
 
 import ServiceData.GlobalStats
 import ServiceData.Types
@@ -68,7 +70,9 @@ import Util.Defer
 import Util.Log
 import Util.STM
 
+import Glean.Database.Exception
 import Glean.Database.Open
+import Glean.Database.Schema.Types
 import Glean.Database.Trace
 import Glean.Database.Write.Batch
 import Glean.Database.Types
@@ -212,13 +216,25 @@ enqueueWrite
   :: Env
   -> Repo
   -> Int
+  -> Maybe SchemaId
   -> IO WriteContent
   -> IO (MVar (Either SomeException Subst.Subst))
-enqueueWrite env@Env{..} repo size writeContent = do
+enqueueWrite env@Env{..} repo size optSchemaId writeContent = do
   start <- beginTick 1
   config <- Observed.get envServerConfig
   mvar <- newEmptyMVar
-  withWritableDatabase env repo $ \queue@WriteQueue{..} -> do
+  withWritableDatabase env repo $ \(queue@WriteQueue{..}, odbSchema) -> do
+
+  -- check the schema ID in the batch matches the DB
+  case optSchemaId of
+    Just schemaId | ServerConfig.config_check_write_schema_id config ->
+      when (not (Map.member schemaId (schemaEnvs odbSchema))) $
+        dbError repo $ printf
+          "schema ID in batch (%s) does not match schema ID of DB (%s)"
+          (unSchemaId schemaId)
+          (show (Map.keys (schemaEnvs odbSchema)))
+    _ -> return ()
+
   let WriteQueues{..} = envWriteQueues
       enqueueIt = do
         pending <- now $ readTVar writeQueuesSize
@@ -253,7 +269,7 @@ enqueueCheckpoint
   -> Repo
   -> IO ()
   -> IO ()
-enqueueCheckpoint env repo io = withWritableDatabase env repo $ \queue ->
+enqueueCheckpoint env repo io = withWritableDatabase env repo $ \(queue, _) ->
   atomically $ void $
     addToWriteQueue repo queue (envWriteQueues env) (WriteCheckpoint io)
 
@@ -293,7 +309,8 @@ enqueueBatch env ComputedBatch{..} ownership = do
   handle <- UUID.toText <$> UUID.nextRandom
 
   let size = batchSize computedBatch_batch
-  r <- try $ enqueueWrite env computedBatch_repo size $ pure $
+      optSchemaId = batch_schema_id computedBatch_batch
+  r <- try $ enqueueWrite env computedBatch_repo size optSchemaId $ pure $
         (writeContentFromBatch computedBatch_batch) {
           writeOwnership= ownership
         }
@@ -339,7 +356,10 @@ enqueueJsonBatch env repo batch = do
     size = sum (map jsonFactBatchSize (sendJsonBatch_batches batch))
   traceMsg (envTracer env) (GleanTraceEnqueue repo EnqueueJsonBatch size) $ do
   handle <- UUID.toText <$> UUID.nextRandom
-  write <- enqueueWrite env repo size $ writeJsonBatch env repo batch
+  let optSchemaId =
+        sendJsonBatch_options batch >>= sendJsonBatchOptions_schema_id
+  write <- enqueueWrite env repo size optSchemaId $
+    writeJsonBatch env repo batch
   when (sendJsonBatch_remember batch) $ rememberWrite env handle write
   return $ def { sendJsonBatchResponse_handle = handle }
 

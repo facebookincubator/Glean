@@ -13,6 +13,7 @@ import Control.Exception
 import Control.Monad
 import Data.Either
 import Data.Default (def)
+import Data.List (isInfixOf)
 import qualified Data.Map as Map
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
@@ -34,6 +35,7 @@ import Glean.Init
 import qualified Glean.RTS.Term as RTS
 import Glean.Types as Thrift
 import qualified Glean.Internal.Types as Internal
+import Glean.Write.SendBatch
 import Glean.Write.JSON
 
 
@@ -512,24 +514,6 @@ validateSchemaChanges =
           schema all.1 : x.1 {}
         |]
 
-      withIndex root a b f = do
-        saveJSON schema_index_file schema_index
-        f schema_index_file
-        where
-        schema_index_file = root </> "schema_index_" <> a <> b
-        schema_index = Internal.SchemaIndex
-          { schemaIndex_current = Internal.SchemaInstance
-            { schemaInstance_versions = Map.fromList [ ("v1", 1) ]
-            , schemaInstance_file = Text.pack a
-            }
-          , schemaIndex_older = [
-              Internal.SchemaInstance
-                { schemaInstance_versions = Map.fromList [ ("v0", 1) ]
-                , schemaInstance_file = Text.pack b
-                }
-          ]
-          }
-
       validate
         :: String
         -> String
@@ -574,10 +558,79 @@ validateSchemaChanges =
       , validate "change evolved field" schema_v8 schema_v7 isRight
       ]
 
+withIndex :: FilePath -> String -> String -> (FilePath -> IO b) -> IO b
+withIndex root a b f = do
+  saveJSON schema_index_file schema_index
+  f schema_index_file
+  where
+  schema_index_file = root </> "schema_index_" <> a <> b
+  schema_index = Internal.SchemaIndex
+    { schemaIndex_current = Internal.SchemaInstance
+      { schemaInstance_versions = Map.fromList [ ("v1", 1) ]
+      , schemaInstance_file = Text.pack a
+      }
+    , schemaIndex_older = [
+        Internal.SchemaInstance
+          { schemaInstance_versions = Map.fromList [ ("v0", 1) ]
+          , schemaInstance_file = Text.pack b
+          }
+    ]
+    }
+
+schemaMismatch :: Test
+schemaMismatch = TestCase $
+    let
+      schema_v0 =
+        [s|
+          schema x.1 {
+            predicate P : { a: string }
+          }
+
+          schema all.1 : x.1 {}
+        |]
+
+      schema_v1 =
+        [s|
+          schema x.1 {
+            predicate P : { a: string, b : nat }
+          }
+
+          schema all.1 : x.1 {}
+        |]
+    in
+    withSystemTempDirectory "glean-dbtest" $ \root -> do
+
+      let dbRoot = root </> "db"
+      createDirectory dbRoot
+
+      let file0 = "schema0"
+          file1 = "schema1"
+      writeFile (root </> file0) schema_v0
+      writeFile (root </> file1) schema_v1
+
+      withIndex root file0 file1 $ \index_file -> do
+        withTestEnv [
+          setRoot dbRoot,
+          setSchemaIndex index_file ] $ \env -> do
+        let repo = Repo "test" "0"
+        kickOffTestDB env repo id
+        let
+          facts =
+            [ mkBatch (PredicateRef "x.P" 1)
+                [ [s| { "key" : { "a" : "abc" }} |] ]
+            ]
+        -- don't use syncWriteJsonBatch, it doesn't check the schema ID
+        r <- try $ sendJsonBatch env repo facts (Just def {
+          sendJsonBatchOptions_schema_id = Just (SchemaId "v0") })
+        assertBool "schema mismatch" $ case r of
+          Left (e :: SomeException) ->
+            "does not match schema ID" `isInfixOf` show e
+          _ -> False
 
 main :: IO ()
 main = withUnitTest $ testRunner $ TestList
   [
     TestLabel "multiSchemaTest" multiSchemaTest,
-    TestLabel "validateSchemaChanges" validateSchemaChanges
+    TestLabel "validateSchemaChanges" validateSchemaChanges,
+    TestLabel "schemaMismatch" schemaMismatch
   ]

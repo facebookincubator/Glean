@@ -203,10 +203,10 @@ withOpenDBStack env repo lookup f = do
         withOpenDBStack env baseRepo baseLookup $ \base -> do
           Lookup.withCanLookup (Stacked.stacked base lookup) f
 
-withWritableDatabase :: Env -> Repo -> (WriteQueue -> IO a) -> IO a
+withWritableDatabase :: Env -> Repo -> ((WriteQueue, DbSchema) -> IO a) -> IO a
 withWritableDatabase env repo action =
   withOpenDatabase env repo $ \OpenDB{..} -> case odbWriting of
-    Just Writing{..} -> action wrQueue
+    Just Writing{..} -> action (wrQueue, odbSchema)
     Nothing -> dbError repo "can't write to a read-only database"
 
 readDatabase
