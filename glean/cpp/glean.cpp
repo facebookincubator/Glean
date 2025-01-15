@@ -16,7 +16,10 @@ namespace facebook {
 namespace glean {
 namespace cpp {
 
-BatchBase::BatchBase(const SchemaInventory* inv, size_t cache_capacity)
+BatchBase::BatchBase(
+    const SchemaInventory* inv,
+    size_t cache_capacity,
+    std::string schemaId)
     : inventory(inv),
       stats(std::make_shared<rts::LookupCache::Stats>()),
       cache(
@@ -27,7 +30,8 @@ BatchBase::BatchBase(const SchemaInventory* inv, size_t cache_capacity)
           stats),
       anchor(&rts::EmptyLookup::instance(), &cache),
       buffer(Id::lowest()),
-      facts(&anchor, &buffer) {}
+      facts(&anchor, &buffer),
+      schemaId(std::move(schemaId)) {}
 
 rts::FactSet::Serialized BatchBase::serialize() const {
   return buffer.serialize();

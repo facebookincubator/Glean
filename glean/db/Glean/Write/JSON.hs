@@ -184,6 +184,7 @@ withFactBuilder action =
     (Just $ Vector.fromList $ coerce $ reverse ids)
     (fmap (Vector.fromList . coerce . reverse) ownerMap)
     mempty
+    Nothing -- TODO: we should have a schema ID for JSON batches
 
 
 type WriteFacts a = ReaderT FactBuilder IO a

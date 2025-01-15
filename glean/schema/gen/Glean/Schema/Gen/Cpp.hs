@@ -26,10 +26,11 @@ import TextShow
 import Glean.Schema.Gen.Utils hiding (pushDefs, popDefs)
 import Glean.Angle.Types hiding (schemaName)
 import Glean.Schema.Types
+import Glean.Types (SchemaId(..))
 
 
-genSchemaCpp :: Version -> [ResolvedPredicateDef] -> [ResolvedTypeDef] -> [(FilePath,Text)]
-genSchemaCpp version preddefs typedefs =
+genSchemaCpp :: SchemaId -> Version -> [ResolvedPredicateDef] -> [ResolvedTypeDef] -> [(FilePath,Text)]
+genSchemaCpp hash version preddefs typedefs =
   [("", leading <> newline <> newline <> body)]
   where
     namePolicy = mkNamePolicy preddefs typedefs
@@ -37,7 +38,7 @@ genSchemaCpp version preddefs typedefs =
     ordered = orderDecls someDecls
     ((ds,schema), extra) = runM [] namePolicy typedefs $ do
       ds <- mapM genDecl ordered
-      sc <- defineSchema ordered
+      sc <- defineSchema ordered hash
       return (ds, sc)
     decls = concat ds ++ reverse extra
     pieces = withNS $
@@ -75,8 +76,8 @@ forwardDeclare xs =
     declarations = filter (not . Text.null . snd) . map (fmap fst)
     definitions = map (fmap snd)
 
-defineSchema :: [SomeDecl] -> CppGen Text
-defineSchema ds = do
+defineSchema :: [SomeDecl] -> SchemaId -> CppGen Text
+defineSchema ds hash = do
   let preds = [ p | PredicateDecl p <- ds ]
   pnames <- forM preds $ \PredicateDef{..} -> do
     cppNameIn schemaNamespace . schemaName <$> predicateName predicateDefRef
@@ -87,6 +88,7 @@ defineSchema ds = do
         "static constexpr size_t count = "
           <> Text.pack (show $ length pnames)
           <> ";",
+        "static std::string schemaId = \"" <> unSchemaId hash <> "\";",
         "template<size_t i> struct predicate;"
       ]
     , ["};"]

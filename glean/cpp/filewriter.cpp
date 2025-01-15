@@ -42,6 +42,7 @@ class FileWriter : public Sender {
             {2, static_cast<int64_t>(r.count)},
             {3, folly::ByteRange(r.facts.data(), r.facts.size())},
             {5, batch.serializeOwnership()},
+            {7, batch.getSchemaId()},
         });
     folly::writeFile(folly::ByteRange(out.data(), out.size()), path.c_str());
   }

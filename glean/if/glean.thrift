@@ -253,6 +253,9 @@ struct Batch {
   //
   // The dependency relation is used to determine ownership.
   6: map_Id_list_FactDependencies_964 dependencies;
+
+  // The schema ID, which must match the schema ID of the DB
+  7: optional SchemaId schema_id;
 }
 
 struct Subst {

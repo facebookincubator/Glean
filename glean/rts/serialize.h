@@ -196,7 +196,7 @@ using String = std::string;
 using List = std::vector<Nat>; // TODO: generalise
 using Map = std::map<String, List>; // TODO: generalise
 
-using Field = std::variant<Nat, Binary, Map>;
+using Field = std::variant<Nat, Binary, Map, String>;
 using Object = std::vector<std::pair<uint32_t, Field>>;
 
 enum Type : uint32_t {

@@ -442,7 +442,7 @@ gen GenOptions{..} versions =
             let path = odir </> file
             createDirectoryIfMissing True (takeDirectory path)
             Text.writeFile path (text <> "\n")
-      doGen genSchemaCpp cpp
+      doGen (genSchemaCpp hash) cpp
       doGen genSchemaHackJson hackjson
       doGen genSchemaHS hs
       doGen genSchemaPy py

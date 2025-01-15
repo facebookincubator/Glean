@@ -460,7 +460,10 @@ struct SchemaInventory {
 
 class BatchBase {
  public:
-  explicit BatchBase(const SchemaInventory* inventory, size_t cache_capacity);
+  explicit BatchBase(
+      const SchemaInventory* inventory,
+      size_t cache_capacity,
+      std::string schemaId);
   BatchBase(const BatchBase&) = delete;
   BatchBase(BatchBase&&) = delete;
   BatchBase& operator=(const BatchBase&) = delete;
@@ -496,6 +499,10 @@ class BatchBase {
     return facts.firstFreeId();
   }
 
+  const std::string& getSchemaId() const {
+    return schemaId;
+  }
+
   void beginUnit(std::string);
   void endUnit();
 
@@ -508,6 +515,7 @@ class BatchBase {
   rts::LookupCache::Anchor anchor;
   rts::FactSet buffer;
   rts::Stacked<rts::Define> facts;
+  std::string schemaId;
 
   struct Owned {
     std::string unit;
@@ -587,7 +595,7 @@ template <typename Schema>
 class Batch : private BatchBase {
  public:
   Batch(const DbSchema<Schema>* schema, size_t cache_capacity)
-      : BatchBase(&(schema->inventory), cache_capacity) {}
+      : BatchBase(&(schema->inventory), cache_capacity, Schema::schemaId) {}
 
   template <typename P>
   const rts::Predicate* predicate() const {
