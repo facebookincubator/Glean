@@ -231,7 +231,7 @@ maybeFlush w callback action = modifyMVar_ (writerFacts w) $ \facts -> do
   case writerSender w of
     Just sender | flush == FlushFacts -> do
       new_facts <- newFacts (writerPredicates w) (Just $ writerFirstId w)
-      batch <- serializeFacts facts
+      batch <- addSchemaId sender <$> serializeFacts facts
       writerLog (writerSettings w) $ WriterPushing batch
       let write = writeSendQueue (senderQueue sender) batch callback
       -- NOTE: Yes, we're intentionally blocking inside modifyMVar_
@@ -246,6 +246,12 @@ maybeFlush w callback action = modifyMVar_ (writerFacts w) $ \facts -> do
 
     _ -> return facts
 
+-- If we add our schema ID to the batch, the server will check that it
+-- matches the DB's schema, so we can catch schema mismatches before
+-- we get (de)serialization errors.
+addSchemaId :: Sender -> Thrift.Batch -> Thrift.Batch
+addSchemaId Sender{..} batch =
+  batch { Thrift.batch_schema_id = Backend.schemaId senderBackend }
 
 -- | Write facts to a Repo using an asynchronous sender, with all the
 -- default settings.
