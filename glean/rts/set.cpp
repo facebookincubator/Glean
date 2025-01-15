@@ -33,11 +33,10 @@ void SetOps::insertOutputSet(SetOps::SetToken token, binary::Output* out) {
     s.insert(out->moveToFbString());
     set_sizes[token] += size;
   } else {
-    throw std::overflow_error(folly::sformat(
-        "Set size limit exceeded for standard set. Set token: {}. Max size: {}. Size: {}",
-        token,
+    rts::error(
+        "Set size limit exceeded for standard set. Max size: {}. Size: {}",
         max_set_size,
-        set_sizes[token] + size));
+        set_sizes[token] + size);
   }
 }
 
@@ -56,19 +55,16 @@ void SetOps::freeSet(SetOps::SetToken token) {
 
 SetOps::SetToken SetOps::newWordSet() {
   wordsets.emplace_back(WordSet());
-  wordset_sizes.emplace_back(0);
   return wordsets.size() - 1;
 }
 
 void SetOps::insertWordSet(SetOps::SetToken token, uint64_t value) {
   auto& set = wordsets[token];
-  if (set.size() + sizeof(uint64_t) <= max_set_size) {
+  if ((set.size() + 1) * sizeof(uint64_t) <= max_set_size) {
     set.insert(value);
-    wordset_sizes[token] += sizeof(uint64_t);
   } else {
     rts::error(
-        "Set size limit exceeded for nat set. Set token: {}. Max size: {}. Size: {}",
-        token,
+        "Set size limit exceeded for nat set. Max size: {}. Size: {}",
         max_set_size,
         set.size() + sizeof(uint64_t));
   }
@@ -79,15 +75,13 @@ void SetOps::insertBytesWordSet(
     const unsigned char* start,
     const unsigned char* end) {
   auto& set = wordsets[token];
-  if (set.size() + (end - start) <= max_set_size) {
+  if (set.size() * sizeof(uint64_t) + (end - start) <= max_set_size) {
     for (const unsigned char* p = start; p < end; p++) {
       set.insert(*p);
     }
-    wordset_sizes[token] += end - start;
   } else {
     rts::error(
-        "Set size limit exceeded for byte set. Set token: {}. Max size: {}. Size: {}",
-        token,
+        "Set size limit exceeded for byte set. Max size: {}. Size: {}",
         max_set_size,
         set.size() + (end - start));
   }
@@ -111,7 +105,6 @@ void SetOps::byteSetToByteArray(SetOps::SetToken token, binary::Output* out) {
 
 void SetOps::freeWordSet(SetOps::SetToken token) {
   wordsets.erase(wordsets.begin() + token);
-  wordset_sizes.erase(wordset_sizes.begin() + token);
 }
 
 } // namespace rts

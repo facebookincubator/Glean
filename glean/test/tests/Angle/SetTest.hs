@@ -9,6 +9,8 @@
 {-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE AllowAmbiguousTypes #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module Angle.SetTest (main) where
 
 import Control.Exception hiding (assert)
@@ -18,7 +20,7 @@ import Data.Default
 import Data.Text
 
 import Glean.Angle.Parser
-import Glean.Angle.Types hiding (Nat)
+import Glean.Angle.Types hiding (Nat, Type)
 import Glean.Init
 import Glean.Query.Typecheck
 import Glean.Query.Flatten
@@ -27,6 +29,7 @@ import Glean.Schema.Resolve
 import Glean.Database.Schema.Types
 import Glean.Database.Test
 import Glean.Database.Types
+import Glean.Typed.Binary
 import Glean.Types
 
 import qualified Data.HashMap.Strict as HashMap
@@ -132,18 +135,29 @@ setSemanticsTest = TestList
   ]
 
 setLimitTest :: Test
-setLimitTest =
-  TestLabel "Fail when exceeding limit" $
-    dbTestCaseSettings [setMaxSetSize 8] $ \env repo -> do
-      r <- try (runQuery_ env repo $ angleData @(Set Nat) [s| all (1|2) |])
-        :: IO (Either FFIError [Set Nat])
-      case r of
-        Left ffiExc -> do
-          -- Remove the stack trace and just check the actual error
-          let runtimeMsg = Prelude.take 71 (ffiErrorMessage ffiExc)
-          assertEqual "Exception " runtimeMsg errMsg
-        Right _ -> assert False
+setLimitTest = TestList
+  [ TestLabel  "Fail when exceeding limit for nat set" $
+      testQuery @(Set Nat) [s| all (1|2) |]
+        "Set size limit exceeded for nat set. Max size: 8. Size: 9"
+  , TestLabel "Fail when exceeding limit for word set" $
+      testQuery @(Set Byte)
+        [s| all ( 1 : byte | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 ) |]
+        "Set size limit exceeded for byte set. Max size: 8. Size: 9"
+  , TestLabel "Fail when exceeding limit for word set" $
+      testQuery @(Set Text) [s| all ("foo"|"bar") |]
+        "Set size limit exceeded for standard set. Max size: 8. Size: 10"
+  ]
 
-errMsg :: String
-errMsg =
-  "Set size limit exceeded for nat set. Set token: 0. Max size: 8. Size: 9"
+testQuery :: forall ty . (Show ty, Type ty) => Text -> String -> Test
+testQuery query errMsg =
+  dbTestCaseSettings [setMaxSetSize 8] $ \env repo -> do
+    r <- try (runQuery_ env repo $ angleData query)
+          :: IO (Either FFIError [ty])
+    case r of
+      Left ffiExc -> do
+        let runtimeMsg =
+              Prelude.take (Prelude.length errMsg) (ffiErrorMessage ffiExc)
+        assertEqual "Exception" runtimeMsg errMsg
+      Right v -> do
+        print v
+        assert False

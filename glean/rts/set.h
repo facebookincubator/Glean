@@ -61,7 +61,6 @@ struct SetOps {
   std::vector<BytestringSet> sets = {};
   std::vector<WordSet> wordsets = {};
   std::vector<uint64_t> set_sizes = {};
-  std::vector<uint64_t> wordset_sizes = {};
   uint64_t max_set_size = UINT64_MAX;
 };
 
