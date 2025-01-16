@@ -17,7 +17,7 @@ import Control.Exception hiding (assert)
 import Control.Monad.Trans.Except
 import Control.Monad.Except
 import Data.Default
-import Data.Text
+import Data.Text (Text, unpack)
 
 import Glean.Angle.Parser
 import Glean.Angle.Types hiding (Nat, Type)
@@ -29,6 +29,7 @@ import Glean.Schema.Resolve
 import Glean.Database.Schema.Types
 import Glean.Database.Test
 import Glean.Database.Types
+import qualified Glean.Schema.GleanTest.Types as Glean.Test
 import Glean.Typed.Binary
 import Glean.Types
 
@@ -132,6 +133,10 @@ setSemanticsTest = TestList
   , TestLabel "size of a set" $ dbTestCase $ \env repo -> do
       r <- runQuery_ env repo $ angleData @Nat [s| prim.size (all (1|2|3))|]
       assertEqual "size" r [Nat 3]
+  , TestLabel "sets in predicates" $ dbTestCase $ \env repo -> do
+      r <- runQuery_ env repo $ angleData @Glean.Test.Predicate
+        [s| glean.test.Predicate { set_of_string = all ("bepa" | "apa") } |]
+      assertEqual "angle - set matching" 2 (length r)
   ]
 
 setLimitTest :: Test
