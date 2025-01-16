@@ -88,7 +88,7 @@ defineSchema ds hash = do
         "static constexpr size_t count = "
           <> Text.pack (show $ length pnames)
           <> ";",
-        "static std::string schemaId = \"" <> unSchemaId hash <> "\";",
+        "inline static std::string schemaId = \"" <> unSchemaId hash <> "\";",
         "template<size_t i> struct predicate;"
       ]
     , ["};"]
