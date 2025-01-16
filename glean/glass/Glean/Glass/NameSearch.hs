@@ -17,6 +17,7 @@ module Glean.Glass.NameSearch
   , RepoSearchResult
   , FeelingLuckyResult(..)
   , SingleSymbol
+  , dedupSearchResult
 
   -- * Search
   -- ** Search flags
@@ -56,6 +57,7 @@ import Glean.Glass.Utils (splitOnAny, QueryType )
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.CodemarkupSearch.Types as CodeSearch
 import qualified Glean.Schema.Code.Types as Code
+import qualified Data.HashMap.Strict as Map
 
 --
 -- Finding entities by name search
@@ -650,6 +652,18 @@ instance ToSearchResult CodeSearch.SearchByScope where
 
 -- | Type of processed search results from a single scm repo
 type RepoSearchResult = [SingleSymbol]
+
+-- | Ensure all SymbolResults in a (repo-wide) search result are unique.
+--
+--   We can have multiple descriptions when querying dbs
+--   having the same content (for instance, incremental and full
+--   DBs). In that case, descriptions differ only in the repo_hash
+--   field.
+--   dedupSearchResult picks one abitrarily. TODO pick the most
+--   recent revision one, and don't discard a description if it
+--   differs by more than the repo_hash field
+dedupSearchResult :: RepoSearchResult -> RepoSearchResult
+dedupSearchResult results = Map.toList $ Map.fromListWith max results
 
 -- An un-concatenated set of query results to search for unique hits in
 -- within one scm repo, across dbs, across queries, a set of result symbols.

@@ -82,7 +82,7 @@ import Glean.Glass.NameSearch (
     SearchQuery(..), SingleSymbol, FeelingLuckyResult(..),
     QueryExpr(..), RepoSearchResult, SymbolSearchData(..),
     toSearchResult, ToSearchResult(..), AngleSearch(..), srEntity,
-    buildLuckyContainerQuery, buildSearchQuery
+    buildLuckyContainerQuery, buildSearchQuery, dedupSearchResult
   )
 import Glean.Glass.XRefs ( GenXRef(..) )
 import Glean.Glass.Search as Search
@@ -408,13 +408,14 @@ joinSearchResults
 joinSearchResults mlimit terse sorted xs = SymbolSearchResult syms $
     if terse then [] else catMaybes descs
   where
+    uniqXs = dedupSearchResult <$> xs
     (syms,descs) = unzip $ nubOrd $ case (mlimit, sorted) of
       (Nothing, _) -> flattened
       (Just n, False) -> take n flattened
       -- codehub/aka "sorted" mode grouping, ranking and sampling
-      (Just n, True) -> takeFairN n (concatMap sortResults xs)
+      (Just n, True) -> takeFairN n (concatMap sortResults uniqXs)
 
-    flattened = concat xs
+    flattened = concat uniqXs
 
 --
 -- DFS to first singleton result.
