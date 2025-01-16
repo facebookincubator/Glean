@@ -527,7 +527,7 @@ predicate FileCall :
     callee_xref: maybe XRefTarget,  # deprecated in favor of callee_xrefs
     dispatch_arg: maybe CallArgument,
     receiver_type: maybe Declaration,
-    callee_xrefs: [XRefTarget],
+    callee_xrefs: set XRefTarget,
   }
 
 # All uses of a declaration in a file. Note that the bytespan offsets are

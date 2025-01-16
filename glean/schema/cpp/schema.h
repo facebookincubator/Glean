@@ -13906,7 +13906,7 @@ struct CallArgument {
   }
 }; // struct CallArgument
 
-struct FileCall : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan, std::vector<CallArgument>, boost::variant<Alt<0, std::tuple<>>, Alt<1, XRefTarget>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, CallArgument>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Declaration>>, std::vector<XRefTarget>>> {
+struct FileCall : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan, std::vector<CallArgument>, boost::variant<Alt<0, std::tuple<>>, Alt<1, XRefTarget>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, CallArgument>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Declaration>>, std::set<XRefTarget>>> {
   static const char* GLEAN_name() {
     return "hack.FileCall";
   }
@@ -29613,7 +29613,7 @@ struct ArgumentValue : Predicate<boost::variant<Alt<0, std::string>, Alt<1, std:
 struct SCHEMA {
   template<typename P> struct index;
   static constexpr size_t count = 1321;
-  static constexpr char schemaId[] = "6b1f4c87d9affa95bff4e43dc9e40170";
+  static std::string schemaId = "59d399727c5be908f526f7279d0e6ee1";
   template<size_t i> struct predicate;
 };
 
