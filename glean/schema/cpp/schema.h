@@ -29613,7 +29613,7 @@ struct ArgumentValue : Predicate<boost::variant<Alt<0, std::string>, Alt<1, std:
 struct SCHEMA {
   template<typename P> struct index;
   static constexpr size_t count = 1321;
-  inline static std::string schemaId = "59d399727c5be908f526f7279d0e6ee1";
+  static constexpr char schemaId[] = "59d399727c5be908f526f7279d0e6ee1";
   template<size_t i> struct predicate;
 };
 
