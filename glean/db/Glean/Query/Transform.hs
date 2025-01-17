@@ -20,6 +20,7 @@ module Glean.Query.Transform
   , skipTrusted
   , buildTerm
   , isWordTy
+  , isByteTy
   , defaultValue
   ) where
 
@@ -246,6 +247,7 @@ buildTerm out vars term = go term
         outputBytes ptr end out
       go rest
     Ref (MatchVar (Var ty var _))
+      | isByteTy ty -> outputByte (vars ! var) out
       | isWordTy ty -> outputNat (vars ! var) out
       | otherwise ->
         local $ \ptr end -> do
@@ -270,6 +272,9 @@ isWordTy = isWordRep . repType
   isWordRep ByteRep = True
   isWordRep NatRep = True
   isWordRep _ = False
+
+isByteTy :: Type -> Bool
+isByteTy = (ByteRep ==) . repType
 
 -- | Transform predicates inside the type but keep its structure.
 transformType :: QueryTransformations -> Type -> Type

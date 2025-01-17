@@ -15,6 +15,7 @@ import Data.Default
 import Data.List
 import Data.Text (Text)
 import qualified Data.Text as Text
+import Data.Word (Word8)
 import Test.HUnit
 
 import TestRunner
@@ -306,6 +307,13 @@ angleTest modify = dbTestCase $ \env repo -> do
       glean.test.Predicate { enum_ = f }
     |]
   assertEqual "angle - enum 2" 0 (length results)
+
+  r <- runQuery_ env repo $ modify $ angleData @Byte
+    [s| ( 1 | 240 ) : byte |]
+    -- The Byte type uses signed Int8, because that's what Thrift uses.
+    -- But Angle bytes are unsigned. It turns out that `fromIntegral` does
+    -- the right thing here and doesn't touch the bit patterns.
+  assertEqual "angle - bytes" (sort [Byte 1, Byte (fromIntegral (240 :: Word8))]) (sort r)
 
   -- test fact lookups
   results <- runQuery_ env repo $ modify $ angle @Cxx.Name

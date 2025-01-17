@@ -40,6 +40,7 @@ import qualified Util.Log.Text as TextLog
 import Glean.Query.Transform
   ( skipTrusted
   , isWordTy
+  , isByteTy
   , buildTerm
   , transformType
   , transformBytes
@@ -1346,6 +1347,9 @@ buildPrefix chunks cont =
       local $ \ptr end -> do
         loadLiteral bs ptr end
         outputBytes ptr end out
+      go out cont rest
+    QueryVar (Typed ty o) | isByteTy ty -> do
+      outputByte (castRegister o) out
       go out cont rest
     QueryVar (Typed ty o) | isWordTy ty -> do
       outputNat (castRegister o) out

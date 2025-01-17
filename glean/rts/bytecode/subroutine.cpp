@@ -92,6 +92,10 @@ struct Eval {
     *a.output = binary::Output();
   }
 
+  FOLLY_ALWAYS_INLINE void execute(OutputByte a) {
+    a.output->fixed<unsigned char>(static_cast<unsigned char>(a.src));
+  }
+
   FOLLY_ALWAYS_INLINE void execute(OutputByteImm a) {
     a.output->fixed<unsigned char>(static_cast<unsigned char>(a.src));
   }

@@ -85,7 +85,7 @@ data Usage
 --
 -- BUMP THIS WHENEVER YOU CHANGE THE BYTECODE EVEN IF YOU JUST ADD INSTRUCTIONS
 version :: Int
-version = 13
+version = 14
 
 -- | Lowest bytecode version supported by the current engine.
 --
@@ -93,7 +93,7 @@ version = 13
 -- TO THE END OF THE LIST (in which case the new engine can still execute
 -- old bytecode)
 lowestSupportedVersion :: Int
-lowestSupportedVersion = 13
+lowestSupportedVersion = 14
 
 -- | Definitions of all bytecode instructions
 instructions :: [Insn]
@@ -156,6 +156,10 @@ instructions =
   , Insn "OutputNatImm" [] []
       [ Arg "src" $ Imm ImmWord
       , Arg "output" $ reg BinaryOutputPtr Load ]
+
+  , Insn "OutputByte" [] []
+    [ Arg "src" $ reg Word Load
+    , Arg "output" $ reg BinaryOutputPtr Load ]
 
     -- Encode a byte in a binary::Output
   , Insn "OutputByteImm" [] []

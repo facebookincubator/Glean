@@ -43,6 +43,10 @@
           eval_OutputNatImm();
           break;
   
+        case Op::OutputByte:
+          eval_OutputByte();
+          break;
+  
         case Op::OutputByteImm:
           eval_OutputByteImm();
           break;
@@ -233,7 +237,6 @@
         case Op::Ret:
           return eval_Ret();
   
-        case Op::Unused58:
         case Op::Unused59:
         case Op::Unused60:
         case Op::Unused61:
@@ -448,6 +451,7 @@
       &&label_ResetOutput,
       &&label_OutputNat,
       &&label_OutputNatImm,
+      &&label_OutputByte,
       &&label_OutputByteImm,
       &&label_OutputBytes,
       &&label_OutputStringToLower,
@@ -538,6 +542,10 @@
   
   label_OutputNatImm:
           eval_OutputNatImm();
+    goto *labels[*pc++];
+  
+  label_OutputByte:
+          eval_OutputByte();
     goto *labels[*pc++];
   
   label_OutputByteImm:
@@ -870,6 +878,19 @@
     args.src = *pc++;
     args.output = Reg<binary::Output *>(&frame[*pc++]).get();
     DVLOG(5) << "OutputNatImm" << "  " << args.src << "  " << "<<binary::Output>>";
+    return execute(args);
+  }
+
+  struct OutputByte {
+    uint64_t src;
+    binary::Output * output;
+  };
+  
+  FOLLY_ALWAYS_INLINE void eval_OutputByte() {
+    OutputByte args;
+    args.src = Reg<uint64_t>(&frame[*pc++]).get();
+    args.output = Reg<binary::Output *>(&frame[*pc++]).get();
+    DVLOG(5) << "OutputByte" << "  " << args.src << "  " << "<<binary::Output>>";
     return execute(args);
   }
 
