@@ -28,7 +28,6 @@ import Data.List.NonEmpty (NonEmpty(..))
 import qualified Data.List.NonEmpty as NonEmpty
 import Data.Maybe
 import Data.Text ( Text, isPrefixOf )
-import Data.Tuple.Extra ( fst3 )
 import qualified Control.Concurrent.Async as Async
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as Text
@@ -77,6 +76,11 @@ import Glean.Glass.Env (Env' (tracer, sourceControl, useSnapshotsForSymbolsList)
 import Glean.Glass.SourceControl
 import Glean.Glass.Tracing (traceSpan)
 import qualified Glean.Glass.Utils as Utils
+import Glean.Glass.Utils ( fst4 )
+import Glean.Glass.Attributes.Class (
+    AttributesMetricsLog(..),
+    emptyAttributesMetricsLog)
+
 
 -- | Runner for methods that are keyed by a file path
 runRepoFile
@@ -112,15 +116,15 @@ documentSymbolListX
   -> IO DocumentSymbolListXResult
 documentSymbolListX env r opts = do
   useSnapshots <- useSnapshotsForSymbolsList env
-  fst3 <$>
+  fst4 <$>
     runRepoFile
       "documentSymbolListX"
       (if useSnapshots
         then fetchSymbolsAndAttributes env
         else (\dbInfo req opts be _ mlang -> do
-                ((res, log), err) <- fetchSymbolsAndAttributesGlean
+                ((res, log, attrLog), err) <- fetchSymbolsAndAttributesGlean
                   env dbInfo req opts be Nothing mlang
-                return ((res, Snapshot.Unrequested, log), err)
+                return ((res, Snapshot.Unrequested, log, attrLog), err)
               )
       )
       env r opts
@@ -140,13 +144,13 @@ documentSymbolListXSnapshot
   -> Maybe (Some Glean.Backend, GleanDBInfo)
   -> IO DocumentSymbolListXResult
 documentSymbolListXSnapshot env r opts mGleanBe = do
-  fst3 <$>
+  fst4 <$>
     runRepoFile
       "documentSymbolListXSnapshot"
       (\dbInfo req opts be _ mlang -> do
-          ((res, log), err) <- fetchSymbolsAndAttributesGlean
+          ((res, log, attrLog), err) <- fetchSymbolsAndAttributesGlean
             env dbInfo req opts be mGleanBe mlang
-          return ((res, Snapshot.Unrequested, log), err)
+          return ((res, Snapshot.Unrequested, log, attrLog), err)
           )
       env r opts
 
@@ -158,7 +162,7 @@ documentSymbolIndex
   -> RequestOptions
   -> IO DocumentSymbolIndex
 documentSymbolIndex env r opts =
-  fst3 <$>
+  fst4 <$>
     runRepoFile
       "documentSymbolIndex"
       (fetchDocumentSymbolIndex env)
@@ -202,7 +206,7 @@ fetchSymbolsAndAttributesGlean
   -> Maybe (Some Glean.Backend, GleanDBInfo)
   -> Maybe Language
   -> IO (
-       (DocumentSymbolListXResult, QueryEachRepoLog),
+       (DocumentSymbolListXResult, QueryEachRepoLog, AttributesMetricsLog),
        Maybe ErrorLogger
      )
 fetchSymbolsAndAttributesGlean
@@ -215,7 +219,7 @@ fetchSymbolsAndAttributesGlean
       withContentHash
       ExtraSymbolOpts{..} be mlang dbInfo
 
-  res2 <- traceSpan tracer "addDynamicAttributes" $
+  (res2, attributesLog) <- traceSpan tracer "addDynamicAttributes" $
     addDynamicAttributes env dbInfo repo opts
       file mlimit be res1
 
@@ -224,7 +228,7 @@ fetchSymbolsAndAttributesGlean
 
   let res4 = toDocumentSymbolResult res3
   let res5 = translateMirroredRepoListXResult req res4
-  return ((res5, gLogs), elogs)
+  return ((res5, gLogs, attributesLog), elogs)
   where
     repo = documentSymbolsRequest_repository req
     path = documentSymbolsRequest_filepath req
@@ -247,8 +251,8 @@ shouldFetchContentHash opts =
     requestOptions_matching_revision opts)
 
 type FetchDocumentSymbols =
-  ((DocumentSymbolListXResult, SnapshotStatus, QueryEachRepoLog),
-    Maybe ErrorLogger)
+  ((DocumentSymbolListXResult, SnapshotStatus,
+    QueryEachRepoLog, AttributesMetricsLog), Maybe ErrorLogger)
 
 -- | When an explicit revision is requested, we attempt to fetch both
 -- Glean results and a snapshot. This function chooses which result to
@@ -258,7 +262,7 @@ chooseGleanOrSnapshot
   :: RequestOptions
   -> Revision
   -> (
-       (DocumentSymbolListXResult, QueryEachRepoLog),
+       (DocumentSymbolListXResult, QueryEachRepoLog, AttributesMetricsLog),
        Maybe ErrorLogger
      )
      -- ^ Glean result
@@ -291,19 +295,19 @@ chooseGleanOrSnapshot RequestOptions{..} revision glean esnapshot
       empty status =
         ((toDocumentSymbolResult(emptyDocumentSymbols revision)
           , status
-          , FoundNone)
+          , FoundNone, emptyAttributesMetricsLog)
         , Just $ logError $
             GlassExceptionReason_matchingRevisionNotAvailable $
               unRevision revision
         )
 
-    addStatus st ((res, gleanLog), mlogger) =
-      ((res, st, gleanLog), mlogger)
+    addStatus st ((res, gleanLog, attributesLog), mlogger) =
+      ((res, st, gleanLog, attributesLog), mlogger)
 
-    getResultRevision ((x, _), _) = documentSymbolListXResult_revision x
+    getResultRevision ((x, _ ,_), _) = documentSymbolListXResult_revision x
     isRevisionHit rev = (== rev) . getResultRevision
 
-    resultContentMatch ((r, _), _) =
+    resultContentMatch ((r, _, _), _) =
       documentSymbolListXResult_content_match r
 
 returnSnapshot
@@ -311,7 +315,8 @@ returnSnapshot
   -> SnapshotStatus
   -> FetchDocumentSymbols
 returnSnapshot queryResult match =
-  ((setContentMatch queryResult, match, QueryEachRepoUnrequested), Nothing)
+  ((setContentMatch queryResult, match,
+    QueryEachRepoUnrequested, emptyAttributesMetricsLog), Nothing)
   where
     -- set the content_match field appropriately if we used a snapshot
     setContentMatch res = case match of
@@ -332,7 +337,7 @@ fallbackForNewFiles
   -> FetchDocumentSymbols
   -> IO FetchDocumentSymbols
 fallbackForNewFiles Glass.Env{..} RequestOptions{..} snapshotbe repo file res
-  | ((_,_,_), Just ErrorLogger {errorTy}) <- res, all isNoSrcFileFact errorTy,
+  | ((_,_,_,_), Just ErrorLogger {errorTy}) <- res, all isNoSrcFileFact errorTy,
     -- assume it's a new file if no src.File fact
     Just revision <- requestOptions_revision,
     not requestOptions_exact_revision = do
@@ -360,7 +365,8 @@ fetchSymbolsAndAttributes
   -> GleanBackend b
   -> snapshotBackend
   -> Maybe Language
-  -> IO ((DocumentSymbolListXResult, SnapshotStatus, QueryEachRepoLog)
+  -> IO ((DocumentSymbolListXResult, SnapshotStatus, QueryEachRepoLog,
+  AttributesMetricsLog)
         , Maybe ErrorLogger)
 fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
   opts@RequestOptions{..} be snapshotbe mlang = do
@@ -378,7 +384,8 @@ fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
     file = documentSymbolsRequest_filepath req
     repo = documentSymbolsRequest_repository req
 
-    addStatus st ((res, gleanLog), mlogger) = ((res, st, gleanLog), mlogger)
+    addStatus st ((res, gleanLog, attributeLog), mlogger) =
+      ((res, st, gleanLog, attributeLog), mlogger)
 
     getFromSnapshot revision = do
       let matching = requestOptions_matching_revision &&
@@ -518,12 +525,11 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
               XlangXRef (rangeSpan, Code.IdlEntity {
                 idlEntity_entity = Just ent }) <- xrefs ]
 
-        let (refs, defs) = Attributes.augmentSymbols
+        let (refs, defs, _) = Attributes.augmentSymbols
               Attributes.SymbolKindAttr
               kinds
               (xRefDataToRefEntitySymbol <$> refsPlain)
               defs1
-
         return (DocumentSymbols { srcFile = Just srcFile, .. },
                 gleanDataLog, merr)
 
@@ -626,11 +632,13 @@ fetchDocumentSymbolIndex
   -> GleanBackend b
   -> snapshotBackend
   -> Maybe Language
-  -> IO ((DocumentSymbolIndex, SnapshotStatus, QueryEachRepoLog),
-       Maybe ErrorLogger)
+  -> IO ((
+    DocumentSymbolIndex, SnapshotStatus,
+    QueryEachRepoLog, AttributesMetricsLog),
+    Maybe ErrorLogger)
 fetchDocumentSymbolIndex env latest req opts be
     snapshotbe mlang = do
-  ((DocumentSymbolListXResult{..}, status, gleanDataLog), merr1) <-
+  ((DocumentSymbolListXResult{..}, status, gleanDataLog, attrLog), merr1) <-
     fetchSymbolsAndAttributes env latest req opts be snapshotbe mlang
 
   --  refs defs revision truncated digest = result
@@ -650,7 +658,7 @@ fetchDocumentSymbolIndex env latest req opts be
         documentSymbolIndex_content_match =
           documentSymbolListXResult_content_match
       }
-  return ((idxResult, status, gleanDataLog), merr1)
+  return ((idxResult, status, gleanDataLog, attrLog), merr1)
 
 -- | Same repo generic attributes
 documentSymbolKinds
@@ -861,22 +869,28 @@ addDynamicAttributes
   -> Maybe Int
   -> GleanBackend b
   -> DocumentSymbols
-  -> IO DocumentSymbols
+  -> IO (DocumentSymbols, AttributesMetricsLog)
 addDynamicAttributes env dbInfo repo opts repofile mlimit be syms = do
   -- combine additional dynamic attributes
   mattrs <- getSymbolAttributes env
     dbInfo repo opts repofile mlimit be
-  return $ extend mattrs syms
+  return $ extend mattrs emptyAttributesMetricsLog syms
   where
-    extend [] syms = syms
-    extend (augment : xs) syms =
-      let (refs',defs') = augment (refs syms) (defs syms)
-      in extend xs $ syms { refs = refs' , defs = defs' }
+    extend [] log syms = (syms, log)
+    extend (augment : xs) log syms =
+      extend xs newLog (syms { refs = refs' , defs = defs' })
+      where
+      (refs',defs',log') = augment (refs syms) (defs syms)
+      newLog = AttributesMetricsLog
+       (numPerFile log' + numPerFile log)
+       (numAssignedPerFile log' + numAssignedPerFile log)
 
 type Augment =
    [Attributes.RefEntitySymbol] ->
    [Attributes.DefEntitySymbol] ->
-   ([Attributes.RefEntitySymbol], [Attributes.DefEntitySymbol])
+   ([Attributes.RefEntitySymbol],
+    [Attributes.DefEntitySymbol],
+    AttributesMetricsLog)
 
 -- Work out if we have extra attribute dbs and then run the queries
 getSymbolAttributes

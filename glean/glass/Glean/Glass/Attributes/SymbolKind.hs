@@ -54,8 +54,11 @@ instance ToAttributes SymbolKindAttr where
     q = fileEntityKinds fileId .| fileEntityXRefKinds fileId
 
   augmentSymbols _ kinds refs defs =
-    extendAttributes (\_ ent -> ent) attrMap refs defs
-    where
+      (refs_result, defs_result, emptyAttributesMetricsLog)
+     where
+     (refs_result, defs_result) =
+      extendAttributes (\_ ent -> ent) attrMap refs defs
+      where
       attrMap = Map.fromList
         [ (entity, toAttributes kind)
         | (entity, kind) <- kinds

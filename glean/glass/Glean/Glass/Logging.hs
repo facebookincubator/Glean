@@ -44,6 +44,7 @@ import Glean.Glass.Base ( GleanDBName )
 import Glean.Glass.Types
 import Glean.Glass.NameSearch (FeelingLuckyResult(..), RepoSearchResult)
 import Glean.Glass.SnapshotBackend ( SnapshotStatus(..) )
+import Glean.Glass.Attributes.Class (AttributesMetricsLog(..))
 
 instance ActionLog GleanGlassLogger where
   successLog = Logger.setSuccess True
@@ -105,6 +106,11 @@ instance (LogResult a, LogResult b) => LogResult (a,b) where
 instance (LogResult a, LogResult b, LogResult c) => LogResult (a,b,c) where
   logResult (a,b,c) = logResult a <> logResult b <> logResult c
 
+instance (LogResult a, LogResult b, LogResult c,  LogResult d)
+  => LogResult (a,b,c,d) where
+    logResult (a,b,c,d) =
+      logResult a <> logResult b <> logResult c  <> logResult d
+
 instance LogResult DocumentSymbolListXResult  where
   logResult DocumentSymbolListXResult{..} =
     Logger.setTruncated documentSymbolListXResult_truncated <>
@@ -137,6 +143,11 @@ instance LogResult QueryEachRepoLog where
         then mempty
         else Logger.setRepoOther (map Glean.repo_name more)
     _ -> mempty
+
+instance LogResult AttributesMetricsLog where
+    logResult AttributesMetricsLog{..} =
+      Logger.setNumAttributeSamples numPerFile <>
+      Logger.setNumAssignedAttributeSamples numAssignedPerFile
 
 instance LogResult DocumentSymbolIndex where
   logResult DocumentSymbolIndex{..} =

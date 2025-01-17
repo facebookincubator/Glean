@@ -18,6 +18,8 @@ module Glean.Glass.Attributes.Class
   , extendAttributes
   , attrListToMap
   , attrMapToList
+  , AttributesMetricsLog(..)
+  , emptyAttributesMetricsLog
   ) where
 
 import qualified Data.Map as Map
@@ -26,8 +28,24 @@ import qualified Glean
 import qualified Glean.Haxl.Repos as Glean
 
 import Glean.Glass.Types
+    ( SymbolId,
+      AttributeList(AttributeList),
+      Attributes(Attributes),
+      DefinitionSymbolX(..),
+      KeyedAttribute(KeyedAttribute),
+      ReferenceRangeSymbolX(..) )
 import qualified Glean.Schema.Src.Types as Src ( File )
 import qualified Glean.Schema.Code.Types as Code
+
+
+data AttributesMetricsLog = AttributesMetricsLog
+  { numPerFile :: Int
+  , numAssignedPerFile :: Int
+  }
+
+
+emptyAttributesMetricsLog :: AttributesMetricsLog
+emptyAttributesMetricsLog = AttributesMetricsLog 0 0
 
 -- | Class for querying attributes and converting them to thrift
 class ToAttributes key where
@@ -47,7 +65,7 @@ class ToAttributes key where
     -> [AttrRep key]
     -> [RefEntitySymbol]
     -> [DefEntitySymbol]
-    -> ([RefEntitySymbol], [DefEntitySymbol])
+    -> ([RefEntitySymbol], [DefEntitySymbol], AttributesMetricsLog)
 
 type RefEntitySymbol = (Code.Entity, ReferenceRangeSymbolX)
 type DefEntitySymbol = (Code.Entity, DefinitionSymbolX)

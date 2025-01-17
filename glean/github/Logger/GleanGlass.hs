@@ -103,3 +103,9 @@ setInternalError _ = GleanGlassLogger
 
 setInternalErrorType :: Text -> GleanGlassLogger
 setInternalErrorType _ = GleanGlassLogger
+
+setNumAttributeSamples :: Int -> GleanGlassLogger
+setNumAttributeSamples _ = GleanGlassLogger
+
+setNumAssignedAttributeSamples :: Int -> GleanGlassLogger
+setNumAssignedAttributeSamples _ = GleanGlassLogger
