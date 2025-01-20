@@ -41,7 +41,7 @@ common deps
         ansi-terminal ^>= 0.11,
         array ^>=0.5.2.0,
         async ^>=2.2.1,
-        base >=4.11.1 && <4.15,
+        base >=4.11.1 && <4.17,
         containers,
         data-default,
         deepseq ^>=1.4.3.0,
@@ -55,7 +55,7 @@ common deps
         text ^>=1.2.3.0,
         thrift-lib,
         unordered-containers ^>=0.2.9.0,
-        vector ^>=0.12.0.1,
+        vector >=0.12.0.1 && <0.14,
 
 common exe
   ghc-options: -threaded

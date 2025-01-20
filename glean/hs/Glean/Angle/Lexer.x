@@ -280,14 +280,14 @@ encodeTextForAngle :: Text -> Text
 encodeTextForAngle =
   Text.decodeUtf8 . Lazy.toStrict . Aeson.encode . Aeson.String
 
-alexGetUserState :: Alex AlexUserState
-alexGetUserState = Alex $ \s@AlexState{alex_ust} -> Right (s, alex_ust)
+alexGetUserState_ :: Alex AlexUserState
+alexGetUserState_ = Alex $ \s@AlexState{alex_ust} -> Right (s, alex_ust)
 
 getToken :: Alex (SrcLoc, Token)
 getToken = do
   inp__@(_,_,_,n) <- alexGetInput
   sc <- alexGetStartCode
-  ust <- alexGetUserState
+  ust <- alexGetUserState_
   case alexScanUser ust inp__ sc of
     AlexEOF -> alexEOF
     AlexError ((AlexPn _ line column),_,_,_) ->
