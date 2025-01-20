@@ -11,10 +11,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ghc: [8.6.5, 8.8.4, 8.10.7]
+        ghc: [8.6.5, 8.8.4, 8.10.7, 9.2.8]
         compiler: [gcc]
         include:
-          - ghc: 8.10.7
+          - ghc: 9.2.8
             compiler: clang
     runs-on: 32-core-ubuntu
     container:
