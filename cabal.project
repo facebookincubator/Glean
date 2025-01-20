@@ -17,10 +17,13 @@ tests: True
 -- necessary to use a haskeline <0.8 with GHCs that ship with base >= 4.14
 allow-newer: haskeline:base
 
+-- we use haskell-names < 0.10, but need to override some upper bounds
+allow-newer: haskell-names:aeson, haskell-names:bytestring
+
 -- https://github.com/TomMD/entropy/issues/75
 constraints: entropy < 0.4.1.9
 
-index-state: 2022-12-25T00:00:00Z
+index-state: 2025-01-17T00:00:00Z
 
 package glean
     flags: -fbthrift

@@ -137,17 +137,16 @@ common deps
         random,
         regex-base,
         regex-pcre,
-        ghc-prim,
-        base >=4.11.1 && <4.15,
+        base >=4.11.1 && <4.17,
         array ^>=0.5.2.0,
         async ^>=2.2.1,
-        attoparsec ^>=0.13.2.3,
+        attoparsec >=0.13.2.3 && <0.15,
         unordered-containers ^>=0.2.9.0,
         containers,
         contravariant ^>=1.5,
         text ^>=1.2.3.0,
-        bytestring ^>=0.10.8.2,
-        vector ^>=0.12.0.1,
+        bytestring >=0.10.8.2 && <0.12,
+        vector >=0.12.0.1 && <0.14,
         transformers ^>=0.5.6.2,
         network-uri ^>=2.6.1.0,
         stm ^>=2.5.0.0,
@@ -157,15 +156,15 @@ common deps
         mtl ^>=2.2.2,
         unix ^>=2.7.2.2,
         process ^>=1.6.3.0,
-        prettyprinter >=1.2.1 && <1.7,
+        prettyprinter >=1.2.1 && <1.8,
         time >=1.8.0.2 && <1.12,
         binary ^>=0.8.5.1,
         deepseq ^>=1.4.3.0,
-        hashable >=1.2.7.0 && <1.4,
+        hashable >=1.2.7.0 && <1.6,
         tar ^>=0.5.1.0,
-        ghc-prim >=0.5.2.0 && <0.7,
+        ghc-prim >=0.5.2.0 && <0.9,
         parsec ^>=3.1.13.0,
-        haxl >= 2.1.2.0 && < 2.4,
+        haxl >= 2.1.2.0 && < 2.6,
         hinotify ^>= 0.4.1
 
 common hsc2hs-cpp
@@ -917,7 +916,7 @@ executable glean-server
         glean:core,
         glean:db,
         glean:util,
-        haskeline >=0.7.3 && <0.8,
+        haskeline >=0.7.3 && <0.9,
         json
 
 library shell-lib
@@ -943,7 +942,7 @@ library shell-lib
         glean:indexers,
         glean:util,
         glean:lsif,
-        haskeline >=0.7.3 && <0.8,
+        haskeline >=0.7.3 && <0.9,
         json,
         monad-control,
         prettyprinter-ansi-terminal,
@@ -1324,7 +1323,7 @@ library bench-util
         Glean.Util.Benchmark
     build-depends:
         glean:stubs,
-        criterion
+        criterion < 1.6
 
 executable query-bench
     import: fb-haskell, fb-cpp, deps, exe
@@ -1343,7 +1342,7 @@ executable query-bench
         glean:schema,
         glean:test-lib,
         glean:util,
-        criterion
+        criterion < 1.6
 
 executable rename-bench
     import: fb-haskell, fb-cpp, deps, exe
@@ -1359,7 +1358,7 @@ executable rename-bench
         glean:schema,
         glean:test-lib,
         glean:util,
-        criterion
+        criterion < 1.6
 
 executable user-query-bench
     import: fb-haskell, fb-cpp, deps, exe
@@ -1376,7 +1375,7 @@ executable user-query-bench
         glean:schema,
         glean:test-lib,
         glean:util,
-        criterion
+        criterion < 1.6
 
 executable makefact-bench
     import: fb-haskell, deps, exe
@@ -1391,7 +1390,7 @@ executable makefact-bench
         glean:core,
         glean:schema,
         glean:test-lib,
-        criterion
+        criterion < 1.6
 
 executable compile-bench
     import: fb-haskell, fb-cpp, deps, exe
@@ -1408,7 +1407,7 @@ executable compile-bench
         glean:schema,
         glean:test-lib,
         glean:util,
-        criterion,
+        criterion < 1.6,
         criterion-measurement,
         statistics,
         vector-algorithms
