@@ -1116,7 +1116,8 @@ executable hiedb-indexer
         glean:schema,
         glean:stubs,
         glean:util,
-        hiedb,
+        hie-compat < 0.3.1.2,
+        hiedb < 0.4.3,
         split,
         sqlite-simple,
 
