@@ -45,7 +45,6 @@ import Glean
 import qualified Glean.Types as Thrift
 import Glean.LocalOrRemote (LocalOrRemote)
 import Glean.Database.Config (ProcessedSchema(..), processSchema)
-import Glean.Schema.Util (SourceRef)
 import Glean.Util.Some
 
 data Statement pat

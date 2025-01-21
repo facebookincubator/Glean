@@ -156,7 +156,8 @@ module Glean
   , Fid(..)   -- TODO: Fid isn't very useful, might want to tidy up the API here
   , PredicateRef(..)
   , predicateRef
-  , SumBranches(..)
+  , SourceRef(..) -- used in Glean.Util.Derive
+  , showRef
 
   -- * Writing
   , fillDatabase
@@ -208,6 +209,8 @@ module Glean
 
 import Glean.Backend.Types
 import Glean.Angle.Lexer
+import Glean.Angle.Types
+import Glean.Schema.Util (showRef)
 
 import Glean.Impl.ConfigProvider ()
   -- re-export instance ConfigProvider ConfigAPI, so that clients
