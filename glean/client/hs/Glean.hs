@@ -187,8 +187,10 @@ module Glean
   , SendQueueSettings(..)
   , SendQueueEvent(..)
   , withWriter
+  , withWriters
   , Writer
   , WriterSettings(..)
+  , WriterEvent(..)
   , writerOptions
   , writeFacts
   , writeSendAndRebaseQueue

@@ -24,7 +24,6 @@ import Util.Log (logError, logInfo)
 
 import Glean
 import Util.Time ( toDiffMillis )
-import Glean.Write.Async
 import Glean.Types
 
 -- | 'withSimpleSender' has 'senderLog' write to "Util.Log"
