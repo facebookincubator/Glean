@@ -207,6 +207,9 @@ module Glean
   , sendJsonBatch
   , SendJsonBatch(..)
   , JsonFactBatch(..)
+
+  -- * Misc
+  , showUserQueryStats
   ) where
 
 import Glean.Backend.Types
@@ -219,6 +222,7 @@ import Glean.Impl.ConfigProvider ()
   -- don't have to import this.
 import Glean.Haxl
 import Glean.Query.Thrift
+import Glean.Query.Thrift.Internal
 import Glean.Repo
 import Glean.Repo.Text
 import Glean.Typed

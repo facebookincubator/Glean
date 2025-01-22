@@ -15,12 +15,8 @@ import Data.Default
 import Data.Int
 import qualified Data.Text as Text
 
-import Glean.Angle.Types
-import Glean.Backend.Types as Glean
-import Glean.Repo.Text (showRepo)
-import Glean.Query.Thrift.Internal
+import Glean
 import Glean.Types
-import Glean.Schema.Util (showRef)
 import Util.Log
 
 -- | Compute and store the specified derived predicate
