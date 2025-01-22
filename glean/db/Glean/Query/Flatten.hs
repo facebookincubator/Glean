@@ -206,7 +206,7 @@ flattenSeqGenerators (Ref (MatchExt (Typed ty match))) = case match of
   TcElementsOfArray pat -> do
     r <- flattenPattern pat
     return [(mempty, stmts, ArrayElementGenerator ty pat') | (stmts,pat') <- r ]
-  TcElements pat -> do
+  TcElementsOfSet pat -> do
     r <- flattenPattern pat
     return [(mempty, stmts, SetElementGenerator ty pat') | (stmts,pat') <- r ]
   TcQueryGen query -> do

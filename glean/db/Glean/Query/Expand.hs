@@ -98,8 +98,8 @@ instantiateWithFreshVariables query numVars = do
     TcFactGen pid (instantiatePat base kpat) (instantiatePat base vpat) range
   instantiateTcTerm base (TcElementsOfArray pat) =
     TcElementsOfArray (instantiatePat base pat)
-  instantiateTcTerm base (TcElements pat) =
-    TcElements (instantiatePat base pat)
+  instantiateTcTerm base (TcElementsOfSet pat) =
+    TcElementsOfSet (instantiatePat base pat)
   instantiateTcTerm base (TcQueryGen query) =
     TcQueryGen (instantiateQuery base query)
   instantiateTcTerm base (TcAll query) =

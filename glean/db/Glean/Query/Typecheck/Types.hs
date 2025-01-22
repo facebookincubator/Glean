@@ -57,7 +57,7 @@ data TcTerm
   = TcOr TcPat TcPat
   | TcFactGen PidRef TcPat TcPat SeekSection
   | TcElementsOfArray TcPat
-  | TcElements TcPat
+  | TcElementsOfSet TcPat
   | TcQueryGen TcQuery
   | TcAll TcQuery
   | TcNegation [TcStatement]
@@ -102,7 +102,7 @@ instance Display TcTerm where
     isUnit (RTS.Tuple []) = True
     isUnit _ = False
   display opts (TcElementsOfArray arr) = displayAtom opts arr <> "[..]"
-  display opts (TcElements set) = "elements" <+> parens (display opts set)
+  display opts (TcElementsOfSet set) = "elements" <+> parens (display opts set)
   display opts (TcQueryGen q) = parens (display opts q)
   display opts (TcAll query)
     = "all" <+> "(" <> display opts query <> ")"

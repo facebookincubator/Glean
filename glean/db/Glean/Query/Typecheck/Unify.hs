@@ -387,7 +387,7 @@ zonkTcTerm t = case t of
     TcAltSelect
       <$> (Typed <$> zonkType ty <*> zonkTcPat p)
       <*> pure f
-  TcElements p -> TcElements <$> zonkTcPat p
+  TcElementsOfSet p -> TcElementsOfSet <$> zonkTcPat p
   TcPromote{} -> error "zonkTcTerm: TcPromote" -- handled in zonkTcPat
   TcDemote{} -> error "zonkTcTerm: TcPromote" -- handled in zonkTcPat
   TcStructPat{} -> error "zonkTcTerm: TcStructPat" -- handled in zonkTcPat

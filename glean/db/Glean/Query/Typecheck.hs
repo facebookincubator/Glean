@@ -352,7 +352,7 @@ inferExpr ctx pat = case pat of
     (e', ty) <- inferExpr ContextExpr e
     case ty of
       SetTy elemTy ->
-        return (Ref (MatchExt (Typed elemTy (TcElements e'))), elemTy)
+        return (Ref (MatchExt (Typed elemTy (TcElementsOfSet e'))), elemTy)
       _other -> do
         opts <- gets tcDisplayOpts
         prettyErrorIn pat $
@@ -667,7 +667,7 @@ typecheckPattern ctx typ pat = case (typ, pat) of
     return (Ref (MatchExt (Typed ty (TcAll q))))
   (ty, Elements _ pat) -> do
     elems <- typecheckPattern ctx (SetTy ty) pat
-    return (Ref (MatchExt (Typed ty (TcElements elems))))
+    return (Ref (MatchExt (Typed ty (TcElementsOfSet elems))))
   (ty, Wildcard{}) -> return (mkWild ty)
   (ty, Never{}) -> return $ Ref (MatchNever ty)
   (ty, Variable span name) -> varOcc ctx span name ty
@@ -1030,7 +1030,7 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
       TcOr x y -> overPat x <> overPat y
       TcFactGen pref x y _ -> pref : overPat x <> overPat y
       TcElementsOfArray x -> overPat x
-      TcElements x -> overPat x
+      TcElementsOfSet x -> overPat x
       TcQueryGen q -> overQuery q
       TcAll q -> overQuery q
       TcNegation stmts -> foldMap overStatement stmts
@@ -1086,7 +1086,7 @@ tcTermUsesNegation = \case
   TcOr x y -> tcPatUsesNegation x <|> tcPatUsesNegation y
   TcFactGen _ x y _ -> tcPatUsesNegation x <|> tcPatUsesNegation y
   TcElementsOfArray x -> tcPatUsesNegation x
-  TcElements x -> tcPatUsesNegation x
+  TcElementsOfSet x -> tcPatUsesNegation x
   TcQueryGen q -> tcQueryUsesNegation q
   TcAll query -> tcQueryUsesNegation query
   TcNegation _ -> Just PatternNegation
