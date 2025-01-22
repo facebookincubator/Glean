@@ -24,7 +24,7 @@ import Data.IntSet (IntSet)
 import qualified Data.IntSet as IntSet
 import Prelude hiding (lookup)
 
-import Glean.Typed.Id
+import Glean
 import Glean.Util.PredMap (PredMap)
 import qualified Glean.Util.PredMap as PredMap
 

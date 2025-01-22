@@ -27,8 +27,7 @@ import qualified Data.IntMap.Strict as IntMap
 import qualified Data.Maybe (mapMaybe)
 import Prelude hiding (lookup)
 
-import Glean.Typed.Predicate
-import Glean.Typed.Id
+import Glean hiding (keys)
 
 -- -----------------------------------------------------------------------------
 -- Helpers, to make most of this module into one liners
