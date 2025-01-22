@@ -77,9 +77,7 @@ import Glean.Glass.SourceControl
 import Glean.Glass.Tracing (traceSpan)
 import qualified Glean.Glass.Utils as Utils
 import Glean.Glass.Utils ( fst4 )
-import Glean.Glass.Attributes.Class (
-    AttributesMetricsLog(..),
-    emptyAttributesMetricsLog)
+import Logger.GleanGlass (GleanGlassLogger)
 
 
 -- | Runner for methods that are keyed by a file path
@@ -206,7 +204,7 @@ fetchSymbolsAndAttributesGlean
   -> Maybe (Some Glean.Backend, GleanDBInfo)
   -> Maybe Language
   -> IO (
-       (DocumentSymbolListXResult, QueryEachRepoLog, AttributesMetricsLog),
+       (DocumentSymbolListXResult, QueryEachRepoLog, GleanGlassLogger),
        Maybe ErrorLogger
      )
 fetchSymbolsAndAttributesGlean
@@ -252,7 +250,7 @@ shouldFetchContentHash opts =
 
 type FetchDocumentSymbols =
   ((DocumentSymbolListXResult, SnapshotStatus,
-    QueryEachRepoLog, AttributesMetricsLog), Maybe ErrorLogger)
+    QueryEachRepoLog, GleanGlassLogger), Maybe ErrorLogger)
 
 -- | When an explicit revision is requested, we attempt to fetch both
 -- Glean results and a snapshot. This function chooses which result to
@@ -262,7 +260,7 @@ chooseGleanOrSnapshot
   :: RequestOptions
   -> Revision
   -> (
-       (DocumentSymbolListXResult, QueryEachRepoLog, AttributesMetricsLog),
+       (DocumentSymbolListXResult, QueryEachRepoLog, GleanGlassLogger),
        Maybe ErrorLogger
      )
      -- ^ Glean result
@@ -295,7 +293,7 @@ chooseGleanOrSnapshot RequestOptions{..} revision glean esnapshot
       empty status =
         ((toDocumentSymbolResult(emptyDocumentSymbols revision)
           , status
-          , FoundNone, emptyAttributesMetricsLog)
+          , FoundNone, mempty)
         , Just $ logError $
             GlassExceptionReason_matchingRevisionNotAvailable $
               unRevision revision
@@ -316,7 +314,7 @@ returnSnapshot
   -> FetchDocumentSymbols
 returnSnapshot queryResult match =
   ((setContentMatch queryResult, match,
-    QueryEachRepoUnrequested, emptyAttributesMetricsLog), Nothing)
+    QueryEachRepoUnrequested, mempty), Nothing)
   where
     -- set the content_match field appropriately if we used a snapshot
     setContentMatch res = case match of
@@ -365,9 +363,11 @@ fetchSymbolsAndAttributes
   -> GleanBackend b
   -> snapshotBackend
   -> Maybe Language
-  -> IO ((DocumentSymbolListXResult, SnapshotStatus, QueryEachRepoLog,
-  AttributesMetricsLog)
-        , Maybe ErrorLogger)
+  -> IO (
+      (DocumentSymbolListXResult, SnapshotStatus, QueryEachRepoLog,
+         GleanGlassLogger),
+      Maybe ErrorLogger
+    )
 fetchSymbolsAndAttributes env@Glass.Env{..} dbInfo req
   opts@RequestOptions{..} be snapshotbe mlang = do
   res <- case requestOptions_revision of
@@ -634,7 +634,7 @@ fetchDocumentSymbolIndex
   -> Maybe Language
   -> IO ((
     DocumentSymbolIndex, SnapshotStatus,
-    QueryEachRepoLog, AttributesMetricsLog),
+    QueryEachRepoLog, GleanGlassLogger),
     Maybe ErrorLogger)
 fetchDocumentSymbolIndex env latest req opts be
     snapshotbe mlang = do
@@ -869,28 +869,27 @@ addDynamicAttributes
   -> Maybe Int
   -> GleanBackend b
   -> DocumentSymbols
-  -> IO (DocumentSymbols, AttributesMetricsLog)
+  -> IO (DocumentSymbols, GleanGlassLogger)
 addDynamicAttributes env dbInfo repo opts repofile mlimit be syms = do
   -- combine additional dynamic attributes
   mattrs <- getSymbolAttributes env
     dbInfo repo opts repofile mlimit be
-  return $ extend mattrs emptyAttributesMetricsLog syms
+  return $ extend mattrs mempty syms
   where
     extend [] log syms = (syms, log)
     extend (augment : xs) log syms =
       extend xs newLog (syms { refs = refs' , defs = defs' })
       where
       (refs',defs',log') = augment (refs syms) (defs syms)
-      newLog = AttributesMetricsLog
-       (numPerFile log' + numPerFile log)
-       (numAssignedPerFile log' + numAssignedPerFile log)
+      newLog = log <> log'
+      -- Note: it'll only log one if multiple attrs use the same fields
 
 type Augment =
    [Attributes.RefEntitySymbol] ->
    [Attributes.DefEntitySymbol] ->
    ([Attributes.RefEntitySymbol],
     [Attributes.DefEntitySymbol],
-    AttributesMetricsLog)
+    GleanGlassLogger)
 
 -- Work out if we have extra attribute dbs and then run the queries
 getSymbolAttributes
@@ -914,7 +913,9 @@ getSymbolAttributes env dbInfo repo opts repofile mlimit
         withRepo attrDB $ do
           (attrs,_merr2) <- genericFetchFileAttributes attrKey
             (theGleanPath repofile) mlimit
-          return (Attributes.augmentSymbols attrKey attrs)
+          return $ \refs defs ->
+            case Attributes.augmentSymbols attrKey attrs refs defs of
+              (refs, defs, log) -> (refs, defs, logResult log)
 
 -- | External (non-local db) Attributes of symbols. Just Hack only for now
 genericFetchFileAttributes

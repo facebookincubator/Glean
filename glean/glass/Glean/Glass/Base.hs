@@ -14,19 +14,40 @@ module Glean.Glass.Base
   , RepoMapping(..)
   ) where
 
+import Data.Function
 import Data.Hashable
+import Data.List.NonEmpty(NonEmpty(..))
+import qualified Data.List.NonEmpty as NE
 import qualified Data.Map as Map
 import Data.String
 import Data.Text (Text)
+import qualified Data.Text as Text
 
-import Glean.Glass.Attributes.Class as Attributes
+import qualified Logger.GleanGlass as Logger
+
+import Glean ( Repo(..) )
 import qualified Glean.Glass.Types as Glass
+import Glean.Glass.Logging
+import Glean.Glass.Attributes.Class as Attributes
 
 -- | Type of glean dbs
 newtype GleanDBName = GleanDBName { unGleanDBName :: Text }
   deriving (Eq, Ord, Show, Hashable)
 
 instance IsString GleanDBName where fromString = GleanDBName . fromString
+
+instance LogResult (NonEmpty (GleanDBName, Glean.Repo)) where
+  logResult ((_, repo) :| []) =
+    Logger.setRepoName (Glean.repo_name repo) <>
+    Logger.setRepoHash (Glean.repo_hash repo)
+  logResult rs0@(_ :| _) =
+    Logger.setRepoName (commas repo_name rs) <>
+    Logger.setRepoHash (commas (Text.take 12 . repo_hash) rs)
+    where
+      rs = NE.sortBy (compare `on` Glean.repo_name) (fmap snd rs0)
+
+commas :: (Glean.Repo -> Text) -> NonEmpty Glean.Repo -> Text
+commas f = Text.intercalate "," . map f . NE.toList
 
 --
 -- | A glean path for www is prefixed with www/

@@ -46,6 +46,7 @@ type EntityKindLabel = (Code.Entity, Code.SymbolKind)
 
 instance ToAttributes SymbolKindAttr where
   type AttrRep SymbolKindAttr = EntityKindLabel
+  type AttrLog SymbolKindAttr = ()
 
   queryForFile _ lim fileId =
     fst <$> Utils.searchRecursiveWithLimit lim q
@@ -54,7 +55,7 @@ instance ToAttributes SymbolKindAttr where
     q = fileEntityKinds fileId .| fileEntityXRefKinds fileId
 
   augmentSymbols _ kinds refs defs =
-      (refs_result, defs_result, emptyAttributesMetricsLog)
+      (refs_result, defs_result, ())
      where
      (refs_result, defs_result) =
       extendAttributes (\_ ent -> ent) attrMap refs defs

@@ -47,10 +47,13 @@ import Data.Maybe
 import Data.List.NonEmpty as NonEmpty (NonEmpty(..), toList)
 import qualified Data.List.NonEmpty as NonEmpty
 
+import qualified Logger.GleanGlass as Logger
+
 import qualified Glean
 import Glean.Angle as Angle
 import Glean.Haxl.Repos (RepoHaxl)
 
+import Glean.Glass.Logging
 import Glean.Glass.Types (SymbolResult(..), SymbolDescription(..))
 import Glean.Glass.Utils (splitOnAny, QueryType )
 
@@ -668,5 +671,10 @@ dedupSearchResult results = Map.toList $ Map.fromListWith max results
 -- An un-concatenated set of query results to search for unique hits in
 -- within one scm repo, across dbs, across queries, a set of result symbols.
 newtype FeelingLuckyResult = FeelingLuckyResult [[RepoSearchResult]]
+
+instance LogResult FeelingLuckyResult where
+  logResult (FeelingLuckyResult rs) =
+    Logger.setItemCount
+      (sum (map (sum . map length) rs))
 
 type SingleSymbol = (SymbolResult,Maybe SymbolDescription)

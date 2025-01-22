@@ -40,11 +40,8 @@ import Logger.GleanGlass (GleanGlassLogger)
 import qualified Logger.GleanGlass as Logger
 
 import Glean ( Repo(..) )
-import Glean.Glass.Base ( GleanDBName )
 import Glean.Glass.Types
-import Glean.Glass.NameSearch (FeelingLuckyResult(..), RepoSearchResult)
 import Glean.Glass.SnapshotBackend ( SnapshotStatus(..) )
-import Glean.Glass.Attributes.Class (AttributesMetricsLog(..))
 
 instance ActionLog GleanGlassLogger where
   successLog = Logger.setSuccess True
@@ -97,6 +94,12 @@ instance LogRequest FileIncludeLocationRequest where
 class LogResult a where
   logResult :: a -> GleanGlassLogger
 
+instance LogResult () where
+  logResult = mempty
+
+instance LogResult GleanGlassLogger where
+  logResult = id
+
 instance LogResult a => LogResult (Maybe a) where
   logResult = maybe mempty logResult
 
@@ -144,11 +147,6 @@ instance LogResult QueryEachRepoLog where
         else Logger.setRepoOther (map Glean.repo_name more)
     _ -> mempty
 
-instance LogResult AttributesMetricsLog where
-    logResult AttributesMetricsLog{..} =
-      Logger.setNumAttributeSamples numPerFile <>
-      Logger.setNumAssignedAttributeSamples numAssignedPerFile
-
 instance LogResult DocumentSymbolIndex where
   logResult DocumentSymbolIndex{..} =
     Logger.setItemCount (fromIntegral documentSymbolIndex_size)
@@ -188,17 +186,12 @@ instance LogResult SymbolId where
 instance LogResult [SymbolId] where
   logResult xs = Logger.setItemCount (length xs)
 
+instance LogResult [(SymbolResult, Maybe SymbolDescription)] where
+  logResult rs = Logger.setItemCount (length rs)
+
 instance LogResult SymbolSearchResult where
   logResult SymbolSearchResult{..} =
     Logger.setItemCount (length symbolSearchResult_symbols)
-
-instance LogResult RepoSearchResult where
-  logResult rs = Logger.setItemCount (length rs)
-
-instance LogResult FeelingLuckyResult where
-  logResult (FeelingLuckyResult rs) =
-    Logger.setItemCount
-      (sum (map (sum . map length) rs))
 
 instance LogResult SearchRelatedResult where
   logResult SearchRelatedResult{..} =
@@ -232,19 +225,6 @@ instance LogResult [USRSymbolReference] where
 
 instance LogResult [RelatedSymbols] where
   logResult edges = Logger.setItemCount (length edges)
-
-instance LogResult (NonEmpty (GleanDBName, Glean.Repo)) where
-  logResult ((_, repo) :| []) =
-    Logger.setRepoName (Glean.repo_name repo) <>
-    Logger.setRepoHash (Glean.repo_hash repo)
-  logResult rs0@(_ :| _) =
-    Logger.setRepoName (commas repo_name rs) <>
-    Logger.setRepoHash (commas (Text.take 12 . repo_hash) rs)
-    where
-      rs = NE.sortBy (compare `on` Glean.repo_name) (fmap snd rs0)
-
-commas :: (Glean.Repo -> Text) -> NonEmpty Glean.Repo -> Text
-commas f = Text.intercalate "," . map f . NE.toList
 
 --
 -- | Intern error logging
