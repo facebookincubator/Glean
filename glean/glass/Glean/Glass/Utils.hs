@@ -58,10 +58,8 @@ import qualified Data.List as List
 import Control.Monad.Extra ( MonadPlus(mzero) )
 import Control.Monad.Trans ( MonadTrans(..) )
 
-import Glean ( recursive, limit, limitTime, search, getFirstResult )
-import Glean.Angle as Angle ( query, Angle )
-import Glean.Typed.Binary ( Type )
-import Glean.Typed.Predicate ( Predicate )
+import Glean ( recursive, limit, limitTime, search, getFirstResult, Predicate )
+import Glean.Angle as Angle ( query, Angle, Type )
 import Util.Text (slice)
 
 import qualified Glean.Haxl.Repos as Glean

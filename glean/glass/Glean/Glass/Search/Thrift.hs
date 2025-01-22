@@ -38,12 +38,12 @@ import Glean.Glass.Search.Class
 import Glean.Glass.Query ( entityLocation )
 import Glean.Glass.Utils ( joinFragments )
 
+import Glean.Angle (Type)
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Fbthrift.Types as Thrift
 import qualified Glean.Schema.CodeFbthrift.Types as Thrift
 import qualified Glean.Schema.Src.Types as Src
 import Glean.Haxl.Repos as Glean
-import Glean.Typed.Binary (Type)
 import Data.Typeable (Typeable)
 
 -- Depending on context (e.g. find-references or describe), we want to
@@ -68,7 +68,7 @@ instance Search Thrift.Declaration where
 
 -- Resolve symbol id tokens into an entity, with or without location.
 symbolSearchGen ::
-  (Typeable t, Show t, Glean.Typed.Binary.Type t, QueryRepos u)
+  (Typeable t, Show t, Type t, QueryRepos u)
   => (Text -> Text -> Angle t)
   -> (Text -> Angle t)
   -> (Text -> Text -> Text -> Angle t)

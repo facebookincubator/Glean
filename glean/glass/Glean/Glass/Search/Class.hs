@@ -24,9 +24,8 @@ import Util.Text (textShow)
 import Data.Typeable (Typeable)
 
 import qualified Glean
-import Glean.Typed.Binary (Type)
 
-import Glean.Angle ( Angle )
+import Glean.Angle ( Angle, Type )
 import Glean.Haxl.Repos as Glean
 
 import qualified Glean.Schema.Src.Types as Src
@@ -102,7 +101,7 @@ instance Functor SearchResult where
 --
 -- There are some scenarios where we might want to return all matches.
 --
-searchSymbolId :: (Typeable t, Show t, Glean.Typed.Binary.Type t)
+searchSymbolId :: (Typeable t, Show t, Type t)
   => [Text]
   -> Angle t
   -> ReposHaxl u w (SearchResult t)
