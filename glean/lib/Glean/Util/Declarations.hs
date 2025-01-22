@@ -25,9 +25,8 @@ import Data.Typeable
 
 import Glean.Schema.Cxx1.Types as Cxx -- gen
 import Glean.Schema.Src.Types as Src -- gen
-import Glean.Typed.Id (IdOf(..), Fid(..))
-import Glean.Typed.Predicate (Predicate(..))
 import Glean.Util.Range (HasSrcRange(..))
+import Glean
 
 -- -----------------------------------------------------------------------------
 
