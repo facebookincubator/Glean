@@ -44,7 +44,6 @@ import Glean.Database.Schema
 import Glean.Database.Schema.Types
 import qualified Glean.Database.Work as Database
 import qualified Glean.RTS.Foreign.Inventory as Inventory
-import Glean.Schema.Util
 import qualified Glean.ServerConfig.Types as Server
 import Glean.Types as Thrift hiding (ValidateSchema)
 import qualified Glean.Types as Thrift
@@ -569,7 +568,7 @@ instance Plugin StatsCommand where
     schemaInfo <- Glean.getSchemaInfo backend (Just statsRepo)
       def { getSchemaInfo_omit_source = True }
     let
-      matchRefsArgs = parseRef <$> statsPredicates
+      matchRefsArgs = Glean.parseRef <$> statsPredicates
       preds = map (Data.Bifunctor.first (lookupPid schemaInfo)) xs
       filterPred :: Either Thrift.Id PredicateRef -> Bool
       filterPred ref =
@@ -589,14 +588,14 @@ instance Plugin StatsCommand where
     when (not $ null matchRefsArgsNotPresent) $ do
       forM_ matchRefsArgsNotPresent $ \ref -> do
         hPutStrLn stderr $ Text.unpack $
-          "No facts found for: " <> showRef ref
+          "No facts found for: " <> Glean.showRef ref
       when statsSetExitCode $
         exitWith $ ExitFailure 100
     where
       lookupPid SchemaInfo{..} pid =
         maybe (Left pid) Right $
           Map.lookup pid schemaInfo_predicateIds
-      predicateMatches PredicateRef{..} SourceRef{..} =
+      predicateMatches PredicateRef{..} Glean.SourceRef{..} =
           predicateRef_name == sourceRefName &&
           maybe True (== predicateRef_version) sourceRefVersion
 

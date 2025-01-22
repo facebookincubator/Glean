@@ -158,6 +158,7 @@ module Glean
   , predicateRef
   , SourceRef(..) -- used in Glean.Util.Derive
   , showRef
+  , parseRef
 
   -- * Writing
   , fillDatabase
@@ -215,7 +216,7 @@ module Glean
 import Glean.Backend.Types
 import Glean.Angle.Lexer
 import Glean.Angle.Types
-import Glean.Schema.Util (showRef)
+import Glean.Schema.Util (showRef, parseRef)
 
 import Glean.Impl.ConfigProvider ()
   -- re-export instance ConfigProvider ConfigAPI, so that clients

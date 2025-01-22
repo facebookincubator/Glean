@@ -20,7 +20,6 @@ import GleanCLI.Common
 import GleanCLI.Types
 
 import Glean
-import Glean.Schema.Util
 import qualified Glean.Types as Thrift
 
 data CompleteCommand

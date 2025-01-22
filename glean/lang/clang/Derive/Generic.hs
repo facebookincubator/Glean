@@ -16,7 +16,6 @@ import qualified Data.Text as Text
 import Util.Log
 
 import Glean
-import Glean.Write (parseRef)
 import qualified Glean.Derive
 
 import Derive.Types

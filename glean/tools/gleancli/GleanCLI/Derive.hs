@@ -27,7 +27,6 @@ import Util.Text
 
 import Glean
 import Glean.Derive (derivePredicate)
-import Glean.Schema.Util (parseRef)
 import Glean.Types
 
 import GleanCLI.Types
