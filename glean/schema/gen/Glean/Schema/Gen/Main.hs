@@ -82,6 +82,7 @@ import Glean.Types (SchemaId(..))
 
 data WhichVersion
   = AllVersions
+  | OlderVersions
   | HighestVersion
   | OneVersion Version
 
@@ -138,10 +139,15 @@ options = do
   input <- (Left <$> oneFile) <|> (Right <$> dir)
   let
     allVersions = flag' AllVersions (long "all-versions")
+    olderVersions = flag' OlderVersions (long "older-versions")
     justVersion = fmap OneVersion $ option auto $
       long "version" <> metavar "VERSION" <>
       help "version of the schema to generate code for"
-  version <- allVersions <|> justVersion <|> pure HighestVersion
+  version <-
+    allVersions <|>
+    olderVersions <|>
+    justVersion <|>
+    pure HighestVersion
   actOptions <-
     fmap Left graphOptions <|>
     fmap Right genOptions
@@ -290,11 +296,20 @@ main = do
       , resolvedSchemaVersion == v
       ]
 
+    olderSchemas =
+      [ s | s@ResolvedSchema{..} <- allSchemas
+      , resolvedSchemaVersion /= latest
+      ]
+      where latest = maximum (map resolvedSchemaVersion allSchemas)
+
     verToHash = legacyAllVersions dbschema
 
     hashOf ver = case IntMap.lookup (fromIntegral ver) verToHash of
       Nothing -> error $ "no schema version: " <> show ver
       Just hash -> hash
+
+    withPath schema = (v, hashOf v, schema, Just $ 'v' : show v)
+      where v = resolvedSchemaVersion schema
 
   versions <- case version of
     HighestVersion ->
@@ -306,10 +321,8 @@ main = do
       case findVersion v of
         Just schema -> return [(v, hashOf v, schema, Nothing)]
         Nothing -> fail $ "can't find all." <> show v
-    AllVersions -> do
-      let withPath schema = (v, hashOf v, schema, Just $ 'v' : show v)
-            where v = resolvedSchemaVersion schema
-      return $ withPath <$> allSchemas
+    AllVersions -> return $ withPath <$> allSchemas
+    OlderVersions -> return $ withPath <$> olderSchemas
 
   case actOptions of
     Left opts -> graph opts dbschema refsResolved [ v | (v,_,_,_) <- versions ]
