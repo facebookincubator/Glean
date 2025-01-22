@@ -17,7 +17,7 @@ namespace cpp {
 
 namespace schema {
 
-constexpr int version = 10;
+constexpr int version = 1;
 
 namespace Testinfra {
 
