@@ -449,9 +449,6 @@ library core
         Glean.Backend.Types
         Glean.Backend.Retry
 
-        Glean.Util.PredMap
-        Glean.Util.PredSet
-
     build-tool-depends: alex:alex, happy:happy
     build-depends:
         glean:bytecode,
@@ -852,6 +849,8 @@ library lib
         Glean.Util.Same
         Glean.Util.ShowSchemaId
         Glean.Write.SimpleAsync
+        Glean.Util.PredMap
+        Glean.Util.PredSet
     build-depends:
         glean:client-hs,
         glean:core,
