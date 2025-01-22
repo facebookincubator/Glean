@@ -21,8 +21,6 @@ module Glean.Typed.Predicate
   , MissingPredicate(..), throwMissingPredicate
     -- * Vector Predicates
   , Predicates, SchemaPredicates, makePredicates
-    -- ** Sum types
-  , SumBranches(..)
   ) where
 
 import Control.Concurrent
@@ -156,15 +154,3 @@ makePredicates schemas info = Predicates $
 predicateRef :: forall p proxy . Predicate p => proxy p -> Text
 predicateRef _ = name <> "." <> showt version
   where !(PredicateRef name version) = getName (Proxy @p)
-
--- -----------------------------------------------------------------------------
-
--- | When the schema has a @sum([..])@ type, and all the branches have
--- distinct types, then 'SumBranches' lets us get the data constructor
--- for each branch or set the query field in a type-driven way.
---
--- 'injectBranch' : This is the constructor for this branch of the 'parent'
-
-class SumBranches child parent where
-  injectBranch :: child -> parent
-  projectBranch :: parent -> Maybe child

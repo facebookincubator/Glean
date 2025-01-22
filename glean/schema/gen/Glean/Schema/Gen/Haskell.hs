@@ -14,7 +14,6 @@ module Glean.Schema.Gen.Haskell
 
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
-import Data.List.Extra ( nubSort )
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -426,7 +425,6 @@ unionDef ident ver fields = do
   -- walk over the fields to generate nested types first
   mapM_ (makeTypeName PredName True) fields
 
-  conTypeNames <- mapM (makeTypeName PredName False) fields
   keyTypeNames <- mapM (makeTypeName PredKey False) fields
 
   let def_Type = case conNames of
@@ -453,28 +451,10 @@ unionDef ident ver fields = do
             , indentLines [sourceTypeDef ident ver]
             ]
 
-      distinctTypes = length (nubSort conTypeNames) == length conTypeNames
-
-      def_Sum
-        | not distinctTypes = []
-        | otherwise = zipWith mk conNames conTypeNames
-        where
-            inst conTypeName = "instance Glean.SumBranches "
-              <> conTypeName <> " " <> name <> " where"
-            makeInjectBranch conName = [ "injectBranch = " <> conName ]
-            makeProjectBranch conName =
-                ("projectBranch (" <> conName <> " x) = Prelude.Just x")
-                : ["projectBranch _ = Prelude.Nothing"
-                  | 1 < length conTypeNames ]
-            mk conName conTypeName  =
-              inst conTypeName
-              : indentLines (makeInjectBranch conName
-                  ++ makeProjectBranch conName)
-
       def_SumFields =
         [ emitFieldTypes "Angle.SumFields" name (zip fields keyTypeNames) ]
 
-  return $ map myUnlines $ [def_Type, def_SumFields] ++ def_Sum
+  return $ map myUnlines $ [def_Type, def_SumFields]
   where
     mkBuildEmpty constructors emptyCon =
       let index = length constructors in

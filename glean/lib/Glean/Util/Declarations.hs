@@ -32,9 +32,7 @@ import Glean.Util.Range (HasSrcRange(..))
 -- -----------------------------------------------------------------------------
 
 -- | 'DeclBranch' is the class constraint for writing the case handler
--- of 'applyDeclaration' combining the 'HaxlQuery' class
--- with the 'Cxx.Declaration' specific classes
--- 'HasSrcRange' and 'SumBranches' and 'SumQuery'
+-- of 'applyDeclaration'
 type DeclBranch p =
   ( Predicate p
   , Typeable p
