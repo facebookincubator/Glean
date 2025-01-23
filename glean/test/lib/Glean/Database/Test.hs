@@ -19,6 +19,8 @@ module Glean.Database.Test
   , setDBVersion
   , setCompactOnCompletion
   , setMaxSetSize
+  , enableTcDebug
+  , enableQueryDebug
   , withTestEnv
   , kickOffTestDB
   , waitUntilComplete
@@ -104,6 +106,14 @@ setMaxSetSize :: Int64 -> Setting
 setMaxSetSize i cfg = cfg
   { cfgServerConfig = cfgServerConfig cfg <&> \scfg -> scfg
       { ServerConfig.config_max_set_size_bytes = Just i } }
+
+enableTcDebug :: Setting
+enableTcDebug cfg = cfg
+  { cfgDebug = (cfgDebug cfg) { tcDebug = True } }
+
+enableQueryDebug :: Setting
+enableQueryDebug cfg = cfg
+  { cfgDebug = (cfgDebug cfg) { queryDebug = True } }
 
 withTestEnv
   :: [Setting]
