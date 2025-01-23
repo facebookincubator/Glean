@@ -14368,7 +14368,7 @@ struct DeclHasName : Predicate<std::tuple<Declaration, Fact<Value>>> {
   }
 }; // struct DeclHasName
 
-struct BelongToConfig : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, Fact<Value>>> {
+struct BelongToConfig : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, Fact<Value>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Value>>>>> {
   static const char* GLEAN_name() {
     return "graphql.BelongToConfig";
   }
@@ -29624,7 +29624,7 @@ struct ArgumentValue : Predicate<boost::variant<Alt<0, std::string>, Alt<1, std:
 struct SCHEMA {
   template<typename P> struct index;
   static constexpr size_t count = 1322;
-  static constexpr char schemaId[] = "b420d3d2d0c3f0dc83bd186eea865a40";
+  static constexpr char schemaId[] = "0926df660cc94c58a7eb5ab3dd23bd52";
   template<size_t i> struct predicate;
 };
 

@@ -152,6 +152,7 @@ predicate BelongToConfig:
 {
   file: src.File,
   buildConfig: Value,
+  schema: maybe Value,
 }
 
 predicate ScalarTypeDef :
