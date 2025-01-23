@@ -1,5 +1,5 @@
 [![CI](https://github.com/facebookincubator/Glean/actions/workflows/ci.yml/badge.svg)](https://github.com/facebookincubator/Glean/actions/workflows/ci.yml)
-[![Glean demo Docker image](https://github.com/facebookincubator/Glean/actions/workflows/glean-docker.yml/badge.svg)](https://github.com/facebookincubator/Glean/actions/workflows/glean-docker.yml)
+[![Glean demo Docker image](https://github.com/facebookincubator/Glean/actions/workflows/docker.yml/badge.svg)](https://github.com/facebookincubator/Glean/actions/workflows/docker.yml)
 
 # Glean
 

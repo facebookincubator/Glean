@@ -20,7 +20,6 @@ module.exports = {
           external: [{
               'Quick Start': [
                   'trying',
-                  'building',
                   'walkthrough',
               ]
           }],
@@ -95,6 +94,7 @@ module.exports = {
            },
        ],
        'Developers': [
+           'building',
            {
                'Implementation Notes': [
                    'implementation/incrementality',

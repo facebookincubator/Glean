@@ -4,57 +4,68 @@ title: Trying Glean
 sidebar_label: Trying Glean
 ---
 
-import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
-import {SrcFile,SrcFileLink} from '@site/utils';
+import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers'; import
+{SrcFile,SrcFileLink} from '@site/utils';
 
-We provide a Docker image containing a pre-built set of Glean binaries
-that you can try out.  These images are built automatically by a
-[Github Action](https://github.com/facebookincubator/Glean/blob/master/.github/workflows/glean-docker.yml).
+:::note
 
-Pull the latest demo Docker image (warning, this is around 7GB):
-
-```
-docker pull ghcr.io/facebookincubator/glean/demo:latest
-```
-
-Run it:
-
-```
-docker run -it -p 8888:8888 ghcr.io/facebookincubator/glean/demo:latest
-```
-
-:::info
-
-What's in the image?
-
-* A build of Glean, in `/glean-code`
-* The [flow](https://github.com/facebook/flow/) binary, in `/usr/local/bin/flow`
-* A checkout of [react](https://github.com/facebook/react/) in `/react-code`
-* A Glean database containing the Flow index of React in `/gleandb`
+Glean only runs on **x86_64 Linux** and **aarch64 Linux** at this time.
 
 :::
 
-Start the Glean [shell](shell.md):
+We publish weekly Docker images of Glean for x86_64 and aarch64 Linux that you
+can use, including a pre-built demo image with a Glean database, containing an
+imported snapshot of the [React] repository. (These images are built
+automatically by a [Github Action][docker-gha].) Run it immediately with:
 
 ```
-glean shell --db-root /glean-demo/db --schema /glean-demo/schema/source
+docker run -it --rm \
+  -p 12345:12345 -p 8888:8888 \
+  --name glean-server \
+  ghcr.io/facebookincubator/glean/demo:latest
+```
+
+Then, visit [`http://localhost:8888`](http://localhost:8888) in your browser,
+and you should see a list of source files for React. Click on a file, and
+navigate around the code by clicking on a symbol reference to jump to its
+definition. Try something substantial like
+<http://localhost:8888/packages/react-dom/src/client/ReactDOMComponent.js> and
+note how Glean is accurately linking both local and imported symbols.
+
+This demo is powered by the <SrcFileLink
+file="glean/demo/Hyperlink.hs">glean-hyperlink</SrcFileLink> tool.
+
+[React]: https://react.dev
+[docker-gha]: https://github.com/facebookincubator/Glean/blob/master/.github/workflows/docker.yml
+
+### Connecting with the shell
+
+Open a new terminal, and open the Glean [shell](shell.md) by pointing it at the
+server you started:
+
+```
+docker run -it --rm \
+  --link glean-server ghcr.io/facebookincubator/glean/client:latest \
+  glean shell --service glean-server:12345
 ```
 
 You should see:
 
 ```
 Glean Shell, built on <time>, from rev <unknown>
+Using service at glean-server:12345
 type :help for help.
 >
 ```
 
-The demo image contains a pre-generated database containing the
-results of running the Flow indexer on the React repository:
+You can see the pre-generated database containing the results of running the
+Flow indexer on React:
 
 ```
 > :list
 react/0 (complete)
-  Created: 2021-05-24T02:42:33Z (30 days, 9 hours ago)
+  Created: 2025-01-23 20:03:35 UTC (1 minute ago)
+  Completed: 2025-01-23 20:03:48 UTC (1 minute ago)
 ```
 
 We can look at the contents:
@@ -64,55 +75,29 @@ react> :db react
 using database react/0
 react> :stat
 flow.Declaration.3
-  count: 26756
-  size:  888756 (867.93 kB) 4.8248%
+  count: 34423
+  size:  1150802 (1.10 MiB) 4.9262%
 ...
-Total size: 17.57 MB
+
+Total: 622052 facts (22.28 MiB)
 ```
 
-## Running the server
+## Connecting with the shell (locally)
 
-Above we showed the shell reading the database from the filesystem
-directly. Instead we can run a server that the clients will interact
-with to make queries:
-
-```
-glean-server --db-root /glean-demo/db --schema /glean-demo/schema/source --port 12345
-```
-
-And now the shell can connect to the server:
+The previous example connected to Glean over the network using Docker's
+networking functionality. But you can also start Glean locally inside the
+container.
 
 ```
-glean shell --service localhost:12345
+docker run -it --rm ghcr.io/facebookincubator/glean/demo:latest bash
 ```
 
-The commands work exactly the same as with local databases, but now it
-would also work over the network.
-
-## Hyperlink demo
-
-We have a small demo showing how Glean can enable code navigation. The <SrcFileLink file="glean/demo/Hyperlink.hs">glean-hyperlink</SrcFileLink> tool
-creates a webserver that serves hyperlinked source code using data
-from a specified Glean database.
-
-We can navigate the React source code as follows. First start the
-Glean server:
+Then start the shell, pointing it to the proper schema and database directories:
 
 ```
-glean-server --db-root /glean-demo/db --schema /glean-demo/schema/source --port 12345
+glean shell --db-root /glean/db --schema /glean/schema
 ```
 
-Next start the Hyperlink server:
-
-```
-glean-hyperlink --service localhost:12345 --db react --root /react-code --http 8888
-```
-
-Now navigate to `http://localhost:8888` in your browser, and you
-should see a list of source files. Click on a file, and navigate
-around the code by clicking on a symbol reference to jump to its
-definition.  Try something substantial like
-`react-dom/src/client/ReactDOMComponent.js`
-(http://localhost:8888/packages/react-dom/src/client/ReactDOMComponent.js) -
-note how Glean is accurately linking both local and imported
-symbols.
+The commands work exactly the same as with remote databases, but you will need
+to use `docker run -v` to mount your local database and schema directories in
+this case.
