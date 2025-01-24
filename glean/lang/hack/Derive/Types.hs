@@ -21,8 +21,6 @@ import qualified Options.Applicative as O
 import qualified Glean
 import qualified Glean.Remote
 import qualified Glean.Types as Thrift (Repo)-- gen
-import Glean.Write.Async (SendQueueSettings(..), WriterSettings(..))
-import Glean.Write.Options (sendQueueOptions, writerOptions)
 
 -- | Configuration options for "Derive" and its passes
 data Config = Config
@@ -30,8 +28,8 @@ data Config = Config
   , cfgNumCapabilities :: Maybe Int  -- ^ override @+RTS -Nx -RTS@
   , cfgMaxQueryFacts :: Maybe Int
   , cfgMaxQuerySize :: Int
-  , cfgSendQueue :: SendQueueSettings
-  , cfgWriter :: WriterSettings
+  , cfgSendQueue :: Glean.SendQueueSettings
+  , cfgWriter :: Glean.WriterSettings
   , cfgChunksPerCapability :: Int  -- ^ units of work per worker
   , cfgMaxQueueSize :: Int
   }
@@ -91,8 +89,8 @@ options = O.info (O.helper <*> (parserDerive O.<|> parserSchemaId)) O.fullDesc
         <> O.metavar "N"
         <> O.value defaultMaxQuerySize
         <> O.help "maximum number of bytes to query in one step"
-      cfgSendQueue <- sendQueueOptions
-      cfgWriter <- writerOptions
+      cfgSendQueue <- Glean.sendQueueOptions
+      cfgWriter <- Glean.writerOptions
       cfgChunksPerCapability <- O.option O.auto $
         O.long "chunks-per-capability"
         <> O.metavar "N"

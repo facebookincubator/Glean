@@ -16,7 +16,6 @@ module Derive.Env
 import Glean (Backend)
 import qualified Glean.Schema.Hack as Hack
 import Glean.Util.Some
-import Glean.Write.Async
 import Glean.Write.SimpleAsync
 
 import Derive.Types
