@@ -63,7 +63,7 @@ common fb-cpp
   CXX_EXTRA_LIB_DIRS
 
 common exe
-  ghc-options: -threaded
+  ghc-options: -threaded -rtsopts
 
 flag clang
      default: False
