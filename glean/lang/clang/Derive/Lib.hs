@@ -21,9 +21,9 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Options.Applicative as O
 
+import Glean
 import qualified Glean.Schema.Cxx1 as Cxx
 import qualified Glean.Schema.Src as Src
-import Glean.Typed
 
 import Derive.Env
 

@@ -1536,6 +1536,7 @@ test-suite clang-test-derivefamilies
     ghc-options: -main-is Glean.Clang.DeriveFamilies
     build-depends:
        glean:if-glean-hs,
+       glean:client-hs,
        glean:core,
        glean:regression-test-lib,
        glean:clang-derive-lib,
@@ -1557,6 +1558,7 @@ test-suite clang-test-deriveattributes
     ghc-options: -main-is Glean.Clang.DeriveAttrs
     build-depends:
        glean:if-glean-hs,
+       glean:client-hs,
        glean:core,
        glean:regression-test-lib,
        glean:clang-derive-lib,
@@ -1578,6 +1580,7 @@ test-suite clang-test-derivefuncalls
     ghc-options: -main-is Glean.Clang.DeriveFunCalls
     build-depends:
        glean:if-glean-hs,
+       glean:client-hs,
        glean:core,
        glean:regression-test-lib,
        glean:clang-derive-lib,
@@ -1599,6 +1602,7 @@ test-suite clang-test-deriveobjcinherit
     ghc-options: -main-is Glean.Clang.DeriveObjCInheritance
     build-depends:
        glean:if-glean-hs,
+       glean:client-hs,
        glean:core,
        glean:regression-test-lib,
        glean:clang-derive-lib,
@@ -1620,6 +1624,7 @@ test-suite clang-test-codemarkup
     ghc-options: -main-is Glean.Clang.CodeMarkup
     build-depends:
        glean:if-glean-hs,
+       glean:client-hs,
        glean:core,
        glean:regression-test-lib,
        glean:clang-derive-lib,

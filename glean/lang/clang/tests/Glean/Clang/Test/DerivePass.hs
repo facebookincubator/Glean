@@ -12,12 +12,11 @@ module Glean.Clang.Test.DerivePass (testDeriver, driver, derivePasses) where
 import Control.Monad
 import Data.Default
 
-import Glean.Backend.Types
+import Glean
 import Glean.Indexer
 import qualified Glean.Clang.Test as Clang
 import Glean.Regression.Snapshot.Driver
 import Glean.Regression.Snapshot
-import Glean.Types
 
 import Derive.Env (withEnv)
 import Derive.Lib (dispatchDerive, DerivePass, allPredicates)
