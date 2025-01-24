@@ -52,7 +52,7 @@ common fb-haskell
      ghc-options: -O2
 
 common fb-cpp
-  cxx-options: -std=c++17
+  cxx-options: -std=c++17 -Wno-nullability-completeness
   if !flag(clang)
      cxx-options: -fcoroutines
   if arch(x86_64)
