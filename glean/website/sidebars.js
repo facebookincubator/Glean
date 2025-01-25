@@ -15,7 +15,6 @@ module.exports = {
        'Quick Start': [
            'introduction',
            'trying',
-           'building',
            'walkthrough',
        ],
        'User Guide': [
@@ -87,6 +86,7 @@ module.exports = {
            },
        ],
        'Developers': [
+           'building',
            {
                'Implementation Notes': [
                    'implementation/incrementality',
