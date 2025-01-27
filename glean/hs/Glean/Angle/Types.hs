@@ -679,12 +679,14 @@ newtype AngleVersion = AngleVersion Int
 --   - optional versions in `import`, `evolves`, inheritance
 -- version 11:
 --   - size primop
+-- version 12:
+--   - remove support for deriving default
 
 latestSupportedAngleVersion :: AngleVersion
 latestSupportedAngleVersion = AngleVersion 5
 
 latestAngleVersion :: AngleVersion
-latestAngleVersion = AngleVersion 11
+latestAngleVersion = AngleVersion 12
 
 -- -----------------------------------------------------------------------------
 -- Pretty-printing

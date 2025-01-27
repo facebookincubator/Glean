@@ -460,6 +460,7 @@ backwardCompatDeriving = TestCase $
       schema_v1_file = root </> "schema1"
       schema_v1 =
         [s|
+          version: 11
           schema test.1 {
             predicate P : { a : string, b : nat }
             predicate Q : { p : P }
@@ -530,6 +531,7 @@ deriveDefault = TestCase $
       schema_v0_file = root </> "schema0"
       schema_v0 =
         [s|
+          version: 11
           schema test.1 {
             predicate P : { a : string, b : nat }
             predicate Q : { p : P }

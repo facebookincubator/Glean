@@ -14,6 +14,7 @@ import Control.Monad.Except
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Char8 as B
 import qualified Data.ByteString.Lazy.Char8 as LB
+import Data.Char
 import Data.Either (partitionEithers)
 import Data.List.NonEmpty (NonEmpty((:|)))
 import Data.Maybe
@@ -272,7 +273,7 @@ derivewhen :: { Schema.DeriveWhen }
 derivewhen
   : {- empty -}  { Schema.DeriveOnDemand }
   | 'stored'  { Schema.DerivedAndStored }
-  | 'default'  { Schema.DeriveIfEmpty }
+  | 'default'  {% ifVersionOrOlder (AngleVersion 11) $1 Schema.DeriveIfEmpty }
 
 derivedecl :: { Schema.SourceDecl }
 derivedecl
@@ -424,7 +425,7 @@ parseSchema bs = parseSchemaWithVersion ver rest
 
 stripAngleVersion :: ByteString -> (AngleVersion, ByteString)
 stripAngleVersion bs
-  | Just bs1 <- B.stripPrefix "version: " bs
+  | Just bs1 <- B.stripPrefix "version: " (B.dropWhile isSpace bs)
   , Just (ver, bs2) <- B.readInt bs1 = (Schema.AngleVersion ver, bs2)
   | otherwise = (latestAngleVersion, bs)
   -- if the header is omitted, assume we are using the latest version
