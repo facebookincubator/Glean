@@ -38,51 +38,62 @@ angleArray modify = TestList
   ]
 
 angleArrayGenerator :: (forall a . Query a -> Query a) -> Test
-angleArrayGenerator modify = dbTestCase $ \env repo -> do
-  -- fetch all elements of an array
-  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
-    [s|
-      glean.test.Predicate { array_of_pred = Arr };
-      Arr [..]
-    |]
-  print results
-  assertEqual "angle - array generator 1" 2 (length results)
+angleArrayGenerator modify = TestList
+  [ TestLabel "array of pred" $
+    dbTestCase $ \env repo -> do
+    -- fetch all elements of an array
+    results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+      [s|
+        glean.test.Predicate { array_of_pred = Arr };
+        Arr [..]
+      |]
+    print results
+    assertEqual "angle - array generator 1" 2 (length results)
 
-  -- match on elements of an array
-  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
-    [s|
-      P where
-      P = glean.test.Predicate { array_of_nat = Arr };
-      3 = Arr [..]  # any P with a 3 in array_of_nat
-    |]
-  print results
-  assertEqual "angle - array generator 2" 1 (length results)
+  , TestLabel "array of nat" $
+    dbTestCase $ \env repo -> do
 
-  -- test that a generator on the left gets compiled correctly
-  results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
-    [s|
-      P where
-      P = glean.test.Predicate { array_of_pred = Arr };
-      { nat = 42 } = Arr [..]  # any P with a nat = 4
-    |]
-  print results
-  assertEqual "angle - array generator 3" 1 (length results)
+    -- match on elements of an array
+    results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+      [s|
+        P where
+        P = glean.test.Predicate { array_of_nat = Arr };
+        3 = Arr [..]  # any P with a 3 in array_of_nat
+     |]
+    print results
+    assertEqual "angle - array generator 2" 1 (length results)
 
-  results <- runQuery_ env repo $ modify $
-    angleData @(Text, Nat)
-    [s|
-      [ { "a",1 }, { "b",2 } ] [..]
-    |]
-  print results
-  assertEqual "angle - array generator 4"
-    [ ("a", Nat 1), ("b", Nat 2) ] results
+  , TestLabel "array of pred with match" $
+    dbTestCase $ \env repo -> do
+      -- test that a generator on the left gets compiled correctly
+    results <- runQuery_ env repo $ modify $ angle @Glean.Test.Predicate
+      [s|
+        P where
+        P = glean.test.Predicate { array_of_pred = Arr };
+        { nat = 42 } = Arr [..]  # any P with a nat = 4
+      |]
+    print results
+    assertEqual "angle - array generator 3" 1 (length results)
 
-  results <- runQuery_ env repo $ modify $
-    angleData @Byte
-    [s| [1 : byte, 255][..] |]
-  print results
-  assertEqual "angle - array generator 5"
-    (sort [Byte 1, Byte (fromIntegral (255 :: Word8))]) (sort results)
+  , TestLabel "array of records" $
+    dbTestCase $ \env repo -> do
+    results <- runQuery_ env repo $ modify $
+      angleData @(Text, Nat)
+     [s|
+        [ { "a",1 }, { "b",2 } ] [..]
+      |]
+    print results
+    assertEqual "angle - array generator 4"
+      [ ("a", Nat 1), ("b", Nat 2) ] results
+  , TestLabel "array of bytes" $
+    dbTestCase $ \env repo -> do
+    results <- runQuery_ env repo $ modify $
+      angleData @Byte
+      [s| [1 : byte, 255][..] |]
+    print results
+    assertEqual "angle - array generator 5"
+      (sort [Byte 1, Byte (fromIntegral (255 :: Word8))]) (sort results)
+  ]
 
 angleArrayPrefix :: (forall a . Query a -> Query a) -> Test
 angleArrayPrefix modify = TestList
