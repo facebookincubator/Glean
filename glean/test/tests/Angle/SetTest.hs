@@ -18,6 +18,7 @@ import Control.Monad.Trans.Except
 import Control.Monad.Except
 import Data.Default
 import Data.Text (Text, unpack)
+import Data.Word
 
 import Glean.Angle.Parser
 import Glean.Angle.Types hiding (Nat, Type)
@@ -130,6 +131,10 @@ setSemanticsTest = TestList
   , TestLabel "all of big number" $ dbTestCase $ \env repo -> do
       r <- runQuery_ env repo $ angleData @Nat [s| elements (all 65535) |]
       assertEqual "big nat" r [Nat 65535]
+  , TestLabel "all of bytes" $ dbTestCase $ \env repo -> do
+      r <- runQuery_ env repo $ angleData @Byte
+        [s| elements (all (1 : byte | 240)) |]
+      assertEqual "big byte" [Byte 1, Byte (fromIntegral (240 :: Word8))] r
   , TestLabel "size of a set" $ dbTestCase $ \env repo -> do
       r <- runQuery_ env repo $ angleData @Nat [s| prim.size (all (1|2|3))|]
       assertEqual "size" r [Nat 3]

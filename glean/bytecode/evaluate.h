@@ -7,6 +7,10 @@
           eval_InputNat();
           break;
   
+        case Op::InputByte:
+          eval_InputByte();
+          break;
+  
         case Op::InputBytes:
           eval_InputBytes();
           break;
@@ -237,7 +241,6 @@
         case Op::Ret:
           return eval_Ret();
   
-        case Op::Unused59:
         case Op::Unused60:
         case Op::Unused61:
         case Op::Unused62:
@@ -442,6 +445,7 @@
   FOLLY_ALWAYS_INLINE const uint64_t * FOLLY_NULLABLE evalIndirect() {
     static const void * const labels[] = {
       &&label_InputNat,
+      &&label_InputByte,
       &&label_InputBytes,
       &&label_InputSkipUntrustedString,
       &&label_InputShiftLit,
@@ -506,6 +510,10 @@
   
   label_InputNat:
           eval_InputNat();
+    goto *labels[*pc++];
+  
+  label_InputByte:
+          eval_InputByte();
     goto *labels[*pc++];
   
   label_InputBytes:
@@ -751,6 +759,21 @@
     args.end = Reg<const unsigned char *>(&frame[*pc++]).get();
     args.dst = Reg<uint64_t>(&frame[*pc++]);
     DVLOG(5) << "InputNat" << "  " << "<<ptr>>" << "  " << "<<ptr>>" << "  " << args.dst;
+    return execute(args);
+  }
+
+  struct InputByte {
+    Reg<const unsigned char *> begin;
+    const unsigned char * end;
+    Reg<uint64_t> dst;
+  };
+  
+  FOLLY_ALWAYS_INLINE void eval_InputByte() {
+    InputByte args;
+    args.begin = Reg<const unsigned char *>(&frame[*pc++]);
+    args.end = Reg<const unsigned char *>(&frame[*pc++]).get();
+    args.dst = Reg<uint64_t>(&frame[*pc++]);
+    DVLOG(5) << "InputByte" << "  " << "<<ptr>>" << "  " << "<<ptr>>" << "  " << args.dst;
     return execute(args);
   }
 

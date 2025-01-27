@@ -36,6 +36,12 @@ struct Eval {
     a.begin << input.data();
   }
 
+  FOLLY_ALWAYS_INLINE void execute(InputByte a) {
+    binary::Input input{*a.begin, a.end};
+    a.dst << input.fixed<unsigned char>();
+    a.begin << input.data();
+  }
+
   FOLLY_ALWAYS_INLINE void execute(InputBytes a) {
     binary::Input input{*a.begin, a.end};
     input.bytes(a.size);

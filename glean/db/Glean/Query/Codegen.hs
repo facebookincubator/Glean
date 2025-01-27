@@ -525,7 +525,9 @@ compileStatements
             local $ \reg -> do
               compileTermGen expr vars (Just reg) $
                 insertWordSet set (castRegister reg)
-          wordSetToArray set (castRegister (vars!v))
+          if isByteTy ty
+            then byteSetToByteArray set (castRegister (vars!v))
+            else wordSetToArray set (castRegister (vars!v))
           freeWordSet set
         compile rest
       compile (CgAllStatement (Var _ v _) expr stmts : rest) = do
@@ -882,12 +884,15 @@ compileStatements
               local $ \start size -> do
                 -- really want to just matchPat here
                 move ptr start
-                if isWordTy eltTy then do
-                  inputNat ptr end reg
-                else do
-                  skipTrusted ptr end eltTy
-                  resetOutput (castRegister reg)
-                  outputBytes start ptr (castRegister reg)
+                if
+                  | isByteTy eltTy ->
+                    inputByte ptr end reg
+                  | isWordTy eltTy ->
+                    inputNat ptr end reg
+                  | otherwise -> do
+                    skipTrusted ptr end eltTy
+                    resetOutput (castRegister reg)
+                    outputBytes start ptr (castRegister reg)
                 ptrDiff start ptr size
                 add size off
             a <- inner

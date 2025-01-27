@@ -10,7 +10,9 @@
 {-# LANGUAGE TypeApplications #-}
 module Angle.ArrayTest (main) where
 
+import Data.List
 import Data.Text (Text)
+import Data.Word
 import Test.HUnit
 
 import TestRunner
@@ -75,6 +77,12 @@ angleArrayGenerator modify = dbTestCase $ \env repo -> do
   assertEqual "angle - array generator 4"
     [ ("a", Nat 1), ("b", Nat 2) ] results
 
+  results <- runQuery_ env repo $ modify $
+    angleData @Byte
+    [s| [1 : byte, 255][..] |]
+  print results
+  assertEqual "angle - array generator 5"
+    (sort [Byte 1, Byte (fromIntegral (255 :: Word8))]) (sort results)
 
 angleArrayPrefix :: (forall a . Query a -> Query a) -> Test
 angleArrayPrefix modify = TestList

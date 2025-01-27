@@ -85,7 +85,7 @@ data Usage
 --
 -- BUMP THIS WHENEVER YOU CHANGE THE BYTECODE EVEN IF YOU JUST ADD INSTRUCTIONS
 version :: Int
-version = 14
+version = 15
 
 -- | Lowest bytecode version supported by the current engine.
 --
@@ -93,7 +93,7 @@ version = 14
 -- TO THE END OF THE LIST (in which case the new engine can still execute
 -- old bytecode)
 lowestSupportedVersion :: Int
-lowestSupportedVersion = 14
+lowestSupportedVersion = 15
 
 -- | Definitions of all bytecode instructions
 instructions :: [Insn]
@@ -101,6 +101,12 @@ instructions =
   [
     -- Decode a Nat from memory into a register.
     Insn "InputNat" [] []
+      [ Arg "begin" $ reg DataPtr Update
+      , Arg "end" $ reg DataPtr Load
+      , Arg "dst" $ reg Word Store ]
+
+    -- Decode a Byte from memory into a register
+  , Insn "InputByte" [] []
       [ Arg "begin" $ reg DataPtr Update
       , Arg "end" $ reg DataPtr Load
       , Arg "dst" $ reg Word Store ]

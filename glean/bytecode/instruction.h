@@ -10,6 +10,7 @@ namespace rts {
 
 enum class Op : uint8_t {
   InputNat,
+  InputByte,
   InputBytes,
   InputSkipUntrustedString,
   InputShiftLit,
@@ -68,7 +69,6 @@ enum class Op : uint8_t {
   TraceReg,
   Suspend,
   Ret,
-  Unused59,
   Unused60,
   Unused61,
   Unused62,
