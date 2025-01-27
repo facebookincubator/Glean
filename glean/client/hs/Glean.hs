@@ -79,6 +79,7 @@ module Glean
   , ParcelWaiting(..)
   , ParcelFinished(..)
   , GetDatabaseResult(..)
+  , PredicateStats(..)
 
   -- * Repositories
   , Repo(..)
@@ -170,6 +171,7 @@ module Glean
   , CompleteDerivedPredicate(..)
   , CompleteAxiomPredicates(..)
   , basicWriter
+  , SchemaPredicates
   , FactBuilder
   , makeFact
   , makeFact_
@@ -179,7 +181,6 @@ module Glean
 
   -- ** Lower-level write API
   , withSender
-  , SchemaPredicates
   , Sender
   , SendAndRebaseQueue
   , sendAndRebaseQueueOptions
@@ -200,6 +201,7 @@ module Glean
   , writeSendQueueJson
   , withSendQueue
   , SendQueue
+  , withBatchWriter
 
   -- ** Writing binary
   , sendBatch
@@ -211,6 +213,8 @@ module Glean
 
   -- * Misc
   , showUserQueryStats
+  , databases
+  , localDatabases
   ) where
 
 import Glean.Backend.Types

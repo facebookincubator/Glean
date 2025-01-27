@@ -17,6 +17,7 @@ module Glean.Backend.Types
     -- * Operations
   , SchemaPredicates
   , loadPredicates
+  , loadPredicatesForSchema
   , databases
   , localDatabases
   , create
@@ -50,6 +51,7 @@ import Data.Default
 import Data.Hashable
 import qualified Data.HashMap.Strict as HashMap
 import Data.Map (Map)
+import qualified Data.Map as Map
 import Data.Maybe
 import Data.Monoid
 import Data.Text (Text)
@@ -219,6 +221,15 @@ loadPredicates
 loadPredicates backend repo refs =
   makePredicates refs <$> getSchemaInfo backend (Just repo)
     def { Thrift.getSchemaInfo_omit_source = True }
+
+loadPredicatesForSchema :: Backend a => a -> SchemaId -> IO Predicates
+loadPredicatesForSchema backend schemaId = do
+  info <- getSchemaInfo backend Nothing
+    def {
+      Thrift.getSchemaInfo_select = Thrift.SelectSchema_schema_id schemaId,
+      Thrift.getSchemaInfo_omit_source = True
+    }
+  return $ makePredicates [Map.elems (Thrift.schemaInfo_predicateIds info)] info
 
 databases :: Backend a => a -> IO [Thrift.Database]
 databases be =

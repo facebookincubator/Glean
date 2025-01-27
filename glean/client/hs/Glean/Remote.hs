@@ -39,10 +39,6 @@ module Glean.Remote
   , defaultRetryPolicy
 
     -- * More operations
-  , SchemaPredicates
-  , loadPredicates
-  , databases
-  , localDatabases
   , clientInfo
   ) where
 

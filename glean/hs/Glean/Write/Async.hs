@@ -189,7 +189,9 @@ withWriters  s settings n action = do
 -- | Create a new 'Writer' for regression testing.  This accumulates into
 -- a single 'Facts' and produces a single 'Batch' without sending to a backend.
 withBatchWriter
-  :: Predicates
+  :: (Backend be)
+  => be
+  -> Thrift.SchemaId
   -> Maybe Fid
     --  ^ starting fact ID to create. If the batch will be added to an
     -- existing DB and the indexer will be creating facts that refer
@@ -198,12 +200,13 @@ withBatchWriter
   -> WriterSettings
   -> (Writer -> IO a)
   -> IO (a, Thrift.Batch)
-withBatchWriter ps firstId settings action = do
+withBatchWriter backend schemaId firstId settings action = do
+  ps <- Backend.loadPredicatesForSchema backend schemaId
   w <- newWriterFromPredicates ps (fromMaybe lowestFid firstId) settings
   result <- action w
   facts <- takeMVar (writerFacts w)
   batch <- serializeFacts facts
-  return (result, batch)
+  return (result, batch { Thrift.batch_schema_id = Just schemaId })
 
 -- | Write a bunch of facts to a 'Writer'. If the accumulated batch goes over
 -- the threshold (cf. 'writerMaxSize') the batch will be pushed to the 'Sender'.

@@ -13,14 +13,9 @@ import Control.Monad.Extra (unlessM, when)
 import qualified Data.ByteString as BS
 import Data.Default (def)
 import Data.Foldable (toList)
-import qualified Data.Map as AMap
 import Data.Text (Text)
 import qualified Glean
 import Glean.Impl.ConfigProvider ()
-import Glean.Typed.Predicate (makePredicates)
-import Glean.Types (SelectSchema(SelectSchema_schema_id), SchemaId)
-import Glean.Write.Async as Glean
-import qualified Glean.Types as Thrift
 import HieDBIndexer.Builder (buildXrefMapFiles)
 import HieDBIndexer.Glean (hieFactsBuilder, createGleanDB)
 import HieDBIndexer.HieDB (mkHieDB)
@@ -74,22 +69,17 @@ outputMain
   => Tracer Text
   -> HieDBIndexerOptions Sources
   -> FilePath
-  -> SchemaId
+  -> Glean.SchemaId
   -> b
   -> IO ()
 outputMain tracer cfg out schema_id backend = withHieDB cfg $ \hiedb -> do
-  schemaInfo <- Glean.getSchemaInfo backend Nothing $
-    Thrift.GetSchemaInfo (SelectSchema_schema_id schema_id) True
   let finalCfg = cfg {sources = hiedb}
   (fileLinesMap, xrefMapData) <-
       traceMsg tracer "buildXrefMapFiles" $
         buildXrefMapFiles tracer finalCfg
-  let predicates = makePredicates
-        [AMap.elems (Thrift.schemaInfo_predicateIds schemaInfo)]
-        schemaInfo
   ((), batch) <-
-    withBatchWriter predicates Nothing def $ \writer ->
-      writeFacts writer $
+    Glean.withBatchWriter backend schema_id Nothing def $ \writer ->
+      Glean.writeFacts writer $
         hieFactsBuilder fileLinesMap xrefMapData
   BS.writeFile out (Thrift.Protocol.Compact.serializeCompact batch)
 

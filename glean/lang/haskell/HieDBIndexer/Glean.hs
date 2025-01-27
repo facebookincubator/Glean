@@ -22,14 +22,12 @@ import qualified Data.Map as AMap
 import qualified Data.Text as Text
 import Data.Typeable (Typeable)
 import qualified Glean
-import Glean.Angle.Types (SourceRef (..))
 import Glean.BuildInfo (buildRevision, buildRule)
 import Glean.Derive (derivePredicate)
 import qualified Glean.Schema.Hs as Hs
 import qualified Glean.Schema.Hs.Types as Hs
 import qualified Glean.Schema.Src as Src
 import qualified Glean.Schema.Src.Types as Src
-import qualified Glean.Types as Thrift
 import HieDBIndexer.Types (
   Definition (..),
   FileLineMap,
@@ -54,13 +52,13 @@ createGleanDB ::
   (Glean.Backend b) =>
   b ->
   Bool ->
-  Thrift.Repo ->
+  Glean.Repo ->
   FileLineMap ->
   [IndexerBatchOutput] ->
   IO ()
 createGleanDB backend dontCreateDb newRepo fileLinesMap batchOutputs = do
   let buildHandle = buildRule <> "@" <> buildRevision
-      Thrift.Repo{..} = newRepo
+      Glean.Repo{..} = newRepo
 
   logInfo $ printf "Creating Glean DB %s/%s" repo_name repo_hash
 
@@ -69,7 +67,10 @@ createGleanDB backend dontCreateDb newRepo fileLinesMap batchOutputs = do
           hieFactsBuilder fileLinesMap batchOutputs
 
         let mkPredRef predName =
-              SourceRef {sourceRefName = predName, sourceRefVersion = Nothing}
+              Glean.SourceRef {
+                sourceRefName = predName,
+                sourceRefVersion = Nothing
+              }
             predsToDerive = [
               "hs.FileDefinition",
               "hs.TargetUses",
@@ -104,7 +105,7 @@ createGleanDB backend dontCreateDb newRepo fileLinesMap batchOutputs = do
         finalWriter
 
   predicates <-
-    Thrift.schemaInfo_predicateIds
+    Glean.schemaInfo_predicateIds
       <$> Glean.getSchemaInfo backend (Just newRepo)
             def { Glean.getSchemaInfo_omit_source = True }
   repoStats <- Glean.predicateStats backend newRepo Glean.ExcludeBase
@@ -113,8 +114,8 @@ createGleanDB backend dontCreateDb newRepo fileLinesMap batchOutputs = do
           (Text.unpack predicateRef_name)
           predicateStats_count
           predicateStats_size
-        | (p, Thrift.PredicateStats {..}) <- AMap.toList repoStats
-        , Just Thrift.PredicateRef {..} <- [AMap.lookup p predicates]
+        | (p, Glean.PredicateStats {..}) <- AMap.toList repoStats
+        , Just Glean.PredicateRef {..} <- [AMap.lookup p predicates]
         ]
 
   logInfo $ unlines $ "Repo stats: " : readableStats
