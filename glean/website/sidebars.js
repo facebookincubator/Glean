@@ -11,13 +11,21 @@
 const {fbContent, fbInternalOnly} = require('internaldocs-fb-helpers');
 
 module.exports = {
-  someSidebar: {
-       'Quick Start': [
-           'introduction',
-           'trying',
-           'building',
-           'walkthrough',
-       ],
+  someSidebar: [
+      'introduction',
+      ...fbContent({
+          internal: [
+              'walkthrough',
+          ],
+          external: [{
+              'Quick Start': [
+                  'trying',
+                  'building',
+                  'walkthrough',
+              ]
+          }],
+      }),
+      {
        'User Guide': [
            {
                'Schemas': [
@@ -94,4 +102,4 @@ module.exports = {
            },
        ],
   },
-};
+]};
