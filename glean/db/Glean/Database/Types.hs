@@ -145,7 +145,6 @@ data Write = Write
 data WriteContent = WriteContent
   { writeBatch :: !Thrift.Batch
   , writeOwnership :: Maybe DefineOwnership
-  , writeSubst :: Subst -> Subst
   }
 
 -- | A Write on the WriteQueue

@@ -48,19 +48,11 @@ import Glean.RTS.Builder
 import Glean.RTS.Set
 import Glean.RTS.Constants
 import qualified Glean.RTS.Foreign.JSON as J
-import Glean.RTS.Foreign.Subst as Subst (empty)
 import Glean.RTS.Types
 import Glean.Angle.Types hiding (Type)
 import Glean.Schema.Util
 import Glean.Types as Thrift hiding (Value, Nat, Byte)
 
-
--- just an empty Subst for now. Later we might implement
--- returning substitutions from JSON writes.
-emptySubst :: IO Batch -> IO WriteContent
-emptySubst batchIO = do
-  wc <- writeContentFromBatch <$> batchIO
-  return wc{writeSubst = const Subst.empty}
 
 syncWriteJsonBatch
   :: Env
@@ -84,7 +76,7 @@ writeJsonBatch
   -> IO WriteContent
 writeJsonBatch env repo SendJsonBatch{..} = do
   dbSchema <- withOpenDatabase env repo (return . Database.odbSchema)
-  emptySubst $
+  writeContentFromBatch <$>
     buildJsonBatch dbSchema sendJsonBatch_options sendJsonBatch_batches
 
 buildJsonBatch

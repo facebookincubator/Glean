@@ -59,7 +59,6 @@ writeContentFromBatch :: Thrift.Batch -> WriteContent
 writeContentFromBatch writeBatch = WriteContent
   { writeBatch = writeBatch
   , writeOwnership = Nothing
-  , writeSubst = id
   }
 
 syncWriteDatabase
