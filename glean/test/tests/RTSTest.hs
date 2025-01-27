@@ -114,6 +114,7 @@ valueFor T.BooleanTy = do
 valueFor T.TyVar{} = error "valueFor: TyVar"
 valueFor T.HasTy{} = error "valueFor: HasTy"
 valueFor T.HasKey{} = error "valueFor: HasKey"
+valueFor T.ElementsOf{} = error "valueFor: ElementsOf"
 
 shrinkValue :: Value -> [Value]
 shrinkValue (Byte b) = Byte <$>

@@ -340,13 +340,11 @@ inferExpr ctx pat = case pat of
 
   ElementsOfArray _ e -> do
     (e', ty) <- inferExpr ContextExpr e
-    elemTy <- case ty of
-      ArrayTy elemTy -> return elemTy
-      _other -> do
-        elemTy <- freshTyVar
-        inPat pat $ unify ty (ArrayTy elemTy)
-        return elemTy
-    return (Ref (MatchExt (Typed elemTy (TcElementsOfArray e'))), elemTy)
+    elemTy <- freshTyVar
+    containerTy <- freshTyVarInt
+    unify ty (ElementsOf elemTy containerTy)
+    return (Ref (MatchExt (Typed elemTy (TcElementsUnresolved (TyVar containerTy) e')))
+           ,elemTy)
 
   Elements _ e -> do
     (e', ty) <- inferExpr ContextExpr e
@@ -1031,6 +1029,7 @@ tcQueryDeps q = Set.fromList $ map getRef (overQuery q)
       TcFactGen pref x y _ -> pref : overPat x <> overPat y
       TcElementsOfArray x -> overPat x
       TcElementsOfSet x -> overPat x
+      TcElementsUnresolved _ x -> overPat x
       TcQueryGen q -> overQuery q
       TcAll q -> overQuery q
       TcNegation stmts -> foldMap overStatement stmts
@@ -1087,6 +1086,7 @@ tcTermUsesNegation = \case
   TcFactGen _ x y _ -> tcPatUsesNegation x <|> tcPatUsesNegation y
   TcElementsOfArray x -> tcPatUsesNegation x
   TcElementsOfSet x -> tcPatUsesNegation x
+  TcElementsUnresolved _ p -> tcPatUsesNegation p
   TcQueryGen q -> tcQueryUsesNegation q
   TcAll query -> tcQueryUsesNegation query
   TcNegation _ -> Just PatternNegation

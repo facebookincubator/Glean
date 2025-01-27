@@ -334,6 +334,7 @@ thriftTy here t = case t of
   TyVar{} -> error "thriftTy: TyVar"
   HasTy{} -> error "thriftTy: HasTy"
   HasKey{} -> error "thriftTy: HasKey"
+  ElementsOf{} -> error "thriftTy: ElementsOf"
 
 mkField :: [Text] -> Text -> Int -> Name -> Text -> Text
 mkField annots structOrUnion i p t =

@@ -425,6 +425,9 @@ data Type_ pref tref
     -- HasKey K X
     --   A type variable X that is constrained to be a predicate
     --   type with key K
+  | ElementsOf (Type_ pref tref) {-# UNPACK #-}!Int
+    -- ElementsOf T X
+    --   A type variable that is either set T or [T]
   deriving (Eq, Show, Functor, Foldable, Generic)
 
 data RecordOrSum = Record | Sum
@@ -451,6 +454,7 @@ instance Bifunctor Type_ where
     TyVar x -> TyVar x
     HasTy m r x -> HasTy (bimap f g <$> m) r x
     HasKey ty x -> HasKey (bimap f g ty) x
+    ElementsOf ty x -> ElementsOf (bimap f g ty) x
 
 instance Bifoldable Type_ where
   bifoldr f g r = \case
@@ -469,6 +473,7 @@ instance Bifoldable Type_ where
     TyVar _ -> r
     HasTy m _ _ -> foldr (flip $ bifoldr f g) r m
     HasKey ty _ -> bifoldr f g r ty
+    ElementsOf ty _ -> bifoldr f g r ty
 
 {- Note [Types]
 
@@ -754,6 +759,8 @@ instance (Display pref, Display tref) => Display (Type_ pref tref) where
     doField (n, ty) = pretty n <> " : " <> display opts ty
   display opts (HasKey ty x) =
     "T" <> pretty x <> parens (display opts ty)
+  display opts (ElementsOf ty x) =
+    "T" <> pretty x <> brackets (display opts ty)
   displayAtom opts t = case t of
     MaybeTy{} -> parens $ display opts t
     EnumeratedTy{} -> parens $ display opts t

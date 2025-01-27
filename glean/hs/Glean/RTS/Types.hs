@@ -131,6 +131,7 @@ repType BooleanTy = repType lowerBool
 repType TyVar{} = error "repType: TyVar"
 repType HasTy{} = error "repType: HasTy"
 repType HasKey{} = error "repType: HasKey"
+repType ElementsOf{} = error "repType: ElementsOf"
 
 sumLike :: Type -> Maybe [Glean.RTS.Types.FieldDef]
 sumLike (SumTy fs) = Just fs

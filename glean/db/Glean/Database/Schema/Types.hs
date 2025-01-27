@@ -325,6 +325,7 @@ mkRtsType lookupType lookupPid = rtsType
     rtsType Schema.TyVar{} = error "rtsType: TyVar"
     rtsType Schema.HasTy{} = error "rtsType: HasTy"
     rtsType Schema.HasKey{} = error "rtsType: HasKey"
+    rtsType Schema.ElementsOf{} = error "rtsType: ElementsOf"
 
     fieldType :: Schema.FieldDef -> Maybe FieldDef
     fieldType (Schema.FieldDef name ty) = Schema.FieldDef name <$> rtsType ty

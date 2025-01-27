@@ -147,6 +147,18 @@ unify (HasKey a x) (HasKey b y)
   extend y (HasKey a x)
 unify a@PredicateTy{} b@HasKey{} = unify b a
 
+unify (ElementsOf elemTy x) setTy@(SetTy ty) = do
+  extend x setTy
+  unify elemTy ty
+unify a@SetTy{} b@ElementsOf{} = unify b a
+unify (ElementsOf elemTy x) arrTy@(ArrayTy ty) = do
+  extend x arrTy
+  unify elemTy ty
+unify a@ArrayTy{} b@ElementsOf{} = unify b a
+unify (ElementsOf elemTyA avar) b@(ElementsOf elemTyB _) = do
+  unify elemTyA elemTyB
+  extend avar b
+
 unify a b = unifyError a b
 
 unifyError :: Type -> Type -> T a
@@ -250,6 +262,11 @@ apply_ unbound unboundHas t = do
           Nothing -> return t
           Just u -> go u
       SetTy t -> SetTy <$> go t
+      ElementsOf _ x -> do
+        m <- lookup x
+        case m of
+          Nothing -> return t
+          Just u -> go u
 
 zonkVars :: T ()
 zonkVars = do
@@ -336,6 +353,24 @@ zonkTcPat p = case p of
             , "pattern: " <> display opts p
             , "expected type: " <> display opts ty
             ]
+  Ref (MatchExt (Typed ty (TcElementsUnresolved containerTy p))) -> do
+    ty' <- zonkType ty
+    containerTy' <- zonkType containerTy
+    p' <- zonkTcPat p
+    case containerTy' of
+      SetTy _ ->
+        return (Ref (MatchExt (Typed ty' (TcElementsOfSet p'))))
+      ArrayTy _ ->
+        return  (Ref (MatchExt (Typed ty' (TcElementsOfArray p'))))
+      _other -> do
+        opts <- gets tcDisplayOpts
+        prettyError $
+          nest 4 $ vcat
+            [ "type error in pattern"
+            , "pattern: " <> display opts p
+            , "expected type: " <> display opts ty
+            ]
+
 
   Ref m -> Ref <$> zonkMatch m
 
@@ -388,6 +423,7 @@ zonkTcTerm t = case t of
       <$> (Typed <$> zonkType ty <*> zonkTcPat p)
       <*> pure f
   TcElementsOfSet p -> TcElementsOfSet <$> zonkTcPat p
+  TcElementsUnresolved{} -> error "zonkTcTerm: TcElementsUnresolved" -- handled in zonkTcPat
   TcPromote{} -> error "zonkTcTerm: TcPromote" -- handled in zonkTcPat
   TcDemote{} -> error "zonkTcTerm: TcPromote" -- handled in zonkTcPat
   TcStructPat{} -> error "zonkTcTerm: TcStructPat" -- handled in zonkTcPat

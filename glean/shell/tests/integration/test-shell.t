@@ -66,6 +66,11 @@
 
 
 
+
+
+
+
+
   $ query "example.Class _"
   [>] example.Class _ (re)
   { "id": [0-9]+, "key": { "name": "Fish", "line": 30 } } (re)
@@ -74,6 +79,7 @@
   { "id": [0-9]+, "key": { "name": "Pet", "line": 10 } } (re)
   
   4 results, 4 facts, .*, .* bytes, .* compiled bytes (re)
+
 
 
 
@@ -90,6 +96,7 @@
 
 
 
+
   $ query "_"
   [>] _ (re)
   query has ambiguous type
@@ -101,15 +108,6 @@
 
 
 
-  $ query "A -> B"
-  [>] A -> B (re)
-  a key/value pattern (X -> Y) cannot be used here
-       
-  1 |  A -> B
-       ^^^^^^
-  [1]
-
-
 
   $ query "A -> B"
   [>] A -> B (re)
@@ -118,6 +116,18 @@
   1 |  A -> B
        ^^^^^^
   [1]
+
+
+
+
+  $ query "A -> B"
+  [>] A -> B (re)
+  a key/value pattern (X -> Y) cannot be used here
+       
+  1 |  A -> B
+       ^^^^^^
+  [1]
+
 
 
 
@@ -131,6 +141,7 @@
 
 
 
+
   $ query "A B"
   [>] A B (re)
   not in scope: A
@@ -138,6 +149,7 @@
   1 |  A B
        ^
   [1]
+
 
 
 
@@ -151,16 +163,18 @@
 
 
 
+
   $ query "A = 1; B = A[..]"
   [>] A = 1; B = A[[]..[]] (re)
   type error:
     nat
   does not match:
-    [T1]
+    T2[T1]
        
   1 |  A = 1; B = A[..]
            ^
   [1]
+
 
 
 
@@ -177,6 +191,7 @@
 
 
 
+
   $ query "{ w = A } : { n : nat | s : nat }"
   [>] { w = A } : { n : nat | s : nat } (re)
   unknown alt: w
@@ -189,6 +204,7 @@
 
 
 
+
   $ query "{} : { n : nat | s : nat }"
   [>] {} : { n : nat | s : nat } (re)
   matching on a union type should have the form { field = pattern }
@@ -198,6 +214,7 @@
   1 |  {} : { n : nat | s : nat }
        ^^
   [1]
+
 
 
 
@@ -216,6 +233,7 @@
   1 |  a = 2
        ^
   [1]
+
 
 
 

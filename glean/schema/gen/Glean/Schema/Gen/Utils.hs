@@ -136,6 +136,7 @@ orderDecls decls = map betterNotBeAnyCyclesIn sccs
   outEdgesT TyVar{} = error "outEdgesT: TyVar"
   outEdgesT HasTy{} = error "outEdgesT: HasTy"
   outEdgesT HasKey{} = error "outEdgesT: HasKey"
+  outEdgesT ElementsOf{} = error "outEdgesT: ElementsOf"
 
 {- Note [predicate type references]
 
@@ -473,3 +474,4 @@ addNamespaceDependencies nss =
   outEdgesT TyVar{} = error "outEdgesT: TyVar"
   outEdgesT HasTy{} = error "outEdgesT: HasTy"
   outEdgesT HasKey{} = error "outEdgesT: HasKey"
+  outEdgesT ElementsOf{} = error "outEdgesT: ELementsOf"

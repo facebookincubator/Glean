@@ -261,6 +261,7 @@ haskellTy_ withId genSub here t = case t of
   TyVar{} -> error "haskellTy_: TyVar"
   HasTy{} -> error "haskellTy_: HasTy"
   HasKey{} -> error "haskellTy_: HasKey"
+  ElementsOf{} -> error "haskellTy_: ElementsOf"
 
 
 genPredicate :: ResolvedPredicateDef -> M [Text]

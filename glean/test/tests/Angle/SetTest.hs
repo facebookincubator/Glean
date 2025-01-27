@@ -17,6 +17,7 @@ import Control.Exception hiding (assert)
 import Control.Monad.Trans.Except
 import Control.Monad.Except
 import Data.Default
+import Data.List
 import Data.Text (Text, unpack)
 import Data.Word
 
@@ -142,6 +143,9 @@ setSemanticsTest = TestList
       r <- runQuery_ env repo $ angleData @Glean.Test.Predicate
         [s| glean.test.Predicate { set_of_string = all ("bepa" | "apa") } |]
       assertEqual "angle - set matching" 2 (length r)
+  , TestLabel "element syntax for set" $ dbTestCase $ \env repo -> do
+      r <- runQuery_ env repo $ angleData @Nat [s| (all (1|2))[..] |]
+      assertEqual "results" [Nat 1, Nat 2] (sort r)
   ]
 
 setLimitTest :: Test

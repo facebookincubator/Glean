@@ -321,6 +321,7 @@ angleTypeInnerReprFor BooleanTy = return BooleanTBool
 angleTypeInnerReprFor TyVar{} = error "angleTypeInnerReprFor: TyVar"
 angleTypeInnerReprFor HasTy{} = error "angleTypeInnerReprFor: HasTy"
 angleTypeInnerReprFor HasKey{} = error "angleTypeInnerReprFor: HasKey"
+angleTypeInnerReprFor ElementsOf{} = error "angleTypeInnerReprFor: ElementsOf"
 
 defFile :: Either ResolvedPredicateDef ResolvedTypeDef -> FilePath
 defFile (Left p) = fileFor $ predicateDefName p
@@ -430,3 +431,4 @@ cyclesInDefs ctx defs = concatMap hasCycles sccs
   outEdgesT TyVar{} = error "outEdgesT: TyVar"
   outEdgesT HasTy{} = error "outEdgesT: HasTy"
   outEdgesT HasKey{} = error "outEdgesT: HasKey"
+  outEdgesT ElementsOf{} = error "outEdgesT: ElementsOf"

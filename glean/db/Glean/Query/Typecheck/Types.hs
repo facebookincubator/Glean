@@ -58,6 +58,7 @@ data TcTerm
   | TcFactGen PidRef TcPat TcPat SeekSection
   | TcElementsOfArray TcPat
   | TcElementsOfSet TcPat
+  | TcElementsUnresolved Type TcPat
   | TcQueryGen TcQuery
   | TcAll TcQuery
   | TcNegation [TcStatement]
@@ -103,6 +104,7 @@ instance Display TcTerm where
     isUnit _ = False
   display opts (TcElementsOfArray arr) = displayAtom opts arr <> "[..]"
   display opts (TcElementsOfSet set) = "elements" <+> parens (display opts set)
+  display opts (TcElementsUnresolved _ pat) = displayAtom opts pat <> "[..]"
   display opts (TcQueryGen q) = parens (display opts q)
   display opts (TcAll query)
     = "all" <+> "(" <> display opts query <> ")"

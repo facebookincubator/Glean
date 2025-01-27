@@ -295,6 +295,7 @@ reprTy here t = case t of
   TyVar{} -> error "reprTy: TyVar"
   HasTy{} -> error "reprTy: HasTy"
   HasKey{} -> error "reprTy: HasKey"
+  ElementsOf{} -> error "reprTy: ElementsOf"
 
 shareTypeDef :: NameSpaces -> ResolvedType -> CppGen Text
 shareTypeDef here t = do
@@ -349,6 +350,7 @@ valueTy here t = case t of
   TyVar{} -> error "valueTy: TyVar"
   HasTy{} -> error "valueTy: HasTy"
   HasKey{} -> error "valueTy: HasKey"
+  ElementsOf{} -> error "valueTy: ElementsOf"
 
 
 -- ----------------------------------------------------------------------------

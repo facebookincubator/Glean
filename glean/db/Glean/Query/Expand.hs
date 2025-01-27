@@ -100,6 +100,8 @@ instantiateWithFreshVariables query numVars = do
     TcElementsOfArray (instantiatePat base pat)
   instantiateTcTerm base (TcElementsOfSet pat) =
     TcElementsOfSet (instantiatePat base pat)
+  instantiateTcTerm base (TcElementsUnresolved ty pat) =
+    TcElementsUnresolved ty (instantiatePat base pat)
   instantiateTcTerm base (TcQueryGen query) =
     TcQueryGen (instantiateQuery base query)
   instantiateTcTerm base (TcAll query) =
