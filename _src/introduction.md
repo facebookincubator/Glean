@@ -7,6 +7,21 @@ sidebar_label: Introduction
 import {OssOnly, FbInternalOnly} from 'internaldocs-fb-helpers';
 import {SrcFile,SrcFileLink} from '@site/utils';
 
+<FbInternalOnly>
+
+This is the Glean documentation. It describes all aspects of the
+system, including how to write queries and schemas, and how
+to use the included command-line tools. Use the navigation on the left
+to find all the sections.
+
+If you found yourself here by mistake, go back to the
+  main [Glean Wiki](https://www.internalfb.com/wiki/Glean/).
+
+
+</FbInternalOnly>
+
+## Overview
+
 Glean is a system for working with facts about source code. It is
 designed for collecting and storing detailed information about code
 structure, and providing access to the data to power tools and
