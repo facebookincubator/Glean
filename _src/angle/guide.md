@@ -496,21 +496,21 @@ If we want to know for a particular file and a particular name, where it is used
 
 ```lang=angle
 XRefsViaNameByFile { file = "foo.py", xrefs = XRefs };
-{ target = { name = "Bar" } } = elements XRefs
+{ target = { name = "Bar" } } = XRefs[..]
 ```
 
-The second line uses the construct `elements` which is similar to the `[..]` syntax for arrays.
+The second line uses the `[..]` syntax which works the same as for arrays, each element of the set `XRefs` is produced as a different result.
 
 We can also create new sets from the results of a query. This is done using the `all` construct. For instance
 `all (1 | 2 | 3)` is a set containing the number `1`, `2`, and `3`.
 
-The `all` construct can be used in combination with the `elements` construct to, for instance, map over a set
+The `all` construct can be used in combination with the `[..]` construct to, for instance, map over a set
 of elements and transform them. In the example below, the second line takes each element of the `StringSet` and
 applies the primitive `prim.toLower` to it. The result is a set where all the strings are lowercase.
 
 ```lang=angle
 StringSet = all ("Foo" | "Bar" | "Baz" );
-all (String = elements StringSet; prim.toLower String)
+all (String = StringSet[..]; prim.toLower String)
 ```
 
 ## String prefix
