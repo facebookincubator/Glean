@@ -83,7 +83,7 @@ Terms have the following forms:
 
 &nbsp;&nbsp;*term* `[..]`
 
-> All the elements of the array **term**
+> All the elements of **term**, which is either an array or a set.
 
 &nbsp;&nbsp;*term₁* `|` *term₂*
 
@@ -93,7 +93,7 @@ Terms have the following forms:
 
 &nbsp;&nbsp;`elements` *term*
 
-> All the elements of the set **term**
+> **Deprecated**, use the `[..]` syntax above. All the elements of the set **term**
 
 &nbsp;&nbsp;`all` *query*
 
