@@ -9,12 +9,15 @@ def _impl_discover(ctx: bxl.Context):
     uquery = ctx.uquery()
 
     # gets all targets
-    go_targets = uquery.kind("go_binary|go_library|go_test|go_exported_library", ctx.cli_args.scope)
-    print("Go targets (total):", len(go_targets))  # buildifier: disable=print
+    all_go_targets = uquery.kind("go_binary|go_library|go_test|go_exported_library", ctx.cli_args.scope)
+    print("Go targets (total):", len(all_go_targets))  # buildifier: disable=print
 
     # exclude generated: mocks, fastcli, thrift, etc
-    go_targets = go_targets - uquery.attrfilter("labels", "generated", go_targets)
+    go_targets = all_go_targets - uquery.attrfilter("labels", "generated", all_go_targets)
     print("Go targets (non-generated):", len(go_targets))  # buildifier: disable=print
+
+    go_targets = go_targets + uquery.attrfilter("labels", "go_thrift_library", all_go_targets)
+    print("Go targets (non-generated+thrift):", len(go_targets))  # buildifier: disable=print
 
     # exclude broken and incompatible with current platform
     conf_results = ctx.lazy.join_all([ctx.lazy.configured_target_node(t).catch() for t in go_targets]).resolve()
