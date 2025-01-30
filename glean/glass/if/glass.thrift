@@ -9,6 +9,7 @@
 include "glean/github/if/fb303.thrift"
 include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/hack.thrift"
+include "thrift/annotation/thrift.thrift"
 
 namespace hs Glean
 namespace hack GleanGlass
@@ -731,6 +732,9 @@ struct FileDigest {
 }
 
 // Glass symbol service
+@thrift.DeprecatedUnvalidatedAnnotations{
+  items = {"sr.service_name": "glean.glass"},
+}
 service GlassService extends fb303.FacebookService {
   // Return a list of symbols in the given file, with attributes
   DocumentSymbolListXResult documentSymbolListX(
@@ -795,4 +799,4 @@ service GlassService extends fb303.FacebookService {
     1: USR hash,
     2: RequestOptions options,
   ) throws (1: ServerException e, 2: GlassException g);
-} (sr.service_name = 'glean.glass')
+}
