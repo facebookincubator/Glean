@@ -65,7 +65,8 @@ sudo apt-get install \
     libfmt-dev \
     clang-12 \
     llvm-12 \
-    libclang-12-dev
+    libclang-12-dev \
+    fast_float-devel
 ```
 
 ### Debian
@@ -105,7 +106,8 @@ sudo dnf install \
     fmt-devel \
     xxhash \
     clang \
-    llvm12-devel
+    llvm12-devel \
+    libfast-float-dev
 ```
 
 ## Building
@@ -148,6 +150,7 @@ build and install its dependencies:
 Now you can build all the Glean parts:
 
 ```
+cabal update
 make
 ```
 
