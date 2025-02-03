@@ -207,7 +207,6 @@ reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
           tick env repo WriteTraceCommit
             Stats.commitThroughput real_size $ do
               Storage.commit odbHandle facts
-              commitOwnership
 
       -- we're going to perform the actual commit outside the write
       -- lock, so that the next batch can start renaming while we're
@@ -219,6 +218,7 @@ reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
         if envMockWrites env
           then do release facts; return (return ())
           else do
+            commitOwnership -- must be done under the write lock
             atomically $ do
                m <- readTVar (wrCommit writing)
                case m of
