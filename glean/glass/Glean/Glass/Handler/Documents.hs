@@ -874,14 +874,15 @@ addDynamicAttributes env dbInfo repo opts repofile mlimit be syms = do
   -- combine additional dynamic attributes
   mattrs <- getSymbolAttributes env
     dbInfo repo opts repofile mlimit be
-  return $ extend mattrs mempty syms
+  return $ extend mattrs mempty [] syms
   where
-    extend [] log syms = (syms, log)
-    extend (augment : xs) log syms =
-      extend xs newLog (syms { refs = refs' , defs = defs' })
+    extend [] log dblog syms = (syms, log <> logResult dblog)
+    extend (augment : xs) log dblog syms =
+      extend xs newLog newDBLog (syms { refs = refs' , defs = defs' })
       where
-      (refs',defs',log') = augment (refs syms) (defs syms)
+      (refs',defs',log', dblog') = augment (refs syms) (defs syms)
       newLog = log <> log'
+      newDBLog = dblog' : dblog
       -- Note: it'll only log one if multiple attrs use the same fields
 
 type Augment =
@@ -889,7 +890,7 @@ type Augment =
    [Attributes.DefEntitySymbol] ->
    ([Attributes.RefEntitySymbol],
     [Attributes.DefEntitySymbol],
-    GleanGlassLogger)
+    GleanGlassLogger, AttrDBsLog)
 
 -- Work out if we have extra attribute dbs and then run the queries
 getSymbolAttributes
@@ -909,13 +910,14 @@ getSymbolAttributes env dbInfo repo opts repofile mlimit
       dbInfo repo opts
   backendRunHaxl be env $ do
     forM mAttrDBs $
-      \(attrDB, (GleanDBAttrName _ attrKey){- existential key -}) ->
+      \(attrDB, GleanDBAttrName _ attrKey{- existential key -}) ->
         withRepo attrDB $ do
           (attrs,_merr2) <- genericFetchFileAttributes attrKey
             (theGleanPath repofile) mlimit
           return $ \refs defs ->
             case Attributes.augmentSymbols attrKey attrs refs defs of
-              (refs, defs, log) -> (refs, defs, logResult log)
+               (refs, defs, log) ->
+                (refs, defs, logResult log, AttrDBsLog attrDB)
 
 -- | External (non-local db) Attributes of symbols. Just Hack only for now
 genericFetchFileAttributes

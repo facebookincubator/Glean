@@ -19,6 +19,7 @@ module Glean.Glass.Logging
   , QueryEachRepoLog(..)
   , ErrorText(..)
   , ErrorLogger(..)
+  , AttrDBsLog(..)
   , errorText
   , errorsText
 
@@ -35,11 +36,11 @@ import Data.Function (on)
 import Util.Text (textShow)
 
 import Util.Logger (ActionLog(..))
-
 import Logger.GleanGlass (GleanGlassLogger)
 import qualified Logger.GleanGlass as Logger
 
-import Glean ( Repo(..) )
+import Glean (Repo(..), repoToText)
+
 import Glean.Glass.Types
 import Glean.Glass.SnapshotBackend ( SnapshotStatus(..) )
 
@@ -225,6 +226,10 @@ instance LogResult [USRSymbolReference] where
 
 instance LogResult [RelatedSymbols] where
   logResult edges = Logger.setItemCount (length edges)
+
+newtype AttrDBsLog = AttrDBsLog { attrDb :: Glean.Repo }
+instance LogResult [AttrDBsLog] where
+  logResult logs = Logger.setAttributeDbs (map (Glean.repoToText . attrDb) logs)
 
 --
 -- | Intern error logging
