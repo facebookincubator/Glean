@@ -8,9 +8,20 @@
 def _impl_discover(ctx: bxl.Context):
     uquery = ctx.uquery()
 
+    requested_targets = ctx.unconfigured_targets(ctx.cli_args.target_exprs or [])
+
+    if ctx.cli_args.files:
+        requested_targets += ctx.uquery().owner(ctx.cli_args.files)
+
+    go_kind_filter = "go_binary|go_library|go_test|go_exported_library"
+
     # gets all targets
-    all_go_targets = uquery.kind("go_binary|go_library|go_test|go_exported_library", ctx.cli_args.scope)
+    all_go_targets = uquery.kind(go_kind_filter, requested_targets)
     print("Go targets (total):", len(all_go_targets))  # buildifier: disable=print
+
+    if ctx.cli_args.with_deps:
+        all_go_targets = uquery.kind(go_kind_filter, uquery.deps(all_go_targets, filter = "target_deps()"))
+        print("Go targets (total+deps):", len(all_go_targets))  # buildifier: disable=print
 
     # exclude generated: mocks, fastcli, thrift, etc
     go_targets = all_go_targets - uquery.attrfilter("labels", "generated", all_go_targets)
@@ -36,6 +47,8 @@ def _impl_discover(ctx: bxl.Context):
 discover = bxl_main(
     impl = _impl_discover,
     cli_args = {
-        "scope": cli_args.target_expr(),
+        "files": cli_args.option(cli_args.list(cli_args.string())),
+        "target_exprs": cli_args.option(cli_args.list(cli_args.string())),
+        "with_deps": cli_args.option(cli_args.bool()),
     },
 )
