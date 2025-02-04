@@ -70,19 +70,12 @@ syncCompletePredicates env repo =
   withOpenDatabase env repo $ \OpenDB{..} -> do
     own <- Storage.computeOwnership odbHandle base
       (schemaInventory odbSchema)
-    withWriteLock odbWriting $ Storage.storeOwnership odbHandle own
+    withWriteLock odbWriting $ \lock ->
+      Storage.storeOwnership odbHandle lock own
     maybeOwnership <- readTVarIO odbOwnership
     forM_ maybeOwnership $ \ownership -> do
       stats <- getOwnershipStats ownership
       logInfo $ "ownership propagation complete: " <> showOwnershipStats stats
-  where
-  withWriteLock Nothing f = f
-    -- if there's no write lock, we must be in the finalization
-    -- phase and the DB has already been marked read-only. We have
-    -- exclusive write access at this point so it's safe to
-    -- continue.
-  withWriteLock (Just writing) f =
-    withMutex (wrLock writing) $ const f
 
 completeAxiomPredicates :: Env -> Repo -> IO CompletePredicatesResponse
 completeAxiomPredicates env@Env{..} repo = do
@@ -122,17 +115,22 @@ syncCompleteDerivedPredicate env repo pid =
     maybeBase <- repoParent env repo
     let withBase repo f = readDatabase env repo $ \_ lookup -> f (Just lookup)
     maybe ($ Nothing) withBase maybeBase $ \base ->
-      withWriteLock odbWriting $ do
-        computed <- Storage.computeDerivedOwnership odbHandle ownership base pid
-        Storage.storeOwnership odbHandle computed
-  where
-  withWriteLock Nothing f = f
-    -- if there's no write lock, we must be in the finalization
-    -- phase and the DB has already been marked read-only. We have
-    -- exclusive write access at this point so it's safe to
-    -- continue.
-  withWriteLock (Just writing) f =
-    withMutex (wrLock writing) $ const f
+      withWriteLock odbWriting $ \lock -> do
+        computed <- Storage.computeDerivedOwnership
+          odbHandle lock ownership base pid
+        Storage.storeOwnership odbHandle lock computed
+
+withWriteLock
+  :: Maybe Writing
+  -> (forall w . Storage.WriteLock w -> IO b)
+  -> IO b
+withWriteLock Nothing f = f (undefined :: Storage.WriteLock ())
+  -- if there's no write lock, we must be in the finalization
+  -- phase and the DB has already been marked read-only. We have
+  -- exclusive write access at this point so it's safe to
+  -- continue.
+withWriteLock (Just writing) f =
+  withMutexSafe (wrLock writing) f
 
 -- | Kick off completion of externally derived predicate asynchronously
 completeDerivedPredicate

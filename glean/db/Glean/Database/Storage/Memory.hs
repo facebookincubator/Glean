@@ -79,7 +79,7 @@ instance Storage Memory where
   commit db facts = FactSet.append (dbFacts db) facts
 
   -- TODO: ownership
-  addOwnership _ _ = return ()
+  addOwnership _ _ _ = return ()
 
   optimize _ _ = return ()
 
@@ -87,7 +87,7 @@ instance Storage Memory where
   computeOwnership _ _ _ = return (error "unimplemented computeOwnership")
   getUnitId _ _ = return (error "unimplemented getUnitId")
   getUnit _ _ = return (error "unimplemented getUnit")
-  storeOwnership _ _ = return ()  -- can't fail, otherwise we fail tests
+  storeOwnership _ _ _ = return ()  -- can't fail, otherwise we fail tests
   getOwnership _ = return Nothing
   addDefineOwnership _ _ =
     return (error "unimplemented addDefineOwnership")

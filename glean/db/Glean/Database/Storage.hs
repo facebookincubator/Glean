@@ -12,6 +12,7 @@ module Glean.Database.Storage
   , Storage(..)
   , DBVersion(..)
   , AxiomOwnership
+  , WriteLock(..)
   , canOpenVersion
   , currentVersion
   , writableVersions
@@ -72,6 +73,9 @@ data Mode
 -- from unit name to ranges of fact IDs.
 type AxiomOwnership = HashMap ByteString (VS.Vector Fid)
 
+-- | Token representing the write lock
+data WriteLock w = WriteLock w
+
 -- | An abstract storage for fact database
 class CanLookup (Database s) => Storage s where
   -- | A fact database
@@ -113,7 +117,7 @@ class CanLookup (Database s) => Storage s where
   commit :: Database s -> FactSet -> IO ()
 
   -- | Add ownership data about a set of (committed) facts.
-  addOwnership :: Database s -> AxiomOwnership -> IO ()
+  addOwnership :: Database s -> WriteLock w -> AxiomOwnership -> IO ()
 
   -- | Optimise a database for reading. This is typically done before backup.
   optimize :: Database s -> Bool {- compact -} -> IO ()
@@ -126,7 +130,7 @@ class CanLookup (Database s) => Storage s where
     -> Inventory
     -> IO ComputedOwnership
 
-  storeOwnership :: Database s -> ComputedOwnership -> IO ()
+  storeOwnership :: Database s -> WriteLock w -> ComputedOwnership -> IO ()
 
   -- | Fetch the 'Ownership' interface for this DB. This is used to
   -- make a 'Slice' (a view of a subset of the facts in the DB).
@@ -140,11 +144,12 @@ class CanLookup (Database s) => Storage s where
   getUnit :: Database s -> UnitId -> IO (Maybe ByteString)
 
   -- | Called once per batch.
-  addDefineOwnership :: Database s -> DefineOwnership -> IO ()
+  addDefineOwnership :: Database s -> WriteLock w -> DefineOwnership -> IO ()
 
   -- | Called once per derived predicate at the end of its derivation.
   computeDerivedOwnership
     :: Database s
+    -> WriteLock w
     -> Ownership
     -> Maybe Lookup
        -- ^ Base DB lookup if this is a stacked DB, because we may

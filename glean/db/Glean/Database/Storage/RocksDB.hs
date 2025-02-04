@@ -155,7 +155,7 @@ instance Storage RocksDB where
   commit db facts = unsafeWithForeignPtr (dbPtr db) $ \db_ptr -> do
     with facts $ \facts_ptr -> invoke $ glean_rocksdb_commit db_ptr facts_ptr
 
-  addOwnership db owned =
+  addOwnership db _ owned =
     unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     when (not $ HashMap.null owned) $
       withMany entry (HashMap.toList owned) $ \xs ->
@@ -187,7 +187,7 @@ instance Storage RocksDB where
     using (invoke $ glean_rocksdb_get_ownership_unit_iterator db_ptr) $
     Ownership.compute inv db base
 
-  storeOwnership db own =
+  storeOwnership db _ own =
     unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     with own $ \own_ptr ->
     invoke $ glean_rocksdb_store_ownership db_ptr own_ptr
@@ -211,12 +211,12 @@ instance Storage RocksDB where
         then Just <$> unsafeMallocedByteString unit_ptr unit_size
         else return Nothing
 
-  addDefineOwnership db define =
+  addDefineOwnership db _ define =
     unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     with define $ \define_ptr ->
       invoke $ glean_rocksdb_add_define_ownership db_ptr define_ptr
 
-  computeDerivedOwnership db ownership base (Pid pid) =
+  computeDerivedOwnership db _ ownership base (Pid pid) =
     unsafeWithForeignPtr (dbPtr db) $ \db_ptr ->
     using
       (invoke $

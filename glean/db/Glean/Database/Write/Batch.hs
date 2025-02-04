@@ -134,9 +134,9 @@ writeDatabase env repo WriteContent{..} latency =
       --
       -- TODO: What if someone is already deduplicating another batch? Should we
       -- not write in that case?
-      r <- tryWithMutex (wrLock writing) $ const $
+      r <- tryWithMutexSafe (wrLock writing) $ \lock ->
         reallyWriteBatch
-          env repo odb lookup writing size False writeBatch writeOwnership
+          env repo odb lock lookup writing size False writeBatch writeOwnership
       case r of
         Just cont -> cont
         Nothing ->
@@ -148,6 +148,7 @@ reallyWriteBatch
   => Env
   -> Repo
   -> OpenDB s
+  -> Storage.WriteLock w
   -> Lookup
   -> Writing
   -> Word64  -- ^ original size of the batch
@@ -155,7 +156,7 @@ reallyWriteBatch
   -> Thrift.Batch
   -> Maybe DefineOwnership
   -> IO (IO Subst)
-reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
+reallyWriteBatch env repo OpenDB{..} lock lookup writing original_size deduped
     batch@Thrift.Batch{..} maybeOwn = do
   let !real_size = batchSize batch
   Stats.tick (envStats env) Stats.mutatorThroughput original_size
@@ -191,7 +192,7 @@ reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
         commitOwnership = do
           owned <- mapM (coerce Subst.unsafeSubstIntervalsAndRelease subst)
             batch_owned
-          Storage.addOwnership odbHandle owned
+          Storage.addOwnership odbHandle lock owned
           deps <- mapM (substDependencies subst) batch_dependencies
           derivedOwners <-
             if | Just owners <- maybeOwn -> do
@@ -201,7 +202,7 @@ reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
                   makeDefineOwnership env repo next_id deps
                | otherwise -> return Nothing
           forM_ derivedOwners $ \ownBatch ->
-            Storage.addDefineOwnership odbHandle ownBatch
+            Storage.addDefineOwnership odbHandle lock ownBatch
 
         doCommit =
           tick env repo WriteTraceCommit
@@ -228,7 +229,7 @@ reallyWriteBatch env repo OpenDB{..} lookup writing original_size deduped
               doCommit
                 `finally`
               do atomically $ writeTVar (wrCommit writing) Nothing
-                 withMutex (wrLock writing) $ const $ release facts
+                 withMutexSafe (wrLock writing) $ const $ release facts
 
       new_next_id <- Lookup.firstFreeId facts
       atomicWriteIORef (wrNextId writing) new_next_id
@@ -290,8 +291,8 @@ deDupBatch env repo odb lookup writing original_size
         forM_ maybeOwn $ \ownBatch ->
           Ownership.substDefineOwnership ownBatch dsubst
         -- And now write it do the DB, deduplicating again
-        cont <- withMutex (wrLock writing) $ const $
-          reallyWriteBatch env repo odb lookup writing original_size True
+        cont <- withMutexSafe (wrLock writing) $ \lock ->
+          reallyWriteBatch env repo odb lock lookup writing original_size True
             deduped_batch
               { Thrift.batch_owned = is
               , Thrift.batch_dependencies = deps

@@ -447,7 +447,7 @@ setupWriting Env{..} lookup = do
     (fromIntegral $ ServerConfig.config_db_writer_threads scfg)
     envLookupCacheStats
   next_id <- newIORef =<< Lookup.firstFreeId lookup
-  mutex <- newMutex ()
+  mutex <- newMutex (Storage.WriteLock ())
   queue <- WriteQueue <$> newTQueueIO <*> newTVarIO 0 <*> newTVarIO 0
     <*> newTVarIO 0 <*> newTVarIO 0
   anchorName <- newTVarIO Nothing

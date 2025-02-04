@@ -41,7 +41,7 @@ import Glean.Database.Catalog (Catalog)
 import Glean.Database.Config
 import Glean.Database.Meta
 import Glean.Database.Schema.Types
-import Glean.Database.Storage (Database, Storage, describe)
+import Glean.Database.Storage (Database, Storage, describe, WriteLock(..))
 import Glean.Database.Trace
 import Glean.Database.Work.Heartbeat (Heartbeats)
 import Glean.Database.Work.Queue (WorkQueue)
@@ -69,7 +69,7 @@ import Glean.Write.Stats (Stats)
 -- Write caches
 data Writing = Writing
   { -- Write lock
-    wrLock :: Mutex ()
+    wrLock :: Mutex (WriteLock ())
 
     -- First free Id in the write pipeline
   , wrNextId :: IORef Fid

@@ -546,10 +546,10 @@ finishDerivation env log repo ref pred = do
           let withBase repo f =
                 readDatabase env repo $ \_ lookup -> f (Just lookup)
           maybe ($ Nothing) withBase maybeBase $ \base -> do
-            withMutex (wrLock writing) $ \_ -> do
+            withMutexSafe (wrLock writing) $ \lock -> do
               computed <- Storage.computeDerivedOwnership odbHandle
-                ownership base (predicatePid details)
-              Storage.storeOwnership odbHandle computed
+                lock ownership base (predicatePid details)
+              Storage.storeOwnership odbHandle lock computed
 
 getDerivation :: Database.Env -> Repo -> PredicateId -> STM Derivation
 getDerivation env repo pred = do
