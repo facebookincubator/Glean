@@ -1744,7 +1744,7 @@ schemaEvolvesTransformations =
       let hasPid (RTS.Pid pid) fact = fromIntegral pid == Thrift.fact_type fact
           factsOfType pid = Map.filterWithKey (const $ hasPid pid)
       pid <- either (assertFailure . unpack) (return . predicatePid) $
-        lookupPredicateSourceRef ref LatestSchemaAll schema
+        lookupPredicateSourceRef ref LatestSchema schema
       putStrLn $ "Filtering for " <> show (showRef ref) <> " with Pid " <> show pid
       either assertFailure return =<< decodeResults
         (keyType ref schema)
@@ -1761,7 +1761,7 @@ schemaEvolvesTransformations =
       -> DbSchema
       -> RTS.Type
     keyType ref dbSchema =
-      case lookupPredicateSourceRef ref LatestSchemaAll dbSchema of
+      case lookupPredicateSourceRef ref LatestSchema dbSchema of
         Left err -> error $ "can't find predicate: " <>
           unpack (showRef ref) <> ": " <> unpack err
         Right details -> predicateKeyType details

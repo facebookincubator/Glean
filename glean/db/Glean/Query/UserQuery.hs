@@ -921,14 +921,14 @@ schemaVersionForQuery
 schemaVersionForQuery schema ServerConfig.Config{..} qid = do
   use <-
     case qid of
-      Nothing -> return LatestSchemaAll
+      Nothing -> return LatestSchema
       Just id
         | id `Map.member` schemaEnvs schema -> return (SpecificSchemaId id)
         | config_strict_query_schema_id ->
             throwIO (Thrift.UnknownSchemaId id)
         | otherwise -> do
             logWarning $ "schema unavailable: " <> show id
-            return LatestSchemaAll
+            return LatestSchema
 
   vlog 1 $ "using schema ID: " <> show (pretty use)
   return use

@@ -87,7 +87,7 @@ withTest setup setupBackup action =
   withSystemTempDirectory "glean-dbtest" $ \dbdir -> do
   withSystemTempDirectory "glean-dbtest-backup" $ \backupdir -> do
     schema <- parseSchemaDir schemaSourceDir
-    schema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent def
+    schema <- newDbSchema Nothing schema LatestSchema readWriteContent def
     setup dbdir schema
     setupBackup backupdir schema
     action evb cfgAPI dbdir backupdir

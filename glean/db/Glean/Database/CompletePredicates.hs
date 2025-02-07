@@ -168,7 +168,7 @@ completeDerivedPredicate env@Env{..} repo pred = do
     env repo FailIfNotComplete doCompletion isInProgress storeComputation
   where
   predicateDetails schema pred =
-    case lookupPredicateSourceRef (convertRef pred) LatestSchemaAll schema of
+    case lookupPredicateSourceRef (convertRef pred) LatestSchema schema of
       Right details -> return details
       Left err ->
         throwIO $ Thrift.Exception $ "completeDerivedPredicate: " <> err

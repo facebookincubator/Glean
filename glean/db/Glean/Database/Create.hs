@@ -168,8 +168,7 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
                         }
                       })
             OpenDB{..} <- unmask $ Async.wait opener
-            addSchemaIdProperty envCatalog kickOff_repo
-              (schemaLatestVersion odbSchema)
+            addSchemaIdProperty envCatalog kickOff_repo (schemaId odbSchema)
             return $ Thrift.KickOffResponse False
   where
     addSchemaIdProperty :: Catalog.Catalog -> Repo -> SchemaId -> IO ()
@@ -277,7 +276,7 @@ stackedCreate env@Env{..} base KickOff{..} schemaToUse =
                 (renderSchemaSource (procSchemaSource proc))
                 (storedSchema_predicateIds storedSchema)
                 -- Note: we *must* use the Pids from the base DB
-                (toStoredVersions hashedSchemaAllVersions))
+                (toStoredVersions hashedSchemaAllVersion hashedSchemaId))
           else
             throwIO $ Thrift.Exception $
               "update_schema_for_stacked specified, but schemas are " <>

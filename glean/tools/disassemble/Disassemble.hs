@@ -65,7 +65,7 @@ main =
   withConfigProvider cfg $ \(cfgAPI :: ConfigAPI) -> do
 
   schemas <- ThriftSource.load cfgAPI cfgSchemaSource
-  db_schema <- newDbSchema Nothing schemas LatestSchemaAll readWriteContent def
+  db_schema <- newDbSchema Nothing schemas LatestSchema readWriteContent def
 
   case cfgCommand of
     PTC args -> predicateTypecheckers db_schema args
@@ -77,7 +77,7 @@ predicateTypecheckers schema args = do
     refs -> forM refs $ \ref -> do
       let sourceRef = parseRef ref
       either (die . Text.unpack) return
-        $ lookupPredicateSourceRef sourceRef LatestSchemaAll schema
+        $ lookupPredicateSourceRef sourceRef LatestSchema schema
   forM_ (sortOn predicateRef preds) $ \d@PredicateDetails{..} -> do
     let PredicateRef{..} = predicateRef d
     mapM_ Text.putStrLn $ disassemble

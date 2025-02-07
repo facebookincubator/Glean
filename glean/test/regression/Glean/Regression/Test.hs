@@ -77,7 +77,6 @@ createTestConfig repo group outDir cfg =
       , testProjectRoot = cfgProjectRoot cfg
       , testGroup = group
       , testSchema = cfgSchema cfg
-      , testSchemaVersion = cfgSchemaVersion cfg
       }
 
 -- | Run a test with an arbitrary indexer

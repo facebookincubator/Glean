@@ -25,7 +25,6 @@ import Data.Default
 import Data.Foldable
 import qualified Data.HashMap.Strict as HashMap
 import Data.Int
-import qualified Data.IntMap as IntMap
 import Data.IORef
 import Data.List
 import Data.List.Split
@@ -1259,18 +1258,15 @@ getSchemaId = do
     ProcessedSchema{..} <- schemas
     case useSchemaId of
       Thrift.SelectSchema_schema_id id -> Just id
-      _ -> snd <$> IntMap.lookupMax (hashedSchemaAllVersions procSchemaHashed)
+      _ -> Just $ hashedSchemaId procSchemaHashed
 
 getNameEnv :: Eval (Maybe (NameEnv RefTargetId))
 getNameEnv = do
   ShellState{..} <- getState
   case schemas of
     Nothing -> return Nothing
-    Just ProcessedSchema{..} -> do
-      schema_id <- getSchemaId
-      return $ case schema_id of
-        Nothing -> Nothing
-        Just id -> Map.lookup id (hashedSchemaEnvs procSchemaHashed)
+    Just ProcessedSchema{..} ->
+      return $ Just $ hashedSchemaEnv procSchemaHashed
 
 availablePredicates :: Eval [String]
 availablePredicates = maybe [] preds <$> getNameEnv
@@ -1373,7 +1369,7 @@ parseAndTypecheckSchema env dir = do
   -- typecheck the schema now, so that we find out about
   -- errors before we try updating the schema for DBs.
   void $ liftIO $ newDbSchema (fmap envDbSchemaCache env) parsed
-    LatestSchemaAll readWriteContent (maybe def envDebug env)
+    LatestSchema readWriteContent (maybe def envDebug env)
   return parsed
 
 setupLocalSchema

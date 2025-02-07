@@ -37,7 +37,7 @@ mkSchema
   -> SchemaIndex
   -> IO DbSchema
 mkSchema toList schemaIndex =
-  newDbSchemaForTesting toList Nothing schemaIndex LatestSchemaAll
+  newDbSchemaForTesting toList Nothing schemaIndex LatestSchema
     readWriteContent def
 
 main :: IO ()
@@ -73,7 +73,7 @@ deterministicOnFilesTest schemaSourceDir = TestCase $ do
   permutedFiles <- mapM catSchemaFiles (permuteList files)
   schemas <-
     mapM
-      (either error (mkSchema HM.toList) . processOneSchema mempty)
+      (either error (mkSchema HM.toList) . processOneSchema Nothing)
       permutedFiles
   testDeterminism schemas
 
@@ -82,10 +82,10 @@ deterministicOnHashMaps schemaSourceDir = TestCase $ do
   files <- catSchemaFiles =<< listDirectoryRecursive schemaSourceDir
   schemas1 <-
     either error (mkSchema HM.toList . (`SchemaIndex` [])) $
-      processSchemaForTesting HM.toList mempty files
+      processSchemaForTesting HM.toList Nothing files
   schemas2 <-
     either error (mkSchema (reverse . HM.toList) . (`SchemaIndex` [])) $
-      processSchemaForTesting (reverse . HM.toList) mempty files
+      processSchemaForTesting (reverse . HM.toList) Nothing files
   testDeterminism [schemas1, schemas2]
 
 --------------------------------------------------------------------------------

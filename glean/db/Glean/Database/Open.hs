@@ -312,7 +312,7 @@ setupSchema Env{..} _ handle (Create _ _ initial) = do
   dbSchema <- case initial of
     UseDefaultSchema ->
       newDbSchema (Just envDbSchemaCache) schema
-        LatestSchemaAll readWriteContent envDebug
+        LatestSchema readWriteContent envDebug
     UseSpecificSchema schemaId ->
       newDbSchema (Just envDbSchemaCache) schema
         (SpecificSchemaId schemaId) readWriteContent envDebug

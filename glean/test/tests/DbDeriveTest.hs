@@ -122,7 +122,7 @@ deriveTestCases runDerive env repo = do
       sref = SourceRef predicateRef_name (Just predicateRef_version)
   pid <- withOpenDatabase env repo $ \opendb ->
     either (throwIO . ErrorCall . Text.unpack) return $
-      lookupPredicateSourceRef sref LatestSchemaAll (odbSchema opendb)
+      lookupPredicateSourceRef sref LatestSchema (odbSchema opendb)
   addDummyDerivationForPredicate (predicateId pid) env
   derivedCount <- derive pred
   assertEqual "deriveTest - repo check" 1 derivedCount

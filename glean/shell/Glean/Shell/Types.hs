@@ -31,6 +31,7 @@ import qualified Control.Monad.Trans.State.Strict as State
 import Data.Int
 import Data.List
 import qualified Data.Map as Map
+import Data.Maybe
 import Compat.Prettyprinter as Pretty
 #if !MIN_VERSION_haskeline(0,8,0)
 import qualified System.Console.Haskeline as Haskeline
@@ -189,5 +190,5 @@ setRepo r = do
       { repo = Just r
       , schemaInfo = Just info }
     proc <- either (liftIO . throwIO . ErrorCall) return $
-      processSchema (Map.fromList sids) schemaInfo_schema
+      processSchema (listToMaybe sids) schemaInfo_schema
     Eval $ State.modify $ \s -> s { schemas = Just proc }

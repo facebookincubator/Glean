@@ -23,6 +23,9 @@ struct StoredSchema {
   // reason, the SchemaIds that were previously computed remain
   // unchanged. Internal PredicateId and TypeId hashes might change,
   // but those aren't exposed externally.
+  //
+  // Note: as with SchemaInstance below, this is a map for legacy reasons
+  // and MUST HAVE A SINGLE ENTRY.
   3: map<string, glean.Version> versions;
 }
 
@@ -81,10 +84,42 @@ struct Meta {
 // Schema index
 
 struct SchemaInstance {
-  // The SchemaId corresponding to each all.N schema. We could
-  // recompute this from the schema, but storing it here is better:
+  // The SchemaId and the all.N version to use.
+  //
+  // For legacy reasons this is a map, but it MUST HAVE EXACTLY ONE ENTRY.
+  //
+  // The schema source may contain multiple all.N schemas; the version
+  // here specifies which all.N is used to construct the scope for
+  // clients using this schema ID. e.g. if the schema source contains
+  //
+  //    schema all.1 : cxx.1
+  //    schema all.2 : cxx.2
+  //
+  // the schema index may look like
+  //
+  //     {
+  //       "current" : {
+  //         "versions": { "1234" : "2" }
+  //         "file" : "instances/1234"
+  //       },
+  //       "older" : [
+  //         {
+  //           "versions": { "5678" : "1" }
+  //           "file" : "instances/5678"
+  //         },
+  //       ..
+  //       ]
+  //    }
+  //
+  // i.e. there is one entry in the index for each all.N version, and
+  // each one has a complete copy of the schema source.
+  //
+  // We could recompute the schema ID from the schema, but storing it
+  // in the index is better:
   //  - we can change the hashing strategy and the server will still work
-  //    with the existing schemas
+  //    with the existing schemas. This is actually a critical property,
+  //    because the hashing strategy often changes e.g. when we modify
+  //    the Angle AST type.
   //  - if we want to deploy a fix to a schema without changing its hash,
   //    we can do that
   //

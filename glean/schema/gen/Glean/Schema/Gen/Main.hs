@@ -80,15 +80,8 @@ import Glean.Schema.Gen.Utils ( NameSpaces )
 import Glean.Schema.Types
 import Glean.Types (SchemaId(..))
 
-data WhichVersion
-  = AllVersions
-  | OlderVersions
-  | HighestVersion
-  | OneVersion Version
-
 data Options = Options
   { input :: Either FilePath FilePath
-  , version :: WhichVersion
   , omitArchive :: Bool
   , actOptions :: Either GraphOptions GenOptions
   }
@@ -137,17 +130,6 @@ options = do
     dir = strOption (long "dir" <> metavar "DIR")
     oneFile = strOption (long "input" <> metavar "FILE")
   input <- (Left <$> oneFile) <|> (Right <$> dir)
-  let
-    allVersions = flag' AllVersions (long "all-versions")
-    olderVersions = flag' OlderVersions (long "older-versions")
-    justVersion = fmap OneVersion $ option auto $
-      long "version" <> metavar "VERSION" <>
-      help "version of the schema to generate code for"
-  version <-
-    allVersions <|>
-    olderVersions <|>
-    justVersion <|>
-    pure HighestVersion
   actOptions <-
     fmap Left graphOptions <|>
     fmap Right genOptions
@@ -167,9 +149,7 @@ options = do
         target <- optional $ strOption
           (  long "root"
           <> metavar "NODE"
-          <> help
-            ("reference schema/predicate. "
-            <> "If unspecified the latest version of `all`is used.")
+          <> help "reference schema/predicate"
           )
         maxDepth <- optional $ option auto
           (  long "depth"
@@ -225,19 +205,19 @@ main = do
           if omitArchive
             then filter (not . ("/archive/" `isInfixOf`)) files
             else files
-    schema <- case processSchema Map.empty str of
+    schema <- case processSchema Nothing str of
       Left err -> throwIO $ ErrorCall err
       Right schema -> return schema
 
     -- Just check that parseSchemaCached works, because the server
     -- will be using it.
-    case processSchemaCached Map.empty HashMap.empty str of
+    case processSchemaCached Nothing HashMap.empty str of
       Left err -> throwIO $ ErrorCall $ err
       Right{} -> return ()
 
     -- for typechecking
     dbschema <- newDbSchema Nothing (SchemaIndex schema [])
-      LatestSchemaAll readWriteContent def
+      LatestSchema readWriteContent def
     return (str, schema, dbschema)
 
   let ProcessedSchema sourceSchemas resolved _ = schema
@@ -296,33 +276,12 @@ main = do
       , resolvedSchemaVersion == v
       ]
 
-    olderSchemas =
-      [ s | s@ResolvedSchema{..} <- allSchemas
-      , resolvedSchemaVersion /= latest
-      ]
-      where latest = maximum (map resolvedSchemaVersion allSchemas)
-
-    verToHash = legacyAllVersions dbschema
-
-    hashOf ver = case IntMap.lookup (fromIntegral ver) verToHash of
-      Nothing -> error $ "no schema version: " <> show ver
-      Just hash -> hash
-
-    withPath schema = (v, hashOf v, schema, Just $ 'v' : show v)
-      where v = resolvedSchemaVersion schema
-
-  versions <- case version of
-    HighestVersion ->
-      case schemasHighestVersion resolved of
-        Just ver | Just schema <- findVersion ver ->
-          return [(ver, hashOf ver, schema, Nothing)]
-        _otherwise -> fail "missing 'all' schema"
-    OneVersion v ->
-      case findVersion v of
-        Just schema -> return [(v, hashOf v, schema, Nothing)]
-        Nothing -> fail $ "can't find all." <> show v
-    AllVersions -> return $ withPath <$> allSchemas
-    OlderVersions -> return $ withPath <$> olderSchemas
+  versions <-
+    case schemasHighestVersion resolved of
+      Just ver
+        | Just schema <- findVersion ver, ver == schemaAllVersion dbschema ->
+          return [(ver, schemaId dbschema, schema, Nothing)]
+      _otherwise -> fail "missing 'all' schema"
 
   case actOptions of
     Left opts -> graph opts dbschema refsResolved [ v | (v,_,_,_) <- versions ]
@@ -484,13 +443,13 @@ doUpdateIndex src new@(ProcessedSchema _ _ hashed) indexFile = do
     -- store the new schema in the file "instance/<schemaid>" relative
     -- to the index file, where <schemaid> is the SchemaId of the
     -- latest "all" schema
-    file = case IntMap.lookupMax (hashedSchemaAllVersions hashed) of
-      Nothing -> error "no \"all\" schema"
-      Just (_, id) -> "instance/" <> unSchemaId id
+    file = "instance/" <> unSchemaId (hashedSchemaId hashed)
 
-    versions = Map.fromList
-      [ (unSchemaId id, fromIntegral ver)
-      | (ver,id) <- IntMap.toList (hashedSchemaAllVersions hashed) ]
+    versions = Map.fromList [(
+        unSchemaId (hashedSchemaId hashed),
+        fromIntegral (hashedSchemaAllVersion hashed)
+      )]
+
     baseIndex = def {
         Internal.schemaIndex_current = def {
           Internal.schemaInstance_versions = versions,

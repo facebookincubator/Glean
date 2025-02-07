@@ -132,8 +132,8 @@ withSchemaAndFacts customSettings schema facts act =
   -- get PredicateDetails
   dbSchema <- do
     schema <- either error return
-      $ processOneSchema Map.empty $ encodeUtf8 $ pack schema
-    newDbSchema Nothing schema LatestSchemaAll readWriteContent def
+      $ processOneSchema Nothing $ encodeUtf8 $ pack schema
+    newDbSchema Nothing schema LatestSchema readWriteContent def
 
   -- open db for querying
   -- We need to open the db again because schema evolutions are

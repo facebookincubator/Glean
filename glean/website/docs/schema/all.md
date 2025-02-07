@@ -47,13 +47,7 @@ schema all.6 :
 
 :::note
 
-**Multiple versions of `all`**
-
-This is a rather specialised scenario, but it might be necessary to
-have multiple versions of the `all` schema during a schema
-migration. We can code-generate the Thrift types from each version of
-`all` separately, and clients can select at build time which version
-they want to use. This enables incremental migration of code from one
-schema to another schema.
+If there are multiple versions of `all`, all but the highest version
+are ignored.
 
 :::

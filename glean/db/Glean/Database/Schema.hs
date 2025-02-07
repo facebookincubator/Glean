@@ -40,7 +40,6 @@ import Control.Monad.Except
 import Control.Monad.State as State
 import Data.Bifoldable (bifoldMap)
 import Data.ByteString (ByteString)
-import Data.Coerce
 import Data.Foldable
 import Data.Graph
 import Data.Hashable
@@ -147,19 +146,20 @@ storedSchemaPids StoredSchema{..} = HashMap.fromList
   [ (ref, Pid pid) | (pid, ref) <- Map.toList storedSchema_predicateIds ]
 
 toStoredSchema :: DbSchema -> StoredSchema
-toStoredSchema DbSchema{..} = StoredSchema
-  { storedSchema_schema = renderSchemaSource (fst schemaSource)
-  , storedSchema_predicateIds = Map.fromList $
-      [ (fromPid $ predicatePid p, predicateRef p)
-      | p <- HashMap.elems predicatesById
-      , predicateInStoredSchema p
-      ]
-      -- Note: only the stored predicates. There can be multiple
-      -- predicates with the same PredicateRef (different Pid and
-      -- PredicateId), but only one of them is from the stored schema
-      -- and corresponds to the Pids of facts stored in the DB.
-  , storedSchema_versions = toStoredVersions (snd schemaSource)
-  }
+toStoredSchema DbSchema{ schemaSource = (source, ver, sourceId), ..} =
+  StoredSchema
+    { storedSchema_schema = renderSchemaSource source
+    , storedSchema_predicateIds = Map.fromList $
+        [ (fromPid $ predicatePid p, predicateRef p)
+        | p <- HashMap.elems predicatesById
+        , predicateInStoredSchema p
+        ]
+        -- Note: only the stored predicates. There can be multiple
+        -- predicates with the same PredicateRef (different Pid and
+        -- PredicateId), but only one of them is from the stored schema
+        -- and corresponds to the Pids of facts stored in the DB.
+    , storedSchema_versions = toStoredVersions ver sourceId
+    }
 
 newMergedDbSchema
   :: Maybe (MVar DbSchemaCache)
@@ -183,12 +183,13 @@ newMergedDbSchema schemaCache storedSchema@StoredSchema{..}
     identicalSchemas =
       [ proc
       | proc <- schemaIndexCurrent index : schemaIndexOlder index
-      , fromStoredVersions storedSchema_versions ==
-          hashedSchemaAllVersions (procSchemaHashed proc)
+      , let HashedSchema{..} = procSchemaHashed proc
+      , IntMap.toList (fromStoredVersions storedSchema_versions) ==
+          [(fromIntegral hashedSchemaAllVersion, hashedSchemaId)]
       ]
 
     processStoredSchema =
-      case processSchema Map.empty storedSchema_schema of
+      case processSchema Nothing storedSchema_schema of
         Left msg -> throwIO $ ErrorCall msg
         Right resolved -> return resolved
 
@@ -257,7 +258,7 @@ mkDbSchemaFromSource
   -> ByteString
   -> IO DbSchema
 mkDbSchemaFromSource schemaCache knownPids dbContent debug source = do
-  case processSchema Map.empty source of
+  case processSchema Nothing source of
     Left str -> throwIO $ ErrorCall str
     Right (ProcessedSchema source resolved hashed) ->
       mkDbSchema HashMap.toList schemaCache knownPids dbContent
@@ -272,11 +273,14 @@ dbSchemaKey
 dbSchemaKey pidMap stored maybeIndex = DbSchemaCacheKey $
   hashBinary
     ( [ (showRef ref, pid) | (ref, Pid pid) <- HashMap.toList pidMap ]
-    , coerce (hashedSchemaAllVersions (procSchemaHashed stored)) :: IntMap Text
+    , versions (procSchemaHashed stored)
     , flip (maybe []) maybeIndex $ \SchemaIndex{..} ->
-        map (coerce . hashedSchemaAllVersions . procSchemaHashed)
-          (schemaIndexCurrent : schemaIndexOlder) :: [IntMap Text]
+        map (versions . procSchemaHashed)
+          (schemaIndexCurrent : schemaIndexOlder)
     )
+  where
+  versions HashedSchema{..} =
+    (hashedSchemaAllVersion, unSchemaId hashedSchemaId)
 
 {- |
    Caching DbSchema
@@ -323,9 +327,7 @@ withDbSchemaCache maybeCache maybePids stored maybeIndex mk =
         Just schema -> do
           addStatValueType "glean.db.schema.cache.hit" 1 ODS.Sum
           vlog 2 $ "DbSchema cache hit, stored SchemaId: " <>
-            maybe "<unknown>" (unSchemaId . snd)
-              (IntMap.lookupMax (hashedSchemaAllVersions
-                (procSchemaHashed stored)))
+            unSchemaId (hashedSchemaId (procSchemaHashed stored))
           return schema
         Nothing -> do
           addStatValueType "glean.db.schema.cache.miss" 1 ODS.Sum
@@ -470,29 +472,18 @@ mkDbSchema toList cacheVar knownPids dbContent
           (IntMap.lookupMax byPid)
 
         schemaEnvMap =
-          Map.unions $
-          map (hashedSchemaEnvs . procSchemaHashed) $
-          procStored : addedSchemas
+          Map.fromList
+            [ (hashedSchemaId h, hashedSchemaEnv h)
+            | h <- map procSchemaHashed (procStored : addedSchemas) ]
 
-        latestSchema =
+        latestSchema = procSchemaHashed $
           case index of
             Just SchemaIndex{..} -> schemaIndexCurrent
             Nothing -> procStored
 
-        legacyAllVersions =
-          hashedSchemaAllVersions $ procSchemaHashed latestSchema
+        dbSchemaId = hashedSchemaId stored
+        dbSchemaAllVersion = hashedSchemaAllVersion stored
 
-    latestSchemaId <-
-        case IntMap.lookupMax legacyAllVersions of
-            Nothing -> throwIO $ ErrorCall "no \"all\" schema"
-            Just (_, id) -> return id
-
-    dbSchemaId <-
-          case IntMap.lookupMax (hashedSchemaAllVersions stored) of
-            Nothing -> throwIO $ ErrorCall "no \"all\" schema in DB"
-            Just (_, id) -> return id
-
-    let
         predicatesById = tcEnvPredicates tcEnv
         derivationDepends = HashMap.fromListWith (++)
           [ (p, pp) | (_, p, pp) <- derivationEdges predicatesById]
@@ -509,20 +500,20 @@ mkDbSchema toList cacheVar knownPids dbContent
       showt (HashMap.size (tcEnvTypes tcEnv)) <> " types/" <>
       showt (HashMap.size (tcEnvPredicates tcEnv)) <> " predicates."
 
-    forM_ (IntMap.toList legacyAllVersions) $ \(n, id) ->
-      vlog 2 $ "all." <> showt n <> " = " <> unSchemaId id
+    vlog 2 $ "all." <> showt (hashedSchemaAllVersion latestSchema)  <>
+      " = " <> unSchemaId (hashedSchemaId latestSchema)
 
     return $ DbSchema
       { predicatesById = predicatesById
       , typesById = tcEnvTypes tcEnv
       , schemaEnvs = schemaEnvMap
-      , legacyAllVersions = legacyAllVersions
       , predicatesByPid = byPid
       , predicatesTransformations = HashMap.empty
       , schemaInventory = inventory predicates
-      , schemaSource = (source, hashedSchemaAllVersions stored)
+      , schemaSource = (source, dbSchemaAllVersion, dbSchemaId)
       , schemaMaxPid = maxPid
-      , schemaLatestVersion = latestSchemaId
+      , schemaAllVersion = hashedSchemaAllVersion latestSchema
+      , schemaId = hashedSchemaId latestSchema
       , derivationDepends = derivationDepends
       }
 
@@ -578,7 +569,7 @@ mkTransformations content byId stored otherSchemas =
   processed = stored : otherSchemas
 
   versionsOfAll :: ProcessedSchema -> [SchemaId]
-  versionsOfAll = IntMap.elems . hashedSchemaAllVersions . procSchemaHashed
+  versionsOfAll s = [hashedSchemaId (procSchemaHashed s)]
 
   detailsById id = HashMap.lookupDefault err id byId
     where err = error $ "mkEvolutions: " <> show (displayDefault id)
@@ -1014,7 +1005,7 @@ validateNewSchema
   -> DebugFlags
   -> IO ()
 validateNewSchema _config newSrc current debug = do
-  schema <- case processSchema Map.empty newSrc of
+  schema <- case processSchema Nothing newSrc of
     Left msg -> throwIO $ Thrift.Exception $ Text.pack msg
     Right resolved -> return resolved
   let
@@ -1155,15 +1146,17 @@ getSchemaInfo dbSchema index@SchemaIndex{..} GetSchemaInfo{..} = do
       | p <- HashMap.elems (predicatesById dbSchema)
       ]
 
-    storedSchema = renderSchemaSource (fst (schemaSource dbSchema))
+    !(source, sourceVer, sourceId) = schemaSource dbSchema
+    storedSchema = renderSchemaSource source
 
-    schemaIds = toStoredVersions (legacyAllVersions dbSchema)
-    dbSchemaIds = toStoredVersions (snd (schemaSource dbSchema))
+    schemaIds = toStoredVersions (schemaAllVersion dbSchema) (schemaId dbSchema)
+    dbSchemaIds = toStoredVersions sourceVer sourceId
     otherSchemaIds =
-      [ toStoredVersions (hashedSchemaAllVersions procSchemaHashed)
+      [ toStoredVersions
+          (hashedSchemaAllVersion procSchemaHashed)
+          (hashedSchemaId procSchemaHashed)
       | ProcessedSchema{..} <- schemaIndexOlder
-      , all ((`Map.notMember` dbSchemaIds) . unSchemaId)
-          (IntMap.elems (hashedSchemaAllVersions procSchemaHashed))
+      , hashedSchemaId procSchemaHashed /= sourceId
       ]
 
     fromPredicateId predId =
@@ -1179,7 +1172,7 @@ getSchemaInfo dbSchema index@SchemaIndex{..} GetSchemaInfo{..} = do
     else case getSchemaInfo_select of
       SelectSchema_stored{} -> return storedSchema
       SelectSchema_current{} ->
-        findSchemaSource index dbSchema (schemaLatestVersion dbSchema)
+        findSchemaSource index dbSchema (schemaId dbSchema)
       SelectSchema_schema_id sid -> findSchemaSource index dbSchema sid
       _ -> return storedSchema
 
@@ -1213,9 +1206,8 @@ getSchemaInfoForSchema index sid debug = do
 --
 -- TODO: maybe they should be the same.
 
-toStoredVersions :: IntMap SchemaId -> Map Text Version
-toStoredVersions versions = Map.fromList
-  [ (unSchemaId id, fromIntegral ver) | (ver, id) <- IntMap.toList versions ]
+toStoredVersions :: Version -> SchemaId -> Map Text Version
+toStoredVersions ver id = Map.fromList [ (unSchemaId id, fromIntegral ver) ]
 
 fromStoredVersions :: Map Text Version -> IntMap SchemaId
 fromStoredVersions versions = IntMap.fromList
@@ -1246,8 +1238,8 @@ findSchemaInDB dbSchema sid = listToMaybe matches
   where
   matches =
     [ source
-    | (source, versions) <- [ schemaSource dbSchema ]
-    , sid `elem` IntMap.elems versions
+    | (source, _, sourceId) <- [ schemaSource dbSchema ]
+    , sid == sourceId
     ]
 
 findSchemaInIndex
@@ -1260,5 +1252,5 @@ findSchemaInIndex Glean.Database.Config.SchemaIndex{..} sid =
   matches =
     [ proc
     | proc <- schemaIndexCurrent : schemaIndexOlder
-    , sid `Map.member` hashedSchemaEnvs (procSchemaHashed proc)
+    , sid == hashedSchemaId (procSchemaHashed proc)
     ]

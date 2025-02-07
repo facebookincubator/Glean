@@ -114,7 +114,7 @@ writeFacts dbSchema opts builder@FactBuilder{..} pred factList maybeUnit = do
 predDetailsForWriting :: DbSchema -> PredicateRef -> IO PredicateDetails
 predDetailsForWriting dbSchema (PredicateRef name ver) = do
   let sourceRef = SourceRef name (Just ver)
-  case lookupPredicateSourceRef sourceRef LatestSchemaAll dbSchema of
+  case lookupPredicateSourceRef sourceRef LatestSchema dbSchema of
     Right info ->
       assert (predicateInStoredSchema info) $ return info
       -- it should be impossible for predicateInStoredSchema to be

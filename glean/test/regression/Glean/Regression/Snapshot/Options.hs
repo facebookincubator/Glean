@@ -31,8 +31,6 @@ data Config = Config
     -- ^ when True overwrite golden *.out with query result
   , cfgSchema :: Maybe FilePath
     -- ^ Schema directory
-  , cfgSchemaVersion :: Maybe Int
-    -- ^ version of 'all' schema to use
   , cfgTests :: [String]
     -- ^ specific directories of tests we want to run (ignoring other
     --   directories)
@@ -61,9 +59,6 @@ optionsWith other = O.info (O.helper <*> ((,) <$> parser <*> other)) O.fullDesc
       cfgSchema <- O.optional $ O.strOption $
         O.long "schema" <>
         O.help "Directory containing schema source files"
-      cfgSchemaVersion <- O.optional $ O.option O.auto $
-        O.long "schema-version" <> O.metavar "INT" <>
-        O.help "version of 'all' schema to use for unversioned queries"
       cfgTests <- O.many $ O.strOption $
         O.long "only" <> O.metavar "DIR" <>
         O.help "Run tests from DIR only"

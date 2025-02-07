@@ -104,12 +104,12 @@ mkE :: IO E
 mkE = do
   -- Build the DbSchema
   schema <- parseSchemaDir schemaSourceDir
-  dbSchema <- newDbSchema Nothing schema LatestSchemaAll readWriteContent def
+  dbSchema <- newDbSchema Nothing schema LatestSchema readWriteContent def
 
   -- glean.test.Predicate has glean.test.KitchenSink as its key
   Right testPred <- return $ lookupPredicateSourceRef
     (Schema.SourceRef "glean.test.Predicate" Nothing)
-    LatestSchemaAll
+    LatestSchema
     dbSchema
 
   return $ E

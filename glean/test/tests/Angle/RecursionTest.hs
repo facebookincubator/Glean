@@ -124,7 +124,7 @@ recursionTest = TestList
         -> DbSchema
         -> RTS.Type
       keyType ref dbSchema =
-        case lookupPredicateSourceRef ref LatestSchemaAll dbSchema of
+        case lookupPredicateSourceRef ref LatestSchema dbSchema of
           Left err -> error $ "can't find predicate: " <>
             unpack (showRef ref) <> ": " <> unpack err
           Right details -> predicateKeyType details

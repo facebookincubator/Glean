@@ -54,7 +54,7 @@ import qualified Glean.Database.List as Database
 import qualified Glean.Database.PredicateStats as Database (predicateStats)
 import qualified Glean.Database.Restore as Database
 import qualified Glean.Database.Schema as Database
-import Glean.Database.Schema hiding (getSchemaInfo)
+import Glean.Database.Schema hiding (getSchemaInfo, schemaId)
 import qualified Glean.Database.Types as Database
 import Glean.Database.Types (Env(..))
 import qualified Glean.Database.Work as Database

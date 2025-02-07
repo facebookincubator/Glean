@@ -217,7 +217,7 @@ schemaForSchemaId :: SchemaIndex -> SchemaId -> Maybe ProcessedSchema
 schemaForSchemaId SchemaIndex{..} id = find (containsId id) instances
   where
     instances = schemaIndexCurrent : schemaIndexOlder
-    containsId id = Map.member id . hashedSchemaEnvs . procSchemaHashed
+    containsId id = (== id) . hashedSchemaId . procSchemaHashed
 
 -- | The schema that we've read from the filesystem or the configs. We
 -- need this in three forms:
@@ -237,7 +237,7 @@ data ProcessedSchema = ProcessedSchema
   }
 
 processOneSchema
-  :: Map SchemaId Version
+  :: Maybe (SchemaId, Version)
   -> ByteString
   -> Either String SchemaIndex
 processOneSchema versions str =
@@ -246,7 +246,7 @@ processOneSchema versions str =
     Right schema -> Right (SchemaIndex schema [])
 
 processSchema
-  :: Map SchemaId Version
+  :: Maybe (SchemaId, Version)
   -> ByteString
   -> Either String ProcessedSchema
 processSchema = processSchemaForTesting HashMap.toList
@@ -255,7 +255,7 @@ processSchema = processSchemaForTesting HashMap.toList
 --   function to weed out ordering assumptions
 processSchemaForTesting
   :: (forall k v . HashMap k v -> [(k,v)])
-  -> Map SchemaId Version
+  -> Maybe (SchemaId, Version)
   -> ByteString
   -> Either String ProcessedSchema
 processSchemaForTesting toList versions str =
@@ -265,7 +265,7 @@ processSchemaForTesting toList versions str =
       ProcessedSchema ss r (computeIds toList (schemasResolved r) versions)
 
 processSchemaCached
-  :: Map SchemaId Version
+  :: Maybe (SchemaId, Version)
   -> SchemaParserCache
   -> ByteString
   -> Either String (SchemaParserCache, ProcessedSchema)
@@ -283,7 +283,7 @@ processSchemaCached versions cache str =
 legacySchemaSourceConfig :: ThriftSource SchemaIndex
 legacySchemaSourceConfig =
   ThriftSource.configWithDeserializer legacySchemaConfigPath
-     (processOneSchema Map.empty)
+     (processOneSchema Nothing)
 
 -- | Read the default schema index from the ConfigProvider
 defaultSchemaSourceIndexConfig :: ThriftSource SchemaIndex
@@ -296,7 +296,7 @@ schemaSourceFiles = schemaSourceFilesFromDir schemaSourceDir
 -- | Read the schema from a single file
 schemaSourceFile :: FilePath -> ThriftSource SchemaIndex
 schemaSourceFile f = ThriftSource.fileWithDeserializer f
-  (processOneSchema Map.empty)
+  (processOneSchema Nothing)
 
 -- | Read a schema index from a file
 schemaSourceIndexFile :: FilePath -> ThriftSource SchemaIndex
@@ -324,13 +324,13 @@ schemaSourceIndexConfig key = ThriftSource.genericConfig
     loadInstances cfg Internal.SchemaIndex{..} = do
       let proc Internal.SchemaInstance{..} = do
             let
-              versions = Map.mapKeys SchemaId schemaInstance_versions
               instanceKey = Text.pack $
                 takeDirectory (Text.unpack key) </>
                 Text.unpack schemaInstance_file
+            maybeVersion <- lift $ checkVersions schemaInstance_versions
             str <- lift $ Config.get cfg instanceKey Right
             cache <- State.get
-            case processSchemaCached versions cache str of
+            case processSchemaCached maybeVersion cache str of
               Left err -> lift $ throwIO $ Exception $
                 "error in schema: " <> Text.pack err <>
                 "\nFile: " <> instanceKey
@@ -342,11 +342,18 @@ schemaSourceIndexConfig key = ThriftSource.genericConfig
         older <- mapM proc schemaIndex_older
         return (SchemaIndex current (reverse older))
 
+checkVersions :: Map Text Version -> IO (Maybe (SchemaId, Version))
+checkVersions versions =
+  case Map.toList versions of
+    [] -> return Nothing
+    [(txtId, ver)] -> return (Just (SchemaId txtId, ver))
+    _multiple -> throwIO $ Exception "versions must contain a single entry"
+
 -- | Read schema files from a directory
 parseSchemaDir :: FilePath -> IO SchemaIndex
 parseSchemaDir dir = do
   str <- catSchemaFiles =<< listDirectoryRecursive dir
-  case processOneSchema Map.empty str of
+  case processOneSchema Nothing str of
     Left err -> throwIO $ ErrorCall err
     Right schema -> return schema
 
@@ -356,8 +363,8 @@ parseSchemaIndex file = do
   let proc Internal.SchemaInstance{..} = do
         let dir = takeDirectory file
         str <- B.readFile (dir </> Text.unpack schemaInstance_file)
-        either (throwIO . ErrorCall) return $
-          processSchema (Map.mapKeys SchemaId schemaInstance_versions) str
+        maybeVersion <- checkVersions schemaInstance_versions
+        either (throwIO . ErrorCall) return $ processSchema maybeVersion str
   current <- proc schemaIndex_current
   older <- mapM proc schemaIndex_older
   return (SchemaIndex current older)
@@ -401,7 +408,7 @@ schemaSourceParser s = case break (==':') s of
     Right (Just s, ThriftSource.once $ parseSchemaDir s)
   _otherwise -> -- handles config:PATH and file:PATH
     (Nothing,) <$> ThriftSource.parseWithDeserializer s
-      (processOneSchema Map.empty)
+      (processOneSchema Nothing)
 
 schemaSourceOption
   :: Parser (Maybe FilePath, ThriftSource SchemaIndex)

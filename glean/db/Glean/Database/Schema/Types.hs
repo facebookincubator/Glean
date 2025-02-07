@@ -81,9 +81,6 @@ data DbSchema = DbSchema
   , schemaEnvs :: Map SchemaId (NameEnv RefTargetId)
      -- ^ for each SchemaId, the environment of types/predicates
 
-  , legacyAllVersions :: IntMap SchemaId
-     -- ^ Maps all.N schema versions to SchemaIds
-
   , predicatesByPid :: IntMap PredicateDetails
 
   , predicatesTransformations :: HashMap SchemaId QueryTransformations
@@ -92,10 +89,15 @@ data DbSchema = DbSchema
 
   , schemaInventory :: Inventory
   , schemaMaxPid :: Pid
-  , schemaLatestVersion :: SchemaId
 
-  , schemaSource :: (SourceSchemas, IntMap SchemaId)
-    -- ^ This is for toStoredSchema
+  -- These two fields relate to the latest available schema. In a
+  -- writable DB this will be the DB schema, but in a readable DB it
+  -- will be the current schema in the schema index.
+  , schemaAllVersion :: Version
+  , schemaId :: SchemaId
+
+  , schemaSource :: (SourceSchemas, Version, SchemaId)
+    -- ^ This is the DB schema, used by toStoredSchema
   }
 
 -- | Cached DbSchemas, so that we can share them amongst different DBs
@@ -177,16 +179,16 @@ predicateRef :: PredicateDetails -> PredicateRef
 predicateRef = predicateIdRef . predicateId
 
 data SchemaSelector
-  = LatestSchemaAll
+  = LatestSchema
   | SpecificSchemaId SchemaId
 
 instance Pretty SchemaSelector where
-  pretty LatestSchemaAll = "latest"
+  pretty LatestSchema = "latest"
   pretty (SpecificSchemaId (SchemaId id)) = "schema-id:" <> pretty id
 
 allSchemaVersion :: DbSchema -> SchemaSelector -> Maybe SchemaId
 allSchemaVersion _ (SpecificSchemaId v) = Just v
-allSchemaVersion dbSchema LatestSchemaAll = Just (schemaLatestVersion dbSchema)
+allSchemaVersion dbSchema LatestSchema = Just (schemaId dbSchema)
 
 schemaNameEnv :: DbSchema -> SchemaSelector -> Maybe (NameEnv RefTargetId)
 schemaNameEnv dbSchema schemaVer = do

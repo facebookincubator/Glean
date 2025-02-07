@@ -24,10 +24,7 @@ import Data.Bifoldable
 import Data.Graph
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as HashMap
-import Data.IntMap (IntMap)
-import qualified Data.IntMap as IntMap
 import Data.List
-import Data.Map (Map)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 import qualified Data.Text as Text
@@ -44,8 +41,9 @@ data HashedSchema = HashedSchema
   { hashedTypes :: HashMap TypeId TypeDef
   , hashedPreds :: HashMap PredicateId PredicateDef
   , schemaRefToIdEnv :: RefToIdEnv
-  , hashedSchemaEnvs :: Map SchemaId (NameEnv RefTargetId)
-  , hashedSchemaAllVersions :: IntMap SchemaId
+  , hashedSchemaEnv :: NameEnv RefTargetId
+  , hashedSchemaAllVersion :: Version
+  , hashedSchemaId :: SchemaId
   }
 
 type RefTargetId = RefTarget PredicateId TypeId
@@ -55,8 +53,9 @@ emptyHashedSchema = HashedSchema
   { hashedTypes = HashMap.empty
   , hashedPreds =  HashMap.empty
   , schemaRefToIdEnv = emptyRefToIdEnv
-  , hashedSchemaEnvs = Map.empty
-  , hashedSchemaAllVersions = IntMap.empty
+  , hashedSchemaEnv = HashMap.empty
+  , hashedSchemaAllVersion = 0
+  , hashedSchemaId = SchemaId ""
   }
 
 type Def_ p t = RefTarget p t
@@ -112,7 +111,7 @@ isDefaultDeriving _ = False
 computeIds
   :: (forall k v . HashMap k v -> [(k,v)])
   -> [ResolvedSchemaRef]
-  -> Map SchemaId Version
+  -> Maybe (SchemaId, Version)
   -> HashedSchema
 computeIds toList schemas versions = flip evalState emptyRefToIdEnv $ do
   let
@@ -192,15 +191,16 @@ computeIds toList schemas versions = flip evalState emptyRefToIdEnv $ do
           f (PredicateDef id key val _) =
             PredicateDef id key val (fmap (refsToIds env) drv)
 
-      (allVersions, schemaEnvs) = makeSchemaEnvs schemas versions env
+      (allVersion, schemaId, schemaEnv) = makeSchemaEnv schemas versions env
 
   return HashedSchema {
       hashedTypes = HashMap.fromList
         [ (typeDefRef def, def) | RefType def <- defs],
       hashedPreds = attachDefaultDerivings preds,
       schemaRefToIdEnv = env,
-      hashedSchemaEnvs = schemaEnvs,
-      hashedSchemaAllVersions = allVersions
+      hashedSchemaEnv = schemaEnv,
+      hashedSchemaAllVersion = allVersion,
+      hashedSchemaId = schemaId
     }
 
   where
@@ -291,20 +291,32 @@ really only differ in their derivations.
 -}
 
 
-makeSchemaEnvs
+makeSchemaEnv
   :: [ResolvedSchemaRef]
-  -> Map SchemaId Version
+  -> Maybe (SchemaId, Version)
   -> RefToIdEnv
-  -> (IntMap SchemaId, Map SchemaId (NameEnv RefTargetId))
-makeSchemaEnvs resolved versions refToIdEnv =
-  ( IntMap.fromList (map (second fst) schemaEnvs),
-    Map.fromList (map snd schemaEnvs) )
+  -> (Version, SchemaId, NameEnv RefTargetId)
+makeSchemaEnv resolved versions refToIdEnv
+  | Just (schemaId, ver) <- versions,
+    Just schema <- Map.lookup ver resolvedAlls =
+    (ver, schemaId, mkEnv schema)
+  | Just (ver, schema) <- Map.lookupMax resolvedAlls =
+    let
+      env = mkEnv schema
+      schemaId = SchemaId $ Text.pack $ show $ hashNameEnv env
+    in
+    (fromIntegral ver, schemaId, env)
+  | otherwise =
+    error "no \"all\" schema"
   where
-    suppliedSchemaIds = IntMap.fromList
-      [ (fromIntegral ver, id) | (id, ver) <- Map.toList versions ]
+    mkEnv ResolvedSchema{..} =
+       HashMap.union
+         (mapNameEnv (Just . refsToIds refToIdEnv)
+           resolvedSchemaQualScope)
+         versionedNameEnv
 
-    resolvedAlls =
-      [ schema
+    resolvedAlls = Map.fromList
+      [ (resolvedSchemaVersion schema, schema)
       | schema <- resolved
       , resolvedSchemaName schema == "all" ]
 
@@ -319,20 +331,6 @@ makeSchemaEnvs resolved versions refToIdEnv =
           | (r, t) <- HashMap.toList (predRefToId refToIdEnv) ] ++
           [ (typeRef_name r, typeRef_version r, RefType t)
           | (r, t) <- HashMap.toList (typeRefToId refToIdEnv) ]
-      ]
-
-    schemaEnvs =
-      [ (ver, (schemaId, env))
-      | ResolvedSchema{..} <- resolvedAlls
-      , let env =
-               HashMap.union
-                 (mapNameEnv (Just . refsToIds refToIdEnv)
-                   resolvedSchemaQualScope)
-                 versionedNameEnv
-
-            ver = fromIntegral resolvedSchemaVersion
-            hash = SchemaId $ Text.pack $ show $ hashNameEnv env
-            schemaId = IntMap.findWithDefault hash ver suppliedSchemaIds
       ]
 
 -- | How to take a NameEnv and compute the schema hash from it. This

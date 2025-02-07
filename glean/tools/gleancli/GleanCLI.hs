@@ -669,7 +669,7 @@ instance Plugin WriteSerializedInventoryCommand where
         Glean.withBackendWithDefaultOptions evb cfgAPI svc Nothing $ \backend ->
           Glean.serializeInventory backend repo
       FromSchemaId schemaId -> inventoryFromSchema (SpecificSchemaId schemaId)
-      FromLatestSchema -> inventoryFromSchema LatestSchemaAll
+      FromLatestSchema -> inventoryFromSchema LatestSchema
 
     withFile outputFile WriteMode $ \hdl -> do
       B.hPutStr hdl inventory
