@@ -439,13 +439,35 @@ predicate CallArgument: {
     span: src.ByteSpan,
   }
 
+# Names used in a build rule, for example
+# "thrift_library", or "cxx_binary". If available,
+# we also store the module defining the name.
+type CallName = {
+  prim : string |
+  definition : Definition
+}
+
+# Function used in a build rule. For example
+# thrift_library or fbpkg.build
+predicate CallExpr : {
+  name : CallName |
+  accessor : { name : CallExpr, field : string }
+}
+
 predicate TargetCall:
   {
     locator: Locator,
     arguments: [CallArgument],
     file: src.File,
     span: src.ByteSpan,
+    callExpr : maybe CallExpr,
   }
+
+predicate TargetCallByCallExpr :
+  {
+    callExpr : CallExpr,
+    target : TargetCall,
+  } stored { CE, T } where T = buck.TargetCall { callExpr = { just = CE } }
 
 # A translation unit (source file and target)
 predicate TranslationUnit :
@@ -529,4 +551,3 @@ predicate SearchByLocalName:
     L = buck.LocalName NameStr
 
 } # end schema buck.4
-
