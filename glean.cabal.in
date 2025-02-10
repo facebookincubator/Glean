@@ -1021,7 +1021,7 @@ executable glean
         GleanCLI.Query
         GleanCLI.Restore
         GleanCLI.Write
-    ghc-options: -main-is GleanCLI
+    ghc-options: -main-is GleanCLI -with-rtsopts=-I0
     extra-libraries: stdc++
     build-depends:
         glean:cli-types,
