@@ -525,6 +525,7 @@ compileStatements
             local $ \reg -> do
               compileTermGen expr vars (Just reg) $
                 insertWordSet set (castRegister reg)
+          resetOutput (castRegister (vars!v))
           if isByteTy ty
             then byteSetToByteArray set (castRegister (vars!v))
             else wordSetToArray set (castRegister (vars!v))

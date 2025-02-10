@@ -146,6 +146,9 @@ setSemanticsTest = TestList
   , TestLabel "element syntax for set" $ dbTestCase $ \env repo -> do
       r <- runQuery_ env repo $ angleData @Nat [s| (all (1|2))[..] |]
       assertEqual "results" [Nat 1, Nat 2] (sort r)
+  , TestLabel "multiple set results" $ dbTestCase $ \env repo -> do
+      r <- runQuery_ env repo $ angleData @(Set Nat) [s| all X where X= (1|2) |]
+      assertEqual "results" 2 (length r)
   ]
 
 setLimitTest :: Test
