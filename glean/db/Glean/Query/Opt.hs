@@ -228,8 +228,9 @@ instance Apply FlatStatement where
       Ref (MatchVar x) -> return x
       Ref (MatchBind x) -> return x
       _ -> error "apply: FlatAllStatement"
-    g' <- optStmts g
-    FlatAllStatement v' <$> apply e <*> apply g'
+    enclose (stmtGroupScope g . termScope e) $ do
+      g' <- optStmts g
+      FlatAllStatement v' <$> apply e <*> pure g'
   apply (FlatNegation stmts) = do
     -- assumptions arising inside the negation are not true outside of it.
     stmts' <- optStmtsEnclosed stmts
@@ -252,7 +253,7 @@ instance Apply FlatStatement where
     -- are not true outside of it. However, those arising from the condition
     -- are true in the 'then' case.
     (cond', then') <-
-      enclose cond $ do
+      enclose (stmtGroupScope cond) $ do
         cond' <- optStmts cond
         then' <- optStmtsEnclosed then_
         return (cond', then')
@@ -263,7 +264,7 @@ instance Apply FlatStatement where
       else FlatConditional cond' then' else'
 
 optStmtsEnclosed :: FlatStatementGroup -> U FlatStatementGroup
-optStmtsEnclosed stmts = enclose stmts $ optStmts stmts
+optStmtsEnclosed stmts = enclose (stmtGroupScope stmts) $ optStmts stmts
 
 -- If a sequence of statements is found to be false, then we place
 -- a falseStmt sentinel at the beginning. We don't actually remove
@@ -332,11 +333,11 @@ applyVar var@(Var _ v _) = do
 -- or a negated query.
 --
 -- Does not add substitutions or new variables to the parent scope.
-enclose :: FlatStatementGroup -> U a -> U a
-enclose (FlatStatementGroup ord) u = do
+enclose :: (VarSet -> VarSet) -> U a -> U a
+enclose innerScope u = do
   state0 <- get
   -- set the outer scope to be the current scope
-  let scope = foldr ordStmtScope (optCurrentScope state0) ord
+  let scope = innerScope (optCurrentScope state0)
   modify $ \s ->
     s { optCurrentScope = scope, optOuterScope = optCurrentScope state0 }
   a <- u
@@ -542,14 +543,16 @@ queryScope (FlatQuery key maybeVal (FlatStatementGroup ord)) =
   where
     s = termScope key IntSet.empty
 
+stmtGroupScope :: FlatStatementGroup -> VarSet -> VarSet
+stmtGroupScope (FlatStatementGroup g) r = foldr ordStmtScope r g
+
 ordStmtScope :: Ordered FlatStatement -> VarSet -> VarSet
 ordStmtScope = stmtScope . unOrdered
 
 stmtScope :: FlatStatement -> VarSet -> VarSet
 stmtScope (FlatStatement _ lhs rhs) r = termScope lhs (genScope rhs r)
-stmtScope (FlatAllStatement v e (FlatStatementGroup ord)) r =
-  addToCurrentScope v $! termScope e $!
-    foldr ordStmtScope r ord
+stmtScope (FlatAllStatement v _ (FlatStatementGroup _)) r =
+  addToCurrentScope v $! r
 stmtScope (FlatNegation _) r = r
 stmtScope (FlatDisjunction [FlatStatementGroup ord]) r =
   foldr ordStmtScope r ord
@@ -723,7 +726,7 @@ filterStmt :: FlatStatement -> U FlatStatement
 filterStmt stmt = case stmt of
   FlatStatement{} -> return stmt
   FlatAllStatement v e stmts ->
-    FlatAllStatement v e <$> filterGroup stmts
+    FlatAllStatement v e <$> filterGroupEnclosed stmts
   FlatNegation stmts -> FlatNegation <$> filterGroupEnclosed stmts
   FlatDisjunction [stmts] -> grouping <$> filterGroup stmts
   FlatDisjunction stmtss ->

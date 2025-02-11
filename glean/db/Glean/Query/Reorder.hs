@@ -155,7 +155,7 @@ reorder dbSchema QueryWithInfo{..} =
 
 reorderQuery :: FlatQuery -> R CgQuery
 reorderQuery (FlatQuery pat _ stmts) =
-  withScopeFor [stmts] $ do
+  withScopeFor (scopeVars stmts) $ do
     stmts' <- reorderGroup stmts
     (extra, pat') <- resolved `catchError` \e ->
       maybeBindUnboundPredicate e resolved
@@ -212,11 +212,10 @@ reorderGroup g = do
 -- | Define a new scope.
 -- Adds all variables local to the statements to the scope at the start and
 -- remove them from the scope in the end.
-withScopeFor :: [FlatStatementGroup] -> R a -> R a
-withScopeFor stmts act = do
+withScopeFor :: VarSet -> R a -> R a
+withScopeFor stmtsVars act = do
   Scope outerScope bound <- gets roScope
-  let stmtsVars = foldMap scopeVars stmts
-      locals = IntSet.filter (`IntSet.notMember` outerScope) stmtsVars
+  let locals = IntSet.filter (`IntSet.notMember` outerScope) stmtsVars
 
   modify $ \s -> s { roScope = Scope (outerScope <> locals) bound }
   res <- act
@@ -226,28 +225,29 @@ withScopeFor stmts act = do
     without (Scope scope bound) x =
       Scope (IntSet.difference scope x)
         (IntMap.filterWithKey (\v _ -> v `IntSet.notMember` x) bound)
-    -- | All variables that appear in the scope these statements are in.
-    -- Does not include variables local to sub-scopes such as those that only
-    -- appear:
-    --  - inside a negated subquery
-    --  - in some but not all branches of a disjunction
-    --  - in only one of 'else' or (condition + 'then') clauses of an if stmt
-    scopeVars :: FlatStatementGroup -> VarSet
-    scopeVars (FlatStatementGroup ord) =
-      foldMap (stmtScope . unOrdered) ord
-      where
-        stmtScope = \case
-          FlatNegation{} -> mempty
-          s@FlatStatement{} -> vars s
-          s@FlatAllStatement{} -> vars s
-          -- only count variables that appear in all branches of the disjunction
-          FlatDisjunction [] -> mempty
-          FlatDisjunction (s:ss) ->
-            foldr (IntSet.intersection . scopeVars) (scopeVars s) ss
-          FlatConditional cond then_ else_ ->
-            IntSet.intersection
-              (scopeVars cond <> scopeVars then_)
-              (scopeVars else_)
+
+-- | All variables that appear in the scope these statements are in.
+-- Does not include variables local to sub-scopes such as those that only
+-- appear:
+--  - inside a negated subquery
+--  - in some but not all branches of a disjunction
+--  - in only one of 'else' or (condition + 'then') clauses of an if stmt
+scopeVars :: FlatStatementGroup -> VarSet
+scopeVars (FlatStatementGroup ord) =
+  foldMap (stmtScope . unOrdered) ord
+  where
+    stmtScope = \case
+      FlatNegation{} -> mempty
+      s@FlatStatement{} -> vars s
+      FlatAllStatement{} -> mempty
+      -- only count variables that appear in all branches of the disjunction
+      FlatDisjunction [] -> mempty
+      FlatDisjunction (s:ss) ->
+        foldr (IntSet.intersection . scopeVars) (scopeVars s) ss
+      FlatConditional cond then_ else_ ->
+        IntSet.intersection
+          (scopeVars cond <> scopeVars then_)
+          (scopeVars else_)
 
 {-
 Note [Optimising statement groups]
@@ -931,18 +931,20 @@ toCgStatement stmt = case stmt of
     lhs' <- fixVars IsPat lhs
     return [CgStatement lhs' gen']
   FlatAllStatement v e g -> do
-    stmts <- reorderGroup g
-    e' <- fixVars IsExpr e
+    cg <- withScopeFor (scopeVars g <> vars e) $ do
+      stmts <- reorderGroup g
+      e' <- fixVars IsExpr e
+      return [CgAllStatement v e' stmts]
     bindVar v
-    return [CgAllStatement v e' stmts]
+    return cg
   FlatNegation stmts -> do
     stmts' <-
       withinNegation $
-      withScopeFor [stmts] $
+      withScopeFor (scopeVars stmts) $
       reorderGroup stmts
     return [CgNegation stmts']
   FlatDisjunction [stmts] ->
-    withScopeFor [stmts] $ reorderGroup stmts
+    withScopeFor (scopeVars stmts) $ reorderGroup stmts
   FlatDisjunction groups -> do
     cg <- map runIdentity <$> intersectBindings (map Identity groups)
     return [CgDisjunction cg]
@@ -960,7 +962,8 @@ toCgStatement stmt = case stmt of
     initialScope <- gets roScope
     results <- forM groups $ \tgroup -> do
       modify $ \state -> state { roScope = initialScope }
-      tstmts <- withScopeFor (toList tgroup) $ traverse reorderGroup tgroup
+      tstmts <- withScopeFor (foldMap scopeVars (toList tgroup)) $
+        traverse reorderGroup tgroup
       newScope <- gets roScope
       return (tstmts, allBound newScope)
 

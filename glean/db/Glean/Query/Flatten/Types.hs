@@ -101,8 +101,10 @@ data FlatStatement
   = FlatStatement Type Pat Generator
     -- ^ A simple statement: P = gen
   | FlatAllStatement Var Pat FlatStatementGroup
-    -- ^ Similar to a vanilla statement, but the result is a set
-    -- containing the results of computing the statements.
+    -- ^ An all() statement.
+    -- @FlatAllStatement X P S@ means @X = all (P where S)@
+    -- Like disjunction and negation, Variables occurring in
+    -- @P where S@ are not considered bound.
   | FlatNegation FlatStatementGroup
     -- ^ The negation of a series of statements
   | FlatDisjunction [FlatStatementGroup]

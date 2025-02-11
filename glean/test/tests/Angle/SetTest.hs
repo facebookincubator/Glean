@@ -149,6 +149,10 @@ setSemanticsTest = TestList
   , TestLabel "multiple set results" $ dbTestCase $ \env repo -> do
       r <- runQuery_ env repo $ angleData @(Set Nat) [s| all X where X= (1|2) |]
       assertEqual "results" 2 (length r)
+  , TestLabel "predicate in all" $ dbTestCase $ \env repo -> do
+      [set] <- runQuery_ env repo $ angleData @(Set Glean.Test.Predicate)
+        [s| all (glean.test.Predicate _) |]
+      assertEqual "angle - set matching" 4 (size set)
   ]
 
 setLimitTest :: Test
