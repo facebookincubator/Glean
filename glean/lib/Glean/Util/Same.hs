@@ -10,7 +10,6 @@
 {-# LANGUAGE TypeFamilyDependencies #-}
 module Glean.Util.Same
   ( queryDeclFamily
-  , DeclToDef
   ) where
 
 import Glean
@@ -32,25 +31,3 @@ queryDeclFamily decl = do
     (Cxx.DeclToFamily _ (Just key):_) ->
       getKey (Cxx.declToFamily_key_family key)
     _ -> error ("queryDeclFamily: " ++ show decl)
-
--- | Map to Cxx1 definition type, or @p@ if it does not exist. Injective
-type family DeclToDef p = d | d -> p
-
--- main DeclToDef types
-type instance DeclToDef Cxx.RecordDeclaration = Cxx.RecordDefinition
-type instance DeclToDef Cxx.EnumDeclaration = Cxx.EnumDefinition
-type instance DeclToDef Cxx.FunctionDeclaration = Cxx.FunctionDefinition
-type instance DeclToDef Cxx.ObjcContainerDeclaration =
-  Cxx.ObjcContainerDefinition
-type instance DeclToDef Cxx.ObjcMethodDeclaration = Cxx.ObjcMethodDefinition
-type instance DeclToDef Cxx.NamespaceDeclaration = Cxx.NamespaceDefinition
--- some variables are global
-type instance DeclToDef Cxx.VariableDeclaration = Cxx.VariableDeclaration
--- questionable DeclToDef type
-type instance DeclToDef Cxx.ObjcPropertyDeclaration =
-  Cxx.ObjcPropertyImplementation
--- identity DeclToDef x = x, to make extra branches compile
-type instance DeclToDef Cxx.UsingDeclaration = Cxx.UsingDeclaration
-type instance DeclToDef Cxx.UsingDirective = Cxx.UsingDirective
-type instance DeclToDef Cxx.TypeAliasDeclaration =
-  Cxx.TypeAliasDeclaration
