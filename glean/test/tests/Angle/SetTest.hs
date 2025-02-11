@@ -156,11 +156,11 @@ setLimitTest = TestList
   [ TestLabel  "Fail when exceeding limit for nat set" $
       testQuery @(Set Nat) [s| all (1|2) |]
         "Set size limit exceeded for nat set. Max size: 8. Size: 9"
-  , TestLabel "Fail when exceeding limit for word set" $
+  , TestLabel "Fail when exceeding limit for byte set" $
       testQuery @(Set Byte)
         [s| all ( 1 : byte | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 ) |]
-        "Set size limit exceeded for byte set. Max size: 8. Size: 9"
-  , TestLabel "Fail when exceeding limit for word set" $
+        "Set size limit exceeded for nat set. Max size: 8. Size: 9"
+  , TestLabel "Fail when exceeding limit for string set" $
       testQuery @(Set Text) [s| all ("foo"|"bar") |]
         "Set size limit exceeded for standard set. Max size: 8. Size: 10"
   ]
@@ -174,7 +174,7 @@ testQuery query errMsg =
       Left ffiExc -> do
         let runtimeMsg =
               Prelude.take (Prelude.length errMsg) (ffiErrorMessage ffiExc)
-        assertEqual "Exception" runtimeMsg errMsg
+        assertEqual "Exception" errMsg runtimeMsg
       Right v -> do
         print v
         assert False
