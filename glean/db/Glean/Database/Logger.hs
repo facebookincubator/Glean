@@ -46,7 +46,6 @@ logDBStatistics env Thrift.Repo{..} preds maybeOwnershipStats size locator = do
   let queries  =
         [ mconcat
           [ Logger.SetPredicateName predicateRef_name
-          -- TODO: add predicate hash
           , Logger.SetPredicateVersion (fromIntegral predicateRef_version)
           , Logger.SetPredicateCount $ fromIntegral predicateStats_count
           , Logger.SetPredicateSize $ fromIntegral predicateStats_size

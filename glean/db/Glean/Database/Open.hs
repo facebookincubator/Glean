@@ -572,9 +572,6 @@ type Unit = ByteString
 -- Complicating this all somewhat is that a stack may specify the
 -- units to *include* rather than *exclude*.
 --
--- TODO: later we will store the slices in the stacked DB, and read it
--- back directly from there.
---
 baseSlices
   :: Env
   -> Maybe Thrift.Dependencies
