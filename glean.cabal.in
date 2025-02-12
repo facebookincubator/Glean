@@ -842,7 +842,6 @@ library lib
         Glean.Derive
         Glean.Util.CxxXRef
         Glean.Util.Declarations
-        Glean.Util.URI
         Glean.Util.Range
         Glean.Util.ToAngle
         Glean.Util.XRefs
