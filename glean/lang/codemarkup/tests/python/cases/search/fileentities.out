@@ -521,6 +521,243 @@
         "python": {
           "decl": {
             "variable": {
+              "key": { "name": { "key": "some.foo.Foo.meth.<locals>.arg" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 3, "start": 275 } },
+        "name": "some.foo.Foo.meth.<locals>.arg"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "some.foo.Foo.meth.<locals>.self" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 4, "start": 269 } },
+        "name": "some.foo.Foo.meth.<locals>.self"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8.In9.meth_9.<locals>.self"
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 4, "start": 640 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8.In9.meth_9.<locals>.self"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8.meth_8.<locals>.self"
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 4, "start": 743 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.In6.In7.In8.meth_8.<locals>.self"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": "some.foo.In1.In2.In3.In4.In5.In6.In7.meth_7.<locals>.self"
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 4, "start": 838 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.In6.In7.meth_7.<locals>.self"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": "some.foo.In1.In2.In3.In4.In5.In6.meth_6.<locals>.self"
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 4, "start": 925 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.In6.meth_6.<locals>.self"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": "some.foo.In1.In2.In3.In4.In5.meth_5.<locals>.self"
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 4, "start": 1004 } },
+        "name": "some.foo.In1.In2.In3.In4.In5.meth_5.<locals>.self"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": "some.foo.In1.In2.In3.In4.meth_4.<locals>.self"
+                }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 4, "start": 1075 } },
+        "name": "some.foo.In1.In2.In3.In4.meth_4.<locals>.self"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "some.foo.In1.In2.In3.meth_3.<locals>.self" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 4, "start": 1138 } },
+        "name": "some.foo.In1.In2.In3.meth_3.<locals>.self"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "some.foo.In1.In2.meth_2.<locals>.self" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 4, "start": 1193 } },
+        "name": "some.foo.In1.In2.meth_2.<locals>.self"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "some.foo.In1.meth_1.<locals>.self" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/foo.py" },
+      "location": {
+        "file": { "key": "some/foo.py" },
+        "location": { "span": { "length": 4, "start": 1240 } },
+        "name": "some.foo.In1.meth_1.<locals>.self"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
               "key": { "name": { "key": "some.foo.foo.<locals>.local_var" } }
             }
           }
@@ -567,6 +804,27 @@
         "file": { "key": "some/lib/b.py" },
         "location": { "span": { "length": 13, "start": 129 } },
         "name": "some.lib.b.SomeClass.class_var"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "some.lib.b.SomeClass.foo.<locals>.self" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "some/lib/b.py" },
+      "location": {
+        "file": { "key": "some/lib/b.py" },
+        "location": { "span": { "length": 4, "start": 104 } },
+        "name": "some.lib.b.SomeClass.foo.<locals>.self"
       }
     }
   }

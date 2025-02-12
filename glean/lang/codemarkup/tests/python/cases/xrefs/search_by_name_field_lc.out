@@ -1,11 +1,13 @@
 [
   "@generated",
   { "key": { "name_lowercase": "class_var", "name": "class_var" } },
+  { "key": { "name_lowercase": "cls", "name": "cls" } },
   { "key": { "name_lowercase": "instance_var", "name": "instance_var" } },
   {
     "key": {
       "name_lowercase": "old_style_class_var",
       "name": "old_style_class_var"
     }
-  }
+  },
+  { "key": { "name_lowercase": "self", "name": "self" } }
 ]

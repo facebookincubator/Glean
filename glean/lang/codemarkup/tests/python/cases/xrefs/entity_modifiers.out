@@ -548,6 +548,62 @@
         "python": {
           "decl": {
             "variable": {
+              "key": {
+                "name": {
+                  "key": "lib.AbstractClass.abstract_method.<locals>.self"
+                }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isAsync": false,
+        "isConst": false,
+        "isFinal": false,
+        "isInline": false,
+        "isMutable": false,
+        "isReadonly": false,
+        "isStatic": false,
+        "isVirtual": false,
+        "isVolatile": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "lib.HelperClass.class_method.<locals>.cls" }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isAsync": false,
+        "isConst": false,
+        "isFinal": false,
+        "isInline": false,
+        "isMutable": false,
+        "isReadonly": false,
+        "isStatic": false,
+        "isVirtual": false,
+        "isVolatile": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
               "key": { "name": { "key": "lib.HelperClass.class_var" } }
             }
           }
@@ -599,6 +655,33 @@
           "decl": {
             "variable": {
               "key": {
+                "name": { "key": "lib.HelperClass.method.<locals>.self" }
+              }
+            }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isAsync": false,
+        "isConst": false,
+        "isFinal": false,
+        "isInline": false,
+        "isMutable": false,
+        "isReadonly": false,
+        "isStatic": false,
+        "isVirtual": false,
+        "isVolatile": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
                 "name": { "key": "lib.HelperClass.old_style_class_var" }
               }
             }
@@ -625,6 +708,31 @@
         "python": {
           "decl": {
             "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
+          }
+        }
+      },
+      "modifiers": {
+        "isAbstract": false,
+        "isAsync": false,
+        "isConst": false,
+        "isFinal": false,
+        "isInline": false,
+        "isMutable": false,
+        "isReadonly": false,
+        "isStatic": false,
+        "isVirtual": false,
+        "isVolatile": false
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "main.g.<locals>.h.<locals>._" } }
+            }
           }
         }
       },

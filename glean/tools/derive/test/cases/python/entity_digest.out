@@ -505,6 +505,40 @@
       "entity": {
         "python": {
           "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "lib.HelperClass.class_method.<locals>.cls" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "SELF"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "lib.HelperClass.method.<locals>.self" }
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "lib.py" }
+    },
+    "value": "SELF"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
             "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
           }
         }
@@ -512,5 +546,20 @@
       "file": { "key": "main.py" }
     },
     "value": "SELF = Helper()"
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "main.g.<locals>.h.<locals>._" } }
+            }
+          }
+        }
+      },
+      "file": { "key": "main.py" }
+    },
+    "value": "SELF"
   }
 ]

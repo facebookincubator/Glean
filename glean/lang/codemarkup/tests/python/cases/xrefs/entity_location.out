@@ -838,6 +838,48 @@
         "python": {
           "decl": {
             "variable": {
+              "key": {
+                "name": {
+                  "key": "lib.AbstractClass.abstract_method.<locals>.self"
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 4, "start": 1015 } },
+        "name": "lib.AbstractClass.abstract_method.<locals>.self"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "lib.HelperClass.class_method.<locals>.cls" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 3, "start": 550 } },
+        "name": "lib.HelperClass.class_method.<locals>.cls"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
               "key": { "name": { "key": "lib.HelperClass.class_var" } }
             }
           }
@@ -875,6 +917,26 @@
           "decl": {
             "variable": {
               "key": {
+                "name": { "key": "lib.HelperClass.method.<locals>.self" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 4, "start": 474 } },
+        "name": "lib.HelperClass.method.<locals>.self"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
                 "name": { "key": "lib.HelperClass.old_style_class_var" }
               }
             }
@@ -901,6 +963,24 @@
         "file": { "key": "main.py" },
         "location": { "span": { "length": 12, "start": 388 } },
         "name": "main.f.<locals>.c"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "main.g.<locals>.h.<locals>._" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "main.py" },
+        "location": { "span": { "length": 1, "start": 506 } },
+        "name": "main.g.<locals>.h.<locals>._"
       }
     }
   }

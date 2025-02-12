@@ -399,6 +399,30 @@
   {
     "key": {
       "searchcase": 0,
+      "name": "cls",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "lib.HelperClass.class_method.<locals>.cls" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass.class_method.<locals>.cls",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 550, "length": 3 } }
+      },
+      "kind": 9,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
       "name": "f",
       "entity": {
         "python": {
@@ -649,6 +673,56 @@
         "location": { "span": { "start": 0, "length": 260 } }
       },
       "kind": 4,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "self",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": {
+                  "key": "lib.AbstractClass.abstract_method.<locals>.self"
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.AbstractClass.abstract_method.<locals>.self",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 1015, "length": 4 } }
+      },
+      "kind": 9,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "self",
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "lib.HelperClass.method.<locals>.self" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "lib.HelperClass.method.<locals>.self",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 474, "length": 4 } }
+      },
+      "kind": 9,
       "language": 4
     }
   },

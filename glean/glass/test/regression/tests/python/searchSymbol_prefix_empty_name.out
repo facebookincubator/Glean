@@ -80,6 +80,52 @@
                 "symbol": "test/py/all.py/all.LocalClass.meth"
             },
             {
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 25,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": "all.LocalClass.meth.<locals>.param",
+                "qname": {
+                    "container": "all.LocalClass.meth.<locals>",
+                    "localName": "param"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/all.py/all.LocalClass.meth.%3Clocals%3E.param"
+            },
+            {
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "all.py",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 18,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "repository": "test"
+                },
+                "name": "all.LocalClass.meth.<locals>.self",
+                "qname": {
+                    "container": "all.LocalClass.meth.<locals>",
+                    "localName": "self"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/all.py/all.LocalClass.meth.%3Clocals%3E.self"
+            },
+            {
                 "context": {
                     "qname": {
                         "container": "",
@@ -615,6 +661,52 @@
                 "symbol": "test/py/lib.py/lib.HelperClass.another_method"
             },
             {
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 30,
+                        "columnEnd": 35,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.another_method.<locals>.param",
+                "qname": {
+                    "container": "lib.HelperClass.another_method.<locals>",
+                    "localName": "param"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.another_method.%3Clocals%3E.param"
+            },
+            {
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 28,
+                        "lineBegin": 15,
+                        "lineEnd": 15
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.another_method.<locals>.self",
+                "qname": {
+                    "container": "lib.HelperClass.another_method.<locals>",
+                    "localName": "self"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.another_method.%3Clocals%3E.self"
+            },
+            {
                 "context": {
                     "qname": {
                         "container": "lib",
@@ -643,6 +735,29 @@
                     "exactness": 2
                 },
                 "symbol": "test/py/lib.py/lib.HelperClass.method"
+            },
+            {
+                "kind": 10,
+                "language": 7,
+                "location": {
+                    "filepath": "lib.py",
+                    "range": {
+                        "columnBegin": 16,
+                        "columnEnd": 20,
+                        "lineBegin": 12,
+                        "lineEnd": 12
+                    },
+                    "repository": "test"
+                },
+                "name": "lib.HelperClass.method.<locals>.self",
+                "qname": {
+                    "container": "lib.HelperClass.method.<locals>",
+                    "localName": "self"
+                },
+                "score": {
+                    "exactness": 2
+                },
+                "symbol": "test/py/lib.py/lib.HelperClass.method.%3Clocals%3E.self"
             },
             {
                 "context": {

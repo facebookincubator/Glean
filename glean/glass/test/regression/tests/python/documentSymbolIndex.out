@@ -22,7 +22,7 @@
             }
         },
         "revision": "testhash",
-        "size": 46,
+        "size": 48,
         "symbols": {
             "1": [
                 {
@@ -618,6 +618,58 @@
                         "lineEnd": 26
                     },
                     "sym": "test/py/all.py/all.LocalClass.meth"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 10
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "param"
+                        },
+                        "symbolParent": {
+                            "aString": "all.LocalClass.meth.<locals>"
+                        },
+                        "symbolSignature": {
+                            "aString": "param"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 25,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "sym": "test/py/all.py/all.LocalClass.meth.%3Clocals%3E.param"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 10
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 7
+                        },
+                        "symbolName": {
+                            "aString": "self"
+                        },
+                        "symbolParent": {
+                            "aString": "all.LocalClass.meth.<locals>"
+                        },
+                        "symbolSignature": {
+                            "aString": "self"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 18,
+                        "lineBegin": 25,
+                        "lineEnd": 25
+                    },
+                    "sym": "test/py/all.py/all.LocalClass.meth.%3Clocals%3E.self"
                 },
                 {
                     "attributes": {

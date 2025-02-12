@@ -529,6 +529,36 @@
       "python": {
         "decl": {
           "variable": {
+            "key": {
+              "name": {
+                "key": "lib.AbstractClass.abstract_method.<locals>.self"
+              }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "variable": {
+            "key": {
+              "name": { "key": "lib.HelperClass.class_method.<locals>.cls" }
+            }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "variable": {
             "key": { "name": { "key": "lib.HelperClass.class_var" } }
           }
         }
@@ -542,6 +572,18 @@
         "decl": {
           "variable": {
             "key": { "name": { "key": "lib.HelperClass.instance_var" } }
+          }
+        }
+      }
+    },
+    "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "variable": {
+            "key": { "name": { "key": "lib.HelperClass.method.<locals>.self" } }
           }
         }
       }
@@ -569,5 +611,17 @@
       }
     },
     "value": 0
+  },
+  {
+    "key": {
+      "python": {
+        "decl": {
+          "variable": {
+            "key": { "name": { "key": "main.g.<locals>.h.<locals>._" } }
+          }
+        }
+      }
+    },
+    "value": 1
   }
 ]

@@ -659,6 +659,46 @@
       "entity": {
         "python": {
           "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "lib.HelperClass.class_method.<locals>.cls" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 3, "start": 389 } },
+        "name": "lib.HelperClass.class_method.<locals>.cls"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": {
+                "name": { "key": "lib.HelperClass.method.<locals>.self" }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "lib.py" },
+        "location": { "span": { "length": 4, "start": 313 } },
+        "name": "lib.HelperClass.method.<locals>.self"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
             "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
           }
         }
@@ -667,6 +707,24 @@
         "file": { "key": "main.py" },
         "location": { "span": { "length": 12, "start": 418 } },
         "name": "main.f.<locals>.c"
+      }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "python": {
+          "decl": {
+            "variable": {
+              "key": { "name": { "key": "main.g.<locals>.h.<locals>._" } }
+            }
+          }
+        }
+      },
+      "location": {
+        "file": { "key": "main.py" },
+        "location": { "span": { "length": 1, "start": 536 } },
+        "name": "main.g.<locals>.h.<locals>._"
       }
     }
   }

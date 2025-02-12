@@ -193,6 +193,88 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "param"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all.LocalClass.meth.<locals>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "param"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 25,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "sym": "test/py/all.py/all.LocalClass.meth.%3Clocals%3E.param"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "all.LocalClass.meth.<locals>"
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "self"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 7
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 14,
+                    "columnEnd": 18,
+                    "lineBegin": 25,
+                    "lineEnd": 25
+                },
+                "sym": "test/py/all.py/all.LocalClass.meth.%3Clocals%3E.self"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aInteger": 15
                         },
                         "key": "symbolKind"

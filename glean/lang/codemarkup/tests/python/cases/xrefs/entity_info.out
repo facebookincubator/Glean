@@ -237,6 +237,30 @@
       "tuplefield0": { "isAbstract": false, "kind": 9 },
       "tuplefield1": {
         "variable": {
+          "key": {
+            "name": { "key": "lib.AbstractClass.abstract_method.<locals>.self" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 9 },
+      "tuplefield1": {
+        "variable": {
+          "key": {
+            "name": { "key": "lib.HelperClass.class_method.<locals>.cls" }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 9 },
+      "tuplefield1": {
+        "variable": {
           "key": { "name": { "key": "lib.HelperClass.class_var" } }
         }
       }
@@ -248,6 +272,16 @@
       "tuplefield1": {
         "variable": {
           "key": { "name": { "key": "lib.HelperClass.instance_var" } }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 9 },
+      "tuplefield1": {
+        "variable": {
+          "key": { "name": { "key": "lib.HelperClass.method.<locals>.self" } }
         }
       }
     }
@@ -425,6 +459,16 @@
       "tuplefield0": { "isAbstract": false, "kind": 14 },
       "tuplefield1": {
         "variable": { "key": { "name": { "key": "main.f.<locals>.c" } } }
+      }
+    }
+  },
+  {
+    "key": {
+      "tuplefield0": { "isAbstract": false, "kind": 14 },
+      "tuplefield1": {
+        "variable": {
+          "key": { "name": { "key": "main.g.<locals>.h.<locals>._" } }
+        }
       }
     }
   }
