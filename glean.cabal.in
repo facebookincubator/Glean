@@ -344,9 +344,7 @@ library util
         Glean.Impl.TestConfigProvider
         Glean.Util.Bisect
         Glean.Util.ConfigProvider
-        Glean.Util.Cacher
         Glean.Util.Disk
-        Glean.Util.HKD
         Glean.Util.IO
         Glean.Util.Metric
         Glean.Util.Mutex
