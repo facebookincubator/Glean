@@ -61,6 +61,10 @@ instance Backend RetryWritesBackend where
     retryChannelExceptions policy $ enqueueBatch backend batch
   enqueueJsonBatch (RetryWritesBackend policy backend) repo batch =
     retryChannelExceptions policy $ enqueueJsonBatch backend repo batch
+  enqueueBatchDescriptor (RetryWritesBackend policy backend)
+    repo batch waitPolicy =
+      retryChannelExceptions policy
+        $ enqueueBatchDescriptor backend repo batch waitPolicy
   pollBatch (RetryWritesBackend policy backend) handle =
     retryChannelExceptions policy $ pollBatch backend handle
 
@@ -115,6 +119,8 @@ instance Backend RetryReadsBackend where
 
   enqueueBatch (RetryReadsBackend _ backend) = enqueueBatch backend
   enqueueJsonBatch (RetryReadsBackend _ backend) = enqueueJsonBatch backend
+  enqueueBatchDescriptor (RetryReadsBackend _ backend) =
+    enqueueBatchDescriptor backend
   pollBatch (RetryReadsBackend _ backend) = pollBatch backend
 
   displayBackend (RetryReadsBackend _ backend) = displayBackend backend

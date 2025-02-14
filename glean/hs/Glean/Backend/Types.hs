@@ -147,6 +147,14 @@ class Backend a where
     -> Thrift.SendJsonBatch
     -> IO Thrift.SendJsonBatchResponse
 
+  -- Enqueue a batch descriptor to be downloaded and written
+  enqueueBatchDescriptor
+    :: a
+    -> Thrift.Repo
+    -> Thrift.EnqueueBatch
+    -> Thrift.EnqueueBatchWaitPolicy
+    -> IO Thrift.EnqueueBatchResponse
+
   -- Poll the status of a write batch
   pollBatch :: a -> Thrift.Handle -> IO Thrift.FinishResponse
 
@@ -202,6 +210,7 @@ instance Backend (Some Backend) where
 
   enqueueBatch (Some backend) = enqueueBatch backend
   enqueueJsonBatch (Some backend) = enqueueJsonBatch backend
+  enqueueBatchDescriptor (Some backend) = enqueueBatchDescriptor backend
   pollBatch (Some backend) = pollBatch backend
   displayBackend (Some backend) = displayBackend backend
   hasDatabase (Some backend) = hasDatabase backend

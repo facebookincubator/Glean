@@ -32,6 +32,7 @@
 module Glean.Database.Writes
   ( enqueueBatch
   , enqueueJsonBatch
+  , enqueueBatchDescriptor
   , enqueueCheckpoint
   , pollBatch
   , reapWrites
@@ -362,6 +363,15 @@ enqueueJsonBatch env repo batch = do
     writeJsonBatch env repo batch
   when (sendJsonBatch_remember batch) $ rememberWrite env handle write
   return $ def { sendJsonBatchResponse_handle = handle }
+
+enqueueBatchDescriptor
+  :: Env
+  -> Repo
+  -> EnqueueBatch
+  -> EnqueueBatchWaitPolicy
+  -> IO Thrift.EnqueueBatchResponse
+enqueueBatchDescriptor _ _ _ _ = do
+  error "not implemented"
 
 pollBatch :: Env -> Handle -> IO FinishResponse
 pollBatch env@Env{..} handle = do

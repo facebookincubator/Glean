@@ -175,6 +175,8 @@ instance Backend Database.Env where
 
   enqueueBatch env cbatch = Database.enqueueBatch env cbatch Nothing
   enqueueJsonBatch env cbatch = Database.enqueueJsonBatch env cbatch
+  enqueueBatchDescriptor env repo batch waitPolicy =
+    Database.enqueueBatchDescriptor env repo batch waitPolicy
   pollBatch env handle = Database.pollBatch env handle
 
   displayBackend _ = "(local backend)"

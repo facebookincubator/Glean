@@ -270,6 +270,8 @@ instance Backend ThriftBackend where
       GleanService.sendBatch cbatch
   enqueueJsonBatch t repo batch =
     withShard t repo $ GleanService.sendJsonBatch repo batch
+  enqueueBatchDescriptor t repo batch waitPolicy =
+    withShard t repo $ GleanService.enqueueBatch repo batch waitPolicy
   pollBatch t handle = withoutShard t $ GleanService.finishBatch handle
 
   displayBackend = show

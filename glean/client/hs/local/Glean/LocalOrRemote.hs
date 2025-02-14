@@ -217,6 +217,7 @@ instance Backend (Some LocalOrRemote) where
 
   enqueueBatch (Some backend) = enqueueBatch backend
   enqueueJsonBatch (Some backend) = enqueueJsonBatch backend
+  enqueueBatchDescriptor (Some backend) = enqueueBatchDescriptor backend
   pollBatch (Some backend) = pollBatch backend
   displayBackend (Some backend) = displayBackend backend
   hasDatabase (Some backend) = hasDatabase backend
