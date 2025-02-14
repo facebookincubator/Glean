@@ -14,6 +14,7 @@ module Glean.Write.SendQueue
   , withSendQueue
   , writeSendQueue
   , writeSendQueueJson
+  , writeSendQueueDescriptor
   ) where
 
 import qualified Control.Concurrent.Async as Async
@@ -44,6 +45,9 @@ data SendQueueEvent
 
     -- | Started sending a JSON batch
   | SendQueueSendingJson [Thrift.JsonFactBatch]
+
+    -- | Started sending a batch descriptor
+  | SendQueueSendingDescriptor Thrift.BatchDescriptor
 
     -- | Finished sending a batch
   | SendQueueSent
@@ -77,10 +81,12 @@ data Wait = Wait
 data Batch
   = BinaryBatch Thrift.Batch
   | JsonBatch !Int {- size -} [Thrift.JsonFactBatch]
+  | BatchDescriptor Thrift.BatchDescriptor
 
 batchSize :: Batch -> Int
 batchSize (BinaryBatch bin) = BS.length $ Thrift.batch_facts bin
 batchSize (JsonBatch sz _) = sz
+batchSize (BatchDescriptor _) = 0
 
 data SendQueue = SendQueue
   { -- | Batches we haven't sent yet
@@ -144,6 +150,14 @@ writeSendQueueJson sq json callback =
   jsonFactBatchSize Thrift.JsonFactBatch{..} =
     sum (map BS.length jsonFactBatch_facts) +
     maybe 0 BS.length jsonFactBatch_unit
+
+writeSendQueueDescriptor
+  :: SendQueue
+  -> Thrift.BatchDescriptor
+  -> Callback
+  -> STM ()
+writeSendQueueDescriptor sq descriptor callback =
+  writeSendQueue_ sq (BatchDescriptor descriptor) callback
 
 writeSendQueue_ :: SendQueue -> Batch -> Callback -> STM ()
 writeSendQueue_ sq batch callback = do
@@ -264,10 +278,13 @@ sendFromQueue backend repo settings sq = do
         sendQueueLog settings $ case batch of
           BinaryBatch bin -> SendQueueSending bin
           JsonBatch _ json -> SendQueueSendingJson json
+          BatchDescriptor descriptor -> SendQueueSendingDescriptor descriptor
         start <- getTimePoint
         handle <- case batch of
           BinaryBatch bin -> sendBatchAsync backend repo bin
           JsonBatch _ json -> sendJsonBatchAsync backend repo json Nothing
+          BatchDescriptor descriptor
+            -> sendBatchDescriptorAsync backend repo descriptor
         atomically $ writeTQueue (sqWaitQueue sq) Wait
           { waitHandle = handle
           , waitStart = start

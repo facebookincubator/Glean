@@ -15,6 +15,8 @@ module Glean.Write.SendBatch
   , sendBatchAsync
   , sendJsonBatch
   , sendJsonBatchAsync
+  , sendBatchDescriptor
+  , sendBatchDescriptorAsync
   , waitBatch
   ) where
 
@@ -83,6 +85,35 @@ sendJsonBatch backend repo batches opts = do
   if Text.null handle
     then return def
     else waitBatch backend handle
+
+sendBatchDescriptor
+  :: Backend be
+  => be
+  -> Thrift.Repo
+  -> Thrift.BatchDescriptor
+  -> IO Thrift.Subst
+sendBatchDescriptor backend repo descriptor = do
+  handle <- sendBatchDescriptorAsync backend repo descriptor
+  if Text.null handle
+    then return def
+    else waitBatch backend handle
+
+sendBatchDescriptorAsync
+  :: Backend be
+  => be
+  -> Thrift.Repo
+  -> Thrift.BatchDescriptor
+  -> IO Thrift.Handle
+sendBatchDescriptorAsync backend repo descriptor = do
+  let batch = Thrift.EnqueueBatch_descriptor descriptor
+  r <- try $ enqueueBatchDescriptor backend repo batch
+    Thrift.EnqueueBatchWaitPolicy_Remember
+  case r of
+    Right Thrift.EnqueueBatchResponse{..} ->
+      return enqueueBatchResponse_handle
+    Left Thrift.Retry{..} ->
+      retry retry_seconds $
+        sendBatchDescriptorAsync backend repo descriptor
 
 retry :: Double -> IO a -> IO a
 retry secs action = do

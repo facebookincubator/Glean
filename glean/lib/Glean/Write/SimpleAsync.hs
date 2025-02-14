@@ -47,6 +47,7 @@ withSimpleSender be repo predicates settings =
             case event of
               SendQueueSending{} -> return ()
               SendQueueSendingJson{} -> return ()
+              SendQueueSendingDescriptor{} -> return ()
               SendQueueSent size time -> logInfo $ concat
                 [ "sent batch ", show size, " in "
                 , show (toDiffMillis time), "ms" ]
