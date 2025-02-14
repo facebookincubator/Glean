@@ -41,6 +41,8 @@ handler State{..} req =
 
     Service.SendBatch cbatch -> Backend.enqueueBatch backend cbatch
 
+    Service.EnqueueBatch {} -> error "not implemented"
+
     Service.FinishBatch handle -> Backend.pollBatch backend handle
 
     Service.SendJsonBatch repo batch ->

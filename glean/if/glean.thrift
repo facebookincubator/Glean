@@ -937,6 +937,34 @@ struct SendJsonBatchResponse {
   1: Handle handle;
 }
 
+enum BatchFormat {
+  JSON = 0,
+  Binary = 1,
+}
+
+/// Batch information to get from the location and write to the db
+struct BatchDescriptor {
+  1: string location;
+  2: BatchFormat format;
+}
+
+union EnqueueBatch {
+  1: BatchDescriptor descriptor;
+}
+
+enum EnqueueBatchWaitPolicy {
+  // The server will wait for the batch to be written before db complete.
+  None = 0,
+  // The server will remember the handle which can then be
+  // passed to finishBatch to check that the write has completed and
+  // obtain the substitution.
+  Remember = 1,
+}
+
+struct EnqueueBatchResponse {
+  1: Handle handle;
+}
+
 // How to fill a database
 union KickOffFill {
   // Use the recipe set with the given name
@@ -1146,6 +1174,13 @@ service GleanService extends fb303.FacebookService {
 
   // Send a batch of fact. See the comments on ComputedBatch.
   SendResponse sendBatch(1: ComputedBatch batch) throws (1: UnknownDatabase u);
+
+  // Enqueue batch of facts
+  EnqueueBatchResponse enqueueBatch(
+    1: Repo repo,
+    2: EnqueueBatch batch,
+    3: EnqueueBatchWaitPolicy waitPolicy,
+  ) throws (1: Exception e, 2: Retry r, 3: UnknownDatabase u);
 
   // Get the substitution for the given handle (obtained via a previous
   // sendBatch) if no writes are outstanding for it. The server forgets the
