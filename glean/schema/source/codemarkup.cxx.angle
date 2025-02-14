@@ -749,8 +749,7 @@ predicate CxxDeclarationExtendsChild:
       CxxResolveDeclarationToEntity { { function_ = C }, Child }
     ) | (
       { objcContainer = P } = Parent;
-      cxx1.ObjcInterfaceToImplementation { P, C } |
-        cxx1.ObjcContainerInheritance { P, C };
+      cxx1.ObjcContainerInheritance { P, C };
       CxxResolveDeclarationToEntity { { objcContainer = C }, Child }
     )
 
