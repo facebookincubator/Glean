@@ -565,9 +565,20 @@ predicate CxxDeclVisibility:
     visibility: codemarkup.types.Visibility
   }
   { Decl, Visibility } where
-    cxx1.DeclarationScope { Decl, Scope };
-    { recordWithAccess = { access = Access } } = Scope;
-    FromCxxVisibility { Access, Visibility }
+    Decl : cxx1.Declaration;
+    if cxx1.DeclarationScope { Decl, Scope } then
+      (
+        { recordWithAccess = { access = Access } } = Scope;
+        FromCxxVisibility { Access, Visibility }
+      )
+    else
+      # Objc things don't have Scope
+      (
+        { objcMethod = _ } |
+          { objcProperty = _ } |
+          { objcContainer = _ } = Decl;
+        Public = Visibility
+      )
 
 predicate CxxDefnVisibility:
   {
@@ -611,6 +622,9 @@ predicate CxxDefinitionModifiers:
       { false, false, false, false, false,
         Const, false, Volatile, Virtual, Inline } = Modifiers;
     ) | (
+      { objcMethod = M : cxx1.ObjcMethodDeclaration } = Defn;
+      CxxDeclarationModifiers { { objcMethod = M }, Modifiers };
+    ) | (
       { variable = VarDecl } = Defn;
       CxxDeclarationModifiers { { variable = VarDecl } , Modifiers };
     );
@@ -630,9 +644,14 @@ predicate CxxDeclarationModifiers:
         else false;
       Inline = false; Readonly = false; Static = Static; Mutable = false;
     ) | (
-      { objcProperty = { isReadOnly = Readonly } } = Decl;
+      { objcProperty = { isReadOnly = Readonly, isInstance = Instance } } = Decl;
       Const = false; Volatile = false; Virtual = false; Inline = false;
-      Static = false; Mutable = false;
+      Static = (if (Instance = true) then false else true); Mutable = true;
+    ) | (
+      { objcMethod = { isInstance = Instance } } = Decl;
+      Readonly = false;
+      Const = false; Volatile = false; Virtual = false; Inline = false;
+      Static = (if (Instance = true) then false else true); Mutable = true;
     ) | (
       { variable = { kind = Kind } } = Decl;
       ( { global_ = { VKind, Attr, _ } } = Kind;
@@ -690,6 +709,10 @@ predicate CxxDefinitionExtendsParent:
       cxx1.RecordDefinition { bases = BS } = C;
       cxx1.RecordBase { base = P } = BS[..];
       CxxResolveDeclarationToEntity { { record_ = P }, Parent }
+    ) | (
+      { objcContainer = { declaration = C }} = Child;
+      cxx1.ObjcImplements { C, P } | cxx1.ObjcContainerBase{ C, P };
+      CxxResolveDeclarationToEntity { { objcContainer = P }, Parent }
     )
 
 predicate CxxDeclarationExtendsParent:

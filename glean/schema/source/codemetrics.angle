@@ -34,8 +34,50 @@ predicate CxxReferencesFrom : {
   source : code.cxx.Entity,
   target : code.cxx.Entity
 }
-  { { defn = { record_ = R }}, { decl = T } }
-    where CxxRecordReference { R, T }
+  (
+    { { defn = { record_ = R }}, { decl = T } }
+      where CxxRecordReference { R, T }
+  ) | (
+    { { defn = { objcContainer = C }}, { decl = T } }
+      where CxxObjcContainerReference { C, T }
+  )
+
+predicate CxxObjcContainerReference : {
+  source : cxx1.ObjcContainerDefinition,
+  target : cxx1.Declaration
+}
+  { { declaration = Decl, members = Members : [cxx1.Declaration] }, D }
+  where
+    # Include references from:
+    #  - the definition itself
+    #  - the members
+    #  - members in the implementation
+    DeclOrMember =
+      ( {objcContainer = Decl} : cxx1.Declaration
+      | Members[..]
+      | (
+          cxx1.ObjcInterfaceToImplementation { Decl, Impl };
+          cxx1.ObjcContainerDefinition {
+            declaration = Impl,
+            members = ImplMembers : [cxx1.Declaration] };
+          ImplMembers[..]
+        )
+     );
+
+    cxx1.DeclarationTargets { source = DeclOrMember, targets = T };
+    D = T[..];
+
+    # We don't care about references to namespaces
+    !({ namespace_ = _ } = D);
+
+    # We don't care about references to things in this class
+    { id = Id } = Decl;
+    !({ objcMethod = { container = Id } } = D);
+    !({ objcProperty = { container = Id } } = D);
+
+    # We don't care about references to the class itself
+    !({ objcContainer = Decl } = D);
+
 
 predicate CxxRecordReference : {
   source : cxx1.RecordDefinition,
@@ -97,8 +139,13 @@ predicate CxxReferencesTo : {
   target : code.cxx.Entity,
   source : code.cxx.Entity
 }
-  { { defn = { record_ = R }}, { decl = S } }
-    where CxxRecordReferenceTo { R, S }
+  (
+    { { defn = { record_ = R }}, { decl = S } }
+      where CxxRecordReferenceTo { R, S }
+  ) | (
+    { { defn = { objcContainer = R }}, { decl = S } }
+      where CxxObjcReferencesTo { R, S }
+  )
 
 predicate CxxRecordReferenceTo : {
   target : cxx1.RecordDefinition,
@@ -117,6 +164,23 @@ predicate CxxRecordReferenceTo : {
 
     # We don't care about references from the class itself
     !({ record_ = Decl } = D);
+
+predicate CxxObjcReferencesTo : {
+  target : cxx1.ObjcContainerDefinition,
+  source : cxx1.Declaration,
+}
+  { Target, D } where
+    { declaration = Decl } = Target;
+    cxx1.DeclarationSources { target = { objcContainer = Decl }, sources = S };
+    D = S[..];
+
+    # We don't care about references from things in this class
+    { id = Id } = Decl;
+    !({ objcMethod = { container = Id } } = D);
+    !({ objcProperty = { container = Id } } = D);
+
+    # We don't care about references from the class itself
+    !({ objcContainer = Decl } = D);
 
 predicate HackReferencesTo : {
   target : code.hack.Entity,

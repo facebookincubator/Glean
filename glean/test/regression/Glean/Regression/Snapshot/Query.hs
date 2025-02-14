@@ -8,6 +8,7 @@
 
 module Glean.Regression.Snapshot.Query (runQuery) where
 
+import Control.Exception
 import Control.Monad
 import Control.Monad.IO.Class (liftIO)
 import qualified Data.Aeson as Aeson
@@ -71,7 +72,8 @@ runQuery
     String, -- The results as transformed, pretty-printed JSON
     Maybe String -- Query performance stats, also pretty-printed JSON
   )
-runQuery backend repo xforms qfile = do
+runQuery backend repo xforms qfile =
+  handle (\(Glean.BadQuery b) -> throwIO $ Glean.BadQuery ("in " <> Text.pack qfile <> ": " <> b)) $ do
   r <- Yaml.decodeFileEither qfile
   case r of
     Left err -> die

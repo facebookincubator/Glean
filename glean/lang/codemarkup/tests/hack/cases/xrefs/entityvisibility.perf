@@ -13,6 +13,9 @@
     "hack.TypedefDefinition.6": 1
   },
   "full_scans": [
+    "cxx1.ObjcContainerDeclaration.5",
+    "cxx1.ObjcMethodDeclaration.5",
+    "cxx1.ObjcPropertyDeclaration.5",
     "hack.ClassConstDeclaration.6",
     "hack.ClassDefinition.6",
     "hack.EnumDefinition.6",

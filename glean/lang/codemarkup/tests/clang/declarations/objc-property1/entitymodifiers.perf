@@ -1,10 +1,12 @@
 {
   "@generated": null,
   "facts_searched": {
+    "cxx1.ObjcMethodDeclaration.5": 4,
     "cxx1.ObjcPropertyDeclaration.5": 1,
     "cxx1.VariableDeclaration.5": 2
   },
   "full_scans": [
+    "cxx1.ObjcMethodDeclaration.5",
     "cxx1.ObjcPropertyDeclaration.5",
     "cxx1.VariableDeclaration.5",
     "cxx1.VariableDeclaration.5"

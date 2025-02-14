@@ -1,5 +1,12 @@
 {
   "@generated": null,
-  "facts_searched": { "cxx1.VariableDeclaration.5": 10 },
-  "full_scans": [ "cxx1.VariableDeclaration.5", "cxx1.VariableDeclaration.5" ]
+  "facts_searched": {
+    "cxx1.ObjcMethodDeclaration.5": 4,
+    "cxx1.VariableDeclaration.5": 10
+  },
+  "full_scans": [
+    "cxx1.ObjcMethodDeclaration.5",
+    "cxx1.VariableDeclaration.5",
+    "cxx1.VariableDeclaration.5"
+  ]
 }

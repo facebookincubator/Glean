@@ -53,4 +53,7 @@ codemarkupDerivePasses =
   ,DeriveGeneric "cxx1.RecordUnionLowerCase"
   ,DeriveGeneric "cxx1.TypeAliasLowerCase"
   ,DeriveGeneric "cxx1.VariableLowerCase"
+  -- objc
+  ,DeriveGeneric "cxx1.ObjcContainerInheritance"
+  ,DeriveGeneric "cxx1.ObjcInterfaceToImplementation"
   ]
