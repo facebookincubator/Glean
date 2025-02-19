@@ -132,9 +132,18 @@ cxx-libraries:
 cxx-test-%: force
 	@$(MAKE) -f mk/cxx.mk --no-print-directory CXX_MODE=$(CXX_MODE) CXX_DIR=$(CXX_DIR) $@
 
+GLEAN_CABAL_BINS=glean glean-server glean-hyperlink gen-schema
+GLEAN_NATIVE_LIBS=librocksdb.so.8 libfolly.so.0.58.0-dev libfmt.so.11
 .PHONY: glean
 glean:: glean.cabal cxx-libraries
-	$(CABAL) build glean glean-server glean-hyperlink
+	$(CABAL) build $(GLEAN_CABAL_BINS)
+
+CABAL_BUILD_PREFIX := dist-newstyle/build/$(shell uname -m)-linux/ghc-$(shell ghc --numeric-version)/glean-0.1.0.0/x
+.PHONY: bindist
+bindist: glean
+	for b in $(GLEAN_CABAL_BINS); do install -D $(CABAL_BUILD_PREFIX)/$$b/build/$$b/$$b bindir/bin/$$b; done
+	for l in $(GLEAN_NATIVE_LIBS); do install -D $(HOME)/.hsthrift/lib/$$l bindir/lib/$$l; done
+	strip bindir/bin/* bindir/lib/*
 
 .PHONY: gen-bytecode
 gen-bytecode: $(BYTECODE_GEN)
