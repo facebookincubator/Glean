@@ -447,7 +447,7 @@ struct UserQueryCont {
   6: i64 hash; // internal continuation hash
   7: optional binary returnType; // angle return type
   8: list<i64> pids; // pids to expand in the results
-// 9: deprecated
+  // 9: deprecated
 }
 
 enum QuerySyntax {
@@ -559,24 +559,23 @@ struct UserQueryEncodingJSON {
   // and do the stitching-together automatically, so the result
   // is a data structure with internal sharing of repeated facts.
   2: bool no_base64_binary = false;
-// Set to true if your client does not base64-encode the Thrift
-// "binary" type in JSON.  This is needed in the following cases:
-// - If your client is Python. The Python Thrift implementation is
-//   broken and doesn't base64-encode the binary type.
-// - If you're writing JSON directly (instead of generating it
-//   from the Thrift types). In that case dealing with strings
-//   is easier if you don't have to use base64 encoding. This is
-//   how queries via the Glean shell work, for example.
-// However, note that if you use this option then non-UTF8 data
-// in a binary type may not be returned correctly, or you may
-// encounter errors.
-
+  // Set to true if your client does not base64-encode the Thrift
+  // "binary" type in JSON.  This is needed in the following cases:
+  // - If your client is Python. The Python Thrift implementation is
+  //   broken and doesn't base64-encode the binary type.
+  // - If you're writing JSON directly (instead of generating it
+  //   from the Thrift types). In that case dealing with strings
+  //   is easier if you don't have to use base64 encoding. This is
+  //   how queries via the Glean shell work, for example.
+  // However, note that if you use this option then non-UTF8 data
+  // in a binary type may not be returned correctly, or you may
+  // encounter errors.
 }
 
 # Encode results as Thrift Compact
 struct UserQueryEncodingCompact {
   1: bool expand_results = false;
-// See expand_results in UserQueryEncodingJSON
+  // See expand_results in UserQueryEncodingJSON
 }
 
 # How to encode query results
@@ -597,7 +596,7 @@ struct DerivePredicateQuery {
   5: optional DerivePredicateOptions options;
   // How to parallelise derivation
   6: optional ParallelDerivation parallel;
-// 7: deprecated
+  // 7: deprecated
 }
 
 // Derivation can be parallelised by partitioning over the range of an
@@ -647,7 +646,7 @@ struct DerivePredicateOptions {
   3: optional i64 max_time_ms_per_query;
   // maximum amount of time executing each batch
   4: bool collect_facts_searched = false;
-// populate the facts_searched field of query stats
+  // populate the facts_searched field of query stats
 }
 
 exception NotAStoredPredicate {}
@@ -777,7 +776,7 @@ struct UserQueryStats {
   11: list<PredicateRef> full_scans = [];
   // whether the query performs full predicate scans
   12: optional i64 result_bytes;
-// query results size in bytes
+  // query results size in bytes
 }
 
 # Results in Glean's internal binary representation
@@ -843,7 +842,7 @@ struct UserQueryResults {
   // to pass to finishBatch to poll for completion.
 
   9: optional string type;
-// The inferred type of the query
+  // The inferred type of the query
 }
 
 // struct versions of exception types, needed because the
@@ -893,7 +892,7 @@ struct UserQueryClientInfo {
   2: optional string unixname;
   // User making the query
   3: string application;
-// Name of program making the query.
+  // Name of program making the query.
 }
 
 struct ListDatabases {
@@ -972,7 +971,7 @@ union KickOffFill {
 
   // Create a taskless DB which can be written to with the given handle
   2: WorkHandle writeHandle;
-// 3: deprecated
+  // 3: deprecated
 }
 
 struct KickOff {
@@ -1024,7 +1023,7 @@ struct Work {
   // Total number of work parcels in the task
 
   5: WorkHandle handle;
-// Unique handle
+  // Unique handle
 }
 
 struct GetWork {
@@ -1040,7 +1039,7 @@ struct GetWork {
   // Machine or task that will be executing the work (for display only)
 
   4: optional Work previous;
-// Work we've done right before (for optimising work assignments)
+  // Work we've done right before (for optimising work assignments)
 }
 
 struct WorkAvailable {
@@ -1054,12 +1053,12 @@ struct WorkAvailable {
   // How often to ping the server via workHeartbeat (in seconds)
 
   4: DatabaseProperties properties;
-// Properties of the database this work is for
+  // Properties of the database this work is for
 }
 
 struct WorkUnavailable {
   1: i32 pause;
-// How long to wait before calling getWork again (in seconds)
+  // How long to wait before calling getWork again (in seconds)
 }
 
 union GetWorkResponse {

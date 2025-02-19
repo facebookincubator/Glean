@@ -26,7 +26,7 @@ struct Diff {
   2: i32 removed;
   // number of lines removed
   3: list<string> added;
-// new lines to be added
+  // new lines to be added
 }
 
 struct FileModified {
