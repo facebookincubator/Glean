@@ -38,6 +38,7 @@ instance TextShow WriteTraceEvent where
 data EnqueueTraceEvent
   = EnqueueBatch
   | EnqueueJsonBatch
+  | EnqueueBatchDescriptor
   | EnqueueJsonBatchBS
   deriving Show
 

@@ -80,7 +80,7 @@ import Glean.Database.Types
 import qualified Glean.RTS.Foreign.Subst as Subst
 import Glean.RTS.Foreign.Ownership (DefineOwnership)
 import qualified Glean.ServerConfig.Types as ServerConfig
-import Glean.Types as Thrift hiding (Database, Exception)
+import Glean.Types as Thrift hiding (Database)
 import Glean.Write.JSON
 import Glean.Util.Metric
 import Glean.Util.Observed as Observed
@@ -218,9 +218,10 @@ enqueueWrite
   -> Repo
   -> Int
   -> Maybe SchemaId
+  -> Bool
   -> IO WriteContent
   -> IO (MVar (Either SomeException Subst.Subst))
-enqueueWrite env@Env{..} repo size optSchemaId writeContent = do
+enqueueWrite env@Env{..} repo size optSchemaId checkQueueSize writeContent = do
   start <- beginTick 1
   config <- Observed.get envServerConfig
   mvar <- newEmptyMVar
@@ -256,7 +257,9 @@ enqueueWrite env@Env{..} repo size optSchemaId writeContent = do
           addStatValueType "glean.db.write.enqueued" (size `div` k) Sum
           reportQueueSizes repo queueCount queueSize newSize Nothing
   immediately $ do
-    check <- now $ checkMemoryAvailable env config size
+    check <- if checkQueueSize
+      then now $ checkMemoryAvailable env config size
+      else return True
     if check then enqueueIt else do
       latency <- now $ readTVar writeQueueLatency
       let elapsed = fromIntegral (toNanoSecs latency) / 1000000000.0
@@ -311,7 +314,7 @@ enqueueBatch env ComputedBatch{..} ownership = do
 
   let size = batchSize computedBatch_batch
       optSchemaId = batch_schema_id computedBatch_batch
-  r <- try $ enqueueWrite env computedBatch_repo size optSchemaId $ pure $
+  r <- try $ enqueueWrite env computedBatch_repo size optSchemaId True $ pure $
         (writeContentFromBatch computedBatch_batch) {
           writeOwnership= ownership
         }
@@ -359,7 +362,7 @@ enqueueJsonBatch env repo batch = do
   handle <- UUID.toText <$> UUID.nextRandom
   let optSchemaId =
         sendJsonBatch_options batch >>= sendJsonBatchOptions_schema_id
-  write <- enqueueWrite env repo size optSchemaId $
+  write <- enqueueWrite env repo size optSchemaId True $
     writeJsonBatch env repo batch
   when (sendJsonBatch_remember batch) $ rememberWrite env handle write
   return $ def { sendJsonBatchResponse_handle = handle }
@@ -370,8 +373,18 @@ enqueueBatchDescriptor
   -> EnqueueBatch
   -> EnqueueBatchWaitPolicy
   -> IO Thrift.EnqueueBatchResponse
-enqueueBatchDescriptor _ _ _ _ = do
-  error "not implemented"
+enqueueBatchDescriptor env repo enqueueBatch waitPolicy = do
+  traceMsg (envTracer env)
+    (GleanTraceEnqueue repo EnqueueBatchDescriptor 0) $ do
+  handle <- UUID.toText <$> UUID.nextRandom
+  _ <- case enqueueBatch of
+    Thrift.EnqueueBatch_descriptor descriptor -> return descriptor
+    Thrift.EnqueueBatch_EMPTY -> throwIO $ Thrift.Exception "empty batch"
+  write <- enqueueWrite env repo 0 Nothing False $
+    throwIO $ Exception "not implemented"
+  when (waitPolicy == Thrift.EnqueueBatchWaitPolicy_Remember)
+    $ rememberWrite env handle write
+  return $ def { enqueueBatchResponse_handle = handle }
 
 pollBatch :: Env -> Handle -> IO FinishResponse
 pollBatch env@Env{..} handle = do
