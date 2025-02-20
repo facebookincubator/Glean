@@ -26,7 +26,10 @@ def _impl_discover(ctx: bxl.Context):
     print("Go targets (total):", len(all_go_targets))  # buildifier: disable=print
 
     if ctx.cli_args.with_deps:
-        all_go_targets = uquery.kind(go_kind_filter, uquery.deps(all_go_targets, filter = "target_deps()"))
+        # HACK: do cquery here because it's 20x faster currently
+        # Context: https://fburl.com/workplace/6bzec5cn
+        conf_targets = ctx.cquery().kind(go_kind_filter, ctx.cquery().deps(all_go_targets, filter = "target_deps()"))
+        all_go_targets = ctx.unconfigured_targets([t.label.raw_target() for t in conf_targets])
         print("Go targets (total+deps):", len(all_go_targets))  # buildifier: disable=print
 
     # exclude generated: mocks, fastcli, thrift, etc
