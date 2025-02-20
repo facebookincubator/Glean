@@ -4,6 +4,12 @@
 # This source code is licensed under the BSD-style license found in the
 # LICENSE file in the root directory of this source tree.
 
+load("@prelude//bxl:lazy.bxl", "batch_apply_lazy_catch_each", "partition_results")
+
+def _report_errors(errors: list[bxl.Error]):
+    for error in errors:
+        print(error.message)  #buildifier: disable=print
+
 # Find all targets eligible for indexing.
 def _impl_discover(ctx: bxl.Context):
     uquery = ctx.uquery()
@@ -31,13 +37,10 @@ def _impl_discover(ctx: bxl.Context):
     print("Go targets (non-generated+thrift):", len(go_targets))  # buildifier: disable=print
 
     # exclude broken and incompatible with current platform
-    conf_results = ctx.lazy.join_all([ctx.lazy.configured_target_node(t).catch() for t in go_targets]).resolve()
-    valid_targets = []
-    for result in conf_results:
-        if result.is_ok():
-            valid_targets.append(result.unwrap())
-        else:
-            print(result.unwrap_err().message)  #buildifier: disable=print
+    results = batch_apply_lazy_catch_each(ctx, ctx.lazy.configured_target_node, list(go_targets))
+    targets, errors = partition_results(results)
+    _report_errors(errors)
+    valid_targets = bxl.ctarget_set(targets)
 
     print("Go targets (valid&compatible):", len(valid_targets))  # buildifier: disable=print
 
