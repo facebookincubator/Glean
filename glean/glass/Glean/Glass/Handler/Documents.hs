@@ -215,7 +215,7 @@ fetchSymbolsAndAttributesGlean
       (requestOptions_revision opts)
       (requestOptions_exact_revision opts)
       withContentHash
-      ExtraSymbolOpts{..} be mlang dbInfo
+      ExtraSymbolOpts{..} be mlang dbInfo (requestOptions_attribute_opts opts)
 
   (res2, attributesLog) <- traceSpan tracer "addDynamicAttributes" $
     addDynamicAttributes env dbInfo repo opts
@@ -441,10 +441,11 @@ fetchDocumentSymbols
   -> GleanBackend b
   -> Maybe Language
   -> GleanDBInfo
+  -> AttributeOptions
   -> IO (DocumentSymbols, QueryEachRepoLog, Maybe ErrorLogger)
 fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
     repoPath mlimit wantedRevision exactRevision fetchContentHash extraOpts
-    b mlang dbInfo = do
+    b mlang dbInfo attrOpts = do
   backendRunHaxl b env $ do
     --
     -- we pick the first db in the list that has the full FileInfo{..}
@@ -530,6 +531,7 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
               kinds
               (xRefDataToRefEntitySymbol <$> refsPlain)
               defs1
+              attrOpts
         return (DocumentSymbols { srcFile = Just srcFile, .. },
                 gleanDataLog, merr)
 
@@ -912,10 +914,13 @@ getSymbolAttributes env dbInfo repo opts repofile mlimit
     forM mAttrDBs $
       \(attrDB, GleanDBAttrName _ attrKey{- existential key -}) ->
         withRepo attrDB $ do
-          (attrs,_merr2) <- genericFetchFileAttributes attrKey
-            (theGleanPath repofile) mlimit
+          (attrs,_merr2) <- genericFetchFileAttributes
+            attrKey
+            (theGleanPath repofile)
+            mlimit
           return $ \refs defs ->
-            case Attributes.augmentSymbols attrKey attrs refs defs of
+            case Attributes.augmentSymbols attrKey attrs refs defs
+              (requestOptions_attribute_opts opts) of
                (refs, defs, log) ->
                 (refs, defs, logResult log, AttrDBsLog attrDB)
 
@@ -926,7 +931,6 @@ genericFetchFileAttributes
   -> GleanPath
   -> Maybe Int
   -> RepoHaxl u w ([Attributes.AttrRep key], Maybe ErrorLogger)
-
 genericFetchFileAttributes key path mlimit = do
   efile <- getFile path
   repo <- Glean.haxlRepo

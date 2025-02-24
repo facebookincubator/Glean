@@ -54,7 +54,7 @@ instance ToAttributes SymbolKindAttr where
     -- We actually make two queries!
     q = fileEntityKinds fileId .| fileEntityXRefKinds fileId
 
-  augmentSymbols _ kinds refs defs =
+  augmentSymbols _ kinds refs defs _ =
       (refs_result, defs_result, ())
      where
      (refs_result, defs_result) =

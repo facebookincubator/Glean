@@ -26,12 +26,6 @@ import qualified Glean
 import qualified Glean.Haxl.Repos as Glean
 
 import Glean.Glass.Types
-    ( SymbolId,
-      AttributeList(AttributeList),
-      Attributes(Attributes),
-      DefinitionSymbolX(..),
-      KeyedAttribute(KeyedAttribute),
-      ReferenceRangeSymbolX(..) )
 import Glean.Glass.Logging
 import qualified Glean.Schema.Src.Types as Src ( File )
 import qualified Glean.Schema.Code.Types as Code
@@ -56,6 +50,7 @@ class LogResult (AttrLog key) => ToAttributes key where
     -> [AttrRep key]
     -> [RefEntitySymbol]
     -> [DefEntitySymbol]
+    -> AttributeOptions
     -> ([RefEntitySymbol], [DefEntitySymbol], AttrLog key)
 
 type RefEntitySymbol = (Code.Entity, ReferenceRangeSymbolX)
