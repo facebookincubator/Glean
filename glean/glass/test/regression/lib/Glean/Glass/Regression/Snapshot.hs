@@ -179,10 +179,15 @@ mkTest cfgReplace get name qfile tempDir = TestLabel name $ TestCase $ do
       then copyFile actual expected
       else diff actual expected
 
+attrs :: RequestOptions -> RequestOptions
+attrs opts = opts { requestOptions_attribute_opts =
+  AttributeOptions { attributeOptions_fetch_per_line_data = True }
+}
+
 evalQuery :: Glass.Env -> FilePath -> Query -> FilePath -> IO ()
 evalQuery glassEnv qFile Query{..} oFile = case action of
   "documentSymbolListX" -> withObjectArgs qFile oFile args
-    (\req opts -> Glass.documentSymbolListX glassEnv req opts)
+    (\req opts -> Glass.documentSymbolListX glassEnv req (attrs opts))
   "documentSymbolIndex" -> withObjectArgs qFile oFile args
     (\req opts -> Glass.documentSymbolIndex glassEnv req opts)
   "findReferenceRanges" -> withSymbolId oFile args
