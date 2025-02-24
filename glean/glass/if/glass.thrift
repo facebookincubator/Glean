@@ -81,6 +81,10 @@ struct SymbolLocation {
   2: Revision revision;
 }
 
+struct AttributeOptions {
+  1: bool fetch_per_line_data = false;
+}
+
 // Generic request options, supported by most calls
 struct RequestOptions {
   // repo-global preferred revision identifier
@@ -125,6 +129,8 @@ struct RequestOptions {
   // we expect the result to change soon, e.g. if a snapshot becomes
   // available.
   6: bool matching_revision = false;
+
+  8: AttributeOptions attribute_opts;
 }
 
 struct FeatureFlags {
