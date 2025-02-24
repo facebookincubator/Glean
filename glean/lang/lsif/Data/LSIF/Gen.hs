@@ -106,14 +106,14 @@ insertPredicateMap = foldl' ins
 
 -- | Given a hashmap keyed by lsif predicate names, emit an array of json
 -- pred/facts with one entry per predicate. In case we have very large
--- predicats, we chunk them into smaller top level groups, which makes memory
+-- predicates, we chunk them into smaller top level groups, which makes memory
 -- mgmt a bit easier
 generateJSON :: PredicateMap -> [Value]
 generateJSON = mkGenerateJSON lsifSchemaVersion lsifDependencyOrder
 
--- | Given a hashmap keyed by scip redicate names, emit an array of json
+-- | Given a hashmap keyed by scip predicate names, emit an array of json
 -- pred/facts with one entry per predicate. In case we have very large
--- predicats, we chunk them into smaller top level groups, which makes memory
+-- predicates, we chunk them into smaller top level groups, which makes memory
 -- mgmt a bit easier
 generateSCIPJSON :: PredicateMap -> [Value]
 generateSCIPJSON = mkGenerateJSON scipSchemaVersion scipDependencyOrder
@@ -175,17 +175,19 @@ lsifDependencyOrder p = case p of
 --
 scipDependencyOrder :: Text -> Int
 scipDependencyOrder p = case p of
-  "src.File" -> 0
-  "scip.Range" -> 0
-  "scip.Symbol" -> 0
-  "scip.LocalName" -> 0
-  "scip.Documentation" -> 0
-  "scip.FileLanguage" -> 1 -- refers to src.File
-  "scip.FileRange" -> 2 -- refers to src.File and scip.Range
-  "scip.Definition" -> 3
-  "scip.Reference" -> 3
-  "scip.SymbolDocumentation" -> 3
-  "scip.SymbolName" -> 3
+  "src.File" -> 01
+  "scip.Range" -> 02
+  "scip.Symbol" -> 03
+  "scip.LocalName" -> 04
+  "scip.Documentation" -> 05
+  "scip.FileLanguage" -> 11 -- refers to src.File
+  "scip.FileRange" -> 21 -- refers to src.File and scip.Range
+  "scip.Definition" -> 31
+  "scip.Reference" -> 32
+  "scip.SymbolDocumentation" -> 33
+  "scip.SymbolName" -> 34
+  "scip.SymbolKind" -> 41
+  "scip.Metadata" -> 42
   _ -> 100
 
 data MonikerKind = Export | Local | Import | Implementation
