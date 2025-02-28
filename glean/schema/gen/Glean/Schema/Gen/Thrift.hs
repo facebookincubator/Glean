@@ -116,7 +116,7 @@ genTargets slashVn info =
     langs :: [Text]
     langs = map (\x -> "\"" <> x <> "\"") [
         "hs2",
-        "py",
+        "py-deprecated",
         "py3",
         "python",
         "java-swift",
