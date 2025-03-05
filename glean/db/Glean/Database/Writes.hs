@@ -80,7 +80,6 @@ import Glean.Database.Types
 import qualified Glean.RTS.Foreign.Subst as Subst
 import Glean.RTS.Foreign.Ownership (DefineOwnership)
 import qualified Glean.ServerConfig.Types as ServerConfig
-import Glean.Server.DownloadBatch
 import Glean.Types as Thrift hiding (Database)
 import Glean.Write.JSON
 import Glean.Util.Metric
@@ -378,11 +377,11 @@ enqueueBatchDescriptor env repo enqueueBatch waitPolicy = do
   traceMsg (envTracer env)
     (GleanTraceEnqueue repo EnqueueBatchDescriptor 0) $ do
   handle <- UUID.toText <$> UUID.nextRandom
-  descriptor <- case enqueueBatch of
+  _ <- case enqueueBatch of
     Thrift.EnqueueBatch_descriptor descriptor -> return descriptor
     Thrift.EnqueueBatch_EMPTY -> throwIO $ Thrift.Exception "empty batch"
   write <- enqueueWrite env repo 0 Nothing False $
-    writeContentFromBatch <$> downloadBatch descriptor
+    throwIO $ Exception "not implemented"
   when (waitPolicy == Thrift.EnqueueBatchWaitPolicy_Remember)
     $ rememberWrite env handle write
   return $ def { enqueueBatchResponse_handle = handle }

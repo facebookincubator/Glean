@@ -194,7 +194,6 @@ library stubs
         Glean.BuildInfo
         Glean.Datasource.Scribe.Write
         Glean.Init
-        Glean.Server.DownloadBatch
         Glean.Server.PublishShards
         Glean.Index
         Glean.Username
