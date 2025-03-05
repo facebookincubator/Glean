@@ -2,7 +2,6 @@
 
 use std::fs::File;
 use std::fs::OpenOptions;
-use std::io::Read;
 use std::path::Path;
 use std::path::PathBuf;
 
@@ -10,9 +9,7 @@ use anyhow::anyhow;
 use anyhow::Context;
 use anyhow::Error;
 use anyhow::Result;
-use clap::Args;
 use clap::Parser;
-use clap::Subcommand;
 use fbinit::FacebookInit;
 use proto_rust::scip::Index;
 use protobuf::Message;
@@ -27,22 +24,12 @@ mod angle;
 mod lsif;
 mod output;
 
-/// PoC CLI for converting SCIP to Glean facts
+/// CLI for converting SCIP to Glean facts json
 #[derive(Parser, Debug)]
 #[command(
     author = "rl_code_authoring",
-    about = "PoC CLI for converting SCIP to Glean facts"
+    about = "CLI for converting SCIP to Glean facts json"
 )]
-pub struct Cli {
-    #[command(subcommand)]
-    command: Commands,
-}
-
-#[derive(Debug, Subcommand)]
-enum Commands {
-    BuildJson(BuildJsonArgs),
-}
-#[derive(Debug, Args)]
 struct BuildJsonArgs {
     #[arg(short, long)]
     input: PathBuf,
@@ -66,13 +53,8 @@ struct BuildJsonArgs {
 }
 
 #[cli::main("scip-aosp", error_logging(user(default_level = "info")))]
-async fn main(_fb: FacebookInit, cli: Cli) -> Result<cli::ExitCode> {
-    match cli.command {
-        Commands::BuildJson(args) => {
-            build_json(args)?;
-        }
-    };
-
+async fn main(_fb: FacebookInit, args: BuildJsonArgs) -> Result<cli::ExitCode> {
+    build_json(args)?;
     Ok(cli::ExitCode::SUCCESS)
 }
 
