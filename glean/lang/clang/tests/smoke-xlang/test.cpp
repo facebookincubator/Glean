@@ -24,7 +24,7 @@ void thriftCaller() {
   auto client = facebook::servicerouter::cpp2::getClientFactory().getSRClientUnique<SomeService>("dummy.tier");
   client->sync_someFunction(response, request);
   response.struct_field_1().value();
-  SomeEnum::EnumValue0;
+  std::ignore = SomeEnum::EnumValue0;
   smoke_constants::SOME_CONST();
-  smoke_constants::SOME_CONST_;
+  std::ignore = smoke_constants::SOME_CONST_;
 }
