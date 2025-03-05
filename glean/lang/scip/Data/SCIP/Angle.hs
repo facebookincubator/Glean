@@ -26,7 +26,6 @@ module Data.SCIP.Angle (
 import Lens.Micro ((^.))
 import Data.Bits ( Bits(testBit) )
 import Data.Maybe ( catMaybes ) -- , fromMaybe )
-import Util.Text ( textToInt )
 import Data.Text ( Text )
 import qualified Data.Text as Text
 import Data.Set ( Set )
@@ -187,8 +186,9 @@ decodeScipDoc mlang inferLanguage mPathPrefix mStripPrefix doc = do
     [ "file" .= srcFileId
     , "language" .= langEnum
     ]
-  occs <- mapM (decodeScipOccurence srcFileId) (doc ^. Scip.occurrences)
-  infos <- mapM decodeScipInfo (doc ^. Scip.symbols)
+  occs <- mapM (decodeScipOccurence srcFileId filepath)
+      (doc ^. Scip.occurrences)
+  infos <- mapM (decodeScipInfo filepath) (doc ^. Scip.symbols)
   return (srcFile : fileLang <> concat (occs <> infos))
 
 -- We really don't want to do a general purpose language detector
@@ -201,14 +201,19 @@ fileLanguageOf filepath
   | "java" `Text.isSuffixOf` filepath = Just SCIP.Java
   | otherwise = Nothing
 
-decodeScipInfo :: Scip.SymbolInformation -> Parse [SCIP.Predicate]
-decodeScipInfo info = do
+decodeScipInfo :: Text -> Scip.SymbolInformation -> Parse [SCIP.Predicate]
+decodeScipInfo filepath info = do
   (docIds, docFacts) <- unzip <$> forM scipDocs (\docStr -> do
     docId <- nextId
     return (docId, SCIP.Predicate "scip.Documentation" [
             object [ SCIP.factId docId, "key" .= Text.strip docStr ]
           ]))
-  mSymId <- getDefFactId scipSymbol
+  let eSym = symbolFromString scipSymbol
+  let qualifiedSymbol = case eSym of
+        Left err -> error(show err)
+        Right (Local _) -> filepath <> "/" <> scipSymbol
+        Right (Global {}) -> scipSymbol
+  mSymId <- getDefFactId qualifiedSymbol
   symDocFacts <- case mSymId of
     Nothing -> return []
     Just symId -> forM docIds (\docId ->
@@ -224,8 +229,12 @@ decodeScipInfo info = do
 
 -- | An occurence of a symbol in a given document the optional symbol role
 -- will tell us if it is an xref or a def or other
-decodeScipOccurence :: SCIP.Id -> Scip.Occurrence -> Parse [SCIP.Predicate]
-decodeScipOccurence fileId occ = do
+decodeScipOccurence
+  :: SCIP.Id
+  -> Text
+  -> Scip.Occurrence
+  -> Parse [SCIP.Predicate]
+decodeScipOccurence fileId filepath occ = do
     fileRangeId <- nextId
     fileRange <- SCIP.predicateId "scip.FileRange" fileRangeId
       [ "file" .= fileId
@@ -234,13 +243,8 @@ decodeScipOccurence fileId occ = do
     let eSym = symbolFromString scipSymbol
     symbolFacts <- case eSym of
           Left err -> error (show err) -- Can't handle this symbol format
-        -- support for locals not implemented
-        --   pure $ SCIP.Predicate "scip.Local" [
-        --           object [ SCIP.factId symbolId, "key" .= n ]
-        --         ]
-          Right (Local _n) -> pure []
-          Right (LocalWithName _s) -> pure []
-
+          Right (Local _) -> decodeLocalOccurence filepath scipSymbol symRoles
+              fileRangeId
           Right Global{..} -> decodeGlobalOccurence scipSymbol symRoles
               fileRangeId descriptor
     return (symbolFacts <> fileRange)
@@ -291,6 +295,53 @@ decodeGlobalOccurence scipSymbol symRoles fileRangeId Descriptor{..} = do
             ]
   return $ symbolFact <> concat roleFact <> nameFact <>
             concat symbolNameFact <> kindFact
+
+decodeLocalOccurence
+  :: Text
+  -> Text
+  -> Set Scip.SymbolRole
+  -> SCIP.Id
+  -> Parse [SCIP.Predicate]
+decodeLocalOccurence filepath localSymbol symRoles fileRangeId = do
+  let qualifiedSymbol = filepath <> "/" <> localSymbol
+  (symbolId, seenSymbol) <- getOrSetFact qualifiedSymbol
+  let symbolFact :: [SCIP.Predicate]
+        | seenSymbol = []
+        | otherwise = pure $
+            SCIP.Predicate "scip.Symbol" [
+                object [ SCIP.factId symbolId, "key" .= qualifiedSymbol ]
+            ]
+  let roleFact :: [[SCIP.Predicate]] = if Scip.Definition `Set.member` symRoles
+        then SCIP.predicate "scip.Definition" [
+            "symbol" .= symbolId,
+            "location" .= fileRangeId
+          ]
+        else SCIP.predicate "scip.Reference" [
+            "symbol" .= symbolId,
+            "location" .= fileRangeId
+          ]
+  (nameId, seenName) <- getOrSetFact localSymbol
+  let nameFact :: [SCIP.Predicate]
+        | seenName = []
+        | otherwise = pure $
+            SCIP.Predicate "scip.LocalName" [
+                object [ SCIP.factId nameId, "key" .= localSymbol ]
+            ]
+  let symbolNameFact :: [[SCIP.Predicate]]
+        | seenSymbol = []
+        | otherwise = SCIP.predicate "scip.SymbolName" [
+              "symbol" .= symbolId,
+              "name" .= nameId
+           ]
+  let kindFact :: [[SCIP.Predicate]]
+        | seenSymbol = []
+        | otherwise = SCIP.predicate "scip.SymbolKind" [
+              "symbol" .= symbolId,
+              -- TODO: this could be any SymbolInformation.Kind
+              "kind" .= fromEnum SCIP.SkVariable
+            ]
+  return $ symbolFact <> concat roleFact <> nameFact <>
+            concat symbolNameFact <> concat kindFact
 
 -- | For sharding we might want to take a repo-relative anchor here
 -- as it potentially differs to project root when combining SCIP files
@@ -357,8 +408,7 @@ decodeScipRange range = error $
 -}
 
 data ScipSymbol
-  = Local {-# UNPACK #-}!Int
-  | LocalWithName !Text
+  = Local !Text
   | Global
       { scheme :: !Text
       , package :: !Package
@@ -389,11 +439,8 @@ data Descriptor = Descriptor
 symbolFromString :: Text -> Either Text ScipSymbol
 symbolFromString str
   -- 'local ' <local-id>
-  | ("local", rest) <- split normalStr
-  = case textToInt rest of
-      Left _ -> Right (LocalWithName rest)
-      Right n -> Right (Local n) -- locals are numbered and anonymous
-
+  | ("local", localId) <- split normalStr
+  = Right $ Local localId
   --  <scheme> ' ' <package> ' ' { <descriptor> }
   | (scheme, rest1) <- split normalStr
   -- <package> ::= <manager> ' ' <package-name> ' ' <version>

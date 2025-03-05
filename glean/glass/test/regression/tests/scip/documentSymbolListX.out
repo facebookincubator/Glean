@@ -6,6 +6,908 @@
                 "attributes": [
                     {
                         "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "10"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nS: Serializer\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 18,
+                    "columnEnd": 19,
+                    "lineBegin": 153,
+                    "lineEnd": 153
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/10"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "11"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet path_str: &str\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 13,
+                    "columnEnd": 21,
+                    "lineBegin": 154,
+                    "lineEnd": 154
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/11"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "12"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\n'de\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 6,
+                    "columnEnd": 9,
+                    "lineBegin": 161,
+                    "lineEnd": 161
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/12"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "13"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nD: Deserializer\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 21,
+                    "lineBegin": 162,
+                    "lineEnd": 162
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/13"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "14"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\n'de\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 14,
+                    "columnEnd": 17,
+                    "lineBegin": 168,
+                    "lineEnd": 168
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/14"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "15"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nE: Error\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 26,
+                    "columnEnd": 27,
+                    "lineBegin": 175,
+                    "lineEnd": 175
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/15"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "16"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet mut split: SplitN<char>\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 25,
+                    "columnEnd": 30,
+                    "lineBegin": 179,
+                    "lineEnd": 179
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/16"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "17"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet prefix_str: Option<&str>\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 21,
+                    "columnEnd": 31,
+                    "lineBegin": 180,
+                    "lineEnd": 180
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/17"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "18"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet path_str: Option<&str>\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 21,
+                    "columnEnd": 29,
+                    "lineBegin": 181,
+                    "lineEnd": 181
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/18"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "19"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet prefix: Prefix\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 21,
+                    "columnEnd": 27,
+                    "lineBegin": 183,
+                    "lineEnd": 183
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/19"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "20"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet path: Option<PathBuf>\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 21,
+                    "columnEnd": 25,
+                    "lineBegin": 198,
+                    "lineEnd": 198
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/20"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "21"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\npath_str: &str\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 26,
+                    "columnEnd": 34,
+                    "lineBegin": 199,
+                    "lineEnd": 199
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/21"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "22"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\npath_str: &str\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 26,
+                    "columnEnd": 34,
+                    "lineBegin": 200,
+                    "lineEnd": 200
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/22"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "23"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\n'a\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 20,
+                    "columnEnd": 22,
+                    "lineBegin": 220,
+                    "lineEnd": 220
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/23"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "24"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nA: Allocator\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 24,
+                    "columnEnd": 25,
+                    "lineBegin": 220,
+                    "lineEnd": 220
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/24"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "25"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet mut block: BlockBuilder\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 17,
+                    "columnEnd": 22,
+                    "lineBegin": 221,
+                    "lineEnd": 221
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/25"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "26"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet block: Block\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 13,
+                    "columnEnd": 18,
+                    "lineBegin": 230,
+                    "lineEnd": 230
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/26"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "27"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet prefix: Prefix\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 13,
+                    "columnEnd": 19,
+                    "lineBegin": 231,
+                    "lineEnd": 231
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/27"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "28"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet path: PathBuf\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 13,
+                    "columnEnd": 17,
+                    "lineBegin": 232,
+                    "lineEnd": 232
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/28"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "29"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nT\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 14,
+                    "columnEnd": 15,
+                    "lineBegin": 237,
+                    "lineEnd": 237
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/29"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "32"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet valid_prefix: usize\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 13,
+                    "columnEnd": 25,
+                    "lineBegin": 271,
+                    "lineEnd": 271
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/32"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "33"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet invalid_prefix: usize\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 13,
+                    "columnEnd": 27,
+                    "lineBegin": 277,
+                    "lineEnd": 277
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/33"
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
                             "aInteger": 10
                         },
                         "key": "symbolKind"
@@ -3244,6 +4146,1791 @@
         ],
         "referenced_file_digests": {},
         "references": [
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "10"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nS: Serializer\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 59,
+                    "columnEnd": 60,
+                    "lineBegin": 153,
+                    "lineEnd": 153
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/10",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 19,
+                        "lineBegin": 153,
+                        "lineEnd": 153
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "10"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nS: Serializer\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 72,
+                    "columnEnd": 73,
+                    "lineBegin": 153,
+                    "lineEnd": 153
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/10",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 19,
+                        "lineBegin": 153,
+                        "lineEnd": 153
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "10"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nS: Serializer\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 79,
+                    "columnEnd": 80,
+                    "lineBegin": 153,
+                    "lineEnd": 153
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/10",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 18,
+                        "columnEnd": 19,
+                        "lineBegin": 153,
+                        "lineEnd": 153
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "11"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet path_str: &str\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 65,
+                    "columnEnd": 73,
+                    "lineBegin": 156,
+                    "lineEnd": 156
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/11",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 21,
+                        "lineBegin": 154,
+                        "lineEnd": 154
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "12"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\n'de\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 26,
+                    "lineBegin": 161,
+                    "lineEnd": 161
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/12",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 9,
+                        "lineBegin": 161,
+                        "lineEnd": 161
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "12"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\n'de\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 32,
+                    "columnEnd": 35,
+                    "lineBegin": 164,
+                    "lineEnd": 164
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/12",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 6,
+                        "columnEnd": 9,
+                        "lineBegin": 161,
+                        "lineEnd": 161
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "13"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nD: Deserializer\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 37,
+                    "columnEnd": 38,
+                    "lineBegin": 162,
+                    "lineEnd": 162
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/13",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 21,
+                        "lineBegin": 162,
+                        "lineEnd": 162
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "13"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nD: Deserializer\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 56,
+                    "columnEnd": 57,
+                    "lineBegin": 162,
+                    "lineEnd": 162
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/13",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 21,
+                        "lineBegin": 162,
+                        "lineEnd": 162
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "13"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nD: Deserializer\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 10,
+                    "lineBegin": 164,
+                    "lineEnd": 164
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/13",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 21,
+                        "lineBegin": 162,
+                        "lineEnd": 162
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "14"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\n'de\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 38,
+                    "columnEnd": 41,
+                    "lineBegin": 168,
+                    "lineEnd": 168
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/14",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 17,
+                        "lineBegin": 168,
+                        "lineEnd": 168
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "15"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nE: Error\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 72,
+                    "columnEnd": 73,
+                    "lineBegin": 175,
+                    "lineEnd": 175
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/15",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 26,
+                        "columnEnd": 27,
+                        "lineBegin": 175,
+                        "lineEnd": 175
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "15"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nE: Error\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 17,
+                    "columnEnd": 18,
+                    "lineBegin": 177,
+                    "lineEnd": 177
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/15",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 26,
+                        "columnEnd": 27,
+                        "lineBegin": 175,
+                        "lineEnd": 175
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "15"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nE: Error\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 36,
+                    "columnEnd": 37,
+                    "lineBegin": 189,
+                    "lineEnd": 189
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/15",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 26,
+                        "columnEnd": 27,
+                        "lineBegin": 175,
+                        "lineEnd": 175
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "15"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nE: Error\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 36,
+                    "columnEnd": 37,
+                    "lineBegin": 202,
+                    "lineEnd": 202
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/15",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 26,
+                        "columnEnd": 27,
+                        "lineBegin": 175,
+                        "lineEnd": 175
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "16"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet mut split: SplitN<char>\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 34,
+                    "columnEnd": 39,
+                    "lineBegin": 180,
+                    "lineEnd": 180
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/16",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 25,
+                        "columnEnd": 30,
+                        "lineBegin": 179,
+                        "lineEnd": 179
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "16"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet mut split: SplitN<char>\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 32,
+                    "columnEnd": 37,
+                    "lineBegin": 181,
+                    "lineEnd": 181
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/16",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 25,
+                        "columnEnd": 30,
+                        "lineBegin": 179,
+                        "lineEnd": 179
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "16"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet mut split: SplitN<char>\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 25,
+                    "columnEnd": 30,
+                    "lineBegin": 182,
+                    "lineEnd": 182
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/16",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 25,
+                        "columnEnd": 30,
+                        "lineBegin": 179,
+                        "lineEnd": 179
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "17"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet prefix_str: Option<&str>\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 36,
+                    "columnEnd": 46,
+                    "lineBegin": 183,
+                    "lineEnd": 183
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/17",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 31,
+                        "lineBegin": 180,
+                        "lineEnd": 180
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "18"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet path_str: Option<&str>\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 34,
+                    "columnEnd": 42,
+                    "lineBegin": 198,
+                    "lineEnd": 198
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/18",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 21,
+                        "columnEnd": 29,
+                        "lineBegin": 181,
+                        "lineEnd": 181
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "21"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\npath_str: &str\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 39,
+                    "columnEnd": 47,
+                    "lineBegin": 199,
+                    "lineEnd": 199
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/21",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 26,
+                        "columnEnd": 34,
+                        "lineBegin": 199,
+                        "lineEnd": 199
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "22"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\npath_str: &str\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 58,
+                    "columnEnd": 66,
+                    "lineBegin": 200,
+                    "lineEnd": 200
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/22",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 26,
+                        "columnEnd": 34,
+                        "lineBegin": 200,
+                        "lineEnd": 200
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "23"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\n'a\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 49,
+                    "columnEnd": 51,
+                    "lineBegin": 220,
+                    "lineEnd": 220
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/23",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 22,
+                        "lineBegin": 220,
+                        "lineEnd": 220
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "23"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\n'a\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 66,
+                    "columnEnd": 68,
+                    "lineBegin": 220,
+                    "lineEnd": 220
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/23",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 22,
+                        "lineBegin": 220,
+                        "lineEnd": 220
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "23"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\n'a\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 91,
+                    "columnEnd": 93,
+                    "lineBegin": 220,
+                    "lineEnd": 220
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/23",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 20,
+                        "columnEnd": 22,
+                        "lineBegin": 220,
+                        "lineEnd": 220
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "24"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nA: Allocator\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 69,
+                    "columnEnd": 70,
+                    "lineBegin": 220,
+                    "lineEnd": 220
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/24",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 24,
+                        "columnEnd": 25,
+                        "lineBegin": 220,
+                        "lineEnd": 220
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "25"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet mut block: BlockBuilder\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 30,
+                    "columnEnd": 35,
+                    "lineBegin": 222,
+                    "lineEnd": 222
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/25",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 22,
+                        "lineBegin": 221,
+                        "lineEnd": 221
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "25"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet mut block: BlockBuilder\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 30,
+                    "columnEnd": 35,
+                    "lineBegin": 223,
+                    "lineEnd": 223
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/25",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 22,
+                        "lineBegin": 221,
+                        "lineEnd": 221
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "25"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet mut block: BlockBuilder\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 9,
+                    "columnEnd": 14,
+                    "lineBegin": 224,
+                    "lineEnd": 224
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/25",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 17,
+                        "columnEnd": 22,
+                        "lineBegin": 221,
+                        "lineEnd": 221
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "26"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet block: Block\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 44,
+                    "columnEnd": 49,
+                    "lineBegin": 231,
+                    "lineEnd": 231
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/26",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 18,
+                        "lineBegin": 230,
+                        "lineEnd": 230
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "26"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet block: Block\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 51,
+                    "columnEnd": 56,
+                    "lineBegin": 232,
+                    "lineEnd": 232
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/26",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 18,
+                        "lineBegin": 230,
+                        "lineEnd": 230
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "27"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet prefix: Prefix\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 23,
+                    "columnEnd": 29,
+                    "lineBegin": 233,
+                    "lineEnd": 233
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/27",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 19,
+                        "lineBegin": 231,
+                        "lineEnd": 231
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "28"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet path: PathBuf\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 31,
+                    "columnEnd": 35,
+                    "lineBegin": 233,
+                    "lineEnd": 233
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/28",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 17,
+                        "lineBegin": 232,
+                        "lineEnd": 232
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "29"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nT\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 60,
+                    "columnEnd": 61,
+                    "lineBegin": 237,
+                    "lineEnd": 237
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/29",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 14,
+                        "columnEnd": 15,
+                        "lineBegin": 237,
+                        "lineEnd": 237
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "32"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet valid_prefix: usize\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 56,
+                    "columnEnd": 68,
+                    "lineBegin": 272,
+                    "lineEnd": 272
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/32",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 25,
+                        "lineBegin": 271,
+                        "lineEnd": 271
+                    },
+                    "repository": "test"
+                }
+            },
+            {
+                "attributes": [
+                    {
+                        "attribute": {
+                            "aInteger": 15
+                        },
+                        "key": "symbolKind"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "33"
+                        },
+                        "key": "symbolName"
+                    },
+                    {
+                        "attribute": {
+                            "aString": ""
+                        },
+                        "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "```rust\nlet invalid_prefix: usize\n```"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
+                            "aInteger": 10
+                        },
+                        "key": "symbolLanguage"
+                    }
+                ],
+                "range": {
+                    "columnBegin": 30,
+                    "columnEnd": 44,
+                    "lineBegin": 281,
+                    "lineEnd": 281
+                },
+                "sym": "test/rs/relative_path.rs%2Flocal/33",
+                "target": {
+                    "filepath": "relative_path.rs",
+                    "range": {
+                        "columnBegin": 13,
+                        "columnEnd": 27,
+                        "lineBegin": 277,
+                        "lineEnd": 277
+                    },
+                    "repository": "test"
+                }
+            },
             {
                 "attributes": [
                     {

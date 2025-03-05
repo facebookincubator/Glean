@@ -2,6 +2,186 @@
   "@generated",
   {
     "key": {
+      "symbol": { "key": "relative_path.rs/local 0" },
+      "docs": {
+        "key": "```rust\u000aextern crate std\u000a```\u000a\u000a---\u000a\u000a# The Rust Standard Library\u000a\u000aThe Rust Standard Library is the foundation of portable Rust software, a\u000aset of minimal and battle-tested shared abstractions for the [broader Rust\u000aecosystem](https://crates.io). It offers core types, like [`Vec<T>`] and\u000a[`Option<T>`], library-defined [operations on language\u000aprimitives](https://doc.rust-lang.org/nightly/std/index.html#primitives), [standard macros](https://doc.rust-lang.org/nightly/std/index.html#macros), [I/O] and\u000a[multithreading], among [many other things](https://doc.rust-lang.org/nightly/std/index.html#what-is-in-the-standard-library-documentation).\u000a\u000a`std` is available to all Rust crates by default. Therefore, the\u000astandard library can be accessed in [`use`](https://doc.rust-lang.org/nightly/book/ch07-02-defining-modules-to-control-scope-and-privacy.html) statements through the path\u000a`std`, as in [`use std::env`](https://doc.rust-lang.org/nightly/std/env/index.html).\u000a\u000a# How to read this documentation\u000a\u000aIf you already know the name of what you are looking for, the fastest way to\u000afind it is to use the <a href=\"#\" onclick=\"window.searchState.focus();\">search\u000abar</a> at the top of the page.\u000a\u000aOtherwise, you may want to jump to one of these useful sections:\u000a\u000a* [`std::*` modules](https://doc.rust-lang.org/nightly/std/index.html#modules)\u000a* [Primitive types](https://doc.rust-lang.org/nightly/std/index.html#primitives)\u000a* [Standard macros](https://doc.rust-lang.org/nightly/std/index.html#macros)\u000a* [The Rust Prelude]\u000a\u000aIf this is your first time, the documentation for the standard library is\u000awritten to be casually perused. Clicking on interesting things should\u000agenerally lead you to interesting places. Still, there are important bits\u000ayou don't want to miss, so read on for a tour of the standard library and\u000aits documentation!\u000a\u000aOnce you are familiar with the contents of the standard library you may\u000abegin to find the verbosity of the prose distracting. At this stage in your\u000adevelopment you may want to press the `[-]` button near the top of the\u000apage to collapse it into a more skimmable view.\u000a\u000aWhile you are looking at that `[-]` button also notice the `source`\u000alink. Rust's API documentation comes with the source code and you are\u000aencouraged to read it. The standard library source is generally high\u000aquality and a peek behind the curtains is often enlightening.\u000a\u000a# What is in the standard library documentation?\u000a\u000aFirst of all, The Rust Standard Library is divided into a number of focused\u000amodules, [all listed further down this page](https://doc.rust-lang.org/nightly/std/index.html#modules). These modules are\u000athe bedrock upon which all of Rust is forged, and they have mighty names\u000alike [`std::slice`] and [`std::cmp`]. Modules' documentation typically\u000aincludes an overview of the module along with examples, and are a smart\u000aplace to start familiarizing yourself with the library.\u000a\u000aSecond, implicit methods on [primitive types](https://doc.rust-lang.org/nightly/book/ch03-02-data-types.html) are documented here. This can\u000abe a source of confusion for two reasons:\u000a\u000a1. While primitives are implemented by the compiler, the standard library\u000a   implements methods directly on the primitive types (and it is the only\u000a   library that does so), which are [documented in the section on\u000a   primitives](https://doc.rust-lang.org/nightly/std/index.html#primitives).\u000a1. The standard library exports many modules *with the same name as\u000a   primitive types*. These define additional items related to the primitive\u000a   type, but not the all-important methods.\u000a\u000aSo for example there is a [page for the primitive type\u000a`i32`](https://doc.rust-lang.org/nightly/core/primitive.i32.html) that lists all the methods that can be called on\u000a32-bit integers (very useful), and there is a [page for the module\u000a`std::i32`](https://doc.rust-lang.org/nightly/core/i32/index.html) that documents the constant values [`MIN`] and [`MAX`] (rarely\u000auseful).\u000a\u000aNote the documentation for the primitives [`str`] and [`[T]`](https://doc.rust-lang.org/nightly/alloc/slice/index.html) (also\u000acalled 'slice'). Many method calls on [`String`](https://doc.rust-lang.org/nightly/alloc/string/struct.String.html) and [`Vec<T>`] are actually\u000acalls to methods on [`str`] and [`[T]`](https://doc.rust-lang.org/nightly/alloc/slice/index.html) respectively, via [deref\u000acoercions](https://doc.rust-lang.org/nightly/book/ch15-02-deref.html#implicit-deref-coercions-with-functions-and-methods).\u000a\u000aThird, the standard library defines [The Rust Prelude], a small collection\u000aof items - mostly traits - that are imported into every module of every\u000acrate. The traits in the prelude are pervasive, making the prelude\u000adocumentation a good entry point to learning about the library.\u000a\u000aAnd finally, the standard library exports a number of standard macros, and\u000a[lists them on this page](https://doc.rust-lang.org/nightly/std/index.html#macros) (technically, not all of the standard\u000amacros are defined by the standard library - some are defined by the\u000acompiler - but they are documented here the same). Like the prelude, the\u000astandard macros are imported by default into all crates.\u000a\u000a# Contributing changes to the documentation\u000a\u000aCheck out the rust contribution guidelines [here](https://rustc-dev-guide.rust-lang.org/contributing.html#writing-documentation).\u000aThe source for this documentation can be found on\u000a[GitHub](https://github.com/rust-lang/rust).\u000aTo contribute changes, make sure you read the guidelines first, then submit\u000apull-requests for your suggested changes.\u000a\u000aContributions are appreciated! If you see a part of the docs that can be\u000aimproved, submit a PR, or chat with us first on [Discord](https://discord.gg/rust-lang)\u000a\\#docs.\u000a\u000a# A Tour of The Rust Standard Library\u000a\u000aThe rest of this crate documentation is dedicated to pointing out notable\u000afeatures of The Rust Standard Library.\u000a\u000a## Containers and collections\u000a\u000aThe [`option`](https://doc.rust-lang.org/nightly/core/option/index.html) and [`result`](https://doc.rust-lang.org/nightly/core/result/index.html) modules define optional and error-handling\u000atypes, [`Option<T>`] and [`Result<T, E>`]. The [`iter`](https://doc.rust-lang.org/nightly/core/iter/index.html) module defines\u000aRust's iterator trait, [`Iterator`](https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html), which works with the [`for`](https://doc.rust-lang.org/nightly/book/ch03-05-control-flow.html#looping-through-a-collection-with-for) loop to\u000aaccess collections.\u000a\u000aThe standard library exposes three common ways to deal with contiguous\u000aregions of memory:\u000a\u000a* [`Vec<T>`] - A heap-allocated *vector* that is resizable at runtime.\u000a* [`[T; N]`](https://doc.rust-lang.org/nightly/core/array/index.html) - An inline *array* with a fixed size at compile time.\u000a* [`[T]`](https://doc.rust-lang.org/nightly/alloc/slice/index.html) - A dynamically sized *slice* into any other kind of contiguous\u000a  storage, whether heap-allocated or not.\u000a\u000aSlices can only be handled through some kind of *pointer*, and as such come\u000ain many flavors such as:\u000a\u000a* `&[T]` - *shared slice*\u000a* `&mut [T]` - *mutable slice*\u000a* [`Box<[T]>`](https://doc.rust-lang.org/nightly/alloc/boxed/index.html) - *owned slice*\u000a\u000a[`str`], a UTF-8 string slice, is a primitive type, and the standard library\u000adefines many methods for it. Rust [`str`]s are typically accessed as\u000aimmutable references: `&str`. Use the owned [`String`](https://doc.rust-lang.org/nightly/alloc/string/struct.String.html) for building and\u000amutating strings.\u000a\u000aFor converting to strings use the [`format`](https://doc.rust-lang.org/nightly/alloc/macros/macro.format.html) macro, and for converting from\u000astrings use the [`FromStr`] trait.\u000a\u000aData may be shared by placing it in a reference-counted box or the [`Rc`]\u000atype, and if further contained in a [`Cell`] or [`RefCell`], may be mutated\u000aas well as shared. Likewise, in a concurrent setting it is common to pair an\u000aatomically-reference-counted box, [`Arc`], with a [`Mutex`] to get the same\u000aeffect.\u000a\u000aThe [`collections`](https://doc.rust-lang.org/nightly/std/collections/index.html) module defines maps, sets, linked lists and other\u000atypical collection types, including the common [`HashMap<K, V>`].\u000a\u000a## Platform abstractions and I/O\u000a\u000aBesides basic data types, the standard library is largely concerned with\u000aabstracting over differences in common platforms, most notably Windows and\u000aUnix derivatives.\u000a\u000aCommon types of I/O, including [files], [TCP], and [UDP], are defined in\u000athe [`io`](https://doc.rust-lang.org/nightly/std/io/index.html), [`fs`](https://doc.rust-lang.org/nightly/std/fs/index.html), and [`net`](https://doc.rust-lang.org/nightly/std/net/index.html) modules.\u000a\u000aThe [`thread`](https://doc.rust-lang.org/nightly/std/thread/index.html) module contains Rust's threading abstractions. [`sync`](https://doc.rust-lang.org/nightly/std/sync/index.html)\u000acontains further primitive shared memory types, including [`atomic`] and\u000a[`mpsc`], which contains the channel types for message passing."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 1" },
+      "docs": { "key": "```rust\u000aextern crate eq_modulo_pos\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 10" },
+      "docs": { "key": "```rust\u000aS: Serializer\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 11" },
+      "docs": { "key": "```rust\u000alet path_str: &str\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 12" },
+      "docs": { "key": "```rust\u000a'de\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 13" },
+      "docs": { "key": "```rust\u000aD: Deserializer\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 14" },
+      "docs": { "key": "```rust\u000a'de\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 15" },
+      "docs": { "key": "```rust\u000aE: Error\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 16" },
+      "docs": { "key": "```rust\u000alet mut split: SplitN<char>\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 17" },
+      "docs": { "key": "```rust\u000alet prefix_str: Option<&str>\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 18" },
+      "docs": { "key": "```rust\u000alet path_str: Option<&str>\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 19" },
+      "docs": { "key": "```rust\u000alet prefix: Prefix\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 2" },
+      "docs": { "key": "```rust\u000aextern crate no_pos_hash\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 20" },
+      "docs": { "key": "```rust\u000alet path: Option<PathBuf>\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 21" },
+      "docs": { "key": "```rust\u000apath_str: &str\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 22" },
+      "docs": { "key": "```rust\u000apath_str: &str\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 23" },
+      "docs": { "key": "```rust\u000a'a\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 24" },
+      "docs": { "key": "```rust\u000aA: Allocator\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 25" },
+      "docs": { "key": "```rust\u000alet mut block: BlockBuilder\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 26" },
+      "docs": { "key": "```rust\u000alet block: Block\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 27" },
+      "docs": { "key": "```rust\u000alet prefix: Prefix\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 28" },
+      "docs": { "key": "```rust\u000alet path: PathBuf\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 29" },
+      "docs": { "key": "```rust\u000aT\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 3" },
+      "docs": {
+        "key": "```rust\u000aextern crate ocamlrep\u000a```\u000a\u000a---\u000a\u000aOcamlRep is a framework for building and interpreting the in-memory\u000arepresentation of OCaml values. This is useful for converting Rust values to\u000aOCaml values and vice-versa, and for building and storing OCaml values off of\u000athe OCaml runtime's garbage-collected heap.\u000a\u000aOcamlRep provides a generic interface abstracting over the allocation of OCaml\u000avalues, allowing custom allocators to choose where values are allocated\u000a(including directly onto the OCaml heap).\u000a\u000a# Example: build an OCaml value\u000a\u000aThis crate provides an arena-allocator which manages the memory in which\u000aconverted OCaml values are stored. When the arena is dropped, the values are\u000afreed.\u000a\u000a```rust\u000a// Import the Allocator trait for access to its `add` method, which builds an\u000a// OCaml-value representation of the argument (using `OcamlRep::to_ocamlrep`)\u000a// and returns that value.\u000ause ocamlrep::{Allocator, Arena, Value};\u000a\u000a// The `ocamlrep` crate provides implementations of `OcamlRep` for builtin types\u000a// like `Option`, `String`, integers, and tuples. This allows them to be\u000a// converted to OCaml values using the Allocator trait (which Arena implements).\u000alet tuple = (Some(42), String::from(\"a\"));\u000a\u000a// Allocate a chunk of Rust-managed backing storage for our OCaml value.\u000alet arena = Arena::new();\u000a\u000a// This value borrows the Arena, to ensure that we cannot continue to use it\u000a// after the Arena has been freed. OcamlRep values do not borrow the Rust values\u000a// they were converted from--the string \"a\" is copied into the Arena.\u000alet ocamlrep_value: Value<'_> = arena.add(&tuple);\u000a\u000a// We must now convert the value to a usize which can be handed over to the\u000a// OCaml runtime. We must take care when doing this to ensure that our OCaml\u000a// program doesn't use the value after the Arena is freed.\u000alet ocaml_value: usize = ocamlrep_value.to_bits();\u000a```\u000a\u000a# Example: return an OCaml value to the OCaml runtime\u000a\u000aThe value `ocaml_value` from the previous example is suitable to be handed to\u000athe OCaml runtime. We might do so with an extern declaration like this:\u000a\u000a```ocaml\u000aexternal get_tuple : unit -> int option * string = \"get_tuple\"\u000a\u000alet use_rust_tuple () =\u000a  match get_tuple () with\u000a  | (Some i, s) -> Printf.printf \"%d, %s\\n\" i s\u000a  | (None, s) -> Printf.printf \"None, %s\\n\" s\u000a```\u000a\u000aWe could provide this symbol from the Rust side like this:\u000a\u000a```rust\u000a#[no_mangle]\u000apub extern \"C\" fn get_tuple(_unit: usize) -> usize {\u000a    use ocamlrep::{Allocator, Arena};\u000a    let arena = Box::leak(Box::new(Arena::new()));\u000a    let ocaml_tuple = arena.add(&(Some(42), String::from(\"a\")));\u000a    // This is safe because we leaked the Arena--no matter what we do with this\u000a    // value on the OCaml side, we'll never use-after-free.\u000a    ocaml_tuple.to_bits()\u000a}\u000a```\u000a\u000aBut this leaks memory. For small amounts of memory, or a short-lived process,\u000athis might be fine. If not, we might choose another strategy...\u000a\u000a# Example: lend an OCaml value to the OCaml runtime\u000a\u000aInstead, we could register an OCaml callback which uses the value:\u000a\u000a```ocaml\u000alet use_tuple (tuple : int option * string) : unit =\u000a  match tuple with\u000a  | (Some i, s) -> Printf.printf \"%d, %s\\n\" i s\u000a  | (None, s) -> Printf.printf \"None, %s\\n\" s\u000a\u000aexternal make_and_use_tuple : unit -> unit = \"make_and_use_tuple\"\u000a\u000alet () =\u000a  Callback.register \"use_tuple\" use_tuple;\u000a  make_and_use_tuple ()\u000a```\u000a\u000aAnd call into OCaml from Rust (using the `ocaml` crate) to hand over the value:\u000a\u000a```rust\u000a#[no_mangle]\u000apub extern \"C\" fn make_and_use_tuple(_unit: usize) -> usize {\u000a    use ocamlrep::{Allocator, Arena};\u000a    let arena = Arena::new();\u000a    let tuple_ocamlrep = arena.add(&(Some(42), String::from(\"a\")));\u000a\u000a    let use_tuple = ocaml::named_value(\"use_tuple\")\u000a        .expect(\"use_tuple must be registered using Callback.register\");\u000a\u000a    // This is safe because we are passing the value to `use_tuple`, which\u000a    // doesn't store the value and returns before we free the Arena.\u000a    let ocaml_tuple: usize = tuple_ocamlrep.to_bits();\u000a    use_tuple\u000a        .call(ocaml::Value::new(ocaml_tuple))\u000a        .expect(\"use_tuple must be a function\");\u000a\u000a    // Free the arena and return unit.\u000a    ocaml::core::mlvalues::UNIT\u000a}\u000a```\u000a\u000a# Example: pass an OCaml value to the OCaml runtime\u000a\u000aThe `ocamlrep_ocamlpool` crate provides an `Allocator` which builds values on\u000athe OCaml runtime's garbage-collected heap. We can replace the memory-leaking\u000aimplementation from the [second example (\"return an OCaml value to the OCaml\u000aruntime\")](https://docs.rs/ocamlrep/*/ocamlrep/index.html#example-return-an-ocaml-value-to-the-ocaml-runtime) with one that\u000aallows the OCaml value to be garbage-collected when no longer used:\u000a\u000a```rust\u000a#[no_mangle]\u000apub extern \"C\" fn get_tuple(_unit: usize) -> usize {\u000a    ocamlrep_ocamlpool::to_ocaml(&(Some(42), String::from(\"a\")))\u000a}\u000a```\u000a\u000aThe `ocamlrep_ocamlpool` crate provides a convenience macro for this use case:\u000a\u000a```rust\u000ause ocamlrep_ocamlpool::ocaml_ffi;\u000a\u000aocaml_ffi! {\u000a    // This expands to code similar to the above definition of get_tuple.\u000a    fn get_tuple() -> (Option<i32>, String) {\u000a        (Some(42), String::from(\"a\"))\u000a    }\u000a}\u000a```\u000a\u000a# Example: pass an OCaml value to Rust\u000a\u000aAn `Allocator` converts Rust values which implement the `OcamlRep` trait into\u000aOCaml values using the method `OcamlRep::to_ocamlrep`. The `OcamlRep` trait also\u000aprovides a method `OcamlRep::from_ocamlrep` (and an FFI helper named\u000a`OcamlRep::from_ocaml`) for conversion in the other direction.\u000a\u000aIf we call into Rust like this:\u000a\u000a```ocaml\u000aexternal use_tuple : int option * string -> unit = \"use_tuple\"\u000a\u000alet () = use_tuple (Some 42, \"a\")\u000a```\u000a\u000aWe could convert the tuple to a Rust value like this:\u000a\u000a```rust\u000a#[no_mangle]\u000apub extern \"C\" fn use_tuple(ocaml_tuple: usize) -> usize {\u000a    // Import the OcamlRep trait to use its associated function `from_ocaml`.\u000a    use ocamlrep::OcamlRep;\u000a    // Safety: `ocaml_tuple` is a valid OCaml value allocated by the OCaml\u000a    // runtime, all objects reachable from that value are also valid OCaml\u000a    // values, and those objects cannot be concurrently modified while\u000a    // `from_ocaml` runs. This is true because that graph of objects is owned by\u000a    // the OCaml runtime, we didn't expose any of their pointers in any other\u000a    // FFI functions, and the OCaml runtime is both single-threaded and\u000a    // currently interrupted by an FFI call into this function.\u000a    let tuple_result = unsafe { <(Option<i32>, String)>::from_ocaml(ocaml_tuple) };\u000a    let tuple = tuple_result\u000a        .expect(\"Expected a value of type `int option * string`, \\\u000a                 but got some other type or invalid UTF-8\");\u000a    println!(\"{:?}\", tuple);\u000a    ocaml::core::mlvalues::UNIT\u000a}\u000a```\u000a\u000aThe `ocaml_ffi!` macro in the `ocamlrep_ocamlpool` crate supports this use case:\u000a\u000a```rust\u000ause ocamlrep_ocamlpool::ocaml_ffi;\u000a\u000aocaml_ffi! {\u000a    // This expands to code similar to the above definition of use_tuple.\u000a    fn use_tuple(tuple: (Option<i32>, String)) {\u000a        println!(\"{:?}\", tuple)\u000a    }\u000a}\u000a```\u000a\u000aNote that the value returned by `from_ocaml` is owned--it is effectively a\u000adeep clone of the OCaml value. For instance, the OCaml string \"a\" is copied into\u000aa newly allocated Rust String--the Rust side does not need to worry about the\u000aOCaml value being garbage collected.\u000a\u000aTake care when using `from_ocaml`, `from_ocamlrep`, or `ocaml_ffi!` with types\u000acontaining `String`s. OCaml strings are not guaranteed to be UTF-8, so\u000a`from_ocaml` may return an `Err` because a string was invalid UTF-8 rather than\u000abecause the OCaml code did not pass a value of the expected type (which should\u000abe forbidden by the OCaml compiler, provided that the `external` declaration is\u000aannotated with the correct type). If representing invalid UTF-8 is a\u000arequirement, use `Vec<u8>` instead (an implementation of `OcamlRep` which\u000aconverts `Vec<u8>` to an OCaml `string` is provided).\u000a\u000a# Example: implementing OcamlRep\u000a\u000aWriting a manual implementation of OcamlRep requires one to choose some type\u000awith which their value should be represented in OCaml and write `to_ocamlrep`\u000aand `from_ocamlrep` conversion functions which build and interpret the in-memory\u000arepresentation of that type.\u000a\u000aThis crate provides implementations of OcamlRep for several std types, and\u000achooses these OCaml types to represent them with:\u000a\u000a|Rust type|OCaml type|\u000a|---------|----------|\u000a|`()`|`unit`|\u000a|`bool`|`bool`|\u000a|`usize`/`isize`|`int`|\u000a|[`Option`](https://doc.rust-lang.org/beta/std/option/enum.Option.html)|[`option`](https://caml.inria.fr/pub/docs/manual-ocaml/libref/Option.html)|\u000a|[`Result`](https://doc.rust-lang.org/std/result/enum.Result.html)|[`result`](https://caml.inria.fr/pub/docs/manual-ocaml/libref/Result.html)|\u000a|[`Vec`](https://doc.rust-lang.org/std/vec/struct.Vec.html)|[`list`](https://caml.inria.fr/pub/docs/manual-ocaml/libref/List.html)|\u000a|[`String`](https://doc.rust-lang.org/std/string/struct.String.html)|[`string`](https://caml.inria.fr/pub/docs/manual-ocaml/libref/String.html) (when valid UTF-8)|\u000a|[`Vec<u8>`](https://doc.rust-lang.org/std/vec/struct.Vec.html)|[`string`](https://caml.inria.fr/pub/docs/manual-ocaml/libref/String.html)|\u000a|[`PathBuf`](https://doc.rust-lang.org/std/path/struct.PathBuf.html)|[`string`](https://caml.inria.fr/pub/docs/manual-ocaml/libref/String.html)|\u000a|[`BTreeMap`](https://doc.rust-lang.org/std/collections/struct.BTreeMap.html)|[`Map`](https://caml.inria.fr/pub/docs/manual-ocaml/libref/Map.html)|\u000a|[`BTreeSet`](https://doc.rust-lang.org/std/collections/struct.BTreeSet.html)|[`Set`](https://caml.inria.fr/pub/docs/manual-ocaml/libref/Set.html)|\u000a\u000aSee the [`impls`](https://docs.rs/ocamlrep/*/src/ocamlrep/impls.rs.html) submodule for examples of\u000aconversions for std types, and [Real World\u000aOCaml](https://dev.realworldocaml.org/runtime-memory-layout.html) and the\u000a[Interfacing C with OCaml](https://ocaml.org/manual/intfc.html) section of the\u000aOCaml manual for description of the OCaml representation of values.\u000a\u000aSince manually implementing OcamlRep is cumbersome and error-prone, the\u000a`ocamlrep_derive` crate provides a procedural macro for deriving the OcamlRep\u000atrait.\u000a\u000aWhen derived for custom types like this:\u000a\u000a```ocaml\u000ause ocamlrep_derive::OcamlRep;\u000a\u000a#[derive(OcamlRep)]\u000astruct Foo {\u000a    a: isize,\u000a    b: Vec<bool>,\u000a}\u000a\u000a#[derive(OcamlRep)]\u000aenum Fruit {\u000a    Apple,\u000a    Orange(isize),\u000a    Pear { num: isize },\u000a    Kiwi,\u000a}\u000a```\u000a\u000aIt produces implementations of OcamlRep which construct values belonging to\u000athese roughly-equivalent OCaml types:\u000a\u000a```ocaml\u000atype foo = {\u000a  a: int;\u000a  b: bool list;\u000a}\u000a\u000atype fruit =\u000a  | Apple\u000a  | Orange of int\u000a  | Pear of { num: int }\u000a  | Kiwi\u000a```\u000a\u000aThe `oxidize` program at hphp/hack/src/hh_oxidize will take OCaml source files\u000alike the one above and generate Rust source files which define\u000a\"roughly-equivalent\" types (like the Rust source above). These types will derive\u000aan implementation of `OcamlRep` which will produce OCaml values belonging to the\u000acorresponding type in the OCaml source file."
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 30" },
+      "docs": { "key": "```rust\u000aextern crate relative_path\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 32" },
+      "docs": { "key": "```rust\u000alet valid_prefix: usize\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 33" },
+      "docs": { "key": "```rust\u000alet invalid_prefix: usize\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 4" },
+      "docs": {
+        "key": "```rust\u000aextern crate serde_1.0.152\u000a```\u000a\u000a---\u000a\u000a# Serde\u000a\u000aSerde is a framework for ***ser***ializing and ***de***serializing Rust data\u000astructures efficiently and generically.\u000a\u000aThe Serde ecosystem consists of data structures that know how to serialize\u000aand deserialize themselves along with data formats that know how to\u000aserialize and deserialize other things. Serde provides the layer by which\u000athese two groups interact with each other, allowing any supported data\u000astructure to be serialized and deserialized using any supported data format.\u000a\u000aSee the Serde website <https://serde.rs/> for additional documentation and\u000ausage examples.\u000a\u000a## Design\u000a\u000aWhere many other languages rely on runtime reflection for serializing data,\u000aSerde is instead built on Rust's powerful trait system. A data structure\u000athat knows how to serialize and deserialize itself is one that implements\u000aSerde's `Serialize` and `Deserialize` traits (or uses Serde's derive\u000aattribute to automatically generate implementations at compile time). This\u000aavoids any overhead of reflection or runtime type information. In fact in\u000amany situations the interaction between data structure and data format can\u000abe completely optimized away by the Rust compiler, leaving Serde\u000aserialization to perform the same speed as a handwritten serializer for the\u000aspecific selection of data structure and data format.\u000a\u000a## Data formats\u000a\u000aThe following is a partial list of data formats that have been implemented\u000afor Serde by the community.\u000a\u000a* [JSON](https://github.com/serde-rs/json), the ubiquitous JavaScript Object Notation used by many HTTP APIs.\u000a* [Postcard](https://github.com/jamesmunns/postcard), a no\\_std and embedded-systems friendly compact binary format.\u000a* [CBOR](https://github.com/enarx/ciborium), a Concise Binary Object Representation designed for small message\u000a  size without the need for version negotiation.\u000a* [YAML](https://github.com/dtolnay/serde-yaml), a self-proclaimed human-friendly configuration language that ain't\u000a  markup language.\u000a* [MessagePack](https://github.com/3Hren/msgpack-rust), an efficient binary format that resembles a compact JSON.\u000a* [TOML](https://docs.rs/toml), a minimal configuration format used by [Cargo](https://doc.rust-lang.org/cargo/reference/manifest.html).\u000a* [Pickle](https://github.com/birkenfeld/serde-pickle), a format common in the Python world.\u000a* [RON](https://github.com/ron-rs/ron), a Rusty Object Notation.\u000a* [BSON](https://github.com/mongodb/bson-rust), the data storage and network transfer format used by MongoDB.\u000a* [Avro](https://docs.rs/apache-avro), a binary format used within Apache Hadoop, with support for schema\u000a  definition.\u000a* [JSON5](https://github.com/callum-oakley/json5-rs), a superset of JSON including some productions from ES5.\u000a* [URL](https://docs.rs/serde_qs) query strings, in the x-www-form-urlencoded format.\u000a* [Envy](https://github.com/softprops/envy), a way to deserialize environment variables into Rust structs.\u000a  *(deserialization only)*\u000a* [Envy Store](https://github.com/softprops/envy-store), a way to deserialize [AWS Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) parameters into\u000a  Rust structs. *(deserialization only)*\u000a* [S-expressions](https://github.com/rotty/lexpr-rs), the textual representation of code and data used by the\u000a  Lisp language family.\u000a* [D-Bus](https://docs.rs/zvariant)'s binary wire format.\u000a* [FlexBuffers](https://github.com/google/flatbuffers/tree/master/rust/flexbuffers), the schemaless cousin of Google's FlatBuffers zero-copy\u000a  serialization format.\u000a* [Bencode](https://github.com/P3KI/bendy), a simple binary format used in the BitTorrent protocol.\u000a* [Token streams](https://github.com/oxidecomputer/serde_tokenstream), for processing Rust procedural macro input.\u000a  *(deserialization only)*\u000a* [DynamoDB Items](https://docs.rs/serde_dynamo), the format used by [rusoto_dynamodb](https://docs.rs/rusoto_dynamodb) to transfer data to\u000a  and from DynamoDB.\u000a* [Hjson](https://github.com/Canop/deser-hjson), a syntax extension to JSON designed around human reading and\u000a  editing. *(deserialization only)*"
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "relative_path.rs/local 6" },
+      "docs": { "key": "```rust\u000aextern crate arena_trait\u000a```" }
+    }
+  },
+  {
+    "key": {
       "symbol": {
         "key": "rust-analyzer cargo _eq_modulo_pos_derive . EqModuloPos!"
       },

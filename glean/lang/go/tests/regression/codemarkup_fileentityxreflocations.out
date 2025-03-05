@@ -108,6 +108,57 @@
   },
   {
     "key": {
+      "file": { "key": "lib1/lib1_test.go" },
+      "xref": {
+        "target": {
+          "name": "local 0",
+          "file": { "key": "lib1/lib1_test.go" },
+          "location": {
+            "range": {
+              "file": { "key": "lib1/lib1_test.go" },
+              "lineBegin": 7,
+              "columnBegin": 15,
+              "lineEnd": 7,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "lib1/lib1_test.go" },
+            "lineBegin": 9,
+            "columnBegin": 3,
+            "lineEnd": 9,
+            "columnEnd": 3
+          }
+        }
+      },
+      "entity": {
+        "scip": {
+          "go": {
+            "defn": {
+              "key": {
+                "symbol": { "key": "lib1/lib1_test.go/local 0" },
+                "location": {
+                  "key": {
+                    "file": { "key": "lib1/lib1_test.go" },
+                    "range": {
+                      "lineBegin": 7,
+                      "columnBegin": 15,
+                      "lineEnd": 7,
+                      "columnEnd": 15
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "file": { "key": "lib2/lib2_test.go" },
       "xref": {
         "target": {
@@ -202,6 +253,57 @@
                       "columnBegin": 6,
                       "lineEnd": 3,
                       "columnEnd": 9
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "lib2/lib2_test.go" },
+      "xref": {
+        "target": {
+          "name": "local 0",
+          "file": { "key": "lib2/lib2_test.go" },
+          "location": {
+            "range": {
+              "file": { "key": "lib2/lib2_test.go" },
+              "lineBegin": 7,
+              "columnBegin": 15,
+              "lineEnd": 7,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "lib2/lib2_test.go" },
+            "lineBegin": 9,
+            "columnBegin": 3,
+            "lineEnd": 9,
+            "columnEnd": 3
+          }
+        }
+      },
+      "entity": {
+        "scip": {
+          "go": {
+            "defn": {
+              "key": {
+                "symbol": { "key": "lib2/lib2_test.go/local 0" },
+                "location": {
+                  "key": {
+                    "file": { "key": "lib2/lib2_test.go" },
+                    "range": {
+                      "lineBegin": 7,
+                      "columnBegin": 15,
+                      "lineEnd": 7,
+                      "columnEnd": 15
                     }
                   }
                 }

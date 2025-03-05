@@ -1372,6 +1372,33 @@
       "file": { "key": "relative_path.rs" },
       "range": {
         "lineBegin": 153,
+        "columnBegin": 18,
+        "lineEnd": 153,
+        "columnEnd": 18
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 10" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 153,
+                "columnBegin": 18,
+                "lineEnd": 153,
+                "columnEnd": 18
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 153,
         "columnBegin": 41,
         "lineEnd": 153,
         "columnEnd": 44
@@ -1427,6 +1454,60 @@
     "key": {
       "file": { "key": "relative_path.rs" },
       "range": {
+        "lineBegin": 154,
+        "columnBegin": 13,
+        "lineEnd": 154,
+        "columnEnd": 20
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 11" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 154,
+                "columnBegin": 13,
+                "lineEnd": 154,
+                "columnEnd": 20
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 161,
+        "columnBegin": 6,
+        "lineEnd": 161,
+        "columnEnd": 8
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 12" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 161,
+                "columnBegin": 6,
+                "lineEnd": 161,
+                "columnEnd": 8
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
         "lineBegin": 162,
         "columnBegin": 8,
         "lineEnd": 162,
@@ -1445,6 +1526,33 @@
                 "columnBegin": 8,
                 "lineEnd": 162,
                 "columnEnd": 18
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 162,
+        "columnBegin": 20,
+        "lineEnd": 162,
+        "columnEnd": 20
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 13" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 162,
+                "columnBegin": 20,
+                "lineEnd": 162,
+                "columnEnd": 20
               }
             }
           }
@@ -1501,6 +1609,33 @@
                 "columnBegin": 16,
                 "lineEnd": 166,
                 "columnEnd": 22
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 168,
+        "columnBegin": 14,
+        "lineEnd": 168,
+        "columnEnd": 16
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 14" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 168,
+                "columnBegin": 14,
+                "lineEnd": 168,
+                "columnEnd": 16
               }
             }
           }
@@ -1656,6 +1791,33 @@
       "file": { "key": "relative_path.rs" },
       "range": {
         "lineBegin": 175,
+        "columnBegin": 26,
+        "lineEnd": 175,
+        "columnEnd": 26
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 15" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 175,
+                "columnBegin": 26,
+                "lineEnd": 175,
+                "columnEnd": 26
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 175,
         "columnBegin": 29,
         "lineEnd": 175,
         "columnEnd": 32
@@ -1709,6 +1871,195 @@
     "key": {
       "file": { "key": "relative_path.rs" },
       "range": {
+        "lineBegin": 179,
+        "columnBegin": 25,
+        "lineEnd": 179,
+        "columnEnd": 29
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 16" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 179,
+                "columnBegin": 25,
+                "lineEnd": 179,
+                "columnEnd": 29
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 180,
+        "columnBegin": 21,
+        "lineEnd": 180,
+        "columnEnd": 30
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 17" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 180,
+                "columnBegin": 21,
+                "lineEnd": 180,
+                "columnEnd": 30
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 181,
+        "columnBegin": 21,
+        "lineEnd": 181,
+        "columnEnd": 28
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 18" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 181,
+                "columnBegin": 21,
+                "lineEnd": 181,
+                "columnEnd": 28
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 183,
+        "columnBegin": 21,
+        "lineEnd": 183,
+        "columnEnd": 26
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 19" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 183,
+                "columnBegin": 21,
+                "lineEnd": 183,
+                "columnEnd": 26
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 198,
+        "columnBegin": 21,
+        "lineEnd": 198,
+        "columnEnd": 24
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 20" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 198,
+                "columnBegin": 21,
+                "lineEnd": 198,
+                "columnEnd": 24
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 199,
+        "columnBegin": 26,
+        "lineEnd": 199,
+        "columnEnd": 33
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 21" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 199,
+                "columnBegin": 26,
+                "lineEnd": 199,
+                "columnEnd": 33
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 200,
+        "columnBegin": 26,
+        "lineEnd": 200,
+        "columnEnd": 33
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 22" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 200,
+                "columnBegin": 26,
+                "lineEnd": 200,
+                "columnEnd": 33
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
         "lineBegin": 220,
         "columnBegin": 8,
         "lineEnd": 220,
@@ -1727,6 +2078,60 @@
                 "columnBegin": 8,
                 "lineEnd": 220,
                 "columnEnd": 18
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 220,
+        "columnBegin": 20,
+        "lineEnd": 220,
+        "columnEnd": 21
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 23" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 220,
+                "columnBegin": 20,
+                "lineEnd": 220,
+                "columnEnd": 21
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 220,
+        "columnBegin": 24,
+        "lineEnd": 220,
+        "columnEnd": 24
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 24" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 220,
+                "columnBegin": 24,
+                "lineEnd": 220,
+                "columnEnd": 24
               }
             }
           }
@@ -1781,6 +2186,33 @@
                 "columnBegin": 58,
                 "lineEnd": 220,
                 "columnEnd": 62
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 221,
+        "columnBegin": 17,
+        "lineEnd": 221,
+        "columnEnd": 21
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 25" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 221,
+                "columnBegin": 17,
+                "lineEnd": 221,
+                "columnEnd": 21
               }
             }
           }
@@ -1848,6 +2280,87 @@
     "key": {
       "file": { "key": "relative_path.rs" },
       "range": {
+        "lineBegin": 230,
+        "columnBegin": 13,
+        "lineEnd": 230,
+        "columnEnd": 17
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 26" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 230,
+                "columnBegin": 13,
+                "lineEnd": 230,
+                "columnEnd": 17
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 231,
+        "columnBegin": 13,
+        "lineEnd": 231,
+        "columnEnd": 18
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 27" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 231,
+                "columnBegin": 13,
+                "lineEnd": 231,
+                "columnEnd": 18
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 232,
+        "columnBegin": 13,
+        "lineEnd": 232,
+        "columnEnd": 16
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 28" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 232,
+                "columnBegin": 13,
+                "lineEnd": 232,
+                "columnEnd": 16
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
         "lineBegin": 237,
         "columnBegin": 10,
         "lineEnd": 237,
@@ -1864,6 +2377,33 @@
                 "columnBegin": 10,
                 "lineEnd": 237,
                 "columnEnd": 12
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 237,
+        "columnBegin": 14,
+        "lineEnd": 237,
+        "columnEnd": 14
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 29" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 237,
+                "columnBegin": 14,
+                "lineEnd": 237,
+                "columnEnd": 14
               }
             }
           }
@@ -2186,6 +2726,33 @@
     "key": {
       "file": { "key": "relative_path.rs" },
       "range": {
+        "lineBegin": 271,
+        "columnBegin": 13,
+        "lineEnd": 271,
+        "columnEnd": 24
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 32" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 271,
+                "columnBegin": 13,
+                "lineEnd": 271,
+                "columnEnd": 24
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
         "lineBegin": 276,
         "columnBegin": 8,
         "lineEnd": 276,
@@ -2204,6 +2771,33 @@
                 "columnBegin": 8,
                 "lineEnd": 276,
                 "columnEnd": 32
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "relative_path.rs" },
+      "range": {
+        "lineBegin": 277,
+        "columnBegin": 13,
+        "lineEnd": 277,
+        "columnEnd": 26
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "relative_path.rs/local 33" },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 277,
+                "columnBegin": 13,
+                "lineEnd": 277,
+                "columnEnd": 26
               }
             }
           }

@@ -37,8 +37,10 @@ predicate FileRange:
     range: lsif.types.RangeSpan,
   }
 
-# Global (non-local) symbols in SCIP. Globally unique identifiers.
-# Distinct from local (anonymous) variables
+# Symbols in SCIP. Globally unique identifiers.
+#
+# Local symbols (e.g., "local 0") are made globally unique by prefixing a
+# document path (e.g., "fbcode/foo/bar/baz.rs/local 0").
 #
 # These are similar in intent to qualified names in Python, or
 # symbol ids in Glass.
