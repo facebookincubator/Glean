@@ -238,7 +238,12 @@ fn parse_suffix<'a>(sym_str: &'a str) -> Descriptor<'a> {
         b':' => Suffix::SymMeta,
         b']' => Suffix::SymTypeParameter,
         b')' => Suffix::SymParameter,
-        _ => Suffix::SymUnspecifiedSuffix,
+        _ => {
+            return Descriptor {
+                text: sym_str,
+                suffix: Suffix::SymUnspecifiedSuffix,
+            };
+        }
     };
 
     Descriptor { text, suffix }
@@ -248,5 +253,33 @@ struct SymbolRoleSet(i32);
 impl SymbolRoleSet {
     fn has_def(&self) -> bool {
         self.0 & (1 << 0) != 0
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_symbol_from_string_global_type() {
+        let symbol = "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std io/stdio/IsTerminal#";
+        let symbol = symbol_from_string(symbol).unwrap();
+        let ScipSymbol::Global { descriptor } = symbol else {
+            panic!("expected global symbol");
+        };
+        assert_eq!(descriptor.text, "io/stdio/IsTerminal");
+        assert_eq!(descriptor.suffix, Suffix::SymType);
+    }
+
+    #[test]
+    fn test_symbol_from_string_global_unspecified() {
+        let symbol =
+            "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std macros/println!";
+        let symbol = symbol_from_string(symbol).unwrap();
+        let ScipSymbol::Global { descriptor } = symbol else {
+            panic!("expected global symbol");
+        };
+        assert_eq!(descriptor.text, "macros/println!");
+        assert_eq!(descriptor.suffix, Suffix::SymUnspecifiedSuffix);
     }
 }
