@@ -97,7 +97,7 @@ impl Env {
 
         self.fact_id.insert(filepath.clone(), src_file_id);
 
-        self.out.src_file(src_file_id, filepath);
+        self.out.src_file(src_file_id, filepath.clone());
         let lang_file_id = self.next_id();
 
         let lang = LanguageId::new(&doc.language)
@@ -107,7 +107,7 @@ impl Env {
         self.out.file_lang(lang_file_id, src_file_id, lang);
 
         for occ in doc.occurrences {
-            self.decode_scip_occurrence(src_file_id, occ)?;
+            self.decode_scip_occurrence(src_file_id, &filepath, occ)?;
         }
 
         for info in doc.symbols {
@@ -129,7 +129,12 @@ impl Env {
         }
     }
 
-    fn decode_scip_occurrence(&mut self, file_id: ScipId, occ: Occurrence) -> Result<()> {
+    fn decode_scip_occurrence(
+        &mut self,
+        file_id: ScipId,
+        filepath: &str,
+        occ: Occurrence,
+    ) -> Result<()> {
         let file_range_id = self.next_id();
         self.out
             .file_range(file_range_id, file_id, decode_scip_range(&occ.range)?);
@@ -138,16 +143,56 @@ impl Env {
         let symbol = symbol_from_string(&symbol)
             .ok_or_else(|| anyhow::Error::msg(format!("failed to parse symbol: {}", symbol)))?;
 
-        if let ScipSymbol::Global { descriptor, .. } = symbol {
-            self.decode_global_occurrence(
-                occ.symbol,
-                SymbolRoleSet(occ.symbol_roles),
-                file_range_id,
-                descriptor,
-            )?;
+        match symbol {
+            ScipSymbol::Local { id } => {
+                self.decode_local_occurrence(
+                    format!("local {}", id),
+                    SymbolRoleSet(occ.symbol_roles),
+                    file_range_id,
+                    filepath,
+                );
+            }
+            ScipSymbol::Global { descriptor, .. } => {
+                self.decode_global_occurrence(
+                    occ.symbol,
+                    SymbolRoleSet(occ.symbol_roles),
+                    file_range_id,
+                    descriptor,
+                );
+            }
         }
 
         Ok(())
+    }
+
+    fn decode_local_occurrence(
+        &mut self,
+        local_symbol: String,
+        sym_roles: SymbolRoleSet,
+        file_range_id: ScipId,
+        filepath: &str,
+    ) {
+        let qualified_symbol = format!("{}/{}", filepath, local_symbol).into_boxed_str();
+        let (symbol_id, seen_symbol) = self.get_or_set_fact(qualified_symbol.clone());
+        if seen_symbol {
+            self.out.symbol(symbol_id, qualified_symbol);
+        }
+        if sym_roles.has_def() {
+            self.out.definition(symbol_id, file_range_id);
+        } else {
+            self.out.reference(symbol_id, file_range_id);
+        }
+
+        let local_symbol = local_symbol.into_boxed_str();
+        let (name_id, seen_name) = self.get_or_set_fact(local_symbol.clone());
+        if seen_name {
+            self.out.local_name(name_id, local_symbol.clone());
+        }
+        if seen_symbol {
+            self.out.symbol_name(symbol_id, name_id);
+            // TODO: this could be any SymbolInformation.kind
+            self.out.symbol_kind(symbol_id, SymbolKind::SkVariable);
+        }
     }
 
     fn decode_global_occurrence(
@@ -156,7 +201,7 @@ impl Env {
         sym_roles: SymbolRoleSet,
         file_range_id: ScipId,
         descriptor: Descriptor,
-    ) -> Result<()> {
+    ) {
         let scip_symbol = scip_symbol.into_boxed_str();
         let (symbol_id, seen_symbol) = self.get_or_set_fact(scip_symbol.clone());
         if seen_symbol {
@@ -181,12 +226,13 @@ impl Env {
         if kind != SymbolKind::SkUnknown {
             self.out.symbol_kind(symbol_id, kind);
         }
-        Ok(())
     }
 }
 
 enum ScipSymbol<'a> {
-    Local,
+    Local {
+        id: &'a str,
+    },
     Global {
         // scheme: &'a str,
         // manager: &'a str,
@@ -203,8 +249,7 @@ struct Descriptor<'a> {
 fn symbol_from_string<'a>(symbol: &'a str) -> Option<ScipSymbol<'a>> {
     let (scheme, rest) = symbol.split_once(' ')?;
     if scheme == "local" {
-        // Haskell code does nothing with local symbols, so don't bother fully parsing them
-        return Some(ScipSymbol::Local);
+        return Some(ScipSymbol::Local { id: rest });
     }
 
     let (_manager, rest) = rest.split_once(' ')?;
