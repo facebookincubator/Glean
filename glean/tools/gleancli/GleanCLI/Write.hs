@@ -51,7 +51,6 @@ data WriteCommand
       { writeRepo :: Repo
       , writeRepoTime :: Maybe UTCTime
       , writeHandle :: Text
-      , writeFiles :: [FilePath]
       , create :: Bool
       , dependencies :: Maybe (IO Thrift.Dependencies)
       , finish :: Bool
@@ -61,13 +60,26 @@ data WriteCommand
       , sendQueueSettings :: Glean.SendAndRebaseQueueSettings
       , writeFileFormat :: FileFormat
       , updateSchemaForStacked :: Bool
+      , factsSource :: FactsSource
       }
+
+data FactsSource = Locations [Text] | Files [FilePath]
+
+factsSourceOpts :: Parser FactsSource
+factsSourceOpts = Files <$> fileArg <|> Locations <$> locationOpt
 
 fileArg :: Parser [FilePath]
 fileArg = many $ strArgument
   (  metavar "FILE..."
   <> help ("File(s) of facts to add to the DB. "
   <> "You can specify the format of the file with --file-format. ")
+  )
+
+locationOpt :: Parser [Text]
+locationOpt = many $ strOption
+  (  long "location"
+  <> metavar "LOCATION"
+  <> help "Location(s) of facts to be downloaded and written to the db"
   )
 
 repoTimeOpt :: Parser UTCTime
@@ -186,7 +198,6 @@ instance Plugin WriteCommand where
           <> "options are related to each other.")) $ do
         writeRepo <- dbOpts
         writeRepoTime <- optional repoTimeOpt
-        writeFiles <- fileArg
         finish <- finishOpt
         dependencies <- optional (stackedOptions <|> updateOptions)
         properties <- dbPropertiesOpt
@@ -196,6 +207,7 @@ instance Plugin WriteCommand where
         sendQueueSettings <- Glean.sendAndRebaseQueueOptions
         writeFileFormat <- fileFormatOpt JsonFormat
         updateSchemaForStacked <- updateSchemaForStackedOpt
+        factsSource <- factsSourceOpts
         return Write
           { create=True
           , ..
@@ -207,13 +219,13 @@ instance Plugin WriteCommand where
           <> "Please carefully read help above to understand how various "
           <> "options are related to each other.")) $ do
         writeRepo <- dbOpts
-        writeFiles <- fileArg
         finish <- finishOpt
         writeHandle <- handleOpt
         writeMaxConcurrency <- maxConcurrencyOpt
         useLocalCache <- useLocalSwitchOpt
         sendQueueSettings <- Glean.sendAndRebaseQueueOptions
         writeFileFormat <- fileFormatOpt JsonFormat
+        factsSource <- factsSourceOpts
         return Write
           { create=False, writeRepoTime=Nothing
           , properties=[], dependencies=Nothing
@@ -269,7 +281,11 @@ instance Plugin WriteCommand where
        (\_ ->
           write Write{..})
     where
-    write Write{useLocalCache = True, ..} = do
+    write Write{..} = do
+      case factsSource of
+        Files writeFiles -> writeBatches writeFiles Write{..}
+        Locations locations -> writeBatchDescriptors locations Write{..}
+    writeBatches writeFiles Write{useLocalCache = True, ..} = do
       dbSchema <- loadDbSchema backend writeRepo
       logMessages <- newTQueueIO
       let inventory = schemaInventory dbSchema
@@ -298,7 +314,7 @@ instance Plugin WriteCommand where
             return ()
       atomically (flushTQueue logMessages) >>= mapM_ putStrLn
 
-    write Write{useLocalCache = False, ..}
+    writeBatches writeFiles Write{useLocalCache = False, ..}
       | LocalOrRemote.BackendEnv env <- LocalOrRemote.backendKind backend = do
         logMessages <- newTQueueIO
         case writeFileFormat of
@@ -318,7 +334,7 @@ instance Plugin WriteCommand where
               atomically $ writeTQueue logMessages $ "Wrote " <> file
               atomically (flushTQueue logMessages) >>= mapM_ putStrLn
 
-    write Write{useLocalCache = False, ..} = do
+    writeBatches writeFiles Write{useLocalCache = False, ..} = do
       logMessages <- newTQueueIO
       let settings = sendAndRebaseQueueSendQueueSettings sendQueueSettings
       Glean.withSendQueue backend writeRepo settings $ \queue ->
@@ -338,7 +354,24 @@ instance Plugin WriteCommand where
           atomically (flushTQueue logMessages) >>= mapM_ putStrLn
           return ()
       atomically (flushTQueue logMessages) >>= mapM_ putStrLn
+    writeBatchDescriptors locations Write{..} = do
+      logMessages <- newTQueueIO
+      let settings = sendAndRebaseQueueSendQueueSettings sendQueueSettings
+      Glean.withSendQueue backend writeRepo settings $ \queue ->
+        stream writeMaxConcurrency (forM_ locations) $ \location -> do
+          let batchDescriptor = Thrift.BatchDescriptor {
+            Thrift.batchDescriptor_location = location,
+            Thrift.batchDescriptor_format = batchFormat writeFileFormat}
+          atomically
+            $ Glean.writeSendQueueDescriptor queue batchDescriptor $ \_ ->
+              writeTQueue logMessages $ "Wrote " <> Text.unpack location
+          atomically (flushTQueue logMessages) >>= mapM_ putStrLn
+          return ()
+      atomically (flushTQueue logMessages) >>= mapM_ putStrLn
 
+    batchFormat writeFileFormat = case writeFileFormat of
+      BinaryFormat -> Thrift.BatchFormat_Binary
+      JsonFormat -> Thrift.BatchFormat_JSON
     resultToFailure Right{} = Nothing
     resultToFailure (Left err) = Just (show err)
 

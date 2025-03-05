@@ -199,6 +199,7 @@ module Glean
   , withSendAndRebaseQueue
   , writeSendQueue
   , writeSendQueueJson
+  , writeSendQueueDescriptor
   , withSendQueue
   , SendQueue
   , withBatchWriter
