@@ -71,6 +71,7 @@ import Util.Defer
 import Util.Log
 import Util.STM
 
+import Glean.Database.BatchLocation as BatchLocation
 import Glean.Database.Exception
 import Glean.Database.Open
 import Glean.Database.Schema.Types
@@ -377,11 +378,11 @@ enqueueBatchDescriptor env repo enqueueBatch waitPolicy = do
   traceMsg (envTracer env)
     (GleanTraceEnqueue repo EnqueueBatchDescriptor 0) $ do
   handle <- UUID.toText <$> UUID.nextRandom
-  _ <- case enqueueBatch of
+  descriptor <- case enqueueBatch of
     Thrift.EnqueueBatch_descriptor descriptor -> return descriptor
     Thrift.EnqueueBatch_EMPTY -> throwIO $ Thrift.Exception "empty batch"
   write <- enqueueWrite env repo 0 Nothing False $
-    throwIO $ Exception "not implemented"
+    writeContentFromBatch <$> downloadBatchFromLocation env descriptor
   when (waitPolicy == Thrift.EnqueueBatchWaitPolicy_Remember)
     $ rememberWrite env handle write
   return $ def { enqueueBatchResponse_handle = handle }
@@ -456,6 +457,19 @@ deleteWriteQueues env OpenDB{odbWriting = Just Writing{..}} = do
   -- This WriteQueue might still be on the writeQueues, but it will
   -- get removed by the next write thread to encounter it.
 deleteWriteQueues _ _ = return ()
+
+downloadBatchFromLocation
+  :: Env
+  -> Thrift.BatchDescriptor
+  -> IO Thrift.Batch
+downloadBatchFromLocation Env{..} batchDescriptor =
+  let
+    batchFormat = batchDescriptor_format batchDescriptor
+    locationString = batchDescriptor_location batchDescriptor
+    location = BatchLocation.fromString envBatchLocationParser locationString
+  in
+    BatchLocation.downloadBatch location batchFormat
+
 
 k :: Int
 k = 1024

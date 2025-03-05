@@ -63,6 +63,7 @@ import Util.Log (logInfo)
 import Glean.Angle.Types
 import qualified Glean.Database.Backup.Backend as Backup -- from glean/util
 import qualified Glean.Database.Backup.Mock as Backup.Mock
+import qualified Glean.Database.BatchLocation as BatchLocation
 import Glean.Database.Catalog (Catalog)
 import qualified Glean.Database.Catalog.Local.Files as Catalog
 import qualified Glean.Database.Catalog.Local.Memory as Catalog
@@ -155,6 +156,8 @@ data Config = Config
     -- ^ Logger for recording stats of databases produced
   , cfgBackupBackends :: HashMap Text (Some Backup.Backend)
     -- ^ Backup backends
+  , cfgBatchLocationParser :: Some BatchLocation.Parser
+    -- ^ Batch's location parser
   , cfgEnableRecursion :: Bool
     -- ^ Enable experimental support for recursion
   , cfgFilterAvailableDBs :: [Repo] -> IO [Repo]
@@ -202,6 +205,7 @@ instance Default Config where
     , cfgServerLogger = Some NullGleanServerLogger
     , cfgDatabaseLogger = Some NullGleanDatabaseLogger
     , cfgBackupBackends = HashMap.fromList [("mock", Backup.Mock.mock)]
+    , cfgBatchLocationParser = Some BatchLocation.DefaultParser
     , cfgEnableRecursion = False
     , cfgFilterAvailableDBs = const $ return []
     , cfgTracer = mempty
@@ -454,6 +458,7 @@ options = do
     , cfgServerLogger = cfgServerLogger def
     , cfgDatabaseLogger = cfgDatabaseLogger def
     , cfgBackupBackends = cfgBackupBackends def
+    , cfgBatchLocationParser = cfgBatchLocationParser def
     , cfgFilterAvailableDBs = const $ return []
     , cfgTracer = mempty
     , cfgSchemaId = Nothing

@@ -137,6 +137,7 @@ initEnv evb envStorage envCatalog shardManager cfg
       { envEventBase = evb
       , envServerLogger = cfgServerLogger cfg
       , envDatabaseLogger = cfgDatabaseLogger cfg
+      , envBatchLocationParser = cfgBatchLocationParser cfg
       , envReadOnly = cfgReadOnly cfg
       , envMockWrites = cfgMockWrites cfg
       , envListener = cfgListener cfg

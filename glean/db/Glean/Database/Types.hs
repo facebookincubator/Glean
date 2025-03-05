@@ -37,6 +37,7 @@ import Util.STM
 
 import Glean.Angle.Types hiding (describe)
 import qualified Glean.Database.Backup.Backend as Backup
+import qualified Glean.Database.BatchLocation as BatchLocation
 import Glean.Database.Catalog (Catalog)
 import Glean.Database.Config
 import Glean.Database.Meta
@@ -224,6 +225,7 @@ data Env = forall storage. Storage storage => Env
   { envEventBase :: EventBaseDataplane
   , envServerLogger :: Some GleanServerLogger
   , envDatabaseLogger :: Some GleanDatabaseLogger
+  , envBatchLocationParser :: Some BatchLocation.Parser
   , envLoggerRateLimit :: RateLimiterMap Text
   , envCatalog :: Catalog
   , envStorage :: storage

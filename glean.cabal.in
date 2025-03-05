@@ -470,6 +470,7 @@ library db
         Glean.Database.Backup.Backend
         Glean.Database.Backup.Locator
         Glean.Database.Backup.Mock
+        Glean.Database.BatchLocation
         Glean.Database.Catalog.Filter
         Glean.Database.Catalog
         Glean.Database.Catalog.Local.Files
