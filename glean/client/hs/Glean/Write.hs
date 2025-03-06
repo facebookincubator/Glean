@@ -12,7 +12,7 @@ module Glean.Write
   ( fileToBatches
   , parseRef
   , parseJsonFactBatches
-  ) where
+  ,schemaIdToOpts) where
 
 import Control.Exception (ErrorCall(ErrorCall), throwIO)
 import Control.Monad.Extra
@@ -37,6 +37,8 @@ import Glean.Schema.Util
 import System.FilePath (takeExtension)
 import qualified System.Process.ByteString as BS
 import System.Exit (ExitCode(ExitSuccess))
+import Control.Applicative ((<|>))
+import Data.Either (partitionEithers)
 
 $(mangle
   [s|
@@ -48,13 +50,13 @@ $(mangle
   |])
 
 newtype ParseJsonFactBatchForWriteServer = ParseJsonFactBatchForWriteServer
-  {getBatch :: JsonFactBatch}
+  {getBatch :: JsonItem}
 instance FromJSON ParseJsonFactBatchForWriteServer where
   parseJSON =
     fmap ParseJsonFactBatchForWriteServer <$>
       parseJsonFactBatchGen (withText "fact" $ return . Text.encodeUtf8)
 
-fileToBatches :: FilePath -> IO [JsonFactBatch]
+fileToBatches :: FilePath -> IO ([JsonFactBatch], Maybe SchemaId)
 fileToBatches file = do
   bs <- if takeExtension file == ".zst" then do
     (exit, bs, err) <- BS.readProcessWithExitCode "zstd" [file,"-d","-c"] ""
@@ -66,7 +68,7 @@ fileToBatches file = do
   case r of
     Right val -> case Aeson.parse parseJSON val of
       Aeson.Error str -> throwIO $ ErrorCall $ file ++ ": " ++ str
-      Aeson.Success x -> return $ map getBatch x
+      Aeson.Success x -> return $ jsonItemsToPair $ map getBatch x
     Left err -> throwIO $ ErrorCall $ file ++ ": " ++ Text.unpack err
 
 parsePredicate :: Value -> Aeson.Parser PredicateRef
@@ -85,17 +87,37 @@ parseFact = withObject "fact" $ \obj -> return (LB.toStrict (encode obj))
 
 -- | Given a fact parser, returns a 'JsonFactBatch' parser
 parseJsonFactBatchGen
-  :: (Value -> Aeson.Parser Json) -> Value -> Aeson.Parser JsonFactBatch
+  :: (Value -> Aeson.Parser Json) -> Value -> Aeson.Parser JsonItem
 parseJsonFactBatchGen parseFact = withObject "JsonFactBatch" $ \v ->
-  JsonFactBatch
+  fmap JsonItemBatch (JsonFactBatch
     <$> Aeson.explicitParseField parsePred v "predicate"
     <*> Aeson.explicitParseField parseFacts v "facts"
-    <*> fmap (fmap Text.encodeUtf8) (v .:? "unit")
+    <*> fmap (fmap Text.encodeUtf8) (v .:? "unit"))
+  <|>
+  (JsonItemSchemaId
+    <$> fmap SchemaId (v .: "schema_id"))
   where
     parsePred v = parsePredicate v `mplus` parsePredicateRef v
     parseFacts = withArray "facts" (mapM parseFact . Vector.toList)
 
 -- | Parser that expects facts to be JSON objects
-parseJsonFactBatches :: Value -> Aeson.Parser [JsonFactBatch]
+parseJsonFactBatches :: Value -> Aeson.Parser ([JsonFactBatch], Maybe SchemaId)
 parseJsonFactBatches = withArray "JsonFactBatch" $ \vec ->
-  mapM (parseJsonFactBatchGen parseFact) (Vector.toList vec)
+  jsonItemsToPair <$> mapM (parseJsonFactBatchGen parseFact) (Vector.toList vec)
+
+data JsonItem = JsonItemBatch JsonFactBatch | JsonItemSchemaId SchemaId
+
+jsonItemsToPair :: [JsonItem] -> ([JsonFactBatch], Maybe SchemaId)
+jsonItemsToPair items = (batches, listToMaybe schemas)
+ where
+  (batches, schemas) = partitionEithers (map toEither items)
+  toEither (JsonItemBatch item) = Left item
+  toEither (JsonItemSchemaId schema_id) = Right schema_id
+
+schemaIdToOpts :: Maybe SchemaId -> Maybe SendJsonBatchOptions
+schemaIdToOpts schema_id = case schema_id of
+  Nothing -> Nothing
+  Just s -> Just SendJsonBatchOptions {
+      sendJsonBatchOptions_schema_id = Just s,
+      sendJsonBatchOptions_no_base64_binary = False
+    }

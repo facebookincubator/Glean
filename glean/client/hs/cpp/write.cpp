@@ -21,9 +21,13 @@ parseJSONFacts(const char* str, int64_t len, char** err) noexcept {
   try {
     auto parsedJson = parseJson(folly::StringPiece(str, len), opts);
 
-    // The contents is expected to be a list of {"predicate", "facts"} objects
+    // The contents is expected to be a list of objects with either "schema_id"
+    // or {"predicate", "facts"}
     // We render each fact object into a String as expected by the Write server
     for (auto& obj : parsedJson) {
+      if (obj.find("schema_id") != obj.items().end()) {
+        continue;
+      }
       for (auto& fact : obj["facts"]) {
         fact = toJson(fact);
       }

@@ -140,8 +140,10 @@ execExternal Ext{..} env repo IndexerParams{..} = do index; derive
         (unwords (extRunScript : map (quoteArg . subst jsonVars) extArgs))
       files <- listDirectoryRecursive jsonBatchDir
       stream maxConcurrency (forM_ files) $ \file -> do
-        batches <- fileToBatches (jsonBatchDir </> file)
-        void $ LocalOrRemote.sendJsonBatch env repo batches Nothing
+        (batches, schema_id) <- fileToBatches (jsonBatchDir </> file)
+        let opts = schemaIdToOpts schema_id
+
+        void $ LocalOrRemote.sendJsonBatch env repo batches opts
 
     Server -> do
       let
@@ -187,7 +189,8 @@ sendJsonBatches
   -> Aeson.Value
   -> IO ()
 sendJsonBatches backend repo msg val = do
-  batches <- case Aeson.parse parseJsonFactBatches val of
+  (batches, schema_id) <- case Aeson.parse parseJsonFactBatches val of
     Aeson.Error s -> throwIO $ ErrorCall $ msg <> ": " <> s
     Aeson.Success x -> return x
-  void $ LocalOrRemote.sendJsonBatch backend repo batches Nothing
+  let opts = schemaIdToOpts schema_id
+  void $ LocalOrRemote.sendJsonBatch backend repo batches opts

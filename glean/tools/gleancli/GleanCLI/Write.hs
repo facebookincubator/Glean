@@ -306,8 +306,8 @@ instance Plugin WriteCommand where
                   Left parseError -> die 3 $ "Parse error: " <> parseError
                   Right result -> return result
               JsonFormat -> do
-                batches <- fileToBatches file
-                buildJsonBatch dbSchema Nothing batches
+                (batches, schema_id) <- fileToBatches file
+                buildJsonBatch dbSchema (schemaIdToOpts schema_id) batches
             _ <- Glean.writeSendAndRebaseQueue queue batch $
               \_ -> writeTQueue logMessages $ "Wrote " <> file
             atomically (flushTQueue logMessages) >>= mapM_ putStrLn
@@ -329,8 +329,9 @@ instance Plugin WriteCommand where
                   atomically (flushTQueue logMessages) >>= mapM_ putStrLn
           JsonFormat ->
             stream writeMaxConcurrency (forM_ writeFiles) $ \file -> do
-              batches <- fileToBatches file
-              syncWriteJsonBatch env writeRepo batches Nothing
+              (batches, schema_id) <- fileToBatches file
+              syncWriteJsonBatch
+                env writeRepo batches (schemaIdToOpts schema_id)
               atomically $ writeTQueue logMessages $ "Wrote " <> file
               atomically (flushTQueue logMessages) >>= mapM_ putStrLn
 
@@ -348,7 +349,7 @@ instance Plugin WriteCommand where
                   atomically $ Glean.writeSendQueue queue batch $ \_ ->
                     writeTQueue logMessages $ "Wrote " <> file
             JsonFormat -> do
-              batches <- fileToBatches file
+              (batches, _) <- fileToBatches file
               atomically $ Glean.writeSendQueueJson queue batches $ \_ ->
                 writeTQueue logMessages $ "Wrote " <> file
           atomically (flushTQueue logMessages) >>= mapM_ putStrLn

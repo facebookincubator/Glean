@@ -95,10 +95,11 @@ load repo files = withBackend $ \be ->  liftIO $ do
     forM_ files $ \file -> do
       r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
       val <- either (throwIO  . ErrorCall . Text.unpack) return r
-      batches <- case Aeson.parse parseJsonFactBatches val of
+      (batches, schema_id) <- case Aeson.parse parseJsonFactBatches val of
         Error str -> throwIO $ ErrorCall str
         Aeson.Success x -> return x
-      Glean.sendJsonBatch be repo batches Nothing
+      let opts = schemaIdToOpts schema_id
+      Glean.sendJsonBatch be repo batches opts
 
 create :: Glean.Repo -> Eval ()
 create repo = withBackend $ \be ->  liftIO $ do

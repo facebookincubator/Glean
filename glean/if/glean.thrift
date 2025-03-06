@@ -158,10 +158,6 @@ typedef map<recipes.TaskName, Task> (hs.type = "HashMap") Tasks
 
 struct SendJsonBatchOptions {
   1: bool no_base64_binary = false; // See UserQueryOptions
-
-  // If supplied, this must match the schema ID of the DB.  Note:
-  // there's no way currently to specify this in a JSON file given to
-  // `glean write` (TODO).
   2: optional SchemaId schema_id;
 }
 

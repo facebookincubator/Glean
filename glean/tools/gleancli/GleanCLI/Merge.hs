@@ -37,7 +37,7 @@ import Glean.Database.Schema.Types
 
 import GleanCLI.Types
 import GleanCLI.Common (dbOpts, fileFormatOpt, FileFormat (..))
-import Glean.Write (fileToBatches)
+import Glean.Write (fileToBatches, schemaIdToOpts)
 import Glean.Write.JSON (buildJsonBatch)
 import System.Directory.Extra (listFiles)
 
@@ -149,8 +149,8 @@ instance Plugin MergeCommand where
                   "No db schema to serialize json format file. "
                   <> "Please specify the database"
                 Just schema -> do
-                  batches <- fileToBatches file
-                  buildJsonBatch schema Nothing batches
+                  (batches, schema_id) <- fileToBatches file
+                  buildJsonBatch schema (schemaIdToOpts schema_id) batches
             BinaryFormat -> do
               bytes <- B.readFile file
               case deserializeCompact bytes of
