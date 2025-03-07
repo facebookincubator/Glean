@@ -111,14 +111,26 @@ impl Env {
         }
 
         for info in doc.symbols {
-            self.decode_scip_info(info);
+            self.decode_scip_info(&filepath, info)?;
         }
 
         Ok(())
     }
 
-    fn decode_scip_info(&mut self, info: SymbolInformation) {
-        let sym_id = self.fact_id.get(&info.symbol.into_boxed_str()).copied();
+    fn decode_scip_info(&mut self, filepath: &str, info: SymbolInformation) -> Result<()> {
+        let symbol = info.symbol.replace("  ", "_");
+        let symbol = symbol_from_string(&symbol)
+            .ok_or_else(|| anyhow::Error::msg(format!("failed to parse symbol: {}", symbol)))?;
+        let qualified_symbol = match symbol {
+            ScipSymbol::Local { .. } => {
+                format!("{}/{}", filepath, info.symbol)
+            }
+            ScipSymbol::Global { .. } => info.symbol,
+        }
+        .into_boxed_str();
+
+        let sym_id = self.fact_id.get(&qualified_symbol).copied();
+
         for document in info.documentation {
             let doc_id = self.next_id();
             self.out
@@ -127,6 +139,8 @@ impl Env {
                 self.out.symbol_documentation(sym_id, doc_id);
             }
         }
+
+        Ok(())
     }
 
     fn decode_scip_occurrence(
