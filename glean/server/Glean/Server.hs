@@ -36,6 +36,7 @@ import JustKnobs (evalKnob)
 import Logger.IO
 import Glean.Facebook.Logger.Server
 import Glean.Facebook.Logger.Database
+import Glean.BatchLocation.FacebookBatchLocation
 import qualified Glean.Database.Backup.Manifold as Manifold
 import qualified Glean.Database.Backup.XDBCatalog as XDB
 import Glean.Server.Available ( withAvailableDBFilterViaSR )
@@ -73,6 +74,7 @@ main =
 #if GLEAN_FACEBOOK
         , cfgServerLogger = Some (GleanServerFacebookLogger logger)
         , cfgDatabaseLogger = Some (GleanDatabaseFacebookLogger logger)
+        , cfgBatchLocationParser = Some (FacebookBatchLocationParser)
         , cfgFilterAvailableDBs = filterAvailableDBs
         , cfgTracer = tracer
 #endif

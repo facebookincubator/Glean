@@ -466,9 +466,8 @@ downloadBatchFromLocation Env{..} batchDescriptor =
   let
     batchFormat = batchDescriptor_format batchDescriptor
     locationString = batchDescriptor_location batchDescriptor
-    location = BatchLocation.fromString envBatchLocationParser locationString
   in
-    BatchLocation.downloadBatch location batchFormat
+    BatchLocation.fromString envBatchLocationParser locationString batchFormat
 
 
 k :: Int

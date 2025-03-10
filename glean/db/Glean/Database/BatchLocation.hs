@@ -8,7 +8,6 @@
 
 module Glean.Database.BatchLocation
   ( Parser(..)
-  , Location(..)
   , DefaultParser(..)
   ) where
 
@@ -20,17 +19,10 @@ import Control.Exception
 -- | A batch's location parser
 class Parser a where
   -- | Parse a string returning a location to get the batch from
-  fromString :: a -> Text -> Some Location
+  fromString :: a -> Text -> Thrift.BatchFormat -> IO Thrift.Batch
 
 instance Parser (Some Parser) where
   fromString (Some parser) = fromString parser
-
--- | A batch's location to download a batch from
-class Location a where
-  downloadBatch :: a -> Thrift.BatchFormat -> IO Thrift.Batch
-
-instance Location (Some Location) where
-  downloadBatch (Some location) format = downloadBatch location format
 
 data DefaultParser = DefaultParser
 
