@@ -151,6 +151,7 @@ type Entity =
     typescript: SomeEntity |
     java: SomeEntity |
     kotlin: SomeEntity |
+    swift: SomeEntity |
   }
 
 # entities are scip.Definitions
@@ -171,6 +172,7 @@ predicate TagDefinition:
     ( Rust = Language; { rust = SomeEntity }) |
     ( Go = Language; { go = SomeEntity }) |
     ( TypeScript = Language; { typescript = SomeEntity }) |
+    ( Swift = Language; { swift = SomeEntity }) |
     ( Java = Language; { java = SomeEntity }) |
     ( Kotlin = Language; { kotlin = SomeEntity }) = Entity;
 
@@ -184,6 +186,7 @@ predicate EntityDefinition:
     ({ rust = SomeEntity }) |
     ({ go = SomeEntity }) |
     ({ typescript = SomeEntity }) |
+    ({ swift = SomeEntity }) |
     ({ java = SomeEntity }) |
     ({ kotlin = SomeEntity }) = Entity;
     { defn = Defn } = SomeEntity

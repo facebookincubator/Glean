@@ -10,6 +10,7 @@ type Entity =
     typescript : scip.SomeEntity |
     java : scip.SomeEntity |
     kotlin : scip.SomeEntity |
+    swift: scip.SomeEntity |
   }
 
 }

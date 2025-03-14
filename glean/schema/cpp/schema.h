@@ -6644,7 +6644,7 @@ struct LocalName : Predicate<std::string> {
 } // namespace schema
 
 template<> struct Repr_<facebook::glean::cpp::schema::Scip::Entity> {
-  using Type = Sum<Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>>;
+  using Type = Sum<Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>>;
 };
 
 
@@ -6653,7 +6653,7 @@ namespace schema {
 namespace Scip {
 
 struct Entity {
-  boost::variant<Alt<0, SomeEntity>, Alt<1, SomeEntity>, Alt<2, SomeEntity>, Alt<3, SomeEntity>, Alt<4, SomeEntity>> GLEAN_value;
+  boost::variant<Alt<0, SomeEntity>, Alt<1, SomeEntity>, Alt<2, SomeEntity>, Alt<3, SomeEntity>, Alt<4, SomeEntity>, Alt<5, SomeEntity>> GLEAN_value;
 
   static Entity rust(const SomeEntity& a) {
     return Entity{Alt<0, SomeEntity>(a)};
@@ -6669,6 +6669,9 @@ struct Entity {
   }
   static Entity kotlin(const SomeEntity& a) {
     return Entity{Alt<4, SomeEntity>(a)};
+  }
+  static Entity swift(const SomeEntity& a) {
+    return Entity{Alt<5, SomeEntity>(a)};
   }
 
   bool operator==(const Entity& other) const {
@@ -22724,7 +22727,7 @@ struct CodeLens : Predicate<std::tuple<CodeLensCommand, facebook::glean::cpp::sc
 } // namespace schema
 
 template<> struct Repr_<facebook::glean::cpp::schema::Code::Scip::Entity> {
-  using Type = Sum<Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>>;
+  using Type = Sum<Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>, Repr<facebook::glean::cpp::schema::Scip::SomeEntity>>;
 };
 
 
@@ -22735,7 +22738,7 @@ namespace Code {
 namespace Scip {
 
 struct Entity {
-  boost::variant<Alt<0, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<1, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<2, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<3, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<4, facebook::glean::cpp::schema::Scip::SomeEntity>> GLEAN_value;
+  boost::variant<Alt<0, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<1, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<2, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<3, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<4, facebook::glean::cpp::schema::Scip::SomeEntity>, Alt<5, facebook::glean::cpp::schema::Scip::SomeEntity>> GLEAN_value;
 
   static Entity rust(const facebook::glean::cpp::schema::Scip::SomeEntity& a) {
     return Entity{Alt<0, facebook::glean::cpp::schema::Scip::SomeEntity>(a)};
@@ -22751,6 +22754,9 @@ struct Entity {
   }
   static Entity kotlin(const facebook::glean::cpp::schema::Scip::SomeEntity& a) {
     return Entity{Alt<4, facebook::glean::cpp::schema::Scip::SomeEntity>(a)};
+  }
+  static Entity swift(const facebook::glean::cpp::schema::Scip::SomeEntity& a) {
+    return Entity{Alt<5, facebook::glean::cpp::schema::Scip::SomeEntity>(a)};
   }
 
   bool operator==(const Entity& other) const {
@@ -29805,7 +29811,7 @@ struct ArgumentValue : Predicate<boost::variant<Alt<0, std::string>, Alt<1, std:
 struct SCHEMA {
   template<typename P> struct index;
   static constexpr size_t count = 1332;
-  static constexpr char schemaId[] = "e22985f5737f5bef921fa19c344005ac";
+  static constexpr char schemaId[] = "54195d609c9195d2bc09d8fa05050bf7";
   template<size_t i> struct predicate;
 };
 

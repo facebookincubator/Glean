@@ -525,6 +525,7 @@ enum Language {
   GraphQL = 17,
   Dataswarm = 18,
   Yaml = 19,
+  Swift = 20,
 }
 
 // Kinds of definitions. E.g. for jump-to-declaration or jump-to-definition

@@ -265,6 +265,7 @@ languageToCodeLang l = case l of
   Language_PreProcessor -> Just Code.Language_PreProcessor
   Language_Python -> Just Code.Language_Python
   Language_Rust -> Just Code.Language_Rust
+  Language_Swift -> Just Code.Language_Swift
   Language_Thrift -> Just Code.Language_Thrift
   Language_TypeScript -> Just Code.Language_TypeScript
   Language_Yaml -> Just Code.Language_Yaml
@@ -320,6 +321,7 @@ instance Symbol Code.Entity where
       Scip.Entity_typescript se -> toSymbolWithPath se p
       Scip.Entity_java se -> toSymbolWithPath se p
       Scip.Entity_kotlin se -> toSymbolWithPath se p
+      Scip.Entity_swift se -> toSymbolWithPath se p
       Scip.Entity_EMPTY -> throwM $ SymbolError "Unknown SCIP language"
 
     _ -> throwM $ SymbolError "Language not supported"
@@ -376,6 +378,7 @@ entityToAngle e = case e of
       Scip.Entity_typescript x -> Right $ alt @"typescript" (toAngle x)
       Scip.Entity_java x -> Right $ alt @"java" (toAngle x)
       Scip.Entity_kotlin x -> Right $ alt @"kotlin" (toAngle x)
+      Scip.Entity_swift x -> Right $ alt @"swift" (toAngle x)
       Scip.Entity_EMPTY -> Left "toAngle: Unknown SCIP language"
 
   _ -> Left $
@@ -416,6 +419,7 @@ instance ToQName Code.Entity where
       Scip.Entity_typescript x -> toQName x
       Scip.Entity_java x -> toQName x
       Scip.Entity_kotlin x -> toQName x
+      Scip.Entity_swift x -> toQName x
       Scip.Entity_EMPTY -> pure $ Left "SCIP: language unsupported"
     _ -> pure $ Left ("Language unsupported: " <> textShow (entityLanguage e))
 

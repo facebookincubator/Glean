@@ -141,6 +141,7 @@ instance ToSymbolSignature Code.Entity where
       Scip.Entity_typescript x -> SCIP.prettyScipSignature opts x
       Scip.Entity_java x -> SCIP.prettyScipSignature opts x
       Scip.Entity_kotlin x -> SCIP.prettyScipSignature opts x
+      Scip.Entity_swift x -> SCIP.prettyScipSignature opts x
       Scip.Entity_EMPTY -> pure Nothing
     -- lsif languages, just enumerate completely to stay total
     Code.Entity_lsif e -> case e of
