@@ -249,6 +249,7 @@ filetype (Path file)
   | is ".thrift"  = Just Language_Thrift
 
   | is ".rs"  = Just Language_Rust
+  | is ".swift"  = Just Language_Swift
   | is ".erl"  = Just Language_Erlang
   | is ".go"  = Just Language_Go
   | is ".ts"  = Just Language_TypeScript

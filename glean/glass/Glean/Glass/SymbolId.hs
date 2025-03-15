@@ -192,6 +192,7 @@ shortCodeTable =
   , (Language_PreProcessor , "pp")
   , (Language_Python, "py")
   , (Language_Rust , "rs")
+  , (Language_Swift , "swift")
   , (Language_Thrift , "thrift")
   , (Language_TypeScript , "ts")
   ]

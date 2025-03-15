@@ -54,6 +54,7 @@ gleanIndices_ = Map.fromList
       ,("test", Language_TypeScript)
       ,("test", Language_Rust)
       ,("test", Language_Java)
+      ,("test", Language_Swift)
       ])
   ]
 
