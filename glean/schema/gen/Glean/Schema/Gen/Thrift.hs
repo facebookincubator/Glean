@@ -336,38 +336,42 @@ thriftTy here t = case t of
   HasKey{} -> error "thriftTy: HasKey"
   ElementsOf{} -> error "thriftTy: ElementsOf"
 
-mkField :: [Text] -> Text -> Int -> Name -> Text -> Text
-mkField annots structOrUnion i p t =
-  allowReservedIdentifierAnnotation p
-    <> showt i <> ": " <> t <> " " <> p <> annotText <> ";"
+mkField :: [Text] -> [Text] -> Text -> Int -> Name -> Text -> Text
+mkField structuredAnnots unstructuredAnnots structOrUnion i p t =
+  structuredAnnotText <> allowReservedIdentifierAnnotation p
+    <> showt i <> ": " <> t <> " " <> p <> unstructuredAnnotText <> ";"
   where
+  structuredAnnotText =
+    Text.concat $ map (\annot -> annot <> newline <> "  ") structuredAnnots
+
   -- The java.swift codegen likes to strip underscores from the end of
   -- names for some reason.
-  javaAnnot
+  javaUnstructuredAnnot
     | "_" `Text.isSuffixOf` p = ["java.swift.name = \"" <> p <> "\""]
     | otherwise = []
 
-  py3Annot
+  py3UnstructuredAnnot
     | p == "from" = ["py3.name = \"from_\""]
     | p == "type" && structOrUnion == "union"  = ["py3.name = \"type_\""]
     | p == "name" && structOrUnion == "union" = ["py3.name = \"name_\""]
     | p == "value" && structOrUnion == "union" = ["py3.name = \"value_\""]
     | otherwise = []
 
-  allAnnots = javaAnnot ++ py3Annot ++ annots
+  allUnstructuredAnnots =
+    javaUnstructuredAnnot ++ py3UnstructuredAnnot ++ unstructuredAnnots
 
-  annotText
-    | null allAnnots = ""
-    | otherwise = " (" <> Text.intercalate ", " allAnnots <> ")"
+  unstructuredAnnotText
+    | null allUnstructuredAnnots = ""
+    | otherwise = " (" <> Text.intercalate ", " allUnstructuredAnnots <> ")"
 
 makeField :: Text -> Int -> Name -> Text -> Text
-makeField = mkField []
+makeField = mkField [] []
 
 makeRefField :: Text -> Int -> Name -> Text -> Text
 makeRefField = mkField
+  [ "@rust.Box" ]
   [ "cpp.ref = \"true\""
   , "cpp2.ref = \"true\""
-  , "rust.box"
   , "swift.recursive_reference = \"true\""
   ]
 
@@ -442,7 +446,7 @@ genPred here PredicateDef{..} = do
       , [ allowReservedIdentifierAnnotation name
         <> structOrUnion <> " " <> name <> " {" ]
       , indentLines . catMaybes . zipWith (flip ($)) [1..] $
-        [ \i -> Just $ mkField ["hs.strict"] structOrUnion i "id" type_id
+        [ \i -> Just $ mkField [] ["hs.strict"] structOrUnion i "id" type_id
         , key, val ]
       , [ "}" ]
       ]
