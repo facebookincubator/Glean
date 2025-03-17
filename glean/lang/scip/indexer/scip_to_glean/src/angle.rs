@@ -119,8 +119,7 @@ impl Env {
 
     fn decode_scip_info(&mut self, filepath: &str, info: SymbolInformation) -> Result<()> {
         let symbol = info.symbol.replace("  ", "_");
-        let symbol = symbol_from_string(&symbol)
-            .ok_or_else(|| anyhow::Error::msg(format!("failed to parse symbol: {}", symbol)))?;
+        let symbol = symbol_from_string(&symbol);
         let qualified_symbol = match symbol {
             ScipSymbol::Local { .. } => {
                 format!("{}/{}", filepath, info.symbol)
@@ -154,8 +153,7 @@ impl Env {
             .file_range(file_range_id, file_id, decode_scip_range(&occ.range)?);
 
         let symbol = occ.symbol.replace("  ", "_");
-        let symbol = symbol_from_string(&symbol)
-            .ok_or_else(|| anyhow::Error::msg(format!("failed to parse symbol: {}", symbol)))?;
+        let symbol = symbol_from_string(&symbol);
 
         match symbol {
             ScipSymbol::Local { id } => {
@@ -260,17 +258,17 @@ struct Descriptor<'a> {
     suffix: Suffix,
 }
 
-fn symbol_from_string<'a>(symbol: &'a str) -> Option<ScipSymbol<'a>> {
-    let (scheme, rest) = symbol.split_once(' ')?;
-    if scheme == "local" {
-        return Some(ScipSymbol::Local { id: rest });
+fn symbol_from_string<'a>(symbol: &'a str) -> ScipSymbol<'a> {
+    if let Some(("local", rest)) = symbol.split_once(' ') {
+        return ScipSymbol::Local { id: rest };
     }
 
-    let (_manager, rest) = rest.split_once(' ')?;
-    let (_pkgname, rest) = rest.split_once(' ')?;
-    let (_version, sym_str) = rest.split_once(' ')?;
+    let (_scheme, rest) = symbol.split_once(' ').unwrap_or((symbol, ""));
+    let (_manager, rest) = rest.split_once(' ').unwrap_or((rest, ""));
+    let (_pkgname, rest) = rest.split_once(' ').unwrap_or((rest, ""));
+    let (_version, sym_str) = rest.split_once(' ').unwrap_or((rest, ""));
     let descriptor = parse_suffix(sym_str);
-    Some(ScipSymbol::Global { descriptor })
+    ScipSymbol::Global { descriptor }
 }
 
 fn parse_suffix<'a>(sym_str: &'a str) -> Descriptor<'a> {
@@ -322,7 +320,7 @@ mod tests {
     #[test]
     fn test_symbol_from_string_global_type() {
         let symbol = "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std io/stdio/IsTerminal#";
-        let symbol = symbol_from_string(symbol).unwrap();
+        let symbol = symbol_from_string(symbol);
         let ScipSymbol::Global { descriptor } = symbol else {
             panic!("expected global symbol");
         };
@@ -334,7 +332,7 @@ mod tests {
     fn test_symbol_from_string_global_unspecified() {
         let symbol =
             "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std macros/println!";
-        let symbol = symbol_from_string(symbol).unwrap();
+        let symbol = symbol_from_string(symbol);
         let ScipSymbol::Global { descriptor } = symbol else {
             panic!("expected global symbol");
         };
