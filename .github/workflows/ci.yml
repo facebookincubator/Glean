@@ -83,15 +83,6 @@ jobs:
       - name: Install indexer (go)
         run: go install github.com/sourcegraph/scip-go/cmd/scip-go@latest
 
-      - name: Install indexer (hack)
-        run: |
-          # From https://hhvm.com/blog/2022/08/30/experimenting-with-universal-deb-packages.html
-          apt-get install -y software-properties-common apt-transport-https
-          apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xB4112585D386EB94
-          add-apt-repository 'deb https://dl.hhvm.com/universal nightly main'
-          apt-get update
-          apt-get install -y hhvm
-
       - name: Install indexer (java)
         run: |
           apt-get install -y default-jdk maven
