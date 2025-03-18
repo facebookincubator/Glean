@@ -488,7 +488,7 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
             fileId
         -- todo this could be done in Glean in a single pass
         (kinds, merr) <- withRepo fileRepo $
-          documentSymbolKinds mlimit mlang fileId
+          documentSymbolKinds mlimit mlang fileId attrOpts
 
         let revision = getDBRevision (scmRevisions dbInfo) fileRepo scsrepo
         contentMatch <- case wantedRevision of
@@ -667,27 +667,29 @@ documentSymbolKinds
   :: Maybe Int
   -> Maybe Language
   -> Glean.IdOf Src.File
+  -> AttributeOptions
   -> Glean.RepoHaxl u w
      ([Attributes.AttrRep Attributes.SymbolKindAttr], Maybe ErrorLogger)
 
 -- It's not sound to key for all entities in file in C++ , due to traces
 -- So we can't use the generic a attribute technique
-documentSymbolKinds _mlimit (Just Language_Cpp) _fileId =
+documentSymbolKinds _mlimit (Just Language_Cpp) _fileId _ =
   return mempty
 
 -- Anything else, just load from Glean
-documentSymbolKinds mlimit _ fileId =
-  searchFileAttributes Attributes.SymbolKindAttr mlimit fileId
+documentSymbolKinds mlimit _ fileId attrOptions =
+  searchFileAttributes Attributes.SymbolKindAttr mlimit fileId attrOptions
 
 searchFileAttributes
   :: Attributes.ToAttributes key
   => key
   -> Maybe Int
   -> Glean.IdOf Src.File
+  -> AttributeOptions
   -> Glean.RepoHaxl u w
     ([Attributes.AttrRep key], Maybe ErrorLogger)
-searchFileAttributes key mlimit fileId = do
-  eraw <- try $ Attributes.queryForFile key mlimit fileId
+searchFileAttributes key mlimit fileId attrOpts = do
+  eraw <- try $ Attributes.queryForFile key mlimit fileId attrOpts
   repo <- Glean.haxlRepo
   case eraw of
     Left (err::SomeException) -- logic errors or transient errors
@@ -918,6 +920,7 @@ getSymbolAttributes env dbInfo repo opts repofile mlimit
             attrKey
             (theGleanPath repofile)
             mlimit
+            (requestOptions_attribute_opts opts)
           return $ \refs defs ->
             case Attributes.augmentSymbols attrKey attrs refs defs
               (requestOptions_attribute_opts opts) of
@@ -930,12 +933,13 @@ genericFetchFileAttributes
   => key
   -> GleanPath
   -> Maybe Int
+  -> AttributeOptions
   -> RepoHaxl u w ([Attributes.AttrRep key], Maybe ErrorLogger)
-genericFetchFileAttributes key path mlimit = do
+genericFetchFileAttributes key path mlimit attrOptions = do
   efile <- getFile path
   repo <- Glean.haxlRepo
   case efile of
     Left err ->
       return (mempty, Just (logError err <> logError repo))
     Right fileId -> do
-      searchFileAttributes key mlimit (Glean.getId fileId)
+      searchFileAttributes key mlimit (Glean.getId fileId) attrOptions

@@ -83,7 +83,14 @@ struct SymbolLocation {
 
 struct AttributeOptions {
   1: bool fetch_per_line_data = false;
+  2: optional Revision revision;
+  3: optional ServiceID service_id;
+  4: optional BinaryName binary_name;
 }
+
+typedef string ServiceID (hs.newtype)
+
+typedef string BinaryName (hs.newtype)
 
 // Generic request options, supported by most calls
 struct RequestOptions {

@@ -42,6 +42,7 @@ class LogResult (AttrLog key) => ToAttributes key where
     :: key
     -> Maybe Int
     -> Glean.IdOf Src.File
+    -> AttributeOptions
     -> Glean.RepoHaxl u w [AttrRep key]
 
   -- | Add attributes to symbols

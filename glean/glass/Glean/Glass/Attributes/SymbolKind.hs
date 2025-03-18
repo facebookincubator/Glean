@@ -48,7 +48,7 @@ instance ToAttributes SymbolKindAttr where
   type AttrRep SymbolKindAttr = EntityKindLabel
   type AttrLog SymbolKindAttr = ()
 
-  queryForFile _ lim fileId =
+  queryForFile _ lim fileId _ =
     fst <$> Utils.searchRecursiveWithLimit lim q
     where
     -- We actually make two queries!
