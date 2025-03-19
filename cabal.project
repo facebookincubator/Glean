@@ -25,6 +25,9 @@ constraints: entropy < 0.4.1.9
 
 index-state: 2025-01-17T00:00:00Z
 
+package fb-util
+    flags: +folly
+
 package glean
     flags: -fbthrift
 
