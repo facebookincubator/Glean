@@ -487,7 +487,7 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
             mlimit mlang extraOpts
             fileId
         -- todo this could be done in Glean in a single pass
-        (kinds, merr) <- withRepo fileRepo $
+        (kinds, _, merr) <- withRepo fileRepo $
           documentSymbolKinds mlimit mlang fileId attrOpts
 
         let revision = getDBRevision (scmRevisions dbInfo) fileRepo scsrepo
@@ -532,7 +532,12 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
               (xRefDataToRefEntitySymbol <$> refsPlain)
               defs1
               attrOpts
-        return (DocumentSymbols { srcFile = Just srcFile, .. },
+
+        return (DocumentSymbols {
+                 srcFile = Just srcFile,
+                 attributes = Nothing,
+                 ..
+                },
                 gleanDataLog, merr)
 
   where
@@ -603,12 +608,13 @@ data DocumentSymbols = DocumentSymbols
   , unresolvedXrefsXlang :: [(Code.Entity, Code.RangeSpan)]
   , srcFile :: Maybe Src.File
   , offsets :: Maybe Range.LineOffsets
+  , attributes :: Maybe AttributeList
   }
 
 emptyDocumentSymbols :: Revision -> DocumentSymbols
 emptyDocumentSymbols revision =
   DocumentSymbols [] [] revision Nothing False Nothing mempty mempty Nothing
-    Nothing
+    Nothing Nothing
 
 -- | Drop any remnant entities after we are done with them
 toDocumentSymbolResult :: DocumentSymbols -> DocumentSymbolListXResult
@@ -621,6 +627,8 @@ toDocumentSymbolResult DocumentSymbols{..} = DocumentSymbolListXResult{..}
     documentSymbolListXResult_digest = digest
     documentSymbolListXResult_referenced_file_digests = xref_digests
     documentSymbolListXResult_content_match = contentMatch
+    documentSymbolListXResult_attributes = attributes
+
 
 
 -- And build a line-indexed map of symbols, resolved to spans
@@ -658,7 +666,8 @@ fetchDocumentSymbolIndex env latest req opts be
         documentSymbolIndex_referenced_file_digests =
           documentSymbolListXResult_referenced_file_digests,
         documentSymbolIndex_content_match =
-          documentSymbolListXResult_content_match
+          documentSymbolListXResult_content_match,
+        documentSymbolIndex_attributes = documentSymbolListXResult_attributes
       }
   return ((idxResult, status, gleanDataLog, attrLog), merr1)
 
@@ -669,7 +678,9 @@ documentSymbolKinds
   -> Glean.IdOf Src.File
   -> AttributeOptions
   -> Glean.RepoHaxl u w
-     ([Attributes.AttrRep Attributes.SymbolKindAttr], Maybe ErrorLogger)
+     ([Attributes.AttrRep Attributes.SymbolKindAttr],
+     [Attributes.FileAttrRep Attributes.SymbolKindAttr],
+     Maybe ErrorLogger)
 
 -- It's not sound to key for all entities in file in C++ , due to traces
 -- So we can't use the generic a attribute technique
@@ -677,8 +688,8 @@ documentSymbolKinds _mlimit (Just Language_Cpp) _fileId _ =
   return mempty
 
 -- Anything else, just load from Glean
-documentSymbolKinds mlimit _ fileId attrOptions =
-  searchFileAttributes Attributes.SymbolKindAttr mlimit fileId attrOptions
+documentSymbolKinds mlimit _ fileId attrOpts =
+  searchFileAttributes Attributes.SymbolKindAttr mlimit fileId attrOpts
 
 searchFileAttributes
   :: Attributes.ToAttributes key
@@ -687,18 +698,37 @@ searchFileAttributes
   -> Glean.IdOf Src.File
   -> AttributeOptions
   -> Glean.RepoHaxl u w
-    ([Attributes.AttrRep key], Maybe ErrorLogger)
+    ([Attributes.AttrRep key], [Attributes.FileAttrRep key], Maybe ErrorLogger)
 searchFileAttributes key mlimit fileId attrOpts = do
+  eraw_file <- (
+    if attributeOptions_fetch_per_line_data attrOpts then
+        searchFileAttributesMetadata key mlimit fileId attrOpts
+    else
+        mempty)
+
   eraw <- try $ Attributes.queryForFile key mlimit fileId attrOpts
   repo <- Glean.haxlRepo
   case eraw of
     Left (err::SomeException) -- logic errors or transient errors
       -> return
-        (mempty,
+        (mempty, mempty,
         Just (logError (GlassExceptionReason_attributesError $ textShow err)
               <> logError repo))
     Right raw
-      -> return (raw, Nothing)
+      -> return (raw,eraw_file, Nothing)
+
+searchFileAttributesMetadata
+  :: Attributes.ToAttributes key
+  => key
+  -> Maybe Int
+  -> Glean.IdOf Src.File
+  -> AttributeOptions
+  -> Glean.RepoHaxl u w [Attributes.FileAttrRep key]
+searchFileAttributesMetadata key mlimit fileId attrOpts = do
+  eraw_file <- try $ Attributes.queryMetadataForFile key mlimit fileId attrOpts
+  case eraw_file of
+    Left (_::SomeException) -> return mempty
+    Right raw -> return raw
 
 data XRefData = XRefData
   { xrefEntity :: !Code.Entity
@@ -876,13 +906,21 @@ addDynamicAttributes
   -> IO (DocumentSymbols, GleanGlassLogger)
 addDynamicAttributes env dbInfo repo opts repofile mlimit be syms = do
   -- combine additional dynamic attributes
-  mattrs <- getSymbolAttributes env
-    dbInfo repo opts repofile mlimit be
-  return $ extend mattrs mempty [] syms
+  (mattrs, fattrs) <-
+   getSymbolAttributes env dbInfo repo opts repofile mlimit be
+  return $ extend mattrs mempty [] syms fattrs
   where
-    extend [] log dblog syms = (syms, log <> logResult dblog)
-    extend (augment : xs) log dblog syms =
-      extend xs newLog newDBLog (syms { refs = refs' , defs = defs' })
+    extend [] log dblog syms _ = (syms, log <> logResult dblog)
+    extend (augment : xs) log dblog syms [] =
+     extend xs newLog newDBLog
+       (syms { refs = refs' , defs = defs', attributes =  Nothing }) []
+      where
+      (refs',defs',log', dblog') = augment (refs syms) (defs syms)
+      newLog = log <> log'
+      newDBLog = dblog' : dblog
+    extend (augment : xs) log dblog syms  (f : _) =
+      extend xs newLog newDBLog
+       (syms { refs = refs' , defs = defs', attributes =  f }) []
       where
       (refs',defs',log', dblog') = augment (refs syms) (defs syms)
       newLog = log <> log'
@@ -906,26 +944,36 @@ getSymbolAttributes
   -> FileReference
   -> Maybe Int
   -> GleanBackend b
-  -> IO [Augment]
+  -> IO ([Augment], [Maybe AttributeList])
 getSymbolAttributes env dbInfo repo opts repofile mlimit
     be@GleanBackend{..} = do
   mAttrDBs <-
     getLatestAttrDBs tracer (sourceControl env) (Glass.repoMapping env)
       dbInfo repo opts
   backendRunHaxl be env $ do
-    forM mAttrDBs $
+    attrsTuples <- forM mAttrDBs $
       \(attrDB, GleanDBAttrName _ attrKey{- existential key -}) ->
         withRepo attrDB $ do
-          (attrs,_merr2) <- genericFetchFileAttributes
+          (attrs,fileAttrs,_merr2) <- genericFetchFileAttributes
             attrKey
             (theGleanPath repofile)
             mlimit
             (requestOptions_attribute_opts opts)
-          return $ \refs defs ->
-            case Attributes.augmentSymbols attrKey attrs refs defs
-              (requestOptions_attribute_opts opts) of
-               (refs, defs, log) ->
-                (refs, defs, logResult log, AttrDBsLog attrDB)
+
+          let augment refs defs = case Attributes.augmentSymbols
+                attrKey attrs refs defs (requestOptions_attribute_opts opts) of
+                 (refs, defs, log) ->
+                  (refs, defs, logResult log, AttrDBsLog attrDB)
+
+          let fileAttributes = case fileAttrs of
+               [] -> Nothing
+               f -> Attributes.fileAttrsToAttributeList attrKey f
+
+          return (augment, fileAttributes)
+
+    let (augments, fileAttrs) = unzip attrsTuples
+    return (augments, fileAttrs)
+
 
 -- | External (non-local db) Attributes of symbols. Just Hack only for now
 genericFetchFileAttributes
@@ -934,12 +982,15 @@ genericFetchFileAttributes
   -> GleanPath
   -> Maybe Int
   -> AttributeOptions
-  -> RepoHaxl u w ([Attributes.AttrRep key], Maybe ErrorLogger)
-genericFetchFileAttributes key path mlimit attrOptions = do
+  -> RepoHaxl u w (
+     [Attributes.AttrRep key],
+     [Attributes.FileAttrRep key],
+     Maybe ErrorLogger)
+genericFetchFileAttributes key path mlimit attrOpts = do
   efile <- getFile path
   repo <- Glean.haxlRepo
   case efile of
     Left err ->
-      return (mempty, Just (logError err <> logError repo))
-    Right fileId -> do
-      searchFileAttributes key mlimit (Glean.getId fileId) attrOptions
+      return (mempty, mempty, Just (logError err <> logError repo))
+    Right fileId -> do searchFileAttributes
+                        key mlimit (Glean.getId fileId) attrOpts

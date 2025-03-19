@@ -379,7 +379,7 @@ instance Simplify DocumentSymbolListXResult where
       documentSymbolListXResult_revision
       documentSymbolListXResult_truncated
   fromSimple (SimpleSymbolsListXResult rev isSnapshotMatch) =
-    DocumentSymbolListXResult [] [] rev isSnapshotMatch Nothing mempty Nothing
+    DocumentSymbolListXResult [] [] rev isSnapshotMatch Nothing mempty Nothing Nothing
 
 instance Simplify (DocumentSymbolsRequest, RequestOptions) where
   data Simple (DocumentSymbolsRequest, RequestOptions) =

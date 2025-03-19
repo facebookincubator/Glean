@@ -47,6 +47,10 @@ type EntityKindLabel = (Code.Entity, Code.SymbolKind)
 instance ToAttributes SymbolKindAttr where
   type AttrRep SymbolKindAttr = EntityKindLabel
   type AttrLog SymbolKindAttr = ()
+  type FileAttrRep SymbolKindAttr = ()
+
+  fileAttrsToAttributeList _ _ = undefined
+
 
   queryForFile _ lim fileId _ =
     fst <$> Utils.searchRecursiveWithLimit lim q
@@ -67,6 +71,9 @@ instance ToAttributes SymbolKindAttr where
       toAttributes kind = Attributes $ Map.singleton "symbolKind"
         (Attribute_aInteger (fromIntegral
           (fromThriftEnum $ symbolKindToSymbolKind kind)))
+
+
+  queryMetadataForFile _ _ _ _ = pure []
 
 fileEntityKinds :: Glean.IdOf Src.File -> Angle.Angle EntityKindLabel
 fileEntityKinds fileId =

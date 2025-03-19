@@ -288,6 +288,10 @@ struct DocumentSymbolListXResult {
   // definitions and references will match the source file.
   // Only populated when content_check = True.
   7: optional bool content_match;
+
+  // additional metadata associated with the file, non-symbol specific
+  // e.g. list of available attributes / denominators for the file
+  8: optional AttributeList attributes;
 }
 
 // For cursor navigation in a file, it is useful to have a line indexed
@@ -316,6 +320,10 @@ struct DocumentSymbolIndex {
   // definitions and references will match the source file.
   // Only populated when content_check = True.
   7: optional bool content_match;
+
+  // additional metadata associated with the file, non-symbol specific
+  // e.g. list of available attributes / denominators for the file
+  8: optional AttributeList attributes;
 }
 
 // Generic server exception

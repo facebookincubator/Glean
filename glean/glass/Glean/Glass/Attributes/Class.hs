@@ -35,7 +35,22 @@ import qualified Glean.Schema.Code.Types as Code
 class LogResult (AttrLog key) => ToAttributes key where
 
   type AttrRep key :: *
+  type FileAttrRep key :: *
   type AttrLog key :: *
+
+  -- | Fetch the metadata about the attributes for this file
+  -- e.g. a list of available denominators/slices
+  queryMetadataForFile
+    :: key
+    -> Maybe Int
+    -> Glean.IdOf Src.File
+    -> AttributeOptions
+    -> Glean.RepoHaxl u w [FileAttrRep key]
+
+  fileAttrsToAttributeList
+   :: key
+    -> [FileAttrRep key]
+    -> Maybe AttributeList
 
   -- | Fetch the data for this attribute type for a file
   queryForFile
