@@ -4,6 +4,90 @@
     "key": {
       "defn": {
         "key": {
+          "symbol": { "key": "example.ts/local 13" },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 47,
+                "columnBegin": 9,
+                "lineEnd": 47,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000avar repoDir: any\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": { "key": "example.ts/local 16" },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 49,
+                "columnBegin": 9,
+                "lineEnd": 49,
+                "columnEnd": 11
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000avar git: Git\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": { "key": "example.ts/local 6" },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 16,
+                "columnBegin": 11,
+                "lineEnd": 16,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000avar res: any\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": { "key": "example.ts/local 9" },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 11,
+                "lineEnd": 35,
+                "columnEnd": 16
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "```ts\u000avar addRes: any\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
           "symbol": { "key": "scip-typescript npm . . `example.ts`/" },
           "location": {
             "key": {

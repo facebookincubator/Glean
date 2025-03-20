@@ -2,6 +2,54 @@
   "@generated",
   {
     "key": {
+      "symbol": { "key": "example.ts/local 0" },
+      "name": { "key": "local 0" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.ts/local 1" },
+      "name": { "key": "local 1" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.ts/local 13" },
+      "name": { "key": "local 13" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.ts/local 16" },
+      "name": { "key": "local 16" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.ts/local 2" },
+      "name": { "key": "local 2" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.ts/local 3" },
+      "name": { "key": "local 3" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.ts/local 6" },
+      "name": { "key": "local 6" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.ts/local 9" },
+      "name": { "key": "local 9" }
+    }
+  },
+  {
+    "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/" },
       "name": { "key": "`example.ts`" }
     }
@@ -145,7 +193,7 @@
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm typescript 5.7.3 lib/`lib.es2022.error.d.ts`/Error#"
+        "key": "scip-typescript npm typescript 5.8.2 lib/`lib.es2022.error.d.ts`/Error#"
       },
       "name": { "key": "lib/`lib.es2022.error.d.ts`/Error" }
     }
@@ -153,7 +201,7 @@
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm typescript 5.7.3 lib/`lib.es5.d.ts`/Error#"
+        "key": "scip-typescript npm typescript 5.8.2 lib/`lib.es5.d.ts`/Error#"
       },
       "name": { "key": "lib/`lib.es5.d.ts`/Error" }
     }
@@ -161,7 +209,7 @@
   {
     "key": {
       "symbol": {
-        "key": "scip-typescript npm typescript 5.7.3 lib/`lib.es5.d.ts`/Error."
+        "key": "scip-typescript npm typescript 5.8.2 lib/`lib.es5.d.ts`/Error."
       },
       "name": { "key": "lib/`lib.es5.d.ts`/Error" }
     }

@@ -2,6 +2,30 @@
   "@generated",
   {
     "key": {
+      "symbol": { "key": "example.ts/local 13" },
+      "docs": { "key": "```ts\u000avar repoDir: any\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.ts/local 16" },
+      "docs": { "key": "```ts\u000avar git: Git\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.ts/local 6" },
+      "docs": { "key": "```ts\u000avar res: any\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "example.ts/local 9" },
+      "docs": { "key": "```ts\u000avar addRes: any\u000a```" }
+    }
+  },
+  {
+    "key": {
       "symbol": { "key": "scip-typescript npm . . `example.ts`/" },
       "docs": { "key": "```ts\u000amodule \"example.ts\"\u000a```" }
     }

@@ -2,6 +2,54 @@
   "@generated",
   {
     "key": {
+      "symbol": { "key": "Program.cs/local 0" },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 62,
+            "columnBegin": 13,
+            "lineEnd": 62,
+            "columnEnd": 13
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "Program.cs/local 1" },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 65,
+            "columnBegin": 13,
+            "lineEnd": 65,
+            "columnEnd": 13
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "Program.cs/local 2" },
+      "location": {
+        "key": {
+          "file": { "key": "Program.cs" },
+          "range": {
+            "lineBegin": 68,
+            "columnBegin": 13,
+            "lineEnd": 68,
+            "columnEnd": 13
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/Dog#" },
       "location": {
         "key": {
