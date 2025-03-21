@@ -14,7 +14,11 @@
 
 #ifdef __cplusplus
 template <typename T>
+#ifdef __HSC2HS__
+struct HsArray;
+#else
 class HsArray;
+#endif
 #endif
 
 #ifdef __cplusplus
