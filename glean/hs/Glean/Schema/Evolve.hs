@@ -263,8 +263,8 @@ validateEvolutions mHasFacts types preds evolutions =
   void $ HashMap.traverseWithKey validate evolutions
   where
     validate old new =
-      let PredicateDef _ oldKey oldVal _ = preds HashMap.! old
-          PredicateDef _ newKey newVal _ = preds HashMap.! new
+      let PredicateDef _ oldKey oldVal _ _ = preds HashMap.! old
+          PredicateDef _ newKey newVal _ _ = preds HashMap.! new
           keyErr = newKey `canEvolve'` oldKey
           valErr = newVal `canEvolve'` oldVal
       in
@@ -334,7 +334,8 @@ validateResolvedEvolutions resolved = do
 
     -- Later definitions override earlier ones in case of db overrides
     -- (is this really the case or are overrides added to a new ProcessedSchema?)
-    preds :: HashMap PredicateRef (PredicateDef_ SrcSpan PredicateRef TypeRef)
+    preds :: HashMap PredicateRef
+      (PredicateDef_ SrcSpan PredicateRef TypeRef)
     preds = HashMap.unions $ reverse $ map resolvedSchemaPredicates resolved
 
     types :: HashMap TypeRef (TypeDef_ PredicateRef TypeRef)

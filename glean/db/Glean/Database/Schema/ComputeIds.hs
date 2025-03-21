@@ -188,8 +188,8 @@ computeIds toList schemas versions = flip evalState emptyRefToIdEnv $ do
         where
         attach (id,drv) = HashMap.adjust f id
           where
-          f (PredicateDef id key val _) =
-            PredicateDef id key val (fmap (refsToIds env) drv)
+          f (PredicateDef id key val _ s) =
+            PredicateDef id key val (fmap (refsToIds env) drv) s
 
       (allVersion, schemaId, schemaEnv) = makeSchemaEnv schemas versions env
 
@@ -208,15 +208,15 @@ computeIds toList schemas versions = flip evalState emptyRefToIdEnv $ do
     updateDefWithHash hash def = case def of
         RefType (TypeDef (TypeId ref _) ty) ->
           RefType (TypeDef (TypeId ref hash) ty)
-        RefPred (PredicateDef (PredicateId ref _) key val drv) ->
-          RefPred (PredicateDef (PredicateId ref hash) key val drv)
+        RefPred (PredicateDef (PredicateId ref _) key val drv s) ->
+          RefPred (PredicateDef (PredicateId ref hash) key val drv s)
 
     extend :: Def -> RefToIdEnv -> RefToIdEnv
     extend def (RefToIdEnv tids pids) =
       case def of
         RefType (TypeDef id _) ->
           RefToIdEnv (HashMap.insert (typeIdRef id) id tids) pids
-        RefPred (PredicateDef id _ _ _) ->
+        RefPred (PredicateDef id _ _ _ _) ->
           RefToIdEnv tids (HashMap.insert (predicateIdRef id) id pids)
 
     extends :: [(DefResolved, Hash)] -> RefToIdEnv -> RefToIdEnv
@@ -227,7 +227,7 @@ computeIds toList schemas versions = flip evalState emptyRefToIdEnv $ do
           RefType (TypeDef ref _) ->
             let id = TypeId ref hash in
             RefToIdEnv (HashMap.insert ref id tids) pids
-          RefPred (PredicateDef ref _ _ _) ->
+          RefPred (PredicateDef ref _ _ _ _) ->
             let id = PredicateId ref hash in
             RefToIdEnv tids (HashMap.insert ref id pids)
 
@@ -241,7 +241,7 @@ computeIds toList schemas versions = flip evalState emptyRefToIdEnv $ do
           typeIdHash = hash0 }
         def = RefType (TypeDef newId newTy)
       return def
-    resolveDef (RefPred (PredicateDef ref key val drv)) = do
+    resolveDef (RefPred (PredicateDef ref key val drv s)) = do
       env <- State.get
       let
         newKey = refsToIds env key
@@ -250,7 +250,7 @@ computeIds toList schemas versions = flip evalState emptyRefToIdEnv $ do
         newId = PredicateId {
           predicateIdRef = ref,
           predicateIdHash = hash0 }
-        def = RefPred (PredicateDef newId newKey newVal newDrv)
+        def = RefPred (PredicateDef newId newKey newVal newDrv s)
       return def
 
 resolveQuery
@@ -268,7 +268,7 @@ fingerprintDef :: Def -> Hash
 fingerprintDef (RefType (TypeDef id ty)) =
   hashBinary (showRef ref, ty)
   where ref = typeIdRef id
-fingerprintDef (RefPred (PredicateDef id key val drv)) =
+fingerprintDef (RefPred (PredicateDef id key val drv _)) =
   hashBinary (showRef ref, key, val, fmap rmLocQuery drv)
   where ref = predicateIdRef id
 

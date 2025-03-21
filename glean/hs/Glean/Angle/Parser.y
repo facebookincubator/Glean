@@ -261,7 +261,10 @@ predicate
         { predicateDefRef = ref
         , predicateDefKeyType = lval $4
         , predicateDefValueType = $5
-        , predicateDefDeriving = Schema.NoDeriving }
+        , predicateDefDeriving = Schema.NoDeriving
+        , predicateDefSrcSpan = case $6 of
+            Just (Derive _ (q)) -> s $1 q
+            _ -> s $1 $4}
         : map (Schema.SourceDeriving ref) (maybeToList $6)
     }
 

@@ -400,7 +400,8 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
           { predicateDefRef = ref
           , predicateDefKeyType = key
           , predicateDefValueType = value
-          , predicateDefDeriving = NoDeriving })
+          , predicateDefDeriving = NoDeriving
+          , predicateDefSrcSpan = predicateDefSrcSpan })
 
   let
     -- scope of predicates that we can specify queries for. Namely

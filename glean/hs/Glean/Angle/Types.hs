@@ -537,6 +537,7 @@ data PredicateDef_ s pref tref = PredicateDef
   , predicateDefKeyType :: Type_ pref tref
   , predicateDefValueType :: Type_ pref tref
   , predicateDefDeriving :: DerivingInfo (SourceQuery_ s pref tref)
+  , predicateDefSrcSpan :: s
   }
   deriving Eq
 
@@ -1012,7 +1013,8 @@ rmLocDecl :: SourceDecl_ a -> SourceDecl_ ()
 rmLocDecl = \case
   SourceImport name -> SourceImport name
   SourcePredicate pred -> SourcePredicate $ pred
-    { predicateDefDeriving = rmLocQuery <$> predicateDefDeriving pred }
+      { predicateDefDeriving = rmLocQuery <$> predicateDefDeriving pred
+      , predicateDefSrcSpan = ()}
   SourceType typeDef -> SourceType typeDef
   SourceDeriving ref deriv -> SourceDeriving ref $ rmLocQuery <$> deriv
 

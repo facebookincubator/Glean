@@ -169,7 +169,8 @@ genNamedTypesClasses
 genNamedTypesClasses pred types = map genTypePred $
   filter (\(_, t, _) -> shouldGenClass t) $ map genType types
   where
-    genTypePred (n, t, v) = PredicateDef (PredicateRef n v) t t (predicateDefDeriving pred)
+    genTypePred (n, t, v) = PredicateDef (PredicateRef n v) t t
+      (predicateDefDeriving pred) (predicateDefSrcSpan pred)
 
 
 genNamedTypesAliases :: NamePolicy -> [TypeDef_ PredicateRef TypeRef] -> [Text]
@@ -197,7 +198,8 @@ unionDummyPreds :: Type_ PredicateRef tref
   -> Text
   -> [PredicateDef_ s PredicateRef tref]
 unionDummyPreds key pred class_name = map
-  (\(n, t) -> PredicateDef (predRef n) t t (predicateDefDeriving pred))
+  (\(n, t) -> PredicateDef (predRef n) t t
+    (predicateDefDeriving pred) (predicateDefSrcSpan pred))
   dummyPredicateGens
   where
     predRef n = PredicateRef (class_name <> "_" <> n) 0
