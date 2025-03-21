@@ -2,6 +2,24 @@
   "@generated",
   {
     "key": {
+      "symbol": { "key": "Program.cs/local 0" },
+      "docs": { "key": "```cs\u000aMammal? m\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "Program.cs/local 1" },
+      "docs": { "key": "```cs\u000aDog? d\u000a```" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "Program.cs/local 2" },
+      "docs": { "key": "```cs\u000aHuman? h\u000a```" }
+    }
+  },
+  {
+    "key": {
       "symbol": { "key": "scip-dotnet nuget . . ``/Dog#" },
       "docs": { "key": "```cs\u000aclass Dog\u000a```" }
     }

@@ -14,4 +14,4 @@ import qualified Glean.Glass.Regression.TypeScript as Glass
 main :: IO ()
 main = getArgs >>= \args -> withArgs (["--root", path] ++ args) Glass.main
   where
-    path = "glean/lang/typescript/tests/cases/xrefs"
+    path = "glean/lang/typescript-lsif/tests/cases/xrefs"

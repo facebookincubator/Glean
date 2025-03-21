@@ -117,6 +117,33 @@
       "file": { "key": "example.ts" },
       "range": {
         "lineBegin": 16,
+        "columnBegin": 11,
+        "lineEnd": 16,
+        "columnEnd": 13
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "example.ts/local 6" },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 16,
+                "columnBegin": 11,
+                "lineEnd": 16,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.ts" },
+      "range": {
+        "lineBegin": 16,
         "columnBegin": 41,
         "lineEnd": 16,
         "columnEnd": 43
@@ -449,6 +476,33 @@
       "file": { "key": "example.ts" },
       "range": {
         "lineBegin": 35,
+        "columnBegin": 11,
+        "lineEnd": 35,
+        "columnEnd": 16
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "example.ts/local 9" },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 35,
+                "columnBegin": 11,
+                "lineEnd": 35,
+                "columnEnd": 16
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.ts" },
+      "range": {
+        "lineBegin": 35,
         "columnBegin": 45,
         "lineEnd": 35,
         "columnEnd": 47
@@ -578,6 +632,60 @@
                 "columnBegin": 53,
                 "lineEnd": 46,
                 "columnEnd": 55
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.ts" },
+      "range": {
+        "lineBegin": 47,
+        "columnBegin": 9,
+        "lineEnd": 47,
+        "columnEnd": 15
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "example.ts/local 13" },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 47,
+                "columnBegin": 9,
+                "lineEnd": 47,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "example.ts" },
+      "range": {
+        "lineBegin": 49,
+        "columnBegin": 9,
+        "lineEnd": 49,
+        "columnEnd": 11
+      },
+      "defn": {
+        "key": {
+          "symbol": { "key": "example.ts/local 16" },
+          "location": {
+            "key": {
+              "file": { "key": "example.ts" },
+              "range": {
+                "lineBegin": 49,
+                "columnBegin": 9,
+                "lineEnd": 49,
+                "columnEnd": 11
               }
             }
           }

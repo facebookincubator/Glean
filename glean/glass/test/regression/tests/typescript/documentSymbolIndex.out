@@ -3,7 +3,7 @@
     {
         "referenced_file_digests": {},
         "revision": "testhash",
-        "size": 30,
+        "size": 43,
         "symbols": {
             "1": [
                 {
@@ -119,6 +119,32 @@
                 {
                     "attributes": {
                         "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "6"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```ts\nvar res: any\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 16,
+                        "lineEnd": 16
+                    },
+                    "sym": "test/ts/example.ts%2Flocal/6"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
                             "aInteger": 10
                         },
                         "symbolLanguage": {
@@ -197,6 +223,158 @@
                         "lineEnd": 16
                     },
                     "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2Fsilent0:"
+                }
+            ],
+            "17": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "6"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```ts\nvar res: any\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 12,
+                        "lineBegin": 17,
+                        "lineEnd": 17
+                    },
+                    "sym": "test/ts/example.ts%2Flocal/6",
+                    "target": {
+                        "filepath": "example.ts",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 14,
+                            "lineBegin": 16,
+                            "lineEnd": 16
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "18": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "6"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```ts\nvar res: any\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 52,
+                        "columnEnd": 55,
+                        "lineBegin": 18,
+                        "lineEnd": 18
+                    },
+                    "sym": "test/ts/example.ts%2Flocal/6",
+                    "target": {
+                        "filepath": "example.ts",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 14,
+                            "lineBegin": 16,
+                            "lineEnd": 16
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "19": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "6"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```ts\nvar res: any\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 19,
+                        "lineEnd": 19
+                    },
+                    "sym": "test/ts/example.ts%2Flocal/6",
+                    "target": {
+                        "filepath": "example.ts",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 14,
+                            "lineBegin": 16,
+                            "lineEnd": 16
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "20": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "6"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```ts\nvar res: any\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 14,
+                        "lineBegin": 20,
+                        "lineEnd": 20
+                    },
+                    "sym": "test/ts/example.ts%2Flocal/6",
+                    "target": {
+                        "filepath": "example.ts",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 14,
+                            "lineBegin": 16,
+                            "lineEnd": 16
+                        },
+                        "repository": "test"
+                    }
                 }
             ],
             "24": [
@@ -565,6 +743,32 @@
                 {
                     "attributes": {
                         "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "9"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```ts\nvar addRes: any\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 17,
+                        "lineBegin": 35,
+                        "lineEnd": 35
+                    },
+                    "sym": "test/ts/example.ts%2Flocal/9"
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
                             "aInteger": 10
                         },
                         "symbolLanguage": {
@@ -643,6 +847,158 @@
                         "lineEnd": 35
                     },
                     "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2Fsilent4:"
+                }
+            ],
+            "36": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "9"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```ts\nvar addRes: any\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 15,
+                        "lineBegin": 36,
+                        "lineEnd": 36
+                    },
+                    "sym": "test/ts/example.ts%2Flocal/9",
+                    "target": {
+                        "filepath": "example.ts",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 17,
+                            "lineBegin": 35,
+                            "lineEnd": 35
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "37": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "9"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```ts\nvar addRes: any\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 51,
+                        "columnEnd": 57,
+                        "lineBegin": 37,
+                        "lineEnd": 37
+                    },
+                    "sym": "test/ts/example.ts%2Flocal/9",
+                    "target": {
+                        "filepath": "example.ts",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 17,
+                            "lineBegin": 35,
+                            "lineEnd": 35
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "38": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "9"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```ts\nvar addRes: any\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 17,
+                        "lineBegin": 38,
+                        "lineEnd": 38
+                    },
+                    "sym": "test/ts/example.ts%2Flocal/9",
+                    "target": {
+                        "filepath": "example.ts",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 17,
+                            "lineBegin": 35,
+                            "lineEnd": 35
+                        },
+                        "repository": "test"
+                    }
+                }
+            ],
+            "39": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "9"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```ts\nvar addRes: any\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 11,
+                        "columnEnd": 17,
+                        "lineBegin": 39,
+                        "lineEnd": 39
+                    },
+                    "sym": "test/ts/example.ts%2Flocal/9",
+                    "target": {
+                        "filepath": "example.ts",
+                        "range": {
+                            "columnBegin": 11,
+                            "columnEnd": 17,
+                            "lineBegin": 35,
+                            "lineEnd": 35
+                        },
+                        "repository": "test"
+                    }
                 }
             ],
             "46": [
@@ -761,7 +1117,97 @@
                     "sym": "test/ts/scip-typescript/npm/././%60example.ts%60%2FcreateTempRepo%28%29.typeLiteral10:repoDir."
                 }
             ],
+            "47": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "13"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```ts\nvar repoDir: any\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 16,
+                        "lineBegin": 47,
+                        "lineEnd": 47
+                    },
+                    "sym": "test/ts/example.ts%2Flocal/13"
+                }
+            ],
             "49": [
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "13"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```ts\nvar repoDir: any\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 23,
+                        "columnEnd": 30,
+                        "lineBegin": 49,
+                        "lineEnd": 49
+                    },
+                    "sym": "test/ts/example.ts%2Flocal/13",
+                    "target": {
+                        "filepath": "example.ts",
+                        "range": {
+                            "columnBegin": 9,
+                            "columnEnd": 16,
+                            "lineBegin": 47,
+                            "lineEnd": 47
+                        },
+                        "repository": "test"
+                    }
+                },
+                {
+                    "attributes": {
+                        "symbolKind": {
+                            "aInteger": 15
+                        },
+                        "symbolLanguage": {
+                            "aInteger": 13
+                        },
+                        "symbolName": {
+                            "aString": "16"
+                        },
+                        "symbolParent": {
+                            "aString": ""
+                        },
+                        "symbolSignature": {
+                            "aString": "```ts\nvar git: Git\n```"
+                        }
+                    },
+                    "range": {
+                        "columnBegin": 9,
+                        "columnEnd": 12,
+                        "lineBegin": 49,
+                        "lineEnd": 49
+                    },
+                    "sym": "test/ts/example.ts%2Flocal/16"
+                },
                 {
                     "attributes": {
                         "symbolKind": {

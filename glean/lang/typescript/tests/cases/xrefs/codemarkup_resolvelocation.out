@@ -804,5 +804,153 @@
         }
       }
     }
+  },
+  {
+    "key": {
+      "location": {
+        "name": "local 13",
+        "file": { "key": "example.ts" },
+        "location": {
+          "range": {
+            "file": { "key": "example.ts" },
+            "lineBegin": 47,
+            "columnBegin": 9,
+            "lineEnd": 47,
+            "columnEnd": 15
+          }
+        }
+      },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "example.ts/local 13" },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 47,
+                    "columnBegin": 9,
+                    "lineEnd": 47,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "location": {
+        "name": "local 16",
+        "file": { "key": "example.ts" },
+        "location": {
+          "range": {
+            "file": { "key": "example.ts" },
+            "lineBegin": 49,
+            "columnBegin": 9,
+            "lineEnd": 49,
+            "columnEnd": 11
+          }
+        }
+      },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "example.ts/local 16" },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 49,
+                    "columnBegin": 9,
+                    "lineEnd": 49,
+                    "columnEnd": 11
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "location": {
+        "name": "local 6",
+        "file": { "key": "example.ts" },
+        "location": {
+          "range": {
+            "file": { "key": "example.ts" },
+            "lineBegin": 16,
+            "columnBegin": 11,
+            "lineEnd": 16,
+            "columnEnd": 13
+          }
+        }
+      },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "example.ts/local 6" },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 11,
+                    "lineEnd": 16,
+                    "columnEnd": 13
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "location": {
+        "name": "local 9",
+        "file": { "key": "example.ts" },
+        "location": {
+          "range": {
+            "file": { "key": "example.ts" },
+            "lineBegin": 35,
+            "columnBegin": 11,
+            "lineEnd": 35,
+            "columnEnd": 16
+          }
+        }
+      },
+      "entity": {
+        "typescript": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "example.ts/local 9" },
+              "location": {
+                "key": {
+                  "file": { "key": "example.ts" },
+                  "range": {
+                    "lineBegin": 35,
+                    "columnBegin": 11,
+                    "lineEnd": 35,
+                    "columnEnd": 16
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 ]
