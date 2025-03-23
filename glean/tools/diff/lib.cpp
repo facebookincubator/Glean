@@ -81,7 +81,7 @@ struct TSubstitution {
   TSubstitution(Id first, size_t size_)
       : size(size_), base(first), shard_size(std::min(size, max_shard_size)) {
     auto shard_count =
-        size / shard_size + std::min(1, (int)(size % shard_size));
+        size / shard_size + std::min(1, static_cast<int>(size % shard_size));
     shards.reserve(shard_count);
     for (size_t ix = 0; ix < shard_count; ix++) {
       auto size_this_shard = std::min(shard_size, size - (ix * shard_size));
