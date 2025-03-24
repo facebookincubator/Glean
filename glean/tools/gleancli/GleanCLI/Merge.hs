@@ -22,6 +22,7 @@ import System.Process
 
 import Control.Concurrent.Stream
 import Util.OptParse
+import Util.Log
 import Thrift.Protocol.Compact
 
 import Glean.LocalOrRemote (loadDbSchema)
@@ -40,6 +41,7 @@ import GleanCLI.Common (dbOpts, fileFormatOpt, FileFormat (..))
 import Glean.Write (fileToBatches, schemaIdToOpts)
 import Glean.Write.JSON (buildJsonBatch)
 import System.Directory.Extra (listFiles)
+
 
 data MergeCommand = MergeCommand
   { mergeFiles :: [FilePath]
@@ -82,6 +84,7 @@ instance Plugin MergeCommand where
         dbSchema <- Glean.withBackendWithDefaultOptions
           _evb _cfgAPI _svc Nothing $ \backend -> do
             loadDbSchema backend repo
+        logInfo("db's schema ID is: "  <> show(schemaId dbSchema))
         return (schemaInventory dbSchema, Just dbSchema)
       Right mergeInventory -> do
         inventory <- Inventory.deserialize <$> B.readFile mergeInventory
@@ -141,7 +144,7 @@ instance Plugin MergeCommand where
         where
         read :: FilePath -> Int -> FactSet -> IO FactOwnership
         read file size factSet = do
-          hPutStrLn stderr $ "Reading " <> file <> " (" <> show size <> ")"
+          logInfo $ "Reading " <> file <> " (" <> show size <> " bytes)"
           batch <- case fileFormat of
             JsonFormat -> do
               case dbSchema of
@@ -149,8 +152,22 @@ instance Plugin MergeCommand where
                   "No db schema to serialize json format file. "
                   <> "Please specify the database"
                 Just schema -> do
-                  (batches, schema_id) <- fileToBatches file
-                  buildJsonBatch schema (schemaIdToOpts schema_id) batches
+                  (batches, schema_id_file) <- fileToBatches file
+                  if Just(schemaId schema) == schema_id_file then
+                    logInfo(
+                      "Schema matches with db schema. Merging data from "
+                      <>  file
+                      )
+                  else
+                    throwIO $ ErrorCall $
+                        "ERROR - ABORTING MERGE\nSchema ID mismatch:\ndb: "
+                        <> show(schemaId schema) <> "\nvs\nFile: "
+                        <> file <> " has " <> show schema_id_file
+                  let getSchemaId theschema = Just(schemaId theschema) in
+                    buildJsonBatch schema
+                        (schemaIdToOpts $ getSchemaId schema) batches
+
+
             BinaryFormat -> do
               bytes <- B.readFile file
               case deserializeCompact bytes of
