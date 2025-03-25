@@ -18,7 +18,7 @@ jobs:
             compiler: clang
     runs-on: 32-core-ubuntu
     container:
-      image: ubuntu:25.04
+      image: ubuntu:24.04
       options: --security-opt=seccomp=unconfined
     steps:
       - name: Checkout Repository
