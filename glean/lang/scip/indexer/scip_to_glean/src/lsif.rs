@@ -185,9 +185,6 @@ impl LanguageId {
             "xml" => XML,
             "xsl" => XSL,
             "yaml" => YAML,
-
-            // Added to mimic the behavior of fileLanguageOf
-            "kt" => Kotlin,
             _ => UnknownLanguage,
         }
     }

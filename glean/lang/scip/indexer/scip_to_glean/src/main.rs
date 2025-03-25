@@ -44,7 +44,7 @@ struct BuildJsonArgs {
 
     #[arg(
         long,
-        help = "Ignored. This argument exists for compatibility with Haskell. The only effect of --infer-language in the Haskell code is to detect .kt as Kotlin. The Rust version does this unconditionally."
+        help = "Infer language for .java and .hk files when language is not set"
     )]
     infer_language: bool,
 
@@ -81,7 +81,12 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
         env.decode_scip_metadata(metadata);
     }
     for doc in scip_index.documents {
-        env.decode_scip_doc(default_language, args.root_prefix.as_deref(), doc)?;
+        env.decode_scip_doc(
+            default_language,
+            args.infer_language,
+            args.root_prefix.as_deref(),
+            doc,
+        )?;
     }
 
     let write = OpenOptions::new()

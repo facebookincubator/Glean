@@ -84,6 +84,7 @@ impl Env {
     pub fn decode_scip_doc(
         &mut self,
         default_lang: Option<LanguageId>,
+        infer_language: bool,
         path_prefix: Option<&str>,
         doc: Document,
     ) -> Result<()> {
@@ -102,6 +103,13 @@ impl Env {
 
         let lang = LanguageId::new(&doc.language)
             .known()
+            .or_else(|| {
+                if infer_language {
+                    self.file_language_of(&filepath)
+                } else {
+                    None
+                }
+            })
             .or(default_lang)
             .unwrap_or_default();
         self.out.file_lang(lang_file_id, src_file_id, lang);
@@ -115,6 +123,15 @@ impl Env {
         }
 
         Ok(())
+    }
+
+    fn file_language_of(&self, filepath: &str) -> Option<LanguageId> {
+        if filepath.ends_with(".kt") {
+            return Some(LanguageId::Kotlin);
+        } else if filepath.ends_with(".java") {
+            return Some(LanguageId::Java);
+        }
+        None
     }
 
     fn decode_scip_info(&mut self, filepath: &str, info: SymbolInformation) -> Result<()> {
