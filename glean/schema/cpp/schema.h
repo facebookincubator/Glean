@@ -8229,7 +8229,7 @@ struct FileAttributes : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::
 } // namespace schema
 
 template<> struct Repr_<facebook::glean::cpp::schema::Perf::Domain> {
-  using Type = Sum<facebook::glean::cpp::schema::Perf::SymbolId, facebook::glean::cpp::schema::Perf::ServiceId, Tuple<facebook::glean::cpp::schema::Perf::SymbolId, facebook::glean::cpp::schema::Perf::ServiceId>, Tuple<facebook::glean::cpp::schema::Src::File, facebook::glean::cpp::schema::Perf::QualifiedName>, Tuple<facebook::glean::cpp::schema::Src::File, Nat, facebook::glean::cpp::schema::Perf::QualifiedName>, Tuple<facebook::glean::cpp::schema::Src::File, facebook::glean::cpp::schema::Perf::ServiceRevision, Nat, facebook::glean::cpp::schema::Perf::QualifiedName>, Tuple<facebook::glean::cpp::schema::Src::File, facebook::glean::cpp::schema::Perf::Denominators, Nat, facebook::glean::cpp::schema::Perf::QualifiedName>, facebook::glean::cpp::schema::Perf::FileAttributes>;
+  using Type = Sum<facebook::glean::cpp::schema::Perf::SymbolId, facebook::glean::cpp::schema::Perf::ServiceId, Tuple<facebook::glean::cpp::schema::Perf::SymbolId, facebook::glean::cpp::schema::Perf::ServiceId>, Tuple<facebook::glean::cpp::schema::Src::File, facebook::glean::cpp::schema::Perf::QualifiedName>, Tuple<facebook::glean::cpp::schema::Src::File, Nat, facebook::glean::cpp::schema::Perf::QualifiedName>, Tuple<facebook::glean::cpp::schema::Src::File, facebook::glean::cpp::schema::Perf::ServiceRevision, Nat, facebook::glean::cpp::schema::Perf::QualifiedName>, Tuple<facebook::glean::cpp::schema::Src::File, facebook::glean::cpp::schema::Perf::Denominators, Nat, facebook::glean::cpp::schema::Perf::QualifiedName>, facebook::glean::cpp::schema::Perf::FileAttributes, Tuple<facebook::glean::cpp::schema::Src::File, String, Nat, facebook::glean::cpp::schema::Perf::QualifiedName>>;
 };
 
 
@@ -8238,7 +8238,7 @@ namespace schema {
 namespace Perf {
 
 struct Domain {
-  boost::variant<Alt<0, Fact<SymbolId>>, Alt<1, Fact<ServiceId>>, Alt<2, std::tuple<Fact<SymbolId>, Fact<ServiceId>>>, Alt<3, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, Fact<QualifiedName>>>, Alt<4, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, uint64_t, Fact<QualifiedName>>>, Alt<5, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, Fact<ServiceRevision>, uint64_t, Fact<QualifiedName>>>, Alt<6, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, Fact<Denominators>, uint64_t, Fact<QualifiedName>>>, Alt<7, Fact<FileAttributes>>> GLEAN_value;
+  boost::variant<Alt<0, Fact<SymbolId>>, Alt<1, Fact<ServiceId>>, Alt<2, std::tuple<Fact<SymbolId>, Fact<ServiceId>>>, Alt<3, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, Fact<QualifiedName>>>, Alt<4, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, uint64_t, Fact<QualifiedName>>>, Alt<5, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, Fact<ServiceRevision>, uint64_t, Fact<QualifiedName>>>, Alt<6, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, Fact<Denominators>, uint64_t, Fact<QualifiedName>>>, Alt<7, Fact<FileAttributes>>, Alt<8, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, std::string, uint64_t, Fact<QualifiedName>>>> GLEAN_value;
 
   static Domain symbol(const Fact<SymbolId>& a) {
     return Domain{Alt<0, Fact<SymbolId>>(a)};
@@ -8263,6 +8263,9 @@ struct Domain {
   }
   static Domain fileAttributes(const Fact<FileAttributes>& a) {
     return Domain{Alt<7, Fact<FileAttributes>>(a)};
+  }
+  static Domain assemblyCode(const Fact<facebook::glean::cpp::schema::Src::File>& file, const std::string& assemblyBlobLink, const uint64_t& line, const Fact<QualifiedName>& symbol) {
+    return Domain{Alt<8, std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, std::string, uint64_t, Fact<QualifiedName>>>(std::make_tuple(file, assemblyBlobLink, line, symbol))};
   }
 
   bool operator==(const Domain& other) const {
@@ -29811,7 +29814,7 @@ struct ArgumentValue : Predicate<boost::variant<Alt<0, std::string>, Alt<1, std:
 struct SCHEMA {
   template<typename P> struct index;
   static constexpr size_t count = 1332;
-  static constexpr char schemaId[] = "54195d609c9195d2bc09d8fa05050bf7";
+  static constexpr char schemaId[] = "48f4671bb4f9e91b5294998caf7342a7";
   template<size_t i> struct predicate;
 };
 
