@@ -117,7 +117,7 @@ genTargets slashVn info =
     langs = map (\x -> "\"" <> x <> "\"") [
         "hs2",
         "py-deprecated",
-        "py3",
+        "py3-deprecated",
         "python",
         "java-swift",
         "rust",
