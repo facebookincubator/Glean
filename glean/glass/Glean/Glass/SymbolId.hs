@@ -243,6 +243,7 @@ entityLanguage e = case e of
   Code.Entity_scip Scip.Entity_typescript{} -> Language_TypeScript
   Code.Entity_scip Scip.Entity_java{} -> Language_Java
   Code.Entity_scip Scip.Entity_kotlin{} -> Language_Kotlin
+  Code.Entity_scip Scip.Entity_swift{} -> Language_Swift
   Code.Entity_scip _ -> Language__UNKNOWN 0
   Code.Entity_EMPTY -> Language__UNKNOWN 0
 
