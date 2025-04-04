@@ -1,0 +1,46 @@
+[
+    "@generated",
+    {
+        "resolvedSymbols": [
+            {
+                "symbol": "test/php/ns/NS",
+                "symbolResolutions": [
+                    {
+                        "location": {
+                            "filepath": "www/Namespace.php",
+                            "range": {
+                                "columnBegin": 11,
+                                "columnEnd": 13,
+                                "lineBegin": 10,
+                                "lineEnd": 10
+                            },
+                            "repository": "test"
+                        },
+                        "qname": {
+                            "container": "",
+                            "localName": "NS"
+                        },
+                        "revision": "testhash"
+                    },
+                    {
+                        "location": {
+                            "filepath": "www/Namespace2.php",
+                            "range": {
+                                "columnBegin": 11,
+                                "columnEnd": 13,
+                                "lineBegin": 11,
+                                "lineEnd": 11
+                            },
+                            "repository": "test"
+                        },
+                        "qname": {
+                            "container": "",
+                            "localName": "NS"
+                        },
+                        "revision": "testhash"
+                    }
+                ]
+            }
+        ]
+    }
+]

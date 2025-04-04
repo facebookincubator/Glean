@@ -194,6 +194,8 @@ evalQuery glassEnv qFile Query{..} oFile = case action of
     (Glass.symbolLocation glassEnv)
   "describeSymbol" -> withSymbolId oFile args
     (Glass.describeSymbol glassEnv)
+  "resolveSymbols" -> withObjectArgs qFile oFile args request_args
+    (Glass.resolveSymbols glassEnv)
   "searchSymbol" ->  withObjectArgs qFile oFile args request_args
     (Glass.searchSymbol glassEnv)
   "searchRelated" -> withObjectAndSymbolId qFile oFile args
@@ -228,7 +230,7 @@ validateCxxSymbols glassEnv req def = do
   return (map Cxx.validateSymbolId toks)
 
 decodeObjectAsThriftJson
-  :: (Thrift.Protocol.ThriftStruct a, ToJSON a)
+  :: Thrift.Protocol.ThriftSerializable a
   => Aeson.Value -> Either String a
 decodeObjectAsThriftJson
   = Thrift.deserializeJSON . S.concat . B.toChunks. encode
@@ -244,8 +246,9 @@ withSymbolId oFile args f = do
   writeResult oFile res
 
 withObjectArgs
- :: (Thrift.Protocol.ThriftStruct req, Thrift.Protocol.ThriftStruct opts,
-     ToJSON req, ToJSON a, ToJSON opts, Default opts, DeterministicResponse a)
+ :: (Thrift.Protocol.ThriftSerializable req,
+     Thrift.Protocol.ThriftSerializable opts,
+     ToJSON a, Default opts, DeterministicResponse a)
  => FilePath
  -> FilePath
  -> Value
@@ -285,7 +288,7 @@ withObjectAndSymbolId qFile oFile args f = do
   writeResult oFile res
 
 parseAsObject
-  :: (Thrift.Protocol.ThriftStruct a, ToJSON a) => String -> Value -> IO a
+  :: Thrift.Protocol.ThriftSerializable a => String -> Value -> IO a
 parseAsObject file args = case decodeObjectAsThriftJson args of
   Left str -> assertFailure $ "Invalid args in " <> file <> " : " <> str
   Right req -> pure req
@@ -335,8 +338,13 @@ instance (DeterministicResponse a, Ord a) => DeterministicResponse [a] where
 
 instance DeterministicResponse Range where det = id
 instance DeterministicResponse LocationRange where det = id
+instance DeterministicResponse Glass.QualifiedName where det = id
 instance DeterministicResponse SymbolLocation where
   det (SymbolLocation loc _rev) = SymbolLocation (det loc) (Revision "testhash")
+
+instance DeterministicResponse SymbolResolution where
+  det (SymbolResolution qname loc _rev) =
+    SymbolResolution (det qname) (det loc) (Revision "testhash")
 
 instance DeterministicResponse SearchRelatedResult where
   det (SearchRelatedResult xs ys) = -- to edit the desc hash
@@ -399,6 +407,11 @@ instance DeterministicResponse FileIncludeLocationResults where
 instance DeterministicResponse FileIncludeXRef where
   det (FileIncludeXRef path incs) =
     FileIncludeXRef path (sort incs)
+instance DeterministicResponse ResolveSymbolsResult where
+  det (ResolveSymbolsResult syms) =
+    ResolveSymbolsResult (det syms)
+instance DeterministicResponse ResolvedSymbol where
+  det (ResolvedSymbol sym loc) = ResolvedSymbol (det sym) (det loc)
 
 diff :: FilePath -> FilePath -> IO ()
 diff outGenerated outSpec = do

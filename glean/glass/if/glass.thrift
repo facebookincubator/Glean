@@ -81,6 +81,14 @@ struct SymbolLocation {
   2: Revision revision;
 }
 
+struct SymbolResolution {
+  1: QualifiedName qname;
+  // Repository, filepath and line / column range
+  2: LocationRange location;
+  // the revision for which the location is defined
+  3: Revision revision;
+}
+
 struct AttributeOptions {
   1: bool fetch_per_line_data = false;
   2: optional Revision revision;
@@ -724,6 +732,19 @@ struct FileIncludeLocationResults {
   3: XRefFileList references;
 }
 
+struct ResolveSymbolsRequest {
+  1: list<SymbolId> symbols;
+}
+
+struct ResolvedSymbol {
+  1: SymbolId symbol;
+  2: list<SymbolResolution> symbolResolutions;
+}
+
+struct ResolveSymbolsResult {
+  1: list<ResolvedSymbol> resolvedSymbols;
+}
+
 # Response to ClangD for what we know about a USR and its target definition
 struct USRSymbolDefinition {
   // location of the definition (or fallback to decl)
@@ -786,6 +807,11 @@ service GlassService extends fb303.FacebookService {
   // Return just the symbol's location as efficiently as possible
   SymbolLocation symbolLocation(
     1: SymbolId symbol,
+    2: RequestOptions options,
+  ) throws (1: ServerException e, 2: GlassException g);
+
+  ResolveSymbolsResult resolveSymbols(
+    1: ResolveSymbolsRequest request,
     2: RequestOptions options,
   ) throws (1: ServerException e, 2: GlassException g);
 

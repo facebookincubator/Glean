@@ -189,6 +189,7 @@ glassHandler env0 cmd =
   -- Symbol info
   DescribeSymbol r opts -> Handler.describeSymbol env r opts
   SymbolLocation r opts -> Handler.symbolLocation env r opts
+  ResolveSymbols r opts -> Handler.resolveSymbols env r opts
 
   -- Search for symbols
   -- by string

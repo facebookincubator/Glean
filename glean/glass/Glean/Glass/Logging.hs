@@ -177,6 +177,9 @@ instance LogResult SymbolDescription where
     logResult symbolDescription_sym <>
     Logger.setItemCount 1
 
+instance LogResult [SymbolResolution] where
+  logResult xs = Logger.setItemCount (length xs)
+
 instance LogResult SymbolPath where
   logResult SymbolPath{..} =
     Logger.setRepo (unRepoName symbolPath_repository)

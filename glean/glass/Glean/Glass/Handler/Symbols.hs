@@ -19,6 +19,7 @@ module Glean.Glass.Handler.Symbols
   -- * working with symbol ids
   , symbolLocation
   , describeSymbol
+  , resolveSymbols
 
   -- * searching by string
   , searchSymbol
@@ -162,6 +163,43 @@ describeSymbol env@Glass.Env{..} symId opts =
               scmRepo (toCodeEntityLoc this) Nothing
         let !desc = foldr combineDescriptions desc0 descN
         pure (desc, err)
+
+resolveSymbols
+  :: Glass.Env
+  -> ResolveSymbolsRequest
+  -> RequestOptions
+  -> IO ResolveSymbolsResult
+resolveSymbols env@Glass.Env{..} (ResolveSymbolsRequest symIds) opts =
+  ResolveSymbolsResult <$>
+  forM symIds (\symId ->
+    ResolvedSymbol symId <$>
+    withSymbol "resolveSymbols" env opts symId
+      (\gleanDBs dbInfo (scmRepo, lang, toks) ->
+        backendRunHaxl GleanBackend{..} env $ do
+          r <- Search.searchEntityLocation lang toks
+          (entities, err) <- case r of
+            None t -> throwM (ServerException t)
+            One e -> return ([e], Nothing)
+            Many{initial = e, rest = es} -> return (e : es, Nothing)
+          let scmRevs = scmRevisions dbInfo
+          res <- forM entities $ \this ->
+            let SearchEntity
+                  { entityRepo
+                  , decl = (entity :: Code.Entity, file, rangespan, _text)
+                  } = this
+              in withRepo entityRepo $ do
+                  qname <- eThrow =<< toQualifiedName entity
+                  location <- rangeSpanToLocationRange scmRepo file rangespan
+                  repo_hash <-
+                    getRepoHashForLocation location scmRevs <$> Glean.haxlRepo
+                  pure $
+                    SymbolResolution
+                      { symbolResolution_qname = qname
+                      , symbolResolution_location = location
+                      , symbolResolution_revision = repo_hash
+                      }
+          pure (res, err)))
+
 
 toCodeEntityLoc ::
   SearchEntity (ResultLocation Code.Entity) -> CodeEntityLocation
