@@ -143,7 +143,7 @@ resolveSchema schemas = runExcept $ do
     out s = schemaDependencies s <> evolvesOf (schemaName s)
 
     schemaDependencies SourceSchema{..} =
-      schemaInherits ++ [ name | SourceImport name <- schemaDecls ]
+      schemaInherits ++ [ name | SourceImport name _ <- schemaDecls ]
 
     evolves = HashMap.fromListWith (++)
       [ (new, [old])
@@ -217,7 +217,7 @@ resolveSchemaRefs SourceSchemas{..} = do
        where
        unknown = throwError $ "unknown schema: " <> showRef ref
 
-     resolveDecl (SourceImport r) = SourceImport <$> schemaByName r
+     resolveDecl (SourceImport r s) = SourceImport <$> schemaByName r <*> pure s
      resolveDecl decl = return decl
 
      resolveEvolve (SourceEvolves l n o) =
@@ -271,7 +271,7 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
   inherits <- traverse schemaByName schemaInherits
 
   -- All the schemas we imported
-  imports <- traverse schemaByName [ name | SourceImport name <- schemaDecls ]
+  imports <- traverse schemaByName [ name | SourceImport name _ <- schemaDecls ]
 
   let
     qualify :: Name -> Name

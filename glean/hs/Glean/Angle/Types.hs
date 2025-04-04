@@ -655,7 +655,7 @@ data SourceSchemas_ s = SourceSchemas
   deriving (Eq)
 
 data SourceDecl_ s
-  = SourceImport SourceRef
+  = SourceImport SourceRef s
   | SourcePredicate (SourcePredicateDef' s)
   | SourceType SourceTypeDef
   | SourceDeriving SourceRef (SourceDerivingInfo' s)
@@ -810,7 +810,7 @@ instance Display SourceSchema where
     ]
 
 instance Display SourceDecl where
-  display opts (SourceImport name) = "import " <> display opts name
+  display opts (SourceImport name _) = "import " <> display opts name
   display opts (SourcePredicate def) = display opts def
   display opts (SourceType def) = display opts def
   display opts (SourceDeriving ref der) =
@@ -1011,7 +1011,7 @@ rmLocEvolves (SourceEvolves _ a b) = SourceEvolves () a b
 
 rmLocDecl :: SourceDecl_ a -> SourceDecl_ ()
 rmLocDecl = \case
-  SourceImport name -> SourceImport name
+  SourceImport name _ -> SourceImport name ()
   SourcePredicate pred -> SourcePredicate $ pred
       { predicateDefDeriving = rmLocQuery <$> predicateDefDeriving pred
       , predicateDefSrcSpan = ()}

@@ -248,7 +248,7 @@ inherit
 
 schemadecl :: { [Schema.SourceDecl] }
 schemadecl
-  : 'import' qname  { [Schema.SourceImport (lval $2)] }
+  : 'import' qname  { [Schema.SourceImport (lval $2) (sspan $2)] }
   | typedef  { [$1] }
   | predicate  { $1 }
   | derivedecl  { [$1] }

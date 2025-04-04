@@ -321,7 +321,7 @@ schemaGraph sourceSchemas = Map.fromList
 
 schemaDependencies :: SourceSchema -> [SourceRef]
 schemaDependencies SourceSchema{..} =
-  schemaInherits ++ [ name | SourceImport name <- schemaDecls ]
+  schemaInherits ++ [ name | SourceImport name _ <- schemaDecls ]
 
 predicateGraph :: Bool -> DbSchema -> Map Text [Text]
 predicateGraph ignoreDerivations dbschema = Map.fromList
