@@ -78,6 +78,7 @@ import Glean.Glass.Tracing (traceSpan)
 import qualified Glean.Glass.Utils as Utils
 import Glean.Glass.Utils ( fst4 )
 import Logger.GleanGlass (GleanGlassLogger)
+import qualified Glean.Glass.Attributes.Frame as Attributes
 
 
 -- | Runner for methods that are keyed by a file path
@@ -526,11 +527,24 @@ fetchDocumentSymbols env@Glass.Env{..} (FileReference scsrepo path)
               XlangXRef (rangeSpan, Code.IdlEntity {
                 idlEntity_entity = Just ent }) <- xrefs ]
 
-        let (refs, defs, _) = Attributes.augmentSymbols
+        let (refs2, defs2, _) = Attributes.augmentSymbols
               Attributes.SymbolKindAttr
               kinds
               (xRefDataToRefEntitySymbol <$> refsPlain)
               defs1
+              attrOpts
+
+        defsToFrames <- (
+          if attributeOptions_fetch_frame_matches attrOpts then
+             withRepo fileRepo $ do addFramesToDefs defs2
+          else
+              return mempty [])
+
+        let (refs, defs, _) = Attributes.augmentSymbols
+              Attributes.FrameAttr
+              defsToFrames
+              refs2
+              defs2
               attrOpts
 
         return (DocumentSymbols {
@@ -888,6 +902,15 @@ newtype GetStaticAttributes =
 
 -- -----------------------------------------------------------------------------
 -- Attributes
+addFramesToDefs
+  :: [(Code.Entity, DefinitionSymbolX)]
+  -> Glean.RepoHaxl u w [(Code.Entity, Text)]
+addFramesToDefs defs =
+  do forM defs
+       $ \ (entity, _)
+           -> do qName <- toStrobelight entity
+                 return (entity, qName)
+
 
 --
 -- | Check if this db / lang pair has additional dynamic attributes

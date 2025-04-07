@@ -94,6 +94,7 @@ struct AttributeOptions {
   2: optional Revision revision;
   3: optional ServiceID service_id;
   4: optional BinaryName binary_name;
+  5: bool fetch_frame_matches = false;
 }
 
 typedef string ServiceID (hs.newtype)

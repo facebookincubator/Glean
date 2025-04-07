@@ -17,6 +17,8 @@ module Glean.Glass.SymbolId.Class (
   -- ** qualified names
   , ToQName(..)
 
+  , ToStrobelightFrame(..)
+
   -- ** labels and other attributes
   , ToSymbolParent(..)
 
@@ -76,6 +78,9 @@ class Symbol a where
 -- | Symbols that have qualified names can be searched
 class Symbol a => ToQName a where
   toQName :: a -> Glean.RepoHaxl u w (Either Text (Name, Name))
+
+class ToStrobelightFrame a where
+  toStrobelightFrame :: a -> Glean.RepoHaxl u w Text
 
 -- first level parent identifier
 class ToSymbolParent a where

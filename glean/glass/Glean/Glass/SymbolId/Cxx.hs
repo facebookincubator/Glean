@@ -607,7 +607,47 @@ instance ToQName Cxx.Entity where
                       in Right (Name name', Name (intercalate "::" ns))
                     | otherwise -> Right (Name name, Name (intercalate "::" ms))
 
---
+
+instance ToStrobelightFrame Cxx.Entity where
+  -- convert to strobelight frame format
+  -- largely similar to qualified name, with some small differences
+  -- For now we only support: functions, destructors
+  toStrobelightFrame e = do
+    symId <- toSymbolWithPath e (Path mempty)
+    return $ case symId of
+      [] -> ""
+      [name] -> name
+      x@(_:_) ->
+        case Prelude.break (== ".f") x of
+          (scope, ".f":params) ->
+            functionSignatureFrameStrobelight False scope params
+          _ -> case Prelude.break (== ".d") x of
+            (scope, ".d":_anything) -> dtorFrameStrobelight scope
+            _ -> ""
+
+functionSignatureFrameStrobelight :: Bool -> [Text] -> [Text] -> Text
+functionSignatureFrameStrobelight _ [] _ =
+  "functionSignatureQName: empty function name"
+functionSignatureFrameStrobelight _ _ [] =
+  "functionSignatureQName: empty signature"
+functionSignatureFrameStrobelight _ prefix _ = scopename <> "::" <> localname
+  where
+    localname = name
+    scopename = intercalate "::" scope
+
+    (scope, name) = case prefix of
+      [n] -> ([], n)
+      _ -> (filter (/= "") $ init prefix, last prefix)
+
+dtorFrameStrobelight :: [Text] -> Text
+dtorFrameStrobelight prefix = scopename <> "::" <> localname
+  where
+    localname = "~" <> name
+    scopename = intercalate "::" scope
+    (scope, name) = case prefix of
+      [n] -> ([], n)
+      _ -> (filter (/= "") $ init prefix, last prefix)
+
 -- e.g. default constructors:
 -- fbsource/cpp/fbcode/folly/dynamic/.c/.decl
 --
