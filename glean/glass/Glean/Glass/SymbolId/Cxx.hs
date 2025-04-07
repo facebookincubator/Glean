@@ -618,12 +618,14 @@ instance ToStrobelightFrame Cxx.Entity where
       [] -> ""
       [name] -> name
       x@(_:_) ->
-        case Prelude.break (== ".f") x of
-          (scope, ".f":params) ->
-            functionSignatureFrameStrobelight False scope params
-          _ -> case Prelude.break (== ".d") x of
-            (scope, ".d":_anything) -> dtorFrameStrobelight scope
-            _ -> ""
+        case Prelude.break (== ".c") x of
+          (scope, ".c":params) -> ctorFrameStrobelight scope params
+          _ -> case Prelude.break (== ".f") x of
+            (scope, ".f":params) ->
+              functionSignatureFrameStrobelight False scope params
+            _ -> case Prelude.break (== ".d") x of
+              (scope, ".d":_anything) -> dtorFrameStrobelight scope
+              _ -> ""
 
 functionSignatureFrameStrobelight :: Bool -> [Text] -> [Text] -> Text
 functionSignatureFrameStrobelight _ [] _ =
@@ -640,9 +642,17 @@ functionSignatureFrameStrobelight _ prefix _ = scopename <> "::" <> localname
       _ -> (filter (/= "") $ init prefix, last prefix)
 
 dtorFrameStrobelight :: [Text] -> Text
-dtorFrameStrobelight prefix = scopename <> "::" <> localname
+dtorFrameStrobelight prefix = scopename <> "::" <> name <> "::" <> localname
   where
     localname = "~" <> name
+    scopename = intercalate "::" scope
+    (scope, name) = case prefix of
+      [n] -> ([], n)
+      _ -> (filter (/= "") $ init prefix, last prefix)
+
+ctorFrameStrobelight :: [Text] -> [Text] -> Text
+ctorFrameStrobelight prefix _ = scopename <> "::" <> name <> "::" <> name
+  where
     scopename = intercalate "::" scope
     (scope, name) = case prefix of
       [n] -> ([], n)
