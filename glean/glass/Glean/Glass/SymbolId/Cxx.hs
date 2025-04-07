@@ -620,8 +620,10 @@ instance ToStrobelightFrame Cxx.Entity where
       x@(_:_) ->
         case Prelude.break (== ".c") x of
           (scope, ".c":params) -> ctorFrameStrobelight scope params
-          _ -> case Prelude.break (== ".f") x of
+          _ -> case Prelude.break (\x -> x `elem` [".f",".o"]) x of
             (scope, ".f":params) ->
+              functionSignatureFrameStrobelight False scope params
+            (scope, ".o":params) ->
               functionSignatureFrameStrobelight False scope params
             _ -> case Prelude.break (== ".d") x of
               (scope, ".d":_anything) -> dtorFrameStrobelight scope
