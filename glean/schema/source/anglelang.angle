@@ -1,0 +1,99 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates
+
+schema anglelang.1 {
+import src
+
+predicate Name : string
+
+type Field = {
+  name : Name,
+  ty : Type
+}
+
+predicate Type : {
+  boolean_ |
+  byte_ |
+  nat_ |
+  string_ |
+  array_ : Type |
+  set_ : Type  |
+  maybe_ : Type |
+  record_ : [ Field ] |
+  sum_ : [ Field ] |
+  predicate_ : Name |
+  named_ : Name |
+  enum_ : [ Name ]
+}
+
+predicate FileXRefs:
+  {
+    file : src.File,
+    xrefs : [XRef],
+  }
+
+type XRef =
+  {
+    target : XRefTarget,
+    span : [src.ByteSpan],
+  }
+
+type XRefTarget = {
+  ref : Declaration
+}
+
+# ----- DECLARATIONS ------
+type ImportStmt = Name
+type DeriveInfo = enum { NoDeriving | OnDemand | Stored | IfEmpty}
+
+predicate DerivingDecl : {
+  name : Name,
+  derive_ : DeriveInfo
+}
+
+# Entities
+type Declaration = {
+  pred : PredicateDecl |
+  ty : TypeDecl |
+  schema : SchemaDecl |
+  imp : ImportStmt |
+  evolve : EvolveDecl |
+  derive_ : DerivingDecl
+}
+
+predicate EvolveDecl : {
+  new_ : Name,
+  old_ : Name
+}
+
+predicate SchemaDecl : {
+  name : Name,
+  declarations : [Declaration]
+}
+
+predicate PredicateDecl : {
+  name : Name,
+  keyTy : Type,
+  valTy : Type,
+  derived : DeriveInfo
+}
+
+predicate TypeDecl : {
+    name : Name,
+    ty : Type
+}
+
+predicate DeclarationLocation : {
+  decl : Declaration,
+  file: src.File,
+  span: src.ByteSpan
+}
+
+predicate DeclarationToName: Declaration -> Name
+  D -> N where
+    ({pred = { name = N }} = D) |
+    ({ty = { name = N }} = D) |
+    ({schema = { name = N }} = D) |
+    ({imp = N} = D) |
+    ({evolve = { new_ = N }} = D) |
+    ({derive_ = { name = N }} = D)
+}

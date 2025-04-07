@@ -1,0 +1,22 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates
+
+schema codemarkup.anglelang.1 {
+    import src
+    import anglelang
+    import code
+    import code.anglelang
+    import codemarkup.types
+
+predicate AngleFileEntityXRefLocations :
+  {
+    file: src.File,
+    xref: codemarkup.types.XRefLocation,
+    entity: code.anglelang.Entity,
+  }
+  {File, {{Name,TargetFile,{span = TargetSpan}, nothing},{span = RefSpan}},D} where
+  anglelang.FileXRefs {File, XRefs};
+  anglelang.XRef {{ref = D}, RefSpans} = XRefs[..];
+  RefSpan = RefSpans[..];
+  anglelang.DeclarationLocation {D,TargetFile,TargetSpan };
+  anglelang.DeclarationToName D -> (Name : string);
+}

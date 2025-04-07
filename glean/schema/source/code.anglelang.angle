@@ -1,0 +1,7 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates
+
+schema code.anglelang.1 {
+import anglelang
+
+type Entity = anglelang.Declaration
+}

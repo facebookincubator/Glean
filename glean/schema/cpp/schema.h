@@ -4209,6 +4209,40 @@ struct ArgumentValue;
 
 } // namespace Buck
 
+namespace Anglelang {
+
+struct TypeDecl;
+
+struct Name;
+
+struct Field;
+
+struct Type;
+
+struct EvolveDecl;
+
+enum class DeriveInfo;
+
+struct DerivingDecl;
+
+struct PredicateDecl;
+
+struct Declaration;
+
+struct DeclarationLocation;
+
+struct DeclarationToName;
+
+struct SchemaDecl;
+
+struct XRefTarget;
+
+struct XRef;
+
+struct FileXRefs;
+
+} // namespace Anglelang
+
 namespace Testinfra {
 
 struct TestId : Predicate<uint64_t> {
@@ -29838,10 +29872,333 @@ struct ArgumentValue : Predicate<boost::variant<Alt<0, std::string>, Alt<1, std:
 
 } // namespace Buck
 
+namespace Anglelang {
+
+struct TypeDecl : Predicate<std::tuple<Fact<Name>, Fact<Type>>> {
+  static const char* GLEAN_name() {
+    return "anglelang.TypeDecl";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct TypeDecl
+
+struct Name : Predicate<std::string> {
+  static const char* GLEAN_name() {
+    return "anglelang.Name";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct Name
+
+using ImportStmt = Fact<Name>;
+
+} // namespace Anglelang
+
+} // namespace schema
+
+template<> struct Repr_<facebook::glean::cpp::schema::Anglelang::Field> {
+  using Type = Tuple<facebook::glean::cpp::schema::Anglelang::Name, facebook::glean::cpp::schema::Anglelang::Type>;
+};
+
+
+namespace schema {
+
+namespace Anglelang {
+
+struct Field {
+  Fact<Name> name;
+  Fact<Type> ty;
+
+  bool operator==(const Field& other) const {
+    return std::tie(name,ty)
+             == std::tie(other.name,other.ty);
+  }
+  bool operator!=(const Field& other) const {
+    return std::tie(name,ty)
+             != std::tie(other.name,other.ty);
+  }
+  bool operator<(const Field& other) const {
+    return std::tie(name,ty)
+             < std::tie(other.name,other.ty);
+  }
+  bool operator<=(const Field& other) const {
+    return std::tie(name,ty)
+             <= std::tie(other.name,other.ty);
+  }
+  bool operator>(const Field& other) const {
+    return std::tie(name,ty)
+             > std::tie(other.name,other.ty);
+  }
+  bool operator>=(const Field& other) const {
+    return std::tie(name,ty)
+             >= std::tie(other.name,other.ty);
+  }
+  void outputRepr(Output<Repr<Field>> out) const {
+    outputValue(out, std::make_tuple(name, ty));
+  }
+}; // struct Field
+
+struct Type : Predicate<boost::variant<Alt<0, std::tuple<>>, Alt<1, std::tuple<>>, Alt<2, std::tuple<>>, Alt<3, std::tuple<>>, Alt<4, Fact<Type>>, Alt<5, Fact<Type>>, Alt<6, Fact<Type>>, Alt<7, std::vector<Field>>, Alt<8, std::vector<Field>>, Alt<9, Fact<Name>>, Alt<10, Fact<Name>>, Alt<11, std::vector<Fact<Name>>>>> {
+  static const char* GLEAN_name() {
+    return "anglelang.Type";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct Type
+
+struct EvolveDecl : Predicate<std::tuple<Fact<Name>, Fact<Name>>> {
+  static const char* GLEAN_name() {
+    return "anglelang.EvolveDecl";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct EvolveDecl
+
+} // namespace Anglelang
+
+} // namespace schema
+
+template<> struct Repr_<facebook::glean::cpp::schema::Anglelang::DeriveInfo> {
+  using Type = Enum<4>;
+};
+
+
+namespace schema {
+
+namespace Anglelang {
+
+enum class DeriveInfo { NoDeriving, OnDemand, Stored, IfEmpty };
+
+struct DerivingDecl : Predicate<std::tuple<Fact<Name>, DeriveInfo>> {
+  static const char* GLEAN_name() {
+    return "anglelang.DerivingDecl";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct DerivingDecl
+
+struct PredicateDecl : Predicate<std::tuple<Fact<Name>, Fact<Type>, Fact<Type>, DeriveInfo>> {
+  static const char* GLEAN_name() {
+    return "anglelang.PredicateDecl";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct PredicateDecl
+
+} // namespace Anglelang
+
+} // namespace schema
+
+template<> struct Repr_<facebook::glean::cpp::schema::Anglelang::Declaration> {
+  using Type = Sum<facebook::glean::cpp::schema::Anglelang::PredicateDecl, facebook::glean::cpp::schema::Anglelang::TypeDecl, facebook::glean::cpp::schema::Anglelang::SchemaDecl, Repr<facebook::glean::cpp::schema::Anglelang::ImportStmt>, facebook::glean::cpp::schema::Anglelang::EvolveDecl, facebook::glean::cpp::schema::Anglelang::DerivingDecl>;
+};
+
+
+namespace schema {
+
+namespace Anglelang {
+
+struct Declaration {
+  boost::variant<Alt<0, Fact<PredicateDecl>>, Alt<1, Fact<TypeDecl>>, Alt<2, Fact<SchemaDecl>>, Alt<3, ImportStmt>, Alt<4, Fact<EvolveDecl>>, Alt<5, Fact<DerivingDecl>>> GLEAN_value;
+
+  static Declaration pred(const Fact<PredicateDecl>& a) {
+    return Declaration{Alt<0, Fact<PredicateDecl>>(a)};
+  }
+  static Declaration ty(const Fact<TypeDecl>& a) {
+    return Declaration{Alt<1, Fact<TypeDecl>>(a)};
+  }
+  static Declaration schema(const Fact<SchemaDecl>& a) {
+    return Declaration{Alt<2, Fact<SchemaDecl>>(a)};
+  }
+  static Declaration imp(const ImportStmt& a) {
+    return Declaration{Alt<3, ImportStmt>(a)};
+  }
+  static Declaration evolve(const Fact<EvolveDecl>& a) {
+    return Declaration{Alt<4, Fact<EvolveDecl>>(a)};
+  }
+  static Declaration derive_(const Fact<DerivingDecl>& a) {
+    return Declaration{Alt<5, Fact<DerivingDecl>>(a)};
+  }
+
+  bool operator==(const Declaration& other) const {
+    return std::tie(GLEAN_value)
+             == std::tie(other.GLEAN_value);
+  }
+  bool operator!=(const Declaration& other) const {
+    return std::tie(GLEAN_value)
+             != std::tie(other.GLEAN_value);
+  }
+  bool operator<(const Declaration& other) const {
+    return std::tie(GLEAN_value)
+             < std::tie(other.GLEAN_value);
+  }
+  bool operator<=(const Declaration& other) const {
+    return std::tie(GLEAN_value)
+             <= std::tie(other.GLEAN_value);
+  }
+  bool operator>(const Declaration& other) const {
+    return std::tie(GLEAN_value)
+             > std::tie(other.GLEAN_value);
+  }
+  bool operator>=(const Declaration& other) const {
+    return std::tie(GLEAN_value)
+             >= std::tie(other.GLEAN_value);
+  }
+
+  void outputRepr(Output<Repr<Declaration>> out) const {
+    outputValue(out, GLEAN_value);
+  }
+}; // struct Declaration
+
+struct DeclarationLocation : Predicate<std::tuple<Declaration, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan>> {
+  static const char* GLEAN_name() {
+    return "anglelang.DeclarationLocation";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct DeclarationLocation
+
+struct DeclarationToName : Predicate<Declaration, Fact<Name>> {
+  static const char* GLEAN_name() {
+    return "anglelang.DeclarationToName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct DeclarationToName
+
+struct SchemaDecl : Predicate<std::tuple<Fact<Name>, std::vector<Declaration>>> {
+  static const char* GLEAN_name() {
+    return "anglelang.SchemaDecl";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct SchemaDecl
+
+} // namespace Anglelang
+
+} // namespace schema
+
+template<> struct Repr_<facebook::glean::cpp::schema::Anglelang::XRefTarget> {
+  using Type = Tuple<Repr<facebook::glean::cpp::schema::Anglelang::Declaration>>;
+};
+
+
+namespace schema {
+
+namespace Anglelang {
+
+struct XRefTarget {
+  Declaration ref;
+
+  bool operator==(const XRefTarget& other) const {
+    return std::tie(ref)
+             == std::tie(other.ref);
+  }
+  bool operator!=(const XRefTarget& other) const {
+    return std::tie(ref)
+             != std::tie(other.ref);
+  }
+  bool operator<(const XRefTarget& other) const {
+    return std::tie(ref)
+             < std::tie(other.ref);
+  }
+  bool operator<=(const XRefTarget& other) const {
+    return std::tie(ref)
+             <= std::tie(other.ref);
+  }
+  bool operator>(const XRefTarget& other) const {
+    return std::tie(ref)
+             > std::tie(other.ref);
+  }
+  bool operator>=(const XRefTarget& other) const {
+    return std::tie(ref)
+             >= std::tie(other.ref);
+  }
+  void outputRepr(Output<Repr<XRefTarget>> out) const {
+    outputValue(out, std::make_tuple(ref));
+  }
+}; // struct XRefTarget
+
+} // namespace Anglelang
+
+} // namespace schema
+
+template<> struct Repr_<facebook::glean::cpp::schema::Anglelang::XRef> {
+  using Type = Tuple<Repr<facebook::glean::cpp::schema::Anglelang::XRefTarget>, Array<Repr<facebook::glean::cpp::schema::Src::ByteSpan>>>;
+};
+
+
+namespace schema {
+
+namespace Anglelang {
+
+struct XRef {
+  XRefTarget target;
+  std::vector<facebook::glean::cpp::schema::Src::ByteSpan> span;
+
+  bool operator==(const XRef& other) const {
+    return std::tie(target,span)
+             == std::tie(other.target,other.span);
+  }
+  bool operator!=(const XRef& other) const {
+    return std::tie(target,span)
+             != std::tie(other.target,other.span);
+  }
+  bool operator<(const XRef& other) const {
+    return std::tie(target,span)
+             < std::tie(other.target,other.span);
+  }
+  bool operator<=(const XRef& other) const {
+    return std::tie(target,span)
+             <= std::tie(other.target,other.span);
+  }
+  bool operator>(const XRef& other) const {
+    return std::tie(target,span)
+             > std::tie(other.target,other.span);
+  }
+  bool operator>=(const XRef& other) const {
+    return std::tie(target,span)
+             >= std::tie(other.target,other.span);
+  }
+  void outputRepr(Output<Repr<XRef>> out) const {
+    outputValue(out, std::make_tuple(target, span));
+  }
+}; // struct XRef
+
+struct FileXRefs : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, std::vector<XRef>>> {
+  static const char* GLEAN_name() {
+    return "anglelang.FileXRefs";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct FileXRefs
+
+} // namespace Anglelang
+
 struct SCHEMA {
   template<typename P> struct index;
-  static constexpr size_t count = 1334;
-  static constexpr char schemaId[] = "3534b4d19959c03c6fd47e9fd2cfb570";
+  static constexpr size_t count = 1344;
+  static constexpr char schemaId[] = "fec181905e362faa927160750ca4ac71";
   template<size_t i> struct predicate;
 };
 
@@ -31179,6 +31536,16 @@ template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::CallArgument
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::AttributeName> { static constexpr size_t value = 1331; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::AttributeValue> { static constexpr size_t value = 1332; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::ArgumentValue> { static constexpr size_t value = 1333; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::TypeDecl> { static constexpr size_t value = 1334; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::Name> { static constexpr size_t value = 1335; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::Type> { static constexpr size_t value = 1336; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::EvolveDecl> { static constexpr size_t value = 1337; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::DerivingDecl> { static constexpr size_t value = 1338; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::PredicateDecl> { static constexpr size_t value = 1339; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::DeclarationLocation> { static constexpr size_t value = 1340; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::DeclarationToName> { static constexpr size_t value = 1341; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::SchemaDecl> { static constexpr size_t value = 1342; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::FileXRefs> { static constexpr size_t value = 1343; };
 
 template<> struct SCHEMA::predicate<0> { using type = facebook::glean::cpp::schema::Testinfra::TestId; };
 template<> struct SCHEMA::predicate<1> { using type = facebook::glean::cpp::schema::Testinfra::TaggedAssembly; };
@@ -32514,6 +32881,16 @@ template<> struct SCHEMA::predicate<1330> { using type = facebook::glean::cpp::s
 template<> struct SCHEMA::predicate<1331> { using type = facebook::glean::cpp::schema::Buck::AttributeName; };
 template<> struct SCHEMA::predicate<1332> { using type = facebook::glean::cpp::schema::Buck::AttributeValue; };
 template<> struct SCHEMA::predicate<1333> { using type = facebook::glean::cpp::schema::Buck::ArgumentValue; };
+template<> struct SCHEMA::predicate<1334> { using type = facebook::glean::cpp::schema::Anglelang::TypeDecl; };
+template<> struct SCHEMA::predicate<1335> { using type = facebook::glean::cpp::schema::Anglelang::Name; };
+template<> struct SCHEMA::predicate<1336> { using type = facebook::glean::cpp::schema::Anglelang::Type; };
+template<> struct SCHEMA::predicate<1337> { using type = facebook::glean::cpp::schema::Anglelang::EvolveDecl; };
+template<> struct SCHEMA::predicate<1338> { using type = facebook::glean::cpp::schema::Anglelang::DerivingDecl; };
+template<> struct SCHEMA::predicate<1339> { using type = facebook::glean::cpp::schema::Anglelang::PredicateDecl; };
+template<> struct SCHEMA::predicate<1340> { using type = facebook::glean::cpp::schema::Anglelang::DeclarationLocation; };
+template<> struct SCHEMA::predicate<1341> { using type = facebook::glean::cpp::schema::Anglelang::DeclarationToName; };
+template<> struct SCHEMA::predicate<1342> { using type = facebook::glean::cpp::schema::Anglelang::SchemaDecl; };
+template<> struct SCHEMA::predicate<1343> { using type = facebook::glean::cpp::schema::Anglelang::FileXRefs; };
 
 
 } // namespace schema
