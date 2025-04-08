@@ -1022,57 +1022,8 @@ struct Work {
   // Unique handle
 }
 
-struct GetWork {
-  1: i32 timeout = 20;
-  // How long to wait for work (in seconds)
-
-  2: list<string> tasks;
-  // Tasks we are interested in.  Each entry is a regex which is
-  // matched against the available tasks. To match a task exactly, use
-  // "^name$" and escape any special regex characters inside name.
-
-  3: string runner;
-  // Machine or task that will be executing the work (for display only)
-
-  4: optional Work previous;
-  // Work we've done right before (for optimising work assignments)
-}
-
-struct WorkAvailable {
-  1: Work work;
-  // The work
-
-  2: i32 attempt;
-  // How often the parcel has been retried
-
-  3: optional i32 heartbeat;
-  // How often to ping the server via workHeartbeat (in seconds)
-
-  4: DatabaseProperties properties;
-  // Properties of the database this work is for
-}
-
-struct WorkUnavailable {
-  1: i32 pause;
-  // How long to wait before calling getWork again (in seconds)
-}
-
-union GetWorkResponse {
-  1: WorkAvailable available;
-  2: WorkUnavailable unavailable;
-} (hs.nonempty)
-
 exception AbortWork {
   1: string reason;
-}
-
-struct WorkCancelled {
-  1: Work work;
-  2: string reason;
-}
-
-struct WorkHeartbeat {
-  1: Work work;
 }
 
 struct WorkFinished {
@@ -1204,31 +1155,6 @@ service GleanService extends fb303.FacebookService {
     2: DatabaseProperties set_ = {},
     3: list<string> unset = [],
   ) throws (1: Exception e, 2: UnknownDatabase u);
-
-  // Get a work parcel
-  GetWorkResponse getWork(1: GetWork request) throws (1: Exception e);
-
-  // Tell the server that the work parcel is no longer being worked on. The
-  // server will then reschedule it as appropriate. This does not count as a
-  // retry.
-  void workCancelled(1: WorkCancelled request) throws (
-    1: Exception e,
-    2: AbortWork a,
-    3: UnknownDatabase u,
-    4: DatabaseNotIncomplete c,
-    5: WrongHandle h,
-  );
-
-  // Tell the server that work is still ongoing. This needs to be done
-  // periodically as indicated by WorkAvailable.heartbeat.
-  void workHeartbeat(1: WorkHeartbeat request) throws (
-    1: Exception e,
-    // client should abort the work if it receives any of the following:
-    2: AbortWork a,
-    3: UnknownDatabase u,
-    4: DatabaseNotIncomplete c,
-    5: WrongHandle h,
-  );
 
   // Tell the server that work has finished, either successfully or
   // unsuccessfully. If this is the final task and the server still

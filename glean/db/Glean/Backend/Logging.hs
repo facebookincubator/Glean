@@ -104,23 +104,6 @@ instance Backend LoggingBackend where
       (runLogRepo "updateProperties" env repo)
       (const mempty) $
       updateProperties env repo set unset
-  getWork (LoggingBackend env) rq =
-    loggingAction (runLogCmd "getWork" env) (const mempty) $
-      getWork env rq
-  workCancelled (LoggingBackend env) rq =
-    loggingAction
-      (runLogRepo "workCancelled" env
-        $ Thrift.work_repo
-        $ Thrift.workCancelled_work rq)
-      (const mempty) $
-      workCancelled env rq
-  workHeartbeat (LoggingBackend env) rq =
-    loggingAction
-      (runLogRepo "workHeartbeat" env
-        $ Thrift.work_repo
-        $ Thrift.workHeartbeat_work rq)
-      (const mempty) $
-      workHeartbeat env rq
   workFinished (LoggingBackend env) rq =
     loggingAction
       (runLogRepo "workFinished" env

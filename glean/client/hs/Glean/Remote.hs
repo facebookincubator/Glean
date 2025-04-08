@@ -244,14 +244,7 @@ instance Backend ThriftBackend where
   updateProperties t repo set unset =
     withoutShard t $
       GleanService.updateProperties repo set unset
-  getWork t rq = withoutShard t $ GleanService.getWork rq
 
-  workCancelled t rq =
-    withShard t (Thrift.work_repo $ Thrift.workCancelled_work rq)
-      $ GleanService.workCancelled rq
-  workHeartbeat t rq =
-    withShard t (Thrift.work_repo $ Thrift.workHeartbeat_work rq)
-      $ GleanService.workHeartbeat rq
   workFinished t rq =
     withShard t (Thrift.work_repo $ Thrift.workFinished_work rq)
       $ GleanService.workFinished rq

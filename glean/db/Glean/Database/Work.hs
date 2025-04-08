@@ -10,9 +10,6 @@ module Glean.Database.Work
   ( resumeWork
   , completenessFromFill
   , scheduleTasks
-  , getWork
-  , workCancelled
-  , workHeartbeat
   , workFinished
   , reapHeartbeats
   , failTask
@@ -21,7 +18,6 @@ module Glean.Database.Work
   , finalizeWait
   ) where
 
-import Control.Applicative
 import Control.Concurrent (threadDelay)
 import Control.Monad
 import Control.Monad.Catch
@@ -34,8 +30,6 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Time (UTCTime)
-import qualified Data.UUID as UUID
-import qualified Data.UUID.V4 as UUID
 import Data.Vector (Vector)
 import qualified Data.Vector as Vector
 
@@ -348,46 +342,6 @@ heartbeatFrequency = 60
 heartbeatTimeout :: Int -> Int
 heartbeatTimeout n = n * 10
 
--- | Get the next available bit of work for any task from the supplied list.
-getWork :: Env -> Thrift.GetWork -> IO Thrift.GetWorkResponse
-getWork env@Env{..} Thrift.GetWork{..} = do
-  uuid <- UUID.nextRandom
-  time <- envGetCurrentTime
-  timepoint <- getTimePoint
-  let grab = do
-        parcel <- lift $ readWorkQueue
-          envWorkQueue
-          getWork_tasks
-          (fromThriftWork <$> getWork_previous)
-        r <- lift $ try $ parcelInfo env parcel
-        case r of
-          Right info@ParcelInfo{piState =
-            ParcelState_waiting (ParcelWaiting retries), ..} -> do
-            props <- metaProperties <$>
-              now (Catalog.readMeta envCatalog $ parcelRepo parcel)
-            let handle = UUID.toText uuid
-            updateParcel env info time $ ParcelState_running def
-              { parcelRunning_retries = retries
-              , parcelRunning_handle = handle
-              , parcelRunning_runner = getWork_runner
-              }
-            let work = parcelWork info handle
-            heartbeat <- lift $ listenForHeartbeat timepoint env piTask work
-            return $ Thrift.GetWorkResponse_available
-              Thrift.WorkAvailable
-                { workAvailable_work = work
-                , workAvailable_attempt = fromIntegral retries
-                , workAvailable_heartbeat = heartbeat
-                , workAvailable_properties = props
-                }
-          Right _ -> grab
-          Left (_ :: SomeException) -> grab
-
-      unavailable = Thrift.GetWorkResponse_unavailable
-        Thrift.WorkUnavailable{ workUnavailable_pause = 30 }
-
-  immediately $ grab <|> return unavailable
-
 -- | Start listening for a heartbeat from the worker for a given parcel
 listenForHeartbeat
   :: TimePoint
@@ -428,41 +382,6 @@ fromThriftWork work = Parcel
   , parcelTask = Thrift.work_task work
   , parcelIndex = fromIntegral $ Thrift.work_parcelIndex work
   }
-
--- | A worker has cancelled work on a particular work parcel. Reenter it into
--- the work queue.
-workCancelled :: Env -> Thrift.WorkCancelled -> IO ()
-workCancelled env@Env{..} Thrift.WorkCancelled{..} = do
-  time <- envGetCurrentTime
-  immediately $ do
-    pi@ParcelInfo{..} <- lift $ runningParcelInfo env workCancelled_work
-    case piState of
-      ParcelState_running ParcelRunning{..} -> do
-        lift $ deleteHeartbeat envHeartbeats workCancelled_work
-        later $ logInfo $
-          "work cancelled, requeueing: " ++ show workCancelled_work
-        updateParcel env pi time $
-          ParcelState_waiting (ParcelWaiting parcelRunning_retries)
-        lift $ writeWorkQueue envWorkQueue $ fromThriftWork workCancelled_work
-      _ -> return ()
-
--- | Handle heartbeat from a worker.
-workHeartbeat :: Env -> Thrift.WorkHeartbeat -> IO ()
-workHeartbeat env Thrift.WorkHeartbeat{..} = do
-  -- It should be fine to get the time now, this is when the heartbeat
-  -- happened.
-  now <- getTimePoint
-  atomically $ do
-    ParcelInfo{..} <- runningParcelInfo env workHeartbeat_work
-    case recipe_heartbeat $ task_recipe piTask of
-      0 -> return ()
-      heartbeat -> void
-        $ expectHeartbeat (envHeartbeats env) workHeartbeat_work
-        $ addToTimePoint now
-        $ seconds
-        $ fromIntegral
-        $ heartbeatTimeout
-        $ fromIntegral heartbeat
 
 -- | A worker has finished work on a particular parcel with the given
 -- 'Outcome'.

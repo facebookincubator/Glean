@@ -43,12 +43,6 @@ instance Backend RetryWritesBackend where
     retryChannelExceptions policy $ finalizeDatabase backend repo
   updateProperties (RetryWritesBackend policy backend) repo props vals =
     retryChannelExceptions policy $ updateProperties backend repo props vals
-  getWork (RetryWritesBackend policy backend) get =
-    retryChannelExceptions policy $ getWork backend get
-  workCancelled (RetryWritesBackend policy backend) work =
-    retryChannelExceptions policy $ workCancelled backend work
-  workHeartbeat (RetryWritesBackend policy backend) work =
-    retryChannelExceptions policy $ workHeartbeat backend work
   workFinished (RetryWritesBackend policy backend) work =
     retryChannelExceptions policy $ workFinished backend work
   completePredicates_ (RetryWritesBackend policy backend) repo preds =
@@ -107,9 +101,6 @@ instance Backend RetryReadsBackend where
   kickOffDatabase (RetryReadsBackend _ backend) = kickOffDatabase backend
   finalizeDatabase (RetryReadsBackend _ backend) = finalizeDatabase backend
   updateProperties (RetryReadsBackend _ backend) = updateProperties backend
-  getWork (RetryReadsBackend _ backend) = getWork backend
-  workCancelled (RetryReadsBackend _ backend) = workCancelled backend
-  workHeartbeat (RetryReadsBackend _ backend) = workHeartbeat backend
   workFinished (RetryReadsBackend _ backend) = workFinished backend
   completePredicates_ (RetryReadsBackend _ backend) =
     completePredicates_ backend

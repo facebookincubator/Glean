@@ -115,9 +115,6 @@ class Backend a where
     -> [Text]
     -> IO Thrift.UpdatePropertiesResponse
 
-  getWork :: a -> Thrift.GetWork -> IO Thrift.GetWorkResponse
-  workCancelled :: a -> Thrift.WorkCancelled -> IO ()
-  workHeartbeat :: a -> Thrift.WorkHeartbeat -> IO ()
   workFinished :: a -> Thrift.WorkFinished -> IO ()
 
   completePredicates_
@@ -199,9 +196,6 @@ instance Backend (Some Backend) where
   kickOffDatabase (Some backend) = kickOffDatabase backend
   finalizeDatabase (Some backend) = finalizeDatabase backend
   updateProperties (Some backend) = updateProperties backend
-  getWork (Some backend) = getWork backend
-  workCancelled (Some backend) = workCancelled backend
-  workHeartbeat (Some backend) = workHeartbeat backend
   workFinished (Some backend) = workFinished backend
   completePredicates_ (Some backend) = completePredicates_ backend
 

@@ -206,9 +206,6 @@ instance Backend (Some LocalOrRemote) where
   kickOffDatabase (Some backend) = kickOffDatabase backend
   finalizeDatabase (Some backend) = finalizeDatabase backend
   updateProperties (Some backend) = updateProperties backend
-  getWork (Some backend) = getWork backend
-  workCancelled (Some backend) = workCancelled backend
-  workHeartbeat (Some backend) = workHeartbeat backend
   workFinished (Some backend) = workFinished backend
   completePredicates_ (Some backend) = completePredicates_ backend
 

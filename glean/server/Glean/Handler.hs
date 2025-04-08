@@ -56,12 +56,6 @@ handler State{..} req =
     Service.UpdateProperties repo set unset ->
       Backend.updateProperties backend repo set unset
 
-    Service.GetWork rq -> Backend.getWork backend rq
-
-    Service.WorkCancelled rq -> Backend.workCancelled backend rq
-
-    Service.WorkHeartbeat rq -> Backend.workHeartbeat backend rq
-
     Service.WorkFinished rq -> Backend.workFinished backend rq
 
     Service.QueryFact repo id ->
