@@ -1922,20 +1922,6 @@ test-suite lifecycle
         QuickCheck,
         quickcheck-io,
 
-test-suite worker
-    import: test
-    type: exitcode-stdio-1.0
-    main-is: WorkerTest.hs
-    ghc-options: -main-is WorkerTest
-    build-depends:
-        glean:stubs,
-        glean:core,
-        glean:db,
-        glean:if-glean-hs,
-        glean:schema,
-        glean:config,
-        QuickCheck,
-
 test-suite shard
     import: test
     type: exitcode-stdio-1.0
