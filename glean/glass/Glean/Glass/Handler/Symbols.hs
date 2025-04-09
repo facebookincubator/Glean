@@ -63,7 +63,7 @@ import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 
 import Glean.Glass.Base
-import Glean.Glass.Describe ( mkSymbolDescription, describeEntity )
+import Glean.Glass.Describe ( mkSymbolDescription, describeEntity, mkBriefSymbolDescription )
 import Glean.Glass.Handler.Utils
 import Glean.Glass.Logging
 import Glean.Glass.Repos
@@ -185,19 +185,27 @@ resolveSymbols env@Glass.Env{..} (ResolveSymbolsRequest symIds) opts =
           res <- forM entities $ \this ->
             let SearchEntity
                   { entityRepo
-                  , decl = (entity :: Code.Entity, file, rangespan, _text)
+                  , decl = (_entity, file, rangespan, _text)
                   } = this
               in withRepo entityRepo $ do
-                  qname <- eThrow =<< toQualifiedName entity
                   location <- rangeSpanToLocationRange scmRepo file rangespan
-                  repo_hash <-
+                  repoHash <-
                     getRepoHashForLocation location scmRevs <$> Glean.haxlRepo
-                  pure $
-                    SymbolResolution
-                      { symbolResolution_qname = qname
-                      , symbolResolution_location = location
-                      , symbolResolution_revision = repo_hash
-                      }
+                  SymbolBasicDescription{..} <-
+                    mkBriefSymbolDescription
+                      symId
+                      scmRevs
+                      scmRepo
+                      (toCodeEntityLoc this)
+                      Nothing
+                  pure SymbolResolution
+                    { symbolResolution_qname = symbolBasicDescription_name
+                    , symbolResolution_location = location
+                    , symbolResolution_revision = repoHash
+                    , symbolResolution_kind = symbolBasicDescription_kind
+                    , symbolResolution_language = symbolBasicDescription_language
+                    , symbolResolution_signature = symbolBasicDescription_signature
+                    }
           pure (res, err)))
 
 

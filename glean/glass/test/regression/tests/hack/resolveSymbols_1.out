@@ -6,6 +6,8 @@
                 "symbol": "test/php/ns/NS",
                 "symbolResolutions": [
                     {
+                        "kind": 6,
+                        "language": 3,
                         "location": {
                             "filepath": "www/Namespace.php",
                             "range": {
@@ -20,9 +22,12 @@
                             "container": "",
                             "localName": "NS"
                         },
-                        "revision": "testhash"
+                        "revision": "testhash",
+                        "signature": "namespace NS"
                     },
                     {
+                        "kind": 6,
+                        "language": 3,
                         "location": {
                             "filepath": "www/Namespace2.php",
                             "range": {
@@ -37,7 +42,8 @@
                             "container": "",
                             "localName": "NS"
                         },
-                        "revision": "testhash"
+                        "revision": "testhash",
+                        "signature": "namespace NS"
                     }
                 ]
             }

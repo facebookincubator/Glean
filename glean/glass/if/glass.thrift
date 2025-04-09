@@ -87,6 +87,9 @@ struct SymbolResolution {
   2: LocationRange location;
   // the revision for which the location is defined
   3: Revision revision;
+  4: optional SymbolKind kind;
+  5: Language language;
+  6: optional string signature;
 }
 
 struct AttributeOptions {

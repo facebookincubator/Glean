@@ -343,8 +343,9 @@ instance DeterministicResponse SymbolLocation where
   det (SymbolLocation loc _rev) = SymbolLocation (det loc) (Revision "testhash")
 
 instance DeterministicResponse SymbolResolution where
-  det (SymbolResolution qname loc _rev) =
-    SymbolResolution (det qname) (det loc) (Revision "testhash")
+  det (SymbolResolution qname loc _rev kind lang sig) =
+    SymbolResolution (det qname) (det loc)
+      (Revision "testhash") kind lang sig
 
 instance DeterministicResponse SearchRelatedResult where
   det (SearchRelatedResult xs ys) = -- to edit the desc hash
