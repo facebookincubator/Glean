@@ -1,0 +1,19 @@
+# Copyright (c) Facebook, Inc. and its affiliates.
+
+# Angle example schema for regression test
+
+schema a.1 {
+
+predicate Name : string
+
+type Age = nat
+
+type City = enum { London | NewYork }
+
+predicate Person :
+  {
+    name : Name,
+    age : Age,
+    lives : City
+  }
+}
