@@ -905,7 +905,6 @@ struct ListDatabasesResult {
 
 struct GetDatabaseResult {
   1: Database database;
-  2: optional Tasks tasks;
 }
 
 struct DeleteDatabaseResult {}

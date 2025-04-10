@@ -603,7 +603,6 @@ getLocalDatabases cat = do
             exp
             repo
             meta
-        , getDatabaseResult_tasks = completenessTasks meta
         }
 
     restoring_db repo meta = Thrift.GetDatabaseResult
@@ -612,7 +611,6 @@ getLocalDatabases cat = do
           Nothing
           repo
           meta
-      , getDatabaseResult_tasks = Nothing
       }
 
 getLocalDatabase :: Catalog -> Repo -> STM (Maybe Thrift.GetDatabaseResult)

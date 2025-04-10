@@ -179,7 +179,8 @@ instance Backend Database.Env where
   displayBackend _ = "(local backend)"
 
   hasDatabase env repo = do
-    Thrift.GetDatabaseResult Thrift.Database{..} _ <- getDatabase env repo
+    Thrift.GetDatabaseResult { getDatabaseResult_database = Thrift.Database{..}}
+      <- getDatabase env repo
     return $ case database_status of
       Thrift.DatabaseStatus_Restorable -> False
       _ -> True

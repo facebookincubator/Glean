@@ -57,7 +57,6 @@ listDatabases env@Env{..} Thrift.ListDatabases{..} = do
             Nothing
             repo
             meta
-        , getDatabaseResult_tasks = Nothing
         })
 
 listRestorable :: Backup.Site site => Text -> site -> IO (HashMap Repo Meta)
