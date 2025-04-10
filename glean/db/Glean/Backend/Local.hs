@@ -57,7 +57,7 @@ import qualified Glean.Database.Schema as Database
 import Glean.Database.Schema hiding (getSchemaInfo, schemaId)
 import qualified Glean.Database.Types as Database
 import Glean.Database.Types (Env(..))
-import qualified Glean.Database.Work as Database
+import qualified Glean.Database.Finish as Database
 import qualified Glean.Database.Writes as Database
 import Glean.Internal.Types
 import qualified Glean.Query.UserQuery as UserQuery

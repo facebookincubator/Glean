@@ -13,7 +13,6 @@ module Glean.Database.Meta
   , newMeta
   , showCompleteness
   , completenessStatus
-  , completenessTasks
   , dbAge
   , dbTime
   , metaToThriftDatabase
@@ -26,7 +25,6 @@ module Glean.Database.Meta
 
 import qualified Data.ByteString.Char8 as B
 import Data.Functor
-import Data.HashMap.Strict (HashMap)
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
@@ -78,11 +76,6 @@ completenessStatus meta = case metaCompleteness meta of
   Complete{} -> DatabaseStatus_Complete
   Broken{} -> DatabaseStatus_Broken
   Finalizing{} -> DatabaseStatus_Finalizing
-
-completenessTasks :: Meta -> Maybe (HashMap Text Task)
-completenessTasks meta = case metaCompleteness meta of
-  Incomplete (DatabaseIncomplete_tasks tasks) -> Just tasks
-  _ -> Nothing
 
 dbAge :: UTCTime -> Meta -> NominalDiffTime
 dbAge now meta = now `diffUTCTime` posixEpochTimeToUTCTime (metaCreated meta)

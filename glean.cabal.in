@@ -486,6 +486,7 @@ library db
         Glean.Database.Restore
         Glean.Database.Delete
         Glean.Database.Create
+        Glean.Database.Finish
         Glean.Database.List
         Glean.Database.Janitor
         Glean.Database.Logger
@@ -503,10 +504,6 @@ library db
         Glean.Database.Trace
         Glean.Database.Types
         Glean.Database.Validate
-        Glean.Database.Work.Controller
-        Glean.Database.Work.Heartbeat
-        Glean.Database.Work
-        Glean.Database.Work.Queue
         Glean.Database.Writes
         Glean.Database.Write.Batch
         Glean.Logger.Database
@@ -2028,18 +2025,6 @@ test-suite inventory
         glean:db,
         glean:if-internal-hs,
         glean:stubs
-
-test-suite external-controller
-    import: test
-    type: exitcode-stdio-1.0
-    main-is: ExternalControllerTest.hs
-    ghc-options: -main-is ExternalControllerTest
-    build-depends:
-        glean:stubs,
-        glean:core,
-        glean:db,
-        glean:if-glean-hs,
-        glean:config
 
 test-suite continuation
     import: test

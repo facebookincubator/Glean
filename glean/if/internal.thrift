@@ -32,9 +32,7 @@ struct StoredSchema {
 // -----------------------------------------------------------------------------
 // DB metadata
 
-union DatabaseIncomplete {
-  1: glean.Tasks tasks;
-}
+struct DatabaseIncomplete {}
 
 struct DatabaseFinalizing {}
 

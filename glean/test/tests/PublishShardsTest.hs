@@ -72,7 +72,7 @@ setupFakeDBs dbdir schema = do
   makeFakeDB schema dbdir completeRepo now complete id
 
 incomplete :: p -> Completeness
-incomplete _ = Incomplete DatabaseIncomplete_EMPTY
+incomplete _ = Incomplete DatabaseIncomplete
 
 complete :: UTCTime -> Completeness
 complete = Complete . (`DatabaseComplete` Nothing) . utcTimeToPosixEpochTime

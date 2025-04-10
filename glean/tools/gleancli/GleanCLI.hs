@@ -42,7 +42,7 @@ import Glean.Database.Config (cfgSchemaSource, cfgServerConfig)
 import qualified Glean.Database.Config as GleanDB
 import Glean.Database.Schema
 import Glean.Database.Schema.Types
-import qualified Glean.Database.Work as Database
+import qualified Glean.Database.Finish as Database
 import qualified Glean.RTS.Foreign.Inventory as Inventory
 import qualified Glean.ServerConfig.Types as Server
 import Glean.Types as Thrift hiding (ValidateSchema)
@@ -300,7 +300,7 @@ instance Plugin UnfinishCommand where
   runCommand _ _ backend Unfinish{..} = do
     case Glean.backendKind backend of
       Glean.BackendEnv env -> do
-        Database.unfinishDatabase env repo handle
+        Database.unfinishDatabase env repo
       _ -> die 5 "It is NOT possible to unfinish a remote database"
 
 data ListCommand

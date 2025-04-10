@@ -19,6 +19,7 @@ import Control.Monad.Catch (handle)
 import Control.Monad.Extra
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map as Map
+import Data.Default
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -29,7 +30,6 @@ import Text.Printf
 #ifdef GLEAN_FACEBOOK
 import Facebook.Process
 #endif
-import Util.Defer
 import Util.Log
 import Util.STM
 
@@ -44,13 +44,11 @@ import qualified Glean.Database.Storage as Storage
 import Glean.Database.Open
 import Glean.Database.PredicateStats
 import Glean.Database.Types
-import Glean.Database.Work
 import Glean.Database.Schema (
   toStoredSchema, compareSchemaPredicates, renderSchemaSource, toStoredVersions)
 import Glean.Database.Schema.ComputeIds
 import Glean.Database.Schema.Types
 import Glean.Internal.Types hiding (SchemaIndex)
-import qualified Glean.Recipes.Types as Recipes
 import Glean.RTS.Foreign.Lookup (firstFreeId)
 import Glean.RTS.Types (lowestFid, fromPid)
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -91,9 +89,6 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
               Just (Dependencies_pruned
                 update{pruned_guid=pruned_guid update <|> guid}))
 
-      -- NOTE: We don't want to load recipes (which might fail) if we don't
-      -- need them.
-      state <- completenessFromFill get_recipes kickOff_repo kickOff_fill
       creationTime <- envGetCurrentTime
       serverProps <- serverProperties
       fbServerProps <- facebookServerProperties
@@ -131,7 +126,7 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
           (Catalog.create
             envCatalog
             kickOff_repo
-            (newMeta version time state allProps
+            (newMeta version time (Incomplete def) allProps
               (lightDeps kickOff_dependencies')) $ do
                 modifyTVar' envActive $ HashMap.insert kickOff_repo db
                 writeTVar (dbState db) Opening
@@ -145,16 +140,6 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
             opener <- asyncOpenDB env envStorage db version mode
                 kickOff_dependencies'
               (do
-                -- On success, schedule the db's tasks. If this throws,
-                -- 'asyncOpenDB' will close the db and call our failure action
-                -- below.
-                immediately $ do
-                  meta <- lift $ Catalog.readMeta envCatalog kickOff_repo
-                  new_meta <- handle (failTask meta) $ scheduleTasks
-                    env
-                    kickOff_repo
-                    meta
-                  lift $ Catalog.writeMeta envCatalog kickOff_repo new_meta
                 logInfo $ inRepo kickOff_repo "created")
               (\exc -> atomically $ void $
                   -- If opening the db fails for any reason, mark the db as
@@ -185,16 +170,6 @@ kickOffDatabase env@Env{..} kickOff@Thrift.KickOff{..}
     guidProperties = do
       guid <- Guid.toText <$> Guid.nextRandom
       return $ HashMap.fromList [("glean.guid", guid)]
-
-    get_recipes name = do
-      rcfg <- Recipes.config_recipes <$> Observed.get envRecipeConfig
-      case Map.lookup name rcfg of
-        Just recipes -> do
-          when (Map.null recipes) $ dbError kickOff_repo
-            "can't create a database with no recipes"
-          return recipes
-        Nothing -> dbError kickOff_repo $
-          "unknown recipe set '" ++ Text.unpack name ++ "'"
 
     -- The dependencies that we keep in the Meta have the units
     -- removed, because the units can be large and the Meta has a size

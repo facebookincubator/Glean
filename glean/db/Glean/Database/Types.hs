@@ -44,8 +44,6 @@ import Glean.Database.Meta
 import Glean.Database.Schema.Types
 import Glean.Database.Storage (Database, Storage, describe, WriteLock(..))
 import Glean.Database.Trace
-import Glean.Database.Work.Heartbeat (Heartbeats)
-import Glean.Database.Work.Queue (WorkQueue)
 import Glean.Logger.Server (GleanServerLogger)
 import Glean.Logger.Database (GleanDatabaseLogger)
 import Glean.RTS.Foreign.FactSet (FactSet)
@@ -253,8 +251,6 @@ data Env = forall storage. Storage storage => Env
   , envDatabaseJanitorPublishedCounters :: TVar (HashSet ByteString)
   , envCachedRestorableDBs :: TVar (Maybe (UTCTime, [(Thrift.Repo, Meta)]))
   , envCachedAvailableDBs :: TVar (HashSet Thrift.Repo)
-  , envWorkQueue :: WorkQueue
-  , envHeartbeats :: Heartbeats
   , envWrites :: TVar (HashMap Text Write)
   , envDerivations :: TVar (HashMap (Thrift.Repo, PredicateId) Derivation)
   , envWriteQueues :: WriteQueues

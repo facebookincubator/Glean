@@ -36,9 +36,6 @@ import Glean.Database.Janitor
 import Glean.Database.Open
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Types
-import Glean.Database.Work
-import Glean.Database.Work.Heartbeat
-import Glean.Database.Work.Queue (newWorkQueue)
 import Glean.Database.Writes
 import qualified Glean.Recipes.Types as Recipes
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -82,7 +79,6 @@ withDatabases evb cfg cfgapi act =
           server_config)
         closeEnv
         $ \env -> do
-            resumeWork env
             spawnThreads env
             act env
 
@@ -114,16 +110,13 @@ initEnv evb envStorage envCatalog shardManager cfg
     envLoggerRateLimit <-
       newRateLimiterMap (fromIntegral config_logging_rate_limit) 600
 
-    envWorkQueue <- newWorkQueue
-    envHeartbeats <- newHeartbeats
-
     envWrites <- newTVarIO HashMap.empty
     envDerivations <- newTVarIO HashMap.empty
     envWriteQueues <- WriteQueues
       <$> newTQueueIO
       <*> newTVarIO 0
 
-    envSchemaUpdateSignal <- atomically newEmptyTMVar
+    envSchemaUpdateSignal <- newEmptyTMVarIO
 
     envCompleting <- newTVarIO HashMap.empty
 
@@ -211,8 +204,6 @@ spawnThreads env@Env{..} = do
       recordJanitorResult JanitorDisabled
 
   Warden.spawn_ envWarden $ backuper env
-
-  Warden.spawn_ envWarden $ reapHeartbeats env
 
   replicateM_ (fromIntegral config_db_writer_threads)
     $ Warden.spawn_ envWarden

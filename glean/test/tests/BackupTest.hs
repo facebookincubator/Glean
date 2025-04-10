@@ -35,7 +35,7 @@ import Glean.Database.Env
 import Glean.Database.Janitor
 import Glean.Database.Meta
 import Glean.Database.Types
-import Glean.Database.Work (finalizeWait)
+import Glean.Database.Finish (finalizeWait)
 import Glean.Init
 import Glean.ServerConfig.Types as ServerTypes
 import Glean.Types as Thrift

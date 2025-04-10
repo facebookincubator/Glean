@@ -74,7 +74,7 @@ import Glean.Backend.Logging
 import Glean.DefaultConfigs
 import Glean.Dump
 import Glean.Database.Validate
-import Glean.Database.Work (finalizeWait)
+import Glean.Database.Finish (finalizeWait)
 import qualified Glean.Remote as Remote
 import Glean.Util.ConfigProvider
 import Glean.Util.Some
