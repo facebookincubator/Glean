@@ -51,6 +51,8 @@ handler State{..} req =
 
     Service.KickOff rq -> Backend.kickOffDatabase backend rq
 
+    Service.Finish repo -> Backend.finishDatabase backend repo
+
     Service.Finalize repo -> Backend.finalizeDatabase backend repo
 
     Service.UpdateProperties repo set unset ->

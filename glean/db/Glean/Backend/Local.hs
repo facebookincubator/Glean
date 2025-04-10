@@ -156,6 +156,7 @@ instance Backend Database.Env where
     =<< atomically (Catalog.getLocalDatabase (Database.envCatalog env) repo)
 
   kickOffDatabase = Database.kickOffDatabase
+  finishDatabase = Database.finishDatabase
   finalizeDatabase = Database.finalizeDatabase
   updateProperties env repo set unset = do
     Database.updateProperties env repo set unset

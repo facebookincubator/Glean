@@ -39,6 +39,8 @@ instance Backend RetryWritesBackend where
 
   kickOffDatabase (RetryWritesBackend policy backend) kickOff =
     retryChannelExceptions policy $ kickOffDatabase backend kickOff
+  finishDatabase (RetryWritesBackend policy backend) repo =
+    retryChannelExceptions policy $ finishDatabase backend repo
   finalizeDatabase (RetryWritesBackend policy backend) repo =
     retryChannelExceptions policy $ finalizeDatabase backend repo
   updateProperties (RetryWritesBackend policy backend) repo props vals =
@@ -99,6 +101,7 @@ instance Backend RetryReadsBackend where
   deriveStored (RetryReadsBackend _ backend) = deriveStored backend
 
   kickOffDatabase (RetryReadsBackend _ backend) = kickOffDatabase backend
+  finishDatabase (RetryReadsBackend _ backend) = finishDatabase backend
   finalizeDatabase (RetryReadsBackend _ backend) = finalizeDatabase backend
   updateProperties (RetryReadsBackend _ backend) = updateProperties backend
   workFinished (RetryReadsBackend _ backend) = workFinished backend

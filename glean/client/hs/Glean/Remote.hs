@@ -239,6 +239,7 @@ instance Backend ThriftBackend where
         <|> Just (thriftBackendClientInfo t)
 
   kickOffDatabase t rq = withoutShard t $ GleanService.kickOff rq
+  finishDatabase t repo = withShard t repo $ GleanService.finish repo
   finalizeDatabase t rq = withoutShard t $ GleanService.finalize rq
 
   updateProperties t repo set unset =

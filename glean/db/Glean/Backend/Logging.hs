@@ -94,6 +94,11 @@ instance Backend LoggingBackend where
       (runLogKickOff "kickOff" env rq)
       (const mempty) $
       kickOffDatabase env rq
+  finishDatabase (LoggingBackend env) repo =
+    loggingAction
+      (runLogRepo "finishDatabase" env repo)
+      (const mempty) $
+      finishDatabase env repo
   finalizeDatabase (LoggingBackend env) repo =
     loggingAction
       (runLogRepo "finalizeDatabase" env repo)

@@ -204,6 +204,7 @@ instance Backend (Some LocalOrRemote) where
   deriveStored (Some backend) = deriveStored backend
 
   kickOffDatabase (Some backend) = kickOffDatabase backend
+  finishDatabase (Some backend) = finishDatabase backend
   finalizeDatabase (Some backend) = finalizeDatabase backend
   updateProperties (Some backend) = updateProperties backend
   workFinished (Some backend) = workFinished backend

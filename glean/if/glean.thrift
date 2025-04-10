@@ -422,6 +422,8 @@ union FinishResponse {
 
 struct FinalizeResponse {}
 
+struct FinishDatabaseResponse {}
+
 struct Worker {
   1: string name;
 }
@@ -1181,8 +1183,16 @@ service GleanService extends fb303.FacebookService {
     2: CompletePredicates predicates,
   ) throws (1: Exception e, 3: Retry r, 4: UnknownDatabase u);
 
-  // Wait for a DB to be complete, after the last workFinished
-  // call. If finalization failed, this will throw an Exception with
+  // Tell the server that the database is complete starting the finalization process.
+  // Throws an exception if the database is not in incomplete state or there are pending writes.
+  FinishDatabaseResponse finish(1: Repo repo) throws (
+    1: Exception e,
+    2: DatabaseNotIncomplete c,
+    3: UnknownDatabase u,
+  );
+
+  // Wait for a DB to be complete, after the finish database call.
+  // If finalization failed, this will throw an Exception with
   // the failure reason. If finalization is still in progress, this
   // will throw Retry.
   FinalizeResponse finalize(1: Repo repo) throws (

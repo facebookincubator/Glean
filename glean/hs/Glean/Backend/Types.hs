@@ -106,6 +106,7 @@ class Backend a where
     -> Thrift.DerivePredicateQuery -> IO Thrift.DerivationStatus
 
   kickOffDatabase :: a -> Thrift.KickOff -> IO Thrift.KickOffResponse
+  finishDatabase :: a -> Thrift.Repo -> IO Thrift.FinishDatabaseResponse
   finalizeDatabase :: a -> Thrift.Repo -> IO Thrift.FinalizeResponse
 
   updateProperties
@@ -194,6 +195,7 @@ instance Backend (Some Backend) where
   deriveStored (Some backend) = deriveStored backend
 
   kickOffDatabase (Some backend) = kickOffDatabase backend
+  finishDatabase (Some backend) = finishDatabase backend
   finalizeDatabase (Some backend) = finalizeDatabase backend
   updateProperties (Some backend) = updateProperties backend
   workFinished (Some backend) = workFinished backend
