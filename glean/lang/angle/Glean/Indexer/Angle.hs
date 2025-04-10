@@ -19,6 +19,7 @@ import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 import Control.Exception
 import Options.Applicative
+import System.FilePath ( (</>))
 import Util.EventBase
 import Util.IO (listDirectoryRecursive)
 
@@ -38,6 +39,7 @@ import qualified Glean.Schema.Src as Src (allPredicates)
 
 data Options = Options
   { optDir ::  String
+  , optRepoPath :: String
   , optDb :: Glean.Repo
   , optService :: Service
   }
@@ -55,11 +57,18 @@ opts = info (helper <*> parser) fullDesc
       optDir <- strOption
         (long "dir"
         <> metavar "DIR"
-        <> help "dir of schemas to index")
+        <> help "dir of schemas to index. Relative to the repo-path")
       optDb <- option (maybeReader Glean.parseRepo)
         (  long "db"
         <> metavar "NAME"
         <> help "database to write facts to" )
+      optRepoPath <- strOption
+        (long "repo-path"
+        <> metavar "REPO-PATH"
+        <> help ("path to repo root."
+          <> "indexed files will have names relative this root"
+          )
+        )
       optService <- options
       return Options{..}
 
@@ -121,7 +130,7 @@ buildFileLines fileInfo = do
 send :: Backend be => be -> ProcessedSchema -> Options -> IO ()
 send be schemas opts = do
   -- pre-processing before building facts
-  fileInfos <- sourceFileInfos $ optDir opts
+  fileInfos <- sourceFileInfos (optRepoPath opts) (optDir opts)
 
   withSender be (optDb opts) refs def $ \sender ->
     withWriter sender def $ \writer ->
@@ -135,7 +144,8 @@ main :: IO ()
 main = do
   withConfigOptions opts $ \(opts, cfgOpts) -> do
     let service = optService opts
-    schemas <- readSchemas $ optDir opts
+        indexDir = optRepoPath opts </> optDir opts
+    schemas <- readSchemas indexDir
     withEventBaseDataplane $ \evb ->
       withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
       withBackendWithDefaultOptions evb cfgAPI service (Just schema_id)

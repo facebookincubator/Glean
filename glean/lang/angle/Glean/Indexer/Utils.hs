@@ -47,16 +47,19 @@ type FileInfoMap = HashMap.HashMap Name SchemaFileInfo
 -- Collect bytestrings from source code
 -- we need this to create the Src.FileLines,
 -- and for SrcSpan -> Src.ByteSpan conversion
-sourceFileInfos :: FilePath -> IO [SourceFileInfo]
-sourceFileInfos dir = do
-  files <- filter ((== ".angle") . takeExtension) <$> listDirectoryRecursive dir
+sourceFileInfos :: FilePath -> FilePath -> IO [SourceFileInfo]
+sourceFileInfos repoPath dir  = do
+  let indexDir = repoPath  </> dir
+  files <- filter ((== ".angle") . takeExtension)
+    <$> listDirectoryRecursive indexDir
   sourceFileInfo <- mapM  (\file -> do
     bytestr <- B.readFile file
     case parseSchema bytestr of
         Left err -> throwIO $ ErrorCall err
         Right SourceSchemas{..} -> return $ map (\s -> do
           let name = sourceRefName $ schemaName s
-          SourceFileInfo name file bytestr
+              relFilePath = makeRelative repoPath file
+          SourceFileInfo name relFilePath bytestr
           )
           srcSchemas) files
   return $ concat sourceFileInfo
