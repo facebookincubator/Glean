@@ -7,6 +7,7 @@
 -}
 
 {-# LANGUAGE ApplicativeDo #-}
+{-# LANGUAGE CPP #-}
 module Glean.Regression.Snapshot.Options
   ( Config(..)
   , options
@@ -77,7 +78,11 @@ optionsWith other = O.info (O.helper <*> ((,) <$> parser <*> other)) O.fullDesc
       replace <-
         if replaceAll
         then do
+#if OSS
+          src <- pure (cfgProjectRoot </> root)
+#else
           src <- sourcePath root
+#endif
           putStrLn src
           return (Just src)
         else mapM makeAbsolute cfgReplace

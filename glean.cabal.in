@@ -1469,6 +1469,7 @@ library regression-test-lib
         Glean.Regression.Snapshot.Result
         Glean.Regression.Snapshot.Transform
         Glean.Regression.Test
+    ghc-options: -DOSS=1
     build-depends:
         glean:client-hs,
         glean:client-hs-local,
