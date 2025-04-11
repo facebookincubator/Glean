@@ -206,15 +206,15 @@ computeIds toList schemas versions = flip evalState emptyRefToIdEnv $ do
   where
     updateDefWithHash :: Hash -> Def -> Def
     updateDefWithHash hash def = case def of
-        RefType (TypeDef (TypeId ref _) ty) ->
-          RefType (TypeDef (TypeId ref hash) ty)
+        RefType (TypeDef (TypeId ref _) ty s) ->
+          RefType (TypeDef (TypeId ref hash) ty s)
         RefPred (PredicateDef (PredicateId ref _) key val drv s) ->
           RefPred (PredicateDef (PredicateId ref hash) key val drv s)
 
     extend :: Def -> RefToIdEnv -> RefToIdEnv
     extend def (RefToIdEnv tids pids) =
       case def of
-        RefType (TypeDef id _) ->
+        RefType (TypeDef id _ _) ->
           RefToIdEnv (HashMap.insert (typeIdRef id) id tids) pids
         RefPred (PredicateDef id _ _ _ _) ->
           RefToIdEnv tids (HashMap.insert (predicateIdRef id) id pids)
@@ -224,7 +224,7 @@ computeIds toList schemas versions = flip evalState emptyRefToIdEnv $ do
       where
       one (def, hash) (RefToIdEnv tids pids) =
         case def of
-          RefType (TypeDef ref _) ->
+          RefType (TypeDef ref _ _) ->
             let id = TypeId ref hash in
             RefToIdEnv (HashMap.insert ref id tids) pids
           RefPred (PredicateDef ref _ _ _ _) ->
@@ -232,14 +232,14 @@ computeIds toList schemas versions = flip evalState emptyRefToIdEnv $ do
             RefToIdEnv tids (HashMap.insert ref id pids)
 
     resolveDef :: DefResolved -> State RefToIdEnv Def
-    resolveDef (RefType (TypeDef ref ty)) = do
+    resolveDef (RefType (TypeDef ref ty s)) = do
       env <- State.get
       let
         newTy = refsToIds env ty
         newId = TypeId {
           typeIdRef = ref,
           typeIdHash = hash0 }
-        def = RefType (TypeDef newId newTy)
+        def = RefType (TypeDef newId newTy s)
       return def
     resolveDef (RefPred (PredicateDef ref key val drv s)) = do
       env <- State.get
@@ -265,7 +265,7 @@ resolveQuery env (SourceQuery head stmts ord) =
 -- same only if they the same name, same version, and same
 -- representation.
 fingerprintDef :: Def -> Hash
-fingerprintDef (RefType (TypeDef id ty)) =
+fingerprintDef (RefType (TypeDef id ty _)) =
   hashBinary (showRef ref, ty)
   where ref = typeIdRef id
 fingerprintDef (RefPred (PredicateDef id key val drv _)) =

@@ -29,12 +29,18 @@ import Glean.Schema.Types
 import Glean.Types (SchemaId(..))
 
 
-genSchemaCpp :: SchemaId -> Version -> [ResolvedPredicateDef] -> [ResolvedTypeDef] -> [(FilePath,Text)]
+genSchemaCpp
+  :: SchemaId
+  -> Version
+  -> [ResolvedPredicateDef]
+  -> [ResolvedTypeDef]
+  -> [(FilePath,Text)]
 genSchemaCpp hash version preddefs typedefs =
   [("", leading <> newline <> newline <> body)]
   where
     namePolicy = mkNamePolicy preddefs typedefs
-    someDecls = map PredicateDecl preddefs ++ map TypeDecl typedefs
+    someDecls = map PredicateDecl preddefs ++
+      map (\TypeDef{..} -> TypeDecl typeDefRef typeDefType) typedefs
     ordered = orderDecls someDecls
     ((ds,schema), extra) = runM [] namePolicy typedefs $ do
       ds <- mapM genDecl ordered
@@ -306,10 +312,8 @@ shareTypeDef here t = do
       -- getting the namespace for the generated type right is a bit of a hack,
       -- because we've already mangled the namespace that we're passing around.
       let qname = joinDot (drop (length schemaNamespace) here, name)
-          dNew = TypeDef
-            { typeDefRef = TypeRef qname 0
-            , typeDefType = t }
-      pushDefs =<< genDecl (TypeDecl dNew)
+          tref = TypeRef qname 0
+      pushDefs =<< genDecl (TypeDecl tref t)
   return name
 
 -- | Generate a value type
@@ -381,17 +385,17 @@ genDecl (PredicateDecl PredicateDef{..}) = withExtra $ do
       , "}; // struct " <> ident
       ]
   return [(spaces, (declare, define))]
-genDecl (TypeDecl TypeDef{..}) = withExtra $ do
-  name@(_,base) <- schemaName <$> typeName typeDefRef
+genDecl (TypeDecl tref ty) = withExtra $ do
+  name@(_,base) <- schemaName <$> typeName tref
   withTypeDefHint base $ do
   if isJust (provided name)
     then return []
     else do
-      case typeDefType of
+      case ty of
         RecordTy fields -> recordDef name fields
         SumTy fields -> unionDef name fields
         EnumeratedTy vals -> enumDef name vals
-        _other -> aliasDef name typeDefType
+        _other -> aliasDef name ty
 
 
 aliasDef :: (NameSpaces,Text) -> ResolvedType -> CppGen [(NameSpaces, (Text, Text))]

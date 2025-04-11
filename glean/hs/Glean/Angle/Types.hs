@@ -36,6 +36,7 @@ module Glean.Angle.Types
   , rmLocStatement
   , rmLocPat
   , rmLocField
+  , rmLocTypeDef
 
   -- * Types
   , Type_(..)
@@ -525,9 +526,10 @@ tupleField :: Text
 tupleField = "tuplefield"
 
 -- | A definition of a named type
-data TypeDef_ pref tref = TypeDef
+data TypeDef_ s pref tref = TypeDef
   { typeDefRef :: tref
   , typeDefType :: Type_ pref tref
+  , typeDefSrcSpan :: s
   }
   deriving Eq
 
@@ -615,13 +617,14 @@ type SourceStatement' s = SourceStatement_ s SourceRef SourceRef
 type SourceQuery' s = SourceQuery_ s SourceRef SourceRef
 type SourceDerivingInfo' s = DerivingInfo (SourceQuery' s)
 type SourcePredicateDef' s = PredicateDef_ s SourceRef SourceRef
+type SourceTypeDef' s = TypeDef_ s SourceRef SourceRef
 
 type SourcePat = SourcePat' SrcSpan
 type SourceStatement = SourceStatement' SrcSpan
 type SourceQuery = SourceQuery' SrcSpan
 type SourceType = Type_ SourceRef SourceRef
 type SourceFieldDef = FieldDef_ SourceRef SourceRef
-type SourceTypeDef = TypeDef_ SourceRef SourceRef
+type SourceTypeDef = TypeDef_ SrcSpan SourceRef SourceRef
 type SourcePredicateDef = SourcePredicateDef' SrcSpan
 type SourceDerivingInfo = SourceDerivingInfo' SrcSpan
 type SourceSchemas = SourceSchemas_ SrcSpan
@@ -657,7 +660,7 @@ data SourceSchemas_ s = SourceSchemas
 data SourceDecl_ s
   = SourceImport SourceRef s
   | SourcePredicate (SourcePredicateDef' s)
-  | SourceType SourceTypeDef
+  | SourceType (SourceTypeDef' s)
   | SourceDeriving SourceRef (SourceDerivingInfo' s)
   deriving (Eq)
 
@@ -665,7 +668,7 @@ data SourceDecl_ s
 
 type Type = Type_ PredicateId TypeId
 type FieldDef = FieldDef_ PredicateId TypeId
-type TypeDef = TypeDef_ PredicateId TypeId
+type TypeDef = TypeDef_ SrcSpan PredicateId TypeId
 type PredicateDef = PredicateDef_ SrcSpan PredicateId TypeId
 
 -- -----------------------------------------------------------------------------
@@ -786,7 +789,7 @@ instance (Display pref, Display tref) =>
          Derive _ query -> [ display opts query ]
          _other -> [])
 
-instance (Display pref, Display tref) => Display (TypeDef_ pref tref) where
+instance (Display pref, Display tref) => Display (TypeDef_ s pref tref) where
   display opts TypeDef{..} =
     hang 2 $ sep
       [ "type" <+> display opts typeDefRef <+> "="
@@ -1015,7 +1018,7 @@ rmLocDecl = \case
   SourcePredicate pred -> SourcePredicate $ pred
       { predicateDefDeriving = rmLocQuery <$> predicateDefDeriving pred
       , predicateDefSrcSpan = ()}
-  SourceType typeDef -> SourceType typeDef
+  SourceType typeDef -> SourceType $ rmLocTypeDef typeDef
   SourceDeriving ref deriv -> SourceDeriving ref $ rmLocQuery <$> deriv
 
 rmLocQuery :: SourceQuery_ s p t -> SourceQuery_ () p t
@@ -1025,6 +1028,9 @@ rmLocQuery (SourceQuery mhead stmts ord) =
 rmLocStatement :: SourceStatement_ s p t -> SourceStatement_ () p t
 rmLocStatement (SourceStatement x y) =
   SourceStatement (rmLocPat x) (rmLocPat y)
+
+rmLocTypeDef :: TypeDef_ s p t -> TypeDef_ () p t
+rmLocTypeDef (TypeDef tref ty _) = TypeDef tref ty ()
 
 rmLocPat :: SourcePat_ s p t -> SourcePat_ () p t
 rmLocPat = \case

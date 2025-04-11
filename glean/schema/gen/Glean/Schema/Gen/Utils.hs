@@ -89,7 +89,7 @@ shouldNameKeyType _ = False
 
 data SomeDecl
   = PredicateDecl ResolvedPredicateDef
-  | TypeDecl ResolvedTypeDef
+  | TypeDecl TypeRef ResolvedType
 
 type Node = (Name,Version)
 
@@ -107,15 +107,15 @@ orderDecls decls = map betterNotBeAnyCyclesIn sccs
   declNode :: SomeDecl -> (Name,Version)
   declNode (PredicateDecl PredicateDef{..}) =
     (predicateRef_name predicateDefRef, predicateRef_version predicateDefRef)
-  declNode (TypeDecl TypeDef{..}) =
-    (typeRef_name typeDefRef, typeRef_version typeDefRef)
+  declNode (TypeDecl tref _) =
+    (typeRef_name tref, typeRef_version tref)
 
   outEdges :: SomeDecl -> [Node]
   outEdges d = case d of
     PredicateDecl PredicateDef{..} ->
       outEdgesTs [predicateDefKeyType, predicateDefValueType]
-    TypeDecl TypeDef{..} ->
-      outEdgesT typeDefType
+    TypeDecl _ ty ->
+      outEdgesT ty
 
   outEdgesTs = concatMap outEdgesT
   outEdgesFields fields = outEdgesTs [ ty | FieldDef _ ty <- fields ]
@@ -436,7 +436,8 @@ popDefs = state $ \ s -> (reverse s, mempty)
 
 addNamespaceDependencies
   :: HashMap NameSpaces ([ResolvedPredicateDef], [ResolvedTypeDef])
-  -> HashMap NameSpaces ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
+  -> HashMap NameSpaces
+    ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
 addNamespaceDependencies nss =
   HashMap.fromList
     [ (ns, (outEdges ns preds types, preds, types))

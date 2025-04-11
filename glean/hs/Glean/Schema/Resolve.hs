@@ -387,7 +387,8 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
       type' <- runResolve angleVersion scope (resolveType typeDefType)
       return (name, TypeDef
         { typeDefRef = ref
-        , typeDefType = type' })
+        , typeDefType = type'
+        , typeDefSrcSpan = typeDefSrcSpan })
 
   -- resolve predicate definitions
   predicates <- forM localPreds $

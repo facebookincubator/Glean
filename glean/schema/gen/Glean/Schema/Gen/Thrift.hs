@@ -60,7 +60,8 @@ genSchemaThrift versionDir hash version preddefs typedefs =
 
 genTargets
   :: Text   -- "/v1" or ""
-  -> HashMap NameSpaces ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
+  -> HashMap NameSpaces
+    ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
   -> Text
 genTargets slashVn info =
   Text.unlines
@@ -191,7 +192,8 @@ genNamespace slashVn namespaces version
     hash namePolicy deps preddefs typedefs
  = Text.intercalate (newline <> newline) (header : pieces)
  where
-  someDecls = map PredicateDecl preddefs ++ map TypeDecl typedefs
+  someDecls = map PredicateDecl preddefs ++
+    map (\TypeDef{..} -> TypeDecl typeDefRef typeDefType) typedefs
   ordered = orderDecls someDecls
   (gen :: [[Text]], extra :: [Text]) = runM [] namePolicy typedefs $ do
      ps <- mapM (genDecl namespaces) ordered
@@ -200,7 +202,7 @@ genNamespace slashVn namespaces version
 
   genDecl :: NameSpaces -> SomeDecl -> M ([Text],[Text])
   genDecl ns (PredicateDecl p) = genPred ns p
-  genDecl ns (TypeDecl t) = ([],) <$> genType ns t
+  genDecl ns (TypeDecl tref ty) = ([],) <$> genType ns tref ty
 
   namespace = dotted namespaces
 
@@ -298,10 +300,8 @@ shareTypeDef here t = do
   case no of
     Old -> return ()
     New -> do
-      let dNew = TypeDef
-            { typeDefRef = TypeRef name 0
-            , typeDefType = t }
-      pushDefs =<< genType here dNew
+      let tref = TypeRef name 0
+      pushDefs =<< genType here tref t
   return name
 
 
@@ -470,13 +470,13 @@ needsRefType t = do
       _ -> return False
 
 -- Make the thriftTy type text, and the [Text] declaration block
-define_kt :: NameSpaces -> ResolvedType -> (NameSpaces, Text) -> M (Text, [Text])
+define_kt ::
+  NameSpaces -> ResolvedType -> (NameSpaces, Text) -> M (Text, [Text])
 define_kt here typ name_kt = do
   let gname = joinDot name_kt
+      tref = TypeRef gname 0
   ref <- thriftTy here (NamedTy (TypeRef gname 0))
-  def <- genType here TypeDef
-    { typeDefRef = TypeRef gname 0
-    , typeDefType = typ }
+  def <- genType here tref typ
   return (ref,def)
 
 makeEnumerated :: Text -> [Name] -> M [Text]
@@ -500,9 +500,9 @@ makeEnumerated name vals = do
           | null py3Annot = ""
           | otherwise = " (" <> Text.intercalate ", " py3Annot <> ")"
 
-genType :: NameSpaces -> ResolvedTypeDef -> M [Text]
-genType here TypeDef{..} = addExtraDecls $ do
-  tName@(_, root) <- typeName typeDefRef
+genType :: NameSpaces -> TypeRef -> ResolvedType -> M [Text]
+genType here tref ty = addExtraDecls $ do
+  tName@(_, root) <- typeName tref
   let name = thriftName here tName
 
   withTypeDefHint root $ do
@@ -526,7 +526,7 @@ genType here TypeDef{..} = addExtraDecls $ do
           ]
       return [define]
 
-  case typeDefType of
+  case ty of
     RecordTy fields -> structLike "struct" fields withRecordFieldHint []
     SumTy fields -> structLike structOrUnion fields withUnionFieldHint anyField
       where
@@ -536,6 +536,6 @@ genType here TypeDef{..} = addExtraDecls $ do
     EnumeratedTy vals -> makeEnumerated name vals
 
     _other_ty -> do
-      t <- thriftTy here typeDefType
+      t <- thriftTy here ty
       return [allowReservedIdentifierAnnotation name
         <> "typedef " <> t <> " " <> name]

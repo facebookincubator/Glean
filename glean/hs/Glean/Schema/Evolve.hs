@@ -255,7 +255,7 @@ validateEvolutions
   :: (Eq p, Eq t, ShowRef p, ShowRef t,
       Hashable p, Hashable t, Display p, Display t)
   => Maybe (p -> Bool)               -- ^ does the db has facts of p
-  -> HashMap t (TypeDef_ p t)        -- ^ types to their definitions
+  -> HashMap t (TypeDef_ s p t)        -- ^ types to their definitions
   -> HashMap p (PredicateDef_ s p t) -- ^ predicates to their definitions
   -> HashMap p p                     -- ^ predicate evolutions
   -> Either Text ()
@@ -338,7 +338,7 @@ validateResolvedEvolutions resolved = do
       (PredicateDef_ SrcSpan PredicateRef TypeRef)
     preds = HashMap.unions $ reverse $ map resolvedSchemaPredicates resolved
 
-    types :: HashMap TypeRef (TypeDef_ PredicateRef TypeRef)
+    types :: HashMap TypeRef ResolvedTypeDef
     types = HashMap.unions $ reverse $ map resolvedSchemaTypes resolved
 
 data Opt = Option | FieldOpt
@@ -355,7 +355,7 @@ data Opt = Option | FieldOpt
 canEvolve
   :: (Eq p, Eq t, ShowRef p, ShowRef t,
       Hashable p, Hashable t, Display p, Display t)
-  => HashMap t (TypeDef_ p t) -- ^ type definitions
+  => HashMap t (TypeDef_ s p t) -- ^ type definitions
   -> (p -> p -> Bool)         -- ^ whether two predicates are compatible
   -> Type_ p t                -- ^ updated type
   -> Type_ p t                -- ^ old type

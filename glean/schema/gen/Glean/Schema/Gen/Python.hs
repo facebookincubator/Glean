@@ -173,7 +173,7 @@ genNamedTypesClasses pred types = map genTypePred $
       (predicateDefDeriving pred) (predicateDefSrcSpan pred)
 
 
-genNamedTypesAliases :: NamePolicy -> [TypeDef_ PredicateRef TypeRef] -> [Text]
+genNamedTypesAliases :: NamePolicy -> [ResolvedTypeDef] -> [Text]
 genNamedTypesAliases namePolicy types = map genTypeAlias $
   filter (\(_, t, _) -> shouldGenAlias t) $ map genType types
   where
@@ -190,8 +190,9 @@ shouldGenClass t = case t of
 shouldGenAlias :: Type_ pref tref -> Bool
 shouldGenAlias t = not $ shouldGenClass t
 
-genType :: TypeDef_ pref TypeRef -> (TypeName, Type_ pref TypeRef, Version)
-genType TypeDef{typeDefRef = TypeRef{..}, ..} = (typeRef_name, typeDefType, typeRef_version)
+genType :: ResolvedTypeDef -> (TypeName, ResolvedType, Version)
+genType TypeDef{typeDefRef = TypeRef{..}, ..} =
+  (typeRef_name, typeDefType, typeRef_version)
 
 unionDummyPreds :: Type_ PredicateRef tref
   -> PredicateDef_ s PredicateRef tref

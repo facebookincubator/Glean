@@ -336,7 +336,8 @@ typedef
   : 'type' predicatename '=' type
     { Schema.SourceType Schema.TypeDef
         { typeDefRef = parseRef $2
-        , typeDefType = lval $4 }
+        , typeDefType = lval $4
+        , typeDefSrcSpan = s $1 $4 }
     }
 
 qname :: { Located SourceRef }

@@ -1118,7 +1118,7 @@ checkRecursiveDefinitions resolved =
     -- predicates referenced by type
     references :: TypeRef -> HashSet PredicateRef
     references tref = fromMaybe mempty $ do
-      TypeDef _ ty <- HashMap.lookup tref (resolvedSchemaTypes resolved)
+      TypeDef _ ty _ <- HashMap.lookup tref (resolvedSchemaTypes resolved)
       return $ bifoldMap HashSet.singleton references ty
 
 definitions

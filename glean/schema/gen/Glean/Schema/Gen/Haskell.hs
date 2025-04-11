@@ -25,7 +25,8 @@ import Glean.Schema.Gen.Utils
 import Glean.Angle.Types
 import Glean.Schema.Types
 
-genSchemaHS :: Version -> [ResolvedPredicateDef] -> [ResolvedTypeDef] -> [(FilePath,Text)]
+genSchemaHS
+  :: Version -> [ResolvedPredicateDef] -> [ResolvedTypeDef] -> [(FilePath,Text)]
 genSchemaHS _version preddefs typedefs =
   ("hs" </> "TARGETS", genTargets declsPerNamespace) :
   [ ("thrift" </> Text.unpack (underscored namespaces) <> "_include" <.> "hs",
@@ -53,7 +54,7 @@ genSchemaHS _version preddefs typedefs =
       where
       (gen :: [[Text]], extra :: [Text]) = runM [] namePolicy typedefs $ do
          ps <- mapM genPredicate preds
-         ts <- mapM genType types
+         ts <- mapM (\TypeDef{..} -> genType typeDefRef typeDefType) types
          return (ps ++ ts)
 
 genTargets
@@ -211,10 +212,8 @@ shareTypeDef genSub here t = do
   (no, name) <- nameThisType t
   case no of
     New | genSub -> do
-      let dNew = TypeDef
-            { typeDefRef = TypeRef (joinDot (here,name)) 0
-            , typeDefType = t }
-      pushDefs =<< genType dNew
+      let tref = TypeRef (joinDot (here,name)) 0
+      pushDefs =<< genType tref t
     _otherwise -> return ()
   return (haskellTypeName (localOrExternal here name))
 
@@ -355,16 +354,14 @@ define_kt here typ name_kt = case typ of
 
    alias t = do
     ref <- haskellTy here (NamedTy (TypeRef gname 0))
-    def <- genType TypeDef
-      { typeDefRef = TypeRef (joinDot name_kt) 0
-      , typeDefType = t }
+    def <- genType (TypeRef gname 0) t
     return (ref,def)
 
-genType :: ResolvedTypeDef -> M [Text]
-genType TypeDef{typeDefRef = TypeRef{..}, ..}
+genType :: TypeRef -> ResolvedType -> M [Text]
+genType TypeRef{..} ty
   | provided typeRef_name = return []
   | otherwise =
-  case typeDefType of
+  case ty of
     RecordTy fields -> structDef typeRef_name typeRef_version fields
     SumTy fields -> unionDef typeRef_name typeRef_version fields
     EnumeratedTy vals -> enumDef typeRef_name typeRef_version vals

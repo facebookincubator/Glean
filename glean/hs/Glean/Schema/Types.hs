@@ -28,6 +28,7 @@ module Glean.Schema.Types (
   ResolvedStatement',
   ResolvedQuery',
   ResolvedDeriving',
+  ResolvedTypeDef',
 
   -- * Name environments and resolution
   NameEnv,
@@ -126,7 +127,7 @@ resolveRefFiltered scope p ref =
 
 type ResolvedType = Type_ PredicateRef TypeRef
 type ResolvedFieldDef = FieldDef_ PredicateRef TypeRef
-type ResolvedTypeDef = TypeDef_ PredicateRef TypeRef
+type ResolvedTypeDef = TypeDef_ SrcSpan PredicateRef TypeRef
 type ResolvedPredicateDef = PredicateDef_ SrcSpan PredicateRef TypeRef
 type ResolvedPat = SourcePat_ SrcSpan PredicateRef TypeRef
 type ResolvedStatement = SourceStatement_ SrcSpan PredicateRef TypeRef
@@ -138,6 +139,7 @@ type ResolvedPat' s = SourcePat_ s PredicateRef TypeRef
 type ResolvedStatement' s = SourceStatement_ s PredicateRef TypeRef
 type ResolvedQuery' s = SourceQuery_ s PredicateRef TypeRef
 type ResolvedDeriving' s = DerivingInfo (ResolvedQuery' s)
+type ResolvedTypeDef' s = TypeDef_ s PredicateRef TypeRef
 
 -- | A 'ResolvedSchema' is used during schema resolution to resolve
 -- schemas that import or inherit from this schema.
@@ -145,9 +147,9 @@ data ResolvedSchema p t = ResolvedSchema
   { resolvedSchemaName :: Name
   , resolvedSchemaVersion :: Version
   , resolvedSchemaAngleVersion :: AngleVersion
-  , resolvedSchemaTypes :: HashMap TypeRef (TypeDef_ p t)
+  , resolvedSchemaTypes :: HashMap TypeRef (TypeDef_ SrcSpan p t )
     -- ^ types that are defined by this schema
-  , resolvedSchemaReExportedTypes :: HashMap TypeRef (TypeDef_ p t)
+  , resolvedSchemaReExportedTypes :: HashMap TypeRef (TypeDef_ SrcSpan p t )
     -- ^ types that are inherited and re-exported by this schema
   , resolvedSchemaPredicates ::
       HashMap PredicateRef (PredicateDef_ SrcSpan p t)
