@@ -29,13 +29,15 @@ import Glean.Database.Config
 import Glean.LocalOrRemote
 import Glean.Util.ConfigProvider
 import Glean.Impl.ConfigProvider
-import Glean.Schema.Builtin.Types (schema_id)
+import Glean.Schema.Builtin.Types (schema_id, Unit(..))
 import Glean.Indexer.Utils
 import Glean.Angle.Types
 import Glean.Schema.Types
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.Src as Src (allPredicates)
 
+import qualified Glean.Schema.Anglelang.Types as Anglelang
+import qualified Glean.Schema.Anglelang as Anglelang (allPredicates)
 
 data Options = Options
   { optDir ::  String
@@ -46,8 +48,16 @@ data Options = Options
 
 -- Combining all info needed to build facts for an angle schema
 -- such that we can easily iterate them on a "per schema" basis.
-data AngleSchema =
-  AngleSchema SourceSchema ResolvedSchemaRef FilePath ToByteSpan
+data AngleSchema = AngleSchema {
+ sSchema :: SourceSchema,
+ rSchema :: ResolvedSchemaRef,
+ fpath :: FilePath,
+ toByteSpan :: ToByteSpan
+}
+
+type DeclBuilder a =
+  forall m. (NewFact m) => a -> m (Anglelang.Declaration, SrcSpan)
+
 
 opts :: ParserInfo Options
 opts = info (helper <*> parser) fullDesc
@@ -92,9 +102,57 @@ buildFacts ProcessedSchema{..} fileinfos = do
   mapM_ buildSchemaFacts schemas
 
 buildSchemaFacts :: AngleSchema -> FactBuilder
-buildSchemaFacts _schema = do
-  -- TODO: not implemented yet
-  return ()
+buildSchemaFacts AngleSchema{..} = do
+  let preds = map snd $ HashMap.toList $ resolvedSchemaPredicates rSchema
+  let types = map snd $ HashMap.toList $ resolvedSchemaTypes rSchema
+  fileFact <- makeFact @Src.File $ Text.pack fpath
+
+  mapM_ (buildImportDeclFacts toByteSpan fileFact) $ schemaDecls sSchema
+  mapM_ (\p -> buildDecl buildPredDeclFact p toByteSpan fileFact ) preds
+  mapM_ (\t -> buildDecl buildTypeDeclFact t toByteSpan fileFact ) types
+  -- TODO: deriving decls
+  -- TODO: all refs
+
+
+buildDecl :: DeclBuilder a -> a -> ToByteSpan -> Src.File -> FactBuilder
+buildDecl declBuilder def toByteSpan fileFact = do
+  (decl, srcSpan) <- declBuilder def
+  makeFact_ @Anglelang.DeclarationLocation $
+    Anglelang.DeclarationLocation_key decl fileFact (toByteSpan srcSpan)
+
+buildTypeDeclFact :: DeclBuilder ResolvedTypeDef
+buildTypeDeclFact TypeDef{..} = do
+  name <- buildNameFact $ typeRef_name typeDefRef
+  ty <- buildTypeFact typeDefType
+  typeDecl <- makeFact @Anglelang.TypeDecl $ Anglelang.TypeDecl_key name ty
+  return (Anglelang.Declaration_ty typeDecl, typeDefSrcSpan)
+
+buildPredDeclFact :: DeclBuilder ResolvedPredicateDef
+buildPredDeclFact PredicateDef{..} = do
+  let derived = toDeriveEnum predicateDefDeriving
+  name <- buildNameFact $ predicateRef_name  predicateDefRef
+  keyTy <- buildTypeFact predicateDefKeyType
+  valTy <- buildTypeFact predicateDefValueType
+  predDecl <- makeFact @Anglelang.PredicateDecl $
+    Anglelang.PredicateDecl_key name keyTy valTy derived
+
+  return (Anglelang.Declaration_pred predDecl, predicateDefSrcSpan)
+
+  where toDeriveEnum deriveInf = case deriveInf of
+          NoDeriving -> Anglelang.DeriveInfo_NoDeriving
+          Derive DeriveOnDemand _ -> Anglelang.DeriveInfo_OnDemand
+          Derive DerivedAndStored _ -> Anglelang.DeriveInfo_Stored
+          Derive DeriveIfEmpty _ -> Anglelang.DeriveInfo_IfEmpty
+
+
+buildImportDeclFacts ::  ToByteSpan -> Src.File -> SourceDecl -> FactBuilder
+buildImportDeclFacts toByteSpan file decl = case decl of
+  (SourceImport n s) -> do
+    name <- buildNameFact $ sourceRefName n
+    makeFact_ @Anglelang.DeclarationLocation $
+      Anglelang.DeclarationLocation_key
+        (Anglelang.Declaration_imp name) file (toByteSpan s)
+  _ -> return ()
 
 readSchemas :: FilePath -> IO ProcessedSchema
 readSchemas dir = do
@@ -127,6 +185,44 @@ buildFileLines fileInfo = do
   let toByteSpan = fromSrcSpan fileLinesKey bytestr
   return $ SchemaFileInfo fileInfo toByteSpan
 
+
+
+buildTypeFact :: forall m. (NewFact m) => Type_ PredicateRef TypeRef
+  -> m Anglelang.Type
+buildTypeFact typeDef = do
+  typeFact <- case typeDef of
+      ByteTy ->  return (Anglelang.Type_key_byte_ Unit)
+      NatTy ->  return (Anglelang.Type_key_nat_ Unit)
+      BooleanTy ->  return (Anglelang.Type_key_boolean_ Unit)
+      StringTy -> return (Anglelang.Type_key_string_ Unit)
+      ArrayTy type_ -> Anglelang.Type_key_array_ <$> buildTypeFact type_
+      SetTy type_ -> Anglelang.Type_key_set_ <$> buildTypeFact type_
+      RecordTy fieldDefs ->
+        Anglelang.Type_key_record_ <$> mapM buildField fieldDefs
+      SumTy fieldDefs ->
+        Anglelang.Type_key_sum_ <$> mapM buildField fieldDefs
+      PredicateTy pref -> do
+        Anglelang.Type_key_predicate_ <$> buildNameFact (predicateRef_name pref)
+      NamedTy tref -> do
+        Anglelang.Type_key_named_ <$> buildNameFact (typeRef_name tref)
+      MaybeTy tref -> do
+        Anglelang.Type_key_maybe_ <$> buildTypeFact tref
+      EnumeratedTy names -> Anglelang.Type_key_enum_ <$> mapM buildName names
+      _ -> fail $ "Couldn't build fact of unexpected type: " <> show typeDef
+  makeFact @Anglelang.Type typeFact
+
+  where
+    buildField fieldDef = do
+        name <- makeFact @Anglelang.Name $ fieldDefName fieldDef
+        ty <- buildTypeFact $ fieldDefType fieldDef
+        return $ Anglelang.Field name ty
+    buildName name = makeFact @Anglelang.Name name
+
+
+buildNameFact ::forall m. (NewFact m) =>  Name -> m Anglelang.Name
+buildNameFact name = makeFact @Anglelang.Name name
+
+
 send :: Backend be => be -> ProcessedSchema -> Options -> IO ()
 send be schemas opts = do
   -- pre-processing before building facts
@@ -137,8 +233,7 @@ send be schemas opts = do
       writeFacts writer (buildFacts schemas fileInfos)
 
     where
-      -- TODO: add predicates sent, e.g., [ Anglelang.allPredicates, Src., ..]
-      refs = [Src.allPredicates]
+      refs = [Src.allPredicates, Anglelang.allPredicates]
 
 main :: IO ()
 main = do
