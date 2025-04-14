@@ -17,7 +17,6 @@ module Glean.RTS.Foreign.Define
 
 import Control.Exception
 import Control.Monad
-import Data.Coerce (coerce)
 import Data.Default
 import Data.Typeable
 import qualified Data.Vector.Storable as VS
@@ -35,6 +34,7 @@ import Glean.RTS.Foreign.Inventory (Inventory)
 import Glean.RTS.Foreign.Subst (Subst)
 import Glean.RTS.Types (Fid(..), Pid(..), invalidFid)
 import qualified Glean.Types as Thrift
+import Glean.Util.Vector
 
 -- | A reference to a thing we can define facts in
 newtype Define = Define (Ptr Define)
@@ -108,7 +108,7 @@ defineBatch facts inventory batch DefineFlags{..} =
     withIds f
       | Just ids <- Thrift.batch_ids batch =
           if fromIntegral (VS.length ids) == Thrift.batch_count batch
-            then VS.unsafeWith (coerce ids) f
+            then VS.unsafeWith (unsafeCoerceVector ids) f
             else throwIO $
               Thrift.Exception "mismatch between count and ids.size in batch"
       | otherwise = f nullPtr

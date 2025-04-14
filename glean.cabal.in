@@ -147,7 +147,7 @@ common deps
         contravariant ^>=1.5,
         text ^>=1.2.3.0,
         bytestring >=0.10.8.2 && <0.12,
-        vector >=0.12.0.1 && <0.13,
+        vector >=0.12.0.1 && <0.14,
         transformers ^>=0.5.6.2,
         network-uri ^>=2.6.1.0,
         stm ^>=2.5.0.0,
@@ -363,6 +363,7 @@ library util
         Glean.Util.TransitiveClosure
         Glean.Util.Trace
         Glean.Util.ValueBuffer
+        Glean.Util.Vector
         Glean.Util.Warden
     build-depends:
         glean:stubs,

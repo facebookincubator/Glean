@@ -70,6 +70,7 @@ import Glean.RTS.Foreign.Lookup
 import Glean.RTS.Foreign.Subst
 import Glean.RTS.Types
 import qualified Glean.Types as Thrift
+import Glean.Util.Vector
 
 newtype UnitIterator = UnitIterator (Ptr UnitIterator)
   deriving(Storable)
@@ -213,14 +214,14 @@ addDerivedOwners base define (Pid pid) deps =
       define_ptr
       (fromIntegral pid)
       (fromIntegral $ length deps)
-      p_facts_ptrs
+      (castPtr p_facts_ptrs)
       p_facts_sizes
-      p_deps_ptrs
+      (castPtr p_deps_ptrs)
       p_deps_sizes
   where
     entry (Thrift.FactDependencies facts deps) f =
-      VS.unsafeWith (coerce facts) $ \facts_ptr ->
-      VS.unsafeWith (coerce deps) $ \deps_ptr -> do
+      VS.unsafeWith facts $ \facts_ptr ->
+      VS.unsafeWith deps $ \deps_ptr -> do
       let
         !num_facts = fromIntegral $ VS.length facts
         !num_deps = fromIntegral $ VS.length deps
@@ -286,8 +287,8 @@ getOwnershipSet ownership usetid =
           vec <- hsArrayStorable <$> peek (castPtr arr_ptr)
           let op | cop == (#const facebook::glean::rts::Or) = Or
                  | cop == (#const facebook::glean::rts::And) = And
-                 | otherwise = error "unkonwn SetOp"
-          return $ Just (op, coerce (vec :: VS.Vector Word32))
+                 | otherwise = error "unknown SetOp"
+          return $ Just (op, unsafeCoerceVector (vec :: VS.Vector Word32))
     )
 
 data OwnershipStats = OwnershipStats
@@ -349,8 +350,9 @@ newtype FactOwnership = FactOwnership
 
 substOwnership :: Subst -> FactOwnership -> IO FactOwnership
 substOwnership subst (FactOwnership owned) = do
-  owned' <- traverse (coerce $ unsafeSubstIntervalsAndRelease subst) owned
-  return (FactOwnership owned')
+  let apply x = unsafeCoerceVector <$>
+        unsafeSubstIntervalsAndRelease subst (unsafeCoerceVector x)
+  FactOwnership <$> traverse apply owned
 
 unionOwnership :: [FactOwnership] -> FactOwnership
 unionOwnership =
