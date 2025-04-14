@@ -16,6 +16,7 @@ make developer iteration quicker.
 -}
 
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE CPP #-}
 
 module Data.LSIF.Angle (
     factToAngle, Predicate, PredicateMap,
@@ -481,7 +482,11 @@ withResultSet id f g = do
 toName :: Tag -> Value
 toName = string . tagText
 
+#if MIN_VERSION_aeson(2,2,0)
+tagToRange :: KeyValue e a => Tag -> Maybe [a]
+#else
 tagToRange :: KeyValue a => Tag -> Maybe [a]
+#endif
 tagToRange Definition{..} = Just ["fullRange" .= toRange fullRange]
 tagToRange Declaration{..} = Just ["fullRange" .= toRange fullRange]
 tagToRange _ = Nothing

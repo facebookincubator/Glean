@@ -13,6 +13,7 @@ converters
 
 -}
 
+{-# LANGUAGE CPP #-}
 module Data.LSIF.Gen (
 
     Predicate(..),
@@ -83,7 +84,11 @@ predicateId :: Applicative f => Text -> Id -> [Pair] -> f [Predicate]
 predicateId name id_ facts =
   pure [Predicate name [object [factId id_, key facts ]]]
 
+#if MIN_VERSION_aeson(2,2,0)
+key :: KeyValue e kv => [Pair] -> kv
+#else
 key :: KeyValue kv => [Pair] -> kv
+#endif
 key xs = "key" .= object xs
 
 string :: Text -> Value
@@ -95,7 +100,11 @@ srcFile id_ path = Predicate "src.File" [
     object [ factId id_, "key" .= path ]
   ]
 
+#if MIN_VERSION_aeson(2,2,0)
+factId :: KeyValue e kv => Id -> kv
+#else
 factId :: KeyValue kv => Id -> kv
+#endif
 factId (Id id_) = "id" .= id_
 
 -- | Accumulate predicates
