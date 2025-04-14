@@ -17,7 +17,6 @@ module Glean.RTS.Foreign.Define
 
 import Control.Exception
 import Control.Monad
-import Data.Coerce (coerce)
 import Data.Default
 import Data.Typeable
 import qualified Data.Vector.Storable as VS
@@ -108,7 +107,7 @@ defineBatch facts inventory batch DefineFlags{..} =
     withIds f
       | Just ids <- Thrift.batch_ids batch =
           if fromIntegral (VS.length ids) == Thrift.batch_count batch
-            then VS.unsafeWith (coerce ids) f
+            then VS.unsafeWith (VS.unsafeCoerceVector ids) f
             else throwIO $
               Thrift.Exception "mismatch between count and ids.size in batch"
       | otherwise = f nullPtr
