@@ -54,21 +54,9 @@ predicate PythonFileEntityXRefLocations:
     xref: codemarkup.types.XRefLocation,
     entity: code.python.Entity,
   }
-  {File, {Location, { span = Src }}, Entity} where
-  {PyDecl, Src} = (
-    python.DeclarationsByFile {
-      file = File,
-      span = Src,
-      declaration = { imp = { from_name = TargetName } },
-    };
-    python.DeclarationWithName { name = TargetName, declaration = TargetDecl};
-    {TargetDecl, Src}
-  ) | (
-    python.DirectXRefsByFile {File, XRef};
-    XRef
-  );
-  { decl = PyDecl } = Entity;
-  PythonEntityLocation {Entity, Location};
+  {File, {Location , { span = Src } }, { decl = Decl }} where
+  python.DirectXRefsByFile {File, { Decl, Src }};
+  PythonEntityLocation {{ decl = Decl }, Location};
 
 #
 # Language entity uses
