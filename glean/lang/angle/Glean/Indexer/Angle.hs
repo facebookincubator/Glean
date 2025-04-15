@@ -14,6 +14,7 @@ module Glean.Indexer.Angle
 
 
 import Data.Default
+import Data.Maybe (mapMaybe)
 import qualified Data.ByteString.Char8 as BC
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
@@ -46,13 +47,19 @@ data Options = Options
   , optService :: Service
   }
 
+data ImportDecl = ImportDecl
+  { importName    :: Name
+  , importVersion :: Version
+  , importSrcSpan :: SrcSpan
+  }
+
 -- Combining all info needed to build facts for an angle schema
 -- such that we can easily iterate them on a "per schema" basis.
 data AngleSchema = AngleSchema {
- sSchema :: SourceSchema,
  rSchema :: ResolvedSchemaRef,
  fpath :: FilePath,
- toByteSpan :: ToByteSpan
+ toByteSpan :: ToByteSpan,
+ imports :: [ImportDecl]
 }
 
 type DeclBuilder a =
@@ -90,13 +97,24 @@ buildFacts ProcessedSchema{..} fileinfos = do
 
   schemas <- mapM (\sSchema -> do
     let name = sourceRefName $ schemaName sSchema
+        -- we don't have import statements in ResolvedSchema,
+        -- so we get them from SourceSchema but use resolved version
+        imports = mapMaybe (\d -> case d of
+          SourceImport (SourceRef n v) s -> case v of
+              Just v' -> Just $ ImportDecl n v' s
+              Nothing -> case HashMap.lookup n resolvedSchemaMap of
+                Just resSchema -> Just $ ImportDecl n v' s
+                  where v' = resolvedSchemaVersion resSchema
+                Nothing -> fail $ "Couldn't find resolved schema: " <> show n
+          _ -> Nothing
+          ) $ schemaDecls sSchema
     rSchema <- case HashMap.lookup name resolvedSchemaMap of
       Just rSchema -> return rSchema
       Nothing -> fail $ "Couldn't find resolved schema" <> show name
     (file, toBs) <- case HashMap.lookup name schemaFileInfoMap of
       Just SchemaFileInfo{..} -> return (filepath sourceFileInfo, toByteSpan)
       Nothing -> fail $ "Couldn't find file info for schema " <> show name
-    return $ AngleSchema sSchema rSchema file toBs
+    return $ AngleSchema rSchema file toBs imports
     ) $ srcSchemas procSchemaSource
 
   mapM_ buildSchemaFacts schemas
@@ -107,7 +125,7 @@ buildSchemaFacts AngleSchema{..} = do
   let types = map snd $ HashMap.toList $ resolvedSchemaTypes rSchema
   fileFact <- makeFact @Src.File $ Text.pack fpath
 
-  mapM_ (buildImportDeclFacts toByteSpan fileFact) $ schemaDecls sSchema
+  mapM_ (\d -> buildDecl buildImportDeclFacts d toByteSpan fileFact ) imports
   mapM_ (\p -> buildDecl buildPredDeclFact p toByteSpan fileFact ) preds
   mapM_ (\t -> buildDecl buildTypeDeclFact t toByteSpan fileFact ) types
   -- TODO: deriving decls
@@ -121,16 +139,16 @@ buildDecl declBuilder def toByteSpan fileFact = do
     Anglelang.DeclarationLocation_key decl fileFact (toByteSpan srcSpan)
 
 buildTypeDeclFact :: DeclBuilder ResolvedTypeDef
-buildTypeDeclFact TypeDef{..} = do
-  name <- buildNameFact $ typeRef_name typeDefRef
+buildTypeDeclFact TypeDef{typeDefRef = TypeRef{..}, ..} = do
+  name <- buildNameFact typeRef_name typeRef_version
   ty <- buildTypeFact typeDefType
   typeDecl <- makeFact @Anglelang.TypeDecl $ Anglelang.TypeDecl_key name ty
   return (Anglelang.Declaration_ty typeDecl, typeDefSrcSpan)
 
 buildPredDeclFact :: DeclBuilder ResolvedPredicateDef
-buildPredDeclFact PredicateDef{..} = do
+buildPredDeclFact PredicateDef{predicateDefRef = PredicateRef{..}, ..} = do
   let derived = toDeriveEnum predicateDefDeriving
-  name <- buildNameFact $ predicateRef_name  predicateDefRef
+  name <- buildNameFact predicateRef_name predicateRef_version
   keyTy <- buildTypeFact predicateDefKeyType
   valTy <- buildTypeFact predicateDefValueType
   predDecl <- makeFact @Anglelang.PredicateDecl $
@@ -144,15 +162,10 @@ buildPredDeclFact PredicateDef{..} = do
           Derive DerivedAndStored _ -> Anglelang.DeriveInfo_Stored
           Derive DeriveIfEmpty _ -> Anglelang.DeriveInfo_IfEmpty
 
-
-buildImportDeclFacts ::  ToByteSpan -> Src.File -> SourceDecl -> FactBuilder
-buildImportDeclFacts toByteSpan file decl = case decl of
-  (SourceImport n s) -> do
-    name <- buildNameFact $ sourceRefName n
-    makeFact_ @Anglelang.DeclarationLocation $
-      Anglelang.DeclarationLocation_key
-        (Anglelang.Declaration_imp name) file (toByteSpan s)
-  _ -> return ()
+buildImportDeclFacts :: DeclBuilder ImportDecl
+buildImportDeclFacts ImportDecl{..} = do
+  name <- buildNameFact importName importVersion
+  return (Anglelang.Declaration_imp name, importSrcSpan)
 
 readSchemas :: FilePath -> IO ProcessedSchema
 readSchemas dir = do
@@ -201,10 +214,10 @@ buildTypeFact typeDef = do
         Anglelang.Type_key_record_ <$> mapM buildField fieldDefs
       SumTy fieldDefs ->
         Anglelang.Type_key_sum_ <$> mapM buildField fieldDefs
-      PredicateTy pref -> do
-        Anglelang.Type_key_predicate_ <$> buildNameFact (predicateRef_name pref)
-      NamedTy tref -> do
-        Anglelang.Type_key_named_ <$> buildNameFact (typeRef_name tref)
+      PredicateTy (PredicateRef n v) -> do
+        Anglelang.Type_key_predicate_ <$> buildNameFact n v
+      NamedTy (TypeRef n v) -> do
+        Anglelang.Type_key_named_ <$> buildNameFact n v
       MaybeTy tref -> do
         Anglelang.Type_key_maybe_ <$> buildTypeFact tref
       EnumeratedTy names -> Anglelang.Type_key_enum_ <$> mapM buildName names
@@ -219,8 +232,9 @@ buildTypeFact typeDef = do
     buildName name = makeFact @Anglelang.Name name
 
 
-buildNameFact ::forall m. (NewFact m) =>  Name -> m Anglelang.Name
-buildNameFact name = makeFact @Anglelang.Name name
+buildNameFact ::forall m. (NewFact m) =>  Name -> Version -> m Anglelang.Name
+buildNameFact name v = makeFact @Anglelang.Name $ name
+  <> (Text.pack . ("." ++) . show ) v
 
 
 send :: Backend be => be -> ProcessedSchema -> Options -> IO ()
