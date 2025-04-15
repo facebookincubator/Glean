@@ -3,8 +3,7 @@
 # Angle example schema for regression test
 
 schema a.1 {
-
-predicate Name : string
+import b
 
 type Age = nat
 
@@ -12,7 +11,7 @@ type City = enum { London | NewYork }
 
 predicate Person :
   {
-    name : Name,
+    name : b.Name,
     age : Age,
     lives : City
   }

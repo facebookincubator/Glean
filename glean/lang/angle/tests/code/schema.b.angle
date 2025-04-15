@@ -1,0 +1,5 @@
+schema b.1 {
+
+predicate Name : string
+
+}

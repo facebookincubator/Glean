@@ -1,0 +1,89 @@
+[
+  "@generated",
+  {
+    "key": {
+      "decl": { "imp": { "key": "b.1" } },
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "span": { "start": 116, "length": 2 }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "pred": {
+          "key": {
+            "name": { "key": "a.Person.1" },
+            "keyTy": {
+              "key": {
+                "record_": [
+                  {
+                    "name": { "key": "name" },
+                    "ty": { "key": { "predicate_": { "key": "b.Name.1" } } }
+                  },
+                  {
+                    "name": { "key": "age" },
+                    "ty": { "key": { "named_": { "key": "a.Age.1" } } }
+                  },
+                  {
+                    "name": { "key": "lives" },
+                    "ty": { "key": { "named_": { "key": "a.City.1" } } }
+                  }
+                ]
+              }
+            },
+            "valTy": { "key": { "record_": [ ] } },
+            "derived": 0
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "span": { "start": 174, "length": 78 }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "pred": {
+          "key": {
+            "name": { "key": "b.Name.1" },
+            "keyTy": { "key": { "string_": { } } },
+            "valTy": { "key": { "record_": [ ] } },
+            "derived": 0
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.b.angle" },
+      "span": { "start": 14, "length": 24 }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "ty": {
+          "key": {
+            "name": { "key": "a.Age.1" },
+            "ty": { "key": { "nat_": { } } }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "span": { "start": 119, "length": 15 }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "ty": {
+          "key": {
+            "name": { "key": "a.City.1" },
+            "ty": {
+              "key": { "enum_": [ { "key": "London" }, { "key": "NewYork" } ] }
+            }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "span": { "start": 135, "length": 38 }
+    }
+  }
+]
