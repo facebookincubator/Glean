@@ -8,11 +8,11 @@
 
 use serde::Serialize;
 
+use crate::GleanRange;
+use crate::ToolInfo;
 use crate::angle::ScipId;
 use crate::lsif::LanguageId;
 use crate::lsif::SymbolKind;
-use crate::GleanRange;
-use crate::ToolInfo;
 
 #[derive(Serialize)]
 struct IdKey<T> {

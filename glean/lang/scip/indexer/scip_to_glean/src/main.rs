@@ -11,10 +11,10 @@ use std::fs::OpenOptions;
 use std::path::Path;
 use std::path::PathBuf;
 
-use anyhow::anyhow;
 use anyhow::Context;
 use anyhow::Error;
 use anyhow::Result;
+use anyhow::anyhow;
 use clap::Parser;
 use fbinit::FacebookInit;
 use proto_rust::scip::Index;

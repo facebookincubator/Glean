@@ -17,12 +17,12 @@ use proto_rust::scip::Occurrence;
 use proto_rust::scip::SymbolInformation;
 use serde::Serialize;
 
+use crate::Suffix;
+use crate::ToolInfo;
 use crate::decode_scip_range;
 use crate::lsif::LanguageId;
 use crate::lsif::SymbolKind;
 use crate::output::GleanJSONOutput;
-use crate::Suffix;
-use crate::ToolInfo;
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize)]
 #[serde(transparent)]
