@@ -263,24 +263,28 @@ predicate
         , predicateDefValueType = $5
         , predicateDefDeriving = Schema.NoDeriving
         , predicateDefSrcSpan = case $6 of
-            Just (Derive _ (q)) -> s $1 q
-            _ -> s $1 $4}
-        : map (Schema.SourceDeriving ref) (maybeToList $6)
+            Just d -> s $1 d
+            _ -> s $1 $4 }
+        : case $6 of
+            Just d -> [Schema.SourceDeriving ref $ lval d]
+            Nothing -> []
+
     }
 
-deriving :: { Schema.SourceDerivingInfo }
+deriving :: { Located Schema.SourceDerivingInfo }
 deriving
-  : derivewhen query { Schema.Derive $1 $2 }
+  : {- empty -} query { L (sspan $1) $ Schema.Derive Schema.DeriveOnDemand $1 }
+  | derivewhen query {L (s $1 $2) $  Schema.Derive (lval $1) $2 }
 
-derivewhen :: { Schema.DeriveWhen }
+derivewhen :: { Located Schema.DeriveWhen }
 derivewhen
-  : {- empty -}  { Schema.DeriveOnDemand }
-  | 'stored'  { Schema.DerivedAndStored }
-  | 'default'  {% ifVersionOrOlder (AngleVersion 11) $1 Schema.DeriveIfEmpty }
+  : 'stored'  { L (sspan $1)  Schema.DerivedAndStored }
+  | 'default'  { % ifVersionOrOlder (AngleVersion 11) $1 (L (sspan $1) Schema.DeriveIfEmpty) }
+
 
 derivedecl :: { Schema.SourceDecl }
 derivedecl
-  : 'derive' qname deriving  { Schema.SourceDeriving (lval $2) $3 }
+  : 'derive' qname deriving  { Schema.SourceDeriving (lval $2) (lval $3) }
 
 optval :: { Schema.SourceType }
 optval
