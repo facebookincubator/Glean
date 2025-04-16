@@ -15,4 +15,14 @@ predicate Person :
     age : Age,
     lives : City
   }
+
+# Test derived predicates
+predicate Pair : { x : string, y : nat}
+
+predicate PairReversed :
+  { y : nat, x : string } stored {Y,X} where Pair {X,Y}
+
+predicate PairExample :
+  { x : string , y : nat  } {"hello", 5}
+
 }

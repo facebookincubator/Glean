@@ -2,9 +2,109 @@
   "@generated",
   {
     "key": {
+      "decl": {
+        "derive_": {
+          "key": { "name": { "key": "a.PairExample.1" }, "derive_": 1 }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "span": { "start": 454, "length": 13 }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "derive_": {
+          "key": { "name": { "key": "a.PairReversed.1" }, "derive_": 2 }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "span": { "start": 371, "length": 30 }
+    }
+  },
+  {
+    "key": {
       "decl": { "imp": { "key": "b.1" } },
       "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
       "span": { "start": 116, "length": 2 }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "pred": {
+          "key": {
+            "name": { "key": "a.Pair.1" },
+            "keyTy": {
+              "key": {
+                "record_": [
+                  {
+                    "name": { "key": "x" },
+                    "ty": { "key": { "string_": { } } }
+                  },
+                  { "name": { "key": "y" }, "ty": { "key": { "nat_": { } } } }
+                ]
+              }
+            },
+            "valTy": { "key": { "record_": [ ] } },
+            "derived": 0
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "span": { "start": 279, "length": 40 }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "pred": {
+          "key": {
+            "name": { "key": "a.PairExample.1" },
+            "keyTy": {
+              "key": {
+                "record_": [
+                  {
+                    "name": { "key": "x" },
+                    "ty": { "key": { "string_": { } } }
+                  },
+                  { "name": { "key": "y" }, "ty": { "key": { "nat_": { } } } }
+                ]
+              }
+            },
+            "valTy": { "key": { "record_": [ ] } },
+            "derived": 0
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "span": { "start": 402, "length": 65 }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "pred": {
+          "key": {
+            "name": { "key": "a.PairReversed.1" },
+            "keyTy": {
+              "key": {
+                "record_": [
+                  { "name": { "key": "y" }, "ty": { "key": { "nat_": { } } } },
+                  {
+                    "name": { "key": "x" },
+                    "ty": { "key": { "string_": { } } }
+                  }
+                ]
+              }
+            },
+            "valTy": { "key": { "record_": [ ] } },
+            "derived": 0
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "span": { "start": 320, "length": 81 }
     }
   },
   {

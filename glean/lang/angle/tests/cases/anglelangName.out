@@ -4,10 +4,15 @@
   { "key": "NewYork" },
   { "key": "a.Age.1" },
   { "key": "a.City.1" },
+  { "key": "a.Pair.1" },
+  { "key": "a.PairExample.1" },
+  { "key": "a.PairReversed.1" },
   { "key": "a.Person.1" },
   { "key": "age" },
   { "key": "b.1" },
   { "key": "b.Name.1" },
   { "key": "lives" },
-  { "key": "name" }
+  { "key": "name" },
+  { "key": "x" },
+  { "key": "y" }
 ]
