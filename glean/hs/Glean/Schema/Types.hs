@@ -163,7 +163,7 @@ data ResolvedSchema p t = ResolvedSchema
   , resolvedSchemaQualScope :: NameEnv (RefTarget p t)
     -- ^ The scope exposed by this schema, qualified. This will be
     -- used when the schema is inherited or imported.
-  , resolvedSchemaDeriving :: HashMap PredicateRef (DerivingInfo (Query_ p t))
+  , resolvedSchemaDeriving :: HashMap PredicateRef (DerivingDef_ SrcSpan p t)
     -- ^ deriving declarations, for predicates defined in this schema
     -- or an inherited schema.
   , resolvedSchemaEvolves :: Set SchemaRef

@@ -266,7 +266,7 @@ predicate
             Just d -> s $1 d
             _ -> s $1 $4 }
         : case $6 of
-            Just d -> [Schema.SourceDeriving ref $ lval d]
+            Just d -> [Schema.SourceDeriving $ Schema.DerivingDef ref (lval d) (sspan d)]
             Nothing -> []
 
     }
@@ -284,7 +284,12 @@ derivewhen
 
 derivedecl :: { Schema.SourceDecl }
 derivedecl
-  : 'derive' qname deriving  { Schema.SourceDeriving (lval $2) (lval $3) }
+  : 'derive' qname deriving  { Schema.SourceDeriving
+    Schema.DerivingDef {
+      derivingDefRef = (lval $2)
+      , derivingDefDeriveInfo = lval $3
+      , derivingDefSrcSpan = s $1 $3 }
+    }
 
 optval :: { Schema.SourceType }
 optval

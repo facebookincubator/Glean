@@ -97,7 +97,8 @@ attachDerivations schemas =
   allDerivings = HashMap.unions (map resolvedSchemaDeriving schemas)
 
   attach ref def = case HashMap.lookup ref allDerivings of
-    Just drv | not (isDefaultDeriving drv) -> def { predicateDefDeriving = drv }
+    Just drv | not (isDefaultDeriving $ derivingDefDeriveInfo drv) ->
+      def { predicateDefDeriving =  derivingDefDeriveInfo drv }
       -- see Note [overriding default deriving]
     _ -> def
 
@@ -179,10 +180,10 @@ computeIds toList schemas versions = flip evalState emptyRefToIdEnv $ do
 
       -- see Note [overriding default deriving]
       attachDefaultDerivings preds = foldr attach preds
-        [ (id, drv)
+        [ (id, derivingDefDeriveInfo drv)
         | schema <- schemas
         , (ref, drv) <- toList (resolvedSchemaDeriving schema)
-        , isDefaultDeriving drv
+        , isDefaultDeriving $ derivingDefDeriveInfo drv
         , Just id <- [HashMap.lookup ref (predRefToId env)]
         ]
         where

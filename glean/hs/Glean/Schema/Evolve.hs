@@ -125,7 +125,8 @@ visiblePredicates ResolvedSchema{..} = VisiblePredicates
   evolvable = HashSet.fromList . filter stored . HashMap.keys
 
   stored ref =
-    maybe True canBeStored $ HashMap.lookup ref resolvedSchemaDeriving
+    maybe True (canBeStored . derivingDefDeriveInfo) $
+      HashMap.lookup ref resolvedSchemaDeriving
 
 canBeStored :: DerivingInfo a -> Bool
 canBeStored = \case

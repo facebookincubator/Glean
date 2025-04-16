@@ -1095,8 +1095,8 @@ checkRecursiveDefinitions resolved =
     hasDerivation ref = ref `HashMap.member` derivationQueries
 
     derivationQueries :: HashMap PredicateRef (Query_ PredicateRef TypeRef)
-    derivationQueries =
-      HashMap.mapMaybe toQuery (resolvedSchemaDeriving resolved)
+    derivationQueries = HashMap.mapMaybe
+      (toQuery . derivingDefDeriveInfo ) (resolvedSchemaDeriving resolved)
       where
         toQuery = \case
           NoDeriving -> Nothing

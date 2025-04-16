@@ -415,14 +415,16 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
 
   -- resolve queries
   localDeriving <-
-    forM [ (ref,derive) | SourceDeriving ref derive <- schemaDecls ] $
-    \(ref, derive) -> do
+    forM [ (derivingDefRef,derive)
+      | SourceDeriving derive@DerivingDef{..} <- schemaDecls ] $
+    \(ref, DerivingDef{..}) -> do
       ty <- lookupResultToExcept ref $ predScope ref
       ref <- case ty of
         RefPred ref -> return ref
         _ -> throwError $ showRef ref <> " is not a predicate"
-      resolved <- runResolve angleVersion scope (resolveDeriving derive)
-      return (ref, resolved)
+      resolvedDerInfo <- runResolve angleVersion scope $
+        resolveDeriving derivingDefDeriveInfo
+      return (ref, DerivingDef ref resolvedDerInfo derivingDefSrcSpan)
 
   let
     localTypeNames = HashSet.fromList $

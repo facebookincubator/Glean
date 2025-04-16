@@ -51,6 +51,7 @@ module Glean.Angle.Types
   , SeekSection(..)
 
   -- * Schemas and definitions
+  , DerivingDef_(..)
   , TypeDef_(..)
   , FieldDef_(..)
   , PredicateDef_(..)
@@ -84,6 +85,7 @@ module Glean.Angle.Types
   , SourceStatement'
   , SourceQuery'
   , SourceDerivingInfo'
+  , DerivingDef'
   , SourceSchemas_(..)
   , SourceEvolves_(..)
   , SourceSchema_(..)
@@ -543,6 +545,13 @@ data PredicateDef_ s pref tref = PredicateDef
   }
   deriving Eq
 
+data DerivingDef_ s pref tref = DerivingDef
+  { derivingDefRef :: pref
+  , derivingDefDeriveInfo :: DerivingInfo (SourceQuery_ s pref tref)
+  , derivingDefSrcSpan :: s
+  }
+  deriving Eq
+
 -- | Globally unique identifier for a predicate. This is not the same
 -- as a Pid, which is unique only within a particular DB.
 data PredicateId = PredicateId
@@ -618,6 +627,7 @@ type SourceQuery' s = SourceQuery_ s SourceRef SourceRef
 type SourceDerivingInfo' s = DerivingInfo (SourceQuery' s)
 type SourcePredicateDef' s = PredicateDef_ s SourceRef SourceRef
 type SourceTypeDef' s = TypeDef_ s SourceRef SourceRef
+type DerivingDef' s = DerivingDef_ s SourceRef SourceRef
 
 type SourcePat = SourcePat' SrcSpan
 type SourceStatement = SourceStatement' SrcSpan
@@ -661,7 +671,7 @@ data SourceDecl_ s
   = SourceImport SourceRef s
   | SourcePredicate (SourcePredicateDef' s)
   | SourceType (SourceTypeDef' s)
-  | SourceDeriving SourceRef (SourceDerivingInfo' s)
+  | SourceDeriving (DerivingDef' s)
   deriving (Eq)
 
 -- Abstract syntax with global Ids
@@ -816,8 +826,9 @@ instance Display SourceDecl where
   display opts (SourceImport name _) = "import " <> display opts name
   display opts (SourcePredicate def) = display opts def
   display opts (SourceType def) = display opts def
-  display opts (SourceDeriving ref der) =
-    hang 2 $ sep ["derive " <> display opts ref, display opts der]
+  display opts (SourceDeriving DerivingDef{..}) =
+    hang 2 $ sep ["derive "
+      <> display opts derivingDefRef, display opts derivingDefDeriveInfo]
 
 instance Display q => Display (DerivingInfo q) where
   display _ NoDeriving = mempty
@@ -1019,7 +1030,8 @@ rmLocDecl = \case
       { predicateDefDeriving = rmLocQuery <$> predicateDefDeriving pred
       , predicateDefSrcSpan = ()}
   SourceType typeDef -> SourceType $ rmLocTypeDef typeDef
-  SourceDeriving ref deriv -> SourceDeriving ref $ rmLocQuery <$> deriv
+  SourceDeriving DerivingDef{..} -> SourceDeriving $ DerivingDef
+    derivingDefRef (rmLocQuery <$> derivingDefDeriveInfo) ()
 
 rmLocQuery :: SourceQuery_ s p t -> SourceQuery_ () p t
 rmLocQuery (SourceQuery mhead stmts ord) =
