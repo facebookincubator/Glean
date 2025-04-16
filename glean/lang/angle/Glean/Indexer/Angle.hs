@@ -122,14 +122,15 @@ buildFacts ProcessedSchema{..} fileinfos = do
 buildSchemaFacts :: AngleSchema -> FactBuilder
 buildSchemaFacts AngleSchema{..} = do
   let preds = map snd $ HashMap.toList $ resolvedSchemaPredicates rSchema
-  let types = map snd $ HashMap.toList $ resolvedSchemaTypes rSchema
+      types = map snd $ HashMap.toList $ resolvedSchemaTypes rSchema
+      derives = HashMap.elems $ resolvedSchemaDeriving rSchema
   fileFact <- makeFact @Src.File $ Text.pack fpath
 
   mapM_ (\d -> buildDecl buildImportDeclFacts d toByteSpan fileFact ) imports
   mapM_ (\p -> buildDecl buildPredDeclFact p toByteSpan fileFact ) preds
   mapM_ (\t -> buildDecl buildTypeDeclFact t toByteSpan fileFact ) types
-  -- TODO: deriving decls
-  -- TODO: all refs
+  mapM_ (\d -> buildDecl buildDeriveDeclFact d toByteSpan fileFact ) derives
+  -- TODO: Refs
 
 
 buildDecl :: DeclBuilder a -> a -> ToByteSpan -> Src.File -> FactBuilder
@@ -156,16 +157,27 @@ buildPredDeclFact PredicateDef{predicateDefRef = PredicateRef{..}, ..} = do
 
   return (Anglelang.Declaration_pred predDecl, predicateDefSrcSpan)
 
-  where toDeriveEnum deriveInf = case deriveInf of
-          NoDeriving -> Anglelang.DeriveInfo_NoDeriving
-          Derive DeriveOnDemand _ -> Anglelang.DeriveInfo_OnDemand
-          Derive DerivedAndStored _ -> Anglelang.DeriveInfo_Stored
-          Derive DeriveIfEmpty _ -> Anglelang.DeriveInfo_IfEmpty
+toDeriveEnum :: DerivingInfo q -> Anglelang.DeriveInfo
+toDeriveEnum = \case
+  NoDeriving -> Anglelang.DeriveInfo_NoDeriving
+  Derive DeriveOnDemand _ -> Anglelang.DeriveInfo_OnDemand
+  Derive DerivedAndStored _ -> Anglelang.DeriveInfo_Stored
+  Derive DeriveIfEmpty _ -> Anglelang.DeriveInfo_IfEmpty
 
 buildImportDeclFacts :: DeclBuilder ImportDecl
 buildImportDeclFacts ImportDecl{..} = do
   name <- buildNameFact importName importVersion
   return (Anglelang.Declaration_imp name, importSrcSpan)
+
+buildDeriveDeclFact :: DeclBuilder ResolvedDerivingDef
+buildDeriveDeclFact DerivingDef{..}= do
+  let prefName = predicateRef_name derivingDefRef
+      prefVersion = predicateRef_version derivingDefRef
+      deriveInfo = toDeriveEnum derivingDefDeriveInfo
+  name <- buildNameFact prefName prefVersion
+  deriveDecl <- makeFact @Anglelang.DerivingDecl $
+    Anglelang.DerivingDecl_key name deriveInfo
+  return (Anglelang.Declaration_derive_ deriveDecl, derivingDefSrcSpan)
 
 readSchemas :: FilePath -> IO ProcessedSchema
 readSchemas dir = do

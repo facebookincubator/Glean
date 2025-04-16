@@ -20,6 +20,7 @@ module Glean.Schema.Types (
   ResolvedFieldDef,
   ResolvedTypeDef,
   ResolvedPredicateDef,
+  ResolvedDerivingDef,
   ResolvedQuery,
   ResolvedStatement,
   ResolvedDeriving,
@@ -129,6 +130,7 @@ type ResolvedType = Type_ PredicateRef TypeRef
 type ResolvedFieldDef = FieldDef_ PredicateRef TypeRef
 type ResolvedTypeDef = TypeDef_ SrcSpan PredicateRef TypeRef
 type ResolvedPredicateDef = PredicateDef_ SrcSpan PredicateRef TypeRef
+type ResolvedDerivingDef = DerivingDef_ SrcSpan PredicateRef TypeRef
 type ResolvedPat = SourcePat_ SrcSpan PredicateRef TypeRef
 type ResolvedStatement = SourceStatement_ SrcSpan PredicateRef TypeRef
 type ResolvedQuery = SourceQuery_ SrcSpan PredicateRef TypeRef
