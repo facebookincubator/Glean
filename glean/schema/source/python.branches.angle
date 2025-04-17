@@ -1,0 +1,37 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
+schema python.branches.1 {
+import builtin.1
+import python.4
+import src
+
+predicate Root: string
+
+predicate FileToRoot:
+  {
+    file: src.File,
+    root: Root,
+  }
+
+predicate DirectXRef:
+  {
+    target: python.DeclarationLocation,
+    file: src.File,
+    source: src.ByteSpan,
+  }
+  stored { Target, File, Span } where
+  python.XRefsViaNameByFile { File, XRefs };
+  { target = TargetName, source = Span } = XRefs[..];
+  python.DeclarationWithName { TargetName, Decl };
+  Target = python.DeclarationLocation { declaration = Decl, file = SourceFile };
+  FileToRoot { file = SourceFile, root = Root };
+  FileToRoot { file = File, root = Root };
+
+predicate DirectXRefsByFile:
+  {
+    file: src.File,
+    xrefs: [DirectXRef],
+  }
+  stored { File, XRefs } where
+  XRefs[..] = DirectXRef { file = File };
+}
