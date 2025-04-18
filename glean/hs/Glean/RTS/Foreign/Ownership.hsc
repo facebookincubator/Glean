@@ -213,9 +213,9 @@ addDerivedOwners base define (Pid pid) deps =
       define_ptr
       (fromIntegral pid)
       (fromIntegral $ length deps)
-      p_facts_ptrs
+      (coerce p_facts_ptrs)
       p_facts_sizes
-      p_deps_ptrs
+      (coerce p_deps_ptrs)
       p_deps_sizes
   where
     entry (Thrift.FactDependencies facts deps) f =
@@ -286,8 +286,8 @@ getOwnershipSet ownership usetid =
           vec <- hsArrayStorable <$> peek (castPtr arr_ptr)
           let op | cop == (#const facebook::glean::rts::Or) = Or
                  | cop == (#const facebook::glean::rts::And) = And
-                 | otherwise = error "unkonwn SetOp"
-          return $ Just (op, coerce (vec :: VS.Vector Word32))
+                 | otherwise = error "unknown SetOp"
+          return $ Just (op, VS.unsafeCoerceVector (vec :: VS.Vector Word32))
     )
 
 data OwnershipStats = OwnershipStats
@@ -349,8 +349,9 @@ newtype FactOwnership = FactOwnership
 
 substOwnership :: Subst -> FactOwnership -> IO FactOwnership
 substOwnership subst (FactOwnership owned) = do
-  owned' <- traverse (coerce $ unsafeSubstIntervalsAndRelease subst) owned
-  return (FactOwnership owned')
+  let apply x = VS.unsafeCoerceVector <$>
+        unsafeSubstIntervalsAndRelease subst (VS.unsafeCoerceVector x)
+  FactOwnership <$> traverse apply owned
 
 unionOwnership :: [FactOwnership] -> FactOwnership
 unionOwnership =

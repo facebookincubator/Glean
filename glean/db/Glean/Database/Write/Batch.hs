@@ -19,12 +19,12 @@ import Control.Trace (traceMsg)
 import qualified Data.ByteString as BS
 import qualified Data.HashMap.Strict as HashMap
 import Data.HashMap.Strict (HashMap)
-import Data.Coerce
 import Data.Default
 import Data.Int (Int64)
 import Data.IORef
 import Data.Maybe
 import Data.Word
+import qualified Data.Vector.Storable as VS
 
 import Util.Control.Exception
 import Util.STM
@@ -48,7 +48,7 @@ import Glean.RTS.Foreign.Ownership as Ownership
 import Glean.RTS.Foreign.Stacked (stacked)
 import Glean.RTS.Foreign.Subst (Subst)
 import qualified Glean.RTS.Foreign.Subst as Subst
-import Glean.RTS.Types (Pid(..), Fid)
+import Glean.RTS.Types (Pid(..), Fid(..))
 import Glean.Types (Repo)
 import qualified Glean.Types as Thrift
 import Glean.Util.Metric
@@ -190,8 +190,10 @@ reallyWriteBatch env repo OpenDB{..} lock lookup writing original_size deduped
 
       let
         commitOwnership = do
-          owned <- mapM (coerce Subst.unsafeSubstIntervalsAndRelease subst)
-            batch_owned
+          let apply v = VS.unsafeCoerceVector <$>
+                Subst.unsafeSubstIntervalsAndRelease subst
+                  (VS.unsafeCoerceVector v)
+          owned <- mapM apply batch_owned
           Storage.addOwnership odbHandle lock owned
           deps <- mapM (substDependencies subst) batch_dependencies
           derivedOwners <-
@@ -285,8 +287,10 @@ deDupBatch env repo odb lookup writing original_size
     case maybe_deduped_batch of
       Nothing -> return dsubst
       Just deduped_batch -> do
-        is <- mapM (coerce Subst.unsafeSubstIntervalsAndRelease dsubst)
-          batch_owned
+        let apply v = VS.unsafeCoerceVector <$>
+              Subst.unsafeSubstIntervalsAndRelease dsubst
+                (VS.unsafeCoerceVector v)
+        is <- mapM apply batch_owned
         deps <- mapM (substDependencies dsubst) batch_dependencies
         forM_ maybeOwn $ \ownBatch ->
           Ownership.substDefineOwnership ownBatch dsubst
@@ -316,9 +320,10 @@ substDependencies
 substDependencies subst dmap = mapM substFD dmap
   where
   substFD (Thrift.FactDependencies facts deps) = do
-    Thrift.FactDependencies
-      <$> coerce (Subst.substVector subst) facts
-      <*> coerce (Subst.substVector subst) deps
+    Thrift.FactDependencies <$> apply facts <*> apply deps
+  apply v =
+    VS.unsafeCoerceVector <$>
+      Subst.substVector subst (VS.unsafeCoerceVector v)
 
 batchSize :: Thrift.Batch -> Word64
 batchSize = fromIntegral . BS.length . Thrift.batch_facts

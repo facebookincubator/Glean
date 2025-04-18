@@ -23,7 +23,7 @@ allow-newer: haskell-names:aeson, haskell-names:bytestring
 -- https://github.com/TomMD/entropy/issues/75
 constraints: entropy < 0.4.1.9
 
-index-state: 2025-01-17T00:00:00Z
+index-state: 2025-04-14T00:00:00Z
 
 package fb-util
     flags: +folly
