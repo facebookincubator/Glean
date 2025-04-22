@@ -340,6 +340,7 @@ define_kt here typ name_kt = case typ of
   RecordTy [] -> leaf
   RecordTy _fields -> alias typ
   ArrayTy{} -> alias typ
+  SetTy{} -> alias typ
   SumTy [] -> leaf
   SumTy _fields -> alias typ
   MaybeTy{} -> alias typ
