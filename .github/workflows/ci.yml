@@ -13,9 +13,11 @@ jobs:
       matrix:
         ghc: [8.6.5, 8.8.4, 8.10.7, 9.2.8]
         compiler: [gcc]
+        index-state: [2025-04-14T00:00:00Z]
         include:
           - ghc: 9.2.8
             compiler: clang
+            index-state: 2025-01-17T00:00:00Z
     runs-on: 32-core-ubuntu
     container:
       image: ubuntu:24.04
@@ -150,6 +152,9 @@ jobs:
 
       - name: Disable some tests
         run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS -f-hack-tests -f-rust-tests -f-python-tests" >> "$GITHUB_ENV"
+
+      - name: Setup index-state
+        run: echo CABAL_CONFIG_FLAGS="$CABAL_CONFIG_FLAGS --index-state=${{ matrix.index-state }}" >>"$GITHUB_ENV"
 
       - name: Install hsthrift and Glean dependencies
         run: apt-get install -y pkg-config rsync libgmock-dev libpcre3-dev libtinfo-dev libxxhash-dev
