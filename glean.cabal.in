@@ -146,7 +146,7 @@ common deps
         contravariant ^>=1.5,
         text ^>=1.2.3.0,
         bytestring >=0.10.8.2 && <0.12,
-        vector >=0.12.0.1 && <0.14,
+        vector >=0.12.0.1 && <0.13,
         transformers ^>=0.5.6.2,
         network-uri ^>=2.6.1.0,
         stm ^>=2.5.0.0,
