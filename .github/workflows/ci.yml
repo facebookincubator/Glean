@@ -171,7 +171,7 @@ jobs:
       - name: Build glean-clang
         run: make glean-clang
 
-      - if: matrix.ghc != '8.6.5' && matrix.ghc != '9.4.7'
+      - if: matrix.ghc != '8.6.5'
         name: Build hiedb-indexer
         run: make glean-hiedb
 

@@ -52,17 +52,17 @@ createGleanDB ::
   b ->
   Bool ->
   Glean.Repo ->
-  FileLineMap ->
-  [IndexerBatchOutput] ->
+  (Glean.Writer -> IO ()) ->
   IO ()
-createGleanDB backend dontCreateDb newRepo fileLinesMap batchOutputs = do
+createGleanDB backend dontCreateDb newRepo write = do
   let Glean.Repo{..} = newRepo
 
   logInfo $ printf "Creating Glean DB %s/%s" repo_name repo_hash
 
   let finalWriter = do
-        Glean.basicWriter backend newRepo allPredicates $
-          hieFactsBuilder fileLinesMap batchOutputs
+        Glean.withSender backend newRepo allPredicates def $ \sender -> do
+          Glean.withWriter sender def $ \writer -> do
+            write writer
 
         let mkPredRef predName =
               Glean.SourceRef {
