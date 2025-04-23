@@ -1,0 +1,3 @@
+query: codemarkup.FileEntityLocations _
+perf: true
+transform: [gensort, []]

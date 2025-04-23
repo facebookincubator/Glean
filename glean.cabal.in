@@ -1101,7 +1101,7 @@ executable hack-derive
 -- Haskell indexer via hiedb
 executable hiedb-indexer
     import: deps, fb-haskell, exe
-    if impl(ghc >= 8.8 && < 9.4)
+    if impl(ghc >= 8.8)
       buildable: True
     else
       buildable: False
@@ -1112,6 +1112,7 @@ executable hiedb-indexer
         HieDBIndexer.DefaultMain
         HieDBIndexer.Glean
         HieDBIndexer.HieDB
+        HieDBIndexer.Index
         HieDBIndexer.Options
         HieDBIndexer.Trace
         HieDBIndexer.Types
@@ -2152,8 +2153,34 @@ test-suite glean-snapshot-hack
     if !flag(hack-tests)
         buildable: False
 
+test-suite glean-snapshot-haskell
+    import: fb-haskell, fb-cpp, deps, exe
+    hs-source-dirs: glean/lang/haskell/tests
+    type: exitcode-stdio-1.0
+    main-is: Main.hs
+    ghc-options: -main-is Main
+    build-depends:
+       glean:regression-test-lib,
+       glean:indexers
+    build-tool-depends:
+       glean:hiedb-indexer,
+       glean:glean
+
+test-suite glean-snapshot-codemarkup-haskell
+    import: fb-haskell, fb-cpp, deps, exe
+    hs-source-dirs: glean/lang/codemarkup/tests/haskell
+    type: exitcode-stdio-1.0
+    main-is: Main.hs
+    ghc-options: -main-is Main
+    build-depends:
+       glean:regression-test-lib,
+       glean:indexers
+    build-tool-depends:
+       glean:hiedb-indexer,
+       glean:glean
+
 test-suite glean-snapshot-rust-lsif
-    import: fb-haskell, deps
+    import: fb-haskell, deps, exe
     hs-source-dirs: glean/lang/rust-lsif/tests
     type: exitcode-stdio-1.0
     main-is: Glean/Regression/RustLsif/Main.hs

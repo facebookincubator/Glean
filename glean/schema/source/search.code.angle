@@ -1009,10 +1009,8 @@ predicate HsSearchByLowerCaseName:
   }
   { Name, Entity } where
   (
-    hs.ModuleNameLowerCase { Name, hs.ModuleName NameCase } |
-    hs.FunctionNameLowerCase { Name, hs.FunctionName NameCase } |
-    hs.DefinitionNameLowerCase { Name, hs.DefinitionName NameCase } |
-    hs.ClassNameLowerCase { Name, hs.ClassName NameCase }
+    hs.DefinitionNameLowerCase { Name, hs.DefinitionName NameCase }
+    # later: other kinds of definition
   );
   HsSearchByName { NameCase, Entity };
 

@@ -15,7 +15,7 @@
      2. record hs_src column
      3. place hie paths in output folder and record their relative paths
 -}
-module HieDBIndexer.HieDB (mkHieDB) where
+module HieDBIndexer.HieDB (mkHieDB, getHieFilesIn) where
 
 import Control.Applicative (liftA2)
 import Control.Exception (throwIO)
@@ -68,8 +68,12 @@ mkHieDB pathsToIndex hiedbOptions =
 doIndex :: Foldable t => HieDb -> t FilePath -> IO ()
 doIndex db files =
   withTransaction (getConn db) $ do
+#if MIN_VERSION_ghc(9,4,0)
+    nc <- newIORef =<< initNameCache 'c' []
+#else
     u <- mkSplitUniqSupply 'c'
     nc <- newIORef $ initNameCache u []
+#endif
     forM_ files $ \f -> do
       fc <- canonicalizePath f
       hash <- getFileHash f
