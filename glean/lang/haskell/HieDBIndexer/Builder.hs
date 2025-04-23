@@ -47,11 +47,12 @@ import Database.SQLite.Simple (
   queryNamed,
  )
 #if __GLASGOW_HASKELL__ >= 902
+#if __GLASGOW_HASKELL__ < 904
 import Data.IORef
 import GHC.Plugins (mkSplitUniqSupply)
-import GHC.Iface.Ext.Binary (HieFileResult (hie_file_result), readHieFile,
-  NameCacheUpdater(..))
-import GHC.Iface.Env (updNameCache)
+import GHC.Iface.Ext.Env (updNameCache)
+#endif
+import GHC.Iface.Ext.Binary
 import GHC.Iface.Ext.Types (HieFile (..))
 import GHC.Unit.Module.Name (moduleNameString)
 import GHC.Types.Name.Cache (NameCache, initNameCache)
@@ -166,8 +167,12 @@ mkFileLinesMap ::
   [Vertex] ->
   IO (FileLineMap, FileLineMap)
 mkFileLinesMap logger allVertices = traceMsg logger "mkFileLinesMap" $ do
+#if MIN_VERSION_ghc(9,4,0)
+  nc <- initNameCache 'z' []
+#else
   uniqSupply <- mkSplitUniqSupply 'z'
   let nc = initNameCache uniqSupply []
+#endif
   bothLineMaps <-
     catMaybes <$> mapM (mkLineLengths logger nc) filepathsSet
   let fileLinesSumMap =
@@ -239,10 +244,12 @@ mkLineLengths logger nc (srcFp, hieFp) = handle exHandler $ do
 sourceFileLineLengths ::
   NameCache -> FilePath -> IO [Int]
 sourceFileLineLengths nc hieFp = do
-#if __GLASGOW_HASKELL__ >= 902
+#if __GLASGOW_HASKELL__ == 902
   ref <- newIORef nc
   let ncu = NCU (updNameCache ref)
   srcContent <- hie_hs_src . hie_file_result <$> readHieFile ncu hieFp
+#elif __GLASGOW_HASKELL__ >= 904
+  srcContent <- hie_hs_src . hie_file_result <$> readHieFile nc hieFp
 #else
   srcContent <- hie_hs_src . hie_file_result . fst <$> readHieFile nc hieFp
 #endif

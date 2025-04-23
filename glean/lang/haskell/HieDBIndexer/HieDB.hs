@@ -68,8 +68,12 @@ mkHieDB pathsToIndex hiedbOptions =
 doIndex :: Foldable t => HieDb -> t FilePath -> IO ()
 doIndex db files =
   withTransaction (getConn db) $ do
+#if MIN_VERSION_ghc(9,4,0)
+    nc <- newIORef =<< initNameCache 'c' []
+#else
     u <- mkSplitUniqSupply 'c'
     nc <- newIORef $ initNameCache u []
+#endif
     forM_ files $ \f -> do
       fc <- canonicalizePath f
       hash <- getFileHash f
