@@ -1085,7 +1085,7 @@ executable hack-derive
 -- Haskell indexer via hiedb
 executable hiedb-indexer
     import: deps, fb-haskell, exe
-    if impl(ghc >= 8.8)
+    if impl(ghc >= 8.8 && < 9.4)
       buildable: True
     else
       buildable: False
