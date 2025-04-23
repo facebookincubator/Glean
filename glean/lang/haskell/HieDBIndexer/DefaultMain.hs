@@ -7,25 +7,37 @@
 -}
 
 {-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
+{-# LANGUAGE TypeApplications #-}
 module HieDBIndexer.DefaultMain (defaultMain, outputMain) where
 
+import Control.Monad
+import Control.Monad.IO.Class
 import Control.Monad.Extra (unlessM, when)
 import qualified Data.ByteString as BS
 import Data.Default (def)
 import Data.Foldable (toList)
+import qualified Data.HashSet as HashSet
+import Data.IORef
+import qualified Data.List.NonEmpty as NonEmpty
 import Data.Text (Text)
-import qualified Glean
-import Glean.Impl.ConfigProvider ()
-import HieDBIndexer.Builder (buildXrefMapFiles)
-import HieDBIndexer.Glean (hieFactsBuilder, createGleanDB)
-import HieDBIndexer.HieDB (mkHieDB)
-import HieDBIndexer.Options
-import HieDBIndexer.Trace (Tracer, traceMsg)
 import HieDb.Run (optParser)
+import HieDb (withHieFile)
+import HieDb.Utils (makeNc)
+import HieDb.Types (runDbM)
 import Options.Applicative.Common (evalParser)
 import System.Directory (copyFile, doesFileExist)
 import System.IO.Extra (withTempFile)
 import qualified Thrift.Protocol.Compact
+
+import qualified Glean
+import Glean.Impl.ConfigProvider ()
+
+import HieDBIndexer.Builder (buildXrefMapFiles)
+import HieDBIndexer.Glean (hieFactsBuilder, createGleanDB)
+import HieDBIndexer.HieDB (mkHieDB, getHieFilesIn)
+import HieDBIndexer.Index (indexHieFile)
+import HieDBIndexer.Options
+import HieDBIndexer.Trace (Tracer, traceMsg)
 
 {- | Tests run concurrently, and they become flaky because the
  HieDB gets locked when running a test. This copies the DB to a temp dir
@@ -50,19 +62,16 @@ defaultMain
   -> IO ()
 defaultMain tracer cfg repo dontCreateDb backend =
   (if dontCreateDb then handleDontCreateDb cfg else ($ cfg)) $ \cfg' ->
-  withHieDB cfg $ \hiedb -> do
-    let finalCfg = cfg' {sources = hiedb}
-    (fileLinesMap, xrefMapData) <-
-      traceMsg tracer "buildXrefMapFiles" $
-        buildXrefMapFiles tracer finalCfg
-    putStrLn "Finished creating the data and saving to files."
-    traceMsg tracer "createGleanDB" $
-      createGleanDB
-        backend
-        dontCreateDb
-        repo
-        fileLinesMap
-        xrefMapData
+  case sources cfg of
+    HieDB{} -> error "TODO"
+    HieFiles roots -> do
+      paths <- getHieFilesIn (NonEmpty.toList roots)
+      createGleanDB backend dontCreateDb repo $ \writer ->
+        forM_ (HashSet.toList paths) $ \f -> do
+          nc <- newIORef =<< makeNc
+          runDbM nc $ do
+            withHieFile f $ \h ->
+              liftIO $ indexHieFile writer h
 
 outputMain
   :: Glean.Backend b

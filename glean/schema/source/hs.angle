@@ -1,64 +1,10 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
-schema hs.1 {
+schema hs.2 {
 import src
-
-# Identifies a package, e.g. 'base-4.11.1.0'
-predicate PackageId : string
 
 # E.g. 'Data.Maybe'
 predicate ModuleName : string
-
-# Maps lower-case strings to ModuleName, for case-insensitive search
-predicate ModuleNameLowerCase:
-  {
-    nameLowerCase: string,
-    name: ModuleName,
-  }
-  stored { prim.toLower Str, N } where N = ModuleName Str
-
-
-# Uniquely identifies a module and its source
-predicate Module :
-  {
-    packageId : PackageId,
-    moduleName : ModuleName,
-    source : src.File,
-  }
-
-# Uniquely identifies a module and its source. For internal source files,
-# so there is no 'PackageId'
-predicate SourceModule :
-  {
-    moduleName : ModuleName,
-    source : src.File,
-  }
-
-# Unqualified function name
-predicate FunctionName : string
-
-# Maps lower-case strings to FunctionName, for case-insensitive search
-predicate FunctionNameLowerCase:
-  {
-    nameLowerCase: string,
-    name: FunctionName,
-  }
-  stored { prim.toLower Str, N } where N = FunctionName Str
-
-
-# Code range in which the function body is defined
-predicate FunctionDefinition :
-  {
-    name : FunctionName,
-    source : src.Range,
-  }
-
-# Lists all the module definitions
-predicate ModuleDefinitions :
-  {
-    module : Module,
-    functionDefinitions : [FunctionDefinition],
-  }
 
 # Definition location by identifier string
 predicate DefinitionName : string
@@ -71,59 +17,17 @@ predicate DefinitionNameLowerCase:
   }
   stored { prim.toLower Str, N } where N = DefinitionName Str
 
-
-predicate Definition :
-  {
-    name : DefinitionName,
-    source : src.Range,
-  }
-
-# Just a string for now; we don't record this info at the moment.
-predicate Type : string
-
-predicate ClassName : string
-
-# Maps lower-case strings to ClassName, for case-insensitive search
-predicate ClassNameLowerCase:
-  {
-    nameLowerCase: string,
-    name: ClassName,
-  }
-  stored { prim.toLower Str, N } where N = ClassName Str
-
-
-# We don't record this at the moment, only the instances.
-predicate Class :
-  {
-    name : ClassName,
-    source : src.Range,
-  }
-
-predicate ClassInstance :
-  {
-    typeclass : ClassName,
-    instance : Type,
-    source : src.Range,
-  }
-}
-
-schema hs.2: hs.1 {
-import src
-
 predicate Definition :
   {
     name : DefinitionName,
     source : src.FileLocation,
   }
 
-
 # Type of "entities" that have a definition location
 # to match code.hs.angle:Entity
 type DefinitionEntity =
   {
     definition : Definition |
-    function_ : FunctionDefinition |
-    class_ : Class |
   }
 
 # Index by file.
@@ -147,22 +51,9 @@ predicate DefinitionLocation:
     where
       { definition = { DefinitionName Name, { File, Span }} } = Entity;
 
-
 type XRefTarget =
   {
-    # type : hs.Type |
     definition : hs.DefinitionName |
-    typeclass : hs.ClassName |
-    hs_module : hs.ModuleName |
-  }
-
-# Cross references, for code exploration integrations
-# DEPRECATED
-predicate XRef :
-  {
-    loc : src.FileLocation,
-    ref : XRefTarget,
-
   }
 
 # Cross-references per file, for code exploration integrations
@@ -187,4 +78,211 @@ predicate TargetUses:
   } stored {{name = DefN}, File, Uses} where
   FileXRefMap {file = File, refs = Refs};
   {target = {definition = DefN}, spans = Uses} = Refs[..];
+
+# ----------------------------------------------------------------------------
+# NEW from here
+
+# Names: more or less matching GHC's Name/OccName/Module structure
+# but with fields ordered to allow searching by name.
+
+type Namespace = enum { var_ | datacon | tyvar | tycon }
+
+predicate UnitName : string
+
+predicate Module:
+  {
+    name: ModuleName,
+    unit: UnitName,
+  }
+
+predicate ModuleSource:
+  {
+    mod: Module,
+    file: src.File,
+  }
+
+predicate SourceModule:
+  {
+    file: src.File,
+    mod: Module,
+  }
+  stored { File, Mod } where ModuleSource { Mod, File }
+
+predicate OccName:
+  {
+    name: string,
+    namespace_: Namespace,
+  }
+
+type NameSort =
+  {
+    external: {} |
+      # An exported entity, uniquely identified by its OccName and Module.
+    internal: src.ByteSpan |
+      # A local binder, e.g. bound by a pattern-match, let. or where,
+      # or a non-exported entity. These are uniquely identified by
+      # the OccName, Module and ByteSpan.
+  }
+
+# Name: a unique key for an entity
+predicate Name:
+  {
+    occ: OccName,
+    mod: Module,
+    sort: NameSort,
+  }
+
+# Declarations / definitions
+
+type Declaration =
+  {
+    val: ValBind |
+    typeFamily: TypeFamilyDecl |
+    type_: TypeSynDecl |
+    data: DataDecl |
+    con: ConDecl |
+    patSyn: PatSynDecl |
+    class_: ClassDecl |
+    method: MethodDecl |
+    instance: InstanceDecl |
+    patBind: PatBind |
+    tyVarBind: TyVarBind |
+    field: RecFieldDecl |
+  }
+
+predicate DeclarationOfName:
+  {
+    name: Name,
+    decl: Declaration,
+  }
+  # maybe store this? Turns 12 lookups into 1 lookup.
+  { N, { val = { name = N }}} |
+  { N, { typeFamily = { name = N }}} |
+  { N, { type_ = { name = N }}} |
+  { N, { data = { name = N }}} |
+  { N, { con = { name = N }}} |
+  { N, { patSyn = { name = N }}} |
+  { N, { class_ = { name = N }}} |
+  { N, { method = { name = N }}} |
+  { N, { instance = { name = N }}} |
+  { N, { patBind = { name = N }}} |
+  { N, { tyVarBind = { name = N }}} |
+  { N, { field = { name = N }}}
+
+predicate ValBind:
+  {
+    name: Name,
+    # type
+    # fixity
+    # location of signature
+  }
+
+predicate TypeFamilyDecl:
+  {
+    name: Name,
+  }
+
+predicate TypeSynDecl:
+  {
+    name: Name,
+  }
+
+predicate DataDecl:
+  {
+    name: Name,
+    # constructors
+  }
+
+predicate ConDecl:
+  {
+    name: Name,
+    # fields, etc.
+  }
+
+predicate PatSynDecl:
+  {
+    name: Name,
+  }
+
+predicate ClassDecl:
+  {
+    name: Name,
+    # superclass constraints
+    # methods
+    # defaults
+  }
+
+predicate MethodDecl:
+  {
+    name: Name,
+    # type
+    # default decl
+  }
+
+predicate InstanceDecl:
+  {
+    name: Name,
+    # class
+    # parameters etc.
+  }
+
+predicate PatBind:
+  {
+    name: Name,
+  }
+
+predicate TyVarBind:
+  {
+    name: Name,
+  }
+
+predicate RecFieldDecl:
+  {
+    name: Name,
+    # type
+  }
+
+predicate DeclarationLocation:
+  {
+    name: Name,
+    file: src.File,
+    span: src.ByteSpan
+  }
+
+predicate ModuleDeclarations:
+  {
+    module: Module,
+    names: set Name,
+  }
+
+# References
+
+predicate Reference:
+  {
+    name: Name,
+    spans: [src.ByteSpan]
+  }
+
+predicate FileXRefs :
+  {
+    file : src.File,
+    refs : [Reference],
+  }
+
+predicate OccNameLowerCase:
+  {
+    nameLowerCase: string,
+    occName: OccName,
+  }
+  stored { prim.toLower Str, N } where N = OccName { name = Str }
+
+predicate NameRefs:
+  {
+    target: Name,
+    file: src.File,
+    uses: [src.ByteSpan]
+  } stored {Name, File, Uses} where
+  FileXRefs {file = File, refs = Refs};
+  {name = Name, spans = Uses} = Refs[..];
+
 }
