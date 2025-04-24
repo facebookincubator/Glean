@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ghc: [8.6.5, 8.8.4, 8.10.7, 9.2.8]
+        ghc: [8.6.5, 8.8.4, 8.10.7, 9.2.8, 9.4.7]
         compiler: [gcc]
         index-state: [2025-04-14T00:00:00Z]
         include:
@@ -171,7 +171,7 @@ jobs:
       - name: Build glean-clang
         run: make glean-clang
 
-      - if: matrix.ghc != '8.6.5'
+      - if: matrix.ghc != '8.6.5' && matrix.ghc != '9.4.7'
         name: Build hiedb-indexer
         run: make glean-hiedb
 

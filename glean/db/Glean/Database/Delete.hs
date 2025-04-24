@@ -107,7 +107,7 @@ asyncDeleteDatabase :: HasCallStack => Env -> Repo -> IO (Async ())
 asyncDeleteDatabase env@Env{..} repo = bracket
   newEmptyTMVarIO
   (\todo -> atomically $ tryPutTMVar todo Nothing) $ \todo -> do
-    remover <- Warden.spawnMask envWarden $ const $ removeDatabase env repo todo
+    remover <- Warden.spawnMask envWarden $ \_ -> removeDatabase env repo todo
     join $ atomically $ do
       active <- HashMap.lookup repo <$> readTVar envActive
       let deleteDB db = do
