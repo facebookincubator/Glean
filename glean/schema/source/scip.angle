@@ -47,14 +47,6 @@ predicate FileRange:
 #
 predicate Symbol: string
 
-predicate DisplayName: string
-
-predicate DisplayNameSymbol:
-  {
-    displayName: DisplayName,
-    symbol: Symbol
-  }
-
 # Definition occurences
 predicate Definition:
   {
