@@ -1,4 +1,16 @@
 [
   "@generated",
-  { "key": { "file": { "key": "relative_path.rs" }, "language": 42 } }
+  { "key": { "file": { "key": "delta_log.rs" }, "language": 42 } },
+  { "key": { "file": { "key": "measure/measure.rs" }, "language": 42 } },
+  { "key": { "file": { "key": "measure/measure_ffi.rs" }, "language": 42 } },
+  { "key": { "file": { "key": "pos/file_pos.rs" }, "language": 42 } },
+  { "key": { "file": { "key": "pos/file_pos_large.rs" }, "language": 42 } },
+  { "key": { "file": { "key": "pos/file_pos_small.rs" }, "language": 42 } },
+  { "key": { "file": { "key": "pos/pos_impl.rs" }, "language": 42 } },
+  { "key": { "file": { "key": "pos/pos_span_raw.rs" }, "language": 42 } },
+  { "key": { "file": { "key": "pos/pos_span_tiny.rs" }, "language": 42 } },
+  { "key": { "file": { "key": "pos/rc_pos.rs" }, "language": 42 } },
+  { "key": { "file": { "key": "pos/with_erased_lines.rs" }, "language": 42 } },
+  { "key": { "file": { "key": "relative_path.rs" }, "language": 42 } },
+  { "key": { "file": { "key": "signed_source.rs" }, "language": 42 } }
 ]

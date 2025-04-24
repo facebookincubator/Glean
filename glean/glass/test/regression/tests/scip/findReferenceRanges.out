@@ -2,82 +2,132 @@
     "@generated",
     [
         {
+            "filepath": "pos/pos_impl.rs",
+            "range": {
+                "columnBegin": 24,
+                "columnEnd": 30,
+                "lineBegin": 641,
+                "lineEnd": 641
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "pos/pos_impl.rs",
+            "range": {
+                "columnBegin": 41,
+                "columnEnd": 47,
+                "lineBegin": 647,
+                "lineEnd": 647
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "pos/pos_impl.rs",
+            "range": {
+                "columnBegin": 48,
+                "columnEnd": 54,
+                "lineBegin": 684,
+                "lineEnd": 684
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "pos/pos_impl.rs",
+            "range": {
+                "columnBegin": 48,
+                "columnEnd": 54,
+                "lineBegin": 699,
+                "lineEnd": 699
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "relative_path.rs",
+            "range": {
+                "columnBegin": 35,
+                "columnEnd": 41,
+                "lineBegin": 29,
+                "lineEnd": 29
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "relative_path.rs",
+            "range": {
+                "columnBegin": 6,
+                "columnEnd": 12,
+                "lineBegin": 31,
+                "lineEnd": 31
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "relative_path.rs",
+            "range": {
+                "columnBegin": 25,
+                "columnEnd": 31,
+                "lineBegin": 37,
+                "lineEnd": 37
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "relative_path.rs",
+            "range": {
+                "columnBegin": 21,
+                "columnEnd": 27,
+                "lineBegin": 42,
+                "lineEnd": 42
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "relative_path.rs",
+            "range": {
+                "columnBegin": 21,
+                "columnEnd": 27,
+                "lineBegin": 43,
+                "lineEnd": 43
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "relative_path.rs",
+            "range": {
+                "columnBegin": 21,
+                "columnEnd": 27,
+                "lineBegin": 44,
+                "lineEnd": 44
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "relative_path.rs",
+            "range": {
+                "columnBegin": 21,
+                "columnEnd": 27,
+                "lineBegin": 45,
+                "lineEnd": 45
+            },
+            "repository": "test"
+        },
+        {
             "filepath": "relative_path.rs",
             "range": {
                 "columnBegin": 18,
-                "columnEnd": 22,
-                "lineBegin": 33,
-                "lineEnd": 33
+                "columnEnd": 24,
+                "lineBegin": 51,
+                "lineEnd": 51
             },
             "repository": "test"
         },
         {
             "filepath": "relative_path.rs",
             "range": {
-                "columnBegin": 15,
+                "columnBegin": 13,
                 "columnEnd": 19,
-                "lineBegin": 55,
-                "lineEnd": 55
-            },
-            "repository": "test"
-        },
-        {
-            "filepath": "relative_path.rs",
-            "range": {
-                "columnBegin": 9,
-                "columnEnd": 13,
-                "lineBegin": 92,
-                "lineEnd": 92
-            },
-            "repository": "test"
-        },
-        {
-            "filepath": "relative_path.rs",
-            "range": {
-                "columnBegin": 9,
-                "columnEnd": 13,
-                "lineBegin": 96,
-                "lineEnd": 96
-            },
-            "repository": "test"
-        },
-        {
-            "filepath": "relative_path.rs",
-            "range": {
-                "columnBegin": 9,
-                "columnEnd": 13,
-                "lineBegin": 100,
-                "lineEnd": 100
-            },
-            "repository": "test"
-        },
-        {
-            "filepath": "relative_path.rs",
-            "range": {
-                "columnBegin": 9,
-                "columnEnd": 13,
-                "lineBegin": 104,
-                "lineEnd": 104
-            },
-            "repository": "test"
-        },
-        {
-            "filepath": "relative_path.rs",
-            "range": {
-                "columnBegin": 9,
-                "columnEnd": 13,
-                "lineBegin": 108,
-                "lineEnd": 108
-            },
-            "repository": "test"
-        },
-        {
-            "filepath": "relative_path.rs",
-            "range": {
-                "columnBegin": 9,
-                "columnEnd": 13,
-                "lineBegin": 112,
-                "lineEnd": 112
+                "lineBegin": 67,
+                "lineEnd": 67
             },
             "repository": "test"
         },
@@ -85,137 +135,77 @@
             "filepath": "relative_path.rs",
             "range": {
                 "columnBegin": 25,
-                "columnEnd": 29,
-                "lineBegin": 116,
-                "lineEnd": 116
+                "columnEnd": 31,
+                "lineBegin": 75,
+                "lineEnd": 75
             },
             "repository": "test"
         },
         {
             "filepath": "relative_path.rs",
             "range": {
-                "columnBegin": 43,
-                "columnEnd": 47,
-                "lineBegin": 116,
-                "lineEnd": 116
-            },
-            "repository": "test"
-        },
-        {
-            "filepath": "relative_path.rs",
-            "range": {
-                "columnBegin": 28,
-                "columnEnd": 32,
-                "lineBegin": 122,
-                "lineEnd": 122
-            },
-            "repository": "test"
-        },
-        {
-            "filepath": "relative_path.rs",
-            "range": {
-                "columnBegin": 41,
-                "columnEnd": 45,
-                "lineBegin": 122,
-                "lineEnd": 122
-            },
-            "repository": "test"
-        },
-        {
-            "filepath": "relative_path.rs",
-            "range": {
-                "columnBegin": 9,
-                "columnEnd": 13,
-                "lineBegin": 138,
-                "lineEnd": 138
-            },
-            "repository": "test"
-        },
-        {
-            "filepath": "relative_path.rs",
-            "range": {
-                "columnBegin": 19,
+                "columnBegin": 17,
                 "columnEnd": 23,
-                "lineBegin": 140,
-                "lineEnd": 140
+                "lineBegin": 87,
+                "lineEnd": 87
             },
             "repository": "test"
         },
         {
             "filepath": "relative_path.rs",
             "range": {
-                "columnBegin": 14,
-                "columnEnd": 18,
-                "lineBegin": 146,
-                "lineEnd": 146
+                "columnBegin": 29,
+                "columnEnd": 35,
+                "lineBegin": 109,
+                "lineEnd": 109
             },
             "repository": "test"
         },
         {
             "filepath": "relative_path.rs",
             "range": {
-                "columnBegin": 25,
-                "columnEnd": 29,
-                "lineBegin": 154,
-                "lineEnd": 154
+                "columnBegin": 37,
+                "columnEnd": 43,
+                "lineBegin": 186,
+                "lineEnd": 186
             },
             "repository": "test"
         },
         {
             "filepath": "relative_path.rs",
             "range": {
-                "columnBegin": 52,
-                "columnEnd": 56,
-                "lineBegin": 156,
-                "lineEnd": 156
+                "columnBegin": 36,
+                "columnEnd": 42,
+                "lineBegin": 187,
+                "lineEnd": 187
             },
             "repository": "test"
         },
         {
             "filepath": "relative_path.rs",
             "range": {
-                "columnBegin": 30,
-                "columnEnd": 34,
-                "lineBegin": 194,
-                "lineEnd": 194
+                "columnBegin": 36,
+                "columnEnd": 42,
+                "lineBegin": 188,
+                "lineEnd": 188
             },
             "repository": "test"
         },
         {
             "filepath": "relative_path.rs",
             "range": {
-                "columnBegin": 30,
-                "columnEnd": 34,
-                "lineBegin": 207,
-                "lineEnd": 207
+                "columnBegin": 33,
+                "columnEnd": 39,
+                "lineBegin": 189,
+                "lineEnd": 189
             },
             "repository": "test"
         },
         {
             "filepath": "relative_path.rs",
             "range": {
-                "columnBegin": 51,
-                "columnEnd": 55,
-                "lineBegin": 222,
-                "lineEnd": 222
-            },
-            "repository": "test"
-        },
-        {
-            "filepath": "relative_path.rs",
-            "range": {
-                "columnBegin": 50,
-                "columnEnd": 54,
-                "lineBegin": 223,
-                "lineEnd": 223
-            },
-            "repository": "test"
-        },
-        {
-            "filepath": "relative_path.rs",
-            "range": {
-                "columnBegin": 30,
-                "columnEnd": 34,
+                "columnBegin": 39,
+                "columnEnd": 45,
                 "lineBegin": 255,
                 "lineEnd": 255
             },
@@ -224,18 +214,8 @@
         {
             "filepath": "relative_path.rs",
             "range": {
-                "columnBegin": 29,
-                "columnEnd": 33,
-                "lineBegin": 256,
-                "lineEnd": 256
-            },
-            "repository": "test"
-        },
-        {
-            "filepath": "relative_path.rs",
-            "range": {
-                "columnBegin": 29,
-                "columnEnd": 33,
+                "columnBegin": 13,
+                "columnEnd": 19,
                 "lineBegin": 257,
                 "lineEnd": 257
             },
@@ -244,10 +224,60 @@
         {
             "filepath": "relative_path.rs",
             "range": {
-                "columnBegin": 31,
-                "columnEnd": 35,
+                "columnBegin": 13,
+                "columnEnd": 19,
                 "lineBegin": 258,
                 "lineEnd": 258
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "relative_path.rs",
+            "range": {
+                "columnBegin": 13,
+                "columnEnd": 19,
+                "lineBegin": 259,
+                "lineEnd": 259
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "relative_path.rs",
+            "range": {
+                "columnBegin": 13,
+                "columnEnd": 19,
+                "lineBegin": 260,
+                "lineEnd": 260
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "relative_path.rs",
+            "range": {
+                "columnBegin": 23,
+                "columnEnd": 29,
+                "lineBegin": 274,
+                "lineEnd": 274
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "relative_path.rs",
+            "range": {
+                "columnBegin": 39,
+                "columnEnd": 45,
+                "lineBegin": 274,
+                "lineEnd": 274
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "relative_path.rs",
+            "range": {
+                "columnBegin": 13,
+                "columnEnd": 19,
+                "lineBegin": 283,
+                "lineEnd": 283
             },
             "repository": "test"
         }

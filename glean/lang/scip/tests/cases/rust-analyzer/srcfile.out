@@ -1,1 +1,16 @@
-[ "@generated", { "key": "relative_path.rs" } ]
+[
+  "@generated",
+  { "key": "delta_log.rs" },
+  { "key": "measure/measure.rs" },
+  { "key": "measure/measure_ffi.rs" },
+  { "key": "pos/file_pos.rs" },
+  { "key": "pos/file_pos_large.rs" },
+  { "key": "pos/file_pos_small.rs" },
+  { "key": "pos/pos_impl.rs" },
+  { "key": "pos/pos_span_raw.rs" },
+  { "key": "pos/pos_span_tiny.rs" },
+  { "key": "pos/rc_pos.rs" },
+  { "key": "pos/with_erased_lines.rs" },
+  { "key": "relative_path.rs" },
+  { "key": "signed_source.rs" }
+]

@@ -1,5 +1,539 @@
 [
   "@generated",
+  { "key": "delta_log.rs/local 0" },
+  { "key": "delta_log.rs/local 1" },
+  { "key": "delta_log.rs/local 2" },
+  { "key": "delta_log.rs/local 3" },
+  { "key": "delta_log.rs/local 4" },
+  { "key": "delta_log.rs/local 5" },
+  { "key": "delta_log.rs/local 6" },
+  { "key": "delta_log.rs/local 7" },
+  { "key": "measure/measure.rs/local 0" },
+  { "key": "measure/measure.rs/local 1" },
+  { "key": "measure/measure.rs/local 10" },
+  { "key": "measure/measure.rs/local 11" },
+  { "key": "measure/measure.rs/local 12" },
+  { "key": "measure/measure.rs/local 13" },
+  { "key": "measure/measure.rs/local 14" },
+  { "key": "measure/measure.rs/local 15" },
+  { "key": "measure/measure.rs/local 16" },
+  { "key": "measure/measure.rs/local 17" },
+  { "key": "measure/measure.rs/local 18" },
+  { "key": "measure/measure.rs/local 19" },
+  { "key": "measure/measure.rs/local 2" },
+  { "key": "measure/measure.rs/local 20" },
+  { "key": "measure/measure.rs/local 21" },
+  { "key": "measure/measure.rs/local 22" },
+  { "key": "measure/measure.rs/local 23" },
+  { "key": "measure/measure.rs/local 24" },
+  { "key": "measure/measure.rs/local 25" },
+  { "key": "measure/measure.rs/local 26" },
+  { "key": "measure/measure.rs/local 27" },
+  { "key": "measure/measure.rs/local 28" },
+  { "key": "measure/measure.rs/local 29" },
+  { "key": "measure/measure.rs/local 3" },
+  { "key": "measure/measure.rs/local 30" },
+  { "key": "measure/measure.rs/local 31" },
+  { "key": "measure/measure.rs/local 32" },
+  { "key": "measure/measure.rs/local 33" },
+  { "key": "measure/measure.rs/local 34" },
+  { "key": "measure/measure.rs/local 35" },
+  { "key": "measure/measure.rs/local 36" },
+  { "key": "measure/measure.rs/local 37" },
+  { "key": "measure/measure.rs/local 38" },
+  { "key": "measure/measure.rs/local 39" },
+  { "key": "measure/measure.rs/local 4" },
+  { "key": "measure/measure.rs/local 40" },
+  { "key": "measure/measure.rs/local 41" },
+  { "key": "measure/measure.rs/local 42" },
+  { "key": "measure/measure.rs/local 43" },
+  { "key": "measure/measure.rs/local 44" },
+  { "key": "measure/measure.rs/local 45" },
+  { "key": "measure/measure.rs/local 46" },
+  { "key": "measure/measure.rs/local 47" },
+  { "key": "measure/measure.rs/local 48" },
+  { "key": "measure/measure.rs/local 49" },
+  { "key": "measure/measure.rs/local 5" },
+  { "key": "measure/measure.rs/local 50" },
+  { "key": "measure/measure.rs/local 51" },
+  { "key": "measure/measure.rs/local 52" },
+  { "key": "measure/measure.rs/local 53" },
+  { "key": "measure/measure.rs/local 54" },
+  { "key": "measure/measure.rs/local 55" },
+  { "key": "measure/measure.rs/local 56" },
+  { "key": "measure/measure.rs/local 57" },
+  { "key": "measure/measure.rs/local 58" },
+  { "key": "measure/measure.rs/local 59" },
+  { "key": "measure/measure.rs/local 6" },
+  { "key": "measure/measure.rs/local 7" },
+  { "key": "measure/measure.rs/local 8" },
+  { "key": "measure/measure.rs/local 9" },
+  { "key": "pos/file_pos.rs/local 0" },
+  { "key": "pos/file_pos.rs/local 1" },
+  { "key": "pos/file_pos_large.rs/local 0" },
+  { "key": "pos/file_pos_large.rs/local 1" },
+  { "key": "pos/file_pos_large.rs/local 10" },
+  { "key": "pos/file_pos_large.rs/local 11" },
+  { "key": "pos/file_pos_large.rs/local 12" },
+  { "key": "pos/file_pos_large.rs/local 13" },
+  { "key": "pos/file_pos_large.rs/local 14" },
+  { "key": "pos/file_pos_large.rs/local 15" },
+  { "key": "pos/file_pos_large.rs/local 16" },
+  { "key": "pos/file_pos_large.rs/local 17" },
+  { "key": "pos/file_pos_large.rs/local 18" },
+  { "key": "pos/file_pos_large.rs/local 19" },
+  { "key": "pos/file_pos_large.rs/local 2" },
+  { "key": "pos/file_pos_large.rs/local 20" },
+  { "key": "pos/file_pos_large.rs/local 21" },
+  { "key": "pos/file_pos_large.rs/local 22" },
+  { "key": "pos/file_pos_large.rs/local 23" },
+  { "key": "pos/file_pos_large.rs/local 24" },
+  { "key": "pos/file_pos_large.rs/local 25" },
+  { "key": "pos/file_pos_large.rs/local 26" },
+  { "key": "pos/file_pos_large.rs/local 27" },
+  { "key": "pos/file_pos_large.rs/local 28" },
+  { "key": "pos/file_pos_large.rs/local 29" },
+  { "key": "pos/file_pos_large.rs/local 3" },
+  { "key": "pos/file_pos_large.rs/local 30" },
+  { "key": "pos/file_pos_large.rs/local 31" },
+  { "key": "pos/file_pos_large.rs/local 32" },
+  { "key": "pos/file_pos_large.rs/local 33" },
+  { "key": "pos/file_pos_large.rs/local 34" },
+  { "key": "pos/file_pos_large.rs/local 35" },
+  { "key": "pos/file_pos_large.rs/local 36" },
+  { "key": "pos/file_pos_large.rs/local 37" },
+  { "key": "pos/file_pos_large.rs/local 38" },
+  { "key": "pos/file_pos_large.rs/local 39" },
+  { "key": "pos/file_pos_large.rs/local 4" },
+  { "key": "pos/file_pos_large.rs/local 40" },
+  { "key": "pos/file_pos_large.rs/local 41" },
+  { "key": "pos/file_pos_large.rs/local 42" },
+  { "key": "pos/file_pos_large.rs/local 43" },
+  { "key": "pos/file_pos_large.rs/local 44" },
+  { "key": "pos/file_pos_large.rs/local 45" },
+  { "key": "pos/file_pos_large.rs/local 46" },
+  { "key": "pos/file_pos_large.rs/local 47" },
+  { "key": "pos/file_pos_large.rs/local 48" },
+  { "key": "pos/file_pos_large.rs/local 49" },
+  { "key": "pos/file_pos_large.rs/local 5" },
+  { "key": "pos/file_pos_large.rs/local 50" },
+  { "key": "pos/file_pos_large.rs/local 6" },
+  { "key": "pos/file_pos_large.rs/local 7" },
+  { "key": "pos/file_pos_large.rs/local 8" },
+  { "key": "pos/file_pos_large.rs/local 9" },
+  { "key": "pos/file_pos_small.rs/local 0" },
+  { "key": "pos/file_pos_small.rs/local 1" },
+  { "key": "pos/file_pos_small.rs/local 10" },
+  { "key": "pos/file_pos_small.rs/local 11" },
+  { "key": "pos/file_pos_small.rs/local 12" },
+  { "key": "pos/file_pos_small.rs/local 13" },
+  { "key": "pos/file_pos_small.rs/local 14" },
+  { "key": "pos/file_pos_small.rs/local 15" },
+  { "key": "pos/file_pos_small.rs/local 16" },
+  { "key": "pos/file_pos_small.rs/local 17" },
+  { "key": "pos/file_pos_small.rs/local 18" },
+  { "key": "pos/file_pos_small.rs/local 19" },
+  { "key": "pos/file_pos_small.rs/local 2" },
+  { "key": "pos/file_pos_small.rs/local 20" },
+  { "key": "pos/file_pos_small.rs/local 21" },
+  { "key": "pos/file_pos_small.rs/local 22" },
+  { "key": "pos/file_pos_small.rs/local 23" },
+  { "key": "pos/file_pos_small.rs/local 24" },
+  { "key": "pos/file_pos_small.rs/local 25" },
+  { "key": "pos/file_pos_small.rs/local 26" },
+  { "key": "pos/file_pos_small.rs/local 27" },
+  { "key": "pos/file_pos_small.rs/local 28" },
+  { "key": "pos/file_pos_small.rs/local 29" },
+  { "key": "pos/file_pos_small.rs/local 3" },
+  { "key": "pos/file_pos_small.rs/local 30" },
+  { "key": "pos/file_pos_small.rs/local 31" },
+  { "key": "pos/file_pos_small.rs/local 32" },
+  { "key": "pos/file_pos_small.rs/local 33" },
+  { "key": "pos/file_pos_small.rs/local 34" },
+  { "key": "pos/file_pos_small.rs/local 35" },
+  { "key": "pos/file_pos_small.rs/local 36" },
+  { "key": "pos/file_pos_small.rs/local 37" },
+  { "key": "pos/file_pos_small.rs/local 38" },
+  { "key": "pos/file_pos_small.rs/local 39" },
+  { "key": "pos/file_pos_small.rs/local 4" },
+  { "key": "pos/file_pos_small.rs/local 40" },
+  { "key": "pos/file_pos_small.rs/local 41" },
+  { "key": "pos/file_pos_small.rs/local 42" },
+  { "key": "pos/file_pos_small.rs/local 43" },
+  { "key": "pos/file_pos_small.rs/local 5" },
+  { "key": "pos/file_pos_small.rs/local 6" },
+  { "key": "pos/file_pos_small.rs/local 7" },
+  { "key": "pos/file_pos_small.rs/local 8" },
+  { "key": "pos/file_pos_small.rs/local 9" },
+  { "key": "pos/pos_impl.rs/local 0" },
+  { "key": "pos/pos_impl.rs/local 1" },
+  { "key": "pos/pos_impl.rs/local 10" },
+  { "key": "pos/pos_impl.rs/local 100" },
+  { "key": "pos/pos_impl.rs/local 101" },
+  { "key": "pos/pos_impl.rs/local 102" },
+  { "key": "pos/pos_impl.rs/local 103" },
+  { "key": "pos/pos_impl.rs/local 104" },
+  { "key": "pos/pos_impl.rs/local 105" },
+  { "key": "pos/pos_impl.rs/local 106" },
+  { "key": "pos/pos_impl.rs/local 107" },
+  { "key": "pos/pos_impl.rs/local 108" },
+  { "key": "pos/pos_impl.rs/local 109" },
+  { "key": "pos/pos_impl.rs/local 11" },
+  { "key": "pos/pos_impl.rs/local 110" },
+  { "key": "pos/pos_impl.rs/local 111" },
+  { "key": "pos/pos_impl.rs/local 112" },
+  { "key": "pos/pos_impl.rs/local 113" },
+  { "key": "pos/pos_impl.rs/local 114" },
+  { "key": "pos/pos_impl.rs/local 115" },
+  { "key": "pos/pos_impl.rs/local 116" },
+  { "key": "pos/pos_impl.rs/local 117" },
+  { "key": "pos/pos_impl.rs/local 118" },
+  { "key": "pos/pos_impl.rs/local 119" },
+  { "key": "pos/pos_impl.rs/local 12" },
+  { "key": "pos/pos_impl.rs/local 120" },
+  { "key": "pos/pos_impl.rs/local 121" },
+  { "key": "pos/pos_impl.rs/local 122" },
+  { "key": "pos/pos_impl.rs/local 123" },
+  { "key": "pos/pos_impl.rs/local 124" },
+  { "key": "pos/pos_impl.rs/local 125" },
+  { "key": "pos/pos_impl.rs/local 126" },
+  { "key": "pos/pos_impl.rs/local 127" },
+  { "key": "pos/pos_impl.rs/local 128" },
+  { "key": "pos/pos_impl.rs/local 129" },
+  { "key": "pos/pos_impl.rs/local 13" },
+  { "key": "pos/pos_impl.rs/local 130" },
+  { "key": "pos/pos_impl.rs/local 131" },
+  { "key": "pos/pos_impl.rs/local 132" },
+  { "key": "pos/pos_impl.rs/local 133" },
+  { "key": "pos/pos_impl.rs/local 134" },
+  { "key": "pos/pos_impl.rs/local 135" },
+  { "key": "pos/pos_impl.rs/local 136" },
+  { "key": "pos/pos_impl.rs/local 137" },
+  { "key": "pos/pos_impl.rs/local 138" },
+  { "key": "pos/pos_impl.rs/local 139" },
+  { "key": "pos/pos_impl.rs/local 14" },
+  { "key": "pos/pos_impl.rs/local 140" },
+  { "key": "pos/pos_impl.rs/local 141" },
+  { "key": "pos/pos_impl.rs/local 142" },
+  { "key": "pos/pos_impl.rs/local 143" },
+  { "key": "pos/pos_impl.rs/local 144" },
+  { "key": "pos/pos_impl.rs/local 145" },
+  { "key": "pos/pos_impl.rs/local 146" },
+  { "key": "pos/pos_impl.rs/local 147" },
+  { "key": "pos/pos_impl.rs/local 148" },
+  { "key": "pos/pos_impl.rs/local 149" },
+  { "key": "pos/pos_impl.rs/local 15" },
+  { "key": "pos/pos_impl.rs/local 150" },
+  { "key": "pos/pos_impl.rs/local 151" },
+  { "key": "pos/pos_impl.rs/local 152" },
+  { "key": "pos/pos_impl.rs/local 153" },
+  { "key": "pos/pos_impl.rs/local 154" },
+  { "key": "pos/pos_impl.rs/local 155" },
+  { "key": "pos/pos_impl.rs/local 156" },
+  { "key": "pos/pos_impl.rs/local 157" },
+  { "key": "pos/pos_impl.rs/local 158" },
+  { "key": "pos/pos_impl.rs/local 159" },
+  { "key": "pos/pos_impl.rs/local 16" },
+  { "key": "pos/pos_impl.rs/local 160" },
+  { "key": "pos/pos_impl.rs/local 161" },
+  { "key": "pos/pos_impl.rs/local 162" },
+  { "key": "pos/pos_impl.rs/local 163" },
+  { "key": "pos/pos_impl.rs/local 164" },
+  { "key": "pos/pos_impl.rs/local 165" },
+  { "key": "pos/pos_impl.rs/local 166" },
+  { "key": "pos/pos_impl.rs/local 167" },
+  { "key": "pos/pos_impl.rs/local 168" },
+  { "key": "pos/pos_impl.rs/local 169" },
+  { "key": "pos/pos_impl.rs/local 17" },
+  { "key": "pos/pos_impl.rs/local 170" },
+  { "key": "pos/pos_impl.rs/local 171" },
+  { "key": "pos/pos_impl.rs/local 172" },
+  { "key": "pos/pos_impl.rs/local 173" },
+  { "key": "pos/pos_impl.rs/local 174" },
+  { "key": "pos/pos_impl.rs/local 175" },
+  { "key": "pos/pos_impl.rs/local 176" },
+  { "key": "pos/pos_impl.rs/local 177" },
+  { "key": "pos/pos_impl.rs/local 178" },
+  { "key": "pos/pos_impl.rs/local 179" },
+  { "key": "pos/pos_impl.rs/local 18" },
+  { "key": "pos/pos_impl.rs/local 180" },
+  { "key": "pos/pos_impl.rs/local 181" },
+  { "key": "pos/pos_impl.rs/local 182" },
+  { "key": "pos/pos_impl.rs/local 183" },
+  { "key": "pos/pos_impl.rs/local 184" },
+  { "key": "pos/pos_impl.rs/local 185" },
+  { "key": "pos/pos_impl.rs/local 186" },
+  { "key": "pos/pos_impl.rs/local 187" },
+  { "key": "pos/pos_impl.rs/local 188" },
+  { "key": "pos/pos_impl.rs/local 189" },
+  { "key": "pos/pos_impl.rs/local 19" },
+  { "key": "pos/pos_impl.rs/local 190" },
+  { "key": "pos/pos_impl.rs/local 191" },
+  { "key": "pos/pos_impl.rs/local 192" },
+  { "key": "pos/pos_impl.rs/local 193" },
+  { "key": "pos/pos_impl.rs/local 194" },
+  { "key": "pos/pos_impl.rs/local 195" },
+  { "key": "pos/pos_impl.rs/local 196" },
+  { "key": "pos/pos_impl.rs/local 197" },
+  { "key": "pos/pos_impl.rs/local 198" },
+  { "key": "pos/pos_impl.rs/local 199" },
+  { "key": "pos/pos_impl.rs/local 2" },
+  { "key": "pos/pos_impl.rs/local 20" },
+  { "key": "pos/pos_impl.rs/local 200" },
+  { "key": "pos/pos_impl.rs/local 201" },
+  { "key": "pos/pos_impl.rs/local 202" },
+  { "key": "pos/pos_impl.rs/local 203" },
+  { "key": "pos/pos_impl.rs/local 204" },
+  { "key": "pos/pos_impl.rs/local 205" },
+  { "key": "pos/pos_impl.rs/local 206" },
+  { "key": "pos/pos_impl.rs/local 207" },
+  { "key": "pos/pos_impl.rs/local 208" },
+  { "key": "pos/pos_impl.rs/local 209" },
+  { "key": "pos/pos_impl.rs/local 21" },
+  { "key": "pos/pos_impl.rs/local 210" },
+  { "key": "pos/pos_impl.rs/local 211" },
+  { "key": "pos/pos_impl.rs/local 212" },
+  { "key": "pos/pos_impl.rs/local 213" },
+  { "key": "pos/pos_impl.rs/local 214" },
+  { "key": "pos/pos_impl.rs/local 215" },
+  { "key": "pos/pos_impl.rs/local 216" },
+  { "key": "pos/pos_impl.rs/local 217" },
+  { "key": "pos/pos_impl.rs/local 218" },
+  { "key": "pos/pos_impl.rs/local 219" },
+  { "key": "pos/pos_impl.rs/local 22" },
+  { "key": "pos/pos_impl.rs/local 220" },
+  { "key": "pos/pos_impl.rs/local 221" },
+  { "key": "pos/pos_impl.rs/local 222" },
+  { "key": "pos/pos_impl.rs/local 223" },
+  { "key": "pos/pos_impl.rs/local 224" },
+  { "key": "pos/pos_impl.rs/local 225" },
+  { "key": "pos/pos_impl.rs/local 226" },
+  { "key": "pos/pos_impl.rs/local 227" },
+  { "key": "pos/pos_impl.rs/local 228" },
+  { "key": "pos/pos_impl.rs/local 229" },
+  { "key": "pos/pos_impl.rs/local 23" },
+  { "key": "pos/pos_impl.rs/local 230" },
+  { "key": "pos/pos_impl.rs/local 231" },
+  { "key": "pos/pos_impl.rs/local 232" },
+  { "key": "pos/pos_impl.rs/local 233" },
+  { "key": "pos/pos_impl.rs/local 234" },
+  { "key": "pos/pos_impl.rs/local 235" },
+  { "key": "pos/pos_impl.rs/local 236" },
+  { "key": "pos/pos_impl.rs/local 237" },
+  { "key": "pos/pos_impl.rs/local 238" },
+  { "key": "pos/pos_impl.rs/local 239" },
+  { "key": "pos/pos_impl.rs/local 24" },
+  { "key": "pos/pos_impl.rs/local 240" },
+  { "key": "pos/pos_impl.rs/local 241" },
+  { "key": "pos/pos_impl.rs/local 242" },
+  { "key": "pos/pos_impl.rs/local 243" },
+  { "key": "pos/pos_impl.rs/local 244" },
+  { "key": "pos/pos_impl.rs/local 25" },
+  { "key": "pos/pos_impl.rs/local 26" },
+  { "key": "pos/pos_impl.rs/local 27" },
+  { "key": "pos/pos_impl.rs/local 28" },
+  { "key": "pos/pos_impl.rs/local 29" },
+  { "key": "pos/pos_impl.rs/local 3" },
+  { "key": "pos/pos_impl.rs/local 30" },
+  { "key": "pos/pos_impl.rs/local 31" },
+  { "key": "pos/pos_impl.rs/local 32" },
+  { "key": "pos/pos_impl.rs/local 33" },
+  { "key": "pos/pos_impl.rs/local 34" },
+  { "key": "pos/pos_impl.rs/local 35" },
+  { "key": "pos/pos_impl.rs/local 36" },
+  { "key": "pos/pos_impl.rs/local 37" },
+  { "key": "pos/pos_impl.rs/local 38" },
+  { "key": "pos/pos_impl.rs/local 39" },
+  { "key": "pos/pos_impl.rs/local 4" },
+  { "key": "pos/pos_impl.rs/local 40" },
+  { "key": "pos/pos_impl.rs/local 41" },
+  { "key": "pos/pos_impl.rs/local 42" },
+  { "key": "pos/pos_impl.rs/local 43" },
+  { "key": "pos/pos_impl.rs/local 44" },
+  { "key": "pos/pos_impl.rs/local 45" },
+  { "key": "pos/pos_impl.rs/local 46" },
+  { "key": "pos/pos_impl.rs/local 47" },
+  { "key": "pos/pos_impl.rs/local 48" },
+  { "key": "pos/pos_impl.rs/local 49" },
+  { "key": "pos/pos_impl.rs/local 5" },
+  { "key": "pos/pos_impl.rs/local 50" },
+  { "key": "pos/pos_impl.rs/local 51" },
+  { "key": "pos/pos_impl.rs/local 52" },
+  { "key": "pos/pos_impl.rs/local 53" },
+  { "key": "pos/pos_impl.rs/local 54" },
+  { "key": "pos/pos_impl.rs/local 55" },
+  { "key": "pos/pos_impl.rs/local 56" },
+  { "key": "pos/pos_impl.rs/local 57" },
+  { "key": "pos/pos_impl.rs/local 58" },
+  { "key": "pos/pos_impl.rs/local 59" },
+  { "key": "pos/pos_impl.rs/local 6" },
+  { "key": "pos/pos_impl.rs/local 60" },
+  { "key": "pos/pos_impl.rs/local 61" },
+  { "key": "pos/pos_impl.rs/local 62" },
+  { "key": "pos/pos_impl.rs/local 63" },
+  { "key": "pos/pos_impl.rs/local 64" },
+  { "key": "pos/pos_impl.rs/local 65" },
+  { "key": "pos/pos_impl.rs/local 66" },
+  { "key": "pos/pos_impl.rs/local 67" },
+  { "key": "pos/pos_impl.rs/local 68" },
+  { "key": "pos/pos_impl.rs/local 69" },
+  { "key": "pos/pos_impl.rs/local 7" },
+  { "key": "pos/pos_impl.rs/local 70" },
+  { "key": "pos/pos_impl.rs/local 71" },
+  { "key": "pos/pos_impl.rs/local 72" },
+  { "key": "pos/pos_impl.rs/local 73" },
+  { "key": "pos/pos_impl.rs/local 74" },
+  { "key": "pos/pos_impl.rs/local 75" },
+  { "key": "pos/pos_impl.rs/local 76" },
+  { "key": "pos/pos_impl.rs/local 77" },
+  { "key": "pos/pos_impl.rs/local 78" },
+  { "key": "pos/pos_impl.rs/local 79" },
+  { "key": "pos/pos_impl.rs/local 8" },
+  { "key": "pos/pos_impl.rs/local 80" },
+  { "key": "pos/pos_impl.rs/local 81" },
+  { "key": "pos/pos_impl.rs/local 82" },
+  { "key": "pos/pos_impl.rs/local 83" },
+  { "key": "pos/pos_impl.rs/local 84" },
+  { "key": "pos/pos_impl.rs/local 85" },
+  { "key": "pos/pos_impl.rs/local 86" },
+  { "key": "pos/pos_impl.rs/local 87" },
+  { "key": "pos/pos_impl.rs/local 88" },
+  { "key": "pos/pos_impl.rs/local 89" },
+  { "key": "pos/pos_impl.rs/local 9" },
+  { "key": "pos/pos_impl.rs/local 90" },
+  { "key": "pos/pos_impl.rs/local 91" },
+  { "key": "pos/pos_impl.rs/local 92" },
+  { "key": "pos/pos_impl.rs/local 93" },
+  { "key": "pos/pos_impl.rs/local 94" },
+  { "key": "pos/pos_impl.rs/local 95" },
+  { "key": "pos/pos_impl.rs/local 96" },
+  { "key": "pos/pos_impl.rs/local 97" },
+  { "key": "pos/pos_impl.rs/local 98" },
+  { "key": "pos/pos_impl.rs/local 99" },
+  { "key": "pos/pos_span_raw.rs/local 0" },
+  { "key": "pos/pos_span_raw.rs/local 1" },
+  { "key": "pos/pos_span_raw.rs/local 2" },
+  { "key": "pos/pos_span_raw.rs/local 3" },
+  { "key": "pos/pos_span_raw.rs/local 4" },
+  { "key": "pos/pos_span_raw.rs/local 5" },
+  { "key": "pos/pos_span_tiny.rs/local 0" },
+  { "key": "pos/pos_span_tiny.rs/local 1" },
+  { "key": "pos/pos_span_tiny.rs/local 10" },
+  { "key": "pos/pos_span_tiny.rs/local 100" },
+  { "key": "pos/pos_span_tiny.rs/local 101" },
+  { "key": "pos/pos_span_tiny.rs/local 102" },
+  { "key": "pos/pos_span_tiny.rs/local 103" },
+  { "key": "pos/pos_span_tiny.rs/local 104" },
+  { "key": "pos/pos_span_tiny.rs/local 105" },
+  { "key": "pos/pos_span_tiny.rs/local 106" },
+  { "key": "pos/pos_span_tiny.rs/local 107" },
+  { "key": "pos/pos_span_tiny.rs/local 108" },
+  { "key": "pos/pos_span_tiny.rs/local 109" },
+  { "key": "pos/pos_span_tiny.rs/local 11" },
+  { "key": "pos/pos_span_tiny.rs/local 110" },
+  { "key": "pos/pos_span_tiny.rs/local 111" },
+  { "key": "pos/pos_span_tiny.rs/local 112" },
+  { "key": "pos/pos_span_tiny.rs/local 113" },
+  { "key": "pos/pos_span_tiny.rs/local 114" },
+  { "key": "pos/pos_span_tiny.rs/local 115" },
+  { "key": "pos/pos_span_tiny.rs/local 12" },
+  { "key": "pos/pos_span_tiny.rs/local 13" },
+  { "key": "pos/pos_span_tiny.rs/local 14" },
+  { "key": "pos/pos_span_tiny.rs/local 15" },
+  { "key": "pos/pos_span_tiny.rs/local 16" },
+  { "key": "pos/pos_span_tiny.rs/local 17" },
+  { "key": "pos/pos_span_tiny.rs/local 18" },
+  { "key": "pos/pos_span_tiny.rs/local 19" },
+  { "key": "pos/pos_span_tiny.rs/local 2" },
+  { "key": "pos/pos_span_tiny.rs/local 20" },
+  { "key": "pos/pos_span_tiny.rs/local 21" },
+  { "key": "pos/pos_span_tiny.rs/local 22" },
+  { "key": "pos/pos_span_tiny.rs/local 23" },
+  { "key": "pos/pos_span_tiny.rs/local 24" },
+  { "key": "pos/pos_span_tiny.rs/local 25" },
+  { "key": "pos/pos_span_tiny.rs/local 26" },
+  { "key": "pos/pos_span_tiny.rs/local 27" },
+  { "key": "pos/pos_span_tiny.rs/local 28" },
+  { "key": "pos/pos_span_tiny.rs/local 29" },
+  { "key": "pos/pos_span_tiny.rs/local 3" },
+  { "key": "pos/pos_span_tiny.rs/local 30" },
+  { "key": "pos/pos_span_tiny.rs/local 31" },
+  { "key": "pos/pos_span_tiny.rs/local 32" },
+  { "key": "pos/pos_span_tiny.rs/local 33" },
+  { "key": "pos/pos_span_tiny.rs/local 34" },
+  { "key": "pos/pos_span_tiny.rs/local 35" },
+  { "key": "pos/pos_span_tiny.rs/local 36" },
+  { "key": "pos/pos_span_tiny.rs/local 37" },
+  { "key": "pos/pos_span_tiny.rs/local 38" },
+  { "key": "pos/pos_span_tiny.rs/local 39" },
+  { "key": "pos/pos_span_tiny.rs/local 4" },
+  { "key": "pos/pos_span_tiny.rs/local 40" },
+  { "key": "pos/pos_span_tiny.rs/local 41" },
+  { "key": "pos/pos_span_tiny.rs/local 42" },
+  { "key": "pos/pos_span_tiny.rs/local 43" },
+  { "key": "pos/pos_span_tiny.rs/local 44" },
+  { "key": "pos/pos_span_tiny.rs/local 45" },
+  { "key": "pos/pos_span_tiny.rs/local 46" },
+  { "key": "pos/pos_span_tiny.rs/local 47" },
+  { "key": "pos/pos_span_tiny.rs/local 48" },
+  { "key": "pos/pos_span_tiny.rs/local 49" },
+  { "key": "pos/pos_span_tiny.rs/local 5" },
+  { "key": "pos/pos_span_tiny.rs/local 50" },
+  { "key": "pos/pos_span_tiny.rs/local 51" },
+  { "key": "pos/pos_span_tiny.rs/local 52" },
+  { "key": "pos/pos_span_tiny.rs/local 53" },
+  { "key": "pos/pos_span_tiny.rs/local 54" },
+  { "key": "pos/pos_span_tiny.rs/local 55" },
+  { "key": "pos/pos_span_tiny.rs/local 56" },
+  { "key": "pos/pos_span_tiny.rs/local 57" },
+  { "key": "pos/pos_span_tiny.rs/local 58" },
+  { "key": "pos/pos_span_tiny.rs/local 59" },
+  { "key": "pos/pos_span_tiny.rs/local 6" },
+  { "key": "pos/pos_span_tiny.rs/local 60" },
+  { "key": "pos/pos_span_tiny.rs/local 61" },
+  { "key": "pos/pos_span_tiny.rs/local 62" },
+  { "key": "pos/pos_span_tiny.rs/local 63" },
+  { "key": "pos/pos_span_tiny.rs/local 64" },
+  { "key": "pos/pos_span_tiny.rs/local 65" },
+  { "key": "pos/pos_span_tiny.rs/local 66" },
+  { "key": "pos/pos_span_tiny.rs/local 67" },
+  { "key": "pos/pos_span_tiny.rs/local 68" },
+  { "key": "pos/pos_span_tiny.rs/local 69" },
+  { "key": "pos/pos_span_tiny.rs/local 7" },
+  { "key": "pos/pos_span_tiny.rs/local 70" },
+  { "key": "pos/pos_span_tiny.rs/local 71" },
+  { "key": "pos/pos_span_tiny.rs/local 72" },
+  { "key": "pos/pos_span_tiny.rs/local 73" },
+  { "key": "pos/pos_span_tiny.rs/local 74" },
+  { "key": "pos/pos_span_tiny.rs/local 75" },
+  { "key": "pos/pos_span_tiny.rs/local 76" },
+  { "key": "pos/pos_span_tiny.rs/local 77" },
+  { "key": "pos/pos_span_tiny.rs/local 78" },
+  { "key": "pos/pos_span_tiny.rs/local 79" },
+  { "key": "pos/pos_span_tiny.rs/local 8" },
+  { "key": "pos/pos_span_tiny.rs/local 80" },
+  { "key": "pos/pos_span_tiny.rs/local 81" },
+  { "key": "pos/pos_span_tiny.rs/local 82" },
+  { "key": "pos/pos_span_tiny.rs/local 83" },
+  { "key": "pos/pos_span_tiny.rs/local 84" },
+  { "key": "pos/pos_span_tiny.rs/local 85" },
+  { "key": "pos/pos_span_tiny.rs/local 86" },
+  { "key": "pos/pos_span_tiny.rs/local 87" },
+  { "key": "pos/pos_span_tiny.rs/local 88" },
+  { "key": "pos/pos_span_tiny.rs/local 89" },
+  { "key": "pos/pos_span_tiny.rs/local 9" },
+  { "key": "pos/pos_span_tiny.rs/local 90" },
+  { "key": "pos/pos_span_tiny.rs/local 91" },
+  { "key": "pos/pos_span_tiny.rs/local 92" },
+  { "key": "pos/pos_span_tiny.rs/local 93" },
+  { "key": "pos/pos_span_tiny.rs/local 94" },
+  { "key": "pos/pos_span_tiny.rs/local 95" },
+  { "key": "pos/pos_span_tiny.rs/local 96" },
+  { "key": "pos/pos_span_tiny.rs/local 97" },
+  { "key": "pos/pos_span_tiny.rs/local 98" },
+  { "key": "pos/pos_span_tiny.rs/local 99" },
+  { "key": "pos/with_erased_lines.rs/local 0" },
+  { "key": "pos/with_erased_lines.rs/local 1" },
   { "key": "relative_path.rs/local 0" },
   { "key": "relative_path.rs/local 1" },
   { "key": "relative_path.rs/local 10" },
@@ -28,310 +562,875 @@
   { "key": "relative_path.rs/local 31" },
   { "key": "relative_path.rs/local 32" },
   { "key": "relative_path.rs/local 33" },
+  { "key": "relative_path.rs/local 34" },
+  { "key": "relative_path.rs/local 35" },
+  { "key": "relative_path.rs/local 36" },
+  { "key": "relative_path.rs/local 37" },
+  { "key": "relative_path.rs/local 38" },
+  { "key": "relative_path.rs/local 39" },
   { "key": "relative_path.rs/local 4" },
+  { "key": "relative_path.rs/local 40" },
+  { "key": "relative_path.rs/local 41" },
+  { "key": "relative_path.rs/local 42" },
+  { "key": "relative_path.rs/local 43" },
+  { "key": "relative_path.rs/local 44" },
+  { "key": "relative_path.rs/local 45" },
+  { "key": "relative_path.rs/local 46" },
+  { "key": "relative_path.rs/local 47" },
+  { "key": "relative_path.rs/local 48" },
+  { "key": "relative_path.rs/local 49" },
   { "key": "relative_path.rs/local 5" },
+  { "key": "relative_path.rs/local 50" },
+  { "key": "relative_path.rs/local 51" },
+  { "key": "relative_path.rs/local 52" },
+  { "key": "relative_path.rs/local 53" },
+  { "key": "relative_path.rs/local 54" },
+  { "key": "relative_path.rs/local 55" },
+  { "key": "relative_path.rs/local 56" },
   { "key": "relative_path.rs/local 6" },
   { "key": "relative_path.rs/local 7" },
   { "key": "relative_path.rs/local 8" },
   { "key": "relative_path.rs/local 9" },
-  { "key": "rust-analyzer cargo _eq_modulo_pos_derive . EqModuloPos!" },
-  { "key": "rust-analyzer cargo _no_pos_hash_derive . NoPosHash!" },
-  { "key": "rust-analyzer cargo _ocamlrep_derive . FromOcamlRep!" },
-  { "key": "rust-analyzer cargo _ocamlrep_derive . FromOcamlRepIn!" },
-  { "key": "rust-analyzer cargo _ocamlrep_derive . ToOcamlRep!" },
-  { "key": "rust-analyzer cargo _serde_derive-1.0.152 . Deserialize!" },
-  { "key": "rust-analyzer cargo _serde_derive-1.0.152 . Serialize!" },
+  { "key": "rust-analyzer cargo arena_deserializer 0.0.0 crate/" },
+  {
+    "key": "rust-analyzer cargo arena_deserializer 0.0.0 impls/impl_deserialize_in_arena!"
+  },
+  { "key": "rust-analyzer cargo arena_trait 0.0.0 TrivialDrop#" },
+  { "key": "rust-analyzer cargo arena_trait 0.0.0 crate/" },
+  { "key": "rust-analyzer cargo bstr 1.10.0 crate/" },
+  { "key": "rust-analyzer cargo bstr 1.10.0 ext_slice/ByteSlice#" },
+  { "key": "rust-analyzer cargo bumpalo 3.16.0 Bump#" },
+  {
+    "key": "rust-analyzer cargo dashmap 5.5.3 impl#[`DashMap<K, V, S>`]entry()."
+  },
+  {
+    "key": "rust-analyzer cargo dashmap 5.5.3 impl#[`DashMap<K, V, S>`]iter()."
+  },
+  { "key": "rust-analyzer cargo dashmap 5.5.3 iter/Iter#map." },
+  {
+    "key": "rust-analyzer cargo dashmap 5.5.3 mapref/entry/impl#[`Entry<'a, K, V, S>`]or_default()."
+  },
+  { "key": "rust-analyzer cargo delta_log 0.0.0 LOG_LAST." },
+  { "key": "rust-analyzer cargo delta_log 0.0.0 LOG_START." },
+  { "key": "rust-analyzer cargo delta_log 0.0.0 crate/" },
+  { "key": "rust-analyzer cargo delta_log 0.0.0 init_delta_logger()." },
+  { "key": "rust-analyzer cargo delta_log 0.0.0 log_durations()." },
+  { "key": "rust-analyzer cargo digest 0.10.7 digest/Digest#" },
+  { "key": "rust-analyzer cargo env_logger 0.10.2 crate/" },
+  { "key": "rust-analyzer cargo env_logger 0.10.2 logger/Builder#" },
+  {
+    "key": "rust-analyzer cargo env_logger 0.10.2 logger/impl#[Builder]format()."
+  },
+  {
+    "key": "rust-analyzer cargo env_logger 0.10.2 logger/impl#[Builder]from_default_env()."
+  },
+  {
+    "key": "rust-analyzer cargo env_logger 0.10.2 logger/impl#[Builder]try_init()."
+  },
+  { "key": "rust-analyzer cargo eq_modulo_pos 0.0.0 EqModuloPos#" },
+  { "key": "rust-analyzer cargo eq_modulo_pos 0.0.0 crate/" },
+  { "key": "rust-analyzer cargo hash 0.0.0 DashMap#" },
+  { "key": "rust-analyzer cargo hash 0.0.0 crate/" },
+  { "key": "rust-analyzer cargo hex 0.4.3 crate/" },
+  { "key": "rust-analyzer cargo hex 0.4.3 encode()." },
+  {
+    "key": "rust-analyzer cargo lock_api 0.4.12 rwlock/impl#[`RwLock<R, T>`]new()."
+  },
+  { "key": "rust-analyzer cargo md-5 0.10.6 Md5#" },
+  { "key": "rust-analyzer cargo md-5 0.10.6 crate/" },
+  { "key": "rust-analyzer cargo measure 0.0.0 GLOBAL." },
+  { "key": "rust-analyzer cargo measure 0.0.0 Record#" },
+  { "key": "rust-analyzer cargo measure 0.0.0 Record#entries." },
+  { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#" },
+  { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#count." },
+  { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#distribution." },
+  { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#max." },
+  { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#mean." },
+  { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#min." },
+  { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#variance_sum." },
+  { "key": "rust-analyzer cargo measure 0.0.0 RecordName#" },
+  { "key": "rust-analyzer cargo measure 0.0.0 RecordName#0." },
+  { "key": "rust-analyzer cargo measure 0.0.0 RecordName#1." },
+  { "key": "rust-analyzer cargo measure 0.0.0 crate/" },
+  { "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordEntry]" },
+  { "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordEntry]default()." },
+  { "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName]" },
+  {
+    "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName][ToOcamlRep]to_ocamlrep()."
+  },
+  { "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName]fmt()." },
+  { "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName]from()." },
+  { "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]" },
+  {
+    "key": "rust-analyzer cargo measure 0.0.0 impl#[Record][ToOcamlRep]to_ocamlrep()."
+  },
+  { "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]new()." },
+  { "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]print_stats()." },
+  { "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]sample()." },
+  { "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]sample_impl()." },
+  { "key": "rust-analyzer cargo measure 0.0.0 pop_global()." },
+  { "key": "rust-analyzer cargo measure 0.0.0 pretty_num()." },
+  { "key": "rust-analyzer cargo measure 0.0.0 print_stats()." },
+  { "key": "rust-analyzer cargo measure 0.0.0 push_global()." },
+  { "key": "rust-analyzer cargo measure 0.0.0 sample()." },
+  { "key": "rust-analyzer cargo measure 0.0.0 sample_impl()." },
+  { "key": "rust-analyzer cargo measure_ffi 0.0.0 crate/" },
+  { "key": "rust-analyzer cargo measure_ffi 0.0.0 hh_measure_pop_global()." },
+  { "key": "rust-analyzer cargo measure_ffi 0.0.0 hh_measure_push_global()." },
+  { "key": "rust-analyzer cargo no_pos_hash 0.0.0 NoPosHash#" },
+  { "key": "rust-analyzer cargo no_pos_hash 0.0.0 crate/" },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#" },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#add()." },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#add_copy()." },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#block_with_size()." },
+  {
+    "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#block_with_size_and_tag()."
+  },
+  {
+    "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#byte_string_with_len()."
+  },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#set_field()." },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 FromOcamlRep#" },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 FromOcamlRepIn#" },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 ToOcamlRep#" },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 arena/Arena#" },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 arena/impl#[Arena]new()." },
+  {
+    "key": "rust-analyzer cargo ocamlrep 0.1.0 block/impl#[`BlockBuilder<'a>`]build()."
+  },
+  {
+    "key": "rust-analyzer cargo ocamlrep 0.1.0 block/impl#[`BlockBytes<'a>`]build()."
+  },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 crate/" },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 error/FromError#" },
+  {
+    "key": "rust-analyzer cargo ocamlrep 0.1.0 error/FromError#BlockTagOutOfRange#"
+  },
+  {
+    "key": "rust-analyzer cargo ocamlrep 0.1.0 error/FromError#BlockTagOutOfRange#actual."
+  },
+  {
+    "key": "rust-analyzer cargo ocamlrep 0.1.0 error/FromError#BlockTagOutOfRange#max."
+  },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 from/" },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 from/expect_block()." },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 from/expect_block_size()." },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 from/expect_int()." },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 from/expect_tuple()." },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 from/field()." },
+  {
+    "key": "rust-analyzer cargo ocamlrep 0.1.0 impls/sorted_iter_to_ocaml_map()."
+  },
+  { "key": "rust-analyzer cargo ocamlrep 0.1.0 value/Value#" },
+  {
+    "key": "rust-analyzer cargo ocamlrep 0.1.0 value/impl#[`Value<'a>`]int()."
+  },
+  { "key": "rust-analyzer cargo ocamlrep_ocamlpool 0.1.0 crate/" },
+  { "key": "rust-analyzer cargo ocamlrep_ocamlpool 0.1.0 ocaml_ffi!" },
+  { "key": "rust-analyzer cargo once_cell 1.20.2 crate/" },
+  { "key": "rust-analyzer cargo once_cell 1.20.2 sync/" },
+  { "key": "rust-analyzer cargo once_cell 1.20.2 sync/Lazy#" },
+  {
+    "key": "rust-analyzer cargo once_cell 1.20.2 sync/impl#[`Lazy<T, F>`]new()."
+  },
+  { "key": "rust-analyzer cargo parking_lot 0.12.3 crate/" },
+  { "key": "rust-analyzer cargo parking_lot 0.12.3 rwlock/RwLock#" },
+  { "key": "rust-analyzer cargo parser_core_types 0.0.0 crate/" },
+  { "key": "rust-analyzer cargo parser_core_types 0.0.0 indexed_source_text/" },
+  {
+    "key": "rust-analyzer cargo parser_core_types 0.0.0 indexed_source_text/Pos#"
+  },
+  {
+    "key": "rust-analyzer cargo parser_core_types 0.0.0 indexed_source_text/Pos#end."
+  },
+  {
+    "key": "rust-analyzer cargo parser_core_types 0.0.0 indexed_source_text/Pos#path."
+  },
+  {
+    "key": "rust-analyzer cargo parser_core_types 0.0.0 indexed_source_text/Pos#start."
+  },
+  { "key": "rust-analyzer cargo pretty_assertions 1.4.0 assert_eq!" },
+  { "key": "rust-analyzer cargo pretty_assertions 1.4.0 crate/" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 crate/" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/FilePos#" },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/FilePos#line_column_beg()."
+  },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/FilePos#offset()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/DUMMY." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#" },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#bol."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#lnum."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#offset."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]"
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FilePos]line_column_beg()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FilePos]offset()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FromOcamlRep]"
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FromOcamlRep]from_ocamlrep()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][ToOcamlRep]to_ocamlrep()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][`FromOcamlRepIn<'a>`]"
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]beg_of_file()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]beg_of_line()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]cmp()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]column()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]from()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]from_line_column_offset()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]from_lnum_bol_offset()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]is_dummy()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_beg()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_beg_offset()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_column()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_column_offset()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]make_dummy()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]partial_cmp()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]with_column()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[`(FilePosLarge, FilePosLarge)`][WithErasedLines]"
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[`(FilePosLarge, FilePosLarge)`][WithErasedLines]with_erased_lines()."
+  },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/BOL_BITS." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/COLUMN_BITS." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/DUMMY." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/FilePosSmall#" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/FilePosSmall#0." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/LINE_BITS." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_BOL." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_COLUMN." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_LINE." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/PosTooLarge#" },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]"
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]Error#"
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FilePos]line_column_beg()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FilePos]offset()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FromOcamlRep]"
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FromOcamlRep]from_ocamlrep()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][ToOcamlRep]to_ocamlrep()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][`FromOcamlRepIn<'a>`]"
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
+  },
   {
-    "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc fmt/"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]beg_of_file()."
   },
   {
-    "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc macros/format!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]beg_of_line()."
   },
   {
-    "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc map/btree/collections/BTreeMap#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]bol_line_col()."
   },
   {
-    "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc string/String#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]bol_line_col_unchecked()."
   },
   {
-    "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc string/ToString#to_string()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]cmp()."
   },
-  { "key": "rust-analyzer cargo arena_trait . TrivialDrop#" },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core builtin/macros/assert!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]column()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core builtin/macros/derive!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]fmt()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core builtin/macros/test!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]from_line_column_offset()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core clone/Clone!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]from_lnum_bol_offset()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]is_dummy()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Eq!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ord!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_beg()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ord#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_beg_offset()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ord#cmp()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_column()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ordering#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_column_offset()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ordering#then()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]make_dummy()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/PartialEq!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]partial_cmp()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/PartialOrd!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]try_from()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/PartialOrd#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]with_column()."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/mask()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/mask_by()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/Pos#" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/Pos#0." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#FromReason#" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#end." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#file." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#start." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#end." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#file." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#start." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Tiny#" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Tiny#file." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Tiny#span." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosR#" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosString#" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/compute()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/do_fmt()." },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core convert/AsRef#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[PosImpl][FromOcamlRep]"
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core convert/AsRef#as_ref()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[PosImpl][FromOcamlRep]from_ocamlrep()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core convert/TryFrom#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[PosImpl][ToOcamlRep]to_ocamlrep()."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]NONE." },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core default/Default!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][EqModuloPos]"
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/Debug#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][EqModuloPos]eq_modulo_pos()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/Display#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][EqModuloPos]eq_modulo_pos_and_reason()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/Formatter#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][NoPosHash]hash()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/[Result]"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][WithErasedLines]"
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core iter/str/SplitN#Iterator#next()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][WithErasedLines]with_erased_lines()."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]absolute()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]btw()." },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/assert_eq!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]btw_nocheck()."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]cmp()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]default()." },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/fmt/Debug!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]end_offset()."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]eq()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]filename()." },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/hash/Hash!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]filename_rc()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/matches!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]first_char_of_line()."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]fmt()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from()." },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core macros/write!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from_line_cols_offset()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core marker/Copy!"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from_lnum_bol_offset()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/None#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from_raw_span()."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]hash()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]info_pos()." },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]info_pos_extended()."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]info_raw()." },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#as_deref()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]into_filename()."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]is_none()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]is_valid()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]last_char()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]line()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]merge()." },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#is_none()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]merge_without_checking_filename()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#ok_or_else()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]partial_cmp()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#unwrap()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]start_offset()."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]string()." },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#unwrap_or()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]to_raw_span()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Some#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]to_start_and_end_lnum_bol_offset()."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[`PosString<'_>`]" },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core result/Err#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[`PosString<'_>`]fmt()."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/map/" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/map/Map#" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/make_pos()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos()." },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core result/Ok#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_absolute()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core result/Result#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_merge()."
   },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core str/is_empty()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_string()."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/DUMMY." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/PosSpanRaw#" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/PosSpanRaw#end." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/PosSpanRaw#start." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw]" },
   {
-    "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core str/splitn()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw][WithErasedLines]"
   },
-  { "key": "rust-analyzer cargo eq_modulo_pos . EqModuloPos#" },
-  { "key": "rust-analyzer cargo no_pos_hash . NoPosHash#" },
-  { "key": "rust-analyzer cargo ocamlrep . Allocator#" },
-  { "key": "rust-analyzer cargo ocamlrep . Allocator#add()." },
-  { "key": "rust-analyzer cargo ocamlrep . Allocator#block_with_size()." },
-  { "key": "rust-analyzer cargo ocamlrep . Allocator#set_field()." },
-  { "key": "rust-analyzer cargo ocamlrep . FromOcamlRep#" },
-  { "key": "rust-analyzer cargo ocamlrep . FromOcamlRepIn#" },
-  { "key": "rust-analyzer cargo ocamlrep . ToOcamlRep#" },
-  { "key": "rust-analyzer cargo ocamlrep . block/BlockBuilder#build()." },
-  { "key": "rust-analyzer cargo ocamlrep . error/FromError#" },
-  { "key": "rust-analyzer cargo ocamlrep . from/" },
-  { "key": "rust-analyzer cargo ocamlrep . from/expect_tuple()." },
-  { "key": "rust-analyzer cargo ocamlrep . from/field()." },
-  { "key": "rust-analyzer cargo ocamlrep . value/Value#" },
-  { "key": "rust-analyzer cargo relative_path . (alloc)" },
-  { "key": "rust-analyzer cargo relative_path . (ctx)" },
-  { "key": "rust-analyzer cargo relative_path . (deserializer)" },
-  { "key": "rust-analyzer cargo relative_path . (f)" },
-  { "key": "rust-analyzer cargo relative_path . (formatter)" },
-  { "key": "rust-analyzer cargo relative_path . (other)" },
-  { "key": "rust-analyzer cargo relative_path . (path)" },
-  { "key": "rust-analyzer cargo relative_path . (prefix)" },
-  { "key": "rust-analyzer cargo relative_path . (prefix_raw)" },
-  { "key": "rust-analyzer cargo relative_path . (s)" },
-  { "key": "rust-analyzer cargo relative_path . (self)" },
-  { "key": "rust-analyzer cargo relative_path . (serializer)" },
-  { "key": "rust-analyzer cargo relative_path . (value)" },
-  { "key": "rust-analyzer cargo relative_path . Dummy#" },
-  { "key": "rust-analyzer cargo relative_path . Hhi#" },
-  { "key": "rust-analyzer cargo relative_path . Prefix#" },
-  { "key": "rust-analyzer cargo relative_path . Prefix#Display#fmt()." },
-  { "key": "rust-analyzer cargo relative_path . Prefix#TryFrom#[Error]" },
-  { "key": "rust-analyzer cargo relative_path . Prefix#TryFrom#try_from()." },
-  { "key": "rust-analyzer cargo relative_path . Prefix#is_hhi()." },
-  { "key": "rust-analyzer cargo relative_path . RelativePath#" },
-  { "key": "rust-analyzer cargo relative_path . RelativePath#Debug#fmt()." },
   {
-    "key": "rust-analyzer cargo relative_path . RelativePath#Deserialize#deserialize()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw][WithErasedLines]with_erased_lines()."
   },
-  { "key": "rust-analyzer cargo relative_path . RelativePath#Display#fmt()." },
-  { "key": "rust-analyzer cargo relative_path . RelativePath#EMPTY." },
   {
-    "key": "rust-analyzer cargo relative_path . RelativePath#FromOcamlRep#from_ocamlrep()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw]is_dummy()."
   },
-  { "key": "rust-analyzer cargo relative_path . RelativePath#Ord#cmp()." },
   {
-    "key": "rust-analyzer cargo relative_path . RelativePath#PartialOrd#partial_cmp()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw]make_dummy()."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/" },
   {
-    "key": "rust-analyzer cargo relative_path . RelativePath#Serialize#serialize()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/BEGINNING_OF_LINE_INCREMENT_BITS."
   },
   {
-    "key": "rust-analyzer cargo relative_path . RelativePath#ToOcamlRep#to_ocamlrep()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/BEGINNING_OF_LINE_INCREMENT_OFFSET."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/DUMMY." },
   {
-    "key": "rust-analyzer cargo relative_path . RelativePath#has_extension()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/LINE_NUMBER_INCREMENT_BITS."
   },
-  { "key": "rust-analyzer cargo relative_path . RelativePath#is_empty()." },
-  { "key": "rust-analyzer cargo relative_path . RelativePath#is_hhi()." },
-  { "key": "rust-analyzer cargo relative_path . RelativePath#make()." },
-  { "key": "rust-analyzer cargo relative_path . RelativePath#path()." },
-  { "key": "rust-analyzer cargo relative_path . RelativePath#path." },
-  { "key": "rust-analyzer cargo relative_path . RelativePath#path_str()." },
-  { "key": "rust-analyzer cargo relative_path . RelativePath#prefix()." },
-  { "key": "rust-analyzer cargo relative_path . RelativePath#prefix." },
-  { "key": "rust-analyzer cargo relative_path . RelativePath#to_absolute()." },
-  { "key": "rust-analyzer cargo relative_path . RelativePathCtx#" },
-  { "key": "rust-analyzer cargo relative_path . RelativePathCtx#dummy." },
-  { "key": "rust-analyzer cargo relative_path . RelativePathCtx#hhi." },
   {
-    "key": "rust-analyzer cargo relative_path . RelativePathCtx#prefix_path()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/LINE_NUMBER_INCREMENT_OFFSET."
   },
-  { "key": "rust-analyzer cargo relative_path . RelativePathCtx#root." },
-  { "key": "rust-analyzer cargo relative_path . RelativePathCtx#tmp." },
-  { "key": "rust-analyzer cargo relative_path . Root#" },
-  { "key": "rust-analyzer cargo relative_path . Tmp#" },
-  { "key": "rust-analyzer cargo relative_path . Visitor#" },
-  { "key": "rust-analyzer cargo relative_path . Visitor#Visitor#[Value]" },
-  { "key": "rust-analyzer cargo relative_path . Visitor#Visitor#expecting()." },
-  { "key": "rust-analyzer cargo relative_path . Visitor#Visitor#visit_str()." },
-  { "key": "rust-analyzer cargo relative_path . [Map]" },
-  { "key": "rust-analyzer cargo relative_path . map/" },
-  { "key": "rust-analyzer cargo relative_path . tests/" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MASK." },
   {
-    "key": "rust-analyzer cargo relative_path . tests/test_invalid_usize_prefix()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_BEGINNING_OF_LINE_INCREMENT."
   },
   {
-    "key": "rust-analyzer cargo relative_path . tests/test_valid_usize_prefix()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_LINE_NUMBER_INCREMENT."
   },
-  { "key": "rust-analyzer cargo serde-1.0.152 . de/" },
-  { "key": "rust-analyzer cargo serde-1.0.152 . de/Deserialize#" },
-  { "key": "rust-analyzer cargo serde-1.0.152 . de/Deserializer#" },
-  { "key": "rust-analyzer cargo serde-1.0.152 . de/Deserializer#[Error]" },
   {
-    "key": "rust-analyzer cargo serde-1.0.152 . de/Deserializer#deserialize_str()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_BEGINNING_OF_LINE."
   },
-  { "key": "rust-analyzer cargo serde-1.0.152 . de/Error#" },
-  { "key": "rust-analyzer cargo serde-1.0.152 . de/Error#invalid_value()." },
-  { "key": "rust-analyzer cargo serde-1.0.152 . de/Other#" },
-  { "key": "rust-analyzer cargo serde-1.0.152 . de/Unexpected#" },
-  { "key": "rust-analyzer cargo serde-1.0.152 . de/Visitor#" },
-  { "key": "rust-analyzer cargo serde-1.0.152 . ser/" },
-  { "key": "rust-analyzer cargo serde-1.0.152 . ser/Error#" },
-  { "key": "rust-analyzer cargo serde-1.0.152 . ser/Error#custom()." },
-  { "key": "rust-analyzer cargo serde-1.0.152 . ser/Serialize#" },
-  { "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#" },
-  { "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#[Error]" },
-  { "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#[Ok]" },
   {
-    "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#serialize_str()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_COLUMN_NUMBER."
   },
   {
-    "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std collections/"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_LINE_NUMBER."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_WIDTH." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/PosSpanTiny#" },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/PosSpanTiny#0." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/PosSpanTooLarge#" },
   {
-    "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std os_str/ffi/OsStr#Ord#cmp()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_BEGINNING_OF_LINE_BITS."
   },
   {
-    "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std os_str/ffi/OsStr#is_empty()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_BEGINNING_OF_LINE_OFFSET."
   },
   {
-    "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_COLUMN_NUMBER_BITS."
   },
   {
-    "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_COLUMN_NUMBER_OFFSET."
   },
   {
-    "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#as_os_str()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_LINE_NUMBER_BITS."
   },
   {
-    "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#display()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_LINE_NUMBER_OFFSET."
   },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/WIDTH_BITS." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/WIDTH_OFFSET." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanRaw]" },
   {
-    "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#extension()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanRaw]from()."
   },
   {
-    "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#join()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]"
   },
   {
-    "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#new()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]Error#"
   },
   {
-    "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#to_str()."
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][FromOcamlRep]"
   },
   {
-    "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/PathBuf#"
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][FromOcamlRep]from_ocamlrep()."
   },
   {
-    "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/PathBuf#From#from()."
-  }
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][ToOcamlRep]to_ocamlrep()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][`FromOcamlRepIn<'a>`]"
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]beginning_of_line_increment()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]cmp()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_beginning_of_line()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_column()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_line_number()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_offset()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]fmt()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]is_dummy()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]line_number_increment()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]make()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]make_dummy()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]partial_cmp()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_beginning_of_line()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_column()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_line_number()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_offset()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]to_raw_span()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]try_from()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]width()."
+  },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/mask()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/mask_by()." },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/" },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_round_trip_through_ocaml_value_large_tiny_span()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_dummy()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_large()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_multiline_span()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_negative_span()."
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_small()."
+  },
+  { "key": "rust-analyzer cargo rc_pos 0.0.0 with_erased_lines/" },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 with_erased_lines/WithErasedLines#"
+  },
+  {
+    "key": "rust-analyzer cargo rc_pos 0.0.0 with_erased_lines/WithErasedLines#with_erased_lines()."
+  },
+  { "key": "rust-analyzer cargo regex 1.11.1 bytes/" },
+  { "key": "rust-analyzer cargo regex 1.11.1 crate/" },
+  { "key": "rust-analyzer cargo regex 1.11.1 escape()." },
+  { "key": "rust-analyzer cargo regex 1.11.1 regex/bytes/Regex#" },
+  { "key": "rust-analyzer cargo regex 1.11.1 regex/bytes/impl#[Regex]new()." },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 Map#" },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#" },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Dummy#" },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Hhi#" },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Root#" },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Tmp#" },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 RelativePath#" },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 RelativePath#path." },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 RelativePath#prefix." },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#" },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#dummy." },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#hhi." },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#root." },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#tmp." },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 Visitor#" },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 crate/" },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]" },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]Error#" },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]fmt()." },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]is_hhi()." },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]try_from()." },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePathCtx]prefix_path()."
+  },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]" },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]EMPTY."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][FromOcamlRep]"
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][FromOcamlRep]from_ocamlrep()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][Serialize]serialize()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][ToOcamlRep]to_ocamlrep()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][`Deserialize<'de>`]"
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][`Deserialize<'de>`]deserialize()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]cmp()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]fmt()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]has_extension()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]is_empty()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]is_hhi()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]make()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]partial_cmp()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]path()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]path_str()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]prefix()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]to_absolute()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]Value#"
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]expecting()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]visit_str()."
+  },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 map/" },
+  { "key": "rust-analyzer cargo relative_path 0.0.0 tests/" },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 tests/test_invalid_usize_prefix()."
+  },
+  {
+    "key": "rust-analyzer cargo relative_path 0.0.0 tests/test_valid_usize_prefix()."
+  },
+  { "key": "rust-analyzer cargo serde 1.0.217 crate/" },
+  { "key": "rust-analyzer cargo serde 1.0.217 de/" },
+  { "key": "rust-analyzer cargo serde 1.0.217 de/Deserialize#" },
+  { "key": "rust-analyzer cargo serde 1.0.217 de/Deserializer#" },
+  { "key": "rust-analyzer cargo serde 1.0.217 de/Deserializer#Error#" },
+  {
+    "key": "rust-analyzer cargo serde 1.0.217 de/Deserializer#deserialize_str()."
+  },
+  { "key": "rust-analyzer cargo serde 1.0.217 de/Error#" },
+  { "key": "rust-analyzer cargo serde 1.0.217 de/Error#invalid_value()." },
+  { "key": "rust-analyzer cargo serde 1.0.217 de/Unexpected#" },
+  { "key": "rust-analyzer cargo serde 1.0.217 de/Unexpected#Other#" },
+  { "key": "rust-analyzer cargo serde 1.0.217 de/Visitor#" },
+  { "key": "rust-analyzer cargo serde 1.0.217 ser/" },
+  { "key": "rust-analyzer cargo serde 1.0.217 ser/Error#" },
+  { "key": "rust-analyzer cargo serde 1.0.217 ser/Serialize#" },
+  { "key": "rust-analyzer cargo serde 1.0.217 ser/Serializer#" },
+  { "key": "rust-analyzer cargo serde 1.0.217 ser/Serializer#Error#" },
+  { "key": "rust-analyzer cargo serde 1.0.217 ser/Serializer#Ok#" },
+  {
+    "key": "rust-analyzer cargo serde 1.0.217 ser/Serializer#serialize_str()."
+  },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 OLD_TOKEN." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 SIGNATURE_RE." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 SIGNING_REGEX." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 SIGNING_TOKEN." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 SIGN_OR_OLD_TOKEN." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#" },
+  {
+    "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#Invalid#"
+  },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#Ok#" },
+  {
+    "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#Unsigned#"
+  },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 TOKEN." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 TOKEN_REGEX." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 TokenNotFoundError#" },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 crate/" },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 hash()." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 is_signed()." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 make_signing_token()." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 sign_file()." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 sign_utf8_file()." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 test/" },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 test/INVALID." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 test/NO_TOKEN." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 test/SIGNED." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 test/UNSIGNED." },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 test/test_is_signed()." },
+  {
+    "key": "rust-analyzer cargo signed_source 0.0.0 test/test_sign_utf8_file()."
+  },
+  {
+    "key": "rust-analyzer cargo signed_source 0.0.0 test/test_signing_token()."
+  },
+  {
+    "key": "rust-analyzer cargo signed_source 0.0.0 test/test_verify_signature()."
+  },
+  { "key": "rust-analyzer cargo signed_source 0.0.0 verify_signature()." },
+  {
+    "key": "rust-analyzer cargo static_assertions 1.1.0 const_assert/const_assert_eq!"
+  },
+  { "key": "rust-analyzer cargo static_assertions 1.1.0 crate/" },
+  { "key": "signed_source.rs/local 0" },
+  { "key": "signed_source.rs/local 1" },
+  { "key": "signed_source.rs/local 10" },
+  { "key": "signed_source.rs/local 11" },
+  { "key": "signed_source.rs/local 12" },
+  { "key": "signed_source.rs/local 13" },
+  { "key": "signed_source.rs/local 14" },
+  { "key": "signed_source.rs/local 2" },
+  { "key": "signed_source.rs/local 3" },
+  { "key": "signed_source.rs/local 4" },
+  { "key": "signed_source.rs/local 5" },
+  { "key": "signed_source.rs/local 6" },
+  { "key": "signed_source.rs/local 7" },
+  { "key": "signed_source.rs/local 8" },
+  { "key": "signed_source.rs/local 9" }
 ]

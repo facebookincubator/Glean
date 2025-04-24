@@ -4,3159 +4,24 @@
     "key": {
       "defn": {
         "key": {
-          "symbol": { "key": "relative_path.rs/local 10" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 153,
-                "columnBegin": 18,
-                "lineEnd": 153,
-                "columnEnd": 18
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aS: Serializer\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 11" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 154,
-                "columnBegin": 13,
-                "lineEnd": 154,
-                "columnEnd": 20
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000alet path_str: &str\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 12" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 161,
-                "columnBegin": 6,
-                "lineEnd": 161,
-                "columnEnd": 8
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000a'de\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 13" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 162,
-                "columnBegin": 20,
-                "lineEnd": 162,
-                "columnEnd": 20
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aD: Deserializer\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 14" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 168,
-                "columnBegin": 14,
-                "lineEnd": 168,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000a'de\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 15" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 175,
-                "columnBegin": 26,
-                "lineEnd": 175,
-                "columnEnd": 26
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aE: Error\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 16" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 179,
-                "columnBegin": 25,
-                "lineEnd": 179,
-                "columnEnd": 29
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000alet mut split: SplitN<char>\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 17" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 180,
-                "columnBegin": 21,
-                "lineEnd": 180,
-                "columnEnd": 30
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000alet prefix_str: Option<&str>\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 18" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 181,
-                "columnBegin": 21,
-                "lineEnd": 181,
-                "columnEnd": 28
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000alet path_str: Option<&str>\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 19" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 183,
-                "columnBegin": 21,
-                "lineEnd": 183,
-                "columnEnd": 26
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000alet prefix: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 20" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 198,
-                "columnBegin": 21,
-                "lineEnd": 198,
-                "columnEnd": 24
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000alet path: Option<PathBuf>\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 21" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 199,
-                "columnBegin": 26,
-                "lineEnd": 199,
-                "columnEnd": 33
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000apath_str: &str\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 22" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 200,
-                "columnBegin": 26,
-                "lineEnd": 200,
-                "columnEnd": 33
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000apath_str: &str\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 23" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 220,
-                "columnBegin": 20,
-                "lineEnd": 220,
-                "columnEnd": 21
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000a'a\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 24" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 220,
-                "columnBegin": 24,
-                "lineEnd": 220,
-                "columnEnd": 24
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aA: Allocator\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 25" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 221,
-                "columnBegin": 17,
-                "lineEnd": 221,
-                "columnEnd": 21
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000alet mut block: BlockBuilder\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 26" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 230,
-                "columnBegin": 13,
-                "lineEnd": 230,
-                "columnEnd": 17
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000alet block: Block\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 27" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 231,
-                "columnBegin": 13,
-                "lineEnd": 231,
-                "columnEnd": 18
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000alet prefix: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 28" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 232,
-                "columnBegin": 13,
-                "lineEnd": 232,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000alet path: PathBuf\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 29" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 237,
-                "columnBegin": 14,
-                "lineEnd": 237,
-                "columnEnd": 14
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aT\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 32" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 271,
-                "columnBegin": 13,
-                "lineEnd": 271,
-                "columnEnd": 24
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000alet valid_prefix: usize\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "relative_path.rs/local 33" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 277,
-                "columnBegin": 13,
-                "lineEnd": 277,
-                "columnEnd": 26
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000alet invalid_prefix: usize\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (alloc)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 220,
-                "columnBegin": 58,
-                "lineEnd": 220,
-                "columnEnd": 62
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aalloc: &A\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (ctx)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 115,
-                "columnBegin": 31,
-                "lineEnd": 115,
-                "columnEnd": 33
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000actx: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . (deserializer)"
+            "key": "rust-analyzer cargo delta_log 0.0.0 init_delta_logger()."
           },
           "location": {
             "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 162,
-                "columnBegin": 23,
-                "lineEnd": 162,
-                "columnEnd": 34
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000adeserializer: D\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (f)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 52,
-                "columnBegin": 19,
-                "lineEnd": 52,
-                "columnEnd": 19
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000af: &mut Formatter\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (f)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 121,
-                "columnBegin": 19,
-                "lineEnd": 121,
-                "columnEnd": 19
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000af: &mut Formatter\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (f)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 127,
-                "columnBegin": 19,
-                "lineEnd": 127,
-                "columnEnd": 19
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000af: &mut Formatter\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . (formatter)"
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 171,
-                "columnBegin": 33,
-                "lineEnd": 171,
-                "columnEnd": 41
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aformatter: &mut Formatter\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (other)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 137,
-                "columnBegin": 19,
-                "lineEnd": 137,
-                "columnEnd": 23
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aother: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (other)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 145,
-                "columnBegin": 27,
-                "lineEnd": 145,
-                "columnEnd": 31
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aother: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (path)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 75,
-                "columnBegin": 33,
-                "lineEnd": 75,
-                "columnEnd": 36
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000apath: PathBuf\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (prefix)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 75,
-                "columnBegin": 17,
-                "lineEnd": 75,
-                "columnEnd": 22
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aprefix: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (prefix)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 253,
-                "columnBegin": 31,
-                "lineEnd": 253,
-                "columnEnd": 36
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aprefix: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . (prefix_raw)"
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 40,
-                "columnBegin": 17,
-                "lineEnd": 40,
-                "columnEnd": 26
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aprefix_raw: usize\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (s)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 95,
-                "columnBegin": 33,
-                "lineEnd": 95,
-                "columnEnd": 33
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000as: impl AsRef<Path>\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 32,
-                "columnBegin": 19,
-                "lineEnd": 32,
-                "columnEnd": 22
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 32,
-                "columnBegin": 19,
-                "lineEnd": 32,
-                "columnEnd": 22
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 32,
-                "columnBegin": 19,
-                "lineEnd": 32,
-                "columnEnd": 22
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 32,
-                "columnBegin": 19,
-                "lineEnd": 32,
-                "columnEnd": 22
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 32,
-                "columnBegin": 19,
-                "lineEnd": 32,
-                "columnEnd": 22
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 32,
-                "columnBegin": 19,
-                "lineEnd": 32,
-                "columnEnd": 22
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 52,
-                "columnBegin": 13,
-                "lineEnd": 52,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 52,
-                "columnBegin": 13,
-                "lineEnd": 52,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 52,
-                "columnBegin": 13,
-                "lineEnd": 52,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 52,
-                "columnBegin": 13,
-                "lineEnd": 52,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 52,
-                "columnBegin": 13,
-                "lineEnd": 52,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 52,
-                "columnBegin": 13,
-                "lineEnd": 52,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 91,
-                "columnBegin": 22,
-                "lineEnd": 91,
-                "columnEnd": 25
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 91,
-                "columnBegin": 22,
-                "lineEnd": 91,
-                "columnEnd": 25
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 91,
-                "columnBegin": 22,
-                "lineEnd": 91,
-                "columnEnd": 25
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 91,
-                "columnBegin": 22,
-                "lineEnd": 91,
-                "columnEnd": 25
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 91,
-                "columnBegin": 22,
-                "lineEnd": 91,
-                "columnEnd": 25
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 91,
-                "columnBegin": 22,
-                "lineEnd": 91,
-                "columnEnd": 25
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 95,
-                "columnBegin": 27,
-                "lineEnd": 95,
-                "columnEnd": 30
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 95,
-                "columnBegin": 27,
-                "lineEnd": 95,
-                "columnEnd": 30
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 95,
-                "columnBegin": 27,
-                "lineEnd": 95,
-                "columnEnd": 30
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 95,
-                "columnBegin": 27,
-                "lineEnd": 95,
-                "columnEnd": 30
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 95,
-                "columnBegin": 27,
-                "lineEnd": 95,
-                "columnEnd": 30
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 95,
-                "columnBegin": 27,
-                "lineEnd": 95,
-                "columnEnd": 30
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 99,
-                "columnBegin": 18,
-                "lineEnd": 99,
-                "columnEnd": 21
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 99,
-                "columnBegin": 18,
-                "lineEnd": 99,
-                "columnEnd": 21
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 99,
-                "columnBegin": 18,
-                "lineEnd": 99,
-                "columnEnd": 21
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 99,
-                "columnBegin": 18,
-                "lineEnd": 99,
-                "columnEnd": 21
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 99,
-                "columnBegin": 18,
-                "lineEnd": 99,
-                "columnEnd": 21
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 99,
-                "columnBegin": 18,
-                "lineEnd": 99,
-                "columnEnd": 21
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 103,
-                "columnBegin": 22,
-                "lineEnd": 103,
-                "columnEnd": 25
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 103,
-                "columnBegin": 22,
-                "lineEnd": 103,
-                "columnEnd": 25
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 103,
-                "columnBegin": 22,
-                "lineEnd": 103,
-                "columnEnd": 25
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 103,
-                "columnBegin": 22,
-                "lineEnd": 103,
-                "columnEnd": 25
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 103,
-                "columnBegin": 22,
-                "lineEnd": 103,
-                "columnEnd": 25
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 103,
-                "columnBegin": 22,
-                "lineEnd": 103,
-                "columnEnd": 25
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 107,
-                "columnBegin": 20,
-                "lineEnd": 107,
-                "columnEnd": 23
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 107,
-                "columnBegin": 20,
-                "lineEnd": 107,
-                "columnEnd": 23
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 107,
-                "columnBegin": 20,
-                "lineEnd": 107,
-                "columnEnd": 23
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 107,
-                "columnBegin": 20,
-                "lineEnd": 107,
-                "columnEnd": 23
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 107,
-                "columnBegin": 20,
-                "lineEnd": 107,
-                "columnEnd": 23
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 107,
-                "columnBegin": 20,
-                "lineEnd": 107,
-                "columnEnd": 23
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 111,
-                "columnBegin": 20,
-                "lineEnd": 111,
-                "columnEnd": 23
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 111,
-                "columnBegin": 20,
-                "lineEnd": 111,
-                "columnEnd": 23
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 111,
-                "columnBegin": 20,
-                "lineEnd": 111,
-                "columnEnd": 23
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 111,
-                "columnBegin": 20,
-                "lineEnd": 111,
-                "columnEnd": 23
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 111,
-                "columnBegin": 20,
-                "lineEnd": 111,
-                "columnEnd": 23
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 111,
-                "columnBegin": 20,
-                "lineEnd": 111,
-                "columnEnd": 23
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 115,
-                "columnBegin": 25,
-                "lineEnd": 115,
-                "columnEnd": 28
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 115,
-                "columnBegin": 25,
-                "lineEnd": 115,
-                "columnEnd": 28
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 115,
-                "columnBegin": 25,
-                "lineEnd": 115,
-                "columnEnd": 28
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 115,
-                "columnBegin": 25,
-                "lineEnd": 115,
-                "columnEnd": 28
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 115,
-                "columnBegin": 25,
-                "lineEnd": 115,
-                "columnEnd": 28
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 115,
-                "columnBegin": 25,
-                "lineEnd": 115,
-                "columnEnd": 28
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 121,
-                "columnBegin": 13,
-                "lineEnd": 121,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 121,
-                "columnBegin": 13,
-                "lineEnd": 121,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 121,
-                "columnBegin": 13,
-                "lineEnd": 121,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 121,
-                "columnBegin": 13,
-                "lineEnd": 121,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 121,
-                "columnBegin": 13,
-                "lineEnd": 121,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 121,
-                "columnBegin": 13,
-                "lineEnd": 121,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 127,
-                "columnBegin": 13,
-                "lineEnd": 127,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 127,
-                "columnBegin": 13,
-                "lineEnd": 127,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 127,
-                "columnBegin": 13,
-                "lineEnd": 127,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 127,
-                "columnBegin": 13,
-                "lineEnd": 127,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 127,
-                "columnBegin": 13,
-                "lineEnd": 127,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 127,
-                "columnBegin": 13,
-                "lineEnd": 127,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 137,
-                "columnBegin": 13,
-                "lineEnd": 137,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 137,
-                "columnBegin": 13,
-                "lineEnd": 137,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 137,
-                "columnBegin": 13,
-                "lineEnd": 137,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 137,
-                "columnBegin": 13,
-                "lineEnd": 137,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 137,
-                "columnBegin": 13,
-                "lineEnd": 137,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 137,
-                "columnBegin": 13,
-                "lineEnd": 137,
-                "columnEnd": 16
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 145,
-                "columnBegin": 21,
-                "lineEnd": 145,
+              "file": { "key": "delta_log.rs" },
+              "range": {
+                "lineBegin": 21,
+                "columnBegin": 8,
+                "lineEnd": 21,
                 "columnEnd": 24
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 145,
-                "columnBegin": 21,
-                "lineEnd": 145,
-                "columnEnd": 24
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 145,
-                "columnBegin": 21,
-                "lineEnd": 145,
-                "columnEnd": 24
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 145,
-                "columnBegin": 21,
-                "lineEnd": 145,
-                "columnEnd": 24
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 145,
-                "columnBegin": 21,
-                "lineEnd": 145,
-                "columnEnd": 24
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 145,
-                "columnBegin": 21,
-                "lineEnd": 145,
-                "columnEnd": 24
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 153,
-                "columnBegin": 41,
-                "lineEnd": 153,
-                "columnEnd": 44
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 153,
-                "columnBegin": 41,
-                "lineEnd": 153,
-                "columnEnd": 44
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 153,
-                "columnBegin": 41,
-                "lineEnd": 153,
-                "columnEnd": 44
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 153,
-                "columnBegin": 41,
-                "lineEnd": 153,
-                "columnEnd": 44
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 153,
-                "columnBegin": 41,
-                "lineEnd": 153,
-                "columnEnd": 44
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 153,
-                "columnBegin": 41,
-                "lineEnd": 153,
-                "columnEnd": 44
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 171,
-                "columnBegin": 27,
-                "lineEnd": 171,
-                "columnEnd": 30
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 171,
-                "columnBegin": 27,
-                "lineEnd": 171,
-                "columnEnd": 30
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 171,
-                "columnBegin": 27,
-                "lineEnd": 171,
-                "columnEnd": 30
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 171,
-                "columnBegin": 27,
-                "lineEnd": 171,
-                "columnEnd": 30
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 171,
-                "columnBegin": 27,
-                "lineEnd": 171,
-                "columnEnd": 30
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 171,
-                "columnBegin": 27,
-                "lineEnd": 171,
-                "columnEnd": 30
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 175,
-                "columnBegin": 29,
-                "lineEnd": 175,
-                "columnEnd": 32
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 175,
-                "columnBegin": 29,
-                "lineEnd": 175,
-                "columnEnd": 32
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 175,
-                "columnBegin": 29,
-                "lineEnd": 175,
-                "columnEnd": 32
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 175,
-                "columnBegin": 29,
-                "lineEnd": 175,
-                "columnEnd": 32
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 175,
-                "columnBegin": 29,
-                "lineEnd": 175,
-                "columnEnd": 32
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 175,
-                "columnBegin": 29,
-                "lineEnd": 175,
-                "columnEnd": 32
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 220,
-                "columnBegin": 52,
-                "lineEnd": 220,
-                "columnEnd": 55
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 220,
-                "columnBegin": 52,
-                "lineEnd": 220,
-                "columnEnd": 55
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 220,
-                "columnBegin": 52,
-                "lineEnd": 220,
-                "columnEnd": 55
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 220,
-                "columnBegin": 52,
-                "lineEnd": 220,
-                "columnEnd": 55
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 220,
-                "columnBegin": 52,
-                "lineEnd": 220,
-                "columnEnd": 55
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 220,
-                "columnBegin": 52,
-                "lineEnd": 220,
-                "columnEnd": 55
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 253,
-                "columnBegin": 25,
-                "lineEnd": 253,
-                "columnEnd": 28
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 253,
-                "columnBegin": 25,
-                "lineEnd": 253,
-                "columnEnd": 28
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePath\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 253,
-                "columnBegin": 25,
-                "lineEnd": 253,
-                "columnEnd": 28
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &RelativePathCtx\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 253,
-                "columnBegin": 25,
-                "lineEnd": 253,
-                "columnEnd": 28
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: &Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 253,
-                "columnBegin": 25,
-                "lineEnd": 253,
-                "columnEnd": 28
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Prefix\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 253,
-                "columnBegin": 25,
-                "lineEnd": 253,
-                "columnEnd": 28
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aself: Visitor\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . (serializer)"
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 153,
-                "columnBegin": 47,
-                "lineEnd": 153,
-                "columnEnd": 56
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000aserializer: S\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (value)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 175,
-                "columnBegin": 35,
-                "lineEnd": 175,
-                "columnEnd": 39
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000avalue: &str\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (value)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 175,
-                "columnBegin": 35,
-                "lineEnd": 175,
-                "columnEnd": 39
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000avalue: Value\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (value)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 229,
-                "columnBegin": 22,
-                "lineEnd": 229,
-                "columnEnd": 26
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000avalue: &str\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . (value)" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 229,
-                "columnBegin": 22,
-                "lineEnd": 229,
-                "columnEnd": 26
-              }
-            }
-          }
-        }
-      },
-      "docs": { "key": "```rust\u000avalue: Value\u000a```" }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . Dummy#" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 26,
-                "columnBegin": 5,
-                "lineEnd": 26,
-                "columnEnd": 9
               }
             }
           }
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::Prefix\u000a```\u000a\u000a```rust\u000aDummy = 2\u000a```"
+        "key": "Initialize a logger that shows the time since start and since the\u000aprevious log message, rather than absolute time."
       }
     }
   },
@@ -3164,14 +29,160 @@
     "key": {
       "defn": {
         "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . Hhi#" },
+          "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordName#" },
           "location": {
             "key": {
-              "file": { "key": "relative_path.rs" },
+              "file": { "key": "measure/measure.rs" },
               "range": {
-                "lineBegin": 25,
+                "lineBegin": 80,
+                "columnBegin": 12,
+                "lineEnd": 80,
+                "columnEnd": 21
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "A `RecordName` can be constructed from a single static string which does not\u000acontain the `(` character, or a pair of static strings where the first does\u000anot contain the `(` character. When constructed from a pair, e.g.,\u000a`RecordName::from((\"foo\", \"bar\"))`, the record name will be rendered as the\u000afirst string followed by the second, parenthesized, e.g., `\"foo (bar)\"`.\u000aThis is in order to support some existing patterns for constructing record\u000anames in our OCaml without requiring the caller to concatenate strings at\u000asample time."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": { "key": "rust-analyzer cargo measure 0.0.0 crate/" },
+          "location": {
+            "key": {
+              "file": { "key": "measure/measure.rs" },
+              "range": {
+                "lineBegin": 1,
+                "columnBegin": 1,
+                "lineEnd": 292,
+                "columnEnd": 1
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "A simple telemetry crate ported from src/utils/core/measure.ml.\u000a\u000aThe OCaml implementation will call into this one upon invocations of\u000a`Measure.push_global` and `Measure.pop_global`, unioning the Rust\u000ameasurements into the returned OCaml record.\u000a\u000aThe `measure` crate is primarily useful for debugging. It's particularly\u000auseful for gathering stats about something that happens a lot. Let's say you\u000ahave some code like this\u000a\u000a    let number_bunnies = count_bunnies();\u000a\u000aIf you want to debug how many bunnies are being counted, you could do\u000asomething like\u000a\u000a    let number_bunnies = count_bunnies();\u000a    eprintln!(\"Num bunnies: {number_bunnies}\");\u000a\u000abut what if this code is called 1000 times? Then you end up with log spew.\u000aUsing the `measure` crate helps with this. You can now do\u000a\u000a    let number_bunnies = count_bunnies();\u000a    measure::sample(\"num_bunnies\", number_bunnies);\u000a\u000aand then later you do\u000a\u000a    measure::print_stats();\u000a\u000awhich will print the number of samples, the total, the average, the\u000avariance, the max and the min.\u000a\u000aMeasurements are stored in a stateful way in a record. You can either use a\u000aglobal record or a local record.\u000a\u000aUsing a global record:\u000a\u000a    measure::sample(\"num_bunnies\", number_bunnies);\u000a    measure::print_stats();\u000a\u000aYou can push and pop the global record. This is useful if you want to reset\u000asome counters without throwing away that data.\u000a\u000a    measure::push_global();\u000a    // ...measure stuff\u000a    let record = measure::pop_global();\u000a    record.print_stats();\u000a\u000aUsing a local record:\u000a\u000a    let record = measure::Record::default();\u000a    record.sample(\"num_bunnies\", number_bunnies);\u000a    record.print_stats();\u000a\u000aA record does not store the individual measurements, just the aggregate\u000astats, which are updated online."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName][ToOcamlRep]to_ocamlrep()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "measure/measure.rs" },
+              "range": {
+                "lineBegin": 268,
+                "columnBegin": 8,
+                "lineEnd": 268,
+                "columnEnd": 18
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Allocate an OCaml representation of `self` using the given Allocator.\u000a\u000aImplementors of this method must not mutate or drop any values after\u000apassing them to `Allocator::add` (or invoking `to_ocamlrep` on them),\u000aelse `Allocator::memoized` may return incorrect results (this can\u000agenerally only be done using internal-mutability types like `RefCell`,\u000a`Mutex`, or atomics, or by using `unsafe`)."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo measure 0.0.0 impl#[Record][ToOcamlRep]to_ocamlrep()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "measure/measure.rs" },
+              "range": {
+                "lineBegin": 279,
+                "columnBegin": 8,
+                "lineEnd": 279,
+                "columnEnd": 18
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Allocate an OCaml representation of `self` using the given Allocator.\u000a\u000aImplementors of this method must not mutate or drop any values after\u000apassing them to `Allocator::add` (or invoking `to_ocamlrep` on them),\u000aelse `Allocator::memoized` may return incorrect results (this can\u000agenerally only be done using internal-mutability types like `RefCell`,\u000a`Mutex`, or atomics, or by using `unsafe`)."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo measure 0.0.0 pop_global()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "measure/measure.rs" },
+              "range": {
+                "lineBegin": 104,
+                "columnBegin": 8,
+                "lineEnd": 104,
+                "columnEnd": 17
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "# Panics\u000a\u000aPanics if invoked when the global record stack is empty."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": { "key": "rust-analyzer cargo measure 0.0.0 sample()." },
+          "location": {
+            "key": {
+              "file": { "key": "measure/measure.rs" },
+              "range": {
+                "lineBegin": 125,
+                "columnBegin": 8,
+                "lineEnd": 125,
+                "columnEnd": 13
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "# Panics\u000a\u000aPanics if invoked when the global record stack is empty (i.e.,\u000a`measure::pop_global` was called without a corresponding\u000a`measure::push_global`)."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#bol."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "pos/file_pos_large.rs" },
+              "range": {
+                "lineBegin": 23,
                 "columnBegin": 5,
-                "lineEnd": 25,
+                "lineEnd": 23,
                 "columnEnd": 7
               }
             }
@@ -3179,30 +190,7 @@
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::Prefix\u000a```\u000a\u000a```rust\u000aHhi = 1\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . Prefix#" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 23,
-                "columnBegin": 10,
-                "lineEnd": 23,
-                "columnEnd": 15
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000apub enum Prefix\u000a```"
+        "key": "character offset (from the beginning of file) of the beginning of line of this position.\u000aThe column number is therefore offset - bol\u000aStarts at 0"
       }
     }
   },
@@ -3211,15 +199,38 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . Prefix#Display#fmt()."
+            "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#lnum."
           },
           "location": {
             "key": {
-              "file": { "key": "relative_path.rs" },
+              "file": { "key": "pos/file_pos_large.rs" },
               "range": {
-                "lineBegin": 52,
-                "columnBegin": 8,
-                "lineEnd": 52,
+                "lineBegin": 19,
+                "columnBegin": 5,
+                "lineEnd": 19,
+                "columnEnd": 8
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "line number. Starts at 1." }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#offset."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "pos/file_pos_large.rs" },
+              "range": {
+                "lineBegin": 25,
+                "columnBegin": 5,
+                "lineEnd": 25,
                 "columnEnd": 10
               }
             }
@@ -3227,7 +238,7 @@
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::Prefix\u000a```\u000a\u000a```rust\u000afn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result\u000a```\u000a\u000a---\u000a\u000aFormats the value using the given formatter.\u000a\u000a# Examples\u000a\u000a```\u000ause std::fmt;\u000a\u000astruct Position {\u000a    longitude: f32,\u000a    latitude: f32,\u000a}\u000a\u000aimpl fmt::Display for Position {\u000a    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\u000a        write!(f, \"({}, {})\", self.longitude, self.latitude)\u000a    }\u000a}\u000a\u000aassert_eq!(\"(1.987, 2.983)\",\u000a           format!(\"{}\", Position { longitude: 1.987, latitude: 2.983, }));\u000a```"
+        "key": "character offset from the beginning of the file. Starts at 0."
       }
     }
   },
@@ -3236,215 +247,15 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . Prefix#TryFrom#[Error]"
+            "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FromOcamlRep]from_ocamlrep()."
           },
           "location": {
             "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 38,
-                "columnBegin": 10,
-                "lineEnd": 38,
-                "columnEnd": 14
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000atype Error = String\u000a```\u000a\u000a---\u000a\u000aThe type returned in the event of a conversion error."
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . Prefix#TryFrom#try_from()."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 40,
-                "columnBegin": 8,
-                "lineEnd": 40,
-                "columnEnd": 15
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::Prefix\u000a```\u000a\u000a```rust\u000afn try_from(prefix_raw: usize) -> Result<Self, String>\u000a```\u000a\u000a---\u000a\u000aPerforms the conversion."
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . Prefix#is_hhi()."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 32,
-                "columnBegin": 12,
-                "lineEnd": 32,
-                "columnEnd": 17
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::Prefix\u000a```\u000a\u000a```rust\u000apub fn is_hhi(self) -> bool\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#"
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 66,
-                "columnBegin": 12,
-                "lineEnd": 66,
-                "columnEnd": 23
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000apub struct RelativePath\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#Debug#fmt()."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 127,
-                "columnBegin": 8,
-                "lineEnd": 127,
-                "columnEnd": 10
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result\u000a```\u000a\u000a---\u000a\u000aFormats the value using the given formatter.\u000a\u000a# Examples\u000a\u000a```\u000ause std::fmt;\u000a\u000astruct Position {\u000a    longitude: f32,\u000a    latitude: f32,\u000a}\u000a\u000aimpl fmt::Debug for Position {\u000a    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\u000a        f.debug_tuple(\"\")\u000a         .field(&self.longitude)\u000a         .field(&self.latitude)\u000a         .finish()\u000a    }\u000a}\u000a\u000alet position = Position { longitude: 1.987, latitude: 2.983 };\u000aassert_eq!(format!(\"{position:?}\"), \"(1.987, 2.983)\");\u000a\u000aassert_eq!(format!(\"{position:#?}\"), \"(\u000a    1.987,\u000a    2.983,\u000a)\");\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#Deserialize#deserialize()."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
+              "file": { "key": "pos/file_pos_large.rs" },
               "range": {
                 "lineBegin": 162,
                 "columnBegin": 8,
                 "lineEnd": 162,
-                "columnEnd": 18
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn deserialize<D>(deserializer: D) -> Result<Self, D::Error>\u000awhere\u000a    D: serde::Deserializer<'de>,\u000a```\u000a\u000a---\u000a\u000aDeserialize this value from the given Serde deserializer.\u000a\u000aSee the [Implementing `Deserialize`](https://serde.rs/impl-deserialize.html) section of the\u000amanual for more information about how to implement this method."
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#Display#fmt()."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 121,
-                "columnBegin": 8,
-                "lineEnd": 121,
-                "columnEnd": 10
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result\u000a```\u000a\u000a---\u000a\u000aFormats the value using the given formatter.\u000a\u000a# Examples\u000a\u000a```\u000ause std::fmt;\u000a\u000astruct Position {\u000a    longitude: f32,\u000a    latitude: f32,\u000a}\u000a\u000aimpl fmt::Display for Position {\u000a    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {\u000a        write!(f, \"({}, {})\", self.longitude, self.latitude)\u000a    }\u000a}\u000a\u000aassert_eq!(\"(1.987, 2.983)\",\u000a           format!(\"{}\", Position { longitude: 1.987, latitude: 2.983, }));\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#EMPTY."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 86,
-                "columnBegin": 15,
-                "lineEnd": 86,
-                "columnEnd": 19
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000apub const EMPTY: Self = Self {\u000a        prefix: Prefix::Dummy,\u000a        path: None,\u000a    }\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#FromOcamlRep#from_ocamlrep()."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 229,
-                "columnBegin": 8,
-                "lineEnd": 229,
                 "columnEnd": 20
               }
             }
@@ -3452,7 +263,7 @@
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn from_ocamlrep(value: ocamlrep::Value<'_>) -> Result<Self, ocamlrep::FromError>\u000a```\u000a\u000a---\u000a\u000aConvert the given ocamlrep Value to a value of type `Self`, if possible."
+        "key": "Convert the given ocamlrep Value to a value of type `Self`, if possible."
       }
     }
   },
@@ -3461,40 +272,15 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#Ord#cmp()."
+            "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][ToOcamlRep]to_ocamlrep()."
           },
           "location": {
             "key": {
-              "file": { "key": "relative_path.rs" },
+              "file": { "key": "pos/file_pos_large.rs" },
               "range": {
-                "lineBegin": 137,
+                "lineBegin": 152,
                 "columnBegin": 8,
-                "lineEnd": 137,
-                "columnEnd": 10
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn cmp(&self, other: &Self) -> std::cmp::Ordering\u000a```\u000a\u000a---\u000a\u000aThis method returns an [`Ordering`](`Ordering`) between `self` and `other`.\u000a\u000aBy convention, `self.cmp(&other)` returns the ordering matching the expression\u000a`self <operator> other` if true.\u000a\u000a# Examples\u000a\u000a```\u000ause std::cmp::Ordering;\u000a\u000aassert_eq!(5.cmp(&10), Ordering::Less);\u000aassert_eq!(10.cmp(&5), Ordering::Greater);\u000aassert_eq!(5.cmp(&5), Ordering::Equal);\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#PartialOrd#partial_cmp()."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 145,
-                "columnBegin": 8,
-                "lineEnd": 145,
+                "lineEnd": 152,
                 "columnEnd": 18
               }
             }
@@ -3502,7 +288,7 @@
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering>\u000a```\u000a\u000a---\u000a\u000aThis method returns an ordering between `self` and `other` values if one exists.\u000a\u000a# Examples\u000a\u000a```\u000ause std::cmp::Ordering;\u000a\u000alet result = 1.0.partial_cmp(&2.0);\u000aassert_eq!(result, Some(Ordering::Less));\u000a\u000alet result = 1.0.partial_cmp(&1.0);\u000aassert_eq!(result, Some(Ordering::Equal));\u000a\u000alet result = 2.0.partial_cmp(&1.0);\u000aassert_eq!(result, Some(Ordering::Greater));\u000a```\u000a\u000aWhen comparison is impossible:\u000a\u000a```\u000alet result = f64::NAN.partial_cmp(&1.0);\u000aassert_eq!(result, None);\u000a```"
+        "key": "Allocate an OCaml representation of `self` using the given Allocator.\u000a\u000aImplementors of this method must not mutate or drop any values after\u000apassing them to `Allocator::add` (or invoking `to_ocamlrep` on them),\u000aelse `Allocator::memoized` may return incorrect results (this can\u000agenerally only be done using internal-mutability types like `RefCell`,\u000a`Mutex`, or atomics, or by using `unsafe`)."
       }
     }
   },
@@ -3511,23 +297,23 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#Serialize#serialize()."
+            "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
           },
           "location": {
             "key": {
-              "file": { "key": "relative_path.rs" },
+              "file": { "key": "pos/file_pos_large.rs" },
               "range": {
-                "lineBegin": 153,
+                "lineBegin": 176,
                 "columnBegin": 8,
-                "lineEnd": 153,
-                "columnEnd": 16
+                "lineEnd": 176,
+                "columnEnd": 23
               }
             }
           }
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>\u000awhere\u000a    S: serde::Serializer,\u000a```\u000a\u000a---\u000a\u000aSerialize this value into the given Serde serializer.\u000a\u000aSee the [Implementing `Serialize`](https://serde.rs/impl-serialize.html) section of the manual for more\u000ainformation about how to implement this method.\u000a\u000a```edition2018\u000ause serde::ser::{Serialize, SerializeStruct, Serializer};\u000a\u000astruct Person {\u000a    name: String,\u000a    age: u8,\u000a    phones: Vec<String>,\u000a}\u000a\u000a// This is what #[derive(Serialize)] would generate.\u000aimpl Serialize for Person {\u000a    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>\u000a    where\u000a        S: Serializer,\u000a    {\u000a        let mut s = serializer.serialize_struct(\"Person\", 3)?;\u000a        s.serialize_field(\"name\", &self.name)?;\u000a        s.serialize_field(\"age\", &self.age)?;\u000a        s.serialize_field(\"phones\", &self.phones)?;\u000a        s.end()\u000a    }\u000a}\u000a```"
+        "key": "Convert the given ocamlrep Value to a value of type `Self`, allocated in\u000athe given arena."
       }
     }
   },
@@ -3536,15 +322,40 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#ToOcamlRep#to_ocamlrep()."
+            "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FromOcamlRep]from_ocamlrep()."
           },
           "location": {
             "key": {
-              "file": { "key": "relative_path.rs" },
+              "file": { "key": "pos/file_pos_small.rs" },
               "range": {
-                "lineBegin": 220,
+                "lineBegin": 219,
                 "columnBegin": 8,
-                "lineEnd": 220,
+                "lineEnd": 219,
+                "columnEnd": 20
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Convert the given ocamlrep Value to a value of type `Self`, if possible."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][ToOcamlRep]to_ocamlrep()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "pos/file_pos_small.rs" },
+              "range": {
+                "lineBegin": 213,
+                "columnBegin": 8,
+                "lineEnd": 213,
                 "columnEnd": 18
               }
             }
@@ -3552,7 +363,7 @@
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000afn to_ocamlrep<'a, A>(&'a self, alloc: &'a A) -> ocamlrep::Value<'a>\u000awhere\u000a    A: ocamlrep::Allocator,\u000a```\u000a\u000a---\u000a\u000aAllocate an OCaml representation of `self` using the given Allocator.\u000a\u000aImplementors of this method must not mutate or drop any values after\u000apassing them to `Allocator::add` (or invoking `to_ocamlrep` on them),\u000aelse `Allocator::memoized` may return incorrect results (this can\u000agenerally only be done using internal-mutability types like `RefCell`,\u000a`Mutex`, or atomics, or by using `unsafe`)."
+        "key": "Allocate an OCaml representation of `self` using the given Allocator.\u000a\u000aImplementors of this method must not mutate or drop any values after\u000apassing them to `Allocator::add` (or invoking `to_ocamlrep` on them),\u000aelse `Allocator::memoized` may return incorrect results (this can\u000agenerally only be done using internal-mutability types like `RefCell`,\u000a`Mutex`, or atomics, or by using `unsafe`)."
       }
     }
   },
@@ -3561,23 +372,23 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#has_extension()."
+            "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
           },
           "location": {
             "key": {
-              "file": { "key": "relative_path.rs" },
+              "file": { "key": "pos/file_pos_small.rs" },
               "range": {
-                "lineBegin": 95,
-                "columnBegin": 12,
-                "lineEnd": 95,
-                "columnEnd": 24
+                "lineBegin": 225,
+                "columnBegin": 8,
+                "lineEnd": 225,
+                "columnEnd": 23
               }
             }
           }
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn has_extension(&self, s: impl AsRef<Path>) -> bool\u000a```"
+        "key": "Convert the given ocamlrep Value to a value of type `Self`, allocated in\u000athe given arena."
       }
     }
   },
@@ -3586,15 +397,138 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#is_empty()."
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Tiny#file."
           },
           "location": {
             "key": {
-              "file": { "key": "relative_path.rs" },
+              "file": { "key": "pos/pos_impl.rs" },
               "range": {
-                "lineBegin": 91,
+                "lineBegin": 41,
+                "columnBegin": 9,
+                "lineEnd": 41,
+                "columnEnd": 12
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Representation invariant: `RelativePath::EMPTY` is always encoded as\u000a`None`. This allows us to construct `Pos` in `const` contexts."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosString#"
+          },
+          "location": {
+            "key": {
+              "file": { "key": "pos/pos_impl.rs" },
+              "range": {
+                "lineBegin": 593,
                 "columnBegin": 12,
-                "lineEnd": 91,
+                "lineEnd": 593,
+                "columnEnd": 20
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "This struct has an impl of Display which produces the same format as\u000a`Pos.string` in OCaml."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[PosImpl][FromOcamlRep]from_ocamlrep()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "pos/pos_impl.rs" },
+              "range": {
+                "lineBegin": 535,
+                "columnBegin": 8,
+                "lineEnd": 535,
+                "columnEnd": 20
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Convert the given ocamlrep Value to a value of type `Self`, if possible."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[PosImpl][ToOcamlRep]to_ocamlrep()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "pos/pos_impl.rs" },
+              "range": {
+                "lineBegin": 502,
+                "columnBegin": 8,
+                "lineEnd": 502,
+                "columnEnd": 18
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Allocate an OCaml representation of `self` using the given Allocator.\u000a\u000aImplementors of this method must not mutate or drop any values after\u000apassing them to `Allocator::add` (or invoking `to_ocamlrep` on them),\u000aelse `Allocator::memoized` may return incorrect results (this can\u000agenerally only be done using internal-mutability types like `RefCell`,\u000a`Mutex`, or atomics, or by using `unsafe`)."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from_line_cols_offset()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "pos/pos_impl.rs" },
+              "range": {
+                "lineBegin": 223,
+                "columnBegin": 12,
+                "lineEnd": 223,
+                "columnEnd": 32
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "For single-line spans only." }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]info_pos()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "pos/pos_impl.rs" },
+              "range": {
+                "lineBegin": 144,
+                "columnBegin": 12,
+                "lineEnd": 144,
                 "columnEnd": 19
               }
             }
@@ -3602,7 +536,7 @@
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn is_empty(&self) -> bool\u000a```"
+        "key": "Returns a closed interval that's incorrect for multi-line spans."
       }
     }
   },
@@ -3611,15 +545,65 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#is_hhi()."
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]info_pos_extended()."
           },
           "location": {
             "key": {
-              "file": { "key": "relative_path.rs" },
+              "file": { "key": "pos/pos_impl.rs" },
               "range": {
-                "lineBegin": 111,
+                "lineBegin": 171,
                 "columnBegin": 12,
-                "lineEnd": 111,
+                "lineEnd": 171,
+                "columnEnd": 28
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Returns (start_line, end_line, start_col, end_col) for multi-line spans."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]merge_without_checking_filename()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "pos/pos_impl.rs" },
+              "range": {
+                "lineBegin": 302,
+                "columnBegin": 12,
+                "lineEnd": 302,
+                "columnEnd": 42
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Return the smallest position containing both given positions (if they\u000aare both in the same file). The returned position will have the\u000afilename of the first Pos argument.\u000a\u000aFor merging positions that may not occur within the same file, use\u000a`Pos::merge`."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]string()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "pos/pos_impl.rs" },
+              "range": {
+                "lineBegin": 582,
+                "columnBegin": 12,
+                "lineEnd": 582,
                 "columnEnd": 17
               }
             }
@@ -3627,7 +611,7 @@
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn is_hhi(&self) -> bool\u000a```"
+        "key": "Returns a struct implementing Display which produces the same format as\u000a`Pos.string` in OCaml."
       }
     }
   },
@@ -3636,23 +620,23 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#make()."
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MASK."
           },
           "location": {
             "key": {
-              "file": { "key": "relative_path.rs" },
+              "file": { "key": "pos/pos_span_tiny.rs" },
               "range": {
-                "lineBegin": 75,
-                "columnBegin": 12,
-                "lineEnd": 75,
-                "columnEnd": 15
+                "lineBegin": 85,
+                "columnBegin": 7,
+                "lineEnd": 85,
+                "columnEnd": 10
               }
             }
           }
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn make(prefix: Prefix, path: PathBuf) -> Self\u000a```"
+        "key": "We only have 63 bits to work with, since OCaml reserves one bit for the\u000ainteger tag. On the OCaml side, the integer tag is the low bit, but when\u000aconverting ints from OCaml to Rust, we shift them right one bit, making the\u000aspare bit the high bit. Since OCaml integers are signed, when we convert a\u000aPosSpanTiny value from OCaml, the high bit is filled with a sign bit via the\u000aarithmetic shift in `ocamlrep::ocaml_int_to_isize`. Since this high bit\u000aisn't meaningful, we want to mask it off (to prevent construction of\u000aequivalent values with differing high bits)."
       }
     }
   },
@@ -3661,23 +645,23 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#path()."
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/PosSpanTiny#"
           },
           "location": {
             "key": {
-              "file": { "key": "relative_path.rs" },
+              "file": { "key": "pos/pos_span_tiny.rs" },
               "range": {
-                "lineBegin": 99,
+                "lineBegin": 29,
                 "columnBegin": 12,
-                "lineEnd": 99,
-                "columnEnd": 15
+                "lineEnd": 29,
+                "columnEnd": 22
               }
             }
           }
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn path(&self) -> &Path\u000a```"
+        "key": "A compressed representation of a position span, i.e. a start and an end position."
       }
     }
   },
@@ -3686,7 +670,107 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#path."
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_BEGINNING_OF_LINE_BITS."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "pos/pos_span_tiny.rs" },
+              "range": {
+                "lineBegin": 36,
+                "columnBegin": 7,
+                "lineEnd": 36,
+                "columnEnd": 34
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "These numbers were obtained by gathering statistics on the positions in\u000athe decl heap for a large code base run as of December 2020. They should\u000aallow us to encode about 99% of positions."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][FromOcamlRep]from_ocamlrep()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "pos/pos_span_tiny.rs" },
+              "range": {
+                "lineBegin": 271,
+                "columnBegin": 8,
+                "lineEnd": 271,
+                "columnEnd": 20
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Convert the given ocamlrep Value to a value of type `Self`, if possible."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][ToOcamlRep]to_ocamlrep()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "pos/pos_span_tiny.rs" },
+              "range": {
+                "lineBegin": 265,
+                "columnBegin": 8,
+                "lineEnd": 265,
+                "columnEnd": 18
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Allocate an OCaml representation of `self` using the given Allocator.\u000a\u000aImplementors of this method must not mutate or drop any values after\u000apassing them to `Allocator::add` (or invoking `to_ocamlrep` on them),\u000aelse `Allocator::memoized` may return incorrect results (this can\u000agenerally only be done using internal-mutability types like `RefCell`,\u000a`Mutex`, or atomics, or by using `unsafe`)."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "pos/pos_span_tiny.rs" },
+              "range": {
+                "lineBegin": 277,
+                "columnBegin": 8,
+                "lineEnd": 277,
+                "columnEnd": 23
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Convert the given ocamlrep Value to a value of type `Self`, allocated in\u000athe given arena."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo relative_path 0.0.0 RelativePath#path."
           },
           "location": {
             "key": {
@@ -3702,7 +786,7 @@
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apath: Option<PathBuf>\u000a```\u000a\u000a---\u000a\u000aRepresentation invariant: the empty path is always encoded as `None`.\u000aThis allows us to construct `RelativePath` in `const` contexts\u000a(because `Path::new` is not a `const fn`)."
+        "key": "Representation invariant: the empty path is always encoded as `None`.\u000aThis allows us to construct `RelativePath` in `const` contexts\u000a(because `Path::new` is not a `const fn`)."
       }
     }
   },
@@ -3711,24 +795,145 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#path_str()."
+            "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][FromOcamlRep]from_ocamlrep()."
           },
           "location": {
             "key": {
               "file": { "key": "relative_path.rs" },
               "range": {
-                "lineBegin": 103,
+                "lineBegin": 231,
+                "columnBegin": 8,
+                "lineEnd": 231,
+                "columnEnd": 20
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Convert the given ocamlrep Value to a value of type `Self`, if possible."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][Serialize]serialize()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 155,
+                "columnBegin": 8,
+                "lineEnd": 155,
+                "columnEnd": 16
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Serialize this value into the given Serde serializer.\u000a\u000aSee the [Implementing `Serialize`] section of the manual for more\u000ainformation about how to implement this method.\u000a\u000a```edition2021\u000ause serde::ser::{Serialize, SerializeStruct, Serializer};\u000a\u000astruct Person {\u000a    name: String,\u000a    age: u8,\u000a    phones: Vec<String>,\u000a}\u000a\u000a// This is what #[derive(Serialize)] would generate.\u000aimpl Serialize for Person {\u000a    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>\u000a    where\u000a        S: Serializer,\u000a    {\u000a        let mut s = serializer.serialize_struct(\"Person\", 3)?;\u000a        s.serialize_field(\"name\", &self.name)?;\u000a        s.serialize_field(\"age\", &self.age)?;\u000a        s.serialize_field(\"phones\", &self.phones)?;\u000a        s.end()\u000a    }\u000a}\u000a```\u000a\u000a[Implementing `Serialize`]: https://serde.rs/impl-serialize.html"
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][ToOcamlRep]to_ocamlrep()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 222,
+                "columnBegin": 8,
+                "lineEnd": 222,
+                "columnEnd": 18
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Allocate an OCaml representation of `self` using the given Allocator.\u000a\u000aImplementors of this method must not mutate or drop any values after\u000apassing them to `Allocator::add` (or invoking `to_ocamlrep` on them),\u000aelse `Allocator::memoized` may return incorrect results (this can\u000agenerally only be done using internal-mutability types like `RefCell`,\u000a`Mutex`, or atomics, or by using `unsafe`)."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][`Deserialize<'de>`]deserialize()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 164,
+                "columnBegin": 8,
+                "lineEnd": 164,
+                "columnEnd": 18
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Deserialize this value from the given Serde deserializer.\u000a\u000aSee the [Implementing `Deserialize`][impl-deserialize] section of the\u000amanual for more information about how to implement this method.\u000a\u000a[impl-deserialize]: https://serde.rs/impl-deserialize.html"
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]path()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 100,
                 "columnBegin": 12,
-                "lineEnd": 103,
+                "lineEnd": 100,
+                "columnEnd": 15
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "The relative path compared to the prefix" }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]path_str()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "relative_path.rs" },
+              "range": {
+                "lineBegin": 105,
+                "columnBegin": 12,
+                "lineEnd": 105,
                 "columnEnd": 19
               }
             }
           }
         }
       },
-      "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn path_str(&self) -> &str\u000a```"
-      }
+      "docs": { "key": "The relative path compared to the prefix as a string" }
     }
   },
   {
@@ -3736,343 +941,22 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#prefix()."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 107,
-                "columnBegin": 12,
-                "lineEnd": 107,
-                "columnEnd": 17
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn prefix(&self) -> Prefix\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#prefix."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 67,
-                "columnBegin": 5,
-                "lineEnd": 67,
-                "columnEnd": 10
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000aprefix: Prefix\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePath#to_absolute()."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 115,
-                "columnBegin": 12,
-                "lineEnd": 115,
-                "columnEnd": 22
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::RelativePath\u000a```\u000a\u000a```rust\u000apub fn to_absolute(&self, ctx: &RelativePathCtx) -> PathBuf\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePathCtx#"
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 245,
-                "columnBegin": 12,
-                "lineEnd": 245,
-                "columnEnd": 26
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000apub struct RelativePathCtx\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePathCtx#dummy."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 249,
-                "columnBegin": 9,
-                "lineEnd": 249,
-                "columnEnd": 13
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::RelativePathCtx\u000a```\u000a\u000a```rust\u000apub dummy: PathBuf\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePathCtx#hhi."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 247,
-                "columnBegin": 9,
-                "lineEnd": 247,
-                "columnEnd": 11
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::RelativePathCtx\u000a```\u000a\u000a```rust\u000apub hhi: PathBuf\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePathCtx#prefix_path()."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 253,
-                "columnBegin": 12,
-                "lineEnd": 253,
-                "columnEnd": 22
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::RelativePathCtx\u000a```\u000a\u000a```rust\u000apub fn prefix_path(&self, prefix: Prefix) -> &Path\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePathCtx#root."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 246,
-                "columnBegin": 9,
-                "lineEnd": 246,
-                "columnEnd": 12
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::RelativePathCtx\u000a```\u000a\u000a```rust\u000apub root: PathBuf\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . RelativePathCtx#tmp."
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 248,
-                "columnBegin": 9,
-                "lineEnd": 248,
-                "columnEnd": 11
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::RelativePathCtx\u000a```\u000a\u000a```rust\u000apub tmp: PathBuf\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . Root#" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 24,
-                "columnBegin": 5,
-                "lineEnd": 24,
-                "columnEnd": 8
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::Prefix\u000a```\u000a\u000a```rust\u000aRoot = 0\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . Tmp#" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 27,
-                "columnBegin": 5,
-                "lineEnd": 27,
-                "columnEnd": 7
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path::Prefix\u000a```\u000a\u000a```rust\u000aTmp = 3\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . Visitor#" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 166,
-                "columnBegin": 16,
-                "lineEnd": 166,
-                "columnEnd": 22
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000astruct Visitor\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . Visitor#Visitor#[Value]"
-          },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 169,
-                "columnBegin": 18,
-                "lineEnd": 169,
-                "columnEnd": 22
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000apub(super) type Value = RelativePath\u000a```\u000a\u000a---\u000a\u000aThe value produced by this visitor."
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": {
-            "key": "rust-analyzer cargo relative_path . Visitor#Visitor#expecting()."
+            "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]Value#"
           },
           "location": {
             "key": {
               "file": { "key": "relative_path.rs" },
               "range": {
                 "lineBegin": 171,
-                "columnBegin": 16,
+                "columnBegin": 18,
                 "lineEnd": 171,
-                "columnEnd": 24
+                "columnEnd": 22
               }
             }
           }
         }
       },
-      "docs": {
-        "key": "```rust\u000arelative_path::Visitor\u000a```\u000a\u000a```rust\u000afn expecting(&self, formatter: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result\u000a```\u000a\u000a---\u000a\u000aFormat a message stating what data this Visitor expects to receive.\u000a\u000aThis is used in error messages. The message should complete the sentence\u000a\"This Visitor expects to receive ...\", for example the message could be\u000a\"an integer between 0 and 64\". The message should not be capitalized and\u000ashould not end with a period.\u000a\u000a```edition2018\u000a# use std::fmt;\u000a#\u000a# struct S {\u000a#     max: usize,\u000a# }\u000a#\u000a# impl<'de> serde::de::Visitor<'de> for S {\u000a#     type Value = ();\u000a#\u000afn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {\u000a    write!(formatter, \"an integer between 0 and {}\", self.max)\u000a}\u000a# }\u000a```"
-      }
+      "docs": { "key": "The value produced by this visitor." }
     }
   },
   {
@@ -4080,15 +964,15 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . Visitor#Visitor#visit_str()."
+            "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]expecting()."
           },
           "location": {
             "key": {
               "file": { "key": "relative_path.rs" },
               "range": {
-                "lineBegin": 175,
+                "lineBegin": 173,
                 "columnBegin": 16,
-                "lineEnd": 175,
+                "lineEnd": 173,
                 "columnEnd": 24
               }
             }
@@ -4096,76 +980,7 @@
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::Visitor\u000a```\u000a\u000a```rust\u000afn visit_str<E>(self, value: &str) -> Result<RelativePath, E>\u000awhere\u000a    E: serde::de::Error,\u000a```\u000a\u000a---\u000a\u000aThe input contains a string. The lifetime of the string is ephemeral and\u000ait may be destroyed after this method returns.\u000a\u000aThis method allows the `Deserializer` to avoid a copy by retaining\u000aownership of any buffered data. `Deserialize` implementations that do\u000anot benefit from taking ownership of `String` data should indicate that\u000ato the deserializer by using `Deserializer::deserialize_str` rather than\u000a`Deserializer::deserialize_string`.\u000a\u000aIt is never correct to implement `visit_string` without implementing\u000a`visit_str`. Implement neither, both, or just `visit_str`."
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . [Map]" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 237,
-                "columnBegin": 10,
-                "lineEnd": 237,
-                "columnEnd": 12
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000apub type Map<T> = std::collections::BTreeMap<RelativePath, T>\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . map/" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 239,
-                "columnBegin": 9,
-                "lineEnd": 239,
-                "columnEnd": 11
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000amod map\u000a```"
-      }
-    }
-  },
-  {
-    "key": {
-      "defn": {
-        "key": {
-          "symbol": { "key": "rust-analyzer cargo relative_path . tests/" },
-          "location": {
-            "key": {
-              "file": { "key": "relative_path.rs" },
-              "range": {
-                "lineBegin": 264,
-                "columnBegin": 5,
-                "lineEnd": 264,
-                "columnEnd": 9
-              }
-            }
-          }
-        }
-      },
-      "docs": {
-        "key": "```rust\u000arelative_path\u000a```\u000a\u000a```rust\u000amod tests\u000a```"
+        "key": "Format a message stating what data this Visitor expects to receive.\u000a\u000aThis is used in error messages. The message should complete the sentence\u000a\"This Visitor expects to receive ...\", for example the message could be\u000a\"an integer between 0 and 64\". The message should not be capitalized and\u000ashould not end with a period.\u000a\u000a```edition2021\u000a# use std::fmt;\u000a#\u000a# struct S {\u000a#     max: usize,\u000a# }\u000a#\u000a# impl<'de> serde::de::Visitor<'de> for S {\u000a#     type Value = ();\u000a#\u000afn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {\u000a    write!(formatter, \"an integer between 0 and {}\", self.max)\u000a}\u000a# }\u000a```"
       }
     }
   },
@@ -4174,23 +989,23 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . tests/test_invalid_usize_prefix()."
+            "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]visit_str()."
           },
           "location": {
             "key": {
               "file": { "key": "relative_path.rs" },
               "range": {
-                "lineBegin": 276,
-                "columnBegin": 8,
-                "lineEnd": 276,
-                "columnEnd": 32
+                "lineBegin": 177,
+                "columnBegin": 16,
+                "lineEnd": 177,
+                "columnEnd": 24
               }
             }
           }
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::tests\u000a```\u000a\u000a```rust\u000afn test_invalid_usize_prefix()\u000a```"
+        "key": "The input contains a string. The lifetime of the string is ephemeral and\u000ait may be destroyed after this method returns.\u000a\u000aThis method allows the `Deserializer` to avoid a copy by retaining\u000aownership of any buffered data. `Deserialize` implementations that do\u000anot benefit from taking ownership of `String` data should indicate that\u000ato the deserializer by using `Deserializer::deserialize_str` rather than\u000a`Deserializer::deserialize_string`.\u000a\u000aIt is never correct to implement `visit_string` without implementing\u000a`visit_str`. Implement neither, both, or just `visit_str`."
       }
     }
   },
@@ -4199,24 +1014,147 @@
       "defn": {
         "key": {
           "symbol": {
-            "key": "rust-analyzer cargo relative_path . tests/test_valid_usize_prefix()."
+            "key": "rust-analyzer cargo signed_source 0.0.0 OLD_TOKEN."
           },
           "location": {
             "key": {
-              "file": { "key": "relative_path.rs" },
+              "file": { "key": "signed_source.rs" },
               "range": {
-                "lineBegin": 270,
+                "lineBegin": 89,
                 "columnBegin": 8,
-                "lineEnd": 270,
-                "columnEnd": 30
+                "lineEnd": 89,
+                "columnEnd": 16
               }
             }
           }
         }
       },
       "docs": {
-        "key": "```rust\u000arelative_path::tests\u000a```\u000a\u000a```rust\u000afn test_valid_usize_prefix()\u000a```"
+        "key": "This old token was historically used as the signing token. It was replaced\u000abecause it is 2 characters shorter than the final signature, and as a result,\u000asigning data with the old token forced the entire string to be rewritten\u000a(everything after the token needs to be shifted forwards 2 bytes).\u000aIn this implementation, we rewrite the entire string anyway."
       }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo signed_source 0.0.0 SIGNING_TOKEN."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "signed_source.rs" },
+              "range": {
+                "lineBegin": 15,
+                "columnBegin": 12,
+                "lineEnd": 15,
+                "columnEnd": 24
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "This crate is a port of hphp/hack/src/utils/signed_source.ml, which was\u000abased on a historical version of fbsource/tools/signedsource.py.\u000aThe signing token, which you must embed in the file you wish to sign.\u000aGenerally, you should put this in a header comment."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo signed_source 0.0.0 is_signed()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "signed_source.rs" },
+              "range": {
+                "lineBegin": 51,
+                "columnBegin": 8,
+                "lineEnd": 51,
+                "columnEnd": 16
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Determine whether a file is signed. This does NOT verify the signature."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo signed_source 0.0.0 sign_file()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "signed_source.rs" },
+              "range": {
+                "lineBegin": 27,
+                "columnBegin": 8,
+                "lineEnd": 27,
+                "columnEnd": 16
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Sign a source file into which you have previously embedded a signing token.\u000aSigning modifies only the signing token, so the semantics of the file will\u000anot change if the token is put in a comment.\u000a\u000aReturns `TokenNotFoundError` if no signing token is present."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo signed_source 0.0.0 sign_utf8_file()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "signed_source.rs" },
+              "range": {
+                "lineBegin": 43,
+                "columnBegin": 8,
+                "lineEnd": 43,
+                "columnEnd": 21
+              }
+            }
+          }
+        }
+      },
+      "docs": {
+        "key": "Sign a UTF-8 source file into which you have previously embedded a signing\u000atoken. Signing modifies only the signing token, so the semantics of the file\u000awill not change if the token is put in a comment.\u000a\u000aReturns `TokenNotFoundError` if no signing token is present."
+      }
+    }
+  },
+  {
+    "key": {
+      "defn": {
+        "key": {
+          "symbol": {
+            "key": "rust-analyzer cargo signed_source 0.0.0 verify_signature()."
+          },
+          "location": {
+            "key": {
+              "file": { "key": "signed_source.rs" },
+              "range": {
+                "lineBegin": 63,
+                "columnBegin": 8,
+                "lineEnd": 63,
+                "columnEnd": 23
+              }
+            }
+          }
+        }
+      },
+      "docs": { "key": "Verify a file's signature." }
     }
   }
 ]

@@ -20,27 +20,26 @@
             "range": {
                 "columnBegin": 12,
                 "columnEnd": 18,
-                "lineBegin": 111,
-                "lineEnd": 111
+                "lineBegin": 113,
+                "lineEnd": 113
             },
             "repository": "test"
         },
         "modifiers": [],
         "name": {
             "container": "",
-            "localName": "RelativePath#is_hhi()."
+            "localName": "impl#[RelativePath]is_hhi()."
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
-        "signature": "```rust\nrelative_path::RelativePath\n```\n\n```rust\npub fn is_hhi(&self) -> bool\n```",
-        "sym": "test/rs/rust-analyzer/cargo/relative_path/./RelativePath%23is_hhi%28%29.",
+        "sym": "test/rs/rust-analyzer/cargo/relative_path/0.0.0/impl%23[RelativePath]is_hhi%28%29.",
         "sym_location": {
             "filepath": "relative_path.rs",
             "range": {
                 "columnBegin": 12,
                 "columnEnd": 18,
-                "lineBegin": 111,
-                "lineEnd": 111
+                "lineBegin": 113,
+                "lineEnd": 113
             },
             "repository": "test"
         },

@@ -1,5 +1,971 @@
 [
   "@generated",
+  { "key": { "symbol": { "key": "delta_log.rs/local 0" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "delta_log.rs/local 1" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "delta_log.rs/local 2" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "delta_log.rs/local 3" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "delta_log.rs/local 4" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "delta_log.rs/local 5" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "delta_log.rs/local 6" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "delta_log.rs/local 7" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 0" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 1" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 10" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 11" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 12" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 13" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 14" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 15" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 16" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 17" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 18" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 19" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 2" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 20" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 21" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 22" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 23" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 24" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 25" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 26" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 27" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 28" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 29" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 3" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 30" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 31" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 32" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 33" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 34" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 35" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 36" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 37" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 38" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 39" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 4" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 40" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 41" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 42" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 43" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 44" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 45" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 46" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 47" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 48" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 49" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 5" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 50" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 51" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 52" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 53" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 54" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 55" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 56" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 57" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 58" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 59" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 6" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 7" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 8" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "measure/measure.rs/local 9" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/file_pos.rs/local 0" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/file_pos.rs/local 1" }, "kind": 12 } },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 0" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 1" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 10" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 11" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 12" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 13" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 14" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 15" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 16" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 17" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 18" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 19" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 2" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 20" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 21" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 22" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 23" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 24" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 25" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 26" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 27" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 28" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 29" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 3" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 30" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 31" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 32" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 33" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 34" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 35" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 36" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 37" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 38" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 39" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 4" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 40" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 41" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 42" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 43" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 44" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 45" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 46" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 47" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 48" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 49" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 5" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 50" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 6" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 7" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 8" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_large.rs/local 9" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 0" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 1" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 10" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 11" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 12" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 13" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 14" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 15" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 16" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 17" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 18" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 19" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 2" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 20" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 21" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 22" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 23" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 24" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 25" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 26" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 27" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 28" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 29" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 3" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 30" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 31" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 32" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 33" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 34" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 35" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 36" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 37" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 38" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 39" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 4" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 40" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 41" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 42" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 43" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 5" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 6" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 7" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 8" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/file_pos_small.rs/local 9" }, "kind": 12 }
+  },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 0" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 1" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 10" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 100" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 101" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 102" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 103" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 104" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 105" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 106" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 107" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 108" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 109" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 11" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 110" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 111" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 112" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 113" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 114" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 115" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 116" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 117" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 118" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 119" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 12" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 120" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 121" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 122" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 123" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 124" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 125" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 126" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 127" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 128" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 129" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 13" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 130" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 131" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 132" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 133" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 134" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 135" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 136" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 137" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 138" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 139" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 14" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 140" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 141" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 142" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 143" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 144" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 145" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 146" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 147" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 148" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 149" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 15" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 150" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 151" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 152" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 153" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 154" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 155" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 156" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 157" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 158" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 159" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 16" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 160" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 161" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 162" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 163" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 164" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 165" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 166" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 167" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 168" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 169" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 17" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 170" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 171" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 172" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 173" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 174" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 175" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 176" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 177" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 178" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 179" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 18" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 180" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 181" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 182" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 183" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 184" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 185" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 186" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 187" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 188" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 189" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 19" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 190" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 191" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 192" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 193" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 194" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 195" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 196" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 197" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 198" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 199" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 2" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 20" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 200" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 201" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 202" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 203" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 204" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 205" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 206" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 207" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 208" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 209" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 21" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 210" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 211" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 212" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 213" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 214" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 215" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 216" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 217" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 218" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 219" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 22" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 220" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 221" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 222" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 223" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 224" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 225" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 226" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 227" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 228" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 229" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 23" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 230" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 231" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 232" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 233" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 234" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 235" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 236" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 237" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 238" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 239" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 24" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 240" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 241" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 242" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 243" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 244" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 25" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 26" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 27" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 28" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 29" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 3" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 30" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 31" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 32" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 33" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 34" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 35" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 36" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 37" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 38" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 39" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 4" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 40" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 41" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 42" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 43" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 44" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 45" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 46" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 47" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 48" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 49" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 5" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 50" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 51" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 52" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 53" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 54" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 55" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 56" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 57" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 58" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 59" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 6" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 60" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 61" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 62" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 63" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 64" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 65" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 66" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 67" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 68" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 69" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 7" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 70" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 71" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 72" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 73" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 74" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 75" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 76" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 77" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 78" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 79" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 8" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 80" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 81" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 82" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 83" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 84" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 85" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 86" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 87" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 88" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 89" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 9" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 90" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 91" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 92" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 93" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 94" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 95" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 96" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 97" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 98" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_impl.rs/local 99" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_span_raw.rs/local 0" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_span_raw.rs/local 1" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_span_raw.rs/local 2" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_span_raw.rs/local 3" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_span_raw.rs/local 4" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "pos/pos_span_raw.rs/local 5" }, "kind": 12 } },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 0" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 1" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 10" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 100" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 101" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 102" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 103" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 104" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 105" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 106" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 107" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 108" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 109" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 11" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 110" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 111" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 112" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 113" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 114" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 115" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 12" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 13" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 14" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 15" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 16" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 17" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 18" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 19" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 2" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 20" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 21" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 22" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 23" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 24" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 25" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 26" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 27" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 28" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 29" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 3" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 30" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 31" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 32" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 33" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 34" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 35" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 36" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 37" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 38" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 39" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 4" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 40" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 41" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 42" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 43" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 44" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 45" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 46" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 47" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 48" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 49" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 5" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 50" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 51" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 52" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 53" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 54" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 55" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 56" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 57" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 58" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 59" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 6" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 60" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 61" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 62" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 63" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 64" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 65" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 66" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 67" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 68" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 69" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 7" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 70" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 71" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 72" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 73" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 74" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 75" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 76" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 77" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 78" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 79" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 8" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 80" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 81" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 82" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 83" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 84" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 85" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 86" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 87" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 88" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 89" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 9" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 90" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 91" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 92" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 93" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 94" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 95" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 96" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 97" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 98" }, "kind": 12 }
+  },
+  {
+    "key": { "symbol": { "key": "pos/pos_span_tiny.rs/local 99" }, "kind": 12 }
+  },
+  {
+    "key": {
+      "symbol": { "key": "pos/with_erased_lines.rs/local 0" },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "pos/with_erased_lines.rs/local 1" },
+      "kind": 12
+    }
+  },
   { "key": { "symbol": { "key": "relative_path.rs/local 0" }, "kind": 12 } },
   { "key": { "symbol": { "key": "relative_path.rs/local 1" }, "kind": 12 } },
   { "key": { "symbol": { "key": "relative_path.rs/local 10" }, "kind": 12 } },
@@ -28,8 +994,31 @@
   { "key": { "symbol": { "key": "relative_path.rs/local 31" }, "kind": 12 } },
   { "key": { "symbol": { "key": "relative_path.rs/local 32" }, "kind": 12 } },
   { "key": { "symbol": { "key": "relative_path.rs/local 33" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 34" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 35" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 36" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 37" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 38" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 39" }, "kind": 12 } },
   { "key": { "symbol": { "key": "relative_path.rs/local 4" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 40" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 41" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 42" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 43" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 44" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 45" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 46" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 47" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 48" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 49" }, "kind": 12 } },
   { "key": { "symbol": { "key": "relative_path.rs/local 5" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 50" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 51" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 52" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 53" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 54" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 55" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "relative_path.rs/local 56" }, "kind": 12 } },
   { "key": { "symbol": { "key": "relative_path.rs/local 6" }, "kind": 12 } },
   { "key": { "symbol": { "key": "relative_path.rs/local 7" }, "kind": 12 } },
   { "key": { "symbol": { "key": "relative_path.rs/local 8" }, "kind": 12 } },
@@ -37,61 +1026,47 @@
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc fmt/"
+        "key": "rust-analyzer cargo arena_deserializer 0.0.0 crate/"
       },
       "kind": 3
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc map/btree/collections/BTreeMap#"
-      },
+      "symbol": { "key": "rust-analyzer cargo arena_trait 0.0.0 TrivialDrop#" },
       "kind": 4
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc string/String#"
-      },
-      "kind": 4
+      "symbol": { "key": "rust-analyzer cargo arena_trait 0.0.0 crate/" },
+      "kind": 3
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo alloc https://github.com/rust-lang/rust/library/alloc string/ToString#to_string()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo arena_trait . TrivialDrop#" },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/"
-      },
+      "symbol": { "key": "rust-analyzer cargo bstr 1.10.0 crate/" },
       "kind": 3
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ord#"
+        "key": "rust-analyzer cargo bstr 1.10.0 ext_slice/ByteSlice#"
       },
       "kind": 4
     }
   },
   {
     "key": {
+      "symbol": { "key": "rust-analyzer cargo bumpalo 3.16.0 Bump#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
       "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ord#cmp()."
+        "key": "rust-analyzer cargo dashmap 5.5.3 impl#[`DashMap<K, V, S>`]entry()."
       },
       "kind": 5
     }
@@ -99,393 +1074,83 @@
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ordering#"
-      },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/Ordering#then()."
+        "key": "rust-analyzer cargo dashmap 5.5.3 impl#[`DashMap<K, V, S>`]iter()."
       },
       "kind": 5
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core cmp/PartialOrd#"
-      },
-      "kind": 4
+      "symbol": { "key": "rust-analyzer cargo dashmap 5.5.3 iter/Iter#map." },
+      "kind": 12
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core convert/AsRef#"
-      },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core convert/AsRef#as_ref()."
+        "key": "rust-analyzer cargo dashmap 5.5.3 mapref/entry/impl#[`Entry<'a, K, V, S>`]or_default()."
       },
       "kind": 5
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core convert/TryFrom#"
-      },
-      "kind": 4
+      "symbol": { "key": "rust-analyzer cargo delta_log 0.0.0 LOG_LAST." },
+      "kind": 12
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/Debug#"
-      },
-      "kind": 4
+      "symbol": { "key": "rust-analyzer cargo delta_log 0.0.0 LOG_START." },
+      "kind": 12
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/Display#"
-      },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/Formatter#"
-      },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core fmt/[Result]"
-      },
-      "kind": 25
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core iter/str/SplitN#Iterator#next()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/None#"
-      },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#"
-      },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#as_deref()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#is_none()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#ok_or_else()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#unwrap()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Option#unwrap_or()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core option/Some#"
-      },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core result/Err#"
-      },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core result/Ok#"
-      },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core result/Result#"
-      },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core str/is_empty()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo core https://github.com/rust-lang/rust/library/core str/splitn()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo eq_modulo_pos . EqModuloPos#" },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo no_pos_hash . NoPosHash#" },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo ocamlrep . Allocator#" },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo ocamlrep . Allocator#add()." },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo ocamlrep . Allocator#block_with_size()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo ocamlrep . Allocator#set_field()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo ocamlrep . FromOcamlRep#" },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo ocamlrep . FromOcamlRepIn#" },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo ocamlrep . ToOcamlRep#" },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo ocamlrep . block/BlockBuilder#build()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo ocamlrep . error/FromError#" },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo ocamlrep . from/" },
+      "symbol": { "key": "rust-analyzer cargo delta_log 0.0.0 crate/" },
       "kind": 3
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo ocamlrep . from/expect_tuple()."
+        "key": "rust-analyzer cargo delta_log 0.0.0 init_delta_logger()."
       },
       "kind": 5
     }
   },
   {
     "key": {
-      "symbol": { "key": "rust-analyzer cargo ocamlrep . from/field()." },
+      "symbol": {
+        "key": "rust-analyzer cargo delta_log 0.0.0 log_durations()."
+      },
       "kind": 5
     }
   },
   {
     "key": {
-      "symbol": { "key": "rust-analyzer cargo ocamlrep . value/Value#" },
+      "symbol": { "key": "rust-analyzer cargo digest 0.10.7 digest/Digest#" },
       "kind": 4
     }
   },
   {
     "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . (alloc)" },
-      "kind": 7
+      "symbol": { "key": "rust-analyzer cargo env_logger 0.10.2 crate/" },
+      "kind": 3
     }
   },
   {
     "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . (ctx)" },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . (deserializer)" },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . (f)" },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . (formatter)" },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . (other)" },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . (path)" },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . (prefix)" },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . (prefix_raw)" },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . (s)" },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . (self)" },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . (serializer)" },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . (value)" },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . Dummy#" },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . Hhi#" },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . Prefix#" },
+      "symbol": {
+        "key": "rust-analyzer cargo env_logger 0.10.2 logger/Builder#"
+      },
       "kind": 4
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo relative_path . Prefix#Display#fmt()."
+        "key": "rust-analyzer cargo env_logger 0.10.2 logger/impl#[Builder]format()."
       },
       "kind": 5
     }
@@ -493,15 +1158,7 @@
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo relative_path . Prefix#TryFrom#[Error]"
-      },
-      "kind": 25
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . Prefix#TryFrom#try_from()."
+        "key": "rust-analyzer cargo env_logger 0.10.2 logger/impl#[Builder]from_default_env()."
       },
       "kind": 5
     }
@@ -509,45 +1166,97 @@
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo relative_path . Prefix#is_hhi()."
+        "key": "rust-analyzer cargo env_logger 0.10.2 logger/impl#[Builder]try_init()."
       },
       "kind": 5
     }
   },
   {
     "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . RelativePath#" },
+      "symbol": {
+        "key": "rust-analyzer cargo eq_modulo_pos 0.0.0 EqModuloPos#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo eq_modulo_pos 0.0.0 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo hash 0.0.0 DashMap#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo hash 0.0.0 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo hex 0.4.3 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo hex 0.4.3 encode()." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo lock_api 0.4.12 rwlock/impl#[`RwLock<R, T>`]new()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo md-5 0.10.6 Md5#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo md-5 0.10.6 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 GLOBAL." },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 Record#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 Record#entries." },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#" },
       "kind": 4
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#Debug#fmt()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#Deserialize#deserialize()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#Display#fmt()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#EMPTY."
+        "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#count."
       },
       "kind": 12
     }
@@ -555,193 +1264,67 @@
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#FromOcamlRep#from_ocamlrep()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#Ord#cmp()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#PartialOrd#partial_cmp()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#Serialize#serialize()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#ToOcamlRep#to_ocamlrep()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#has_extension()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#is_empty()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#is_hhi()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#make()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#path()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#path."
+        "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#distribution."
       },
       "kind": 12
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#path_str()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#prefix()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#prefix."
-      },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#max." },
       "kind": 12
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePath#to_absolute()."
+        "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#mean."
       },
-      "kind": 5
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#min." },
+      "kind": 12
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePathCtx#"
+        "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#variance_sum."
       },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordName#" },
       "kind": 4
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePathCtx#dummy."
-      },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordName#0." },
       "kind": 12
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePathCtx#hhi."
-      },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordName#1." },
       "kind": 12
     }
   },
   {
     "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePathCtx#prefix_path()."
-      },
-      "kind": 5
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 crate/" },
+      "kind": 3
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePathCtx#root."
-      },
-      "kind": 12
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . RelativePathCtx#tmp."
-      },
-      "kind": 12
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . Root#" },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . Tmp#" },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . Visitor#" },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . Visitor#Visitor#[Value]"
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordEntry]"
       },
       "kind": 25
     }
@@ -749,7 +1332,7 @@
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo relative_path . Visitor#Visitor#expecting()."
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordEntry]default()."
       },
       "kind": 5
     }
@@ -757,71 +1340,7 @@
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo relative_path . Visitor#Visitor#visit_str()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . [Map]" },
-      "kind": 25
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . map/" },
-      "kind": 3
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo relative_path . tests/" },
-      "kind": 3
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . tests/test_invalid_usize_prefix()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo relative_path . tests/test_valid_usize_prefix()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/" },
-      "kind": 3
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo serde-1.0.152 . de/Deserialize#"
-      },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo serde-1.0.152 . de/Deserializer#"
-      },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo serde-1.0.152 . de/Deserializer#[Error]"
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName]"
       },
       "kind": 25
     }
@@ -829,73 +1348,255 @@
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo serde-1.0.152 . de/Deserializer#deserialize_str()."
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName][ToOcamlRep]to_ocamlrep()."
       },
       "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/Error#" },
-      "kind": 4
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo serde-1.0.152 . de/Error#invalid_value()."
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName]fmt()."
       },
       "kind": 5
     }
   },
   {
     "key": {
-      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/Other#" },
-      "kind": 4
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName]from()."
+      },
+      "kind": 5
     }
   },
   {
     "key": {
-      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/Unexpected#" },
-      "kind": 4
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]" },
+      "kind": 25
     }
   },
   {
     "key": {
-      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . de/Visitor#" },
-      "kind": 4
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[Record][ToOcamlRep]to_ocamlrep()."
+      },
+      "kind": 5
     }
   },
   {
     "key": {
-      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . ser/" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]new()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]print_stats()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]sample()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]sample_impl()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 pop_global()." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 pretty_num()." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 print_stats()." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 push_global()." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 sample()." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 sample_impl()." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo measure_ffi 0.0.0 crate/" },
       "kind": 3
     }
   },
   {
     "key": {
-      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . ser/Error#" },
-      "kind": 4
-    }
-  },
-  {
-    "key": {
       "symbol": {
-        "key": "rust-analyzer cargo serde-1.0.152 . ser/Error#custom()."
+        "key": "rust-analyzer cargo measure_ffi 0.0.0 hh_measure_pop_global()."
       },
       "kind": 5
     }
   },
   {
     "key": {
-      "symbol": { "key": "rust-analyzer cargo serde-1.0.152 . ser/Serialize#" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure_ffi 0.0.0 hh_measure_push_global()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo no_pos_hash 0.0.0 NoPosHash#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo no_pos_hash 0.0.0 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#" },
       "kind": 4
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#"
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#add()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#add_copy()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#block_with_size()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#block_with_size_and_tag()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#byte_string_with_len()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 Allocator#set_field()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep 0.1.0 FromOcamlRep#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep 0.1.0 FromOcamlRepIn#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep 0.1.0 ToOcamlRep#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep 0.1.0 arena/Arena#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 arena/impl#[Arena]new()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 block/impl#[`BlockBuilder<'a>`]build()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 block/impl#[`BlockBytes<'a>`]build()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep 0.1.0 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 error/FromError#"
       },
       "kind": 4
     }
@@ -903,7 +1604,277 @@
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#[Error]"
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 error/FromError#BlockTagOutOfRange#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 error/FromError#BlockTagOutOfRange#actual."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 error/FromError#BlockTagOutOfRange#max."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep 0.1.0 from/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 from/expect_block()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 from/expect_block_size()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 from/expect_int()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 from/expect_tuple()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep 0.1.0 from/field()." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 impls/sorted_iter_to_ocaml_map()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo ocamlrep 0.1.0 value/Value#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep 0.1.0 value/impl#[`Value<'a>`]int()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo ocamlrep_ocamlpool 0.1.0 crate/"
+      },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo once_cell 1.20.2 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo once_cell 1.20.2 sync/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo once_cell 1.20.2 sync/Lazy#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo once_cell 1.20.2 sync/impl#[`Lazy<T, F>`]new()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo parking_lot 0.12.3 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo parking_lot 0.12.3 rwlock/RwLock#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo parser_core_types 0.0.0 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo parser_core_types 0.0.0 indexed_source_text/"
+      },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo parser_core_types 0.0.0 indexed_source_text/Pos#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo parser_core_types 0.0.0 indexed_source_text/Pos#end."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo parser_core_types 0.0.0 indexed_source_text/Pos#path."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo parser_core_types 0.0.0 indexed_source_text/Pos#start."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo pretty_assertions 1.4.0 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/FilePos#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/FilePos#line_column_beg()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/FilePos#offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/DUMMY."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#bol."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#lnum."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#offset."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]"
       },
       "kind": 25
     }
@@ -911,7 +1882,23 @@
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#[Ok]"
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FilePos]line_column_beg()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FilePos]offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FromOcamlRep]"
       },
       "kind": 25
     }
@@ -919,7 +1906,7 @@
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo serde-1.0.152 . ser/Serializer#serialize_str()."
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FromOcamlRep]from_ocamlrep()."
       },
       "kind": 5
     }
@@ -927,39 +1914,205 @@
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std collections/"
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][ToOcamlRep]to_ocamlrep()."
       },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][`FromOcamlRepIn<'a>`]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]beg_of_file()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]beg_of_line()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]cmp()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]column()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]from()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]from_line_column_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]from_lnum_bol_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]is_dummy()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_beg()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_beg_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_column()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_column_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]make_dummy()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]partial_cmp()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]with_column()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[`(FilePosLarge, FilePosLarge)`][WithErasedLines]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[`(FilePosLarge, FilePosLarge)`][WithErasedLines]with_erased_lines()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/" },
       "kind": 3
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std os_str/ffi/OsStr#Ord#cmp()."
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/BOL_BITS."
       },
-      "kind": 5
+      "kind": 12
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std os_str/ffi/OsStr#is_empty()."
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/COLUMN_BITS."
       },
-      "kind": 5
+      "kind": 12
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/"
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/DUMMY."
       },
-      "kind": 3
+      "kind": 12
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#"
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/FilePosSmall#"
       },
       "kind": 4
     }
@@ -967,55 +2120,47 @@
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#as_os_str()."
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/FilePosSmall#0."
       },
-      "kind": 5
+      "kind": 12
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#display()."
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/LINE_BITS."
       },
-      "kind": 5
+      "kind": 12
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#extension()."
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_BOL."
       },
-      "kind": 5
+      "kind": 12
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#join()."
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_COLUMN."
       },
-      "kind": 5
+      "kind": 12
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#new()."
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_LINE."
       },
-      "kind": 5
+      "kind": 12
     }
   },
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/Path#to_str()."
-      },
-      "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": {
-        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/PathBuf#"
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/PosTooLarge#"
       },
       "kind": 4
     }
@@ -1023,9 +2168,2152 @@
   {
     "key": {
       "symbol": {
-        "key": "rust-analyzer cargo std https://github.com/rust-lang/rust/library/std path/PathBuf#From#from()."
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]Error#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FilePos]line_column_beg()."
       },
       "kind": 5
     }
-  }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FilePos]offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FromOcamlRep]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FromOcamlRep]from_ocamlrep()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][ToOcamlRep]to_ocamlrep()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][`FromOcamlRepIn<'a>`]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]beg_of_file()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]beg_of_line()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]bol_line_col()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]bol_line_col_unchecked()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]cmp()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]column()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]fmt()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]from_line_column_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]from_lnum_bol_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]is_dummy()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_beg()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_beg_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_column()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_column_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]make_dummy()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]partial_cmp()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]try_from()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]with_column()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/mask()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/mask_by()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/Pos#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/Pos#0." },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#FromReason#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#end."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#file."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#start."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#end."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#file."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#start."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Tiny#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Tiny#file."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Tiny#span."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosR#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosString#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/compute()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/do_fmt()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[PosImpl][FromOcamlRep]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[PosImpl][FromOcamlRep]from_ocamlrep()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[PosImpl][ToOcamlRep]to_ocamlrep()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]NONE."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][EqModuloPos]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][EqModuloPos]eq_modulo_pos()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][EqModuloPos]eq_modulo_pos_and_reason()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][NoPosHash]hash()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][WithErasedLines]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][WithErasedLines]with_erased_lines()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]absolute()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]btw()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]btw_nocheck()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]cmp()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]default()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]end_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]eq()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]filename()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]filename_rc()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]first_char_of_line()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]fmt()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from_line_cols_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from_lnum_bol_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from_raw_span()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]hash()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]info_pos()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]info_pos_extended()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]info_raw()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]into_filename()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]is_none()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]is_valid()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]last_char()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]line()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]merge()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]merge_without_checking_filename()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]partial_cmp()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]start_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]string()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]to_raw_span()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]to_start_and_end_lnum_bol_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[`PosString<'_>`]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[`PosString<'_>`]fmt()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/map/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/map/Map#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/make_pos()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_absolute()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_merge()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_string()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/DUMMY."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/PosSpanRaw#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/PosSpanRaw#end."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/PosSpanRaw#start."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw][WithErasedLines]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw][WithErasedLines]with_erased_lines()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw]is_dummy()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw]make_dummy()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/BEGINNING_OF_LINE_INCREMENT_BITS."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/BEGINNING_OF_LINE_INCREMENT_OFFSET."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/DUMMY."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/LINE_NUMBER_INCREMENT_BITS."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/LINE_NUMBER_INCREMENT_OFFSET."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MASK."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_BEGINNING_OF_LINE_INCREMENT."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_LINE_NUMBER_INCREMENT."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_BEGINNING_OF_LINE."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_COLUMN_NUMBER."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_LINE_NUMBER."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_WIDTH."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/PosSpanTiny#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/PosSpanTiny#0."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/PosSpanTooLarge#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_BEGINNING_OF_LINE_BITS."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_BEGINNING_OF_LINE_OFFSET."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_COLUMN_NUMBER_BITS."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_COLUMN_NUMBER_OFFSET."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_LINE_NUMBER_BITS."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_LINE_NUMBER_OFFSET."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/WIDTH_BITS."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/WIDTH_OFFSET."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanRaw]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanRaw]from()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]Error#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][FromOcamlRep]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][FromOcamlRep]from_ocamlrep()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][ToOcamlRep]to_ocamlrep()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][`FromOcamlRepIn<'a>`]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]beginning_of_line_increment()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]cmp()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_beginning_of_line()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_column()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_line_number()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]fmt()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]is_dummy()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]line_number_increment()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]make()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]make_dummy()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]partial_cmp()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_beginning_of_line()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_column()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_line_number()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_offset()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]to_raw_span()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]try_from()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]width()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/mask()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/mask_by()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/"
+      },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_round_trip_through_ocaml_value_large_tiny_span()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_dummy()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_large()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_multiline_span()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_negative_span()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_small()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 with_erased_lines/"
+      },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 with_erased_lines/WithErasedLines#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 with_erased_lines/WithErasedLines#with_erased_lines()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo regex 1.11.1 bytes/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo regex 1.11.1 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo regex 1.11.1 escape()." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo regex 1.11.1 regex/bytes/Regex#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo regex 1.11.1 regex/bytes/impl#[Regex]new()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 Map#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Dummy#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Hhi#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Root#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Tmp#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePath#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePath#path."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePath#prefix."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#dummy."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#hhi."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#root."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#tmp."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 Visitor#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]Error#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]fmt()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]is_hhi()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]try_from()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePathCtx]prefix_path()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]EMPTY."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][FromOcamlRep]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][FromOcamlRep]from_ocamlrep()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][Serialize]serialize()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][ToOcamlRep]to_ocamlrep()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][`Deserialize<'de>`]"
+      },
+      "kind": 25
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][`Deserialize<'de>`]deserialize()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]cmp()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]fmt()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]has_extension()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]is_empty()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]is_hhi()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]make()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]partial_cmp()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]path()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]path_str()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]prefix()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]to_absolute()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]Value#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]expecting()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]visit_str()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 map/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 tests/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 tests/test_invalid_usize_prefix()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 tests/test_valid_usize_prefix()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde 1.0.217 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde 1.0.217 de/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde 1.0.217 de/Deserialize#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde 1.0.217 de/Deserializer#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde 1.0.217 de/Deserializer#Error#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde 1.0.217 de/Deserializer#deserialize_str()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde 1.0.217 de/Error#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde 1.0.217 de/Error#invalid_value()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde 1.0.217 de/Unexpected#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde 1.0.217 de/Unexpected#Other#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde 1.0.217 de/Visitor#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde 1.0.217 ser/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde 1.0.217 ser/Error#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde 1.0.217 ser/Serialize#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo serde 1.0.217 ser/Serializer#" },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde 1.0.217 ser/Serializer#Error#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde 1.0.217 ser/Serializer#Ok#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo serde 1.0.217 ser/Serializer#serialize_str()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo signed_source 0.0.0 OLD_TOKEN." },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SIGNATURE_RE."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SIGNING_REGEX."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SIGNING_TOKEN."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SIGN_OR_OLD_TOKEN."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#Invalid#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#Ok#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#Unsigned#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo signed_source 0.0.0 TOKEN." },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 TOKEN_REGEX."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 TokenNotFoundError#"
+      },
+      "kind": 4
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo signed_source 0.0.0 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo signed_source 0.0.0 hash()." },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 is_signed()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 make_signing_token()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 sign_file()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 sign_utf8_file()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo signed_source 0.0.0 test/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/INVALID."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/NO_TOKEN."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/SIGNED."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/UNSIGNED."
+      },
+      "kind": 12
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/test_is_signed()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/test_sign_utf8_file()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/test_signing_token()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/test_verify_signature()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 verify_signature()."
+      },
+      "kind": 5
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "rust-analyzer cargo static_assertions 1.1.0 crate/" },
+      "kind": 3
+    }
+  },
+  { "key": { "symbol": { "key": "signed_source.rs/local 0" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "signed_source.rs/local 1" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "signed_source.rs/local 10" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "signed_source.rs/local 11" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "signed_source.rs/local 12" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "signed_source.rs/local 13" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "signed_source.rs/local 14" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "signed_source.rs/local 2" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "signed_source.rs/local 3" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "signed_source.rs/local 4" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "signed_source.rs/local 5" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "signed_source.rs/local 6" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "signed_source.rs/local 7" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "signed_source.rs/local 8" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "signed_source.rs/local 9" }, "kind": 12 } }
 ]
