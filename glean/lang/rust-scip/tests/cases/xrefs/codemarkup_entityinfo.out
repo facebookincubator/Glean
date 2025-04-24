@@ -6,6 +6,31 @@
         "rust": {
           "defn": {
             "key": {
+              "symbol": { "key": "rust-analyzer cargo basics 0.1.0 crate/" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 1,
+                    "columnBegin": 1,
+                    "lineEnd": 44,
+                    "columnEnd": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 0, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
               "symbol": { "key": "rust-analyzer cargo basics 0.1.0 f1_go()." },
               "location": {
                 "key": {
@@ -23,60 +48,6 @@
         }
       },
       "info": { "kind": 7, "isAbstract": false }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "rust": {
-          "defn": {
-            "key": {
-              "symbol": {
-                "key": "rust-analyzer cargo basics 0.1.0 f1_go().(acc)"
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "src/lib.rs" },
-                  "range": {
-                    "lineBegin": 16,
-                    "columnBegin": 18,
-                    "lineEnd": 16,
-                    "columnEnd": 20
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "info": { "kind": 9, "isAbstract": false }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "rust": {
-          "defn": {
-            "key": {
-              "symbol": {
-                "key": "rust-analyzer cargo basics 0.1.0 f1_go().(n)"
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "src/lib.rs" },
-                  "range": {
-                    "lineBegin": 16,
-                    "columnBegin": 10,
-                    "lineEnd": 16,
-                    "columnEnd": 10
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "info": { "kind": 9, "isAbstract": false }
     }
   },
   {
@@ -110,33 +81,6 @@
         "rust": {
           "defn": {
             "key": {
-              "symbol": {
-                "key": "rust-analyzer cargo basics 0.1.0 sum_f1().(n)"
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "src/lib.rs" },
-                  "range": {
-                    "lineBegin": 12,
-                    "columnBegin": 15,
-                    "lineEnd": 12,
-                    "columnEnd": 15
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "info": { "kind": 9, "isAbstract": false }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "rust": {
-          "defn": {
-            "key": {
               "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f2()." },
               "location": {
                 "key": {
@@ -154,33 +98,6 @@
         }
       },
       "info": { "kind": 7, "isAbstract": false }
-    }
-  },
-  {
-    "key": {
-      "entity": {
-        "rust": {
-          "defn": {
-            "key": {
-              "symbol": {
-                "key": "rust-analyzer cargo basics 0.1.0 sum_f2().(n)"
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "src/lib.rs" },
-                  "range": {
-                    "lineBegin": 22,
-                    "columnBegin": 15,
-                    "lineEnd": 22,
-                    "columnEnd": 15
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "info": { "kind": 9, "isAbstract": false }
     }
   },
   {
@@ -214,9 +131,157 @@
         "rust": {
           "defn": {
             "key": {
-              "symbol": {
-                "key": "rust-analyzer cargo basics 0.1.0 sum_f3().(n)"
-              },
+              "symbol": { "key": "src/lib.rs/local 0" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 12,
+                    "columnBegin": 15,
+                    "lineEnd": 12,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 14, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 1" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 10,
+                    "lineEnd": 16,
+                    "columnEnd": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 14, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 2" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 18,
+                    "lineEnd": 16,
+                    "columnEnd": 20
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 14, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 3" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 22,
+                    "columnBegin": 15,
+                    "lineEnd": 22,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 14, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 4" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 23,
+                    "columnBegin": 13,
+                    "lineEnd": 23,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 14, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 5" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 24,
+                    "columnBegin": 13,
+                    "lineEnd": 24,
+                    "columnEnd": 13
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 14, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 6" },
               "location": {
                 "key": {
                   "file": { "key": "src/lib.rs" },
@@ -232,7 +297,57 @@
           }
         }
       },
-      "info": { "kind": 9, "isAbstract": false }
+      "info": { "kind": 14, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 7" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 38,
+                    "columnBegin": 13,
+                    "lineEnd": 38,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 14, "isAbstract": false }
+    }
+  },
+  {
+    "key": {
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 8" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 39,
+                    "columnBegin": 9,
+                    "lineEnd": 39,
+                    "columnEnd": 9
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "info": { "kind": 14, "isAbstract": false }
     }
   }
 ]

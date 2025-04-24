@@ -4,10 +4,10 @@
     "key": {
       "file": { "key": "src/lib.rs" },
       "range": {
-        "lineBegin": 11,
-        "columnBegin": 3,
-        "lineEnd": 11,
-        "columnEnd": 8
+        "lineBegin": 1,
+        "columnBegin": 1,
+        "lineEnd": 44,
+        "columnEnd": 1
       }
     }
   },
@@ -30,28 +30,6 @@
         "columnBegin": 15,
         "lineEnd": 12,
         "columnEnd": 15
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "range": {
-        "lineBegin": 12,
-        "columnBegin": 18,
-        "lineEnd": 12,
-        "columnEnd": 20
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "range": {
-        "lineBegin": 12,
-        "columnBegin": 26,
-        "lineEnd": 12,
-        "columnEnd": 28
       }
     }
   },
@@ -104,42 +82,9 @@
       "file": { "key": "src/lib.rs" },
       "range": {
         "lineBegin": 16,
-        "columnBegin": 13,
-        "lineEnd": 16,
-        "columnEnd": 15
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "range": {
-        "lineBegin": 16,
         "columnBegin": 18,
         "lineEnd": 16,
         "columnEnd": 20
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "range": {
-        "lineBegin": 16,
-        "columnBegin": 23,
-        "lineEnd": 16,
-        "columnEnd": 25
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "range": {
-        "lineBegin": 16,
-        "columnBegin": 31,
-        "lineEnd": 16,
-        "columnEnd": 33
       }
     }
   },
@@ -213,17 +158,6 @@
     "key": {
       "file": { "key": "src/lib.rs" },
       "range": {
-        "lineBegin": 21,
-        "columnBegin": 3,
-        "lineEnd": 21,
-        "columnEnd": 8
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "range": {
         "lineBegin": 22,
         "columnBegin": 8,
         "lineEnd": 22,
@@ -239,28 +173,6 @@
         "columnBegin": 15,
         "lineEnd": 22,
         "columnEnd": 15
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "range": {
-        "lineBegin": 22,
-        "columnBegin": 18,
-        "lineEnd": 22,
-        "columnEnd": 20
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "range": {
-        "lineBegin": 22,
-        "columnBegin": 26,
-        "lineEnd": 22,
-        "columnEnd": 28
       }
     }
   },
@@ -356,17 +268,6 @@
     "key": {
       "file": { "key": "src/lib.rs" },
       "range": {
-        "lineBegin": 36,
-        "columnBegin": 3,
-        "lineEnd": 36,
-        "columnEnd": 8
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "range": {
         "lineBegin": 37,
         "columnBegin": 8,
         "lineEnd": 37,
@@ -382,28 +283,6 @@
         "columnBegin": 15,
         "lineEnd": 37,
         "columnEnd": 15
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "range": {
-        "lineBegin": 37,
-        "columnBegin": 18,
-        "lineEnd": 37,
-        "columnEnd": 20
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "range": {
-        "lineBegin": 37,
-        "columnBegin": 26,
-        "lineEnd": 37,
-        "columnEnd": 28
       }
     }
   },

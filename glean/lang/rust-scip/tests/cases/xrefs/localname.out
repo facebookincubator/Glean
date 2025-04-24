@@ -2,20 +2,14 @@
   "@generated",
   {
     "key": {
+      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 crate/" },
+      "name": { "key": "crate" }
+    }
+  },
+  {
+    "key": {
       "symbol": { "key": "rust-analyzer cargo basics 0.1.0 f1_go()." },
       "name": { "key": "f1_go()" }
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 f1_go().(acc)" },
-      "name": { "key": "f1_go().(acc" }
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 f1_go().(n)" },
-      "name": { "key": "f1_go().(n" }
     }
   },
   {
@@ -26,20 +20,8 @@
   },
   {
     "key": {
-      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f1().(n)" },
-      "name": { "key": "sum_f1().(n" }
-    }
-  },
-  {
-    "key": {
       "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f2()." },
       "name": { "key": "sum_f2()" }
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f2().(n)" },
-      "name": { "key": "sum_f2().(n" }
     }
   },
   {
@@ -50,8 +32,56 @@
   },
   {
     "key": {
-      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f3().(n)" },
-      "name": { "key": "sum_f3().(n" }
+      "symbol": { "key": "src/lib.rs/local 0" },
+      "name": { "key": "local 0" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "src/lib.rs/local 1" },
+      "name": { "key": "local 1" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "src/lib.rs/local 2" },
+      "name": { "key": "local 2" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "src/lib.rs/local 3" },
+      "name": { "key": "local 3" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "src/lib.rs/local 4" },
+      "name": { "key": "local 4" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "src/lib.rs/local 5" },
+      "name": { "key": "local 5" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "src/lib.rs/local 6" },
+      "name": { "key": "local 6" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "src/lib.rs/local 7" },
+      "name": { "key": "local 7" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "src/lib.rs/local 8" },
+      "name": { "key": "local 8" }
     }
   }
 ]

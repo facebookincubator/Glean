@@ -1,7 +1,10 @@
 {
   "@generated": null,
-  "scip.Definition.1": 10,
-  "scip.FileLanguage.1": 10,
-  "scip.ReferenceLocation.1": 10,
-  "scip.SymbolName.1": 10
+  "facts_searched": {
+    "scip.Definition.1": 18,
+    "scip.FileLanguage.1": 18,
+    "scip.ReferenceLocation.1": 18,
+    "scip.SymbolName.1": 18
+  },
+  "full_scans": [ "scip.ReferenceLocation.1" ]
 }

@@ -103,262 +103,7 @@
       "file": { "key": "src/lib.rs" },
       "xref": {
         "target": {
-          "name": "f1_go().(acc",
-          "file": { "key": "src/lib.rs" },
-          "location": {
-            "range": {
-              "file": { "key": "src/lib.rs" },
-              "lineBegin": 16,
-              "columnBegin": 18,
-              "lineEnd": 16,
-              "columnEnd": 20
-            }
-          }
-        },
-        "source": {
-          "range": {
-            "file": { "key": "src/lib.rs" },
-            "lineBegin": 17,
-            "columnBegin": 17,
-            "lineEnd": 17,
-            "columnEnd": 19
-          }
-        }
-      },
-      "entity": {
-        "rust": {
-          "defn": {
-            "key": {
-              "symbol": {
-                "key": "rust-analyzer cargo basics 0.1.0 f1_go().(acc)"
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "src/lib.rs" },
-                  "range": {
-                    "lineBegin": 16,
-                    "columnBegin": 18,
-                    "lineEnd": 16,
-                    "columnEnd": 20
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "xref": {
-        "target": {
-          "name": "f1_go().(acc",
-          "file": { "key": "src/lib.rs" },
-          "location": {
-            "range": {
-              "file": { "key": "src/lib.rs" },
-              "lineBegin": 16,
-              "columnBegin": 18,
-              "lineEnd": 16,
-              "columnEnd": 20
-            }
-          }
-        },
-        "source": {
-          "range": {
-            "file": { "key": "src/lib.rs" },
-            "lineBegin": 17,
-            "columnBegin": 43,
-            "lineEnd": 17,
-            "columnEnd": 45
-          }
-        }
-      },
-      "entity": {
-        "rust": {
-          "defn": {
-            "key": {
-              "symbol": {
-                "key": "rust-analyzer cargo basics 0.1.0 f1_go().(acc)"
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "src/lib.rs" },
-                  "range": {
-                    "lineBegin": 16,
-                    "columnBegin": 18,
-                    "lineEnd": 16,
-                    "columnEnd": 20
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "xref": {
-        "target": {
-          "name": "f1_go().(n",
-          "file": { "key": "src/lib.rs" },
-          "location": {
-            "range": {
-              "file": { "key": "src/lib.rs" },
-              "lineBegin": 16,
-              "columnBegin": 10,
-              "lineEnd": 16,
-              "columnEnd": 10
-            }
-          }
-        },
-        "source": {
-          "range": {
-            "file": { "key": "src/lib.rs" },
-            "lineBegin": 17,
-            "columnBegin": 8,
-            "lineEnd": 17,
-            "columnEnd": 8
-          }
-        }
-      },
-      "entity": {
-        "rust": {
-          "defn": {
-            "key": {
-              "symbol": {
-                "key": "rust-analyzer cargo basics 0.1.0 f1_go().(n)"
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "src/lib.rs" },
-                  "range": {
-                    "lineBegin": 16,
-                    "columnBegin": 10,
-                    "lineEnd": 16,
-                    "columnEnd": 10
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "xref": {
-        "target": {
-          "name": "f1_go().(n",
-          "file": { "key": "src/lib.rs" },
-          "location": {
-            "range": {
-              "file": { "key": "src/lib.rs" },
-              "lineBegin": 16,
-              "columnBegin": 10,
-              "lineEnd": 16,
-              "columnEnd": 10
-            }
-          }
-        },
-        "source": {
-          "range": {
-            "file": { "key": "src/lib.rs" },
-            "lineBegin": 17,
-            "columnBegin": 36,
-            "lineEnd": 17,
-            "columnEnd": 36
-          }
-        }
-      },
-      "entity": {
-        "rust": {
-          "defn": {
-            "key": {
-              "symbol": {
-                "key": "rust-analyzer cargo basics 0.1.0 f1_go().(n)"
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "src/lib.rs" },
-                  "range": {
-                    "lineBegin": 16,
-                    "columnBegin": 10,
-                    "lineEnd": 16,
-                    "columnEnd": 10
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "xref": {
-        "target": {
-          "name": "f1_go().(n",
-          "file": { "key": "src/lib.rs" },
-          "location": {
-            "range": {
-              "file": { "key": "src/lib.rs" },
-              "lineBegin": 16,
-              "columnBegin": 10,
-              "lineEnd": 16,
-              "columnEnd": 10
-            }
-          }
-        },
-        "source": {
-          "range": {
-            "file": { "key": "src/lib.rs" },
-            "lineBegin": 17,
-            "columnBegin": 49,
-            "lineEnd": 17,
-            "columnEnd": 49
-          }
-        }
-      },
-      "entity": {
-        "rust": {
-          "defn": {
-            "key": {
-              "symbol": {
-                "key": "rust-analyzer cargo basics 0.1.0 f1_go().(n)"
-              },
-              "location": {
-                "key": {
-                  "file": { "key": "src/lib.rs" },
-                  "range": {
-                    "lineBegin": 16,
-                    "columnBegin": 10,
-                    "lineEnd": 16,
-                    "columnEnd": 10
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
-      "file": { "key": "src/lib.rs" },
-      "xref": {
-        "target": {
-          "name": "sum_f1().(n",
+          "name": "local 0",
           "file": { "key": "src/lib.rs" },
           "location": {
             "range": {
@@ -384,9 +129,7 @@
         "rust": {
           "defn": {
             "key": {
-              "symbol": {
-                "key": "rust-analyzer cargo basics 0.1.0 sum_f1().(n)"
-              },
+              "symbol": { "key": "src/lib.rs/local 0" },
               "location": {
                 "key": {
                   "file": { "key": "src/lib.rs" },
@@ -409,7 +152,252 @@
       "file": { "key": "src/lib.rs" },
       "xref": {
         "target": {
-          "name": "sum_f2().(n",
+          "name": "local 1",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 10,
+              "lineEnd": 16,
+              "columnEnd": 10
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 8,
+            "lineEnd": 17,
+            "columnEnd": 8
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 1" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 10,
+                    "lineEnd": 16,
+                    "columnEnd": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "local 1",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 10,
+              "lineEnd": 16,
+              "columnEnd": 10
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 36,
+            "lineEnd": 17,
+            "columnEnd": 36
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 1" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 10,
+                    "lineEnd": 16,
+                    "columnEnd": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "local 1",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 10,
+              "lineEnd": 16,
+              "columnEnd": 10
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 49,
+            "lineEnd": 17,
+            "columnEnd": 49
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 1" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 10,
+                    "lineEnd": 16,
+                    "columnEnd": 10
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "local 2",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 18,
+              "lineEnd": 16,
+              "columnEnd": 20
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 17,
+            "lineEnd": 17,
+            "columnEnd": 19
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 2" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 18,
+                    "lineEnd": 16,
+                    "columnEnd": 20
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "local 2",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 16,
+              "columnBegin": 18,
+              "lineEnd": 16,
+              "columnEnd": 20
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 17,
+            "columnBegin": 43,
+            "lineEnd": 17,
+            "columnEnd": 45
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 2" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 16,
+                    "columnBegin": 18,
+                    "lineEnd": 16,
+                    "columnEnd": 20
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "local 3",
           "file": { "key": "src/lib.rs" },
           "location": {
             "range": {
@@ -435,9 +423,7 @@
         "rust": {
           "defn": {
             "key": {
-              "symbol": {
-                "key": "rust-analyzer cargo basics 0.1.0 sum_f2().(n)"
-              },
+              "symbol": { "key": "src/lib.rs/local 3" },
               "location": {
                 "key": {
                   "file": { "key": "src/lib.rs" },
@@ -460,7 +446,252 @@
       "file": { "key": "src/lib.rs" },
       "xref": {
         "target": {
-          "name": "sum_f3().(n",
+          "name": "local 4",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 23,
+              "columnBegin": 13,
+              "lineEnd": 23,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 27,
+            "columnBegin": 20,
+            "lineEnd": 27,
+            "columnEnd": 22
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 4" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 23,
+                    "columnBegin": 13,
+                    "lineEnd": 23,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "local 4",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 23,
+              "columnBegin": 13,
+              "lineEnd": 23,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 29,
+            "columnBegin": 13,
+            "lineEnd": 29,
+            "columnEnd": 15
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 4" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 23,
+                    "columnBegin": 13,
+                    "lineEnd": 23,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "local 5",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 24,
+              "columnBegin": 13,
+              "lineEnd": 24,
+              "columnEnd": 13
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 26,
+            "columnBegin": 12,
+            "lineEnd": 26,
+            "columnEnd": 12
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 5" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 24,
+                    "columnBegin": 13,
+                    "lineEnd": 24,
+                    "columnEnd": 13
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "local 5",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 24,
+              "columnBegin": 13,
+              "lineEnd": 24,
+              "columnEnd": 13
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 29,
+            "columnBegin": 20,
+            "lineEnd": 29,
+            "columnEnd": 20
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 5" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 24,
+                    "columnBegin": 13,
+                    "lineEnd": 24,
+                    "columnEnd": 13
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "local 5",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 24,
+              "columnBegin": 13,
+              "lineEnd": 24,
+              "columnEnd": 13
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 30,
+            "columnBegin": 13,
+            "lineEnd": 30,
+            "columnEnd": 13
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 5" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 24,
+                    "columnBegin": 13,
+                    "lineEnd": 24,
+                    "columnEnd": 13
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "local 6",
           "file": { "key": "src/lib.rs" },
           "location": {
             "range": {
@@ -486,9 +717,7 @@
         "rust": {
           "defn": {
             "key": {
-              "symbol": {
-                "key": "rust-analyzer cargo basics 0.1.0 sum_f3().(n)"
-              },
+              "symbol": { "key": "src/lib.rs/local 6" },
               "location": {
                 "key": {
                   "file": { "key": "src/lib.rs" },
@@ -497,6 +726,153 @@
                     "columnBegin": 15,
                     "lineEnd": 37,
                     "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "local 7",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 38,
+              "columnBegin": 13,
+              "lineEnd": 38,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 40,
+            "columnBegin": 9,
+            "lineEnd": 40,
+            "columnEnd": 11
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 7" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 38,
+                    "columnBegin": 13,
+                    "lineEnd": 38,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "local 7",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 38,
+              "columnBegin": 13,
+              "lineEnd": 38,
+              "columnEnd": 15
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 42,
+            "columnBegin": 5,
+            "lineEnd": 42,
+            "columnEnd": 7
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 7" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 38,
+                    "columnBegin": 13,
+                    "lineEnd": 38,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "src/lib.rs" },
+      "xref": {
+        "target": {
+          "name": "local 8",
+          "file": { "key": "src/lib.rs" },
+          "location": {
+            "range": {
+              "file": { "key": "src/lib.rs" },
+              "lineBegin": 39,
+              "columnBegin": 9,
+              "lineEnd": 39,
+              "columnEnd": 9
+            }
+          }
+        },
+        "source": {
+          "range": {
+            "file": { "key": "src/lib.rs" },
+            "lineBegin": 40,
+            "columnBegin": 16,
+            "lineEnd": 40,
+            "columnEnd": 16
+          }
+        }
+      },
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": { "key": "src/lib.rs/local 8" },
+              "location": {
+                "key": {
+                  "file": { "key": "src/lib.rs" },
+                  "range": {
+                    "lineBegin": 39,
+                    "columnBegin": 9,
+                    "lineEnd": 39,
+                    "columnEnd": 9
                   }
                 }
               }

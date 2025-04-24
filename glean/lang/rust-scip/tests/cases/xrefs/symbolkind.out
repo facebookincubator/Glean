@@ -2,20 +2,14 @@
   "@generated",
   {
     "key": {
+      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 crate/" },
+      "kind": 3
+    }
+  },
+  {
+    "key": {
       "symbol": { "key": "rust-analyzer cargo basics 0.1.0 f1_go()." },
       "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 f1_go().(acc)" },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 f1_go().(n)" },
-      "kind": 7
     }
   },
   {
@@ -26,20 +20,8 @@
   },
   {
     "key": {
-      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f1().(n)" },
-      "kind": 7
-    }
-  },
-  {
-    "key": {
       "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f2()." },
       "kind": 5
-    }
-  },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f2().(n)" },
-      "kind": 7
     }
   },
   {
@@ -48,10 +30,13 @@
       "kind": 5
     }
   },
-  {
-    "key": {
-      "symbol": { "key": "rust-analyzer cargo basics 0.1.0 sum_f3().(n)" },
-      "kind": 7
-    }
-  }
+  { "key": { "symbol": { "key": "src/lib.rs/local 0" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "src/lib.rs/local 1" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "src/lib.rs/local 2" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "src/lib.rs/local 3" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "src/lib.rs/local 4" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "src/lib.rs/local 5" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "src/lib.rs/local 6" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "src/lib.rs/local 7" }, "kind": 12 } },
+  { "key": { "symbol": { "key": "src/lib.rs/local 8" }, "kind": 12 } }
 ]
