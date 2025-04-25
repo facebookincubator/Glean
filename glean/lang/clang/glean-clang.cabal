@@ -140,6 +140,7 @@ executable clang-derive
         glean:core,
         glean:db,
         glean:lib,
+        glean:lib-derive,
         glean:schema,
         glean:util,
         vector-algorithms

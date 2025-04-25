@@ -832,12 +832,21 @@ executable gen-bytecode-hs
         glean:bytecode,
         glean:bytecode-instruction
 
-library lib
+library lib-derive
     import: fb-haskell, fb-cpp, deps
     visibility: public
     hs-source-dirs: glean/lib
     exposed-modules:
         Glean.Derive
+    build-depends:
+        glean:client-hs,
+        glean:if-glean-hs
+
+library lib
+    import: fb-haskell, fb-cpp, deps
+    visibility: public
+    hs-source-dirs: glean/lib
+    exposed-modules:
         Glean.Util.CxxXRef
         Glean.Util.Declarations
         Glean.Util.Range
@@ -985,7 +994,7 @@ library indexers
         glean:db,
         glean:handler,
         glean:interprocess,
-        glean:lib,
+        glean:lib-derive,
         glean:lsif,
         glean:scip,
         glean:stubs,
@@ -1031,7 +1040,7 @@ executable glean
         glean:stubs,
         glean:config,
         glean:core,
-        glean:lib,
+        glean:lib-derive,
         glean:util,
         json,
         split,
@@ -1109,6 +1118,7 @@ executable hiedb-indexer
         glean:db,
         glean:if-glean-hs,
         glean:lib,
+        glean:lib-derive,
         glean:schema,
         glean:stubs,
         glean:util,
@@ -1492,6 +1502,7 @@ library clang-derive-lib
         glean:core,
         glean:db,
         glean:lib,
+        glean:lib-derive,
         glean:schema,
         glean:util,
         vector-algorithms
@@ -1985,7 +1996,7 @@ test-suite schematest
         glean:config,
         glean:if-glean-hs,
         glean:if-internal-hs,
-        glean:lib,
+        glean:lib-derive,
         glean:util,
 
 test-suite schemaevolves
@@ -2063,7 +2074,7 @@ test-suite incremental
         glean:core,
         glean:db,
         glean:if-glean-hs,
-        glean:lib,
+        glean:lib-derive,
         glean:schema
     if arch(x86_64)
         buildable: True
