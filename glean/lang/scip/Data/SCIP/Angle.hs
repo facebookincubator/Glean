@@ -221,11 +221,28 @@ decodeScipInfo filepath info = do
           "symbol" .= symId,
           "docs" .= docId
         ])
-  return (docFacts <> concat symDocFacts)
+  displayNameFacts <- case mSymId of
+    Nothing -> return []
+    Just symId -> displayNameFacts scipDisplayName symId
+  return (docFacts <> concat symDocFacts <> displayNameFacts)
 
   where
     scipSymbol = info ^. Scip.symbol
     scipDocs = info ^. Scip.documentation
+    scipDisplayName = info ^. Scip.displayName
+
+displayNameFacts :: Text -> SCIP.Id -> Parse [SCIP.Predicate]
+displayNameFacts scipDisplayName symId = do
+  displayNameId <- nextId
+  let displayNameFact = SCIP.Predicate
+        "scip.DisplayName"
+        [ object [SCIP.factId displayNameId, "key" .= scipDisplayName]]
+  symbolDisplayNameFact <-
+    SCIP.predicate
+      "scip.DisplayNameSymbol"
+      ["symbol" .= symId, "displayName" .= displayNameId]
+  return (displayNameFact : symbolDisplayNameFact)
+
 
 -- | An occurence of a symbol in a given document the optional symbol role
 -- will tell us if it is an xref or a def or other
