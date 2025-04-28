@@ -353,14 +353,14 @@ runDerivation env repo ref pred Thrift.DerivePredicateQuery{..} = do
       numCapabilities <- getNumCapabilities
       let
         -- leave some cores free to run writer threads and other requests
-        parallelism = max 1 ((numCapabilities * 7) `quot` 10)
+        parallelism = max 1 ((numCapabilities * 4) `quot` 10)
 
         -- aim for this many jobs, to have a reasonable granularity
         -- and keep the pipeline full.
         jobs = parallelism * 10
 
         -- don't make huge queries
-        maxBatchSize = 10000
+        maxBatchSize = 5000
 
       let
         -- For an enum type, create a separate job for each enum value
