@@ -22,7 +22,6 @@ import Util.EventBase
 
 import qualified Glean
 import qualified Glean.Remote
-import Glean.BuildInfo
 import Glean.Impl.ConfigProvider
 import Glean.Schema.Builtin.Types (schema_id)
 import Glean.Schema.Src as Src
@@ -54,11 +53,8 @@ main =
 
 create :: Glean.Backend b => b -> IO ()
 create backend =
-  Glean.fillDatabase backend repo handle Nothing ifexists write
+  Glean.fillDatabase backend repo Nothing ifexists write
   where
-  -- the handle can be anything, but we'll use some details
-  -- about the binary since that might be useful for debugging
-  handle = buildRule <> "@" <> buildRevision
 
   -- name/hash of the repo to create
   repo = Glean.Repo "example" "0"

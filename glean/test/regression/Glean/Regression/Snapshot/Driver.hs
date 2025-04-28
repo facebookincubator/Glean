@@ -51,7 +51,7 @@ type Group = String
 defaultCreateDatabase :: CreateDatabase opts
 defaultCreateDatabase opts backend indexer test = do
   let repo = testRepo test
-  fillDatabase backend repo "" Nothing (die "repo already exists") $
+  fillDatabase backend repo Nothing (die "repo already exists") $
     runIndexerForTest backend (indexer opts) test
 
 driverFromIndexer :: Indexer opts -> Driver opts

@@ -44,7 +44,7 @@ incrementalClangDriver = clangDriver {
         , testRoot = testRoot test </> "old"
         }
 
-    fillDatabase backend base "" Nothing (die "repo already exists") $
+    fillDatabase backend base Nothing (die "repo already exists") $
       runIndexerForTest backend (indexer opts) baseTestConfig
 
     -- discover which files are in the new version
@@ -57,5 +57,5 @@ incrementalClangDriver = clangDriver {
             pruned_units = map UTF8.fromString files,
             pruned_exclude = True
           }
-    fillDatabase backend repo "" (Just deps) (die "repo already exists") $
+    fillDatabase backend repo (Just deps) (die "repo already exists") $
       runIndexerForTest backend (indexer opts { Clang.clangIncremental = True }) test

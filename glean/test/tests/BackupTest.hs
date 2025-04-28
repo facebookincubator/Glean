@@ -65,30 +65,25 @@ data TestEnv = forall site. Backup.Site site => TestEnv
 data TestDbSpec
   = TestDbSpec
     { testDbRepo :: Repo
-    , testDbGood :: Bool
     , testDbAge :: Int
     , testDbDeps :: Maybe Dependencies
     }
   | CloudTestDbSpec
     { testDbRepo :: Repo
-    , testDbGood :: Bool
     , testDbAge :: Int
     , testDbSize :: Int64
     , testDbDeps :: Maybe Dependencies
     }
 
 goodDb :: Text -> Text -> TestDbSpec
-goodDb name hash = TestDbSpec (Repo name hash) True 0 Nothing
-
-badDb :: Text -> Text -> TestDbSpec
-badDb name hash = TestDbSpec (Repo name hash) False 0 Nothing
+goodDb name hash = TestDbSpec (Repo name hash) 0 Nothing
 
 goodDbAge :: Text -> Text -> Int -> TestDbSpec
-goodDbAge name hash age = TestDbSpec (Repo name hash) True age Nothing
+goodDbAge name hash age = TestDbSpec (Repo name hash) age Nothing
 
 goodDbAgeDeps :: Text -> Text -> Int -> Dependencies -> TestDbSpec
 goodDbAgeDeps name hash age deps =
-  TestDbSpec (Repo name hash) True age (Just deps)
+  TestDbSpec (Repo name hash) age (Just deps)
 
 withTestEnv
   :: [TestDbSpec]
@@ -151,24 +146,15 @@ created :: Integral a => a -> UTCTime -> UTCTime
 created t = addUTCTime (negate (fromIntegral t))
 
 makeDB :: TestEnv -> UTCTime -> TestDbSpec -> IO ()
-makeDB TestEnv{testEnv = env} now (TestDbSpec repo good age deps) = do
+makeDB TestEnv{testEnv = env} now (TestDbSpec repo age deps) = do
   KickOffResponse False <- kickOffDatabase env def
     { kickOff_repo = repo
-    , kickOff_fill = Just $ KickOffFill_writeHandle ""
     , kickOff_dependencies = deps
     }
   void $ atomically $ Catalog.modifyMeta (envCatalog env) repo $ \meta ->
     return meta { metaCreated = utcTimeToPosixEpochTime (created age now) }
-  workFinished env WorkFinished
-    { workFinished_work = def
-        { work_repo = repo
-        , work_handle = ""
-        }
-    , workFinished_outcome = if good
-        then Outcome_success Success
-        else Outcome_failure $ Failure "failed"
-    }
-  when good $ finalizeWait env repo
+  void $ finishDatabase env repo
+  finalizeWait env repo
 
 makeDB TestEnv{testBackup} now CloudTestDbSpec{..} =
   withTempFileContents ("" :: String) $ \path ->
@@ -194,23 +180,23 @@ basicBackupTest = TestCase $ withTest $ withTestEnv
   id
   $ \TestEnv{..} -> do
     expect testEvents $ mconcat
-      [ expectFinalize [repo | TestDbSpec repo True _ _ <- repos] ]
+      [ expectFinalize [repo | TestDbSpec repo _ _ <- repos] ]
     testUpdConfig $ \scfg -> scfg
       { config_backup = (config_backup scfg)
           { databaseBackupPolicy_allowed = HashSet.fromList ["test"] } }
     expect testEvents $ mconcat
-      [ expectBackups [repo | TestDbSpec repo True _ _ <- repos]
+      [ expectBackups [repo | TestDbSpec repo _ _ <- repos]
       , want Waiting ]
 
     backups <- Backup.enumerate testBackup
     assertEqual "repos"
-      (sort [repo | TestDbSpec repo True _ _ <- repos])
+      (sort [repo | TestDbSpec repo _ _ <- repos])
       (sort [repo | (repo, _) <- backups])
   where
     repos :: [TestDbSpec]
     repos =
       [ goodDb "test" "1"
-      , badDb "test" "2"
+      , goodDb "test" "2"
       , goodDb "test" "3" ]
 
 allowedTest :: Test
@@ -219,12 +205,12 @@ allowedTest = TestCase $ withTest $ withTestEnv
   id
   $ \TestEnv{..} -> do
     expect testEvents $ mconcat
-      [ expectFinalize [repo | TestDbSpec repo True _ _ <- repos] ]
+      [ expectFinalize [repo | TestDbSpec repo _ _ <- repos] ]
     testUpdConfig $ \scfg -> scfg
       { config_backup = (config_backup scfg)
           { databaseBackupPolicy_allowed = HashSet.fromList ["bar"] }}
     expect testEvents $ mconcat
-      [ expectBackups [repo | TestDbSpec repo True _ _ <- repos,
+      [ expectBackups [repo | TestDbSpec repo _ _ <- repos,
           repo_name repo == "bar"]
       , want Waiting ]
   where
@@ -242,17 +228,17 @@ restoreOrderTest = TestCase $ withTest $ withTestEnv
   id
   $ \TestEnv{..} -> do
     expect testEvents $ mconcat
-      [ expectFinalize [repo | TestDbSpec repo True _ _ <- repos] ]
+      [ expectFinalize [repo | TestDbSpec repo _ _ <- repos] ]
     testUpdConfig $ \scfg -> scfg
       { config_backup = (config_backup scfg)
           { databaseBackupPolicy_allowed =
               HashSet.fromList ["bar","foo","baz"] }}
     expect testEvents $ mconcat
-      [ expectBackups [repo | TestDbSpec repo True _ _ <- repos ]
+      [ expectBackups [repo | TestDbSpec repo _ _ <- repos ]
       , want Waiting ]
 
     -- delete all the repos and run the janitor to start restoring
-    forM_ repos $ \(TestDbSpec repo _ _ _) -> deleteDatabase testEnv repo
+    forM_ repos $ \(TestDbSpec repo _ _) -> deleteDatabase testEnv repo
     testUpdConfig $ \scfg -> scfg
       { config_restore = def { databaseRestorePolicy_enabled = True } }
     runDatabaseJanitor testEnv
@@ -315,7 +301,7 @@ restoreNoDiskSpaceTest =
 
   where
     repo = Repo "foo" "1"
-    repos = [ CloudTestDbSpec repo True 1 (10*tb) Nothing]
+    repos = [ CloudTestDbSpec repo 1 (10*tb) Nothing]
     tb :: Int64
     tb = 1000000000000
 

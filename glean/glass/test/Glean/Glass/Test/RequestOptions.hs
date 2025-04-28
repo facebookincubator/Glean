@@ -86,7 +86,7 @@ main = do
 
   createDB opts backend indexer testConfig = do
     let createTestDatabase cfg =
-          Glean.fillDatabase backend (testRepo cfg) "" Nothing
+          Glean.fillDatabase backend (testRepo cfg) Nothing
             (error "repo already exists") $ do
               let Glean.Repo name hash = testRepo cfg
               _ <- Glean.updateProperties backend (testRepo cfg)

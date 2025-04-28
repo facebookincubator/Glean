@@ -85,7 +85,6 @@ main = benchmarkMain $ \run -> withBenchDB 10000 $ \env repo -> do
       where (Repo name hash) = repo
   void $ kickOffDatabase env def
     { kickOff_repo = stacked
-    , kickOff_fill = Just $ KickOffFill_writeHandle ""
     , kickOff_dependencies = Just dependencies
     }
   run

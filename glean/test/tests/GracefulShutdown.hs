@@ -14,7 +14,6 @@ module GracefulShutdown (
 import Control.Concurrent.Async (async)
 import Control.DeepSeq (rnf)
 import Control.Exception (Exception, catchJust, evaluate, onException)
-import Control.Monad.Extra (unless)
 import Data.Default (def)
 import Data.Functor ((<&>))
 import Data.List (isInfixOf)
@@ -45,15 +44,11 @@ import Util.EventBase (withEventBaseDataplane)
 import Util.Log.String (logInfo)
 
 import Glean (
-  Backend (workFinished),
+  Backend (finishDatabase),
   ClientConfig (clientConfig_serv),
-  KickOff (kickOff_fill, kickOff_repo),
-  KickOffFill (KickOffFill_writeHandle),
+  KickOff (kickOff_repo),
   KickOffResponse (KickOffResponse),
-  Outcome (Outcome_success),
   Repo (Repo),
-  Work (..),
-  WorkFinished (..),
   completePredicates,
   kickOffDatabase,
   listDatabases,
@@ -69,6 +64,7 @@ import qualified Glean.Types as Glean
 import Glean.Util.ConfigProvider (
   ConfigProvider (defaultConfigOptions, withConfigProvider),
  )
+import Control.Monad.Extra
 
 data Config = Config
   { serverBinary :: FilePath
@@ -119,7 +115,6 @@ waitForIncompleteDBs = setupOutOfProcessServer 10000 $ \ph err backend -> do
       backend
       def
         { kickOff_repo = repo
-        , kickOff_fill = Just $ KickOffFill_writeHandle "writeHandle"
         }
   -- send a SIGTERM to the server and verify that it refuses to die
   terminateProcess ph
@@ -131,18 +126,7 @@ waitForIncompleteDBs = setupOutOfProcessServer 10000 $ \ph err backend -> do
 
   -- finish the DB and check the server exits
   Glean.completePredicates backend repo (Glean.CompletePredicates_axiom def)
-  workFinished
-    backend
-    WorkFinished
-      { workFinished_work =
-          def
-            { work_repo = repo
-            , work_task = ""
-            , work_parcelIndex = 0
-            , work_handle = "writeHandle"
-            }
-      , workFinished_outcome = Outcome_success def
-      }
+  void $ finishDatabase backend repo
   retry assertions 10 $ do
     ec <- getProcessExitCode ph
     assertBool "Dies when all incomplete DBs are finalized" (isJust ec)

@@ -50,7 +50,6 @@ data WriteCommand
   = Write
       { writeRepo :: Repo
       , writeRepoTime :: Maybe UTCTime
-      , writeHandle :: Text
       , create :: Bool
       , dependencies :: Maybe (IO Thrift.Dependencies)
       , finish :: Bool
@@ -201,7 +200,6 @@ instance Plugin WriteCommand where
         finish <- finishOpt
         dependencies <- optional (stackedOptions <|> updateOptions)
         properties <- dbPropertiesOpt
-        writeHandle <- handleOpt
         writeMaxConcurrency <- maxConcurrencyOpt
         useLocalCache <- useLocalSwitchOpt
         sendQueueSettings <- Glean.sendAndRebaseQueueOptions
@@ -220,7 +218,6 @@ instance Plugin WriteCommand where
           <> "options are related to each other.")) $ do
         writeRepo <- dbOpts
         finish <- finishOpt
-        writeHandle <- handleOpt
         writeMaxConcurrency <- maxConcurrencyOpt
         useLocalCache <- useLocalSwitchOpt
         sendQueueSettings <- Glean.sendAndRebaseQueueOptions
@@ -256,12 +253,11 @@ instance Plugin WriteCommand where
   runCommand _ _ backend Write{..} =
     tryBracket
        (when create $ do
-            putStrLn $ "Creating DB using handle " ++ Text.unpack writeHandle
+            putStrLn $ "Creating DB " <> showRepo writeRepo
             deps <- maybe (return Nothing) (fmap Just) dependencies
             Thrift.KickOffResponse alreadyExists <-
               Glean.kickOffDatabase backend def
                 { kickOff_repo = writeRepo
-                , kickOff_fill = Just $ KickOffFill_writeHandle writeHandle
                 , kickOff_properties = HashMap.fromList properties
                 , kickOff_dependencies = deps
                 , kickOff_repo_hash_time =
@@ -270,14 +266,9 @@ instance Plugin WriteCommand where
                 }
             when alreadyExists $ die 3 "DB create failure: already exists"
        )
-       (\_ result ->
-         let mFail = resultToFailure result in
-         if finish then
-           finished backend writeRepo writeHandle
-             Nothing Nothing (fmap Text.pack mFail)
-         else
-           let writeFail err = die 3 $ "DB write failure: " ++ err in
-           maybe (return ()) writeFail mFail)
+       (\_ result -> case resultToFailure result of
+          Just err -> die 3 $ "DB create failure: " ++ err
+          Nothing -> when finish $ finished backend writeRepo)
        (\_ ->
           write Write{..})
     where

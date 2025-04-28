@@ -35,7 +35,6 @@ import Data.Functor
 import Data.Int
 import Data.List (foldl')
 import Data.Map (Map)
-import qualified Data.Map as Map
 import Data.Text (Text)
 
 import Util.EventBase
@@ -54,7 +53,6 @@ import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Typed
 import qualified Glean.Types as Thrift
 import Glean.Util.ConfigProvider
-import Glean.Util.Observed as Observed
 import qualified Glean.Util.ThriftSource as ThriftSource
 import Glean.Util.ThriftSource (ThriftSource)
 
@@ -140,13 +138,8 @@ withTestEnv settings action =
 kickOffTestDB
   :: Env -> Thrift.Repo -> (Thrift.KickOff -> Thrift.KickOff) -> IO ()
 kickOffTestDB env repo update = do
-  recipes <- Observed.get $ envRecipeConfig env
   void $ kickOffDatabase env $ update def
     { Thrift.kickOff_repo = repo
-    , Thrift.kickOff_fill = Just $
-        if Thrift.repo_name repo `Map.member` Recipes.config_recipes recipes
-          then Thrift.KickOffFill_recipes $ Thrift.repo_name repo
-          else Thrift.KickOffFill_writeHandle ""
     }
 
 writeFactsIntoDB
@@ -170,11 +163,7 @@ waitUntilComplete Env{..} repo = atomically $ do
 
 completeTestDB :: Env -> Thrift.Repo -> IO ()
 completeTestDB env repo = do
-  workFinished env $ Thrift.WorkFinished
-    { workFinished_work =
-        def { Thrift.work_repo = repo, Thrift.work_handle = "" }
-    , workFinished_outcome = Thrift.Outcome_success def
-    }
+  void $ finishDatabase env repo
   waitUntilComplete env repo
 
 withEmptyTestDB

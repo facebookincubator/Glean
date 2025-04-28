@@ -36,7 +36,6 @@ dependenciesTest = TestCase $ withTestEnv [] $ \env -> do
 
   void $ kickOffDatabase env def
     { kickOff_repo = repo1
-    , kickOff_fill = Just (KickOffFill_writeHandle "")
     , kickOff_properties = props
     }
 
@@ -45,7 +44,6 @@ dependenciesTest = TestCase $ withTestEnv [] $ \env -> do
   void $ kickOffDatabase env def
     { kickOff_repo = repo2
     , kickOff_dependencies = Just $ stacked repo1
-    , kickOff_fill = Just (KickOffFill_writeHandle "")
     , kickOff_properties = props
     }
   ListDatabasesResult{..} <- listDatabases env def

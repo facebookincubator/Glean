@@ -22,7 +22,6 @@ import qualified Data.Map as AMap
 import qualified Data.Text as Text
 import Data.Typeable (Typeable)
 import qualified Glean
-import Glean.BuildInfo (buildRevision, buildRule)
 import Glean.Derive (derivePredicate)
 import qualified Glean.Schema.Hs as Hs
 import qualified Glean.Schema.Hs.Types as Hs
@@ -57,8 +56,7 @@ createGleanDB ::
   [IndexerBatchOutput] ->
   IO ()
 createGleanDB backend dontCreateDb newRepo fileLinesMap batchOutputs = do
-  let buildHandle = buildRule <> "@" <> buildRevision
-      Glean.Repo{..} = newRepo
+  let Glean.Repo{..} = newRepo
 
   logInfo $ printf "Creating Glean DB %s/%s" repo_name repo_hash
 
@@ -99,7 +97,6 @@ createGleanDB backend dontCreateDb newRepo fileLinesMap batchOutputs = do
       Glean.fillDatabase
         backend
         newRepo
-        buildHandle
         Nothing
         (throwIO DatabaseAlreadyExistsException)
         finalWriter

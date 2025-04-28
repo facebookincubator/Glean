@@ -363,30 +363,6 @@ dbCmd str
           output $ pretty $ "using database " ++ repoString repo
           setRepo repo
 
-kickOff :: String -> Eval ()
-kickOff s
-  | repo:rest <- words s
-  , Just repo <- Glean.parseRepo repo = do
-      fill <- case rest of
-        [] -> return Nothing
-        ["write"] -> return $ Just $ Thrift.KickOffFill_writeHandle ""
-        [r]
-          | Just handle <- stripPrefix "write=" r -> return $ Just $
-              Thrift.KickOffFill_writeHandle $ Text.pack handle
-          | Just name <- stripPrefix "recipes=" r -> return $ Just $
-              Thrift.KickOffFill_recipes $ Text.pack name
-          | otherwise -> liftIO $ throwIO $ ErrorCall "Invalid fill spec"
-        _ -> liftIO $ throwIO $ ErrorCall "Too many arguments"
-      withBackend $ \be -> do
-        r <- liftIO $
-          Glean.kickOffDatabase be $ def
-            { Thrift.kickOff_repo = repo
-            , Thrift.kickOff_fill = fill
-            }
-        when (Thrift.kickOffResponse_alreadyExists r) $
-          output "database already exists"
-  | otherwise = liftIO $ throwIO $ ErrorCall "Invalid database specification"
-
 restoreDatabase :: String -> Eval ()
 restoreDatabase loc = withBackend $ \be ->
   liftIO $ Glean.restoreDatabase be $ Text.pack loc
@@ -618,7 +594,6 @@ commands =
   , Cmd "pager" (completeWords (pure ["on", "off"])) $ \str _ -> pagerCmd str
   , Cmd "count" (completeWords availablePredicates) $ \str _ -> countCmd str
   , Cmd "!restore" Haskeline.noCompletion $ const . restoreDatabase
-  , Cmd "!kickoff" Haskeline.noCompletion $ const . kickOff
   , Cmd "!delete" completeDatabases $ const . deleteDatabase
   , Cmd "!owner" Haskeline.noCompletion $ \str _ -> ownerCmd str
   , Cmd "help" Haskeline.noCompletion $ \_ _ -> help

@@ -52,7 +52,6 @@ import Data.Hashable
 import qualified Data.HashMap.Strict as HashMap
 import Data.Map (Map)
 import qualified Data.Map as Map
-import Data.Maybe
 import Data.Monoid
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -63,7 +62,6 @@ import Foreign.Ptr
 import GHC.Fingerprint
 import qualified Haxl.Core as Haxl
 import System.IO.Unsafe
-import TextShow
 
 import Util.Control.Exception
 import Util.Time (DiffTimePoints)
@@ -74,6 +72,7 @@ import qualified Glean.Types as Thrift
 import Glean.Util.Some
 import Glean.Util.ThriftService (DbShard)
 import Glean.Types
+import Data.Either
 
 data StackedDbOpts
   = IncludeBase
@@ -248,16 +247,13 @@ localDatabases be =
 
 -- | Create a database and run the supplied IO action to write data
 -- into it. When the IO action returns, the DB will be marked complete
--- and cannot be modified further. If the IO action throws an exception,
--- the DB will be marked broken.
+-- and cannot be modified further.
 fillDatabase
   :: Backend a
   => a
     -- ^ The backend
   -> Repo
     -- ^ The repo to create
-  -> Text
-    -- ^ Handle for writing. Can be anything you like.
   -> Maybe Dependencies
     -- ^ Optionally stack the new DB on another DB
   -> IO ()
@@ -266,15 +262,15 @@ fillDatabase
   -> IO b
     -- ^ Caller-supplied action to write data into the DB.
   -> IO b
-fillDatabase env repo handle maybeDeps ifexists action =
+fillDatabase env repo maybeDeps ifexists action =
   tryBracket
     (do
-      exists <- create env repo handle maybeDeps
+      exists <- create env repo maybeDeps
       when exists ifexists
     )
     (\_ ex -> do
-      let failure = case ex of Left e -> Just (showt e); _ -> Nothing
-      finish env repo handle failure
+      when (isRight ex) $ do
+        finish env repo
     )
     (const action)
 
@@ -283,13 +279,11 @@ create
   :: Backend a
   => a
   -> Repo
-  -> Text -- ^ A handle, can be anything
   -> Maybe Dependencies
   -> IO Bool  -- ^ Returns 'True' if the DB already existed
-create backend repo handle maybeDeps = do
+create backend repo maybeDeps = do
   r <- kickOffDatabase backend def
     { kickOff_repo = repo
-    , kickOff_fill = Just $ KickOffFill_writeHandle handle
     , kickOff_properties = HashMap.fromList $
         [ ("glean.schema_id", id)
         | Just (SchemaId id) <- [schemaId backend]
@@ -303,20 +297,10 @@ finish
   :: Backend a
   => a
   -> Repo
-  -> Text -- ^ The handle passed to 'create'
-  -> Maybe Text  -- ^ @Just e@ => failed with message e
   -> IO ()
-finish backend repo handle failure = do
-  workFinished backend WorkFinished
-    { workFinished_work = def
-        { work_repo = repo
-        , work_handle = handle
-        }
-    , workFinished_outcome = case failure of
-        Just ex -> Outcome_failure (Failure ex)
-        Nothing -> Outcome_success def
-    }
-  when (isNothing failure) $ finalize backend repo
+finish backend repo = do
+  void $ finishDatabase backend repo
+  finalize backend repo
 
 -- | Wait for a database to finish finalizing and enter the "complete"
 -- state after all writing has finished. Before the database is

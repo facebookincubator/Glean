@@ -31,7 +31,6 @@ propertiesTest = TestCase $ withTestEnv [] $ \env -> do
       props = HashMap.fromList [("key","value")]
   void $ kickOffDatabase env def
     { kickOff_repo = repo
-    , kickOff_fill = Just (KickOffFill_writeHandle "")
     , kickOff_properties = props
     }
 

@@ -255,14 +255,12 @@ class GleanShellCreate(GleanShellTest):
         self.assertIsNotNone(re.search("0 facts", output))
 
 
-class GleanShellLoadBroken(GleanShellTest):
+class GleanShellLoadIncomplete(GleanShellTest):
     def test(self):
         self.shellCommand(":load glean/shell/tests/error.glean")
         output = self.shellCommand(":list error/0")
-        # Check that the DB is broken
-        self.assertIn("(broken)", output)
-        # Check that we have the error message
-        self.assertIn("Expecting a fact, which should be", output)
+        # Check that the DB didn't complete
+        self.assertIn("(incomplete)", output)
 
 
 class GleanShellOwner(GleanShellTest):

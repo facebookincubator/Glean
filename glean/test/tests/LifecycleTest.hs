@@ -75,7 +75,7 @@ instance Exception InconsistentDBError
 
 mkDB :: HasCallStack => Env -> Repo -> IO ()
 mkDB env repo =
-  fillDatabase env repo "" Nothing
+  fillDatabase env repo Nothing
     (fail "database already exists") (return ())
 
 checkActive :: HasCallStack => Env -> Bool -> IO ()
@@ -115,7 +115,6 @@ kickOff :: HasCallStack => Env -> Repo -> IO Bool
 kickOff env repo = do
   KickOffResponse ex <- kickOffDatabase env def
     { kickOff_repo = repo
-    , kickOff_fill = Just $ KickOffFill_writeHandle ""
     }
   return ex
 
@@ -263,8 +262,7 @@ kickOffStacked = TestCase $ withTEnv $ \TEnv{..} -> do
   waitUntilComplete tEnv repo1
   KickOffResponse ex <- kickOffDatabase tEnv def
     { kickOff_repo = repo2
-    , kickOff_fill = Just $ KickOffFill_writeHandle ""
-      , kickOff_dependencies = Just $ stacked repo1
+    , kickOff_dependencies = Just $ stacked repo1
     }
   assert $ not ex
   withOpenDatabase tEnv repo2 $ \_ -> return ()
@@ -275,7 +273,6 @@ kickOffStackedIncomplete = TestCase $ withTEnv $ \TEnv{..} -> do
   assertThrowsType "" (Proxy :: Proxy InvalidDependency)
     $ kickOffDatabase tEnv def
       { kickOff_repo = repo2
-      , kickOff_fill = Just $ KickOffFill_writeHandle ""
       , kickOff_dependencies = Just $ stacked repo1
       }
 
