@@ -286,6 +286,15 @@ predicate DeclarationToUSR :
   }
   stored { D, U } where USRToDeclaration { U, D }
 
+
+# Hash of the function's mangled name
+type MangledNameHash = string
+predicate MangledNameHashToDeclaration:
+  {
+    hash : MangledNameHash,
+    declaration : Declaration,
+  }
+
 # Objective C interface-implementation relationship
 predicate ObjcImplements :
   {
