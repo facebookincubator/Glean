@@ -67,6 +67,7 @@ data StringPredicate =
   Symbol
   | LocalName
   | File
+  | DisplayName
   deriving (Eq, Ord)
 
 data Env = Env {
@@ -230,11 +231,31 @@ decodeScipInfo filepath info = do
           "symbol" .= symId,
           "docs" .= docId
         ])
-  return (docFacts <> concat symDocFacts)
+  displayNameFacts <- case mSymId of
+    Nothing -> return []
+    Just symId -> case scipDisplayName of
+      "" -> return []
+      _ ->  displayNameFacts scipDisplayName symId
+  return (docFacts <> concat symDocFacts <> displayNameFacts)
 
   where
     scipSymbol = info ^. Scip.symbol
     scipDocs = info ^. Scip.documentation
+    scipDisplayName = info ^. Scip.displayName
+
+displayNameFacts :: Text -> SCIP.Id -> Parse [SCIP.Predicate]
+displayNameFacts scipDisplayName symId = do
+  (displayNameId, seenDisplayName) <- getOrSetFact DisplayName scipDisplayName
+  let displayNameFact =
+        ([ SCIP.Predicate "scip.DisplayName"
+              [object [SCIP.factId displayNameId, "key" .= scipDisplayName]] |
+          not seenDisplayName ])
+  symbolDisplayNameFact <-
+    SCIP.predicate
+      "scip.DisplayNameSymbol"
+      ["symbol" .= symId, "displayName" .= displayNameId]
+  return (displayNameFact <> symbolDisplayNameFact)
+
 
 -- | An occurence of a symbol in a given document the optional symbol role
 -- will tell us if it is an xref or a def or other
