@@ -1,0 +1,6023 @@
+[
+  "@generated",
+  {
+    "key": {
+      "displayName": { "key": "'a" },
+      "symbol": { "key": "measure/measure.rs/local 42" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "'a" },
+      "symbol": { "key": "measure/measure.rs/local 48" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "'a" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 27" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "'a" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 37" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "'a" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 36" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "'a" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 41" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "'a" },
+      "symbol": { "key": "pos/pos_impl.rs/local 0" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "'a" },
+      "symbol": { "key": "pos/pos_impl.rs/local 186" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "'a" },
+      "symbol": { "key": "pos/pos_impl.rs/local 209" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "'a" },
+      "symbol": { "key": "pos/pos_impl.rs/local 212" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "'a" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 42" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "'a" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 47" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "'a" },
+      "symbol": { "key": "relative_path.rs/local 43" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "'de" },
+      "symbol": { "key": "relative_path.rs/local 27" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "'de" },
+      "symbol": { "key": "relative_path.rs/local 30" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "0" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordName#0." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "0" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/FilePosSmall#0."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "0" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/Pos#0." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "0" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/PosSpanTiny#0."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "1" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordName#1." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "A" },
+      "symbol": { "key": "measure/measure.rs/local 43" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "A" },
+      "symbol": { "key": "measure/measure.rs/local 49" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "A" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 28" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "A" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 37" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "A" },
+      "symbol": { "key": "pos/pos_impl.rs/local 187" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "A" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 43" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "A" },
+      "symbol": { "key": "relative_path.rs/local 44" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "BEGINNING_OF_LINE_INCREMENT_BITS" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/BEGINNING_OF_LINE_INCREMENT_BITS."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "BEGINNING_OF_LINE_INCREMENT_OFFSET" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/BEGINNING_OF_LINE_INCREMENT_OFFSET."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "BOL_BITS" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/BOL_BITS."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "COLUMN_BITS" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/COLUMN_BITS."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "D" },
+      "symbol": { "key": "relative_path.rs/local 28" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "DUMMY" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/DUMMY."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "DUMMY" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/DUMMY."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "DUMMY" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/DUMMY."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "DUMMY" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/DUMMY."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Dummy" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Dummy#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "E" },
+      "symbol": { "key": "relative_path.rs/local 33" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "EMPTY" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]EMPTY."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Error" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]Error#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Error" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]Error#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Error" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]Error#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "FilePos" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/FilePos#" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "FilePosLarge" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "FilePosSmall" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/FilePosSmall#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "FromReason" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#FromReason#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "GLOBAL" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 GLOBAL." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "H" },
+      "symbol": { "key": "pos/pos_impl.rs/local 179" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "H" },
+      "symbol": { "key": "pos/pos_impl.rs/local 223" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Hhi" },
+      "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Hhi#" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "INVALID" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/INVALID."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Invalid" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#Invalid#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "LINE_BITS" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/LINE_BITS."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "LINE_NUMBER_INCREMENT_BITS" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/LINE_NUMBER_INCREMENT_BITS."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "LINE_NUMBER_INCREMENT_OFFSET" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/LINE_NUMBER_INCREMENT_OFFSET."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "LOG_LAST" },
+      "symbol": { "key": "rust-analyzer cargo delta_log 0.0.0 LOG_LAST." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "LOG_START" },
+      "symbol": { "key": "rust-analyzer cargo delta_log 0.0.0 LOG_START." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Large" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "MASK" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MASK."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "MAX_BEGINNING_OF_LINE_INCREMENT" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_BEGINNING_OF_LINE_INCREMENT."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "MAX_BOL" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_BOL."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "MAX_COLUMN" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_COLUMN."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "MAX_LINE" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/MAX_LINE."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "MAX_LINE_NUMBER_INCREMENT" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_LINE_NUMBER_INCREMENT."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "MAX_START_BEGINNING_OF_LINE" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_BEGINNING_OF_LINE."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "MAX_START_COLUMN_NUMBER" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_COLUMN_NUMBER."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "MAX_START_LINE_NUMBER" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_START_LINE_NUMBER."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "MAX_WIDTH" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/MAX_WIDTH."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Map" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/map/Map#" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Map" },
+      "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 Map#" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "NONE" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]NONE."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "NO_TOKEN" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/NO_TOKEN."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "None" },
+      "symbol": { "key": "measure/measure.rs/local 3" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "None" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 25" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "None" },
+      "symbol": { "key": "pos/pos_impl.rs/local 219" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "None" },
+      "symbol": { "key": "pos/pos_impl.rs/local 29" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "None" },
+      "symbol": { "key": "pos/pos_impl.rs/local 33" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "None" },
+      "symbol": { "key": "pos/pos_impl.rs/local 37" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "None" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 102" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "None" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 58" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "None" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 70" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "None" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 82" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "None" },
+      "symbol": { "key": "relative_path.rs/local 42" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "None" },
+      "symbol": { "key": "signed_source.rs/local 10" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "None" },
+      "symbol": { "key": "signed_source.rs/local 8" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "OLD_TOKEN" },
+      "symbol": { "key": "rust-analyzer cargo signed_source 0.0.0 OLD_TOKEN." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Ok" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#Ok#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "P" },
+      "symbol": { "key": "pos/pos_impl.rs/local 132" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "P" },
+      "symbol": { "key": "pos/pos_impl.rs/local 153" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "P" },
+      "symbol": { "key": "pos/pos_impl.rs/local 40" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Pos" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/Pos#" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "PosImpl" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "PosR" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosR#" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "PosSpanRaw" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/PosSpanRaw#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "PosSpanTiny" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/PosSpanTiny#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "PosSpanTooLarge" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/PosSpanTooLarge#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "PosString" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosString#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "PosTooLarge" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/PosTooLarge#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Prefix" },
+      "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Record" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 Record#" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "RecordEntry" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "RecordName" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordName#" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "RelativePath" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePath#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "RelativePathCtx" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Root" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Root#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "S" },
+      "symbol": { "key": "relative_path.rs/local 23" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "SIGNATURE_RE" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SIGNATURE_RE."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "SIGNED" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/SIGNED."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "SIGNING_REGEX" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SIGNING_REGEX."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "SIGNING_TOKEN" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SIGNING_TOKEN."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "SIGN_OR_OLD_TOKEN" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SIGN_OR_OLD_TOKEN."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "START_BEGINNING_OF_LINE_BITS" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_BEGINNING_OF_LINE_BITS."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "START_BEGINNING_OF_LINE_OFFSET" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_BEGINNING_OF_LINE_OFFSET."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "START_COLUMN_NUMBER_BITS" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_COLUMN_NUMBER_BITS."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "START_COLUMN_NUMBER_OFFSET" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_COLUMN_NUMBER_OFFSET."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "START_LINE_NUMBER_BITS" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_LINE_NUMBER_BITS."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "START_LINE_NUMBER_OFFSET" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/START_LINE_NUMBER_OFFSET."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Self" },
+      "symbol": { "key": "pos/with_erased_lines.rs/local 1" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "SignCheckResponse" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Small" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "T" },
+      "symbol": { "key": "pos/pos_impl.rs/local 229" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "T" },
+      "symbol": { "key": "relative_path.rs/local 52" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "TOKEN" },
+      "symbol": { "key": "rust-analyzer cargo signed_source 0.0.0 TOKEN." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "TOKEN_REGEX" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 TOKEN_REGEX."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Tiny" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Tiny#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Tmp" },
+      "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#Tmp#" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "TokenNotFoundError" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 TokenNotFoundError#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "UNSIGNED" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/UNSIGNED."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Unsigned" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 SignCheckResponse#Unsigned#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Value" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]Value#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "Visitor" },
+      "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 Visitor#" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "WIDTH_BITS" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/WIDTH_BITS."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "WIDTH_OFFSET" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/WIDTH_OFFSET."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "WithErasedLines" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 with_erased_lines/WithErasedLines#"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_alloc" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 39" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_alloc" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 39" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_alloc" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 43" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_alloc" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 45" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_alloc" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 49" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_p" },
+      "symbol": { "key": "pos/pos_impl.rs/local 124" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_p" },
+      "symbol": { "key": "pos/pos_impl.rs/local 129" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_p" },
+      "symbol": { "key": "pos/pos_impl.rs/local 150" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_p" },
+      "symbol": { "key": "pos/pos_impl.rs/local 26" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_p" },
+      "symbol": { "key": "pos/pos_impl.rs/local 30" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_p" },
+      "symbol": { "key": "pos/pos_impl.rs/local 34" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_p" },
+      "symbol": { "key": "pos/pos_impl.rs/local 38" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_p" },
+      "symbol": { "key": "pos/pos_impl.rs/local 56" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_p" },
+      "symbol": { "key": "pos/pos_impl.rs/local 65" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_p" },
+      "symbol": { "key": "pos/pos_impl.rs/local 71" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_p" },
+      "symbol": { "key": "pos/pos_impl.rs/local 91" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_rhs" },
+      "symbol": { "key": "pos/pos_impl.rs/local 183" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_rhs" },
+      "symbol": { "key": "pos/pos_impl.rs/local 185" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "_state" },
+      "symbol": { "key": "pos/pos_impl.rs/local 225" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "absolute" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]absolute()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "alloc" },
+      "symbol": { "key": "measure/measure.rs/local 45" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "alloc" },
+      "symbol": { "key": "measure/measure.rs/local 51" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "alloc" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 30" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "alloc" },
+      "symbol": { "key": "pos/pos_impl.rs/local 189" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "alloc" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 113" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "alloc" },
+      "symbol": { "key": "relative_path.rs/local 46" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "beg_of_file" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]beg_of_file()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "beg_of_file" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]beg_of_file()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "beg_of_line" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]beg_of_line()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "beg_of_line" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]beg_of_line()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "beginning_of_line_increment" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]beginning_of_line_increment()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bits" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 0" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bits" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 1" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bits" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 0" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bits" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 1" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "block" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 31" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "block" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 33" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "block" },
+      "symbol": { "key": "pos/pos_impl.rs/local 193" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "block" },
+      "symbol": { "key": "pos/pos_impl.rs/local 197" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "block" },
+      "symbol": { "key": "pos/pos_impl.rs/local 201" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "block" },
+      "symbol": { "key": "pos/pos_impl.rs/local 203" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "block" },
+      "symbol": { "key": "pos/pos_impl.rs/local 205" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "block" },
+      "symbol": { "key": "relative_path.rs/local 47" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "block" },
+      "symbol": { "key": "relative_path.rs/local 49" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 25" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 35" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 6" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 10" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 17" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 7" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol" },
+      "symbol": { "key": "pos/pos_impl.rs/local 13" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol" },
+      "symbol": { "key": "pos/pos_impl.rs/local 17" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol" },
+      "symbol": { "key": "pos/pos_impl.rs/local 45" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 107" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 53" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 87" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 97" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#bol."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol_increment" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 13" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol_line_col" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]bol_line_col()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "bol_line_col_unchecked" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]bol_line_col_unchecked()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "btw" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]btw()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "btw_nocheck" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]btw_nocheck()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "buf" },
+      "symbol": { "key": "delta_log.rs/local 4" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "builder" },
+      "symbol": { "key": "delta_log.rs/local 3" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "cap" },
+      "symbol": { "key": "signed_source.rs/local 11" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "caps" },
+      "symbol": { "key": "signed_source.rs/local 9" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "char0" },
+      "symbol": { "key": "pos/pos_impl.rs/local 7" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "char1" },
+      "symbol": { "key": "pos/pos_impl.rs/local 8" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "cmp" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]cmp()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "cmp" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]cmp()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "cmp" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]cmp()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "cmp" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]cmp()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "cmp" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]cmp()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "col" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 12" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "col" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 12" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "col" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 24" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "col" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 9" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "cols" },
+      "symbol": { "key": "pos/pos_impl.rs/local 94" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "column" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 3" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "column" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 14" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "column" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]column()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "column" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]column()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "compute" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/compute()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "count" },
+      "symbol": { "key": "measure/measure.rs/local 27" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "count" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#count."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "ctx" },
+      "symbol": { "key": "pos/pos_impl.rs/local 211" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "ctx" },
+      "symbol": { "key": "pos/pos_impl.rs/local 216" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "ctx" },
+      "symbol": { "key": "pos/pos_impl.rs/local 218" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "ctx" },
+      "symbol": { "key": "pos/pos_impl.rs/local 234" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "ctx" },
+      "symbol": { "key": "relative_path.rs/local 14" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "d1" },
+      "symbol": { "key": "delta_log.rs/local 2" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "data" },
+      "symbol": { "key": "signed_source.rs/local 0" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "data" },
+      "symbol": { "key": "signed_source.rs/local 1" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "data" },
+      "symbol": { "key": "signed_source.rs/local 13" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "data" },
+      "symbol": { "key": "signed_source.rs/local 3" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "data" },
+      "symbol": { "key": "signed_source.rs/local 4" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "data" },
+      "symbol": { "key": "signed_source.rs/local 5" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "data" },
+      "symbol": { "key": "signed_source.rs/local 6" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "default" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordEntry]default()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "default" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]default()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "deserialize" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][`Deserialize<'de>`]deserialize()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "deserializer" },
+      "symbol": { "key": "relative_path.rs/local 29" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "digest" },
+      "symbol": { "key": "signed_source.rs/local 14" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "distribution" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#distribution."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "do_fmt" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/do_fmt()." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "dummy" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#dummy."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 42" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 50" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 101" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 109" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 115" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 117" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 121" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 122" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 136" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 143" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 146" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 149" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 157" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 164" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 167" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 172" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 19" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 192" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 196" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 222" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 23" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 233" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 25" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 48" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 50" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 52" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 55" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 60" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 62" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 63" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 74" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 82" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 85" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 87" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 90" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 97" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_span_raw.rs/local 3" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_span_raw.rs/local 5" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 101" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 111" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 37" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 5" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 57" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 69" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 81" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 91" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#end."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#end."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/PosSpanRaw#end."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 105" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 61" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 73" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 85" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 94" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_beginning_of_line" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_beginning_of_line()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_bol" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 47" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_bol" },
+      "symbol": { "key": "pos/pos_impl.rs/local 79" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_bol" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 10" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_bol" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 32" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_bol" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 65" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_bol" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 77" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_col" },
+      "symbol": { "key": "pos/pos_impl.rs/local 140" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_col" },
+      "symbol": { "key": "pos/pos_impl.rs/local 161" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_column" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_column()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_line" },
+      "symbol": { "key": "pos/pos_impl.rs/local 139" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_line" },
+      "symbol": { "key": "pos/pos_impl.rs/local 160" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_line" },
+      "symbol": { "key": "pos/pos_impl.rs/local 78" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_line" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 11" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_line" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 64" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_line" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 76" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_line_number" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_line_number()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_lnum" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 46" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_lnum" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 31" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_offset" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 48" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_offset" },
+      "symbol": { "key": "pos/pos_impl.rs/local 47" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_offset" },
+      "symbol": { "key": "pos/pos_impl.rs/local 80" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 109" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 12" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 33" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 55" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 67" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 79" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 89" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 99" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]end_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "end_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]end_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "entries" },
+      "symbol": { "key": "measure/measure.rs/local 33" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "entries" },
+      "symbol": { "key": "measure/measure.rs/local 52" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "entries" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 Record#entries." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "entry" },
+      "symbol": { "key": "measure/measure.rs/local 20" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "entry" },
+      "symbol": { "key": "measure/measure.rs/local 58" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "eq" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]eq()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "eq_modulo_pos" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][EqModuloPos]eq_modulo_pos()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "eq_modulo_pos_and_reason" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][EqModuloPos]eq_modulo_pos_and_reason()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "exp_end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 240" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "exp_start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 239" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "expected_md5" },
+      "symbol": { "key": "signed_source.rs/local 7" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "expecting" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]expecting()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "f" },
+      "symbol": { "key": "measure/measure.rs/local 36" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "f" },
+      "symbol": { "key": "measure/measure.rs/local 38" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "f" },
+      "symbol": { "key": "measure/measure.rs/local 41" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "f" },
+      "symbol": { "key": "pos/pos_impl.rs/local 131" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "f" },
+      "symbol": { "key": "pos/pos_impl.rs/local 133" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "f" },
+      "symbol": { "key": "pos/pos_impl.rs/local 152" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "f" },
+      "symbol": { "key": "pos/pos_impl.rs/local 154" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "f" },
+      "symbol": { "key": "pos/pos_impl.rs/local 214" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "f" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 51" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "f" },
+      "symbol": { "key": "relative_path.rs/local 16" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "f" },
+      "symbol": { "key": "relative_path.rs/local 18" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "f" },
+      "symbol": { "key": "relative_path.rs/local 3" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 134" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 141" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 144" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 155" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 162" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 165" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 168" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 170" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 190" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 194" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 198" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 2" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 200" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 206" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 227" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 28" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 32" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 36" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 72" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 9" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": { "key": "pos/pos_impl.rs/local 92" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#file."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#file."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Tiny#file."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file_pos" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file_pos_large" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "file_pos_small" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "filename" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]filename()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "filename_rc" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]filename_rc()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "first_char_of_line" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]first_char_of_line()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "fmt" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 35" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "fmt" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName]fmt()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "fmt" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]fmt()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "fmt" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]fmt()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "fmt" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[`PosString<'_>`]fmt()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "fmt" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]fmt()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "fmt" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]fmt()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "fmt" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]fmt()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "formatter" },
+      "symbol": { "key": "relative_path.rs/local 32" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName]from()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]from()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanRaw]from()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_line_cols_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from_line_cols_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_line_column_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]from_line_column_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_line_column_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]from_line_column_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_lnum_bol_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]from_lnum_bol_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_lnum_bol_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]from_lnum_bol_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_lnum_bol_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from_lnum_bol_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_ocamlrep" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FromOcamlRep]from_ocamlrep()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_ocamlrep" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FromOcamlRep]from_ocamlrep()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_ocamlrep" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[PosImpl][FromOcamlRep]from_ocamlrep()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_ocamlrep" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][FromOcamlRep]from_ocamlrep()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_ocamlrep" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][FromOcamlRep]from_ocamlrep()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_ocamlrep_in" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_ocamlrep_in" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_ocamlrep_in" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][`FromOcamlRepIn<'a>`]from_ocamlrep_in()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "from_raw_span" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]from_raw_span()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "fst_end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 242" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "fst_start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 241" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "has_extension" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]has_extension()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "hash" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][NoPosHash]hash()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "hash" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]hash()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "hash" },
+      "symbol": { "key": "rust-analyzer cargo signed_source 0.0.0 hash()." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "hasher" },
+      "symbol": { "key": "pos/pos_impl.rs/local 181" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "hh_measure_pop_global" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure_ffi 0.0.0 hh_measure_pop_global()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "hh_measure_push_global" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure_ffi 0.0.0 hh_measure_push_global()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "hhi" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#hhi."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "info_pos" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]info_pos()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "info_pos_extended" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]info_pos_extended()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "info_raw" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]info_raw()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "init_delta_logger" },
+      "symbol": {
+        "key": "rust-analyzer cargo delta_log 0.0.0 init_delta_logger()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "into_filename" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]into_filename()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "invalid_prefix" },
+      "symbol": { "key": "relative_path.rs/local 56" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "is_dummy" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]is_dummy()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "is_dummy" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]is_dummy()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "is_dummy" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw]is_dummy()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "is_dummy" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]is_dummy()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "is_empty" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]is_empty()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "is_hhi" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]is_hhi()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "is_hhi" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]is_hhi()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "is_none" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]is_none()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "is_signed" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 is_signed()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "is_valid" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]is_valid()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "iter" },
+      "symbol": { "key": "measure/measure.rs/local 56" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "kv" },
+      "symbol": { "key": "measure/measure.rs/local 34" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "kv" },
+      "symbol": { "key": "measure/measure.rs/local 53" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "last" },
+      "symbol": { "key": "delta_log.rs/local 0" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "last_char" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]last_char()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "len" },
+      "symbol": { "key": "measure/measure.rs/local 55" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 2" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 11" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 13" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 8" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line" },
+      "symbol": { "key": "pos/pos_impl.rs/local 220" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line" },
+      "symbol": { "key": "pos/pos_impl.rs/local 43" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line" },
+      "symbol": { "key": "pos/pos_impl.rs/local 93" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 106" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 52" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 86" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 96" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]line()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line0" },
+      "symbol": { "key": "pos/pos_impl.rs/local 5" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line1" },
+      "symbol": { "key": "pos/pos_impl.rs/local 6" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_beg" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_beg()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_beg" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_beg()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_beg_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_beg_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_beg_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_beg_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_begin" },
+      "symbol": { "key": "pos/pos_impl.rs/local 58" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_column" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_column()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_column" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_column()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_column_beg" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/FilePos#line_column_beg()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_column_beg" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FilePos]line_column_beg()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_column_beg" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FilePos]line_column_beg()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_column_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]line_column_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_column_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]line_column_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 61" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_increment" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 14" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "line_number_increment" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]line_number_increment()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "lnum" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 24" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "lnum" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 34" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "lnum" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 5" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "lnum" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 16" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "lnum" },
+      "symbol": { "key": "pos/pos_impl.rs/local 12" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "lnum" },
+      "symbol": { "key": "pos/pos_impl.rs/local 16" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "lnum" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#lnum."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "log_durations" },
+      "symbol": {
+        "key": "rust-analyzer cargo delta_log 0.0.0 log_durations()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "make" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]make()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "make" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]make()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "make_dummy" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]make_dummy()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "make_dummy" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]make_dummy()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "make_dummy" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw]make_dummy()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "make_dummy" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]make_dummy()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "make_pos" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/make_pos()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "make_signing_token" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 make_signing_token()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "map" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/map/" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "map" },
+      "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 map/" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "mask" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/mask()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "mask" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/mask()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "mask_by" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/mask_by()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "mask_by" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/mask_by()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "max" },
+      "symbol": { "key": "measure/measure.rs/local 24" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "max" },
+      "symbol": { "key": "measure/measure.rs/local 30" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "max" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#max." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "max_int" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 95" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "mean" },
+      "symbol": { "key": "measure/measure.rs/local 28" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "mean" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#mean." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "merge" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]merge()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "merge_without_checking_filename" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]merge_without_checking_filename()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "min" },
+      "symbol": { "key": "measure/measure.rs/local 25" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "min" },
+      "symbol": { "key": "measure/measure.rs/local 31" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "min" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#min." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "name" },
+      "symbol": { "key": "measure/measure.rs/local 0" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "name" },
+      "symbol": { "key": "measure/measure.rs/local 14" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "name" },
+      "symbol": { "key": "measure/measure.rs/local 16" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "name" },
+      "symbol": { "key": "measure/measure.rs/local 18" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "name" },
+      "symbol": { "key": "measure/measure.rs/local 35" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "name" },
+      "symbol": { "key": "measure/measure.rs/local 54" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "name" },
+      "symbol": { "key": "measure/measure.rs/local 57" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "name" },
+      "symbol": { "key": "measure/measure.rs/local 6" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "name" },
+      "symbol": { "key": "measure/measure.rs/local 8" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "name" },
+      "symbol": { "key": "measure/measure.rs/local 9" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "name" },
+      "symbol": { "key": "pos/pos_impl.rs/local 231" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "name" },
+      "symbol": { "key": "pos/pos_impl.rs/local 238" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "names" },
+      "symbol": { "key": "measure/measure.rs/local 1" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "new" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]new()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "now" },
+      "symbol": { "key": "delta_log.rs/local 1" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "offset" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 26" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "offset" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 36" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "offset" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 4" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "offset" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 7" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "offset" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 15" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "offset" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 18" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "offset" },
+      "symbol": { "key": "pos/pos_impl.rs/local 14" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "offset" },
+      "symbol": { "key": "pos/pos_impl.rs/local 18" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos/FilePos#offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/FilePosLarge#offset."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][FilePos]offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][FilePos]offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "old_count" },
+      "symbol": { "key": "measure/measure.rs/local 21" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "old_mean" },
+      "symbol": { "key": "measure/measure.rs/local 22" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "other" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 20" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "other" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 22" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "other" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 31" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "other" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 33" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "other" },
+      "symbol": { "key": "pos/pos_impl.rs/local 174" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "other" },
+      "symbol": { "key": "pos/pos_impl.rs/local 176" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "other" },
+      "symbol": { "key": "pos/pos_impl.rs/local 178" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "other" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 39" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "other" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 41" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "other" },
+      "symbol": { "key": "relative_path.rs/local 20" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "other" },
+      "symbol": { "key": "relative_path.rs/local 22" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "partial_cmp" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]partial_cmp()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "partial_cmp" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]partial_cmp()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "partial_cmp" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]partial_cmp()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "partial_cmp" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]partial_cmp()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "partial_cmp" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]partial_cmp()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "path" },
+      "symbol": { "key": "pos/pos_impl.rs/local 217" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "path" },
+      "symbol": { "key": "pos/pos_impl.rs/local 235" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "path" },
+      "symbol": { "key": "pos/pos_impl.rs/local 236" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "path" },
+      "symbol": { "key": "relative_path.rs/local 40" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "path" },
+      "symbol": { "key": "relative_path.rs/local 5" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "path" },
+      "symbol": { "key": "relative_path.rs/local 51" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "path" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePath#path."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "path" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]path()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "path_str" },
+      "symbol": { "key": "relative_path.rs/local 26" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "path_str" },
+      "symbol": { "key": "relative_path.rs/local 38" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "path_str" },
+      "symbol": { "key": "relative_path.rs/local 41" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "path_str" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]path_str()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "pop_global" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 pop_global()." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "pos" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 23" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "pos" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 26" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "pos" },
+      "symbol": { "key": "pos/pos_impl.rs/local 202" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "pos" },
+      "symbol": { "key": "pos/pos_impl.rs/local 215" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "pos" },
+      "symbol": { "key": "pos/pos_impl.rs/local 230" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "pos_end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 42" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "pos_impl" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "pos_span_raw" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "pos_span_tiny" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "pos_start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 41" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "prefix" },
+      "symbol": { "key": "relative_path.rs/local 39" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "prefix" },
+      "symbol": { "key": "relative_path.rs/local 4" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "prefix" },
+      "symbol": { "key": "relative_path.rs/local 50" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "prefix" },
+      "symbol": { "key": "relative_path.rs/local 54" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "prefix" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePath#prefix."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "prefix" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]prefix()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "prefix_path" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePathCtx]prefix_path()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "prefix_raw" },
+      "symbol": { "key": "relative_path.rs/local 1" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "prefix_str" },
+      "symbol": { "key": "relative_path.rs/local 37" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "pretty_num" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 pretty_num()." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "print_stats" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]print_stats()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "print_stats" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 print_stats()." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "push_global" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 push_global()." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "record" },
+      "symbol": { "key": "delta_log.rs/local 5" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "record" },
+      "symbol": { "key": "measure/measure.rs/local 12" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "record" },
+      "symbol": { "key": "measure/measure.rs/local 2" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "record" },
+      "symbol": { "key": "measure/measure.rs/local 5" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "res" },
+      "symbol": { "key": "measure/measure.rs/local 59" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "root" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#root."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "s" },
+      "symbol": { "key": "measure/measure.rs/local 47" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "s" },
+      "symbol": { "key": "relative_path.rs/local 8" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "sample" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]sample()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "sample" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 sample()." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "sample_impl" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[Record]sample_impl()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "sample_impl" },
+      "symbol": { "key": "rust-analyzer cargo measure 0.0.0 sample_impl()." }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "measure/measure.rs/local 13" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "measure/measure.rs/local 17" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "measure/measure.rs/local 32" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "measure/measure.rs/local 37" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "measure/measure.rs/local 40" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "measure/measure.rs/local 44" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "measure/measure.rs/local 50" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos.rs/local 0" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos.rs/local 1" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 0" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 1" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 10" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 11" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 13" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 14" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 15" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 16" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 17" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 18" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 19" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 21" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 29" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 40" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 8" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 9" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 19" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 20" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 21" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 22" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 23" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 28" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 29" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 3" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 30" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 32" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 34" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 38" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 4" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 5" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 6" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 1" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 116" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 118" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 120" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 125" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 130" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 151" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 173" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 175" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 177" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 180" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 182" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 184" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 188" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 20" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 208" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 210" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 213" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 224" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 226" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 27" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 31" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 35" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 39" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 4" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 57" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 66" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 67" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_impl.rs/local 83" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_raw.rs/local 0" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_raw.rs/local 1" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 16" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 17" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 18" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 19" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 20" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 21" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 22" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 23" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 24" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 25" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 26" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 27" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 3" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 38" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 40" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 44" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 50" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "pos/with_erased_lines.rs/local 0" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 0" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 10" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 11" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 12" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 13" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 15" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 17" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 19" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 2" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 21" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 24" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 31" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 34" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 45" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 53" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 6" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 7" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "self" },
+      "symbol": { "key": "relative_path.rs/local 9" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "serialize" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][Serialize]serialize()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "serializer" },
+      "symbol": { "key": "relative_path.rs/local 25" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "sign_file" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 sign_file()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "sign_utf8_file" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 sign_utf8_file()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "signature" },
+      "symbol": { "key": "signed_source.rs/local 2" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "since_last" },
+      "symbol": { "key": "delta_log.rs/local 6" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "since_start" },
+      "symbol": { "key": "delta_log.rs/local 7" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "snd_end" },
+      "symbol": { "key": "pos/pos_impl.rs/local 244" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "snd_start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 243" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_impl.rs/local 10" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_impl.rs/local 11" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_impl.rs/local 123" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_impl.rs/local 128" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_impl.rs/local 147" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_impl.rs/local 169" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_impl.rs/local 199" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_impl.rs/local 21" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_impl.rs/local 228" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_impl.rs/local 3" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_impl.rs/local 53" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_impl.rs/local 64" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_impl.rs/local 70" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_impl.rs/local 88" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 103" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 112" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 59" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 71" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 83" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 92" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Tiny#span."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span1" },
+      "symbol": { "key": "pos/pos_impl.rs/local 106" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span1" },
+      "symbol": { "key": "pos/pos_impl.rs/local 112" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span2" },
+      "symbol": { "key": "pos/pos_impl.rs/local 107" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span2" },
+      "symbol": { "key": "pos/pos_impl.rs/local 113" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "span_read_back" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 115" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "split" },
+      "symbol": { "key": "relative_path.rs/local 36" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "stack" },
+      "symbol": { "key": "measure/measure.rs/local 11" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "stack" },
+      "symbol": { "key": "measure/measure.rs/local 4" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 41" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 49" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 100" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 108" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 114" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 119" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 126" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 127" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 135" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 142" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 145" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 148" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 15" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 156" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 163" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 166" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 171" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 191" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 195" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 22" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 221" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 232" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 24" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 46" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 49" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 51" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 54" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 59" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 68" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 69" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 73" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 81" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 84" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 86" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 89" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_impl.rs/local 96" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_span_raw.rs/local 2" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_span_raw.rs/local 4" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 100" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 110" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 36" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 4" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 56" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 68" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 80" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 90" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Large#start."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/PosImpl#Small#start."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/PosSpanRaw#start."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 104" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 60" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 72" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 84" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 93" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_beginning_of_line" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_beginning_of_line()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_bol" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 44" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_bol" },
+      "symbol": { "key": "pos/pos_impl.rs/local 76" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_bol" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 29" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_bol" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 6" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_bol" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 63" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_bol" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 75" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_col" },
+      "symbol": { "key": "pos/pos_impl.rs/local 138" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_col" },
+      "symbol": { "key": "pos/pos_impl.rs/local 159" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_col" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 8" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_column" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_column()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_line" },
+      "symbol": { "key": "pos/pos_impl.rs/local 137" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_line" },
+      "symbol": { "key": "pos/pos_impl.rs/local 158" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_line" },
+      "symbol": { "key": "pos/pos_impl.rs/local 75" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_line" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 62" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_line" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 7" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_line" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 74" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_line_number" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_line_number()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_lnum" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 43" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_lnum" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 28" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_minus1" },
+      "symbol": { "key": "pos/pos_impl.rs/local 44" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_offset" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 45" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_offset" },
+      "symbol": { "key": "pos/pos_impl.rs/local 77" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_offset" },
+      "symbol": { "key": "pos/pos_impl.rs/local 95" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 108" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 30" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 54" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 66" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 78" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 88" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 9" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_offset" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 98" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]start_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "start_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]start_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "str" },
+      "symbol": { "key": "measure/measure.rs/local 46" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "string" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]string()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "suffix" },
+      "symbol": { "key": "measure/measure.rs/local 39" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "tag" },
+      "symbol": { "key": "pos/pos_impl.rs/local 207" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test" },
+      "symbol": { "key": "pos/pos_impl.rs/local 237" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/"
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test" },
+      "symbol": { "key": "rust-analyzer cargo signed_source 0.0.0 test/" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_invalid_usize_prefix" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 tests/test_invalid_usize_prefix()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_is_signed" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/test_is_signed()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_pos" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_pos_absolute" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_absolute()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_pos_merge" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_merge()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_pos_string" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/test_pos_string()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": {
+        "key": "test_round_trip_through_ocaml_value_large_tiny_span"
+      },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_round_trip_through_ocaml_value_large_tiny_span()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_sign_utf8_file" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/test_sign_utf8_file()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_signing_token" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/test_signing_token()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_tiny_dummy" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_dummy()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_tiny_large" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_large()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_tiny_multiline_span" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_multiline_span()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_tiny_negative_span" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_negative_span()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_tiny_small" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/test/test_tiny_small()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_valid_usize_prefix" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 tests/test_valid_usize_prefix()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "test_verify_signature" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 test/test_verify_signature()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "tests" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/tests/" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "tests" },
+      "symbol": { "key": "rust-analyzer cargo relative_path 0.0.0 tests/" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "tmp" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 RelativePathCtx#tmp."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "to_absolute" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath]to_absolute()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "to_ocamlrep" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[RecordName][ToOcamlRep]to_ocamlrep()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "to_ocamlrep" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 impl#[Record][ToOcamlRep]to_ocamlrep()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "to_ocamlrep" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge][ToOcamlRep]to_ocamlrep()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "to_ocamlrep" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall][ToOcamlRep]to_ocamlrep()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "to_ocamlrep" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[PosImpl][ToOcamlRep]to_ocamlrep()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "to_ocamlrep" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny][ToOcamlRep]to_ocamlrep()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "to_ocamlrep" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[RelativePath][ToOcamlRep]to_ocamlrep()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "to_raw_span" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]to_raw_span()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "to_raw_span" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]to_raw_span()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "to_start_and_end_lnum_bol_offset" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos]to_start_and_end_lnum_bol_offset()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "token" },
+      "symbol": { "key": "signed_source.rs/local 12" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "try_from" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]try_from()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "try_from" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]try_from()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "try_from" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Prefix]try_from()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "valid_prefix" },
+      "symbol": { "key": "relative_path.rs/local 55" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "measure/measure.rs/local 10" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "measure/measure.rs/local 15" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "measure/measure.rs/local 19" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "measure/measure.rs/local 7" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 32" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "pos/file_pos_large.rs/local 38" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 27" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 40" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 42" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "pos/pos_impl.rs/local 204" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 114" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 34" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 35" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 46" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 48" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "relative_path.rs/local 35" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "value" },
+      "symbol": { "key": "relative_path.rs/local 48" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "variance_sum" },
+      "symbol": { "key": "measure/measure.rs/local 23" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "variance_sum" },
+      "symbol": { "key": "measure/measure.rs/local 29" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "variance_sum" },
+      "symbol": {
+        "key": "rust-analyzer cargo measure 0.0.0 RecordEntry#variance_sum."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "verify_signature" },
+      "symbol": {
+        "key": "rust-analyzer cargo signed_source 0.0.0 verify_signature()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "visit_str" },
+      "symbol": {
+        "key": "rust-analyzer cargo relative_path 0.0.0 impl#[Visitor][`Visitor<'de>`]visit_str()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "weight" },
+      "symbol": { "key": "measure/measure.rs/local 26" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "width" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 15" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "width" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_tiny/impl#[PosSpanTiny]width()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "with_column" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[FilePosLarge]with_column()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "with_column" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_small/impl#[FilePosSmall]with_column()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "with_erased_lines" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 file_pos_large/impl#[`(FilePosLarge, FilePosLarge)`][WithErasedLines]with_erased_lines()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "with_erased_lines" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_impl/impl#[Pos][WithErasedLines]with_erased_lines()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "with_erased_lines" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 pos_span_raw/impl#[PosSpanRaw][WithErasedLines]with_erased_lines()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "with_erased_lines" },
+      "symbol": { "key": "rust-analyzer cargo rc_pos 0.0.0 with_erased_lines/" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "with_erased_lines" },
+      "symbol": {
+        "key": "rust-analyzer cargo rc_pos 0.0.0 with_erased_lines/WithErasedLines#with_erased_lines()."
+      }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "x" },
+      "symbol": { "key": "pos/file_pos_small.rs/local 2" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "x" },
+      "symbol": { "key": "pos/pos_span_tiny.rs/local 2" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "x1" },
+      "symbol": { "key": "pos/pos_impl.rs/local 102" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "x1" },
+      "symbol": { "key": "pos/pos_impl.rs/local 104" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "x1" },
+      "symbol": { "key": "pos/pos_impl.rs/local 110" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "x1" },
+      "symbol": { "key": "pos/pos_impl.rs/local 98" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "x2" },
+      "symbol": { "key": "pos/pos_impl.rs/local 103" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "x2" },
+      "symbol": { "key": "pos/pos_impl.rs/local 105" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "x2" },
+      "symbol": { "key": "pos/pos_impl.rs/local 111" }
+    }
+  },
+  {
+    "key": {
+      "displayName": { "key": "x2" },
+      "symbol": { "key": "pos/pos_impl.rs/local 99" }
+    }
+  }
+]
