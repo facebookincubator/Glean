@@ -25,7 +25,8 @@ module Data.SCIP.Angle (
 
 import Lens.Micro ((^.))
 import Data.Bits ( Bits(testBit) )
-import Data.Maybe ( catMaybes ) -- , fromMaybe )
+import Data.Maybe ( catMaybes, fromMaybe )
+import Data.Function ((&))
 import Data.Text ( Text )
 import qualified Data.Text as Text
 import Data.Set ( Set )
@@ -35,6 +36,8 @@ import Data.Int ( Int32, Int64 )
 import qualified Data.ByteString as B
 import Data.HashMap.Strict ( HashMap )
 import qualified Data.HashMap.Strict as HashMap
+import Data.Map.Strict ( Map, ( !? ) )
+import qualified Data.Map.Strict as Map
 import Control.Monad.State.Strict
 import qualified Data.ProtoLens as Proto
 import qualified Data.Vector as V
@@ -60,19 +63,26 @@ in the Glean side
 
 type Parse a = forall m . Monad m => StateT Env m a
 
+data StringPredicate =
+  Symbol
+  | LocalName
+  | File
+  deriving (Eq, Ord)
+
 data Env = Env {
     -- unique supply for new Glean fact identifiers
     unique :: {-# UNPACK #-}!Int64,
 
-    -- hashmap from any raw text fact to the id we generated
-    -- used to do a bit of sharing before emitting to Glean
-    factId :: !(HashMap Text SCIP.Id)
+    -- Hashmaps from any raw text fact to the id we generated.
+    -- Used to do a bit of sharing before emitting to Glean.
+    -- We maintain one hashmap per string predicate.
+    factId :: !(Map StringPredicate (HashMap Text SCIP.Id))
   }
 
 emptyState :: Env
 emptyState = Env
   1 {- cannot use 0 as a fact id -}
-  HashMap.empty
+  Map.empty
 
 --
 -- Scip doesn't number facts, but it is still useful for us to do so,
@@ -84,23 +94,24 @@ nextId = do
   modify $ \e -> e { unique = i + 1 }
   return (SCIP.Id i)
 
-setDefFact :: Text -> SCIP.Id -> Parse ()
-setDefFact sym i = modify $ \e ->
-  e { factId = HashMap.insert sym i (factId e) }
+setDefFact :: StringPredicate -> Text -> SCIP.Id -> Parse ()
+setDefFact pred val i = modify $ \e ->
+  let m = factId e !? pred & fromMaybe HashMap.empty & HashMap.insert val i in
+  e { factId = Map.insert pred m (factId e)}
 
-getDefFactId :: Text -> Parse (Maybe SCIP.Id)
-getDefFactId sym = do
-  hm <- gets factId
-  pure (HashMap.lookup sym hm)
+getDefFactId :: StringPredicate -> Text -> Parse (Maybe SCIP.Id)
+getDefFactId pred sym = do
+  m <- gets factId
+  pure $ m !? pred >>= HashMap.lookup sym
 
 -- | Make a fresh name or return an existing one if we've seen it
-getOrSetFact :: Text -> Parse (SCIP.Id, Bool)
-getOrSetFact sym = do
-  mId <- getDefFactId sym
+getOrSetFact :: StringPredicate -> Text -> Parse (SCIP.Id, Bool)
+getOrSetFact pred sym = do
+  mId <- getDefFactId pred sym
   case mId of
     Nothing -> do
       id_ <- nextId
-      setDefFact sym id_
+      setDefFact pred sym id_
       return (id_, False)
     Just id_ -> return (id_, True)
 
@@ -160,14 +171,12 @@ decodeScipDoc mlang inferLanguage mPathPrefix mStripPrefix doc = do
       -- first, strip any matching prefix
       filepath1 = case Text.pack <$> mStripPrefix of
         Nothing -> filepath0
-        Just prefix -> case Text.stripPrefix prefix filepath0 of
-          Nothing -> filepath0
-          Just suffix -> suffix
+        Just prefix -> fromMaybe filepath0 $ Text.stripPrefix prefix filepath0
       -- and maybe prepend a new prefix
       filepath = case Text.pack <$> mPathPrefix of
         Nothing -> filepath1
         Just prefix -> prefix <> filepath1
-  setDefFact filepath srcFileId
+  setDefFact File filepath srcFileId
   let srcFile = SCIP.srcFile srcFileId filepath
   langFileId <- nextId
   let parseLang = SCIP.parseLanguage (doc ^. Scip.language)
@@ -213,7 +222,7 @@ decodeScipInfo filepath info = do
         Left err -> error(show err)
         Right (Local _) -> filepath <> "/" <> scipSymbol
         Right (Global {}) -> scipSymbol
-  mSymId <- getDefFactId qualifiedSymbol
+  mSymId <- getDefFactId Symbol qualifiedSymbol
   symDocFacts <- case mSymId of
     Nothing -> return []
     Just symId -> forM docIds (\docId ->
@@ -247,7 +256,7 @@ decodeScipOccurence fileId filepath occ = do
               fileRangeId
           Right Global{..} -> decodeGlobalOccurence scipSymbol symRoles
               fileRangeId descriptor
-    return (symbolFacts <> fileRange)
+    return (fileRange <> symbolFacts)
   where
     scipRange = occ ^. Scip.range
     scipSymbol = occ ^. Scip.symbol
@@ -257,7 +266,7 @@ decodeGlobalOccurence
   :: Text -> Set Scip.SymbolRole -> SCIP.Id -> Descriptor
   -> Parse [SCIP.Predicate]
 decodeGlobalOccurence scipSymbol symRoles fileRangeId Descriptor{..} = do
-  (symbolId, seenSymbol) <- getOrSetFact scipSymbol
+  (symbolId, seenSymbol) <- getOrSetFact Symbol scipSymbol
   let symbolFact :: [SCIP.Predicate]
         | seenSymbol = []
         | otherwise = pure $
@@ -273,7 +282,7 @@ decodeGlobalOccurence scipSymbol symRoles fileRangeId Descriptor{..} = do
             "symbol" .= symbolId,
             "location" .= fileRangeId
           ]
-  (nameId, seenName) <- getOrSetFact text
+  (nameId, seenName) <- getOrSetFact LocalName text
   let nameFact :: [SCIP.Predicate]
         | seenName = []
         | otherwise = pure $
@@ -304,7 +313,7 @@ decodeLocalOccurence
   -> Parse [SCIP.Predicate]
 decodeLocalOccurence filepath localSymbol symRoles fileRangeId = do
   let qualifiedSymbol = filepath <> "/" <> localSymbol
-  (symbolId, seenSymbol) <- getOrSetFact qualifiedSymbol
+  (symbolId, seenSymbol) <- getOrSetFact Symbol qualifiedSymbol
   let symbolFact :: [SCIP.Predicate]
         | seenSymbol = []
         | otherwise = pure $
@@ -320,7 +329,7 @@ decodeLocalOccurence filepath localSymbol symRoles fileRangeId = do
             "symbol" .= symbolId,
             "location" .= fileRangeId
           ]
-  (nameId, seenName) <- getOrSetFact localSymbol
+  (nameId, seenName) <- getOrSetFact LocalName localSymbol
   let nameFact :: [SCIP.Predicate]
         | seenName = []
         | otherwise = pure $

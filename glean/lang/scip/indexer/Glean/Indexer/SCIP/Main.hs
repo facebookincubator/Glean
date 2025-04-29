@@ -70,6 +70,7 @@ readLanguage = do
     "java" -> return Java
     "kotlin" -> return Kotlin
     "csharp" -> return CSharp
+    "swift" -> return Swift
     _ -> readerError "Unrecognized SCIP language"
 
 main :: IO ()
