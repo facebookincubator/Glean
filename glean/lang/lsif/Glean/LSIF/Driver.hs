@@ -31,6 +31,7 @@ import Data.List ( intersperse )
 import System.Directory ( getHomeDirectory, withCurrentDirectory, makeAbsolute )
 import System.FilePath
     ( (</>), dropTrailingPathSeparator, takeBaseName )
+import System.IO ( openFile, IOMode(WriteMode), hClose )
 import System.IO.Temp ( withSystemTempDirectory )
 import System.Process ( callProcess, callCommand )
 import Text.Printf ( printf )
@@ -91,16 +92,16 @@ writeJSON outFile json = do
 
 -- Uses less memory if we do this piece-wise
 encodeChunks :: FilePath -> V.Vector Aeson.Value -> IO ()
-encodeChunks file vs = bracketContents file $ mapM_ writeChunk $
-    intersperse (Right ",") (map Left (V.toList vs))
+encodeChunks file vs = do
+  handle <- openFile file WriteMode
+  Lazy.hPut handle "["
+  mapM_ (writeChunk handle) $
+          intersperse (Right ",") (map Left (V.toList vs))
+  Lazy.hPut handle "]\n"
+  hClose handle
   where
-    writeChunk (Left c) = Lazy.appendFile file (Aeson.encode c)
-    writeChunk (Right s) = Lazy.appendFile file (s <> "\n")
-
-    bracketContents file act = do
-      Lazy.writeFile file "["
-      _ <- act
-      Lazy.appendFile file "]"
+    writeChunk handle (Left c) = Lazy.hPut handle (Aeson.encode c)
+    writeChunk handle (Right s) = Lazy.hPut handle (s <> "\n")
 
 -- Get some likely prefix paths to drop from indexers
 -- E.g. typescript with a yarn install puts .config/yarn paths for libraries
