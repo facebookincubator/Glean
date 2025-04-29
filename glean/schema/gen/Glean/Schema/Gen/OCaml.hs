@@ -256,8 +256,8 @@ genOCamlType ns namePolicy t = case t of
   SetTy ty -> do
     t <- genOCamlType ns namePolicy ty
     return $ t <> " list" -- Suboptimal but sets in OCaml is such a pain
-  PredicateTy pred -> return $ predToModule ns pred namePolicy <> ".t"
-  NamedTy tref -> return $ typeToModule ns tref namePolicy <> ".t"
+  PredicateTy _ pred -> return $ predToModule ns pred namePolicy <> ".t"
+  NamedTy _ tref -> return $ typeToModule ns tref namePolicy <> ".t"
   MaybeTy ty -> do
     t <- genOCamlType ns namePolicy ty
     return $ t <> " option"
@@ -276,7 +276,10 @@ genOCamlType ns namePolicy t = case t of
         Sum -> return $ "     | " <> fieldToConstructor field <> " of " <> ty
 
 genOCamlTypeFromField
-  :: FieldDef_ PredicateRef TypeRef -> NameSpaces -> NamePolicy -> ResolvedType
+  :: FieldDef_ s PredicateRef TypeRef
+  -> NameSpaces
+  -> NamePolicy
+  -> ResolvedType
   -> State GenAnonTypes GenType
 genOCamlTypeFromField field ns namePolicy t = do
   let typeName = fieldToTypeName field
@@ -357,10 +360,10 @@ genOCamlToJson var ns namePolicy t = case t of
     (_, code) <- genOCamlToJson "x" ns namePolicy ty
     return (var, "JSON_Array (List.map ~f:(fun x -> " <> code  <> ") "
        <> var <> ")")
-  PredicateTy pred ->
+  PredicateTy _ pred ->
     let moduleName = predToModule ns pred namePolicy in
         return (var, moduleName <> ".to_json " <> var)
-  NamedTy tref ->
+  NamedTy _ tref ->
     let moduleName = typeToModule ns tref namePolicy in
         return (var, moduleName <> ".to_json " <> var)
   MaybeTy ty -> do
@@ -381,7 +384,7 @@ genOCamlToJson var ns namePolicy t = case t of
   ElementsOf{} -> error "genOCamlToJson: ElementsOf"
 
 genOCamlToJsonFromField
-  :: FieldDef_ PredicateRef TypeRef -> GenVars -> NameSpaces -> NamePolicy
+  :: FieldDef_ s PredicateRef TypeRef -> GenVars -> NameSpaces -> NamePolicy
   -> ResolvedType -> State GenAnonTypesCode (GenVars, GenCode)
 genOCamlToJsonFromField field var ns namePolicy t = do
   let typeName = fieldToTypeName field
@@ -429,19 +432,19 @@ predToModule curNs ref namePolicy =
 -- e.g. angle: type t = { a : { ...} }
 --      ocaml: type a = ...
 -- TODO: handle naming conflict, use path of fields
-fieldToTypeName :: FieldDef_ PredicateRef TypeRef -> GenTypeName
+fieldToTypeName :: FieldDef_ s PredicateRef TypeRef -> GenTypeName
 fieldToTypeName = fieldDefName
 
 nameToConstructor :: Text -> Text
 nameToConstructor = cap1
 
-fieldToJSONKey :: FieldDef_ PredicateRef TypeRef -> Text
+fieldToJSONKey :: FieldDef_ s PredicateRef TypeRef -> Text
 fieldToJSONKey field = fieldDefName field
 
-fieldToConstructor :: FieldDef_ PredicateRef TypeRef -> Text
+fieldToConstructor :: FieldDef_ s PredicateRef TypeRef -> Text
 fieldToConstructor field = cap1 (fieldDefName field)
 
-fieldToVar :: FieldDef_ PredicateRef TypeRef -> Text
+fieldToVar :: FieldDef_ s PredicateRef TypeRef -> Text
 fieldToVar field =
   from_ (camelToUnderscore (fieldDefName field))
   where

@@ -294,7 +294,7 @@ compileQuery r qtrans bounds (QueryWithInfo query numVars lookup ty) = do
   -- nested facts.
   (pid, traverse) <- case derefType ty of
     Angle.RecordTy [ pidfield, key, val ]
-      | Angle.PredicateTy (PidRef pid ref) <-
+      | Angle.PredicateTy _ (PidRef pid ref) <-
           derefType (Angle.fieldDefType pidfield) -> do
         traverse <-
           if ref == tempPredicateId then

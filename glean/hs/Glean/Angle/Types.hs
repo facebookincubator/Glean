@@ -37,6 +37,9 @@ module Glean.Angle.Types
   , rmLocPat
   , rmLocField
   , rmLocTypeDef
+  , rmLocType
+  , rmLocPredDef
+  , rmTypeLocPredDef
 
   -- * Types
   , Type_(..)
@@ -86,6 +89,10 @@ module Glean.Angle.Types
   , SourceQuery'
   , SourceDerivingInfo'
   , DerivingDef'
+  , SourceType'
+  , Type'
+  , FieldDef'
+  , PredicateDef'
   , SourceSchemas_(..)
   , SourceEvolves_(..)
   , SourceSchema_(..)
@@ -165,9 +172,9 @@ data SrcLoc = SrcLoc
 -- -----------------------------------------------------------------------------
 -- Queries
 
-data SourceQuery_ s p t = SourceQuery
-  { srcQueryHead :: Maybe (SourcePat_ s p t)
-  , srcQueryStmts :: [SourceStatement_ s p t]
+data SourceQuery_ s st p t = SourceQuery
+  { srcQueryHead :: Maybe (SourcePat_ s st p t)
+  , srcQueryStmts :: [SourceStatement_ s st p t]
   , srcQueryOrdered :: Ordered
   }
   deriving (Eq, Show, Generic)
@@ -177,66 +184,66 @@ data Ordered = Ordered | Unordered
 
 instance Binary Ordered
 
-instance (Binary p, Binary t) => Binary (SourceQuery_ () p t)
+instance (Binary p, Binary t) => Binary (SourceQuery_ () () p t)
 
-instance Bifunctor (SourceQuery_ s) where
+instance Bifunctor (SourceQuery_ s st) where
   bimap f g (SourceQuery h s o) =
     SourceQuery (fmap (bimap f g) h) (fmap (bimap f g) s) o
 
-instance Bifoldable (SourceQuery_ s) where
+instance Bifoldable (SourceQuery_ s st ) where
   bifoldMap f g (SourceQuery h s _) =
     foldMap (bifoldMap f g) h <> foldMap (bifoldMap f g) s
 
-data SourceStatement_ s p t =
-  SourceStatement (SourcePat_ s p t) (SourcePat_ s p t)
+data SourceStatement_ s st p t =
+  SourceStatement (SourcePat_ s st p t) (SourcePat_ s st p t)
   deriving (Eq, Show, Generic)
 
-instance (Binary p, Binary t) => Binary (SourceStatement_ () p t)
+instance (Binary p, Binary t) => Binary (SourceStatement_ () () p t)
 
-instance Bifunctor (SourceStatement_ s) where
+instance Bifunctor (SourceStatement_ s st) where
   bimap f g (SourceStatement l r) = SourceStatement (bimap f g l) (bimap f g r)
 
-instance Bifoldable (SourceStatement_ s) where
+instance Bifoldable (SourceStatement_ s st) where
   bifoldMap f g (SourceStatement l r) = bifoldMap f g l <> bifoldMap f g r
 
-data SourcePat_ s p t
+data SourcePat_ s st p t
   = Nat s Word64
   | String s Text
   | StringPrefix s Text
   | ByteArray s ByteString
     -- ^ There's no concrete syntax for this (yet), but it can be used
     -- via the DSL.
-  | Array s [SourcePat_ s p t]
-  | ArrayPrefix s (NonEmpty (SourcePat_ s p t))
-  | Tuple s [SourcePat_ s p t]
-  | Struct s [Field s p t]
-  | App s (SourcePat_ s p t) [SourcePat_ s p t]
-  | KeyValue s (SourcePat_ s p t) (SourcePat_ s p t)
-  | Elements s (SourcePat_ s p t)
-  | All s (SourcePat_ s p t)
+  | Array s [SourcePat_ s st p t]
+  | ArrayPrefix s (NonEmpty (SourcePat_ s st p t))
+  | Tuple s [SourcePat_ s st p t]
+  | Struct s [Field s st p t]
+  | App s (SourcePat_ s st p t) [SourcePat_ s st p t]
+  | KeyValue s (SourcePat_ s st p t) (SourcePat_ s st p t)
+  | Elements s (SourcePat_ s st p t)
+  | All s (SourcePat_ s st p t)
   | Wildcard s
   | Variable s Name
-  | ElementsOfArray s (SourcePat_ s p t)
-  | OrPattern s (SourcePat_ s p t) (SourcePat_ s p t)
-  | NestedQuery s (SourceQuery_ s p t)
-  | Negation s (SourcePat_ s p t)
+  | ElementsOfArray s (SourcePat_ s st p t)
+  | OrPattern s (SourcePat_ s st p t) (SourcePat_ s st p t)
+  | NestedQuery s (SourceQuery_ s st p t)
+  | Negation s (SourcePat_ s st p t)
   | FactId s (Maybe Text) Word64
-  | TypeSignature s (SourcePat_ s p t) (Type_ p t)
+  | TypeSignature s (SourcePat_ s st p t) (Type_ st p t)
   | Never s
   | IfPattern
       { span :: s
-      , cond :: SourcePat_ s p t
-      , then_ :: SourcePat_ s p t
-      , else_ :: SourcePat_ s p t
+      , cond :: SourcePat_ s st p t
+      , then_ :: SourcePat_ s st p t
+      , else_ :: SourcePat_ s st p t
       }
-  | FieldSelect s (SourcePat_ s p t) FieldName RecordOrSum
-  | Deref s (SourcePat_ s p t)
+  | FieldSelect s (SourcePat_ s st p t) FieldName RecordOrSum
+  | Deref s (SourcePat_ s st p t)
   | Enum s Text
 
   -- The following forms are introduced by the resolver, and replace
   -- the Variable and App forms produced by the parser.
-  | Clause s s p (SourcePat_ s p t) SeekSection
-  | Prim s PrimOp [SourcePat_ s p t]
+  | Clause s s p (SourcePat_ s st p t) SeekSection
+  | Prim s PrimOp [SourcePat_ s st p t]
  deriving (Eq, Show, Generic)
 
 -- | Should a `seek` call be restricted to a section of the database?
@@ -258,9 +265,9 @@ data SeekSection
 
 instance Binary SeekSection
 
-instance (Binary p, Binary t) => Binary (SourcePat_ () p t)
+instance (Binary p, Binary t) => Binary (SourcePat_ () () p t)
 
-instance Bifunctor (SourcePat_ s) where
+instance Bifunctor (SourcePat_ s st) where
   bimap f g pat = case pat of
     Nat s w -> Nat s w
     String s t -> String s t
@@ -292,7 +299,7 @@ instance Bifunctor (SourcePat_ s) where
     Clause sPat sPred p pat rng -> Clause sPat sPred (f p) (bimap f g pat) rng
     Prim s p pats -> Prim s p (fmap (bimap f g) pats)
 
-instance Bifoldable (SourcePat_ s) where
+instance Bifoldable (SourcePat_ s st) where
   bifoldMap f g = \case
     Nat{} -> mempty
     String{} -> mempty
@@ -323,15 +330,15 @@ instance Bifoldable (SourcePat_ s) where
     Clause _ _ p pat _ -> f p <> bifoldMap f g pat
     Prim _ _ pats -> foldMap (bifoldMap f g) pats
 
-data Field s p t = Field FieldName (SourcePat_ s p t)
+data Field s st p t = Field FieldName (SourcePat_ s st p t)
   deriving (Eq, Show, Generic)
 
-instance (Binary p, Binary t) => Binary (Field () p t)
+instance (Binary p, Binary t) => Binary (Field () () p t)
 
-instance Bifunctor (Field s) where
+instance Bifunctor (Field s st) where
   bimap f g (Field n pat) = Field n (bimap f g pat)
 
-instance Bifoldable (Field s) where
+instance Bifoldable (Field s st) where
   bifoldMap f g (Field _ pat) = bifoldMap f g pat
 
 -- | Primitive operations
@@ -355,7 +362,7 @@ data PrimOp
 
 instance Binary PrimOp
 
-sourcePatSpan :: SourcePat_ s p t -> s
+sourcePatSpan :: SourcePat_ s st p t -> s
 sourcePatSpan = \case
   Nat s _ -> s
   String s _ -> s
@@ -389,23 +396,23 @@ sourcePatSpan = \case
 -- Types
 
 -- | A Glean Type
-data Type_ pref tref
+data Type_ srcspan pref tref
   -- Native types
   = ByteTy
   | NatTy
   | StringTy
-  | ArrayTy (Type_ pref tref)
-  | RecordTy [FieldDef_ pref tref]
-  | SumTy [FieldDef_ pref tref]
-  | SetTy (Type_ pref tref)
-  | PredicateTy pref
-  | NamedTy tref
+  | ArrayTy (Type_ srcspan pref tref)
+  | RecordTy [FieldDef_ srcspan pref tref]
+  | SumTy [FieldDef_ srcspan pref tref]
+  | SetTy (Type_ srcspan pref tref)
+  | PredicateTy srcspan pref
+  | NamedTy srcspan tref
 
   -- Derived types. These appear in the source language, but are
   -- translated into the native types above internally. They also
   -- act as hints to the code generators, e.g. maybe translates to
   -- Thrift's optional and enum translates to Thrift's enum.
-  | MaybeTy (Type_ pref tref)
+  | MaybeTy (Type_ srcspan pref tref)
     -- maybe T  => { nothing | just : T }
   | EnumeratedTy [Name]
     -- enum { a | b } => { a : {}, b : {} }
@@ -414,7 +421,8 @@ data Type_ pref tref
 
   -- These are used during typechecking only
   | TyVar {-# UNPACK #-}!Int
-  | HasTy (Map Name (Type_ pref tref)) !(Maybe RecordOrSum) {-# UNPACK #-}!Int
+  | HasTy (Map Name (Type_ srcspan pref tref))
+      !(Maybe RecordOrSum) {-# UNPACK #-}!Int
     -- HasTy { field:type .. } R X
     --   Constrains X to be a record or sum type containing at least
     --   the given fields/types. X can only be instantiated
@@ -424,11 +432,11 @@ data Type_ pref tref
     --     Just Record -> type must be a record
     --     Just Sum -> type must be a sum type
     --     Nothing -> type can be either a RecordTy or a SumTy
-  | HasKey (Type_ pref tref) {-# UNPACK #-}!Int
+  | HasKey (Type_ srcspan pref tref) {-# UNPACK #-}!Int
     -- HasKey K X
     --   A type variable X that is constrained to be a predicate
     --   type with key K
-  | ElementsOf (Type_ pref tref) {-# UNPACK #-}!Int
+  | ElementsOf (Type_ srcspan pref tref) {-# UNPACK #-}!Int
     -- ElementsOf T X
     --   A type variable that is either set T or [T]
   deriving (Eq, Show, Functor, Foldable, Generic)
@@ -438,9 +446,9 @@ data RecordOrSum = Record | Sum
 
 instance Binary RecordOrSum
 
-instance (Binary pref, Binary tref) => Binary (Type_ pref tref)
+instance (Binary pref, Binary tref) => Binary (Type_ () pref tref)
 
-instance Bifunctor Type_ where
+instance Bifunctor (Type_ s) where
   bimap f g = \case
     ByteTy -> ByteTy
     NatTy -> NatTy
@@ -449,8 +457,8 @@ instance Bifunctor Type_ where
     RecordTy xs -> RecordTy $ bimap f g <$> xs
     SumTy xs -> SumTy $ bimap f g <$> xs
     SetTy ty -> SetTy $ bimap f g ty
-    PredicateTy pref -> PredicateTy (f pref)
-    NamedTy tref -> NamedTy (g tref)
+    PredicateTy s pref -> PredicateTy s (f pref)
+    NamedTy s tref -> NamedTy s (g tref)
     MaybeTy ty -> MaybeTy (bimap f g ty)
     EnumeratedTy xs -> EnumeratedTy xs
     BooleanTy -> BooleanTy
@@ -459,7 +467,7 @@ instance Bifunctor Type_ where
     HasKey ty x -> HasKey (bimap f g ty) x
     ElementsOf ty x -> ElementsOf (bimap f g ty) x
 
-instance Bifoldable Type_ where
+instance Bifoldable (Type_ s) where
   bifoldr f g r = \case
     ByteTy -> r
     NatTy -> r
@@ -468,8 +476,8 @@ instance Bifoldable Type_ where
     RecordTy xs -> foldr (flip $ bifoldr f g) r xs
     SumTy xs -> foldr (flip $ bifoldr f g) r xs
     SetTy ty -> bifoldr f g r ty
-    PredicateTy pref -> f pref r
-    NamedTy tref -> g tref r
+    PredicateTy _ pref -> f pref r
+    NamedTy _ tref -> g tref r
     MaybeTy ty -> bifoldr f g r ty
     EnumeratedTy _ -> r
     BooleanTy -> r
@@ -510,44 +518,45 @@ constructed when a schema is loaded in `Glean.Database.Schema`.
 -- -----------------------------------------------------------------------------
 -- Schemas and definitions
 
-data FieldDef_ pref tref = FieldDef
+data FieldDef_ st pref tref = FieldDef
   { fieldDefName :: Name
-  , fieldDefType :: Type_ pref tref
+  , fieldDefType :: Type_ st pref tref
   }
   deriving (Eq, Show, Functor, Foldable, Generic)
 
-instance (Binary pref, Binary tref) => Binary (FieldDef_ pref tref)
+instance (Binary pref, Binary tref)
+  => Binary (FieldDef_ () pref tref)
 
-instance Bifunctor FieldDef_ where
+instance Bifunctor (FieldDef_ st) where
   bimap f g (FieldDef n ty)  = FieldDef n $ bimap f g ty
 
-instance Bifoldable FieldDef_ where
+instance Bifoldable (FieldDef_ st) where
   bifoldMap f g (FieldDef _ ty) = bifoldMap f g ty
 
 tupleField :: Text
 tupleField = "tuplefield"
 
 -- | A definition of a named type
-data TypeDef_ s pref tref = TypeDef
+data TypeDef_ st pref tref = TypeDef
   { typeDefRef :: tref
-  , typeDefType :: Type_ pref tref
-  , typeDefSrcSpan :: s
+  , typeDefType :: Type_ st pref tref
+  , typeDefSrcSpan :: st
   }
   deriving Eq
 
 -- | A definition of a predicate
-data PredicateDef_ s pref tref = PredicateDef
+data PredicateDef_ s st pref tref = PredicateDef
   { predicateDefRef :: pref
-  , predicateDefKeyType :: Type_ pref tref
-  , predicateDefValueType :: Type_ pref tref
-  , predicateDefDeriving :: DerivingInfo (SourceQuery_ s pref tref)
+  , predicateDefKeyType :: Type_ st pref tref
+  , predicateDefValueType :: Type_ st pref tref
+  , predicateDefDeriving :: DerivingInfo (SourceQuery_ s st pref tref)
   , predicateDefSrcSpan :: s
   }
   deriving Eq
 
-data DerivingDef_ s pref tref = DerivingDef
+data DerivingDef_ s st pref tref = DerivingDef
   { derivingDefRef :: pref
-  , derivingDefDeriveInfo :: DerivingInfo (SourceQuery_ s pref tref)
+  , derivingDefDeriveInfo :: DerivingInfo (SourceQuery_ s st pref tref)
   , derivingDefSrcSpan :: s
   }
   deriving Eq
@@ -621,19 +630,21 @@ instance Binary DeriveWhen
 
 -- Source (parsed) abstract syntax
 
-type SourcePat' s = SourcePat_ s SourceRef SourceRef
-type SourceStatement' s = SourceStatement_ s SourceRef SourceRef
-type SourceQuery' s = SourceQuery_ s SourceRef SourceRef
-type SourceDerivingInfo' s = DerivingInfo (SourceQuery' s)
-type SourcePredicateDef' s = PredicateDef_ s SourceRef SourceRef
+type SourcePat' s st = SourcePat_ s st SourceRef SourceRef
+type SourceStatement' s st = SourceStatement_ s st SourceRef SourceRef
+type SourceQuery' s st = SourceQuery_ s st SourceRef SourceRef
+type SourceDerivingInfo' s = DerivingInfo (SourceQuery' s s)
+type SourcePredicateDef' s = PredicateDef_ s s SourceRef SourceRef
 type SourceTypeDef' s = TypeDef_ s SourceRef SourceRef
-type DerivingDef' s = DerivingDef_ s SourceRef SourceRef
+type DerivingDef' s = DerivingDef_ s s SourceRef SourceRef
+type SourceType' st = Type_ st SourceRef SourceRef
+type Type' st = Type_ st PredicateId TypeId
 
-type SourcePat = SourcePat' SrcSpan
-type SourceStatement = SourceStatement' SrcSpan
-type SourceQuery = SourceQuery' SrcSpan
-type SourceType = Type_ SourceRef SourceRef
-type SourceFieldDef = FieldDef_ SourceRef SourceRef
+type SourcePat = SourcePat' SrcSpan SrcSpan
+type SourceStatement = SourceStatement' SrcSpan SrcSpan
+type SourceQuery = SourceQuery' SrcSpan SrcSpan
+type SourceType = Type_ SrcSpan SourceRef SourceRef
+type SourceFieldDef = FieldDef_ SrcSpan SourceRef SourceRef
 type SourceTypeDef = TypeDef_ SrcSpan SourceRef SourceRef
 type SourcePredicateDef = SourcePredicateDef' SrcSpan
 type SourceDerivingInfo = SourceDerivingInfo' SrcSpan
@@ -642,8 +653,8 @@ type SourceSchema = SourceSchema_ SrcSpan
 type SourceEvolves = SourceEvolves_ SrcSpan
 type SourceDecl = SourceDecl_ SrcSpan
 
-type Statement_ p t = SourceStatement_ SrcSpan p t
-type Query_ p t = SourceQuery_ SrcSpan p t
+type Statement_ p t = SourceStatement_ SrcSpan SrcSpan p t
+type Query_ p t = SourceQuery_ SrcSpan SrcSpan p t
 
 data SourceEvolves_ s = SourceEvolves
   { evolvesSpan :: s
@@ -676,10 +687,13 @@ data SourceDecl_ s
 
 -- Abstract syntax with global Ids
 
-type Type = Type_ PredicateId TypeId
-type FieldDef = FieldDef_ PredicateId TypeId
+type Type = Type_ SrcSpan PredicateId TypeId
+type FieldDef = FieldDef_ SrcSpan PredicateId TypeId
 type TypeDef = TypeDef_ SrcSpan PredicateId TypeId
-type PredicateDef = PredicateDef_ SrcSpan PredicateId TypeId
+type PredicateDef = PredicateDef_ SrcSpan SrcSpan PredicateId TypeId
+
+type PredicateDef' s st = PredicateDef_ s st PredicateId TypeId
+type FieldDef' st = FieldDef_ st PredicateId TypeId
 
 -- -----------------------------------------------------------------------------
 
@@ -737,7 +751,7 @@ instance Display (SourceEvolves_ s) where
   display opts (SourceEvolves _ new old) =
     "schema " <> display opts new <> " evolves " <> display opts old
 
-instance (Display pref, Display tref) => Display (Type_ pref tref) where
+instance (Display pref, Display tref) => Display (Type_ st pref tref) where
   display _ ByteTy = "byte"
   display _ NatTy = "nat"
   display _ StringTy = "string"
@@ -751,8 +765,8 @@ instance (Display pref, Display tref) => Display (Type_ pref tref) where
       [ nest 2 $ vsep $ "{" :  map ((<> " |") . display opts) fields
       , "}" ]
   display opts (SetTy ty) = "set " <> displayAtom opts ty
-  display opts (PredicateTy p) = display opts p
-  display opts (NamedTy t) = display opts t
+  display opts (PredicateTy _ p) = display opts p
+  display opts (NamedTy _ t) = display opts t
   display opts (MaybeTy t) = "maybe" <+> displayAtom opts t
   display _ (EnumeratedTy names) =
     sep
@@ -781,11 +795,11 @@ instance (Display pref, Display tref) => Display (Type_ pref tref) where
     SetTy{} -> parens $ display opts t
     _other -> display opts t
 
-instance (Display pref, Display tref) => Display (FieldDef_ pref tref) where
+instance (Display pref, Display tref) => Display (FieldDef_ st pref tref) where
   display opts (FieldDef n ty) = pretty n <> " : " <> displayAtom opts ty
 
 instance (Display pref, Display tref) =>
-    Display (PredicateDef_ s pref tref) where
+    Display (PredicateDef_ s st pref tref) where
   display opts PredicateDef{..} =
     hang 2 $ sep $
       [ "predicate" <+> display opts predicateDefRef <+> ":"
@@ -842,7 +856,7 @@ instance Display q => Display (DerivingInfo q) where
 class IsWild pat where
   isWild :: pat -> Bool
 
-instance IsWild (SourcePat_ s p t) where
+instance IsWild (SourcePat_ s st p t) where
   isWild Wildcard{} = True
   isWild _ = False
 
@@ -879,15 +893,15 @@ instance Display SrcLoc where
 instance Pretty SrcLoc where
   pretty = displayDefault
 
-instance (Display p, Display t) => Pretty (SourcePat_ s p t) where
+instance (Display p, Display t) => Pretty (SourcePat_ s st p t) where
   pretty = displayDefault
 
-instance (Display p, Display t) => Display (SourcePat_ s p t) where
+instance (Display p, Display t) => Display (SourcePat_ s st p t) where
   display _ (Nat _ w) = pretty w
   display _ (String _ str) =
     pretty (Text.decodeUtf8 (BL.toStrict (Aeson.encode (Aeson.String str))))
   display opts (StringPrefix s str) =
-    display opts (String s str :: SourcePat_ s p t) <> ".."
+    display opts (String s str :: SourcePat_ s st p t) <> ".."
   display _ (ByteArray _ b) = pretty (show b)
   display opts (Array _ pats) =
     brackets $ hsep (punctuate "," (map (display opts) pats))
@@ -970,7 +984,7 @@ instance (Display p, Display t) => Display (SourcePat_ s p t) where
     Deref{} -> display opts pat
     Enum _ _ -> display opts pat
 
-instance (Display p, Display t) => Display (SourceQuery_ s p t) where
+instance (Display p, Display t) => Display (SourceQuery_ s st p t) where
   display opts (SourceQuery maybeHead stmts _ord) = case stmts of
     [] -> maybe mempty (display opts) maybeHead
     _ -> case maybeHead of
@@ -979,7 +993,7 @@ instance (Display p, Display t) => Display (SourceQuery_ s p t) where
     where
     pstmts = punctuate ";" (map (display opts) stmts)
 
-instance (Display p, Display t) => Display (SourceStatement_ s p t) where
+instance (Display p, Display t) => Display (SourceStatement_ s st p t) where
   display opts (SourceStatement lhs rhs) = displayStatement opts lhs rhs
 
 displayStatement
@@ -1023,28 +1037,57 @@ rmLocSchema (SourceSchema name inherits decls) =
 rmLocEvolves :: SourceEvolves_ a -> SourceEvolves_ ()
 rmLocEvolves (SourceEvolves _ a b) = SourceEvolves () a b
 
-rmLocDecl :: SourceDecl_ a -> SourceDecl_ ()
+rmLocDecl :: SourceDecl_ s -> SourceDecl_ ()
 rmLocDecl = \case
   SourceImport name _ -> SourceImport name ()
-  SourcePredicate pred -> SourcePredicate $ pred
-      { predicateDefDeriving = rmLocQuery <$> predicateDefDeriving pred
-      , predicateDefSrcSpan = ()}
+  SourcePredicate pred -> SourcePredicate $ rmLocPredDef pred
   SourceType typeDef -> SourceType $ rmLocTypeDef typeDef
   SourceDeriving DerivingDef{..} -> SourceDeriving $ DerivingDef
     derivingDefRef (rmLocQuery <$> derivingDefDeriveInfo) ()
 
-rmLocQuery :: SourceQuery_ s p t -> SourceQuery_ () p t
+rmLocPredDef :: PredicateDef_ s st p t -> PredicateDef_ () () p t
+rmLocPredDef PredicateDef{..} = PredicateDef {
+  predicateDefRef = predicateDefRef,
+  predicateDefKeyType = rmLocType predicateDefKeyType,
+  predicateDefValueType = rmLocType predicateDefValueType,
+  predicateDefDeriving = rmLocQuery <$> predicateDefDeriving,
+  predicateDefSrcSpan = ()
+}
+
+rmLocQuery :: SourceQuery_ s st p t -> SourceQuery_ () () p t
 rmLocQuery (SourceQuery mhead stmts ord) =
   SourceQuery (rmLocPat <$> mhead) (rmLocStatement <$> stmts) ord
 
-rmLocStatement :: SourceStatement_ s p t -> SourceStatement_ () p t
+rmLocStatement :: SourceStatement_ s st p t -> SourceStatement_ () () p t
 rmLocStatement (SourceStatement x y) =
   SourceStatement (rmLocPat x) (rmLocPat y)
 
 rmLocTypeDef :: TypeDef_ s p t -> TypeDef_ () p t
-rmLocTypeDef (TypeDef tref ty _) = TypeDef tref ty ()
+rmLocTypeDef (TypeDef tref ty _) = TypeDef tref (rmLocType ty) ()
 
-rmLocPat :: SourcePat_ s p t -> SourcePat_ () p t
+rmLocType :: Type_ st p t -> Type_ () p t
+rmLocType = \case
+  ByteTy -> ByteTy
+  NatTy -> NatTy
+  StringTy -> StringTy
+  ArrayTy ty -> ArrayTy $ rmLocType ty
+  RecordTy xs -> RecordTy $ rmLocFieldDef <$> xs
+  SumTy xs -> SumTy $ rmLocFieldDef <$> xs
+  SetTy ty -> SetTy $ rmLocType ty
+  PredicateTy _ pref -> PredicateTy () pref
+  NamedTy _ tref -> NamedTy () tref
+  MaybeTy ty -> MaybeTy $ rmLocType ty
+  EnumeratedTy xs -> EnumeratedTy xs
+  BooleanTy -> BooleanTy
+  TyVar x -> TyVar x
+  HasTy m r x -> HasTy (rmLocType <$> m) r x
+  HasKey ty x -> HasKey (rmLocType ty) x
+  ElementsOf ty x -> ElementsOf (rmLocType ty) x
+
+rmLocFieldDef :: FieldDef_ s p t -> FieldDef_ () p t
+rmLocFieldDef (FieldDef n ty) = FieldDef n $ rmLocType ty
+
+rmLocPat :: SourcePat_ s st p t -> SourcePat_ () () p t
 rmLocPat = \case
   Nat _ x -> Nat () x
   String _ x -> String () x
@@ -1067,16 +1110,67 @@ rmLocPat = \case
   Negation _ x -> Negation () (rmLocPat x)
   NestedQuery _ query -> NestedQuery () $ rmLocQuery query
   FactId _ x y -> FactId () x y
-  TypeSignature _ x t -> TypeSignature () (rmLocPat x) t
+  TypeSignature _ x t -> TypeSignature () (rmLocPat x) (rmLocType t)
   Clause _ _ x y rng -> Clause () () x (rmLocPat y) rng
   Prim _ p ps -> Prim () p (rmLocPat <$> ps)
   FieldSelect _ pat field q -> FieldSelect () (rmLocPat pat) field q
   Deref _ pat -> Deref () (rmLocPat pat)
   Enum _ f -> Enum () f
 
-rmLocField :: Field s p t -> Field () p t
+rmLocField :: Field s st p t -> Field () () p t
 rmLocField (Field name pat) =
   Field name (rmLocPat pat)
+
+-- Remove spans from type refs only. Useful when
+-- the two span types are different (s != st), e.g., s = SrcSpan, st = ()
+rmTypeLocPredDef :: PredicateDef_ s st p t -> PredicateDef_ s () p t
+rmTypeLocPredDef pred = pred
+    { predicateDefKeyType = rmLocType $ predicateDefKeyType pred
+    , predicateDefValueType = rmLocType $ predicateDefValueType pred
+    , predicateDefDeriving = rmTypeLocQuery <$> predicateDefDeriving pred}
+
+rmTypeLocQuery :: SourceQuery_ s st p t -> SourceQuery_ s () p t
+rmTypeLocQuery (SourceQuery mhead stmts ord) =
+  SourceQuery (rmTypeLocPat <$> mhead) (rmTypeLocStatement <$> stmts) ord
+
+rmTypeLocStatement :: SourceStatement_ s st p t -> SourceStatement_ s () p t
+rmTypeLocStatement (SourceStatement x y) =
+  SourceStatement (rmTypeLocPat x) (rmTypeLocPat y)
+
+rmTypeLocPat :: SourcePat_ s st p t -> SourcePat_ s () p t
+rmTypeLocPat pat = case pat of
+  Nat s x -> Nat s x
+  String s x -> String s x
+  StringPrefix s x -> StringPrefix s x
+  ByteArray s x -> ByteArray s x
+  TypeSignature s x t -> TypeSignature s (rmTypeLocPat x) (rmLocType t)
+  Array s xs -> Array s (rmTypeLocPat <$> xs)
+  ArrayPrefix s xs -> ArrayPrefix s (rmTypeLocPat <$> xs)
+  Tuple s xs -> Tuple s (rmTypeLocPat <$> xs)
+  Struct s xs -> Struct s (rmTypeLocField <$> xs)
+  App s x xs -> App s (rmTypeLocPat x) (rmTypeLocPat <$> xs)
+  KeyValue s x y -> KeyValue s (rmTypeLocPat x) (rmTypeLocPat y)
+  Elements s pat -> Elements s (rmTypeLocPat pat)
+  All s query -> All s (rmTypeLocPat query)
+  Wildcard s -> Wildcard s
+  Never s -> Never s
+  Variable s v -> Variable s v
+  ElementsOfArray s x -> ElementsOfArray s (rmTypeLocPat x)
+  OrPattern s x y -> OrPattern s (rmTypeLocPat x) (rmTypeLocPat y)
+  IfPattern s x y z ->
+    IfPattern s (rmTypeLocPat x) (rmTypeLocPat y) (rmTypeLocPat z)
+  Negation s x -> Negation s (rmTypeLocPat x)
+  NestedQuery s query -> NestedQuery s $ rmTypeLocQuery query
+  FactId s x y -> FactId s x y
+  Clause s ss x y rng -> Clause s ss x (rmTypeLocPat y) rng
+  Prim s p ps -> Prim s p (rmTypeLocPat <$> ps)
+  FieldSelect s pat field q -> FieldSelect s (rmTypeLocPat pat) field q
+  Deref s pat -> Deref s (rmTypeLocPat pat)
+  Enum s f -> Enum s f
+
+rmTypeLocField :: Field s st p t -> Field s () p t
+rmTypeLocField (Field name pat) =
+  Field name (rmTypeLocPat pat)
 
 -- -----------------------------------------------------------------------------
 -- Describing the kind of pattern
@@ -1084,7 +1178,7 @@ rmLocField (Field name pat) =
 class Describe a where
   describe :: a -> Doc ann
 
-instance Describe (SourcePat_ s p t) where
+instance Describe (SourcePat_ s st p t) where
   describe = \case
     Nat {} -> "a nat"
     String {} -> "a string"

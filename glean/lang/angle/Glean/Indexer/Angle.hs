@@ -212,7 +212,7 @@ buildFileLines fileInfo = do
 
 
 
-buildTypeFact :: forall m. (NewFact m) => Type_ PredicateRef TypeRef
+buildTypeFact :: forall m. (NewFact m) => Type_ SrcSpan PredicateRef TypeRef
   -> m Anglelang.Type
 buildTypeFact typeDef = do
   typeFact <- case typeDef of
@@ -226,9 +226,9 @@ buildTypeFact typeDef = do
         Anglelang.Type_key_record_ <$> mapM buildField fieldDefs
       SumTy fieldDefs ->
         Anglelang.Type_key_sum_ <$> mapM buildField fieldDefs
-      PredicateTy (PredicateRef n v) -> do
+      PredicateTy _ (PredicateRef n v) -> do
         Anglelang.Type_key_predicate_ <$> buildNameFact n v
-      NamedTy (TypeRef n v) -> do
+      NamedTy _ (TypeRef n v) -> do
         Anglelang.Type_key_named_ <$> buildNameFact n v
       MaybeTy tref -> do
         Anglelang.Type_key_maybe_ <$> buildTypeFact tref

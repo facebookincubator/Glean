@@ -164,7 +164,7 @@ data TypeDetails = TypeDetails
 data PredicateDetails = PredicateDetails
   { predicatePid :: Pid
   , predicateId :: PredicateId
-  , predicateSchema :: PredicateDef
+  , predicateSchema :: PredicateDef' SrcSpan ()
   , predicateKeyType :: Type
   , predicateValueType :: Type
   , predicateTypecheck :: Subroutine CompiledTypecheck
@@ -286,7 +286,7 @@ pidRef :: PredicateDetails -> PidRef
 pidRef details = PidRef (predicatePid details) (predicateId details)
 
 -- | Convert Schema types to RTS types using a DbSchema
-dbSchemaRtsType :: DbSchema -> Schema.Type -> Maybe Type
+dbSchemaRtsType :: DbSchema -> Schema.Type' s -> Maybe Type
 dbSchemaRtsType dbSchema = mkRtsType lookupType lookupPid
   where
   lookupType ref = typeType <$> lookupTypeId ref dbSchema
@@ -303,10 +303,10 @@ dbSchemaRtsType dbSchema = mkRtsType lookupType lookupPid
 mkRtsType
   :: (TypeId -> Maybe Type)
   -> (PredicateId -> Maybe Pid)
-  -> Schema.Type -> Maybe Type
+  -> Schema.Type' s -> Maybe Type
 mkRtsType lookupType lookupPid = rtsType
   where
-    rtsType :: Schema.Type -> Maybe Type
+    rtsType :: Schema.Type' s -> Maybe Type
     rtsType Schema.ByteTy = return Schema.ByteTy
     rtsType Schema.NatTy = return Schema.NatTy
     rtsType (Schema.ArrayTy elty) = Schema.ArrayTy <$> rtsType elty
@@ -314,13 +314,14 @@ mkRtsType lookupType lookupPid = rtsType
     rtsType (Schema.SumTy fields) = Schema.SumTy <$> mapM fieldType fields
     rtsType (Schema.SetTy elty) = Schema.SetTy <$> rtsType elty
     rtsType Schema.StringTy = return Schema.StringTy
-    rtsType (Schema.PredicateTy ref) = do
+    rtsType (Schema.PredicateTy _ ref) = do
       pid <- lookupPid ref
-      return (Schema.PredicateTy (PidRef pid ref))
+      return (Schema.PredicateTy () (PidRef pid ref))
     -- TODO: This will loop if we have recursive typedefs but we don't allow
     -- those at the moment.
-    rtsType (Schema.NamedTy ref) =
-      Schema.NamedTy . ExpandedType ref <$> lookupType ref
+    rtsType (Schema.NamedTy _ ref) = case lookupType ref of
+      Just ty -> Just $ Schema.NamedTy () (ExpandedType ref ty)
+      Nothing -> Nothing
     rtsType (Schema.MaybeTy eltTy) = Schema.MaybeTy <$> rtsType eltTy
     rtsType (Schema.EnumeratedTy names) = return (Schema.EnumeratedTy names)
     rtsType Schema.BooleanTy = return Schema.BooleanTy
@@ -329,7 +330,7 @@ mkRtsType lookupType lookupPid = rtsType
     rtsType Schema.HasKey{} = error "rtsType: HasKey"
     rtsType Schema.ElementsOf{} = error "rtsType: ElementsOf"
 
-    fieldType :: Schema.FieldDef -> Maybe FieldDef
+    fieldType :: Schema.FieldDef' s -> Maybe FieldDef
     fieldType (Schema.FieldDef name ty) = Schema.FieldDef name <$> rtsType ty
 
 mkQueryTransformations

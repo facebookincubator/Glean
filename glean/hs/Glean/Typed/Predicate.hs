@@ -78,9 +78,9 @@ class (Type p, Type (KeyType p), Type (ValueType p)) => Predicate p where
     -- this should be computed once and cached per predicate type
 
 -- | Retrieve the Angle representation of the type
-predicateSourceType :: Predicate p => Proxy p -> Angle.SourceType
+predicateSourceType :: Predicate p => Proxy p -> Angle.SourceType' ()
 predicateSourceType proxy =
-  Angle.PredicateTy $ Angle.convertRef (getName proxy)
+  Angle.PredicateTy () (Angle.convertRef (getName proxy))
 
 justId :: Predicate p => IdOf p -> p
 justId x = mkFact x Nothing Nothing

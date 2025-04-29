@@ -491,7 +491,8 @@ resolveOneSchema env angleVersion evolves SourceSchema{..} =
     , resolvedSchemaEvolves = Set.fromList (schemaRef <$> schemaEvolves)
     }
 
-resolveType :: (ShowRef t, ShowRef p) => SourceType -> Resolve p t (Type_ p t)
+resolveType :: (ShowRef t, ShowRef p) =>
+  SourceType -> Resolve p t (Type_ SrcSpan p t)
 resolveType typ = go typ
   where
   go typ = case typ of
@@ -502,8 +503,8 @@ resolveType typ = go typ
     RecordTy fields -> do checkFields fields; RecordTy <$> mapM goField fields
     SumTy fields -> do checkFields fields; SumTy <$> mapM goField fields
     SetTy ty -> SetTy <$> go ty
-    PredicateTy ref -> goRef ref
-    NamedTy ref -> goRef ref  -- shouldn't happen, but handle it anyway
+    PredicateTy s ref -> goRef ref s
+    NamedTy s ref -> goRef ref s -- shouldn't happen, but handle it anyway
     MaybeTy ty -> MaybeTy <$> go ty
     EnumeratedTy names -> lift $ do
       mapM_ checkName names
@@ -511,13 +512,13 @@ resolveType typ = go typ
     BooleanTy -> return BooleanTy
     _ -> error "resolveType"
 
-  goRef ref = do
+  goRef ref s = do
     scope <- getScope
     target <- lift $ lookupResultToExcept ref $
       resolveRef scope ref
     case target of
-      RefType ref -> return (NamedTy ref)
-      RefPred ref -> return (PredicateTy ref)
+      RefType ref -> return (NamedTy s ref)
+      RefPred ref -> return (PredicateTy s ref)
 
   checkFields fields = do
     sequence_
@@ -688,7 +689,7 @@ resolveQuery (SourceQuery head stmts ord) =
 resolvePat
   :: (ShowRef t, ShowRef p)
   => SourcePat
-  -> Resolve p t (SourcePat_ SrcSpan p t)
+  -> Resolve p t (SourcePat_ SrcSpan SrcSpan p t)
 resolvePat pat = case pat of
   Nat s i -> return (Nat s i)
   String s t -> return (String s t)
@@ -710,7 +711,7 @@ resolvePat pat = case pat of
     res <- resolveTypeOrPred s pred
     case res of
       RefPred ref ->
-        return (TypeSignature s (FactId s Nothing id) (PredicateTy ref))
+        return (TypeSignature s (FactId s Nothing id) (PredicateTy s ref))
       _other -> prettyErrorIn pat $ "not a predicate: " <> pretty pred
   OrPattern s l r -> OrPattern s <$> resolvePat l <*> resolvePat r
   Negation s pat -> Negation s <$> resolvePat pat
@@ -741,7 +742,7 @@ resolvePat pat = case pat of
           RefPred ref -> return (Clause s svar ref arg' range)
           RefType ref
             | SeekOnAllFacts <- range ->
-              return (TypeSignature s arg' (NamedTy ref))
+              return (TypeSignature s arg' (NamedTy svar ref))
             | otherwise ->
               prettyErrorIn pat "cannot use #new or #old with types"
             -- The syntax "T pat" for "pat : T" is something we might
@@ -780,7 +781,7 @@ resolveTypeOrPred span txt = do
 prettyError :: Doc ann -> Resolve p t a
 prettyError = throwError . Text.pack . show
 
-prettyErrorIn :: IsSrcSpan s => SourcePat' s -> Doc ann -> Resolve p t a
+prettyErrorIn :: IsSrcSpan s => SourcePat' s st -> Doc ann -> Resolve p t a
 prettyErrorIn pat doc = prettyErrorAt (sourcePatSpan pat) doc
 
 prettyErrorAt :: IsSrcSpan span => span -> Doc ann -> Resolve p t a
