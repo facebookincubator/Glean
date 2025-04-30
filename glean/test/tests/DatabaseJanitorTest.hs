@@ -246,7 +246,6 @@ dbConfig :: FilePath -> ServerTypes.Config -> Glean.Database.Config.Config
 dbConfig dbdir serverConfig = def
   { cfgDataStore = fileDataStore dbdir
   , cfgSchemaSource = schemaSourceFiles
-  , cfgRecipeConfig = def
   , cfgServerConfig = ThriftSource.value serverConfig
   , cfgReadOnly = False
       -- If we set cfgReadOnly=True, then backing up a DB will fail

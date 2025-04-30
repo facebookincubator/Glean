@@ -58,8 +58,6 @@ handler State{..} req =
     Service.UpdateProperties repo set unset ->
       Backend.updateProperties backend repo set unset
 
-    Service.WorkFinished rq -> Backend.workFinished backend rq
-
     Service.QueryFact repo id ->
       fromMaybe (Thrift.Fact 0 mempty mempty) <$>
         Backend.queryFact backend repo id

@@ -9,7 +9,6 @@
 module Glean.Database.Test
   ( Setting
   , setRoot
-  , setRecipes
   , setSchemaSource
   , setSchemaIndex
   , setSchemaPath
@@ -34,8 +33,6 @@ import Data.Default
 import Data.Functor
 import Data.Int
 import Data.List (foldl')
-import Data.Map (Map)
-import Data.Text (Text)
 
 import Util.EventBase
 
@@ -47,8 +44,6 @@ import Glean.Database.Env
 import Glean.Database.Write.Batch
 import Glean.Database.Types
 import qualified Glean.Internal.Types as Thrift
-import Glean.Recipes.Types (Recipes)
-import qualified Glean.Recipes.Types as Recipes
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Typed
 import qualified Glean.Types as Thrift
@@ -60,12 +55,6 @@ type Setting = Config -> Config
 
 setRoot :: FilePath -> Setting
 setRoot path cfg = cfg{ cfgDataStore = fileDataStore path }
-
-setRecipes :: Map Text Recipes -> Setting
-setRecipes recipes cfg = cfg
-  { cfgRecipeConfig = ThriftSource.value Recipes.Config
-        { config_recipes = recipes }
-  }
 
 setSchemaSource :: ThriftSource SchemaIndex -> Setting
 setSchemaSource source cfg = cfg{ cfgSchemaSource = source }
@@ -125,8 +114,6 @@ withTestEnv settings action =
       dbConfig = foldl' (\acc f -> f acc)
         def
           { cfgDataStore = tmpDataStore
-          , cfgRecipeConfig = ThriftSource.value Recipes.Config
-              { config_recipes = mempty }
           , cfgSchemaSource = schemaSourceFiles
           , cfgServerConfig = ThriftSource.value def
               { ServerConfig.config_db_rocksdb_cache_mb = 0 }

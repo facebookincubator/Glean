@@ -77,7 +77,6 @@ import qualified Glean.Internal.Types as Internal
 import Glean.DefaultConfigs
 import Glean.Logger.Database
 import Glean.Logger.Server
-import qualified Glean.Recipes.Types as Recipes
 import Glean.Schema.Resolve
 import Glean.Schema.Types
 import qualified Glean.ServerConfig.Types as ServerConfig
@@ -137,7 +136,6 @@ data Config = Config
   , cfgSchemaId :: Maybe SchemaId
       -- ^ If set, this is the version of the schema that is used to
       -- interpret a query.
-  , cfgRecipeConfig :: ThriftSource Recipes.Config
   , cfgServerConfig :: ThriftSource ServerConfig.Config
   , cfgReadOnly :: Bool
   , cfgMockWrites :: Bool
@@ -196,7 +194,6 @@ instance Default Config where
     , cfgUpdateSchema = True
     , cfgSchemaDir = Nothing
     , cfgSchemaId = Nothing
-    , cfgRecipeConfig = def
     , cfgServerConfig = def
     , cfgReadOnly = False
     , cfgMockWrites = False
@@ -438,7 +435,6 @@ options = do
   ~(cfgSchemaDir, cfgSchemaSource) <- schemaSourceOption
   _ignored_for_backwards_compat <- switch (long "db-schema-override")
 
-  cfgRecipeConfig <- recipesConfigThriftSource
   cfgServerConfig <-
     serverConfigThriftSource <|>
     serverConfigTier <|>
@@ -469,11 +465,6 @@ options = do
       tcDebug <- switch (long "debug-tc")
       queryDebug <- switch (long "debug-query")
       return DebugFlags{..}
-
-    recipesConfigThriftSource = option (eitherReader ThriftSource.parse)
-      (  long "recipe-config"
-      <> metavar "(file:PATH | config:PATH)"
-      <> value defaultRecipesConfigSource )
 
     serverConfigThriftSource = option (eitherReader ThriftSource.parse)
       (  long "server-config"

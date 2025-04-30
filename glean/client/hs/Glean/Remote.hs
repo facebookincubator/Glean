@@ -246,10 +246,6 @@ instance Backend ThriftBackend where
     withoutShard t $
       GleanService.updateProperties repo set unset
 
-  workFinished t rq =
-    withShard t (Thrift.work_repo $ Thrift.workFinished_work rq)
-      $ GleanService.workFinished rq
-
   completePredicates_ t repo preds = withShard t repo $
     GleanService.completePredicates repo preds
 

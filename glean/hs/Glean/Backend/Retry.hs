@@ -45,8 +45,6 @@ instance Backend RetryWritesBackend where
     retryChannelExceptions policy $ finalizeDatabase backend repo
   updateProperties (RetryWritesBackend policy backend) repo props vals =
     retryChannelExceptions policy $ updateProperties backend repo props vals
-  workFinished (RetryWritesBackend policy backend) work =
-    retryChannelExceptions policy $ workFinished backend work
   completePredicates_ (RetryWritesBackend policy backend) repo preds =
     retryChannelExceptions policy $ completePredicates_ backend repo preds
 
@@ -104,7 +102,6 @@ instance Backend RetryReadsBackend where
   finishDatabase (RetryReadsBackend _ backend) = finishDatabase backend
   finalizeDatabase (RetryReadsBackend _ backend) = finalizeDatabase backend
   updateProperties (RetryReadsBackend _ backend) = updateProperties backend
-  workFinished (RetryReadsBackend _ backend) = workFinished backend
   completePredicates_ (RetryReadsBackend _ backend) =
     completePredicates_ backend
 

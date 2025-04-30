@@ -52,7 +52,6 @@ import qualified Glean.RTS.Foreign.LookupCache as LookupCache
 import Glean.RTS.Foreign.Ownership (Ownership, Slice, DefineOwnership)
 import Glean.RTS.Foreign.Subst (Subst)
 import Glean.RTS.Types (Fid(..))
-import qualified Glean.Recipes.Types as Recipes
 import qualified Glean.ServerConfig.Types as ServerConfig
 import qualified Glean.Types as Thrift
 import Glean.Util.Metric (Point)
@@ -234,7 +233,6 @@ data Env = forall storage. Storage storage => Env
   , envSchemaUpdateSignal :: TMVar ()
   , envSchemaId :: Maybe Thrift.SchemaId
     -- ^ Used to store the schema ID for the session when using the local backend
-  , envRecipeConfig :: Observed Recipes.Config
   , envServerConfig :: Observed ServerConfig.Config
   , envBackupBackends :: Backup.Backends
   , envActive :: TVar (HashMap Thrift.Repo (DB storage))

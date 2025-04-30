@@ -161,7 +161,6 @@ instance Backend Database.Env where
   updateProperties env repo set unset = do
     Database.updateProperties env repo set unset
     return def
-  workFinished = Database.workFinished
 
   completePredicates_ = Database.completePredicates
 

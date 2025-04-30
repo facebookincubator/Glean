@@ -115,8 +115,6 @@ class Backend a where
     -> [Text]
     -> IO Thrift.UpdatePropertiesResponse
 
-  workFinished :: a -> Thrift.WorkFinished -> IO ()
-
   completePredicates_
     :: a
     -> Thrift.Repo
@@ -197,7 +195,6 @@ instance Backend (Some Backend) where
   finishDatabase (Some backend) = finishDatabase backend
   finalizeDatabase (Some backend) = finalizeDatabase backend
   updateProperties (Some backend) = updateProperties backend
-  workFinished (Some backend) = workFinished backend
   completePredicates_ (Some backend) = completePredicates_ backend
 
   restoreDatabase (Some backend) = restoreDatabase backend

@@ -7,8 +7,6 @@
  */
 
 include "glean/github/if/fb303.thrift"
-include "glean/config/recipes/recipes.thrift"
-include "glean/config/server/server_config.thrift"
 include "thrift/annotation/cpp.thrift"
 include "thrift/annotation/thrift.thrift"
 
@@ -105,56 +103,6 @@ struct Repo {
   1: string name;
   2: string hash;
 }
-
-typedef string WorkHandle
-
-// waiting to be picked up by a worker
-struct ParcelWaiting {
-  1: i32 retries;
-}
-
-// being executed by a worker under the given handle
-struct ParcelRunning {
-  1: i32 retries;
-  2: string handle;
-  3: string runner;
-  4: map<string, string> progress = {};
-}
-
-// successfully finished
-struct ParcelFinished {}
-
-// The current state of a work parcel
-union ParcelState {
-  1: ParcelWaiting waiting;
-  2: ParcelRunning running;
-  3: ParcelFinished finished;
-}
-
-// waiting for dependencies to finish
-struct TaskWaiting {}
-
-struct TaskRunning {
-  // ParcelState for parcels [0,1..n-1] where n is Recipe.parcels.
-  1: list_ParcelState_7430 parcels;
-}
-
-struct TaskFinished {
-  1: PosixEpochTime time;
-}
-
-union TaskState {
-  1: TaskWaiting waiting;
-  2: TaskRunning running;
-  3: TaskFinished finished;
-}
-
-struct Task {
-  1: recipes.Recipe recipe;
-  2: TaskState state;
-}
-
-typedef map<recipes.TaskName, Task> (hs.type = "HashMap") Tasks
 
 struct SendJsonBatchOptions {
   1: bool no_base64_binary = false; // See UserQueryOptions
@@ -299,10 +247,7 @@ exception InvalidDependency {
 
 exception UnknownBatchHandle {}
 
-// workFinished: supplied handle doesn't match the server's handle
-exception WrongHandle {}
-
-// workFinished on a DB that is already broken, complete or finalizing
+// finish on a DB that is already broken, complete or finalizing
 exception DatabaseNotIncomplete {
   1: DatabaseStatus status;
 }
@@ -423,20 +368,6 @@ union FinishResponse {
 struct FinalizeResponse {}
 
 struct FinishDatabaseResponse {}
-
-struct Worker {
-  1: string name;
-}
-
-struct Success {}
-struct Failure {
-  1: string message;
-}
-
-union Outcome {
-  1: Success success;
-  2: Failure failure;
-}
 
 struct UserQueryCont {
   3: binary continuation;
@@ -961,23 +892,11 @@ struct EnqueueBatchResponse {
   1: Handle handle;
 }
 
-// How to fill a database
-union KickOffFill {
-  // Use the recipe set with the given name
-  1: string recipes;
-
-  // Create a taskless DB which can be written to with the given handle
-  2: WorkHandle writeHandle;
-  // 3: deprecated
-}
-
 struct KickOff {
   // What DB to kick off
   1: Repo repo;
 
-  // How to fill the DB - nothing means that the name of the recipe set
-  // is the name of the repo
-  2: optional KickOffFill fill;
+  // deprecated: 2
 
   // Arbitrary metadata about this DB. Properties prefixed by
   // "glean."  are reserved for use by Glean itself.
@@ -1003,34 +922,6 @@ struct KickOffResponse {
 }
 
 struct UpdatePropertiesResponse {}
-
-# A chunk of work that can be executed
-struct Work {
-  1: Repo repo;
-  // Repository
-
-  2: string task;
-  // Task name
-
-  3: i32 parcelIndex;
-  // Index of the work parcel within the task (cf. Recipe.parcels).
-  // The first parcel is parcelIndex 0.
-
-  4: i32 parcelCount;
-  // Total number of work parcels in the task
-
-  5: WorkHandle handle;
-  // Unique handle
-}
-
-exception AbortWork {
-  1: string reason;
-}
-
-struct WorkFinished {
-  1: Work work;
-  2: Outcome outcome;
-}
 
 struct SchemaInfo {
   // The complete source of the schema selected by GetSchemaInfo.select
@@ -1157,18 +1048,6 @@ service GleanService extends fb303.FacebookService {
     3: list<string> unset = [],
   ) throws (1: Exception e, 2: UnknownDatabase u);
 
-  // Tell the server that work has finished, either successfully or
-  // unsuccessfully. If this is the final task and the server still
-  // has pending writes, it will fail with Retry.
-  void workFinished(1: WorkFinished request) throws (
-    1: Exception e,
-    2: AbortWork a,
-    3: Retry r,
-    4: UnknownDatabase u,
-    5: DatabaseNotIncomplete c,
-    6: WrongHandle h,
-  );
-
   // Tell the server when predicates are complete.
   // Axiom predicates must be completed first. Then externally
   // derived predicates can be completed and the derivation of
@@ -1270,7 +1149,6 @@ struct PredicateAnnotation {
 // The following were automatically generated and may benefit from renaming.
 typedef list<Fact> (hs.type = "Vector") list_Fact_2137
 typedef list<Id> (hs.type = "Vector") list_Id_2029
-typedef list<ParcelState> (hs.type = "Vector") list_ParcelState_7430
 typedef list<i64> (hs.type = "VectorStorable") list_i64
 typedef map<Id, list<FactDependencies>> (
   hs.type = "HashMap",

@@ -37,7 +37,6 @@ import Glean.Database.Open
 import qualified Glean.Database.Storage as Storage
 import Glean.Database.Types
 import Glean.Database.Writes
-import qualified Glean.Recipes.Types as Recipes
 import qualified Glean.ServerConfig.Types as ServerConfig
 import Glean.Util.ConfigProvider
 import Glean.Util.Observed as Observed
@@ -58,10 +57,6 @@ withDatabases
   -> IO a
 withDatabases evb cfg cfgapi act =
   ThriftSource.withValue cfgapi (cfgSchemaSource cfg) $ \schema_source ->
-  ThriftSource.withValue
-    cfgapi
-    (if cfgReadOnly cfg then ThriftSource.value def else cfgRecipeConfig cfg)
-    $ \recipe_config ->
   ThriftSource.withValue cfgapi (cfgServerConfig cfg) $ \server_config -> do
   server_cfg <- Observed.get server_config
   withDataStore (cfgDataStore cfg) server_cfg $ \catalog storage -> do
@@ -75,7 +70,6 @@ withDatabases evb cfg cfgapi act =
           shardManager
           cfg
           schema_source
-          recipe_config
           server_config)
         closeEnv
         $ \env -> do
@@ -90,11 +84,10 @@ initEnv
   -> SomeShardManager
   -> Config
   -> Observed SchemaIndex
-  -> Observed Recipes.Config
   -> Observed ServerConfig.Config
   -> IO Env
 initEnv evb envStorage envCatalog shardManager cfg
-  envSchemaSource envRecipeConfig envServerConfig = do
+  envSchemaSource envServerConfig = do
     ServerConfig.Config{..} <- Observed.get envServerConfig
 
     envActive <- newTVarIO mempty

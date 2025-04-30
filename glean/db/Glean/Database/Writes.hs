@@ -135,7 +135,7 @@ writerThread env WriteQueues{..} = mask $ \restore ->
       size <- now $ updateTVar writeQueuesSize (subtract writeSize)
       later $ reportQueueSizes repo queueCount qSize size (Just latency)
     -- don't put the MVar until we have updated writeQueueActive, otherwise
-    -- there is a race condition with workFinished which will fail because
+    -- there is a race condition with finish database which will fail because
     -- active /= 0.
     void $ tryPutMVar writeDone result
   done _ _ = return ()

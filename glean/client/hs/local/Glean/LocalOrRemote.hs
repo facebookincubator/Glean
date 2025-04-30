@@ -207,7 +207,6 @@ instance Backend (Some LocalOrRemote) where
   finishDatabase (Some backend) = finishDatabase backend
   finalizeDatabase (Some backend) = finalizeDatabase backend
   updateProperties (Some backend) = updateProperties backend
-  workFinished (Some backend) = workFinished backend
   completePredicates_ (Some backend) = completePredicates_ backend
 
   restoreDatabase (Some backend) = restoreDatabase backend

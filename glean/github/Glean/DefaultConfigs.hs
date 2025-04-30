@@ -8,7 +8,6 @@
 
 module Glean.DefaultConfigs (
     defaultClientConfigSource,
-    defaultRecipesConfigSource,
     serverConfigPath,
     legacySchemaConfigPath,
     schemaConfigPath,
@@ -18,13 +17,9 @@ import Data.Text (Text)
 
 import Glean.Util.ThriftSource
 import Glean.ClientConfig.Types
-import qualified Glean.Recipes.Types as Recipes
 
 defaultClientConfigSource :: ThriftSource ClientConfig
 defaultClientConfigSource = configDefault "client"
-
-defaultRecipesConfigSource :: ThriftSource Recipes.Config
-defaultRecipesConfigSource = configDefault "recipes"
 
 -- | Path in configerator where the server configs live
 serverConfigPath :: String

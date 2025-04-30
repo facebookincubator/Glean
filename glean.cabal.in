@@ -229,7 +229,6 @@ library config
         glean/config/server/gen-hs2
         glean/config/client/gen-hs2
     exposed-modules:
-        Glean.Recipes.Types
         Glean.Service.Types
         Glean.ClientConfig.Types
         Glean.ServerConfig.Types

@@ -109,13 +109,6 @@ instance Backend LoggingBackend where
       (runLogRepo "updateProperties" env repo)
       (const mempty) $
       updateProperties env repo set unset
-  workFinished (LoggingBackend env) rq =
-    loggingAction
-      (runLogRepo "workFinished" env
-        $ Thrift.work_repo
-        $ Thrift.workFinished_work rq)
-      (const mempty) $
-      workFinished env rq
 
   completePredicates_ (LoggingBackend env) repo preds =
     loggingAction

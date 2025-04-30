@@ -46,7 +46,7 @@ import Glean.Regression.Snapshot.Options
 import Glean.Regression.Snapshot.Query
 import Glean.Regression.Snapshot.Result
 import Glean.Regression.Snapshot.Transform
-import Glean.Types hiding (Success, Failure)
+import Glean.Types
 
 -- | From 'testRoot' this locates all subdirectories below the root
 -- that contain at least one ".out" file.
