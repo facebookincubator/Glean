@@ -54,12 +54,12 @@ unify a@(SumTy ts) b@(SumTy us)
   | length ts == length us = forM_ (zip ts us) $
       \(FieldDef f t, FieldDef g u) ->
         if f /= g then unifyError a b else unify t u
-unify (PredicateTy _ (PidRef p _)) (PredicateTy _ (PidRef q _))
+unify (PredicateTy (PidRef p _)) (PredicateTy (PidRef q _))
   | p == q = return ()
-unify (NamedTy _ (ExpandedType n _)) (NamedTy _ (ExpandedType m _))
+unify (NamedTy (ExpandedType n _)) (NamedTy (ExpandedType m _))
   | n == m = return ()
-unify (NamedTy _ (ExpandedType _ t)) u = unify t u
-unify t (NamedTy _ (ExpandedType _ u)) = unify t u
+unify (NamedTy (ExpandedType _ t)) u = unify t u
+unify t (NamedTy (ExpandedType _ u)) = unify t u
 unify (MaybeTy t) (MaybeTy u) = unify t u
 unify (MaybeTy t) u@SumTy{} = unify (lowerMaybe t) u
 unify (MaybeTy t) u@HasTy{} = unify (lowerMaybe t) u
@@ -135,7 +135,7 @@ unify a@(HasTy m _ x) b@(SumTy fs) = do
 unify a@RecordTy{} b@HasTy{} = unify b a
 unify a@SumTy{} b@HasTy{} = unify b a
 
-unify (HasKey keyTy x) predTy@(PredicateTy _ (PidRef _ ref)) = do
+unify (HasKey keyTy x) predTy@(PredicateTy (PidRef _ ref)) = do
   PredicateDetails{..} <- getPredicateDetails ref
   unify predicateKeyType keyTy
   extend x predTy
@@ -308,9 +308,9 @@ zonkTcPat p = case p of
     case (ty', inner') of
       (TyVar{}, _) -> error "zonkMatch: tyvar"
       (_, TyVar{}) -> error "zonkMatch: tyvar"
-      (PredicateTy _ (PidRef _ ref), PredicateTy _ (PidRef _ ref'))
+      (PredicateTy (PidRef _ ref), PredicateTy (PidRef _ ref'))
         | ref == ref' -> return e'
-      (PredicateTy _ pidRef@(PidRef _ ref), _other) -> do
+      (PredicateTy pidRef@(PidRef _ ref), _other) -> do
         PredicateDetails{..} <- getPredicateDetails ref
         let vpat = Ref (MatchWild predicateValueType)
         return (Ref (MatchExt (Typed ty'
@@ -324,7 +324,7 @@ zonkTcPat p = case p of
     case (ty', inner') of
       (TyVar{}, _) -> error "zonkMatch: tyvar"
       (_, TyVar{}) -> error "zonkMatch: tyvar"
-      (PredicateTy  _ (PidRef _ ref), PredicateTy _ (PidRef _ ref'))
+      (PredicateTy (PidRef _ ref), PredicateTy (PidRef _ ref'))
         | ref == ref' -> return e'
       (_other, PredicateTy{}) -> do
         return (Ref (MatchExt (Typed ty' (TcDeref inner' e'))))

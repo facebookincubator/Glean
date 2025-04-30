@@ -821,7 +821,7 @@ typecheckSchema idToPid stored tcOpts HashedSchema{..} tcEnv = do
     -- elements too early, which would also cause a loop.
     typedefs :: Lazy.HashMap.HashMap TypeId (Maybe RTS.Type)
     typedefs = Lazy.HashMap.fromList
-      [ (id, rtsType (Schema.rmLocType $ typeDefType def))
+      [ (id, rtsType (typeDefType def))
       | (id, def) <- HashMap.toList hashedTypes ]
 
     lookupType :: TypeId -> Maybe RTS.Type
@@ -836,7 +836,7 @@ typecheckSchema idToPid stored tcOpts HashedSchema{..} tcEnv = do
     -- If we have already seen this predicate, no need to
     -- typecheck it again.
     new = HashMap.difference hashedPreds (tcEnvPredicates tcEnv)
-    new' = HashMap.map rmTypeLocPredDef new
+
     mkPredicateDetails (id,def) =
         case
           ( HashMap.lookup (predicateDefRef def) idToPid
@@ -858,7 +858,7 @@ typecheckSchema idToPid stored tcOpts HashedSchema{..} tcEnv = do
                 }
         _ -> return Nothing
 
-  newDetails <- catMaybes <$> mapM mkPredicateDetails (HashMap.toList new')
+  newDetails <- catMaybes <$> mapM mkPredicateDetails (HashMap.toList new)
 
   let
     types = HashMap.fromList
@@ -981,7 +981,7 @@ checkStoredType preds types def ty = go ty
   go (MaybeTy ty) = go ty
   go (RecordTy fields) = forM_ fields $ \(FieldDef _ ty) -> go ty
   go (SumTy fields) = forM_ fields $ \(FieldDef _ ty) -> go ty
-  go (PredicateTy _ (PidRef _ ref)) = case HashMap.lookup ref preds of
+  go (PredicateTy (PidRef _ ref)) = case HashMap.lookup ref preds of
     Just PredicateDetails{..} -> case predicateDeriving of
       Derive DerivedAndStored _ -> return ()
       Derive _ _ -> throwIO $ ErrorCall $ show $
@@ -989,7 +989,7 @@ checkStoredType preds types def ty = go ty
          " refers to non-stored derived predicate " <> displayDefault ref
       _ -> return ()
     Nothing -> error $ "checkStoredType: " <> Text.unpack (showRef ref)
-  go (NamedTy _ (ExpandedType ref _)) = case HashMap.lookup ref types of
+  go (NamedTy (ExpandedType ref _)) = case HashMap.lookup ref types of
     Just TypeDetails{..} -> go typeType
     Nothing -> error $ "checkStoredType: " <> Text.unpack (showRef ref)
   go _ = return ()

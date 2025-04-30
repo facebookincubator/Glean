@@ -241,7 +241,7 @@ instance Aeson.ToJSON AngleTypeRepr where
 angleTypeReprFor
   :: ResolvedType
   -> ReaderT AngleTypeReprContext (Writer [HackEnum]) AngleTypeRepr
-angleTypeReprFor (PredicateTy _ ref) = do
+angleTypeReprFor (PredicateTy ref) = do
   ctx <- ask
   case lookupPredDefKeyValue ctx ref of
     -- If the predicate has value of type {} and the key is a String
@@ -249,7 +249,7 @@ angleTypeReprFor (PredicateTy _ ref) = do
     -- concise
     Just (StringTy, RecordTy []) ->
       PredicateT ref (classname ctx) <$> angleTypeInnerReprFor StringTy
-    _ -> angleTypeInnerReprFor (PredicateTy () ref)
+    _ -> angleTypeInnerReprFor (PredicateTy ref)
     where
       lookupPredDefKeyValue ctx pref = do
         PredicateDef{..} <- HashMap.lookup pref $ ctxPredMap ctx
@@ -259,7 +259,7 @@ angleTypeReprFor (PredicateTy _ ref) = do
 angleTypeReprFor ty = angleTypeInnerReprFor ty
 
 angleTypeInnerReprFor
-  :: ResolvedType' s
+  :: ResolvedType
   -> ReaderT AngleTypeReprContext (Writer [HackEnum]) AngleTypeRepr
 angleTypeInnerReprFor ByteTy = return ByteTInt
 angleTypeInnerReprFor NatTy = return NatTInt
@@ -276,7 +276,7 @@ angleTypeInnerReprFor (SumTy fields) =
     f FieldDef{..} =
       (,) fieldDefName <$> angleTypeInnerReprFor fieldDefType
 angleTypeInnerReprFor (SetTy ty) = SetTVec <$> angleTypeInnerReprFor ty
-angleTypeInnerReprFor (PredicateTy _ ref) = do
+angleTypeInnerReprFor (PredicateTy ref) = do
   ctx <- ask
   case lookupPredDefKeyValue ctx ref of
     Nothing -> return $
@@ -291,7 +291,7 @@ angleTypeInnerReprFor (PredicateTy _ ref) = do
         return (predicateDefKeyType, predicateDefValueType)
       classname AngleTypeReprContext{..} =
         refClassname $ prefVref ctxPredLatest ref
-angleTypeInnerReprFor (NamedTy _ ref) = do
+angleTypeInnerReprFor (NamedTy ref) = do
   ctx <- ask
   case lookupTypeDefType ctx ref of
     Just (EnumeratedTy alts) ->
@@ -425,8 +425,8 @@ cyclesInDefs ctx defs = concatMap hasCycles sccs
   outEdgesT (RecordTy fields)  = outEdgesFields fields
   outEdgesT (SumTy fields)  = outEdgesFields fields
   outEdgesT (SetTy ty) = outEdgesT ty
-  outEdgesT (NamedTy _ (TypeRef name ver)) = [(name,ver)]
-  outEdgesT (PredicateTy _ (PredicateRef name ver)) = [(name,ver)]
+  outEdgesT (NamedTy (TypeRef name ver)) = [(name,ver)]
+  outEdgesT (PredicateTy (PredicateRef name ver)) = [(name,ver)]
   outEdgesT EnumeratedTy{} = []
   outEdgesT TyVar{} = error "outEdgesT: TyVar"
   outEdgesT HasTy{} = error "outEdgesT: HasTy"

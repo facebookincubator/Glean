@@ -53,7 +53,7 @@ import Glean.Util.Some
 
 type T a = StateT TypecheckState (ExceptT (Doc ()) IO) a
 
-type ToRtsType = Schema.Type' () -> Maybe Type
+type ToRtsType = Schema.Type -> Maybe Type
 
 whenDebug :: T () -> T ()
 whenDebug act = do
@@ -165,7 +165,7 @@ mkWild ty
 prettyError :: Doc () -> T a
 prettyError = throwError
 
-prettyErrorIn :: IsSrcSpan s => SourcePat_ s st p t -> Doc () -> T a
+prettyErrorIn :: IsSrcSpan s => SourcePat_ s p t -> Doc () -> T a
 prettyErrorIn pat doc = prettyErrorAt (sourcePatSpan pat) doc
 
 prettyErrorAt :: IsSrcSpan span => span -> Doc () -> T a
@@ -174,7 +174,7 @@ prettyErrorAt span doc = prettyError $ vcat
   , doc
   ]
 
-inPat :: (IsSrcSpan s) => SourcePat_ s st p t -> T a -> T a
+inPat :: (IsSrcSpan s) => SourcePat_ s p t -> T a -> T a
 inPat pat = addErrSpan (sourcePatSpan pat)
 
 addErrSpan :: (IsSrcSpan s) => s -> T a -> T a

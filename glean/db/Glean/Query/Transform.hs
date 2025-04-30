@@ -470,14 +470,14 @@ transformTerm inner defaultForType src dst = go src dst
           $ \(FieldDef name def, ix) -> (name, (ix, def))
 
     go :: Type -> Type -> Maybe (TransformTerm m a b)
-    go from@(NamedTy _ _) to = go (derefType from) to
-    go from to@(NamedTy _ _) = go from (derefType to)
+    go from@(NamedTy _) to = go (derefType from) to
+    go from to@(NamedTy _) = go from (derefType to)
     go ByteTy ByteTy = Nothing
     go NatTy NatTy = Nothing
     go StringTy StringTy = Nothing
     go BooleanTy BooleanTy = Nothing
     go (MaybeTy from) (MaybeTy to) = go (lowerMaybe from) (lowerMaybe to)
-    go (PredicateTy _ _) (PredicateTy _ _) = Nothing
+    go (PredicateTy _) (PredicateTy _) = Nothing
     go (EnumeratedTy from) (EnumeratedTy to) =
       go (lowerEnum from) (lowerEnum to)
     go (ArrayTy from) (ArrayTy to) = do
@@ -644,15 +644,15 @@ transformBytes' QueryRegs{..} discard src dst =
      -> Either
           (Register 'BinaryOutputPtr -> Bytes -> Code ()) -- copy as is
           (Register 'BinaryOutputPtr -> Bytes -> Code ()) -- transform and copy
-  go from@(NamedTy _ _) to = go (derefType from) to
-  go from to@(NamedTy _ _) = go from (derefType to)
+  go from@(NamedTy _) to = go (derefType from) to
+  go from to@(NamedTy _) = go from (derefType to)
   go ByteTy ByteTy = Left $ copy ByteTy
   go NatTy NatTy = Left $ copy NatTy
   go StringTy StringTy = Left $ copy StringTy
   go BooleanTy BooleanTy = Left $ copy BooleanTy
   go (MaybeTy from) to = go (lowerMaybe from) to
   go from (MaybeTy to) = go from (lowerMaybe to)
-  go (PredicateTy _ _) (PredicateTy pid s) = Left $ copy (PredicateTy pid s)
+  go (PredicateTy _) (PredicateTy pid) = Left $ copy (PredicateTy pid)
   go from (EnumeratedTy to) = go from (lowerEnum to)
   go (EnumeratedTy from) to = go (lowerEnum from) to
   go (ArrayTy from) (ArrayTy to) =

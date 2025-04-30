@@ -294,7 +294,7 @@ indentLines = map (\t -> if Text.null t then t else "  " <> t)
 optionalize :: Text -> Text
 optionalize name = "optional " <> name
 
-shareTypeDef :: NameSpaces -> ResolvedType' s -> M Text
+shareTypeDef :: NameSpaces -> ResolvedType -> M Text
 shareTypeDef here t = do
   (no, name) <- nameThisType t
   case no of
@@ -305,7 +305,7 @@ shareTypeDef here t = do
   return name
 
 
-thriftTy :: NameSpaces -> ResolvedType' s -> M Text
+thriftTy :: NameSpaces -> ResolvedType -> M Text
 thriftTy here t = case t of
   -- Basic types
   ByteTy{} -> return "glean.Byte"
@@ -326,9 +326,9 @@ thriftTy here t = case t of
     inner <- thriftTy here tInner
     return (optionalize inner)
   -- References
-  PredicateTy _ pred ->
+  PredicateTy pred ->
     thriftName here <$> predicateName pred
-  NamedTy _ typeRef -> do
+  NamedTy typeRef -> do
     thriftName here <$> typeName typeRef
   EnumeratedTy _ -> shareTypeDef here t
   TyVar{} -> error "thriftTy: TyVar"
@@ -406,9 +406,9 @@ genPred here PredicateDef{..} = do
   -- These aren't very useful except for documentation purposes, so that
   -- you can refer to an Id by its typeref name in APIs.
   (type_id, define_id) <- do
-    let target_type = NamedTy () (TypeRef "glean.Id" 0)
+    let target_type = NamedTy (TypeRef "glean.Id" 0)
     type_id <- thriftTy here target_type
-    new_alias <- thriftTy here (NamedTy () (TypeRef (joinDot name_id) 0))
+    new_alias <- thriftTy here (NamedTy (TypeRef (joinDot name_id) 0))
     let name = thriftName here name_id
         d = allowReservedIdentifierAnnotation name <> "typedef "
           <> type_id <> " " <> name
@@ -475,7 +475,7 @@ define_kt ::
 define_kt here typ name_kt = do
   let gname = joinDot name_kt
       tref = TypeRef gname 0
-  ref <- thriftTy here (NamedTy () (TypeRef gname 0))
+  ref <- thriftTy here (NamedTy (TypeRef gname 0))
   def <- genType here tref typ
   return (ref,def)
 
@@ -500,7 +500,7 @@ makeEnumerated name vals = do
           | null py3Annot = ""
           | otherwise = " (" <> Text.intercalate ", " py3Annot <> ")"
 
-genType :: NameSpaces -> TypeRef -> ResolvedType' s -> M [Text]
+genType :: NameSpaces -> TypeRef -> ResolvedType -> M [Text]
 genType here tref ty = addExtraDecls $ do
   tName@(_, root) <- typeName tref
   let name = thriftName here tName

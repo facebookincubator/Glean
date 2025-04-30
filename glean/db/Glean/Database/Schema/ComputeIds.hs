@@ -267,10 +267,10 @@ resolveQuery env (SourceQuery head stmts ord) =
 -- representation.
 fingerprintDef :: Def -> Hash
 fingerprintDef (RefType (TypeDef id ty _)) =
-  hashBinary (showRef ref, rmLocType ty)
+  hashBinary (showRef ref, ty)
   where ref = typeIdRef id
-fingerprintDef (RefPred (PredicateDef id keyTy valTy drv _)) =
-  hashBinary (showRef ref,rmLocType keyTy, rmLocType valTy, fmap rmLocQuery drv)
+fingerprintDef (RefPred (PredicateDef id key val drv _)) =
+  hashBinary (showRef ref, key, val, fmap rmLocQuery drv)
   where ref = predicateIdRef id
 
 {- Note [overriding default deriving]

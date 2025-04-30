@@ -179,7 +179,7 @@ apat
   | 'never'                         { Never (sspan $1) }
   | '(' query ')'                   { nestedQuery (s $1 $3) $2 }
 
-field :: { Field SrcSpan SrcSpan SourceRef SourceRef }
+field :: { Field SrcSpan SourceRef SourceRef }
 field
   : fieldname '=' pattern  { Field $1 $3 }
 
@@ -307,7 +307,7 @@ type
   | '{' seplist2_(fielddef, '|')  '}'       { L (s $1 $3)  $ Schema.SumTy $2 }
   | 'set' type                              { L (s $1 $2)  $ Schema.SetTy (lval $2) }
   | 'enum' '{' seplist_(fieldname, '|') '}' { L (s $1 $4)  $ Schema.EnumeratedTy $3 }
-  | qname                                   { L (sspan $1) $ Schema.PredicateTy (sspan $1) (lval $1) }
+  | qname                                    { L (sspan $1) $ Schema.PredicateTy (lval $1) }
      -- resolved to typedef/predicate later
   | 'maybe' type                            { L (s $1 $2)  $ Schema.MaybeTy (lval $2) }
   | 'bool'                                  { L (sspan $1) $ Schema.BooleanTy }
@@ -463,11 +463,11 @@ class HasSpan a where
   sspan :: a -> SrcSpan
 instance HasSpan (Located a) where
   sspan (L span _) = span
-instance HasSpan (SourcePat_ SrcSpan SrcSpan a b) where
+instance HasSpan (SourcePat_ SrcSpan a b) where
   sspan = sourcePatSpan
-instance HasSpan (SourceStatement_ SrcSpan SrcSpan p t) where
+instance HasSpan (SourceStatement_ SrcSpan p t) where
   sspan (SourceStatement p1 p2) = s p1 p2
-instance HasSpan (SourceQuery_ SrcSpan SrcSpan p t) where
+instance HasSpan (SourceQuery_ SrcSpan p t) where
   sspan (SourceQuery Nothing stmts _) = s (head stmts) (last stmts)
   sspan (SourceQuery (Just pat) stmts _) = s pat (last stmts)
 

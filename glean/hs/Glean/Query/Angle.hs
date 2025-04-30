@@ -106,9 +106,9 @@ instance IsSrcSpan SpanAngleDSL where
 instance Pretty SpanAngleDSL where
   pretty DSL = "angle DSL"
 
-type SourcePat = SourcePat' SpanAngleDSL ()
-type SourceStatement = SourceStatement' SpanAngleDSL ()
-type SourceQuery = SourceQuery' SpanAngleDSL ()
+type SourcePat = SourcePat' SpanAngleDSL
+type SourceStatement = SourceStatement' SpanAngleDSL
+type SourceQuery = SourceQuery' SpanAngleDSL
 
 newtype Angle t = Angle { gen :: State Int SourcePat }
 
@@ -289,7 +289,7 @@ array xs = Angle $ Array DSL <$> mapM gen xs
 tuple :: AngleTuple a => a -> Angle (AngleTupleTy a)
 tuple = fromTuple
 
-type SourceField = Angle.Field SpanAngleDSL () SourceRef SourceRef
+type SourceField = Angle.Field SpanAngleDSL SourceRef SourceRef
 
 -- | Match a record. Zero or more of the fields may be matched.
 --

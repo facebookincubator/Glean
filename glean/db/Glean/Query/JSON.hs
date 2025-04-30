@@ -255,7 +255,7 @@ encode expanded Encoder{..} !d = enc
                       go (n-1)
                 go (size-1)
             encSetEnd
-      NamedTy _ (ExpandedType _ ty) -> enc ty
+      NamedTy (ExpandedType _ ty) -> enc ty
       EnumeratedTy _ -> do
         x <- liftST $ RTS.dSelector d
         encNat $ fromIntegral x
@@ -361,7 +361,7 @@ thriftType (SetTy ByteTy{}) = 8
 thriftType SetTy{} = 9
 thriftType RecordTy{} = 12
 thriftType SumTy{} = 12
-thriftType (NamedTy _ (ExpandedType _ ty)) = thriftType ty
+thriftType (NamedTy (ExpandedType _ ty)) = thriftType ty
 thriftType EnumeratedTy{} = 5 -- spec says enums are i32
 thriftType BooleanTy{} = 1
 thriftType PredicateTy{} = 12

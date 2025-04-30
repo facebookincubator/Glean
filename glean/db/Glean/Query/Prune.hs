@@ -185,8 +185,8 @@ prune hasFacts (QueryWithInfo q _ gen t) = do
             , pb
             ]
         TcDeref ty' p
-          | Angle.PredicateTy _ (PidRef _ predId) <-
-            ty', not $ hasFacts predId -> Nothing
+          | Angle.PredicateTy (PidRef _ predId) <- ty', not $ hasFacts predId ->
+            Nothing
           | otherwise ->
             Ref . MatchExt . Typed ty . TcDeref ty' <$> prunePat p
         TcFieldSelect (Typed ty' p) f -> do

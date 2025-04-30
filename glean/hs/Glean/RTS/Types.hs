@@ -108,8 +108,8 @@ data ExpandedType = ExpandedType TypeId Type
 instance Display ExpandedType where
   display opts (ExpandedType ref _) = display opts ref
 
-type Type = Type_ () PidRef ExpandedType
-type FieldDef = FieldDef_ () PidRef ExpandedType
+type Type = Type_ PidRef ExpandedType
+type FieldDef = FieldDef_ PidRef ExpandedType
 
 
 -- | Construct the representation of a Type
@@ -123,8 +123,8 @@ repType (RecordTy fields) =
 repType (SumTy fields) =
   SumRep [ repType ty | FieldDef _ ty <- fields ]
 repType (SetTy ty)  = SetRep (repType ty)
-repType (PredicateTy _ (PidRef pid _)) = PredicateRep pid
-repType (NamedTy _ (ExpandedType _ ty)) = repType ty
+repType (PredicateTy (PidRef pid _)) = PredicateRep pid
+repType (NamedTy (ExpandedType _ ty)) = repType ty
 repType (MaybeTy ty) = repType (lowerMaybe ty)
 repType (EnumeratedTy names) = repType (lowerEnum names)
 repType BooleanTy = repType lowerBool
@@ -161,11 +161,11 @@ eqType version a b = case (a,b) of
   (SumTy as, SumTy bs) ->
     length as == length bs &&
     and [ eqType version a b | (FieldDef _ a, FieldDef _ b) <- zip as bs ]
-  (PredicateTy _ (PidRef p _), PredicateTy _ (PidRef q _)) -> p == q
-  (NamedTy _ (ExpandedType n t), NamedTy _ (ExpandedType m u)) ->
+  (PredicateTy (PidRef p _), PredicateTy (PidRef q _)) -> p == q
+  (NamedTy (ExpandedType n t), NamedTy (ExpandedType m u)) ->
     n == m || eqType version t u
-  (NamedTy _ (ExpandedType _ t), u) -> eqType version t u
-  (t, NamedTy _ (ExpandedType _ u)) -> eqType version t u
+  (NamedTy (ExpandedType _ t), u) -> eqType version t u
+  (t, NamedTy (ExpandedType _ u)) -> eqType version t u
   (MaybeTy t, MaybeTy u) -> eqType version t u
   (MaybeTy t, u) ->  eqType version (lowerMaybe t) u
   (t, MaybeTy u) -> eqType version t (lowerMaybe u)
@@ -179,7 +179,7 @@ eqType version a b = case (a,b) of
 
 -- | dereference NamedTy on the outside of a Type
 derefType :: Type -> Type
-derefType (NamedTy _ (ExpandedType _ ty)) = derefType ty
+derefType (NamedTy (ExpandedType _ ty)) = derefType ty
 derefType ty = ty
 
 -- | Type describing the raw representation of a value. This makes

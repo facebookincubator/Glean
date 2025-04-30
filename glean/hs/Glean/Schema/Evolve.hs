@@ -256,8 +256,8 @@ validateEvolutions
   :: (Eq p, Eq t, ShowRef p, ShowRef t,
       Hashable p, Hashable t, Display p, Display t)
   => Maybe (p -> Bool)               -- ^ does the db has facts of p
-  -> HashMap t (TypeDef_ st p t)        -- ^ types to their definitions
-  -> HashMap p (PredicateDef_ s st p t) -- ^ predicates to their definitions
+  -> HashMap t (TypeDef_ s p t)        -- ^ types to their definitions
+  -> HashMap p (PredicateDef_ s p t) -- ^ predicates to their definitions
   -> HashMap p p                     -- ^ predicate evolutions
   -> Either Text ()
 validateEvolutions mHasFacts types preds evolutions =
@@ -336,7 +336,7 @@ validateResolvedEvolutions resolved = do
     -- Later definitions override earlier ones in case of db overrides
     -- (is this really the case or are overrides added to a new ProcessedSchema?)
     preds :: HashMap PredicateRef
-      (PredicateDef_ SrcSpan SrcSpan PredicateRef TypeRef)
+      (PredicateDef_ SrcSpan PredicateRef TypeRef)
     preds = HashMap.unions $ reverse $ map resolvedSchemaPredicates resolved
 
     types :: HashMap TypeRef ResolvedTypeDef
@@ -358,8 +358,8 @@ canEvolve
       Hashable p, Hashable t, Display p, Display t)
   => HashMap t (TypeDef_ s p t) -- ^ type definitions
   -> (p -> p -> Bool)         -- ^ whether two predicates are compatible
-  -> Type_ s p t                -- ^ updated type
-  -> Type_ s p t                -- ^ old type
+  -> Type_ p t                -- ^ updated type
+  -> Type_ p t                -- ^ old type
   -> Maybe Text               -- ^ compatibility error
 canEvolve types compatible new old = go new old
   where
@@ -367,11 +367,11 @@ canEvolve types compatible new old = go new old
       Just v -> typeDefType v
       Nothing -> error $ "unknown type " <> Text.unpack (showRef ty)
 
-    go (NamedTy _ new) (NamedTy _ old )
+    go (NamedTy new) (NamedTy old)
       | new == old = Nothing
       | otherwise = go (get new) (get old)
-    go (NamedTy _ t) old = go (get t) old
-    go new (NamedTy _ t) = go new (get t)
+    go (NamedTy t) old = go (get t) old
+    go new (NamedTy t) = go new (get t)
     go (MaybeTy new) (MaybeTy old) = go new old
     go ByteTy ByteTy = Nothing
     go NatTy NatTy = Nothing
@@ -379,7 +379,7 @@ canEvolve types compatible new old = go new old
     go BooleanTy BooleanTy = Nothing
     go (ArrayTy new) (ArrayTy old) = go new old
     go (SetTy new) (SetTy old) = go new old
-    go (PredicateTy _ new) (PredicateTy _ old)
+    go (PredicateTy new) (PredicateTy old)
       | not (compatible new old) = Just
           $ "type changed from " <> showRef old
           <> " to " <> showRef new
@@ -430,7 +430,7 @@ canEvolve types compatible new old = go new old
           RecordTy fields -> all (hasDefault . fieldDefType) fields
           EnumeratedTy{} -> True
           SumTy (first : _) -> hasDefault (fieldDefType first)
-          NamedTy _ ty -> hasDefault (get ty)
+          NamedTy ty -> hasDefault (get ty)
           _ -> False
 
         newRequiredFields = Map.keys (required addedFields)

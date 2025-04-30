@@ -63,7 +63,7 @@ flatten rec dbSchema ver deriveStored QueryWithInfo{..} =
 
       deriveStoredPred =
         case derefType qiReturnType of
-          Angle.PredicateTy _ (PidRef _ pref) | deriveStored -> Just pref
+          Angle.PredicateTy (PidRef _ pref) | deriveStored -> Just pref
           _ -> Nothing
 
       flattenFailure e = throwError $
@@ -345,7 +345,7 @@ flattenPattern pat = case pat of
   Ref (MatchExt (Typed keyTy (TcDeref ty pat))) -> do
     r <- flattenPattern pat
     ref@(PidRef _ pred)  <- case ty of
-      Angle.PredicateTy _ ref -> return ref
+      Angle.PredicateTy ref -> return ref
       _other -> throwError "TcDeref: not a predicate"
     PredicateDetails{..} <- getPredicateDetails pred
     forM r $ \(stmts, p) -> do
@@ -592,7 +592,7 @@ captureKey
   -> F (FlatQuery, Maybe Generator, Type)
 captureKey ver dbSchema
     (FlatQuery pat Nothing (FlatStatementGroup ord)) ty
-  | Angle.PredicateTy _ pidRef@(PidRef pid _) <- ty  = do
+  | Angle.PredicateTy pidRef@(PidRef pid _) <- ty  = do
   let
     captureOrdStmt fidVar keyVar maybeValVar (Ordered s) =
       (Ordered <$> stmts, pats)
@@ -723,7 +723,7 @@ captureKey ver dbSchema
   --    $key is the key
     let
       pidRef = PidRef (tempPid dbSchema) tempPredicateId
-      pidTy = Angle.PredicateTy () pidRef
+      pidTy = Angle.PredicateTy pidRef
       retTy = tupleSchema [pidTy, ty, unit]
 
     fidVar <- fresh pidTy

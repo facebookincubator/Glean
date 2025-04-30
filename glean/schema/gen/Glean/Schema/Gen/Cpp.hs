@@ -289,10 +289,10 @@ reprTy here t = case t of
     rTy <- reprTy here ty
     return $ "Maybe<" <> rTy <> ">"
   -- References
-  PredicateTy _ pref -> do
+  PredicateTy pref -> do
     name <- schemaName <$> predicateName pref
     return (cppNameIn here name)
-  NamedTy _ tref -> do
+  NamedTy tref -> do
     name <- schemaName <$> typeName tref
     if isJust (provided name)
       then return $ cppNameIn here (builtinName (snd name))
@@ -343,10 +343,10 @@ valueTy here t = case t of
       , FieldDef "^Just^" ty ]
   EnumeratedTy{} -> shareTypeDef here t
   -- References, Fact is a phantom-typed Id
-  PredicateTy _ pref -> do
+  PredicateTy pref -> do
     name <- schemaName <$> predicateName pref
     return $ "Fact<" <> cppNameIn here name <> ">"
-  NamedTy _ tref -> do
+  NamedTy tref -> do
     name <- schemaName <$> typeName tref
     case provided name of
       Just ty -> valueTy here ty
@@ -503,7 +503,7 @@ unionDef (spaces,name) fields = do
                 <> ")")
       (args, ret) <- case ty of
           -- special case, Unit is not a concrete type
-        NamedTy _ (TypeRef "builtin.Unit" _) -> tuple []
+        NamedTy (TypeRef "builtin.Unit" _) -> tuple []
         RecordTy fields -> tuple fields
         _ -> do
           vTy <- valueTy spaces ty

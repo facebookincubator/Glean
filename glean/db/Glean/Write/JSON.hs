@@ -367,13 +367,13 @@ writeJsonFact
                   Nothing -> get (n+1) rest
               get _ _ = termError typ v
           get 0 fields
-    (NamedTy _ (ExpandedType _ ty), val) -> jsonToTerm b ty val
+    (NamedTy (ExpandedType _ ty), val) -> jsonToTerm b ty val
     (PredicateTy{}, J.Int n)
       | n == fromFid invalidFid -> invalidFactIdError
       | otherwise -> lift $ invoke $ glean_push_value_fact b $ Fid n
     -- allow { "id": N } for predicate refs, this allows us to accept
     -- JSON-serialized Thrift facts.
-    (PredicateTy _ (PidRef pid ref), val) ->
+    (PredicateTy (PidRef pid ref), val) ->
       -- Facts can be nested. We know from the schema the predicate of
       -- the fact at this position.
       case lookupPid pid dbSchema of
@@ -397,7 +397,7 @@ writeJsonFact
   -- Remove named types so that we can match on the underlying
   -- representation of the type
   repType :: Type -> Type
-  repType (NamedTy _ (ExpandedType _ ty)) = ty
+  repType (NamedTy (ExpandedType _ ty)) = ty
   repType ty = ty
 
   -- Thrift might omit fields from the output if they have the
@@ -415,7 +415,7 @@ writeJsonFact
     SumTy (FieldDef _ ty : _) -> do
       invoke $ glean_push_value_selector b 0
       defaultValue b json (fieldName, ty)
-    NamedTy _ (ExpandedType _ ty) -> defaultValue b json (fieldName, ty)
+    NamedTy (ExpandedType _ ty) -> defaultValue b json (fieldName, ty)
     PredicateTy{} -> do
       msg <- wrapJsonContext json $
         "Field '" <> pretty fieldName <>

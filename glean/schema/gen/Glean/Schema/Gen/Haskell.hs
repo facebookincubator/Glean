@@ -207,7 +207,7 @@ localOrExternal :: NameSpaces -> Text -> (NameSpaces, Text)
 localOrExternal here name = if null ns then (here,x) else (ns,x)
   where (ns,x) = splitDot name
 
-shareTypeDef :: Bool -> NameSpaces -> ResolvedType' s -> M Text
+shareTypeDef :: Bool -> NameSpaces -> ResolvedType -> M Text
 shareTypeDef genSub here t = do
   (no, name) <- nameThisType t
   case no of
@@ -217,7 +217,7 @@ shareTypeDef genSub here t = do
     _otherwise -> return ()
   return (haskellTypeName (localOrExternal here name))
 
-haskellTy :: NameSpaces -> ResolvedType' s -> M Text
+haskellTy :: NameSpaces -> ResolvedType -> M Text
 haskellTy = haskellTy_ PredName True
 
 -- | how to render predicate types in haskellTy
@@ -227,7 +227,7 @@ haskellTy_
   :: PredTy
   -> Bool -- ^ generate nested type definitions
   -> NameSpaces
-  -> ResolvedType' s
+  -> ResolvedType
   -> M Text
 haskellTy_ withId genSub here t = case t of
   -- Leafs
@@ -248,13 +248,13 @@ haskellTy_ withId genSub here t = case t of
     inner <- haskellTy_ PredName genSub here ty
     return (optionalize inner)
   -- References
-  PredicateTy _ pred -> do
+  PredicateTy pred -> do
     let wrap = case withId of
           PredName -> id
           PredKey -> ("Glean.KeyType " <>)
     wrap . haskellTypeName <$> predicateName pred
 
-  NamedTy _ typeRef ->
+  NamedTy typeRef ->
     haskellTypeName <$> typeName typeRef
   EnumeratedTy _ -> shareTypeDef genSub here t
   TyVar{} -> error "haskellTy_: TyVar"
@@ -354,11 +354,11 @@ define_kt here typ name_kt = case typ of
    leaf = (,) <$> return (haskellTypeName name_kt) <*> return []
 
    alias t = do
-    ref <- haskellTy here (NamedTy () (TypeRef gname 0))
+    ref <- haskellTy here (NamedTy (TypeRef gname 0))
     def <- genType (TypeRef gname 0) t
     return (ref,def)
 
-genType :: TypeRef -> ResolvedType' s -> M [Text]
+genType :: TypeRef -> ResolvedType -> M [Text]
 genType TypeRef{..} ty
   | provided typeRef_name = return []
   | otherwise =
@@ -368,7 +368,7 @@ genType TypeRef{..} ty
     EnumeratedTy vals -> enumDef typeRef_name typeRef_version vals
     _ -> return []
 
-structDef :: Name -> Version -> [ResolvedFieldDef' s] -> M [Text]
+structDef :: Name -> Version -> [ResolvedFieldDef] -> M [Text]
 structDef ident ver fields = do
   let typeRef = TypeRef ident ver
   sName@(here,root) <- typeName typeRef
@@ -407,7 +407,7 @@ structDef ident ver fields = do
   return $ map myUnlines [def_Type, def_RecordFields]
 
 
-unionDef :: Name -> Version -> [ResolvedFieldDef' s] -> M [Text]
+unionDef :: Name -> Version -> [ResolvedFieldDef] -> M [Text]
 unionDef ident ver fields = do
   let typeRef = TypeRef ident ver
   uName@(here,root) <- typeName typeRef
@@ -507,7 +507,7 @@ enumDef ident ver eVals = do
 
 sourceTypeDef :: Name -> Version -> Text
 sourceTypeDef name version =
-  "sourceType _ = Angle.NamedTy () " <> paren sourceRef
+  "sourceType _ = Angle.NamedTy " <> paren sourceRef
   where
     sourceRef = Text.unwords
       [ "Angle.SourceRef"
@@ -516,7 +516,7 @@ sourceTypeDef name version =
       ]
 
 
-emitFieldTypes :: Text -> Text -> [(ResolvedFieldDef' s, Text)] -> Text
+emitFieldTypes :: Text -> Text -> [(ResolvedFieldDef, Text)] -> Text
 emitFieldTypes family name fields =
   "type instance " <> family <> " " <> name <> " = " <> go fields
   where

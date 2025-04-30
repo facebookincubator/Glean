@@ -85,7 +85,7 @@ class Type a where
     decodeWithCache nested cache decodeRtsValue k
 
   -- | Get the representation of the type
-  sourceType :: Proxy a -> Angle.SourceType' ()
+  sourceType :: Proxy a -> Angle.SourceType
 
 -- -----------------------------------------------------------------------------
 

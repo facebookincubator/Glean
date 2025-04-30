@@ -101,12 +101,12 @@ typecheck syscalls@SysCalls{..} input inputend out = tc
         setToArray set out
         freeSet set
       return ()
-    tc (PredicateTy _ (PidRef (Pid pid) _)) = local $ \ide -> do
+    tc (PredicateTy (PidRef (Pid pid) _)) = local $ \ide -> do
       t <- constant $ fromIntegral pid
       inputNat input inputend ide
       rename ide t ide
       outputNat ide out
-    tc (NamedTy _ (ExpandedType _ ty)) = tc ty
+    tc (NamedTy (ExpandedType _ ty)) = tc ty
     tc (MaybeTy ty) = mdo
       local $ \sel -> do
         inputNat input inputend sel
