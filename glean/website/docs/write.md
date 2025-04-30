@@ -16,49 +16,15 @@ For a complete walkthrough of the steps necessary to write an indexer, see [How 
 
 </FbInternalOnly>
 
-There are two main methods for creating a DB. Repo-wide indexing jobs
-which require multiple workers and have dependent tasks are managed by
-the server, while simple one-off DB creation can be performed
-independently by a single client.
-
-<FbInternalOnly>
-
-After the data is ingested by the write tier (`glean.write`), it is backed up and copied to the read tier (`glean`) for efficient access. For newly created DB names, check out [the section below](https://www.internalfb.com/intern/wiki/Glean/Write/#configuring-db-backup-an) for configuring this behavior.
-
-</FbInternalOnly>
-
-## Client-driven writing
-
 A database can be created by a client using any of these methods:
 
 1. Programmatically, using one of the APIs listed in [APIs for Writing](#apis-for-writing).
 2. On the command line: invoke the `glean` command-line tool to send data in JSON format, see [ Creating a database using the command line](#creating-a-database-using-the-command-line).
 3. In the shell, use `glean shell --db-root=<dir>` and then use the command `:load` to create a DB from a JSON file. See [Loading a DB from JSON in the shell](#loading-a-db-from-json-in-the-shell).
 
-## Server-driven writing
-
-Large indexing jobs are coordinated by the server, using a *recipe* to
-define the various tasks and the dependencies between them.  Recipes
-are defined in the recipes configuration; see the `--recipe-config`
-option in [Common options](./running.md#common-options).
-
-The job proceeds as follows:
-* An indexing job is started by calling the server's `kickOff` Thrift
-method. This creates a work queue of tasks on the server.
-
-* Clients obtain tasks from the server by calling `getWork`. Tasks may
-have dependencies between them, so the server won't hand out a task
-until its dependencies are complete.
-
-* When all tasks are done, the server marks the database as complete.
-
 <FbInternalOnly>
 
-For the fbsource indexer, the components of this are:
-
-* The coordinator, run by a [chronos job](https://www.internalfb.com/intern/chronos/job/?jobname=glean.clang.indexer&smc=chronos_gp_admin_client), which calls `kickoff` and then waits for completion.
-* The workers which poll the server (see [Glean/ClangIndexer](https://www.internalfb.com/intern/wiki/Glean/ClangIndexer/))
-* The server (see [Glean/Infrastructure](https://www.internalfb.com/intern/wiki/Glean/Infrastructure/))
+After the data is ingested by the write tier (`glean.write`), it is backed up and copied to the read tier (`glean`) for efficient access. For newly created DB names, check out [the section below](https://www.internalfb.com/intern/wiki/Glean/Write/#configuring-db-backup-an) for configuring this behavior.
 
 </FbInternalOnly>
 
@@ -67,7 +33,7 @@ For the fbsource indexer, the components of this are:
 <FbInternalOnly>
 
 * The C++ writing API is the most performant. It is used by the clang-based indexer for C++  and Objective C code.  See [glean/cpp/glean.h](https://phabricator.intern.facebook.com/diffusion/FBS/browse/master/fbcode/glean/cpp/glean.h)
-* In Hack, [genKickOffForHandle](https://www.internalfb.com/intern/codex/symbol/php/Glean/genKickOffForHandle/) and the various functions for writing facts.
+* In Hack, [genKickOff](https://www.internalfb.com/intern/codex/symbol/php/Glean/genKickOffForHandle/) and the various functions for writing facts.
 
 </FbInternalOnly>
 
@@ -80,19 +46,18 @@ access to the database.
 * `kickOff` can be used to create a new DB
 * `sendJsonBatch` is for sending facts in JSON-serialized form
 * `finishBatch` exposes the result of a previously sent JSON batch
-* `workFinished` closes a DB
+* `finish` closes a DB
 
 A rough outline of a client looks like:
 
 ```
 glean = make_glean_thrift_client()
-db_handle = make_uuid()
-glean.kickOff(my_repo, KickOffFill(writeHandle=db_handle))
+glean.kickOff(my_repo)
 for json_batch in json_batches:
     handle = glean.sendJsonBatch(json_batch)
     result = glean.finishBatch(handle)
     # handle result
-glean.workFinished(my_repo, db_handle, success_or_failure)
+glean.finish(my_repo)
 ```
 ## Writing from the command line
 
