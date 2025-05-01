@@ -188,8 +188,8 @@
       "xref": {
         "source": { "span": { "length": 4, "start": 278 } },
         "target": {
-          "file": { "key": "lib.py" },
-          "location": { "span": { "length": 8, "start": 317 } },
+          "file": { "key": "big_lib/__init__.py" },
+          "location": { "span": { "length": 140, "start": 261 } },
           "name": "big_lib.big_func"
         }
       }
@@ -213,8 +213,8 @@
       "xref": {
         "source": { "span": { "length": 4, "start": 377 } },
         "target": {
-          "file": { "key": "lib.py" },
-          "location": { "span": { "length": 8, "start": 317 } },
+          "file": { "key": "big_lib/__init__.py" },
+          "location": { "span": { "length": 140, "start": 261 } },
           "name": "big_lib.big_func"
         }
       }
@@ -238,8 +238,8 @@
       "xref": {
         "source": { "span": { "length": 6, "start": 392 } },
         "target": {
-          "file": { "key": "main.py" },
-          "location": { "span": { "length": 11, "start": 297 } },
+          "file": { "key": "lib.py" },
+          "location": { "span": { "length": 451, "start": 351 } },
           "name": "lib.HelperClass"
         }
       }
@@ -263,8 +263,8 @@
       "xref": {
         "source": { "span": { "length": 11, "start": 509 } },
         "target": {
-          "file": { "key": "main.py" },
-          "location": { "span": { "length": 11, "start": 468 } },
+          "file": { "key": "lib.py" },
+          "location": { "span": { "length": 451, "start": 351 } },
           "name": "lib.HelperClass"
         }
       }
@@ -288,8 +288,8 @@
       "xref": {
         "source": { "span": { "length": 8, "start": 362 } },
         "target": {
-          "file": { "key": "main.py" },
-          "location": { "span": { "length": 8, "start": 245 } },
+          "file": { "key": "big_lib/__init__.py" },
+          "location": { "span": { "length": 140, "start": 261 } },
           "name": "big_lib.big_func"
         }
       }
@@ -313,9 +313,9 @@
       "xref": {
         "source": { "span": { "length": 4, "start": 377 } },
         "target": {
-          "file": { "key": "main.py" },
-          "location": { "span": { "length": 4, "start": 278 } },
-          "name": "lib.func"
+          "file": { "key": "big_lib/__init__.py" },
+          "location": { "span": { "length": 140, "start": 261 } },
+          "name": "big_lib.big_func"
         }
       }
     }
@@ -338,8 +338,8 @@
       "xref": {
         "source": { "span": { "length": 11, "start": 344 } },
         "target": {
-          "file": { "key": "main.py" },
-          "location": { "span": { "length": 11, "start": 284 } },
+          "file": { "key": "lib.py" },
+          "location": { "span": { "length": 43, "start": 805 } },
           "name": "lib.helper_func"
         }
       }

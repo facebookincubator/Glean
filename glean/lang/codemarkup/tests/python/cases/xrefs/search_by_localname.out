@@ -3,6 +3,24 @@
   {
     "key": {
       "searchcase": 0,
+      "name": "ABC",
+      "entity": {
+        "python": {
+          "decl": { "cls": { "key": { "name": { "key": "abc.ABC" } } } }
+        }
+      },
+      "location": {
+        "name": "abc.ABC",
+        "file": { "key": "lib.py" },
+        "location": { "span": { "start": 241, "length": 3 } }
+      },
+      "kind": 6,
+      "language": 4
+    }
+  },
+  {
+    "key": {
+      "searchcase": 0,
       "name": "AbstractClass",
       "entity": {
         "python": {

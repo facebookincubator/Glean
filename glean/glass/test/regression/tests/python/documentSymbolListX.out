@@ -737,12 +737,12 @@
                 },
                 "sym": "test/py/all.py/all.Helper",
                 "target": {
-                    "filepath": "all.py",
+                    "filepath": "lib.py",
                     "range": {
-                        "columnBegin": 17,
-                        "columnEnd": 28,
-                        "lineBegin": 8,
-                        "lineEnd": 8
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 9,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 }
@@ -782,12 +782,12 @@
                 },
                 "sym": "test/py/all.py/all.Helper",
                 "target": {
-                    "filepath": "all.py",
+                    "filepath": "lib.py",
                     "range": {
-                        "columnBegin": 17,
-                        "columnEnd": 28,
-                        "lineBegin": 8,
-                        "lineEnd": 8
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 9,
+                        "lineEnd": 16
                     },
                     "repository": "test"
                 }
@@ -956,12 +956,12 @@
                 },
                 "sym": "test/py/all.py/all.big_func",
                 "target": {
-                    "filepath": "all.py",
+                    "filepath": "big_lib/__init__.py",
                     "range": {
-                        "columnBegin": 21,
-                        "columnEnd": 29,
-                        "lineBegin": 7,
-                        "lineEnd": 7
+                        "columnBegin": 1,
+                        "columnEnd": 19,
+                        "lineBegin": 8,
+                        "lineEnd": 9
                     },
                     "repository": "test"
                 }
@@ -1001,12 +1001,12 @@
                 },
                 "sym": "test/py/all.py/all.big_var",
                 "target": {
-                    "filepath": "all.py",
+                    "filepath": "big_lib/__init__.py",
                     "range": {
-                        "columnBegin": 31,
-                        "columnEnd": 38,
-                        "lineBegin": 7,
-                        "lineEnd": 7
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 5,
+                        "lineEnd": 5
                     },
                     "repository": "test"
                 }
@@ -1046,12 +1046,12 @@
                 },
                 "sym": "test/py/all.py/all.big_var",
                 "target": {
-                    "filepath": "all.py",
+                    "filepath": "big_lib/__init__.py",
                     "range": {
-                        "columnBegin": 31,
-                        "columnEnd": 38,
-                        "lineBegin": 7,
-                        "lineEnd": 7
+                        "columnBegin": 1,
+                        "columnEnd": 12,
+                        "lineBegin": 5,
+                        "lineEnd": 5
                     },
                     "repository": "test"
                 }
@@ -1244,12 +1244,12 @@
                 },
                 "sym": "test/py/all.py/all.lib",
                 "target": {
-                    "filepath": "all.py",
+                    "filepath": "lib.py",
                     "range": {
-                        "columnBegin": 8,
-                        "columnEnd": 11,
-                        "lineBegin": 6,
-                        "lineEnd": 6
+                        "columnBegin": 1,
+                        "columnEnd": 1,
+                        "lineBegin": 1,
+                        "lineEnd": 21
                     },
                     "repository": "test"
                 }

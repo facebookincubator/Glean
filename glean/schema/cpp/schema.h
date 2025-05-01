@@ -30308,7 +30308,7 @@ struct FileXRefs : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::
 struct SCHEMA {
   template<typename P> struct index;
   static constexpr size_t count = 1352;
-  static constexpr char schemaId[] = "54407f9c2486f2d82b45124de40f8ee7";
+  static constexpr char schemaId[] = "3adce19dc610f67f3726fc442347f960";
   template<size_t i> struct predicate;
 };
 

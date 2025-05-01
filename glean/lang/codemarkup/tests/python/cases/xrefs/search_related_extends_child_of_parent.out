@@ -6,6 +6,38 @@
       "parent": {
         "parent": {
           "python": {
+            "decl": { "cls": { "key": { "name": { "key": "abc.ABC" } } } }
+          }
+        },
+        "location": {
+          "name": "abc.ABC",
+          "file": { "key": "lib.py" },
+          "location": { "span": { "start": 241, "length": 3 } }
+        }
+      },
+      "child": {
+        "child": {
+          "python": {
+            "decl": {
+              "cls": { "key": { "name": { "key": "lib.AbstractClass" } } }
+            }
+          }
+        },
+        "location": {
+          "name": "lib.AbstractClass",
+          "file": { "key": "lib.py" },
+          "location": { "span": { "start": 945, "length": 80 } }
+        }
+      },
+      "style": 0
+    }
+  },
+  {
+    "key": {
+      "query": 1,
+      "parent": {
+        "parent": {
+          "python": {
             "decl": {
               "cls": { "key": { "name": { "key": "big_lib.BaseClass" } } }
             }
