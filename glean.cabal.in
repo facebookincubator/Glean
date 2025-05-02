@@ -623,9 +623,11 @@ library schema
         glean/schema/hs
         glean/schema/thrift/gen-hs2
     exposed-modules:
+        Glean.Schema.Anglelang
         Glean.Schema.Buck
         Glean.Schema.Builtin
         Glean.Schema.Code
+        Glean.Schema.CodeAnglelang
         Glean.Schema.CodeCsharp
         Glean.Schema.CodeCxx
         Glean.Schema.CodeDataswarm
@@ -637,6 +639,7 @@ library schema
         Glean.Schema.CodeKotlin
         Glean.Schema.CodeLsif
         Glean.Schema.Codemarkup
+        Glean.Schema.CodemarkupAnglelang
         Glean.Schema.CodemarkupBuck
         Glean.Schema.CodemarkupCsharp
         Glean.Schema.CodemarkupCxx
@@ -680,8 +683,10 @@ library schema
         Glean.Schema.SearchPp
         Glean.Schema.Src
         Glean.Schema.Sys
+        Glean.Schema.Anglelang.Types
         Glean.Schema.Buck.Types
         Glean.Schema.Builtin.Types
+        Glean.Schema.CodeAnglelang.Types
         Glean.Schema.CodeBuck.Types
         Glean.Schema.CodeCsharp.Types
         Glean.Schema.CodeCxx.Types
@@ -694,6 +699,7 @@ library schema
         Glean.Schema.CodeJava.Types
         Glean.Schema.CodeKotlin.Types
         Glean.Schema.CodeLsif.Types
+        Glean.Schema.CodemarkupAnglelang.Types
         Glean.Schema.CodemarkupBuck.Types
         Glean.Schema.CodemarkupCsharp.Types
         Glean.Schema.CodemarkupCxx.Types

@@ -148,9 +148,11 @@ test:: glean.cabal
 	$(CABAL) test glean:tests
 
 SCHEMAS= \
+	anglelang \
 	buck \
 	builtin \
 	code \
+	code_anglelang \
 	code_buck \
 	code_csharp \
 	code_cxx \
@@ -165,6 +167,7 @@ SCHEMAS= \
 	code_kotlin \
 	code_lsif \
 	codemarkup \
+	codemarkup_anglelang \
 	codemarkup_buck \
 	codemarkup_csharp \
 	codemarkup_cxx \

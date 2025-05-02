@@ -21,6 +21,7 @@ import codemarkup.pp
 import codemarkup.python
 import codemarkup.scip
 import codemarkup.types
+import codemarkup.anglelang
 
 # one direct use of python.Declaration, flow.Declaration
 import python
@@ -307,7 +308,9 @@ predicate FileEntityXRefLocations:
     (codemarkup.graphql.GraphQLFileEntityXRefLocations { File, XRef, E };
      { graphql = E } = Entity) |
     (codemarkup.dataswarm.DataswarmFileEntityXRefLocations { File, XRef, E };
-     { dataswarm = E } = Entity);
+     { dataswarm = E } = Entity) |
+     (codemarkup.anglelang.AngleFileEntityXRefLocations { File, XRef, E };
+     { angle = E } = Entity);
 
 # Xrefs without the target location. This can be useful in cases
 # where we don't have a target location, but we don't need it. This

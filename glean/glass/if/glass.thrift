@@ -553,6 +553,7 @@ enum Language {
   Dataswarm = 18,
   Yaml = 19,
   Swift = 20,
+  Angle = 21,
 }
 
 // Kinds of definitions. E.g. for jump-to-declaration or jump-to-definition

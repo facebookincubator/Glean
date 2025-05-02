@@ -3,5 +3,9 @@
 schema code.anglelang.1 {
 import anglelang
 
-type Entity = anglelang.Declaration
+type Entity =
+  {
+    decl : anglelang.Declaration
+  }
+
 }

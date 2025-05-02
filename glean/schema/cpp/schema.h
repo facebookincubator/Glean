@@ -3605,359 +3605,7 @@ struct EntityLanguageSCIP;
 
 struct EntityLanguageLSIF;
 
-struct Entity;
-
-struct EntityLanguage;
-
-struct IdlEntity;
-
-} // namespace Code
-
-namespace Codemarkup {
-
-namespace Cxx {
-
-struct CxxEntityIdl;
-
-} // namespace Cxx
-
-namespace Hack {
-
-struct HackEntityIdl;
-
-} // namespace Hack
-
-namespace Yaml {
-
-struct YamlFileEntityXLangXRefLocations;
-
-} // namespace Yaml
-
-} // namespace Codemarkup
-
-namespace Code {
-
-namespace Compose {
-
-struct CxxSearchContainerKind;
-
-} // namespace Compose
-
-} // namespace Code
-
-namespace Codemarkup {
-
-struct ChildEntity;
-
-struct ContainsChildEntity;
-
-struct ContainsParentEntity;
-
-struct EntityComments;
-
-struct EntityInfo;
-
-struct EntityIsDefinition;
-
-struct EntityKind;
-
-struct EntityLocation;
-
-struct EntityModifiers;
-
-struct EntityModuleName;
-
-struct EntityReferences;
-
-struct EntitySource;
-
-struct EntityUses;
-
-struct EntityVisibility;
-
-struct ExtendsChildEntity;
-
-struct ExtendsParentEntity;
-
-struct ExtendsParentEntityConcise;
-
-struct FileEntityDigest;
-
-struct FileEntityInfos;
-
-struct FileEntityKinds;
-
-struct FileEntityLocations;
-
-struct FileEntityXRefInfos;
-
-struct FileEntityXRefKinds;
-
-struct FileEntityXRefLocations;
-
-struct FileEntityXRefRangeSpans;
-
-struct FindEntityDefinition;
-
-struct GeneratedEntityToIdlEntity;
-
-struct GenericEntity;
-
-struct FileXRefsGenericEntities;
-
-struct ParentEntity;
-
-struct SearchRelatedEntities;
-
-struct ReferencingEntity;
-
-struct ResolveLocation;
-
-struct SearchInheritedEntities;
-
-namespace Cxx {
-
-struct CxxFileEntityIdl;
-
-struct CxxIdlEntityUses;
-
-} // namespace Cxx
-
-namespace Hack {
-
-struct ConvertCallee;
-
-struct ConvertCalleeForFileCall;
-
-struct ConvertStaticType;
-
-struct HackIdlEntityUses;
-
-} // namespace Hack
-
-namespace Search {
-
-struct EntityLocationAndKind;
-
-struct SearchByName;
-
-struct SearchByScope;
-
-} // namespace Search
-
-} // namespace Codemarkup
-
-namespace Codemetrics {
-
-struct ReferencesFrom;
-
-struct ReferencesTo;
-
-} // namespace Codemetrics
-
-namespace Deadcode {
-
-struct GraphEntity;
-
-} // namespace Deadcode
-
-namespace Deletthis {
-
-struct FileReverseDeps;
-
-} // namespace Deletthis
-
-namespace Dyn {
-
-struct EntityUsage;
-
-} // namespace Dyn
-
-namespace Monk {
-
-struct BestPiiFunc;
-
-struct PiiCallerFunc;
-
-struct PiiFunc;
-
-} // namespace Monk
-
-namespace Search {
-
-namespace Code {
-
-struct BuckSearchByLocalNameFact;
-
-struct BuckSearchByLowerCaseName;
-
-struct BuckSearchByName;
-
-struct CSharpSearchByLowerCaseName;
-
-struct CSharpSearchByName;
-
-struct CxxSearchByLowerCaseScopeAndKind;
-
-struct CxxSearchByScopeAndKind;
-
-struct ErlangSearchByLowerCaseName;
-
-struct ErlangSearchByName;
-
-struct FbthriftSearchByNameFact;
-
-struct FlowSearchByLowerCaseNameKindAndScopeFact;
-
-struct FlowSearchByLowerCaseScopeAndKind;
-
-struct FlowSearchByNameKindAndScopeFact;
-
-struct FlowSearchByScopeAndKind;
-
-struct GraphQLSearchByLowerCaseName;
-
-struct GraphQLSearchByName;
-
-struct HackSearchByLowerCaseNameAndKind;
-
-struct HackSearchByLowerCaseScopeAndKind;
-
-struct HackSearchByNameAndKind;
-
-struct HackSearchByNameKindWithNamespace;
-
-struct HackSearchByNameKindWithQName;
-
-struct HackSearchByScopeAndKind;
-
-struct HackSearchByScopeWithNameKinds;
-
-struct HsSearchByLowerCaseName;
-
-struct HsSearchByName;
-
-struct JavaSearchByLowerCaseName;
-
-struct JavaSearchByLowerCaseScope;
-
-struct JavaSearchByName;
-
-struct JavaSearchByNameWithFact;
-
-struct JavaSearchByScope;
-
-struct JavaSearchByScopeWithName;
-
-struct KotlinSearchByLowerCaseName;
-
-struct KotlinSearchByLowerCaseScope;
-
-struct KotlinSearchByName;
-
-struct KotlinSearchByNameWithFact;
-
-struct KotlinSearchByScope;
-
-struct KotlinSearchByScopeWithName;
-
-struct LsifSearchByLowerCaseName;
-
-struct LsifSearchByName;
-
-struct PpSearchByLowerCaseNameKind;
-
-struct PpSearchByNameKind;
-
-struct PythonSearchByLowerCaseNameKindAndScopeFact;
-
-struct PythonSearchByLowerCaseScopeAndKind;
-
-struct PythonSearchByNameKindAndScopeFact;
-
-struct PythonSearchByScopeAndKind;
-
-struct SearchByLowerCaseNameAndLanguage;
-
-struct SearchByLowerCaseNameKindAndLanguage;
-
-struct SearchByLowerCaseScope;
-
-struct SearchByLowerCaseScopeAndKind;
-
-struct SearchByNameAndLanguage;
-
-struct SearchByNameKindAndLanguage;
-
-struct SearchByScope;
-
-struct SearchByScopeAndKind;
-
-struct ThriftSearchByLowerCaseName;
-
-struct ThriftSearchByName;
-
-} // namespace Code
-
-} // namespace Search
-
-namespace Code {
-
-struct Argument;
-
-struct CallArgument;
-
-} // namespace Code
-
-namespace Codemarkup {
-
-struct FileCall;
-
-namespace Hack {
-
-struct ConvertCallArguments;
-
-struct ConvertMaybeCallArguments;
-
-struct HackFileCall;
-
-} // namespace Hack
-
-namespace Python {
-
-struct ConvertCallArguments;
-
-struct PythonFileCall;
-
-} // namespace Python
-
-namespace Hack {
-
-struct ConvertArgument;
-
-} // namespace Hack
-
-namespace Python {
-
-struct ConvertArgument;
-
-} // namespace Python
-
-} // namespace Codemarkup
-
-namespace Code {
-
 struct Annotations;
-
-} // namespace Code
-
-namespace Codemarkup {
-
-struct EntityToAnnotations;
-
-} // namespace Codemarkup
-
-namespace Code {
 
 namespace Quality {
 
@@ -4004,14 +3652,6 @@ struct VariableDeclarationNonLocalByName;
 } // namespace Cxx1
 
 namespace Search {
-
-namespace Code {
-
-struct CxxSearchByLowerCaseNameKindAndScopeFact;
-
-struct CxxSearchByNameKindAndScopeFact;
-
-} // namespace Code
 
 namespace Cxx {
 
@@ -4262,6 +3902,370 @@ struct XRef;
 struct FileXRefs;
 
 } // namespace Anglelang
+
+namespace Code {
+
+namespace Anglelang {
+
+struct Entity;
+
+} // namespace Anglelang
+
+struct Entity;
+
+struct Argument;
+
+struct CallArgument;
+
+} // namespace Code
+
+namespace Codemarkup {
+
+namespace Hack {
+
+struct ConvertCallArguments;
+
+struct ConvertMaybeCallArguments;
+
+} // namespace Hack
+
+namespace Python {
+
+struct ConvertCallArguments;
+
+struct PythonFileCall;
+
+} // namespace Python
+
+namespace Hack {
+
+struct ConvertArgument;
+
+} // namespace Hack
+
+namespace Python {
+
+struct ConvertArgument;
+
+} // namespace Python
+
+} // namespace Codemarkup
+
+namespace Code {
+
+struct EntityLanguage;
+
+struct IdlEntity;
+
+} // namespace Code
+
+namespace Codemarkup {
+
+namespace Cxx {
+
+struct CxxEntityIdl;
+
+} // namespace Cxx
+
+namespace Hack {
+
+struct HackEntityIdl;
+
+} // namespace Hack
+
+namespace Yaml {
+
+struct YamlFileEntityXLangXRefLocations;
+
+} // namespace Yaml
+
+} // namespace Codemarkup
+
+namespace Code {
+
+namespace Compose {
+
+struct CxxSearchContainerKind;
+
+} // namespace Compose
+
+} // namespace Code
+
+namespace Codemarkup {
+
+struct ChildEntity;
+
+struct ContainsChildEntity;
+
+struct ContainsParentEntity;
+
+struct EntityComments;
+
+struct EntityInfo;
+
+struct EntityIsDefinition;
+
+struct EntityKind;
+
+struct EntityLocation;
+
+struct EntityModifiers;
+
+struct EntityModuleName;
+
+struct EntityReferences;
+
+struct EntitySource;
+
+struct EntityToAnnotations;
+
+struct EntityUses;
+
+struct EntityVisibility;
+
+struct ExtendsChildEntity;
+
+struct ExtendsParentEntity;
+
+struct ExtendsParentEntityConcise;
+
+struct FileCall;
+
+struct FileEntityDigest;
+
+struct FileEntityInfos;
+
+struct FileEntityKinds;
+
+struct FileEntityLocations;
+
+struct FileEntityXRefInfos;
+
+struct FileEntityXRefKinds;
+
+struct FileEntityXRefLocations;
+
+struct FileEntityXRefRangeSpans;
+
+struct FindEntityDefinition;
+
+struct GeneratedEntityToIdlEntity;
+
+struct GenericEntity;
+
+struct FileXRefsGenericEntities;
+
+struct ParentEntity;
+
+struct SearchRelatedEntities;
+
+struct ReferencingEntity;
+
+struct ResolveLocation;
+
+struct SearchInheritedEntities;
+
+namespace Cxx {
+
+struct CxxFileEntityIdl;
+
+struct CxxIdlEntityUses;
+
+} // namespace Cxx
+
+namespace Hack {
+
+struct ConvertCallee;
+
+struct ConvertCalleeForFileCall;
+
+struct ConvertStaticType;
+
+struct HackFileCall;
+
+struct HackIdlEntityUses;
+
+} // namespace Hack
+
+namespace Search {
+
+struct EntityLocationAndKind;
+
+struct SearchByName;
+
+struct SearchByScope;
+
+} // namespace Search
+
+} // namespace Codemarkup
+
+namespace Codemetrics {
+
+struct ReferencesFrom;
+
+struct ReferencesTo;
+
+} // namespace Codemetrics
+
+namespace Deadcode {
+
+struct GraphEntity;
+
+} // namespace Deadcode
+
+namespace Deletthis {
+
+struct FileReverseDeps;
+
+} // namespace Deletthis
+
+namespace Dyn {
+
+struct EntityUsage;
+
+} // namespace Dyn
+
+namespace Monk {
+
+struct BestPiiFunc;
+
+struct PiiCallerFunc;
+
+struct PiiFunc;
+
+} // namespace Monk
+
+namespace Search {
+
+namespace Code {
+
+struct BuckSearchByLocalNameFact;
+
+struct BuckSearchByLowerCaseName;
+
+struct BuckSearchByName;
+
+struct CSharpSearchByLowerCaseName;
+
+struct CSharpSearchByName;
+
+struct CxxSearchByLowerCaseNameKindAndScopeFact;
+
+struct CxxSearchByLowerCaseScopeAndKind;
+
+struct CxxSearchByNameKindAndScopeFact;
+
+struct CxxSearchByScopeAndKind;
+
+struct ErlangSearchByLowerCaseName;
+
+struct ErlangSearchByName;
+
+struct FbthriftSearchByNameFact;
+
+struct FlowSearchByLowerCaseNameKindAndScopeFact;
+
+struct FlowSearchByLowerCaseScopeAndKind;
+
+struct FlowSearchByNameKindAndScopeFact;
+
+struct FlowSearchByScopeAndKind;
+
+struct GraphQLSearchByLowerCaseName;
+
+struct GraphQLSearchByName;
+
+struct HackSearchByLowerCaseNameAndKind;
+
+struct HackSearchByLowerCaseScopeAndKind;
+
+struct HackSearchByNameAndKind;
+
+struct HackSearchByNameKindWithNamespace;
+
+struct HackSearchByNameKindWithQName;
+
+struct HackSearchByScopeAndKind;
+
+struct HackSearchByScopeWithNameKinds;
+
+struct HsSearchByLowerCaseName;
+
+struct HsSearchByName;
+
+struct JavaSearchByLowerCaseName;
+
+struct JavaSearchByLowerCaseScope;
+
+struct JavaSearchByName;
+
+struct JavaSearchByNameWithFact;
+
+struct JavaSearchByScope;
+
+struct JavaSearchByScopeWithName;
+
+struct KotlinSearchByLowerCaseName;
+
+struct KotlinSearchByLowerCaseScope;
+
+struct KotlinSearchByName;
+
+struct KotlinSearchByNameWithFact;
+
+struct KotlinSearchByScope;
+
+struct KotlinSearchByScopeWithName;
+
+struct LsifSearchByLowerCaseName;
+
+struct LsifSearchByName;
+
+struct PpSearchByLowerCaseNameKind;
+
+struct PpSearchByNameKind;
+
+struct PythonSearchByLowerCaseNameKindAndScopeFact;
+
+struct PythonSearchByLowerCaseScopeAndKind;
+
+struct PythonSearchByNameKindAndScopeFact;
+
+struct PythonSearchByScopeAndKind;
+
+struct SearchByLowerCaseNameAndLanguage;
+
+struct SearchByLowerCaseNameKindAndLanguage;
+
+struct SearchByLowerCaseScope;
+
+struct SearchByLowerCaseScopeAndKind;
+
+struct SearchByNameAndLanguage;
+
+struct SearchByNameKindAndLanguage;
+
+struct SearchByScope;
+
+struct SearchByScopeAndKind;
+
+struct ThriftSearchByLowerCaseName;
+
+struct ThriftSearchByName;
+
+} // namespace Code
+
+} // namespace Search
+
+namespace Codemarkup {
+
+namespace Anglelang {
+
+struct AngleFileEntityXRefLocations;
+
+} // namespace Anglelang
+
+} // namespace Codemarkup
 
 namespace Testinfra {
 
@@ -26634,7 +26638,7 @@ struct SearchFile : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src:
 } // namespace schema
 
 template<> struct Repr_<facebook::glean::cpp::schema::Code::Language> {
-  using Type = Enum<22>;
+  using Type = Enum<23>;
 };
 
 
@@ -26642,7 +26646,7 @@ namespace schema {
 
 namespace Code {
 
-enum class Language { Cpp, PreProcessor, Java, Haskell, Python, Hack, JavaScript, Rust, Thrift, Buck, Erlang, FSharp, Go, Kotlin, OCaml, Scala, Swift, TypeScript, CSharp, GraphQL, Dataswarm, Yaml };
+enum class Language { Cpp, PreProcessor, Java, Haskell, Python, Hack, JavaScript, Rust, Thrift, Buck, Erlang, FSharp, Go, Kotlin, OCaml, Scala, Swift, TypeScript, CSharp, GraphQL, Dataswarm, Yaml, Angle };
 
 struct EntityLanguageSCIP : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Scip::Entity, Language>> {
   static const char* GLEAN_name() {
@@ -26665,1638 +26669,6 @@ struct EntityLanguageLSIF : Predicate<std::tuple<facebook::glean::cpp::schema::C
 }; // struct EntityLanguageLSIF
 
 } // namespace Code
-
-} // namespace schema
-
-template<> struct Repr_<facebook::glean::cpp::schema::Code::Entity> {
-  using Type = Sum<Repr<facebook::glean::cpp::schema::Code::Cxx::Entity>, Repr<facebook::glean::cpp::schema::Code::Pp::Entity>, Repr<facebook::glean::cpp::schema::Code::Java::Entity>, Repr<facebook::glean::cpp::schema::Code::Kotlin::Entity>, Repr<facebook::glean::cpp::schema::Code::Hs::Entity>, Repr<facebook::glean::cpp::schema::Code::Python::Entity>, Repr<facebook::glean::cpp::schema::Code::Hack::Entity>, Repr<facebook::glean::cpp::schema::Code::Flow::Entity>, Repr<facebook::glean::cpp::schema::Code::Fbthrift::Entity>, Repr<facebook::glean::cpp::schema::Code::Buck::Entity>, Repr<facebook::glean::cpp::schema::Code::Erlang::Entity>, Repr<facebook::glean::cpp::schema::Code::Lsif::Entity>, Repr<facebook::glean::cpp::schema::Code::Scip::Entity>, Repr<facebook::glean::cpp::schema::Code::Csharp::Entity>, Repr<facebook::glean::cpp::schema::Code::Graphql::Entity>, Repr<facebook::glean::cpp::schema::Code::Dataswarm::Entity>>;
-};
-
-
-namespace schema {
-
-namespace Code {
-
-struct Entity {
-  boost::variant<Alt<0, facebook::glean::cpp::schema::Code::Cxx::Entity>, Alt<1, facebook::glean::cpp::schema::Code::Pp::Entity>, Alt<2, facebook::glean::cpp::schema::Code::Java::Entity>, Alt<3, facebook::glean::cpp::schema::Code::Kotlin::Entity>, Alt<4, facebook::glean::cpp::schema::Code::Hs::Entity>, Alt<5, facebook::glean::cpp::schema::Code::Python::Entity>, Alt<6, facebook::glean::cpp::schema::Code::Hack::Entity>, Alt<7, facebook::glean::cpp::schema::Code::Flow::Entity>, Alt<8, facebook::glean::cpp::schema::Code::Fbthrift::Entity>, Alt<9, facebook::glean::cpp::schema::Code::Buck::Entity>, Alt<10, facebook::glean::cpp::schema::Code::Erlang::Entity>, Alt<11, facebook::glean::cpp::schema::Code::Lsif::Entity>, Alt<12, facebook::glean::cpp::schema::Code::Scip::Entity>, Alt<13, facebook::glean::cpp::schema::Code::Csharp::Entity>, Alt<14, facebook::glean::cpp::schema::Code::Graphql::Entity>, Alt<15, facebook::glean::cpp::schema::Code::Dataswarm::Entity>> GLEAN_value;
-
-  static Entity cxx(const facebook::glean::cpp::schema::Code::Cxx::Entity& a) {
-    return Entity{Alt<0, facebook::glean::cpp::schema::Code::Cxx::Entity>(a)};
-  }
-  static Entity pp(const facebook::glean::cpp::schema::Code::Pp::Entity& a) {
-    return Entity{Alt<1, facebook::glean::cpp::schema::Code::Pp::Entity>(a)};
-  }
-  static Entity java(const facebook::glean::cpp::schema::Code::Java::Entity& a) {
-    return Entity{Alt<2, facebook::glean::cpp::schema::Code::Java::Entity>(a)};
-  }
-  static Entity kotlin(const facebook::glean::cpp::schema::Code::Kotlin::Entity& a) {
-    return Entity{Alt<3, facebook::glean::cpp::schema::Code::Kotlin::Entity>(a)};
-  }
-  static Entity hs(const facebook::glean::cpp::schema::Code::Hs::Entity& a) {
-    return Entity{Alt<4, facebook::glean::cpp::schema::Code::Hs::Entity>(a)};
-  }
-  static Entity python(const facebook::glean::cpp::schema::Code::Python::Entity& a) {
-    return Entity{Alt<5, facebook::glean::cpp::schema::Code::Python::Entity>(a)};
-  }
-  static Entity hack(const facebook::glean::cpp::schema::Code::Hack::Entity& a) {
-    return Entity{Alt<6, facebook::glean::cpp::schema::Code::Hack::Entity>(a)};
-  }
-  static Entity flow(const facebook::glean::cpp::schema::Code::Flow::Entity& a) {
-    return Entity{Alt<7, facebook::glean::cpp::schema::Code::Flow::Entity>(a)};
-  }
-  static Entity fbthrift(const facebook::glean::cpp::schema::Code::Fbthrift::Entity& a) {
-    return Entity{Alt<8, facebook::glean::cpp::schema::Code::Fbthrift::Entity>(a)};
-  }
-  static Entity buck(const facebook::glean::cpp::schema::Code::Buck::Entity& a) {
-    return Entity{Alt<9, facebook::glean::cpp::schema::Code::Buck::Entity>(a)};
-  }
-  static Entity erlang(const facebook::glean::cpp::schema::Code::Erlang::Entity& a) {
-    return Entity{Alt<10, facebook::glean::cpp::schema::Code::Erlang::Entity>(a)};
-  }
-  static Entity lsif(const facebook::glean::cpp::schema::Code::Lsif::Entity& a) {
-    return Entity{Alt<11, facebook::glean::cpp::schema::Code::Lsif::Entity>(a)};
-  }
-  static Entity scip(const facebook::glean::cpp::schema::Code::Scip::Entity& a) {
-    return Entity{Alt<12, facebook::glean::cpp::schema::Code::Scip::Entity>(a)};
-  }
-  static Entity csharp(const facebook::glean::cpp::schema::Code::Csharp::Entity& a) {
-    return Entity{Alt<13, facebook::glean::cpp::schema::Code::Csharp::Entity>(a)};
-  }
-  static Entity graphql(const facebook::glean::cpp::schema::Code::Graphql::Entity& a) {
-    return Entity{Alt<14, facebook::glean::cpp::schema::Code::Graphql::Entity>(a)};
-  }
-  static Entity dataswarm(const facebook::glean::cpp::schema::Code::Dataswarm::Entity& a) {
-    return Entity{Alt<15, facebook::glean::cpp::schema::Code::Dataswarm::Entity>(a)};
-  }
-
-  bool operator==(const Entity& other) const {
-    return std::tie(GLEAN_value)
-             == std::tie(other.GLEAN_value);
-  }
-  bool operator!=(const Entity& other) const {
-    return std::tie(GLEAN_value)
-             != std::tie(other.GLEAN_value);
-  }
-  bool operator<(const Entity& other) const {
-    return std::tie(GLEAN_value)
-             < std::tie(other.GLEAN_value);
-  }
-  bool operator<=(const Entity& other) const {
-    return std::tie(GLEAN_value)
-             <= std::tie(other.GLEAN_value);
-  }
-  bool operator>(const Entity& other) const {
-    return std::tie(GLEAN_value)
-             > std::tie(other.GLEAN_value);
-  }
-  bool operator>=(const Entity& other) const {
-    return std::tie(GLEAN_value)
-             >= std::tie(other.GLEAN_value);
-  }
-
-  void outputRepr(Output<Repr<Entity>> out) const {
-    outputValue(out, GLEAN_value);
-  }
-}; // struct Entity
-
-struct EntityLanguage : Predicate<std::tuple<Entity, Language>> {
-  static const char* GLEAN_name() {
-    return "code.EntityLanguage";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 24;
-  }
-}; // struct EntityLanguage
-
-} // namespace Code
-
-} // namespace schema
-
-template<> struct Repr_<facebook::glean::cpp::schema::Code::IdlEntity> {
-  using Type = Tuple<Repr<facebook::glean::cpp::schema::Code::Language>, facebook::glean::cpp::schema::Src::File, Maybe<Repr<facebook::glean::cpp::schema::Code::Entity>>, Maybe<Repr<facebook::glean::cpp::schema::Src::Range>>>;
-};
-
-
-namespace schema {
-
-namespace Code {
-
-struct IdlEntity {
-  Language lang;
-  Fact<facebook::glean::cpp::schema::Src::File> file;
-  boost::variant<Alt<0, std::tuple<>>, Alt<1, Entity>> entity;
-  boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Src::Range>> range;
-
-  bool operator==(const IdlEntity& other) const {
-    return std::tie(lang,file,entity,range)
-             == std::tie(other.lang,other.file,other.entity,other.range);
-  }
-  bool operator!=(const IdlEntity& other) const {
-    return std::tie(lang,file,entity,range)
-             != std::tie(other.lang,other.file,other.entity,other.range);
-  }
-  bool operator<(const IdlEntity& other) const {
-    return std::tie(lang,file,entity,range)
-             < std::tie(other.lang,other.file,other.entity,other.range);
-  }
-  bool operator<=(const IdlEntity& other) const {
-    return std::tie(lang,file,entity,range)
-             <= std::tie(other.lang,other.file,other.entity,other.range);
-  }
-  bool operator>(const IdlEntity& other) const {
-    return std::tie(lang,file,entity,range)
-             > std::tie(other.lang,other.file,other.entity,other.range);
-  }
-  bool operator>=(const IdlEntity& other) const {
-    return std::tie(lang,file,entity,range)
-             >= std::tie(other.lang,other.file,other.entity,other.range);
-  }
-  void outputRepr(Output<Repr<IdlEntity>> out) const {
-    outputValue(out, std::make_tuple(lang, file, entity, range));
-  }
-}; // struct IdlEntity
-
-} // namespace Code
-
-namespace Codemarkup {
-
-namespace Cxx {
-
-struct CxxEntityIdl : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Cxx::Entity, facebook::glean::cpp::schema::Code::IdlEntity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.cxx.CxxEntityIdl";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 4;
-  }
-}; // struct CxxEntityIdl
-
-} // namespace Cxx
-
-namespace Hack {
-
-struct HackEntityIdl : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Hack::Entity, facebook::glean::cpp::schema::Code::IdlEntity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.hack.HackEntityIdl";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 2;
-  }
-}; // struct HackEntityIdl
-
-} // namespace Hack
-
-namespace Yaml {
-
-struct YamlFileEntityXLangXRefLocations : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan, facebook::glean::cpp::schema::Code::IdlEntity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.yaml.YamlFileEntityXLangXRefLocations";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 1;
-  }
-}; // struct YamlFileEntityXLangXRefLocations
-
-} // namespace Yaml
-
-} // namespace Codemarkup
-
-namespace Code {
-
-namespace Compose {
-
-struct CxxSearchContainerKind : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>> {
-  static const char* GLEAN_name() {
-    return "code.compose.CxxSearchContainerKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 1;
-  }
-}; // struct CxxSearchContainerKind
-
-} // namespace Compose
-
-} // namespace Code
-
-} // namespace schema
-
-template<> struct Repr_<facebook::glean::cpp::schema::Codemarkup::ChildEntity> {
-  using Type = Tuple<Repr<facebook::glean::cpp::schema::Code::Entity>, Repr<facebook::glean::cpp::schema::Codemarkup::Types::Location>>;
-};
-
-
-namespace schema {
-
-namespace Codemarkup {
-
-struct ChildEntity {
-  facebook::glean::cpp::schema::Code::Entity child;
-  facebook::glean::cpp::schema::Codemarkup::Types::Location location;
-
-  bool operator==(const ChildEntity& other) const {
-    return std::tie(child,location)
-             == std::tie(other.child,other.location);
-  }
-  bool operator!=(const ChildEntity& other) const {
-    return std::tie(child,location)
-             != std::tie(other.child,other.location);
-  }
-  bool operator<(const ChildEntity& other) const {
-    return std::tie(child,location)
-             < std::tie(other.child,other.location);
-  }
-  bool operator<=(const ChildEntity& other) const {
-    return std::tie(child,location)
-             <= std::tie(other.child,other.location);
-  }
-  bool operator>(const ChildEntity& other) const {
-    return std::tie(child,location)
-             > std::tie(other.child,other.location);
-  }
-  bool operator>=(const ChildEntity& other) const {
-    return std::tie(child,location)
-             >= std::tie(other.child,other.location);
-  }
-  void outputRepr(Output<Repr<ChildEntity>> out) const {
-    outputValue(out, std::make_tuple(child, location));
-  }
-}; // struct ChildEntity
-
-struct ContainsChildEntity : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.ContainsChildEntity";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct ContainsChildEntity
-
-struct ContainsParentEntity : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.ContainsParentEntity";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct ContainsParentEntity
-
-struct EntityComments : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan, boost::variant<Alt<0, std::tuple<>>, Alt<1, std::string>>>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.EntityComments";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct EntityComments
-
-struct EntityInfo : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::SymbolInfo>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.EntityInfo";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct EntityInfo
-
-struct EntityIsDefinition : Predicate<facebook::glean::cpp::schema::Code::Entity> {
-  static const char* GLEAN_name() {
-    return "codemarkup.EntityIsDefinition";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct EntityIsDefinition
-
-struct EntityKind : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.EntityKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct EntityKind
-
-struct EntityLocation : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::Location>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.EntityLocation";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct EntityLocation
-
-struct EntityModifiers : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::Modifiers>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.EntityModifiers";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct EntityModifiers
-
-struct EntityModuleName : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, std::string>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.EntityModuleName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct EntityModuleName
-
-struct EntityReferences : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.EntityReferences";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct EntityReferences
-
-struct EntitySource : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.EntitySource";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct EntitySource
-
-struct EntityUses : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.EntityUses";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct EntityUses
-
-struct EntityVisibility : Predicate<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::Visibility> {
-  static const char* GLEAN_name() {
-    return "codemarkup.EntityVisibility";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct EntityVisibility
-
-struct ExtendsChildEntity : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.ExtendsChildEntity";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct ExtendsChildEntity
-
-struct ExtendsParentEntity : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.ExtendsParentEntity";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct ExtendsParentEntity
-
-struct ExtendsParentEntityConcise : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.ExtendsParentEntityConcise";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct ExtendsParentEntityConcise
-
-struct FileEntityDigest : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Code::Entity>, std::string> {
-  static const char* GLEAN_name() {
-    return "codemarkup.FileEntityDigest";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct FileEntityDigest
-
-struct FileEntityInfos : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::SymbolInfo>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.FileEntityInfos";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct FileEntityInfos
-
-struct FileEntityKinds : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.FileEntityKinds";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct FileEntityKinds
-
-struct FileEntityLocations : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Codemarkup::Types::Location, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.FileEntityLocations";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct FileEntityLocations
-
-struct FileEntityXRefInfos : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::SymbolInfo>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.FileEntityXRefInfos";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct FileEntityXRefInfos
-
-struct FileEntityXRefKinds : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.FileEntityXRefKinds";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct FileEntityXRefKinds
-
-struct FileEntityXRefLocations : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Codemarkup::Types::XRefLocation, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.FileEntityXRefLocations";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct FileEntityXRefLocations
-
-struct FileEntityXRefRangeSpans : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.FileEntityXRefRangeSpans";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct FileEntityXRefRangeSpans
-
-struct FindEntityDefinition : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.FindEntityDefinition";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct FindEntityDefinition
-
-struct GeneratedEntityToIdlEntity : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::IdlEntity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.GeneratedEntityToIdlEntity";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct GeneratedEntityToIdlEntity
-
-} // namespace Codemarkup
-
-} // namespace schema
-
-template<> struct Repr_<facebook::glean::cpp::schema::Codemarkup::GenericEntity> {
-  using Type = Sum<Tuple<Repr<facebook::glean::cpp::schema::Codemarkup::Types::XRefLocation>, Repr<facebook::glean::cpp::schema::Code::Entity>>, Tuple<Repr<facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan>, Repr<facebook::glean::cpp::schema::Code::IdlEntity>>>;
-};
-
-
-namespace schema {
-
-namespace Codemarkup {
-
-struct GenericEntity {
-  boost::variant<Alt<0, std::tuple<facebook::glean::cpp::schema::Codemarkup::Types::XRefLocation, facebook::glean::cpp::schema::Code::Entity>>, Alt<1, std::tuple<facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan, facebook::glean::cpp::schema::Code::IdlEntity>>> GLEAN_value;
-
-  static GenericEntity plainEntity(const facebook::glean::cpp::schema::Codemarkup::Types::XRefLocation& xref, const facebook::glean::cpp::schema::Code::Entity& entity) {
-    return GenericEntity{Alt<0, std::tuple<facebook::glean::cpp::schema::Codemarkup::Types::XRefLocation, facebook::glean::cpp::schema::Code::Entity>>(std::make_tuple(xref, entity))};
-  }
-  static GenericEntity xlangEntity(const facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan& source, const facebook::glean::cpp::schema::Code::IdlEntity& entity) {
-    return GenericEntity{Alt<1, std::tuple<facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan, facebook::glean::cpp::schema::Code::IdlEntity>>(std::make_tuple(source, entity))};
-  }
-
-  bool operator==(const GenericEntity& other) const {
-    return std::tie(GLEAN_value)
-             == std::tie(other.GLEAN_value);
-  }
-  bool operator!=(const GenericEntity& other) const {
-    return std::tie(GLEAN_value)
-             != std::tie(other.GLEAN_value);
-  }
-  bool operator<(const GenericEntity& other) const {
-    return std::tie(GLEAN_value)
-             < std::tie(other.GLEAN_value);
-  }
-  bool operator<=(const GenericEntity& other) const {
-    return std::tie(GLEAN_value)
-             <= std::tie(other.GLEAN_value);
-  }
-  bool operator>(const GenericEntity& other) const {
-    return std::tie(GLEAN_value)
-             > std::tie(other.GLEAN_value);
-  }
-  bool operator>=(const GenericEntity& other) const {
-    return std::tie(GLEAN_value)
-             >= std::tie(other.GLEAN_value);
-  }
-
-  void outputRepr(Output<Repr<GenericEntity>> out) const {
-    outputValue(out, GLEAN_value);
-  }
-}; // struct GenericEntity
-
-struct FileXRefsGenericEntities : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, GenericEntity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.FileXRefsGenericEntities";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct FileXRefsGenericEntities
-
-} // namespace Codemarkup
-
-} // namespace schema
-
-template<> struct Repr_<facebook::glean::cpp::schema::Codemarkup::ParentEntity> {
-  using Type = Tuple<Repr<facebook::glean::cpp::schema::Code::Entity>, Repr<facebook::glean::cpp::schema::Codemarkup::Types::Location>>;
-};
-
-
-namespace schema {
-
-namespace Codemarkup {
-
-struct ParentEntity {
-  facebook::glean::cpp::schema::Code::Entity parent;
-  facebook::glean::cpp::schema::Codemarkup::Types::Location location;
-
-  bool operator==(const ParentEntity& other) const {
-    return std::tie(parent,location)
-             == std::tie(other.parent,other.location);
-  }
-  bool operator!=(const ParentEntity& other) const {
-    return std::tie(parent,location)
-             != std::tie(other.parent,other.location);
-  }
-  bool operator<(const ParentEntity& other) const {
-    return std::tie(parent,location)
-             < std::tie(other.parent,other.location);
-  }
-  bool operator<=(const ParentEntity& other) const {
-    return std::tie(parent,location)
-             <= std::tie(other.parent,other.location);
-  }
-  bool operator>(const ParentEntity& other) const {
-    return std::tie(parent,location)
-             > std::tie(other.parent,other.location);
-  }
-  bool operator>=(const ParentEntity& other) const {
-    return std::tie(parent,location)
-             >= std::tie(other.parent,other.location);
-  }
-  void outputRepr(Output<Repr<ParentEntity>> out) const {
-    outputValue(out, std::make_tuple(parent, location));
-  }
-}; // struct ParentEntity
-
-struct SearchRelatedEntities : Predicate<std::tuple<RelationType, ParentEntity, ChildEntity, SearchStyle>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.SearchRelatedEntities";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct SearchRelatedEntities
-
-struct ReferencingEntity : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan, facebook::glean::cpp::schema::Codemarkup::Types::Location>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.ReferencingEntity";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct ReferencingEntity
-
-struct ResolveLocation : Predicate<std::tuple<facebook::glean::cpp::schema::Codemarkup::Types::Location, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.ResolveLocation";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct ResolveLocation
-
-struct SearchInheritedEntities : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, ParentEntity, ChildEntity, SearchStyle>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.SearchInheritedEntities";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct SearchInheritedEntities
-
-namespace Cxx {
-
-struct CxxFileEntityIdl : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Cxx1::FileXRefs>, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::IdlEntity>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.cxx.CxxFileEntityIdl";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 4;
-  }
-}; // struct CxxFileEntityIdl
-
-struct CxxIdlEntityUses : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.cxx.CxxIdlEntityUses";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 4;
-  }
-}; // struct CxxIdlEntityUses
-
-} // namespace Cxx
-
-namespace Hack {
-
-struct ConvertCallee : Predicate<std::tuple<boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Hack::XRefTarget>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.hack.ConvertCallee";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 2;
-  }
-}; // struct ConvertCallee
-
-struct ConvertCalleeForFileCall : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Hack::XRefTarget>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.hack.ConvertCalleeForFileCall";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 2;
-  }
-}; // struct ConvertCalleeForFileCall
-
-struct ConvertStaticType : Predicate<std::tuple<boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Hack::Declaration>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.hack.ConvertStaticType";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 2;
-  }
-}; // struct ConvertStaticType
-
-struct HackIdlEntityUses : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.hack.HackIdlEntityUses";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 2;
-  }
-}; // struct HackIdlEntityUses
-
-} // namespace Hack
-
-namespace Search {
-
-struct EntityLocationAndKind : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::Location, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.search.EntityLocationAndKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 1;
-  }
-}; // struct EntityLocationAndKind
-
-struct SearchByName : Predicate<std::tuple<SearchCase, std::string, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::Location, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Language>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.search.SearchByName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 1;
-  }
-}; // struct SearchByName
-
-struct SearchByScope : Predicate<std::tuple<SearchCase, std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::Location, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Language>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.search.SearchByScope";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 1;
-  }
-}; // struct SearchByScope
-
-} // namespace Search
-
-} // namespace Codemarkup
-
-namespace Codemetrics {
-
-struct ReferencesFrom : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "codemetrics.ReferencesFrom";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 1;
-  }
-}; // struct ReferencesFrom
-
-struct ReferencesTo : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "codemetrics.ReferencesTo";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 1;
-  }
-}; // struct ReferencesTo
-
-} // namespace Codemetrics
-
-namespace Deadcode {
-
-struct GraphEntity : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan>> {
-  static const char* GLEAN_name() {
-    return "deadcode.GraphEntity";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 7;
-  }
-}; // struct GraphEntity
-
-} // namespace Deadcode
-
-namespace Deletthis {
-
-struct FileReverseDeps : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "deletthis.FileReverseDeps";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 15;
-  }
-}; // struct FileReverseDeps
-
-} // namespace Deletthis
-
-namespace Dyn {
-
-struct EntityUsage : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Observer, Usage, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Environment>>>>> {
-  static const char* GLEAN_name() {
-    return "dyn.EntityUsage";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 6;
-  }
-}; // struct EntityUsage
-
-} // namespace Dyn
-
-namespace Monk {
-
-struct BestPiiFunc : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>, Fact<PiiFunc>>> {
-  static const char* GLEAN_name() {
-    return "monk.BestPiiFunc";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 1;
-  }
-}; // struct BestPiiFunc
-
-struct PiiCallerFunc : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Fact<PiiFunc>>> {
-  static const char* GLEAN_name() {
-    return "monk.PiiCallerFunc";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 1;
-  }
-}; // struct PiiCallerFunc
-
-struct PiiFunc : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>, Fact<Xid>, PrivacySensitivityKind>> {
-  static const char* GLEAN_name() {
-    return "monk.PiiFunc";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 1;
-  }
-}; // struct PiiFunc
-
-} // namespace Monk
-
-namespace Search {
-
-namespace Code {
-
-struct BuckSearchByLocalNameFact : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Buck::LocalName>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.BuckSearchByLocalNameFact";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct BuckSearchByLocalNameFact
-
-struct BuckSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.BuckSearchByLowerCaseName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct BuckSearchByLowerCaseName
-
-struct BuckSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.BuckSearchByName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct BuckSearchByName
-
-struct CSharpSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.CSharpSearchByLowerCaseName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct CSharpSearchByLowerCaseName
-
-struct CSharpSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.CSharpSearchByName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct CSharpSearchByName
-
-struct CxxSearchByLowerCaseScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.CxxSearchByLowerCaseScopeAndKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct CxxSearchByLowerCaseScopeAndKind
-
-struct CxxSearchByScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.CxxSearchByScopeAndKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct CxxSearchByScopeAndKind
-
-struct ErlangSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.ErlangSearchByLowerCaseName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct ErlangSearchByLowerCaseName
-
-struct ErlangSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.ErlangSearchByName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct ErlangSearchByName
-
-struct FbthriftSearchByNameFact : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Fbthrift::Identifier>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.FbthriftSearchByNameFact";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct FbthriftSearchByNameFact
-
-struct FlowSearchByLowerCaseNameKindAndScopeFact : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<facebook::glean::cpp::schema::Flow::Module>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.FlowSearchByLowerCaseNameKindAndScopeFact";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct FlowSearchByLowerCaseNameKindAndScopeFact
-
-struct FlowSearchByLowerCaseScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.FlowSearchByLowerCaseScopeAndKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct FlowSearchByLowerCaseScopeAndKind
-
-struct FlowSearchByNameKindAndScopeFact : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<facebook::glean::cpp::schema::Flow::Module>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.FlowSearchByNameKindAndScopeFact";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct FlowSearchByNameKindAndScopeFact
-
-struct FlowSearchByScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.FlowSearchByScopeAndKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct FlowSearchByScopeAndKind
-
-struct GraphQLSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.GraphQLSearchByLowerCaseName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct GraphQLSearchByLowerCaseName
-
-struct GraphQLSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.GraphQLSearchByName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct GraphQLSearchByName
-
-struct HackSearchByLowerCaseNameAndKind : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.HackSearchByLowerCaseNameAndKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct HackSearchByLowerCaseNameAndKind
-
-struct HackSearchByLowerCaseScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.HackSearchByLowerCaseScopeAndKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct HackSearchByLowerCaseScopeAndKind
-
-struct HackSearchByNameAndKind : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.HackSearchByNameAndKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct HackSearchByNameAndKind
-
-struct HackSearchByNameKindWithNamespace : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<facebook::glean::cpp::schema::Hack::NamespaceQName>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.HackSearchByNameKindWithNamespace";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct HackSearchByNameKindWithNamespace
-
-struct HackSearchByNameKindWithQName : Predicate<std::tuple<std::string, Fact<facebook::glean::cpp::schema::Hack::Name>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<facebook::glean::cpp::schema::Hack::NamespaceQName>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.HackSearchByNameKindWithQName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct HackSearchByNameKindWithQName
-
-struct HackSearchByScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.HackSearchByScopeAndKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct HackSearchByScopeAndKind
-
-struct HackSearchByScopeWithNameKinds : Predicate<std::tuple<std::string, bool, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.HackSearchByScopeWithNameKinds";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct HackSearchByScopeWithNameKinds
-
-struct HsSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.HsSearchByLowerCaseName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct HsSearchByLowerCaseName
-
-struct HsSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.HsSearchByName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct HsSearchByName
-
-struct JavaSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.JavaSearchByLowerCaseName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct JavaSearchByLowerCaseName
-
-struct JavaSearchByLowerCaseScope : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.JavaSearchByLowerCaseScope";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct JavaSearchByLowerCaseScope
-
-struct JavaSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.JavaSearchByName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct JavaSearchByName
-
-struct JavaSearchByNameWithFact : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Javakotlin::Alpha::QName>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.JavaSearchByNameWithFact";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct JavaSearchByNameWithFact
-
-struct JavaSearchByScope : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.JavaSearchByScope";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct JavaSearchByScope
-
-struct JavaSearchByScopeWithName : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Javakotlin::Alpha::Name>, bool, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.JavaSearchByScopeWithName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct JavaSearchByScopeWithName
-
-struct KotlinSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.KotlinSearchByLowerCaseName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct KotlinSearchByLowerCaseName
-
-struct KotlinSearchByLowerCaseScope : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.KotlinSearchByLowerCaseScope";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct KotlinSearchByLowerCaseScope
-
-struct KotlinSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.KotlinSearchByName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct KotlinSearchByName
-
-struct KotlinSearchByNameWithFact : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Javakotlin::Alpha::QName>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.KotlinSearchByNameWithFact";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct KotlinSearchByNameWithFact
-
-struct KotlinSearchByScope : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.KotlinSearchByScope";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct KotlinSearchByScope
-
-struct KotlinSearchByScopeWithName : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Javakotlin::Alpha::Name>, bool, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.KotlinSearchByScopeWithName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct KotlinSearchByScopeWithName
-
-struct LsifSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.LsifSearchByLowerCaseName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct LsifSearchByLowerCaseName
-
-struct LsifSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.LsifSearchByName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct LsifSearchByName
-
-struct PpSearchByLowerCaseNameKind : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.PpSearchByLowerCaseNameKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct PpSearchByLowerCaseNameKind
-
-struct PpSearchByNameKind : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.PpSearchByNameKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct PpSearchByNameKind
-
-struct PythonSearchByLowerCaseNameKindAndScopeFact : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<facebook::glean::cpp::schema::Python::SName>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.PythonSearchByLowerCaseNameKindAndScopeFact";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct PythonSearchByLowerCaseNameKindAndScopeFact
-
-struct PythonSearchByLowerCaseScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.PythonSearchByLowerCaseScopeAndKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct PythonSearchByLowerCaseScopeAndKind
-
-struct PythonSearchByNameKindAndScopeFact : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<facebook::glean::cpp::schema::Python::SName>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.PythonSearchByNameKindAndScopeFact";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct PythonSearchByNameKindAndScopeFact
-
-struct PythonSearchByScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.PythonSearchByScopeAndKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct PythonSearchByScopeAndKind
-
-struct SearchByLowerCaseNameAndLanguage : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Language, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.SearchByLowerCaseNameAndLanguage";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct SearchByLowerCaseNameAndLanguage
-
-struct SearchByLowerCaseNameKindAndLanguage : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Language, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.SearchByLowerCaseNameKindAndLanguage";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct SearchByLowerCaseNameKindAndLanguage
-
-struct SearchByLowerCaseScope : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Language, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.SearchByLowerCaseScope";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct SearchByLowerCaseScope
-
-struct SearchByLowerCaseScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Language, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.SearchByLowerCaseScopeAndKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct SearchByLowerCaseScopeAndKind
-
-struct SearchByNameAndLanguage : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Language, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.SearchByNameAndLanguage";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct SearchByNameAndLanguage
-
-struct SearchByNameKindAndLanguage : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Language, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.SearchByNameKindAndLanguage";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct SearchByNameKindAndLanguage
-
-struct SearchByScope : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Language, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.SearchByScope";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct SearchByScope
-
-struct SearchByScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Language, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.SearchByScopeAndKind";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct SearchByScopeAndKind
-
-struct ThriftSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.ThriftSearchByLowerCaseName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct ThriftSearchByLowerCaseName
-
-struct ThriftSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.ThriftSearchByName";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct ThriftSearchByName
-
-} // namespace Code
-
-} // namespace Search
-
-} // namespace schema
-
-template<> struct Repr_<facebook::glean::cpp::schema::Code::Argument> {
-  using Type = Sum<String, Repr<facebook::glean::cpp::schema::Code::Entity>>;
-};
-
-
-namespace schema {
-
-namespace Code {
-
-struct Argument {
-  boost::variant<Alt<0, std::string>, Alt<1, Entity>> GLEAN_value;
-
-  static Argument lit(const std::string& a) {
-    return Argument{Alt<0, std::string>(a)};
-  }
-  static Argument xref(const Entity& a) {
-    return Argument{Alt<1, Entity>(a)};
-  }
-
-  bool operator==(const Argument& other) const {
-    return std::tie(GLEAN_value)
-             == std::tie(other.GLEAN_value);
-  }
-  bool operator!=(const Argument& other) const {
-    return std::tie(GLEAN_value)
-             != std::tie(other.GLEAN_value);
-  }
-  bool operator<(const Argument& other) const {
-    return std::tie(GLEAN_value)
-             < std::tie(other.GLEAN_value);
-  }
-  bool operator<=(const Argument& other) const {
-    return std::tie(GLEAN_value)
-             <= std::tie(other.GLEAN_value);
-  }
-  bool operator>(const Argument& other) const {
-    return std::tie(GLEAN_value)
-             > std::tie(other.GLEAN_value);
-  }
-  bool operator>=(const Argument& other) const {
-    return std::tie(GLEAN_value)
-             >= std::tie(other.GLEAN_value);
-  }
-
-  void outputRepr(Output<Repr<Argument>> out) const {
-    outputValue(out, GLEAN_value);
-  }
-}; // struct Argument
-
-} // namespace Code
-
-} // namespace schema
-
-template<> struct Repr_<facebook::glean::cpp::schema::Code::CallArgument> {
-  using Type = Tuple<Maybe<String>, Repr<facebook::glean::cpp::schema::Src::ByteSpan>, Maybe<Repr<facebook::glean::cpp::schema::Code::Argument>>>;
-};
-
-
-namespace schema {
-
-namespace Code {
-
-struct CallArgument {
-  boost::variant<Alt<0, std::tuple<>>, Alt<1, std::string>> label;
-  facebook::glean::cpp::schema::Src::ByteSpan span;
-  boost::variant<Alt<0, std::tuple<>>, Alt<1, Argument>> argument;
-
-  bool operator==(const CallArgument& other) const {
-    return std::tie(label,span,argument)
-             == std::tie(other.label,other.span,other.argument);
-  }
-  bool operator!=(const CallArgument& other) const {
-    return std::tie(label,span,argument)
-             != std::tie(other.label,other.span,other.argument);
-  }
-  bool operator<(const CallArgument& other) const {
-    return std::tie(label,span,argument)
-             < std::tie(other.label,other.span,other.argument);
-  }
-  bool operator<=(const CallArgument& other) const {
-    return std::tie(label,span,argument)
-             <= std::tie(other.label,other.span,other.argument);
-  }
-  bool operator>(const CallArgument& other) const {
-    return std::tie(label,span,argument)
-             > std::tie(other.label,other.span,other.argument);
-  }
-  bool operator>=(const CallArgument& other) const {
-    return std::tie(label,span,argument)
-             >= std::tie(other.label,other.span,other.argument);
-  }
-  void outputRepr(Output<Repr<CallArgument>> out) const {
-    outputValue(out, std::make_tuple(label, span, argument));
-  }
-}; // struct CallArgument
-
-} // namespace Code
-
-namespace Codemarkup {
-
-struct FileCall : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan, std::vector<facebook::glean::cpp::schema::Code::CallArgument>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::CallArgument>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.FileCall";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct FileCall
-
-namespace Hack {
-
-struct ConvertCallArguments : Predicate<std::tuple<std::vector<facebook::glean::cpp::schema::Hack::CallArgument>, std::vector<facebook::glean::cpp::schema::Code::CallArgument>>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.hack.ConvertCallArguments";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 2;
-  }
-}; // struct ConvertCallArguments
-
-struct ConvertMaybeCallArguments : Predicate<std::tuple<boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Hack::CallArgument>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::CallArgument>>>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.hack.ConvertMaybeCallArguments";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 2;
-  }
-}; // struct ConvertMaybeCallArguments
-
-struct HackFileCall : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan, std::vector<facebook::glean::cpp::schema::Code::CallArgument>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::CallArgument>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.hack.HackFileCall";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 2;
-  }
-}; // struct HackFileCall
-
-} // namespace Hack
-
-namespace Python {
-
-struct ConvertCallArguments : Predicate<std::tuple<std::vector<facebook::glean::cpp::schema::Python::CallArgument>, std::vector<facebook::glean::cpp::schema::Code::CallArgument>>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.python.ConvertCallArguments";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 2;
-  }
-}; // struct ConvertCallArguments
-
-struct PythonFileCall : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan, std::vector<facebook::glean::cpp::schema::Code::CallArgument>>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.python.PythonFileCall";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 2;
-  }
-}; // struct PythonFileCall
-
-} // namespace Python
-
-namespace Hack {
-
-struct ConvertArgument : Predicate<std::tuple<boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Hack::Argument>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Argument>>>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.hack.ConvertArgument";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 2;
-  }
-}; // struct ConvertArgument
-
-} // namespace Hack
-
-namespace Python {
-
-struct ConvertArgument : Predicate<std::tuple<boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Python::Argument>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Argument>>>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.python.ConvertArgument";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 2;
-  }
-}; // struct ConvertArgument
-
-} // namespace Python
-
-} // namespace Codemarkup
 
 } // namespace schema
 
@@ -28359,20 +26731,6 @@ struct Annotations {
 }; // struct Annotations
 
 } // namespace Code
-
-namespace Codemarkup {
-
-struct EntityToAnnotations : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Annotations>> {
-  static const char* GLEAN_name() {
-    return "codemarkup.EntityToAnnotations";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 30;
-  }
-}; // struct EntityToAnnotations
-
-} // namespace Codemarkup
 
 } // namespace schema
 
@@ -28737,30 +27095,6 @@ struct VariableDeclarationNonLocalByName : Predicate<std::tuple<std::string, Sco
 } // namespace Cxx1
 
 namespace Search {
-
-namespace Code {
-
-struct CxxSearchByLowerCaseNameKindAndScopeFact : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Cxx1::Scope, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.CxxSearchByLowerCaseNameKindAndScopeFact";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct CxxSearchByLowerCaseNameKindAndScopeFact
-
-struct CxxSearchByNameKindAndScopeFact : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Cxx1::Scope, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
-  static const char* GLEAN_name() {
-    return "search.code.CxxSearchByNameKindAndScopeFact";
-  }
-
-  static constexpr size_t GLEAN_version() {
-     return 16;
-  }
-}; // struct CxxSearchByNameKindAndScopeFact
-
-} // namespace Code
 
 namespace Cxx {
 
@@ -30305,10 +28639,1746 @@ struct FileXRefs : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::
 
 } // namespace Anglelang
 
+} // namespace schema
+
+template<> struct Repr_<facebook::glean::cpp::schema::Code::Anglelang::Entity> {
+  using Type = Tuple<Repr<facebook::glean::cpp::schema::Anglelang::Declaration>>;
+};
+
+
+namespace schema {
+
+namespace Code {
+
+namespace Anglelang {
+
+struct Entity {
+  facebook::glean::cpp::schema::Anglelang::Declaration decl;
+
+  bool operator==(const Entity& other) const {
+    return std::tie(decl)
+             == std::tie(other.decl);
+  }
+  bool operator!=(const Entity& other) const {
+    return std::tie(decl)
+             != std::tie(other.decl);
+  }
+  bool operator<(const Entity& other) const {
+    return std::tie(decl)
+             < std::tie(other.decl);
+  }
+  bool operator<=(const Entity& other) const {
+    return std::tie(decl)
+             <= std::tie(other.decl);
+  }
+  bool operator>(const Entity& other) const {
+    return std::tie(decl)
+             > std::tie(other.decl);
+  }
+  bool operator>=(const Entity& other) const {
+    return std::tie(decl)
+             >= std::tie(other.decl);
+  }
+  void outputRepr(Output<Repr<Entity>> out) const {
+    outputValue(out, std::make_tuple(decl));
+  }
+}; // struct Entity
+
+} // namespace Anglelang
+
+} // namespace Code
+
+} // namespace schema
+
+template<> struct Repr_<facebook::glean::cpp::schema::Code::Entity> {
+  using Type = Sum<Repr<facebook::glean::cpp::schema::Code::Cxx::Entity>, Repr<facebook::glean::cpp::schema::Code::Pp::Entity>, Repr<facebook::glean::cpp::schema::Code::Java::Entity>, Repr<facebook::glean::cpp::schema::Code::Kotlin::Entity>, Repr<facebook::glean::cpp::schema::Code::Hs::Entity>, Repr<facebook::glean::cpp::schema::Code::Python::Entity>, Repr<facebook::glean::cpp::schema::Code::Hack::Entity>, Repr<facebook::glean::cpp::schema::Code::Flow::Entity>, Repr<facebook::glean::cpp::schema::Code::Fbthrift::Entity>, Repr<facebook::glean::cpp::schema::Code::Buck::Entity>, Repr<facebook::glean::cpp::schema::Code::Erlang::Entity>, Repr<facebook::glean::cpp::schema::Code::Lsif::Entity>, Repr<facebook::glean::cpp::schema::Code::Scip::Entity>, Repr<facebook::glean::cpp::schema::Code::Csharp::Entity>, Repr<facebook::glean::cpp::schema::Code::Graphql::Entity>, Repr<facebook::glean::cpp::schema::Code::Dataswarm::Entity>, Repr<facebook::glean::cpp::schema::Code::Anglelang::Entity>>;
+};
+
+
+namespace schema {
+
+namespace Code {
+
+struct Entity {
+  boost::variant<Alt<0, facebook::glean::cpp::schema::Code::Cxx::Entity>, Alt<1, facebook::glean::cpp::schema::Code::Pp::Entity>, Alt<2, facebook::glean::cpp::schema::Code::Java::Entity>, Alt<3, facebook::glean::cpp::schema::Code::Kotlin::Entity>, Alt<4, facebook::glean::cpp::schema::Code::Hs::Entity>, Alt<5, facebook::glean::cpp::schema::Code::Python::Entity>, Alt<6, facebook::glean::cpp::schema::Code::Hack::Entity>, Alt<7, facebook::glean::cpp::schema::Code::Flow::Entity>, Alt<8, facebook::glean::cpp::schema::Code::Fbthrift::Entity>, Alt<9, facebook::glean::cpp::schema::Code::Buck::Entity>, Alt<10, facebook::glean::cpp::schema::Code::Erlang::Entity>, Alt<11, facebook::glean::cpp::schema::Code::Lsif::Entity>, Alt<12, facebook::glean::cpp::schema::Code::Scip::Entity>, Alt<13, facebook::glean::cpp::schema::Code::Csharp::Entity>, Alt<14, facebook::glean::cpp::schema::Code::Graphql::Entity>, Alt<15, facebook::glean::cpp::schema::Code::Dataswarm::Entity>, Alt<16, facebook::glean::cpp::schema::Code::Anglelang::Entity>> GLEAN_value;
+
+  static Entity cxx(const facebook::glean::cpp::schema::Code::Cxx::Entity& a) {
+    return Entity{Alt<0, facebook::glean::cpp::schema::Code::Cxx::Entity>(a)};
+  }
+  static Entity pp(const facebook::glean::cpp::schema::Code::Pp::Entity& a) {
+    return Entity{Alt<1, facebook::glean::cpp::schema::Code::Pp::Entity>(a)};
+  }
+  static Entity java(const facebook::glean::cpp::schema::Code::Java::Entity& a) {
+    return Entity{Alt<2, facebook::glean::cpp::schema::Code::Java::Entity>(a)};
+  }
+  static Entity kotlin(const facebook::glean::cpp::schema::Code::Kotlin::Entity& a) {
+    return Entity{Alt<3, facebook::glean::cpp::schema::Code::Kotlin::Entity>(a)};
+  }
+  static Entity hs(const facebook::glean::cpp::schema::Code::Hs::Entity& a) {
+    return Entity{Alt<4, facebook::glean::cpp::schema::Code::Hs::Entity>(a)};
+  }
+  static Entity python(const facebook::glean::cpp::schema::Code::Python::Entity& a) {
+    return Entity{Alt<5, facebook::glean::cpp::schema::Code::Python::Entity>(a)};
+  }
+  static Entity hack(const facebook::glean::cpp::schema::Code::Hack::Entity& a) {
+    return Entity{Alt<6, facebook::glean::cpp::schema::Code::Hack::Entity>(a)};
+  }
+  static Entity flow(const facebook::glean::cpp::schema::Code::Flow::Entity& a) {
+    return Entity{Alt<7, facebook::glean::cpp::schema::Code::Flow::Entity>(a)};
+  }
+  static Entity fbthrift(const facebook::glean::cpp::schema::Code::Fbthrift::Entity& a) {
+    return Entity{Alt<8, facebook::glean::cpp::schema::Code::Fbthrift::Entity>(a)};
+  }
+  static Entity buck(const facebook::glean::cpp::schema::Code::Buck::Entity& a) {
+    return Entity{Alt<9, facebook::glean::cpp::schema::Code::Buck::Entity>(a)};
+  }
+  static Entity erlang(const facebook::glean::cpp::schema::Code::Erlang::Entity& a) {
+    return Entity{Alt<10, facebook::glean::cpp::schema::Code::Erlang::Entity>(a)};
+  }
+  static Entity lsif(const facebook::glean::cpp::schema::Code::Lsif::Entity& a) {
+    return Entity{Alt<11, facebook::glean::cpp::schema::Code::Lsif::Entity>(a)};
+  }
+  static Entity scip(const facebook::glean::cpp::schema::Code::Scip::Entity& a) {
+    return Entity{Alt<12, facebook::glean::cpp::schema::Code::Scip::Entity>(a)};
+  }
+  static Entity csharp(const facebook::glean::cpp::schema::Code::Csharp::Entity& a) {
+    return Entity{Alt<13, facebook::glean::cpp::schema::Code::Csharp::Entity>(a)};
+  }
+  static Entity graphql(const facebook::glean::cpp::schema::Code::Graphql::Entity& a) {
+    return Entity{Alt<14, facebook::glean::cpp::schema::Code::Graphql::Entity>(a)};
+  }
+  static Entity dataswarm(const facebook::glean::cpp::schema::Code::Dataswarm::Entity& a) {
+    return Entity{Alt<15, facebook::glean::cpp::schema::Code::Dataswarm::Entity>(a)};
+  }
+  static Entity angle(const facebook::glean::cpp::schema::Code::Anglelang::Entity& a) {
+    return Entity{Alt<16, facebook::glean::cpp::schema::Code::Anglelang::Entity>(a)};
+  }
+
+  bool operator==(const Entity& other) const {
+    return std::tie(GLEAN_value)
+             == std::tie(other.GLEAN_value);
+  }
+  bool operator!=(const Entity& other) const {
+    return std::tie(GLEAN_value)
+             != std::tie(other.GLEAN_value);
+  }
+  bool operator<(const Entity& other) const {
+    return std::tie(GLEAN_value)
+             < std::tie(other.GLEAN_value);
+  }
+  bool operator<=(const Entity& other) const {
+    return std::tie(GLEAN_value)
+             <= std::tie(other.GLEAN_value);
+  }
+  bool operator>(const Entity& other) const {
+    return std::tie(GLEAN_value)
+             > std::tie(other.GLEAN_value);
+  }
+  bool operator>=(const Entity& other) const {
+    return std::tie(GLEAN_value)
+             >= std::tie(other.GLEAN_value);
+  }
+
+  void outputRepr(Output<Repr<Entity>> out) const {
+    outputValue(out, GLEAN_value);
+  }
+}; // struct Entity
+
+} // namespace Code
+
+} // namespace schema
+
+template<> struct Repr_<facebook::glean::cpp::schema::Code::Argument> {
+  using Type = Sum<String, Repr<facebook::glean::cpp::schema::Code::Entity>>;
+};
+
+
+namespace schema {
+
+namespace Code {
+
+struct Argument {
+  boost::variant<Alt<0, std::string>, Alt<1, Entity>> GLEAN_value;
+
+  static Argument lit(const std::string& a) {
+    return Argument{Alt<0, std::string>(a)};
+  }
+  static Argument xref(const Entity& a) {
+    return Argument{Alt<1, Entity>(a)};
+  }
+
+  bool operator==(const Argument& other) const {
+    return std::tie(GLEAN_value)
+             == std::tie(other.GLEAN_value);
+  }
+  bool operator!=(const Argument& other) const {
+    return std::tie(GLEAN_value)
+             != std::tie(other.GLEAN_value);
+  }
+  bool operator<(const Argument& other) const {
+    return std::tie(GLEAN_value)
+             < std::tie(other.GLEAN_value);
+  }
+  bool operator<=(const Argument& other) const {
+    return std::tie(GLEAN_value)
+             <= std::tie(other.GLEAN_value);
+  }
+  bool operator>(const Argument& other) const {
+    return std::tie(GLEAN_value)
+             > std::tie(other.GLEAN_value);
+  }
+  bool operator>=(const Argument& other) const {
+    return std::tie(GLEAN_value)
+             >= std::tie(other.GLEAN_value);
+  }
+
+  void outputRepr(Output<Repr<Argument>> out) const {
+    outputValue(out, GLEAN_value);
+  }
+}; // struct Argument
+
+} // namespace Code
+
+} // namespace schema
+
+template<> struct Repr_<facebook::glean::cpp::schema::Code::CallArgument> {
+  using Type = Tuple<Maybe<String>, Repr<facebook::glean::cpp::schema::Src::ByteSpan>, Maybe<Repr<facebook::glean::cpp::schema::Code::Argument>>>;
+};
+
+
+namespace schema {
+
+namespace Code {
+
+struct CallArgument {
+  boost::variant<Alt<0, std::tuple<>>, Alt<1, std::string>> label;
+  facebook::glean::cpp::schema::Src::ByteSpan span;
+  boost::variant<Alt<0, std::tuple<>>, Alt<1, Argument>> argument;
+
+  bool operator==(const CallArgument& other) const {
+    return std::tie(label,span,argument)
+             == std::tie(other.label,other.span,other.argument);
+  }
+  bool operator!=(const CallArgument& other) const {
+    return std::tie(label,span,argument)
+             != std::tie(other.label,other.span,other.argument);
+  }
+  bool operator<(const CallArgument& other) const {
+    return std::tie(label,span,argument)
+             < std::tie(other.label,other.span,other.argument);
+  }
+  bool operator<=(const CallArgument& other) const {
+    return std::tie(label,span,argument)
+             <= std::tie(other.label,other.span,other.argument);
+  }
+  bool operator>(const CallArgument& other) const {
+    return std::tie(label,span,argument)
+             > std::tie(other.label,other.span,other.argument);
+  }
+  bool operator>=(const CallArgument& other) const {
+    return std::tie(label,span,argument)
+             >= std::tie(other.label,other.span,other.argument);
+  }
+  void outputRepr(Output<Repr<CallArgument>> out) const {
+    outputValue(out, std::make_tuple(label, span, argument));
+  }
+}; // struct CallArgument
+
+} // namespace Code
+
+namespace Codemarkup {
+
+namespace Hack {
+
+struct ConvertCallArguments : Predicate<std::tuple<std::vector<facebook::glean::cpp::schema::Hack::CallArgument>, std::vector<facebook::glean::cpp::schema::Code::CallArgument>>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.hack.ConvertCallArguments";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 2;
+  }
+}; // struct ConvertCallArguments
+
+struct ConvertMaybeCallArguments : Predicate<std::tuple<boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Hack::CallArgument>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::CallArgument>>>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.hack.ConvertMaybeCallArguments";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 2;
+  }
+}; // struct ConvertMaybeCallArguments
+
+} // namespace Hack
+
+namespace Python {
+
+struct ConvertCallArguments : Predicate<std::tuple<std::vector<facebook::glean::cpp::schema::Python::CallArgument>, std::vector<facebook::glean::cpp::schema::Code::CallArgument>>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.python.ConvertCallArguments";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 2;
+  }
+}; // struct ConvertCallArguments
+
+struct PythonFileCall : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan, std::vector<facebook::glean::cpp::schema::Code::CallArgument>>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.python.PythonFileCall";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 2;
+  }
+}; // struct PythonFileCall
+
+} // namespace Python
+
+namespace Hack {
+
+struct ConvertArgument : Predicate<std::tuple<boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Hack::Argument>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Argument>>>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.hack.ConvertArgument";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 2;
+  }
+}; // struct ConvertArgument
+
+} // namespace Hack
+
+namespace Python {
+
+struct ConvertArgument : Predicate<std::tuple<boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Python::Argument>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Argument>>>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.python.ConvertArgument";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 2;
+  }
+}; // struct ConvertArgument
+
+} // namespace Python
+
+} // namespace Codemarkup
+
+namespace Code {
+
+struct EntityLanguage : Predicate<std::tuple<Entity, Language>> {
+  static const char* GLEAN_name() {
+    return "code.EntityLanguage";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 24;
+  }
+}; // struct EntityLanguage
+
+} // namespace Code
+
+} // namespace schema
+
+template<> struct Repr_<facebook::glean::cpp::schema::Code::IdlEntity> {
+  using Type = Tuple<Repr<facebook::glean::cpp::schema::Code::Language>, facebook::glean::cpp::schema::Src::File, Maybe<Repr<facebook::glean::cpp::schema::Code::Entity>>, Maybe<Repr<facebook::glean::cpp::schema::Src::Range>>>;
+};
+
+
+namespace schema {
+
+namespace Code {
+
+struct IdlEntity {
+  Language lang;
+  Fact<facebook::glean::cpp::schema::Src::File> file;
+  boost::variant<Alt<0, std::tuple<>>, Alt<1, Entity>> entity;
+  boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Src::Range>> range;
+
+  bool operator==(const IdlEntity& other) const {
+    return std::tie(lang,file,entity,range)
+             == std::tie(other.lang,other.file,other.entity,other.range);
+  }
+  bool operator!=(const IdlEntity& other) const {
+    return std::tie(lang,file,entity,range)
+             != std::tie(other.lang,other.file,other.entity,other.range);
+  }
+  bool operator<(const IdlEntity& other) const {
+    return std::tie(lang,file,entity,range)
+             < std::tie(other.lang,other.file,other.entity,other.range);
+  }
+  bool operator<=(const IdlEntity& other) const {
+    return std::tie(lang,file,entity,range)
+             <= std::tie(other.lang,other.file,other.entity,other.range);
+  }
+  bool operator>(const IdlEntity& other) const {
+    return std::tie(lang,file,entity,range)
+             > std::tie(other.lang,other.file,other.entity,other.range);
+  }
+  bool operator>=(const IdlEntity& other) const {
+    return std::tie(lang,file,entity,range)
+             >= std::tie(other.lang,other.file,other.entity,other.range);
+  }
+  void outputRepr(Output<Repr<IdlEntity>> out) const {
+    outputValue(out, std::make_tuple(lang, file, entity, range));
+  }
+}; // struct IdlEntity
+
+} // namespace Code
+
+namespace Codemarkup {
+
+namespace Cxx {
+
+struct CxxEntityIdl : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Cxx::Entity, facebook::glean::cpp::schema::Code::IdlEntity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.cxx.CxxEntityIdl";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 4;
+  }
+}; // struct CxxEntityIdl
+
+} // namespace Cxx
+
+namespace Hack {
+
+struct HackEntityIdl : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Hack::Entity, facebook::glean::cpp::schema::Code::IdlEntity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.hack.HackEntityIdl";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 2;
+  }
+}; // struct HackEntityIdl
+
+} // namespace Hack
+
+namespace Yaml {
+
+struct YamlFileEntityXLangXRefLocations : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan, facebook::glean::cpp::schema::Code::IdlEntity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.yaml.YamlFileEntityXLangXRefLocations";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct YamlFileEntityXLangXRefLocations
+
+} // namespace Yaml
+
+} // namespace Codemarkup
+
+namespace Code {
+
+namespace Compose {
+
+struct CxxSearchContainerKind : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>> {
+  static const char* GLEAN_name() {
+    return "code.compose.CxxSearchContainerKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct CxxSearchContainerKind
+
+} // namespace Compose
+
+} // namespace Code
+
+} // namespace schema
+
+template<> struct Repr_<facebook::glean::cpp::schema::Codemarkup::ChildEntity> {
+  using Type = Tuple<Repr<facebook::glean::cpp::schema::Code::Entity>, Repr<facebook::glean::cpp::schema::Codemarkup::Types::Location>>;
+};
+
+
+namespace schema {
+
+namespace Codemarkup {
+
+struct ChildEntity {
+  facebook::glean::cpp::schema::Code::Entity child;
+  facebook::glean::cpp::schema::Codemarkup::Types::Location location;
+
+  bool operator==(const ChildEntity& other) const {
+    return std::tie(child,location)
+             == std::tie(other.child,other.location);
+  }
+  bool operator!=(const ChildEntity& other) const {
+    return std::tie(child,location)
+             != std::tie(other.child,other.location);
+  }
+  bool operator<(const ChildEntity& other) const {
+    return std::tie(child,location)
+             < std::tie(other.child,other.location);
+  }
+  bool operator<=(const ChildEntity& other) const {
+    return std::tie(child,location)
+             <= std::tie(other.child,other.location);
+  }
+  bool operator>(const ChildEntity& other) const {
+    return std::tie(child,location)
+             > std::tie(other.child,other.location);
+  }
+  bool operator>=(const ChildEntity& other) const {
+    return std::tie(child,location)
+             >= std::tie(other.child,other.location);
+  }
+  void outputRepr(Output<Repr<ChildEntity>> out) const {
+    outputValue(out, std::make_tuple(child, location));
+  }
+}; // struct ChildEntity
+
+struct ContainsChildEntity : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.ContainsChildEntity";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct ContainsChildEntity
+
+struct ContainsParentEntity : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.ContainsParentEntity";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct ContainsParentEntity
+
+struct EntityComments : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan, boost::variant<Alt<0, std::tuple<>>, Alt<1, std::string>>>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.EntityComments";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct EntityComments
+
+struct EntityInfo : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::SymbolInfo>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.EntityInfo";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct EntityInfo
+
+struct EntityIsDefinition : Predicate<facebook::glean::cpp::schema::Code::Entity> {
+  static const char* GLEAN_name() {
+    return "codemarkup.EntityIsDefinition";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct EntityIsDefinition
+
+struct EntityKind : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.EntityKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct EntityKind
+
+struct EntityLocation : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::Location>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.EntityLocation";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct EntityLocation
+
+struct EntityModifiers : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::Modifiers>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.EntityModifiers";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct EntityModifiers
+
+struct EntityModuleName : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, std::string>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.EntityModuleName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct EntityModuleName
+
+struct EntityReferences : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.EntityReferences";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct EntityReferences
+
+struct EntitySource : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.EntitySource";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct EntitySource
+
+struct EntityToAnnotations : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Annotations>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.EntityToAnnotations";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct EntityToAnnotations
+
+struct EntityUses : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.EntityUses";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct EntityUses
+
+struct EntityVisibility : Predicate<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::Visibility> {
+  static const char* GLEAN_name() {
+    return "codemarkup.EntityVisibility";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct EntityVisibility
+
+struct ExtendsChildEntity : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.ExtendsChildEntity";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct ExtendsChildEntity
+
+struct ExtendsParentEntity : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.ExtendsParentEntity";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct ExtendsParentEntity
+
+struct ExtendsParentEntityConcise : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.ExtendsParentEntityConcise";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct ExtendsParentEntityConcise
+
+struct FileCall : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan, std::vector<facebook::glean::cpp::schema::Code::CallArgument>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::CallArgument>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.FileCall";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct FileCall
+
+struct FileEntityDigest : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Code::Entity>, std::string> {
+  static const char* GLEAN_name() {
+    return "codemarkup.FileEntityDigest";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct FileEntityDigest
+
+struct FileEntityInfos : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::SymbolInfo>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.FileEntityInfos";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct FileEntityInfos
+
+struct FileEntityKinds : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.FileEntityKinds";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct FileEntityKinds
+
+struct FileEntityLocations : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Codemarkup::Types::Location, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.FileEntityLocations";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct FileEntityLocations
+
+struct FileEntityXRefInfos : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::SymbolInfo>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.FileEntityXRefInfos";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct FileEntityXRefInfos
+
+struct FileEntityXRefKinds : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.FileEntityXRefKinds";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct FileEntityXRefKinds
+
+struct FileEntityXRefLocations : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Codemarkup::Types::XRefLocation, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.FileEntityXRefLocations";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct FileEntityXRefLocations
+
+struct FileEntityXRefRangeSpans : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.FileEntityXRefRangeSpans";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct FileEntityXRefRangeSpans
+
+struct FindEntityDefinition : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.FindEntityDefinition";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct FindEntityDefinition
+
+struct GeneratedEntityToIdlEntity : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::IdlEntity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.GeneratedEntityToIdlEntity";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct GeneratedEntityToIdlEntity
+
+} // namespace Codemarkup
+
+} // namespace schema
+
+template<> struct Repr_<facebook::glean::cpp::schema::Codemarkup::GenericEntity> {
+  using Type = Sum<Tuple<Repr<facebook::glean::cpp::schema::Codemarkup::Types::XRefLocation>, Repr<facebook::glean::cpp::schema::Code::Entity>>, Tuple<Repr<facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan>, Repr<facebook::glean::cpp::schema::Code::IdlEntity>>>;
+};
+
+
+namespace schema {
+
+namespace Codemarkup {
+
+struct GenericEntity {
+  boost::variant<Alt<0, std::tuple<facebook::glean::cpp::schema::Codemarkup::Types::XRefLocation, facebook::glean::cpp::schema::Code::Entity>>, Alt<1, std::tuple<facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan, facebook::glean::cpp::schema::Code::IdlEntity>>> GLEAN_value;
+
+  static GenericEntity plainEntity(const facebook::glean::cpp::schema::Codemarkup::Types::XRefLocation& xref, const facebook::glean::cpp::schema::Code::Entity& entity) {
+    return GenericEntity{Alt<0, std::tuple<facebook::glean::cpp::schema::Codemarkup::Types::XRefLocation, facebook::glean::cpp::schema::Code::Entity>>(std::make_tuple(xref, entity))};
+  }
+  static GenericEntity xlangEntity(const facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan& source, const facebook::glean::cpp::schema::Code::IdlEntity& entity) {
+    return GenericEntity{Alt<1, std::tuple<facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan, facebook::glean::cpp::schema::Code::IdlEntity>>(std::make_tuple(source, entity))};
+  }
+
+  bool operator==(const GenericEntity& other) const {
+    return std::tie(GLEAN_value)
+             == std::tie(other.GLEAN_value);
+  }
+  bool operator!=(const GenericEntity& other) const {
+    return std::tie(GLEAN_value)
+             != std::tie(other.GLEAN_value);
+  }
+  bool operator<(const GenericEntity& other) const {
+    return std::tie(GLEAN_value)
+             < std::tie(other.GLEAN_value);
+  }
+  bool operator<=(const GenericEntity& other) const {
+    return std::tie(GLEAN_value)
+             <= std::tie(other.GLEAN_value);
+  }
+  bool operator>(const GenericEntity& other) const {
+    return std::tie(GLEAN_value)
+             > std::tie(other.GLEAN_value);
+  }
+  bool operator>=(const GenericEntity& other) const {
+    return std::tie(GLEAN_value)
+             >= std::tie(other.GLEAN_value);
+  }
+
+  void outputRepr(Output<Repr<GenericEntity>> out) const {
+    outputValue(out, GLEAN_value);
+  }
+}; // struct GenericEntity
+
+struct FileXRefsGenericEntities : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, GenericEntity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.FileXRefsGenericEntities";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct FileXRefsGenericEntities
+
+} // namespace Codemarkup
+
+} // namespace schema
+
+template<> struct Repr_<facebook::glean::cpp::schema::Codemarkup::ParentEntity> {
+  using Type = Tuple<Repr<facebook::glean::cpp::schema::Code::Entity>, Repr<facebook::glean::cpp::schema::Codemarkup::Types::Location>>;
+};
+
+
+namespace schema {
+
+namespace Codemarkup {
+
+struct ParentEntity {
+  facebook::glean::cpp::schema::Code::Entity parent;
+  facebook::glean::cpp::schema::Codemarkup::Types::Location location;
+
+  bool operator==(const ParentEntity& other) const {
+    return std::tie(parent,location)
+             == std::tie(other.parent,other.location);
+  }
+  bool operator!=(const ParentEntity& other) const {
+    return std::tie(parent,location)
+             != std::tie(other.parent,other.location);
+  }
+  bool operator<(const ParentEntity& other) const {
+    return std::tie(parent,location)
+             < std::tie(other.parent,other.location);
+  }
+  bool operator<=(const ParentEntity& other) const {
+    return std::tie(parent,location)
+             <= std::tie(other.parent,other.location);
+  }
+  bool operator>(const ParentEntity& other) const {
+    return std::tie(parent,location)
+             > std::tie(other.parent,other.location);
+  }
+  bool operator>=(const ParentEntity& other) const {
+    return std::tie(parent,location)
+             >= std::tie(other.parent,other.location);
+  }
+  void outputRepr(Output<Repr<ParentEntity>> out) const {
+    outputValue(out, std::make_tuple(parent, location));
+  }
+}; // struct ParentEntity
+
+struct SearchRelatedEntities : Predicate<std::tuple<RelationType, ParentEntity, ChildEntity, SearchStyle>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.SearchRelatedEntities";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct SearchRelatedEntities
+
+struct ReferencingEntity : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Codemarkup::Types::RangeSpan, facebook::glean::cpp::schema::Codemarkup::Types::Location>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.ReferencingEntity";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct ReferencingEntity
+
+struct ResolveLocation : Predicate<std::tuple<facebook::glean::cpp::schema::Codemarkup::Types::Location, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.ResolveLocation";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct ResolveLocation
+
+struct SearchInheritedEntities : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, ParentEntity, ChildEntity, SearchStyle>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.SearchInheritedEntities";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 30;
+  }
+}; // struct SearchInheritedEntities
+
+namespace Cxx {
+
+struct CxxFileEntityIdl : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Cxx1::FileXRefs>, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::IdlEntity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.cxx.CxxFileEntityIdl";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 4;
+  }
+}; // struct CxxFileEntityIdl
+
+struct CxxIdlEntityUses : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.cxx.CxxIdlEntityUses";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 4;
+  }
+}; // struct CxxIdlEntityUses
+
+} // namespace Cxx
+
+namespace Hack {
+
+struct ConvertCallee : Predicate<std::tuple<boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Hack::XRefTarget>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.hack.ConvertCallee";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 2;
+  }
+}; // struct ConvertCallee
+
+struct ConvertCalleeForFileCall : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Hack::XRefTarget>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.hack.ConvertCalleeForFileCall";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 2;
+  }
+}; // struct ConvertCalleeForFileCall
+
+struct ConvertStaticType : Predicate<std::tuple<boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Hack::Declaration>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.hack.ConvertStaticType";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 2;
+  }
+}; // struct ConvertStaticType
+
+struct HackFileCall : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan, std::vector<facebook::glean::cpp::schema::Code::CallArgument>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::CallArgument>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.hack.HackFileCall";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 2;
+  }
+}; // struct HackFileCall
+
+struct HackIdlEntityUses : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.hack.HackIdlEntityUses";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 2;
+  }
+}; // struct HackIdlEntityUses
+
+} // namespace Hack
+
+namespace Search {
+
+struct EntityLocationAndKind : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::Location, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.search.EntityLocationAndKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct EntityLocationAndKind
+
+struct SearchByName : Predicate<std::tuple<SearchCase, std::string, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::Location, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Language>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.search.SearchByName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct SearchByName
+
+struct SearchByScope : Predicate<std::tuple<SearchCase, std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Codemarkup::Types::Location, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Language>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.search.SearchByScope";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct SearchByScope
+
+} // namespace Search
+
+} // namespace Codemarkup
+
+namespace Codemetrics {
+
+struct ReferencesFrom : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "codemetrics.ReferencesFrom";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct ReferencesFrom
+
+struct ReferencesTo : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "codemetrics.ReferencesTo";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct ReferencesTo
+
+} // namespace Codemetrics
+
+namespace Deadcode {
+
+struct GraphEntity : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Src::ByteSpan>> {
+  static const char* GLEAN_name() {
+    return "deadcode.GraphEntity";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 7;
+  }
+}; // struct GraphEntity
+
+} // namespace Deadcode
+
+namespace Deletthis {
+
+struct FileReverseDeps : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "deletthis.FileReverseDeps";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 15;
+  }
+}; // struct FileReverseDeps
+
+} // namespace Deletthis
+
+namespace Dyn {
+
+struct EntityUsage : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Observer, Usage, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<Environment>>>>> {
+  static const char* GLEAN_name() {
+    return "dyn.EntityUsage";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 6;
+  }
+}; // struct EntityUsage
+
+} // namespace Dyn
+
+namespace Monk {
+
+struct BestPiiFunc : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>, Fact<PiiFunc>>> {
+  static const char* GLEAN_name() {
+    return "monk.BestPiiFunc";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct BestPiiFunc
+
+struct PiiCallerFunc : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, Fact<PiiFunc>>> {
+  static const char* GLEAN_name() {
+    return "monk.PiiCallerFunc";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct PiiCallerFunc
+
+struct PiiFunc : Predicate<std::tuple<facebook::glean::cpp::schema::Code::Entity, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Code::Entity>>, Fact<Xid>, PrivacySensitivityKind>> {
+  static const char* GLEAN_name() {
+    return "monk.PiiFunc";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct PiiFunc
+
+} // namespace Monk
+
+namespace Search {
+
+namespace Code {
+
+struct BuckSearchByLocalNameFact : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Buck::LocalName>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.BuckSearchByLocalNameFact";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct BuckSearchByLocalNameFact
+
+struct BuckSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.BuckSearchByLowerCaseName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct BuckSearchByLowerCaseName
+
+struct BuckSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.BuckSearchByName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct BuckSearchByName
+
+struct CSharpSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.CSharpSearchByLowerCaseName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct CSharpSearchByLowerCaseName
+
+struct CSharpSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.CSharpSearchByName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct CSharpSearchByName
+
+struct CxxSearchByLowerCaseNameKindAndScopeFact : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Cxx1::Scope, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.CxxSearchByLowerCaseNameKindAndScopeFact";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct CxxSearchByLowerCaseNameKindAndScopeFact
+
+struct CxxSearchByLowerCaseScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.CxxSearchByLowerCaseScopeAndKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct CxxSearchByLowerCaseScopeAndKind
+
+struct CxxSearchByNameKindAndScopeFact : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Cxx1::Scope, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.CxxSearchByNameKindAndScopeFact";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct CxxSearchByNameKindAndScopeFact
+
+struct CxxSearchByScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.CxxSearchByScopeAndKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct CxxSearchByScopeAndKind
+
+struct ErlangSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.ErlangSearchByLowerCaseName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct ErlangSearchByLowerCaseName
+
+struct ErlangSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.ErlangSearchByName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct ErlangSearchByName
+
+struct FbthriftSearchByNameFact : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Fbthrift::Identifier>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.FbthriftSearchByNameFact";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct FbthriftSearchByNameFact
+
+struct FlowSearchByLowerCaseNameKindAndScopeFact : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<facebook::glean::cpp::schema::Flow::Module>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.FlowSearchByLowerCaseNameKindAndScopeFact";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct FlowSearchByLowerCaseNameKindAndScopeFact
+
+struct FlowSearchByLowerCaseScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.FlowSearchByLowerCaseScopeAndKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct FlowSearchByLowerCaseScopeAndKind
+
+struct FlowSearchByNameKindAndScopeFact : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<facebook::glean::cpp::schema::Flow::Module>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.FlowSearchByNameKindAndScopeFact";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct FlowSearchByNameKindAndScopeFact
+
+struct FlowSearchByScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.FlowSearchByScopeAndKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct FlowSearchByScopeAndKind
+
+struct GraphQLSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.GraphQLSearchByLowerCaseName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct GraphQLSearchByLowerCaseName
+
+struct GraphQLSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.GraphQLSearchByName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct GraphQLSearchByName
+
+struct HackSearchByLowerCaseNameAndKind : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.HackSearchByLowerCaseNameAndKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct HackSearchByLowerCaseNameAndKind
+
+struct HackSearchByLowerCaseScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.HackSearchByLowerCaseScopeAndKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct HackSearchByLowerCaseScopeAndKind
+
+struct HackSearchByNameAndKind : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.HackSearchByNameAndKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct HackSearchByNameAndKind
+
+struct HackSearchByNameKindWithNamespace : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<facebook::glean::cpp::schema::Hack::NamespaceQName>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.HackSearchByNameKindWithNamespace";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct HackSearchByNameKindWithNamespace
+
+struct HackSearchByNameKindWithQName : Predicate<std::tuple<std::string, Fact<facebook::glean::cpp::schema::Hack::Name>, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<facebook::glean::cpp::schema::Hack::NamespaceQName>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.HackSearchByNameKindWithQName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct HackSearchByNameKindWithQName
+
+struct HackSearchByScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.HackSearchByScopeAndKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct HackSearchByScopeAndKind
+
+struct HackSearchByScopeWithNameKinds : Predicate<std::tuple<std::string, bool, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.HackSearchByScopeWithNameKinds";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct HackSearchByScopeWithNameKinds
+
+struct HsSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.HsSearchByLowerCaseName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct HsSearchByLowerCaseName
+
+struct HsSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.HsSearchByName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct HsSearchByName
+
+struct JavaSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.JavaSearchByLowerCaseName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct JavaSearchByLowerCaseName
+
+struct JavaSearchByLowerCaseScope : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.JavaSearchByLowerCaseScope";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct JavaSearchByLowerCaseScope
+
+struct JavaSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.JavaSearchByName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct JavaSearchByName
+
+struct JavaSearchByNameWithFact : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Javakotlin::Alpha::QName>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.JavaSearchByNameWithFact";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct JavaSearchByNameWithFact
+
+struct JavaSearchByScope : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.JavaSearchByScope";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct JavaSearchByScope
+
+struct JavaSearchByScopeWithName : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Javakotlin::Alpha::Name>, bool, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.JavaSearchByScopeWithName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct JavaSearchByScopeWithName
+
+struct KotlinSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.KotlinSearchByLowerCaseName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct KotlinSearchByLowerCaseName
+
+struct KotlinSearchByLowerCaseScope : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.KotlinSearchByLowerCaseScope";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct KotlinSearchByLowerCaseScope
+
+struct KotlinSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.KotlinSearchByName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct KotlinSearchByName
+
+struct KotlinSearchByNameWithFact : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Javakotlin::Alpha::QName>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.KotlinSearchByNameWithFact";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct KotlinSearchByNameWithFact
+
+struct KotlinSearchByScope : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.KotlinSearchByScope";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct KotlinSearchByScope
+
+struct KotlinSearchByScopeWithName : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Javakotlin::Alpha::Name>, bool, std::vector<std::string>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.KotlinSearchByScopeWithName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct KotlinSearchByScopeWithName
+
+struct LsifSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.LsifSearchByLowerCaseName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct LsifSearchByLowerCaseName
+
+struct LsifSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.LsifSearchByName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct LsifSearchByName
+
+struct PpSearchByLowerCaseNameKind : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.PpSearchByLowerCaseNameKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct PpSearchByLowerCaseNameKind
+
+struct PpSearchByNameKind : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.PpSearchByNameKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct PpSearchByNameKind
+
+struct PythonSearchByLowerCaseNameKindAndScopeFact : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<facebook::glean::cpp::schema::Python::SName>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.PythonSearchByLowerCaseNameKindAndScopeFact";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct PythonSearchByLowerCaseNameKindAndScopeFact
+
+struct PythonSearchByLowerCaseScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.PythonSearchByLowerCaseScopeAndKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct PythonSearchByLowerCaseScopeAndKind
+
+struct PythonSearchByNameKindAndScopeFact : Predicate<std::tuple<std::string, boost::variant<Alt<0, std::tuple<>>, Alt<1, Fact<facebook::glean::cpp::schema::Python::SName>>>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.PythonSearchByNameKindAndScopeFact";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct PythonSearchByNameKindAndScopeFact
+
+struct PythonSearchByScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.PythonSearchByScopeAndKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct PythonSearchByScopeAndKind
+
+struct SearchByLowerCaseNameAndLanguage : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Language, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.SearchByLowerCaseNameAndLanguage";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct SearchByLowerCaseNameAndLanguage
+
+struct SearchByLowerCaseNameKindAndLanguage : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Language, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.SearchByLowerCaseNameKindAndLanguage";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct SearchByLowerCaseNameKindAndLanguage
+
+struct SearchByLowerCaseScope : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Language, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.SearchByLowerCaseScope";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct SearchByLowerCaseScope
+
+struct SearchByLowerCaseScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Language, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.SearchByLowerCaseScopeAndKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct SearchByLowerCaseScopeAndKind
+
+struct SearchByNameAndLanguage : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Language, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.SearchByNameAndLanguage";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct SearchByNameAndLanguage
+
+struct SearchByNameKindAndLanguage : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Language, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.SearchByNameKindAndLanguage";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct SearchByNameKindAndLanguage
+
+struct SearchByScope : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Language, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.SearchByScope";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct SearchByScope
+
+struct SearchByScopeAndKind : Predicate<std::tuple<std::string, std::vector<std::string>, facebook::glean::cpp::schema::Code::Language, boost::variant<Alt<0, std::tuple<>>, Alt<1, facebook::glean::cpp::schema::Codemarkup::Types::SymbolKind>>, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.SearchByScopeAndKind";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct SearchByScopeAndKind
+
+struct ThriftSearchByLowerCaseName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.ThriftSearchByLowerCaseName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct ThriftSearchByLowerCaseName
+
+struct ThriftSearchByName : Predicate<std::tuple<std::string, facebook::glean::cpp::schema::Code::Entity>> {
+  static const char* GLEAN_name() {
+    return "search.code.ThriftSearchByName";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 16;
+  }
+}; // struct ThriftSearchByName
+
+} // namespace Code
+
+} // namespace Search
+
+namespace Codemarkup {
+
+namespace Anglelang {
+
+struct AngleFileEntityXRefLocations : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, facebook::glean::cpp::schema::Codemarkup::Types::XRefLocation, facebook::glean::cpp::schema::Code::Anglelang::Entity>> {
+  static const char* GLEAN_name() {
+    return "codemarkup.anglelang.AngleFileEntityXRefLocations";
+  }
+
+  static constexpr size_t GLEAN_version() {
+     return 1;
+  }
+}; // struct AngleFileEntityXRefLocations
+
+} // namespace Anglelang
+
+} // namespace Codemarkup
+
 struct SCHEMA {
   template<typename P> struct index;
-  static constexpr size_t count = 1352;
-  static constexpr char schemaId[] = "3adce19dc610f67f3726fc442347f960";
+  static constexpr size_t count = 1353;
+  static constexpr char schemaId[] = "739f0bb553fcbf7d88850b261ba5b365";
   template<size_t i> struct predicate;
 };
 
@@ -31441,229 +31511,230 @@ template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Buck::Sear
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Buck::SearchFile> { static constexpr size_t value = 1126; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Code::EntityLanguageSCIP> { static constexpr size_t value = 1127; };
 template<> struct SCHEMA::index<facebook::glean::cpp::schema::Code::EntityLanguageLSIF> { static constexpr size_t value = 1128; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Code::EntityLanguage> { static constexpr size_t value = 1129; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Cxx::CxxEntityIdl> { static constexpr size_t value = 1130; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::HackEntityIdl> { static constexpr size_t value = 1131; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Yaml::YamlFileEntityXLangXRefLocations> { static constexpr size_t value = 1132; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Code::Compose::CxxSearchContainerKind> { static constexpr size_t value = 1133; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::ContainsChildEntity> { static constexpr size_t value = 1134; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::ContainsParentEntity> { static constexpr size_t value = 1135; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityComments> { static constexpr size_t value = 1136; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityInfo> { static constexpr size_t value = 1137; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityIsDefinition> { static constexpr size_t value = 1138; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityKind> { static constexpr size_t value = 1139; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityLocation> { static constexpr size_t value = 1140; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityModifiers> { static constexpr size_t value = 1141; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityModuleName> { static constexpr size_t value = 1142; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityReferences> { static constexpr size_t value = 1143; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntitySource> { static constexpr size_t value = 1144; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityUses> { static constexpr size_t value = 1145; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityVisibility> { static constexpr size_t value = 1146; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::ExtendsChildEntity> { static constexpr size_t value = 1147; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::ExtendsParentEntity> { static constexpr size_t value = 1148; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::ExtendsParentEntityConcise> { static constexpr size_t value = 1149; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityDigest> { static constexpr size_t value = 1150; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityInfos> { static constexpr size_t value = 1151; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityKinds> { static constexpr size_t value = 1152; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityLocations> { static constexpr size_t value = 1153; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityXRefInfos> { static constexpr size_t value = 1154; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityXRefKinds> { static constexpr size_t value = 1155; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityXRefLocations> { static constexpr size_t value = 1156; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityXRefRangeSpans> { static constexpr size_t value = 1157; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FindEntityDefinition> { static constexpr size_t value = 1158; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::GeneratedEntityToIdlEntity> { static constexpr size_t value = 1159; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileXRefsGenericEntities> { static constexpr size_t value = 1160; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::SearchRelatedEntities> { static constexpr size_t value = 1161; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::ReferencingEntity> { static constexpr size_t value = 1162; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::ResolveLocation> { static constexpr size_t value = 1163; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::SearchInheritedEntities> { static constexpr size_t value = 1164; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Cxx::CxxFileEntityIdl> { static constexpr size_t value = 1165; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Cxx::CxxIdlEntityUses> { static constexpr size_t value = 1166; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::ConvertCallee> { static constexpr size_t value = 1167; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::ConvertCalleeForFileCall> { static constexpr size_t value = 1168; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::ConvertStaticType> { static constexpr size_t value = 1169; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::HackIdlEntityUses> { static constexpr size_t value = 1170; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Search::EntityLocationAndKind> { static constexpr size_t value = 1171; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Search::SearchByName> { static constexpr size_t value = 1172; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Search::SearchByScope> { static constexpr size_t value = 1173; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemetrics::ReferencesFrom> { static constexpr size_t value = 1174; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemetrics::ReferencesTo> { static constexpr size_t value = 1175; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Deadcode::GraphEntity> { static constexpr size_t value = 1176; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Deletthis::FileReverseDeps> { static constexpr size_t value = 1177; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Dyn::EntityUsage> { static constexpr size_t value = 1178; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Monk::BestPiiFunc> { static constexpr size_t value = 1179; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Monk::PiiCallerFunc> { static constexpr size_t value = 1180; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Monk::PiiFunc> { static constexpr size_t value = 1181; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::BuckSearchByLocalNameFact> { static constexpr size_t value = 1182; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::BuckSearchByLowerCaseName> { static constexpr size_t value = 1183; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::BuckSearchByName> { static constexpr size_t value = 1184; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::CSharpSearchByLowerCaseName> { static constexpr size_t value = 1185; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::CSharpSearchByName> { static constexpr size_t value = 1186; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::CxxSearchByLowerCaseScopeAndKind> { static constexpr size_t value = 1187; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::CxxSearchByScopeAndKind> { static constexpr size_t value = 1188; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::ErlangSearchByLowerCaseName> { static constexpr size_t value = 1189; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::ErlangSearchByName> { static constexpr size_t value = 1190; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FbthriftSearchByNameFact> { static constexpr size_t value = 1191; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByLowerCaseNameKindAndScopeFact> { static constexpr size_t value = 1192; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByLowerCaseScopeAndKind> { static constexpr size_t value = 1193; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByNameKindAndScopeFact> { static constexpr size_t value = 1194; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByScopeAndKind> { static constexpr size_t value = 1195; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::GraphQLSearchByLowerCaseName> { static constexpr size_t value = 1196; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::GraphQLSearchByName> { static constexpr size_t value = 1197; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HackSearchByLowerCaseNameAndKind> { static constexpr size_t value = 1198; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HackSearchByLowerCaseScopeAndKind> { static constexpr size_t value = 1199; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HackSearchByNameAndKind> { static constexpr size_t value = 1200; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HackSearchByNameKindWithNamespace> { static constexpr size_t value = 1201; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HackSearchByNameKindWithQName> { static constexpr size_t value = 1202; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HackSearchByScopeAndKind> { static constexpr size_t value = 1203; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HackSearchByScopeWithNameKinds> { static constexpr size_t value = 1204; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HsSearchByLowerCaseName> { static constexpr size_t value = 1205; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HsSearchByName> { static constexpr size_t value = 1206; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::JavaSearchByLowerCaseName> { static constexpr size_t value = 1207; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::JavaSearchByLowerCaseScope> { static constexpr size_t value = 1208; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::JavaSearchByName> { static constexpr size_t value = 1209; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::JavaSearchByNameWithFact> { static constexpr size_t value = 1210; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::JavaSearchByScope> { static constexpr size_t value = 1211; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::JavaSearchByScopeWithName> { static constexpr size_t value = 1212; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::KotlinSearchByLowerCaseName> { static constexpr size_t value = 1213; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::KotlinSearchByLowerCaseScope> { static constexpr size_t value = 1214; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::KotlinSearchByName> { static constexpr size_t value = 1215; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::KotlinSearchByNameWithFact> { static constexpr size_t value = 1216; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::KotlinSearchByScope> { static constexpr size_t value = 1217; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::KotlinSearchByScopeWithName> { static constexpr size_t value = 1218; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::LsifSearchByLowerCaseName> { static constexpr size_t value = 1219; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::LsifSearchByName> { static constexpr size_t value = 1220; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PpSearchByLowerCaseNameKind> { static constexpr size_t value = 1221; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PpSearchByNameKind> { static constexpr size_t value = 1222; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PythonSearchByLowerCaseNameKindAndScopeFact> { static constexpr size_t value = 1223; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PythonSearchByLowerCaseScopeAndKind> { static constexpr size_t value = 1224; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PythonSearchByNameKindAndScopeFact> { static constexpr size_t value = 1225; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PythonSearchByScopeAndKind> { static constexpr size_t value = 1226; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseNameAndLanguage> { static constexpr size_t value = 1227; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseNameKindAndLanguage> { static constexpr size_t value = 1228; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseScope> { static constexpr size_t value = 1229; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseScopeAndKind> { static constexpr size_t value = 1230; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByNameAndLanguage> { static constexpr size_t value = 1231; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByNameKindAndLanguage> { static constexpr size_t value = 1232; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByScope> { static constexpr size_t value = 1233; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByScopeAndKind> { static constexpr size_t value = 1234; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::ThriftSearchByLowerCaseName> { static constexpr size_t value = 1235; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::ThriftSearchByName> { static constexpr size_t value = 1236; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileCall> { static constexpr size_t value = 1237; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::ConvertCallArguments> { static constexpr size_t value = 1238; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::ConvertMaybeCallArguments> { static constexpr size_t value = 1239; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::HackFileCall> { static constexpr size_t value = 1240; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Python::ConvertCallArguments> { static constexpr size_t value = 1241; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Python::PythonFileCall> { static constexpr size_t value = 1242; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::ConvertArgument> { static constexpr size_t value = 1243; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Python::ConvertArgument> { static constexpr size_t value = 1244; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityToAnnotations> { static constexpr size_t value = 1245; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Code::Quality::Issue> { static constexpr size_t value = 1246; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::FunctionName> { static constexpr size_t value = 1247; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclaration> { static constexpr size_t value = 1248; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::DeclarationScope> { static constexpr size_t value = 1249; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::EnumDeclarationByName> { static constexpr size_t value = 1250; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::FunctionDeclarationByNameScope> { static constexpr size_t value = 1251; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::FunctionQName> { static constexpr size_t value = 1252; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::QName> { static constexpr size_t value = 1253; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclarationClass> { static constexpr size_t value = 1254; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclarationStruct> { static constexpr size_t value = 1255; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclarationUnion> { static constexpr size_t value = 1256; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::TypeAliasDeclarationByName> { static constexpr size_t value = 1257; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::VariableDeclarationNonLocalByName> { static constexpr size_t value = 1258; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::CxxSearchByLowerCaseNameKindAndScopeFact> { static constexpr size_t value = 1259; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::CxxSearchByNameKindAndScopeFact> { static constexpr size_t value = 1260; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Cxx::QueryToScopeCase> { static constexpr size_t value = 1261; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchClass> { static constexpr size_t value = 1262; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchEnum> { static constexpr size_t value = 1263; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchEnumerator> { static constexpr size_t value = 1264; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchFunction> { static constexpr size_t value = 1265; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchNamespace> { static constexpr size_t value = 1266; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchStruct> { static constexpr size_t value = 1267; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchTypeAlias> { static constexpr size_t value = 1268; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchUnion> { static constexpr size_t value = 1269; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchVariable> { static constexpr size_t value = 1270; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupDeclaration> { static constexpr size_t value = 1271; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupDefinition> { static constexpr size_t value = 1272; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupEnumerator> { static constexpr size_t value = 1273; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDeclaration> { static constexpr size_t value = 1274; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDefinition> { static constexpr size_t value = 1275; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDeclaration> { static constexpr size_t value = 1276; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDefinition> { static constexpr size_t value = 1277; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDeclaration> { static constexpr size_t value = 1278; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDefinition> { static constexpr size_t value = 1279; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Fbthrift::FunctionSpecification> { static constexpr size_t value = 1280; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buckuses::UsesOfTargetHeader> { static constexpr size_t value = 1281; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buckuses::UsesOfTarget> { static constexpr size_t value = 1282; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::Oncall> { static constexpr size_t value = 1283; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::ModeType> { static constexpr size_t value = 1284; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::TargetModes> { static constexpr size_t value = 1285; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::LocatorOncall> { static constexpr size_t value = 1286; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::FileOncall> { static constexpr size_t value = 1287; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Type> { static constexpr size_t value = 1288; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TranslationUnit> { static constexpr size_t value = 1289; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetUses> { static constexpr size_t value = 1290; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetSourcesBaseModule> { static constexpr size_t value = 1291; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetSources> { static constexpr size_t value = 1292; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetOuts> { static constexpr size_t value = 1293; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetOut> { static constexpr size_t value = 1294; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetMode> { static constexpr size_t value = 1295; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetLocation> { static constexpr size_t value = 1296; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetLinkWhole> { static constexpr size_t value = 1297; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetIndexerName> { static constexpr size_t value = 1298; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetIndexer> { static constexpr size_t value = 1299; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetHash> { static constexpr size_t value = 1300; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetCallByCallExpr> { static constexpr size_t value = 1301; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetCall> { static constexpr size_t value = 1302; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetByType> { static constexpr size_t value = 1303; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetAttribute> { static constexpr size_t value = 1304; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Target> { static constexpr size_t value = 1305; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::SourceFileLocation> { static constexpr size_t value = 1306; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::SearchByLocalName> { static constexpr size_t value = 1307; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::RuleKey> { static constexpr size_t value = 1308; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Platform> { static constexpr size_t value = 1309; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Owner> { static constexpr size_t value = 1310; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::OutsTarget> { static constexpr size_t value = 1311; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::OutputLabel> { static constexpr size_t value = 1312; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::OutTarget> { static constexpr size_t value = 1313; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocatorWithLabel> { static constexpr size_t value = 1314; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocatorReverseDeps> { static constexpr size_t value = 1315; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocatorReverseDep> { static constexpr size_t value = 1316; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Locator> { static constexpr size_t value = 1317; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocalNameLowerCase> { static constexpr size_t value = 1318; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocalName> { static constexpr size_t value = 1319; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Labels> { static constexpr size_t value = 1320; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Label> { static constexpr size_t value = 1321; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::IndexerName> { static constexpr size_t value = 1322; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileXRefs> { static constexpr size_t value = 1323; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileToTarget> { static constexpr size_t value = 1324; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileTarget> { static constexpr size_t value = 1325; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileResolved> { static constexpr size_t value = 1326; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileEntity> { static constexpr size_t value = 1327; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileDefinition> { static constexpr size_t value = 1328; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::File> { static constexpr size_t value = 1329; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FailureSources> { static constexpr size_t value = 1330; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::IndexFailureX> { static constexpr size_t value = 1331; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::DestinationUses> { static constexpr size_t value = 1332; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetDependencies> { static constexpr size_t value = 1333; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::DefinitionLocation> { static constexpr size_t value = 1334; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Definition> { static constexpr size_t value = 1335; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Consumer> { static constexpr size_t value = 1336; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::CallExpr> { static constexpr size_t value = 1337; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::CallArgument> { static constexpr size_t value = 1338; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::AttributeName> { static constexpr size_t value = 1339; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::AttributeValue> { static constexpr size_t value = 1340; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::ArgumentValue> { static constexpr size_t value = 1341; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::TypeDecl> { static constexpr size_t value = 1342; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::Name> { static constexpr size_t value = 1343; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::Type> { static constexpr size_t value = 1344; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::EvolveDecl> { static constexpr size_t value = 1345; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::DerivingDecl> { static constexpr size_t value = 1346; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::PredicateDecl> { static constexpr size_t value = 1347; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::DeclarationLocation> { static constexpr size_t value = 1348; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::DeclarationToName> { static constexpr size_t value = 1349; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::SchemaDecl> { static constexpr size_t value = 1350; };
-template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::FileXRefs> { static constexpr size_t value = 1351; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Code::Quality::Issue> { static constexpr size_t value = 1129; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::FunctionName> { static constexpr size_t value = 1130; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclaration> { static constexpr size_t value = 1131; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::DeclarationScope> { static constexpr size_t value = 1132; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::EnumDeclarationByName> { static constexpr size_t value = 1133; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::FunctionDeclarationByNameScope> { static constexpr size_t value = 1134; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::FunctionQName> { static constexpr size_t value = 1135; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::QName> { static constexpr size_t value = 1136; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclarationClass> { static constexpr size_t value = 1137; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclarationStruct> { static constexpr size_t value = 1138; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::RecordDeclarationUnion> { static constexpr size_t value = 1139; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::TypeAliasDeclarationByName> { static constexpr size_t value = 1140; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Cxx1::VariableDeclarationNonLocalByName> { static constexpr size_t value = 1141; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Cxx::QueryToScopeCase> { static constexpr size_t value = 1142; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchClass> { static constexpr size_t value = 1143; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchEnum> { static constexpr size_t value = 1144; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchEnumerator> { static constexpr size_t value = 1145; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchFunction> { static constexpr size_t value = 1146; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchNamespace> { static constexpr size_t value = 1147; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchStruct> { static constexpr size_t value = 1148; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchTypeAlias> { static constexpr size_t value = 1149; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchUnion> { static constexpr size_t value = 1150; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Kind::Cxx::SearchVariable> { static constexpr size_t value = 1151; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupDeclaration> { static constexpr size_t value = 1152; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupDefinition> { static constexpr size_t value = 1153; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupEnumerator> { static constexpr size_t value = 1154; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDeclaration> { static constexpr size_t value = 1155; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDefinition> { static constexpr size_t value = 1156; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDeclaration> { static constexpr size_t value = 1157; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDefinition> { static constexpr size_t value = 1158; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDeclaration> { static constexpr size_t value = 1159; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDefinition> { static constexpr size_t value = 1160; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Fbthrift::FunctionSpecification> { static constexpr size_t value = 1161; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buckuses::UsesOfTargetHeader> { static constexpr size_t value = 1162; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buckuses::UsesOfTarget> { static constexpr size_t value = 1163; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::Oncall> { static constexpr size_t value = 1164; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::ModeType> { static constexpr size_t value = 1165; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::TargetModes> { static constexpr size_t value = 1166; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::LocatorOncall> { static constexpr size_t value = 1167; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Meta::FileOncall> { static constexpr size_t value = 1168; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Type> { static constexpr size_t value = 1169; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TranslationUnit> { static constexpr size_t value = 1170; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetUses> { static constexpr size_t value = 1171; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetSourcesBaseModule> { static constexpr size_t value = 1172; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetSources> { static constexpr size_t value = 1173; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetOuts> { static constexpr size_t value = 1174; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetOut> { static constexpr size_t value = 1175; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetMode> { static constexpr size_t value = 1176; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetLocation> { static constexpr size_t value = 1177; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetLinkWhole> { static constexpr size_t value = 1178; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetIndexerName> { static constexpr size_t value = 1179; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetIndexer> { static constexpr size_t value = 1180; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetHash> { static constexpr size_t value = 1181; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetCallByCallExpr> { static constexpr size_t value = 1182; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetCall> { static constexpr size_t value = 1183; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetByType> { static constexpr size_t value = 1184; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetAttribute> { static constexpr size_t value = 1185; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Target> { static constexpr size_t value = 1186; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::SourceFileLocation> { static constexpr size_t value = 1187; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::SearchByLocalName> { static constexpr size_t value = 1188; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::RuleKey> { static constexpr size_t value = 1189; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Platform> { static constexpr size_t value = 1190; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Owner> { static constexpr size_t value = 1191; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::OutsTarget> { static constexpr size_t value = 1192; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::OutputLabel> { static constexpr size_t value = 1193; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::OutTarget> { static constexpr size_t value = 1194; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocatorWithLabel> { static constexpr size_t value = 1195; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocatorReverseDeps> { static constexpr size_t value = 1196; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocatorReverseDep> { static constexpr size_t value = 1197; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Locator> { static constexpr size_t value = 1198; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocalNameLowerCase> { static constexpr size_t value = 1199; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::LocalName> { static constexpr size_t value = 1200; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Labels> { static constexpr size_t value = 1201; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Label> { static constexpr size_t value = 1202; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::IndexerName> { static constexpr size_t value = 1203; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileXRefs> { static constexpr size_t value = 1204; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileToTarget> { static constexpr size_t value = 1205; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileTarget> { static constexpr size_t value = 1206; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileResolved> { static constexpr size_t value = 1207; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileEntity> { static constexpr size_t value = 1208; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FileDefinition> { static constexpr size_t value = 1209; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::File> { static constexpr size_t value = 1210; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::FailureSources> { static constexpr size_t value = 1211; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::IndexFailureX> { static constexpr size_t value = 1212; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::DestinationUses> { static constexpr size_t value = 1213; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::TargetDependencies> { static constexpr size_t value = 1214; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::DefinitionLocation> { static constexpr size_t value = 1215; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Definition> { static constexpr size_t value = 1216; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::Consumer> { static constexpr size_t value = 1217; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::CallExpr> { static constexpr size_t value = 1218; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::CallArgument> { static constexpr size_t value = 1219; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::AttributeName> { static constexpr size_t value = 1220; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::AttributeValue> { static constexpr size_t value = 1221; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Buck::ArgumentValue> { static constexpr size_t value = 1222; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::TypeDecl> { static constexpr size_t value = 1223; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::Name> { static constexpr size_t value = 1224; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::Type> { static constexpr size_t value = 1225; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::EvolveDecl> { static constexpr size_t value = 1226; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::DerivingDecl> { static constexpr size_t value = 1227; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::PredicateDecl> { static constexpr size_t value = 1228; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::DeclarationLocation> { static constexpr size_t value = 1229; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::DeclarationToName> { static constexpr size_t value = 1230; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::SchemaDecl> { static constexpr size_t value = 1231; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Anglelang::FileXRefs> { static constexpr size_t value = 1232; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::ConvertCallArguments> { static constexpr size_t value = 1233; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::ConvertMaybeCallArguments> { static constexpr size_t value = 1234; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Python::ConvertCallArguments> { static constexpr size_t value = 1235; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Python::PythonFileCall> { static constexpr size_t value = 1236; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::ConvertArgument> { static constexpr size_t value = 1237; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Python::ConvertArgument> { static constexpr size_t value = 1238; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Code::EntityLanguage> { static constexpr size_t value = 1239; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Cxx::CxxEntityIdl> { static constexpr size_t value = 1240; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::HackEntityIdl> { static constexpr size_t value = 1241; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Yaml::YamlFileEntityXLangXRefLocations> { static constexpr size_t value = 1242; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Code::Compose::CxxSearchContainerKind> { static constexpr size_t value = 1243; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::ContainsChildEntity> { static constexpr size_t value = 1244; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::ContainsParentEntity> { static constexpr size_t value = 1245; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityComments> { static constexpr size_t value = 1246; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityInfo> { static constexpr size_t value = 1247; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityIsDefinition> { static constexpr size_t value = 1248; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityKind> { static constexpr size_t value = 1249; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityLocation> { static constexpr size_t value = 1250; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityModifiers> { static constexpr size_t value = 1251; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityModuleName> { static constexpr size_t value = 1252; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityReferences> { static constexpr size_t value = 1253; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntitySource> { static constexpr size_t value = 1254; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityToAnnotations> { static constexpr size_t value = 1255; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityUses> { static constexpr size_t value = 1256; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::EntityVisibility> { static constexpr size_t value = 1257; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::ExtendsChildEntity> { static constexpr size_t value = 1258; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::ExtendsParentEntity> { static constexpr size_t value = 1259; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::ExtendsParentEntityConcise> { static constexpr size_t value = 1260; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileCall> { static constexpr size_t value = 1261; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityDigest> { static constexpr size_t value = 1262; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityInfos> { static constexpr size_t value = 1263; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityKinds> { static constexpr size_t value = 1264; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityLocations> { static constexpr size_t value = 1265; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityXRefInfos> { static constexpr size_t value = 1266; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityXRefKinds> { static constexpr size_t value = 1267; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityXRefLocations> { static constexpr size_t value = 1268; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileEntityXRefRangeSpans> { static constexpr size_t value = 1269; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FindEntityDefinition> { static constexpr size_t value = 1270; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::GeneratedEntityToIdlEntity> { static constexpr size_t value = 1271; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::FileXRefsGenericEntities> { static constexpr size_t value = 1272; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::SearchRelatedEntities> { static constexpr size_t value = 1273; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::ReferencingEntity> { static constexpr size_t value = 1274; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::ResolveLocation> { static constexpr size_t value = 1275; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::SearchInheritedEntities> { static constexpr size_t value = 1276; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Cxx::CxxFileEntityIdl> { static constexpr size_t value = 1277; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Cxx::CxxIdlEntityUses> { static constexpr size_t value = 1278; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::ConvertCallee> { static constexpr size_t value = 1279; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::ConvertCalleeForFileCall> { static constexpr size_t value = 1280; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::ConvertStaticType> { static constexpr size_t value = 1281; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::HackFileCall> { static constexpr size_t value = 1282; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Hack::HackIdlEntityUses> { static constexpr size_t value = 1283; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Search::EntityLocationAndKind> { static constexpr size_t value = 1284; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Search::SearchByName> { static constexpr size_t value = 1285; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Search::SearchByScope> { static constexpr size_t value = 1286; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemetrics::ReferencesFrom> { static constexpr size_t value = 1287; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemetrics::ReferencesTo> { static constexpr size_t value = 1288; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Deadcode::GraphEntity> { static constexpr size_t value = 1289; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Deletthis::FileReverseDeps> { static constexpr size_t value = 1290; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Dyn::EntityUsage> { static constexpr size_t value = 1291; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Monk::BestPiiFunc> { static constexpr size_t value = 1292; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Monk::PiiCallerFunc> { static constexpr size_t value = 1293; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Monk::PiiFunc> { static constexpr size_t value = 1294; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::BuckSearchByLocalNameFact> { static constexpr size_t value = 1295; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::BuckSearchByLowerCaseName> { static constexpr size_t value = 1296; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::BuckSearchByName> { static constexpr size_t value = 1297; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::CSharpSearchByLowerCaseName> { static constexpr size_t value = 1298; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::CSharpSearchByName> { static constexpr size_t value = 1299; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::CxxSearchByLowerCaseNameKindAndScopeFact> { static constexpr size_t value = 1300; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::CxxSearchByLowerCaseScopeAndKind> { static constexpr size_t value = 1301; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::CxxSearchByNameKindAndScopeFact> { static constexpr size_t value = 1302; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::CxxSearchByScopeAndKind> { static constexpr size_t value = 1303; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::ErlangSearchByLowerCaseName> { static constexpr size_t value = 1304; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::ErlangSearchByName> { static constexpr size_t value = 1305; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FbthriftSearchByNameFact> { static constexpr size_t value = 1306; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByLowerCaseNameKindAndScopeFact> { static constexpr size_t value = 1307; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByLowerCaseScopeAndKind> { static constexpr size_t value = 1308; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByNameKindAndScopeFact> { static constexpr size_t value = 1309; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::FlowSearchByScopeAndKind> { static constexpr size_t value = 1310; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::GraphQLSearchByLowerCaseName> { static constexpr size_t value = 1311; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::GraphQLSearchByName> { static constexpr size_t value = 1312; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HackSearchByLowerCaseNameAndKind> { static constexpr size_t value = 1313; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HackSearchByLowerCaseScopeAndKind> { static constexpr size_t value = 1314; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HackSearchByNameAndKind> { static constexpr size_t value = 1315; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HackSearchByNameKindWithNamespace> { static constexpr size_t value = 1316; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HackSearchByNameKindWithQName> { static constexpr size_t value = 1317; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HackSearchByScopeAndKind> { static constexpr size_t value = 1318; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HackSearchByScopeWithNameKinds> { static constexpr size_t value = 1319; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HsSearchByLowerCaseName> { static constexpr size_t value = 1320; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::HsSearchByName> { static constexpr size_t value = 1321; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::JavaSearchByLowerCaseName> { static constexpr size_t value = 1322; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::JavaSearchByLowerCaseScope> { static constexpr size_t value = 1323; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::JavaSearchByName> { static constexpr size_t value = 1324; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::JavaSearchByNameWithFact> { static constexpr size_t value = 1325; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::JavaSearchByScope> { static constexpr size_t value = 1326; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::JavaSearchByScopeWithName> { static constexpr size_t value = 1327; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::KotlinSearchByLowerCaseName> { static constexpr size_t value = 1328; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::KotlinSearchByLowerCaseScope> { static constexpr size_t value = 1329; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::KotlinSearchByName> { static constexpr size_t value = 1330; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::KotlinSearchByNameWithFact> { static constexpr size_t value = 1331; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::KotlinSearchByScope> { static constexpr size_t value = 1332; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::KotlinSearchByScopeWithName> { static constexpr size_t value = 1333; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::LsifSearchByLowerCaseName> { static constexpr size_t value = 1334; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::LsifSearchByName> { static constexpr size_t value = 1335; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PpSearchByLowerCaseNameKind> { static constexpr size_t value = 1336; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PpSearchByNameKind> { static constexpr size_t value = 1337; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PythonSearchByLowerCaseNameKindAndScopeFact> { static constexpr size_t value = 1338; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PythonSearchByLowerCaseScopeAndKind> { static constexpr size_t value = 1339; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PythonSearchByNameKindAndScopeFact> { static constexpr size_t value = 1340; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::PythonSearchByScopeAndKind> { static constexpr size_t value = 1341; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseNameAndLanguage> { static constexpr size_t value = 1342; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseNameKindAndLanguage> { static constexpr size_t value = 1343; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseScope> { static constexpr size_t value = 1344; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseScopeAndKind> { static constexpr size_t value = 1345; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByNameAndLanguage> { static constexpr size_t value = 1346; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByNameKindAndLanguage> { static constexpr size_t value = 1347; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByScope> { static constexpr size_t value = 1348; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::SearchByScopeAndKind> { static constexpr size_t value = 1349; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::ThriftSearchByLowerCaseName> { static constexpr size_t value = 1350; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Search::Code::ThriftSearchByName> { static constexpr size_t value = 1351; };
+template<> struct SCHEMA::index<facebook::glean::cpp::schema::Codemarkup::Anglelang::AngleFileEntityXRefLocations> { static constexpr size_t value = 1352; };
 
 template<> struct SCHEMA::predicate<0> { using type = facebook::glean::cpp::schema::Testinfra::TestId; };
 template<> struct SCHEMA::predicate<1> { using type = facebook::glean::cpp::schema::Testinfra::TaggedAssembly; };
@@ -32794,229 +32865,230 @@ template<> struct SCHEMA::predicate<1125> { using type = facebook::glean::cpp::s
 template<> struct SCHEMA::predicate<1126> { using type = facebook::glean::cpp::schema::Search::Buck::SearchFile; };
 template<> struct SCHEMA::predicate<1127> { using type = facebook::glean::cpp::schema::Code::EntityLanguageSCIP; };
 template<> struct SCHEMA::predicate<1128> { using type = facebook::glean::cpp::schema::Code::EntityLanguageLSIF; };
-template<> struct SCHEMA::predicate<1129> { using type = facebook::glean::cpp::schema::Code::EntityLanguage; };
-template<> struct SCHEMA::predicate<1130> { using type = facebook::glean::cpp::schema::Codemarkup::Cxx::CxxEntityIdl; };
-template<> struct SCHEMA::predicate<1131> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::HackEntityIdl; };
-template<> struct SCHEMA::predicate<1132> { using type = facebook::glean::cpp::schema::Codemarkup::Yaml::YamlFileEntityXLangXRefLocations; };
-template<> struct SCHEMA::predicate<1133> { using type = facebook::glean::cpp::schema::Code::Compose::CxxSearchContainerKind; };
-template<> struct SCHEMA::predicate<1134> { using type = facebook::glean::cpp::schema::Codemarkup::ContainsChildEntity; };
-template<> struct SCHEMA::predicate<1135> { using type = facebook::glean::cpp::schema::Codemarkup::ContainsParentEntity; };
-template<> struct SCHEMA::predicate<1136> { using type = facebook::glean::cpp::schema::Codemarkup::EntityComments; };
-template<> struct SCHEMA::predicate<1137> { using type = facebook::glean::cpp::schema::Codemarkup::EntityInfo; };
-template<> struct SCHEMA::predicate<1138> { using type = facebook::glean::cpp::schema::Codemarkup::EntityIsDefinition; };
-template<> struct SCHEMA::predicate<1139> { using type = facebook::glean::cpp::schema::Codemarkup::EntityKind; };
-template<> struct SCHEMA::predicate<1140> { using type = facebook::glean::cpp::schema::Codemarkup::EntityLocation; };
-template<> struct SCHEMA::predicate<1141> { using type = facebook::glean::cpp::schema::Codemarkup::EntityModifiers; };
-template<> struct SCHEMA::predicate<1142> { using type = facebook::glean::cpp::schema::Codemarkup::EntityModuleName; };
-template<> struct SCHEMA::predicate<1143> { using type = facebook::glean::cpp::schema::Codemarkup::EntityReferences; };
-template<> struct SCHEMA::predicate<1144> { using type = facebook::glean::cpp::schema::Codemarkup::EntitySource; };
-template<> struct SCHEMA::predicate<1145> { using type = facebook::glean::cpp::schema::Codemarkup::EntityUses; };
-template<> struct SCHEMA::predicate<1146> { using type = facebook::glean::cpp::schema::Codemarkup::EntityVisibility; };
-template<> struct SCHEMA::predicate<1147> { using type = facebook::glean::cpp::schema::Codemarkup::ExtendsChildEntity; };
-template<> struct SCHEMA::predicate<1148> { using type = facebook::glean::cpp::schema::Codemarkup::ExtendsParentEntity; };
-template<> struct SCHEMA::predicate<1149> { using type = facebook::glean::cpp::schema::Codemarkup::ExtendsParentEntityConcise; };
-template<> struct SCHEMA::predicate<1150> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityDigest; };
-template<> struct SCHEMA::predicate<1151> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityInfos; };
-template<> struct SCHEMA::predicate<1152> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityKinds; };
-template<> struct SCHEMA::predicate<1153> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityLocations; };
-template<> struct SCHEMA::predicate<1154> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityXRefInfos; };
-template<> struct SCHEMA::predicate<1155> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityXRefKinds; };
-template<> struct SCHEMA::predicate<1156> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityXRefLocations; };
-template<> struct SCHEMA::predicate<1157> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityXRefRangeSpans; };
-template<> struct SCHEMA::predicate<1158> { using type = facebook::glean::cpp::schema::Codemarkup::FindEntityDefinition; };
-template<> struct SCHEMA::predicate<1159> { using type = facebook::glean::cpp::schema::Codemarkup::GeneratedEntityToIdlEntity; };
-template<> struct SCHEMA::predicate<1160> { using type = facebook::glean::cpp::schema::Codemarkup::FileXRefsGenericEntities; };
-template<> struct SCHEMA::predicate<1161> { using type = facebook::glean::cpp::schema::Codemarkup::SearchRelatedEntities; };
-template<> struct SCHEMA::predicate<1162> { using type = facebook::glean::cpp::schema::Codemarkup::ReferencingEntity; };
-template<> struct SCHEMA::predicate<1163> { using type = facebook::glean::cpp::schema::Codemarkup::ResolveLocation; };
-template<> struct SCHEMA::predicate<1164> { using type = facebook::glean::cpp::schema::Codemarkup::SearchInheritedEntities; };
-template<> struct SCHEMA::predicate<1165> { using type = facebook::glean::cpp::schema::Codemarkup::Cxx::CxxFileEntityIdl; };
-template<> struct SCHEMA::predicate<1166> { using type = facebook::glean::cpp::schema::Codemarkup::Cxx::CxxIdlEntityUses; };
-template<> struct SCHEMA::predicate<1167> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::ConvertCallee; };
-template<> struct SCHEMA::predicate<1168> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::ConvertCalleeForFileCall; };
-template<> struct SCHEMA::predicate<1169> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::ConvertStaticType; };
-template<> struct SCHEMA::predicate<1170> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::HackIdlEntityUses; };
-template<> struct SCHEMA::predicate<1171> { using type = facebook::glean::cpp::schema::Codemarkup::Search::EntityLocationAndKind; };
-template<> struct SCHEMA::predicate<1172> { using type = facebook::glean::cpp::schema::Codemarkup::Search::SearchByName; };
-template<> struct SCHEMA::predicate<1173> { using type = facebook::glean::cpp::schema::Codemarkup::Search::SearchByScope; };
-template<> struct SCHEMA::predicate<1174> { using type = facebook::glean::cpp::schema::Codemetrics::ReferencesFrom; };
-template<> struct SCHEMA::predicate<1175> { using type = facebook::glean::cpp::schema::Codemetrics::ReferencesTo; };
-template<> struct SCHEMA::predicate<1176> { using type = facebook::glean::cpp::schema::Deadcode::GraphEntity; };
-template<> struct SCHEMA::predicate<1177> { using type = facebook::glean::cpp::schema::Deletthis::FileReverseDeps; };
-template<> struct SCHEMA::predicate<1178> { using type = facebook::glean::cpp::schema::Dyn::EntityUsage; };
-template<> struct SCHEMA::predicate<1179> { using type = facebook::glean::cpp::schema::Monk::BestPiiFunc; };
-template<> struct SCHEMA::predicate<1180> { using type = facebook::glean::cpp::schema::Monk::PiiCallerFunc; };
-template<> struct SCHEMA::predicate<1181> { using type = facebook::glean::cpp::schema::Monk::PiiFunc; };
-template<> struct SCHEMA::predicate<1182> { using type = facebook::glean::cpp::schema::Search::Code::BuckSearchByLocalNameFact; };
-template<> struct SCHEMA::predicate<1183> { using type = facebook::glean::cpp::schema::Search::Code::BuckSearchByLowerCaseName; };
-template<> struct SCHEMA::predicate<1184> { using type = facebook::glean::cpp::schema::Search::Code::BuckSearchByName; };
-template<> struct SCHEMA::predicate<1185> { using type = facebook::glean::cpp::schema::Search::Code::CSharpSearchByLowerCaseName; };
-template<> struct SCHEMA::predicate<1186> { using type = facebook::glean::cpp::schema::Search::Code::CSharpSearchByName; };
-template<> struct SCHEMA::predicate<1187> { using type = facebook::glean::cpp::schema::Search::Code::CxxSearchByLowerCaseScopeAndKind; };
-template<> struct SCHEMA::predicate<1188> { using type = facebook::glean::cpp::schema::Search::Code::CxxSearchByScopeAndKind; };
-template<> struct SCHEMA::predicate<1189> { using type = facebook::glean::cpp::schema::Search::Code::ErlangSearchByLowerCaseName; };
-template<> struct SCHEMA::predicate<1190> { using type = facebook::glean::cpp::schema::Search::Code::ErlangSearchByName; };
-template<> struct SCHEMA::predicate<1191> { using type = facebook::glean::cpp::schema::Search::Code::FbthriftSearchByNameFact; };
-template<> struct SCHEMA::predicate<1192> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByLowerCaseNameKindAndScopeFact; };
-template<> struct SCHEMA::predicate<1193> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByLowerCaseScopeAndKind; };
-template<> struct SCHEMA::predicate<1194> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByNameKindAndScopeFact; };
-template<> struct SCHEMA::predicate<1195> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByScopeAndKind; };
-template<> struct SCHEMA::predicate<1196> { using type = facebook::glean::cpp::schema::Search::Code::GraphQLSearchByLowerCaseName; };
-template<> struct SCHEMA::predicate<1197> { using type = facebook::glean::cpp::schema::Search::Code::GraphQLSearchByName; };
-template<> struct SCHEMA::predicate<1198> { using type = facebook::glean::cpp::schema::Search::Code::HackSearchByLowerCaseNameAndKind; };
-template<> struct SCHEMA::predicate<1199> { using type = facebook::glean::cpp::schema::Search::Code::HackSearchByLowerCaseScopeAndKind; };
-template<> struct SCHEMA::predicate<1200> { using type = facebook::glean::cpp::schema::Search::Code::HackSearchByNameAndKind; };
-template<> struct SCHEMA::predicate<1201> { using type = facebook::glean::cpp::schema::Search::Code::HackSearchByNameKindWithNamespace; };
-template<> struct SCHEMA::predicate<1202> { using type = facebook::glean::cpp::schema::Search::Code::HackSearchByNameKindWithQName; };
-template<> struct SCHEMA::predicate<1203> { using type = facebook::glean::cpp::schema::Search::Code::HackSearchByScopeAndKind; };
-template<> struct SCHEMA::predicate<1204> { using type = facebook::glean::cpp::schema::Search::Code::HackSearchByScopeWithNameKinds; };
-template<> struct SCHEMA::predicate<1205> { using type = facebook::glean::cpp::schema::Search::Code::HsSearchByLowerCaseName; };
-template<> struct SCHEMA::predicate<1206> { using type = facebook::glean::cpp::schema::Search::Code::HsSearchByName; };
-template<> struct SCHEMA::predicate<1207> { using type = facebook::glean::cpp::schema::Search::Code::JavaSearchByLowerCaseName; };
-template<> struct SCHEMA::predicate<1208> { using type = facebook::glean::cpp::schema::Search::Code::JavaSearchByLowerCaseScope; };
-template<> struct SCHEMA::predicate<1209> { using type = facebook::glean::cpp::schema::Search::Code::JavaSearchByName; };
-template<> struct SCHEMA::predicate<1210> { using type = facebook::glean::cpp::schema::Search::Code::JavaSearchByNameWithFact; };
-template<> struct SCHEMA::predicate<1211> { using type = facebook::glean::cpp::schema::Search::Code::JavaSearchByScope; };
-template<> struct SCHEMA::predicate<1212> { using type = facebook::glean::cpp::schema::Search::Code::JavaSearchByScopeWithName; };
-template<> struct SCHEMA::predicate<1213> { using type = facebook::glean::cpp::schema::Search::Code::KotlinSearchByLowerCaseName; };
-template<> struct SCHEMA::predicate<1214> { using type = facebook::glean::cpp::schema::Search::Code::KotlinSearchByLowerCaseScope; };
-template<> struct SCHEMA::predicate<1215> { using type = facebook::glean::cpp::schema::Search::Code::KotlinSearchByName; };
-template<> struct SCHEMA::predicate<1216> { using type = facebook::glean::cpp::schema::Search::Code::KotlinSearchByNameWithFact; };
-template<> struct SCHEMA::predicate<1217> { using type = facebook::glean::cpp::schema::Search::Code::KotlinSearchByScope; };
-template<> struct SCHEMA::predicate<1218> { using type = facebook::glean::cpp::schema::Search::Code::KotlinSearchByScopeWithName; };
-template<> struct SCHEMA::predicate<1219> { using type = facebook::glean::cpp::schema::Search::Code::LsifSearchByLowerCaseName; };
-template<> struct SCHEMA::predicate<1220> { using type = facebook::glean::cpp::schema::Search::Code::LsifSearchByName; };
-template<> struct SCHEMA::predicate<1221> { using type = facebook::glean::cpp::schema::Search::Code::PpSearchByLowerCaseNameKind; };
-template<> struct SCHEMA::predicate<1222> { using type = facebook::glean::cpp::schema::Search::Code::PpSearchByNameKind; };
-template<> struct SCHEMA::predicate<1223> { using type = facebook::glean::cpp::schema::Search::Code::PythonSearchByLowerCaseNameKindAndScopeFact; };
-template<> struct SCHEMA::predicate<1224> { using type = facebook::glean::cpp::schema::Search::Code::PythonSearchByLowerCaseScopeAndKind; };
-template<> struct SCHEMA::predicate<1225> { using type = facebook::glean::cpp::schema::Search::Code::PythonSearchByNameKindAndScopeFact; };
-template<> struct SCHEMA::predicate<1226> { using type = facebook::glean::cpp::schema::Search::Code::PythonSearchByScopeAndKind; };
-template<> struct SCHEMA::predicate<1227> { using type = facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseNameAndLanguage; };
-template<> struct SCHEMA::predicate<1228> { using type = facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseNameKindAndLanguage; };
-template<> struct SCHEMA::predicate<1229> { using type = facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseScope; };
-template<> struct SCHEMA::predicate<1230> { using type = facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseScopeAndKind; };
-template<> struct SCHEMA::predicate<1231> { using type = facebook::glean::cpp::schema::Search::Code::SearchByNameAndLanguage; };
-template<> struct SCHEMA::predicate<1232> { using type = facebook::glean::cpp::schema::Search::Code::SearchByNameKindAndLanguage; };
-template<> struct SCHEMA::predicate<1233> { using type = facebook::glean::cpp::schema::Search::Code::SearchByScope; };
-template<> struct SCHEMA::predicate<1234> { using type = facebook::glean::cpp::schema::Search::Code::SearchByScopeAndKind; };
-template<> struct SCHEMA::predicate<1235> { using type = facebook::glean::cpp::schema::Search::Code::ThriftSearchByLowerCaseName; };
-template<> struct SCHEMA::predicate<1236> { using type = facebook::glean::cpp::schema::Search::Code::ThriftSearchByName; };
-template<> struct SCHEMA::predicate<1237> { using type = facebook::glean::cpp::schema::Codemarkup::FileCall; };
-template<> struct SCHEMA::predicate<1238> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::ConvertCallArguments; };
-template<> struct SCHEMA::predicate<1239> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::ConvertMaybeCallArguments; };
-template<> struct SCHEMA::predicate<1240> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::HackFileCall; };
-template<> struct SCHEMA::predicate<1241> { using type = facebook::glean::cpp::schema::Codemarkup::Python::ConvertCallArguments; };
-template<> struct SCHEMA::predicate<1242> { using type = facebook::glean::cpp::schema::Codemarkup::Python::PythonFileCall; };
-template<> struct SCHEMA::predicate<1243> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::ConvertArgument; };
-template<> struct SCHEMA::predicate<1244> { using type = facebook::glean::cpp::schema::Codemarkup::Python::ConvertArgument; };
-template<> struct SCHEMA::predicate<1245> { using type = facebook::glean::cpp::schema::Codemarkup::EntityToAnnotations; };
-template<> struct SCHEMA::predicate<1246> { using type = facebook::glean::cpp::schema::Code::Quality::Issue; };
-template<> struct SCHEMA::predicate<1247> { using type = facebook::glean::cpp::schema::Cxx1::FunctionName; };
-template<> struct SCHEMA::predicate<1248> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclaration; };
-template<> struct SCHEMA::predicate<1249> { using type = facebook::glean::cpp::schema::Cxx1::DeclarationScope; };
-template<> struct SCHEMA::predicate<1250> { using type = facebook::glean::cpp::schema::Cxx1::EnumDeclarationByName; };
-template<> struct SCHEMA::predicate<1251> { using type = facebook::glean::cpp::schema::Cxx1::FunctionDeclarationByNameScope; };
-template<> struct SCHEMA::predicate<1252> { using type = facebook::glean::cpp::schema::Cxx1::FunctionQName; };
-template<> struct SCHEMA::predicate<1253> { using type = facebook::glean::cpp::schema::Cxx1::QName; };
-template<> struct SCHEMA::predicate<1254> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclarationClass; };
-template<> struct SCHEMA::predicate<1255> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclarationStruct; };
-template<> struct SCHEMA::predicate<1256> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclarationUnion; };
-template<> struct SCHEMA::predicate<1257> { using type = facebook::glean::cpp::schema::Cxx1::TypeAliasDeclarationByName; };
-template<> struct SCHEMA::predicate<1258> { using type = facebook::glean::cpp::schema::Cxx1::VariableDeclarationNonLocalByName; };
-template<> struct SCHEMA::predicate<1259> { using type = facebook::glean::cpp::schema::Search::Code::CxxSearchByLowerCaseNameKindAndScopeFact; };
-template<> struct SCHEMA::predicate<1260> { using type = facebook::glean::cpp::schema::Search::Code::CxxSearchByNameKindAndScopeFact; };
-template<> struct SCHEMA::predicate<1261> { using type = facebook::glean::cpp::schema::Search::Cxx::QueryToScopeCase; };
-template<> struct SCHEMA::predicate<1262> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchClass; };
-template<> struct SCHEMA::predicate<1263> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchEnum; };
-template<> struct SCHEMA::predicate<1264> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchEnumerator; };
-template<> struct SCHEMA::predicate<1265> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchFunction; };
-template<> struct SCHEMA::predicate<1266> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchNamespace; };
-template<> struct SCHEMA::predicate<1267> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchStruct; };
-template<> struct SCHEMA::predicate<1268> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchTypeAlias; };
-template<> struct SCHEMA::predicate<1269> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchUnion; };
-template<> struct SCHEMA::predicate<1270> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchVariable; };
-template<> struct SCHEMA::predicate<1271> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupDeclaration; };
-template<> struct SCHEMA::predicate<1272> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupDefinition; };
-template<> struct SCHEMA::predicate<1273> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupEnumerator; };
-template<> struct SCHEMA::predicate<1274> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDeclaration; };
-template<> struct SCHEMA::predicate<1275> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDefinition; };
-template<> struct SCHEMA::predicate<1276> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDeclaration; };
-template<> struct SCHEMA::predicate<1277> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDefinition; };
-template<> struct SCHEMA::predicate<1278> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDeclaration; };
-template<> struct SCHEMA::predicate<1279> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDefinition; };
-template<> struct SCHEMA::predicate<1280> { using type = facebook::glean::cpp::schema::Fbthrift::FunctionSpecification; };
-template<> struct SCHEMA::predicate<1281> { using type = facebook::glean::cpp::schema::Buckuses::UsesOfTargetHeader; };
-template<> struct SCHEMA::predicate<1282> { using type = facebook::glean::cpp::schema::Buckuses::UsesOfTarget; };
-template<> struct SCHEMA::predicate<1283> { using type = facebook::glean::cpp::schema::Buck::Meta::Oncall; };
-template<> struct SCHEMA::predicate<1284> { using type = facebook::glean::cpp::schema::Buck::Meta::ModeType; };
-template<> struct SCHEMA::predicate<1285> { using type = facebook::glean::cpp::schema::Buck::Meta::TargetModes; };
-template<> struct SCHEMA::predicate<1286> { using type = facebook::glean::cpp::schema::Buck::Meta::LocatorOncall; };
-template<> struct SCHEMA::predicate<1287> { using type = facebook::glean::cpp::schema::Buck::Meta::FileOncall; };
-template<> struct SCHEMA::predicate<1288> { using type = facebook::glean::cpp::schema::Buck::Type; };
-template<> struct SCHEMA::predicate<1289> { using type = facebook::glean::cpp::schema::Buck::TranslationUnit; };
-template<> struct SCHEMA::predicate<1290> { using type = facebook::glean::cpp::schema::Buck::TargetUses; };
-template<> struct SCHEMA::predicate<1291> { using type = facebook::glean::cpp::schema::Buck::TargetSourcesBaseModule; };
-template<> struct SCHEMA::predicate<1292> { using type = facebook::glean::cpp::schema::Buck::TargetSources; };
-template<> struct SCHEMA::predicate<1293> { using type = facebook::glean::cpp::schema::Buck::TargetOuts; };
-template<> struct SCHEMA::predicate<1294> { using type = facebook::glean::cpp::schema::Buck::TargetOut; };
-template<> struct SCHEMA::predicate<1295> { using type = facebook::glean::cpp::schema::Buck::TargetMode; };
-template<> struct SCHEMA::predicate<1296> { using type = facebook::glean::cpp::schema::Buck::TargetLocation; };
-template<> struct SCHEMA::predicate<1297> { using type = facebook::glean::cpp::schema::Buck::TargetLinkWhole; };
-template<> struct SCHEMA::predicate<1298> { using type = facebook::glean::cpp::schema::Buck::TargetIndexerName; };
-template<> struct SCHEMA::predicate<1299> { using type = facebook::glean::cpp::schema::Buck::TargetIndexer; };
-template<> struct SCHEMA::predicate<1300> { using type = facebook::glean::cpp::schema::Buck::TargetHash; };
-template<> struct SCHEMA::predicate<1301> { using type = facebook::glean::cpp::schema::Buck::TargetCallByCallExpr; };
-template<> struct SCHEMA::predicate<1302> { using type = facebook::glean::cpp::schema::Buck::TargetCall; };
-template<> struct SCHEMA::predicate<1303> { using type = facebook::glean::cpp::schema::Buck::TargetByType; };
-template<> struct SCHEMA::predicate<1304> { using type = facebook::glean::cpp::schema::Buck::TargetAttribute; };
-template<> struct SCHEMA::predicate<1305> { using type = facebook::glean::cpp::schema::Buck::Target; };
-template<> struct SCHEMA::predicate<1306> { using type = facebook::glean::cpp::schema::Buck::SourceFileLocation; };
-template<> struct SCHEMA::predicate<1307> { using type = facebook::glean::cpp::schema::Buck::SearchByLocalName; };
-template<> struct SCHEMA::predicate<1308> { using type = facebook::glean::cpp::schema::Buck::RuleKey; };
-template<> struct SCHEMA::predicate<1309> { using type = facebook::glean::cpp::schema::Buck::Platform; };
-template<> struct SCHEMA::predicate<1310> { using type = facebook::glean::cpp::schema::Buck::Owner; };
-template<> struct SCHEMA::predicate<1311> { using type = facebook::glean::cpp::schema::Buck::OutsTarget; };
-template<> struct SCHEMA::predicate<1312> { using type = facebook::glean::cpp::schema::Buck::OutputLabel; };
-template<> struct SCHEMA::predicate<1313> { using type = facebook::glean::cpp::schema::Buck::OutTarget; };
-template<> struct SCHEMA::predicate<1314> { using type = facebook::glean::cpp::schema::Buck::LocatorWithLabel; };
-template<> struct SCHEMA::predicate<1315> { using type = facebook::glean::cpp::schema::Buck::LocatorReverseDeps; };
-template<> struct SCHEMA::predicate<1316> { using type = facebook::glean::cpp::schema::Buck::LocatorReverseDep; };
-template<> struct SCHEMA::predicate<1317> { using type = facebook::glean::cpp::schema::Buck::Locator; };
-template<> struct SCHEMA::predicate<1318> { using type = facebook::glean::cpp::schema::Buck::LocalNameLowerCase; };
-template<> struct SCHEMA::predicate<1319> { using type = facebook::glean::cpp::schema::Buck::LocalName; };
-template<> struct SCHEMA::predicate<1320> { using type = facebook::glean::cpp::schema::Buck::Labels; };
-template<> struct SCHEMA::predicate<1321> { using type = facebook::glean::cpp::schema::Buck::Label; };
-template<> struct SCHEMA::predicate<1322> { using type = facebook::glean::cpp::schema::Buck::IndexerName; };
-template<> struct SCHEMA::predicate<1323> { using type = facebook::glean::cpp::schema::Buck::FileXRefs; };
-template<> struct SCHEMA::predicate<1324> { using type = facebook::glean::cpp::schema::Buck::FileToTarget; };
-template<> struct SCHEMA::predicate<1325> { using type = facebook::glean::cpp::schema::Buck::FileTarget; };
-template<> struct SCHEMA::predicate<1326> { using type = facebook::glean::cpp::schema::Buck::FileResolved; };
-template<> struct SCHEMA::predicate<1327> { using type = facebook::glean::cpp::schema::Buck::FileEntity; };
-template<> struct SCHEMA::predicate<1328> { using type = facebook::glean::cpp::schema::Buck::FileDefinition; };
-template<> struct SCHEMA::predicate<1329> { using type = facebook::glean::cpp::schema::Buck::File; };
-template<> struct SCHEMA::predicate<1330> { using type = facebook::glean::cpp::schema::Buck::FailureSources; };
-template<> struct SCHEMA::predicate<1331> { using type = facebook::glean::cpp::schema::Buck::IndexFailureX; };
-template<> struct SCHEMA::predicate<1332> { using type = facebook::glean::cpp::schema::Buck::DestinationUses; };
-template<> struct SCHEMA::predicate<1333> { using type = facebook::glean::cpp::schema::Buck::TargetDependencies; };
-template<> struct SCHEMA::predicate<1334> { using type = facebook::glean::cpp::schema::Buck::DefinitionLocation; };
-template<> struct SCHEMA::predicate<1335> { using type = facebook::glean::cpp::schema::Buck::Definition; };
-template<> struct SCHEMA::predicate<1336> { using type = facebook::glean::cpp::schema::Buck::Consumer; };
-template<> struct SCHEMA::predicate<1337> { using type = facebook::glean::cpp::schema::Buck::CallExpr; };
-template<> struct SCHEMA::predicate<1338> { using type = facebook::glean::cpp::schema::Buck::CallArgument; };
-template<> struct SCHEMA::predicate<1339> { using type = facebook::glean::cpp::schema::Buck::AttributeName; };
-template<> struct SCHEMA::predicate<1340> { using type = facebook::glean::cpp::schema::Buck::AttributeValue; };
-template<> struct SCHEMA::predicate<1341> { using type = facebook::glean::cpp::schema::Buck::ArgumentValue; };
-template<> struct SCHEMA::predicate<1342> { using type = facebook::glean::cpp::schema::Anglelang::TypeDecl; };
-template<> struct SCHEMA::predicate<1343> { using type = facebook::glean::cpp::schema::Anglelang::Name; };
-template<> struct SCHEMA::predicate<1344> { using type = facebook::glean::cpp::schema::Anglelang::Type; };
-template<> struct SCHEMA::predicate<1345> { using type = facebook::glean::cpp::schema::Anglelang::EvolveDecl; };
-template<> struct SCHEMA::predicate<1346> { using type = facebook::glean::cpp::schema::Anglelang::DerivingDecl; };
-template<> struct SCHEMA::predicate<1347> { using type = facebook::glean::cpp::schema::Anglelang::PredicateDecl; };
-template<> struct SCHEMA::predicate<1348> { using type = facebook::glean::cpp::schema::Anglelang::DeclarationLocation; };
-template<> struct SCHEMA::predicate<1349> { using type = facebook::glean::cpp::schema::Anglelang::DeclarationToName; };
-template<> struct SCHEMA::predicate<1350> { using type = facebook::glean::cpp::schema::Anglelang::SchemaDecl; };
-template<> struct SCHEMA::predicate<1351> { using type = facebook::glean::cpp::schema::Anglelang::FileXRefs; };
+template<> struct SCHEMA::predicate<1129> { using type = facebook::glean::cpp::schema::Code::Quality::Issue; };
+template<> struct SCHEMA::predicate<1130> { using type = facebook::glean::cpp::schema::Cxx1::FunctionName; };
+template<> struct SCHEMA::predicate<1131> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclaration; };
+template<> struct SCHEMA::predicate<1132> { using type = facebook::glean::cpp::schema::Cxx1::DeclarationScope; };
+template<> struct SCHEMA::predicate<1133> { using type = facebook::glean::cpp::schema::Cxx1::EnumDeclarationByName; };
+template<> struct SCHEMA::predicate<1134> { using type = facebook::glean::cpp::schema::Cxx1::FunctionDeclarationByNameScope; };
+template<> struct SCHEMA::predicate<1135> { using type = facebook::glean::cpp::schema::Cxx1::FunctionQName; };
+template<> struct SCHEMA::predicate<1136> { using type = facebook::glean::cpp::schema::Cxx1::QName; };
+template<> struct SCHEMA::predicate<1137> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclarationClass; };
+template<> struct SCHEMA::predicate<1138> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclarationStruct; };
+template<> struct SCHEMA::predicate<1139> { using type = facebook::glean::cpp::schema::Cxx1::RecordDeclarationUnion; };
+template<> struct SCHEMA::predicate<1140> { using type = facebook::glean::cpp::schema::Cxx1::TypeAliasDeclarationByName; };
+template<> struct SCHEMA::predicate<1141> { using type = facebook::glean::cpp::schema::Cxx1::VariableDeclarationNonLocalByName; };
+template<> struct SCHEMA::predicate<1142> { using type = facebook::glean::cpp::schema::Search::Cxx::QueryToScopeCase; };
+template<> struct SCHEMA::predicate<1143> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchClass; };
+template<> struct SCHEMA::predicate<1144> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchEnum; };
+template<> struct SCHEMA::predicate<1145> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchEnumerator; };
+template<> struct SCHEMA::predicate<1146> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchFunction; };
+template<> struct SCHEMA::predicate<1147> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchNamespace; };
+template<> struct SCHEMA::predicate<1148> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchStruct; };
+template<> struct SCHEMA::predicate<1149> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchTypeAlias; };
+template<> struct SCHEMA::predicate<1150> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchUnion; };
+template<> struct SCHEMA::predicate<1151> { using type = facebook::glean::cpp::schema::Search::Kind::Cxx::SearchVariable; };
+template<> struct SCHEMA::predicate<1152> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupDeclaration; };
+template<> struct SCHEMA::predicate<1153> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupDefinition; };
+template<> struct SCHEMA::predicate<1154> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupEnumerator; };
+template<> struct SCHEMA::predicate<1155> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDeclaration; };
+template<> struct SCHEMA::predicate<1156> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionDefinition; };
+template<> struct SCHEMA::predicate<1157> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDeclaration; };
+template<> struct SCHEMA::predicate<1158> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureDefinition; };
+template<> struct SCHEMA::predicate<1159> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDeclaration; };
+template<> struct SCHEMA::predicate<1160> { using type = facebook::glean::cpp::schema::Symbolid::Cxx::LookupFunctionSignatureQualifierDefinition; };
+template<> struct SCHEMA::predicate<1161> { using type = facebook::glean::cpp::schema::Fbthrift::FunctionSpecification; };
+template<> struct SCHEMA::predicate<1162> { using type = facebook::glean::cpp::schema::Buckuses::UsesOfTargetHeader; };
+template<> struct SCHEMA::predicate<1163> { using type = facebook::glean::cpp::schema::Buckuses::UsesOfTarget; };
+template<> struct SCHEMA::predicate<1164> { using type = facebook::glean::cpp::schema::Buck::Meta::Oncall; };
+template<> struct SCHEMA::predicate<1165> { using type = facebook::glean::cpp::schema::Buck::Meta::ModeType; };
+template<> struct SCHEMA::predicate<1166> { using type = facebook::glean::cpp::schema::Buck::Meta::TargetModes; };
+template<> struct SCHEMA::predicate<1167> { using type = facebook::glean::cpp::schema::Buck::Meta::LocatorOncall; };
+template<> struct SCHEMA::predicate<1168> { using type = facebook::glean::cpp::schema::Buck::Meta::FileOncall; };
+template<> struct SCHEMA::predicate<1169> { using type = facebook::glean::cpp::schema::Buck::Type; };
+template<> struct SCHEMA::predicate<1170> { using type = facebook::glean::cpp::schema::Buck::TranslationUnit; };
+template<> struct SCHEMA::predicate<1171> { using type = facebook::glean::cpp::schema::Buck::TargetUses; };
+template<> struct SCHEMA::predicate<1172> { using type = facebook::glean::cpp::schema::Buck::TargetSourcesBaseModule; };
+template<> struct SCHEMA::predicate<1173> { using type = facebook::glean::cpp::schema::Buck::TargetSources; };
+template<> struct SCHEMA::predicate<1174> { using type = facebook::glean::cpp::schema::Buck::TargetOuts; };
+template<> struct SCHEMA::predicate<1175> { using type = facebook::glean::cpp::schema::Buck::TargetOut; };
+template<> struct SCHEMA::predicate<1176> { using type = facebook::glean::cpp::schema::Buck::TargetMode; };
+template<> struct SCHEMA::predicate<1177> { using type = facebook::glean::cpp::schema::Buck::TargetLocation; };
+template<> struct SCHEMA::predicate<1178> { using type = facebook::glean::cpp::schema::Buck::TargetLinkWhole; };
+template<> struct SCHEMA::predicate<1179> { using type = facebook::glean::cpp::schema::Buck::TargetIndexerName; };
+template<> struct SCHEMA::predicate<1180> { using type = facebook::glean::cpp::schema::Buck::TargetIndexer; };
+template<> struct SCHEMA::predicate<1181> { using type = facebook::glean::cpp::schema::Buck::TargetHash; };
+template<> struct SCHEMA::predicate<1182> { using type = facebook::glean::cpp::schema::Buck::TargetCallByCallExpr; };
+template<> struct SCHEMA::predicate<1183> { using type = facebook::glean::cpp::schema::Buck::TargetCall; };
+template<> struct SCHEMA::predicate<1184> { using type = facebook::glean::cpp::schema::Buck::TargetByType; };
+template<> struct SCHEMA::predicate<1185> { using type = facebook::glean::cpp::schema::Buck::TargetAttribute; };
+template<> struct SCHEMA::predicate<1186> { using type = facebook::glean::cpp::schema::Buck::Target; };
+template<> struct SCHEMA::predicate<1187> { using type = facebook::glean::cpp::schema::Buck::SourceFileLocation; };
+template<> struct SCHEMA::predicate<1188> { using type = facebook::glean::cpp::schema::Buck::SearchByLocalName; };
+template<> struct SCHEMA::predicate<1189> { using type = facebook::glean::cpp::schema::Buck::RuleKey; };
+template<> struct SCHEMA::predicate<1190> { using type = facebook::glean::cpp::schema::Buck::Platform; };
+template<> struct SCHEMA::predicate<1191> { using type = facebook::glean::cpp::schema::Buck::Owner; };
+template<> struct SCHEMA::predicate<1192> { using type = facebook::glean::cpp::schema::Buck::OutsTarget; };
+template<> struct SCHEMA::predicate<1193> { using type = facebook::glean::cpp::schema::Buck::OutputLabel; };
+template<> struct SCHEMA::predicate<1194> { using type = facebook::glean::cpp::schema::Buck::OutTarget; };
+template<> struct SCHEMA::predicate<1195> { using type = facebook::glean::cpp::schema::Buck::LocatorWithLabel; };
+template<> struct SCHEMA::predicate<1196> { using type = facebook::glean::cpp::schema::Buck::LocatorReverseDeps; };
+template<> struct SCHEMA::predicate<1197> { using type = facebook::glean::cpp::schema::Buck::LocatorReverseDep; };
+template<> struct SCHEMA::predicate<1198> { using type = facebook::glean::cpp::schema::Buck::Locator; };
+template<> struct SCHEMA::predicate<1199> { using type = facebook::glean::cpp::schema::Buck::LocalNameLowerCase; };
+template<> struct SCHEMA::predicate<1200> { using type = facebook::glean::cpp::schema::Buck::LocalName; };
+template<> struct SCHEMA::predicate<1201> { using type = facebook::glean::cpp::schema::Buck::Labels; };
+template<> struct SCHEMA::predicate<1202> { using type = facebook::glean::cpp::schema::Buck::Label; };
+template<> struct SCHEMA::predicate<1203> { using type = facebook::glean::cpp::schema::Buck::IndexerName; };
+template<> struct SCHEMA::predicate<1204> { using type = facebook::glean::cpp::schema::Buck::FileXRefs; };
+template<> struct SCHEMA::predicate<1205> { using type = facebook::glean::cpp::schema::Buck::FileToTarget; };
+template<> struct SCHEMA::predicate<1206> { using type = facebook::glean::cpp::schema::Buck::FileTarget; };
+template<> struct SCHEMA::predicate<1207> { using type = facebook::glean::cpp::schema::Buck::FileResolved; };
+template<> struct SCHEMA::predicate<1208> { using type = facebook::glean::cpp::schema::Buck::FileEntity; };
+template<> struct SCHEMA::predicate<1209> { using type = facebook::glean::cpp::schema::Buck::FileDefinition; };
+template<> struct SCHEMA::predicate<1210> { using type = facebook::glean::cpp::schema::Buck::File; };
+template<> struct SCHEMA::predicate<1211> { using type = facebook::glean::cpp::schema::Buck::FailureSources; };
+template<> struct SCHEMA::predicate<1212> { using type = facebook::glean::cpp::schema::Buck::IndexFailureX; };
+template<> struct SCHEMA::predicate<1213> { using type = facebook::glean::cpp::schema::Buck::DestinationUses; };
+template<> struct SCHEMA::predicate<1214> { using type = facebook::glean::cpp::schema::Buck::TargetDependencies; };
+template<> struct SCHEMA::predicate<1215> { using type = facebook::glean::cpp::schema::Buck::DefinitionLocation; };
+template<> struct SCHEMA::predicate<1216> { using type = facebook::glean::cpp::schema::Buck::Definition; };
+template<> struct SCHEMA::predicate<1217> { using type = facebook::glean::cpp::schema::Buck::Consumer; };
+template<> struct SCHEMA::predicate<1218> { using type = facebook::glean::cpp::schema::Buck::CallExpr; };
+template<> struct SCHEMA::predicate<1219> { using type = facebook::glean::cpp::schema::Buck::CallArgument; };
+template<> struct SCHEMA::predicate<1220> { using type = facebook::glean::cpp::schema::Buck::AttributeName; };
+template<> struct SCHEMA::predicate<1221> { using type = facebook::glean::cpp::schema::Buck::AttributeValue; };
+template<> struct SCHEMA::predicate<1222> { using type = facebook::glean::cpp::schema::Buck::ArgumentValue; };
+template<> struct SCHEMA::predicate<1223> { using type = facebook::glean::cpp::schema::Anglelang::TypeDecl; };
+template<> struct SCHEMA::predicate<1224> { using type = facebook::glean::cpp::schema::Anglelang::Name; };
+template<> struct SCHEMA::predicate<1225> { using type = facebook::glean::cpp::schema::Anglelang::Type; };
+template<> struct SCHEMA::predicate<1226> { using type = facebook::glean::cpp::schema::Anglelang::EvolveDecl; };
+template<> struct SCHEMA::predicate<1227> { using type = facebook::glean::cpp::schema::Anglelang::DerivingDecl; };
+template<> struct SCHEMA::predicate<1228> { using type = facebook::glean::cpp::schema::Anglelang::PredicateDecl; };
+template<> struct SCHEMA::predicate<1229> { using type = facebook::glean::cpp::schema::Anglelang::DeclarationLocation; };
+template<> struct SCHEMA::predicate<1230> { using type = facebook::glean::cpp::schema::Anglelang::DeclarationToName; };
+template<> struct SCHEMA::predicate<1231> { using type = facebook::glean::cpp::schema::Anglelang::SchemaDecl; };
+template<> struct SCHEMA::predicate<1232> { using type = facebook::glean::cpp::schema::Anglelang::FileXRefs; };
+template<> struct SCHEMA::predicate<1233> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::ConvertCallArguments; };
+template<> struct SCHEMA::predicate<1234> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::ConvertMaybeCallArguments; };
+template<> struct SCHEMA::predicate<1235> { using type = facebook::glean::cpp::schema::Codemarkup::Python::ConvertCallArguments; };
+template<> struct SCHEMA::predicate<1236> { using type = facebook::glean::cpp::schema::Codemarkup::Python::PythonFileCall; };
+template<> struct SCHEMA::predicate<1237> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::ConvertArgument; };
+template<> struct SCHEMA::predicate<1238> { using type = facebook::glean::cpp::schema::Codemarkup::Python::ConvertArgument; };
+template<> struct SCHEMA::predicate<1239> { using type = facebook::glean::cpp::schema::Code::EntityLanguage; };
+template<> struct SCHEMA::predicate<1240> { using type = facebook::glean::cpp::schema::Codemarkup::Cxx::CxxEntityIdl; };
+template<> struct SCHEMA::predicate<1241> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::HackEntityIdl; };
+template<> struct SCHEMA::predicate<1242> { using type = facebook::glean::cpp::schema::Codemarkup::Yaml::YamlFileEntityXLangXRefLocations; };
+template<> struct SCHEMA::predicate<1243> { using type = facebook::glean::cpp::schema::Code::Compose::CxxSearchContainerKind; };
+template<> struct SCHEMA::predicate<1244> { using type = facebook::glean::cpp::schema::Codemarkup::ContainsChildEntity; };
+template<> struct SCHEMA::predicate<1245> { using type = facebook::glean::cpp::schema::Codemarkup::ContainsParentEntity; };
+template<> struct SCHEMA::predicate<1246> { using type = facebook::glean::cpp::schema::Codemarkup::EntityComments; };
+template<> struct SCHEMA::predicate<1247> { using type = facebook::glean::cpp::schema::Codemarkup::EntityInfo; };
+template<> struct SCHEMA::predicate<1248> { using type = facebook::glean::cpp::schema::Codemarkup::EntityIsDefinition; };
+template<> struct SCHEMA::predicate<1249> { using type = facebook::glean::cpp::schema::Codemarkup::EntityKind; };
+template<> struct SCHEMA::predicate<1250> { using type = facebook::glean::cpp::schema::Codemarkup::EntityLocation; };
+template<> struct SCHEMA::predicate<1251> { using type = facebook::glean::cpp::schema::Codemarkup::EntityModifiers; };
+template<> struct SCHEMA::predicate<1252> { using type = facebook::glean::cpp::schema::Codemarkup::EntityModuleName; };
+template<> struct SCHEMA::predicate<1253> { using type = facebook::glean::cpp::schema::Codemarkup::EntityReferences; };
+template<> struct SCHEMA::predicate<1254> { using type = facebook::glean::cpp::schema::Codemarkup::EntitySource; };
+template<> struct SCHEMA::predicate<1255> { using type = facebook::glean::cpp::schema::Codemarkup::EntityToAnnotations; };
+template<> struct SCHEMA::predicate<1256> { using type = facebook::glean::cpp::schema::Codemarkup::EntityUses; };
+template<> struct SCHEMA::predicate<1257> { using type = facebook::glean::cpp::schema::Codemarkup::EntityVisibility; };
+template<> struct SCHEMA::predicate<1258> { using type = facebook::glean::cpp::schema::Codemarkup::ExtendsChildEntity; };
+template<> struct SCHEMA::predicate<1259> { using type = facebook::glean::cpp::schema::Codemarkup::ExtendsParentEntity; };
+template<> struct SCHEMA::predicate<1260> { using type = facebook::glean::cpp::schema::Codemarkup::ExtendsParentEntityConcise; };
+template<> struct SCHEMA::predicate<1261> { using type = facebook::glean::cpp::schema::Codemarkup::FileCall; };
+template<> struct SCHEMA::predicate<1262> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityDigest; };
+template<> struct SCHEMA::predicate<1263> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityInfos; };
+template<> struct SCHEMA::predicate<1264> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityKinds; };
+template<> struct SCHEMA::predicate<1265> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityLocations; };
+template<> struct SCHEMA::predicate<1266> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityXRefInfos; };
+template<> struct SCHEMA::predicate<1267> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityXRefKinds; };
+template<> struct SCHEMA::predicate<1268> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityXRefLocations; };
+template<> struct SCHEMA::predicate<1269> { using type = facebook::glean::cpp::schema::Codemarkup::FileEntityXRefRangeSpans; };
+template<> struct SCHEMA::predicate<1270> { using type = facebook::glean::cpp::schema::Codemarkup::FindEntityDefinition; };
+template<> struct SCHEMA::predicate<1271> { using type = facebook::glean::cpp::schema::Codemarkup::GeneratedEntityToIdlEntity; };
+template<> struct SCHEMA::predicate<1272> { using type = facebook::glean::cpp::schema::Codemarkup::FileXRefsGenericEntities; };
+template<> struct SCHEMA::predicate<1273> { using type = facebook::glean::cpp::schema::Codemarkup::SearchRelatedEntities; };
+template<> struct SCHEMA::predicate<1274> { using type = facebook::glean::cpp::schema::Codemarkup::ReferencingEntity; };
+template<> struct SCHEMA::predicate<1275> { using type = facebook::glean::cpp::schema::Codemarkup::ResolveLocation; };
+template<> struct SCHEMA::predicate<1276> { using type = facebook::glean::cpp::schema::Codemarkup::SearchInheritedEntities; };
+template<> struct SCHEMA::predicate<1277> { using type = facebook::glean::cpp::schema::Codemarkup::Cxx::CxxFileEntityIdl; };
+template<> struct SCHEMA::predicate<1278> { using type = facebook::glean::cpp::schema::Codemarkup::Cxx::CxxIdlEntityUses; };
+template<> struct SCHEMA::predicate<1279> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::ConvertCallee; };
+template<> struct SCHEMA::predicate<1280> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::ConvertCalleeForFileCall; };
+template<> struct SCHEMA::predicate<1281> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::ConvertStaticType; };
+template<> struct SCHEMA::predicate<1282> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::HackFileCall; };
+template<> struct SCHEMA::predicate<1283> { using type = facebook::glean::cpp::schema::Codemarkup::Hack::HackIdlEntityUses; };
+template<> struct SCHEMA::predicate<1284> { using type = facebook::glean::cpp::schema::Codemarkup::Search::EntityLocationAndKind; };
+template<> struct SCHEMA::predicate<1285> { using type = facebook::glean::cpp::schema::Codemarkup::Search::SearchByName; };
+template<> struct SCHEMA::predicate<1286> { using type = facebook::glean::cpp::schema::Codemarkup::Search::SearchByScope; };
+template<> struct SCHEMA::predicate<1287> { using type = facebook::glean::cpp::schema::Codemetrics::ReferencesFrom; };
+template<> struct SCHEMA::predicate<1288> { using type = facebook::glean::cpp::schema::Codemetrics::ReferencesTo; };
+template<> struct SCHEMA::predicate<1289> { using type = facebook::glean::cpp::schema::Deadcode::GraphEntity; };
+template<> struct SCHEMA::predicate<1290> { using type = facebook::glean::cpp::schema::Deletthis::FileReverseDeps; };
+template<> struct SCHEMA::predicate<1291> { using type = facebook::glean::cpp::schema::Dyn::EntityUsage; };
+template<> struct SCHEMA::predicate<1292> { using type = facebook::glean::cpp::schema::Monk::BestPiiFunc; };
+template<> struct SCHEMA::predicate<1293> { using type = facebook::glean::cpp::schema::Monk::PiiCallerFunc; };
+template<> struct SCHEMA::predicate<1294> { using type = facebook::glean::cpp::schema::Monk::PiiFunc; };
+template<> struct SCHEMA::predicate<1295> { using type = facebook::glean::cpp::schema::Search::Code::BuckSearchByLocalNameFact; };
+template<> struct SCHEMA::predicate<1296> { using type = facebook::glean::cpp::schema::Search::Code::BuckSearchByLowerCaseName; };
+template<> struct SCHEMA::predicate<1297> { using type = facebook::glean::cpp::schema::Search::Code::BuckSearchByName; };
+template<> struct SCHEMA::predicate<1298> { using type = facebook::glean::cpp::schema::Search::Code::CSharpSearchByLowerCaseName; };
+template<> struct SCHEMA::predicate<1299> { using type = facebook::glean::cpp::schema::Search::Code::CSharpSearchByName; };
+template<> struct SCHEMA::predicate<1300> { using type = facebook::glean::cpp::schema::Search::Code::CxxSearchByLowerCaseNameKindAndScopeFact; };
+template<> struct SCHEMA::predicate<1301> { using type = facebook::glean::cpp::schema::Search::Code::CxxSearchByLowerCaseScopeAndKind; };
+template<> struct SCHEMA::predicate<1302> { using type = facebook::glean::cpp::schema::Search::Code::CxxSearchByNameKindAndScopeFact; };
+template<> struct SCHEMA::predicate<1303> { using type = facebook::glean::cpp::schema::Search::Code::CxxSearchByScopeAndKind; };
+template<> struct SCHEMA::predicate<1304> { using type = facebook::glean::cpp::schema::Search::Code::ErlangSearchByLowerCaseName; };
+template<> struct SCHEMA::predicate<1305> { using type = facebook::glean::cpp::schema::Search::Code::ErlangSearchByName; };
+template<> struct SCHEMA::predicate<1306> { using type = facebook::glean::cpp::schema::Search::Code::FbthriftSearchByNameFact; };
+template<> struct SCHEMA::predicate<1307> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByLowerCaseNameKindAndScopeFact; };
+template<> struct SCHEMA::predicate<1308> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByLowerCaseScopeAndKind; };
+template<> struct SCHEMA::predicate<1309> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByNameKindAndScopeFact; };
+template<> struct SCHEMA::predicate<1310> { using type = facebook::glean::cpp::schema::Search::Code::FlowSearchByScopeAndKind; };
+template<> struct SCHEMA::predicate<1311> { using type = facebook::glean::cpp::schema::Search::Code::GraphQLSearchByLowerCaseName; };
+template<> struct SCHEMA::predicate<1312> { using type = facebook::glean::cpp::schema::Search::Code::GraphQLSearchByName; };
+template<> struct SCHEMA::predicate<1313> { using type = facebook::glean::cpp::schema::Search::Code::HackSearchByLowerCaseNameAndKind; };
+template<> struct SCHEMA::predicate<1314> { using type = facebook::glean::cpp::schema::Search::Code::HackSearchByLowerCaseScopeAndKind; };
+template<> struct SCHEMA::predicate<1315> { using type = facebook::glean::cpp::schema::Search::Code::HackSearchByNameAndKind; };
+template<> struct SCHEMA::predicate<1316> { using type = facebook::glean::cpp::schema::Search::Code::HackSearchByNameKindWithNamespace; };
+template<> struct SCHEMA::predicate<1317> { using type = facebook::glean::cpp::schema::Search::Code::HackSearchByNameKindWithQName; };
+template<> struct SCHEMA::predicate<1318> { using type = facebook::glean::cpp::schema::Search::Code::HackSearchByScopeAndKind; };
+template<> struct SCHEMA::predicate<1319> { using type = facebook::glean::cpp::schema::Search::Code::HackSearchByScopeWithNameKinds; };
+template<> struct SCHEMA::predicate<1320> { using type = facebook::glean::cpp::schema::Search::Code::HsSearchByLowerCaseName; };
+template<> struct SCHEMA::predicate<1321> { using type = facebook::glean::cpp::schema::Search::Code::HsSearchByName; };
+template<> struct SCHEMA::predicate<1322> { using type = facebook::glean::cpp::schema::Search::Code::JavaSearchByLowerCaseName; };
+template<> struct SCHEMA::predicate<1323> { using type = facebook::glean::cpp::schema::Search::Code::JavaSearchByLowerCaseScope; };
+template<> struct SCHEMA::predicate<1324> { using type = facebook::glean::cpp::schema::Search::Code::JavaSearchByName; };
+template<> struct SCHEMA::predicate<1325> { using type = facebook::glean::cpp::schema::Search::Code::JavaSearchByNameWithFact; };
+template<> struct SCHEMA::predicate<1326> { using type = facebook::glean::cpp::schema::Search::Code::JavaSearchByScope; };
+template<> struct SCHEMA::predicate<1327> { using type = facebook::glean::cpp::schema::Search::Code::JavaSearchByScopeWithName; };
+template<> struct SCHEMA::predicate<1328> { using type = facebook::glean::cpp::schema::Search::Code::KotlinSearchByLowerCaseName; };
+template<> struct SCHEMA::predicate<1329> { using type = facebook::glean::cpp::schema::Search::Code::KotlinSearchByLowerCaseScope; };
+template<> struct SCHEMA::predicate<1330> { using type = facebook::glean::cpp::schema::Search::Code::KotlinSearchByName; };
+template<> struct SCHEMA::predicate<1331> { using type = facebook::glean::cpp::schema::Search::Code::KotlinSearchByNameWithFact; };
+template<> struct SCHEMA::predicate<1332> { using type = facebook::glean::cpp::schema::Search::Code::KotlinSearchByScope; };
+template<> struct SCHEMA::predicate<1333> { using type = facebook::glean::cpp::schema::Search::Code::KotlinSearchByScopeWithName; };
+template<> struct SCHEMA::predicate<1334> { using type = facebook::glean::cpp::schema::Search::Code::LsifSearchByLowerCaseName; };
+template<> struct SCHEMA::predicate<1335> { using type = facebook::glean::cpp::schema::Search::Code::LsifSearchByName; };
+template<> struct SCHEMA::predicate<1336> { using type = facebook::glean::cpp::schema::Search::Code::PpSearchByLowerCaseNameKind; };
+template<> struct SCHEMA::predicate<1337> { using type = facebook::glean::cpp::schema::Search::Code::PpSearchByNameKind; };
+template<> struct SCHEMA::predicate<1338> { using type = facebook::glean::cpp::schema::Search::Code::PythonSearchByLowerCaseNameKindAndScopeFact; };
+template<> struct SCHEMA::predicate<1339> { using type = facebook::glean::cpp::schema::Search::Code::PythonSearchByLowerCaseScopeAndKind; };
+template<> struct SCHEMA::predicate<1340> { using type = facebook::glean::cpp::schema::Search::Code::PythonSearchByNameKindAndScopeFact; };
+template<> struct SCHEMA::predicate<1341> { using type = facebook::glean::cpp::schema::Search::Code::PythonSearchByScopeAndKind; };
+template<> struct SCHEMA::predicate<1342> { using type = facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseNameAndLanguage; };
+template<> struct SCHEMA::predicate<1343> { using type = facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseNameKindAndLanguage; };
+template<> struct SCHEMA::predicate<1344> { using type = facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseScope; };
+template<> struct SCHEMA::predicate<1345> { using type = facebook::glean::cpp::schema::Search::Code::SearchByLowerCaseScopeAndKind; };
+template<> struct SCHEMA::predicate<1346> { using type = facebook::glean::cpp::schema::Search::Code::SearchByNameAndLanguage; };
+template<> struct SCHEMA::predicate<1347> { using type = facebook::glean::cpp::schema::Search::Code::SearchByNameKindAndLanguage; };
+template<> struct SCHEMA::predicate<1348> { using type = facebook::glean::cpp::schema::Search::Code::SearchByScope; };
+template<> struct SCHEMA::predicate<1349> { using type = facebook::glean::cpp::schema::Search::Code::SearchByScopeAndKind; };
+template<> struct SCHEMA::predicate<1350> { using type = facebook::glean::cpp::schema::Search::Code::ThriftSearchByLowerCaseName; };
+template<> struct SCHEMA::predicate<1351> { using type = facebook::glean::cpp::schema::Search::Code::ThriftSearchByName; };
+template<> struct SCHEMA::predicate<1352> { using type = facebook::glean::cpp::schema::Codemarkup::Anglelang::AngleFileEntityXRefLocations; };
 
 
 } // namespace schema
