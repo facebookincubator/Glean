@@ -15,7 +15,10 @@ module Glean.Indexer.Angle
 
 import Data.Default
 import Data.Maybe (mapMaybe)
+import qualified Data.Aeson as Aeson
+import qualified Data.Aeson.Encode.Pretty as Aeson
 import qualified Data.ByteString.Char8 as BC
+import qualified Data.ByteString.Lazy.Char8 as LBS
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Text as Text
 import Control.Exception
@@ -40,6 +43,7 @@ import qualified Glean.Schema.Src as Src (allPredicates)
 import qualified Glean.Schema.Anglelang.Types as Anglelang
 import qualified Glean.Schema.Anglelang as Anglelang (allPredicates)
 
+data Command = CmdIndex Options | CmdSchemaId
 data Options = Options
   { optDir ::  String
   , optRepoPath :: String
@@ -66,11 +70,20 @@ type DeclBuilder a =
   forall m. (NewFact m) => a -> m (Anglelang.Declaration, SrcSpan)
 
 
-opts :: ParserInfo Options
+opts :: ParserInfo Command
 opts = info (helper <*> parser) fullDesc
   where
-    parser :: Parser Options
-    parser = do
+    parser :: Parser Command
+    parser = subparser
+      ( command "index"
+        ( info (CmdIndex <$> idxParser)
+        ( progDesc "Run angle indexer for all files in the given directory" ))
+      <> command "schema-id"
+        ( info (pure CmdSchemaId)
+        ( progDesc "Get schema id. Returns scehma id and exits" )))
+
+    idxParser :: Parser Options
+    idxParser = do
       optDir <- strOption
         (long "dir"
         <> metavar "DIR"
@@ -263,12 +276,16 @@ send be schemas opts = do
 
 main :: IO ()
 main = do
-  withConfigOptions opts $ \(opts, cfgOpts) -> do
-    let service = optService opts
-        indexDir = optRepoPath opts </> optDir opts
-    schemas <- readSchemas indexDir
-    withEventBaseDataplane $ \evb ->
-      withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
-      withBackendWithDefaultOptions evb cfgAPI service (Just schema_id)
-        $ \backend -> do
-          send backend schemas opts
+  withConfigOptions opts $ \(cmd, cfgOpts) -> do
+    case cmd  of
+      CmdSchemaId -> putStrLn $ LBS.unpack $ Aeson.encodePretty $
+              Aeson.object ["schema_id" Aeson..= Aeson.toJSON schema_id]
+      CmdIndex opts -> do
+        let service = optService opts
+            indexDir = optRepoPath opts </> optDir opts
+        schemas <- readSchemas indexDir
+        withEventBaseDataplane $ \evb ->
+          withConfigProvider cfgOpts $ \(cfgAPI :: ConfigAPI) ->
+          withBackendWithDefaultOptions evb cfgAPI service (Just schema_id)
+            $ \backend -> do
+              send backend schemas opts
