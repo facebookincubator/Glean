@@ -66,6 +66,8 @@ genTargets info =
      , "# to regenerate: ./glean/schema/sync"
      , "load(\"@fbcode_macros//build_defs:haskell_library.bzl\", " <>
        "\"haskell_library\")"
+     , ""
+     , "oncall(\"code_indexing\")"
      , "" ] ++
      concatMap genTarget (HashMap.keys info)
   where

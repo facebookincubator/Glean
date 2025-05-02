@@ -69,6 +69,8 @@ genTargets slashVn info =
      , "# to regenerate: ./glean/schema/sync"
      , "load(\"@fbcode_macros//build_defs:custom_rule.bzl\", \"custom_rule\")"
      , "load(\"@fbcode_macros//build_defs:thrift_library.bzl\", \"thrift_library\")"
+     , ""
+     , "oncall(\"code_indexing\")"
      , "" ] ++
      concatMap genTarget (HashMap.toList info))
   where

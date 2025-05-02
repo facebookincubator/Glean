@@ -279,6 +279,8 @@ genTargets info extraImports =
      , "load(\"@fbcode_macros//build_defs:python_library.bzl\", " <>
        "\"python_library\")"
      , ""
+     , "oncall(\"code_indexing\")"
+     , ""
      ] ++
      [ "python_library("
      , "  name = \"glean_schema_predicate\","
