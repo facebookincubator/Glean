@@ -8451,7 +8451,7 @@ struct Domain {
   }
 }; // struct Domain
 
-struct SignalValue : Predicate<std::tuple<Fact<Signal>, Domain, uint64_t>> {
+struct SignalValue : Predicate<std::tuple<Fact<Signal>, Domain, uint64_t, bool>> {
   static const char* GLEAN_name() {
     return "perf.SignalValue";
   }
@@ -30378,7 +30378,7 @@ struct AngleFileEntityXRefLocations : Predicate<std::tuple<Fact<facebook::glean:
 struct SCHEMA {
   template<typename P> struct index;
   static constexpr size_t count = 1353;
-  static constexpr char schemaId[] = "739f0bb553fcbf7d88850b261ba5b365";
+  static constexpr char schemaId[] = "fe9ee47f6a92c54f29632509d0c8a008";
   template<size_t i> struct predicate;
 };
 
