@@ -58,7 +58,7 @@ struct BuildJsonArgs {
     root_prefix: Option<String>,
 }
 
-#[cli::main("scip-aosp", error_logging(user(default_level = "info")))]
+#[cli::main("scip_to_glean", error_logging(user(default_level = "info")))]
 async fn main(_fb: FacebookInit, args: BuildJsonArgs) -> Result<cli::ExitCode> {
     build_json(args)?;
     Ok(cli::ExitCode::SUCCESS)
