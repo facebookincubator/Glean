@@ -976,6 +976,22 @@ predicate CxxEntityUSR :
       cxx1.DeclarationToUSR { DeclFam, U };
     )
 
+predicate CxxEntityMangledNameHash :
+  {
+    entity : code.cxx.Entity,
+    hash : cxx1.MangledNameHash,
+  }
+  { E, H } where
+    (  { defn = Defn } = E;
+        cxx1.DefToBaseDecl { Defn, DeclBase };
+        cxx1.DeclFamilyOf { DeclBase, Decl };
+        cxx1.MangledNameHashToDeclaration { H,  Decl };
+    ) | (
+      { decl = Decl } = E;
+      cxx1.DeclFamilyOf { Decl, DeclFam };
+      cxx1.MangledNameHashToDeclaration { H,  DeclFam };
+    )
+
 predicate CxxDeclarationSource:
   {
     target: cxx1.Declaration,
