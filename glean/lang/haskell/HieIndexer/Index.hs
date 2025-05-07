@@ -21,7 +21,7 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
 import Compat.HieTypes (HieFile(..))
-import HieDb.Compat (nameModule_maybe, nameOccName, ppr)
+import HieDb.Compat (nameModule_maybe, nameOccName)
 
 import qualified GHC
 import GHC.Iface.Ext.Utils (generateReferencesMap)
@@ -111,6 +111,7 @@ toNamespace occ
   | GHC.isTvOcc occ = Hs.Namespace_tyvar
   | GHC.isTcOcc occ = Hs.Namespace_tycon
   | GHC.isDataOcc occ = Hs.Namespace_datacon
+  | otherwise = error "toNamespace"
 
 produceDecl
  :: Glean.NewFact m
@@ -190,7 +191,7 @@ indexHieFile writer hie = do
       nameMap :: Map GHC.Name Hs.Name
       nameMap = Map.fromList names
 
-    Glean.makeFact @Hs.ModuleDeclarations $ Hs.ModuleDeclarations_key
+    Glean.makeFact_ @Hs.ModuleDeclarations $ Hs.ModuleDeclarations_key
       modfact (map snd names)
 
     let refs = Map.fromListWith (++)
