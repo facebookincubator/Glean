@@ -8,7 +8,12 @@
 
 {-# LANGUAGE ApplicativeDo #-}
 
-module HieDBIndexer.Options where
+module HieDBIndexer.Options (
+    Sources(..),
+    HieIndexerOptions(..),
+    Mode(..),
+    options,
+  ) where
 
 import Data.List.NonEmpty (NonEmpty, nonEmpty)
 
@@ -27,29 +32,23 @@ import Options.Applicative (
   short,
   showDefault,
   strOption,
-  switch,
   value, (<|>), some, strArgument
  )
 import Glean (Repo (Repo), SchemaId (SchemaId, unSchemaId))
 import Glean.Schema.Builtin.Types (schema_id)
 
--- | Either a HieDB or a set of folders to recursively search for .hie files
+-- | A set of paths to recursively search for .hie files
 data Sources
-  = HieDB FilePath        -- ^ Path to a hiedb
-  | HieFiles (NonEmpty FilePath)   -- ^ Paths to search recursively for .hie files
+  = HieFiles (NonEmpty FilePath)   -- ^ Paths to search recursively for .hie files
 
-data HieDBIndexerOptions sources = HieDBIndexerOptions
+data HieIndexerOptions sources = HieIndexerOptions
   { sources :: sources
   , verbosity :: Int
-  , hiedbTrace :: Bool
-  , repoPath :: FilePath
-  , chunkSize :: Int
   }
 
 data Mode
   = WriteMode {
-      repo :: Repo,
-      dontCreateDb :: Bool
+      repo :: Repo
     }
   | BinaryMode {
       outputPath :: FilePath,
@@ -58,39 +57,18 @@ data Mode
 
 
 sourcesP :: Parser Sources
-sourcesP = HieDB <$> hiedbP <|> (HieFiles <$> hieFilesP)
+sourcesP = HieFiles <$> hieFilesP
   where
-    hiedbP = strOption
-          ( long "db-path"
-              <> metavar "HIEDB_PATH"
-              <> help "Path to the HieDB that will be used to get XReferences"
-          )
     hieFilesP = fromJust . nonEmpty <$> some
       (strArgument (metavar "PATH" <> help "Tree containing .hie files"))
 
-options :: ParserInfo (HieDBIndexerOptions Sources, Mode)
+options :: ParserInfo (HieIndexerOptions Sources, Mode)
 options = info (helper <*> parser) fullDesc
   where
-    parser :: Parser (HieDBIndexerOptions Sources, Mode)
+    parser :: Parser (HieIndexerOptions Sources, Mode)
     parser = do
 
       sources <- sourcesP
-
-      -- TODO(T96241762): change this argument name when using it with fbcode.
-      -- Also add a new argument for the cache directory name, that will be used
-      -- to clean up the file paths and read the source files.
-      repoPath <-
-        strOption
-          ( long "repo-path"
-              <> short 'p'
-              <> metavar "DIR"
-              <> help
-                ( unwords
-                    [ "Path to the repo containing the original"
-                    , "source files."
-                    ]
-                )
-          )
 
       verbosity <-
         option
@@ -103,24 +81,8 @@ options = info (helper <*> parser) fullDesc
               <> metavar "INT"
           )
 
-      hiedbTrace <-
-        switch
-          ( long "trace"
-              <> help "Enable trace in hiedb connection."
-          )
-
-      chunkSize <-
-        option
-          auto
-          ( long "chunk-size"
-              <> short 'c'
-              <> help "Number of vertices in each file batch."
-              <> showDefault
-              <> value 15000
-              <> metavar "INT"
-          )
       mode <- modeParser
-      return (HieDBIndexerOptions {..}, mode)
+      return (HieIndexerOptions {..}, mode)
 
 modeParser :: Parser Mode
 modeParser = serviceModeParser <|> binaryModeParser
@@ -139,18 +101,7 @@ modeParser = serviceModeParser <|> binaryModeParser
               <> metavar "REPO_HASH"
               <> help "Hash of the DB to be created."
           )
-      dontCreateDb <-
-        switch
-          ( long "dont-create-db"
-              <> help
-                ( unwords
-                    [ "If a Glean DB shouldn't be created, i.e. an "
-                    , "existing one should be used."
-                    , " Needed for the regression tests."
-                    ]
-                )
-          )
-      return $ WriteMode (Repo repoName repoHash) dontCreateDb
+      return $ WriteMode (Repo repoName repoHash)
 
     binaryModeParser = do
         outputPath <- strOption
