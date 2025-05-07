@@ -509,7 +509,7 @@ userQueryFactsTransformations qtrans selector schema query results = do
       -- a type containing all types in the response
       allTypes :: Type
       allTypes = Angle.RecordTy
-        [ Angle.FieldDef "" (PredicateTy predId) | predId <- predRefs ]
+        [ Angle.FieldDef "" (PredicateTy () predId) | predId <- predRefs ]
 
   -- errors if multiple versions of the same predicate are requested.
   transformationsFor schema qtrans allTypes
@@ -728,7 +728,7 @@ getPredDiags env repo schema preds = do
 getReturnPredicateDetails :: DbSchema -> Type -> IO PredicateDetails
 getReturnPredicateDetails schema@DbSchema{..} returnType = do
   case returnType of
-    Angle.PredicateTy (PidRef pid _) ->
+    Angle.PredicateTy _ (PidRef pid _) ->
       case IntMap.lookup (fromIntegral (fromPid pid)) predicatesByPid of
         Nothing -> throwIO $ Thrift.Exception "internal: no predicate"
         Just d -> return d

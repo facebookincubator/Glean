@@ -51,7 +51,7 @@ instance Arbitrary Type where
     , T.SetTy <$> arbitrary
     , T.RecordTy . fields <$> children 0
     , T.SumTy . fields <$> children 1
-    , T.PredicateTy <$> arbitrary
+    , T.PredicateTy () <$> arbitrary
     , T.MaybeTy <$> arbitrary
     , sized $ \n -> do
         k <- choose (0, max 0 n)
@@ -79,8 +79,8 @@ instance Arbitrary Type where
   shrink _ = []
 
 shrinkField
-  :: Arbitrary (T.Type_ pref tref)
-  => T.FieldDef_ pref tref -> [T.FieldDef_ pref tref]
+  :: Arbitrary (T.Type_ st pref tref)
+  => T.FieldDef_ st pref tref -> [T.FieldDef_ st pref tref]
 shrinkField (T.FieldDef name ty) = T.FieldDef name <$> shrink ty
 
 valueFor :: Type -> Gen Value
@@ -101,7 +101,7 @@ valueFor (T.SetTy ty) = fmap Array $ sized $ \n -> do
       k <- choose (0,n)
       nub . sort <$> vectorOf k (resize (n `div` k) $ valueFor ty)
 valueFor T.PredicateTy{} = Ref <$> arbitrary
-valueFor (T.NamedTy (ExpandedType _ ty)) = valueFor ty
+valueFor (T.NamedTy _ (ExpandedType _ ty )) = valueFor ty
 valueFor (T.MaybeTy ty) = do
   b <- arbitrary
   if b then Alt 1 <$> valueFor ty else return $ Alt 0 $ Tuple []
