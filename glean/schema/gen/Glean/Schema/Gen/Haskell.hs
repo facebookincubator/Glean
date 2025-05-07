@@ -26,9 +26,13 @@ import Glean.Angle.Types
 import Glean.Schema.Types
 
 genSchemaHS
-  :: Version -> [ResolvedPredicateDef] -> [ResolvedTypeDef] -> [(FilePath,Text)]
-genSchemaHS _version preddefs typedefs =
-  ("hs" </> "TARGETS", genTargets declsPerNamespace) :
+  :: Version
+  -> [ResolvedPredicateDef]
+  -> [ResolvedTypeDef]
+  -> Maybe Oncall
+  -> [(FilePath,Text)]
+genSchemaHS _version preddefs typedefs oncall =
+  ("hs" </> "TARGETS", genTargets declsPerNamespace oncall) :
   [ ("thrift" </> Text.unpack (underscored namespaces) <> "_include" <.> "hs",
       Text.intercalate (newline <> newline)
         (header namespaces deps : doGen preds types))
@@ -59,15 +63,15 @@ genSchemaHS _version preddefs typedefs =
 
 genTargets
   :: HashMap NameSpaces ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
+  -> Maybe Oncall
   -> Text
-genTargets info =
+genTargets info oncall =
   Text.unlines $
      [ "# \x40generated"
      , "# to regenerate: ./glean/schema/sync"
      , "load(\"@fbcode_macros//build_defs:haskell_library.bzl\", " <>
        "\"haskell_library\")"
-     , ""
-     , "oncall(\"code_indexing\")"
+     , buckOncallAnnotation oncall
      , "" ] ++
      concatMap genTarget (HashMap.keys info)
   where

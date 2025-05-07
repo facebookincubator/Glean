@@ -30,9 +30,10 @@ genSchemaPy
   :: Version
   -> [ResolvedPredicateDef]
   -> [ResolvedTypeDef]
+  -> Maybe Oncall
   -> [(FilePath,Text)]
-genSchemaPy _version preddefs typedefs =
-  ( "py" </> "TARGETS", genTargets declsPerNamespace extraImports):
+genSchemaPy _version preddefs typedefs oncall =
+  ( "py" </> "TARGETS", genTargets declsPerNamespace extraImports oncall):
   ( "py" </> "glean_schema_predicate.py", -- base class shared between schemas
   Text.unlines
   [ "# \x40generated"
@@ -271,15 +272,15 @@ namespaceToFileName n = Text.intercalate "_" n
 genTargets
   :: HashMap NameSpaces ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
   -> [(Text, [Text])]
+  -> Maybe Oncall
   -> Text
-genTargets info extraImports =
+genTargets info extraImports oncall =
   Text.unlines $
      [ "# \x40generated"
      , "# to regenerate: ./glean/schema/sync"
      , "load(\"@fbcode_macros//build_defs:python_library.bzl\", " <>
        "\"python_library\")"
-     , ""
-     , "oncall(\"code_indexing\")"
+     , buckOncallAnnotation oncall
      , ""
      ] ++
      [ "python_library("

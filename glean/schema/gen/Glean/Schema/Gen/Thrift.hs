@@ -39,10 +39,11 @@ genSchemaThrift
   -> Version
   -> [ResolvedPredicateDef]
   -> [ResolvedTypeDef]
+  -> Maybe Oncall
   -> [(FilePath, Text)]
-genSchemaThrift versionDir hash version preddefs typedefs =
+genSchemaThrift versionDir hash version preddefs typedefs oncall =
   (dir </> "TARGETS",
-    genTargets slashVn declsPerNamespace) :
+    genTargets slashVn declsPerNamespace oncall) :
   [ ( dir </> Text.unpack (underscored namespaces) ++ ".thrift"
     , genNamespace slashVn namespaces version
         hash namePolicy deps preds types)
@@ -62,15 +63,15 @@ genTargets
   :: Text   -- "/v1" or ""
   -> HashMap NameSpaces
     ([NameSpaces], [ResolvedPredicateDef], [ResolvedTypeDef])
+  -> Maybe Oncall
   -> Text
-genTargets slashVn info =
+genTargets slashVn info oncall =
   Text.unlines
      ([ "# \x40generated"
      , "# to regenerate: ./glean/schema/sync"
      , "load(\"@fbcode_macros//build_defs:custom_rule.bzl\", \"custom_rule\")"
      , "load(\"@fbcode_macros//build_defs:thrift_library.bzl\", \"thrift_library\")"
-     , ""
-     , "oncall(\"code_indexing\")"
+     , buckOncallAnnotation oncall
      , "" ] ++
      concatMap genTarget (HashMap.toList info))
   where

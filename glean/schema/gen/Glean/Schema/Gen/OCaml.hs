@@ -24,7 +24,8 @@ import Glean.Schema.Gen.Utils
       newline,
       cap1,
       mkNamePolicy,
-      addNamespaceDependencies )
+      addNamespaceDependencies,
+      Oncall, buckOncallAnnotation )
 import Glean.Angle.Types
     ( PredicateRef,
       TypeRef,
@@ -118,11 +119,12 @@ utilMl = ocamlHeader <> Text.unlines
   , ""
   ]
 
-targetsHeader :: Text
-targetsHeader = Text.unlines
+targetsHeader :: Maybe Oncall -> Text
+targetsHeader oncall = Text.unlines
   [ "# \x40generated"
   , "# " <> generated
   , "load(\"@fbcode_macros//build_defs:ocaml_library.bzl\", \"ocaml_library\")"
+  , buckOncallAnnotation oncall
   , ""
   ]
 
@@ -519,9 +521,9 @@ genSchema namespaces preds types namePolicy =
         in
           (typeName, funName, kTy, var, code) : others
 
-genTargets :: [(NameSpaces, [NameSpaces])] -> Text
-genTargets deps =
-  targetsHeader
+genTargets :: [(NameSpaces, [NameSpaces])] -> Maybe Oncall -> Text
+genTargets deps oncall =
+  targetsHeader oncall
   <> targetsLib "common" ["util.ml", "fact_id.ml"] [jsonDep]
   <> Text.concat (genTarget <$> deps)
   where
@@ -541,10 +543,11 @@ genSchemaOCaml
   -> Version
   -> [ResolvedPredicateDef]
   -> [ResolvedTypeDef]
+  -> Maybe Oncall
   -> [(FilePath,Text)]
-genSchemaOCaml onlySchemas _version preddefs typedefs =
+genSchemaOCaml onlySchemas _version preddefs typedefs oncall =
   ( "dune", dune modules) :
-  ( "TARGETS", genTargets deps) :
+  ( "TARGETS", genTargets deps oncall) :
   ( "fact_id.ml", factIdMl) :
   ( "util.ml", utilMl) :
   [ (Text.unpack (nsToFileName namespaces),

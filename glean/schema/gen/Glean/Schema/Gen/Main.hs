@@ -75,7 +75,7 @@ import Glean.Schema.Gen.HackJson ( genSchemaHackJson )
 import Glean.Schema.Gen.Haskell ( genSchemaHS )
 import Glean.Schema.Gen.Python ( genSchemaPy )
 import Glean.Schema.Gen.OCaml ( genSchemaOCaml )
-import Glean.Schema.Gen.Utils ( NameSpaces )
+import Glean.Schema.Gen.Utils ( NameSpaces, Oncall )
 
 import Glean.Schema.Types
 import Glean.Types (SchemaId(..))
@@ -108,6 +108,7 @@ data GenOptions =  GenOptions
   , updateIndex :: Maybe FilePath
   , install_dir :: FilePath
   , restrictSchemas :: Maybe [NameSpaces]
+  , oncall :: Maybe Oncall
   }
 
 toNameSpaces :: [Text] -> [NameSpaces]
@@ -189,6 +190,13 @@ options = do
           "current schema")
       install_dir <- strOption $
         long "install_dir" <> short 'd' <> metavar "DIR" <> value ""
+      oncall <- optional $ strOption
+        ( long "oncall"
+          <> value ""
+          <> metavar "NAME"
+          <> help "Adds oncall annotation with oncall NAME to generated files "
+        )
+
       restrictSchemas <- optSchemas
       return GenOptions{..}
 
@@ -410,7 +418,7 @@ gen GenOptions{..} versions =
         doGen _ Nothing = return ()
         doGen gen (Just output) = do
           let odir = install_dir </> fromMaybe "" dir </> output
-          forM_ (gen resolvedSchemaVersion ps ts) $ \(file,text) -> do
+          forM_ (gen resolvedSchemaVersion ps ts oncall) $ \(file,text) -> do
             let path = odir </> file
             createDirectoryIfMissing True (takeDirectory path)
             Text.writeFile path (text <> "\n")

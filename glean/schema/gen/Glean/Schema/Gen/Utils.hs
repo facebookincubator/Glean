@@ -48,6 +48,8 @@ module Glean.Schema.Gen.Utils
   , thriftName
   , haskellThriftName
   , addNamespaceDependencies
+  , buckOncallAnnotation
+  , Oncall
   ) where
 
 import Control.Monad.Reader
@@ -476,3 +478,9 @@ addNamespaceDependencies nss =
   outEdgesT HasTy{} = error "outEdgesT: HasTy"
   outEdgesT HasKey{} = error "outEdgesT: HasKey"
   outEdgesT ElementsOf{} = error "outEdgesT: ELementsOf"
+
+type Oncall = Text
+buckOncallAnnotation :: Maybe Oncall -> Text
+buckOncallAnnotation name = case name of
+  Just oncall -> "\noncall(\"" <> oncall <> "\")"
+  Nothing -> ""

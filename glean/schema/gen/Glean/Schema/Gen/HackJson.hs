@@ -25,6 +25,7 @@ import qualified Data.Text as Text
 import qualified Data.Text.Lazy as Text.Lazy
 import qualified Data.Text.Lazy.Builder as TextBuilder
 import GHC.Generics
+import Glean.Schema.Gen.Utils (Oncall)
 
 import Util.Text (textShow)
 
@@ -104,8 +105,9 @@ genSchemaHackJson
   :: Version
   -> [ResolvedPredicateDef]
   -> [ResolvedTypeDef]
+  -> Maybe Oncall
   -> [(FilePath,Text)]
-genSchemaHackJson _version preddefs typedefs = HashMap.toList files
+genSchemaHackJson _version preddefs typedefs _ = HashMap.toList files
   where
     predMap = HashMap.fromList $ map (\p -> (predicateDefRef p, p)) preddefs
     typeMap = HashMap.fromList $ map (\t -> (typeDefRef t, t)) typedefs

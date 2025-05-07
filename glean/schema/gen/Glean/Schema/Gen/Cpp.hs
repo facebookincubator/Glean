@@ -34,8 +34,9 @@ genSchemaCpp
   -> Version
   -> [ResolvedPredicateDef]
   -> [ResolvedTypeDef]
+  -> Maybe Oncall
   -> [(FilePath,Text)]
-genSchemaCpp hash version preddefs typedefs =
+genSchemaCpp hash version preddefs typedefs _ =
   [("", leading <> newline <> newline <> body)]
   where
     namePolicy = mkNamePolicy preddefs typedefs
