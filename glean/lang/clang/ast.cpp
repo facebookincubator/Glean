@@ -77,7 +77,15 @@ std::optional<std::string> getMangledNameHash(const clang::FunctionDecl* decl) {
   std::string Buffer;
   Buffer.reserve(128);
   llvm::raw_string_ostream Out(Buffer);
-  Ctx->mangleName(clang::GlobalDecl{decl}, Out);
+  clang::GlobalDecl GD;
+  if (const auto* CD = llvm::dyn_cast<clang::CXXConstructorDecl>(decl)) {
+    GD = clang::GlobalDecl(CD, clang::Ctor_Base);
+  } else if (const auto* DD = llvm::dyn_cast<clang::CXXDestructorDecl>(decl)) {
+    GD = clang::GlobalDecl(DD, clang::Dtor_Base);
+  } else {
+    GD = clang::GlobalDecl(decl);
+  }
+  Ctx->mangleName(GD, Out);
   const auto& mangledName = Out.str();
 
   auto hash = llvm::SHA1::hash(llvm::arrayRefFromStringRef(mangledName));

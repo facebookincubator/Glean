@@ -2,51 +2,6 @@
   "@generated",
   {
     "key": {
-      "hash": "1FF18A5AF43E45C2",
-      "declaration": {
-        "function_": {
-          "key": {
-            "name": {
-              "key": {
-                "name": { "key": { "constructor": { } } },
-                "scope": {
-                  "recordWithAccess": {
-                    "record": {
-                      "key": {
-                        "name": { "key": "c1" },
-                        "scope": {
-                          "namespace_": { "key": { "name": { "key": "foo" } } }
-                        }
-                      }
-                    },
-                    "access": 0
-                  }
-                }
-              }
-            },
-            "signature": {
-              "key": { "returns": { "key": "void" }, "parameters": [ ] }
-            },
-            "method": {
-              "isVirtual": false,
-              "isConst": false,
-              "isVolatile": false,
-              "refQualifier": 0
-            },
-            "source": {
-              "file": { "key": "test.cpp" },
-              "lineBegin": 32,
-              "columnBegin": 7,
-              "lineEnd": 33,
-              "columnEnd": 7
-            }
-          }
-        }
-      }
-    }
-  },
-  {
-    "key": {
       "hash": "3159A93E63C97BF8",
       "declaration": {
         "function_": {
@@ -243,6 +198,51 @@
               "columnBegin": 3,
               "lineEnd": 28,
               "columnEnd": 3
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "hash": "ED7AB008FEB9B3B3",
+      "declaration": {
+        "function_": {
+          "key": {
+            "name": {
+              "key": {
+                "name": { "key": { "constructor": { } } },
+                "scope": {
+                  "recordWithAccess": {
+                    "record": {
+                      "key": {
+                        "name": { "key": "c1" },
+                        "scope": {
+                          "namespace_": { "key": { "name": { "key": "foo" } } }
+                        }
+                      }
+                    },
+                    "access": 0
+                  }
+                }
+              }
+            },
+            "signature": {
+              "key": { "returns": { "key": "void" }, "parameters": [ ] }
+            },
+            "method": {
+              "isVirtual": false,
+              "isConst": false,
+              "isVolatile": false,
+              "refQualifier": 0
+            },
+            "source": {
+              "file": { "key": "test.cpp" },
+              "lineBegin": 32,
+              "columnBegin": 7,
+              "lineEnd": 33,
+              "columnEnd": 7
             }
           }
         }
