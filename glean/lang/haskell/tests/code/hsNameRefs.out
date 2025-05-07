@@ -12,7 +12,7 @@
         }
       },
       "file": { "key": "glean/lang/haskell/tests/code/B.hs" },
-      "uses": [ { "start": 296, "length": 2 } ]
+      "uses": [ { "start": 302, "length": 2 } ]
     }
   },
   {
@@ -137,6 +137,24 @@
     "key": {
       "target": {
         "key": {
+          "occ": { "key": { "name": "Char", "namespace_": 3 } },
+          "mod": {
+            "key": {
+              "name": { "key": "GHC.Types" },
+              "unit": { "key": "ghc-prim" }
+            }
+          },
+          "sort": { "external": { } }
+        }
+      },
+      "file": { "key": "glean/lang/haskell/tests/code/B.hs" },
+      "uses": [ { "start": 322, "length": 5 } ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
           "occ": { "key": { "name": "Eq", "namespace_": 3 } },
           "mod": {
             "key": {
@@ -206,7 +224,7 @@
         }
       },
       "file": { "key": "glean/lang/haskell/tests/code/B.hs" },
-      "uses": [ { "start": 279, "length": 4 } ]
+      "uses": [ { "start": 285, "length": 4 } ]
     }
   },
   {
@@ -232,6 +250,21 @@
     "key": {
       "target": {
         "key": {
+          "occ": { "key": { "name": "R", "namespace_": 1 } },
+          "mod": {
+            "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+          },
+          "sort": { "external": { } }
+        }
+      },
+      "file": { "key": "glean/lang/haskell/tests/code/B.hs" },
+      "uses": [ { "start": 331, "length": 4 } ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
           "occ": { "key": { "name": "R", "namespace_": 3 } },
           "mod": {
             "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
@@ -241,6 +274,21 @@
       },
       "file": { "key": "glean/lang/haskell/tests/code/A.hs" },
       "uses": [ { "start": 551, "length": 2 }, { "start": 250, "length": 2 } ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "occ": { "key": { "name": "R", "namespace_": 3 } },
+          "mod": {
+            "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+          },
+          "sort": { "external": { } }
+        }
+      },
+      "file": { "key": "glean/lang/haskell/tests/code/B.hs" },
+      "uses": [ { "start": 320, "length": 2 } ]
     }
   },
   {
@@ -300,7 +348,7 @@
         }
       },
       "file": { "key": "glean/lang/haskell/tests/code/B.hs" },
-      "uses": [ { "start": 306, "length": 2 } ]
+      "uses": [ { "start": 312, "length": 2 } ]
     }
   },
   {
@@ -375,7 +423,7 @@
         }
       },
       "file": { "key": "glean/lang/haskell/tests/code/B.hs" },
-      "uses": [ { "start": 273, "length": 2 }, { "start": 228, "length": 2 } ]
+      "uses": [ { "start": 279, "length": 2 }, { "start": 228, "length": 2 } ]
     }
   },
   {
@@ -405,7 +453,26 @@
         }
       },
       "file": { "key": "glean/lang/haskell/tests/code/A.hs" },
-      "uses": [ { "start": 611, "length": 3 }, { "start": 422, "length": 3 } ]
+      "uses": [
+        { "start": 618, "length": 3 },
+        { "start": 611, "length": 3 },
+        { "start": 422, "length": 3 }
+      ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "occ": { "key": { "name": "f1", "namespace_": 0 } },
+          "mod": {
+            "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+          },
+          "sort": { "external": { } }
+        }
+      },
+      "file": { "key": "glean/lang/haskell/tests/code/B.hs" },
+      "uses": [ { "start": 337, "length": 3 } ]
     }
   },
   {
@@ -421,6 +488,21 @@
       },
       "file": { "key": "glean/lang/haskell/tests/code/A.hs" },
       "uses": [ { "start": 566, "length": 3 }, { "start": 434, "length": 3 } ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
+          "occ": { "key": { "name": "f2", "namespace_": 0 } },
+          "mod": {
+            "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+          },
+          "sort": { "external": { } }
+        }
+      },
+      "file": { "key": "glean/lang/haskell/tests/code/B.hs" },
+      "uses": [ { "start": 347, "length": 3 } ]
     }
   },
   {
@@ -465,7 +547,7 @@
         }
       },
       "file": { "key": "glean/lang/haskell/tests/code/B.hs" },
-      "uses": [ { "start": 298, "length": 4 } ]
+      "uses": [ { "start": 304, "length": 4 } ]
     }
   },
   {
@@ -495,7 +577,7 @@
         }
       },
       "file": { "key": "glean/lang/haskell/tests/code/B.hs" },
-      "uses": [ { "start": 302, "length": 4 }, { "start": 267, "length": 4 } ]
+      "uses": [ { "start": 308, "length": 4 }, { "start": 273, "length": 4 } ]
     }
   },
   {
@@ -517,6 +599,21 @@
     "key": {
       "target": {
         "key": {
+          "occ": { "key": { "name": "r", "namespace_": 0 } },
+          "mod": {
+            "key": { "name": { "key": "B" }, "unit": { "key": "main" } }
+          },
+          "sort": { "external": { } }
+        }
+      },
+      "file": { "key": "glean/lang/haskell/tests/code/B.hs" },
+      "uses": [ { "start": 315, "length": 2 }, { "start": 234, "length": 2 } ]
+    }
+  },
+  {
+    "key": {
+      "target": {
+        "key": {
           "occ": { "key": { "name": "reverse", "namespace_": 0 } },
           "mod": {
             "key": { "name": { "key": "GHC.List" }, "unit": { "key": "base" } }
@@ -525,7 +622,7 @@
         }
       },
       "file": { "key": "glean/lang/haskell/tests/code/B.hs" },
-      "uses": [ { "start": 288, "length": 8 } ]
+      "uses": [ { "start": 294, "length": 8 } ]
     }
   },
   {

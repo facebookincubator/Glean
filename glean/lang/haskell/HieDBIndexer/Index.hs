@@ -9,8 +9,6 @@
 {-# LANGUAGE TypeApplications #-}
 module HieDBIndexer.Index (indexHieFile) where
 
-import Debug.Trace
-
 import Control.Applicative
 import Control.Monad
 import Data.Default
@@ -22,6 +20,7 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
+import Compat.HieTypes (HieFile(..))
 import HieDb.Compat (nameModule_maybe, nameOccName, ppr)
 
 import qualified GHC
@@ -35,7 +34,7 @@ import GHC.Unit.Types (unitFS)
 import qualified GHC.Unit.Module.Name as GHC (moduleNameFS)
 import qualified GHC.Data.FastString as GHC (FastString, bytesFS)
 
-import Compat.HieTypes (HieFile(..))
+import Util.Log
 
 import qualified Glean
 import Glean.Impl.ConfigProvider ()
@@ -147,6 +146,7 @@ produceDecl name ctx = case ctx of
 
 indexHieFile :: Glean.Writer -> HieFile -> IO ()
 indexHieFile writer hie = do
+  logInfo $ "Indexing: " <> hie_hs_file hie
   Glean.writeFacts writer $ do
     modfact <- mkModule smod
 
@@ -176,9 +176,11 @@ indexHieFile writer hie = do
         namefact <- mkName name modfact sort
         Glean.makeFact_ @Hs.DeclarationLocation $
           Hs.DeclarationLocation_key namefact filefact byteSpan
-        trace ("decl: " <>
-          GHC.occNameString (nameOccName name) <> ": " <>
-          show (ppr sp)) $ return ()
+        {-
+          trace ("decl: " <>
+            GHC.occNameString (nameOccName name) <> ": " <>
+           show (ppr sp)) $ return ()
+        -}
         mapM_ (produceDecl namefact) (Set.toList (identInfo dets))
         return $ Just (name, namefact)
       | otherwise -> return Nothing
@@ -200,19 +202,22 @@ indexHieFile writer hie = do
             not (GHC.isDerivedOccName (nameOccName n))
           ]
 
-    refs <- forM (Map.toList refs) $ \(name, spans) -> do
-      namefact <-
+    refs <- fmap catMaybes $ forM (Map.toList refs) $ \(name, spans) -> do
+      maybe_namefact <-
         case Map.lookup name nameMap of
-          Just fact -> return fact
+          Just fact -> return $ Just fact
           Nothing -> case nameModule_maybe name of
-            Nothing -> error $ "missing internal name: " <>
-              show (ppr name) <> " " <> show (ppr spans)
+            Nothing ->
+              -- This shouldn't happen, it's probably a bug in the hie file.
+              -- But it does happen, so let's not crash.
+              return Nothing
             Just mod -> do
               namemod <- mkModule mod
-              mkName name namemod (Hs.NameSort_external def)
-      let gleanspans = map (toByteSpan . srcSpanToSrcRange filefact) spans
-      Glean.makeFact @Hs.Reference $
-        Hs.Reference_key namefact gleanspans
+              Just <$> mkName name namemod (Hs.NameSort_external def)
+      forM maybe_namefact $ \namefact -> do
+        let gleanspans = map (toByteSpan . srcSpanToSrcRange filefact) spans
+        Glean.makeFact @Hs.Reference $
+          Hs.Reference_key namefact gleanspans
 
     Glean.makeFact_ @Hs.FileXRefs $ Hs.FileXRefs_key filefact refs
 
