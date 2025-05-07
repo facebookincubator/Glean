@@ -1108,31 +1108,20 @@ executable hiedb-indexer
     hs-source-dirs: glean/lang/haskell
     main-is: HieDBIndexer/Main.hs
     other-modules:
-        HieDBIndexer.Builder
-        HieDBIndexer.DefaultMain
-        HieDBIndexer.Glean
-        HieDBIndexer.HieDB
         HieDBIndexer.Index
         HieDBIndexer.Options
-        HieDBIndexer.Trace
-        HieDBIndexer.Types
     ghc-options: -main-is HieDBIndexer.Main
     build-depends:
         ghc,
         glean:client-hs,
         glean:client-hs-local,
         glean:core,
-        glean:db,
-        glean:if-glean-hs,
         glean:lib,
-        glean:lib-derive,
         glean:schema,
         glean:stubs,
         glean:util,
         hie-compat < 0.3.1.2,
-        hiedb < 0.4.3,
-        split,
-        sqlite-simple,
+        hiedb < 0.4.3
 
 -- -----------------------------------------------------------------------------
 -- LSIF support

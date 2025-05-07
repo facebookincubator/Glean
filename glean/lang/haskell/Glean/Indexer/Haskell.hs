@@ -22,25 +22,17 @@ import Util.IO
 
 data Haskell = Haskell
   { haskellBinary :: FilePath
-  , haskellRepoRoot :: FilePath
   , haskellGhc :: Maybe FilePath
   }
 
 options :: Parser Haskell
 options = do
   haskellBinary <-strOption
-    ( long "hiedb-indexer"
-        <> value "hiedb-indexer"
+    ( long "hie-indexer"
+        <> value "hie-indexer"
         <> metavar "PATH"
         <> showDefault
-        <> help "path to the hiedb indexer binary"
-    )
-  haskellRepoRoot <-strOption
-    ( long "source-root"
-        <> metavar "DIR"
-        <> value "."
-        <> showDefault
-        <> help "Path containing the source files."
+        <> help "path to the hie-indexer binary"
     )
   haskellGhc <- optional $ strOption
     ( long "with-ghc"
@@ -82,9 +74,6 @@ indexer =
                     , "${TEST_REPO_NAME}"
                     , "--repo-hash"
                     , "${TEST_REPO_HASH}"
-                    , "--repo-path"
-                    , haskellRepoRoot
-                    , "--dont-create-db"
                     , hieDir
                     ]
                 , extDerivePredicates = [
