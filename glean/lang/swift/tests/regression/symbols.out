@@ -1,0 +1,830 @@
+[
+  "@generated",
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@CM@UIKit@@objc(cs)UIView(im)bounds"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@CM@UIKit@@objc(cs)UIView(im)frame"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@CM@UIKit@@objc(cs)UIView(im)setAlpha:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@CM@UIKit@@objc(cs)UIView(im)setBackgroundColor:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@CM@UIKit@@objc(cs)UIView(im)setCenter:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@CM@UIKit@@objc(cs)UIView(im)setFrame:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@CM@UIKit@@objc(cs)UIView(im)setMultipleTouchEnabled:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@E@UIGestureRecognizerState@UIGestureRecognizerStateBegan."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@E@UIGestureRecognizerState@UIGestureRecognizerStateCancelled."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@E@UIGestureRecognizerState@UIGestureRecognizerStateChanged."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@E@UIGestureRecognizerState@UIGestureRecognizerStateEnded."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@E@UIGestureRecognizerState@UIGestureRecognizerStateFailed."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@E@UIViewKeyframeAnimationOptions@UIViewKeyframeAnimationOptionAllowUserInteraction"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@E@UIViewKeyframeAnimationOptions@UIViewKeyframeAnimationOptionCalculationModeLinear"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(cs)CIBCanvasBallView"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)initWithCoder:)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)initWithFrame:)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(cs)CIBCanvasBallView(im)layoutSubviews"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(cs)CIBCanvasView"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)addOrUpdateBallWithId:position:altitude:color:supportsUpdate:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)delegate"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)initWithCoder:)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)initWithFrame:)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)performRainbowAnimationWithId:completion:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)removeAll"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)removeBallWithId:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(cs)CIBCanvasView(im)setDelegate:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(cs)CIBCanvasView(py)delegate"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate#"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didDoubleTapBallId:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didDoubleTapPosition:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didLongPressBallId:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didPanBallId:position:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTapBallId:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTapPosition:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTripleTapBallId:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate(im)canvasView:didTripleTapPosition:"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:@M@UIKit" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:@S@CGPoint#" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:@S@CGRect#" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:@S@CGRect@FI@origin" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:@S@CGRect@FI@size" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:@S@CGSize#" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:@S@CGSize@FI@width" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:@T@NSTimeInterval" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)CALayer(im)setBorderColor:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)CALayer(im)setBorderWidth:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)CALayer(im)setCornerRadius:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)CALayer(im)setMasksToBounds:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)CALayer(py)borderColor"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)CALayer(py)borderWidth"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)CALayer(py)cornerRadius"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)CALayer(py)masksToBounds"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)NSCoder" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)NSObject(im)init)." },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cm)blackColor" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cm)blueColor" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cm)clearColor" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cm)grayColor" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cm)greenColor" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cm)lightGrayColor"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cm)orangeColor"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cm)purpleColor"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cm)redColor" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cm)whiteColor" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cm)yellowColor"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cpy)blackColor"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cpy)blueColor" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cpy)clearColor"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cpy)grayColor" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cpy)greenColor"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cpy)lightGrayColor"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cpy)orangeColor"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cpy)purpleColor"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cpy)redColor" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cpy)whiteColor"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(cpy)yellowColor"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(im)CGColor" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(im)initWithWhite:alpha:)."
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIColor(py)CGColor" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIGestureRecognizer(im)initWithTarget:action:)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIGestureRecognizer(im)locationInView:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIGestureRecognizer(im)requireGestureRecognizerToFail:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIGestureRecognizer(im)state"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIGestureRecognizer(im)view"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIGestureRecognizer(py)state"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIGestureRecognizer(py)view"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UILabel" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UILabel(im)setText:" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UILabel(im)setTextColor:"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UILabel(py)text" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UILabel(py)textColor" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UILongPressGestureRecognizer"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIPanGestureRecognizer"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UITapGestureRecognizer"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UITapGestureRecognizer(im)setNumberOfTapsRequired:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UITapGestureRecognizer(py)numberOfTapsRequired"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(cm)addKeyframeWithRelativeStartTime:relativeDuration:animations:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(cm)animateKeyframesWithDuration:delay:options:animations:completion:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(im)addGestureRecognizer:"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(im)addSubview:" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(im)initWithFrame:)."
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(im)layer" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(im)layoutSubviews"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(im)removeFromSuperview"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(im)setLayer:" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(im)setNeedsLayout"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(im)sizeToFit" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(py)alpha" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(py)backgroundColor"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(py)bounds" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(py)center" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(py)frame" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(py)layer" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(cs)UIView(py)multipleTouchEnabled"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSCoding(im)encodeWithCoder:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSCoding(im)initWithCoder:)."
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject#" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)autorelease"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)class" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)conformsToProtocol:"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)isEqual:" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)isKindOfClass:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)isMemberOfClass:"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)isProxy" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)performSelector:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)performSelector:withObject:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)performSelector:withObject:withObject:"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)release" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)respondsToSelector:"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)retain" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)retainCount"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)self" },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(im)zone" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(py)debugDescription"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(py)description"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(py)hash" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)NSObject(py)superclass"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIAccessibilityIdentification(py)accessibilityIdentifier"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIActivityItemsConfigurationProviding(py)activityItemsConfiguration"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIAppearance(cm)appearance"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIAppearance(cm)appearanceForTraitCollection:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIAppearance(cm)appearanceForTraitCollection:whenContainedInInstancesOfClasses:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIAppearance(cm)appearanceWhenContainedInInstancesOfClasses:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UICoordinateSpace(im)convertPoint:fromCoordinateSpace:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UICoordinateSpace(im)convertPoint:toCoordinateSpace:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UICoordinateSpace(im)convertRect:fromCoordinateSpace:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UICoordinateSpace(im)convertRect:toCoordinateSpace:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UICoordinateSpace(py)bounds"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIDynamicItem(py)bounds"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIDynamicItem(py)center"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIDynamicItem(py)collisionBoundingPath"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIDynamicItem(py)collisionBoundsType"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIDynamicItem(py)transform"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusEnvironment(im)didUpdateFocusInContext:withAnimationCoordinator:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusEnvironment(im)setNeedsFocusUpdate"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusEnvironment(im)shouldUpdateFocusInContext:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusEnvironment(im)updateFocusIfNeeded"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusEnvironment(py)focusGroupIdentifier"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusEnvironment(py)focusItemContainer"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusEnvironment(py)parentFocusEnvironment"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusEnvironment(py)preferredFocusEnvironments"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusEnvironment(py)preferredFocusedView"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusItem(py)canBecomeFocused"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusItem(py)focusEffect"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusItem(py)focusGroupPriority"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusItem(py)focusItemDeferralMode"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusItem(py)frame" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusItem(py)isTransparentFocusItem"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusItemContainer(im)focusItemsInRect:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIFocusItemContainer(py)coordinateSpace"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UILargeContentViewerItem(py)largeContentImage"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UILargeContentViewerItem(py)largeContentImageInsets"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UILargeContentViewerItem(py)largeContentTitle"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UILargeContentViewerItem(py)scalesLargeContentImage"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UILargeContentViewerItem(py)showsLargeContentViewer"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIPasteConfigurationSupporting(py)pasteConfiguration"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIPopoverPresentationControllerSourceItem(im)frameInView:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withAction:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withHandler:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UITraitChangeObservable(im)registerForTraitChanges:withTarget:action:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UITraitChangeObservable(im)unregisterForTraitChanges:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UITraitEnvironment(im)traitCollectionDidChange:"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UITraitEnvironment(py)traitCollection"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . c:objc(pl)UIUserActivityRestoring(im)restoreUserActivityState:"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:14CoreFoundation7CGFloatV#" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:14CoreFoundation7CGFloatV12floatLiteralACSd_tcfc)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:14CoreFoundation7CGFloatV14integerLiteralACSi_tcfc)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:14CoreFoundation7CGFloatV1doiyA2C_ACtFZ"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:14CoreFoundation7CGFloatV1poiyA2C_ACtFZ"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:14CoreFoundation7CGFloatV1soiyA2C_ACtFZ"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didPanBallId8positionyAA0aB0C_SSSo7CGPointVtF1_L_AHvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didPanBallId8positionyAA0aB0C_SSSo7CGPointVtFAEL_SSvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didPanBallId8positionyAA0aB0C_SSSo7CGPointVtFAFL_AJvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didTapBallIdyAA0aB0C_SStF1_L_AGvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_12didTapBallIdyAA0aB0C_SStFAEL_SSvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_14didTapPositionyAA0aB0C_So7CGPointVtF1_L_AGvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_14didTapPositionyAA0aB0C_So7CGPointVtFAEL_AIvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didDoubleTapBallIdyAA0aB0C_SStF1_L_AGvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didDoubleTapBallIdyAA0aB0C_SStFAEL_SSvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didLongPressBallIdyAA0aB0C_SStF1_L_AGvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didLongPressBallIdyAA0aB0C_SStFAEL_SSvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didTripleTapBallIdyAA0aB0C_SStF1_L_AGvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_18didTripleTapBallIdyAA0aB0C_SStFAEL_SSvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_20didDoubleTapPositionyAA0aB0C_So7CGPointVtF1_L_AGvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_20didDoubleTapPositionyAA0aB0C_So7CGPointVtFAEL_AIvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_20didTripleTapPositionyAA0aB0C_So7CGPointVtF1_L_AGvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A12ViewDelegateP06canvasB0_20didTripleTapPositionyAA0aB0C_So7CGPointVtFAEL_AIvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC010createBallB8IfNeeded33_0B3BAAE45C5B973AC393596A4D2DE873LLyAA0adB0CSSF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC010createBallB8IfNeeded33_0B3BAAE45C5B973AC393596A4D2DE873LLyAA0adB0CSSF6ballIdL_SSvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC10ballPanned33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UIPanGestureRecognizerC_tF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC10ballPanned33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UIPanGestureRecognizerC_tFAFL_AHvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC10ballTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC10ballTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC10removeBall6withIdySS_tF04ballF0L_SSvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC12canvasTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC12canvasTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtF04ballH0L_SSvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtFAFL_AKvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtFAGL_ANvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtFAHL_APvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC15addOrUpdateBall6withId8position8altitude5color08supportsE0ySS_So7CGPointV14CoreFoundation7CGFloatVSo7UIColorCSbtFAIL_Sbvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC15ballLongPressed33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo28UILongPressGestureRecognizerC_tF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC15ballLongPressed33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo28UILongPressGestureRecognizerC_tFAFL_AHvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC16ballDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC16ballDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC16ballTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC16ballTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC18canvasDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC18canvasDoubleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC18canvasTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC18canvasTripleTapped33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UITapGestureRecognizerC_tFAFL_AHvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC23performRainbowAnimation6withId10completionySS_yyctF04ballG0L_SSvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC23performRainbowAnimation6withId10completionySS_yyctFAFL_yycvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC5coderACSgSo7NSCoderC_tcfcADL_AGvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC5frameACSo6CGRectV_tcfcADL_AFvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC5viewsSDySSAA0a4BallB0CGvg"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC5viewsSDySSAA0a4BallB0CGvp"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A4ViewC5viewsSDySSAA0a4BallB0CGvs"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC23performRainbowAnimationyyyycF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC23performRainbowAnimationyyyycF10completionL_yycvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC5coderACSgSo7NSCoderC_tcfcADL_AGvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC5labelSo7UILabelCvg"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC5labelSo7UILabelCvp"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC5labelSo7UILabelCvs"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC6ballIdACSS_tcfc)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC6ballIdACSS_tcfcADL_SSvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC6ballIdSSvg"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC6ballIdSSvp"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC6ballIdSSvs"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC6update8altitude5color14supportsUpdatey14CoreFoundation7CGFloatV_So7UIColorCSbtF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC6update8altitude5color14supportsUpdatey14CoreFoundation7CGFloatV_So7UIColorCSbtFAEL_AJvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC6update8altitude5color14supportsUpdatey14CoreFoundation7CGFloatV_So7UIColorCSbtFAFL_ALvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas0A8BallViewC6update8altitude5color14supportsUpdatey14CoreFoundation7CGFloatV_So7UIColorCSbtFAGL_Sbvp)"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvg)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvp."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvs)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas14kTotalDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvg)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas14kTotalDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvp."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas14kTotalDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvs)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas17kRelativeDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvg)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas17kRelativeDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvp."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas17kRelativeDuration33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSdvs)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas21kTotalTransformations33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSivg)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas21kTotalTransformations33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSivp."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas21kTotalTransformations33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSivs)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas9kBallSize33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSo6CGSizeVvg)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas9kBallSize33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSo6CGSizeVvp."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:9CIBCanvas9kBallSize33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSo6CGSizeVvs)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:SD17dictionaryLiteralSDyxq_Gx_q_td_tcfc)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:SD9removeAll15keepingCapacityySb_tF"
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:SDyq_Sgxcig" },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:SDyq_Sgxcip" },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:SDyq_Sgxcis" },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:SFsE1goiySbx_xtFZ" },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:SLsE3zzloiySnyxGx_xtFZ" },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:SS#" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:SS10FoundationE6format_S2Sh_s7CVarArg_pdtcfc)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:Sa12arrayLiteralSayxGxd_tcfc)."
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:Sa5countSivg" },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:Sa5countSivp" },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:SayxSicig" },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:SayxSicip" },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:Sb#" },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:Sd#" },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:Sd1doiyS2d_SdtFZ" },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:Sd1moiyS2d_SdtFZ" },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:SdySdSicfc)." },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:Si1roiyS2i_SitFZ" },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So30UIViewKeyframeAnimationOptionsV20allowUserInteractionABvgZ"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So30UIViewKeyframeAnimationOptionsV21calculationModeLinearABvgZ"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6CGRectV12CoreGraphicsE1x1y5width6heightAB0B10Foundation7CGFloatV_A3Jtcfc)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6CGRectV12CoreGraphicsE4minX0B10Foundation7CGFloatVvp"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6CGRectV12CoreGraphicsE4minXAC7CGFloatVvg"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6CGRectV12CoreGraphicsE4minY0B10Foundation7CGFloatVvp"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6CGRectV12CoreGraphicsE4minYAC7CGFloatVvg"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6CGRectV12CoreGraphicsE5width0B10Foundation7CGFloatVvp"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6CGRectV12CoreGraphicsE5widthAC7CGFloatVvg"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6CGRectV12CoreGraphicsE6height0B10Foundation7CGFloatVvp"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6CGRectV12CoreGraphicsE6heightAC7CGFloatVvg"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6CGRectV12CoreGraphicsE8containsySbSo7CGPointVF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6CGRectV6origin4sizeABSo7CGPointV_So6CGSizeVtcfc)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6CGSizeV12CoreGraphicsE5width6heightABSi_Sitcfc)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6CGSizeV5width12CoreGraphics7CGFloatVvg"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6UIViewC5UIKitE23registerForTraitChanges_6actionSo25UITraitChangeRegistration_pSayAC0H10Definition_pXpG_10ObjectiveC8SelectorVtF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6UIViewC5UIKitE23registerForTraitChanges_6target6actionSo25UITraitChangeRegistration_pSayAC0I10Definition_pXpG_yp10ObjectiveC8SelectorVtF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6UIViewC5UIKitE23registerForTraitChanges_7handlerSo25UITraitChangeRegistration_pSayAC0H10Definition_pXpG_yx_So0H10CollectionCtctSo0H11EnvironmentRzlF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So6UIViewC5UIKitE25unregisterForTraitChangesyySo25UITraitChangeRegistration_pF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So7CGPointV12CoreGraphicsE4zeroABvgZ"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So7CGPointV12CoreGraphicsE4zeroABvpZ"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So8NSObjectC10ObjectiveCE2eeoiySbAB_ABtFZ"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So8NSObjectC10ObjectiveCE4hash4intoys6HasherVz_tF"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:So8NSObjectC10ObjectiveCE9hashValueSivp"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:e:s:9CIBCanvas0A4ViewC10ballPanned33_0B3BAAE45C5B973AC393596A4D2DE873LL6senderySo22UIPanGestureRecognizerC_tF#"
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:s10SetAlgebraPs7ElementQz012ArrayLiteralC0RtzrlE05arrayE0xAFd_tcfc)."
+  },
+  {
+    "key": "scip . fbobjc/Extra/GleanTests . s:s10fatalError_4file4lines5NeverOSSyXK_s12StaticStringVSutF)."
+  },
+  { "key": "scip . fbobjc/Extra/GleanTests . s:s4Voida" }
+]

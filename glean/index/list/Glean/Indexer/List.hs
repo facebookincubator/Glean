@@ -34,6 +34,7 @@ import qualified Glean.Indexer.Go as Go
 import qualified Glean.Indexer.JavaLsif as JavaLsif
 import qualified Glean.Indexer.RustLsif as RustLsif
 import qualified Glean.Indexer.RustScip as RustScip
+import qualified Glean.Indexer.Swift as Swift
 import qualified Glean.Indexer.Typescript as Typescript
 import qualified Glean.Indexer.LSIF as LSIF
 import qualified Glean.Indexer.SCIP as SCIP
@@ -62,6 +63,7 @@ indexers =
   , SomeIndexer SCIP.indexer
   , SomeIndexer RustLsif.indexer
   , SomeIndexer RustScip.indexer
+  , SomeIndexer Swift.indexer
   , SomeIndexer Typescript.indexer
   , SomeIndexer PythonScip.indexer
   , SomeIndexer DotnetScip.indexer
