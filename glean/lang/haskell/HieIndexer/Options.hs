@@ -8,7 +8,7 @@
 
 {-# LANGUAGE ApplicativeDo #-}
 
-module HieDBIndexer.Options (
+module HieIndexer.Options (
     Sources(..),
     HieIndexerOptions(..),
     Mode(..),
