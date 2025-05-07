@@ -109,7 +109,7 @@ readService = do
   hostPort <- Text.pack <$> readerAsk
   case Text.breakOn ":" hostPort of
     (_, "") -> fail "Not a valid host:port"
-    (host, portStr) -> case textToInt portStr of
+    (host, portStr) -> case textToInt (Text.drop 1 portStr) of
       Left _ -> fail ("Not a valid port: " <> show portStr)
       Right port -> return (HostPort host (fromIntegral port))
 
@@ -152,13 +152,13 @@ defCfg = def { processingTimeout = Just 15000 }
 
 type GlassM p a = forall c . ClientChannel c => ThriftM p c GlassService a
 
-svc :: ThriftService GlassService
-svc =  mkThriftService defService defCfg
+svc :: Service -> ThriftService GlassService
+svc s =  mkThriftService s defCfg
 
 main :: IO ()
 main = Glean.withOptions options $ \Options{..} ->
   withEventBaseDataplane $ \evp -> do
-    res <- runThrift evp svc $
+    res <- runThrift evp (svc optHost) $
       case optCommand of
         List repo path -> runListSymbols repo path
         Describe sym -> runDescribe sym
