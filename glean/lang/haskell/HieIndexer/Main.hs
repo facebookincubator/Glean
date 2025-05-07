@@ -6,7 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
-module HieDBIndexer.Main (main) where
+module HieIndexer.Main (main) where
 
 import Control.Monad
 import Control.Monad.State (StateT, evalStateT, get, liftIO, put)
@@ -40,9 +40,9 @@ import qualified Glean.Schema.Hs as Hs
 import qualified Glean.Schema.Src as Src
 import qualified Glean.Util.ConfigProvider as Glean
 
-import qualified HieDBIndexer.Options as Hie
-import HieDBIndexer.Index
-import HieDBIndexer.Options
+import qualified HieIndexer.Options as Hie
+import HieIndexer.Index
+import HieIndexer.Options
 
 main :: IO ()
 main = do

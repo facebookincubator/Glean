@@ -7,7 +7,7 @@
 -}
 
 {-# LANGUAGE TypeApplications #-}
-module HieDBIndexer.Index (indexHieFile) where
+module HieIndexer.Index (indexHieFile) where
 
 import Control.Applicative
 import Control.Monad

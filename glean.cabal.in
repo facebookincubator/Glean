@@ -1098,19 +1098,19 @@ executable hack-derive
         glean:stubs,
         glean:util,
 
--- Haskell indexer via hiedb
-executable hiedb-indexer
+-- Haskell indexer via hie
+executable hie-indexer
     import: deps, fb-haskell, exe
     if impl(ghc >= 8.8)
       buildable: True
     else
       buildable: False
     hs-source-dirs: glean/lang/haskell
-    main-is: HieDBIndexer/Main.hs
+    main-is: HieIndexer/Main.hs
     other-modules:
-        HieDBIndexer.Index
-        HieDBIndexer.Options
-    ghc-options: -main-is HieDBIndexer.Main
+        HieIndexer.Index
+        HieIndexer.Options
+    ghc-options: -main-is HieIndexer.Main
     build-depends:
         ghc,
         glean:client-hs,
@@ -2152,7 +2152,7 @@ test-suite glean-snapshot-haskell
        glean:regression-test-lib,
        glean:indexers
     build-tool-depends:
-       glean:hiedb-indexer,
+       glean:hie-indexer,
        glean:glean
 
 test-suite glean-snapshot-codemarkup-haskell
@@ -2165,7 +2165,7 @@ test-suite glean-snapshot-codemarkup-haskell
        glean:regression-test-lib,
        glean:indexers
     build-tool-depends:
-       glean:hiedb-indexer,
+       glean:hie-indexer,
        glean:glean
 
 test-suite glean-snapshot-rust-lsif
