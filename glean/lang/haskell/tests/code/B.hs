@@ -9,6 +9,7 @@
 
 module B
   ( b
+  , r
   ) where
 
 import A
@@ -16,3 +17,6 @@ import Data.Char(ord)
 
 b :: [Int]
 b = reverse $ map ord a
+
+r :: R Char
+r = A.R { f1 = 'a', f2 = "abc" }
