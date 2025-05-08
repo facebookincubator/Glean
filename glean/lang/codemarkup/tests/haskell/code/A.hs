@@ -39,5 +39,4 @@ zero = 0
 
 f :: R a -> T a
 f R{f2 = [x]} = C3 x
-f r | m (3::Int) = C2 (ord (f1 r))
-
+f r | m (3::Int) = C2 (ord (f1 r { f1 = 'a' }))

@@ -263,9 +263,29 @@
   {
     "key": {
       "location": {
+        "name": "b",
+        "file": { "key": "glean/lang/codemarkup/tests/haskell/code/B.hs" },
+        "location": { "span": { "start": 290, "length": 23 } }
+      },
+      "entity": {
+        "hs": {
+          "key": {
+            "occ": { "key": { "name": "b", "namespace_": 0 } },
+            "mod": {
+              "key": { "name": { "key": "B" }, "unit": { "key": "main" } }
+            },
+            "sort": { "external": { } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "location": {
         "name": "f",
         "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-        "location": { "span": { "start": 562, "length": 55 } }
+        "location": { "span": { "start": 562, "length": 68 } }
       },
       "entity": {
         "hs": {
@@ -375,6 +395,26 @@
               "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
             },
             "sort": { "internal": { "start": 585, "length": 1 } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "location": {
+        "name": "r",
+        "file": { "key": "glean/lang/codemarkup/tests/haskell/code/B.hs" },
+        "location": { "span": { "start": 327, "length": 32 } }
+      },
+      "entity": {
+        "hs": {
+          "key": {
+            "occ": { "key": { "name": "r", "namespace_": 0 } },
+            "mod": {
+              "key": { "name": { "key": "B" }, "unit": { "key": "main" } }
+            },
+            "sort": { "external": { } }
           }
         }
       }
