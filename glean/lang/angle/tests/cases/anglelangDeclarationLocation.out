@@ -4,11 +4,22 @@
     "key": {
       "decl": {
         "derive_": {
+          "key": { "name": { "key": "a.FooReversed.1" }, "derive_": 1 }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "span": { "start": 523, "length": 24 }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "derive_": {
           "key": { "name": { "key": "a.PairExample.1" }, "derive_": 1 }
         }
       },
       "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
-      "span": { "start": 454, "length": 13 }
+      "span": { "start": 449, "length": 13 }
     }
   },
   {
@@ -19,7 +30,7 @@
         }
       },
       "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
-      "span": { "start": 371, "length": 30 }
+      "span": { "start": 366, "length": 30 }
     }
   },
   {
@@ -27,6 +38,35 @@
       "decl": { "imp": { "key": "b.1" } },
       "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
       "span": { "start": 116, "length": 2 }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "pred": {
+          "key": {
+            "name": { "key": "a.FooReversed.1" },
+            "keyTy": {
+              "key": {
+                "record_": [
+                  {
+                    "name": { "key": "y" },
+                    "ty": { "key": { "named_": { "key": "b.Bar.1" } } }
+                  },
+                  {
+                    "name": { "key": "x" },
+                    "ty": { "key": { "predicate_": { "key": "b.Name.1" } } }
+                  }
+                ]
+              }
+            },
+            "valTy": { "key": { "record_": [ ] } },
+            "derived": 0
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "span": { "start": 471, "length": 76 }
     }
   },
   {
@@ -52,7 +92,7 @@
         }
       },
       "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
-      "span": { "start": 279, "length": 40 }
+      "span": { "start": 274, "length": 40 }
     }
   },
   {
@@ -78,7 +118,7 @@
         }
       },
       "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
-      "span": { "start": 402, "length": 65 }
+      "span": { "start": 397, "length": 65 }
     }
   },
   {
@@ -104,7 +144,7 @@
         }
       },
       "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
-      "span": { "start": 320, "length": 81 }
+      "span": { "start": 315, "length": 81 }
     }
   },
   {
@@ -138,6 +178,35 @@
       },
       "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
       "span": { "start": 174, "length": 78 }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "pred": {
+          "key": {
+            "name": { "key": "b.Foo.1" },
+            "keyTy": {
+              "key": {
+                "record_": [
+                  {
+                    "name": { "key": "x" },
+                    "ty": { "key": { "predicate_": { "key": "b.Name.1" } } }
+                  },
+                  {
+                    "name": { "key": "y" },
+                    "ty": { "key": { "named_": { "key": "b.Bar.1" } } }
+                  }
+                ]
+              }
+            },
+            "valTy": { "key": { "record_": [ ] } },
+            "derived": 0
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.b.angle" },
+      "span": { "start": 118, "length": 50 }
     }
   },
   {
@@ -184,6 +253,26 @@
       },
       "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
       "span": { "start": 135, "length": 38 }
+    }
+  },
+  {
+    "key": {
+      "decl": {
+        "ty": {
+          "key": {
+            "name": { "key": "b.Bar.1" },
+            "ty": {
+              "key": {
+                "record_": [
+                  { "name": { "key": "a" }, "ty": { "key": { "nat_": { } } } }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.b.angle" },
+      "span": { "start": 80, "length": 23 }
     }
   }
 ]

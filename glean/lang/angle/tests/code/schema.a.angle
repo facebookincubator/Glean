@@ -16,7 +16,7 @@ predicate Person :
     lives : City
   }
 
-# Test derived predicates
+# Derived predicates
 predicate Pair : { x : string, y : nat}
 
 predicate PairReversed :
@@ -24,5 +24,9 @@ predicate PairReversed :
 
 predicate PairExample :
   { x : string , y : nat  } {"hello", 5}
+
+# XRefs
+predicate FooReversed :
+  { y : b.Bar, x : b.Name } {Y,X} where b.Foo {X,Y}
 
 }

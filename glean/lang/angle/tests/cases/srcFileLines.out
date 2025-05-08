@@ -22,7 +22,7 @@
         17,
         4,
         1,
-        26,
+        21,
         40,
         1,
         25,
@@ -30,6 +30,10 @@
         1,
         24,
         41,
+        1,
+        8,
+        24,
+        52,
         1,
         2
       ],
@@ -40,7 +44,7 @@
   {
     "key": {
       "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.b.angle" },
-      "lengths": [ 13, 1, 24, 1, 2 ],
+      "lengths": [ 13, 1, 24, 1, 31, 10, 23, 1, 14, 16, 4, 14, 12, 4, 2 ],
       "endsInNewline": true,
       "hasUnicodeOrTabs": false
     }

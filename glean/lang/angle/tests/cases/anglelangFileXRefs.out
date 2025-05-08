@@ -1,0 +1,136 @@
+[
+  "@generated",
+  {
+    "key": {
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.a.angle" },
+      "xrefs": [
+        {
+          "target": {
+            "ref": {
+              "pred": {
+                "key": {
+                  "name": { "key": "b.Name.1" },
+                  "keyTy": { "key": { "string_": { } } },
+                  "valTy": { "key": { "record_": [ ] } },
+                  "derived": 0
+                }
+              }
+            }
+          },
+          "span": [ { "start": 208, "length": 7 } ]
+        },
+        {
+          "target": {
+            "ref": {
+              "ty": {
+                "key": {
+                  "name": { "key": "a.Age.1" },
+                  "ty": { "key": { "nat_": { } } }
+                }
+              }
+            }
+          },
+          "span": [ { "start": 226, "length": 4 } ]
+        },
+        {
+          "target": {
+            "ref": {
+              "ty": {
+                "key": {
+                  "name": { "key": "a.City.1" },
+                  "ty": {
+                    "key": {
+                      "enum_": [ { "key": "London" }, { "key": "NewYork" } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "span": [ { "start": 243, "length": 5 } ]
+        },
+        {
+          "target": {
+            "ref": {
+              "ty": {
+                "key": {
+                  "name": { "key": "b.Bar.1" },
+                  "ty": {
+                    "key": {
+                      "record_": [
+                        {
+                          "name": { "key": "a" },
+                          "ty": { "key": { "nat_": { } } }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "span": [ { "start": 503, "length": 6 } ]
+        },
+        {
+          "target": {
+            "ref": {
+              "pred": {
+                "key": {
+                  "name": { "key": "b.Name.1" },
+                  "keyTy": { "key": { "string_": { } } },
+                  "valTy": { "key": { "record_": [ ] } },
+                  "derived": 0
+                }
+              }
+            }
+          },
+          "span": [ { "start": 514, "length": 7 } ]
+        }
+      ]
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "fbcode/glean/lang/angle/tests/code/schema.b.angle" },
+      "xrefs": [
+        {
+          "target": {
+            "ref": {
+              "pred": {
+                "key": {
+                  "name": { "key": "b.Name.1" },
+                  "keyTy": { "key": { "string_": { } } },
+                  "valTy": { "key": { "record_": [ ] } },
+                  "derived": 0
+                }
+              }
+            }
+          },
+          "span": [ { "start": 146, "length": 5 } ]
+        },
+        {
+          "target": {
+            "ref": {
+              "ty": {
+                "key": {
+                  "name": { "key": "b.Bar.1" },
+                  "ty": {
+                    "key": {
+                      "record_": [
+                        {
+                          "name": { "key": "a" },
+                          "ty": { "key": { "nat_": { } } }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "span": [ { "start": 160, "length": 4 } ]
+        }
+      ]
+    }
+  }
+]
