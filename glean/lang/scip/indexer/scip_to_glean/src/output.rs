@@ -61,6 +61,12 @@ struct Metadata {
     tool_info: Option<ToolInfo>,
     version: i32,
 }
+#[derive(Serialize)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+struct DisplayNameSymbol {
+    display_name: ScipId,
+    symbol: ScipId,
+}
 
 #[derive(Default)]
 pub struct GleanJSONOutput {
@@ -76,6 +82,8 @@ pub struct GleanJSONOutput {
     symbol_names: Vec<Key<SymbolName>>,
     symbol_kinds: Vec<Key<SymbolAndKind>>,
     metadata: Vec<Key<Metadata>>,
+    display_names: Vec<IdKey<Box<str>>>,
+    display_name_symbols: Vec<Key<DisplayNameSymbol>>,
 }
 impl GleanJSONOutput {
     pub fn src_file(&mut self, src_file_id: ScipId, path: Box<str>) {
@@ -171,7 +179,20 @@ impl GleanJSONOutput {
             },
         })
     }
-
+    pub fn display_name(&mut self, fact_id: ScipId, name: Box<str>) {
+        self.display_names.push(IdKey {
+            id: fact_id,
+            key: name,
+        })
+    }
+    pub fn display_name_symbol(&mut self, symbol_id: ScipId, name_id: ScipId) {
+        self.display_name_symbols.push(Key {
+            key: DisplayNameSymbol {
+                symbol: symbol_id,
+                display_name: name_id,
+            },
+        })
+    }
     pub fn write(self, mut w: impl std::io::Write) -> std::io::Result<()> {
         fn sub(
             mut w: impl std::io::Write,
@@ -227,6 +248,13 @@ impl GleanJSONOutput {
         sub(&mut w, "scip.SymbolName", self.symbol_names, ifl)?;
         sub(&mut w, "scip.SymbolKind", self.symbol_kinds, ifl)?;
         sub(&mut w, "scip.Metadata", self.metadata, ifl)?;
+        sub(&mut w, "scip.DisplayName", self.display_names, ifl)?;
+        sub(
+            &mut w,
+            "scip.DisplayNameSymbol",
+            self.display_name_symbols,
+            ifl,
+        )?;
         w.write_all(b"]\n")?;
 
         Ok(())

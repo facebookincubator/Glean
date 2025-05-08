@@ -32,6 +32,7 @@ enum StringPredicate {
     Symbol,
     LocalName,
     File,
+    DisplayName,
 }
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, Serialize)]
@@ -176,8 +177,23 @@ impl Env {
                 self.out.symbol_documentation(sym_id, doc_id);
             }
         }
+        if let Some(sym_id) = sym_id {
+            if !info.display_name.is_empty() {
+                self.display_name_facts(info.display_name, sym_id);
+            }
+        }
 
         Ok(())
+    }
+
+    fn display_name_facts(&mut self, display_name: String, sym_id: ScipId) {
+        let display_name = display_name.into_boxed_str();
+        let (display_name_id, seen) =
+            self.get_or_set_fact(StringPredicate::DisplayName, display_name.clone());
+        if seen {
+            self.out.display_name(display_name_id, display_name);
+        }
+        self.out.display_name_symbol(sym_id, display_name_id);
     }
 
     fn decode_scip_occurrence(
