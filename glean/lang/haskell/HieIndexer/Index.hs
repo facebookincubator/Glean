@@ -44,6 +44,8 @@ import Glean.Util.Range
 
 {- TODO
 
+- length of refs are 1 byte too long
+
 - issues with record fields
   - weird references to the record constructor from field decls
   - why do we get a ref for the field decl?
@@ -91,7 +93,9 @@ srcSpanToSrcRange file sp =
     (Glean.Nat $ fromIntegral $ GHC.srcSpanStartLine sp)
     (Glean.Nat $ fromIntegral $ GHC.srcSpanStartCol sp)
     (Glean.Nat $ fromIntegral $ GHC.srcSpanEndLine sp)
-    (Glean.Nat $ fromIntegral $ GHC.srcSpanEndCol sp)
+    (Glean.Nat $ fromIntegral $ GHC.srcSpanEndCol sp - 1)
+    -- GHC.RealSrcSpan is exclusive while Src.Range is inclusive, so
+    -- we subtract one from the end column when converting.
 
 fsToText :: GHC.FastString -> Text
 fsToText = Text.decodeUtf8 . GHC.bytesFS
