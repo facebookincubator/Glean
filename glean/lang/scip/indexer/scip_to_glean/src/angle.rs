@@ -57,6 +57,14 @@ impl Env {
         id
     }
 
+    fn set_def_fact(&mut self, key: Box<str>, val: ScipId) {
+        self.fact_id.insert(key, val);
+    }
+
+    fn get_def_fact_id(&mut self, key: &str) -> Option<ScipId> {
+        self.fact_id.get(key).copied()
+    }
+
     fn get_or_set_fact(&mut self, key: Box<str>) -> (ScipId, bool) {
         match self.fact_id.get(&key) {
             Some(id) => (*id, false),
@@ -96,7 +104,7 @@ impl Env {
         }
         let filepath = filepath.into_boxed_str();
 
-        self.fact_id.insert(filepath.clone(), src_file_id);
+        self.set_def_fact(filepath.clone(), src_file_id);
 
         self.out.src_file(src_file_id, filepath.clone());
         let lang_file_id = self.next_id();
@@ -145,7 +153,7 @@ impl Env {
         }
         .into_boxed_str();
 
-        let sym_id = self.fact_id.get(&qualified_symbol).copied();
+        let sym_id = self.get_def_fact_id(&qualified_symbol);
 
         for document in info.documentation {
             let doc_id = self.next_id();
