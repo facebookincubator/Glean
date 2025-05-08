@@ -218,7 +218,7 @@ impl GleanJSONOutput {
         sub(&mut w, "scip.SymbolName", self.symbol_names, true)?;
         sub(&mut w, "scip.SymbolKind", self.symbol_kinds, true)?;
         sub(&mut w, "scip.Metadata", self.metadata, false)?;
-        w.write_all(b"]")?;
+        w.write_all(b"]\n")?;
 
         Ok(())
     }
