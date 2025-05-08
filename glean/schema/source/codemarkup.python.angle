@@ -26,26 +26,27 @@ predicate PythonEntityLocation:
     location: codemarkup.types.Location,
   }
   { { decl = D }, { Name, File, { span = Span }, nothing } } where
-    python.DeclarationToName D -> SrcName;
-    # if an entity has definition, use its declaration and name as source
-    # this should handle imports overriden with locally defined entities
-    { Decl, PythonName } = if python.DeclarationDefinition { D, _ } then (
-      { D, SrcName };
+    if (
+      { imp = ImportStmt } = D;
+    ) then (
+      # for imports just return import location
+      python.DeclarationLocation { declaration = D, file = File, span = Span };
+      { from_name = python.Name Name } = ImportStmt;
+    ) else if (
+      python.DeclarationDefinition {D, _};
+    ) then (
+      # if an entity has definition, just return its location
+      # this should handle imports overriden with locally definded entities
+      python.DeclarationLocation { declaration = D, file = File, span = Span };
+      python.DeclarationToName D -> (python.Name Name);
     ) else (
-      # Otherwise, resolve original name
+      # for others trying to resolve original name to handle indirect imports
+      python.DeclarationToName D -> SrcName;
       python.ResolveOriginalName { SrcName, OriginalName };
-      OriginalDecl = if (
-        python.DeclarationWithName { OriginalName, Decl };
-        python.DeclarationLocation { declaration = Decl };
-      ) then ( Decl; ) else (
-        # if we don't find DeclarationLocation of the
-        # original name, use the import as the source
-        python.Declaration { imp = { from_name = OriginalName } };
-      );
-      { OriginalDecl, OriginalName };
-    );
-    PythonName = python.Name Name;
-    python.DeclarationLocation { declaration = Decl, file = File, span = Span };
+      python.DeclarationWithName { OriginalName, OriginalDecl };
+      python.DeclarationLocation { declaration = OriginalDecl, file = File, span = Span };
+      OriginalName = python.Name Name;
+    )
 
 
 predicate PythonFileEntityXRefLocations:
