@@ -85,6 +85,64 @@
             }
           },
           "span": [ { "start": 514, "length": 7 } ]
+        },
+        {
+          "target": {
+            "ref": {
+              "pred": {
+                "key": {
+                  "name": { "key": "a.Pair.1" },
+                  "keyTy": {
+                    "key": {
+                      "record_": [
+                        {
+                          "name": { "key": "x" },
+                          "ty": { "key": { "string_": { } } }
+                        },
+                        {
+                          "name": { "key": "y" },
+                          "ty": { "key": { "nat_": { } } }
+                        }
+                      ]
+                    }
+                  },
+                  "valTy": { "key": { "record_": [ ] } },
+                  "derived": 0
+                }
+              }
+            }
+          },
+          "span": [ { "start": 385, "length": 5 } ]
+        },
+        {
+          "target": {
+            "ref": {
+              "pred": {
+                "key": {
+                  "name": { "key": "b.Foo.1" },
+                  "keyTy": {
+                    "key": {
+                      "record_": [
+                        {
+                          "name": { "key": "x" },
+                          "ty": {
+                            "key": { "predicate_": { "key": "b.Name.1" } }
+                          }
+                        },
+                        {
+                          "name": { "key": "y" },
+                          "ty": { "key": { "named_": { "key": "b.Bar.1" } } }
+                        }
+                      ]
+                    }
+                  },
+                  "valTy": { "key": { "record_": [ ] } },
+                  "derived": 0
+                }
+              }
+            }
+          },
+          "span": [ { "start": 535, "length": 6 } ]
         }
       ]
     }

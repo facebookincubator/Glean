@@ -219,12 +219,63 @@ buildFileXRefsFact :: [Anglelang.XRef] -> Src.File ->  FactBuilder
 buildFileXRefsFact xRefs file =
   makeFact_ @Anglelang.FileXRefs $ Anglelang.FileXRefs_key file xRefs
 
+
+findPatXRefs :: ResolvedPat -> [(Ref, SrcSpan)]
+findPatXRefs = \case
+  Glean.Angle.Types.Nat _ _ -> []
+  String _ _ -> []
+  StringPrefix _ _ -> []
+  ByteArray _ _ -> []
+  Wildcard _ -> []
+  Variable _ _ -> []
+  FactId{} -> []
+  Never _ -> []
+  Enum _ _ -> []
+  Array _ pats -> concatMap findPatXRefs pats
+  ArrayPrefix _ pats -> concatMap findPatXRefs pats
+  Tuple _ pats -> concatMap findPatXRefs pats
+  Struct _ fields -> concatMap findFieldXRefs fields
+  App _ pat pats -> findPatXRefs pat ++ concatMap findPatXRefs pats
+  KeyValue _ pat pat' -> findPatXRefs pat ++ findPatXRefs pat'
+  Elements _ pat -> findPatXRefs pat
+  All _ pat -> findPatXRefs pat
+  ElementsOfArray _ pat -> findPatXRefs pat
+  OrPattern _ pat pat' -> findPatXRefs pat ++ findPatXRefs pat'
+  NestedQuery _ query -> findQueryXRefs query
+  Negation _ pat -> findPatXRefs pat
+  TypeSignature _ pat ty -> findPatXRefs pat ++ findTypeXRefs ty
+  IfPattern _ x y z -> findPatXRefs x ++ findPatXRefs y ++ findPatXRefs z
+  FieldSelect _ pat _ _ -> findPatXRefs pat
+  Deref _ pat -> findPatXRefs pat
+  Clause _ s pref pat _ -> (Pred pref,s) : findPatXRefs pat
+  Prim _ _ pats -> concatMap findPatXRefs pats
+  where
+    findFieldXRefs (Field _ pat) = findPatXRefs pat
+
+
+findQueryXRefs :: ResolvedQuery -> [(Ref, SrcSpan)]
+findQueryXRefs (SourceQuery head stms _) =
+  findHeadXRefs head ++ concatMap findStmXrefs stms
+  where
+    findHeadXRefs = maybe [] findPatXRefs
+    findStmXrefs (SourceStatement pat pat') =
+     findPatXRefs pat ++ findPatXRefs pat'
+
+findDeriveXRefs :: ResolvedDerivingDef -> [(Ref, SrcSpan)]
+findDeriveXRefs DerivingDef{..} = do
+  case derivingDefDeriveInfo of
+    NoDeriving -> []
+    Derive _ query -> findQueryXRefs query
+
+
 findXRefs :: ResolvedSchemaRef -> [XRef]
 findXRefs ResolvedSchema{..} = do
   let preds = HashMap.elems resolvedSchemaPredicates
       types = HashMap.elems resolvedSchemaTypes
+      derives = HashMap.elems resolvedSchemaDeriving
       xrefs = concatMap (findTypeXRefs . predicateDefKeyType) preds ++
-        concatMap (findTypeXRefs . typeDefType) types
+        concatMap (findTypeXRefs . typeDefType) types ++
+        concatMap findDeriveXRefs derives
       grouped = groupBy (\(k,_)(k',_) -> k == k') xrefs
   map (\xrefs -> (fst $ head xrefs, map snd xrefs)) grouped
 
