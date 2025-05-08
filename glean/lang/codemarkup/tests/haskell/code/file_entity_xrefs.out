@@ -7,9 +7,9 @@
         "target": {
           "name": "==",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 520, "length": 3 } }
+          "location": { "span": { "start": 520, "length": 2 } }
         },
-        "source": { "span": { "start": 520, "length": 3 } }
+        "source": { "span": { "start": 520, "length": 2 } }
       },
       "entity": {
         "hs": {
@@ -34,9 +34,9 @@
         "target": {
           "name": "A",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 234, "length": 2 } }
+          "location": { "span": { "start": 234, "length": 1 } }
         },
-        "source": { "span": { "start": 234, "length": 2 } }
+        "source": { "span": { "start": 234, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -58,9 +58,9 @@
         "target": {
           "name": "A",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 397, "length": 2 } }
+          "location": { "span": { "start": 397, "length": 1 } }
         },
-        "source": { "span": { "start": 397, "length": 2 } }
+        "source": { "span": { "start": 397, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -82,9 +82,9 @@
         "target": {
           "name": "A",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 534, "length": 2 } }
+          "location": { "span": { "start": 534, "length": 1 } }
         },
-        "source": { "span": { "start": 534, "length": 2 } }
+        "source": { "span": { "start": 534, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -106,9 +106,9 @@
         "target": {
           "name": "Bool",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 483, "length": 5 } }
+          "location": { "span": { "start": 483, "length": 4 } }
         },
-        "source": { "span": { "start": 483, "length": 5 } }
+        "source": { "span": { "start": 483, "length": 4 } }
       },
       "entity": {
         "hs": {
@@ -133,9 +133,9 @@
         "target": {
           "name": "C",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 260, "length": 2 } }
+          "location": { "span": { "start": 260, "length": 1 } }
         },
-        "source": { "span": { "start": 260, "length": 2 } }
+        "source": { "span": { "start": 260, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -157,9 +157,9 @@
         "target": {
           "name": "C",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 498, "length": 2 } }
+          "location": { "span": { "start": 498, "length": 1 } }
         },
-        "source": { "span": { "start": 498, "length": 2 } }
+        "source": { "span": { "start": 498, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -181,9 +181,9 @@
         "target": {
           "name": "C2",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 602, "length": 3 } }
+          "location": { "span": { "start": 602, "length": 2 } }
         },
-        "source": { "span": { "start": 602, "length": 3 } }
+        "source": { "span": { "start": 602, "length": 2 } }
       },
       "entity": {
         "hs": {
@@ -205,9 +205,9 @@
         "target": {
           "name": "C3",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 578, "length": 3 } }
+          "location": { "span": { "start": 578, "length": 2 } }
         },
-        "source": { "span": { "start": 578, "length": 3 } }
+        "source": { "span": { "start": 578, "length": 2 } }
       },
       "entity": {
         "hs": {
@@ -229,9 +229,9 @@
         "target": {
           "name": "Char",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 428, "length": 5 } }
+          "location": { "span": { "start": 428, "length": 4 } }
         },
-        "source": { "span": { "start": 428, "length": 5 } }
+        "source": { "span": { "start": 428, "length": 4 } }
       },
       "entity": {
         "hs": {
@@ -256,9 +256,9 @@
         "target": {
           "name": "Eq",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 453, "length": 3 } }
+          "location": { "span": { "start": 453, "length": 2 } }
         },
-        "source": { "span": { "start": 453, "length": 3 } }
+        "source": { "span": { "start": 453, "length": 2 } }
       },
       "entity": {
         "hs": {
@@ -283,9 +283,9 @@
         "target": {
           "name": "Float",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 386, "length": 6 } }
+          "location": { "span": { "start": 386, "length": 5 } }
         },
-        "source": { "span": { "start": 386, "length": 6 } }
+        "source": { "span": { "start": 386, "length": 5 } }
       },
       "entity": {
         "hs": {
@@ -310,9 +310,9 @@
         "target": {
           "name": "Int",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 367, "length": 4 } }
+          "location": { "span": { "start": 367, "length": 3 } }
         },
-        "source": { "span": { "start": 367, "length": 4 } }
+        "source": { "span": { "start": 367, "length": 3 } }
       },
       "entity": {
         "hs": {
@@ -337,9 +337,9 @@
         "target": {
           "name": "Int",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 500, "length": 4 } }
+          "location": { "span": { "start": 500, "length": 3 } }
         },
-        "source": { "span": { "start": 500, "length": 4 } }
+        "source": { "span": { "start": 500, "length": 3 } }
       },
       "entity": {
         "hs": {
@@ -364,9 +364,9 @@
         "target": {
           "name": "Int",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 595, "length": 4 } }
+          "location": { "span": { "start": 595, "length": 3 } }
         },
-        "source": { "span": { "start": 595, "length": 4 } }
+        "source": { "span": { "start": 595, "length": 3 } }
       },
       "entity": {
         "hs": {
@@ -391,9 +391,9 @@
         "target": {
           "name": "R",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 250, "length": 2 } }
+          "location": { "span": { "start": 250, "length": 1 } }
         },
-        "source": { "span": { "start": 250, "length": 2 } }
+        "source": { "span": { "start": 250, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -415,9 +415,9 @@
         "target": {
           "name": "R",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 422, "length": 3 } }
+          "location": { "span": { "start": 422, "length": 2 } }
         },
-        "source": { "span": { "start": 422, "length": 3 } }
+        "source": { "span": { "start": 422, "length": 2 } }
       },
       "entity": {
         "hs": {
@@ -439,9 +439,9 @@
         "target": {
           "name": "R",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 434, "length": 3 } }
+          "location": { "span": { "start": 434, "length": 2 } }
         },
-        "source": { "span": { "start": 434, "length": 3 } }
+        "source": { "span": { "start": 434, "length": 2 } }
       },
       "entity": {
         "hs": {
@@ -463,9 +463,9 @@
         "target": {
           "name": "R",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 551, "length": 2 } }
+          "location": { "span": { "start": 551, "length": 1 } }
         },
-        "source": { "span": { "start": 551, "length": 2 } }
+        "source": { "span": { "start": 551, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -487,9 +487,9 @@
         "target": {
           "name": "R",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 564, "length": 2 } }
+          "location": { "span": { "start": 564, "length": 1 } }
         },
-        "source": { "span": { "start": 564, "length": 2 } }
+        "source": { "span": { "start": 564, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -511,9 +511,9 @@
         "target": {
           "name": "String",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 330, "length": 7 } }
+          "location": { "span": { "start": 330, "length": 6 } }
         },
-        "source": { "span": { "start": 330, "length": 7 } }
+        "source": { "span": { "start": 330, "length": 6 } }
       },
       "entity": {
         "hs": {
@@ -538,9 +538,9 @@
         "target": {
           "name": "T",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 240, "length": 2 } }
+          "location": { "span": { "start": 240, "length": 1 } }
         },
-        "source": { "span": { "start": 240, "length": 2 } }
+        "source": { "span": { "start": 240, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -562,9 +562,9 @@
         "target": {
           "name": "T",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 558, "length": 2 } }
+          "location": { "span": { "start": 558, "length": 1 } }
         },
-        "source": { "span": { "start": 558, "length": 2 } }
+        "source": { "span": { "start": 558, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -586,9 +586,9 @@
         "target": {
           "name": "a",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 228, "length": 2 } }
+          "location": { "span": { "start": 228, "length": 1 } }
         },
-        "source": { "span": { "start": 228, "length": 2 } }
+        "source": { "span": { "start": 228, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -610,9 +610,9 @@
         "target": {
           "name": "a",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 325, "length": 2 } }
+          "location": { "span": { "start": 325, "length": 1 } }
         },
-        "source": { "span": { "start": 325, "length": 2 } }
+        "source": { "span": { "start": 325, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -634,9 +634,9 @@
         "target": {
           "name": "a",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 404, "length": 2 } }
+          "location": { "span": { "start": 404, "length": 1 } }
         },
-        "source": { "span": { "start": 404, "length": 2 } }
+        "source": { "span": { "start": 404, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -645,7 +645,7 @@
             "mod": {
               "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
             },
-            "sort": { "internal": { "start": 379, "length": 2 } }
+            "sort": { "internal": { "start": 379, "length": 1 } }
           }
         }
       }
@@ -658,9 +658,9 @@
         "target": {
           "name": "a",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 441, "length": 2 } }
+          "location": { "span": { "start": 441, "length": 1 } }
         },
-        "source": { "span": { "start": 441, "length": 2 } }
+        "source": { "span": { "start": 441, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -669,7 +669,7 @@
             "mod": {
               "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
             },
-            "sort": { "internal": { "start": 414, "length": 2 } }
+            "sort": { "internal": { "start": 414, "length": 1 } }
           }
         }
       }
@@ -682,9 +682,9 @@
         "target": {
           "name": "a",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 456, "length": 2 } }
+          "location": { "span": { "start": 456, "length": 1 } }
         },
-        "source": { "span": { "start": 456, "length": 2 } }
+        "source": { "span": { "start": 456, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -693,7 +693,7 @@
             "mod": {
               "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
             },
-            "sort": { "internal": { "start": 463, "length": 2 } }
+            "sort": { "internal": { "start": 463, "length": 1 } }
           }
         }
       }
@@ -706,9 +706,9 @@
         "target": {
           "name": "a",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 478, "length": 2 } }
+          "location": { "span": { "start": 478, "length": 1 } }
         },
-        "source": { "span": { "start": 478, "length": 2 } }
+        "source": { "span": { "start": 478, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -717,7 +717,7 @@
             "mod": {
               "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
             },
-            "sort": { "internal": { "start": 463, "length": 2 } }
+            "sort": { "internal": { "start": 463, "length": 1 } }
           }
         }
       }
@@ -730,9 +730,9 @@
         "target": {
           "name": "a",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 553, "length": 2 } }
+          "location": { "span": { "start": 553, "length": 1 } }
         },
-        "source": { "span": { "start": 553, "length": 2 } }
+        "source": { "span": { "start": 553, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -741,7 +741,7 @@
             "mod": {
               "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
             },
-            "sort": { "internal": { "start": 546, "length": 16 } }
+            "sort": { "internal": { "start": 546, "length": 15 } }
           }
         }
       }
@@ -754,9 +754,9 @@
         "target": {
           "name": "a",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 560, "length": 2 } }
+          "location": { "span": { "start": 560, "length": 1 } }
         },
-        "source": { "span": { "start": 560, "length": 2 } }
+        "source": { "span": { "start": 560, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -765,7 +765,7 @@
             "mod": {
               "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
             },
-            "sort": { "internal": { "start": 546, "length": 16 } }
+            "sort": { "internal": { "start": 546, "length": 15 } }
           }
         }
       }
@@ -778,9 +778,9 @@
         "target": {
           "name": "f",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 279, "length": 2 } }
+          "location": { "span": { "start": 279, "length": 1 } }
         },
-        "source": { "span": { "start": 279, "length": 2 } }
+        "source": { "span": { "start": 279, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -802,9 +802,9 @@
         "target": {
           "name": "f",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 546, "length": 2 } }
+          "location": { "span": { "start": 546, "length": 1 } }
         },
-        "source": { "span": { "start": 546, "length": 2 } }
+        "source": { "span": { "start": 546, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -826,9 +826,9 @@
         "target": {
           "name": "f1",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 422, "length": 3 } }
+          "location": { "span": { "start": 422, "length": 2 } }
         },
-        "source": { "span": { "start": 422, "length": 3 } }
+        "source": { "span": { "start": 422, "length": 2 } }
       },
       "entity": {
         "hs": {
@@ -850,9 +850,9 @@
         "target": {
           "name": "f1",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 611, "length": 3 } }
+          "location": { "span": { "start": 611, "length": 2 } }
         },
-        "source": { "span": { "start": 611, "length": 3 } }
+        "source": { "span": { "start": 611, "length": 2 } }
       },
       "entity": {
         "hs": {
@@ -874,9 +874,9 @@
         "target": {
           "name": "f2",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 434, "length": 3 } }
+          "location": { "span": { "start": 434, "length": 2 } }
         },
-        "source": { "span": { "start": 434, "length": 3 } }
+        "source": { "span": { "start": 434, "length": 2 } }
       },
       "entity": {
         "hs": {
@@ -898,9 +898,9 @@
         "target": {
           "name": "f2",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 566, "length": 3 } }
+          "location": { "span": { "start": 566, "length": 2 } }
         },
-        "source": { "span": { "start": 566, "length": 3 } }
+        "source": { "span": { "start": 566, "length": 2 } }
       },
       "entity": {
         "hs": {
@@ -922,9 +922,9 @@
         "target": {
           "name": "m",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 512, "length": 2 } }
+          "location": { "span": { "start": 512, "length": 1 } }
         },
-        "source": { "span": { "start": 512, "length": 2 } }
+        "source": { "span": { "start": 512, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -946,9 +946,9 @@
         "target": {
           "name": "m",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 589, "length": 2 } }
+          "location": { "span": { "start": 589, "length": 1 } }
         },
-        "source": { "span": { "start": 589, "length": 2 } }
+        "source": { "span": { "start": 589, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -970,9 +970,9 @@
         "target": {
           "name": "map",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 341, "length": 4 } }
+          "location": { "span": { "start": 341, "length": 3 } }
         },
-        "source": { "span": { "start": 341, "length": 4 } }
+        "source": { "span": { "start": 341, "length": 3 } }
       },
       "entity": {
         "hs": {
@@ -997,9 +997,9 @@
         "target": {
           "name": "ord",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 319, "length": 4 } }
+          "location": { "span": { "start": 319, "length": 3 } }
         },
-        "source": { "span": { "start": 319, "length": 4 } }
+        "source": { "span": { "start": 319, "length": 3 } }
       },
       "entity": {
         "hs": {
@@ -1024,9 +1024,9 @@
         "target": {
           "name": "ord",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 606, "length": 4 } }
+          "location": { "span": { "start": 606, "length": 3 } }
         },
-        "source": { "span": { "start": 606, "length": 4 } }
+        "source": { "span": { "start": 606, "length": 3 } }
       },
       "entity": {
         "hs": {
@@ -1051,9 +1051,9 @@
         "target": {
           "name": "r",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 614, "length": 2 } }
+          "location": { "span": { "start": 614, "length": 1 } }
         },
-        "source": { "span": { "start": 614, "length": 2 } }
+        "source": { "span": { "start": 614, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -1062,7 +1062,7 @@
             "mod": {
               "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
             },
-            "sort": { "internal": { "start": 585, "length": 2 } }
+            "sort": { "internal": { "start": 585, "length": 1 } }
           }
         }
       }
@@ -1075,9 +1075,9 @@
         "target": {
           "name": "toLower",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 310, "length": 8 } }
+          "location": { "span": { "start": 310, "length": 7 } }
         },
-        "source": { "span": { "start": 310, "length": 8 } }
+        "source": { "span": { "start": 310, "length": 7 } }
       },
       "entity": {
         "hs": {
@@ -1102,9 +1102,9 @@
         "target": {
           "name": "toLower",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 345, "length": 8 } }
+          "location": { "span": { "start": 345, "length": 7 } }
         },
-        "source": { "span": { "start": 345, "length": 8 } }
+        "source": { "span": { "start": 345, "length": 7 } }
       },
       "entity": {
         "hs": {
@@ -1129,9 +1129,9 @@
         "target": {
           "name": "x",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 518, "length": 2 } }
+          "location": { "span": { "start": 518, "length": 1 } }
         },
-        "source": { "span": { "start": 518, "length": 2 } }
+        "source": { "span": { "start": 518, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -1140,7 +1140,7 @@
             "mod": {
               "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
             },
-            "sort": { "internal": { "start": 514, "length": 2 } }
+            "sort": { "internal": { "start": 514, "length": 1 } }
           }
         }
       }
@@ -1153,9 +1153,9 @@
         "target": {
           "name": "x",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 523, "length": 2 } }
+          "location": { "span": { "start": 523, "length": 1 } }
         },
-        "source": { "span": { "start": 523, "length": 2 } }
+        "source": { "span": { "start": 523, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -1164,7 +1164,7 @@
             "mod": {
               "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
             },
-            "sort": { "internal": { "start": 514, "length": 2 } }
+            "sort": { "internal": { "start": 514, "length": 1 } }
           }
         }
       }
@@ -1177,9 +1177,9 @@
         "target": {
           "name": "x",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 581, "length": 2 } }
+          "location": { "span": { "start": 581, "length": 1 } }
         },
-        "source": { "span": { "start": 581, "length": 2 } }
+        "source": { "span": { "start": 581, "length": 1 } }
       },
       "entity": {
         "hs": {
@@ -1188,7 +1188,7 @@
             "mod": {
               "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
             },
-            "sort": { "internal": { "start": 572, "length": 2 } }
+            "sort": { "internal": { "start": 572, "length": 1 } }
           }
         }
       }
@@ -1201,9 +1201,9 @@
         "target": {
           "name": "zero",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 270, "length": 5 } }
+          "location": { "span": { "start": 270, "length": 4 } }
         },
-        "source": { "span": { "start": 270, "length": 5 } }
+        "source": { "span": { "start": 270, "length": 4 } }
       },
       "entity": {
         "hs": {
@@ -1225,9 +1225,9 @@
         "target": {
           "name": "zero",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
-          "location": { "span": { "start": 526, "length": 5 } }
+          "location": { "span": { "start": 526, "length": 4 } }
         },
-        "source": { "span": { "start": 526, "length": 5 } }
+        "source": { "span": { "start": 526, "length": 4 } }
       },
       "entity": {
         "hs": {

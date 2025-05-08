@@ -100,7 +100,9 @@ srcSpanToSrcRange file sp =
     (Glean.Nat $ fromIntegral $ GHC.srcSpanStartLine sp)
     (Glean.Nat $ fromIntegral $ GHC.srcSpanStartCol sp)
     (Glean.Nat $ fromIntegral $ GHC.srcSpanEndLine sp)
-    (Glean.Nat $ fromIntegral $ GHC.srcSpanEndCol sp)
+    (Glean.Nat $ fromIntegral $ GHC.srcSpanEndCol sp - 1)
+    -- GHC.RealSrcSpan is exclusive while Src.Range is inclusive, so
+    -- we subtract one from the end column when converting.
 
 fsToText :: GHC.FastString -> Text
 fsToText = Text.decodeUtf8 . GHC.bytesFS
