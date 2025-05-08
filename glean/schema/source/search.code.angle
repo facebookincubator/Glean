@@ -1007,12 +1007,8 @@ predicate HsSearchByLowerCaseName:
     name: string,
     entity: code.Entity,
   }
-  { Name, Entity } where
-  (
-    hs.DefinitionNameLowerCase { Name, hs.DefinitionName NameCase }
-    # later: other kinds of definition
-  );
-  HsSearchByName { NameCase, Entity };
+  { Name, { hs = E } } where
+  search.hs.SearchByLowerCaseName { name = Name, entity = E }
 
 predicate ErlangSearchByName:
   {
