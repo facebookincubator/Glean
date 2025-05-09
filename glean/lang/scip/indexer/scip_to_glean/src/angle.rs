@@ -81,11 +81,11 @@ impl Env {
 
     fn get_or_set_fact(&mut self, kind: StringPredicate, key: Box<str>) -> (ScipId, bool) {
         match self.get_def_fact_id(kind, &key) {
-            Some(id) => (id, false),
+            Some(id) => (id, true),
             None => {
                 let id = self.next_id();
                 self.set_def_fact(kind, key, id);
-                (id, true)
+                (id, false)
             }
         }
     }
@@ -190,7 +190,7 @@ impl Env {
         let display_name = display_name.into_boxed_str();
         let (display_name_id, seen) =
             self.get_or_set_fact(StringPredicate::DisplayName, display_name.clone());
-        if seen {
+        if !seen {
             self.out.display_name(display_name_id, display_name);
         }
         self.out.display_name_symbol(sym_id, display_name_id);
@@ -241,7 +241,7 @@ impl Env {
         let qualified_symbol = format!("{}/{}", filepath, local_symbol).into_boxed_str();
         let (symbol_id, seen_symbol) =
             self.get_or_set_fact(StringPredicate::Symbol, qualified_symbol.clone());
-        if seen_symbol {
+        if !seen_symbol {
             self.out.symbol(symbol_id, qualified_symbol);
         }
         if sym_roles.has_def() {
@@ -253,10 +253,10 @@ impl Env {
         let local_symbol = local_symbol.into_boxed_str();
         let (name_id, seen_name) =
             self.get_or_set_fact(StringPredicate::LocalName, local_symbol.clone());
-        if seen_name {
+        if !seen_name {
             self.out.local_name(name_id, local_symbol.clone());
         }
-        if seen_symbol {
+        if !seen_symbol {
             self.out.symbol_name(symbol_id, name_id);
             // TODO: this could be any SymbolInformation.kind
             self.out.symbol_kind(symbol_id, SymbolKind::SkVariable);
@@ -273,7 +273,7 @@ impl Env {
         let scip_symbol = scip_symbol.into_boxed_str();
         let (symbol_id, seen_symbol) =
             self.get_or_set_fact(StringPredicate::Symbol, scip_symbol.clone());
-        if seen_symbol {
+        if !seen_symbol {
             self.out.symbol(symbol_id, scip_symbol);
         }
         if sym_roles.has_def() {
@@ -285,10 +285,10 @@ impl Env {
         let local_name = descriptor.text.to_owned().into_boxed_str();
         let (name_id, seen_name) =
             self.get_or_set_fact(StringPredicate::LocalName, local_name.clone());
-        if seen_name {
+        if !seen_name {
             self.out.local_name(name_id, local_name);
         }
-        if seen_symbol {
+        if !seen_symbol {
             self.out.symbol_name(symbol_id, name_id);
         }
 
