@@ -31,6 +31,7 @@ module Glean.Util.Range
   , sameUpToLastNewline, debugLineOffsets
   , srcRangeToFileLocation
   , srcRangeToSimpleByteRange
+  , mkFileLines
   -- ** converting with LineOffsets
   , byteOffsetToLineCol
   , byteRangeToRange
@@ -186,6 +187,17 @@ getLineOffsets bs
              $ newlines
           , lineOffsets_endsInNewline = False
           , lineOffsets_hasUnicodeOrTabs }
+
+mkFileLines :: Src.File -> LineOffsets -> Src.FileLines_key
+mkFileLines fp offs =
+  Src.FileLines_key
+    { fileLines_key_file = fp
+    , fileLines_key_lengths =
+        let lineOffs = Vector.toList $ lineOffsets offs in
+        map toNat $ zipWith (-) (drop 1 lineOffs) lineOffs
+    , fileLines_key_endsInNewline = lineOffsets_endsInNewline offs
+    , fileLines_key_hasUnicodeOrTabs = lineOffsets_hasUnicodeOrTabs offs
+    }
 
 -- | This assumes that the fileLines_key_lengths are strictly positive
 lengthsToLineOffsets :: Src.FileLines_key -> LineOffsets
