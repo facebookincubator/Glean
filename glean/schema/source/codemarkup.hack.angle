@@ -145,7 +145,8 @@ predicate HackEntityInfo:
       (Function = Kind) |
       (Namespace = Kind) |
       (Type = Kind; { typedef_ = _ } = Decl) |
-      (Module = Kind)
+      (Module = Kind) |
+      (Field = Kind)
     )
 
 #
