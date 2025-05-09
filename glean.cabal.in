@@ -969,6 +969,7 @@ library indexers
         glean/lang/java-lsif
         glean/lang/lsif/indexer
         glean/lang/scip/indexer
+        glean/lang/swift
         glean/lang/python-scip
         glean/lang/dotnet-scip
         glean/lang/rust-lsif
@@ -987,6 +988,7 @@ library indexers
         Glean.Indexer.JavaLsif
         Glean.Indexer.LSIF
         Glean.Indexer.SCIP
+        Glean.Indexer.Swift
         Glean.Indexer.RustLsif
         Glean.Indexer.RustScip
         Glean.Indexer.Typescript
