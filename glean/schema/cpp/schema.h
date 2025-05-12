@@ -8358,7 +8358,7 @@ struct QualifiedName : Predicate<std::string> {
   }
 }; // struct QualifiedName
 
-struct LineAssemblyCode : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, uint64_t, Fact<Binary>, Revision>, std::string> {
+struct LineAssemblyCode : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::Src::File>, uint64_t, Fact<Binary>, Revision, std::string>, std::string> {
   static const char* GLEAN_name() {
     return "perf.LineAssemblyCode";
   }
@@ -30402,7 +30402,7 @@ struct AngleFileEntityXRefLocations : Predicate<std::tuple<Fact<facebook::glean:
 struct SCHEMA {
   template<typename P> struct index;
   static constexpr size_t count = 1355;
-  static constexpr char schemaId[] = "9089ad73abf2fcb40475cf3c467599c7";
+  static constexpr char schemaId[] = "7137d76cee0f62cd19a468a9a213d0b1";
   template<size_t i> struct predicate;
 };
 
