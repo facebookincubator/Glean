@@ -65,7 +65,8 @@ data AngleSchema = AngleSchema {
  rSchema :: ResolvedSchemaRef,
  fpath :: FilePath,
  toByteSpan :: ToByteSpan,
- imports :: [ImportDecl]
+ imports :: [ImportDecl],
+ schemaSpan :: SrcSpan
 }
 
 type DeclBuilder a =
@@ -142,6 +143,7 @@ buildFacts ProcessedSchema{..} fileinfos = do
 
   schemas <- mapM (\sSchema -> do
     let name = sourceRefName $ schemaName sSchema
+        srcSpan = schemaSrcSpan sSchema
         -- we don't have import statements in ResolvedSchema,
         -- so we get them from SourceSchema but use resolved version
         imports = mapMaybe (\d -> case d of
@@ -159,13 +161,13 @@ buildFacts ProcessedSchema{..} fileinfos = do
     (file, toBs) <- case HashMap.lookup name schemaFileInfoMap of
       Just SchemaFileInfo{..} -> return (filepath sourceFileInfo, toByteSpan)
       Nothing -> fail $ "Couldn't find file info for schema " <> show name
-    return $ AngleSchema rSchema file toBs imports
+    return $ AngleSchema rSchema file toBs imports srcSpan
     ) $ srcSchemas procSchemaSource
 
   mapM_ (`buildSchemaFacts` toDef) schemas
 
 buildSchemaFacts :: AngleSchema -> ToDef -> FactBuilder
-buildSchemaFacts AngleSchema{rSchema = rs@ResolvedSchema{..}, ..} toDef = do
+buildSchemaFacts AngleSchema{rSchema = rs@ResolvedSchema{..}, ..} toDef  = do
   let preds = HashMap.elems resolvedSchemaPredicates
       types = HashMap.elems resolvedSchemaTypes
       derives = HashMap.elems resolvedSchemaDeriving
@@ -174,11 +176,19 @@ buildSchemaFacts AngleSchema{rSchema = rs@ResolvedSchema{..}, ..} toDef = do
   fileFact <- makeFact @Src.File $ Text.pack fpath
 
   -- build declarations
-  mapM_ (\d -> buildDecl buildImportDeclFacts d toByteSpan fileFact ) imports
-  mapM_ (\p -> buildDecl buildPredDeclFact p toByteSpan fileFact ) preds
-  mapM_ (\t -> buildDecl buildTypeDeclFact t toByteSpan fileFact ) types
-  mapM_ (\d -> buildDecl buildDeriveDeclFact d toByteSpan fileFact ) derives
-  -- TODO build schema decl facts (so we can "go-to" def from import stms)
+  impDeclFacts <-
+    mapM (\d -> buildDecl buildImportDeclFacts d toByteSpan fileFact ) imports
+  predDeclFacts <-
+    mapM (\p -> buildDecl buildPredDeclFact p toByteSpan fileFact ) preds
+  typeDeclFacts <-
+    mapM (\t -> buildDecl buildTypeDeclFact t toByteSpan fileFact ) types
+  deriveDeclFacts <-
+    mapM (\d -> buildDecl buildDeriveDeclFact d toByteSpan fileFact ) derives
+  let allDecls =
+        impDeclFacts <> predDeclFacts <> typeDeclFacts <> deriveDeclFacts
+  _ <- buildDecl buildSchemaDeclFact
+    (resolvedSchemaName, resolvedSchemaVersion, schemaSpan, allDecls)
+      toByteSpan fileFact
 
   -- build XRefs
   xrefs <- mapM (\xref -> buildXRef xref toDef toByteSpan) sourceRefs
@@ -252,7 +262,6 @@ findPatXRefs = \case
   where
     findFieldXRefs (Field _ pat) = findPatXRefs pat
 
-
 findQueryXRefs :: ResolvedQuery -> [(Ref, SrcSpan)]
 findQueryXRefs (SourceQuery head stms _) =
   findHeadXRefs head ++ concatMap findStmXrefs stms
@@ -279,11 +288,29 @@ findXRefs ResolvedSchema{..} = do
       grouped = groupBy (\(k,_)(k',_) -> k == k') xrefs
   map (\xrefs -> (fst $ head xrefs, map snd xrefs)) grouped
 
-buildDecl :: DeclBuilder a -> a -> ToByteSpan -> Src.File -> FactBuilder
+
+buildDecl
+  :: forall a m. (NewFact m) => DeclBuilder a
+  -> a
+  -> ToByteSpan
+  -> Src.File
+  -> m Anglelang.DeclarationLocation
 buildDecl declBuilder def toByteSpan fileFact = do
   (decl, srcSpan) <- declBuilder def
-  makeFact_ @Anglelang.DeclarationLocation $
+  makeFact @Anglelang.DeclarationLocation $
     Anglelang.DeclarationLocation_key decl fileFact (toByteSpan srcSpan)
+
+buildSchemaDeclFact ::
+  DeclBuilder (Name, Version, SrcSpan, [Anglelang.DeclarationLocation])
+buildSchemaDeclFact (name, version, srcSpan, declLocs) = do
+  nameFact <- buildNameFact name version
+  schemaFact <- makeFact @Anglelang.SchemaDecl
+    $ Anglelang.SchemaDecl_key nameFact decls
+  return (Anglelang.Declaration_schema schemaFact, srcSpan)
+  where
+    decls = mapMaybe toDecl declLocs
+    toDecl = fmap Anglelang.declarationLocation_key_decl
+      . Anglelang.declarationLocation_key
 
 buildTypeDeclFact :: DeclBuilder ResolvedTypeDef
 buildTypeDeclFact TypeDef{typeDefRef = TypeRef{..}, ..} = do
