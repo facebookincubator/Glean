@@ -668,6 +668,7 @@ data SourceSchema_ s = SourceSchema
   { schemaName :: SourceRef
   , schemaInherits :: [SourceRef]
   , schemaDecls :: [SourceDecl_ s]
+  , schemaSrcSpan :: s
   }
   deriving (Eq)
 
@@ -1031,8 +1032,8 @@ rmLocSchemas (SourceSchemas version schemas evolves) =
   SourceSchemas version (rmLocSchema <$> schemas) (rmLocEvolves <$> evolves)
 
 rmLocSchema :: SourceSchema_ a -> SourceSchema_ ()
-rmLocSchema (SourceSchema name inherits decls) =
-  SourceSchema name inherits $ rmLocDecl <$> decls
+rmLocSchema (SourceSchema name inherits decls _) =
+  SourceSchema name inherits (rmLocDecl <$> decls) ()
 
 rmLocEvolves :: SourceEvolves_ a -> SourceEvolves_ ()
 rmLocEvolves (SourceEvolves _ a b) = SourceEvolves () a b

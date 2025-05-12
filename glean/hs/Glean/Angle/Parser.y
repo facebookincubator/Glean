@@ -239,7 +239,7 @@ evolves
 schemadef :: { Schema.SourceSchema }
 schemadef
   : 'schema' qname inherit '{' list(schemadecl) '}'
-    { Schema.SourceSchema (lval $2) $3 (concat $5) }
+    { Schema.SourceSchema (lval $2) $3 (concat $5) (s $1 $6) }
 
 inherit :: { [SourceRef] }
 inherit

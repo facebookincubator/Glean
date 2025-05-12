@@ -230,6 +230,7 @@ resolveSchemaRefs SourceSchemas{..} = do
          { schemaName = schemaName
          , schemaInherits = inherits
          , schemaDecls = decls
+         , schemaSrcSpan = schemaSrcSpan
          }
 
   schemas <- traverse resolveSchema srcSchemas
