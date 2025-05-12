@@ -78,8 +78,8 @@ instance LogRequest DocumentSymbolsRequest where
 instance LogRequest SymbolId where
   logRequest = logSymbolSG Logger.setSymbol
 
-instance LogRequest USR where
-  logRequest (USR hash) = logSymbolSG Logger.setSymbol (SymbolId hash)
+instance LogRequest USRHash where
+  logRequest (USRHash hash) = logSymbolSG Logger.setSymbol (SymbolId hash)
 
 instance LogRequest SymbolPath where
   logRequest = logSymbolPathSG Logger.setFilepath Logger.setRepo

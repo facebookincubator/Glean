@@ -69,10 +69,10 @@ fileIncludeLocations env@Glass.Env{..} req opts = do
 -- compute entity declToDef, return the pairs and other info.
 clangUSRToDefinition
   :: Glass.Env
-  -> USR
+  -> USRHash
   -> RequestOptions
   -> IO (USRSymbolDefinition, QueryEachRepoLog)
-clangUSRToDefinition env@Glass.Env{..} usr@(USR hash) opts = do
+clangUSRToDefinition env@Glass.Env{..} usr@(USRHash hash) opts = do
   withRepoLanguage "clangUSRToDefinition" env usr repo mlang opts $
     \gleanDBs _ _ -> do
       backendRunHaxl GleanBackend{..} env $ do

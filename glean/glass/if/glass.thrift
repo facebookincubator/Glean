@@ -34,7 +34,7 @@ typedef string Path (hs.newtype)
 typedef string Revision (hs.newtype)
 
 // USR hash (Symbol string from ClangD hashed)
-typedef string USR (hs.newtype)
+typedef string USRHash (hs.newtype)
 
 // A line range in the file to restrict the query. start should be <= end, and
 // range is inclusive of end.
@@ -850,7 +850,7 @@ service GlassService extends fb303.FacebookService {
 
   // Resolve declaration USR from ClangD to definition sites
   USRSymbolDefinition clangUSRToDefinition(
-    1: USR hash,
+    1: USRHash usr,
     2: RequestOptions options,
   ) throws (1: ServerException e, 2: GlassException g);
 }
