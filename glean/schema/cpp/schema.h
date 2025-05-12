@@ -30402,7 +30402,7 @@ struct AngleFileEntityXRefLocations : Predicate<std::tuple<Fact<facebook::glean:
 struct SCHEMA {
   template<typename P> struct index;
   static constexpr size_t count = 1355;
-  static constexpr char schemaId[] = "4412e38f0d07ea43d895f9cc3c76283f";
+  static constexpr char schemaId[] = "9089ad73abf2fcb40475cf3c467599c7";
   template<size_t i> struct predicate;
 };
 

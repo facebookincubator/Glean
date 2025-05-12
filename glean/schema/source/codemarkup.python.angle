@@ -6,6 +6,7 @@ import code.24
 import code.python
 import codemarkup.types
 import python
+import python.branches
 
 # Resolving locations to entities
 
@@ -56,8 +57,14 @@ predicate PythonFileEntityXRefLocations:
     entity: code.python.Entity,
   }
   {File, {Location , { span = Src } }, { decl = Decl }} where
-  python.DirectXRefsByFile {File, { Decl, Src }};
-  PythonEntityLocation {{ decl = Decl }, Location};
+  if (python.branches.FileToRoot { file = File }) then (
+    python.branches.DirectXRefByFile { File, {Decl, DeclFile, DeclSpan}, Src };
+    python.DeclarationToName Decl -> (python.Name Name);
+    codemarkup.types.Location { Name, DeclFile, { span = DeclSpan }, nothing } = Location;
+  ) else (
+    python.DirectXRefsByFile {File, { Decl, Src }};
+    PythonEntityLocation {{ decl = Decl }, Location};
+  )
 
 #
 # Language entity uses
