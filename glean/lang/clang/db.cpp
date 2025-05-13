@@ -11,6 +11,8 @@
 
 #include <folly/Overload.h>
 
+#include <utility>
+
 #include "glean/lang/clang/path.h"
 #if GLEAN_FACEBOOK
 #include "glean/facebook/lang/clang/path.h"
@@ -22,7 +24,7 @@ namespace {
 
 std::filesystem::path subpath(
     const folly::Optional<std::string>& subdir,
-    std::filesystem::path p) {
+    const std::filesystem::path& p) {
   // This returns 'path' if it is absolute or if 'subdir' is empty and
   // 'subdir'/'path' otherwise.
   return p.is_absolute() || !subdir ? p
@@ -140,7 +142,7 @@ void ClangDB::include(
       file,
       range.range,
       Src::ByteSpan{name_range.span.start, name_range.span.length});
-  ppevent(PreInclude{include, id}, range);
+  ppevent(PreInclude{include, std::move(id)}, range);
 }
 
 void ClangDB::enterFile(
@@ -171,7 +173,7 @@ void ClangDB::skipFile(
 void ClangDB::FileData::xref(
     Src::ByteSpan span,
     CrossRef::Spans CrossRef::*get_spans,
-    Cxx::XRefTarget target,
+    const Cxx::XRefTarget& target,
     CrossRef::SortID sort_id,
     bool local) {
   auto [iter, inserted] = xrefs.lookup.try_emplace(target);

@@ -6,6 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+#include <utility>
 #include <variant>
 
 #include <clang/AST/DeclBase.h>
@@ -423,7 +424,7 @@ class DeclarationTargets {
   }
 
   void contextXRef(Cxx::Declaration target, ClangDB::SourceRange sort_id) {
-    refsInContext.insert({target, sort_id});
+    refsInContext.insert({std::move(target), sort_id});
   }
 
  private:
@@ -1215,7 +1216,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     static folly::Optional<NamespaceDecl> declare(
         ASTVisitor& visitor,
         const clang::NamespaceDecl* decl,
-        Cxx::Scope,
+        const Cxx::Scope&,
         Src::Range range) {
       folly::Optional<Fact<Cxx::Name>> name;
       if (!decl->isAnonymousNamespace()) {
@@ -1317,7 +1318,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     static folly::Optional<EnumDecl> declare(
         ASTVisitor& visitor,
         const clang::EnumDecl* decl,
-        Cxx::Scope scope,
+        const Cxx::Scope& scope,
         Src::Range range) {
       auto qname =
           visitor.db.fact<Cxx::QName>(visitor.db.name(decl->getName()), scope);
@@ -1390,7 +1391,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     static folly::Optional<TypeAliasDecl> declare(
         ASTVisitor& visitor,
         const clang::TypedefNameDecl* decl,
-        Cxx::Scope scope,
+        const Cxx::Scope& scope,
         Src::Range range) {
       folly::Optional<Cxx::TypeAliasKind> kind;
       if (clang::isa<clang::TypeAliasDecl>(decl)) {
@@ -1453,7 +1454,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     static folly::Optional<NamespaceAliasDecl> declare(
         ASTVisitor& visitor,
         const clang::NamespaceAliasDecl* decl,
-        Cxx::Scope,
+        const Cxx::Scope&,
         Src::Range range) {
       auto qname = visitor.db.fact<Cxx::NamespaceQName>(
           just(visitor.db.name(decl->getName())),
@@ -1505,7 +1506,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     static folly::Optional<ClassDecl> declare(
         ASTVisitor& visitor,
         const clang::CXXRecordDecl* decl,
-        Cxx::Scope scope,
+        const Cxx::Scope& scope,
         Src::Range range) {
       if (decl->isInjectedClassName()) {
         return folly::none;
@@ -1936,7 +1937,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     static folly::Optional<VarDecl> declare(
         ASTVisitor& visitor,
         const clang::FieldDecl* decl,
-        Cxx::Scope scope,
+        const Cxx::Scope& scope,
         Src::Range range) {
       auto qname =
           visitor.db.fact<Cxx::QName>(visitor.db.name(decl->getName()), scope);
@@ -2367,7 +2368,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     static folly::Optional<ObjcMethodDecl> declare(
         ASTVisitor& visitor,
         const clang::ObjCMethodDecl* d,
-        Cxx::Scope,
+        const Cxx::Scope&,
         Src::Range range) {
       if (auto container =
               ObjcContainerDecl::find(visitor, d->getDeclContext())) {
@@ -2414,7 +2415,7 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
     static folly::Optional<ObjcPropertyDecl> declare(
         ASTVisitor& visitor,
         const clang::ObjCPropertyDecl* d,
-        Cxx::Scope,
+        const Cxx::Scope&,
         Src::Range range) {
       if (auto container =
               ObjcContainerDecl::find(visitor, d->getDeclContext())) {

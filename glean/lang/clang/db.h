@@ -122,7 +122,7 @@ class ClangDB {
 
   // Names
 
-  Fact<Cxx::Name> name(std::string s) {
+  Fact<Cxx::Name> name(const std::string& s) {
     return batch.fact<Cxx::Name>(std::move(s));
   }
 
@@ -191,7 +191,7 @@ class ClangDB {
     void xref(
         Src::ByteSpan span,
         CrossRef::Spans CrossRef::*get_spans,
-        Cxx::XRefTarget target,
+        const Cxx::XRefTarget& target,
         CrossRef::SortID sort_id,
         bool local);
 
@@ -217,7 +217,7 @@ class ClangDB {
   void enterFile(clang::SourceLocation loc, folly::Optional<Include> inc);
   void skipFile(folly::Optional<Include> inc, const clang::FileEntryRef& entry);
 
-  void declaration(const SourceRange& range, Cxx::Declaration decl) {
+  void declaration(const SourceRange& range, const Cxx::Declaration& decl) {
     if (range.file) {
       range.file->declarations.emplace_back(range.span, decl);
     }

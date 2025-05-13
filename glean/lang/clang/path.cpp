@@ -15,7 +15,7 @@
 namespace facebook::glean::clangx {
 
 std::filesystem::path goodPath(
-    std::filesystem::path root,
+    const std::filesystem::path& root,
     std::filesystem::path path) {
   assert(root.is_absolute());
   path = path.lexically_normal();
@@ -63,8 +63,8 @@ std::filesystem::path goodPath(
 }
 
 std::filesystem::path followSymlinksInsideRoot(
-    std::filesystem::path root,
-    std::filesystem::path source) {
+    const std::filesystem::path& root,
+    const std::filesystem::path& source) {
   CHECK(source.is_relative());
 
   std::filesystem::path path; // current path
