@@ -65,6 +65,12 @@ common fb-cpp
 common exe
   ghc-options: -threaded -rtsopts
 
+common haskell-indexer
+  if impl(ghc >= 9.2)
+    buildable: True
+  else
+    buildable: False
+
 flag clang
      default: False
 
@@ -1100,11 +1106,7 @@ executable hack-derive
 
 -- Haskell indexer via hie
 executable hie-indexer
-    import: deps, fb-haskell, exe
-    if impl(ghc >= 8.8)
-      buildable: True
-    else
-      buildable: False
+    import: deps, fb-haskell, exe, haskell-indexer
     hs-source-dirs: glean/lang/haskell
     main-is: HieIndexer/Main.hs
     other-modules:
@@ -2143,7 +2145,7 @@ test-suite glean-snapshot-hack
         buildable: False
 
 test-suite glean-snapshot-haskell
-    import: fb-haskell, fb-cpp, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe, haskell-indexer
     hs-source-dirs: glean/lang/haskell/tests
     type: exitcode-stdio-1.0
     main-is: Main.hs
@@ -2156,7 +2158,7 @@ test-suite glean-snapshot-haskell
        glean:glean
 
 test-suite glean-snapshot-codemarkup-haskell
-    import: fb-haskell, fb-cpp, deps, exe
+    import: fb-haskell, fb-cpp, deps, exe, haskell-indexer
     hs-source-dirs: glean/lang/codemarkup/tests/haskell
     type: exitcode-stdio-1.0
     main-is: Main.hs
@@ -2358,7 +2360,7 @@ test-suite glass-regression-hack
         buildable: False
 
 test-suite glass-regression-haskell
-    import: glass-regression-deps, fb-haskell, deps, exe
+    import: glass-regression-deps, fb-haskell, deps, exe, haskell-indexer
     type: exitcode-stdio-1.0
     main-is: Glean/Glass/Regression/Haskell/Main.hs
     ghc-options: -main-is Glean.Glass.Regression.Haskell.Main
