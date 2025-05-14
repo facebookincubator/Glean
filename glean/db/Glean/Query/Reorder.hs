@@ -155,7 +155,7 @@ reorder dbSchema QueryWithInfo{..} =
 
 reorderQuery :: FlatQuery -> R CgQuery
 reorderQuery (FlatQuery pat _ stmts) =
-  withScopeFor (scopeVars stmts) $ do
+  withScopeFor (vars pat <> scopeVars stmts) $ do
     stmts' <- reorderGroup stmts
     (extra, pat') <- resolved `catchError` \e ->
       maybeBindUnboundPredicate e resolved
@@ -904,7 +904,7 @@ maybeBindUnboundPredicate e f
 
         Just details@Schema.PredicateDetails{} -> do return details
 
-    bindVar var
+    lhs <- fixVars IsPat (Ref (MatchVar var))
     (stmts, a) <- f `catchError` \e' -> maybeBindUnboundPredicate e' f
     let
       pid = Schema.predicatePid details
@@ -919,10 +919,7 @@ maybeBindUnboundPredicate e f
           SeekOnAllFacts
     -- V = p {key=_, value=_}
     -- LHS = RHS
-    return (CgStatement (Ref (MatchBind var)) pat : stmts, a)
-
-bindVar :: Var -> R ()
-bindVar v = modify $ \s -> s { roScope = bind v $ roScope s }
+    return (CgStatement lhs pat : stmts, a)
 
 toCgStatement :: FlatStatement -> R [CgStatement]
 toCgStatement stmt = case stmt of
@@ -935,7 +932,7 @@ toCgStatement stmt = case stmt of
       stmts <- reorderGroup g
       e' <- fixVars IsExpr e
       return [CgAllStatement v e' stmts]
-    bindVar v
+    _ <- fixVars IsPat (Ref (MatchVar v) :: Pat) -- bind v, if allowed
     return cg
   FlatNegation stmts -> do
     stmts' <-
