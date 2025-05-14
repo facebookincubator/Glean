@@ -47,7 +47,8 @@ indexer = Indexer {
            [ "--output-dir", outDir
             , "--target", target
             , "--swift-only"
-            , "--output-type", "scip" ],
+            , "--output-type", "scip"
+            , "--build-indexer" ],
         scipRoot = indexerRoot,
         scipWritesLocal = False,
         scipLanguage = Just SCIP.Swift
