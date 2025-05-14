@@ -1,2 +1,2 @@
 query: hs.DeclarationLocation _
-transform: [gensort, []]
+transform: [normord, []]

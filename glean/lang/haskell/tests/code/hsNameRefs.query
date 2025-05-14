@@ -1,2 +1,2 @@
 query: hs.NameRefs _
-transform: [gensort, []]
+transform: [normord, []]

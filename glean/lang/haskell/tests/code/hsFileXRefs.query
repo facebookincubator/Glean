@@ -1,2 +1,2 @@
 query: hs.FileXRefs _
-transform: [gensort, []]
+transform: [normord, []]
