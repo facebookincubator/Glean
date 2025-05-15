@@ -1,0 +1,45 @@
+[
+    "@generated",
+    [
+        {
+            "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
+            "range": {
+                "columnBegin": 16,
+                "columnEnd": 18,
+                "lineBegin": 29,
+                "lineEnd": 29
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
+            "range": {
+                "columnBegin": 29,
+                "columnEnd": 31,
+                "lineBegin": 42,
+                "lineEnd": 42
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
+            "range": {
+                "columnBegin": 36,
+                "columnEnd": 38,
+                "lineBegin": 42,
+                "lineEnd": 42
+            },
+            "repository": "test"
+        },
+        {
+            "filepath": "glean/lang/codemarkup/tests/haskell/code/B.hs",
+            "range": {
+                "columnBegin": 11,
+                "columnEnd": 13,
+                "lineBegin": 22,
+                "lineEnd": 22
+            },
+            "repository": "test"
+        }
+    ]
+]
