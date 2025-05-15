@@ -17,7 +17,7 @@ module Glean.Glass.Regression.Snapshot (
     mainGlassSnapshotGeneric,
     mainGlassSnapshotXLang,
     Cfg(..),
-    Output, Getter
+    Getter
   ) where
 
 import Data.Aeson
@@ -82,8 +82,6 @@ instance FromJSON Query where
     <$> v .: "action"
     <*> v .: "args"
     <*> v .:? "request_args"
-
-type Output = FilePath
 
 type Getter = IO (Some LocalOrRemote, Repo)
 

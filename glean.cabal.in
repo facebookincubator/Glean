@@ -421,7 +421,6 @@ library core
         Glean.Typed.Id
         Glean.Typed.Predicate
         Glean.Typed.Prim
-        Glean.Typed.Query
 
         Glean.Query.Thrift
         Glean.Query.Thrift.Internal
