@@ -11,11 +11,14 @@ module Glean.Glass.Handler.Cxx
   -- * C++ specific methods
     fileIncludeLocations
   , clangUSRToDefinition
+  , usrToDefinition
   ) where
 
-import Control.Monad.Catch
+import Control.Applicative ( (<|>) )
+import Control.Monad.Catch ( MonadThrow(throwM) )
 import Control.Monad ( forM )
 import qualified Data.Map.Strict as Map
+import Data.Foldable ( find )
 
 import Glean.Glass.Base
 import Glean.Glass.SymbolId
@@ -30,9 +33,11 @@ import Glean.Glass.Types
 import Glean.Glass.Range
 
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
+import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.Src.Types as Src
 
 import qualified Glean.Glass.Query.Cxx as Cxx
+import Data.Maybe (fromMaybe)
 
 fileIncludeLocations
   :: Glass.Env
@@ -77,32 +82,70 @@ clangUSRToDefinition env@Glass.Env{..} usr@(USRHash hash) opts = do
     \gleanDBs _ _ -> do
       backendRunHaxl GleanBackend{..} env $ do
         result <- firstOrErrors $ do
-          rev <- getRepoHash <$> Glean.haxlRepo
           mdefn <- Cxx.usrHashToDeclaration hash
-          case mdefn of
-            Nothing -> -- either hash is unknown or decl is already defn
-              pure (Left (GlassExceptionReason_entitySearchFail
-                "No definition result for hash"))
-            Just (Code.Location{..}, entity) -> do
-              range <- case location_destination of
-                Just Src.FileLocation{..} -> do
-                  let rangeSpan = Code.RangeSpan_span fileLocation_span
-                  rangeSpanToLocationRange repo fileLocation_file rangeSpan
-                _ -> rangeSpanToLocationRange repo location_file
-                  location_location
-              path <- GleanPath <$> Glean.keyOf location_file
-              sym <- toSymbolId (fromGleanPath repo path) entity
-              pure (Right (USRSymbolDefinition {
-                uSRSymbolDefinition_location = range,
-                uSRSymbolDefinition_revision = rev,
-                uSRSymbolDefinition_sym = sym
-              }))
+          defnResToUSRSymbolDefinition mdefn repo
         case result of
           Left err -> throwM $ ServerException $ errorsText err
           Right defn -> return (defn, Nothing)
   where
     repo = RepoName "fbsource"
     mlang = Just Language_Cpp
+
+usrToDefinition ::
+  Glass.Env ->
+  USRToDefinitionRequest ->
+  RequestOptions ->
+  IO (USRSymbolDefinition, QueryEachRepoLog)
+usrToDefinition
+  env@Glass.Env{..}
+  req@(USRToDefinitionRequest (USR usr) mRepo)
+  opts =
+    withRepoLanguage "usrToDefinition" env req repo (Just lang) opts $
+      \gleanDBs _ _ -> do
+        backendRunHaxl GleanBackend{..} env $ do
+          result <- firstOrErrors $ do
+            mdefn <- Cxx.usrToDeclaration usr
+            defnResToUSRSymbolDefinition mdefn repo
+          case result of
+            Left err -> throwM $ ServerException $ errorsText err
+            Right defn -> return (defn, Nothing)
+   where
+    lang = Language_Swift
+    repo =
+      fromMaybe
+        (RepoName "fbsource")
+        ( mRepo
+          <|> fmap fst
+              ( find
+                  (any ((== lang) . snd) . snd)
+                  (Map.toList $ gleanIndices repoMapping)
+              )
+        )
+
+defnResToUSRSymbolDefinition
+  :: Maybe (Code.Location, Code.Entity) -- ^
+  -> RepoName -- ^
+  -> Glean.RepoHaxl u w (Either GlassExceptionReason USRSymbolDefinition)
+defnResToUSRSymbolDefinition mdefn repo = do
+  rev <- getRepoHash <$> Glean.haxlRepo
+  case mdefn of
+    Nothing -> -- either usr is unknown or decl is already defn
+      pure (Left (GlassExceptionReason_entitySearchFail
+        "No definition result for USR"))
+    Just (Code.Location{..}, entity) -> do
+      range <- case location_destination of
+        Just Src.FileLocation{..} -> do
+          let rangeSpan = Code.RangeSpan_span fileLocation_span
+          rangeSpanToLocationRange repo fileLocation_file rangeSpan
+        Nothing -> rangeSpanToLocationRange repo location_file
+          location_location
+      path <- GleanPath <$> Glean.keyOf location_file
+      sym <- toSymbolId (fromGleanPath repo path) entity
+      pure (Right (USRSymbolDefinition {
+        uSRSymbolDefinition_location = range,
+        uSRSymbolDefinition_revision = rev,
+        uSRSymbolDefinition_sym = sym
+      }))
 
 -- | Scrub all glean types for export to the client
 -- And flatten to lists for GraphQL.

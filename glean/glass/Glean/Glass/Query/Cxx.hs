@@ -14,6 +14,7 @@ module Glean.Glass.Query.Cxx
     documentSymbolsForCxx,
     fileIncludeLocationsForCxx,
     usrHashToDeclaration,
+    usrToDeclaration,
     usrHashToXRefs,
   ) where
 
@@ -36,6 +37,8 @@ import qualified Glean.Schema.CodeCxx.Types as Cxx
 import qualified Glean.Schema.CodePp.Types as Pp
 import qualified Glean.Schema.Cxx1.Types as Cxx
 import qualified Glean.Schema.Src.Types as Src
+import qualified Glean.Schema.CodeScip.Types as Scip
+import qualified Glean.Schema.CodemarkupScip.Types as Scip
 import Glean.Util.ToAngle ( ToAngle(toAngle) )
 import qualified Glean.Util.Range as Range
 
@@ -688,11 +691,11 @@ fileIncludeLocations mlimit fileId = do
 
 usrHashToDeclaration
   :: Text -> Glean.RepoHaxl u w (Maybe (Code.Location, Code.Entity))
-usrHashToDeclaration usrhash = fetchDataRecursive (usrToDeclaration usrhash)
+usrHashToDeclaration usrhash = fetchDataRecursive (usrHashToDeclarationAngle usrhash)
 
 -- | Resolve USR hash to its definition site
-usrToDeclaration :: Text -> Angle (Code.Location, Code.Entity)
-usrToDeclaration usrhash =
+usrHashToDeclarationAngle :: Text -> Angle (Code.Location, Code.Entity)
+usrHashToDeclarationAngle usrhash =
   vars $ \(decl :: Angle Cxx.Declaration) (loc :: Angle Code.Location)
       (defn :: Angle Cxx.Definition) ->
     tuple (loc, sig (alt @"cxx" (alt @"defn" defn)) :: Angle Code.Entity)
@@ -710,6 +713,26 @@ usrToDeclaration usrhash =
         wild .= predicate @Code.CxxEntityLocation (
           rec $
             field @"entity"  (alt @"defn" defn) $
+            field @"location" loc
+          end)
+      ]
+
+usrToDeclaration
+  :: Text -> Glean.RepoHaxl u w (Maybe (Code.Location, Code.Entity))
+usrToDeclaration usr = fetchDataRecursive (usrToDeclarationAngle usr)
+
+-- | Resolve USR to its definition site
+usrToDeclarationAngle :: Text -> Angle (Code.Location, Code.Entity)
+usrToDeclarationAngle usr =
+  vars $ \(scipEnt :: Angle Scip.Entity) (loc :: Angle Code.Location) ->
+    tuple
+      ( loc, sig (alt @"scip" scipEnt) :: Angle Code.Entity)
+      `where_` [
+        scipEnt .= alt @"swift"
+          (rec $ field @"defn" (rec $ field @"symbol" (string usr) end) end),
+        wild .= predicate @Scip.ScipEntityLocation (
+          rec $
+            field @"entity" scipEnt $
             field @"location" loc
           end)
       ]

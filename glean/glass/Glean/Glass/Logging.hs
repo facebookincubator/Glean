@@ -81,6 +81,12 @@ instance LogRequest SymbolId where
 instance LogRequest USRHash where
   logRequest (USRHash hash) = logSymbolSG Logger.setSymbol (SymbolId hash)
 
+instance LogRequest USR where
+  logRequest (USR usr) = logSymbolSG Logger.setSymbol (SymbolId usr)
+
+instance LogRequest USRToDefinitionRequest where
+  logRequest = logUSRToDefinitionRequestSG Logger.setSymbol Logger.setRepo
+
 instance LogRequest SymbolPath where
   logRequest = logSymbolPathSG Logger.setFilepath Logger.setRepo
 
@@ -347,6 +353,23 @@ logSymbolSearchRequestSG logQuery logRepo SymbolSearchRequest{..} =
     Just r -> logRepo r <> logQuery symbolSearchRequest_name
   where
     repo = unRepoName <$> symbolSearchRequest_repo_name
+
+logUSRToDefinitionRequestSG ::
+  Semigroup a =>
+  (Text -> a) ->
+  (Text -> a) ->
+  USRToDefinitionRequest ->
+  a
+logUSRToDefinitionRequestSG
+    logQuery
+    logRepo
+    (USRToDefinitionRequest usrr repo_name) =
+  case repo of
+    Nothing -> logQuery usr
+    Just r -> logRepo r <> logQuery usr
+ where
+  usr = unUSR usrr
+  repo = unRepoName <$> repo_name
 
 logSnapshotStatus :: SnapshotStatus -> GleanGlassLogger
 logSnapshotStatus st = case st of

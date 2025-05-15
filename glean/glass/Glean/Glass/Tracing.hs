@@ -97,6 +97,8 @@ glassTraceEvent (GlassTraceWithId tid (TraceCommand cmd)) = case cmd of
     ("FileIncludeLocations", tid, json $ toEncoding r)
   Glass.ClangUSRToDefinition r opts ->
     ("ClangUSRToDefinition", tid, json $ toEncoding r)
+  Glass.UsrToDefinition r opts ->
+    ("UsrToDefinition", tid, json $ toEncoding r)
 
   where
     json =

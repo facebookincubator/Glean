@@ -1,0 +1,50 @@
+[
+  "@generated",
+  {
+    "key": {
+      "tuplefield0": {
+        "scip": {
+          "swift": {
+            "defn": {
+              "key": {
+                "symbol": {
+                  "key": "s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvp"
+                },
+                "location": {
+                  "key": {
+                    "file": {
+                      "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+                    },
+                    "range": {
+                      "lineBegin": 5,
+                      "columnBegin": 13,
+                      "lineEnd": 5,
+                      "columnEnd": 26
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "tuplefield1": {
+        "name": "",
+        "file": {
+          "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+        },
+        "location": {
+          "range": {
+            "file": {
+              "key": "fbobjc/Extra/GleanTests/Swift/CIBCanvas/CIBCanvasBallView.swift"
+            },
+            "lineBegin": 5,
+            "columnBegin": 13,
+            "lineEnd": 5,
+            "columnEnd": 26
+          }
+        }
+      }
+    }
+  }
+]

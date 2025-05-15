@@ -205,6 +205,8 @@ evalQuery glassEnv qFile Query{..} oFile = case action of
        def { relatedNeighborhoodRequest_hide_uninteresting = True } )
   "fileIncludeLocations" -> withObjectArgs qFile oFile args request_args
     (Glass.fileIncludeLocations glassEnv)
+  "usrToDefinition" -> withObjectArgs qFile oFile args request_args
+    (\x y -> fst <$> Glass.usrToDefinition glassEnv x y)
 
   -- this lists all symbol ids in a file and then validates them
   -- wrapper for validating C++
@@ -235,15 +237,27 @@ decodeObjectAsThriftJson
 decodeObjectAsThriftJson
   = Thrift.deserializeJSON . S.concat . B.toChunks. encode
 
-withSymbolId
-  :: (ToJSON a, DeterministicResponse a)
-  => FilePath -> Value -> (SymbolId -> RequestOptions -> IO a) -> IO ()
-withSymbolId oFile args f = do
+withStringInput ::
+  (ToJSON a, DeterministicResponse a) =>
+  (Text -> b) ->
+  FilePath ->
+  Value ->
+  (b -> RequestOptions -> IO a) ->
+  IO ()
+withStringInput ctor oFile args f = do
   req <- case fromJSON args of
-          Success sym -> pure (SymbolId sym)
-          Error str -> assertFailure $ "Invalid SymbolId: " <> str
+    Success sym -> pure (ctor sym)
+    Error str -> assertFailure $ "Invalid SymbolId: " <> str
   res <- f req def
   writeResult oFile res
+
+withSymbolId ::
+  (ToJSON a, DeterministicResponse a) =>
+  FilePath ->
+  Value ->
+  (SymbolId -> RequestOptions -> IO a) ->
+  IO ()
+withSymbolId = withStringInput SymbolId
 
 withObjectArgs
  :: (Thrift.Protocol.ThriftSerializable req,
@@ -306,13 +320,16 @@ writeResult oFile res = B.writeFile oFile content
 class DeterministicResponse a where
   det :: a -> a
 
+instance DeterministicResponse Revision where
+  det _ = Revision "testhash"
+
 instance DeterministicResponse (Either [Text] Cxx.SymbolEnv) where
   det = id
 
 instance DeterministicResponse DocumentSymbolListXResult where
-  det (DocumentSymbolListXResult refs defs _rev truncated digest fileMap
+  det (DocumentSymbolListXResult refs defs rev truncated digest fileMap
       contentMatch fileAttrs) =
-    DocumentSymbolListXResult (det refs) (det defs) (Revision "testhash")
+    DocumentSymbolListXResult (det refs) (det defs) (det rev)
       truncated
       digest
       fileMap
@@ -321,9 +338,9 @@ instance DeterministicResponse DocumentSymbolListXResult where
       fileAttrs
 
 instance DeterministicResponse DocumentSymbolIndex where
-  det (DocumentSymbolIndex syms _rev size truncated digest fileMap
+  det (DocumentSymbolIndex syms rev size truncated digest fileMap
       contentMatch fileAttrs) =
-    DocumentSymbolIndex (Map.map sort syms) (Revision "testhash") size truncated
+    DocumentSymbolIndex (Map.map sort syms) (det rev) size truncated
       digest
       fileMap
       contentMatch
@@ -340,12 +357,12 @@ instance DeterministicResponse Range where det = id
 instance DeterministicResponse LocationRange where det = id
 instance DeterministicResponse Glass.QualifiedName where det = id
 instance DeterministicResponse SymbolLocation where
-  det (SymbolLocation loc _rev) = SymbolLocation (det loc) (Revision "testhash")
+  det (SymbolLocation loc rev) = SymbolLocation (det loc) (det rev)
 
 instance DeterministicResponse SymbolResolution where
-  det (SymbolResolution qname loc _rev kind lang sig) =
+  det (SymbolResolution qname loc rev kind lang sig) =
     SymbolResolution (det qname) (det loc)
-      (Revision "testhash") kind lang sig
+      (det rev) kind lang sig
 
 instance DeterministicResponse SearchRelatedResult where
   det (SearchRelatedResult xs ys) = -- to edit the desc hash
@@ -401,9 +418,9 @@ instance DeterministicResponse (Map.Map Text SymbolDescription) where
 instance DeterministicResponse SymbolResult where
   det = id
 instance DeterministicResponse FileIncludeLocationResults where
-  det (FileIncludeLocationResults _rev (XRefFileList refs)) =
+  det (FileIncludeLocationResults rev (XRefFileList refs)) =
     FileIncludeLocationResults
-     (Revision "testhash")
+     (det rev)
      (XRefFileList (sort (map det refs)))
 instance DeterministicResponse FileIncludeXRef where
   det (FileIncludeXRef path incs) =
@@ -413,6 +430,9 @@ instance DeterministicResponse ResolveSymbolsResult where
     ResolveSymbolsResult (det syms)
 instance DeterministicResponse ResolvedSymbol where
   det (ResolvedSymbol sym loc) = ResolvedSymbol (det sym) (det loc)
+instance DeterministicResponse USRSymbolDefinition where
+  det (USRSymbolDefinition loc sym rev) =
+    USRSymbolDefinition (det loc) (det sym) (det rev)
 
 diff :: FilePath -> FilePath -> IO ()
 diff outGenerated outSpec = do

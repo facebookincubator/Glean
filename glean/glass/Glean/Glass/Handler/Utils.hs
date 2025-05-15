@@ -127,6 +127,8 @@ revisionSpecifierError :: Maybe Revision -> Text
 revisionSpecifierError Nothing = "AnyRevision"
 revisionSpecifierError (Just (Revision rev))= "Requested exactly " <> rev
 
+-- Depending on revision provided in the options (none, exact or otherwise)
+-- decide whether we'll need to choose latest, nearest or exact DB
 dbChooser :: RepoName -> RequestOptions -> ChooseGleanDBs
 dbChooser repo opts =
   case requestOptions_revision opts of

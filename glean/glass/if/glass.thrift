@@ -33,7 +33,10 @@ typedef string Path (hs.newtype)
 // Unique revision identifier (repo-wide unique id)
 typedef string Revision (hs.newtype)
 
-// USR hash (Symbol string from ClangD hashed)
+// USR (Symbol string from ClangD/SourceKit)
+typedef string USR (hs.newtype)
+
+// USR hash (Symbol string from ClangD/Sourcekit hashed)
 typedef string USRHash (hs.newtype)
 
 // A line range in the file to restrict the query. start should be <= end, and
@@ -750,6 +753,12 @@ struct ResolveSymbolsResult {
   1: list<ResolvedSymbol> resolvedSymbols;
 }
 
+// Search for symbols by string
+struct USRToDefinitionRequest {
+  1: USR usr;
+  2: optional RepoName repo_name; // optional scm repo (e.g. "fbsource")
+}
+
 # Response to ClangD for what we know about a USR and its target definition
 struct USRSymbolDefinition {
   // location of the definition (or fallback to decl)
@@ -848,9 +857,15 @@ service GlassService extends fb303.FacebookService {
     2: RequestOptions options,
   ) throws (1: ServerException e, 2: GlassException g);
 
-  // Resolve declaration USR from ClangD to definition sites
+  // Resolve declaration USR hashes from ClangD to definition sites
   USRSymbolDefinition clangUSRToDefinition(
-    1: USRHash usr,
+    1: USRHash hash,
+    2: RequestOptions options,
+  ) throws (1: ServerException e, 2: GlassException g);
+
+  // Resolve declaration USR from ClangD/Sourcekit to definition sites
+  USRSymbolDefinition usrToDefinition(
+    1: USRToDefinitionRequest request,
     2: RequestOptions options,
   ) throws (1: ServerException e, 2: GlassException g);
 }

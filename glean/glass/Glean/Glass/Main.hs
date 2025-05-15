@@ -203,6 +203,7 @@ glassHandler env0 cmd =
   -- C++/LSP specific
   FileIncludeLocations r opts -> Cxx.fileIncludeLocations env r opts
   ClangUSRToDefinition r opts -> fst <$> Cxx.clangUSRToDefinition env r opts
+  UsrToDefinition r opts -> fst <$> Cxx.usrToDefinition env r opts
 
   where
     tracing env

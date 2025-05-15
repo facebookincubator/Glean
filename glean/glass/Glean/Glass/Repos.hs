@@ -188,7 +188,7 @@ listGleanIndices RepoMapping{..} testsOnly =
   let testRepos = [RepoName "test", RepoName "test-xlang"]
       flatten (repo,langs) = map (repo,) langs
       flattened = concatMap flatten $ Map.toList gleanIndices
-      isTest = \(repo, _) -> elem repo testRepos in
+      isTest (repo, _) = elem repo testRepos in
     filter (if testsOnly then isTest else not . isTest) flattened
 
 -- Do something simple to map SCS repo to Glean repos

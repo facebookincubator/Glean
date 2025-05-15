@@ -1,0 +1,6 @@
+query: |
+    SE = { swift = { defn = { symbol = "s:9CIBCanvas14kRainbowColors33_4D88CBCEFA33CDEC2987760EAE4F94AFLLSaySo7UIColorCGvp" } } };
+    codemarkup.scip.ScipEntityLocation { SE, L };
+    {{ scip = SE }:code.Entity, L}
+perf: True
+transform: [gensort, []]
