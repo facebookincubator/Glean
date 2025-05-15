@@ -1,0 +1,23 @@
+# Copyright (c) Meta Platforms, Inc. and affiliates.
+
+schema search.anglelang.1 {
+  import code.anglelang
+  import anglelang
+
+  predicate SearchByName:
+    {
+      name: anglelang.Name,
+      entity: code.anglelang.Entity,
+    } { N , Entity } where
+    anglelang.DeclarationLocation {decl = D};
+    anglelang.DeclarationToName D -> N;
+    Entity = {decl = D}
+
+predicate NameLowerCase:
+  {
+    nameLowerCase: string,
+    name: anglelang.Name,
+  } stored
+  { prim.toLower Str, N } where N = anglelang.Name Str
+
+}

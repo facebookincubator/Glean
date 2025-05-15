@@ -41,6 +41,18 @@ type XRefTarget = {
   ref : Declaration
 }
 
+predicate TargetUses :
+  {
+    target : XRefTarget,
+    file : src.File,
+    uses : [src.ByteSpan],
+  }
+  stored
+  { T, File, Span } where
+  anglelang.FileXRefs { file = File, xrefs = XRefs };
+  anglelang.XRef { target = T, span = Span } = XRefs[..]
+
+
 # ----- DECLARATIONS ------
 type ImportStmt = Name
 type DeriveInfo = enum { NoDeriving | OnDemand | Stored | IfEmpty}

@@ -19,4 +19,25 @@ predicate AngleFileEntityXRefLocations :
   RefSpan = RefSpans[..];
   anglelang.DeclarationLocation {D,TargetFile,TargetSpan };
   anglelang.DeclarationToName D -> (Name : string);
+
+
+predicate AngleResolveLocation :
+  {
+    location: codemarkup.types.Location,
+    entity: code.anglelang.Entity,
+  }
+  { { Name, TargetFile, {span= TargetSpan}, nothing }, {decl = Decl} } where
+  anglelang.DeclarationLocation { Decl, TargetFile, TargetSpan };
+  anglelang.DeclarationToName Decl -> (Name : string);
+
+
+predicate AngleEntityUses :
+  {
+    target: code.anglelang.Entity,
+    file: src.File,
+    span: src.ByteSpan,
+  }
+  {{decl = Decl}, File, Span} where
+  anglelang.TargetUses {{ref = Decl},  File, Spans};
+  Span = Spans[..];
 }

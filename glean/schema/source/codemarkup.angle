@@ -164,7 +164,9 @@ predicate ResolveLocation:
     (codemarkup.csharp.CSharpResolveLocation { Location, E };
      { csharp = E } = Entity) |
     (codemarkup.graphql.GraphQLResolveLocation { Location, E };
-     { graphql = E } = Entity);
+     { graphql = E } = Entity) |
+    (codemarkup.anglelang.AngleResolveLocation { Location, E };
+     { angle = E } = Entity);
 
 predicate EntityLocation:
   {
@@ -429,6 +431,10 @@ predicate EntityReferences:
     codemarkup.fbthrift.FbthriftEntityUses { E, File, Range };
     { fbthrift = E } = Entity;
     { range = Range } = RangeSpan;
+  ) | (
+    codemarkup.anglelang.AngleEntityUses { E, File, Span };
+    { span = Span } = RangeSpan;
+    { angle = E } = Entity;
   ) | (
     codemarkup.hack.HackIdlEntityUses { Entity, File, Span };
     { span = Span } = RangeSpan;

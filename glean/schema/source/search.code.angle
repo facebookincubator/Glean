@@ -21,6 +21,7 @@ import javakotlin.alpha
 import lsif
 import pp1
 import python
+import search.anglelang
 import search.cxx
 import search.erlang
 import search.flow
@@ -53,7 +54,8 @@ predicate SearchByNameAndLanguage:
     ( Thrift = Language; ThriftSearchByName { Name, Entity } ) |
     ( Buck = Language; BuckSearchByName { Name, Entity } ) |
     ( CSharp = Language; CSharpSearchByName { Name, Entity } ) |
-    ( GraphQL = Language; GraphQLSearchByName { Name, Entity } );
+    ( GraphQL = Language; GraphQLSearchByName { Name, Entity } ) |
+    ( Angle = Language; AngleSearchByName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
 # global symbol search normalized to lower case
@@ -72,7 +74,8 @@ predicate SearchByLowerCaseNameAndLanguage:
     ( Thrift = Language; ThriftSearchByLowerCaseName { Name, Entity } ) |
     ( Buck = Language; BuckSearchByLowerCaseName { Name, Entity } ) |
     ( CSharp = Language; CSharpSearchByLowerCaseName { Name, Entity } ) |
-    ( GraphQL = Language; GraphQLSearchByLowerCaseName { Name, Entity } );
+    ( GraphQL = Language; GraphQLSearchByLowerCaseName { Name, Entity } ) |
+    ( Angle = Language; AngleSearchByLowerCaseName { Name, Entity } );
     code.EntityLanguage { Entity, Language }; # double check the entity lang
 
 # Kind-optimized search.
@@ -973,6 +976,23 @@ predicate BuckSearchByLocalNameFact:
   }
   { LocalName, { buck = Decl }} where
     buck.SearchByLocalName { LocalName, Decl }
+
+predicate AngleSearchByName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, { angle = E } } where
+  search.anglelang.SearchByName { name = Name : string, entity = E }
+
+  predicate AngleSearchByLowerCaseName:
+  {
+    name: string,
+    entity: code.Entity,
+  }
+  { Name, { angle = Entity } } where
+  search.anglelang.NameLowerCase { Name, NameCase };
+  search.anglelang.SearchByName { NameCase, Entity }
 
 predicate HsSearchByName:
   {
