@@ -15,10 +15,10 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 1, "start": 234 },
-              { "length": 1, "start": 397 },
-              { "length": 1, "start": 534 }
+            "refs": [
+              { "kind": 1, "span": { "length": 1, "start": 234 } },
+              { "kind": 2, "span": { "length": 1, "start": 397 } },
+              { "kind": 2, "span": { "length": 1, "start": 534 } }
             ]
           }
         },
@@ -33,9 +33,9 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 1, "start": 260 },
-              { "length": 1, "start": 498 }
+            "refs": [
+              { "kind": 1, "span": { "length": 1, "start": 260 } },
+              { "kind": 2, "span": { "length": 1, "start": 498 } }
             ]
           }
         },
@@ -50,7 +50,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 2, "start": 602 } ]
+            "refs": [ { "kind": 2, "span": { "length": 2, "start": 602 } } ]
           }
         },
         {
@@ -64,7 +64,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 2, "start": 578 } ]
+            "refs": [ { "kind": 2, "span": { "length": 2, "start": 578 } } ]
           }
         },
         {
@@ -78,10 +78,10 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 1, "start": 564 },
-              { "length": 2, "start": 422 },
-              { "length": 2, "start": 434 }
+            "refs": [
+              { "kind": 2, "span": { "length": 1, "start": 564 } },
+              { "kind": 2, "span": { "length": 2, "start": 422 } },
+              { "kind": 2, "span": { "length": 2, "start": 434 } }
             ]
           }
         },
@@ -96,9 +96,9 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 1, "start": 250 },
-              { "length": 1, "start": 551 }
+            "refs": [
+              { "kind": 1, "span": { "length": 1, "start": 250 } },
+              { "kind": 2, "span": { "length": 1, "start": 551 } }
             ]
           }
         },
@@ -113,9 +113,9 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 1, "start": 240 },
-              { "length": 1, "start": 558 }
+            "refs": [
+              { "kind": 1, "span": { "length": 1, "start": 240 } },
+              { "kind": 2, "span": { "length": 1, "start": 558 } }
             ]
           }
         },
@@ -130,9 +130,9 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 1, "start": 228 },
-              { "length": 1, "start": 325 }
+            "refs": [
+              { "kind": 1, "span": { "length": 1, "start": 228 } },
+              { "kind": 2, "span": { "length": 1, "start": 325 } }
             ]
           }
         },
@@ -147,7 +147,7 @@
                 "sort": { "internal": { "length": 1, "start": 379 } }
               }
             },
-            "spans": [ { "length": 1, "start": 404 } ]
+            "refs": [ { "kind": 2, "span": { "length": 1, "start": 404 } } ]
           }
         },
         {
@@ -161,7 +161,7 @@
                 "sort": { "internal": { "length": 1, "start": 414 } }
               }
             },
-            "spans": [ { "length": 1, "start": 441 } ]
+            "refs": [ { "kind": 2, "span": { "length": 1, "start": 441 } } ]
           }
         },
         {
@@ -175,9 +175,9 @@
                 "sort": { "internal": { "length": 1, "start": 463 } }
               }
             },
-            "spans": [
-              { "length": 1, "start": 456 },
-              { "length": 1, "start": 478 }
+            "refs": [
+              { "kind": 2, "span": { "length": 1, "start": 456 } },
+              { "kind": 2, "span": { "length": 1, "start": 478 } }
             ]
           }
         },
@@ -192,9 +192,9 @@
                 "sort": { "internal": { "length": 15, "start": 546 } }
               }
             },
-            "spans": [
-              { "length": 1, "start": 553 },
-              { "length": 1, "start": 560 }
+            "refs": [
+              { "kind": 2, "span": { "length": 1, "start": 553 } },
+              { "kind": 2, "span": { "length": 1, "start": 560 } }
             ]
           }
         },
@@ -209,9 +209,9 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 1, "start": 279 },
-              { "length": 1, "start": 546 }
+            "refs": [
+              { "kind": 1, "span": { "length": 1, "start": 279 } },
+              { "kind": 2, "span": { "length": 1, "start": 546 } }
             ]
           }
         },
@@ -226,10 +226,10 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 2, "start": 422 },
-              { "length": 2, "start": 611 },
-              { "length": 2, "start": 618 }
+            "refs": [
+              { "kind": 2, "span": { "length": 2, "start": 422 } },
+              { "kind": 2, "span": { "length": 2, "start": 611 } },
+              { "kind": 2, "span": { "length": 2, "start": 618 } }
             ]
           }
         },
@@ -244,9 +244,9 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 2, "start": 434 },
-              { "length": 2, "start": 566 }
+            "refs": [
+              { "kind": 2, "span": { "length": 2, "start": 434 } },
+              { "kind": 2, "span": { "length": 2, "start": 566 } }
             ]
           }
         },
@@ -261,9 +261,9 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 1, "start": 512 },
-              { "length": 1, "start": 589 }
+            "refs": [
+              { "kind": 2, "span": { "length": 1, "start": 512 } },
+              { "kind": 2, "span": { "length": 1, "start": 589 } }
             ]
           }
         },
@@ -278,7 +278,7 @@
                 "sort": { "internal": { "length": 1, "start": 585 } }
               }
             },
-            "spans": [ { "length": 1, "start": 614 } ]
+            "refs": [ { "kind": 2, "span": { "length": 1, "start": 614 } } ]
           }
         },
         {
@@ -292,9 +292,9 @@
                 "sort": { "internal": { "length": 1, "start": 514 } }
               }
             },
-            "spans": [
-              { "length": 1, "start": 518 },
-              { "length": 1, "start": 523 }
+            "refs": [
+              { "kind": 2, "span": { "length": 1, "start": 518 } },
+              { "kind": 2, "span": { "length": 1, "start": 523 } }
             ]
           }
         },
@@ -309,7 +309,7 @@
                 "sort": { "internal": { "length": 1, "start": 572 } }
               }
             },
-            "spans": [ { "length": 1, "start": 581 } ]
+            "refs": [ { "kind": 2, "span": { "length": 1, "start": 581 } } ]
           }
         },
         {
@@ -323,9 +323,9 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 4, "start": 270 },
-              { "length": 4, "start": 526 }
+            "refs": [
+              { "kind": 1, "span": { "length": 4, "start": 270 } },
+              { "kind": 2, "span": { "length": 4, "start": 526 } }
             ]
           }
         },
@@ -343,7 +343,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 6, "start": 330 } ]
+            "refs": [ { "kind": 2, "span": { "length": 6, "start": 330 } } ]
           }
         },
         {
@@ -360,7 +360,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 3, "start": 341 } ]
+            "refs": [ { "kind": 2, "span": { "length": 3, "start": 341 } } ]
           }
         },
         {
@@ -377,9 +377,9 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 3, "start": 319 },
-              { "length": 3, "start": 606 }
+            "refs": [
+              { "kind": 0, "span": { "length": 3, "start": 319 } },
+              { "kind": 2, "span": { "length": 3, "start": 606 } }
             ]
           }
         },
@@ -397,7 +397,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 2, "start": 520 } ]
+            "refs": [ { "kind": 2, "span": { "length": 2, "start": 520 } } ]
           }
         },
         {
@@ -414,7 +414,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 2, "start": 453 } ]
+            "refs": [ { "kind": 2, "span": { "length": 2, "start": 453 } } ]
           }
         },
         {
@@ -431,7 +431,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 4, "start": 483 } ]
+            "refs": [ { "kind": 2, "span": { "length": 4, "start": 483 } } ]
           }
         },
         {
@@ -448,7 +448,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 4, "start": 428 } ]
+            "refs": [ { "kind": 2, "span": { "length": 4, "start": 428 } } ]
           }
         },
         {
@@ -465,7 +465,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 5, "start": 386 } ]
+            "refs": [ { "kind": 2, "span": { "length": 5, "start": 386 } } ]
           }
         },
         {
@@ -482,10 +482,10 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 3, "start": 367 },
-              { "length": 3, "start": 500 },
-              { "length": 3, "start": 595 }
+            "refs": [
+              { "kind": 2, "span": { "length": 3, "start": 367 } },
+              { "kind": 2, "span": { "length": 3, "start": 500 } },
+              { "kind": 2, "span": { "length": 3, "start": 595 } }
             ]
           }
         },
@@ -503,9 +503,9 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 7, "start": 310 },
-              { "length": 7, "start": 345 }
+            "refs": [
+              { "kind": 0, "span": { "length": 7, "start": 310 } },
+              { "kind": 2, "span": { "length": 7, "start": 345 } }
             ]
           }
         }
@@ -527,7 +527,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 3, "start": 331 } ]
+            "refs": [ { "kind": 2, "span": { "length": 3, "start": 331 } } ]
           }
         },
         {
@@ -541,7 +541,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 1, "start": 320 } ]
+            "refs": [ { "kind": 2, "span": { "length": 1, "start": 320 } } ]
           }
         },
         {
@@ -555,7 +555,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 1, "start": 312 } ]
+            "refs": [ { "kind": 2, "span": { "length": 1, "start": 312 } } ]
           }
         },
         {
@@ -569,7 +569,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 2, "start": 337 } ]
+            "refs": [ { "kind": 2, "span": { "length": 2, "start": 337 } } ]
           }
         },
         {
@@ -583,7 +583,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 2, "start": 347 } ]
+            "refs": [ { "kind": 2, "span": { "length": 2, "start": 347 } } ]
           }
         },
         {
@@ -597,9 +597,9 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 1, "start": 228 },
-              { "length": 1, "start": 279 }
+            "refs": [
+              { "kind": 1, "span": { "length": 1, "start": 228 } },
+              { "kind": 2, "span": { "length": 1, "start": 279 } }
             ]
           }
         },
@@ -614,9 +614,9 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 1, "start": 234 },
-              { "length": 1, "start": 315 }
+            "refs": [
+              { "kind": 1, "span": { "length": 1, "start": 234 } },
+              { "kind": 2, "span": { "length": 1, "start": 315 } }
             ]
           }
         },
@@ -634,7 +634,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 1, "start": 302 } ]
+            "refs": [ { "kind": 2, "span": { "length": 1, "start": 302 } } ]
           }
         },
         {
@@ -651,7 +651,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 3, "start": 304 } ]
+            "refs": [ { "kind": 2, "span": { "length": 3, "start": 304 } } ]
           }
         },
         {
@@ -668,9 +668,9 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [
-              { "length": 3, "start": 273 },
-              { "length": 3, "start": 308 }
+            "refs": [
+              { "kind": 0, "span": { "length": 3, "start": 273 } },
+              { "kind": 2, "span": { "length": 3, "start": 308 } }
             ]
           }
         },
@@ -688,7 +688,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 7, "start": 294 } ]
+            "refs": [ { "kind": 2, "span": { "length": 7, "start": 294 } } ]
           }
         },
         {
@@ -705,7 +705,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 4, "start": 322 } ]
+            "refs": [ { "kind": 2, "span": { "length": 4, "start": 322 } } ]
           }
         },
         {
@@ -722,7 +722,7 @@
                 "sort": { "external": { } }
               }
             },
-            "spans": [ { "length": 3, "start": 285 } ]
+            "refs": [ { "kind": 2, "span": { "length": 3, "start": 285 } } ]
           }
         }
       ]
