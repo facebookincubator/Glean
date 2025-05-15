@@ -48,8 +48,8 @@ predicate HaskellFileEntityXRefLocations:
   }
   { File, { Location, { span = Span } }, { name = Name } } where
     hs.FileXRefs { file = File, refs = XRefs };
-    { name = Name, spans = Spans } = XRefs[..];
-    Span = Spans[..];
+    { name = Name, refs = Spans } = XRefs[..];
+    Span = (Spans[..]).span;
     Location = codemarkup.types.Location
       {
         name = Name.occ.name,
@@ -68,7 +68,7 @@ predicate HaskellEntityUses:
     file: src.File,
     span: src.ByteSpan,
   }
-  { { name = Name }, File, Spans[..] } where
+  { { name = Name }, File, (Spans[..]).span } where
     hs.NameRefs { target = Name, file = File, uses = Spans }
 
 }
