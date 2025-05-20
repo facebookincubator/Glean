@@ -20,6 +20,7 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
+import qualified Data.Vector.Unboxed as Vector
 import Compat.HieTypes (HieFile(..))
 import HieDb.Compat (nameModule_maybe, nameOccName)
 
@@ -32,7 +33,7 @@ import qualified GHC.Types.Name.Occurrence as GHC
 import qualified GHC.Types.Name as GHC (isSystemName)
 import GHC.Unit.Types (unitFS)
 import qualified GHC.Unit.Module.Name as GHC (moduleNameFS)
-import qualified GHC.Data.FastString as GHC (FastString, bytesFS)
+import qualified GHC.Data.FastString as GHC (FastString, bytesFS, mkFastString)
 
 import Util.Log
 
@@ -155,25 +156,29 @@ indexHieFile writer hie = do
     modfact <- mkModule smod
 
     let offs = getLineOffsets (hie_hs_src hie)
-    let fp = Text.pack $ hie_hs_file hie
-    filefact <- Glean.makeFact @Src.File fp
+    let hsFileFS = GHC.mkFastString $ hie_hs_file hie
+    filefact <- Glean.makeFact @Src.File (Text.pack (hie_hs_file hie))
     let fileLines = mkFileLines filefact offs
     Glean.makeFact_ @Src.FileLines fileLines
 
     Glean.makeFact_ @Hs.ModuleSource $
       Hs.ModuleSource_key modfact filefact
 
-    let toByteSpan =
-          rangeToByteSpan .
-          srcRangeToByteRange fileLines (hie_hs_src hie)
+    let toByteRange = srcRangeToByteRange fileLines (hie_hs_src hie)
+        toByteSpan sp
+          | GHC.srcSpanEndLine sp >= Vector.length (lineOffsets offs) =
+            Src.ByteSpan (Glean.toNat 0) (Glean.toNat 0)
+          | otherwise =
+            rangeToByteSpan (toByteRange (srcSpanToSrcRange filefact sp))
 
     let allIds = [ (n, p) | (Right n, ps) <- Map.toList refmap, p <- ps ]
 
     -- produce names & declarations
     names <- fmap catMaybes $ forM allIds $ \(name, (span, dets)) -> if
       | Just sp <- getBindSpan span (identInfo dets)
-      , localOrGlobal name smod -> do
-        let byteSpan = toByteSpan (srcSpanToSrcRange filefact sp)
+      , localOrGlobal name smod
+      , GHC.srcSpanFile sp == hsFileFS -> do -- Note [#included source files]
+        let byteSpan = toByteSpan sp
         sort <- case nameModule_maybe name of
           Nothing -> return $ Hs.NameSort_internal byteSpan
           Just{} -> return $ Hs.NameSort_external def
@@ -220,7 +225,7 @@ indexHieFile writer hie = do
               Just <$> mkName name namemod (Hs.NameSort_external def)
       forM maybe_namefact $ \namefact -> do
         refspans <- forM (Map.toList kindspans) $ \(kind, spans) -> do
-          let gleanspans = map (toByteSpan . srcSpanToSrcRange filefact) spans
+          let gleanspans = map toByteSpan spans
           return $ map (Hs.RefSpan kind) gleanspans
         Glean.makeFact @Hs.Reference $
           Hs.Reference_key namefact (concat refspans)
@@ -263,3 +268,11 @@ indexHieFile writer hie = do
     goDecl TyVarBind{} = Just defaultSpan
     goDecl (ClassTyDecl sp) = sp
     goDecl _ = Nothing
+
+{-
+Note [#included source files]
+
+There might be other source files involved when compiling a module,
+e.g. if CPP is being used and the .hs file uses `#include`. We
+currently ignore Names that come from another source file (TODO).
+-}
