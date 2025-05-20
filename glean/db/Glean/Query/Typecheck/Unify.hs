@@ -56,18 +56,24 @@ unify a@(SumTy ts) b@(SumTy us)
         if f /= g then unifyError a b else unify t u
 unify (PredicateTy _ (PidRef p _)) (PredicateTy _ (PidRef q _))
   | p == q = return ()
+
 unify (NamedTy _ (ExpandedType n _)) (NamedTy _ (ExpandedType m _))
   | n == m = return ()
 unify (NamedTy _ (ExpandedType _ t)) u = unify t u
 unify t (NamedTy _ (ExpandedType _ u)) = unify t u
+
 unify (MaybeTy t) (MaybeTy u) = unify t u
 unify (MaybeTy t) u@SumTy{} = unify (lowerMaybe t) u
 unify (MaybeTy t) u@HasTy{} = unify (lowerMaybe t) u
 unify t@SumTy{} (MaybeTy u) = unify t (lowerMaybe u)
 unify t@HasTy{} (MaybeTy u) = unify t (lowerMaybe u)
+
 unify (EnumeratedTy ns) (EnumeratedTy ms) | ns == ms = return ()
 unify (EnumeratedTy ns) u@SumTy{} = unify (lowerEnum ns) u
+unify (EnumeratedTy ns) u@HasTy{} = unify (lowerEnum ns) u
 unify t@SumTy{} (EnumeratedTy ns) = unify t (lowerEnum ns)
+unify t@HasTy{} (EnumeratedTy ns) = unify t (lowerEnum ns)
+
 unify BooleanTy BooleanTy = return ()
 
 unify (TyVar x) (TyVar y) | x == y = return ()

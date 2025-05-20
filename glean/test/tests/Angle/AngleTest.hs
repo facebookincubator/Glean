@@ -1029,3 +1029,10 @@ angleTypeTest = dbTestCase $ \env repo -> do
     |]
   print r
   assertEqual "angle - inference 8" 1 (length r)
+
+  r <- runQuery_ env repo $ angleData @Text
+    [s|
+      P.string_ where P : glean.test.Predicate; P.enum_ = e
+    |]
+  print r
+  assertEqual "angle - inference 9" 4 (length r)
