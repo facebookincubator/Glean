@@ -29834,7 +29834,7 @@ struct SearchByName : Predicate<std::tuple<Fact<facebook::glean::cpp::schema::An
 struct SCHEMA {
   template<typename P> struct index;
   static constexpr size_t count = 1332;
-  static constexpr char schemaId[] = "0ef5909ee1483fde292d8cb66f8005c5";
+  static constexpr char schemaId[] = "a54a185f8216ac12b0e85b9a87ae7093";
   template<size_t i> struct predicate;
 };
 

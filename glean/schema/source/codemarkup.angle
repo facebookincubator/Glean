@@ -269,7 +269,9 @@ predicate FileXRefsGenericEntities: {
   (codemarkup.dataswarm.DataswarmFileEntityXRefLocations { File, XRef, E };
   { plainEntity = { xref = XRef, entity = { dataswarm = E } } } = GenEntity) |
   (codemarkup.yaml.YamlFileEntityXLangXRefLocations { File, Source, E };
-  { xlangEntity = { source = Source, entity = E } } = GenEntity);
+  { xlangEntity = { source = Source, entity = E } } = GenEntity) |
+  (codemarkup.anglelang.AngleFileEntityXRefLocations { File, XRef, E };
+  { plainEntity = { xref = XRef, entity = { angle = E } } } = GenEntity)
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:
