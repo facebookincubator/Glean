@@ -250,11 +250,11 @@ library thrift-annotation
     hs-source-dirs:
         thrift/annotation/gen-hs2
     exposed-modules:
-        Cpp.Types
+        Facebook.Thrift.Annotation.Cpp.Cpp.Types
         Hack.Types
         Rust.Types
         Scope.Types
-        Thrift.Types
+        Facebook.Thrift.Annotation.Thrift.Thrift.Types
 
 library if-fb303-hs
     import: fb-haskell, fb-cpp, deps
