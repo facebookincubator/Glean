@@ -1921,9 +1921,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
         // Here, i is a bit field but it doesn't have a fixed bit size. In fact,
         // Clang segfaults if we call getBitWidthValue on it. So let's give it
         // size 0 for now - we should probably extend the schema eventually.
-        bitsize = size_expr->isValueDependent()
-            ? 0
-            : decl->getBitWidthValue(visitor.astContext);
+        bitsize = size_expr->isValueDependent() ? 0
+#if LLVM_VERSION_MAJOR >= 20
+                                                : decl->getBitWidthValue();
+#else
+                                                : decl->getBitWidthValue(
+                                                      visitor.astContext);
+#endif
       }
       if (auto ivar = clang::dyn_cast<clang::ObjCIvarDecl>(decl)) {
         return Cxx::VariableKind::ivar(
