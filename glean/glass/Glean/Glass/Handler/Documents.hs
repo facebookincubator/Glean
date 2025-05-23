@@ -941,11 +941,14 @@ addDynamicAttributes env dbInfo repo opts repofile mlimit be syms = do
       (refs',defs',log', dblog') = augment (refs syms) (defs syms)
       newLog = log <> log'
       newDBLog = dblog' : dblog
-    extend (augment : xs) log dblog syms  (f : _) =
+    extend (augment : xs) log dblog syms f =
       extend xs newLog newDBLog
-       (syms { refs = refs' , defs = defs', attributes =  f }) []
+       (syms { refs = refs' , defs = defs', attributes = flattenAttrs }) f
       where
       (refs',defs',log', dblog') = augment (refs syms) (defs syms)
+
+      flattenAttrs :: Maybe AttributeList
+      flattenAttrs = mconcat f
       newLog = log <> log'
       newDBLog = dblog' : dblog
       -- Note: it'll only log one if multiple attrs use the same fields

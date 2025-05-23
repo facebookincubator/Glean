@@ -101,6 +101,7 @@ struct AttributeOptions {
   3: optional ServiceID service_id;
   4: optional BinaryName binary_name;
   5: bool fetch_frame_matches = false;
+  6: bool fetch_assembly_data = false;
 }
 
 typedef string ServiceID (hs.newtype)
@@ -195,6 +196,7 @@ union Attribute {
   4: string aString;
   5: list<string> aList;
   6: map<i64, double> aMapIntDouble;
+  7: map<i64, string> aMapIntString;
 }
 
 // Symbol attributes, keyed by attribute name
