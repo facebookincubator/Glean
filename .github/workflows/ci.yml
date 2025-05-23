@@ -171,9 +171,9 @@ jobs:
       - name: Build glean-clang
         run: make glean-clang
 
-      - if: matrix.ghc != '8.6.5' && matrix.ghc != '9.4.7'
-        name: Build hiedb-indexer
-        run: make glean-hiedb
+      - if: matrix.ghc != '8.6.5' && matrix.ghc != '8.8.4' && matrix.ghc != '8.10.7'
+        name: Build hie-indexer
+        run: make glean-hie
 
       - name: Run tests
         run: make test

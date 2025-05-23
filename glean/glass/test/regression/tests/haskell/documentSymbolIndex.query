@@ -1,0 +1,3 @@
+action: documentSymbolIndex
+args: {"include_refs":true,"filepath":"glean/lang/codemarkup/tests/haskell/code/A.hs","repository":"test"}
+
