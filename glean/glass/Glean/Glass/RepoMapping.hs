@@ -45,6 +45,7 @@ gleanIndices_ = Map.fromList
   , (RepoName "test",
       [("test", Language_JavaScript)
       ,("test", Language_Hack)
+      ,("test", Language_Haskell)
       ,("test", Language_Cpp)
       ,("test", Language_PreProcessor)
       ,("test", Language_Python)
