@@ -16,7 +16,7 @@ import TextShow
 
 import Glean.Glass.SymbolId.Class
 import Glean.Glass.Types (Name(..))
-import Glean.Schema.CodeHs.Types as Hs (Entity)
+import Glean.Schema.CodeHs.Types as Hs (Entity(..))
 import qualified Glean
 import qualified Glean.Schema.Hs.Types as Hs
 import qualified Glean.Schema.Src.Types as Src
@@ -24,7 +24,9 @@ import qualified Glean.Schema.Src.Types as Src
 -- REPO/hs/containers/Data/Map/{var|datacon|tyvar|tycon}/toList[/START/END]
 
 instance Symbol Hs.Entity where
-  toSymbol = toSymbolPredicate
+  toSymbol (Hs.Entity_name x) = toSymbolPredicate x
+  toSymbol (Hs.Entity_mod x) = toSymbolPredicate x
+  toSymbol _ = error "toSymbol: unknown Hs.Entity"
 
 instance Symbol Hs.Name_key where
   toSymbol (Hs.Name_key occ mod sort) = do
@@ -66,12 +68,15 @@ instance Symbol Hs.NameSort where
   toSymbol Hs.NameSort_external{} = return []
   toSymbol (Hs.NameSort_internal (Src.ByteSpan start end)) =
     return [showt (Glean.fromNat start), showt (Glean.fromNat end)]
+  toSymbol _ = error "toSymbol: unknown Hs.NameSort"
 
 instance ToQName Hs.Entity where
-  toQName n = Glean.keyOf n >>= toQName
+  toQName (Hs.Entity_name n) = Glean.keyOf n >>= toQName
+  toQName (Hs.Entity_mod _) = error "TODO: ToQName Hs.Entity_mod"
+  toQName _ = error "ToQName: unknown Hs.Entity"
 
 instance ToQName Hs.Name_key where
-  toQName (Hs.Name_key occ mod sort) = do
+  toQName (Hs.Name_key occ mod _sort) = do
     Hs.Module_key m _ <- Glean.keyOf mod
     modname <- Glean.keyOf m
     Hs.OccName_key n _ <- Glean.keyOf occ

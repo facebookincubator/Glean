@@ -4,15 +4,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "$", "namespace_": 0 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Base" },
-                "unit": { "key": "base" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "$", "namespace_": 0 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Base" },
+                  "unit": { "key": "base" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -24,15 +26,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "==", "namespace_": 0 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Classes" },
-                "unit": { "key": "ghc-prim" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "==", "namespace_": 0 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Classes" },
+                  "unit": { "key": "ghc-prim" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -44,12 +48,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "A", "namespace_": 3 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "A", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -61,12 +67,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "A", "namespace_": 3 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "A", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -78,12 +86,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "A", "namespace_": 3 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "A", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -95,15 +105,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "Bool", "namespace_": 3 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Types" },
-                "unit": { "key": "ghc-prim" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "Bool", "namespace_": 3 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Types" },
+                  "unit": { "key": "ghc-prim" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -115,12 +127,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "C", "namespace_": 3 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "C", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -132,12 +146,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "C", "namespace_": 3 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "C", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -149,12 +165,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "C2", "namespace_": 1 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "C2", "namespace_": 1 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -166,12 +184,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "C3", "namespace_": 1 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "C3", "namespace_": 1 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -183,15 +203,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "Char", "namespace_": 3 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Types" },
-                "unit": { "key": "ghc-prim" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "Char", "namespace_": 3 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Types" },
+                  "unit": { "key": "ghc-prim" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -203,15 +225,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "Char", "namespace_": 3 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Types" },
-                "unit": { "key": "ghc-prim" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "Char", "namespace_": 3 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Types" },
+                  "unit": { "key": "ghc-prim" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -223,15 +247,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "Eq", "namespace_": 3 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Classes" },
-                "unit": { "key": "ghc-prim" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "Eq", "namespace_": 3 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Classes" },
+                  "unit": { "key": "ghc-prim" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -243,15 +269,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "Float", "namespace_": 3 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Types" },
-                "unit": { "key": "ghc-prim" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "Float", "namespace_": 3 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Types" },
+                  "unit": { "key": "ghc-prim" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -263,15 +291,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "Int", "namespace_": 3 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Types" },
-                "unit": { "key": "ghc-prim" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "Int", "namespace_": 3 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Types" },
+                  "unit": { "key": "ghc-prim" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -283,15 +313,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "Int", "namespace_": 3 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Types" },
-                "unit": { "key": "ghc-prim" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "Int", "namespace_": 3 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Types" },
+                  "unit": { "key": "ghc-prim" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -303,15 +335,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "Int", "namespace_": 3 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Types" },
-                "unit": { "key": "ghc-prim" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "Int", "namespace_": 3 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Types" },
+                  "unit": { "key": "ghc-prim" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -323,15 +357,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "Int", "namespace_": 3 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Types" },
-                "unit": { "key": "ghc-prim" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "Int", "namespace_": 3 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Types" },
+                  "unit": { "key": "ghc-prim" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -343,12 +379,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "R", "namespace_": 1 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "R", "namespace_": 1 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -360,12 +398,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "R", "namespace_": 1 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "R", "namespace_": 1 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -377,12 +417,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "R", "namespace_": 1 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "R", "namespace_": 1 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -394,12 +436,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "R", "namespace_": 1 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "R", "namespace_": 1 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -411,12 +455,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "R", "namespace_": 3 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "R", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -428,12 +474,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "R", "namespace_": 3 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "R", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -445,12 +493,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "R", "namespace_": 3 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "R", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -462,15 +512,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "String", "namespace_": 3 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Base" },
-                "unit": { "key": "base" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "String", "namespace_": 3 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Base" },
+                  "unit": { "key": "base" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -482,12 +534,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "T", "namespace_": 3 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "T", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -499,12 +553,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "T", "namespace_": 3 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "T", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -516,12 +572,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "a", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "a", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -533,12 +591,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "a", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "a", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -550,12 +610,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "a", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "a", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -567,12 +629,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "a", "namespace_": 2 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "internal": { "start": 379, "length": 1 } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "a", "namespace_": 2 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "internal": { "start": 379, "length": 1 } }
+            }
           }
         }
       },
@@ -584,12 +648,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "a", "namespace_": 2 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "internal": { "start": 414, "length": 1 } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "a", "namespace_": 2 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "internal": { "start": 414, "length": 1 } }
+            }
           }
         }
       },
@@ -601,12 +667,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "a", "namespace_": 2 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "internal": { "start": 463, "length": 1 } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "a", "namespace_": 2 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "internal": { "start": 463, "length": 1 } }
+            }
           }
         }
       },
@@ -618,12 +686,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "a", "namespace_": 2 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "internal": { "start": 463, "length": 1 } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "a", "namespace_": 2 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "internal": { "start": 463, "length": 1 } }
+            }
           }
         }
       },
@@ -635,12 +705,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "a", "namespace_": 2 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "internal": { "start": 546, "length": 15 } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "a", "namespace_": 2 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "internal": { "start": 546, "length": 15 } }
+            }
           }
         }
       },
@@ -652,12 +724,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "a", "namespace_": 2 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "internal": { "start": 546, "length": 15 } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "a", "namespace_": 2 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "internal": { "start": 546, "length": 15 } }
+            }
           }
         }
       },
@@ -669,12 +743,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "b", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "B" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "b", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "B" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -686,12 +762,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "b", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "B" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "b", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "B" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -703,12 +781,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "f", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "f", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -720,12 +800,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "f", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "f", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -737,12 +819,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "f1", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "f1", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -754,12 +838,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "f1", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "f1", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -771,12 +857,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "f1", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "f1", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -788,12 +876,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "f1", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "f1", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -805,12 +895,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "f2", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "f2", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -822,12 +914,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "f2", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "f2", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -839,12 +933,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "f2", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "f2", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -856,12 +952,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "m", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "m", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -873,12 +971,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "m", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "m", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -890,15 +990,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "map", "namespace_": 0 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Base" },
-                "unit": { "key": "base" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "map", "namespace_": 0 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Base" },
+                  "unit": { "key": "base" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -910,15 +1012,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "map", "namespace_": 0 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Base" },
-                "unit": { "key": "base" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "map", "namespace_": 0 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Base" },
+                  "unit": { "key": "base" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -930,15 +1034,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "ord", "namespace_": 0 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Base" },
-                "unit": { "key": "base" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "ord", "namespace_": 0 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Base" },
+                  "unit": { "key": "base" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -950,15 +1056,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "ord", "namespace_": 0 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Base" },
-                "unit": { "key": "base" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "ord", "namespace_": 0 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Base" },
+                  "unit": { "key": "base" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -970,15 +1078,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "ord", "namespace_": 0 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Base" },
-                "unit": { "key": "base" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "ord", "namespace_": 0 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Base" },
+                  "unit": { "key": "base" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -990,15 +1100,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "ord", "namespace_": 0 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Base" },
-                "unit": { "key": "base" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "ord", "namespace_": 0 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Base" },
+                  "unit": { "key": "base" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -1010,12 +1122,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "r", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "internal": { "start": 585, "length": 1 } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "r", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "internal": { "start": 585, "length": 1 } }
+            }
           }
         }
       },
@@ -1027,12 +1141,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "r", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "B" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "r", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "B" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -1044,12 +1160,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "r", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "B" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "r", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "B" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -1061,15 +1179,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "reverse", "namespace_": 0 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.List" },
-                "unit": { "key": "base" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "reverse", "namespace_": 0 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.List" },
+                  "unit": { "key": "base" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -1081,15 +1201,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "toLower", "namespace_": 0 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Unicode" },
-                "unit": { "key": "base" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "toLower", "namespace_": 0 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Unicode" },
+                  "unit": { "key": "base" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -1101,15 +1223,17 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "toLower", "namespace_": 0 } },
-            "mod": {
-              "key": {
-                "name": { "key": "GHC.Unicode" },
-                "unit": { "key": "base" }
-              }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "toLower", "namespace_": 0 } },
+              "mod": {
+                "key": {
+                  "name": { "key": "GHC.Unicode" },
+                  "unit": { "key": "base" }
+                }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -1121,12 +1245,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "x", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "internal": { "start": 514, "length": 1 } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "x", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "internal": { "start": 514, "length": 1 } }
+            }
           }
         }
       },
@@ -1138,12 +1264,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "x", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "internal": { "start": 514, "length": 1 } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "x", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "internal": { "start": 514, "length": 1 } }
+            }
           }
         }
       },
@@ -1155,12 +1283,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "x", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "internal": { "start": 572, "length": 1 } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "x", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "internal": { "start": 572, "length": 1 } }
+            }
           }
         }
       },
@@ -1172,12 +1302,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "zero", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "zero", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },
@@ -1189,12 +1321,14 @@
     "key": {
       "target": {
         "hs": {
-          "key": {
-            "occ": { "key": { "name": "zero", "namespace_": 0 } },
-            "mod": {
-              "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
-            },
-            "sort": { "external": { } }
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "zero", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
           }
         }
       },

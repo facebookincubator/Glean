@@ -17,7 +17,7 @@ predicate HaskellResolveLocation:
     location: codemarkup.types.Location,
     entity: code.hs.Entity,
   }
-  { { Ent.occ.name, File, { span = Span }, nothing }, Ent } where
+  { { Ent.occ.name, File, { span = Span }, nothing }, { name = Ent } } where
     hs.SourceModule { File, Mod };
     hs.ModuleDeclarations { module = Mod, names = Names };
     Ent = Names[..];
@@ -32,7 +32,7 @@ predicate HaskellEntityLocation:
     entity: code.hs.Entity,
     location: codemarkup.types.Location,
   }
-  { D, { D.occ.name, File, { span = Span }, nothing } } where
+  { { name = D }, { D.occ.name, File, { span = Span }, nothing } } where
     hs.DeclarationLocation { D, File, Span };
 
 #
@@ -46,7 +46,7 @@ predicate HaskellFileEntityXRefLocations:
     xref: codemarkup.types.XRefLocation,
     entity: code.hs.Entity,
   }
-  { File, { Location, { span = Span } }, Name } where
+  { File, { Location, { span = Span } }, { name = Name } } where
     hs.FileXRefs { file = File, refs = XRefs };
     { name = Name, spans = Spans } = XRefs[..];
     Span = Spans[..];
@@ -68,7 +68,7 @@ predicate HaskellEntityUses:
     file: src.File,
     span: src.ByteSpan,
   }
-  { Name, File, Spans[..] } where
+  { { name = Name }, File, Spans[..] } where
     hs.NameRefs { target = Name, file = File, uses = Spans }
 
 }

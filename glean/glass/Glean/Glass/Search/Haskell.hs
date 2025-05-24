@@ -59,8 +59,12 @@ symbolIdQuery
   -> Angle (ResultLocation Haskell.Entity)
 symbolIdQuery _pkg mod ident ns sort =
   vars $ \name file span ->
-    tuple (name, file, sig (alt @"span" span :: Angle Code.RangeSpan), string ident)
-      `where_` [
+    tuple (
+      alt @"name" (asPredicate name),
+      file,
+      alt @"span" span,
+      string ident
+    ) `where_` [
         name .= predicate @Hs.Name (
           rec $
             field @"occ" (rec $

@@ -3,6 +3,10 @@
 schema code.hs.2 {
 import hs.2
 
-type Entity = hs.Name
+type Entity =
+  {
+    name: hs.Name |
+    mod: hs.Module |
+  }
 
 }
