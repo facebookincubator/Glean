@@ -307,7 +307,7 @@ glass::
 	$(CABAL) build glass-server glass-democlient
 
 .PHONY: glean-clang
-glean-clang:: gen-schema glean glean.cabal cxx-libraries
+glean-clang:: gen-schema glean glean.cabal cxx-libraries glean/schema/cpp/schema.h
 	$(CABAL) build glean-clang
 
 .PHONY: glean-hiedb
@@ -328,3 +328,6 @@ $(BUILD_DIR)/current.sh: force
 .PHONY: install
 install::
 	mkdir -p $(PREFIX)
+
+glean/schema/cpp/schema.h: gen-schema
+       cp $(CODEGEN_DIR)/gen-schema/glean/lang/clang/schema.h glean/schema/cpp/schema.h
