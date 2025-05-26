@@ -122,6 +122,10 @@ glean.cabal: glean.cabal.in $(BUILD_DIR)/mode $(CXX_DIR)/defs.m4
 		> $@
 	chmod guo-w $@
 
+# we have to copy the generated C++ headers to a designated place for reasons
+glean/schema/cpp/schema.h: gen-schema
+	cp $(CODEGEN_DIR)/gen-schema/glean/lang/clang/schema.h glean/schema/cpp/schema.h
+
 $(CXX_DIR)/defs.m4: force
 	@$(MAKE) -f mk/cxx.mk --no-print-directory CXX_MODE=$(CXX_MODE) CXX_DIR=$(CXX_DIR) $@
 
@@ -328,6 +332,3 @@ $(BUILD_DIR)/current.sh: force
 .PHONY: install
 install::
 	mkdir -p $(PREFIX)
-
-glean/schema/cpp/schema.h: gen-schema
-       cp $(CODEGEN_DIR)/gen-schema/glean/lang/clang/schema.h glean/schema/cpp/schema.h
