@@ -122,6 +122,11 @@ glean.cabal: glean.cabal.in $(BUILD_DIR)/mode $(CXX_DIR)/defs.m4
 		> $@
 	chmod guo-w $@
 
+# we have to copy the generated C++ headers to a designated place for reasons
+glean/schema/cpp/schema.h: gen-schema
+	mkdir -p glean/schema/cpp
+	cp $(CODEGEN_DIR)/gen-schema/glean/lang/clang/schema.h glean/schema/cpp/schema.h
+
 $(CXX_DIR)/defs.m4: force
 	@$(MAKE) -f mk/cxx.mk --no-print-directory CXX_MODE=$(CXX_MODE) CXX_DIR=$(CXX_DIR) $@
 
@@ -307,7 +312,7 @@ glass::
 	$(CABAL) build glass-server glass-democlient
 
 .PHONY: glean-clang
-glean-clang:: gen-schema glean glean.cabal cxx-libraries
+glean-clang:: gen-schema glean glean.cabal cxx-libraries glean/schema/cpp/schema.h
 	$(CABAL) build glean-clang
 
 .PHONY: glean-hiedb
