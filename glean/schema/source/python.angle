@@ -188,6 +188,14 @@ predicate XRefsViaNameByFile:
         xrefs: [XRefViaName],
     }
 
+# Uses of a reference via name in a particular file.
+predicate XRefsViaName:
+    {
+      xref: Name,
+      file: src.File,
+      span: src.ByteSpan,
+    }
+
 # All uses of a declaration in a particular file.
 # This predicate does not follow references, so if a symbol is used through
 # a chain of imports, only the first hop will be present as a fact.
