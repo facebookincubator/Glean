@@ -1795,6 +1795,17 @@ test-suite angle-test-misc
     main-is: Angle/MiscTest.hs
     ghc-options: -main-is Angle.MiscTest
 
+test-suite api
+    import: test
+    type: exitcode-stdio-1.0
+    main-is: ApiTest.hs
+    ghc-options: -main-is ApiTest
+    build-depends:
+        glean:stubs,
+        glean:core,
+        glean:if-glean-hs,
+        glean:schema
+
 test-suite cppexception
     import: test
     type: exitcode-stdio-1.0
