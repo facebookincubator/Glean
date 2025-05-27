@@ -146,7 +146,10 @@ build (Angle m) =
 -- >                 end)
 -- >      ]
 query :: (Type t) => Angle t -> Query t
-query = Thrift.angleData . display
+query = Thrift.angleData . display . sig
+  -- adding a type signature ensures that our type matches the type
+  -- Glean infers. Otherwise these could diverge, leading to
+  -- deserialization errors or just wrong data.
 
 class AngleVars f r where
   -- | Use `vars` to batch up a series of nested `var` calls:
