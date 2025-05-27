@@ -56,6 +56,12 @@ struct BuildJsonArgs {
 
     #[arg(long, help = "Prefix to prepend to filepaths.")]
     root_prefix: Option<String>,
+
+    #[arg(
+        long,
+        help = "Shards the JSON graph into subgraphs. Subgraphs will be approximately the size specified. Uses the --output argument as a directory, and writes one file per shard"
+    )]
+    shard: Option<usize>,
 }
 
 #[cli::main("scip_to_glean", error_logging(user(default_level = "info")))]
@@ -88,16 +94,36 @@ fn build_json(args: BuildJsonArgs) -> Result<()> {
             doc,
         )?;
     }
+    let shards = if let Some(shard_size) = args.shard {
+        let shards = env.output().shard(shard_size);
+        // pad the output files for correct numerical sorting
+        let padding = shards.len().to_string().len();
+        shards
+            .into_iter()
+            .enumerate()
+            .map(|(i, shard)| {
+                let output = args
+                    .output
+                    .join(format!("{:0width$}.json", i, width = padding));
+                (output, shard)
+            })
+            .collect()
+    } else {
+        vec![(args.output, env.output())]
+    };
 
-    let write = OpenOptions::new()
-        .write(true)
-        .create(true)
-        .truncate(true)
-        .open(&args.output)
-        .with_context(|| format!("Error creating output file {}", args.output.display()))?;
-    let writer = std::io::BufWriter::new(write);
+    for (file, shard) in shards {
+        let write = OpenOptions::new()
+            .write(true)
+            .create(true)
+            .truncate(true)
+            .open(&file)
+            .with_context(|| format!("Error creating output file {}", file.display()))?;
+        let writer = std::io::BufWriter::new(write);
 
-    env.output().write(writer)?;
+        shard.write(writer)?;
+    }
+
     Ok(())
 }
 
@@ -175,12 +201,44 @@ mod tests {
             infer_language: true,
             language: None,
             root_prefix: None,
+            shard: None,
         };
 
         build_json(args).expect("failure building JSON");
 
         let output_json =
             std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        assert_eq!(output_json, "[]\n");
+    }
+
+    #[test]
+    fn test_write_sharded_scip() {
+        let scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json_dir = tempfile::TempDir::new().expect("Unable to create temp dir");
+
+        let args = BuildJsonArgs {
+            input: scip_file.path().to_path_buf(),
+            output: output_json_dir.path().to_path_buf(),
+            infer_language: true,
+            language: None,
+            root_prefix: None,
+            shard: Some(100),
+        };
+
+        build_json(args).expect("failure building JSON");
+
+        let files_in_dir: Vec<_> = std::fs::read_dir(output_json_dir.path())
+            .expect("unable to read output directory")
+            .collect();
+        let file_count = files_in_dir.len();
+        assert_eq!(
+            file_count, 1,
+            "Expected exactly one file in the output directory"
+        );
+
+        let output_file_path = files_in_dir[0].as_ref().unwrap().path();
+        let output_json = std::fs::read_to_string(output_file_path).expect("unable to read output");
 
         assert_eq!(output_json, "[]\n");
     }

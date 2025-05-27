@@ -193,6 +193,11 @@ impl GleanJSONOutput {
             },
         })
     }
+
+    pub fn shard(self, _shard_size: usize) -> Vec<Self> {
+        vec![self]
+    }
+
     pub fn write(self, mut w: impl std::io::Write) -> std::io::Result<()> {
         fn sub(
             mut w: impl std::io::Write,
