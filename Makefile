@@ -124,6 +124,7 @@ glean.cabal: glean.cabal.in $(BUILD_DIR)/mode $(CXX_DIR)/defs.m4
 
 # we have to copy the generated C++ headers to a designated place for reasons
 glean/schema/cpp/schema.h: gen-schema
+	mkdir -p glean/schema/cpp
 	cp $(CODEGEN_DIR)/gen-schema/glean/lang/clang/schema.h glean/schema/cpp/schema.h
 
 $(CXX_DIR)/defs.m4: force
