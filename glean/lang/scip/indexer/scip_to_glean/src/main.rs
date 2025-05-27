@@ -157,3 +157,31 @@ fn read_scip_file(file: &Path) -> Result<Index, Error> {
     let mut reader = std::io::BufReader::new(scip_file);
     Index::parse_from_reader(&mut reader).context("Failed to deserialize scip file")
 }
+
+#[cfg(test)]
+mod tests {
+    use tempfile::NamedTempFile;
+
+    use super::*;
+
+    #[test]
+    fn test_write_blank_scip() {
+        let scip_file = NamedTempFile::new().expect("unable to create temp file");
+        let output_json = NamedTempFile::new().expect("unable to create temp file");
+
+        let args = BuildJsonArgs {
+            input: scip_file.path().to_path_buf(),
+            output: output_json.path().to_path_buf(),
+            infer_language: true,
+            language: None,
+            root_prefix: None,
+        };
+
+        build_json(args).expect("failure building JSON");
+
+        let output_json =
+            std::fs::read_to_string(output_json.path()).expect("unable to read output");
+
+        assert_eq!(output_json, "[]\n");
+    }
+}
