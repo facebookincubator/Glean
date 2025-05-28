@@ -11,7 +11,7 @@ module Glean.Database.Retention (
     retentionChanges,
     RetentionChanges(..),
     repoRetention,
-    hasProperties,
+    hasAllProperties,
   ) where
 
 import Control.Monad
@@ -242,10 +242,11 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs dbIndex = do
     isAvailable = isLocal |||> isAvailableM
     hasDependencies = not . missingDependencies dbIndex
 
-    -- all DBs with the required properties, sorted by most recent first
+    -- all DBs with the required/excluded properties, sorted by most recent first
     sorted =
       sortOn (Down . dbTime . itemMeta) $
-      filter (hasProperties retention_required_properties) $
+      filter (hasAllProperties retention_required_properties) $
+      filter (not . hasAnyProperties retention_excluded_properties) $
       NonEmpty.toList dbs
 
     -- whether to delete a DB according to the deletion policy
@@ -279,11 +280,16 @@ dbRetentionForRepo ServerConfig.Retention{..} t isAvailableM dbs dbIndex = do
 missingDependencies :: DbIndex -> Item -> Bool
 missingDependencies dbIndex item = any isNothing (dependencies dbIndex item)
 
-hasProperties :: HashMap.HashMap Text Text -> Item -> Bool
-hasProperties req Item{..} = all has (HashMap.toList req)
-  where
-  has (name,val) =
-    HashMap.lookup name (metaProperties itemMeta) == Just val
+hasProperty :: Item -> (Text, Text) -> Bool
+hasProperty Item{..} (name,val) =
+  HashMap.lookup name (metaProperties itemMeta) == Just val
+
+hasAllProperties :: HashMap.HashMap Text Text -> Item -> Bool
+hasAllProperties req item = all (hasProperty item) (HashMap.toList req)
+
+hasAnyProperties :: HashMap.HashMap Text Text -> Item -> Bool
+hasAnyProperties exclude_props item =
+  any (hasProperty item) (HashMap.toList exclude_props)
 
 repoRetention
   :: ServerConfig.DatabaseRetentionPolicy

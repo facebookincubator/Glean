@@ -260,7 +260,7 @@ runWithShards env myShards sm = do
             NonEmpty.toList (repoRetention config_retention repoNm)
         , item <- NonEmpty.toList dbs
         , shouldOpen item
-        , hasProperties retention_required_properties item
+        , hasAllProperties retention_required_properties item
         ]
 
       isComplete Complete{} = True

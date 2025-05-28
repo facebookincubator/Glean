@@ -118,6 +118,8 @@ setupBasicDBs dbdir schema = do
   makeFakeDB schema dbdir (Repo "test" "0005") (age (days 5)) (complete 5) $
     stacked (Stacked "test2" "0006" Nothing) . props [("bool","no")]
   makeFakeDB schema dbdir (Repo "test2" "0006") (age (days 6)) (complete 6) id
+  makeFakeDB schema dbdir (Repo "test3" "0007") (age (days 0)) (complete 1)
+    (props [("exclude_me","true")])
 
 
 setupBasicCloudDBs :: FilePath -> DbSchema -> IO ()
@@ -298,14 +300,14 @@ deleteOldDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
 
   dbs <- listDBs env
   assertEqual "before"
-    [ "0001", "0002", "0003", "0004", "0005", "0006"]
+    [ "0001", "0002", "0003", "0004", "0005", "0006", "0007"]
     (sort (map (repo_hash . database_repo) dbs))
 
   runDatabaseJanitor env
   waitDel env
   dbs <- listDBs env
   assertEqual "after"
-    [ "0001", "0004", "0005", "0006" ]
+    [ "0001", "0004", "0005", "0006","0007"]
       -- we don't delete 0004 because even though its source is old,
       -- it was created recently. 0004 depends on 0005, and 0005
       -- depends on 0006
@@ -321,7 +323,7 @@ deleteOldDBsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   waitDel env
   dbs <- listDBs env
   assertEqual "after-repeat"
-    [ "0001", "0004", "0005", "0006" ]
+    [ "0001", "0004", "0005", "0006","0007" ]
     (sort (map (repo_hash . database_repo) dbs))
 
 deleteIncompleteDBsTest :: Test
@@ -340,7 +342,7 @@ deleteIncompleteDBsTest = TestCase $
 
   dbs <- listDBs env
   assertEqual "before"
-    [ "0001", "0002", "0003", "0004", "0005", "0006"]
+    [ "0001", "0002", "0003", "0004", "0005", "0006","0007"]
     (sort (map (repo_hash . database_repo) dbs))
 
   runDatabaseJanitor env
@@ -348,14 +350,14 @@ deleteIncompleteDBsTest = TestCase $
   dbs <- listDBs env
   print (map database_repo dbs)
   assertEqual "after"
-    [ "0001", "0003", "0004", "0005", "0006"]
+    [ "0001", "0003", "0004", "0005", "0006", "0007"]
     (sort (map (repo_hash . database_repo) dbs))
 
   runDatabaseJanitor env
   waitDel env
   dbs <- listDBs env
   assertEqual "after-repeat"
-    [ "0001", "0003", "0004", "0005", "0006"]
+    [ "0001", "0003", "0004", "0005", "0006","0007"]
     (sort $ map (repo_hash . database_repo) dbs)
 
 
@@ -374,14 +376,14 @@ retainAtMostTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   dbs <- listDBs env
   let repos = map database_repo dbs
   assertEqual "after"
-    [ "0001", "0002", "0006"]
+    [ "0001", "0002", "0006", "0007"]
     (sort $ map repo_hash repos)
 
   runDatabaseJanitor env
   waitDel env
   dbs <- listDBs env
   assertEqual "after-repeat"
-    [ "0001", "0002", "0006"]
+    [ "0001", "0002", "0006", "0007"]
     (sort $ map (repo_hash . database_repo) dbs)
 
 
@@ -402,7 +404,7 @@ retainAtLeastTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   dbs <- listDBs env
   let repos = map database_repo dbs
   assertEqual "after"
-    [ "0001", "0003", "0004", "0005", "0006"]
+    [ "0001", "0003", "0004", "0005", "0006", "0007"]
     (sort $ map repo_hash repos)
     -- should drop 0002, because its metaIndexing=Failed
     -- should retain 0003 even though it is older than delete_if_older,
@@ -413,7 +415,25 @@ retainAtLeastTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   dbs <- listDBs env
   let repos = map database_repo dbs
   assertEqual "after-repeat"
-    [ "0001", "0003", "0004", "0005", "0006"]
+    [ "0001", "0003", "0004", "0005", "0006","0007"]
+    (sort $ map repo_hash repos)
+
+excludedPropsTest :: Test
+excludedPropsTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
+  let cfg = dbConfig dbdir $ (serverConfig backupdir)
+        { config_retention = def
+          { databaseRetentionPolicy_default_retention = def
+            { retention_excluded_properties =
+                HashMap.fromList [("exclude_me","true")]
+            }
+          }
+        }
+  withDatabases evb cfg cfgAPI $ \env -> do
+  runDatabaseJanitor env
+  dbs <- listDBs env
+  let repos = map database_repo dbs
+  assertEqual "after"
+    [ "0001", "0002", "0003", "0004", "0005", "0006"]
     (sort $ map repo_hash repos)
 
 requiredPropsTest :: Test
@@ -458,7 +478,7 @@ multiRetentionTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   runDatabaseJanitor env
   dbs <- listDBs env
   let repos = sort $ map (repo_hash . database_repo) dbs
-  assertEqual "after" [ "0001", "0005", "0006" ] repos
+  assertEqual "after" [ "0001", "0005", "0006", "0007" ] repos
 
   -- 0005 should be open due to keep_open=True in the retention policy
   closed <- atomically $ isDatabaseClosed env (Repo "test" "0005")
@@ -491,7 +511,8 @@ backupRestoreTest :: Test
 backupRestoreTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   let cfg = dbConfig dbdir $ (serverConfig backupdir)
         { config_backup = (config_backup (serverConfig backupdir))
-          { databaseBackupPolicy_allowed = HashSet.fromList ["test", "test2"] }
+          { databaseBackupPolicy_allowed =
+              HashSet.fromList ["test", "test2", "test3"] }
         }
   withDatabases evb cfg cfgAPI $ \env -> do
     runDatabaseJanitor env
@@ -506,7 +527,7 @@ backupRestoreTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   backups <- listDirectory backupdir
   let withProps filename = [filename, filename ++ ".props"]
   let expected = concatMap withProps
-        [ "test.0001", "test.0003", "test.0004", "test.0005" , "test2.0006"]
+        [ "test.0001", "test.0003", "test.0004", "test.0005" , "test2.0006", "test3.0007"]
   assertEqual "after"
     expected
     (sort backups)
@@ -527,6 +548,7 @@ backupRestoreTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
   removeDirectoryRecursive dbdir
   createDirectoryIfMissing True (dbdir </> "test")
   createDirectoryIfMissing True (dbdir </> "test2")
+  createDirectoryIfMissing True (dbdir </> "test3")
   withDatabases evb cfg cfgAPI $ \env -> do
   runDatabaseJanitor env  -- this should kick off the restore
 
@@ -551,7 +573,7 @@ backupRestoreTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
 
 
   assertEqual "after"
-    [ "0001", "0003", "0004", "0005", "0006"]
+    [ "0001", "0003", "0004", "0005", "0006", "0007" ]
     (sort $ map repo_hash repos)
 
   areClosed <- atomically
@@ -672,7 +694,7 @@ shardingFallbackTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> d
     waitDel env
     dbs <- listHereDBs env
     assertEqual "falls back to no sharding"
-      ["0001", "0002", "0003", "0004", "0005", "0006"]
+      ["0001", "0002", "0003", "0004", "0005", "0006", "0007"]
       (sort $ map (repo_hash . database_repo) dbs)
 
 shardingByRepoNameTest :: Test
@@ -705,7 +727,7 @@ elsewhereTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
 
     dbs <- listHereDBs env
     assertEqual "before"
-      [ "0001", "0002", "0003", "0004", "0005", "0006"]
+      [ "0001", "0002", "0003", "0004", "0005", "0006", "0007"]
       (sort (map (repo_hash . database_repo) dbs))
 
     runDatabaseJanitor env
@@ -713,7 +735,7 @@ elsewhereTest = TestCase $ withFakeDBs $ \evb cfgAPI dbdir backupdir -> do
     dbs <- listAllDBs env
 
     assertEqual "after: dbs available with the retention policy"
-      [ "0001", "0002", "0003", "0004", "0005", "0006"]
+      [ "0001", "0002", "0003", "0004", "0005", "0006", "0007"]
       (sort $ map (repo_hash . database_repo) dbs)
 
 makeFilterDBsWithInvariant :: ([Repo] -> IO [Repo]) -> IO ([Repo] -> IO [Repo])
@@ -949,4 +971,5 @@ main = withUnitTest $ testRunner $ TestList
   , TestLabel "retentionRestoreDepsTest" retentionRestoreDepsTest
   , TestLabel "multiRetentionTest" multiRetentionTest
   , TestLabel "retentionCheckMissingDepsTest" retentionCheckMissingDepsTest
+  , TestLabel "excludedPropsTest" excludedPropsTest
   ]
