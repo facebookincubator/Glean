@@ -366,6 +366,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "String"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolLanguage"
@@ -392,6 +398,12 @@
                             "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> T a"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -424,6 +436,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "forall a. R a -> Char"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolLanguage"
@@ -450,6 +468,12 @@
                             "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> [a]"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -511,6 +535,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Int -> Bool"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolLanguage"
@@ -537,6 +567,12 @@
                             "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "R a"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -569,6 +605,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Int"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolLanguage"
@@ -598,6 +640,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "a"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolLanguage"
@@ -624,6 +672,12 @@
                             "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Int"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -1985,6 +2039,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "String"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolLanguage"
@@ -2021,6 +2081,12 @@
                             "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "String"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2063,6 +2129,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "forall a. R a -> T a"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolLanguage"
@@ -2099,6 +2171,12 @@
                             "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> T a"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2141,6 +2219,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "forall a. R a -> Char"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolLanguage"
@@ -2177,6 +2261,12 @@
                             "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> Char"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2219,6 +2309,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "forall a. R a -> Char"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolLanguage"
@@ -2258,6 +2354,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "forall a. R a -> [a]"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolLanguage"
@@ -2294,6 +2396,12 @@
                             "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> [a]"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2414,6 +2522,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "R a"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolLanguage"
@@ -2450,6 +2564,12 @@
                             "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Int"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2492,6 +2612,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Int"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolLanguage"
@@ -2528,6 +2654,12 @@
                             "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "a"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2570,6 +2702,12 @@
                     },
                     {
                         "attribute": {
+                            "aString": "Int"
+                        },
+                        "key": "symbolSignature"
+                    },
+                    {
+                        "attribute": {
                             "aInteger": 4
                         },
                         "key": "symbolLanguage"
@@ -2606,6 +2744,12 @@
                             "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Int"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {

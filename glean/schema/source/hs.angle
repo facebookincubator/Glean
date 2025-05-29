@@ -3,87 +3,7 @@
 schema hs.3 {
 import src
 
-# E.g. 'Data.Maybe'
 predicate ModuleName : string
-
-# Definition location by identifier string
-predicate DefinitionName : string
-
-# Maps lower-case strings to DefinitionName, for case-insensitive search
-predicate DefinitionNameLowerCase:
-  {
-    nameLowerCase: string,
-    name: DefinitionName,
-  }
-  stored { prim.toLower Str, N } where N = DefinitionName Str
-
-predicate Definition :
-  {
-    name : DefinitionName,
-    source : src.FileLocation,
-  }
-
-# Type of "entities" that have a definition location
-# to match code.hs.angle:Entity
-type DefinitionEntity =
-  {
-    definition : Definition |
-  }
-
-# Index by file.
-predicate FileDefinition:
-  {
-    file : src.File,
-    defn : DefinitionEntity,
-  } stored
-  { File, { definition = Defn } }
-    where
-      Defn = Definition { source = { File, _ } }
-
-# From an entity, find name and location
-predicate DefinitionLocation:
-  {
-    defn: DefinitionEntity,
-    name: string,
-    source: src.FileLocation,
-  }
-  { Entity, Name, { File, Span }}
-    where
-      { definition = { DefinitionName Name, { File, Span }} } = Entity;
-
-type XRefTarget =
-  {
-    definition : hs.DefinitionName |
-  }
-
-# Cross-references per file, for code exploration integrations
-predicate FileXRefMap :
-  {
-    file : src.File,
-    refs : [XReference],
-  }
-
-# Cross-references in a file, for code exploration integrations
-type XReference =
-  {
-    target : XRefTarget,
-    spans : [src.ByteSpan],
-  }
-
-predicate TargetUses:
-  {
-    target: Definition,
-    file: src.File,
-    uses: [src.ByteSpan]
-  } stored {{name = DefN}, File, Uses} where
-  FileXRefMap {file = File, refs = Refs};
-  {target = {definition = DefN}, spans = Uses} = Refs[..];
-
-# ----------------------------------------------------------------------------
-# NEW from here
-
-# Names: more or less matching GHC's Name/OccName/Module structure
-# but with fields ordered to allow searching by name.
 
 type Namespace = enum { var_ | datacon | tyvar | tycon }
 
@@ -132,6 +52,73 @@ predicate Name:
     sort: NameSort,
   }
 
+# Types
+
+type TupleSort = enum { boxed | unboxed | constraint }
+
+type TyConSort =
+  {
+    normal: {} |
+    tuple: { arity: nat, sort: TupleSort } |
+    sum: { arity: nat } |
+    equality: {} |
+  }
+
+predicate TyCon:
+  {
+    name: Name,
+    sort: TyConSort,
+    promoted: bool,
+  }
+
+type ArgFlag =
+  {
+    invisible: Specificity |
+    requird: {}
+  }
+
+type Specificity = enum { inferred | specified }
+
+predicate LitType:
+  {
+    num: nat |
+    str: string |
+    chr: nat |
+  }
+
+type TypeArg =
+  {
+    visible: bool,
+    ty: Type,
+  }
+
+type TyVar = string
+
+# Type variables
+#
+# In HieType a type variable is a Name. But these are always internal
+# names, and they don't have a binding SrcSpan so we can't use sort =
+# { internal = { span = .. }}. I considered adding a new NameSort: {
+# unique: string }, but we don't really want to index uniques (they're
+# too non-deterministic). Interestingly, when a HieType is rendered,
+# we convert to IfaceType and we use only the OccName of the tyvars,
+# discarding the uniques. This is probably wrong, strictly speaking,
+# because there could be name clashes, but using a string here leaves
+# room to rename the tyvars to disambiguate later.
+
+predicate Type:
+  {
+    tyvar: TyVar |
+    app: { fun: Type, args_: [TypeArg] } |
+    tyconapp: { tycon: TyCon, args_: [TypeArg] } |
+    forall: { name: TyVar, kind: Type, flag: ArgFlag, inner: Type } |
+    fun: { mult: Type, arg: Type, res: Type } |
+    qual: { pred: Type, res: Type } |
+    lit: LitType |
+    cast: Type |
+    coercion: {}
+  }
+
 # Declarations / definitions
 
 type Declaration =
@@ -172,7 +159,7 @@ predicate DeclarationOfName:
 predicate ValBind:
   {
     name: Name,
-    # type
+    ty: maybe Type,
     # fixity
     # location of signature
   }
@@ -229,6 +216,7 @@ predicate InstanceDecl:
 predicate PatBind:
   {
     name: Name,
+    ty: maybe Type,
   }
 
 predicate TyVarBind:

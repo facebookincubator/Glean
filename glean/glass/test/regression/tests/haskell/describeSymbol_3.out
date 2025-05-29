@@ -31,6 +31,7 @@
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
+        "signature": "forall a. R a -> Char",
         "sym": "test/hs/main/A/var/f1",
         "sym_location": {
             "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",

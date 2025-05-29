@@ -16,6 +16,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "String"
                         }
                     },
                     "range": {
@@ -176,6 +179,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "Int"
                         }
                     },
                     "range": {
@@ -208,6 +214,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "forall a. R a -> T a"
                         }
                     },
                     "range": {
@@ -332,6 +341,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "String"
                         }
                     },
                     "range": {
@@ -424,6 +436,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "String"
                         }
                     },
                     "range": {
@@ -870,6 +885,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "forall a. R a -> Char"
                         }
                     },
                     "range": {
@@ -890,6 +908,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "forall a. R a -> Char"
                         }
                     },
                     "range": {
@@ -920,6 +941,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "forall a. R a -> [a]"
                         }
                     },
                     "range": {
@@ -940,6 +964,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "forall a. R a -> [a]"
                         }
                     },
                     "range": {
@@ -1278,6 +1305,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "Int -> Bool"
                         }
                     },
                     "range": {
@@ -1298,6 +1328,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "Int"
                         }
                     },
                     "range": {
@@ -1318,6 +1351,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "Int"
                         }
                     },
                     "range": {
@@ -1348,6 +1384,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "Int"
                         }
                     },
                     "range": {
@@ -1410,6 +1449,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "Int"
                         }
                     },
                     "range": {
@@ -1442,6 +1484,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "Int"
                         }
                     },
                     "range": {
@@ -1604,6 +1649,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "forall a. R a -> T a"
                         }
                     },
                     "range": {
@@ -1696,6 +1744,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "forall a. R a -> T a"
                         }
                     },
                     "range": {
@@ -1716,6 +1767,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "forall a. R a -> [a]"
                         }
                     },
                     "range": {
@@ -1746,6 +1800,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "a"
                         }
                     },
                     "range": {
@@ -1766,6 +1823,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "a"
                         }
                     },
                     "range": {
@@ -1888,6 +1948,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "forall a. R a -> Char"
                         }
                     },
                     "range": {
@@ -1918,6 +1981,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "forall a. R a -> Char"
                         }
                     },
                     "range": {
@@ -1978,6 +2044,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "R a"
                         }
                     },
                     "range": {
@@ -1998,6 +2067,9 @@
                         },
                         "symbolParent": {
                             "aString": "A"
+                        },
+                        "symbolSignature": {
+                            "aString": "R a"
                         }
                     },
                     "range": {
