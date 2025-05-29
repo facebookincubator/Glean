@@ -75,6 +75,7 @@ import Glean.Schema.Gen.HackJson ( genSchemaHackJson )
 import Glean.Schema.Gen.Haskell ( genSchemaHS )
 import Glean.Schema.Gen.Python ( genSchemaPy )
 import Glean.Schema.Gen.OCaml ( genSchemaOCaml )
+import Glean.Schema.Gen.Rust ( genSchemaRust )
 import Glean.Schema.Gen.Utils ( NameSpaces, Oncall )
 
 import Glean.Schema.Types
@@ -104,6 +105,7 @@ data GenOptions =  GenOptions
   , hs :: Maybe FilePath
   , py :: Maybe FilePath
   , ocaml :: Maybe FilePath
+  , rust :: Maybe FilePath
   , source :: Maybe FilePath
   , updateIndex :: Maybe FilePath
   , install_dir :: FilePath
@@ -182,6 +184,8 @@ options = do
         long "py" <> metavar "FILE"
       ocaml <- optional $ strOption $
         long "ocaml" <> metavar "FILE"
+      rust <- optional $ strOption $
+        long "rust" <> metavar "FILE"
       source <- optional $ strOption $
         long "source" <> metavar "FILE"
       updateIndex <- optional $ strOption $
@@ -427,6 +431,7 @@ gen GenOptions{..} versions =
       doGen genSchemaHS hs
       doGen genSchemaPy py
       doGen (genSchemaOCaml restrictSchemas) ocaml
+      doGen (genSchemaRust hash) rust
       doGen (genSchemaThrift dir hash) thrift
 
 -- -----------------------------------------------------------------------------
