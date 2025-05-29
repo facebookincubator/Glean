@@ -208,8 +208,7 @@ predicate DeclarationUses:
     span: src.ByteSpan,
   }
   stored {Decl, File, Span} where
-  XRefsViaNameByFile { File, XRefs };
-  { target = Name, source = Span } = XRefs[..];
+  XRefsViaName { Name, File, Span };
   DeclarationWithName {Name, Decl};
 
 predicate DirectXRefsByFile:

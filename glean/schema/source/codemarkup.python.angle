@@ -77,7 +77,8 @@ predicate PythonEntityUses:
     span: src.ByteSpan,
   }
   { { decl = D }, File, Span } where
-  python.DeclarationUses { declaration = D, file = File, span = Span}
+  python.DeclarationToName D -> Target;
+  python.XRefsViaName { xref = Target, file = File, span = Span};
 
 #
 # Language-specific symbol info
