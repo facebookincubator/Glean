@@ -387,8 +387,9 @@ predicate DeclarationReference:
     source : Declaration
   }
   { target = T, source = S } where
-    python.DeclarationUses {declaration=T, file=F, span=LittleSpan};
-    python.DeclarationsByFile {declaration=S, file=F, span=BigSpan};
+    DeclarationToName T -> Name;
+    XRefsViaName {xref=Name, file=F, span=LittleSpan};
+    DeclarationsByFile {declaration=S, file=F, span=BigSpan};
     src.ByteSpanContains {byteSpan=BigSpan, contains=LittleSpan}
 
 predicate DeclarationWithLocalName:
