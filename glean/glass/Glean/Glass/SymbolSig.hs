@@ -25,6 +25,7 @@ import qualified Glean.Schema.CodeScip.Types as Scip
 import Glean.Glass.Pretty.Cxx as Cxx ( prettyCxxSignature, Qualified(..) )
 import Glean.Glass.Pretty.Flow as Flow ( prettyFlowSignature )
 import Glean.Glass.Pretty.Hack as Hack ( prettyHackSignature )
+import Glean.Glass.Pretty.Haskell as Haskell ( prettyHaskellSignature )
 import Glean.Glass.Pretty.LSIF as LSIF ( prettyLsifSignature )
 import Glean.Glass.Pretty.SCIP as SCIP ( prettyScipSignature )
 import Glean.Glass.Pretty.Python as Python ( prettyPythonSignature )
@@ -125,6 +126,8 @@ instance ToSymbolSignature Code.Entity where
     Code.Entity_pp{} -> pure Nothing
     -- hack pretty signatures
     Code.Entity_hack x -> Hack.prettyHackSignature opts repo sym x
+    -- haskell pretty signatures
+    Code.Entity_hs x -> Haskell.prettyHaskellSignature opts x
     -- Flow signatures direct from the DB
     Code.Entity_flow x -> Flow.prettyFlowSignature opts x
     -- python pretty signatures
