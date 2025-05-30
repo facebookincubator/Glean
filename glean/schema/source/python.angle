@@ -207,9 +207,9 @@ predicate DeclarationUses:
     file: src.File,
     span: src.ByteSpan,
   }
-  stored {Decl, File, Span} where
+  {Decl, File, Span} where
+  DeclarationToName Decl -> Name;
   XRefsViaName { Name, File, Span };
-  DeclarationWithName {Name, Decl};
 
 predicate DirectXRefsByFile:
   {
