@@ -1,0 +1,48 @@
+[
+    "@generated",
+    {
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "language": 4,
+        "location": {
+            "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
+            "range": {
+                "columnBegin": 12,
+                "columnEnd": 20,
+                "lineBegin": 27,
+                "lineEnd": 27
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "C1",
+            "localName": "A"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "sym": "test/hs/main/A/con/C1",
+        "sym_location": {
+            "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
+            "range": {
+                "columnBegin": 12,
+                "columnEnd": 20,
+                "lineBegin": 27,
+                "lineEnd": 27
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]

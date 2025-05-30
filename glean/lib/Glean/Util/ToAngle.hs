@@ -315,11 +315,9 @@ instance Prune Hack.ContainerDeclaration where
 -- Haskell
 
 instance ToAngle Hs.Entity where
-  toAngle e = case e of
-    Hs.Entity_class_ x -> alt @"class_" (mkKey x)
-    Hs.Entity_definition x -> alt @"definition" (mkKey x)
-    Hs.Entity_function_ x -> alt @"function_" (mkKey x)
-    Hs.Entity_EMPTY -> error "unknown Entity"
+  toAngle (Hs.Entity_name x) = alt @"name" (mkKey x)
+  toAngle (Hs.Entity_mod x) = alt @"mod" (mkKey x)
+  toAngle x = error $ "unknown Hs.Entity: " <> show x
 
 -- Python
 

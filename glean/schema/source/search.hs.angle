@@ -2,18 +2,20 @@
 
 schema search.hs.9 {
   import code.hs
-  import hs.2
+  import hs
 
   predicate SearchByName:
     {
       name: string,
       entity: code.hs.Entity,
-    } { Name, Entity } where
-      (Defn = hs.Definition { name = hs.DefinitionName Name };
-       { definition = Defn } = Entity ) |
-      (Defn = hs.FunctionDefinition { name = hs.FunctionName Name };
-       { function_ = Defn } = Entity ) |
-      (Defn = hs.Class { name = hs.ClassName Name };
-       { class_ = Defn } = Entity );
+    } { Name, { name = Entity } } where Entity.occ.name = Name;
+
+  predicate SearchByLowerCaseName:
+    {
+      name: string,
+      entity: code.hs.Entity,
+    } { Name, { name = Entity } } where
+      hs.OccNameLowerCase { Name, Occ };
+      Entity.occ = Occ;
 
 }

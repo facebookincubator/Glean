@@ -315,9 +315,9 @@ glass::
 glean-clang:: gen-schema glean glean.cabal cxx-libraries glean/schema/cpp/schema.h
 	$(CABAL) build glean-clang
 
-.PHONY: glean-hiedb
-glean-hiedb:: glean.cabal cxx-libraries
-	$(CABAL) build hiedb-indexer
+.PHONY: glean-hie
+glean-hie:: glean.cabal cxx-libraries
+	$(CABAL) build hie-indexer
 
 define bash_macros
 call_cabal() {

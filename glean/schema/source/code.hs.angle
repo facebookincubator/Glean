@@ -1,13 +1,12 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
 schema code.hs.2 {
-import hs.2
+import hs
 
 type Entity =
   {
-    definition : hs.Definition |
-    function_ : hs.FunctionDefinition |
-    class_ : hs.Class |
+    name: hs.Name |
+    mod: hs.Module |
   }
 
 }

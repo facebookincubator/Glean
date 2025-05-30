@@ -17,7 +17,7 @@ def _impl(ctx):
     # compiler to use.
     ctargets = ctx.configured_targets(
         ctx.cli_args.targets,
-        modifiers = ["ovr_config//third-party/ghc/constraints:8.8.3"],
+        modifiers = ["ovr_config//third-party/ghc/constraints:9.2.4"],
     )
 
     deps = [ctx.analysis(t).as_dependency() for t in ctargets]
@@ -35,7 +35,7 @@ def _impl(ctx):
 
     hie_indexer = ctx.analysis(ctx.configured_targets(
         "fbcode//glean/lang/haskell:indexer",
-        modifiers = ["ovr_config//third-party/ghc/constraints:8.8.3"],
+        modifiers = ["ovr_config//third-party/ghc/constraints:9.2.4"],
     ))
 
     facts = action_factory.declare_output("facts")

@@ -65,6 +65,12 @@ common fb-cpp
 common exe
   ghc-options: -threaded -rtsopts
 
+common haskell-indexer
+  if impl(ghc >= 9.2)
+    buildable: True
+  else
+    buildable: False
+
 flag clang
      default: False
 
@@ -1098,40 +1104,26 @@ executable hack-derive
         glean:stubs,
         glean:util,
 
--- Haskell indexer via hiedb
-executable hiedb-indexer
-    import: deps, fb-haskell, exe
-    if impl(ghc >= 8.8 && < 9.4)
-      buildable: True
-    else
-      buildable: False
+-- Haskell indexer via hie
+executable hie-indexer
+    import: deps, fb-haskell, exe, haskell-indexer
     hs-source-dirs: glean/lang/haskell
-    main-is: HieDBIndexer/Main.hs
+    main-is: HieIndexer/Main.hs
     other-modules:
-        HieDBIndexer.Builder
-        HieDBIndexer.DefaultMain
-        HieDBIndexer.Glean
-        HieDBIndexer.HieDB
-        HieDBIndexer.Options
-        HieDBIndexer.Trace
-        HieDBIndexer.Types
-    ghc-options: -main-is HieDBIndexer.Main
+        HieIndexer.Index
+        HieIndexer.Options
+    ghc-options: -main-is HieIndexer.Main
     build-depends:
         ghc,
         glean:client-hs,
         glean:client-hs-local,
         glean:core,
-        glean:db,
-        glean:if-glean-hs,
         glean:lib,
-        glean:lib-derive,
         glean:schema,
         glean:stubs,
         glean:util,
         hie-compat < 0.3.1.2,
-        hiedb < 0.4.3,
-        split,
-        sqlite-simple,
+        hiedb < 0.4.3
 
 -- -----------------------------------------------------------------------------
 -- LSIF support
@@ -2153,8 +2145,34 @@ test-suite glean-snapshot-hack
     if !flag(hack-tests)
         buildable: False
 
+test-suite glean-snapshot-haskell
+    import: fb-haskell, fb-cpp, deps, exe, haskell-indexer
+    hs-source-dirs: glean/lang/haskell/tests
+    type: exitcode-stdio-1.0
+    main-is: Main.hs
+    ghc-options: -main-is Main
+    build-depends:
+       glean:regression-test-lib,
+       glean:indexers
+    build-tool-depends:
+       glean:hie-indexer,
+       glean:glean
+
+test-suite glean-snapshot-codemarkup-haskell
+    import: fb-haskell, fb-cpp, deps, exe, haskell-indexer
+    hs-source-dirs: glean/lang/codemarkup/tests/haskell
+    type: exitcode-stdio-1.0
+    main-is: Main.hs
+    ghc-options: -main-is Main
+    build-depends:
+       glean:regression-test-lib,
+       glean:indexers
+    build-tool-depends:
+       glean:hie-indexer,
+       glean:glean
+
 test-suite glean-snapshot-rust-lsif
-    import: fb-haskell, deps
+    import: fb-haskell, deps, exe
     hs-source-dirs: glean/lang/rust-lsif/tests
     type: exitcode-stdio-1.0
     main-is: Glean/Regression/RustLsif/Main.hs
@@ -2341,6 +2359,19 @@ test-suite glass-regression-hack
         glean:util,
     if !flag(hack-tests)
         buildable: False
+
+test-suite glass-regression-haskell
+    import: glass-regression-deps, fb-haskell, deps, exe, haskell-indexer
+    type: exitcode-stdio-1.0
+    main-is: Glean/Glass/Regression/Haskell/Main.hs
+    ghc-options: -main-is Glean.Glass.Regression.Haskell.Main
+    other-modules: Glean.Glass.Regression.Haskell
+    build-depends:
+        glean:client-hs,
+        glean:indexers,
+        glean:util
+    build-tool-depends:
+        glean:hie-indexer
 
 test-suite glass-regression-typescript
     import: glass-regression-deps, fb-haskell, deps, exe

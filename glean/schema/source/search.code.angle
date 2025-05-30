@@ -16,7 +16,7 @@ import fbthrift
 import flow
 import graphql
 import hack
-import hs.2
+import hs
 import javakotlin.alpha
 import lsif
 import pp1
@@ -1007,14 +1007,8 @@ predicate HsSearchByLowerCaseName:
     name: string,
     entity: code.Entity,
   }
-  { Name, Entity } where
-  (
-    hs.ModuleNameLowerCase { Name, hs.ModuleName NameCase } |
-    hs.FunctionNameLowerCase { Name, hs.FunctionName NameCase } |
-    hs.DefinitionNameLowerCase { Name, hs.DefinitionName NameCase } |
-    hs.ClassNameLowerCase { Name, hs.ClassName NameCase }
-  );
-  HsSearchByName { NameCase, Entity };
+  { Name, { hs = E } } where
+  search.hs.SearchByLowerCaseName { name = Name, entity = E }
 
 predicate ErlangSearchByName:
   {

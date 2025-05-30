@@ -47,7 +47,7 @@ data Command
   | Describe SymbolId
   | FindRefs SymbolId
   | FindLocation SymbolId
-  | Search RepoName Text
+  | Search RepoName Text Bool{- case-insensitve? -}
 
 options :: ParserInfo Options
 options = info (helper <*> parser) (fullDesc <>
@@ -87,7 +87,7 @@ options = info (helper <*> parser) (fullDesc <>
         ) <>
         command "search" (info searchCommand
           (progDesc $ unlines
-            ["Find entities matching (case-insensitive) string"
+            ["Find entities matching string"
             ]
           )
         )
@@ -102,7 +102,13 @@ options = info (helper <*> parser) (fullDesc <>
     describeCommand = cmd (Describe <$> readSymbol) symbolHelp
     findRefsCommand = cmd (FindRefs <$> readSymbol) symbolHelp
     locationCommand = cmd (FindLocation <$> readSymbol) symbolHelp
-    searchCommand = cmd readSearch searchHelp
+    searchCommand = do
+      ~(repo,needle) <- argument readSearch searchHelp
+      ignoreCase <- switch
+        (  long "case-insensitive"
+        <> short 'i'
+        )
+      return $ Search repo needle ignoreCase
 
 readService :: ReadM Service
 readService = do
@@ -113,12 +119,12 @@ readService = do
       Left _ -> fail ("Not a valid port: " <> show portStr)
       Right port -> return (HostPort host (fromIntegral port))
 
-readSearch :: ReadM Command
+readSearch :: ReadM (RepoName, Text)
 readSearch = do
   repoStr <- Text.pack <$> readerAsk
   case Text.breakOn "/" repoStr of
     (_, "") -> fail "Not a valid repo/string"
-    (repo, str) -> return (Search (RepoName repo) (Text.tail str))
+    (repo, str) -> return (RepoName repo, Text.tail str)
 
 readListRepoPath :: ReadM Command
 readListRepoPath = do
@@ -164,7 +170,7 @@ main = Glean.withOptions options $ \Options{..} ->
         Describe sym -> runDescribe sym
         FindRefs sym -> runFindRefs sym
         FindLocation sym -> runLocation sym
-        Search repo str -> runSearch repo str
+        Search repo str ignoreCase -> runSearch repo str ignoreCase
     mapM_ Text.putStrLn res
 
 runListSymbols :: Protocol p => RepoName -> Path -> GlassM p [Text]
@@ -186,8 +192,8 @@ runDescribe sym = do
       annot = textShow <$> symbolDescription_annotations
   return $ [loc,name] <> catMaybes [kind,annot]
 
-runSearch :: Protocol p => RepoName -> Text -> GlassM p [Text]
-runSearch repoName strName = do
+runSearch :: Protocol p => RepoName -> Text -> Bool -> GlassM p [Text]
+runSearch repoName strName ignoreCase = do
   SymbolSearchResult syms _ <- searchSymbol req def
   return (map textShow syms)
   where
@@ -196,7 +202,9 @@ runSearch repoName strName = do
         (Just repoName)
         def -- language
         def -- kinds
-        def -- default search options
+        def { -- search options
+          symbolSearchOptions_ignoreCase = ignoreCase
+        }
 
 runLocation :: Protocol p => SymbolId -> GlassM p [Text]
 runLocation sym = do

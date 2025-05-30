@@ -6,39 +6,41 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE ApplicativeDo #-}
 module Glean.Indexer.Haskell (
   indexer,
 ) where
 
+import Options.Applicative
+import System.Directory
+import System.FilePath
+import System.Process
+
 import Glean.Indexer
 import Glean.Indexer.External
-import Options.Applicative
+import Util.IO
 
 data Haskell = Haskell
   { haskellBinary :: FilePath
-  , haskellRepoRoot :: FilePath
+  , haskellGhc :: Maybe FilePath
   }
 
 options :: Parser Haskell
-options =
-  Haskell
-    <$> strOption
-      ( long "hiedb-indexer"
-          <> value "hiedb-indexer"
-          <> metavar "PATH"
-          <> showDefault
-          <> help "path to the hiedb indexer binary"
-      )
-    <*> strOption
-      ( long "source-root"
-          <> metavar "DIR"
-          <> value "."
-          <> showDefault
-          <> help
-            ( unwords
-                [ "Path containing the source files." ]
-            )
-      )
+options = do
+  haskellBinary <-strOption
+    ( long "hie-indexer"
+        <> value "hie-indexer"
+        <> metavar "PATH"
+        <> showDefault
+        <> help "path to the hie-indexer binary"
+    )
+  haskellGhc <- optional $ strOption
+    ( long "with-ghc"
+        <> metavar "PATH"
+        <> help ("GHC to invoke to generate .hie files " <>
+             " (otherwise read existing .hie files)")
+    )
+  return Haskell{..}
 
 indexer :: Indexer Haskell
 indexer =
@@ -46,7 +48,21 @@ indexer =
     { indexerShortName = "haskell-hie"
     , indexerDescription = "Index Haskell code"
     , indexerOptParser = options
-    , indexerRun = \Haskell {..} -> do
+    , indexerRun = \Haskell {..} backend repo params -> do
+        hieDir <- case haskellGhc of
+          Just ghc -> do
+            let isHs = (== ".hs") . takeExtension
+            root <- makeRelativeToCurrentDirectory (indexerRoot params)
+            srcs <- filter isHs <$> listDirectoryRecursive root
+            let out = indexerOutput params </> "ghc-out"
+            callProcess ghc $ [
+              "--make",
+              "-c",
+              "-fwrite-ide-info",
+              "-outputdir", out
+              ] <> srcs
+            return out
+          Nothing -> return (indexerRoot params)
         let ext =
               Ext
                 { extRunScript = haskellBinary
@@ -58,13 +74,13 @@ indexer =
                     , "${TEST_REPO_NAME}"
                     , "--repo-hash"
                     , "${TEST_REPO_HASH}"
-                    , "--repo-path"
-                    , haskellRepoRoot
-                    , "--dont-create-db"
-                    , "${TEST_ROOT}"
-                    , ""
+                    , hieDir
                     ]
-                , extDerivePredicates = []
+                , extDerivePredicates = [
+                    "hs.NameRefs",
+                    "hs.OccNameLowerCase",
+                    "hs.SourceModule"
+                  ]
                 }
-        indexerRun externalIndexer ext
+        indexerRun externalIndexer ext backend repo params
     }

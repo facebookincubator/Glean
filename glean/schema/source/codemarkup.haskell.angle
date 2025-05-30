@@ -5,21 +5,23 @@ schema codemarkup.haskell.2 {
 import src
 import code.hs
 import codemarkup.types
-import hs.2
+import hs
 
 #
 # Resolving locations to entities
 #
 
-# Resolve sigma/Haskell locations
+# Resolve Haskell locations
 predicate HaskellResolveLocation:
   {
     location: codemarkup.types.Location,
     entity: code.hs.Entity,
   }
-  { { Name, File, { span = Span }, nothing }, Defn } where
-    hs.FileDefinition { File, Defn };
-    hs.DefinitionLocation { Defn, Name, { File , Span }};
+  { { Ent.occ.name, File, { span = Span }, nothing }, { name = Ent } } where
+    hs.SourceModule { File, Mod };
+    hs.ModuleDeclarations { module = Mod, names = Names };
+    Ent = Names[..];
+    hs.DeclarationLocation { name = Ent, span = Span };
 
 #
 # Finding entities' locations
@@ -30,35 +32,31 @@ predicate HaskellEntityLocation:
     entity: code.hs.Entity,
     location: codemarkup.types.Location,
   }
-  { D, { Name, File, { span = Span }, nothing } } where
-    hs.DefinitionLocation { D, Name, { File, Span } };
+  { { name = D }, { D.occ.name, File, { span = Span }, nothing } } where
+    hs.DeclarationLocation { D, File, Span };
 
 #
 # Finding references in a file
 #
 
-# XRefs in sigma/Haskell
+# XRefs in Haskell
 predicate HaskellFileEntityXRefLocations:
   {
     file: src.File,
     xref: codemarkup.types.XRefLocation,
     entity: code.hs.Entity,
   }
-  { File, { Location, { span = SrcSpan } }, { definition = Def } } where
-    # Get all XRefs in file
-    hs.FileXRefMap { file = File, refs = XRefs };
-    # Map over each XRef
-    hs.XReference { target = { definition = hs.DefinitionName TargetName }, spans = SrcSpans } = XRefs[..];
-
-    SrcSpan = SrcSpans[..];
-
-    Def = hs.Definition
+  { File, { Location, { span = Span } }, { name = Name } } where
+    hs.FileXRefs { file = File, refs = XRefs };
+    { name = Name, spans = Spans } = XRefs[..];
+    Span = Spans[..];
+    Location = codemarkup.types.Location
       {
-        name = hs.DefinitionName TargetName,
-        source = {TargetFile, TargetSpan}
+        name = Name.occ.name,
+        file = File,
+        location = { span = Span },
+        destination = nothing
       };
-    Location = codemarkup.types.Location { TargetName, TargetFile, { span = TargetSpan }, nothing };
-
 
 #
 # Language entity uses
@@ -70,8 +68,7 @@ predicate HaskellEntityUses:
     file: src.File,
     span: src.ByteSpan,
   }
-  { { definition = Def }, File, SrcSpan } where
-    hs.TargetUses {target = Def, file = File, uses = Spans};
-    SrcSpan = Spans[..];
+  { { name = Name }, File, Spans[..] } where
+    hs.NameRefs { target = Name, file = File, uses = Spans }
 
 }
