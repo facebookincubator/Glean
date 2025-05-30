@@ -133,10 +133,10 @@ jobs:
         run: |
           apt-get install -y git ninja-build \
             libaio-dev libbz2-dev libdouble-conversion-dev libdwarf-dev libgoogle-glog-dev libiberty-dev libjemalloc-dev \
-            liblzma-dev liblz4-dev libsnappy-dev libsodium-dev libssl-dev libunwind-dev libzstd-dev libfast-float-dev
+            liblzma-dev liblz4-dev libsnappy-dev libsodium-dev libssl-dev libunwind-dev libzstd-dev libfast-float-dev librocksdb-dev
 
       - name: Fetch hsthrift and build folly, rocksdb
-        run: ./install_deps.sh --threads $(nproc)
+        run: ./install_deps.sh --threads $(nproc) --use-system-libs
 
       - name: Nuke build artifacts
         run: rm -rf /tmp/fbcode_builder_getdeps-Z__wZGleanZGleanZhsthriftZbuildZfbcode_builder-root/
