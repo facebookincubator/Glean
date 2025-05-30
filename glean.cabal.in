@@ -1255,6 +1255,7 @@ library glass-lib
         Glean.Glass.SnapshotBackend
         Glean.Glass.SourceControl
         Glean.Glass.SymbolId
+        Glean.Glass.SymbolId.Angle
         Glean.Glass.SymbolId.Buck
         Glean.Glass.SymbolId.Class
         Glean.Glass.SymbolId.CSharp

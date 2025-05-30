@@ -74,7 +74,7 @@ import Glean.Glass.SymbolId.Class
       ToStrobelightFrame(..),
       ToSymbolParent(..),
       ToNativeSymbol(..) )
-
+import Glean.Glass.SymbolId.Angle ({- instances -})
 import Glean.Glass.SymbolId.Buck ({- instances -})
 import Glean.Glass.SymbolId.Cxx ({- instances -})
 import Glean.Glass.SymbolId.Erlang ({- instances -})
@@ -298,6 +298,7 @@ instance Symbol Code.Entity where
   toSymbol _ = throwM $ SymbolError "Code.Entity: use toSymbolWithPath"
 
   toSymbolWithPath e p = case e of
+    Code.Entity_angle x -> toSymbolWithPath x p
     Code.Entity_hack (Hack.Entity_decl x) -> toSymbolWithPath x p
     Code.Entity_python (Python.Entity_decl x) -> toSymbolWithPath x p
     Code.Entity_flow x -> toSymbolWithPath x p
@@ -397,6 +398,7 @@ entityToAngle e = case e of
 
 instance ToQName Code.Entity where
   toQName e = case e of
+    Code.Entity_angle x -> toQName x
     Code.Entity_buck x -> toQName x
     Code.Entity_csharp x -> toQName x
     Code.Entity_cxx x -> toQName x
