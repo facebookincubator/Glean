@@ -40,8 +40,6 @@ def _impl(ctx):
 
     facts = action_factory.declare_output("facts")
     args = cmd_args(hie_indexer.providers()[RunInfo])
-    args.add(ctx.cli_args.backend)
-    args.add("--repo-path", ctx.root())
     args.add("--output", facts.as_output())
     if ctx.cli_args.schema_id:
         args.add("--schema-id", ctx.cli_args.schema_id)
