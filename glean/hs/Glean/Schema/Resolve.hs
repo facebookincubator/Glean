@@ -217,15 +217,20 @@ resolveSchemaRefs SourceSchemas{..} = do
        where
        unknown = throwError $ "unknown schema: " <> showRef ref
 
-     resolveDecl (SourceImport r s) = SourceImport <$> schemaByName r <*> pure s
-     resolveDecl decl = return decl
+     schemaByNameWithNamespace parentSchema ref =
+       let message e = e <> " within schema: " <> showRef parentSchema
+       in withExcept message (schemaByName ref)
+
+     resolveDecl parentSchema (SourceImport r s) =
+      SourceImport <$> schemaByNameWithNamespace parentSchema r <*> pure s
+     resolveDecl _ decl = return decl
 
      resolveEvolve (SourceEvolves l n o) =
        SourceEvolves l <$> schemaByName n <*> schemaByName o
 
      resolveSchema SourceSchema{..} = do
-       inherits <- mapM schemaByName schemaInherits
-       decls <- mapM resolveDecl schemaDecls
+       inherits <- mapM (schemaByNameWithNamespace schemaName) schemaInherits
+       decls <- mapM (resolveDecl schemaName) schemaDecls
        return SourceSchema
          { schemaName = schemaName
          , schemaInherits = inherits
