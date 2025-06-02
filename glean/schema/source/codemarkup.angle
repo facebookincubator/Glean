@@ -203,7 +203,9 @@ predicate EntityLocation:
     (codemarkup.csharp.CSharpEntityLocation { E, Location };
      { csharp = E } = Entity) |
     (codemarkup.graphql.GraphQLEntityLocation { E, Location };
-     { graphql = E } = Entity);
+     { graphql = E } = Entity) |
+    (codemarkup.anglelang.AngleEntityLocation { E, Location };
+     { angle = E } = Entity);
 
 # Maps a generated entity to its source definition
 predicate GeneratedEntityToIdlEntity:
