@@ -83,11 +83,15 @@ genNamespace namespaces version
   namespace = dotted namespaces
 
   header = Text.unlines $
-    [ "/*!"
-    , " *  Copyright (c) Meta Platforms, Inc. and affiliates."
+    [ "/*"
+    , " * Copyright (c) Meta Platforms, Inc. and affiliates."
     , " *"
-    , " *  This source code is licensed under the MIT license found in the"
-    , " *  LICENSE file in the root directory of this source tree."
+    , " * This source code is licensed under the MIT license found in the"
+    , " * LICENSE file in the root directory of this source tree."
+    , " *"
+    , " * @generated"
+    , " * Regenerate with glean/schema/gen/Glean/Schema/Gen/Rust.hs"
+    , " *  buck2 run glean/schema/gen:gen-schema -- --dir glean/schema/source --rust pyrefly/pyrefly/lib/report/glean"
     , " */"
     , ""
     , "#![allow(warnings)]"
