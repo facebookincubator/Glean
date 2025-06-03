@@ -1,0 +1,25 @@
+{
+  "@generated": null,
+  "facts_searched": {
+    "hs.ClassDecl.3": 1,
+    "hs.ConDecl.3": 4,
+    "hs.DataDecl.3": 2,
+    "hs.MethodDecl.3": 1,
+    "hs.PatBind.3": 3,
+    "hs.RecFieldDecl.3": 2,
+    "hs.TyVarBind.3": 4,
+    "hs.TypeSynDecl.3": 1,
+    "hs.ValBind.3": 8
+  },
+  "full_scans": [
+    "hs.ClassDecl.3",
+    "hs.ConDecl.3",
+    "hs.DataDecl.3",
+    "hs.MethodDecl.3",
+    "hs.PatBind.3",
+    "hs.RecFieldDecl.3",
+    "hs.TyVarBind.3",
+    "hs.TypeSynDecl.3",
+    "hs.ValBind.3"
+  ]
+}

@@ -177,13 +177,14 @@ predicate TypeSynDecl:
 predicate DataDecl:
   {
     name: Name,
-    # constructors
+    constrs: [ConDecl]
   }
 
 predicate ConDecl:
   {
     name: Name,
-    # fields, etc.
+    data_: Name,  # the Name of the DataDecl
+    fields: [RecFieldDecl],  # empty if this is not a record
   }
 
 predicate PatSynDecl:
@@ -194,14 +195,15 @@ predicate PatSynDecl:
 predicate ClassDecl:
   {
     name: Name,
+    methods: [MethodDecl],
     # superclass constraints
-    # methods
     # defaults
   }
 
 predicate MethodDecl:
   {
     name: Name,
+    class_: Name,
     # type
     # default decl
   }
@@ -227,6 +229,7 @@ predicate TyVarBind:
 predicate RecFieldDecl:
   {
     name: Name,
+    con: Name,
     # type
   }
 
