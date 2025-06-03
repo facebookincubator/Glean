@@ -719,6 +719,10 @@ predicate ContainsParentEntity :
       { kotlin = C } = Child;
       codemarkup.kotlin.KotlinContainsParentEntity { C, P };
       { kotlin = P } = Parent
+    ) | (
+      { hs = C } = Child;
+      codemarkup.haskell.HaskellContainsParentEntity { C, P };
+      { hs = P } = Parent
     )
 
 # A parent `contains` a child
@@ -755,6 +759,10 @@ predicate ContainsChildEntity :
       { kotlin = P } = Parent;
       codemarkup.kotlin.KotlinContainsChildEntity { P, C };
       { kotlin = C } = Child
+    ) | (
+      { hs = P } = Parent;
+      codemarkup.haskell.HaskellContainsChildEntity { P, C };
+      { hs = C } = Child
     )
 
 #

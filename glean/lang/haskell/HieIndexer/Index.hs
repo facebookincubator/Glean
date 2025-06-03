@@ -11,11 +11,13 @@ module HieIndexer.Index (indexHieFile) where
 
 import Control.Applicative
 import Control.Monad
+import qualified Control.Monad.State.Strict as State
 import qualified Data.Array as A
 import Data.Char
 import Data.Default
 import Data.IntMap (IntMap)
 import qualified Data.IntMap as IntMap
+import Data.List (foldl')
 import Data.List.NonEmpty (NonEmpty)
 import qualified Data.List.NonEmpty as NonEmpty
 import Data.Map (Map)
@@ -30,13 +32,14 @@ import qualified Data.Vector.Unboxed as Vector
 import HieDb.Compat (nameModule_maybe, nameOccName)
 import System.Directory
 import System.FilePath
-import Control.Monad.Extra (findM)
+import Control.Monad.Extra (findM, whenJust)
 
 import qualified GHC
+import GHC.Utils.Outputable (ppr)
 import qualified GHC.Types.Basic as GHC (TupleSort(..), isPromoted)
 import qualified GHC.Iface.Type as GHC (
   IfaceTyLit(..), IfaceTyConSort(..), IfaceTyCon(..), IfaceTyConInfo(..))
-import GHC.Iface.Ext.Utils (generateReferencesMap)
+import GHC.Iface.Ext.Utils (generateReferencesMap, emptyNodeInfo, flattenAst)
 import GHC.Iface.Ext.Types
 import qualified GHC.Types.Name.Occurrence as GHC
 import qualified GHC.Types.Name as GHC (isSystemName, nameOccName)
@@ -63,16 +66,20 @@ import Glean.Util.Range
 
 - types
   - types on constructors
+    - no identType on the ConDec
   - types on methods
+    - also no identType?
   - types on refs? not supported by Glass
   - types of foreign imports? Seems missing from Hie
 
 - declarations
-  - details of declarations (e.g. class methods, constructors, fields)
-    - doing this properly is a lot of work, and it's hard to get this
-      info from Hie. A possible way to do this is using the Haddock API:
-      Haddock's Interface type has all the ASTs for the declarations
-      in addition to the Hie.
+  - check that GADT data types work properly, including with record fields
+  - class defaults
+  - instance methods
+  - doing this properly is a lot of work, and it's hard to get this
+    info from Hie. A possible way to do this is using the Haddock API:
+    Haddock's Interface type has all the ASTs for the declarations
+    in addition to the Hie.
 
 - index exports
   - can we tag Names correctly with exportedness?
@@ -80,11 +87,9 @@ import Glean.Util.Range
 - exclude generated names in a cleaner way
 
 - Glass / codemarkup
-  - search by name
-  - type signatures for symbols (needs types)
+  - search by scope
   - should modules be symbols?
   - SymbolKind, Visibility, etc.
-  - RelationType_Contains child/parent (needs declarations)
   - full signatures for symbols (needs declarations)
   - Haddock docs for symbol
 -}
@@ -127,6 +132,12 @@ toNamespace occ
   | GHC.isDataOcc occ = Hs.Namespace_datacon
   | otherwise = error "toNamespace"
 
+isRecFieldRef :: RecFieldContext -> Bool
+isRecFieldRef RecFieldAssign = True
+isRecFieldRef RecFieldMatch = True
+isRecFieldRef RecFieldOcc = True
+isRecFieldRef _ = False
+
 produceDecl
  :: Glean.NewFact m
  => Hs.Name
@@ -140,25 +151,48 @@ produceDecl name maybeTy ctx = case ctx of
     Glean.makeFact_ @Hs.TypeFamilyDecl $ Hs.TypeFamilyDecl_key name
   Decl SynDec _ ->
     Glean.makeFact_ @Hs.TypeSynDecl $ Hs.TypeSynDecl_key name
-  Decl DataDec _ ->
-    Glean.makeFact_ @Hs.DataDecl $ Hs.DataDecl_key name
-  Decl ConDec _ ->
-    Glean.makeFact_ @Hs.ConDecl $ Hs.ConDecl_key name
   Decl PatSynDec _ ->
     Glean.makeFact_ @Hs.PatSynDecl $ Hs.PatSynDecl_key name
-  Decl ClassDec _ ->
-    Glean.makeFact_ @Hs.ClassDecl $ Hs.ClassDecl_key name
   Decl InstDec _ ->
     Glean.makeFact_ @Hs.InstanceDecl $ Hs.InstanceDecl_key name
   PatternBind{} ->
     Glean.makeFact_ @Hs.PatBind $ Hs.PatBind_key name maybeTy
   TyVarBind{} ->
     Glean.makeFact_ @Hs.TyVarBind $ Hs.TyVarBind_key name
-  ClassTyDecl{} -> do
-    Glean.makeFact_ @Hs.MethodDecl $ Hs.MethodDecl_key name
-  RecField{} ->
-    Glean.makeFact_ @Hs.RecFieldDecl $ Hs.RecFieldDecl_key name
+  -- moved to produceDeclInfo:
+  ClassTyDecl{} -> return ()
+  RecField{} -> return ()
+  Decl DataDec _ -> return ()
+  Decl ConDec _ -> return ()
+  Decl ClassDec _ -> return ()
   _ -> return ()
+
+produceDeclInfo
+  :: Glean.NewFact m
+  => Map GHC.Name Hs.Name
+  -> Map GHC.Name DeclInfo
+  -> m ()
+produceDeclInfo nameMap declInfoMap =
+  forM_ (Map.toList declInfoMap) $ \(name, info) ->
+    whenJust (Map.lookup name nameMap) $ \hsName ->
+      case info of
+        DataDecl { dataDeclConstrs = cs } -> do
+          cons <- forM cs $ \(ConstrInfo cName fields) -> do
+            forM (Map.lookup cName nameMap) $ \hsCName -> do
+              fNames <- forM (mapMaybe (`Map.lookup` nameMap) fields) $ \fName ->
+                Glean.makeFact @Hs.RecFieldDecl $
+                  Hs.RecFieldDecl_key fName hsCName
+              Glean.makeFact @Hs.ConDecl $
+                Hs.ConDecl_key hsCName hsName fNames
+          Glean.makeFact_ @Hs.DataDecl $
+            Hs.DataDecl_key hsName (catMaybes cons)
+
+        ClassDecl { classDeclMethods = ms } -> do
+          mNames <- forM (mapMaybe (`Map.lookup` nameMap) ms) $ \mName ->
+            Glean.makeFact @Hs.MethodDecl $
+              Hs.MethodDecl_key mName hsName
+          Glean.makeFact_ @Hs.ClassDecl $
+            Hs.ClassDecl_key hsName mNames
 
 nat :: Integral a => a -> Glean.Nat
 nat = Glean.toNat . fromIntegral
@@ -287,6 +321,8 @@ indexHieFile writer srcPaths path hie = do
 
     let allIds = [ (n, p) | (Right n, ps) <- Map.toList refmap, p <- ps ]
 
+        declInfo = Map.unions $ fmap getDeclInfos $ getAsts $ hie_asts hie
+
     -- produce names & declarations
     names <- fmap catMaybes $ forM allIds $ \(name, (span, dets)) -> if
       | Just sp <- getBindSpan span (identInfo dets)
@@ -313,6 +349,8 @@ indexHieFile writer srcPaths path hie = do
     let
       nameMap :: Map GHC.Name Hs.Name
       nameMap = Map.fromList names
+
+    produceDeclInfo nameMap declInfo
 
     Glean.makeFact_ @Hs.ModuleDeclarations $ Hs.ModuleDeclarations_key
       modfact (map snd names)
@@ -367,11 +405,6 @@ indexHieFile writer srcPaths path hie = do
   isRef (IEThing Export) = Just Hs.RefKind_exportref
   isRef (IEThing _) = Just Hs.RefKind_importref
   isRef _ = Nothing
-
-  isRecFieldRef RecFieldAssign = True
-  isRecFieldRef RecFieldMatch = True
-  isRecFieldRef RecFieldOcc = True
-  isRecFieldRef _ = False
 
   -- returns (Just span) if this ContextInfo is a definition
   getBindSpan defaultSpan = getFirst . foldMap (First . goDecl)
@@ -449,3 +482,130 @@ There might be other source files involved when compiling a module,
 e.g. if CPP is being used and the .hs file uses `#include`. We
 currently ignore Names that come from another source file (TODO).
 -}
+
+
+data DeclInfo
+  = DataDecl {
+      dataDeclConstrs :: [ConstrInfo]
+    }
+  | ClassDecl {
+      classDeclMethods :: [GHC.Name]
+    }
+
+data ConstrInfo =
+  ConstrInfo {
+    constrName :: GHC.Name,
+    constrFields :: [GHC.Name]
+  }
+
+getDeclInfos :: HieAST a -> Map GHC.Name DeclInfo
+getDeclInfos node = snd $ State.runState (go node) Map.empty
+  where
+  go node@Node{..} = do
+    visit node
+    void $ traverse go nodeChildren
+
+  visit node =
+    {-
+      trace ("node: " <> show (ppr (nodeAnnotations nodeInfo)) <> ": " <> show (ppr (fmap (const ()) (nodeIdentifiers nodeInfo)))) $
+    -}
+    whenJust hasInfo $ \(name, info) ->
+      State.modify (Map.insert name info)
+    where
+
+    nodeInfo = getNodeInfo node
+
+    hasInfo
+      | isDataDecl nodeInfo,
+        [name] <- findIdent dataDeclCtx nodeInfo node =
+         Just (name, DataDecl { dataDeclConstrs = findConstrs node })
+      | isClassDecl nodeInfo,
+        [name] <- findIdent classDeclCtx nodeInfo node =
+         Just (name, ClassDecl { classDeclMethods = findMethods node })
+      | otherwise =
+          Nothing
+
+    -- The Name for a decl seems to be a child of the declaration Node
+    findIdent ctx ni Node{..} =
+      concatMap (namesWithContext ctx) $
+        map nodeIdentifiers (ni : map getNodeInfo nodeChildren)
+
+    isDataDecl = any (== dataDeclAnnot) . nodeAnnotations
+    isConstrDecl = any (`elem` [constrAnnot, constrGadtAnnot]) . nodeAnnotations
+    isClassDecl = any (== classDeclAnnot) . nodeAnnotations
+    isMethodDecl = any (== classOpSigAnnot) . nodeAnnotations
+
+    findMethods Node{..} =
+      [ meth
+      | n <- nodeChildren
+      , let ni = getNodeInfo n
+      , isMethodDecl ni
+      , meth <- findIdent classTyDeclCtx ni n
+      ]
+
+    findConstrs Node{..} =
+      [ ConstrInfo con (fields n)
+      | n <- nodeChildren
+      , let ni = getNodeInfo n
+      , isConstrDecl ni
+      , con <- findIdent conDeclCtx ni n
+      ]
+      where
+      -- there are intermediate AST nodes between the constructor and
+      -- the fields, so rather than matching the shape exactly let's
+      -- just search the whole subtree to find fields.
+      fields n =
+        [ fld
+        | child <- flattenAst n
+        , let ni = getNodeInfo child
+        , fld <- namesWithContext recFieldDeclCtx (nodeIdentifiers ni)
+        ]
+
+namesWithContext
+  :: (ContextInfo -> Bool)
+  -> NodeIdentifiers a
+  -> [GHC.Name]
+namesWithContext p ids =
+  [ name | (Right name, dtl) <- Map.toList ids, any p (identInfo dtl) ]
+
+getNodeInfo :: HieAST a -> NodeInfo a
+getNodeInfo =
+  foldl' combine emptyNodeInfo . getSourcedNodeInfo . sourcedNodeInfo
+  where
+  (NodeInfo as ai ad) `combine` (NodeInfo bs bi bd) =
+    NodeInfo (Set.union as bs) (ai <> bi) (Map.unionWith (<>) ad bd)
+
+dataDeclCtx :: ContextInfo -> Bool
+dataDeclCtx (Decl DataDec _) = True
+dataDeclCtx _ = False
+
+conDeclCtx :: ContextInfo -> Bool
+conDeclCtx (Decl ConDec _) = True
+conDeclCtx _ = False
+
+recFieldDeclCtx :: ContextInfo -> Bool
+recFieldDeclCtx (RecField r _) = not (isRecFieldRef r)
+recFieldDeclCtx _ = False
+
+classDeclCtx :: ContextInfo -> Bool
+classDeclCtx (Decl ClassDec _) = True
+classDeclCtx _ = False
+
+classTyDeclCtx :: ContextInfo -> Bool
+classTyDeclCtx (ClassTyDecl _) = True
+classTyDeclCtx _ = False
+
+dataDeclAnnot :: NodeAnnotation
+dataDeclAnnot = NodeAnnotation "DataDecl" "TyClDecl"
+
+constrAnnot :: NodeAnnotation
+constrAnnot = NodeAnnotation "ConDeclH98" "ConDecl"
+
+constrGadtAnnot :: NodeAnnotation
+constrGadtAnnot = NodeAnnotation "ConDeclGADT" "ConDecl"
+
+classOpSigAnnot :: NodeAnnotation
+classOpSigAnnot = NodeAnnotation "ClassOpSig" "Sig"
+
+classDeclAnnot :: NodeAnnotation
+classDeclAnnot = NodeAnnotation "ClassDecl" "TyClDecl"

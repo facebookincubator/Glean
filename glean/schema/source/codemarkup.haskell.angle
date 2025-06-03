@@ -71,4 +71,40 @@ predicate HaskellEntityUses:
   { { name = Name }, File, (Spans[..]).span } where
     hs.NameRefs { target = Name, file = File, uses = Spans }
 
+#
+# Contains
+#
+
+predicate HaskellContainsParentEntity:
+  {
+    child: code.hs.Entity,
+    parent: code.hs.Entity
+  }
+  { { name = ChildName }, { name = ParentName } }
+  where
+  hs.DeclarationOfName { name = ChildName, decl = ChildDecl };
+  (
+    ChildDecl.con?.data_ = ParentName
+  ) | (
+    ChildDecl.field?.con = ParentName
+  ) | (
+    ChildDecl.method?.class_ = ParentName
+  )
+
+predicate HaskellContainsChildEntity:
+  {
+    parent: code.hs.Entity,
+    child: code.hs.Entity
+  }
+  { { name = ParentName }, { name = ChildName } }
+  where
+  hs.DeclarationOfName { name = ParentName, decl = ParentDecl };
+  (
+    (ParentDecl.class_?.methods[..]).name = ChildName
+  ) | (
+    (ParentDecl.data?.constrs[..]).name = ChildName
+  ) | (
+    (ParentDecl.con?.fields[..]).name = ChildName
+  )
+
 }
