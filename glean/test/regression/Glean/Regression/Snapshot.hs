@@ -140,7 +140,7 @@ executeTest cfg driver driverOpts base_group group diff subdir =
   let test = TestConfig
         { testRepo =
             let hash = map (\c -> if c == '/' then '_' else c) subdir
-            in Repo "test" (Text.pack hash)
+            in Repo "test" (if null hash then "0" else Text.pack hash)
         , testOutput =
             outdir </> (if null group then id else (group </>)) subdir
         , testRoot = cfgRoot cfg </> subdir
