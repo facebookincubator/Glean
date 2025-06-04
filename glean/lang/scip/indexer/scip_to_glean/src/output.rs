@@ -6,6 +6,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+use std::collections::HashMap;
+use std::collections::HashSet;
+
 use serde::Serialize;
 
 use crate::GleanRange;
@@ -14,47 +17,47 @@ use crate::angle::ScipId;
 use crate::lsif::LanguageId;
 use crate::lsif::SymbolKind;
 
-#[derive(Serialize)]
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 struct IdKey<T> {
     id: ScipId,
     key: T,
 }
-#[derive(Serialize)]
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 struct Key<T> {
     key: T,
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 struct FileLang {
     file: ScipId,
     language: u8,
 }
-#[derive(Serialize)]
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 struct FileRange {
     file: ScipId,
     range: GleanRange,
 }
-#[derive(Serialize)]
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 struct SymbolLocation {
     location: ScipId,
     symbol: ScipId,
 }
-#[derive(Serialize)]
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 struct SymbolDocs {
     docs: ScipId,
     symbol: ScipId,
 }
-#[derive(Serialize)]
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 struct SymbolName {
     name: ScipId,
     symbol: ScipId,
 }
-#[derive(Serialize)]
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 struct SymbolAndKind {
     kind: u8,
     symbol: ScipId,
 }
-#[derive(Serialize)]
+#[derive(Serialize, Clone, Eq, PartialEq, Hash)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 struct Metadata {
     text_encoding: i32,
@@ -66,6 +69,21 @@ struct Metadata {
 struct DisplayNameSymbol {
     display_name: ScipId,
     symbol: ScipId,
+}
+
+#[derive(Eq, Hash, PartialEq, Clone)]
+enum Node {
+    SymbolName(Key<SymbolName>),
+    FileLanguage(IdKey<FileLang>),
+    SymbolKind(Key<SymbolAndKind>),
+    Definition(Key<SymbolLocation>),
+    Reference(Key<SymbolLocation>),
+    SymbolDocumentation(IdKey<SymbolDocs>),
+    File(IdKey<Box<str>>),
+    FileRange(IdKey<FileRange>),
+    LocalName(IdKey<Box<str>>),
+    Symbol(IdKey<Box<str>>),
+    Documentation(IdKey<Box<str>>),
 }
 
 #[derive(Default)]
@@ -85,6 +103,33 @@ pub struct GleanJSONOutput {
     display_names: Vec<IdKey<Box<str>>>,
     display_name_symbols: Vec<Key<DisplayNameSymbol>>,
 }
+
+impl<I> From<I> for GleanJSONOutput
+where
+    I: IntoIterator<Item = Node>,
+{
+    fn from(nodes: I) -> Self {
+        let mut output = GleanJSONOutput::default();
+        for node in nodes {
+            match node {
+                Node::SymbolName(node) => output.symbol_names.push(node),
+                Node::FileLanguage(node) => output.file_langs.push(node),
+                Node::File(node) => output.src_files.push(node),
+                Node::FileRange(node) => output.file_ranges.push(node),
+                Node::SymbolKind(node) => output.symbol_kinds.push(node),
+                Node::Definition(node) => output.definitions.push(node),
+                Node::Reference(node) => output.references.push(node),
+                Node::SymbolDocumentation(node) => output.symbol_documentation.push(node),
+                Node::LocalName(node) => output.local_names.push(node),
+                Node::Symbol(node) => output.symbols.push(node),
+                Node::Documentation(node) => output.documentation.push(node),
+            }
+        }
+
+        output
+    }
+}
+
 impl GleanJSONOutput {
     pub fn src_file(&mut self, src_file_id: ScipId, path: Box<str>) {
         self.src_files.push(IdKey {
@@ -194,8 +239,110 @@ impl GleanJSONOutput {
         })
     }
 
-    pub fn shard(self, _shard_size: usize) -> Vec<Self> {
-        vec![self]
+    /// Consumes self, returns a list of GleanJSONOutput shards that are approximately of size `shard_size`
+    /// The shards are complete SCIP subgraphs, per the SCIP schema definition
+    /// This facilitates smaller writes to Glean without global, stateful keys
+    pub fn shard(self, shard_size: usize) -> Vec<Self> {
+        // Lookup tables, inline to avoid annoying lifetime specifiers
+        let files = self
+            .src_files
+            .iter()
+            .map(|x| (x.id, x))
+            .collect::<HashMap<_, _>>();
+        let documentation = self
+            .documentation
+            .iter()
+            .map(|x| (x.id, x))
+            .collect::<HashMap<_, _>>();
+        let file_ranges = self
+            .file_ranges
+            .iter()
+            .map(|x| (x.id, x))
+            .collect::<HashMap<_, _>>();
+        let symbols = self
+            .symbols
+            .iter()
+            .map(|x| (x.id, x))
+            .collect::<HashMap<_, _>>();
+        let local_names = self
+            .local_names
+            .iter()
+            .map(|x| (x.id, x))
+            .collect::<HashMap<_, _>>();
+
+        let mut source_nodes: Vec<Node> = Vec::new();
+        source_nodes.extend(self.symbol_names.into_iter().map(Node::SymbolName));
+        source_nodes.extend(self.file_langs.into_iter().map(Node::FileLanguage));
+        source_nodes.extend(self.symbol_kinds.into_iter().map(Node::SymbolKind));
+        source_nodes.extend(self.definitions.into_iter().map(Node::Definition));
+        source_nodes.extend(self.references.into_iter().map(Node::Reference));
+        source_nodes.extend(
+            self.symbol_documentation
+                .into_iter()
+                .map(Node::SymbolDocumentation),
+        );
+
+        let mut shards = Vec::new();
+
+        let mut current_graph: HashSet<Node> = HashSet::new();
+
+        // source nodes are our entry into each subgraph
+        for node in source_nodes {
+            if current_graph.len() >= shard_size {
+                shards.push(current_graph.into());
+
+                current_graph = HashSet::new();
+            }
+
+            let mut to_visit = vec![node.clone()];
+
+            while let Some(node) = to_visit.pop() {
+                if !current_graph.contains(&node) {
+                    match &node {
+                        Node::SymbolName(symbol_name) => {
+                            let localname = *local_names.get(&symbol_name.key.name).unwrap();
+                            let symbol = *symbols.get(&symbol_name.key.symbol).unwrap();
+                            to_visit.push(Node::LocalName(localname.clone()));
+                            to_visit.push(Node::Symbol(symbol.clone()));
+                        }
+                        Node::FileLanguage(file_language) => {
+                            let file = *files.get(&file_language.key.file).unwrap();
+                            to_visit.push(Node::File(file.clone()));
+                        }
+                        Node::FileRange(file_range) => {
+                            let file = *files.get(&file_range.key.file).unwrap();
+                            to_visit.push(Node::File(file.clone()));
+                        }
+                        Node::SymbolKind(symbol_kind) => {
+                            let symbol = *symbols.get(&symbol_kind.key.symbol).unwrap();
+                            to_visit.push(Node::Symbol(symbol.clone()));
+                        }
+                        Node::Definition(loc) | Node::Reference(loc) => {
+                            let location = *file_ranges.get(&loc.key.location).unwrap();
+                            let symbol = *symbols.get(&loc.key.symbol).unwrap();
+                            to_visit.push(Node::FileRange(location.clone()));
+                            to_visit.push(Node::Symbol(symbol.clone()));
+                        }
+                        Node::SymbolDocumentation(symbol_documentation) => {
+                            let symbol = *symbols.get(&symbol_documentation.key.symbol).unwrap();
+                            let doc = *documentation.get(&symbol_documentation.key.docs).unwrap();
+                            to_visit.push(Node::Symbol(symbol.clone()));
+                            to_visit.push(Node::Documentation(doc.clone()));
+                        }
+                        // sink nodes:
+                        Node::LocalName(_) => {}
+                        Node::Symbol(_) => {}
+                        Node::Documentation(_) => {}
+                        Node::File(_) => {}
+                    }
+                    current_graph.insert(node);
+                }
+            }
+        }
+
+        shards.push(current_graph.into());
+
+        shards
     }
 
     pub fn write(self, mut w: impl std::io::Write) -> std::io::Result<()> {

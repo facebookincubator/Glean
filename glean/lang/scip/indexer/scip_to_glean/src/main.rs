@@ -139,7 +139,7 @@ enum Suffix {
     SymMeta,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone, Eq, PartialEq, Hash)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 struct ToolInfo {
     tool_args: Vec<String>,
@@ -147,7 +147,7 @@ struct ToolInfo {
     version: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone, Eq, PartialEq, Hash)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 struct GleanRange {
     column_begin: u64,
