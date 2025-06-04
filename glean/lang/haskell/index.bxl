@@ -8,19 +8,23 @@
 
 load("//common/hs/index:rules.bzl", "haskell_index_rule")
 
+# GHC constraint when building targets
+conf_modifier = ["ovr_config//third-party/ghc/constraints:9.2.4"]
+
 def _impl(ctx):
     bxl_actions = ctx.bxl_actions()
     action_factory = bxl_actions.actions
 
+    # filter out targets that are not compatible with the current compiler
     # TODO: have a separate indexer for each compiler version, and index targets using
     # the correct one. Probably needs a provider or an attribute to tell us which
     # compiler to use.
-    ctargets = ctx.configured_targets(
+    compatible_targets = filter(
+        lambda t: ctx.lazy.configured_target_node(t, modifiers = conf_modifier).catch().resolve().is_ok(),
         ctx.cli_args.targets,
-        modifiers = ["ovr_config//third-party/ghc/constraints:9.2.4"],
     )
 
-    deps = [ctx.analysis(t).as_dependency() for t in ctargets]
+    deps = [ctx.analysis(t).as_dependency() for t in compatible_targets]
 
     hie = action_factory.anon_target(
         haskell_index_rule,
