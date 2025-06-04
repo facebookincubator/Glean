@@ -18,17 +18,10 @@ import qualified Glean.Glass.Types as Glass
 
 -- Convert repo-relative Glass normalized paths to Glean-index specific paths
 toGleanPath :: SymbolRepoPath -> GleanPath
-toGleanPath (SymbolRepoPath (Glass.RepoName "react") (Glass.Path path)) =
-    GleanPath ("react/" <> path)
 toGleanPath (SymbolRepoPath _ (Glass.Path path)) = GleanPath path
 
 -- | Site-level rules for processing index paths to the filesystem
 -- Glass paths are always repo-root relative.
 fromGleanPath
   :: Glass.RepoName -> GleanPath -> SymbolRepoPath
-fromGleanPath repo@(Glass.RepoName "react") (GleanPath path) =
-  SymbolRepoPath repo $ case Text.stripPrefix "react/" path of
-    Just suff -> Glass.Path suff
-    Nothing -> Glass.Path path
-
 fromGleanPath repo (GleanPath path) = SymbolRepoPath repo $ Glass.Path path
