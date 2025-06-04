@@ -32,8 +32,6 @@ module Glean.Glass.Repos
 
   -- * Misc
   , toRepoName
-  , findLanguages
-  , findRepos
   , selectGleanDBs
   , getRepoHash
   , getRepoHashForLocation
@@ -522,24 +520,6 @@ chooseGleanDBs tracer scm dbInfo (ChooseNearest repo rev) repoNames = do
       gen' = fromIntegral gen
       low = IntMap.lookupLE gen' bygen
       high = IntMap.lookupGT gen' bygen
-
-
--- | Symbols of the form "/repo/lang/" where pRepo is a prefix of repo
-findRepos :: RepoMapping -> Text -> [SymbolId]
-findRepos RepoMapping{..} pRepo =
-  let repos = Map.toList $ Map.filterWithKey
-        (const . Text.isPrefixOf pRepo . unRepoName) gleanIndices
-  in concatMap (\(RepoName repo, repolangs) ->
-      map (\(_, lang) -> SymbolId $ repo <> "/" <> toShortCode lang <> "/")
-      repolangs) repos
-
--- | Symbols of the form "/repo/lang/" where pLang is a prefix of lang
-findLanguages :: RepoMapping -> RepoName -> Text -> [SymbolId]
-findLanguages RepoMapping{..} repoName@(RepoName repo) pLang =
-  let allLangs = maybe [] (map (toShortCode . snd)) $
-        Map.lookup repoName gleanIndices
-      langs = filter (Text.isPrefixOf pLang) allLangs
-  in map (\lang -> SymbolId $ repo <> "/" <> lang <> "/") langs
 
 -- TODO (T122759515): Get repo revision from db properties
 getRepoHash :: Glean.Repo -> Revision
