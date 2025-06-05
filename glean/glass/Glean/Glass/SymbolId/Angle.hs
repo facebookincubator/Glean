@@ -51,9 +51,7 @@ instance Symbol A.SchemaDecl_key where
   toSymbol A.SchemaDecl_key{..} = toSymbol schemaDecl_key_name
 
 instance Symbol A.DerivingDecl_key where
-   toSymbol (A.DerivingDecl_key n d) = do
-     n' <- toSymbol n
-     return $ n' ++ [Text.pack $ "_" ++ show d]
+   toSymbol (A.DerivingDecl_key n _) = ("derived" :) <$> toSymbol n
 
 instance Symbol A.Name where
   toSymbol k = do
