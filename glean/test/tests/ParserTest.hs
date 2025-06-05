@@ -111,7 +111,7 @@ schemaParser = TestCase $ do
       # predicate names can also be keywords
       predicate type : { nat | bool_ }
     }
-  |]
+  #last line can be a comment|]
   either print (putDoc . displayDefault . fst) r
   putStr "\n"
   assertBool "schema parser 1" $ case r of

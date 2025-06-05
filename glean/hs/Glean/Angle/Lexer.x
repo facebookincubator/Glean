@@ -61,7 +61,7 @@ $digit = [0-9]
 tokens :-
   $white+       ;
   "#FILE " .* \n { setFile }
-  "#" .* \n     ;
+  "#" .*        ;
 
   $digit+       { tokenContent $ T_NatLit . number  }
   @string       { tokenContentP $ \b -> T_StringLit <$> parseString b }
