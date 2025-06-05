@@ -217,7 +217,13 @@ predicate DeclarationUses:
   }
   {Decl, File, Span} where
   DeclarationToName Decl -> Name;
-  XRefsViaName { Name, File, Span };
+  if (XRefsViaNameByTarget { Name, _ , _ }) then (
+    XRefsViaNameByTarget {Name, File, Spans};
+    Span = Spans[..];
+  ) else (
+    XRefsViaName { Name, File, Span };
+  )
+
 
 predicate DirectXRefsByFile:
   {
@@ -395,8 +401,7 @@ predicate DeclarationReference:
     source : Declaration
   }
   { target = T, source = S } where
-    DeclarationToName T -> Name;
-    XRefsViaName {xref=Name, file=F, span=LittleSpan};
+    python.DeclarationUses {declaration=T, file=F, span=LittleSpan};
     DeclarationsByFile {declaration=S, file=F, span=BigSpan};
     src.ByteSpanContains {byteSpan=BigSpan, contains=LittleSpan}
 
