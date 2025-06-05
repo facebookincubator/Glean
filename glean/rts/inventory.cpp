@@ -8,7 +8,6 @@
 
 #include "glean/rts/inventory.h"
 #include "glean/rts/bytecode/subroutine.h"
-#include "glean/rts/fact.h"
 #include "glean/rts/serialize.h"
 
 namespace facebook {
