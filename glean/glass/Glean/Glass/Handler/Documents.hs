@@ -189,7 +189,7 @@ translateMirroredRepoListXResult
   -> DocumentSymbolListXResult
   -> DocumentSymbolListXResult
 translateMirroredRepoListXResult
-  (DocumentSymbolsRequest repository path _ _ _) res =
+  (DocumentSymbolsRequest repository path _ _ _ _) res =
   case repoPathToMirror repository path of
     Just (Mirror mirror prefix origin) ->
       Utils.translateDocumentSymbolListXResult origin mirror prefix Nothing res

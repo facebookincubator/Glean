@@ -50,6 +50,7 @@ testDocumentSymbolListX path get =
             , documentSymbolsRequest_range = Nothing
             , documentSymbolsRequest_include_refs = True
             , documentSymbolsRequest_include_xlang_refs = False
+            , documentSymbolsRequest_branchName = Nothing
             }
       res <- documentSymbolListX env req def
       assertBool "documentSymbolListX"
