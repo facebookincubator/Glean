@@ -390,7 +390,7 @@ indexHieFile writer srcPaths path hie = do
           let gleanspans = map toByteSpan spans
           return $ map (Hs.RefSpan kind) gleanspans
         Glean.makeFact @Hs.Reference $
-          Hs.Reference_key namefact (concat refspans)
+          Hs.Reference_key namefact filefact (concat refspans)
 
     Glean.makeFact_ @Hs.FileXRefs $ Hs.FileXRefs_key filefact refs
 
