@@ -35,6 +35,7 @@ import System.FilePath
 import Control.Monad.Extra (findM, whenJust)
 
 import qualified GHC
+import qualified GHC.Types.Avail as GHC (availNames)
 import qualified GHC.Types.Basic as GHC (TupleSort(..), isPromoted)
 import qualified GHC.Iface.Type as GHC (
   IfaceTyLit(..), IfaceTyConSort(..), IfaceTyCon(..), IfaceTyConInfo(..))
@@ -80,8 +81,7 @@ import Glean.Util.Range
     Haddock's Interface type has all the ASTs for the declarations
     in addition to the Hie.
 
-- index exports
-  - can we tag Names correctly with exportedness?
+- map Name to exportedness?
 
 - exclude generated names in a cleaner way
 
@@ -349,10 +349,19 @@ indexHieFile writer srcPaths path hie = do
       nameMap :: Map GHC.Name Hs.Name
       nameMap = Map.fromList names
 
+    eNames <- forM (concatMap GHC.availNames (hie_exports hie)) $ \name ->
+      case Map.lookup name nameMap of
+        Just hsName -> return $ Just hsName
+        Nothing -> case nameModule_maybe name of
+          Nothing -> return Nothing -- shouldn't happen
+          Just m -> do
+            mod <- if m == smod then return modfact else mkModule m
+            Just <$> mkName name mod (Hs.NameSort_external def)
+
     produceDeclInfo nameMap declInfo
 
     Glean.makeFact_ @Hs.ModuleDeclarations $ Hs.ModuleDeclarations_key
-      modfact (map snd names)
+      modfact (map snd names) (catMaybes eNames)
 
     let refs = Map.fromListWith (Map.unionWith (++))
           [ (n, Map.singleton kind [span])
