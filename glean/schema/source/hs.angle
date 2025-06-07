@@ -244,6 +244,7 @@ predicate ModuleDeclarations:
   {
     module: Module,
     names: set Name,
+    exports: set Name,
   }
 
 # References
