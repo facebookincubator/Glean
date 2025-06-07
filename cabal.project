@@ -11,6 +11,9 @@ packages:
     hsthrift/http/thrift-http.cabal
     glean.cabal
     glean/lang/clang/glean-clang.cabal
+    static-ls/static-ls.cabal
+    tree-sitter-simple/*
+    tasty-expect
 
 tests: True
 

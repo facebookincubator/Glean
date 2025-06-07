@@ -40,7 +40,8 @@ fixedRepoMapping = RepoMapping
 gleanIndices_ :: Map.Map RepoName [(GleanDBName, Language)]
 gleanIndices_ = Map.fromList
   -- demo
-  [ (RepoName "react", [ ("react", Language_JavaScript) ])
+  [ (RepoName "stackage", [ ("stackage", Language_Haskell) ])
+  , (RepoName "haxl", [ ("haxl", Language_Haskell) ])
   -- for running tests with locally-indexed repos:
   , (RepoName "test",
       [("test", Language_JavaScript)

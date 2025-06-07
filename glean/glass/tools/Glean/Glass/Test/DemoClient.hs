@@ -220,7 +220,18 @@ runFindRefs sym = do
 
 -- List unique definition symbols
 pprDefs :: [DefinitionSymbolX] -> [Text]
-pprDefs = map (unSymbolId . definitionSymbolX_sym)
+pprDefs = map showDef
+  where
+  showDef def =
+    Text.unlines (unSymbolId (definitionSymbolX_sym def) : map ("  " <>) attrs)
+    where
+    attrs =
+      [ sig |
+        KeyedAttribute {
+          keyedAttribute_key = "symbolSignature",
+          keyedAttribute_attribute = Attribute_aString sig } <-
+            unAttributeList (definitionSymbolX_attributes def)
+      ]
 
 pprLocationRange :: LocationRange -> Text
 pprLocationRange LocationRange{..} =
