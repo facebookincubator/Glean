@@ -12,10 +12,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "symbolParent": {
-                            "aString": "a"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -76,10 +76,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "T"
                         },
                         "symbolParent": {
-                            "aString": "T"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -108,10 +108,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "R"
                         },
                         "symbolParent": {
-                            "aString": "R"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -140,10 +140,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "C"
                         },
                         "symbolParent": {
-                            "aString": "C"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -172,10 +172,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "zero"
                         },
                         "symbolParent": {
-                            "aString": "zero"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -204,10 +204,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "f"
                         },
                         "symbolParent": {
-                            "aString": "f"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -236,10 +236,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "GHC.Base"
+                            "aString": "ord"
                         },
                         "symbolParent": {
-                            "aString": "ord"
+                            "aString": "GHC.Base"
                         }
                     },
                     "range": {
@@ -266,10 +266,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "GHC.Unicode"
+                            "aString": "toLower"
                         },
                         "symbolParent": {
-                            "aString": "toLower"
+                            "aString": "GHC.Unicode"
                         }
                     },
                     "range": {
@@ -298,10 +298,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "GHC.Base"
+                            "aString": "String"
                         },
                         "symbolParent": {
-                            "aString": "String"
+                            "aString": "GHC.Base"
                         }
                     },
                     "range": {
@@ -328,10 +328,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "symbolParent": {
-                            "aString": "a"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -360,10 +360,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "GHC.Base"
+                            "aString": "map"
                         },
                         "symbolParent": {
-                            "aString": "map"
+                            "aString": "GHC.Base"
                         }
                     },
                     "range": {
@@ -390,10 +390,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "GHC.Unicode"
+                            "aString": "toLower"
                         },
                         "symbolParent": {
-                            "aString": "toLower"
+                            "aString": "GHC.Unicode"
                         }
                     },
                     "range": {
@@ -420,10 +420,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "symbolParent": {
-                            "aString": "a"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -442,10 +442,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "GHC.Types"
+                            "aString": "Int"
                         },
                         "symbolParent": {
-                            "aString": "Int"
+                            "aString": "GHC.Types"
                         }
                     },
                     "range": {
@@ -494,10 +494,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "GHC.Types"
+                            "aString": "Float"
                         },
                         "symbolParent": {
-                            "aString": "Float"
+                            "aString": "GHC.Types"
                         }
                     },
                     "range": {
@@ -524,10 +524,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "C1"
                         },
                         "symbolParent": {
-                            "aString": "C1"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -544,10 +544,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "C2"
                         },
                         "symbolParent": {
-                            "aString": "C2"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -564,10 +564,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "C3"
                         },
                         "symbolParent": {
-                            "aString": "C3"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -614,10 +614,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "T"
                         },
                         "symbolParent": {
-                            "aString": "T"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -634,10 +634,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "symbolParent": {
-                            "aString": "a"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -654,10 +654,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "symbolParent": {
-                            "aString": "a"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -686,10 +686,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "GHC.Types"
+                            "aString": "Char"
                         },
                         "symbolParent": {
-                            "aString": "Char"
+                            "aString": "GHC.Types"
                         }
                     },
                     "range": {
@@ -716,10 +716,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "R"
                         },
                         "symbolParent": {
-                            "aString": "R"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -736,10 +736,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "R"
                         },
                         "symbolParent": {
-                            "aString": "R"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -766,10 +766,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "R"
                         },
                         "symbolParent": {
-                            "aString": "R"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -796,10 +796,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "R"
                         },
                         "symbolParent": {
-                            "aString": "R"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -816,10 +816,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "symbolParent": {
-                            "aString": "a"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -836,10 +836,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "symbolParent": {
-                            "aString": "a"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -866,10 +866,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "f1"
                         },
                         "symbolParent": {
-                            "aString": "f1"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -886,10 +886,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "f1"
                         },
                         "symbolParent": {
-                            "aString": "f1"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -916,10 +916,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "f2"
                         },
                         "symbolParent": {
-                            "aString": "f2"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -936,10 +936,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "f2"
                         },
                         "symbolParent": {
-                            "aString": "f2"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -968,10 +968,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "GHC.Classes"
+                            "aString": "Eq"
                         },
                         "symbolParent": {
-                            "aString": "Eq"
+                            "aString": "GHC.Classes"
                         }
                     },
                     "range": {
@@ -998,10 +998,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "C"
                         },
                         "symbolParent": {
-                            "aString": "C"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1018,10 +1018,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "symbolParent": {
-                            "aString": "a"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1048,10 +1048,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "symbolParent": {
-                            "aString": "a"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1070,10 +1070,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "GHC.Types"
+                            "aString": "Bool"
                         },
                         "symbolParent": {
-                            "aString": "Bool"
+                            "aString": "GHC.Types"
                         }
                     },
                     "range": {
@@ -1100,10 +1100,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "symbolParent": {
-                            "aString": "a"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1130,10 +1130,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "m"
                         },
                         "symbolParent": {
-                            "aString": "m"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1152,10 +1152,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "GHC.Types"
+                            "aString": "Int"
                         },
                         "symbolParent": {
-                            "aString": "Int"
+                            "aString": "GHC.Types"
                         }
                     },
                     "range": {
@@ -1182,10 +1182,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "C"
                         },
                         "symbolParent": {
-                            "aString": "C"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1214,10 +1214,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "GHC.Classes"
+                            "aString": "=="
                         },
                         "symbolParent": {
-                            "aString": "=="
+                            "aString": "GHC.Classes"
                         }
                     },
                     "range": {
@@ -1244,10 +1244,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "m"
                         },
                         "symbolParent": {
-                            "aString": "m"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1274,10 +1274,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "m"
                         },
                         "symbolParent": {
-                            "aString": "m"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1294,10 +1294,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "x"
                         },
                         "symbolParent": {
-                            "aString": "x"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1314,10 +1314,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "x"
                         },
                         "symbolParent": {
-                            "aString": "x"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1344,10 +1344,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "x"
                         },
                         "symbolParent": {
-                            "aString": "x"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1406,10 +1406,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "zero"
                         },
                         "symbolParent": {
-                            "aString": "zero"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1438,10 +1438,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "zero"
                         },
                         "symbolParent": {
-                            "aString": "zero"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1460,10 +1460,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "R"
                         },
                         "symbolParent": {
-                            "aString": "R"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1490,10 +1490,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "T"
                         },
                         "symbolParent": {
-                            "aString": "T"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1520,10 +1520,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "symbolParent": {
-                            "aString": "a"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1540,10 +1540,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "symbolParent": {
-                            "aString": "a"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1570,10 +1570,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "symbolParent": {
-                            "aString": "a"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1600,10 +1600,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "f"
                         },
                         "symbolParent": {
-                            "aString": "f"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1632,10 +1632,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "C3"
                         },
                         "symbolParent": {
-                            "aString": "C3"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1662,10 +1662,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "R"
                         },
                         "symbolParent": {
-                            "aString": "R"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1692,10 +1692,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "f"
                         },
                         "symbolParent": {
-                            "aString": "f"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1712,10 +1712,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "f2"
                         },
                         "symbolParent": {
-                            "aString": "f2"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1742,10 +1742,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "x"
                         },
                         "symbolParent": {
-                            "aString": "x"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1762,10 +1762,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "x"
                         },
                         "symbolParent": {
-                            "aString": "x"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1794,10 +1794,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "GHC.Base"
+                            "aString": "ord"
                         },
                         "symbolParent": {
-                            "aString": "ord"
+                            "aString": "GHC.Base"
                         }
                     },
                     "range": {
@@ -1824,10 +1824,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "GHC.Types"
+                            "aString": "Int"
                         },
                         "symbolParent": {
-                            "aString": "Int"
+                            "aString": "GHC.Types"
                         }
                     },
                     "range": {
@@ -1854,10 +1854,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "C2"
                         },
                         "symbolParent": {
-                            "aString": "C2"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1884,10 +1884,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "f1"
                         },
                         "symbolParent": {
-                            "aString": "f1"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1914,10 +1914,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "f1"
                         },
                         "symbolParent": {
-                            "aString": "f1"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1944,10 +1944,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "m"
                         },
                         "symbolParent": {
-                            "aString": "m"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1974,10 +1974,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "r"
                         },
                         "symbolParent": {
-                            "aString": "r"
+                            "aString": "A"
                         }
                     },
                     "range": {
@@ -1994,10 +1994,10 @@
                             "aInteger": 4
                         },
                         "symbolName": {
-                            "aString": "A"
+                            "aString": "r"
                         },
                         "symbolParent": {
-                            "aString": "r"
+                            "aString": "A"
                         }
                     },
                     "range": {

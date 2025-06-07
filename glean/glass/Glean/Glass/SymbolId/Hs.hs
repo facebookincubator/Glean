@@ -80,4 +80,4 @@ instance ToQName Hs.Name_key where
     Hs.Module_key m _ <- Glean.keyOf mod
     modname <- Glean.keyOf m
     Hs.OccName_key n _ <- Glean.keyOf occ
-    return $ Right (Name modname, Name n)
+    return $ Right (Name n, Name modname)
