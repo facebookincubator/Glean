@@ -20,6 +20,7 @@ import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as Text
+import qualified Data.Vector.Unboxed as Vector
 import Compat.HieTypes (HieFile(..))
 import HieDb.Compat (nameModule_maybe, nameOccName)
 
@@ -27,12 +28,12 @@ import qualified GHC
 import GHC.Iface.Ext.Utils (generateReferencesMap)
 import GHC.Iface.Ext.Types (
   getAsts, ContextInfo(..), IdentifierDetails(..), RecFieldContext(..),
-  BindType(..), DeclType(..))
+  BindType(..), DeclType(..), IEType(..))
 import qualified GHC.Types.Name.Occurrence as GHC
 import qualified GHC.Types.Name as GHC (isSystemName)
 import GHC.Unit.Types (unitFS)
 import qualified GHC.Unit.Module.Name as GHC (moduleNameFS)
-import qualified GHC.Data.FastString as GHC (FastString, bytesFS)
+import qualified GHC.Data.FastString as GHC (FastString, bytesFS, mkFastString)
 
 import Util.Log
 
@@ -45,6 +46,7 @@ import Glean.Util.Range
 {- TODO
 
 - issues with record fields
+  - DuplicateRecordFields generates names like $sel:field:Rec
   - weird references to the record constructor from field decls
   - why do we get a ref for the field decl?
   - span of record field in pattern match is wrong
@@ -154,25 +156,29 @@ indexHieFile writer hie = do
     modfact <- mkModule smod
 
     let offs = getLineOffsets (hie_hs_src hie)
-    let fp = Text.pack $ hie_hs_file hie
-    filefact <- Glean.makeFact @Src.File fp
+    let hsFileFS = GHC.mkFastString $ hie_hs_file hie
+    filefact <- Glean.makeFact @Src.File (Text.pack (hie_hs_file hie))
     let fileLines = mkFileLines filefact offs
     Glean.makeFact_ @Src.FileLines fileLines
 
     Glean.makeFact_ @Hs.ModuleSource $
       Hs.ModuleSource_key modfact filefact
 
-    let toByteSpan =
-          rangeToByteSpan .
-          srcRangeToByteRange fileLines (hie_hs_src hie)
+    let toByteRange = srcRangeToByteRange fileLines (hie_hs_src hie)
+        toByteSpan sp
+          | GHC.srcSpanEndLine sp >= Vector.length (lineOffsets offs) =
+            Src.ByteSpan (Glean.toNat 0) (Glean.toNat 0)
+          | otherwise =
+            rangeToByteSpan (toByteRange (srcSpanToSrcRange filefact sp))
 
     let allIds = [ (n, p) | (Right n, ps) <- Map.toList refmap, p <- ps ]
 
     -- produce names & declarations
     names <- fmap catMaybes $ forM allIds $ \(name, (span, dets)) -> if
       | Just sp <- getBindSpan span (identInfo dets)
-      , localOrGlobal name smod -> do
-        let byteSpan = toByteSpan (srcSpanToSrcRange filefact sp)
+      , localOrGlobal name smod
+      , GHC.srcSpanFile sp == hsFileFS -> do -- Note [#included source files]
+        let byteSpan = toByteSpan sp
         sort <- case nameModule_maybe name of
           Nothing -> return $ Hs.NameSort_internal byteSpan
           Just{} -> return $ Hs.NameSort_external def
@@ -196,16 +202,16 @@ indexHieFile writer hie = do
     Glean.makeFact_ @Hs.ModuleDeclarations $ Hs.ModuleDeclarations_key
       modfact (map snd names)
 
-    let refs = Map.fromListWith (++)
-          [ (n, [span])
+    let refs = Map.fromListWith (Map.unionWith (++))
+          [ (n, Map.singleton kind [span])
           | (n, (span, dets)) <- allIds,
-            any isRef (identInfo dets),
+            Just kind <- map isRef (Set.toList (identInfo dets)),
             not (GHC.isSystemName n),
             -- TODO: we should exclude generated names in a cleaner way
             not (GHC.isDerivedOccName (nameOccName n))
           ]
 
-    refs <- fmap catMaybes $ forM (Map.toList refs) $ \(name, spans) -> do
+    refs <- fmap catMaybes $ forM (Map.toList refs) $ \(name, kindspans) -> do
       maybe_namefact <-
         case Map.lookup name nameMap of
           Just fact -> return $ Just fact
@@ -218,9 +224,11 @@ indexHieFile writer hie = do
               namemod <- mkModule mod
               Just <$> mkName name namemod (Hs.NameSort_external def)
       forM maybe_namefact $ \namefact -> do
-        let gleanspans = map (toByteSpan . srcSpanToSrcRange filefact) spans
+        refspans <- forM (Map.toList kindspans) $ \(kind, spans) -> do
+          let gleanspans = map toByteSpan spans
+          return $ map (Hs.RefSpan kind) gleanspans
         Glean.makeFact @Hs.Reference $
-          Hs.Reference_key namefact gleanspans
+          Hs.Reference_key namefact (concat refspans)
 
     Glean.makeFact_ @Hs.FileXRefs $ Hs.FileXRefs_key filefact refs
 
@@ -236,12 +244,14 @@ indexHieFile writer hie = do
       | otherwise -> False
 
   -- returns True if this ContextInfo is a reference
-  isRef Use = True
-  isRef (RecField r _) = isRecFieldRef r
-  isRef (ValBind InstanceBind _ _) = True -- treat these as refs, not binds
-  isRef TyDecl{} = True
-  isRef IEThing{} = True
-  isRef _ = False
+  isRef Use = Just Hs.RefKind_coderef
+  isRef (RecField r _) | isRecFieldRef r = Just Hs.RefKind_coderef
+  isRef (ValBind InstanceBind _ _) = Just Hs.RefKind_coderef
+    -- treat these as refs, not binds
+  isRef TyDecl{} = Just Hs.RefKind_coderef
+  isRef (IEThing Export) = Just Hs.RefKind_exportref
+  isRef (IEThing _) = Just Hs.RefKind_importref
+  isRef _ = Nothing
 
   isRecFieldRef RecFieldAssign = True
   isRecFieldRef RecFieldMatch = True
@@ -258,3 +268,11 @@ indexHieFile writer hie = do
     goDecl TyVarBind{} = Just defaultSpan
     goDecl (ClassTyDecl sp) = sp
     goDecl _ = Nothing
+
+{-
+Note [#included source files]
+
+There might be other source files involved when compiling a module,
+e.g. if CPP is being used and the .hs file uses `#include`. We
+currently ignore Names that come from another source file (TODO).
+-}
