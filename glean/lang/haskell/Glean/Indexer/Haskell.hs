@@ -79,7 +79,6 @@ indexer =
                     , hieDir
                     ] <> [ "--src=" <> f | f <- haskellSrcs ]
                 , extDerivePredicates = [
-                    "hs.NameRefs",
                     "hs.OccNameLowerCase",
                     "hs.SourceModule"
                   ]
