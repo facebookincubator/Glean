@@ -1,6 +1,6 @@
 # Copyright (c) Meta Platforms, Inc. and affiliates.
 
-schema hs.3 {
+schema hs.4 {
 import src
 
 predicate ModuleName : string
@@ -259,9 +259,13 @@ type RefSpan =
 # because e.g. dead code can still have import/export refs.
 type RefKind = enum { importref | exportref | coderef }
 
+# Note that references are indexed by Name, so this supports
+# find-references. Go-to-def is provided by FileXRefs, which gives all
+# the references for a file.
 predicate Reference:
   {
     name: Name,
+    file: src.File,
     refs: [RefSpan],
   }
 
@@ -277,14 +281,5 @@ predicate OccNameLowerCase:
     occName: OccName,
   }
   stored { prim.toLower Str, N } where N = OccName { name = Str }
-
-predicate NameRefs:
-  {
-    target: Name,
-    file: src.File,
-    uses: [RefSpan]
-  } stored {Name, File, Uses} where
-  FileXRefs {file = File, refs = Refs};
-  {name = Name, refs = Uses} = Refs[..];
 
 }
