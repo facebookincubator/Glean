@@ -35,6 +35,26 @@
   {
     "key": {
       "file": { "key": "www/RefClass.php" },
+      "span": { "start": 687, "length": 11 },
+      "arguments": [ ],
+      "callee_xref": {
+        "hack": {
+          "decl": {
+            "container": {
+              "class_": {
+                "key": {
+                  "name": { "key": { "name": { "key": "SourceClass" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "www/RefClass.php" },
       "span": { "start": 717, "length": 5 },
       "arguments": [ ],
       "callee_xref": {
