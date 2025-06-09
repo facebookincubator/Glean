@@ -326,19 +326,18 @@ withGleanDBs method env@Glass.Env{..} opts req repo dbNames fn = do
   fmap fst $ withLog method env opts req $
     (,dbs) <$> fn dbs dbInfo
 
--- | Get glean db for an attribute type
+-- | Get glean db for an attribute type (always choose the latest)
 getLatestAttrDBs
   :: GlassTracer
   -> Some SourceControl
   -> RepoMapping
   -> GleanDBInfo
   -> RepoName
-  -> RequestOptions
   -> IO [(Glean.Repo, GleanDBAttrName)]
-getLatestAttrDBs tracer scm repoMapping dbInfo repo opts =
+getLatestAttrDBs tracer scm repoMapping dbInfo repo =
   fmap catMaybes $ forM (attrDBsForRepo repoMapping repo) $
     \attrDBName -> do
-      dbs <- chooseGleanDBs tracer scm dbInfo (dbChooser repo opts)
+      dbs <- chooseGleanDBs tracer scm dbInfo ChooseLatest
         [gleanAttrDBName attrDBName]
       return $ case dbs of
         [] -> Nothing

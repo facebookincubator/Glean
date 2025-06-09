@@ -975,7 +975,7 @@ getSymbolAttributes env dbInfo repo opts repofile mlimit
     be@GleanBackend{..} = do
   mAttrDBs <-
     getLatestAttrDBs tracer (sourceControl env) (Glass.repoMapping env)
-      dbInfo repo opts
+      dbInfo repo
   backendRunHaxl be env $ do
     attrsTuples <- forM mAttrDBs $
       \(attrDB, GleanDBAttrName _ attrKey{- existential key -}) ->
