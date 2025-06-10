@@ -1,0 +1,7 @@
+# Make sure all bindings have types. We can't compare the actual types
+# because some details differ between GHC versions.
+query:
+        N where
+          hs.ValBind { name = N, ty = nothing } |
+          hs.PatBind { name = N, ty = nothing }
+transform: [normord, []]

@@ -6,13 +6,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "C1"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "C1"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -35,13 +35,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "C2"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "C2"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -64,13 +64,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "C3"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "C3"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -93,13 +93,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "R"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "R"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -151,13 +151,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "C"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "C"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -180,13 +180,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "R"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "R"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -209,13 +209,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "T"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "T"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -238,13 +238,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "a"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -267,13 +267,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "a"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -296,13 +296,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "a"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -325,13 +325,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "a"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -354,15 +354,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "a"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "String"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -383,15 +389,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "f"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "f"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> T a"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -412,15 +424,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "f1"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "f1"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> Char"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -441,15 +459,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "f2"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "f2"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> [a]"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -470,13 +494,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "m"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "m"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -499,15 +523,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "m"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "m"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Int -> Bool"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -528,15 +558,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "r"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "r"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "R a"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -557,15 +593,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "x"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "x"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Int"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -586,15 +628,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "x"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "x"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "a"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -615,15 +663,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "zero"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "zero"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Int"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -647,559 +701,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "GHC.Base"
+                            "aString": "C2"
                         },
                         "key": "symbolName"
                     },
-                    {
-                        "attribute": {
-                            "aString": "String"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 4
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 6,
-                    "columnEnd": 12,
-                    "lineBegin": 22,
-                    "lineEnd": 22
-                },
-                "sym": "test/hs/base/GHC/Base/ty/String",
-                "target": {
-                    "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
-                    "range": {
-                        "columnBegin": 6,
-                        "columnEnd": 12,
-                        "lineBegin": 22,
-                        "lineEnd": 22
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "GHC.Base"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "map"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 4
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 5,
-                    "columnEnd": 8,
-                    "lineBegin": 23,
-                    "lineEnd": 23
-                },
-                "sym": "test/hs/base/GHC/Base/var/map",
-                "target": {
-                    "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
-                    "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 8,
-                        "lineBegin": 23,
-                        "lineEnd": 23
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "GHC.Base"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "ord"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 4
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 28,
-                    "columnEnd": 31,
-                    "lineBegin": 20,
-                    "lineEnd": 20
-                },
-                "sym": "test/hs/base/GHC/Base/var/ord",
-                "target": {
-                    "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
-                    "range": {
-                        "columnBegin": 28,
-                        "columnEnd": 31,
-                        "lineBegin": 20,
-                        "lineEnd": 20
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "GHC.Base"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "ord"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 4
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 24,
-                    "columnEnd": 27,
-                    "lineBegin": 42,
-                    "lineEnd": 42
-                },
-                "sym": "test/hs/base/GHC/Base/var/ord",
-                "target": {
-                    "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
-                    "range": {
-                        "columnBegin": 24,
-                        "columnEnd": 27,
-                        "lineBegin": 42,
-                        "lineEnd": 42
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "GHC.Unicode"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "toLower"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 4
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 19,
-                    "columnEnd": 26,
-                    "lineBegin": 20,
-                    "lineEnd": 20
-                },
-                "sym": "test/hs/base/GHC/Unicode/var/toLower",
-                "target": {
-                    "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
-                    "range": {
-                        "columnBegin": 19,
-                        "columnEnd": 26,
-                        "lineBegin": 20,
-                        "lineEnd": 20
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "GHC.Unicode"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "toLower"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 4
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 9,
-                    "columnEnd": 16,
-                    "lineBegin": 23,
-                    "lineEnd": 23
-                },
-                "sym": "test/hs/base/GHC/Unicode/var/toLower",
-                "target": {
-                    "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
-                    "range": {
-                        "columnBegin": 9,
-                        "columnEnd": 16,
-                        "lineBegin": 23,
-                        "lineEnd": 23
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "GHC.Classes"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "Eq"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 4
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 7,
-                    "columnEnd": 9,
-                    "lineBegin": 31,
-                    "lineEnd": 31
-                },
-                "sym": "test/hs/ghc-prim/GHC/Classes/ty/Eq",
-                "target": {
-                    "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
-                    "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 9,
-                        "lineBegin": 31,
-                        "lineEnd": 31
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "GHC.Classes"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "=="
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 4
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 11,
-                    "columnEnd": 13,
-                    "lineBegin": 35,
-                    "lineEnd": 35
-                },
-                "sym": "test/hs/ghc-prim/GHC/Classes/var/%3D%3D",
-                "target": {
-                    "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
-                    "range": {
-                        "columnBegin": 11,
-                        "columnEnd": 13,
-                        "lineBegin": 35,
-                        "lineEnd": 35
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "GHC.Types"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "Bool"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 4
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 13,
-                    "columnEnd": 17,
-                    "lineBegin": 32,
-                    "lineEnd": 32
-                },
-                "sym": "test/hs/ghc-prim/GHC/Types/ty/Bool",
-                "target": {
-                    "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
-                    "range": {
-                        "columnBegin": 13,
-                        "columnEnd": 17,
-                        "lineBegin": 32,
-                        "lineEnd": 32
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "GHC.Types"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "Char"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 4
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 22,
-                    "columnEnd": 26,
-                    "lineBegin": 29,
-                    "lineEnd": 29
-                },
-                "sym": "test/hs/ghc-prim/GHC/Types/ty/Char",
-                "target": {
-                    "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
-                    "range": {
-                        "columnBegin": 22,
-                        "columnEnd": 26,
-                        "lineBegin": 29,
-                        "lineEnd": 29
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "GHC.Types"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "Float"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 4
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 15,
-                    "columnEnd": 20,
-                    "lineBegin": 27,
-                    "lineEnd": 27
-                },
-                "sym": "test/hs/ghc-prim/GHC/Types/ty/Float",
-                "target": {
-                    "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
-                    "range": {
-                        "columnBegin": 15,
-                        "columnEnd": 20,
-                        "lineBegin": 27,
-                        "lineEnd": 27
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "GHC.Types"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "Int"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 4
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 10,
-                    "columnEnd": 13,
-                    "lineBegin": 25,
-                    "lineEnd": 25
-                },
-                "sym": "test/hs/ghc-prim/GHC/Types/ty/Int",
-                "target": {
-                    "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
-                    "range": {
-                        "columnBegin": 10,
-                        "columnEnd": 13,
-                        "lineBegin": 25,
-                        "lineEnd": 25
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "GHC.Types"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "Int"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 4
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 12,
-                    "columnEnd": 15,
-                    "lineBegin": 34,
-                    "lineEnd": 34
-                },
-                "sym": "test/hs/ghc-prim/GHC/Types/ty/Int",
-                "target": {
-                    "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
-                    "range": {
-                        "columnBegin": 12,
-                        "columnEnd": 15,
-                        "lineBegin": 34,
-                        "lineEnd": 34
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
-                    {
-                        "attribute": {
-                            "aString": "GHC.Types"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "Int"
-                        },
-                        "key": "symbolParent"
-                    },
-                    {
-                        "attribute": {
-                            "aInteger": 4
-                        },
-                        "key": "symbolLanguage"
-                    }
-                ],
-                "range": {
-                    "columnBegin": 13,
-                    "columnEnd": 16,
-                    "lineBegin": 42,
-                    "lineEnd": 42
-                },
-                "sym": "test/hs/ghc-prim/GHC/Types/ty/Int",
-                "target": {
-                    "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
-                    "range": {
-                        "columnBegin": 13,
-                        "columnEnd": 16,
-                        "lineBegin": 42,
-                        "lineEnd": 42
-                    },
-                    "repository": "test"
-                }
-            },
-            {
-                "attributes": [
                     {
                         "attribute": {
                             "aString": "A"
-                        },
-                        "key": "symbolName"
-                    },
-                    {
-                        "attribute": {
-                            "aString": "C2"
                         },
                         "key": "symbolParent"
                     },
@@ -1220,10 +728,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 20,
-                        "columnEnd": 22,
-                        "lineBegin": 42,
-                        "lineEnd": 42
+                        "columnBegin": 23,
+                        "columnEnd": 27,
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 }
@@ -1232,13 +740,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "C3"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "C3"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1259,10 +767,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 17,
-                        "columnEnd": 19,
-                        "lineBegin": 41,
-                        "lineEnd": 41
+                        "columnBegin": 30,
+                        "columnEnd": 34,
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 }
@@ -1271,13 +779,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "R"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "R"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1298,8 +806,8 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 16,
-                        "columnEnd": 18,
+                        "columnBegin": 12,
+                        "columnEnd": 39,
                         "lineBegin": 29,
                         "lineEnd": 29
                     },
@@ -1310,13 +818,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "R"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "R"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1337,8 +845,8 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 28,
-                        "columnEnd": 30,
+                        "columnBegin": 12,
+                        "columnEnd": 39,
                         "lineBegin": 29,
                         "lineEnd": 29
                     },
@@ -1349,13 +857,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "R"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "R"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1376,10 +884,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 3,
-                        "columnEnd": 4,
-                        "lineBegin": 41,
-                        "lineEnd": 41
+                        "columnBegin": 12,
+                        "columnEnd": 39,
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 }
@@ -1415,10 +923,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 6,
-                        "lineBegin": 12,
-                        "lineEnd": 12
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 25,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 }
@@ -1454,10 +962,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 26,
-                        "columnEnd": 27,
-                        "lineBegin": 27,
-                        "lineEnd": 27
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 25,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 }
@@ -1493,10 +1001,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 9,
-                        "columnEnd": 10,
-                        "lineBegin": 37,
-                        "lineEnd": 37
+                        "columnBegin": 1,
+                        "columnEnd": 13,
+                        "lineBegin": 25,
+                        "lineEnd": 25
                     },
                     "repository": "test"
                 }
@@ -1505,13 +1013,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "C"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "C"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1532,10 +1040,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 6,
-                        "lineBegin": 15,
-                        "lineEnd": 15
+                        "columnBegin": 1,
+                        "columnEnd": 17,
+                        "lineBegin": 31,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 }
@@ -1544,13 +1052,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "C"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "C"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1571,10 +1079,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 10,
-                        "columnEnd": 11,
-                        "lineBegin": 34,
-                        "lineEnd": 34
+                        "columnBegin": 1,
+                        "columnEnd": 17,
+                        "lineBegin": 31,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 }
@@ -1583,13 +1091,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "R"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "R"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1610,10 +1118,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 6,
-                        "lineBegin": 14,
-                        "lineEnd": 14
+                        "columnBegin": 1,
+                        "columnEnd": 39,
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 }
@@ -1622,13 +1130,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "R"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "R"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1649,10 +1157,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 6,
-                        "columnEnd": 7,
-                        "lineBegin": 40,
-                        "lineEnd": 40
+                        "columnBegin": 1,
+                        "columnEnd": 39,
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 }
@@ -1661,13 +1169,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "T"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "T"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1688,10 +1196,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 6,
-                        "lineBegin": 13,
-                        "lineEnd": 13
+                        "columnBegin": 1,
+                        "columnEnd": 34,
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 }
@@ -1700,13 +1208,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "T"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "T"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1727,10 +1235,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 13,
-                        "columnEnd": 14,
-                        "lineBegin": 40,
-                        "lineEnd": 40
+                        "columnBegin": 1,
+                        "columnEnd": 34,
+                        "lineBegin": 27,
+                        "lineEnd": 27
                     },
                     "repository": "test"
                 }
@@ -1739,13 +1247,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "a"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1766,8 +1274,8 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 33,
-                        "columnEnd": 34,
+                        "columnBegin": 8,
+                        "columnEnd": 9,
                         "lineBegin": 27,
                         "lineEnd": 27
                     },
@@ -1778,13 +1286,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "a"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1805,8 +1313,8 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 35,
-                        "columnEnd": 36,
+                        "columnBegin": 8,
+                        "columnEnd": 9,
                         "lineBegin": 29,
                         "lineEnd": 29
                     },
@@ -1817,13 +1325,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "a"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1844,8 +1352,8 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 10,
-                        "columnEnd": 11,
+                        "columnBegin": 17,
+                        "columnEnd": 18,
                         "lineBegin": 31,
                         "lineEnd": 31
                     },
@@ -1856,13 +1364,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "a"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1883,10 +1391,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 8,
-                        "columnEnd": 9,
-                        "lineBegin": 32,
-                        "lineEnd": 32
+                        "columnBegin": 17,
+                        "columnEnd": 18,
+                        "lineBegin": 31,
+                        "lineEnd": 31
                     },
                     "repository": "test"
                 }
@@ -1895,13 +1403,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "a"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1922,8 +1430,8 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 8,
-                        "columnEnd": 9,
+                        "columnBegin": 1,
+                        "columnEnd": 16,
                         "lineBegin": 40,
                         "lineEnd": 40
                     },
@@ -1934,13 +1442,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "a"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -1961,7 +1469,7 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 15,
+                        "columnBegin": 1,
                         "columnEnd": 16,
                         "lineBegin": 40,
                         "lineEnd": 40
@@ -1973,15 +1481,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "a"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "String"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2000,10 +1514,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 6,
-                        "lineBegin": 11,
-                        "lineEnd": 11
+                        "columnBegin": 1,
+                        "columnEnd": 20,
+                        "lineBegin": 23,
+                        "lineEnd": 23
                     },
                     "repository": "test"
                 }
@@ -2012,15 +1526,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "a"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "a"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "String"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2040,9 +1560,9 @@
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 22,
-                        "lineEnd": 22
+                        "columnEnd": 20,
+                        "lineBegin": 23,
+                        "lineEnd": 23
                     },
                     "repository": "test"
                 }
@@ -2051,15 +1571,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "f"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "f"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> T a"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2078,10 +1604,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 6,
-                        "lineBegin": 17,
-                        "lineEnd": 17
+                        "columnBegin": 1,
+                        "columnEnd": 48,
+                        "lineBegin": 41,
+                        "lineEnd": 42
                     },
                     "repository": "test"
                 }
@@ -2090,15 +1616,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "f"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "f"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> T a"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2118,9 +1650,9 @@
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 2,
-                        "lineBegin": 40,
-                        "lineEnd": 40
+                        "columnEnd": 48,
+                        "lineBegin": 41,
+                        "lineEnd": 42
                     },
                     "repository": "test"
                 }
@@ -2129,15 +1661,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "f1"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "f1"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> Char"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2168,15 +1706,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "f1"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "f1"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> Char"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2195,10 +1739,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 29,
-                        "columnEnd": 31,
-                        "lineBegin": 42,
-                        "lineEnd": 42
+                        "columnBegin": 16,
+                        "columnEnd": 18,
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 }
@@ -2207,15 +1751,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "f1"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "f1"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> Char"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2234,10 +1784,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 36,
-                        "columnEnd": 38,
-                        "lineBegin": 42,
-                        "lineEnd": 42
+                        "columnBegin": 16,
+                        "columnEnd": 18,
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 }
@@ -2246,15 +1796,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "f2"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "f2"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> [a]"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2285,15 +1841,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "f2"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "f2"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "forall a. R a -> [a]"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2312,10 +1874,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 5,
-                        "columnEnd": 7,
-                        "lineBegin": 41,
-                        "lineEnd": 41
+                        "columnBegin": 28,
+                        "columnEnd": 30,
+                        "lineBegin": 29,
+                        "lineEnd": 29
                     },
                     "repository": "test"
                 }
@@ -2324,13 +1886,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "m"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "m"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -2352,9 +1914,9 @@
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
                         "columnBegin": 3,
-                        "columnEnd": 4,
-                        "lineBegin": 35,
-                        "lineEnd": 35
+                        "columnEnd": 17,
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 }
@@ -2363,13 +1925,13 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "m"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "m"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
                     },
@@ -2390,10 +1952,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 7,
-                        "columnEnd": 8,
-                        "lineBegin": 42,
-                        "lineEnd": 42
+                        "columnBegin": 3,
+                        "columnEnd": 17,
+                        "lineBegin": 32,
+                        "lineEnd": 32
                     },
                     "repository": "test"
                 }
@@ -2402,15 +1964,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "r"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "r"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "R a"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2429,8 +1997,8 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 32,
-                        "columnEnd": 33,
+                        "columnBegin": 3,
+                        "columnEnd": 4,
                         "lineBegin": 42,
                         "lineEnd": 42
                     },
@@ -2441,15 +2009,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "x"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "x"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Int"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2468,8 +2042,8 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 9,
-                        "columnEnd": 10,
+                        "columnBegin": 5,
+                        "columnEnd": 6,
                         "lineBegin": 35,
                         "lineEnd": 35
                     },
@@ -2480,15 +2054,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "x"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "x"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Int"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2507,8 +2087,8 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 14,
-                        "columnEnd": 15,
+                        "columnBegin": 5,
+                        "columnEnd": 6,
                         "lineBegin": 35,
                         "lineEnd": 35
                     },
@@ -2519,15 +2099,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "x"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "x"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "a"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2546,8 +2132,8 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 20,
-                        "columnEnd": 21,
+                        "columnBegin": 11,
+                        "columnEnd": 12,
                         "lineBegin": 41,
                         "lineEnd": 41
                     },
@@ -2558,15 +2144,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "zero"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "zero"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Int"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2585,10 +2177,10 @@
                 "target": {
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
-                        "columnBegin": 5,
+                        "columnBegin": 1,
                         "columnEnd": 9,
-                        "lineBegin": 16,
-                        "lineEnd": 16
+                        "lineBegin": 38,
+                        "lineEnd": 38
                     },
                     "repository": "test"
                 }
@@ -2597,15 +2189,21 @@
                 "attributes": [
                     {
                         "attribute": {
-                            "aString": "A"
+                            "aString": "zero"
                         },
                         "key": "symbolName"
                     },
                     {
                         "attribute": {
-                            "aString": "zero"
+                            "aString": "A"
                         },
                         "key": "symbolParent"
+                    },
+                    {
+                        "attribute": {
+                            "aString": "Int"
+                        },
+                        "key": "symbolSignature"
                     },
                     {
                         "attribute": {
@@ -2625,9 +2223,9 @@
                     "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",
                     "range": {
                         "columnBegin": 1,
-                        "columnEnd": 5,
-                        "lineBegin": 37,
-                        "lineEnd": 37
+                        "columnEnd": 9,
+                        "lineBegin": 38,
+                        "lineEnd": 38
                     },
                     "repository": "test"
                 }

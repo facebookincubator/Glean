@@ -4,7 +4,7 @@
         "contains_relation": {
             "firstChild": "nondeterministic",
             "firstParent": "nondeterministic",
-            "hasMoreChildren": false,
+            "hasMoreChildren": true,
             "hasMoreParents": false
         },
         "extends_relation": {
@@ -26,8 +26,8 @@
         },
         "modifiers": [],
         "name": {
-            "container": "T",
-            "localName": "A"
+            "container": "A",
+            "localName": "T"
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
