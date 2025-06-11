@@ -193,13 +193,24 @@ listGleanIndices RepoMapping{..} testsOnly =
 -- Names from configerator/scm/myles/service as a start
 -- This should be in a config or SV to make onboarding simple, or from Glean
 -- properties?
-fromSCSRepo :: RepoMapping -> RepoName -> Maybe Language -> [GleanDBName]
-fromSCSRepo RepoMapping{..} r hint
-  | Just rs <- Map.lookup r gleanIndices
-  = nub $ map dbName $ case hint of
-      Nothing -> rs
-      Just h -> filter ((== h) . language) rs
+fromSCSRepo
+  :: RepoMapping
+  -> RepoName
+  -> Maybe BranchName
+  -> Maybe Language
+  -> [GleanDBName]
+fromSCSRepo RepoMapping{..} repo mBranchName mLanguage
+  | Just rs <- Map.lookup repo gleanIndices
+  = nub $ map dbName
+    $ filterByLanguage mLanguage
+    $ filterByBranch mBranchName rs
   | otherwise = []
+  where
+    filterByLanguage Nothing = id
+    filterByLanguage (Just lang) = filter ((== lang) . language)
+
+    filterByBranch Nothing = id
+    filterByBranch (Just branch) = filter (maybe True (== branch) . branchName)
 
 -- | Used to minimize the choice of Glean db when looking for a file
 -- This could be in DB properties if it becomes important

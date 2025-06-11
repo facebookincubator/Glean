@@ -284,7 +284,7 @@ getGleanRepos
 getGleanRepos tracer scm repoMapping dbInfo scsrepo mlanguage chooser mGleanDB =
   case mGleanDB of
     Nothing ->
-      case fromSCSRepo repoMapping scsrepo mlanguage of
+      case fromSCSRepo repoMapping scsrepo Nothing mlanguage of
         [] ->  throwIO $ ServerException $ "No repository found for: " <>
           unRepoName scsrepo <>
             maybe "" (\x -> " (" <> toShortCode x <> ")") mlanguage
