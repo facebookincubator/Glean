@@ -2295,6 +2295,11 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       if (auto bs = base(visitor, d)) {
         visitor.db.fact<Cxx::ObjcContainerBase>(decl, bs->decl);
       }
+
+      if (auto usr_hash = getUsrHash(d)) {
+        visitor.db.fact<Cxx::USRToDeclaration>(
+            usr_hash.value(), Cxx::Declaration::objcContainer(decl));
+      }
     }
   };
 
@@ -2395,8 +2400,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
     }
 
-    void define(ASTVisitor& visitor, const clang::ObjCMethodDecl*) const {
+    void define(ASTVisitor& visitor, const clang::ObjCMethodDecl* d) const {
       visitor.db.fact<Cxx::ObjcMethodDefinition>(decl);
+
+      if (auto usr_hash = getUsrHash(d)) {
+        visitor.db.fact<Cxx::USRToDeclaration>(
+            usr_hash.value(), Cxx::Declaration::objcMethod(decl));
+      }
     }
   };
 
@@ -2439,8 +2449,13 @@ struct ASTVisitor : public clang::RecursiveASTVisitor<ASTVisitor> {
       }
     }
 
-    void define(ASTVisitor&, const clang::ObjCPropertyDecl*) const {
+    void define(ASTVisitor& visitor, const clang::ObjCPropertyDecl* d) const {
       // TODO: complete
+
+      if (auto usr_hash = getUsrHash(d)) {
+        visitor.db.fact<Cxx::USRToDeclaration>(
+            usr_hash.value(), Cxx::Declaration::objcProperty(decl));
+      }
     }
   };
 
