@@ -1,2 +1,2 @@
-query: hs.NameRefs _
+query: hs.ClassDecl _
 transform: [normord, []]

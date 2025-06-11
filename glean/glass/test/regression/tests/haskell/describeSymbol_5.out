@@ -26,11 +26,12 @@
         },
         "modifiers": [],
         "name": {
-            "container": "f",
-            "localName": "A"
+            "container": "A",
+            "localName": "f"
         },
         "pretty_comments": [],
         "repo_hash": "testhash",
+        "signature": "forall a. R a -> T a",
         "sym": "test/hs/main/A/var/f",
         "sym_location": {
             "filepath": "glean/lang/codemarkup/tests/haskell/code/A.hs",

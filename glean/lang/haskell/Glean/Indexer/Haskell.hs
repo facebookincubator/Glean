@@ -23,6 +23,7 @@ import Util.IO
 data Haskell = Haskell
   { haskellBinary :: FilePath
   , haskellGhc :: Maybe FilePath
+  , haskellSrcs :: [FilePath]
   }
 
 options :: Parser Haskell
@@ -40,6 +41,7 @@ options = do
         <> help ("GHC to invoke to generate .hie files " <>
              " (otherwise read existing .hie files)")
     )
+  haskellSrcs <- many (strOption (long "src"))
   return Haskell{..}
 
 indexer :: Indexer Haskell
@@ -75,9 +77,8 @@ indexer =
                     , "--repo-hash"
                     , "${TEST_REPO_HASH}"
                     , hieDir
-                    ]
+                    ] <> [ "--src=" <> f | f <- haskellSrcs ]
                 , extDerivePredicates = [
-                    "hs.NameRefs",
                     "hs.OccNameLowerCase",
                     "hs.SourceModule"
                   ]

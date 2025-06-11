@@ -1,0 +1,213 @@
+[
+  "@generated",
+  {
+    "key": {
+      "parent": {
+        "hs": {
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "C", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
+          }
+        }
+      },
+      "child": {
+        "hs": {
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "m", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hs": {
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "R", "namespace_": 1 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
+          }
+        }
+      },
+      "child": {
+        "hs": {
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "f1", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hs": {
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "R", "namespace_": 1 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
+          }
+        }
+      },
+      "child": {
+        "hs": {
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "f2", "namespace_": 0 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hs": {
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "R", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
+          }
+        }
+      },
+      "child": {
+        "hs": {
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "R", "namespace_": 1 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hs": {
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "T", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
+          }
+        }
+      },
+      "child": {
+        "hs": {
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "C1", "namespace_": 1 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hs": {
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "T", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
+          }
+        }
+      },
+      "child": {
+        "hs": {
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "C2", "namespace_": 1 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "parent": {
+        "hs": {
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "T", "namespace_": 3 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
+          }
+        }
+      },
+      "child": {
+        "hs": {
+          "name": {
+            "key": {
+              "occ": { "key": { "name": "C3", "namespace_": 1 } },
+              "mod": {
+                "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+              },
+              "sort": { "external": { } }
+            }
+          }
+        }
+      }
+    }
+  }
+]
