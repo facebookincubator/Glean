@@ -20,7 +20,11 @@ import Data.Set (Set)
 import qualified Data.Set as Set
 import qualified Data.Map.Strict as Map
 
-import Glean.Glass.Base ( GleanDBName(..), RepoMapping(..) )
+import Glean.Glass.Base
+  ( GleanDBName(..)
+  , RepoMapping(..)
+  , GleanDBSelector(..)
+  )
 import Glean.Glass.Types ( Language(..), RepoName(..) )
 import Data.Text(Text)
 
@@ -37,33 +41,48 @@ fixedRepoMapping = RepoMapping
   }
 
 -- example: the open source react repo.
-gleanIndices_ :: Map.Map RepoName [(GleanDBName, Language)]
+gleanIndices_ :: Map.Map RepoName [GleanDBSelector]
 gleanIndices_ = Map.fromList
   -- demo
-  [ (RepoName "react", [ ("react", Language_JavaScript) ])
+  [ ( RepoName "react",
+      [ GleanDBSelector
+        { dbName = "react"
+        , language = Language_JavaScript
+        , branchName = Nothing
+        }
+      ]
+    )
   -- for running tests with locally-indexed repos:
-  , (RepoName "test",
-      [("test", Language_JavaScript)
-      ,("test", Language_Hack)
-      ,("test", Language_Haskell)
-      ,("test", Language_Cpp)
-      ,("test", Language_PreProcessor)
-      ,("test", Language_Python)
-      ,("test", Language_Thrift)
-      ,("test", Language_Buck)
-      ,("test", Language_Go)
-      ,("test", Language_TypeScript)
-      ,("test", Language_Rust)
-      ,("test", Language_Java)
-      ,("test", Language_Swift)
-      ])
+  , ( RepoName "test",
+      [ testSelector Language_JavaScript
+      , testSelector Language_Hack
+      , testSelector Language_Haskell
+      , testSelector Language_Cpp
+      , testSelector Language_PreProcessor
+      , testSelector Language_Python
+      , testSelector Language_Thrift
+      , testSelector Language_Buck
+      , testSelector Language_Go
+      , testSelector Language_TypeScript
+      , testSelector Language_Rust
+      , testSelector Language_Java
+      , testSelector Language_Swift
+      ]
+    )
   ]
+  where
+    testSelector language =
+      GleanDBSelector
+        { dbName = "test"
+        , language = language
+        , branchName = Nothing
+        }
 
 -- | All the Glean db repo names we're aware of
 -- We will only be able to query members of this set
 allGleanRepos :: Set GleanDBName
 allGleanRepos = Set.fromList $
-  map fst (concat (Map.elems gleanIndices_))
+  map dbName (concat (Map.elems gleanIndices_))
 
 -- repos that are required
 gleanRequiredIndices :: Set.Set GleanDBName

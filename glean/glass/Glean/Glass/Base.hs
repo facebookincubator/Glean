@@ -12,6 +12,7 @@ module Glean.Glass.Base
   , SymbolRepoPath(..)
   , GleanDBAttrName(..)
   , RepoMapping(..)
+  , GleanDBSelector(..)
   ) where
 
 import Data.Function
@@ -73,9 +74,16 @@ data GleanDBAttrName =
     attributeKey :: attr
   }
 
+data GleanDBSelector = GleanDBSelector
+  { dbName :: GleanDBName
+  , language :: Glass.Language
+  , branchName :: Maybe Glass.BranchName
+  -- ^ Nothing means the db is default, can be used for any branch
+  }
+
 data RepoMapping = RepoMapping
-  { gleanIndices :: Map.Map Glass.RepoName [(GleanDBName, Glass.Language)]
-    -- ^ Glean indexes and the language they index. This should be in a config
+  { gleanIndices :: Map.Map Glass.RepoName [GleanDBSelector]
+    -- ^ This should be in a config
     --
     -- This is the set of Glean dbs that should implement codemarkup.*
     --

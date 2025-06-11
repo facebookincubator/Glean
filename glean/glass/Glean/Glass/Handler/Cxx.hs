@@ -117,7 +117,7 @@ usrToDefinition
         ( mRepo
           <|> fmap fst
               ( find
-                  (any ((== lang) . snd) . snd)
+                  (any ((== lang) . language) . snd)
                   (Map.toList $ gleanIndices repoMapping)
               )
         )

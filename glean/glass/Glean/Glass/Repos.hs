@@ -153,17 +153,17 @@ selectGleanDBs repoMapping mRepoName langs0 =
     candidates = listGleanIndices repoMapping isTestOnly
     langs = Set.map normalizeLanguages langs0
 
-    flatten (repo,(dbname,_)) = (repo, Set.singleton dbname)
+    flatten (repo, GleanDBSelector{..}) = (repo, Set.singleton dbName)
 
     -- if client requests tests only, search expansion is limited to the test db
     isTestOnly = mRepoName == Just (RepoName "test")
 
-    matches :: (RepoName, (GleanDBName, Language)) -> Bool
-    matches (r, (_, l)) = case (mRepoName, Set.null langs) of
+    matches :: (RepoName, GleanDBSelector) -> Bool
+    matches (repo, GleanDBSelector{..}) = case (mRepoName, Set.null langs) of
       (Nothing, True)  -> True
-      (Just rr, False) -> r == rr && l `Set.member` langs
-      (Nothing, False) -> l `Set.member` langs
-      (Just rr, True)  -> r == rr
+      (Just rr, False) -> repo == rr && language `Set.member` langs
+      (Nothing, False) -> language `Set.member` langs
+      (Just rr, True)  -> repo == rr
 
     err = case (mRepoName, Set.toList langs) of
       (Nothing, []) -> "Empty index: no repos or languages found"
@@ -181,7 +181,7 @@ normalizeLanguages l = l
 
 -- | Select universe of glean repo,(db/language) pairs.
 -- Either just the test dbs, or all the non-test dbs.
-listGleanIndices :: RepoMapping -> Bool -> [(RepoName, (GleanDBName, Language))]
+listGleanIndices :: RepoMapping -> Bool -> [(RepoName, GleanDBSelector)]
 listGleanIndices RepoMapping{..} testsOnly =
   let testRepos = [RepoName "test", RepoName "test-xlang"]
       flatten (repo,langs) = map (repo,) langs
@@ -196,9 +196,9 @@ listGleanIndices RepoMapping{..} testsOnly =
 fromSCSRepo :: RepoMapping -> RepoName -> Maybe Language -> [GleanDBName]
 fromSCSRepo RepoMapping{..} r hint
   | Just rs <- Map.lookup r gleanIndices
-  = nub $ map fst $ case hint of
+  = nub $ map dbName $ case hint of
       Nothing -> rs
-      Just h -> filter ((== h) . snd) rs
+      Just h -> filter ((== h) . language) rs
   | otherwise = []
 
 -- | Used to minimize the choice of Glean db when looking for a file
