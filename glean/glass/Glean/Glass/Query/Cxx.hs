@@ -14,8 +14,8 @@ module Glean.Glass.Query.Cxx
     documentSymbolsForCxx,
     fileIncludeLocationsForCxx,
     usrHashToDeclaration,
-    usrToDeclaration,
     usrHashToXRefs,
+    usrToDeclaration,
   ) where
 
 import Data.Maybe ( catMaybes )
@@ -691,7 +691,8 @@ fileIncludeLocations mlimit fileId = do
 
 usrHashToDeclaration
   :: Text -> Glean.RepoHaxl u w (Maybe (Code.Location, Code.Entity))
-usrHashToDeclaration usrhash = fetchDataRecursive (usrHashToDeclarationAngle usrhash)
+usrHashToDeclaration usrhash =
+  fetchDataRecursive (usrHashToDeclarationAngle usrhash)
 
 -- | Resolve USR hash to its definition site
 usrHashToDeclarationAngle :: Text -> Angle (Code.Location, Code.Entity)

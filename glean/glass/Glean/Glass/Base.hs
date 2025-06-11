@@ -31,7 +31,7 @@ import qualified Glean.Glass.Types as Glass
 import Glean.Glass.Logging
 import Glean.Glass.Attributes.Class as Attributes
 
--- | Type of glean dbs
+-- | Just a wrapper for a db name as Text
 newtype GleanDBName = GleanDBName { unGleanDBName :: Text }
   deriving (Eq, Ord, Show, Hashable)
 

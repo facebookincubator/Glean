@@ -21,7 +21,7 @@ module Glean.Glass.Repos
 
   -- * Mappings
   , fromSCSRepo
-  , filetype
+  , fileLanguage
   , attrDBsForRepo
 
   -- * Operation on a pool of latest repos
@@ -189,7 +189,7 @@ listGleanIndices RepoMapping{..} testsOnly =
       isTest (repo, _) = elem repo testRepos in
     filter (if testsOnly then isTest else not . isTest) flattened
 
--- Do something simple to map SCS repo to Glean repos
+-- | Do something simple to map SCS repo to Glean repos
 -- Names from configerator/scm/myles/service as a start
 -- This should be in a config or SV to make onboarding simple, or from Glean
 -- properties?
@@ -218,8 +218,8 @@ fromSCSRepo RepoMapping{..} repo mBranchName mLanguage
 -- When onboarding a language, you should register the filetype, for
 -- any src.Files we have xrefs for
 --
-filetype :: Path -> Maybe Language
-filetype (Path file)
+fileLanguage :: Path -> Maybe Language
+fileLanguage (Path file)
   | is ".c"  = Just Language_Cpp
   | is ".cc"  = Just Language_Cpp
   | is ".cpp"  = Just Language_Cpp

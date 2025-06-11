@@ -19,7 +19,7 @@ module Glean.Glass.Query
   , fileEntityLocations
   , fileEntityXRefsGenEntities
 
-  -- * Finding refernces to declarations
+  -- * Finding references to declarations
   , findReferenceRangeSpan
 
   -- * Finding references for call hierarchy

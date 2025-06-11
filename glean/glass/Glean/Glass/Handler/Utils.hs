@@ -195,7 +195,7 @@ withRepoFile
      -> IO (b, Maybe ErrorLogger))
   -> IO b
 withRepoFile method env opts req repo file fn = do
-  withRepoLanguage method env req repo (filetype file) opts fn
+  withRepoLanguage method env req repo (fileLanguage file) opts fn
 
 -- | Run an action that provides a symbol id, log it
 withSymbol
@@ -269,7 +269,7 @@ withLogDB dbs act = do
   return ((b,dbs), merr)
 
 -- | Given an SCS repo name, and a candidate path, find latest Glean dbs or
--- throw. Returns the chosen db name and Glean repo handle.
+-- throw. Returns the chosen db name and Glean repo handles.
 -- If a Glean.Repo is given, use it instead.
 getGleanRepos
   :: GlassTracer
