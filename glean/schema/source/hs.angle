@@ -257,10 +257,20 @@ predicate ModuleDeclarations:
 
 # References
 
+type RefSpan =
+  {
+    kind: RefKind,
+    span: src.ByteSpan,
+  }
+
+# It's useful to be able to distinguish import/export refs from code refs,
+# because e.g. dead code can still have import/export refs.
+type RefKind = enum { importref | exportref | coderef }
+
 predicate Reference:
   {
     name: Name,
-    spans: [src.ByteSpan]
+    refs: [RefSpan],
   }
 
 predicate FileXRefs :
@@ -280,9 +290,9 @@ predicate NameRefs:
   {
     target: Name,
     file: src.File,
-    uses: [src.ByteSpan]
+    uses: [RefSpan]
   } stored {Name, File, Uses} where
   FileXRefs {file = File, refs = Refs};
-  {name = Name, spans = Uses} = Refs[..];
+  {name = Name, refs = Uses} = Refs[..];
 
 }

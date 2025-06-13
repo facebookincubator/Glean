@@ -27,7 +27,7 @@ import qualified GHC
 import GHC.Iface.Ext.Utils (generateReferencesMap)
 import GHC.Iface.Ext.Types (
   getAsts, ContextInfo(..), IdentifierDetails(..), RecFieldContext(..),
-  BindType(..), DeclType(..))
+  BindType(..), DeclType(..), IEType(..))
 import qualified GHC.Types.Name.Occurrence as GHC
 import qualified GHC.Types.Name as GHC (isSystemName)
 import GHC.Unit.Types (unitFS)
@@ -45,6 +45,7 @@ import Glean.Util.Range
 {- TODO
 
 - issues with record fields
+  - DuplicateRecordFields generates names like $sel:field:Rec
   - weird references to the record constructor from field decls
   - why do we get a ref for the field decl?
   - span of record field in pattern match is wrong
@@ -196,16 +197,16 @@ indexHieFile writer hie = do
     Glean.makeFact_ @Hs.ModuleDeclarations $ Hs.ModuleDeclarations_key
       modfact (map snd names)
 
-    let refs = Map.fromListWith (++)
-          [ (n, [span])
+    let refs = Map.fromListWith (Map.unionWith (++))
+          [ (n, Map.singleton kind [span])
           | (n, (span, dets)) <- allIds,
-            any isRef (identInfo dets),
+            Just kind <- map isRef (Set.toList (identInfo dets)),
             not (GHC.isSystemName n),
             -- TODO: we should exclude generated names in a cleaner way
             not (GHC.isDerivedOccName (nameOccName n))
           ]
 
-    refs <- fmap catMaybes $ forM (Map.toList refs) $ \(name, spans) -> do
+    refs <- fmap catMaybes $ forM (Map.toList refs) $ \(name, kindspans) -> do
       maybe_namefact <-
         case Map.lookup name nameMap of
           Just fact -> return $ Just fact
@@ -218,9 +219,11 @@ indexHieFile writer hie = do
               namemod <- mkModule mod
               Just <$> mkName name namemod (Hs.NameSort_external def)
       forM maybe_namefact $ \namefact -> do
-        let gleanspans = map (toByteSpan . srcSpanToSrcRange filefact) spans
+        refspans <- forM (Map.toList kindspans) $ \(kind, spans) -> do
+          let gleanspans = map (toByteSpan . srcSpanToSrcRange filefact) spans
+          return $ map (Hs.RefSpan kind) gleanspans
         Glean.makeFact @Hs.Reference $
-          Hs.Reference_key namefact gleanspans
+          Hs.Reference_key namefact (concat refspans)
 
     Glean.makeFact_ @Hs.FileXRefs $ Hs.FileXRefs_key filefact refs
 
@@ -236,12 +239,14 @@ indexHieFile writer hie = do
       | otherwise -> False
 
   -- returns True if this ContextInfo is a reference
-  isRef Use = True
-  isRef (RecField r _) = isRecFieldRef r
-  isRef (ValBind InstanceBind _ _) = True -- treat these as refs, not binds
-  isRef TyDecl{} = True
-  isRef IEThing{} = True
-  isRef _ = False
+  isRef Use = Just Hs.RefKind_coderef
+  isRef (RecField r _) | isRecFieldRef r = Just Hs.RefKind_coderef
+  isRef (ValBind InstanceBind _ _) = Just Hs.RefKind_coderef
+    -- treat these as refs, not binds
+  isRef TyDecl{} = Just Hs.RefKind_coderef
+  isRef (IEThing Export) = Just Hs.RefKind_exportref
+  isRef (IEThing _) = Just Hs.RefKind_importref
+  isRef _ = Nothing
 
   isRecFieldRef RecFieldAssign = True
   isRecFieldRef RecFieldMatch = True
