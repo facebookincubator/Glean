@@ -417,10 +417,10 @@ predicate HackEnumInheritedMembers :
 {
   member_ : hack.MethodDeclaration
 } { member_ = Md } where
-  hack.ClassDefinition {
-    declaration = { name = { name = "BuiltinEnum",  namespace_ = {just = { name = "HH" } } } },
-    members = Ms
-  };
+  C : hack.ClassDefinition;
+  C.declaration.name.name = "BuiltinEnum";
+  C.declaration.name.namespace_.just?.name = "HH";
+  C.members = Ms;
   { method = Md } = Ms[..]
 
 # Inherited parents but drop those with "HideFromDocs" annotations
@@ -937,43 +937,23 @@ predicate HackRequiredConstraint:
     entity : code.hack.Entity,
     requiredRelation : RequiredRelation,
     required_ : code.hack.Entity
-  }
+  } { E, Rel, R } where
   (
-    {
-      { decl = { container = { interface_ = D } } },
-      extends_,
-      { decl = { container = { class_ = C } } }
-    }
-    where
-      RE[..] = C;
-      hack.InterfaceDefinition { declaration = D, requireExtends = RE }
+    Rel = extends_;
+    RE[..] = R.decl?.container?.class_?;
+    hack.InterfaceDefinition { declaration = E.decl?.container?.interface_?, requireExtends = RE }
   ) | (
-    {
-      { decl = { container = { trait = D } } },
-      extends_,
-      { decl = { container = { class_ = C } } }
-    }
-    where
-      RE[..] = C;
-      hack.TraitDefinition { declaration = D, requireExtends = RE }
+    Rel = extends_;
+    RE[..] = R.decl?.container?.class_?;
+    hack.TraitDefinition { declaration = E.decl?.container?.trait?, requireExtends = RE }
   ) | (
-    {
-      { decl = { container = { trait = D } } },
-      implements_,
-      { decl = { container = { interface_ = I } } }
-    }
-    where
-      RE[..] = I;
-      hack.TraitDefinition { declaration = D, requireImplements = RE }
+    Rel = implements_;
+    RE[..] = R.decl?.container?.interface_?;
+    hack.TraitDefinition { declaration = E.decl?.container?.trait?, requireImplements = RE }
   ) | (
-    {
-      {decl = { container = { trait = D } } },
-      class_,
-      { decl = { container = { class_ = C } } }
-    }
-    where
-      RE[..] = C;
-      hack.TraitDefinition { declaration = D, requireClass = { just = RE } }
+    Rel = class_;
+    RE[..] = R.decl?.container?.class_?;
+    hack.TraitDefinition { declaration = E.decl?.container?.trait?, requireClass = { just = RE } }
   )
 
 predicate HackEntityModuleName:
@@ -981,7 +961,7 @@ predicate HackEntityModuleName:
     entity : code.hack.Entity,
     name : string
   }
-  { { decl = { module = { name = hack.Name Name } } }, Name }
+  { Decl, Name } where Decl.decl?.module?.name = hack.Name Name
 
 predicate HackEntityIdl:
   {
@@ -991,7 +971,7 @@ predicate HackEntityIdl:
   { E, I } where
   hack.HackToThrift { from = Hack, to = Thrift };
   fbthrift.DeclarationFile { Thrift, fbthrift.File F };
-  { lang = Thrift,
+    { lang = Thrift,
     file = F,
     entity = { just = { fbthrift = { decl = Thrift } } },
     range = nothing } = I;
