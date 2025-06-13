@@ -9,40 +9,28 @@
 {-# LANGUAGE ApplicativeDo #-}
 
 module HieIndexer.Options (
-    Sources(..),
     HieIndexerOptions(..),
     Mode(..),
     options,
   ) where
 
 import Data.List.NonEmpty (NonEmpty, nonEmpty)
+import qualified Data.List.NonEmpty as NonEmpty
 
-import Data.Maybe (fromJust)
-import Options.Applicative (
-  Parser,
-  ParserInfo,
-  auto,
-  fullDesc,
-  help,
-  helper,
-  info,
-  long,
-  metavar,
-  option,
-  short,
-  showDefault,
-  strOption,
-  value, (<|>), some, strArgument
- )
+import Data.Maybe
+import Data.Text (Text)
+import Options.Applicative
 import Glean (Repo (Repo), SchemaId (SchemaId, unSchemaId))
 import Glean.Schema.Builtin.Types (schema_id)
+import Util.OptParse
 
--- | A set of paths to recursively search for .hie files
-data Sources
-  = HieFiles (NonEmpty FilePath)   -- ^ Paths to search recursively for .hie files
-
-data HieIndexerOptions sources = HieIndexerOptions
-  { sources :: sources
+data HieIndexerOptions = HieIndexerOptions
+  { hiePaths :: NonEmpty FilePath
+      -- ^ Paths to search recursively for .hie files
+  , srcPaths :: NonEmpty Text
+      -- ^ Paths to look for source files. May include the string
+      -- @$PACKAGE@ which will be replaced by the package name
+      -- (@<pkg>-<version>@).
   , verbosity :: Int
   }
 
@@ -56,19 +44,22 @@ data Mode
     }
 
 
-sourcesP :: Parser Sources
-sourcesP = HieFiles <$> hieFilesP
-  where
-    hieFilesP = fromJust . nonEmpty <$> some
-      (strArgument (metavar "PATH" <> help "Tree containing .hie files"))
-
-options :: ParserInfo (HieIndexerOptions Sources, Mode)
+options :: ParserInfo (HieIndexerOptions, Mode)
 options = info (helper <*> parser) fullDesc
   where
-    parser :: Parser (HieIndexerOptions Sources, Mode)
+    parser :: Parser (HieIndexerOptions, Mode)
     parser = do
 
-      sources <- sourcesP
+      hiePaths <- fromJust . nonEmpty <$> some
+        (strArgument (metavar "PATH" <> help "Tree containing .hie files"))
+
+      srcPaths <- fromMaybe (NonEmpty.singleton ".") . nonEmpty <$>
+        many (textOption (
+          long "src" <>
+          metavar "PATH" <>
+          help (
+            "Path to search for source files. The string \"$PACKAGE\" is " <>
+            "replaced by the package name, e.g. text-2.0.2")))
 
       verbosity <-
         option
