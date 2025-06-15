@@ -152,6 +152,27 @@ union ShardingPolicy {
   4: ShardManagerMostRecentPolicy shard_manager_most_recent;
 }
 
+union SchemaLocation {
+  // schema source files (*.angle) in a directory. The string `$datadir` is
+  // replaced by the Cabal datadir, if this is a Cabal build.
+  1: string dir;
+
+  // A single file containing concatenated schema files. The string `$datadir` is
+  // replaced by the Cabal datadir, if this is a Cabal build.
+  2: string file;
+
+  // A schema index (referencing multiple schema versions) in a
+  // file. The string `$datadir` is replaced by the Cabal datadir,
+  // if this is a Cabal build.
+  3: string index;
+
+  // A single file containing concatenated schema files in a config location.
+  4: string config;
+
+  // A schema index in a config location.
+  5: string indexconfig;
+}
+
 // Configeration for Glean Servers
 struct Config {
   1: DatabaseRetentionPolicy retention;
@@ -279,6 +300,10 @@ struct Config {
   // server, which would otherwise manifest as an obscure failure such
   // as a deserialization error later.
   35: bool check_write_schema_id = true;
+
+  // Where to find the schema by default. This can be overridden by the
+  // `--schema` flag on the command line.
+  36: optional SchemaLocation schema_location;
 }
 
 // The following were automatically generated and may benefit from renaming.

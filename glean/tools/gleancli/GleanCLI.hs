@@ -38,7 +38,7 @@ import System.Exit (exitWith, ExitCode(..))
 import qualified Glean
 import Glean.Init
 import qualified Glean.LocalOrRemote as Glean
-import Glean.Database.Config (cfgSchemaSource, cfgServerConfig)
+import Glean.Database.Config (cfgServerConfig)
 import qualified Glean.Database.Config as GleanDB
 import Glean.Database.Schema
 import Glean.Database.Schema.Types
@@ -658,9 +658,13 @@ instance Plugin WriteSerializedInventoryCommand where
   withService evb cfgAPI svc WriteSerializedInventory{..} = do
     let
       inventoryFromSchema selector = do
-        index <- ThriftSource.load cfgAPI $ cfgSchemaSource $ case svc of
-          Glean.Local cfg _ -> cfg
-          Glean.Remote{} -> def
+        let cfg = case svc of
+              Glean.Local cfg _ -> cfg
+              Glean.Remote{} -> def
+        serverConfig <- ThriftSource.load cfgAPI (cfgServerConfig cfg)
+        loc <- GleanDB.schemaLocation cfg serverConfig
+        let (schemaSource, _) = GleanDB.cfgSchemaHook cfg loc
+        index <- ThriftSource.load cfgAPI schemaSource
         dbSchema <- newDbSchema Nothing index selector readWriteContent def
         return $ Inventory.serialize $ schemaInventory dbSchema
 

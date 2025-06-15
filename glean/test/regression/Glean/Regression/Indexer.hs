@@ -12,6 +12,7 @@ module Glean.Regression.Indexer
   ) where
 
 import Data.Maybe
+import qualified Data.Text as Text
 import System.FilePath
 
 import Glean.Database.Config
@@ -30,7 +31,7 @@ withTestBackend test action =
   withTestEnv settings (action . Some)
   where
   settings = [ setRoot $ testOutput test </> "db" ] <>
-    map (setSchemaSource . schemaSourceFilesFromDir)
+    map (setSchemaLocation . SchemaLocation_dir . Text.pack)
       (maybeToList (testSchema test))
 
 runIndexerForTest :: Some LocalOrRemote -> RunIndexer -> TestConfig -> IO ()

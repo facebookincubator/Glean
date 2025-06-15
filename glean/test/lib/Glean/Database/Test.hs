@@ -9,7 +9,7 @@
 module Glean.Database.Test
   ( Setting
   , setRoot
-  , setSchemaSource
+  , setSchemaLocation
   , setSchemaIndex
   , setSchemaPath
   , setSchemaId
@@ -33,6 +33,7 @@ import Data.Default
 import Data.Functor
 import Data.Int
 import Data.List (foldl')
+import qualified Data.Text as Text
 
 import Util.EventBase
 
@@ -49,21 +50,20 @@ import Glean.Typed
 import qualified Glean.Types as Thrift
 import Glean.Util.ConfigProvider
 import qualified Glean.Util.ThriftSource as ThriftSource
-import Glean.Util.ThriftSource (ThriftSource)
 
 type Setting = Config -> Config
 
 setRoot :: FilePath -> Setting
 setRoot path cfg = cfg{ cfgDataStore = fileDataStore path }
 
-setSchemaSource :: ThriftSource SchemaIndex -> Setting
-setSchemaSource source cfg = cfg{ cfgSchemaSource = source }
+setSchemaLocation :: SchemaLocation -> Setting
+setSchemaLocation loc cfg = cfg{ cfgSchemaLocation = Just loc }
 
 setSchemaPath :: FilePath -> Setting
-setSchemaPath = setSchemaSource . schemaSourceFile
+setSchemaPath = setSchemaLocation . SchemaLocation_file . Text.pack
 
 setSchemaIndex :: FilePath -> Setting
-setSchemaIndex = setSchemaSource . schemaSourceIndexFile
+setSchemaIndex = setSchemaLocation . SchemaLocation_index . Text.pack
 
 -- | Set the schema that will be used for queries, otherwise defaults
 -- to the highest all.N in the latest schema.
@@ -114,7 +114,7 @@ withTestEnv settings action =
       dbConfig = foldl' (\acc f -> f acc)
         def
           { cfgDataStore = tmpDataStore
-          , cfgSchemaSource = schemaSourceFiles
+          , cfgSchemaLocation = Just schemaLocationFiles
           , cfgServerConfig = ThriftSource.value def
               { ServerConfig.config_db_rocksdb_cache_mb = 0 }
           }
