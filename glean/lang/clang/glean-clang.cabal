@@ -99,8 +99,18 @@ common fb-cpp
   if flag(opt)
      cxx-options: -O3
 
+flag use-folly-clib
+     default: False
+
+common folly
+    if flag(use-folly-clib)
+        build-depends: fb-util >= 0.2, folly-clib
+    else
+        build-depends: fb-util < 0.2
+        pkgconfig-depends: libfolly
+
 executable clang-index
-    import: fb-cpp
+    import: fb-cpp, folly
     ghc-options: -no-hs-main
     main-is: index.cpp
     cxx-sources:
@@ -116,7 +126,6 @@ executable clang-index
     extra-libraries:
         clang-cpp,
         LLVM,
-        folly,
         glog,
         pthread,
         fmt,

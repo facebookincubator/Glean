@@ -123,6 +123,16 @@ flag flow-tests
 flag fbthrift
      default: False
 
+flag use-folly-clib
+     default: False
+
+common folly
+    if flag(use-folly-clib)
+        build-depends: fb-util >= 0.2, folly-clib
+    else
+        build-depends: fb-util < 0.2
+        pkgconfig-depends: libfolly
+
 common deps
     build-depends:
         fb-util,
@@ -182,14 +192,14 @@ common hsc2hs-cpp
 
 common thrift-server
     if flag(fbthrift)
-       ghc-options: -DFBTHRIFT
+       cpp-options: -DFBTHRIFT
        build-depends: thrift-server
     else
        build-depends: thrift-http
 
 common thrift-client
     if flag(fbthrift)
-       ghc-options: -DFBTHRIFT
+       cpp-options: -DFBTHRIFT
        build-depends: thrift-cpp-channel
     else
        build-depends: thrift-http
@@ -234,14 +244,12 @@ library config
     include-dirs: .
     hs-source-dirs:
         glean/config/gen-hs2
-        glean/config/recipes/gen-hs2
         glean/config/server/gen-hs2
         glean/config/client/gen-hs2
     exposed-modules:
         Glean.Service.Types
         Glean.ClientConfig.Types
         Glean.ServerConfig.Types
-    pkgconfig-depends: libfolly
 
 library defaultconfigs
     import: fb-haskell, fb-cpp, deps
@@ -318,18 +326,69 @@ library if-internal-hs
         glean:if-glean-hs
 
 library rts
-    import: fb-haskell, fb-cpp, deps
+    import: fb-haskell, fb-cpp, deps, folly
     visibility: public
     include-dirs: .
     CXX_LIB_glean_cpp_rts
+    install-includes:
+        glean/bytecode/evaluate.h
+        glean/bytecode/instruction.h
+        glean/rts/benchmarking/factblock.h
+        glean/rts/benchmarking/ffi.h
+        glean/rts/binary.h
+        glean/rts/bytecode/subroutine.h
+        glean/rts/bytecode/syscall.h
+        glean/rts/cache.h
+        glean/rts/define.h
+        glean/rts/densemap.h
+        glean/rts/error.h
+        glean/rts/fact.h
+        glean/rts/factset.h
+        glean/rts/ffi.h
+        glean/rts/id.h
+        glean/rts/inventory.h
+        glean/rts/json.h
+        glean/rts/lookup.h
+        glean/rts/nat.h
+        glean/rts/ondemand.h
+        glean/rts/ownership/derived.h
+        glean/rts/ownership/fallbackavx.h
+        glean/rts/ownership.h
+        glean/rts/ownership/pool.h
+        glean/rts/ownership/setu32.h
+        glean/rts/ownership/slice.h
+        glean/rts/ownership/triearray.h
+        glean/rts/ownership/uset.h
+        glean/rts/prim.h
+        glean/rts/query.h
+        glean/rts/sanity.h
+        glean/rts/serialize.h
+        glean/rts/set.h
+        glean/rts/stacked.h
+        glean/rts/stats.h
+        glean/rts/store.h
+        glean/rts/string.h
+        glean/rts/substitution.h
+        glean/rts/tests/arbitrary.h
+        glean/rts/tests/uniform.h
+        glean/rts/thrift.h
+        glean/rts/timer.h
+        glean/rts/validate.h
     -- __atomic_is_lock_free missing with clang
     extra-libraries: atomic
-    pkgconfig-depends: libfolly, libunwind, libglog, icu-uc, gflags, libxxhash
+    pkgconfig-depends: libunwind, libglog, icu-uc, gflags, libxxhash
 
 library rocksdb
-    import: fb-haskell, fb-cpp, deps
+    import: fb-haskell, fb-cpp, deps, folly
     visibility: private
     CXX_LIB_glean_cpp_rocksdb
+    include-dirs: .
+    install-includes:
+        glean/rocksdb/container-impl.h
+        glean/rocksdb/database-impl.h
+        glean/rocksdb/ffi.h
+        glean/rocksdb/rocksdb.h
+        glean/rocksdb/util.h
     pkgconfig-depends: rocksdb, fmt
     build-depends:
         glean:rocksdb-stats,
@@ -337,9 +396,12 @@ library rocksdb
 
 -- This needs to be separate from rocksdb because it can't be compiled with -fno-rtti
 library rocksdb-stats
-    import: fb-haskell, fb-cpp, deps
+    import: fb-haskell, fb-cpp, deps, folly
     visibility: private
     CXX_LIB_glean_cpp_rocksdb_stats
+    include-dirs: .
+    install-includes:
+        glean/rocksdb/stats.h
     build-depends:
         glean:rts,
 
@@ -473,7 +535,7 @@ library db
     visibility: public
     hs-source-dirs: glean/db
     default-extensions: CPP
-    ghc-options: -DOSS=1
+    cpp-options: -DOSS=1
 
     exposed-modules:
         Glean.Database.Backup
@@ -549,6 +611,8 @@ library db
 
     other-modules:
         Paths_glean
+    autogen-modules:
+        Paths_glean
 
     build-depends:
         split,
@@ -609,12 +673,18 @@ library client-hs-local
 
 -- things needed by glean-clang
 library client-cpp
-    import: fb-cpp, deps
+    import: fb-haskell, fb-cpp, deps, folly
     visibility: public
     CXX_LIB_glean_cpp_client
     include-dirs: .
     install-includes:
+        glean/cpp/filewriter.h
+        glean/cpp/sender.h
         glean/cpp/glean.h
+        glean/interprocess/cpp/counters.h
+        glean/interprocess/cpp/counters_ffi.h
+        glean/interprocess/cpp/worklist.h
+        glean/interprocess/cpp/worklist_ffi.h
     build-depends:
         glean:rts
 
@@ -795,6 +865,7 @@ library haxl-datasource
 
 executable gen-schema
     import: fb-haskell, fb-cpp, deps, exe
+    scope: private
     main-is: Glean/Schema/Gen/Main.hs
     hs-source-dirs: glean/schema/gen
     ghc-options: -main-is Glean.Schema.Gen.Main
@@ -836,6 +907,7 @@ library bytecode
 
 executable gen-bytecode-cpp
     import: fb-haskell, fb-cpp, deps, exe
+    scope: private
     main-is: Glean/Bytecode/Generate/Cpp.hs
     hs-source-dirs: glean/bytecode/gen
     ghc-options: -main-is Glean.Bytecode.Generate.Cpp
@@ -845,6 +917,7 @@ executable gen-bytecode-cpp
 
 executable gen-bytecode-hs
     import: fb-haskell, fb-cpp, deps, exe
+    scope: private
     main-is: Glean/Bytecode/Generate/Haskell.hs
     hs-source-dirs: glean/bytecode/gen
     ghc-options: -main-is Glean.Bytecode.Generate.Haskell
@@ -893,6 +966,7 @@ executable disassemble
     ghc-options: -main-is Disassemble
     extra-libraries: stdc++
     build-depends:
+        glean:bytecode,
         glean:db,
         glean:core,
         glean:if-glean-hs,
@@ -1091,12 +1165,16 @@ library hack-derive-lib
         Derive.Env
         Derive.HackDeclarationTarget
         Derive.Types
+        Glean.Indexer.HackWithDeriver
+    other-modules:
+        Glean.Indexer.Hack
     build-depends:
         glean:client-hs,
         glean:core,
         glean:if-glean-hs,
         glean:indexers,
         glean:lib,
+        glean:lib-derive,
         glean:schema,
         glean:util,
         IntervalMap,
@@ -1109,8 +1187,10 @@ executable hack-derive
     main-is: Derive.hs
     ghc-options: -main-is Derive
     build-depends:
+        aeson-pretty,
         glean:client-hs,
         glean:hack-derive-lib,
+        glean:schema,
         glean:stubs,
         glean:util,
 
@@ -1197,14 +1277,15 @@ library if-glass-hs
         glean:thrift-annotation,
 
 library hash
-    import: fb-cpp, deps
+    import: fb-haskell, fb-cpp, deps, folly
     visibility: public
     cxx-sources:
         glean/lang/clang/hash/hash.cpp
     install-includes:
         glean/lang/clang/hash/hash.h
     cxx-options: -DOSS=1
-    pkgconfig-depends: libfolly, openssl
+    if !flag(use-folly-clib)
+        pkgconfig-depends: openssl
 
 -- Glass core library
 library glass-lib
@@ -1392,23 +1473,6 @@ executable rename-bench
         glean:util,
         criterion < 1.7
 
-executable user-query-bench
-    import: fb-haskell, fb-cpp, deps, exe
-    if !flag(benchmarks)
-       buildable: False
-    hs-source-dirs: glean/bench
-    main-is: UserQueryBench.hs
-    ghc-options: -main-is UserQueryBench
-    build-depends:
-        glean:bench-util,
-        glean:client-hs,
-        glean:db,
-        glean:if-glean-hs,
-        glean:schema,
-        glean:test-lib,
-        glean:util,
-        criterion < 1.7
-
 executable makefact-bench
     import: fb-haskell, deps, exe
     if !flag(benchmarks)
@@ -1502,7 +1566,7 @@ library regression-test-lib
         Glean.Regression.Snapshot.Result
         Glean.Regression.Snapshot.Transform
         Glean.Regression.Test
-    ghc-options: -DOSS=1
+    cpp-options: -DOSS=1
     build-depends:
         glean:client-hs,
         glean:client-hs-local,
@@ -1862,7 +1926,7 @@ test-suite jsonwrite
         glean:schema,
 
 test-suite BinaryTest
-    import: fb-cpp, exe
+    import: fb-haskell, fb-cpp, exe
     type: exitcode-stdio-1.0
     main-is: glean/rts/tests/BinaryTest.cpp
     ghc-options: -no-hs-main
