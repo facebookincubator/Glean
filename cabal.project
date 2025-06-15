@@ -1,6 +1,7 @@
 -- Copyright (c) Facebook, Inc. and its affiliates.
 
 packages:
+    hsthrift/folly/folly.cabal
     hsthrift/common/util/fb-util.cabal
     hsthrift/common/github/fb-stubs.cabal
     hsthrift/common/mangle/mangle.cabal
@@ -22,6 +23,9 @@ allow-newer: haskell-names:aeson, haskell-names:bytestring
 
 -- https://github.com/TomMD/entropy/issues/75
 constraints: entropy < 0.4.1.9
+
+package folly
+    flags: +bundled-folly
 
 package fb-util
     flags: +folly
