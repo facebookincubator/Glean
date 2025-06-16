@@ -27,9 +27,6 @@ const i32 MAXIMUM_QUERY_TIME_LIMIT = 15000;
 // Repositories are referred to by their SCS repo names
 typedef string RepoName (hs.newtype)
 
-// Repo's branch name
-typedef string BranchName (hs.newtype)
-
 // The UTF-8 path of a file relative to the source control root
 typedef string Path (hs.newtype)
 
@@ -184,9 +181,6 @@ struct DocumentSymbolsRequest {
   // resolved using latest version of target db. This may add latency
   // to the query. includes_refs must be set to true.
   5: bool include_xlang_refs = false;
-
-  // Repo's branch name
-  6: optional BranchName branchName;
 }
 
 // response types

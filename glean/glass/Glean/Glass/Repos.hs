@@ -196,7 +196,7 @@ listGleanIndices RepoMapping{..} testsOnly =
 fromSCSRepo
   :: RepoMapping
   -> RepoName
-  -> Maybe BranchName
+  -> Maybe Text
   -> Maybe Language
   -> [GleanDBName]
 fromSCSRepo RepoMapping{..} repo mBranchName mLanguage

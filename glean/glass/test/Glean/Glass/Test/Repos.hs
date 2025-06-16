@@ -56,7 +56,7 @@ callRepoMapping
 callRepoMapping repoName maybeLanguage maybeBranch =
   fromSCSRepo repoMapping
     (RepoName repoName)
-    (BranchName <$> maybeBranch)
+    maybeBranch
     maybeLanguage
 
 repoMapping :: RepoMapping
@@ -71,17 +71,17 @@ genGleanIndices = Map.fromList
       [ GleanDBSelector
         { dbName = "db1"
         , language = Language_Cpp
-        , branchName = Just $ BranchName "branch1"
+        , branchName = Just "branch1"
         }
         , GleanDBSelector
         { dbName = "db2"
         , language = Language_Cpp
-        , branchName = Just $ BranchName "branch2"
+        , branchName = Just "branch2"
         }
         , GleanDBSelector
         { dbName = "db2"
         , language = Language_Rust
-        , branchName = Just $ BranchName "branch2"
+        , branchName = Just "branch2"
         }
         , GleanDBSelector
         { dbName = "db3"

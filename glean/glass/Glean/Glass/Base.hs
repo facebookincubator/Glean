@@ -77,7 +77,7 @@ data GleanDBAttrName =
 data GleanDBSelector = GleanDBSelector
   { dbName :: GleanDBName
   , language :: Glass.Language
-  , branchName :: Maybe Glass.BranchName
+  , branchName :: Maybe Text
   -- ^ Nothing means the db is default, can be used for any branch
   }
 
