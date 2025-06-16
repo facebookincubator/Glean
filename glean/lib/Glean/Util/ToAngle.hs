@@ -17,6 +17,7 @@ module Glean.Util.ToAngle
 import Glean
 import Glean.Angle
 
+import qualified Glean.Schema.Anglelang.Types as Anglelang
 import qualified Glean.Schema.Src.Types as Src
 import qualified Glean.Schema.Csharp.Types as CSharp
 import qualified Glean.Schema.Cxx1.Types as Cxx
@@ -31,6 +32,7 @@ import qualified Glean.Schema.Lsif.Types as Lsif
 import qualified Glean.Schema.Python.Types as Py
 import qualified Glean.Schema.Scip.Types as Scip
 
+import qualified Glean.Schema.CodeAnglelang.Types as Anglelang
 import qualified Glean.Schema.Code.Types as Code
 import qualified Glean.Schema.CodeHack.Types as Hack
 import qualified Glean.Schema.CodePython.Types as Py
@@ -208,6 +210,21 @@ instance ToAngle Erlang.Declaration where
   toAngle d = case d of
     Erlang.Declaration_func x -> alt @"func" (mkKey x)
     Erlang.Declaration_EMPTY -> error "unknown Declaration"
+
+-- Angle
+instance ToAngle Anglelang.Entity where
+  toAngle e = rec $ field @"decl" (toAngle decl) end
+    where decl = Anglelang.entity_decl e
+
+instance ToAngle Anglelang.Declaration where
+  toAngle x = case x of
+    Anglelang.Declaration_pred x -> alt @"pred" (mkKey x)
+    Anglelang.Declaration_ty x -> alt @"ty" (mkKey x)
+    Anglelang.Declaration_schema x -> alt @"schema" (mkKey x)
+    Anglelang.Declaration_evolve x -> alt @"evolve" (mkKey x)
+    Anglelang.Declaration_derive_ x -> alt @"derive_" (mkKey x)
+    Anglelang.Declaration_imp x -> alt @"imp" (factId (Glean.getId x))
+    Anglelang.Declaration_EMPTY -> error "unknown Declaration"
 
 -- Buck
 

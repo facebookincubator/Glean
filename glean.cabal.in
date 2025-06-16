@@ -679,6 +679,7 @@ library schema
         Glean.Schema.Lsif
         Glean.Schema.Pp1
         Glean.Schema.Python
+        Glean.Schema.SearchAnglelang
         Glean.Schema.SearchBuck
         Glean.Schema.SearchCode
         Glean.Schema.SearchCxx
@@ -745,6 +746,7 @@ library schema
         Glean.Schema.Scip.Types
         Glean.Schema.Pp1.Types
         Glean.Schema.Python.Types
+        Glean.Schema.SearchAnglelang.Types
         Glean.Schema.SearchBuck.Types
         Glean.Schema.SearchCode.Types
         Glean.Schema.SearchCxx.Types
@@ -1229,6 +1231,7 @@ library glass-lib
         Glean.Glass.RepoMapping
         Glean.Glass.Repos
         Glean.Glass.Search
+        Glean.Glass.Search.Angle
         Glean.Glass.Search.Buck
         Glean.Glass.Search.Class
         Glean.Glass.Search.Cxx

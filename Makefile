@@ -214,6 +214,7 @@ SCHEMAS= \
 	pp1 \
 	python \
 	scip \
+	search_anglelang \
 	search_code \
 	search_cxx \
 	search_erlang \

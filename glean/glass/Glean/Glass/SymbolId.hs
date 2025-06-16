@@ -342,6 +342,8 @@ instance Symbol Code.Entity where
 -- languages we don't support
 entityToAngle :: Code.Entity -> Either Text (Angle Code.Entity)
 entityToAngle e = case e of
+  Code.Entity_angle x -> Right $
+    alt @"angle" (toAngle x)
   Code.Entity_hack (Hack.Entity_decl x) -> Right $
     alt @"hack" (alt @"decl" (toAngle x))
   Code.Entity_python (Python.Entity_decl x) -> Right $
