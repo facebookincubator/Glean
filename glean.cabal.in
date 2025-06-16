@@ -327,7 +327,7 @@ library rocksdb
     import: fb-haskell, fb-cpp, deps
     visibility: private
     CXX_LIB_glean_cpp_rocksdb
-    pkgconfig-depends: rocksdb
+    pkgconfig-depends: rocksdb, fmt
     build-depends:
         glean:rocksdb-stats,
         glean:rts,
@@ -1221,6 +1221,7 @@ library glass-lib
         Glean.Glass.Pretty.Flow
         Glean.Glass.Pretty.Fbthrift
         Glean.Glass.Pretty.Hack
+        Glean.Glass.Pretty.Haskell
         Glean.Glass.Pretty.Java
         Glean.Glass.Pretty.LSIF
         Glean.Glass.Pretty.Python
@@ -1289,7 +1290,8 @@ library glass-lib
         glean:stubs,
         glean:util,
         uri-encode,
-        split
+        split,
+        ghc
 
 executable glass-server
     import: fb-haskell, fb-cpp, deps, exe
