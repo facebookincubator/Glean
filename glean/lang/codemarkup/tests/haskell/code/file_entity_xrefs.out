@@ -967,6 +967,36 @@
       "file": { "key": "glean/lang/codemarkup/tests/haskell/code/B.hs" },
       "xref": {
         "target": {
+          "name": "A",
+          "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
+          "location": {
+            "range": {
+              "file": {
+                "key": "glean/lang/codemarkup/tests/haskell/code/A.hs"
+              },
+              "lineBegin": 1,
+              "columnBegin": 1,
+              "lineEnd": 1,
+              "columnEnd": 1
+            }
+          }
+        },
+        "source": { "span": { "start": 254, "length": 1 } }
+      },
+      "entity": {
+        "hs": {
+          "mod": {
+            "key": { "name": { "key": "A" }, "unit": { "key": "main" } }
+          }
+        }
+      }
+    }
+  },
+  {
+    "key": {
+      "file": { "key": "glean/lang/codemarkup/tests/haskell/code/B.hs" },
+      "xref": {
+        "target": {
           "name": "R",
           "file": { "key": "glean/lang/codemarkup/tests/haskell/code/A.hs" },
           "location": { "span": { "start": 407, "length": 38 } }
