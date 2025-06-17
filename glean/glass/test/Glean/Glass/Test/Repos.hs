@@ -24,39 +24,45 @@ main = withUnitTest $ testRunner $ TestList unitTests
 unitTests :: [Test]
 unitTests = [
   TestLabel "no-branch-no-language-setup" $
-    TestCase $
+    TestCase $ do
+      result <- callRepoMapping "repo1" Nothing Nothing
       assertEqual "No filters should be applied"
-        ["db1", "db2", "db3"]
-        $ callRepoMapping "repo1" Nothing Nothing
+        ["db1", "db2", "db3"] result
   ,
   TestLabel "branch-and-language-setup" $
-    TestCase $
+    TestCase $ do
+      result <- callRepoMapping "repo1"
+        (Just Language_Rust)
+        (Just (\branch -> return (branch == "branch2")))
       assertEqual "The matching branch and language db should be returned"
-        ["db2"]
-        $ callRepoMapping "repo1" (Just Language_Rust) (Just "branch2")
+        ["db2"] result
   ,
   TestLabel "unknown-branch-setup" $
-    TestCase $
+    TestCase $ do
+      result <- callRepoMapping "repo1"
+        (Just Language_Cpp)
+        (Just (\branch -> return (branch == "unknownBranch")))
       assertEqual "The db with no specified branch should be returned"
-        ["db3"]
-        $ callRepoMapping "repo1" (Just Language_Cpp) (Just "unknownBranch")
+        ["db3"] result
   ,
   TestLabel "unknown-language" $
-    TestCase $
+    TestCase $ do
+      result <- callRepoMapping "repo1"
+        (Just Language_Swift)
+        (Just (\branch -> return (branch == "branch1")))
       assertEqual "No db should be returned if language doesn't match"
-        []
-        $ callRepoMapping "repo1" (Just Language_Swift) (Just "branch1")
+        [] result
   ]
 
 callRepoMapping
   :: Text
   -> Maybe Language
-  -> Maybe Text
-  -> [GleanDBName]
-callRepoMapping repoName maybeLanguage maybeBranch =
+  -> Maybe (Text -> IO Bool)
+  -> IO [GleanDBName]
+callRepoMapping repoName maybeLanguage maybeBranchesFilter =
   fromSCSRepo repoMapping
     (RepoName repoName)
-    maybeBranch
+    maybeBranchesFilter
     maybeLanguage
 
 repoMapping :: RepoMapping

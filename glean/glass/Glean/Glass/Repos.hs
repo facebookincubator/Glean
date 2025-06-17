@@ -196,21 +196,21 @@ listGleanIndices RepoMapping{..} testsOnly =
 fromSCSRepo
   :: RepoMapping
   -> RepoName
-  -> Maybe Text
+  -> Maybe (Text -> IO Bool)
   -> Maybe Language
-  -> [GleanDBName]
-fromSCSRepo RepoMapping{..} repo mBranchName mLanguage
-  | Just rs <- Map.lookup repo gleanIndices
-  = nub $ map dbName
-    $ filterByLanguage mLanguage
-    $ filterByBranch mBranchName rs
-  | otherwise = []
+  -> IO [GleanDBName]
+fromSCSRepo RepoMapping{..} repo branchFilter mLanguage
+  | Just rs <- Map.lookup repo gleanIndices = do
+    let filteredByLang = filterByLanguage mLanguage rs
+    filteredByBranch <- filterByBranch branchFilter filteredByLang
+    return $ nub $ map dbName filteredByBranch
+  | otherwise = return []
   where
     filterByLanguage Nothing = id
     filterByLanguage (Just lang) = filter ((== lang) . language)
 
-    filterByBranch Nothing = id
-    filterByBranch (Just branch) = filter (maybe True (== branch) . branchName)
+    filterByBranch Nothing = pure
+    filterByBranch (Just f) = filterM (maybe (pure True) f . branchName)
 
 -- | Used to minimize the choice of Glean db when looking for a file
 -- This could be in DB properties if it becomes important

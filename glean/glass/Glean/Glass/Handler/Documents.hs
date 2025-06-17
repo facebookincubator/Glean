@@ -600,7 +600,7 @@ resolveXlangXrefs
               Just (Mirror _mirror _prefix origin) -> origin
               Nothing -> scsrepo
       gleanDBs <- getGleanRepos tracer sourceControl repoMapping dbInfo
-        targetRepo (Just lang) ChooseLatest Nothing
+        targetRepo (Just lang) Nothing ChooseLatest Nothing
       let gleanBe = GleanBackend {gleanDBs, tracer, gleanBackend}
       xlangRefs <- backendRunHaxl gleanBe env $ do
         xrefsXlang <- withRepo (snd (NonEmpty.head gleanDBs)) $ do

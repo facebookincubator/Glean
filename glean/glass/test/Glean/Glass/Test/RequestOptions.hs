@@ -319,6 +319,8 @@ instance SourceControl MockSourceControl where
     Glass.Revision x ->
       return (Just (ContentHash (Text.encodeUtf8 x))) -- nothing else will match
 
+  isDescendantBranch _ _ _ _ = return False
+
 -- Used to check scenarios where we don't expect to call
 -- getGeneration, such as when exact_revision = True
 data FailSourceControl = FailSourceControl
@@ -326,6 +328,7 @@ data FailSourceControl = FailSourceControl
 instance SourceControl FailSourceControl where
   getGeneration _ _ _ = throwIO $ ErrorCall "FailSourceControl.getGeneration"
   getFileContentHash _ _repo _path _rev0 = return Nothing
+  isDescendantBranch _ _ _ _ = return False
 
 failSourceControl :: Glass.Env -> Glass.Env
 failSourceControl env =
