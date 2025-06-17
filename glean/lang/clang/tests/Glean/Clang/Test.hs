@@ -56,16 +56,25 @@ driver :: Driver Clang
 driver = driverWith False
 
 commandsJsonFor :: FilePath -> [FilePath] -> String
-commandsJsonFor tmpDir srcFiles = ("["++) . (++"]") . unlines $ intersperse ","
-  [ unlines
-    [ "{"
-    , "  \"directory\": \"" ++ tmpDir ++ "\","
-    , "  \"command\": \"/usr/bin/clang-11 " ++ argsFor srcFile ++ " -o " ++ objFileFor srcFile ++ " -c " ++ srcFile ++ "\","
-    , "  \"file\": \"" ++ srcFile ++ "\""
-    , "}"
-    ]
-  | srcFile <- srcFiles
-  ]
+commandsJsonFor tmpDir srcFiles =
+  ("[" ++) $ (++ "]")
+    ( unlines $ intersperse ","
+      [ unlines
+        [ "{"
+        , "  \"directory\": \"" ++ tmpDir ++ "\","
+        , "  \"command\": \"/usr/bin/clang-11 "
+            ++ argsFor srcFile
+            ++ " -o "
+            ++ objFileFor srcFile
+            ++ " -c "
+            ++ srcFile
+            ++ "\","
+        , "  \"file\": \"" ++ srcFile ++ "\""
+        , "}"
+        ]
+      | srcFile <- srcFiles
+      ]
+    )
 
   where objFileFor srcFile = tmpDir </> (takeFileName srcFile <.> "o")
         argsFor srcFile

@@ -20,6 +20,7 @@ import Data.Int
 import Glean.Glass.Types
 import Glean.Util.Some
 import Glean.Haxl.Repos
+import Data.Text (Text)
 
 -- | Source control generation, used for ordering revisions
 newtype ScmGeneration = ScmGeneration Int64
@@ -39,12 +40,24 @@ class SourceControl scm where
   getFileContentHash
     :: scm -> RepoName -> Path -> Revision -> RepoHaxl u w (Maybe ContentHash)
 
+  -- | Check if the given branch is reachable (descendant)
+  -- from a given revision. In case of a failure,
+  -- returns False and logs an error.
+  isDescendantBranch
+    :: scm
+    -> RepoName
+    -> Revision
+    -> Text
+    -> IO Bool
+
 data NilSourceControl = NilSourceControl
 
 instance SourceControl NilSourceControl where
   getGeneration _ _ _ = return Nothing
   getFileContentHash _ _ _ _ = return Nothing
+  isDescendantBranch _ _ _ _ = return False
 
 instance SourceControl (Some SourceControl) where
   getGeneration (Some scm) = getGeneration scm
   getFileContentHash (Some scm) = getFileContentHash scm
+  isDescendantBranch (Some scm) = isDescendantBranch scm

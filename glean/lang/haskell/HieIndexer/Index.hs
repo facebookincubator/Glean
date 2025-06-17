@@ -83,6 +83,9 @@ import Glean.Util.Range
 - index exports
   - can we tag Names correctly with exportedness?
 
+- index exports
+  - can we tag Names correctly with exportedness?
+
 - exclude generated names in a cleaner way
 
 - Glass / codemarkup

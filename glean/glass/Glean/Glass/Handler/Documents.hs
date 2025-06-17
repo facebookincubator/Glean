@@ -189,7 +189,7 @@ translateMirroredRepoListXResult
   -> DocumentSymbolListXResult
   -> DocumentSymbolListXResult
 translateMirroredRepoListXResult
-  (DocumentSymbolsRequest repository path _ _ _ _) res =
+  (DocumentSymbolsRequest repository path _ _ _) res =
   case repoPathToMirror repository path of
     Just (Mirror mirror prefix origin) ->
       Utils.translateDocumentSymbolListXResult origin mirror prefix Nothing res
@@ -600,7 +600,7 @@ resolveXlangXrefs
               Just (Mirror _mirror _prefix origin) -> origin
               Nothing -> scsrepo
       gleanDBs <- getGleanRepos tracer sourceControl repoMapping dbInfo
-        targetRepo (Just lang) ChooseLatest Nothing
+        targetRepo (Just lang) Nothing ChooseLatest Nothing
       let gleanBe = GleanBackend {gleanDBs, tracer, gleanBackend}
       xlangRefs <- backendRunHaxl gleanBe env $ do
         xrefsXlang <- withRepo (snd (NonEmpty.head gleanDBs)) $ do
@@ -975,7 +975,7 @@ getSymbolAttributes env dbInfo repo opts repofile mlimit
     be@GleanBackend{..} = do
   mAttrDBs <-
     getLatestAttrDBs tracer (sourceControl env) (Glass.repoMapping env)
-      dbInfo repo opts
+      dbInfo repo
   backendRunHaxl be env $ do
     attrsTuples <- forM mAttrDBs $
       \(attrDB, GleanDBAttrName _ attrKey{- existential key -}) ->

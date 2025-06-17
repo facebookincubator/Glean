@@ -88,6 +88,7 @@ data DbSchema = DbSchema
     -- and server schemas. Indexed by client schema id.
 
   , schemaInventory :: Inventory
+    -- ^ Information about the predicates in an open DB
   , schemaMaxPid :: Pid
 
   -- These two fields relate to the latest available schema. In a

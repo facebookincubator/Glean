@@ -91,13 +91,16 @@ pickHash name = withBackend $ \be -> do
 load :: Glean.Repo -> [FilePath] -> Eval ()
 load repo files = withBackend $ \be ->  liftIO $ do
   let onExisting  = throwIO $ ErrorCall "database already exists"
-  void $ Glean.fillDatabase be repo Nothing onExisting $
-    forM_ files $ \file -> do
+  -- load all files first
+  parsedFiles <- forM files $ \file -> do
       r <- Foreign.CPP.Dynamic.parseJSON =<< B.readFile file
       val <- either (throwIO  . ErrorCall . Text.unpack) return r
-      (batches, schema_id) <- case Aeson.parse parseJsonFactBatches val of
+      case Aeson.parse parseJsonFactBatches val of
         Error str -> throwIO $ ErrorCall str
         Aeson.Success x -> return x
+  -- then, send them to the server
+  Glean.fillDatabase be repo Nothing onExisting $
+    forM_ parsedFiles $ \(batches, schema_id) -> do
       let opts = schemaIdToOpts schema_id
       Glean.sendJsonBatch be repo batches opts
 

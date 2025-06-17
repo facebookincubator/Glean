@@ -537,7 +537,7 @@ specialPredicateQuery suffix (Angle pat) = Angle $ do
   case p of
     App DSL (Variable DSL p) args ->
       return $ App DSL (Variable DSL (p <> "#" <> suffix)) args
-    _ -> error $ ": not a predicate"
+    _ -> error ": not a predicate"
 
 -- -----------------------------------------------------------------------------
 -- Type checking for records and sum types

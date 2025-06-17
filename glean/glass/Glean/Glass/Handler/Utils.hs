@@ -176,7 +176,7 @@ withRepoLanguage
 withRepoLanguage method env@Glass.Env{..} req repo mlanguage opts fn =
   fmap fst $ withRequest method env req opts $ \dbInfo -> do
     dbs <- getGleanRepos tracer sourceControl repoMapping dbInfo repo
-      mlanguage (dbChooser repo opts) gleanDB
+      mlanguage (requestOptions_revision opts) (dbChooser repo opts) gleanDB
     withLogDB dbs $
       fn dbs dbInfo mlanguage
 
@@ -195,7 +195,7 @@ withRepoFile
      -> IO (b, Maybe ErrorLogger))
   -> IO b
 withRepoFile method env opts req repo file fn = do
-  withRepoLanguage method env req repo (filetype file) opts fn
+  withRepoLanguage method env req repo (fileLanguage file) opts fn
 
 -- | Run an action that provides a symbol id, log it
 withSymbol
@@ -215,7 +215,8 @@ withSymbol method env@Glass.Env{..} opts sym fn =
       Left err -> throwM $ ServerException err
       Right req@(repo, lang, _toks) -> do
         dbs <- getGleanRepos tracer sourceControl repoMapping dbInfo repo
-          (Just lang) (dbChooser repo opts) gleanDB
+          (Just lang) (requestOptions_revision opts)
+          (dbChooser repo opts) gleanDB
         withLogDB dbs $ fn dbs dbInfo req
 
 withStrictErrorHandling
@@ -269,7 +270,7 @@ withLogDB dbs act = do
   return ((b,dbs), merr)
 
 -- | Given an SCS repo name, and a candidate path, find latest Glean dbs or
--- throw. Returns the chosen db name and Glean repo handle.
+-- throw. Returns the chosen db name and Glean repo handles.
 -- If a Glean.Repo is given, use it instead.
 getGleanRepos
   :: GlassTracer
@@ -278,20 +279,26 @@ getGleanRepos
   -> GleanDBInfo
   -> RepoName
   -> Maybe Language
+  -> Maybe Revision
   -> ChooseGleanDBs
   -> Maybe Glean.Repo
   -> IO ChosenDBs
-getGleanRepos tracer scm repoMapping dbInfo scsrepo mlanguage chooser mGleanDB =
-  case mGleanDB of
-    Nothing ->
-      case fromSCSRepo repoMapping scsrepo mlanguage of
-        [] ->  throwIO $ ServerException $ "No repository found for: " <>
-          unRepoName scsrepo <>
-            maybe "" (\x -> " (" <> toShortCode x <> ")") mlanguage
-        (x:xs) ->
-          getSpecificGleanDBs tracer scm dbInfo chooser (x :| xs)
-    Just gleanDB@Glean.Repo{repo_name} ->
-      return ((GleanDBName repo_name, gleanDB) :| [])
+getGleanRepos tracer scm repoMapping dbInfo
+  scsrepo mlanguage revision chooser mGleanDB =
+    case mGleanDB of
+      Nothing -> do
+        gleanDBs <- fromSCSRepo repoMapping scsrepo branchesFilter mlanguage
+        case gleanDBs of
+          [] ->  throwIO $ ServerException $ "No repository found for: " <>
+            unRepoName scsrepo <>
+              maybe "" (\x -> " (" <> toShortCode x <> ")") mlanguage
+          (x:xs) ->
+            getSpecificGleanDBs tracer scm dbInfo chooser (x :| xs)
+      Just gleanDB@Glean.Repo{repo_name} ->
+        return ((GleanDBName repo_name, gleanDB) :| [])
+  where
+    branchesFilter :: Maybe (Text -> IO Bool)
+    branchesFilter = fmap (isDescendantBranch scm scsrepo) revision
 
 -- | If you already know the set of dbs you need, just get them.
 getSpecificGleanDBs
@@ -326,19 +333,18 @@ withGleanDBs method env@Glass.Env{..} opts req repo dbNames fn = do
   fmap fst $ withLog method env opts req $
     (,dbs) <$> fn dbs dbInfo
 
--- | Get glean db for an attribute type
+-- | Get glean db for an attribute type (always choose the latest)
 getLatestAttrDBs
   :: GlassTracer
   -> Some SourceControl
   -> RepoMapping
   -> GleanDBInfo
   -> RepoName
-  -> RequestOptions
   -> IO [(Glean.Repo, GleanDBAttrName)]
-getLatestAttrDBs tracer scm repoMapping dbInfo repo opts =
+getLatestAttrDBs tracer scm repoMapping dbInfo repo =
   fmap catMaybes $ forM (attrDBsForRepo repoMapping repo) $
     \attrDBName -> do
-      dbs <- chooseGleanDBs tracer scm dbInfo (dbChooser repo opts)
+      dbs <- chooseGleanDBs tracer scm dbInfo ChooseLatest
         [gleanAttrDBName attrDBName]
       return $ case dbs of
         [] -> Nothing

@@ -56,7 +56,7 @@ class OnDemand final {
   }
 
   const T& value() const {
-    return const_cast<OnDemand*>(this)->get();
+    return const_cast<OnDemand*>(this)->value();
   }
 
  private:

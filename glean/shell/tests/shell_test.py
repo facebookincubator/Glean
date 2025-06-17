@@ -235,6 +235,22 @@ class GleanShellLoad(GleanShellTest):
         output = self.shellCommand(":db", prompt="expr>")
         self.assertIn("expr/1", output)
 
+        # :load <db>/<hash> <file> where any file fails to load, and the DB does
+        # not exist should, not create the DB
+        output = self.shellCommand(
+            ":load test/2 glean/shell/tests/expr.glean foo.json", prompt="expr>"
+        )
+        self.assertIn("Exception: foo.json", output)
+        output = self.shellCommand(":db test/2", prompt="expr>")
+        self.assertIn("Exception: UnknownDatabase", output)
+
+        # :load <db>/<hash> <file> where all files can be parsed but the DB
+        # already exists, should fail the operation
+        output = self.shellCommand(
+            ":load test/0 glean/shell/tests/expr.glean", prompt="expr>"
+        )
+        self.assertIn("Exception: database already exists", output)
+
 
 class GleanShellCreate(GleanShellTest):
     def test(self):

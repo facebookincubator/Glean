@@ -251,6 +251,8 @@ loadDbSchema backend repo = do
   fromStoredSchema Nothing (StoredSchema schema pids dbSchemaIds)
     readWriteContent def
 
+-- | Serialize the inventory for the schema used by this repo.
+-- The inventory is some information about the predicates in the schema
 serializeInventory
   :: Backend backend
   => backend

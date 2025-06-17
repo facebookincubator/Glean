@@ -21,7 +21,7 @@ module Glean.Glass.Repos
 
   -- * Mappings
   , fromSCSRepo
-  , filetype
+  , fileLanguage
   , attrDBsForRepo
 
   -- * Operation on a pool of latest repos
@@ -153,17 +153,17 @@ selectGleanDBs repoMapping mRepoName langs0 =
     candidates = listGleanIndices repoMapping isTestOnly
     langs = Set.map normalizeLanguages langs0
 
-    flatten (repo,(dbname,_)) = (repo, Set.singleton dbname)
+    flatten (repo, GleanDBSelector{..}) = (repo, Set.singleton dbName)
 
     -- if client requests tests only, search expansion is limited to the test db
     isTestOnly = mRepoName == Just (RepoName "test")
 
-    matches :: (RepoName, (GleanDBName, Language)) -> Bool
-    matches (r, (_, l)) = case (mRepoName, Set.null langs) of
+    matches :: (RepoName, GleanDBSelector) -> Bool
+    matches (repo, GleanDBSelector{..}) = case (mRepoName, Set.null langs) of
       (Nothing, True)  -> True
-      (Just rr, False) -> r == rr && l `Set.member` langs
-      (Nothing, False) -> l `Set.member` langs
-      (Just rr, True)  -> r == rr
+      (Just rr, False) -> repo == rr && language `Set.member` langs
+      (Nothing, False) -> language `Set.member` langs
+      (Just rr, True)  -> repo == rr
 
     err = case (mRepoName, Set.toList langs) of
       (Nothing, []) -> "Empty index: no repos or languages found"
@@ -181,7 +181,7 @@ normalizeLanguages l = l
 
 -- | Select universe of glean repo,(db/language) pairs.
 -- Either just the test dbs, or all the non-test dbs.
-listGleanIndices :: RepoMapping -> Bool -> [(RepoName, (GleanDBName, Language))]
+listGleanIndices :: RepoMapping -> Bool -> [(RepoName, GleanDBSelector)]
 listGleanIndices RepoMapping{..} testsOnly =
   let testRepos = [RepoName "test", RepoName "test-xlang"]
       flatten (repo,langs) = map (repo,) langs
@@ -189,17 +189,28 @@ listGleanIndices RepoMapping{..} testsOnly =
       isTest (repo, _) = elem repo testRepos in
     filter (if testsOnly then isTest else not . isTest) flattened
 
--- Do something simple to map SCS repo to Glean repos
+-- | Do something simple to map SCS repo to Glean repos
 -- Names from configerator/scm/myles/service as a start
 -- This should be in a config or SV to make onboarding simple, or from Glean
 -- properties?
-fromSCSRepo :: RepoMapping -> RepoName -> Maybe Language -> [GleanDBName]
-fromSCSRepo RepoMapping{..} r hint
-  | Just rs <- Map.lookup r gleanIndices
-  = nub $ map fst $ case hint of
-      Nothing -> rs
-      Just h -> filter ((== h) . snd) rs
-  | otherwise = []
+fromSCSRepo
+  :: RepoMapping
+  -> RepoName
+  -> Maybe (Text -> IO Bool)
+  -> Maybe Language
+  -> IO [GleanDBName]
+fromSCSRepo RepoMapping{..} repo branchFilter mLanguage
+  | Just rs <- Map.lookup repo gleanIndices = do
+    let filteredByLang = filterByLanguage mLanguage rs
+    filteredByBranch <- filterByBranch branchFilter filteredByLang
+    return $ nub $ map dbName filteredByBranch
+  | otherwise = return []
+  where
+    filterByLanguage Nothing = id
+    filterByLanguage (Just lang) = filter ((== lang) . language)
+
+    filterByBranch Nothing = pure
+    filterByBranch (Just f) = filterM (maybe (pure True) f . branchName)
 
 -- | Used to minimize the choice of Glean db when looking for a file
 -- This could be in DB properties if it becomes important
@@ -207,8 +218,8 @@ fromSCSRepo RepoMapping{..} r hint
 -- When onboarding a language, you should register the filetype, for
 -- any src.Files we have xrefs for
 --
-filetype :: Path -> Maybe Language
-filetype (Path file)
+fileLanguage :: Path -> Maybe Language
+fileLanguage (Path file)
   | is ".c"  = Just Language_Cpp
   | is ".cc"  = Just Language_Cpp
   | is ".cpp"  = Just Language_Cpp

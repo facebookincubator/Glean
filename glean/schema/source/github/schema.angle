@@ -3,6 +3,7 @@
 schema all.1 :
   builtin,
   code,
+  code.anglelang,
   code.buck,
   code.csharp,
   code.cxx,
@@ -16,6 +17,7 @@ schema all.1 :
   code.pp,
   code.python,
   codemarkup,
+  codemarkup.anglelang,
   codemarkup.buck,
   codemarkup.csharp,
   codemarkup.cxx,
@@ -50,6 +52,7 @@ schema all.1 :
   pp1,
   python,
   scip,
+  search.anglelang,
   search.buck,
   search.code,
   search.cxx,
