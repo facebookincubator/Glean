@@ -217,12 +217,8 @@ predicate DeclarationUses:
   }
   {Decl, File, Span} where
   DeclarationToName Decl -> Name;
-  if (XRefsViaNameByTarget { Name, _ , _ }) then (
-    XRefsViaNameByTarget {Name, File, Spans};
-    Span = Spans[..];
-  ) else (
-    XRefsViaName { Name, File, Span };
-  )
+  XRefsViaNameByTarget {Name, File, Spans};
+  Span = Spans[..];
 
 
 predicate DirectXRefsByFile:
