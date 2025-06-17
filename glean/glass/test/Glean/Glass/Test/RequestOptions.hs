@@ -49,6 +49,12 @@ import qualified Glean.Glass.Types as Glass
 cxxRepo :: Text
 cxxRepo = "fbsource"
 
+aospOculusRepo :: Text
+aospOculusRepo = "aosp.oculus.14.cxx"
+
+aospNucleusRepo :: Text
+aospNucleusRepo = "aosp.nucleus.14.cxx"
+
 examplePath, newPath :: Glass.Path
 examplePath = Glass.Path "main.cpp"
 newPath = Glass.Path "NewFile.cpp"
@@ -76,6 +82,7 @@ main = do
            [testUseRevisionJK withEnv | useJK == Right True]
         , testNearestRevision withEnv
         , testMatchingRevision withEnv
+        , testBranchSelection withEnv
         ]
   where
   baseDriver = DerivePass.driver []
@@ -95,6 +102,10 @@ main = do
 
     createTestDatabase testConfig { testRepo = Glean.Repo cxxRepo "1" }
     createTestDatabase testConfig { testRepo = Glean.Repo cxxRepo "2" }
+    createTestDatabase testConfig
+      { testRepo = Glean.Repo aospOculusRepo "oculus-root" }
+    createTestDatabase testConfig
+      { testRepo = Glean.Repo aospNucleusRepo "nucleus-root" }
 
 
 --------------------------------------------------------------------------------
@@ -297,6 +308,41 @@ testMatchingRevision withEnv = TestLabel "matching" $ TestList
   ]
 
 --------------------------------------------------------------------------------
+-- Branch selection
+
+testBranchSelection :: WithEnv -> Test
+testBranchSelection withEnv = TestLabel "branch" $ TestList
+  [ TestLabel "matches-revision" $ TestCase $ withEnv $ \env -> do
+    result <- symbolsList env def
+      { repo = Glass.RepoName "aosp"
+      , revision2 = Glass.Revision "nucleus-latest"
+      }
+    assertEqual
+      "Expected a revision from nucleus db when nucleus-latest is requested"
+      (SimpleSymbolsListXResult (Glass.Revision "nucleus-root") False)
+      result
+
+    result <- symbolsList env def
+      { repo = Glass.RepoName "aosp"
+      , revision2 = Glass.Revision "oculus-latest"
+      }
+    assertEqual
+      "Expected a revision from oculus db when oculus-latest is requested"
+      (SimpleSymbolsListXResult (Glass.Revision "oculus-root") False)
+      result
+
+  , TestLabel "default" $ TestCase $ withEnv $ \env -> do
+    result <- symbolsList env def
+      { repo = Glass.RepoName "aosp"
+      , revision2 = Glass.Revision "unknown-revision"
+      }
+    assertEqual
+      "Expected a revision from oculus db when unknown revision is requested"
+      (SimpleSymbolsListXResult (Glass.Revision "oculus-root") False)
+      result
+  ]
+
+--------------------------------------------------------------------------------
 -- Mocks
 
 data MockSourceControl = MockSourceControl
@@ -319,7 +365,12 @@ instance SourceControl MockSourceControl where
     Glass.Revision x ->
       return (Just (ContentHash (Text.encodeUtf8 x))) -- nothing else will match
 
-  isDescendantBranch _ _ _ _ = return False
+  isDescendantBranch _ _ revision branch = case (branch, revision) of
+    ("nucleus-14.0", Glass.Revision "nucleus-latest")
+      -> return True
+    ("oculus-14.0", Glass.Revision "oculus-latest")
+      -> return True
+    _ -> return False
 
 -- Used to check scenarios where we don't expect to call
 -- getGeneration, such as when exact_revision = True
