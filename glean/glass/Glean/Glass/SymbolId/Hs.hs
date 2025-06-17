@@ -72,7 +72,10 @@ instance Symbol Hs.NameSort where
 
 instance ToQName Hs.Entity where
   toQName (Hs.Entity_name n) = Glean.keyOf n >>= toQName
-  toQName (Hs.Entity_mod _) = error "TODO: ToQName Hs.Entity_mod"
+  toQName (Hs.Entity_mod mod) = do
+    Hs.Module_key m _ <- Glean.keyOf mod
+    modname <- Glean.keyOf m
+    return $ Right (Name modname, Name "")
   toQName _ = error "ToQName: unknown Hs.Entity"
 
 instance ToQName Hs.Name_key where
