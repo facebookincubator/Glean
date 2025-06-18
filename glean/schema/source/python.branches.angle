@@ -40,13 +40,4 @@ predicate DirectXRefByFile:
   Target = python.DeclarationLocation { declaration = Decl, file = SourceFile };
   FileToRoot { file = SourceFile, root = Root };
   FileToRoot { file = File, root = Root };
-
-
-predicate DirectXRefsByFile:
-  {
-    file: src.File,
-    xrefs: [DirectXRef],
-  }
-  stored { File, XRefs } where
-  XRefs[..] = DirectXRef { file = File };
 }
