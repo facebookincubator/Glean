@@ -25,7 +25,12 @@ module Glean.Query.Transform
   , defaultValue
   ) where
 
+import Control.Monad
+#if MIN_VERSION_mtl(2,3,1)
+import Control.Monad.Cont hiding (label)
+#else
 import Control.Monad.Cont
+#endif
 import Data.Bifoldable
 import Data.Bifunctor (bimap)
 import qualified Data.ByteString as ByteString

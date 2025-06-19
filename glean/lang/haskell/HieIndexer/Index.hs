@@ -6,6 +6,7 @@
   LICENSE file in the root directory of this source tree.
 -}
 
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE TypeApplications #-}
 module HieIndexer.Index (indexHieFile) where
 
@@ -25,6 +26,9 @@ import qualified Data.List.NonEmpty as NonEmpty
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
+#if MIN_VERSION_ghc(9,6,0)
+import Data.Monoid (First(..), getFirst)
+#endif
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -37,16 +41,25 @@ import Control.Monad.Extra (findM, whenJust, mapMaybeM)
 
 import qualified GHC
 import qualified GHC.Types.Avail as GHC (availNames)
-import qualified GHC.Types.Basic as GHC (TupleSort(..), isPromoted)
+import qualified GHC.Types.Basic as GHC (TupleSort(..))
+#if !MIN_VERSION_ghc(9,6,0)
+import qualified GHC.Types.Basic as GHC (isPromoted)
+#endif
 import qualified GHC.Iface.Type as GHC (
   IfaceTyLit(..), IfaceTyConSort(..), IfaceTyCon(..), IfaceTyConInfo(..))
 import GHC.Iface.Ext.Utils (generateReferencesMap, emptyNodeInfo, flattenAst)
 import GHC.Iface.Ext.Types
 import qualified GHC.Types.Name.Occurrence as GHC
 import qualified GHC.Types.Name as GHC (isSystemName, nameOccName)
+#if MIN_VERSION_ghc(9,6,0)
+import qualified GHC.Types.Var as GHC (ForAllTyFlag(..), Specificity(..))
+#else
 import qualified GHC.Types.Var as GHC (ArgFlag(..), Specificity(..))
+#endif
 import GHC.Unit.Types (unitFS)
+#if !MIN_VERSION_ghc(9,6,0)
 import qualified GHC.Unit.Module.Name as GHC (moduleNameFS)
+#endif
 import qualified GHC.Data.FastString as GHC (FastString, bytesFS, mkFastString)
 
 import Util.Log

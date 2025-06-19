@@ -25,20 +25,33 @@ import qualified GHC
 import qualified GHC.Utils.Outputable as GHC (
   renderWithContext, defaultSDocContext, defaultUserStyle, SDocContext(..))
 import qualified GHC.Iface.Type as GHC (
-  pprIfaceType, IfaceType(..), AnonArgFlag(..), IfaceType(..), IfaceTyLit(..),
+  pprIfaceType, IfaceType(..), IfaceType(..), IfaceTyLit(..),
   IfaceTyCon(..), IfaceTyConInfo(..), IfExtName, IfaceTyConSort(..),
   IfaceAppArgs(..), many_ty, IfaceBndr(..))
-import qualified GHC.Types.Basic as GHC (
-  PromotionFlag(..), TupleSort(..))
+#if !MIN_VERSION_ghc(9,6,0)
+import qualified GHC.Iface.Type as GHC (AnonArgFlag(..))
+#endif
+import qualified GHC.Types.Basic as GHC (TupleSort(..))
+#if !MIN_VERSION_ghc(9,6,0)
+import qualified GHC.Types.Basic as GHC (PromotionFlag(..))
+#endif
 import qualified GHC.Types.Unique as GHC (getUnique)
 import qualified GHC.Types.Name as GHC (mkExternalName)
 import qualified GHC.Types.Name.Cache as GHC
 import qualified GHC.Types.Name.Occurrence as GHC (
   mkOccNameFS, varName, dataName, tvName, tcName)
+#if MIN_VERSION_ghc(9,6,0)
+import qualified GHC.Types.Var as GHC (
+  Specificity(..), ForAllTyFlag(..), FunTyFlag(..), VarBndr(..),
+  visArgTypeLike, invisArgTypeLike)
+#else
 import qualified GHC.Types.Var as GHC (
   Specificity(..), ArgFlag(..), VarBndr(..))
+#endif
 import qualified GHC.Unit.Module.Env as GHC (emptyModuleEnv)
+#if !MIN_VERSION_ghc(9,6,0)
 import qualified GHC.Unit.Module.Name as GHC (mkModuleNameFS)
+#endif
 import qualified GHC.Unit.Types as GHC (fsToUnit)
 import qualified GHC.Data.FastString as GHC (FastString, mkFastStringByteString)
 import qualified GHC.Builtin.Utils as GHC (knownKeyNames)
@@ -101,12 +114,12 @@ toIfaceType ty = Glean.keyOf ty >>= \case
     GHC.IfaceForAllTy (GHC.Bndr (GHC.IfaceTvBndr (textToFS name, k)) af)
       <$> toIfaceType inner
   Hs.Type_key_fun (Hs.Type_fun_ mult arg res) -> do
-    GHC.IfaceFunTy GHC.VisArg
+    GHC.IfaceFunTy visArg
       <$> toIfaceType mult
       <*> toIfaceType arg
       <*> toIfaceType res
   Hs.Type_key_qual (Hs.Type_qual_ pred res) ->
-    GHC.IfaceFunTy GHC.InvisArg
+    GHC.IfaceFunTy invisArg
       <$> pure GHC.many_ty
       <*> toIfaceType pred
       <*> toIfaceType res
@@ -114,6 +127,23 @@ toIfaceType ty = Glean.keyOf ty >>= \case
   Hs.Type_key_cast ty -> toIfaceType ty
   Hs.Type_key_coercion{} -> return $ GHC.IfaceTyVar "<coercion type>"
   _ -> return $ GHC.IfaceTyVar "<unknown type>"
+  where
+
+#if MIN_VERSION_ghc(9,6,0)
+visArg :: GHC.FunTyFlag
+visArg = GHC.visArgTypeLike
+#else
+visArg :: GHC.AnonArgFlag
+visArg = GHC.VisArg
+#endif
+
+#if MIN_VERSION_ghc(9,6,0)
+invisArg :: GHC.FunTyFlag
+invisArg = GHC.invisArgTypeLike
+#else
+invisArg :: GHC.AnonArgFlag
+invisArg = GHC.InvisArg
+#endif
 
 toIfaceTyCon :: Hs.TyCon -> Glean.RepoHaxl u w GHC.IfaceTyCon
 toIfaceTyCon tycon = do
@@ -181,7 +211,7 @@ toIfaceTypeArgs (Hs.TypeArg vis ty : xs) =
     <*> pure (if vis then GHC.Required else GHC.Specified)
     <*> toIfaceTypeArgs xs
 
-toIfaceArgFlag :: Hs.ArgFlag -> GHC.ArgFlag
+toIfaceArgFlag :: Hs.ArgFlag -> ForAllTyFlag
 toIfaceArgFlag (Hs.ArgFlag_invisible spec) =
   GHC.Invisible $ case spec of
     Hs.Specificity_inferred -> GHC.InferredSpec
@@ -189,6 +219,12 @@ toIfaceArgFlag (Hs.ArgFlag_invisible spec) =
     Hs.Specificity__UNKNOWN{} -> GHC.SpecifiedSpec
 toIfaceArgFlag Hs.ArgFlag_requird{} = GHC.Required
 toIfaceArgFlag Hs.ArgFlag_EMPTY{} = GHC.Required
+
+#if MIN_VERSION_ghc(9,6,0)
+type ForAllTyFlag = GHC.ForAllTyFlag
+#else
+type ForAllTyFlag = GHC.ArgFlag
+#endif
 
 toIfaceLitType :: Hs.LitType -> Glean.RepoHaxl u w GHC.IfaceTyLit
 toIfaceLitType l = Glean.keyOf l >>= \case

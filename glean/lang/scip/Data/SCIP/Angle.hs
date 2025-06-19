@@ -23,6 +23,7 @@ module Data.SCIP.Angle (
     SCIP.LanguageId(..)
   ) where
 
+import Control.Monad
 import Lens.Micro ((^.))
 import Data.Bits ( Bits(testBit) )
 import Data.Maybe ( catMaybes, fromMaybe )

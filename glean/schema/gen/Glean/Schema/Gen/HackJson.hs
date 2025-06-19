@@ -7,12 +7,13 @@
 -}
 
 
+{-# LANGUAGE CPP #-}
 module Glean.Schema.Gen.HackJson
   ( genSchemaHackJson
   ) where
 
 import Control.Monad.Reader
-import Control.Monad.Writer.Strict hiding (Sum)
+import Control.Monad.Writer.Strict
 import qualified Data.Aeson as Aeson
 import qualified Data.Aeson.Encode.Pretty as Aeson
 import qualified Data.Char as Char

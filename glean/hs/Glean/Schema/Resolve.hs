@@ -19,6 +19,7 @@ module Glean.Schema.Resolve
   , resolveSchemaRefs
   ) where
 
+import Control.Monad
 import Control.Monad.Reader
 import Control.Monad.Except
 import Data.ByteString (ByteString)

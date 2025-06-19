@@ -10,7 +10,7 @@ module Glean.Angle.Parser
   , parseType
   ) where
 
-import Control.Monad.Except
+import Control.Monad
 import Data.ByteString (ByteString)
 import qualified Data.ByteString.Char8 as B
 import qualified Data.ByteString.Lazy.Char8 as LB
