@@ -52,7 +52,7 @@ common deps
         process ^>=1.6.3.0,
         stm ^>=2.5.0.0,
         temporary,
-        text ^>=1.2.3.0,
+        text >=1.2.3.0 && < 2.2,
         thrift-lib,
         unordered-containers ^>=0.2.9.0,
         vector >=0.12.0.1 && <0.14,
