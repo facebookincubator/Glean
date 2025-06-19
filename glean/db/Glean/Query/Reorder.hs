@@ -13,6 +13,7 @@ module Glean.Query.Reorder
   ) where
 
 import Control.Applicative ((<|>))
+import Control.Monad
 import Control.Monad.Except
 import Control.Monad.State.Strict
 import Data.Foldable (find, toList)

@@ -10,6 +10,7 @@ module Glean.Query.Flatten
   ( flatten
   ) where
 
+import Control.Monad
 import Control.Monad.Except
 import Control.Monad.State
 import Data.List hiding (intersect)

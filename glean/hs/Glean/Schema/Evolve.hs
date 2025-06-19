@@ -25,7 +25,7 @@ module Glean.Schema.Evolve
   ) where
 
 import Control.Applicative
-import Control.Monad.Except
+import Control.Monad
 #if !MIN_VERSION_base(4,16,0)
 import Data.Foldable
 #endif
