@@ -7,7 +7,7 @@
 -}
 
 -- Note: UnboxedTuples needed for deriving Prim
-{-# LANGUAGE GeneralizedNewtypeDeriving, TypeInType, UnboxedTuples #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving, UnboxedTuples #-}
   -- | This does not import Glean modules at all
 module Glean.Typed.Id
   ( -- * Id-like

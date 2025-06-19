@@ -9,10 +9,6 @@
 {-# LANGUAGE DeriveTraversable #-}
 {-# LANGUAGE UnboxedTuples #-}
 
--- required for deriving 'Prim' below (at least with GHC 8.4),
--- see https://gitlab.haskell.org/ghc/ghc/-/issues/15073
-{-# LANGUAGE TypeInType #-}
-
 module Glean.RTS.Types
   ( -- * fact types
     -- ** type

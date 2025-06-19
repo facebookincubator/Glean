@@ -177,7 +177,7 @@ data SourceQuery_ s st p t = SourceQuery
   , srcQueryStmts :: [SourceStatement_ s st p t]
   , srcQueryOrdered :: Ordered
   }
-  deriving (Eq, Show, Generic)
+  deriving (Eq, Show, Generic, Functor)
 
 data Ordered = Ordered | Unordered
   deriving (Eq, Show, Generic)
@@ -196,7 +196,7 @@ instance Bifoldable (SourceQuery_ s st ) where
 
 data SourceStatement_ s st p t =
   SourceStatement (SourcePat_ s st p t) (SourcePat_ s st p t)
-  deriving (Eq, Show, Generic)
+  deriving (Eq, Show, Generic, Functor)
 
 instance (Binary p, Binary t) => Binary (SourceStatement_ () () p t)
 
@@ -244,7 +244,7 @@ data SourcePat_ s st p t
   -- the Variable and App forms produced by the parser.
   | Clause s s p (SourcePat_ s st p t) SeekSection
   | Prim s PrimOp [SourcePat_ s st p t]
- deriving (Eq, Show, Generic)
+ deriving (Eq, Show, Generic, Functor)
 
 -- | Should a `seek` call be restricted to a section of the database?
 --
@@ -331,7 +331,7 @@ instance Bifoldable (SourcePat_ s st) where
     Prim _ _ pats -> foldMap (bifoldMap f g) pats
 
 data Field s st p t = Field FieldName (SourcePat_ s st p t)
-  deriving (Eq, Show, Generic)
+  deriving (Eq, Show, Generic, Functor)
 
 instance (Binary p, Binary t) => Binary (Field () () p t)
 
