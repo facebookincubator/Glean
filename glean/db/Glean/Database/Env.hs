@@ -56,9 +56,12 @@ withDatabases
   -> (Env -> IO a)
   -> IO a
 withDatabases evb cfg cfgapi act =
-  ThriftSource.withValue cfgapi (cfgSchemaSource cfg) $ \schema_source ->
   ThriftSource.withValue cfgapi (cfgServerConfig cfg) $ \server_config -> do
   server_cfg <- Observed.get server_config
+  schemaLoc <- schemaLocation cfg server_cfg
+  logInfo $ "Using schema from " <> showSchemaLocation schemaLoc
+  let (schema, updateSchema) = cfgSchemaHook cfg schemaLoc
+  ThriftSource.withValue cfgapi schema $ \schema_source -> do
   withDataStore (cfgDataStore cfg) server_cfg $ \catalog storage -> do
     envCatalog <- Catalog.open catalog
     cfgShardManager cfg envCatalog server_config $ \shardManager ->
@@ -70,6 +73,7 @@ withDatabases evb cfg cfgapi act =
           shardManager
           cfg
           schema_source
+          updateSchema
           server_config)
         closeEnv
         $ \env -> do
@@ -84,10 +88,11 @@ initEnv
   -> SomeShardManager
   -> Config
   -> Observed SchemaIndex
+  -> Bool
   -> Observed ServerConfig.Config
   -> IO Env
 initEnv evb envStorage envCatalog shardManager cfg
-  envSchemaSource envServerConfig = do
+  envSchemaSource updateSchema envServerConfig = do
     ServerConfig.Config{..} <- Observed.get envServerConfig
 
     envActive <- newTVarIO mempty
@@ -128,7 +133,7 @@ initEnv evb envStorage envCatalog shardManager cfg
       , envMockWrites = cfgMockWrites cfg
       , envListener = cfgListener cfg
       , envGetCurrentTime = getCurrentTime
-      , envUpdateSchema = cfgUpdateSchema cfg
+      , envUpdateSchema = updateSchema
       , envSchemaId = cfgSchemaId cfg
       , envShardManager = shardManager
       , envBackupBackends = cfgBackupBackends cfg

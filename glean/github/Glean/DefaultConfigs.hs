@@ -7,9 +7,9 @@
 -}
 
 module Glean.DefaultConfigs (
+    defaultSchemaLocation,
     defaultClientConfigSource,
     serverConfigPath,
-    legacySchemaConfigPath,
     schemaConfigPath,
   ) where
 
@@ -17,18 +17,20 @@ import Data.Text (Text)
 
 import Glean.Util.ThriftSource
 import Glean.ClientConfig.Types
+import Glean.ServerConfig.Types
 
+-- | Where do we find the schema by default?
+defaultSchemaLocation :: SchemaLocation
+defaultSchemaLocation = SchemaLocation_dir "$datadir/glean/schema/source"
+
+-- | Path under ~/.config/glean where the default client config lives
 defaultClientConfigSource :: ThriftSource ClientConfig
 defaultClientConfigSource = configDefault "client"
 
--- | Path in configerator where the server configs live
+-- | Path under ~/.config/glean where the server config lives
 serverConfigPath :: String
 serverConfigPath = "server"
 
--- | config path to the (old) schema definition
-legacySchemaConfigPath :: Text
-legacySchemaConfigPath = "schema"
-
--- | config path to the schema index
+-- | Path under ~/.config/glean where the schema lives if we use `--schema indexconfig`
 schemaConfigPath :: Text
 schemaConfigPath = "schema-index"

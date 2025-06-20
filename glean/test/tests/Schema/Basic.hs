@@ -352,8 +352,7 @@ changeSchemaTest = TestCase $ do
         let
           dbConfig = def
             { cfgDataStore = tmpDataStore
-            , cfgSchemaSource = ThriftSource.configWithDeserializer
-                fakeSchemaKey (processOneSchema Nothing)
+            , cfgSchemaLocation = Just (SchemaLocation_config fakeSchemaKey)
             , cfgServerConfig = ThriftSource.value def
                 { ServerConfig.config_db_rocksdb_cache_mb = 0 }
             }

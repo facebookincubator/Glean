@@ -13,6 +13,10 @@ module Glean.Database.Config (
   tmpDataStore,
   memoryDataStore,
   Config(..),
+  ServerConfig.SchemaLocation(..),
+  showSchemaLocation,
+  schemaLocation,
+  schemaLocationOption,
   DebugFlags(..),
   options,
   processSchema,
@@ -21,15 +25,13 @@ module Glean.Database.Config (
   SchemaIndex(..),
   schemaForSchemaId,
   ProcessedSchema(..),
-  legacySchemaSourceConfig,
   catSchemaFiles,
-  schemaSourceFiles,
+  schemaLocationToSource,
+  schemaLocationFiles,
   schemaSourceFilesFromDir,
   schemaSourceDir,
   schemaSourceFile,
   schemaSourceIndexFile,
-  schemaSourceParser,
-  schemaSourceOption,
   parseSchemaDir,
   parseSchemaIndex,
   -- testing
@@ -48,6 +50,7 @@ import qualified Data.HashMap.Strict as HashMap
 import Data.List
 import Data.Map (Map)
 import qualified Data.Map as Map
+import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Options.Applicative
@@ -89,6 +92,10 @@ import Glean.Util.Trace (Listener)
 import Glean.Util.ThriftSource (ThriftSource)
 import qualified Glean.Util.ThriftSource as ThriftSource
 
+#ifdef OSS
+import Paths_glean
+#endif
+
 data DataStore = DataStore
   { withDataStore
       :: forall a. ServerConfig.Config
@@ -125,14 +132,12 @@ memoryDataStore = DataStore
 
 data Config = Config
   { cfgDataStore :: DataStore
-  , cfgSchemaSource :: ThriftSource SchemaIndex
-  , cfgUpdateSchema :: Bool
-      -- ^ When True (the default), the schema for open DBs is updated
+  , cfgSchemaLocation :: Maybe ServerConfig.SchemaLocation
+  , cfgSchemaHook :: ServerConfig.SchemaLocation -> (ThriftSource SchemaIndex, Bool)
+      -- ^ Allows the client to provide the ThriftSource for the schema. This is
+      -- used by the shell to update the schema in response to a user command.
+      -- The Bool is True if the schema for open DBs should be updated
       -- whenever the global schema changes.
-  , cfgSchemaDir :: Maybe FilePath
-      -- ^ Records whether we're reading the schema from a directory
-      -- of source files or not, because some clients (the shell) want
-      -- to know this, and it's not avaialble from the ThriftSource.
   , cfgSchemaId :: Maybe SchemaId
       -- ^ If set, this is the version of the schema that is used to
       -- interpret a query.
@@ -190,9 +195,8 @@ instance Show Config where
 instance Default Config where
   def = Config
     { cfgDataStore = fileDataStore "."
-    , cfgSchemaSource = defaultSchemaSourceIndexConfig
-    , cfgUpdateSchema = True
-    , cfgSchemaDir = Nothing
+    , cfgSchemaLocation = Nothing
+    , cfgSchemaHook = \l -> (schemaLocationToSource l, True)
     , cfgSchemaId = Nothing
     , cfgServerConfig = def
     , cfgReadOnly = False
@@ -280,19 +284,15 @@ processSchemaCached versions cache str =
           (computeIds HashMap.toList (schemasResolved r) versions)
       )
 
--- | Read the schema definition from the ConfigProvider
-legacySchemaSourceConfig :: ThriftSource SchemaIndex
-legacySchemaSourceConfig =
-  ThriftSource.configWithDeserializer legacySchemaConfigPath
-     (processOneSchema Nothing)
-
--- | Read the default schema index from the ConfigProvider
-defaultSchemaSourceIndexConfig :: ThriftSource SchemaIndex
-defaultSchemaSourceIndexConfig = schemaSourceIndexConfig schemaConfigPath
-
 -- | Read the schema files from the source tree
-schemaSourceFiles :: ThriftSource SchemaIndex
-schemaSourceFiles = schemaSourceFilesFromDir schemaSourceDir
+schemaLocationFiles :: ServerConfig.SchemaLocation
+schemaLocationFiles = ServerConfig.SchemaLocation_dir (Text.pack schemaSourceDir)
+
+-- | Read the schema definition from the ConfigProvider
+schemaSourceConfig :: Text -> ThriftSource SchemaIndex
+schemaSourceConfig loc =
+  ThriftSource.configWithDeserializer loc
+     (processOneSchema Nothing)
 
 -- | Read the schema from a single file
 schemaSourceFile :: FilePath -> ThriftSource SchemaIndex
@@ -386,37 +386,87 @@ catSchemaFiles files = do
 schemaSourceDir :: FilePath
 schemaSourceDir = "glean/schema/source"
 
--- | Allow short \"config\" and \"dir\"  to choose the defaults from
+schemaLocationToSource
+  :: ServerConfig.SchemaLocation
+  -> ThriftSource SchemaIndex
+schemaLocationToSource = \case
+  ServerConfig.SchemaLocation_dir d -> schemaSourceFilesFromDir (Text.unpack d)
+  ServerConfig.SchemaLocation_file f -> schemaSourceFile (Text.unpack f)
+  ServerConfig.SchemaLocation_index i -> schemaSourceIndexFile (Text.unpack i)
+  ServerConfig.SchemaLocation_config c -> schemaSourceConfig c
+  ServerConfig.SchemaLocation_indexconfig c -> schemaSourceIndexConfig c
+  ServerConfig.SchemaLocation_EMPTY{} -> error "schemaLocationToSource"
+
+-- | The logic for obtaining the SchemaLocation for the schema, given
+-- the Config and ServerConfig. The location is given by, in order of preference:
+--   - the Config (--schema flag)
+--   - the ServerConfig (schema_location field)
+--   - the default schema location: Glean.DefaultConfigs.defaultSchemaLocation
+--
+-- Also here we replace "$datadir" with the datadir supplied by Cabal, so that
+-- we can install the schema in $datadir when Glean is installed.
+schemaLocation :: Config -> ServerConfig.Config -> IO ServerConfig.SchemaLocation
+schemaLocation cfg server_cfg = do
+#ifdef OSS
+  datadir <- Text.replace "$datadir" . Text.pack <$> getDataDir
+#else
+  datadir <- return id
+#endif
+  let loc = fromMaybe defaultSchemaLocation $
+        cfgSchemaLocation cfg <|>
+        ServerConfig.config_schema_location server_cfg
+  case loc of
+    ServerConfig.SchemaLocation_dir d ->
+      return (ServerConfig.SchemaLocation_dir (datadir d))
+    ServerConfig.SchemaLocation_file f ->
+      return (ServerConfig.SchemaLocation_file (datadir f))
+    ServerConfig.SchemaLocation_index i ->
+      return (ServerConfig.SchemaLocation_index (datadir i))
+    other ->
+      return other
+
+showSchemaLocation :: ServerConfig.SchemaLocation -> String
+showSchemaLocation = \case
+  ServerConfig.SchemaLocation_dir d -> "dir:" <> Text.unpack d
+  ServerConfig.SchemaLocation_file d -> "file:" <> Text.unpack d
+  ServerConfig.SchemaLocation_index d -> "index:" <> Text.unpack d
+  ServerConfig.SchemaLocation_config d -> "config:" <> Text.unpack d
+  ServerConfig.SchemaLocation_indexconfig d -> "indexconfig:" <> Text.unpack d
+  _ -> error "showSchemaLocation"
+
+-- | Allow short \"indexconfig\" and \"dir\"  to choose the defaults from
 -- 'schemaSourceConfig' and 'schemaSourceDir' as well as full explicit
 -- \"config:PATH\", \"dir:PATH\", and \"file:PATH\" sources.
-schemaSourceParser
+schemaLocationParser
   :: String
-  -> Either String (Maybe FilePath, ThriftSource SchemaIndex)
-schemaSourceParser "config" = Right (Nothing, legacySchemaSourceConfig)
-schemaSourceParser "indexconfig" =
-  Right (Nothing, defaultSchemaSourceIndexConfig)
-schemaSourceParser "dir" =
-  Right (Just schemaSourceDir, schemaSourceFilesFromDir schemaSourceDir)
-schemaSourceParser s = case break (==':') s of
+  -> Either String ServerConfig.SchemaLocation
+schemaLocationParser "indexconfig" =
+  Right (ServerConfig.SchemaLocation_index schemaConfigPath)
+schemaLocationParser "dir" =
+  Right (ServerConfig.SchemaLocation_dir (Text.pack schemaSourceDir))
+schemaLocationParser s = case break (==':') s of
   ("dir", ':':path) ->
-    Right (Just path, ThriftSource.once $ parseSchemaDir path)
+    Right (ServerConfig.SchemaLocation_dir (Text.pack path))
   ("index", ':':path) ->
-    Right (Nothing, ThriftSource.once $ parseSchemaIndex path)
+    Right (ServerConfig.SchemaLocation_index (Text.pack path))
   ("indexconfig", ':':path) ->
-    Right (Nothing, schemaSourceIndexConfig (Text.pack path))
+    Right (ServerConfig.SchemaLocation_indexconfig (Text.pack path))
   -- default to interpreting the argument as a directory:
+  ("file", ':':path) ->
+    Right (ServerConfig.SchemaLocation_file (Text.pack path))
+  ("config", ':':path) ->
+    Right (ServerConfig.SchemaLocation_config (Text.pack path))
   (_, "") ->
-    Right (Just s, ThriftSource.once $ parseSchemaDir s)
+    Right (ServerConfig.SchemaLocation_dir (Text.pack s))
   _otherwise -> -- handles config:PATH and file:PATH
-    (Nothing,) <$> ThriftSource.parseWithDeserializer s
-      (processOneSchema Nothing)
+    Left "invalid schema location"
 
-schemaSourceOption
-  :: Parser (Maybe FilePath, ThriftSource SchemaIndex)
-schemaSourceOption = option (eitherReader schemaSourceParser)
+schemaLocationOption
+  :: Parser ServerConfig.SchemaLocation
+schemaLocationOption = option (eitherReader schemaLocationParser)
   (  long "schema"
   <> metavar "(dir | config | indexconfig | file:FILE | dir:DIR | config:PATH | index:FILE | indexconfig:PATH | DIR)"
-  <> value (Nothing, defaultSchemaSourceIndexConfig))
+  )
 
 options :: Parser Config
 options = do
@@ -432,7 +482,7 @@ options = do
       long "db-memory" <>
       help "Store databases in memory")
   cfgDataStore <- dbRoot <|> dbTmp <|> dbMem <|> pure tmpDataStore
-  ~(cfgSchemaDir, cfgSchemaSource) <- schemaSourceOption
+  cfgSchemaLocation <- optional schemaLocationOption
   _ignored_for_backwards_compat <- switch (long "db-schema-override")
 
   cfgServerConfig <-
@@ -449,7 +499,7 @@ options = do
   cfgDebug <- debugParser
   return Config
     { cfgListener = mempty
-    , cfgUpdateSchema = True
+    , cfgSchemaHook = cfgSchemaHook def
     , cfgShardManager = cfgShardManager def
     , cfgServerLogger = cfgServerLogger def
     , cfgDatabaseLogger = cfgDatabaseLogger def

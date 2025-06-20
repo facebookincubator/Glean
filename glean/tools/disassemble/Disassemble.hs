@@ -20,7 +20,8 @@ import System.Exit (die)
 
 import Util.OptParse
 
-import Glean.Database.Config (schemaSourceOption, SchemaIndex)
+import Glean.Database.Config (
+  schemaLocationOption, schemaLocationToSource, SchemaLocation)
 import Glean.Database.Schema
 import Glean.Database.Schema.Types
 import Glean.Impl.ConfigProvider
@@ -28,12 +29,11 @@ import Glean.RTS.Bytecode.Disassemble (disassemble)
 import Glean.Types (PredicateRef(..))
 import Glean.Schema.Util (parseRef)
 import Glean.Util.ConfigProvider
-import Glean.Util.ThriftSource (ThriftSource)
 import qualified Glean.Util.ThriftSource as ThriftSource
 import Glean.Bytecode.SysCalls (typecheckSysCalls)
 
 data Config = Config
-  { cfgSchemaSource :: ThriftSource SchemaIndex
+  { cfgSchemaLocation :: SchemaLocation
   , cfgCommand :: Command
   }
 
@@ -46,7 +46,7 @@ options = info (parser <**> helper)
   where
     parser :: Parser Config
     parser = do
-      cfgSchemaSource <- snd <$> schemaSourceOption
+      cfgSchemaLocation <- schemaLocationOption
       cfgCommand <- typecheckerCmd
       return Config{..}
 
@@ -64,7 +64,7 @@ main =
   withConfigOptions options $ \(Config{..}, cfg) ->
   withConfigProvider cfg $ \(cfgAPI :: ConfigAPI) -> do
 
-  schemas <- ThriftSource.load cfgAPI cfgSchemaSource
+  schemas <- ThriftSource.load cfgAPI (schemaLocationToSource cfgSchemaLocation)
   db_schema <- newDbSchema Nothing schemas LatestSchema readWriteContent def
 
   case cfgCommand of
