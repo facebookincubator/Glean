@@ -208,6 +208,22 @@ data Staleness
   | LocalDbNewer
   deriving (Eq,Ord)
 
+hasExcludeProperty
+  :: Repo
+  -> DatabaseProperties
+  -> ServerConfig.DatabaseRetentionPolicy
+  -> Bool
+hasExcludeProperty repo props policy = do
+  let retentionPolicy = ServerConfig.databaseRetentionPolicy_repos policy
+  case Map.lookup (repo_name repo) retentionPolicy of
+    Just ret -> do
+      let exclude_props = ServerConfig.retention_excluded_properties ret
+      any (hasProperty props) (HashMap.toList exclude_props)
+    Nothing -> False
+  where
+    hasProperty props (name,val) = HashMap.lookup name props == Just val
+
+
 doBackup :: Site site => Env -> Repo -> Text -> site -> IO Bool
 doBackup env@Env{..} repo prefix site =
   backup `catch` \exc -> do
@@ -219,6 +235,10 @@ doBackup env@Env{..} repo prefix site =
   say log s = log $ inRepo repo $ "backup: " ++ s
 
   backup = loggingAction (runLogRepo "backup" env repo) (const mempty) $ do
+    ServerConfig.Config{..} <- Observed.get envServerConfig
+    meta <- atomically $ Catalog.readMeta envCatalog repo
+    let excluded =
+          hasExcludeProperty repo (metaProperties meta) config_retention
     atomically $ notify envListener $ BackupStarted repo
     say logInfo "starting"
     withOpenDatabaseStorage env repo $ \_storage OpenDB{..} -> do
@@ -229,17 +249,16 @@ doBackup env@Env{..} repo prefix site =
     ownershipStats <- do
       maybeOwnership <- readTVarIO odbOwnership
       mapM getOwnershipStats maybeOwnership
+
     Backend.Data{..} <- withScratchDirectory envStorage repo $ \scratch ->
       Storage.backup odbHandle scratch $ \path Data{dataSize} -> do
         say logInfo "uploading"
-        policy <- ServerConfig.databaseBackupPolicy_repos
-          . ServerConfig.config_backup <$> Observed.get envServerConfig
-        let ttl = case ServerConfig.backup_delete_after_seconds <$>
+        let policy = ServerConfig.databaseBackupPolicy_repos config_backup
+            ttl = case ServerConfig.backup_delete_after_seconds <$>
               Map.lookup (repo_name repo) policy of
                 Just 0 -> Nothing
                 ttl -> fromIntegral <$> ttl
-        meta <- atomically $ Catalog.readMeta envCatalog repo
-        let metaWithBytes = meta {
+            metaWithBytes = meta {
               metaCompleteness = case metaCompleteness meta of
                 Complete DatabaseComplete{..} ->
                   Complete DatabaseComplete
@@ -249,7 +268,14 @@ doBackup env@Env{..} repo prefix site =
         }
         Backend.backup site repo metaWithBytes ttl path
     let locator = toRepoLocator prefix site repo
-    Logger.logDBStatistics env repo stats ownershipStats dataSize locator
+    Logger.logDBStatistics
+      env
+      repo
+      stats
+      ownershipStats
+      dataSize
+      locator
+      excluded
     say logInfo "finished"
     atomically $ do
       void $ Catalog.modifyMeta envCatalog repo $ \meta -> return meta

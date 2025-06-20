@@ -28,8 +28,16 @@ logDBStatistics
   -> Maybe OwnershipStats
   -> Int          -- ^ Number of bytes backed up
   -> Text         -- ^ Backup locator
+  -> Bool         -- ^ The db has exclude property
   -> IO ()
-logDBStatistics env Thrift.Repo{..} preds maybeOwnershipStats size locator = do
+logDBStatistics
+  env
+  Thrift.Repo{..}
+  preds
+  maybeOwnershipStats
+  size
+  locator
+  excluded = do
   let preamble = mconcat
         [ Logger.SetRepoName repo_name
         , Logger.SetRepoHash repo_hash
@@ -40,6 +48,7 @@ logDBStatistics env Thrift.Repo{..} preds maybeOwnershipStats size locator = do
         [ Logger.SetPredicateSize size            -- # bytes uploaded
         , Logger.SetPredicateCount factCount      -- # total facts
         , Logger.SetUploadDestination locator
+        , Logger.SetHasExcludeProperty excluded
         ]
       factCount = fromIntegral $ sum [predicateStats_count p| (_, p) <- preds]
 
