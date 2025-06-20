@@ -42,6 +42,12 @@ type Entity =
     angle: code.anglelang.Entity |
   }
 
+type SymbolId =
+  {
+    scip : code.scip.SymbolId |
+    cxx : code.cxx.SymbolId |
+  }
+
 # language enum values for exactly the set of entity tags (including LSIF)
 #
 # n.b. flow => javascript, javascript is the user-facing language

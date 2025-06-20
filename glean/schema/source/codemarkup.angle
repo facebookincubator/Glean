@@ -225,7 +225,8 @@ predicate GeneratedEntityToIdlEntity:
 #    resolved client side)
 type GenericEntity = {
   plainEntity: { xref: codemarkup.types.XRefLocation, entity : code.Entity } |
-  xlangEntity: { source : codemarkup.types.RangeSpan, entity : code.IdlEntity }
+  xlangEntity: { source : codemarkup.types.RangeSpan, entity : code.IdlEntity } |
+  xlangSymbol: { source : codemarkup.types.RangeSpan, symbol : code.SymbolId }
 }
 
 # Finding xrefs to generic entities. Same thing as
@@ -257,9 +258,12 @@ predicate FileXRefsGenericEntities: {
   (codemarkup.erlang.ErlangFileEntityXRefLocations { File, XRef, E };
   { plainEntity = { xref = XRef, entity = { erlang = E } } } = GenEntity) |
   (codemarkup.lsif.LsifFileEntityXRefLocations { File, XRef, E };
-  { plainEntity = { xref = XRef, entity = { lsif = E } } } = GenEntity) |
-  (codemarkup.scip.ScipFileEntityXRefLocations { File, XRef, E };
-  { plainEntity = { xref = XRef, entity = { scip = E } } } = GenEntity) |
+  { plainEntity = { xref = XRef, entity = { lsif = E } } } = GenEntity)
+  | ( codemarkup.scip.ScipFileEntityXRefLocations { File, XRef, E }
+      ; { plainEntity = { xref = XRef, entity = { scip = E } } } = GenEntity )
+  | ( codemarkup.scip.FileXLangSymbolRefs { File, Source, Symbol }
+      ; { xlangSymbol = { source = Source, symbol = { scip = Symbol } } } = GenEntity )
+  |
   (codemarkup.java.JavalFileEntityXRefLocations { File, XRef, E };
   { plainEntity = { xref = XRef, entity = { java = E } } } = GenEntity) |
   (codemarkup.kotlin.KotlinFileEntityXRefLocations { File, XRef, E };
@@ -274,6 +278,16 @@ predicate FileXRefsGenericEntities: {
   { xlangEntity = { source = Source, entity = E } } = GenEntity) |
   (codemarkup.anglelang.AngleFileEntityXRefLocations { File, XRef, E };
   { plainEntity = { xref = XRef, entity = { angle = E } } } = GenEntity)
+
+predicate SymbolToEntity:
+  {
+    symbol: code.SymbolId,
+    entity: code.Entity,
+  }
+  { Symbol, Entity } where
+  { cxx = CxxSymbol } = Symbol
+    ; codemarkup.cxx.SymbolToEntity { CxxSymbol, CxxEntity }
+    ; { cxx = CxxEntity } = Entity;
 
 # Finding xrefs. All references in a file and their targets
 predicate FileEntityXRefLocations:

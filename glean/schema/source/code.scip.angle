@@ -13,4 +13,6 @@ type Entity =
     swift: scip.SomeEntity |
   }
 
+type SymbolId = scip.Symbol
+
 }

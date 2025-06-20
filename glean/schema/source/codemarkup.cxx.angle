@@ -976,6 +976,16 @@ predicate CxxEntityUSR :
       cxx1.DeclarationToUSR { DeclFam, U };
     )
 
+# TODO: do we have to care about decl families? (see CxxEntityUSR above)
+predicate SymbolToEntity:
+  {
+    usr: code.cxx.SymbolId,
+    entity: code.cxx.Entity,
+  }
+  { Symbol, Entity } where
+  cxx1.USRToDeclaration { hash = Symbol, declaration = Decl };
+  Entity = { decl = Decl };
+
 predicate CxxEntityMangledNameHash :
   {
     entity : code.cxx.Entity,

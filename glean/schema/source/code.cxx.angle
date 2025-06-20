@@ -11,6 +11,8 @@ type Entity =
     objcSelectorSlot : ObjcSelectorSlotEntity |
   }
 
+type SymbolId = cxx1.USR
+
 type Definition =
   {
     record_ : cxx1.RecordDefinition |

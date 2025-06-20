@@ -51,6 +51,9 @@ buildGenXRefs genEntity = case genEntity of
     -> Just $ XlangXRef (source, entity)
   Code.GenericEntity_plainEntity (Code.GenericEntity_plainEntity_ xref entity)
     -> Just $ PlainXRef (xref, entity)
+  Code.GenericEntity_xlangSymbol _ ->
+    -- TODO
+    Nothing
   Code.GenericEntity_EMPTY -> Nothing
 
 -- | Annotate a list of items keyed by an entity, with the
