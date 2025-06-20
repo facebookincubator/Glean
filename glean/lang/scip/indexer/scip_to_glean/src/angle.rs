@@ -157,17 +157,7 @@ impl Env {
     }
 
     fn decode_scip_info(&mut self, filepath: &str, info: SymbolInformation) -> Result<()> {
-        let symbol = info.symbol.replace("  ", "_");
-        let symbol = symbol_from_string(&symbol);
-        let qualified_symbol = match symbol {
-            ScipSymbol::Local { .. } => {
-                format!("{}/{}", filepath, info.symbol)
-            }
-            ScipSymbol::Global { .. } => info.symbol,
-        }
-        .into_boxed_str();
-
-        let sym_id = self.get_def_fact_id(StringPredicate::Symbol, &qualified_symbol);
+        let sym_id = self.get_symbol_id(&info.symbol, filepath);
 
         for document in info.documentation {
             let doc_id = self.next_id();
@@ -181,9 +171,30 @@ impl Env {
             if !info.display_name.is_empty() {
                 self.display_name_facts(info.display_name, sym_id);
             }
+            info.relationships.iter().for_each(|rel| {
+                if rel.is_implementation {
+                    let implemented_symbol = &rel.symbol;
+                    let implemented_symbol_id = self.get_symbol_id(implemented_symbol, filepath);
+                    if let Some(implemented_symbol_id) = implemented_symbol_id {
+                        self.out.is_implementation(sym_id, implemented_symbol_id);
+                    }
+                }
+            });
         }
 
         Ok(())
+    }
+
+    fn get_symbol_id(&mut self, symbol: &String, filepath: &str) -> Option<ScipId> {
+        let symbol_no_spaces = symbol.replace("  ", "_");
+        let scip_symbol = symbol_from_string(&symbol_no_spaces);
+        let qualified_symbol = match scip_symbol {
+            ScipSymbol::Local { .. } => format!("{}/{}", filepath, symbol),
+            ScipSymbol::Global { .. } => symbol.clone(),
+        }
+        .into_boxed_str();
+
+        self.get_def_fact_id(StringPredicate::Symbol, &qualified_symbol)
     }
 
     fn display_name_facts(&mut self, display_name: String, sym_id: ScipId) {

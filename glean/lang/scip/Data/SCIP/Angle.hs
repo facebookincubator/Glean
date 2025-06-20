@@ -218,12 +218,7 @@ decodeScipInfo filepath info = do
     return (docId, SCIP.Predicate "scip.Documentation" [
             object [ SCIP.factId docId, "key" .= Text.strip docStr ]
           ]))
-  let eSym = symbolFromString scipSymbol
-  let qualifiedSymbol = case eSym of
-        Left err -> error(show err)
-        Right (Local _) -> filepath <> "/" <> scipSymbol
-        Right (Global {}) -> scipSymbol
-  mSymId <- getDefFactId Symbol qualifiedSymbol
+  mSymId <- getSymbolId scipSymbol filepath
   symDocFacts <- case mSymId of
     Nothing -> return []
     Just symId -> forM docIds (\docId ->
@@ -236,12 +231,42 @@ decodeScipInfo filepath info = do
     Just symId -> case scipDisplayName of
       "" -> return []
       _ ->  displayNameFacts scipDisplayName symId
-  return (docFacts <> concat symDocFacts <> displayNameFacts)
+  relationshipsFacts <- case mSymId of
+    Nothing -> return []
+    Just symId -> forM scipRelationshps (\rel ->
+        if rel ^. Scip.isImplementation then do
+          let implementedSymbol = rel ^. Scip.symbol
+          implementedSymbolId <- getSymbolId implementedSymbol filepath
+          case implementedSymbolId of
+            Nothing -> return []
+            Just implementedSymbolId ->
+              SCIP.predicate "scip.IsImplementation" [
+                  "symbol" .= symId,
+                  "implemented" .= implementedSymbolId
+                ]
+        else
+          pure [] )
+  return
+    ( docFacts
+    <> concat symDocFacts
+    <> displayNameFacts
+    <> concat relationshipsFacts )
 
   where
     scipSymbol = info ^. Scip.symbol
     scipDocs = info ^. Scip.documentation
     scipDisplayName = info ^. Scip.displayName
+    scipRelationshps = info ^. Scip.relationships
+
+getSymbolId :: Text -> Text -> Parse (Maybe SCIP.Id)
+getSymbolId symbol filepath = do
+  let eSym = symbolFromString symbol
+  let qualifiedSymbol = case eSym of
+        Left err -> error(show err)
+        Right (Local _) -> filepath <> "/" <> symbol
+        Right (Global {}) -> symbol
+  getDefFactId Symbol qualifiedSymbol
+
 
 displayNameFacts :: Text -> SCIP.Id -> Parse [SCIP.Predicate]
 displayNameFacts scipDisplayName symId = do

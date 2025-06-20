@@ -1,0 +1,21 @@
+[
+  "@generated",
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasBallView" },
+      "implemented": { "key": "c:objc(cs)UIView" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(cs)CIBCanvasView" },
+      "implemented": { "key": "c:objc(cs)UIView" }
+    }
+  },
+  {
+    "key": {
+      "symbol": { "key": "c:@M@CIBCanvas@objc(pl)CIBCanvasViewDelegate" },
+      "implemented": { "key": "c:objc(pl)NSObject" }
+    }
+  }
+]

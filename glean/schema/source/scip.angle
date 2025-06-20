@@ -55,7 +55,7 @@ predicate DisplayNameSymbol:
     symbol: Symbol
   }
 
-# Definition occurences
+# These correspond to SCIP occurrences with symbol_role = `Definition`
 predicate Definition:
   {
     symbol: Symbol,
@@ -111,6 +111,12 @@ predicate DefinitionUses:
 # Documentation facts (including type signatures)
 predicate Documentation: string
 
+################################################################
+# `SymbolInformation`
+#
+# The following predicates corresponds to fields of SCIP's `SymbolInformation`
+################################################################
+
 predicate SymbolDocumentation:
   {
     symbol: Symbol,
@@ -141,6 +147,20 @@ predicate SymbolName:
     symbol: Symbol,
     name: LocalName
   }
+
+# Symbol relationships
+
+predicate IsImplementation:
+  {
+    symbol: Symbol,
+    implemented: Symbol,
+  }
+
+# TODO is_reference, is_definition, is_type_definition relationships
+
+################################################################
+# All the derived predicates
+################################################################
 
 predicate DefinitionName:
   {
