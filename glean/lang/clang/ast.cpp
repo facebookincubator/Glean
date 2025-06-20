@@ -25,6 +25,7 @@
 #include "folly/ScopeGuard.h"
 #include "folly/lang/Assume.h"
 #include "glean/lang/clang/ast.h"
+#include "glean/lang/clang/hash/hash.h"
 #include "glean/lang/clang/index.h"
 
 // This file implements the Clang AST traversal.
@@ -62,8 +63,7 @@ std::optional<std::string> getUsrHash(const clang::Decl* decl) {
   //
   // These cases does not really matter much to us and not going to lead to any
   // false positives. Also, Glean and clangd uses the same implementation.
-  auto hash = llvm::SHA1::hash(llvm::arrayRefFromStringRef(usr));
-  return llvm::toHex(llvm::ArrayRef(hash.data(), 8));
+  return hash::hash(usr);
 }
 
 std::optional<std::string> getMangledNameHash(const clang::FunctionDecl* decl) {

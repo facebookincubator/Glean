@@ -1,0 +1,38 @@
+cabal-version:       3.6
+
+-- Copyright (c) Facebook, Inc. and its affiliates.
+
+name:                glean-hash
+version:             0.1.0.0
+synopsis:            C++ code indexing infrastructure for Glean
+homepage:            https://github.com/facebookincubator/Glean
+bug-reports:         https://github.com/facebookincubator/Glean/issues
+license:             BSD-3-Clause
+license-file:        LICENSE
+author:              Facebook, Inc.
+maintainer:          Glean-team@fb.com
+copyright:           (c) Facebook, All Rights Reserved
+build-type:          Custom
+
+-- Custom setup used to detect LLVM (and clang) and configure the appropriate
+-- include/library directories, necessary for 'glean-clang-index' C++ program
+-- which uses the clang/llvm libraries.
+custom-setup
+  setup-depends:
+    base,
+    Cabal >= 3.6,
+    containers
+
+flag opt
+     default: False
+
+library
+    cxx-sources:
+        hash.cpp
+    extra-libraries:
+        LLVM,
+    cxx-options: -fexceptions -DOSS=1 -std=c++17
+    if arch(x86_64)
+      cxx-options: -DGLEAN_X86_64 -march=haswell
+    if flag(opt)
+      cxx-options: -O3

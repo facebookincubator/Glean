@@ -11,6 +11,7 @@ packages:
     hsthrift/http/thrift-http.cabal
     glean.cabal
     glean/lang/clang/glean-clang.cabal
+    glean/lang/clang/hash/glean-hash.cabal
 
 tests: True
 
