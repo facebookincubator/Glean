@@ -127,14 +127,14 @@ type Declaration =
     typeFamily: TypeFamilyDecl |
     type_: TypeSynDecl |
     data: DataDecl |
-    con: ConDecl |
+    con: ConstrDecl |
     patSyn: PatSynDecl |
     class_: ClassDecl |
-    method: MethodDecl |
+    method: MethDecl |
     instance: InstanceDecl |
     patBind: PatBind |
     tyVarBind: TyVarBind |
-    field: RecFieldDecl |
+    field: RecordFieldDecl |
   }
 
 predicate DeclarationOfName:
@@ -177,13 +177,14 @@ predicate TypeSynDecl:
 predicate DataDecl:
   {
     name: Name,
-    # constructors
+    constrs: [ConstrDecl]
   }
 
-predicate ConDecl:
+predicate ConstrDecl:
   {
     name: Name,
-    # fields, etc.
+    data_: Name,  # the Name of the DataDecl
+    fields: [RecordFieldDecl],  # empty if this is not a record
   }
 
 predicate PatSynDecl:
@@ -194,14 +195,15 @@ predicate PatSynDecl:
 predicate ClassDecl:
   {
     name: Name,
+    methods: [MethDecl],
     # superclass constraints
-    # methods
     # defaults
   }
 
-predicate MethodDecl:
+predicate MethDecl:
   {
     name: Name,
+    class_: Name,
     # type
     # default decl
   }
@@ -224,9 +226,10 @@ predicate TyVarBind:
     name: Name,
   }
 
-predicate RecFieldDecl:
+predicate RecordFieldDecl:
   {
     name: Name,
+    con: Name,
     # type
   }
 
