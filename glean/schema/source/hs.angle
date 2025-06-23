@@ -121,6 +121,7 @@ predicate Type:
 
 # Declarations / definitions
 
+# A declaration, which may or may not define a Name.
 type Declaration =
   {
     val: ValBind |
@@ -135,14 +136,15 @@ type Declaration =
     patBind: PatBind |
     tyVarBind: TyVarBind |
     field: RecordFieldDecl |
+    sig: SigDecl |
   }
 
+# Go from a Name to its definition, or vice versa.
 predicate DeclarationOfName:
   {
     name: Name,
     decl: Declaration,
   }
-  # maybe store this? Turns 12 lookups into 1 lookup.
   { N, { val = { name = N }}} |
   { N, { typeFamily = { name = N }}} |
   { N, { type_ = { name = N }}} |
@@ -161,7 +163,13 @@ predicate ValBind:
     name: Name,
     ty: maybe Type,
     # fixity
-    # location of signature
+    sig: maybe SigDecl
+  }
+
+predicate SigDecl:
+  {
+    name: Name,
+    loc: src.FileLocation,
   }
 
 predicate TypeFamilyDecl:
@@ -233,6 +241,7 @@ predicate RecordFieldDecl:
     # type
   }
 
+# From a Name to the location of its defining declaration
 predicate DeclarationLocation:
   {
     name: Name,
@@ -240,10 +249,27 @@ predicate DeclarationLocation:
     span: src.ByteSpan
   }
 
+# From a Declaration to its location
+predicate DeclarationSpan:
+  {
+    decl: Declaration,
+    loc: src.FileLocation,
+  }
+  { Decl, Loc } where
+    # it's either a definition, or it has a location
+    (
+      DeclarationOfName { Name, Decl };
+      DeclarationLocation { Name, File, Span };
+      Loc = { File, Span };
+    ) | (
+      Decl.sig?.loc = Loc;
+    )
+
 predicate ModuleDeclarations:
   {
     module: Module,
     names: set Name,
+    # TODO: decls: [Declaration],
     exports: set Name,
   }
 
@@ -257,7 +283,7 @@ type RefSpan =
 
 # It's useful to be able to distinguish import/export refs from code refs,
 # because e.g. dead code can still have import/export refs.
-type RefKind = enum { importref | exportref | coderef | tydecl }
+type RefKind = enum { importref | exportref | coderef | tydecl | instbind }
 
 type RefTarget =
   {

@@ -138,13 +138,15 @@ isRecFieldRef _ = False
 
 produceDecl
  :: Glean.NewFact m
- => Hs.Name
+ => Map (Glean.IdOf Hs.Name) Hs.SigDecl
+ -> Hs.Name
  -> Maybe Hs.Type
  -> ContextInfo
  -> m ()
-produceDecl name maybeTy ctx = case ctx of
+produceDecl sigMap name maybeTy ctx = case ctx of
   ValBind RegularBind _ _ ->
-    Glean.makeFact_ @Hs.ValBind $ Hs.ValBind_key name maybeTy
+    Glean.makeFact_ @Hs.ValBind $
+      Hs.ValBind_key name maybeTy (Map.lookup (Glean.getId name) sigMap)
   Decl FamDec _ ->
     Glean.makeFact_ @Hs.TypeFamilyDecl $ Hs.TypeFamilyDecl_key name
   Decl SynDec _ ->
@@ -167,30 +169,40 @@ produceDecl name maybeTy ctx = case ctx of
 
 produceDeclInfo
   :: Glean.NewFact m
-  => Map GHC.Name Hs.Name
+  => Src.File
+  -> (GHC.RealSrcSpan -> Src.ByteSpan)
+  -> Map GHC.Name Hs.Name
   -> Map GHC.Name DeclInfo
-  -> m ()
-produceDeclInfo nameMap declInfoMap =
-  forM_ (Map.toList declInfoMap) $ \(name, info) ->
-    whenJust (Map.lookup name nameMap) $ \hsName ->
-      case info of
-        DataDecl { dataDeclConstrs = cs } -> do
-          cons <- forM cs $ \(ConstrInfo cName fields) -> do
-            forM (Map.lookup cName nameMap) $ \hsCName -> do
-              fNames <- forM (mapMaybe (`Map.lookup` nameMap) fields) $ \fName ->
-                Glean.makeFact @Hs.RecordFieldDecl $
-                  Hs.RecordFieldDecl_key fName hsCName
-              Glean.makeFact @Hs.ConstrDecl $
-                Hs.ConstrDecl_key hsCName hsName fNames
-          Glean.makeFact_ @Hs.DataDecl $
-            Hs.DataDecl_key hsName (catMaybes cons)
-
-        ClassDecl { classDeclMethods = ms } -> do
-          mNames <- forM (mapMaybe (`Map.lookup` nameMap) ms) $ \mName ->
-            Glean.makeFact @Hs.MethDecl $
-              Hs.MethDecl_key mName hsName
-          Glean.makeFact_ @Hs.ClassDecl $
-            Hs.ClassDecl_key hsName mNames
+  -> m (Map (Glean.IdOf Hs.Name) Hs.SigDecl)
+produceDeclInfo fileFact toByteSpan nameMap declInfoMap =
+  fmap (Map.fromList . catMaybes) $
+    forM (Map.toList declInfoMap) $ \(name, info) ->
+      flip (maybe (return Nothing)) (Map.lookup name nameMap) $ \hsName ->
+        case info of
+          SigDecl { sigDeclSpan = span } -> do
+            decl <- Glean.makeFact @Hs.SigDecl $
+              Hs.SigDecl_key hsName (
+                Src.FileLocation fileFact (toByteSpan span))
+            return (Just (Glean.getId hsName, decl))
+          DataDecl { dataDeclConstrs = cs } -> do
+            cons <- forM cs $ \(ConstrInfo cName fields) -> do
+              forM (Map.lookup cName nameMap) $ \hsCName -> do
+                fNames <- forM (mapMaybe (`Map.lookup` nameMap) fields) $
+                  \fName ->
+                    Glean.makeFact @Hs.RecordFieldDecl $
+                      Hs.RecordFieldDecl_key fName hsCName
+                Glean.makeFact @Hs.ConstrDecl $
+                  Hs.ConstrDecl_key hsCName hsName fNames
+            Glean.makeFact_ @Hs.DataDecl $
+              Hs.DataDecl_key hsName (catMaybes cons)
+            return Nothing
+          ClassDecl { classDeclMethods = ms } -> do
+            mNames <- forM (mapMaybe (`Map.lookup` nameMap) ms) $ \mName ->
+              Glean.makeFact @Hs.MethDecl $
+                Hs.MethDecl_key mName hsName
+            Glean.makeFact_ @Hs.ClassDecl $
+              Hs.ClassDecl_key hsName mNames
+            return Nothing
 
 nat :: Integral a => a -> Glean.Nat
 nat = Glean.toNat . fromIntegral
@@ -338,8 +350,6 @@ indexHieFile writer srcPaths path hie = do
             GHC.occNameString (nameOccName name) <> ": " <>
            show (ppr sp)) $ return ()
         -}
-        let ty = identType dets >>= \ix -> IntMap.lookup ix typeMap
-        mapM_ (produceDecl namefact ty) (Set.toList (identInfo dets))
         return $ Just (name, namefact)
       | otherwise -> return Nothing
 
@@ -347,6 +357,15 @@ indexHieFile writer srcPaths path hie = do
     let
       nameMap :: Map GHC.Name Hs.Name
       nameMap = Map.fromList names
+
+    sigMap <- produceDeclInfo filefact toByteSpan nameMap declInfo
+
+    forM_ allIds $ \(ident, (_, dets)) -> if
+      | Right name <- ident
+      , Just namefact <- Map.lookup name nameMap -> do
+        let ty = identType dets >>= \ix -> IntMap.lookup ix typeMap
+        mapM_ (produceDecl sigMap namefact ty) (Set.toList (identInfo dets))
+      | otherwise -> return ()
 
     eNames <- forM (concatMap GHC.availNames (hie_exports hie)) $ \name ->
       case Map.lookup name nameMap of
@@ -356,8 +375,6 @@ indexHieFile writer srcPaths path hie = do
           Just m -> do
             mod <- if m == smod then return modfact else mkModule m
             Just <$> mkName name mod (Hs.NameSort_external def)
-
-    produceDeclInfo nameMap declInfo
 
     Glean.makeFact_ @Hs.ModuleDeclarations $ Hs.ModuleDeclarations_key
       modfact (map snd names) (catMaybes eNames)
@@ -508,6 +525,9 @@ data DeclInfo
   | ClassDecl {
       classDeclMethods :: [GHC.Name]
     }
+  | SigDecl {
+      sigDeclSpan :: GHC.RealSrcSpan
+    }
 
 data ConstrInfo =
   ConstrInfo {
@@ -539,6 +559,9 @@ getDeclInfos node = snd $ State.runState (go node) Map.empty
       | isClassDecl nodeInfo,
         [name] <- findIdent classDeclCtx nodeInfo node =
          Just (name, ClassDecl { classDeclMethods = findMethods node })
+      | isTypeSig nodeInfo,
+        [name] <- findIdent tyDeclCtx nodeInfo node =
+         Just (name, SigDecl { sigDeclSpan = nodeSpan node })
       | otherwise =
           Nothing
 
@@ -547,6 +570,7 @@ getDeclInfos node = snd $ State.runState (go node) Map.empty
       concatMap (namesWithContext ctx) $
         map nodeIdentifiers (ni : map getNodeInfo nodeChildren)
 
+    isTypeSig = any (== typeSigAnnot) . nodeAnnotations
     isDataDecl = any (== dataDeclAnnot) . nodeAnnotations
     isConstrDecl = any (`elem` [constrAnnot, constrGadtAnnot]) . nodeAnnotations
     isClassDecl = any (== classDeclAnnot) . nodeAnnotations
@@ -604,6 +628,10 @@ recFieldDeclCtx :: ContextInfo -> Bool
 recFieldDeclCtx (RecField r _) = not (isRecFieldRef r)
 recFieldDeclCtx _ = False
 
+tyDeclCtx :: ContextInfo -> Bool
+tyDeclCtx TyDecl = True
+tyDeclCtx _ = False
+
 classDeclCtx :: ContextInfo -> Bool
 classDeclCtx (Decl ClassDec _) = True
 classDeclCtx _ = False
@@ -611,6 +639,9 @@ classDeclCtx _ = False
 classTyDeclCtx :: ContextInfo -> Bool
 classTyDeclCtx (ClassTyDecl _) = True
 classTyDeclCtx _ = False
+
+typeSigAnnot :: NodeAnnotation
+typeSigAnnot = NodeAnnotation "TypeSig" "Sig"
 
 dataDeclAnnot :: NodeAnnotation
 dataDeclAnnot = NodeAnnotation "DataDecl" "TyClDecl"
