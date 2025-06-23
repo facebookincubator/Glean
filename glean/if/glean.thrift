@@ -153,7 +153,7 @@ struct FactDependencies {
 
 // A collection of facts which can be written to a database.
 struct Batch {
-  // Id of the first fact in the batch if ids isn't supplied and the boundary
+  // Id of the first fact in the batch if ids isn't supplied. It's also the boundary
   // between the underlying database and the batch - any fact id >= firstId
   // will be assumed to refer to facts in the batch and will not be looked
   // up in the underlying database.

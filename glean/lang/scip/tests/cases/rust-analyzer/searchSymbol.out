@@ -1,0 +1,48 @@
+[
+  "@generated",
+  {
+    "key": {
+      "searchcase": 0,
+      "name": "Prefix",
+      "entity": {
+        "scip": {
+          "rust": {
+            "defn": {
+              "key": {
+                "symbol": {
+                  "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#"
+                },
+                "location": {
+                  "key": {
+                    "file": { "key": "relative_path.rs" },
+                    "range": {
+                      "lineBegin": 23,
+                      "columnBegin": 10,
+                      "lineEnd": 23,
+                      "columnEnd": 15
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "location": {
+        "name": "Prefix",
+        "file": { "key": "relative_path.rs" },
+        "location": {
+          "range": {
+            "file": { "key": "relative_path.rs" },
+            "lineBegin": 23,
+            "columnBegin": 10,
+            "lineEnd": 23,
+            "columnEnd": 15
+          }
+        }
+      },
+      "kind": 6,
+      "language": 7
+    }
+  }
+]

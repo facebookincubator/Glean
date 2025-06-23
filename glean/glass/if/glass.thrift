@@ -834,6 +834,8 @@ service GlassService extends fb303.FacebookService {
     2: RequestOptions options,
   ) throws (1: ServerException e, 2: GlassException g);
 
+  // Takes a list of symbol IDs and returns basic information like locations
+  // This may return multiple results/locations per symbol if appropriate.
   ResolveSymbolsResult resolveSymbols(
     1: ResolveSymbolsRequest request,
     2: RequestOptions options,

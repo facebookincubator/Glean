@@ -1,0 +1,4 @@
+
+query: scip.SearchByNameKind { name = "Prefix" }
+perf: True
+transform: [gensort, []]

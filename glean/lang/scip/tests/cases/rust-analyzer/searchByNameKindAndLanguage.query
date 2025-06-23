@@ -1,0 +1,3 @@
+query: search.code.SearchByNameKindAndLanguage { name = "Prefix", kinds = { just = Class_ }, language = Rust }
+perf: True
+transform: [gensort, []]

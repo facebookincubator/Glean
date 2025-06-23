@@ -1,0 +1,49 @@
+[
+    "@generated",
+    {
+        "contains_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "extends_relation": {
+            "firstChild": "nondeterministic",
+            "firstParent": "nondeterministic",
+            "hasMoreChildren": false,
+            "hasMoreParents": false
+        },
+        "kind": 7,
+        "language": 10,
+        "location": {
+            "filepath": "relative_path.rs",
+            "range": {
+                "columnBegin": 10,
+                "columnEnd": 16,
+                "lineBegin": 23,
+                "lineEnd": 23
+            },
+            "repository": "test"
+        },
+        "modifiers": [],
+        "name": {
+            "container": "",
+            "localName": "Prefix#"
+        },
+        "pretty_comments": [],
+        "repo_hash": "testhash",
+        "sym": "test/rs/rust-analyzer/cargo/relative_path/0.0.0/Prefix%23",
+        "sym_location": {
+            "filepath": "relative_path.rs",
+            "range": {
+                "columnBegin": 10,
+                "columnEnd": 16,
+                "lineBegin": 23,
+                "lineEnd": 23
+            },
+            "repository": "test"
+        },
+        "sym_other_locations": [],
+        "type_xrefs": []
+    }
+]

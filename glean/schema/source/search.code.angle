@@ -8,6 +8,7 @@ import code.cxx
 import code.hack
 import code.java
 import code.python
+import codemarkup.lsif
 import codemarkup.types
 import csharp
 import cxx1
@@ -31,6 +32,7 @@ import search.java
 import search.kind.cxx
 import search.kotlin
 import search.python
+import scip
 
 #
 # public API
@@ -101,6 +103,9 @@ predicate SearchByNameKindAndLanguage:
     ) | (
       Hack = Language;
       HackSearchByNameAndKind { NameStr, Kinds, Entity }
+    ) | (
+      Rust = Language;
+      RustSearchByNameAndKind { NameStr, Kinds, Entity }
     )
 
 # Kind-optimized search, case insensitive.
@@ -278,6 +283,20 @@ predicate HackSearchByScopeWithNameKinds:
 #
 # string-based search
 #
+
+predicate RustSearchByNameAndKind:
+  {
+    name: string,
+    kind: maybe codemarkup.types.SymbolKind,
+    entity: code.Entity,
+  }
+  { NameStr, Kinds, Entity } where
+  scip.SearchByNameKind { NameStr, Ks, { rust = { defn = D } } };
+  Kinds =
+    if (Ks = { just = K }) then
+      (codemarkup.lsif.LsifKindToKind { K, Kind }; { just = Kind })
+    else nothing;
+  { scip = { rust = { defn = D } } } = Entity
 
 predicate HackSearchByNameAndKind:
   {

@@ -1,0 +1,3 @@
+query: scip.SymbolKind { symbol = "rust-analyzer cargo basics 0.1.0 f1_go().", kind = Method }
+perf: True
+transform: [gensort, []]

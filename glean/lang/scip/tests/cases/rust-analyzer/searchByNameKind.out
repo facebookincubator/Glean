@@ -1,0 +1,31 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "Prefix",
+      "kind": 4,
+      "entity": {
+        "rust": {
+          "defn": {
+            "key": {
+              "symbol": {
+                "key": "rust-analyzer cargo relative_path 0.0.0 Prefix#"
+              },
+              "location": {
+                "key": {
+                  "file": { "key": "relative_path.rs" },
+                  "range": {
+                    "lineBegin": 23,
+                    "columnBegin": 10,
+                    "lineEnd": 23,
+                    "columnEnd": 15
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

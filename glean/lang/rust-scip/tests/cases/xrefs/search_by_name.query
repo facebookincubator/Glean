@@ -1,0 +1,3 @@
+query: scip.SearchByNameKind { name = "f1_go" }
+perf: True
+transform: [gensort, []]

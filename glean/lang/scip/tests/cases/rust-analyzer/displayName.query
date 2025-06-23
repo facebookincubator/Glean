@@ -1,0 +1,3 @@
+query: scip.DisplayName "Prefix"
+perf: True
+transform: [gensort, []]

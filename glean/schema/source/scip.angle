@@ -323,4 +323,14 @@ predicate FileXLangSymbolRef:
   scip.ReferenceLocation { File, Range, { symbol = Symbol } };
   Symbol = "c:objc"..;
 
+predicate SearchByNameKind:
+  {
+    name : string,
+    kind : maybe lsif.types.SymbolKind,
+    entity : scip.Entity,
+  }
+  { Name, Kind, Entity } where
+    scip.DisplayNameSymbol { DisplayName Name, Symbol };
+    Kind = ( if (scip.SymbolKind { Symbol, K }) then { just = K } else nothing );
+    scip.SearchBySymbol { Symbol, Entity }
 }

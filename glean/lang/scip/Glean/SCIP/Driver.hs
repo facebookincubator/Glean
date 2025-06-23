@@ -64,6 +64,7 @@ runSCIPIndexer ScipIndexerParams{..} outputFile =
   withCurrentDirectory scipRoot $ do
     logInfo $ printf "Indexing %s with %s" (takeBaseName scipRoot) scipBinary
     let args = scipArgs outputFile
+    logInfo $ printf "Running command: %s %s" scipBinary (unwords args)
     callProcess scipBinary args
 
 -- | Convert an scip protobufs encoded file into Glean lsif.angle JSON object

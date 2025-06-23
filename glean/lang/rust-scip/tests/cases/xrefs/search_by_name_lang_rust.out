@@ -1,0 +1,34 @@
+[
+  "@generated",
+  {
+    "key": {
+      "name": "f1_go",
+      "language": 7,
+      "kinds": 7,
+      "entity": {
+        "scip": {
+          "rust": {
+            "defn": {
+              "key": {
+                "symbol": {
+                  "key": "rust-analyzer cargo basics 0.1.0 f1_go()."
+                },
+                "location": {
+                  "key": {
+                    "file": { "key": "src/lib.rs" },
+                    "range": {
+                      "lineBegin": 16,
+                      "columnBegin": 4,
+                      "lineEnd": 16,
+                      "columnEnd": 8
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

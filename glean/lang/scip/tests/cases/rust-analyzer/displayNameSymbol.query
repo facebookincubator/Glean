@@ -1,0 +1,3 @@
+query: scip.DisplayNameSymbol { displayName = "Prefix" }
+perf: True
+transform: [gensort, []]
