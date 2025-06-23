@@ -62,8 +62,12 @@ import Glean.Haxl.Repos as Glean
 import qualified Glean.Schema.CodemarkupTypes.Types as Code
 import qualified Glean.Schema.Code.Types as Code
 
-import Glean.Glass.Base
-import Glean.Glass.Describe ( mkSymbolDescription, describeEntity, mkBriefSymbolDescription )
+import Glean.Glass.Base (GleanPath(GleanPath))
+import Glean.Glass.Describe
+  ( mkSymbolDescription
+  , describeEntity
+  , mkBriefSymbolDescription
+  )
 import Glean.Glass.Handler.Utils
 import Glean.Glass.Logging
 import Glean.Glass.Repos
@@ -128,7 +132,8 @@ symbolLocation env@Glass.Env{..} sym opts =
           None t -> throwM (ServerException t)
           One e -> return (e, Nothing)
           Many { initial = e, message = t } ->
-            return (e, Just (GlassExceptionReason_entitySearchFail t))
+            return
+              (e, Just (GlassExceptionReason_entitySearchFail t))
         let SearchEntity { entityRepo, decl = (_,file,rangespan,_) } = entity
         let scmRevs = scmRevisions dbInfo
         (, fmap logError err) <$> withRepo entityRepo (do
@@ -169,44 +174,48 @@ resolveSymbols
   -> ResolveSymbolsRequest
   -> RequestOptions
   -> IO ResolveSymbolsResult
-resolveSymbols env@Glass.Env{..} (ResolveSymbolsRequest symIds) opts =
-  ResolveSymbolsResult <$>
-  forM symIds (\symId ->
-    ResolvedSymbol symId <$>
-    withSymbol "resolveSymbols" env opts symId
-      (\gleanDBs dbInfo (scmRepo, lang, toks) ->
-        backendRunHaxl GleanBackend{..} env $ do
-          r <- Search.searchEntityLocation lang toks
-          (entities, err) <- case r of
-            None t -> throwM (ServerException t)
-            One e -> return ([e], Nothing)
-            Many{initial = e, rest = es} -> return (e : es, Nothing)
-          let scmRevs = scmRevisions dbInfo
-          res <- forM entities $ \this ->
-            let SearchEntity
-                  { entityRepo
-                  , decl = (_entity, file, rangespan, _text)
-                  } = this
-              in withRepo entityRepo $ do
-                  location <- rangeSpanToLocationRange scmRepo file rangespan
-                  repoHash <-
-                    getRepoHashForLocation location scmRevs <$> Glean.haxlRepo
-                  SymbolBasicDescription{..} <-
-                    mkBriefSymbolDescription
-                      symId
-                      scmRevs
-                      scmRepo
-                      (toCodeEntityLoc this)
-                      Nothing
-                  pure SymbolResolution
-                    { symbolResolution_qname = symbolBasicDescription_name
-                    , symbolResolution_location = location
-                    , symbolResolution_revision = repoHash
-                    , symbolResolution_kind = symbolBasicDescription_kind
-                    , symbolResolution_language = symbolBasicDescription_language
-                    , symbolResolution_signature = symbolBasicDescription_signature
-                    }
-          pure (res, err)))
+resolveSymbols env@Glass.Env{..} (ResolveSymbolsRequest symIds) opts = do
+  results <- forM symIds $ \symId -> do
+    -- Try to resolve the symbol, returning any error encountered
+    (resolutions, err) <- withSymbol "resolveSymbols" env opts symId $
+      \gleanDBs dbInfo (scmRepo, lang, toks) ->
+      backendRunHaxl GleanBackend{..} env $ do
+        r <- Search.searchEntityLocation lang toks
+        (entities, err) <- case r of
+          None t ->
+            return ([], Just $ SymbolResolutionFailure symId
+              (GlassExceptionReason_entitySearchFail t))
+          One e -> return ([e], Nothing)
+          Many{initial = e, rest = es} -> return (e : es, Nothing)
+        let scmRevs = scmRevisions dbInfo
+        resolutions <- forM entities $ \this ->
+          let SearchEntity
+                { entityRepo
+                , decl = (_entity, file, rangespan, _text)
+                } = this
+            in withRepo entityRepo $ do
+                location <- rangeSpanToLocationRange scmRepo file rangespan
+                repoHash <-
+                  getRepoHashForLocation location scmRevs <$> Glean.haxlRepo
+                SymbolBasicDescription{..} <-
+                  mkBriefSymbolDescription
+                    symId
+                    scmRevs
+                    scmRepo
+                    (toCodeEntityLoc this)
+                    Nothing
+                pure SymbolResolution
+                  { symbolResolution_qname = symbolBasicDescription_name
+                  , symbolResolution_location = location
+                  , symbolResolution_revision = repoHash
+                  , symbolResolution_kind = symbolBasicDescription_kind
+                  , symbolResolution_language = symbolBasicDescription_language
+                  , symbolResolution_signature = symbolBasicDescription_signature
+                  }
+        pure ((resolutions, err), Nothing)
+    pure (ResolvedSymbol symId resolutions err)
+
+  return $ ResolveSymbolsResult results
 
 
 toCodeEntityLoc ::
@@ -247,11 +256,15 @@ searchSymbol
   case selectGleanDBs repoMapping scmRepo languageSet of
     Left err -> throwIO $ ServerException err
     Right rs -> case sFeelingLucky of
-      Normal -> joinSearchResults mlimit terse sorted <$> Async.mapConcurrently
-        (continueOnErrors. uncurry searchSymbolsIn) (Map.toList rs)
+      Normal -> joinSearchResults mlimit terse sorted <$>
+        Async.mapConcurrently
+          (continueOnErrors. uncurry searchSymbolsIn)
+          (Map.toList rs)
       -- lucky mode is quite different, as it has to make priority choices
-      FeelingLucky -> joinLuckyResults <$> Async.mapConcurrently
-        (continueOnErrors . uncurry searchLuckySymbolsIn) (Map.toList rs)
+      FeelingLucky -> joinLuckyResults <$>
+        Async.mapConcurrently
+          (continueOnErrors . uncurry searchLuckySymbolsIn)
+          (Map.toList rs)
   where
     continueOnErrors = fmap fst -- TODO support strict errors
     scmRepo = symbolSearchRequest_repo_name

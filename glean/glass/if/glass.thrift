@@ -748,9 +748,15 @@ struct ResolveSymbolsRequest {
   1: list<SymbolId> symbols;
 }
 
+struct SymbolResolutionFailure {
+  1: SymbolId symbol;
+  2: GlassExceptionReason reason;
+}
+
 struct ResolvedSymbol {
   1: SymbolId symbol;
   2: list<SymbolResolution> symbolResolutions;
+  3: optional SymbolResolutionFailure failure;
 }
 
 struct ResolveSymbolsResult {

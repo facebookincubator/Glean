@@ -17,7 +17,7 @@ module Glean.Glass.Regression.Snapshot (
     mainGlassSnapshotGeneric,
     mainGlassSnapshotXLang,
     Cfg(..),
-    Getter
+    Output, Getter
   ) where
 
 import Data.Aeson
@@ -73,15 +73,15 @@ newtype Cfg =
 data Query
   = Query {
       action :: Text, -- ^ name of glass.thrift method
-      args :: Aeson.Value, -- json object of args to method
-      request_args :: Maybe Aeson.Value -- json object of request args to method
+      args :: Aeson.Value -- json object of args to method
   } deriving (Show)
 
 instance FromJSON Query where
   parseJSON = withObject "query" $ \v -> Query
     <$> v .: "action"
     <*> v .: "args"
-    <*> v .:? "request_args"
+
+type Output = FilePath
 
 type Getter = IO (Some LocalOrRemote, Repo)
 
@@ -130,7 +130,7 @@ mainGlassSnapshot_
   -> (Getter -> [Test])
   -> IO ()
 mainGlassSnapshot_ testName testRoot driver extraOpts extras = do
-  -- just check for --replace, everything else is passed through
+  -- just check for --replace. Everything else is passed through
   -- really want to compose these with the underlying testsuite's options
   cfgReplace <- any (`elem` ["--replace", "--replace-all"]) <$> getArgs
   qs <- findQueries testRoot
@@ -179,36 +179,39 @@ mkTest cfgReplace get name qfile tempDir = TestLabel name $ TestCase $ do
       then copyFile actual expected
       else diff actual expected
 
+xlang :: RequestOptions -> RequestOptions
+xlang opts = opts { requestOptions_feature_flags = Just
+  (def { featureFlags_include_xlang_refs = Just True })
+}
 
 evalQuery :: Glass.Env -> FilePath -> Query -> FilePath -> IO ()
 evalQuery glassEnv qFile Query{..} oFile = case action of
-  "documentSymbolListX" -> withObjectArgs qFile oFile args request_args
-    (\req opts -> Glass.documentSymbolListX glassEnv req opts)
-  "documentSymbolIndex" -> withObjectArgs qFile oFile args request_args
-    (\req opts -> Glass.documentSymbolIndex glassEnv req opts)
+  "documentSymbolListX" -> withObjectArgs qFile oFile args
+    (\req opts -> Glass.documentSymbolListX glassEnv req (xlang opts))
+  "documentSymbolIndex" -> withObjectArgs qFile oFile args
+    (\req opts -> Glass.documentSymbolIndex glassEnv req (xlang opts))
   "findReferenceRanges" -> withSymbolId oFile args
     (Glass.findReferenceRanges glassEnv)
   "symbolLocation" -> withSymbolId oFile args
     (Glass.symbolLocation glassEnv)
   "describeSymbol" -> withSymbolId oFile args
     (Glass.describeSymbol glassEnv)
-  "resolveSymbols" -> withObjectArgs qFile oFile args request_args
+  "resolveSymbols" -> withObjectArgs qFile oFile args
     (Glass.resolveSymbols glassEnv)
-  "searchSymbol" ->  withObjectArgs qFile oFile args request_args
+  "searchSymbol" ->  withObjectArgs qFile oFile args
     (Glass.searchSymbol glassEnv)
   "searchRelated" -> withObjectAndSymbolId qFile oFile args
     (Glass.searchRelated glassEnv)
   "searchRelatedNeighborhood" -> withSymbolId oFile args
     (\sym opts -> Glass.searchRelatedNeighborhood glassEnv sym opts
        def { relatedNeighborhoodRequest_hide_uninteresting = True } )
-  "fileIncludeLocations" -> withObjectArgs qFile oFile args request_args
+  "fileIncludeLocations" -> withObjectArgs qFile oFile args
     (Glass.fileIncludeLocations glassEnv)
-  "usrToDefinition" -> withObjectArgs qFile oFile args request_args
+  "usrToDefinition" -> withObjectArgs qFile oFile args
     (\x y -> fst <$> Glass.usrToDefinition glassEnv x y)
-
   -- this lists all symbol ids in a file and then validates them
   -- wrapper for validating C++
-  "validateCxxSymbolIds" -> withObjectArgs qFile oFile args request_args
+  "validateCxxSymbolIds" -> withObjectArgs qFile oFile args
     (validateCxxSymbols glassEnv)
 
   _ -> error $ "Invalid action: " <> show action
@@ -230,48 +233,31 @@ validateCxxSymbols glassEnv req def = do
   return (map Cxx.validateSymbolId toks)
 
 decodeObjectAsThriftJson
-  :: Thrift.Protocol.ThriftSerializable a
+  :: (Thrift.Protocol.ThriftStruct a, ToJSON a)
   => Aeson.Value -> Either String a
 decodeObjectAsThriftJson
   = Thrift.deserializeJSON . S.concat . B.toChunks. encode
 
-withStringInput ::
-  (ToJSON a, DeterministicResponse a) =>
-  (Text -> b) ->
-  FilePath ->
-  Value ->
-  (b -> RequestOptions -> IO a) ->
-  IO ()
-withStringInput ctor oFile args f = do
+withSymbolId
+  :: (ToJSON a, DeterministicResponse a)
+  => FilePath -> Value -> (SymbolId -> RequestOptions -> IO a) -> IO ()
+withSymbolId oFile args f = do
   req <- case fromJSON args of
-    Success sym -> pure (ctor sym)
-    Error str -> assertFailure $ "Invalid SymbolId: " <> str
+          Success sym -> pure (SymbolId sym)
+          Error str -> assertFailure $ "Invalid SymbolId: " <> str
   res <- f req def
   writeResult oFile res
 
-withSymbolId ::
-  (ToJSON a, DeterministicResponse a) =>
-  FilePath ->
-  Value ->
-  (SymbolId -> RequestOptions -> IO a) ->
-  IO ()
-withSymbolId = withStringInput SymbolId
-
 withObjectArgs
- :: (Thrift.Protocol.ThriftSerializable req,
-     Thrift.Protocol.ThriftSerializable opts,
-     ToJSON a, Default opts, DeterministicResponse a)
+ :: (Thrift.Protocol.ThriftStruct req,
+     ToJSON req, ToJSON a, DeterministicResponse a)
  => FilePath
  -> FilePath
  -> Value
- -> Maybe Value
- -> (req -> opts -> IO a) -> IO ()
-withObjectArgs qFile oFile args rargs f = do
+ -> (req -> RequestOptions -> IO a) -> IO ()
+withObjectArgs qFile oFile args f = do
   req <- parseAsObject qFile args
-  opts <- case rargs of
-    Nothing -> return def
-    Just rargs -> parseAsObject qFile rargs
-  res <- f req opts
+  res <- f req def
   writeResult oFile res
 
 withObjectAndSymbolId
@@ -300,7 +286,7 @@ withObjectAndSymbolId qFile oFile args f = do
   writeResult oFile res
 
 parseAsObject
-  :: Thrift.Protocol.ThriftSerializable a => String -> Value -> IO a
+  :: (Thrift.Protocol.ThriftStruct a, ToJSON a) => String -> Value -> IO a
 parseAsObject file args = case decodeObjectAsThriftJson args of
   Left str -> assertFailure $ "Invalid args in " <> file <> " : " <> str
   Right req -> pure req
@@ -325,24 +311,24 @@ instance DeterministicResponse (Either [Text] Cxx.SymbolEnv) where
   det = id
 
 instance DeterministicResponse DocumentSymbolListXResult where
-  det (DocumentSymbolListXResult refs defs rev truncated digest fileMap
-      contentMatch fileAttrs) =
-    DocumentSymbolListXResult (det refs) (det defs) (det rev)
+  det (DocumentSymbolListXResult refs defs _rev truncated digest fileMap
+      contentMatch attributes) =
+    DocumentSymbolListXResult (det refs) (det defs) (Revision "testhash")
       truncated
       digest
       fileMap
       -- n.b. don't want to include any test group revision tags
       contentMatch
-      fileAttrs
+      attributes
 
 instance DeterministicResponse DocumentSymbolIndex where
-  det (DocumentSymbolIndex syms rev size truncated digest fileMap
-      contentMatch fileAttrs) =
-    DocumentSymbolIndex (Map.map sort syms) (det rev) size truncated
+  det (DocumentSymbolIndex syms _rev size truncated digest fileMap
+      contentMatch attributes) =
+    DocumentSymbolIndex (Map.map sort syms) (Revision "testhash") size truncated
       digest
       fileMap
       contentMatch
-      fileAttrs
+      attributes
 
 instance DeterministicResponse SymbolSearchResult where
   det (SymbolSearchResult syms deets) =
@@ -355,7 +341,7 @@ instance DeterministicResponse Range where det = id
 instance DeterministicResponse LocationRange where det = id
 instance DeterministicResponse Glass.QualifiedName where det = id
 instance DeterministicResponse SymbolLocation where
-  det (SymbolLocation loc rev) = SymbolLocation (det loc) (det rev)
+  det (SymbolLocation loc _rev) = SymbolLocation (det loc) (Revision "testhash")
 
 instance DeterministicResponse SymbolResolution where
   det (SymbolResolution qname loc rev kind lang sig) =
@@ -416,21 +402,30 @@ instance DeterministicResponse (Map.Map Text SymbolDescription) where
 instance DeterministicResponse SymbolResult where
   det = id
 instance DeterministicResponse FileIncludeLocationResults where
-  det (FileIncludeLocationResults rev (XRefFileList refs)) =
+  det (FileIncludeLocationResults _rev (XRefFileList refs)) =
     FileIncludeLocationResults
-     (det rev)
+     (Revision "testhash")
      (XRefFileList (sort (map det refs)))
 instance DeterministicResponse FileIncludeXRef where
   det (FileIncludeXRef path incs) =
     FileIncludeXRef path (sort incs)
+
+instance DeterministicResponse SymbolResolutionFailure where
+  det = id
+
+instance DeterministicResponse (Maybe SymbolResolutionFailure) where
+  det Nothing = Nothing
+  det (Just x) = Just (det x)
+
 instance DeterministicResponse ResolveSymbolsResult where
   det (ResolveSymbolsResult syms) =
     ResolveSymbolsResult (det syms)
 instance DeterministicResponse ResolvedSymbol where
-  det (ResolvedSymbol sym loc) = ResolvedSymbol (det sym) (det loc)
+  det (ResolvedSymbol sym resolutions failure) =
+    ResolvedSymbol (det sym) (det resolutions) (det failure)
 instance DeterministicResponse USRSymbolDefinition where
-  det (USRSymbolDefinition loc sym rev) =
-    USRSymbolDefinition (det loc) (det sym) (det rev)
+  det (USRSymbolDefinition location sym revision) =
+    USRSymbolDefinition (det location) (det sym) (det revision)
 
 diff :: FilePath -> FilePath -> IO ()
 diff outGenerated outSpec = do

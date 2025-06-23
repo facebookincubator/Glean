@@ -186,6 +186,10 @@ instance LogResult SymbolDescription where
 instance LogResult [SymbolResolution] where
   logResult xs = Logger.setItemCount (length xs)
 
+instance LogResult SymbolResolutionFailure where
+  logResult SymbolResolutionFailure{..} =
+      Logger.setInternalError (errorText symbolResolutionFailure_reason)
+
 instance LogResult SymbolPath where
   logResult SymbolPath{..} =
     Logger.setRepo (unRepoName symbolPath_repository)
